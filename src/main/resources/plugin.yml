@@ -1,0 +1,11 @@
+name: TownsAndNations
+version: '${version}'
+main: org.tan.towns_and_nations.TownsAndNations
+api-version: 1.19
+authors: [ Leralix ]
+description: My first big plugin
+commands:
+  tan:
+    description: base command of Town and Nation
+    usage: /<command>
+
