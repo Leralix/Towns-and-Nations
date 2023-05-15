@@ -1,34 +1,22 @@
-package org.tan.towns_and_nations.commands.PlayerData;
+package org.tan.towns_and_nations.PlayerData;
 
 import org.bukkit.entity.Player;
-
-import java.util.UUID;
 
 public class PlayerDataClass {
 
     String UUID;
     String PlayerName;
-    Player player;
     int Balance;
 
     public PlayerDataClass(Player player) {
         this.UUID = player.getUniqueId().toString();
         this.PlayerName = player.getName();
-        this.player = player;
         this.Balance = 0;
     }
 
 
     public String getUuid() {
         return UUID;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player newPlayer){
-        this.player = newPlayer;
     }
 
     public String getPlayerName(){

@@ -2,7 +2,7 @@ package org.tan.towns_and_nations.commands.subcommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.tan.towns_and_nations.commands.PlayerData.PlayerDataClass;
+import org.tan.towns_and_nations.PlayerData.PlayerDataClass;
 import org.tan.towns_and_nations.commands.SubCommand;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
 

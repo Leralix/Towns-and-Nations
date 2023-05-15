@@ -3,7 +3,7 @@ package org.tan.towns_and_nations.utils;
 import com.google.gson.Gson;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.TownsAndNations;
-import org.tan.towns_and_nations.commands.PlayerData.PlayerDataClass;
+import org.tan.towns_and_nations.PlayerData.PlayerDataClass;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,12 +13,11 @@ public class PlayerStatStorage {
 
     private static ArrayList<PlayerDataClass> stats = new ArrayList<PlayerDataClass>();
 
-    public static PlayerDataClass createPlayerDataClass(Player p){
+    public static void createPlayerDataClass(Player p) throws IOException {
 
         PlayerDataClass stat = new PlayerDataClass(p);
         stats.add(stat);
-
-        return stat;
+        saveStats();
     }
 
     public static void deleteStat(String uuid) throws IOException {
@@ -50,14 +49,14 @@ public class PlayerStatStorage {
     }
 
 
-    public static PlayerDataClass updateStat(String uuid, PlayerDataClass newStat){
+    public static PlayerDataClass updateStat(String uuid, PlayerDataClass newStat) throws IOException {
         for (PlayerDataClass stat : stats) {
             if (stat.getUuid().equalsIgnoreCase(uuid)) {
-                stat.setPlayer(newStat.getPlayer());
                 stat.setPlayerName(newStat.getPlayerName());
                 stat.setBalance(newStat.getBalance());
             }
         }
+        saveStats();
         return null;
     }
 
@@ -70,12 +69,14 @@ public class PlayerStatStorage {
     public static void loadStats() throws IOException {
 
         Gson gson = new Gson();
+        System.out.println(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNstats.json");
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNstats.json");
         if (file.exists()){
             Reader reader = new FileReader(file);
             PlayerDataClass[] n = gson.fromJson(reader, PlayerDataClass[].class);
             stats = new ArrayList<>(Arrays.asList(n));
             System.out.println("[TaN]Stats Loaded");
+
         }
 
     }

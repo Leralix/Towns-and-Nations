@@ -7,7 +7,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.commands.subcommands.*;
+import org.tan.towns_and_nations.utils.PlayerStatStorage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class CommandManager implements CommandExecutor, TabExecutor {
         subcommands.add(new SeeBalanceCommand());
         subcommands.add(new AddBalanceCommand());
         subcommands.add(new PayCommand());
+        subcommands.add(new DebugCommand());
     }
 
     @Override
@@ -46,7 +49,11 @@ public class CommandManager implements CommandExecutor, TabExecutor {
 
         }
 
-
+        try {
+            PlayerStatStorage.saveStats();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return true;
     }
 

@@ -24,7 +24,7 @@ public class SeeBalanceCommand extends SubCommand  {
     @Override
     public void perform(Player player, String[] args){
         if (args.length == 1){
-            player.sendMessage("Your Balance: " + PlayerStatStorage.findStat(player.getUniqueId().toString()));
+            player.sendMessage("Your Balance: " + PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).getBalance());
         }else if(args.length > 1){
             player.sendMessage("Too many arguments");
             player.sendMessage("Correct Syntax: /tan balance");
