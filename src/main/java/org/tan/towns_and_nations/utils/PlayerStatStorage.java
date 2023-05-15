@@ -31,7 +31,7 @@ public class PlayerStatStorage {
         saveStats();
     }
 
-    public static PlayerDataClass findStat(String uuid){
+    public static PlayerDataClass findStatUUID(String uuid){
         for (PlayerDataClass stat : stats) {
             if (stat.getUuid().equalsIgnoreCase(uuid)) {
                 return stat;
@@ -39,6 +39,16 @@ public class PlayerStatStorage {
         }
         return null;
     }
+
+    public static PlayerDataClass findStatUsername(String username){
+        for (PlayerDataClass stat : stats) {
+            if (stat.getPlayerName().equalsIgnoreCase(username)) {
+                return stat;
+            }
+        }
+        return null;
+    }
+
 
     public static PlayerDataClass updateStat(String uuid, PlayerDataClass newStat){
         for (PlayerDataClass stat : stats) {
@@ -50,6 +60,8 @@ public class PlayerStatStorage {
         }
         return null;
     }
+
+    // Ajouter une fonction pour modifier une seule valeure
 
     public static ArrayList<PlayerDataClass> getStats(){
         return stats;
