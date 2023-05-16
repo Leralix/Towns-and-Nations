@@ -17,7 +17,7 @@ public class AddBalanceCommand extends SubCommand  {
     public String getDescription() {
         return "Add money to a player's balance";
     }
-
+    public int getArguments(){ return 3;}
     @Override
     public String getSyntax() {
         return "/tan addmoney playerName amount";

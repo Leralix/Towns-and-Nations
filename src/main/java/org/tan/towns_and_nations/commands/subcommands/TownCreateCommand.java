@@ -18,7 +18,9 @@ public class TownCreateCommand extends SubCommand {
     public String getDescription() {
         return "Create a town";
     }
-
+    public int getArguments(){
+        return 2;
+    }
     @Override
     public String getSyntax() {
         return "/tan create <town name>";

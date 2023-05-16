@@ -14,10 +14,13 @@ public class ChunkClaimCommand extends SubCommand  {
         return "claim";
     }
 
+
     @Override
     public String getDescription() {
         return "claim the chunk you in witch you are";
     }
+    public int getArguments(){ return 2;}
+
 
     @Override
     public String getSyntax() {

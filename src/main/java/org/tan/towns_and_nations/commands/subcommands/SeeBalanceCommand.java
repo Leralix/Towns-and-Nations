@@ -15,6 +15,9 @@ public class SeeBalanceCommand extends SubCommand  {
     public String getDescription() {
         return "Look at your balance";
     }
+    public int getArguments(){
+        return 1;
+    }
 
     @Override
     public String getSyntax() {

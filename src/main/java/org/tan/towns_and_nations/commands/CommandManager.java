@@ -67,7 +67,6 @@ public class CommandManager implements CommandExecutor, TabExecutor {
                 TabCompleteList.add(subCommand.getName());
             }
 
-
             return TabCompleteList;
 
             /*List<String> playerNames = new ArrayList<>();

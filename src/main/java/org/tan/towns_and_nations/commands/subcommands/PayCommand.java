@@ -15,13 +15,18 @@ public class PayCommand extends SubCommand  {
 
     @Override
     public String getDescription() {
-        return "give money to nother player";
+        return "give money to another player";
     }
 
     @Override
     public String getSyntax() {
         return "/tan pay playerName amount";
     }
+
+    public int getArguments(){
+        return 3;
+    }
+
 
     @Override
     public void perform(Player player, String[] args){
@@ -33,8 +38,13 @@ public class PayCommand extends SubCommand  {
             PlayerDataClass receiver = PlayerStatStorage.findStatUUID(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
             PlayerDataClass sender = PlayerStatStorage.findStatUUID(player.getUniqueId().toString());
             int amount = 0;
+            if(!args[2].matches("[0*9]+")){
+                player.sendMessage( "Invalid Syntax for the amount of money");
+                return;
+            }
             try{
                 amount = Integer.parseInt(args[2]);
+
             } catch (NumberFormatException e) {
                 player.sendMessage( "Invalid Syntax for the amount of money");
                 throw new RuntimeException(e);
@@ -49,6 +59,8 @@ public class PayCommand extends SubCommand  {
             player.sendMessage("Correct Syntax: " + getSyntax());
         }
     }
+
+
 
 }
 
