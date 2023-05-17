@@ -66,7 +66,9 @@ public class DebugCommand extends SubCommand {
                     ItemStack rareGold = new ItemStack(Material.GOLD_NUGGET,64);
                     ItemMeta rareGoldMeta = rareGold.getItemMeta();
                     rareGoldMeta.setDisplayName("Rare gold");
-                    rareGoldMeta.set
+                    ArrayList<String> lore = new ArrayList<>();
+                    lore.add("Can be used to create Money");
+                    rareGoldMeta.setLore(lore);
                     inventory.setItem(1,rareGold);
 
                     player.openInventory(inventory);
