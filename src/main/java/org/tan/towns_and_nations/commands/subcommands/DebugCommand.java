@@ -3,8 +3,10 @@ package org.tan.towns_and_nations.commands.subcommands;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.towns_and_nations.PlayerData.PlayerDataClass;
@@ -61,7 +63,7 @@ public class DebugCommand extends SubCommand {
 
                 case "itemtab":
 
-                    Inventory inventory = Bukkit.createInventory(player,27, ChatColor.RED + "Debug Item Menu");
+                    Inventory inventory = Bukkit.createInventory(player,27, ChatColor.BLACK + "Debug Item Menu");
 
                     ItemStack rareGold = new ItemStack(Material.GOLD_NUGGET,64);
                     ItemMeta rareGoldMeta = rareGold.getItemMeta();
@@ -69,6 +71,9 @@ public class DebugCommand extends SubCommand {
                     ArrayList<String> lore = new ArrayList<>();
                     lore.add("Can be used to create Money");
                     rareGoldMeta.setLore(lore);
+                    rareGoldMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+                    rareGoldMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                    rareGold.setItemMeta(rareGoldMeta);
                     inventory.setItem(1,rareGold);
 
                     player.openInventory(inventory);

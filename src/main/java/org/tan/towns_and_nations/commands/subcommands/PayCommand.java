@@ -52,6 +52,7 @@ public class PayCommand extends SubCommand  {
             sender.removeFromBalance(amount);
             receiver.addToBalance(amount);
             player.sendMessage( "Paid "  + amount + " Ecu to " + receiver.getPlayerName());
+            Bukkit.getOfflinePlayer(args[1]).getPlayer().sendMessage("Received "  + amount + " Ecu to " + receiver.getPlayerName());
 
         }
         else {

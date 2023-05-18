@@ -15,10 +15,15 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
-}
+    maven {
+        name = 'minecraft-repo'
+        url = 'https://libraries.minecraft.net/'
+        // this lets gradle know where to look for authlib
+    }}
 
 dependencies {
     compileOnly "org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT"
+    compileOnly 'com.mojang:authlib:1.5.21'
 }
 
 def targetJavaVersion = 17
