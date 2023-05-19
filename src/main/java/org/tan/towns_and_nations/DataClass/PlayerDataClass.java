@@ -1,12 +1,12 @@
-package org.tan.towns_and_nations.PlayerData;
+package org.tan.towns_and_nations.DataClass;
 
 import org.bukkit.entity.Player;
 
 public class PlayerDataClass {
 
-    String UUID;
-    String PlayerName;
-    int Balance;
+    private String UUID;
+    private String PlayerName;
+    private int Balance;
 
     public PlayerDataClass(Player player) {
         this.UUID = player.getUniqueId().toString();

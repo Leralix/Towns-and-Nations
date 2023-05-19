@@ -9,13 +9,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.tan.towns_and_nations.PlayerData.PlayerDataClass;
+import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.commands.SubCommand;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DebugCommand extends SubCommand {
 

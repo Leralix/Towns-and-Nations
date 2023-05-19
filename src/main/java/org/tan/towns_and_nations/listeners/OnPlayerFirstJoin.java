@@ -1,14 +1,9 @@
 package org.tan.towns_and_nations.listeners;
 
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerBedEnterEvent;
-import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.tan.towns_and_nations.PlayerData.PlayerDataClass;
 import org.tan.towns_and_nations.TownsAndNations;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
 

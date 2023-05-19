@@ -1,9 +1,8 @@
 package org.tan.towns_and_nations;
 
-import org.bukkit.event.EventHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tan.towns_and_nations.commands.CommandManager;
-import org.tan.towns_and_nations.PlayerData.PlayerDataClass;
+import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.listeners.GuiListener;
 import org.tan.towns_and_nations.listeners.OnPlayerFirstJoin;
 import org.tan.towns_and_nations.listeners.onBedLeaveListener;

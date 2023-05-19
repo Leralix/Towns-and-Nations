@@ -5,12 +5,18 @@ import com.mojang.authlib.properties.Property;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Statistic;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.tan.towns_and_nations.utils.PlayerStatStorage;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class GuiManager {
@@ -21,16 +27,9 @@ public class GuiManager {
         Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Debug Item Menu");
 
         ItemStack KingdomHead = makeSkull("Kingdom","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=");
-
         ItemStack RegionHead = makeSkull("Region","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
-
         ItemStack TownHead = makeSkull("Town","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
-
-        ItemStack PlayerHead = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta skullMeta = (SkullMeta) PlayerHead.getItemMeta();
-        skullMeta.setDisplayName("Profil");
-        skullMeta.setOwningPlayer(p);
-        PlayerHead.setItemMeta(skullMeta);
+        ItemStack PlayerHead = getPlayerHead("Profil",p);
 
         inventory.setItem(10, KingdomHead);
         inventory.setItem(12, RegionHead);
@@ -44,13 +43,46 @@ public class GuiManager {
 
         Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Profil");
 
-        ItemStack PlayerHead = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta skullMeta = (SkullMeta) PlayerHead.getItemMeta();
-        skullMeta.setDisplayName(p.getDisplayName());
-        skullMeta.setOwningPlayer(p);
-        PlayerHead.setItemMeta(skullMeta);
+        ItemStack PlayerHead = getPlayerHead("Votre Profil",p);
+
+        ItemStack GoldPurse = getCustomLoreItem(Material.GOLD_NUGGET, "Balance","You have " + PlayerStatStorage.findStatUUID(p.getUniqueId().toString()) + "gold");
+
+        ItemStack killList = getCustomLoreItem(Material.IRON_SWORD, "Balance","You killed " + p.getStatistic(Statistic.MOB_KILLS) + "mobs");
+
+        ItemStack lastDeath = getCustomLoreItem(Material.SKELETON_SKULL, "Balance","You killed " + p.getStatistic(Statistic.TIME_SINCE_DEATH) + "mobs");
+
+
+
 
         inventory.setItem(4, PlayerHead);
+        inventory.setItem(10, GoldPurse);
+        inventory.setItem(12, killList);
+        inventory.setItem(14, lastDeath);
+
+
+        p.openInventory(inventory);
+    }
+
+    public static void OpenTownMenu(Player p) {
+
+        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Profil");
+
+        ItemStack PlayerHead = getPlayerHead("Votre Profil",p);
+
+        ItemStack GoldPurse = getCustomLoreItem(Material.GOLD_NUGGET, "Balance","You have " + PlayerStatStorage.findStatUUID(p.getUniqueId().toString()) + "gold");
+
+        ItemStack killList = getCustomLoreItem(Material.IRON_SWORD, "Balance","You killed " + p.getStatistic(Statistic.MOB_KILLS) + "mobs");
+
+        ItemStack lastDeath = getCustomLoreItem(Material.SKELETON_SKULL, "Balance","You killed " + p.getStatistic(Statistic.TIME_SINCE_DEATH) + "mobs");
+
+
+
+
+        inventory.setItem(4, PlayerHead);
+        inventory.setItem(10, GoldPurse);
+        inventory.setItem(12, killList);
+        inventory.setItem(14, lastDeath);
+
 
         p.openInventory(inventory);
     }
@@ -71,6 +103,28 @@ public class GuiManager {
         meta.setDisplayName(name);
         skull.setItemMeta(meta);
         return skull;
+    }
+
+    public static ItemStack getPlayerHead(String headName, Player p){
+        ItemStack PlayerHead = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta skullMeta = (SkullMeta) PlayerHead.getItemMeta();
+        skullMeta.setDisplayName(headName);
+        skullMeta.setOwningPlayer(p);
+        PlayerHead.setItemMeta(skullMeta);
+        return PlayerHead;
+    }
+
+    public static ItemStack getCustomLoreItem(Material itemMaterial, String itemName, String itemLoreOneLine){
+        ItemStack item = new ItemStack(itemMaterial);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(itemName);
+
+        List<String> itemLore = new ArrayList<String>();
+        itemLore.add(itemLoreOneLine);
+        meta.setLore(itemLore);
+
+        item.setItemMeta(meta);
+        return item;
     }
 
 }

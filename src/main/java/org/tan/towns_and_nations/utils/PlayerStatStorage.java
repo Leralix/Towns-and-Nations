@@ -3,7 +3,7 @@ package org.tan.towns_and_nations.utils;
 import com.google.gson.Gson;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.TownsAndNations;
-import org.tan.towns_and_nations.PlayerData.PlayerDataClass;
+import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 
 import java.io.*;
 import java.util.ArrayList;
