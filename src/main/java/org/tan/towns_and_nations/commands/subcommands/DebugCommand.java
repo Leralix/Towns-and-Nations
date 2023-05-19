@@ -11,7 +11,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.commands.SubCommand;
+import org.tan.towns_and_nations.utils.PlayerChatListenerStorage;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
+import org.tan.towns_and_nations.utils.TownDataStorage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ import java.util.ArrayList;
 public class DebugCommand extends SubCommand {
 
 
-    private String[] commandes = {"playerstats","savestats","itemtab"};
+    private String[] commandes = {"playerstats","savestats","itemtab","getplayerstorage","gettownstats"};
     @Override
     public String getName() {
         return "debug";
@@ -44,6 +46,14 @@ public class DebugCommand extends SubCommand {
         }
         else if(args.length == 2){
             switch(args[1]){
+
+                case "getplayerstorage":
+                    player.sendMessage(PlayerChatListenerStorage.getData().toString());
+                    break;
+
+                case "gettownstats":
+                    player.sendMessage(TownDataStorage.getTownList().toString());
+                    break;
 
                 case "playerstats":
                     ArrayList<PlayerDataClass> stats = PlayerStatStorage.getStats();

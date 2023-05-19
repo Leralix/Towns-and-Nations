@@ -18,7 +18,7 @@ public class CommandManager implements CommandExecutor, TabExecutor {
     private ArrayList<SubCommand> subcommands = new ArrayList<>();
 
     public CommandManager(){
-        subcommands.add(new TownCreateCommand());
+        //subcommands.add(new TownCreateCommand());
         subcommands.add(new ChunkClaimCommand());
 
         subcommands.add(new SeeBalanceCommand());

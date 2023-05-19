@@ -24,17 +24,21 @@ public class GuiManager {
 
     public static void OpenMainMenu(Player p) {
 
-        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Debug Item Menu");
+        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Towns and Nations");
 
         ItemStack KingdomHead = makeSkull("Kingdom","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=");
         ItemStack RegionHead = makeSkull("Region","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
         ItemStack TownHead = makeSkull("Town","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
         ItemStack PlayerHead = getPlayerHead("Profil",p);
+        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Quit", null);
+
+
 
         inventory.setItem(10, KingdomHead);
         inventory.setItem(12, RegionHead);
         inventory.setItem(14, TownHead);
         inventory.setItem(16, PlayerHead);
+        inventory.setItem(18, getBackArrow);
 
         p.openInventory(inventory);
     }
@@ -45,19 +49,23 @@ public class GuiManager {
 
         ItemStack PlayerHead = getPlayerHead("Votre Profil",p);
 
-        ItemStack GoldPurse = getCustomLoreItem(Material.GOLD_NUGGET, "Balance","You have " + PlayerStatStorage.findStatUUID(p.getUniqueId().toString()) + "gold");
+        ItemStack GoldPurse = getCustomLoreItem(Material.GOLD_NUGGET, "Balance","You have " + PlayerStatStorage.findStatUUID(p.getUniqueId().toString()).getBalance() + " gold");
 
-        ItemStack killList = getCustomLoreItem(Material.IRON_SWORD, "Balance","You killed " + p.getStatistic(Statistic.MOB_KILLS) + "mobs");
+        ItemStack killList = getCustomLoreItem(Material.IRON_SWORD, "Kills","You killed " + p.getStatistic(Statistic.MOB_KILLS) + " mobs");
 
-        ItemStack lastDeath = getCustomLoreItem(Material.SKELETON_SKULL, "Balance","You killed " + p.getStatistic(Statistic.TIME_SINCE_DEATH) + "mobs");
+        int time = p.getStatistic(Statistic.PLAY_ONE_MINUTE) /20 / 86400;
+        ItemStack lastDeath = getCustomLoreItem(Material.SKELETON_SKULL, "Time Alive","You survived for " + time + " days");
 
+        ItemStack totalRpKills = getCustomLoreItem(Material.SKELETON_SKULL, "Murder","You killed " + "//En developpement//" + " players");
 
-
+        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
 
         inventory.setItem(4, PlayerHead);
         inventory.setItem(10, GoldPurse);
         inventory.setItem(12, killList);
         inventory.setItem(14, lastDeath);
+        inventory.setItem(16, totalRpKills);
+        inventory.setItem(18, getBackArrow);
 
 
         p.openInventory(inventory);
@@ -65,24 +73,16 @@ public class GuiManager {
 
     public static void OpenTownMenu(Player p) {
 
-        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Profil");
+        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town");
 
-        ItemStack PlayerHead = getPlayerHead("Votre Profil",p);
-
-        ItemStack GoldPurse = getCustomLoreItem(Material.GOLD_NUGGET, "Balance","You have " + PlayerStatStorage.findStatUUID(p.getUniqueId().toString()) + "gold");
-
-        ItemStack killList = getCustomLoreItem(Material.IRON_SWORD, "Balance","You killed " + p.getStatistic(Statistic.MOB_KILLS) + "mobs");
-
-        ItemStack lastDeath = getCustomLoreItem(Material.SKELETON_SKULL, "Balance","You killed " + p.getStatistic(Statistic.TIME_SINCE_DEATH) + "mobs");
+        ItemStack createNewland = getCustomLoreItem(Material.GRASS_BLOCK, "Create new Town","Cost: 100 gold");
+        ItemStack joinLand = getCustomLoreItem(Material.ANVIL, "Join a Town","Look at every public town");
+        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
 
 
-
-
-        inventory.setItem(4, PlayerHead);
-        inventory.setItem(10, GoldPurse);
-        inventory.setItem(12, killList);
-        inventory.setItem(14, lastDeath);
-
+        inventory.setItem(11, createNewland);
+        inventory.setItem(15, joinLand);
+        inventory.setItem(18, getBackArrow);
 
         p.openInventory(inventory);
     }
@@ -118,10 +118,12 @@ public class GuiManager {
         ItemStack item = new ItemStack(itemMaterial);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(itemName);
+        if(itemLoreOneLine != null){
+            List<String> itemLore = new ArrayList<String>();
+            itemLore.add(itemLoreOneLine);
+            meta.setLore(itemLore);
+        }
 
-        List<String> itemLore = new ArrayList<String>();
-        itemLore.add(itemLoreOneLine);
-        meta.setLore(itemLore);
 
         item.setItemMeta(meta);
         return item;
