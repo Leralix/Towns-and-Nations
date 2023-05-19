@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.tan.towns_and_nations.GUI.GuiManager;
 import org.tan.towns_and_nations.commands.SubCommand;
 import com.mojang.authlib.GameProfile;
 
@@ -51,43 +52,10 @@ public class OpenGuiCommand extends SubCommand  {
     }
 
     private void getOpeningGui(Player player) {
-        Inventory inventory = Bukkit.createInventory(player,27, ChatColor.BLACK + "Debug Item Menu");
-
-        //Kingdom
-        ItemStack KingdomHead = makeSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=");
-        ItemStack KingdomHead2 = getSkullFromName("X4RDONIAK");
-
-        player.openInventory(inventory);
-
-        return ;
-}
-
-    private ItemStack getSkullFromName(String name) {
-        ItemStack skullItem = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta skullMeta = (SkullMeta) skullItem.getItemMeta();
-
-        skullMeta.setOwner(name);
-        skullItem.setItemMeta(skullMeta);
-
-        return skullItem;
+        GuiManager.OpenMainMenu(player);
     }
 
-    public ItemStack makeSkull(String base64EncodedString) {
-        final ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        assert meta != null;
-        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-        profile.getProperties().put("textures", new Property("textures", base64EncodedString));
-        try {
-            Field profileField = meta.getClass().getDeclaredField("profile");
-            profileField.setAccessible(true);
-            profileField.set(meta, profile);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        skull.setItemMeta(meta);
-        return skull;
-    }
+
 
 }
 

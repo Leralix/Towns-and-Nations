@@ -4,6 +4,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tan.towns_and_nations.commands.CommandManager;
 import org.tan.towns_and_nations.PlayerData.PlayerDataClass;
+import org.tan.towns_and_nations.listeners.GuiListener;
 import org.tan.towns_and_nations.listeners.OnPlayerFirstJoin;
 import org.tan.towns_and_nations.listeners.onBedLeaveListener;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
@@ -61,6 +62,7 @@ public final class TownsAndNations extends JavaPlugin {
     private void EnableEventList(){
         getServer().getPluginManager().registerEvents(new onBedLeaveListener(),this);
         getServer().getPluginManager().registerEvents(new OnPlayerFirstJoin(),this);
+        getServer().getPluginManager().registerEvents(new GuiListener(),this);
     }
 
     public static TownsAndNations getPlugin(){
