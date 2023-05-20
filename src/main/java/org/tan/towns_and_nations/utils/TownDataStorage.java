@@ -13,11 +13,19 @@ import java.util.*;
 public class TownDataStorage {
 
     public static HashMap<Integer, TownDataClass> townDataMap = new HashMap<>();
-    public static int nextTownId;
+    public static int nextTownId = -1;
 
-    public static void addTown(TownDataClass town){
+    public static void newTown(String townName, String uuidLeader){
+
+        if(nextTownId == -1){
+            nextTownId = 0;
+        }
+
+        TownDataClass newTown = new TownDataClass( "T"+nextTownId, townName, uuidLeader);
         nextTownId = nextTownId+1;
-        townDataMap.put(nextTownId,town);
+
+
+        townDataMap.put(nextTownId,newTown);
         saveStats();
     }
 

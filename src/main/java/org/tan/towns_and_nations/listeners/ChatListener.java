@@ -17,15 +17,16 @@ public class ChatListener implements Listener {
     @EventHandler
     public void OnPlayerChat(AsyncPlayerChatEvent event){
         Player player = event.getPlayer();
+        String townName = event.getMessage();
         if(PlayerChatListenerStorage.checkIfPlayerIn(player.getUniqueId())){
-            Bukkit.broadcastMessage(player.getName() + " has created his city: " + event.getMessage());
+            Bukkit.broadcastMessage(player.getName() + " has created his city: " + townName);
 
             PlayerChatListenerStorage.removePlayer(player);
             PlayerDataClass sender = PlayerStatStorage.findStatUUID(player.getUniqueId().toString());
             sender.removeFromBalance(100);
 
-            TownDataClass newTown = new TownDataClass(player.getUniqueId().toString(),event.getMessage());
-            TownDataStorage.addTown(newTown);
+
+            TownDataStorage.newTown(townName,player.getUniqueId().toString());
 
             event.setCancelled(true);
         }
