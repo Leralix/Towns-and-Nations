@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
+import org.tan.towns_and_nations.utils.TownDataStorage;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -73,6 +74,16 @@ public class GuiManager {
 
     public static void OpenTownMenu(Player p) {
 
+        if(PlayerStatStorage.findStatUUID(p.getUniqueId().toString()).haveTown()){
+            OpenTownMenuHaveTown(p);
+        }
+        else{
+            OpenTownMenuNoTown(p);
+        }
+    }
+
+    public static void OpenTownMenuNoTown(Player p) {
+
         Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town");
 
         ItemStack createNewland = getCustomLoreItem(Material.GRASS_BLOCK, "Create new Town","Cost: 100 gold");
@@ -82,6 +93,18 @@ public class GuiManager {
 
         inventory.setItem(11, createNewland);
         inventory.setItem(15, joinLand);
+        inventory.setItem(18, getBackArrow);
+
+        p.openInventory(inventory);
+    }
+
+    public static void OpenTownMenuHaveTown(Player p) {
+
+        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town");
+
+        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+
+
         inventory.setItem(18, getBackArrow);
 
         p.openInventory(inventory);
