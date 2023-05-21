@@ -17,6 +17,11 @@ public class GuiListener implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event){
+
+        if(event.getCurrentItem().getItemMeta() == null){
+            return;
+        }
+
         Material item = event.getCurrentItem().getType();
         String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
         Player player = (Player) event.getWhoClicked();

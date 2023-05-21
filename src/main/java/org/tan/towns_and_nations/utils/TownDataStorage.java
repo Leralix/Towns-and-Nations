@@ -2,6 +2,7 @@ package org.tan.towns_and_nations.utils;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.TownsAndNations;
@@ -12,29 +13,31 @@ import java.util.*;
 
 public class TownDataStorage {
 
-    public static HashMap<Integer, TownDataClass> townDataMap = new HashMap<>();
-    public static int nextTownId = -1;
+    public static HashMap<String, TownDataClass> townDataMap = new HashMap<>();
+    public static int newTownId = 1;
 
-    public static void newTown(String townName, String uuidLeader){
+    public static void newTown(String townName, Player leader){
+        String townId = "T"+newTownId;
+        TownDataClass newTown = new TownDataClass( townId, townName, leader.getUniqueId().toString());
+        PlayerStatStorage.findStatUUID(leader.getUniqueId().toString()).setTownId(townId);
+        townDataMap.put(townId,newTown);
 
-        if(nextTownId == -1){
-            nextTownId = 0;
-        }
-
-        TownDataClass newTown = new TownDataClass( "T"+nextTownId, townName, uuidLeader);
-        nextTownId = nextTownId+1;
-
-
-        townDataMap.put(nextTownId,newTown);
         saveStats();
+        newTownId = newTownId+1;
+
     }
 
     public static void removeTown(int TownId){
-        townDataMap.remove(nextTownId);
+        townDataMap.remove(TownId);
+        saveStats();
     }
 
-    public static HashMap<Integer, TownDataClass> getTownList(){
+    public static HashMap<String, TownDataClass> getTownList(){
         return townDataMap;
+    }
+
+    public static TownDataClass getTown(String townId){
+        return townDataMap.get(townId);
     }
 
 
@@ -49,7 +52,7 @@ public class TownDataStorage {
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            Type type = new TypeToken<HashMap<Integer, PlayerDataClass>>() {}.getType();
+            Type type = new TypeToken<HashMap<String, TownDataClass>>() {}.getType();
             townDataMap = gson.fromJson(reader, type);
             System.out.println("[TaN]Stats Loaded");
 

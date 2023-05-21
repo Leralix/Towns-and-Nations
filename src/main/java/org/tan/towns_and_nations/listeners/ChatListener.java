@@ -26,8 +26,7 @@ public class ChatListener implements Listener {
             sender.removeFromBalance(100);
 
 
-            TownDataStorage.newTown(townName,player.getUniqueId().toString());
-
+            TownDataStorage.newTown(townName,player);
             event.setCancelled(true);
         }
     }

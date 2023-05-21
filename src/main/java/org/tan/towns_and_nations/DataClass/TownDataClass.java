@@ -18,7 +18,6 @@ public class TownDataClass {
     public String DateCreated;
     private String Overlord;
     private ItemStack townIcon;
-
     private HashMap<String, ArrayList<String>> townPlayerList = new HashMap<>();
 
     public TownDataClass( String townId, String townName, String uuidLeader){
@@ -35,6 +34,10 @@ public class TownDataClass {
         list.add(uuidLeader);
         this.townPlayerList.put("Leader", list);
 
+    }
+
+    public String getTownName(){
+        return this.TownName;
     }
 
 

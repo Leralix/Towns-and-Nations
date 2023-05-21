@@ -8,6 +8,7 @@ import org.tan.towns_and_nations.listeners.GuiListener;
 import org.tan.towns_and_nations.listeners.OnPlayerFirstJoin;
 import org.tan.towns_and_nations.listeners.onBedLeaveListener;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
+import org.tan.towns_and_nations.utils.TownDataStorage;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,6 +33,8 @@ public final class TownsAndNations extends JavaPlugin {
             System.out.println("[TaN] Error while loading plugin's data");
             throw new RuntimeException(e);
         }
+        TownDataStorage.loadStats();
+
 
         //getConfig().options().copyDefaults();
 

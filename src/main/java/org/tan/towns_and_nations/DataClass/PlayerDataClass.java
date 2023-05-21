@@ -7,13 +7,13 @@ public class PlayerDataClass {
     private String UUID;
     private String PlayerName;
     private int Balance;
-    private int TownId;
+    private String TownId;
 
     public PlayerDataClass(Player player) {
         this.UUID = player.getUniqueId().toString();
         this.PlayerName = player.getName();
         this.Balance = 0;
-        this.TownId = -1;
+        this.TownId = null;
     }
 
 
@@ -37,17 +37,15 @@ public class PlayerDataClass {
         this.Balance = balance;
     }
 
-    public int getTownId(){
+    public String getTownId(){
         return this.TownId;
     }
     public boolean haveTown(){
-        return !(this.TownId == -1);
+        return this.TownId != null;
     }
-    public void setTownId(int newTownId){
+    public void setTownId(String newTownId){
         this.TownId = newTownId;
     }
-
-
     public void addToBalance(int money) {
         this.Balance = this.Balance + money;
     }

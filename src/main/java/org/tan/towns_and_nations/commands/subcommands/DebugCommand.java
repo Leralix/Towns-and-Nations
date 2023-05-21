@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
+import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.commands.SubCommand;
 import org.tan.towns_and_nations.utils.PlayerChatListenerStorage;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
@@ -17,6 +18,8 @@ import org.tan.towns_and_nations.utils.TownDataStorage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DebugCommand extends SubCommand {
 
@@ -52,13 +55,31 @@ public class DebugCommand extends SubCommand {
                     break;
 
                 case "gettownstats":
-                    player.sendMessage(TownDataStorage.getTownList().toString());
+                    player.sendMessage("Liste des villes:");
+                    HashMap<String, TownDataClass> test = TownDataStorage.getTownList();
+                    for (Map.Entry<String, TownDataClass> e : test.entrySet()) {
+                        String key = e.getKey();
+                        TownDataClass value  = e.getValue();
+                        player.sendMessage(key + ": " + value.getTownName());
+                    }
+
                     break;
 
                 case "playerstats":
                     ArrayList<PlayerDataClass> stats = PlayerStatStorage.getStats();
                     for (PlayerDataClass stat : stats) {
-                        player.sendMessage(stat.getPlayerName() + ": " + stat.getBalance());
+                        String name = stat.getPlayerName();
+                        int balance = stat.getBalance();
+                        String townName;
+                        if (TownDataStorage.getTown(stat.getTownId())!= null){
+                            townName = TownDataStorage.getTown(stat.getTownId()).getTownName();
+                        }
+                        else
+                            townName = null;
+
+                        player.sendMessage(name +
+                                ": " + balance +
+                                " ecu, town: " + townName);
                     }
                     break;
 
