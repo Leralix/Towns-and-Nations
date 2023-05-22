@@ -23,7 +23,7 @@ import java.util.UUID;
 
 public class GuiManager {
 
-
+    //Gui menu Main Menu //////////
     public static void OpenMainMenu(Player p) {
 
         Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Towns and Nations");
@@ -44,7 +44,7 @@ public class GuiManager {
 
         p.openInventory(inventory);
     }
-
+    //Gui menu Profil //////////
     public static void OpenProfileMenu(Player p) {
 
         Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Profil");
@@ -72,9 +72,9 @@ public class GuiManager {
 
         p.openInventory(inventory);
     }
-
+    //Gui menu Town //////////
     public static void OpenTownMenu(Player p) {
-
+        System.out.println("tesrt");
         if(PlayerStatStorage.findStatUUID(p.getUniqueId().toString()).haveTown()){
             OpenTownMenuHaveTown(p);
         }
@@ -82,7 +82,7 @@ public class GuiManager {
             OpenTownMenuNoTown(p);
         }
     }
-
+    //Gui menu NoTown //////////
     public static void OpenTownMenuNoTown(Player p) {
 
         Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town");
@@ -98,15 +98,18 @@ public class GuiManager {
 
         p.openInventory(inventory);
     }
-
+    //Gui menu HaveTown //////////
     public static void OpenTownMenuHaveTown(Player p) {
 
         Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town");
 
+
         ItemStack TownIcon = getTownIcon(PlayerStatStorage.findStatUUID(p.getUniqueId().toString()).getTownId());
+
+
         ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
 
-
+        inventory.setItem(4, TownIcon);
         inventory.setItem(18, getBackArrow);
 
         p.openInventory(inventory);
@@ -163,7 +166,7 @@ public class GuiManager {
         TownDataClass town = TownDataStorage.getTown(TownId);
         ItemStack itemStack = town.getTownIconItemStack();
         if (itemStack == null){
-            return getPlayerHead(town.getTownName(), Bukkit.getPlayer(UUID.fromString(town.getOverlord())));
+            return getPlayerHead(town.getTownName(), Bukkit.getPlayer(UUID.fromString(town.getUuidLeader())));
         }
         else {
             return itemStack;

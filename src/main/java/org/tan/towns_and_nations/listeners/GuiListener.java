@@ -29,7 +29,6 @@ public class GuiListener implements Listener {
 
         //Gui menu intro //////////
         if(event.getView().getTitle().equalsIgnoreCase(ChatColor.BLACK + "Towns and Nations")){
-
             //Kingdom
             if(item.equals(Material.PLAYER_HEAD) && itemName.equals("Kingdom"))
                 event.getWhoClicked().sendMessage("Encore en dev");
@@ -81,7 +80,7 @@ public class GuiListener implements Listener {
 
             event.setCancelled(true);
         }
-
+        //Gui menu Region //////////
         if(event.getView().getTitle().equalsIgnoreCase(ChatColor.BLACK + "Region")){
             event.setCancelled(true);
         }

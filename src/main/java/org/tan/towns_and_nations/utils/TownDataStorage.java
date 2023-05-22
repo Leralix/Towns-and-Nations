@@ -54,7 +54,17 @@ public class TownDataStorage {
             }
             Type type = new TypeToken<HashMap<String, TownDataClass>>() {}.getType();
             townDataMap = gson.fromJson(reader, type);
-            System.out.println("[TaN]Stats Loaded");
+
+            int ID = 0;
+            for (Map.Entry<String, TownDataClass> entry : townDataMap.entrySet()) {
+                String cle = entry.getKey();
+                int newID =  Integer.parseInt(cle.substring(1));
+                if(newID > ID)
+                    ID = newID;
+            }
+            newTownId = ID+1;
+            System.out.println("[TaN]Town Stats Loaded");
+            System.out.println("[TaN]First Free Number in town ID:" + ID);
 
         }
 

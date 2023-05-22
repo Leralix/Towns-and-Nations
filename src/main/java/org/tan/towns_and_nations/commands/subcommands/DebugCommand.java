@@ -62,6 +62,7 @@ public class DebugCommand extends SubCommand {
                         TownDataClass value  = e.getValue();
                         player.sendMessage(key + ": " + value.getTownName());
                     }
+                    player.sendMessage("Prochaine clef: " + TownDataStorage.newTownId);
 
                     break;
 
