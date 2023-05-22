@@ -38,10 +38,7 @@ public class PayCommand extends SubCommand  {
             PlayerDataClass receiver = PlayerStatStorage.findStatUUID(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
             PlayerDataClass sender = PlayerStatStorage.findStatUUID(player.getUniqueId().toString());
             int amount = 0;
-            if(!args[2].matches("[0*9]+")){
-                player.sendMessage( "Invalid Syntax for the amount of money");
-                return;
-            }
+
             try{
                 amount = Integer.parseInt(args[2]);
 
@@ -49,6 +46,9 @@ public class PayCommand extends SubCommand  {
                 player.sendMessage( "Invalid Syntax for the amount of money");
                 throw new RuntimeException(e);
             }
+            if(sender.getBalance() < amount)
+                player.sendMessage("You do not have enough money. You need " + (amount - sender.getBalance()) + " more");
+
             sender.removeFromBalance(amount);
             receiver.addToBalance(amount);
             player.sendMessage( "Paid "  + amount + " Ecu to " + receiver.getPlayerName());

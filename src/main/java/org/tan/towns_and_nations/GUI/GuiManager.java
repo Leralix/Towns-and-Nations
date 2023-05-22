@@ -12,6 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
 import org.tan.towns_and_nations.utils.TownDataStorage;
 
@@ -102,6 +103,7 @@ public class GuiManager {
 
         Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town");
 
+        ItemStack TownIcon = getTownIcon(PlayerStatStorage.findStatUUID(p.getUniqueId().toString()).getTownId());
         ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
 
 
@@ -147,9 +149,27 @@ public class GuiManager {
             meta.setLore(itemLore);
         }
 
-
         item.setItemMeta(meta);
         return item;
     }
+
+    public static ItemStack getTownIcon(String TownId){
+
+        if(TownId == null){
+            System.out.println("Erreur critique: Fonction accesible seulement a un joueur qui a une ville apellée par un joueur qui n'en possède pas");
+            return null;
+        }
+
+        TownDataClass town = TownDataStorage.getTown(TownId);
+        ItemStack itemStack = town.getTownIconItemStack();
+        if (itemStack == null){
+            return getPlayerHead(town.getTownName(), Bukkit.getPlayer(UUID.fromString(town.getOverlord())));
+        }
+        else {
+            return itemStack;
+        }
+
+    }
+
 
 }
