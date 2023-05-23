@@ -17,9 +17,7 @@ import org.tan.towns_and_nations.utils.PlayerStatStorage;
 import org.tan.towns_and_nations.utils.TownDataStorage;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class GuiManager {
 
@@ -82,6 +80,42 @@ public class GuiManager {
             OpenTownMenuNoTown(p);
         }
     }
+    //Gui menu SearchTown //////////
+    public static void OpenSearchTownMenu(Player p) {
+        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Search Town");
+
+        HashMap<String,TownDataClass> townDataStorage = TownDataStorage.getTownList();
+
+        int i = 0;
+        for (Map.Entry<String, TownDataClass> entry : townDataStorage.entrySet()) {
+
+
+            TownDataClass townDataClass = entry.getValue();
+            String townId = townDataClass.getTownId();
+            ItemStack townIcon = getTownIcon(townId);
+
+
+
+            inventory.setItem(i, townIcon);
+            i++;
+
+
+            System.out.println(townDataClass.getTownName() + i);
+
+        }
+
+
+
+
+
+        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+
+
+        inventory.setItem(18, getBackArrow);
+
+        p.openInventory(inventory);
+    }
+
     //Gui menu NoTown //////////
     public static void OpenTownMenuNoTown(Player p) {
 
@@ -101,7 +135,7 @@ public class GuiManager {
     //Gui menu HaveTown //////////
     public static void OpenTownMenuHaveTown(Player p) {
 
-        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town");
+        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town Menu");
 
 
         ItemStack TownIcon = getTownIcon(PlayerStatStorage.findStatUUID(p.getUniqueId().toString()).getTownId());
@@ -130,6 +164,27 @@ public class GuiManager {
 
         p.openInventory(inventory);
     }
+
+    public static void OpenTownSettings(Player p) {
+
+        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town Settings");
+
+        ItemStack TownIcon = getTownIcon(PlayerStatStorage.findStatUUID(p.getUniqueId().toString()).getTownId());
+        ItemStack leaveTown = getCustomLoreItem(Material.BARRIER, "Leave Town", "Quit the town \"" + TownDataStorage.getTown(PlayerStatStorage.findStatUUID(p.getUniqueId().toString()).getTownId()).getTownName() + "\" ?");
+        ItemStack deleteTown = getCustomLoreItem(Material.BARRIER, "Delete Town", "Delete the town \"" + TownDataStorage.getTown(PlayerStatStorage.findStatUUID(p.getUniqueId().toString()).getTownId()).getTownName() + "\" ?");
+
+        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+
+        inventory.setItem(4, TownIcon);
+
+        inventory.setItem(10, leaveTown);
+        inventory.setItem(11, deleteTown);
+
+        inventory.setItem(18, getBackArrow);
+
+        p.openInventory(inventory);
+    }
+
 
     public static ItemStack makeSkull(String name, String base64EncodedString) {
         final ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
@@ -189,6 +244,9 @@ public class GuiManager {
         }
 
     }
+
+
+
 
 
 }

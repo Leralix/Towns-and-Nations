@@ -27,8 +27,24 @@ public class TownDataStorage {
 
     }
 
-    public static void removeTown(int TownId){
+    public static void removeTown(String TownId){
+
+        TownDataClass townDataClass = townDataMap.get(TownId);
+
+        HashMap<String, ArrayList<String>> hashmap = townDataClass.getTownPlayerList();
+        for(Map.Entry<String, ArrayList<String>> entry : hashmap.entrySet()){
+            ArrayList<String> array = entry.getValue();
+
+            for(String playerUUID : array) {
+                PlayerStatStorage.findStatUUID(playerUUID).setTownId(null);
+            }
+        }
+
         townDataMap.remove(TownId);
+
+
+
+
         saveStats();
     }
 
@@ -100,6 +116,7 @@ public class TownDataStorage {
         System.out.println("[TaN]Stats saved");
 
     }
+
 
 
 }
