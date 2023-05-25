@@ -3,10 +3,7 @@ package org.tan.towns_and_nations;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tan.towns_and_nations.commands.CommandManager;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
-import org.tan.towns_and_nations.listeners.ChatListener;
-import org.tan.towns_and_nations.listeners.GuiListener;
-import org.tan.towns_and_nations.listeners.OnPlayerFirstJoin;
-import org.tan.towns_and_nations.listeners.onBedLeaveListener;
+import org.tan.towns_and_nations.listeners.*;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
 import org.tan.towns_and_nations.utils.TownDataStorage;
 
@@ -67,6 +64,7 @@ public final class TownsAndNations extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OnPlayerFirstJoin(),this);
         getServer().getPluginManager().registerEvents(new GuiListener(),this);
         getServer().getPluginManager().registerEvents(new ChatListener(),this);
+        getServer().getPluginManager().registerEvents(new BreakBlockListener(), this);
     }
 
     public static TownsAndNations getPlugin(){

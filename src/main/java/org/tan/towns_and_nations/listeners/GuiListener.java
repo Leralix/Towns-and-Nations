@@ -27,6 +27,7 @@ public class GuiListener implements Listener {
         if(event.getCurrentItem().getItemMeta() == null){
             return;
         }
+
         ItemStack itemStack = event.getCurrentItem();
         Material item = itemStack.getType();
         String itemName = itemStack.getItemMeta().getDisplayName();
@@ -91,6 +92,11 @@ public class GuiListener implements Listener {
         //Gui menu Havetown //////////
         if(event.getView().getTitle().equalsIgnoreCase(ChatColor.BLACK + "Town Menu")){
 
+
+            if(checkItem(itemStack, Material.PLAYER_HEAD, "Members")){
+                GuiManager.OpenTownMemberList(player);
+            }
+
             if(checkItem(itemStack, Material.PLAYER_HEAD, "Settings")){
                 GuiManager.OpenTownSettings(player);
             }
@@ -99,6 +105,11 @@ public class GuiListener implements Listener {
             event.setCancelled(true);
         }
 
+        //Gui menu Havetown //////////
+        if(event.getView().getTitle().equalsIgnoreCase(ChatColor.BLACK + "Town Members")){
+
+            event.setCancelled(true);
+        }
 
         //Gui menu TownSettings //////////
         if(event.getView().getTitle().equalsIgnoreCase(ChatColor.BLACK + "Town Settings")){

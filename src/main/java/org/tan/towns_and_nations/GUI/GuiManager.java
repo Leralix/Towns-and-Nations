@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
+import org.tan.towns_and_nations.util.HeadUtils;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
 import org.tan.towns_and_nations.utils.TownDataStorage;
 
@@ -23,10 +24,10 @@ public class GuiManager {
 
         Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Towns and Nations");
 
-        ItemStack KingdomHead = makeSkull("Kingdom","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=");
-        ItemStack RegionHead = makeSkull("Region","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
-        ItemStack TownHead = makeSkull("Town","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
-        ItemStack PlayerHead = getPlayerHead("Profil",p);
+        ItemStack KingdomHead = HeadUtils.makeSkull("Kingdom","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=");
+        ItemStack RegionHead = HeadUtils.makeSkull("Region","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
+        ItemStack TownHead = HeadUtils.makeSkull("Town","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
+        ItemStack PlayerHead = HeadUtils.getPlayerHead("Profil",p);
         ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Quit", null);
 
 
@@ -44,7 +45,7 @@ public class GuiManager {
 
         Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Profil");
 
-        ItemStack PlayerHead = getPlayerHead("Votre Profil",p);
+        ItemStack PlayerHead = HeadUtils.getPlayerHead("Votre Profil",p);
 
         ItemStack GoldPurse = getCustomLoreItem(Material.GOLD_NUGGET, "Balance","You have " + PlayerStatStorage.findStatUUID(p.getUniqueId().toString()).getBalance() + " gold");
 
@@ -136,13 +137,13 @@ public class GuiManager {
 
         ItemStack TownIcon = getTownIcon(PlayerStatStorage.findStatUUID(p.getUniqueId().toString()).getTownId());
 
-        ItemStack GoldIcon = makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack SkullIcon = makeSkull("Members","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Q0ZDQ5NmIxZGEwNzUzNmM5NGMxMzEyNGE1ODMzZWJlMGM1MzgyYzhhMzM2YWFkODQ2YzY4MWEyOGQ5MzU2MyJ9fX0=");
-        ItemStack ClaimIcon = makeSkull("Claims","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
+        ItemStack GoldIcon = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack SkullIcon = HeadUtils.makeSkull("Members","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Q0ZDQ5NmIxZGEwNzUzNmM5NGMxMzEyNGE1ODMzZWJlMGM1MzgyYzhhMzM2YWFkODQ2YzY4MWEyOGQ5MzU2MyJ9fX0=");
+        ItemStack ClaimIcon = HeadUtils.makeSkull("Claims","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
 
-        ItemStack RelationIcon = makeSkull("Relations","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=");
-        ItemStack LevelIcon = makeSkull("Town Level","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmJlNTI5YWI2YjJlYTdjNTBkOTE5MmQ4OWY4OThmZDdkYThhOWU3NTBkMzc4Mjk1ZGY3MzIwNWU3YTdlZWFlMCJ9fX0=");
-        ItemStack SettingIcon = makeSkull("Settings","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkMmNiMzg0NThkYTE3ZmI2Y2RhY2Y3ODcxNjE2MDJhMjQ5M2NiZjkzMjMzNjM2MjUzY2ZmMDdjZDg4YTljMCJ9fX0=");
+        ItemStack RelationIcon = HeadUtils.makeSkull("Relations","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=");
+        ItemStack LevelIcon = HeadUtils.makeSkull("Town Level","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmJlNTI5YWI2YjJlYTdjNTBkOTE5MmQ4OWY4OThmZDdkYThhOWU3NTBkMzc4Mjk1ZGY3MzIwNWU3YTdlZWFlMCJ9fX0=");
+        ItemStack SettingIcon = HeadUtils.makeSkull("Settings","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkMmNiMzg0NThkYTE3ZmI2Y2RhY2Y3ODcxNjE2MDJhMjQ5M2NiZjkzMjMzNjM2MjUzY2ZmMDdjZDg4YTljMCJ9fX0=");
 
         ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
 
@@ -182,24 +183,21 @@ public class GuiManager {
     }
 
     //Gui menu TownMembers //////////
-    public static void OpenTownMemberList(Player p) {
+        public static void OpenTownMemberList(Player p) {
 
-        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town Settings");
+        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town Members");
 
 
         TownDataClass town = TownDataStorage.getTown(PlayerStatStorage.findStatUUID(p.getUniqueId().toString()).getTownId());
 
-        ItemStack TownIcon = getTownIcon(town.getTownId());
-
-
-        ArrayList<String> players = town.getTownPlayerList();
+        ArrayList<String> players = town.getPlayerList();
 
         int i = 0;
         for (String playerUUID: players) {
 
-            OfflinePlayer player = Bukkit.getOfflinePlayer(playerUUID);
+            OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
 
-            ItemStack playerHead = getPlayerHead(player.getName(),player);
+            ItemStack playerHead = HeadUtils.getPlayerHead(player.getName(),player);
 
             inventory.setItem(i, playerHead);
             i++;
@@ -208,7 +206,6 @@ public class GuiManager {
         }
 
 
-        inventory.setItem(4, TownIcon);
 
         ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
         inventory.setItem(18, getBackArrow);
@@ -221,41 +218,8 @@ public class GuiManager {
     }
 
 
-    public static ItemStack makeSkull(String name, String base64EncodedString) {
-        final ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        assert meta != null;
-        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-        profile.getProperties().put("textures", new Property("textures", base64EncodedString));
-        try {
-            Field profileField = meta.getClass().getDeclaredField("profile");
-            profileField.setAccessible(true);
-            profileField.set(meta, profile);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        meta.setDisplayName(name);
-        skull.setItemMeta(meta);
-        return skull;
-    }
 
-    public static ItemStack getPlayerHead(String headName, Player p){
-        ItemStack PlayerHead = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta skullMeta = (SkullMeta) PlayerHead.getItemMeta();
-        skullMeta.setDisplayName(headName);
-        skullMeta.setOwningPlayer(p);
-        PlayerHead.setItemMeta(skullMeta);
-        return PlayerHead;
-    }
 
-    public static ItemStack getPlayerHead(String headName, OfflinePlayer p){
-        ItemStack PlayerHead = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta skullMeta = (SkullMeta) PlayerHead.getItemMeta();
-        skullMeta.setDisplayName(headName);
-        skullMeta.setOwningPlayer(p);
-        PlayerHead.setItemMeta(skullMeta);
-        return PlayerHead;
-    }
 
     public static ItemStack getCustomLoreItem(Material itemMaterial, String itemName, String itemLoreOneLine){
         ItemStack item = new ItemStack(itemMaterial);
@@ -281,7 +245,7 @@ public class GuiManager {
         TownDataClass town = TownDataStorage.getTown(TownId);
         ItemStack itemStack = town.getTownIconItemStack();
         if (itemStack == null){
-            return getPlayerHead(town.getTownName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
+            return HeadUtils.getPlayerHead(town.getTownName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
         }
         else {
             return itemStack;
