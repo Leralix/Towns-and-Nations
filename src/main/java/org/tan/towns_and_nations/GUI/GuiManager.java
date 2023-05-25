@@ -39,7 +39,7 @@ public class GuiManager {
 
         p.openInventory(inventory);
     }
-    //Gui menu Profil //////////
+    //Gui menu Profile //////////
     public static void OpenProfileMenu(Player p) {
 
         Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Profil");
@@ -160,7 +160,7 @@ public class GuiManager {
 
         p.openInventory(inventory);
     }
-
+    //Gui menu TownSettings //////////
     public static void OpenTownSettings(Player p) {
 
         Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town Settings");
@@ -179,6 +179,45 @@ public class GuiManager {
         inventory.setItem(18, getBackArrow);
 
         p.openInventory(inventory);
+    }
+
+    //Gui menu TownMembers //////////
+    public static void OpenTownMemberList(Player p) {
+
+        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town Settings");
+
+
+        TownDataClass town = TownDataStorage.getTown(PlayerStatStorage.findStatUUID(p.getUniqueId().toString()).getTownId());
+
+        ItemStack TownIcon = getTownIcon(town.getTownId());
+
+
+        ArrayList<String> players = town.getTownPlayerList();
+
+        int i = 0;
+        for (String playerUUID: players) {
+
+            OfflinePlayer player = Bukkit.getOfflinePlayer(playerUUID);
+
+            ItemStack playerHead = getPlayerHead(player.getName(),player);
+
+            inventory.setItem(i, playerHead);
+            i++;
+
+
+        }
+
+
+        inventory.setItem(4, TownIcon);
+
+        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+        inventory.setItem(18, getBackArrow);
+
+        p.openInventory(inventory);
+    }
+
+    public static void OpenTownEconomy(Player p){
+
     }
 
 
