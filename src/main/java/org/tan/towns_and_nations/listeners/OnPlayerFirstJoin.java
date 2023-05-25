@@ -23,7 +23,7 @@ public class OnPlayerFirstJoin implements Listener {
             PlayerStatStorage.createPlayerDataClass(player);
 
             PluginInstance = TownsAndNations.getPlugin();
-            PluginInstance.getServer().broadcastMessage(player.getName() + " a rejoint le serveur pour la premiere fois");
+            //PluginInstance.getServer().broadcastMessage(player.getName() + " a rejoint le serveur pour la premiere fois");
         }
         else{
             System.out.println("Player already joined.");

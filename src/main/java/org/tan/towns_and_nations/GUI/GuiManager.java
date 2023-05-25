@@ -2,10 +2,7 @@ package org.tan.towns_and_nations.GUI;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Statistic;
+import org.bukkit.*;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -115,7 +112,6 @@ public class GuiManager {
 
         p.openInventory(inventory);
     }
-
     //Gui menu NoTown //////////
     public static void OpenTownMenuNoTown(Player p) {
 
@@ -213,6 +209,15 @@ public class GuiManager {
         return PlayerHead;
     }
 
+    public static ItemStack getPlayerHead(String headName, OfflinePlayer p){
+        ItemStack PlayerHead = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta skullMeta = (SkullMeta) PlayerHead.getItemMeta();
+        skullMeta.setDisplayName(headName);
+        skullMeta.setOwningPlayer(p);
+        PlayerHead.setItemMeta(skullMeta);
+        return PlayerHead;
+    }
+
     public static ItemStack getCustomLoreItem(Material itemMaterial, String itemName, String itemLoreOneLine){
         ItemStack item = new ItemStack(itemMaterial);
         ItemMeta meta = item.getItemMeta();
@@ -237,7 +242,7 @@ public class GuiManager {
         TownDataClass town = TownDataStorage.getTown(TownId);
         ItemStack itemStack = town.getTownIconItemStack();
         if (itemStack == null){
-            return getPlayerHead(town.getTownName(), Bukkit.getPlayer(UUID.fromString(town.getUuidLeader())));
+            return getPlayerHead(town.getTownName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
         }
         else {
             return itemStack;

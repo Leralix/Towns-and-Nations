@@ -21,6 +21,10 @@ public class CommandManager implements CommandExecutor, TabExecutor {
         //subcommands.add(new TownCreateCommand());
         subcommands.add(new ChunkClaimCommand());
 
+        subcommands.add(new InvitePlayerCommand());
+        subcommands.add(new JoinTownCommand());
+
+
         subcommands.add(new SeeBalanceCommand());
         subcommands.add(new AddBalanceCommand());
         subcommands.add(new PayCommand());
@@ -62,6 +66,8 @@ public class CommandManager implements CommandExecutor, TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 
 
+
+
         if (args.length == 1){
             List<String> TabCompleteList = new ArrayList<>();
             for (SubCommand subCommand : subcommands) {
@@ -70,27 +76,7 @@ public class CommandManager implements CommandExecutor, TabExecutor {
 
             return TabCompleteList;
 
-            /*List<String> playerNames = new ArrayList<>();
-            Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
-            Bukkit.getServer().getOnlinePlayers().toArray(players);
-            for (int i = 0; i < players.length; i++){
-                playerNames.add(players[i].getName());
-            }
-
-
-
-            return playerNames;
-            */
-
         }
-        /*else if (args.length == 2){
-            List<String> arguments = new ArrayList<>();
-            arguments.add("Daddy");
-            arguments.add("JamesHarden#1");
-
-            return arguments;
-        }
-        */
         return null;
 
     }

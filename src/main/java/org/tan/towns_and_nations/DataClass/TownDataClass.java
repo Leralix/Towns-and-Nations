@@ -2,6 +2,7 @@ package org.tan.towns_and_nations.DataClass;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.tan.towns_and_nations.utils.TownDataStorage;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +19,7 @@ public class TownDataClass {
     public String DateCreated;
     private String Overlord;
     private String townIconMaterialCode;
-    private HashMap<String, ArrayList<String>> townPlayerList = new HashMap<>();
+    private ArrayList<String> townPlayerListId = new ArrayList<String>();
 
     public TownDataClass( String townId, String townName, String uuidLeader){
         this.TownId = townId;
@@ -32,7 +33,7 @@ public class TownDataClass {
 
         ArrayList<String> list = new ArrayList<>();
         list.add(uuidLeader);
-        this.townPlayerList.put("Leader", list);
+        this.townPlayerListId.add(uuidLeader);
 
     }
 
@@ -105,14 +106,15 @@ public class TownDataClass {
         this.townIconMaterialCode = material.name();
     }
 
-    public HashMap<String, ArrayList<String>> getTownPlayerList() {
-        return this.townPlayerList;
+
+    public void addPlayer(String playerUUID){
+        townPlayerListId.add(playerUUID);
+        TownDataStorage.saveStats();
     }
 
-    public void setTownPlayerList(HashMap<String, ArrayList<String>> townPlayerList) {
-        this.townPlayerList = townPlayerList;
+    public ArrayList<String> getPlayerList(){
+        return townPlayerListId;
     }
-
 
 
 

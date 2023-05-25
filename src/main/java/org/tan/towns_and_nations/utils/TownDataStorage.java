@@ -14,6 +14,7 @@ import java.util.*;
 public class TownDataStorage {
 
     public static HashMap<String, TownDataClass> townDataMap = new HashMap<>();
+
     public static int newTownId = 1;
 
     public static void newTown(String townName, Player leader){
@@ -31,20 +32,12 @@ public class TownDataStorage {
 
         TownDataClass townDataClass = townDataMap.get(TownId);
 
-        HashMap<String, ArrayList<String>> hashmap = townDataClass.getTownPlayerList();
-        for(Map.Entry<String, ArrayList<String>> entry : hashmap.entrySet()){
-            ArrayList<String> array = entry.getValue();
-
+         ArrayList<String> array = townDataClass.getPlayerList();
             for(String playerUUID : array) {
                 PlayerStatStorage.findStatUUID(playerUUID).setTownId(null);
             }
-        }
 
         townDataMap.remove(TownId);
-
-
-
-
         saveStats();
     }
 
@@ -116,7 +109,6 @@ public class TownDataStorage {
         System.out.println("[TaN]Stats saved");
 
     }
-
 
 
 }
