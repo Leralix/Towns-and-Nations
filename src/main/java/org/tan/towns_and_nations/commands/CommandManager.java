@@ -18,8 +18,6 @@ public class CommandManager implements CommandExecutor, TabExecutor {
     private ArrayList<SubCommand> subcommands = new ArrayList<>();
 
     public CommandManager(){
-        //subcommands.add(new TownCreateCommand());
-        subcommands.add(new ChunkClaimCommand());
 
         subcommands.add(new InvitePlayerCommand());
         subcommands.add(new JoinTownCommand());
@@ -28,7 +26,6 @@ public class CommandManager implements CommandExecutor, TabExecutor {
         subcommands.add(new SeeBalanceCommand());
         subcommands.add(new AddBalanceCommand());
         subcommands.add(new PayCommand());
-        subcommands.add(new DebugCommand());
         subcommands.add(new OpenGuiCommand());
     }
 
@@ -84,5 +81,6 @@ public class CommandManager implements CommandExecutor, TabExecutor {
     public ArrayList<SubCommand> getSubcommands(){
         return subcommands;
     }
+
 
 }

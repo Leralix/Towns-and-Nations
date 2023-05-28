@@ -1,11 +1,11 @@
-package org.tan.towns_and_nations.util;
+package org.tan.towns_and_nations.utils;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
-public class ChatUtil {
+public class ChatUtils {
 
 
     public static void sendClickableCommand(Player player, String message, String command) {

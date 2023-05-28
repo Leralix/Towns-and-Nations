@@ -7,5 +7,11 @@ description: My first big plugin
 commands:
   tan:
     description: base command of Town and Nation
+    permission: townandnation.base
     usage: /<command>
+  tandebug:
+    description: debug command of Town and Nation
+    permission: townandnation.admin
+    usage: /<command> 
 
+depend: [LuckPerms]

@@ -1,17 +1,12 @@
 package org.tan.towns_and_nations.commands.subcommands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.tan.towns_and_nations.DataClass.TownDataClass;
-import org.tan.towns_and_nations.GUI.GuiManager;
 import org.tan.towns_and_nations.commands.SubCommand;
-import org.tan.towns_and_nations.util.ChatUtil;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
 import org.tan.towns_and_nations.utils.TownDataStorage;
 import org.tan.towns_and_nations.utils.TownInviteDataStorage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class JoinTownCommand extends SubCommand {
     @Override

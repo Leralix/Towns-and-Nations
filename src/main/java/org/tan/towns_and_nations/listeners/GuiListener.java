@@ -32,7 +32,7 @@ public class GuiListener implements Listener {
         Material item = itemStack.getType();
         String itemName = itemStack.getItemMeta().getDisplayName();
         Player player = (Player) event.getWhoClicked();
-        PlayerDataClass playerStats = PlayerStatStorage.findStatUUID(player.getUniqueId().toString());
+        PlayerDataClass playerStat = PlayerStatStorage.findStatUUID(player.getUniqueId().toString());
 
 
         boolean back = item.equals(Material.ARROW) && itemName.equals("Back");
@@ -105,7 +105,7 @@ public class GuiListener implements Listener {
             event.setCancelled(true);
         }
 
-        //Gui menu Havetown //////////
+        //Gui menu townMembers //////////
         if(event.getView().getTitle().equalsIgnoreCase(ChatColor.BLACK + "Town Members")){
 
             event.setCancelled(true);
@@ -116,11 +116,13 @@ public class GuiListener implements Listener {
 
             if(checkItem(itemStack,Material.BARRIER, "Leave Town")){
 
-                if(TownDataStorage.getTown(playerStats.getTownId()).getUuidLeader().equals(playerStats.getUuid())){
+                if(TownDataStorage.getTown(playerStat.getTownId()).getUuidLeader().equals(playerStat.getUuid())){
                     player.sendMessage("You can't leave a town you are the leader, you need to disband it or give the leadership to someone else");
                 }
                 else{
-                    playerStats.setTownId(null);
+
+                    TownDataStorage.getTown(playerStat.getTownId()).removePlayer(player.getUniqueId().toString());
+                    playerStat.setTownId(null);
                     player.sendMessage("You left the town");
                     player.closeInventory();
                 }
@@ -128,15 +130,15 @@ public class GuiListener implements Listener {
 
             if(checkItem(itemStack,Material.BARRIER, "Delete Town")){
 
-                System.out.println(TownDataStorage.getTown(playerStats.getTownId()).getUuidLeader());
-                System.out.println(playerStats.getUuid());
+                System.out.println(TownDataStorage.getTown(playerStat.getTownId()).getUuidLeader());
+                System.out.println(playerStat.getUuid());
 
-                if(!TownDataStorage.getTown(playerStats.getTownId()).getUuidLeader().equals(playerStats.getUuid())){
+                if(!TownDataStorage.getTown(playerStat.getTownId()).getUuidLeader().equals(playerStat.getUuid())){
                     player.sendMessage("You can't delete a town if you are not the leader");
                 }
                 else{
-                    TownDataStorage.removeTown(playerStats.getTownId());
-                    playerStats.setTownId(null);
+                    TownDataStorage.removeTown(playerStat.getTownId());
+                    playerStat.setTownId(null);
                     player.closeInventory();
                     player.sendMessage("Town deleted");
                 }

@@ -1,20 +1,15 @@
 package org.tan.towns_and_nations.GUI;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import org.bukkit.*;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
-import org.tan.towns_and_nations.util.HeadUtils;
+import org.tan.towns_and_nations.utils.HeadUtils;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
 import org.tan.towns_and_nations.utils.TownDataStorage;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 public class GuiManager {

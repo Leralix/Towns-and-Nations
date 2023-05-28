@@ -112,6 +112,11 @@ public class TownDataClass {
         TownDataStorage.saveStats();
     }
 
+    public void removePlayer(String playerUUID){
+        townPlayerListId.remove(playerUUID);
+        TownDataStorage.saveStats();
+    }
+
     public ArrayList<String> getPlayerList(){
         return townPlayerListId;
     }

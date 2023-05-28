@@ -1,14 +1,11 @@
 package org.tan.towns_and_nations.commands.subcommands;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.GUI.GuiManager;
 import org.tan.towns_and_nations.commands.SubCommand;
-import org.tan.towns_and_nations.util.ChatUtil;
+import org.tan.towns_and_nations.utils.ChatUtils;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
 import org.tan.towns_and_nations.utils.TownDataStorage;
 import org.tan.towns_and_nations.utils.TownInviteDataStorage;
@@ -56,7 +53,7 @@ public class InvitePlayerCommand extends SubCommand {
                 invite.sendMessage("You have been invited by "+ player.getName() + " to his town: " + town.getTownName());
                 invite.sendMessage("To join his town, type /tan join "  + town.getTownId() + " to join the town: " + town.getTownName());
 
-                ChatUtil.sendClickableCommand(invite,  "Or click here",  "tan join "  + town.getTownId());
+                ChatUtils.sendClickableCommand(invite,  "Or click here",  "tan join "  + town.getTownId());
 
 
 

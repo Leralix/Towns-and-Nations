@@ -1,4 +1,4 @@
-package org.tan.towns_and_nations.util;
+package org.tan.towns_and_nations.utils;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;

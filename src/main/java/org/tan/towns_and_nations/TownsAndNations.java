@@ -1,8 +1,18 @@
 package org.tan.towns_and_nations;
 
+
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.node.Node;
+import net.luckperms.api.node.NodeBuilder;
+import net.luckperms.api.node.types.PermissionNode;
+import net.luckperms.api.model.user.User;
+
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tan.towns_and_nations.commands.CommandManager;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
+import org.tan.towns_and_nations.commands.DebugCommand;
 import org.tan.towns_and_nations.listeners.*;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
 import org.tan.towns_and_nations.utils.TownDataStorage;
@@ -35,8 +45,17 @@ public final class TownsAndNations extends JavaPlugin {
 
         //getConfig().options().copyDefaults();
 
+
+        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+        if (provider != null) {
+            LuckPerms api = provider.getProvider();
+
+        }
+
+
         EnableEventList();
         Objects.requireNonNull(getCommand("tan")).setExecutor(new CommandManager());
+        Objects.requireNonNull(getCommand("tandebug")).setExecutor(new DebugCommand());
 
         System.out.println("[TaN] Plugin successfully loaded");
     }
@@ -65,6 +84,9 @@ public final class TownsAndNations extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new GuiListener(),this);
         getServer().getPluginManager().registerEvents(new ChatListener(),this);
         getServer().getPluginManager().registerEvents(new BreakBlockListener(), this);
+        getServer().getPluginManager().registerEvents(new VillagerInteractionListener(), this);
+
+
     }
 
     public static TownsAndNations getPlugin(){
