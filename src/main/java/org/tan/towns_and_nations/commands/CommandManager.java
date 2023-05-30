@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CommandManager implements CommandExecutor, TabExecutor {
 
-    private ArrayList<SubCommand> subcommands = new ArrayList<>();
+    private final ArrayList<SubCommand> subcommands = new ArrayList<>();
 
     public CommandManager(){
 
@@ -24,7 +24,6 @@ public class CommandManager implements CommandExecutor, TabExecutor {
 
 
         subcommands.add(new SeeBalanceCommand());
-        subcommands.add(new AddBalanceCommand());
         subcommands.add(new PayCommand());
         subcommands.add(new OpenGuiCommand());
     }
@@ -32,16 +31,18 @@ public class CommandManager implements CommandExecutor, TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (sender instanceof Player){
-            Player p = (Player) sender;
+        if (sender instanceof Player p){
 
             if (args.length > 0){
                 for (int i = 0; i < getSubcommands().size(); i++){
                     if (args[0].equalsIgnoreCase(getSubcommands().get(i).getName())){
                         getSubcommands().get(i).perform(p, args);
+
+                        try {PlayerStatStorage.saveStats();
+                        } catch (IOException e) {throw new RuntimeException(e);}
+                        return true;
                     }
                 }
-            }else {
                 p.sendMessage("--------------------------------");
                 for (int i = 0; i < getSubcommands().size(); i++){
                     p.sendMessage(getSubcommands().get(i).getSyntax() + " - " + getSubcommands().get(i).getDescription());
@@ -50,27 +51,17 @@ public class CommandManager implements CommandExecutor, TabExecutor {
             }
 
         }
-
-        try {
-            PlayerStatStorage.saveStats();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 
-
-
-
         if (args.length == 1){
             List<String> TabCompleteList = new ArrayList<>();
             for (SubCommand subCommand : subcommands) {
                 TabCompleteList.add(subCommand.getName());
             }
-
             return TabCompleteList;
 
         }

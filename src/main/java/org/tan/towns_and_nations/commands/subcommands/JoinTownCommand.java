@@ -1,5 +1,6 @@
 package org.tan.towns_and_nations.commands.subcommands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.commands.SubCommand;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
@@ -35,9 +36,9 @@ public class JoinTownCommand extends SubCommand {
 
 
         if (args.length == 1) {
-            player.sendMessage("Not enough arguments");
-            player.sendMessage("Correct Syntax: /tan join <Town ID>");
-        } else {
+            player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +  " Not enough arguments");
+            player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +  " Correct Syntax: " + getSyntax());
+        } else if (args.length == 2){
 
             String townID = args[1];
 
@@ -59,27 +60,11 @@ public class JoinTownCommand extends SubCommand {
 
             }
             System.out.println("testJointown");
-            // Code tentative pour faire /join avec le nom de la ville
-            /*
-
-            args = Arrays.copyOfRange(args, 1, args.length);
-
-
-            String townName = "";
-            for (String arg : args) {
-                player.sendMessage(arg);
-                townName = townName + arg + " ";
-
-            }
-            player.sendMessage(townName);
-
-            if(townName.equals(TownInviteDataStorage.getInvitation(player.getUniqueId().toString()))){
-
-            }
-            */
         }
-
-
+        else{
+            player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +  " Too many arguments");
+            player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +  " Correct Syntax: " + getSyntax());
+        }
     }
 }
 

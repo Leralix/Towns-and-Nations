@@ -26,9 +26,6 @@ dependencies {
     compileOnly 'com.mojang:authlib:1.5.21'
     compileOnly 'net.luckperms:api:5.4'
 
-
-
-
 }
 
 def targetJavaVersion = 17

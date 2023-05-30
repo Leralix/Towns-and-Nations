@@ -2,6 +2,7 @@ package org.tan.towns_and_nations.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,16 +26,10 @@ public class BreakBlockListener implements Listener {
 
 
 
-        ItemStack rareStoneItem = new ItemStack(Material.EMERALD);
-        ItemMeta rareStoneItemMeta = rareStoneItem.getItemMeta();
-        rareStoneItemMeta.setCustomModelData(101);
-        rareStoneItemMeta.setDisplayName("Rare Stone");
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add("Can be traded for money");
-        rareStoneItemMeta.setLore(lore);
 
 
-        rareStoneItem.setItemMeta(rareStoneItemMeta);
+
+
 
         ItemStack item = player.getInventory().getItemInMainHand();
 
@@ -44,13 +39,12 @@ public class BreakBlockListener implements Listener {
         }
 
 
-
         if(blockName.equals("GOLD_ORE")){
             Random rand = new Random();
             int int_random = rand.nextInt(100);
 
-            if(int_random > 80){
-                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), rareStoneItem);
+            if(int_random > 70){
+                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), getRareStone());
 
             }
         }
@@ -59,8 +53,8 @@ public class BreakBlockListener implements Listener {
             Random rand = new Random();
             int int_random = rand.nextInt(100);
 
-            if(int_random > 80){
-                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), rareStoneItem);
+            if(int_random > 70  ){
+                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), getRareStone());
 
             }
         }
@@ -69,6 +63,16 @@ public class BreakBlockListener implements Listener {
 
     }
 
-
+    public ItemStack getRareStone(){
+        ItemStack rareStoneItem = new ItemStack(Material.EMERALD);
+        ItemMeta rareStoneItemMeta = rareStoneItem.getItemMeta();
+        rareStoneItemMeta.setCustomModelData(101);
+        rareStoneItemMeta.setDisplayName("Rare Stone");
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add("Can be traded for money");
+        rareStoneItemMeta.setLore(lore);
+        rareStoneItem.setItemMeta(rareStoneItemMeta);
+        return rareStoneItem;
+    }
 
 }

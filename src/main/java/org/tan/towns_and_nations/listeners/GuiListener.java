@@ -6,6 +6,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
@@ -21,6 +22,12 @@ public class GuiListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event){
 
+        if (!event.getClick().equals(ClickType.LEFT)) {
+            return;
+        }
+
+
+
         if(event.getCurrentItem() == null){
             return;
         }
@@ -30,15 +37,15 @@ public class GuiListener implements Listener {
 
         ItemStack itemStack = event.getCurrentItem();
         Material item = itemStack.getType();
-        String itemName = itemStack.getItemMeta().getDisplayName();
+        String itemName = itemStack.getItemMeta().getDisplayName().substring(2);
         Player player = (Player) event.getWhoClicked();
         PlayerDataClass playerStat = PlayerStatStorage.findStatUUID(player.getUniqueId().toString());
 
 
         boolean back = item.equals(Material.ARROW) && itemName.equals("Back");
-
+        String title = event.getView().getTitle();
         //Gui menu intro //////////
-        if(event.getView().getTitle().equalsIgnoreCase(ChatColor.BLACK + "Towns and Nations")){
+        if(title.equalsIgnoreCase(ChatColor.BLACK + "Towns and Nations")){
             //Kingdom
             if(item.equals(Material.PLAYER_HEAD) && itemName.equals("Kingdom"))
                 event.getWhoClicked().sendMessage("Encore en dev");
@@ -59,12 +66,12 @@ public class GuiListener implements Listener {
         }
 
         //Gui menu Profil //////////
-        if(event.getView().getTitle().equalsIgnoreCase(ChatColor.BLACK + "Profil")){
+        if(title.equalsIgnoreCase(ChatColor.BLACK + "Profil")){
             event.setCancelled(true);
         }
 
         //Gui menu NoTown //////////
-        if(event.getView().getTitle().equalsIgnoreCase(ChatColor.BLACK + "Town")){
+        if(title.equalsIgnoreCase(ChatColor.BLACK + "Town")){
 
             if(item.equals(Material.GRASS_BLOCK) && itemName.equals("Create new Town")){
                 if(PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).getBalance() < 100){
@@ -84,17 +91,21 @@ public class GuiListener implements Listener {
         }
 
         //Gui menu SearchTown //////////
-        if(event.getView().getTitle().equalsIgnoreCase(ChatColor.BLACK + "Search Town")){
+        if(title.equalsIgnoreCase(ChatColor.BLACK + "Search Town")){
 
             event.setCancelled(true);
         }
 
         //Gui menu Havetown //////////
-        if(event.getView().getTitle().equalsIgnoreCase(ChatColor.BLACK + "Town Menu")){
+        if(title.equalsIgnoreCase(ChatColor.BLACK + "Town Menu")){
 
 
             if(checkItem(itemStack, Material.PLAYER_HEAD, "Members")){
                 GuiManager.OpenTownMemberList(player);
+            }
+
+            if(checkItem(itemStack, Material.PLAYER_HEAD, "Relations")){
+                GuiManager.OpenTownRelation(player);
             }
 
             if(checkItem(itemStack, Material.PLAYER_HEAD, "Settings")){
@@ -106,13 +117,32 @@ public class GuiListener implements Listener {
         }
 
         //Gui menu townMembers //////////
-        if(event.getView().getTitle().equalsIgnoreCase(ChatColor.BLACK + "Town Members")){
+        if(title.equalsIgnoreCase(ChatColor.BLACK + "Town Members")){
+            event.setCancelled(true);
+        }
+
+        //Gui menu townRelation //////////
+        if(title.equalsIgnoreCase(ChatColor.BLACK + "Town Relation")){
+
+            if(checkItem(itemStack, Material.IRON_SWORD, "War")){
+                GuiManager.OpenTownWarRelation(player);
+            }
+
+            event.setCancelled(true);
+        }
+
+        //Gui menu addTownRelation //////////
+        if(title.equalsIgnoreCase(ChatColor.BLACK + "Town Relation - War")){
+
+            if(checkItem(itemStack, Material.PLAYER_HEAD, "add town")){
+                GuiManager.OpenTownRelationAdd(player,"war");
+            }
 
             event.setCancelled(true);
         }
 
         //Gui menu TownSettings //////////
-        if(event.getView().getTitle().equalsIgnoreCase(ChatColor.BLACK + "Town Settings")){
+        if(title.equalsIgnoreCase(ChatColor.BLACK + "Town Settings")){
 
             if(checkItem(itemStack,Material.BARRIER, "Leave Town")){
 
@@ -130,8 +160,6 @@ public class GuiListener implements Listener {
 
             if(checkItem(itemStack,Material.BARRIER, "Delete Town")){
 
-                System.out.println(TownDataStorage.getTown(playerStat.getTownId()).getUuidLeader());
-                System.out.println(playerStat.getUuid());
 
                 if(!TownDataStorage.getTown(playerStat.getTownId()).getUuidLeader().equals(playerStat.getUuid())){
                     player.sendMessage("You can't delete a town if you are not the leader");
@@ -148,7 +176,7 @@ public class GuiListener implements Listener {
         }
 
         //Gui menu Region //////////
-        if(event.getView().getTitle().equalsIgnoreCase(ChatColor.BLACK + "Region")){
+        if(title.equalsIgnoreCase(ChatColor.BLACK + "Region")){
             event.setCancelled(true);
         }
 
@@ -166,8 +194,8 @@ public class GuiListener implements Listener {
     private boolean checkItem(ItemStack item, Material materialtest, String nameTest){
 
         Material itemMaterial = item.getType();
-        String itemName = item.getItemMeta().getDisplayName();
-
+        String itemName = item.getItemMeta().getDisplayName().substring(2);
+        System.out.println(itemName);
         return itemMaterial.equals(materialtest) && itemName.equals(nameTest);
 
     }

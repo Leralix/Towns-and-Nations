@@ -19,7 +19,10 @@ public class TownDataClass {
     public String DateCreated;
     private String Overlord;
     private String townIconMaterialCode;
-    private ArrayList<String> townPlayerListId = new ArrayList<String>();
+    private final ArrayList<String> townPlayerListId = new ArrayList<String>();
+
+    private TownRelationClass relations;
+
 
     public TownDataClass( String townId, String townName, String uuidLeader){
         this.TownId = townId;
@@ -34,7 +37,7 @@ public class TownDataClass {
         ArrayList<String> list = new ArrayList<>();
         list.add(uuidLeader);
         this.townPlayerListId.add(uuidLeader);
-
+        this.relations = new TownRelationClass();
     }
 
     public String getTownId() {
@@ -121,6 +124,11 @@ public class TownDataClass {
         return townPlayerListId;
     }
 
+    public TownRelationClass getRelations(){
+        return relations;
+    }
 
-
+    public void addRelations(){
+        relations = new TownRelationClass();
+    }
 }

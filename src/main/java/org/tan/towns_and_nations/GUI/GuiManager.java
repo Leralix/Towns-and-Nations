@@ -12,6 +12,8 @@ import org.tan.towns_and_nations.utils.TownDataStorage;
 
 import java.util.*;
 
+import static org.tan.towns_and_nations.utils.HeadUtils.getTownIcon;
+
 public class GuiManager {
 
     //Gui menu Main Menu //////////
@@ -65,7 +67,6 @@ public class GuiManager {
     }
     //Gui menu Town //////////
     public static void OpenTownMenu(Player p) {
-        System.out.println("tesrt");
         if(PlayerStatStorage.findStatUUID(p.getUniqueId().toString()).haveTown()){
             OpenTownMenuHaveTown(p);
         }
@@ -156,6 +157,63 @@ public class GuiManager {
 
         p.openInventory(inventory);
     }
+    //Gui menu TownRelation //////////
+    public static void OpenTownRelation(Player p) {
+
+        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town Relation");
+
+        ItemStack warCategory = getCustomLoreItem(Material.IRON_SWORD,"War","Manage town you are at war with");
+        ItemStack EmbargoCategory = getCustomLoreItem(Material.BARRIER,"Embargo","Manage town you are at war with");
+        ItemStack NAPCategory = getCustomLoreItem(Material.WRITABLE_BOOK,"Non-aggression pact","Manage town you are at war with");
+        ItemStack AllianceCategory = getCustomLoreItem(Material.CAMPFIRE,"Alliance","Manage town you are allied with");
+
+
+
+
+        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+
+        inventory.setItem(10, warCategory);
+        inventory.setItem(12, EmbargoCategory);
+        inventory.setItem(14, NAPCategory);
+        inventory.setItem(16, AllianceCategory);
+
+        inventory.setItem(18, getBackArrow);
+
+        p.openInventory(inventory);
+    }
+    //Gui menu TownRelation //////////
+    public static void OpenTownWarRelation(Player p) {
+
+        TownDataClass playerTown = TownDataStorage.getTown(PlayerStatStorage.findStatUUID(p.getUniqueId().toString()).getTownId());
+        ArrayList<String> relationWar = playerTown.getRelations().getOne("war");
+
+        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town Relation - War");
+
+        /*
+        for(String town : relationWar){
+
+        }
+        */
+
+        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+
+        ItemStack addTownButton = HeadUtils.makeSkull("add town","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
+        ItemStack removeTownButton = HeadUtils.makeSkull("remove town","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=");
+
+        ItemStack nextPageButton = HeadUtils.makeSkull("next page","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0=");
+        ItemStack previousPageButton = HeadUtils.makeSkull("previous page","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19");
+
+
+        inventory.setItem(18, getBackArrow);
+        inventory.setItem(20,addTownButton);
+        inventory.setItem(21,removeTownButton);
+
+        inventory.setItem(24,previousPageButton);
+        inventory.setItem(25,nextPageButton);
+
+
+        p.openInventory(inventory);
+    }
     //Gui menu TownSettings //////////
     public static void OpenTownSettings(Player p) {
 
@@ -176,9 +234,20 @@ public class GuiManager {
 
         p.openInventory(inventory);
     }
+    //Gui menu TownEconomy //////////
+    public static void OpenTownRelationAdd(Player p,String relation) {
+        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town Settings");
+
+
+
+
+
+        p.openInventory(inventory);
+    }
+
 
     //Gui menu TownMembers //////////
-        public static void OpenTownMemberList(Player p) {
+    public static void OpenTownMemberList(Player p) {
 
         Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town Members");
 
@@ -208,6 +277,7 @@ public class GuiManager {
         p.openInventory(inventory);
     }
 
+    //Gui menu TownEconomy //////////
     public static void OpenTownEconomy(Player p){
 
     }
@@ -219,7 +289,7 @@ public class GuiManager {
     public static ItemStack getCustomLoreItem(Material itemMaterial, String itemName, String itemLoreOneLine){
         ItemStack item = new ItemStack(itemMaterial);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(itemName);
+        meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + itemName);
         if(itemLoreOneLine != null){
             List<String> itemLore = new ArrayList<String>();
             itemLore.add(itemLoreOneLine);
@@ -230,23 +300,7 @@ public class GuiManager {
         return item;
     }
 
-    public static ItemStack getTownIcon(String TownId){
 
-        if(TownId == null){
-            System.out.println("Erreur critique: Fonction accesible seulement a un joueur qui a une ville apellée par un joueur qui n'en possède pas");
-            return null;
-        }
-
-        TownDataClass town = TownDataStorage.getTown(TownId);
-        ItemStack itemStack = town.getTownIconItemStack();
-        if (itemStack == null){
-            return HeadUtils.getPlayerHead(town.getTownName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
-        }
-        else {
-            return itemStack;
-        }
-
-    }
 
 
 

@@ -49,6 +49,15 @@ public class DebugCommand implements CommandExecutor, TabExecutor {
             sender.sendMessage(args[0]);
             switch (args[0]) {
 
+                case "reloadtown":
+                    HashMap<String,TownDataClass> towns =  TownDataStorage.getTownList();
+                    for (Map.Entry<String, TownDataClass> entry : towns.entrySet()) {
+                        String cle = entry.getKey();
+                        TownDataClass town = entry.getValue();
+
+                        town.addRelations();
+                    }
+                    break;
 
                 case "addmoney":
                     if (args.length < 3) {
