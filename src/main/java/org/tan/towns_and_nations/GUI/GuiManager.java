@@ -182,18 +182,22 @@ public class GuiManager {
         p.openInventory(inventory);
     }
     //Gui menu TownRelation //////////
-    public static void OpenTownWarRelation(Player p) {
+    public static void OpenTownRelations(Player p, String relation) {
 
         TownDataClass playerTown = TownDataStorage.getTown(PlayerStatStorage.findStatUUID(p.getUniqueId().toString()).getTownId());
-        ArrayList<String> relationWar = playerTown.getRelations().getOne("war");
+        ArrayList<String> TownListUUID = playerTown.getRelations().getOne(relation);
 
-        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town Relation - War");
+        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town Relation - " + relation);
 
-        /*
-        for(String town : relationWar){
+        int i = 0;
+        for(String townUUID : TownListUUID){
+            ItemStack townIcon = HeadUtils.getTownIcon(townUUID);
+            inventory.setItem(i, townIcon);
 
+
+            i = i+1;
         }
-        */
+
 
         ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
 
@@ -214,6 +218,25 @@ public class GuiManager {
 
         p.openInventory(inventory);
     }
+    public static void OpenTownRelationInteraction(Player p,String action,String relation) {
+        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town Settings");
+
+        int i = 0;
+        HashMap<String,TownDataClass> towns =  TownDataStorage.getTownList();
+        for (Map.Entry<String, TownDataClass> entry : towns.entrySet()) {
+            String cle = entry.getKey();
+            TownDataClass town = entry.getValue();
+            ItemStack townIcon = HeadUtils.getTownIcon(town.getTownId());
+            inventory.setItem(i, townIcon);
+
+
+            i = i+1;
+
+        }
+
+        p.openInventory(inventory);
+    }
+
     //Gui menu TownSettings //////////
     public static void OpenTownSettings(Player p) {
 
@@ -234,16 +257,7 @@ public class GuiManager {
 
         p.openInventory(inventory);
     }
-    //Gui menu TownEconomy //////////
-    public static void OpenTownRelationAdd(Player p,String relation) {
-        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town Settings");
 
-
-
-
-
-        p.openInventory(inventory);
-    }
 
 
     //Gui menu TownMembers //////////

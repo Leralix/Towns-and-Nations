@@ -125,7 +125,7 @@ public class GuiListener implements Listener {
         if(title.equalsIgnoreCase(ChatColor.BLACK + "Town Relation")){
 
             if(checkItem(itemStack, Material.IRON_SWORD, "War")){
-                GuiManager.OpenTownWarRelation(player);
+                GuiManager.OpenTownRelations(player,"war");
             }
 
             event.setCancelled(true);
@@ -135,7 +135,7 @@ public class GuiListener implements Listener {
         if(title.equalsIgnoreCase(ChatColor.BLACK + "Town Relation - War")){
 
             if(checkItem(itemStack, Material.PLAYER_HEAD, "add town")){
-                GuiManager.OpenTownRelationAdd(player,"war");
+                GuiManager.OpenTownRelationInteraction(player,"add","war");
             }
 
             event.setCancelled(true);
