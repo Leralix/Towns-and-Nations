@@ -5,10 +5,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
+import org.tan.towns_and_nations.TownsAndNations;
 import org.tan.towns_and_nations.utils.HeadUtils;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
 import org.tan.towns_and_nations.utils.TownDataStorage;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.*;
 
@@ -222,11 +225,26 @@ public class GuiManager {
         Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town Settings");
 
         int i = 0;
-        HashMap<String,TownDataClass> towns =  TownDataStorage.getTownList();
+        LinkedHashMap<String,TownDataClass> towns =  TownDataStorage.getTownList();
         for (Map.Entry<String, TownDataClass> entry : towns.entrySet()) {
             String cle = entry.getKey();
             TownDataClass town = entry.getValue();
             ItemStack townIcon = HeadUtils.getTownIcon(town.getTownId());
+            ItemMeta townItemMeta= townIcon.getItemMeta();
+
+            NamespacedKey key = new NamespacedKey(TownsAndNations.getPlugin(), "townId");
+            townItemMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, town.getTownId());
+
+            /* Le code pour récupérer la valeur
+            if (meta.getPersistentDataContainer().has(key, PersistentDataType.STRING)) {
+                String chaineCachee = meta.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+            }
+            */
+
+
+            townIcon.setItemMeta(townItemMeta);
+
+
             inventory.setItem(i, townIcon);
 
 

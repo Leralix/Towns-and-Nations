@@ -3,10 +3,11 @@ package org.tan.towns_and_nations.DataClass;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class TownRelationClass {
 
-    private final HashMap<String, ArrayList<String>> townRelations = new HashMap<String, ArrayList<String>>();
+    private final LinkedHashMap<String, ArrayList<String>> townRelations = new LinkedHashMap<String, ArrayList<String>>();
 
 
     public TownRelationClass(){

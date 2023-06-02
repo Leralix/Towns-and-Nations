@@ -13,7 +13,7 @@ import java.util.*;
 
 public class TownDataStorage {
 
-    public static HashMap<String, TownDataClass> townDataMap = new HashMap<>();
+    public static LinkedHashMap<String, TownDataClass> townDataMap = new LinkedHashMap<>();
 
     public static int newTownId = 1;
 
@@ -41,7 +41,7 @@ public class TownDataStorage {
         saveStats();
     }
 
-    public static HashMap<String, TownDataClass> getTownList(){
+    public static LinkedHashMap<String, TownDataClass> getTownList(){
         return townDataMap;
     }
 
@@ -61,7 +61,7 @@ public class TownDataStorage {
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            Type type = new TypeToken<HashMap<String, TownDataClass>>() {}.getType();
+            Type type = new TypeToken<LinkedHashMap<String, TownDataClass>>() {}.getType();
             townDataMap = gson.fromJson(reader, type);
 
             int ID = 0;
