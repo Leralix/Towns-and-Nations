@@ -37,6 +37,9 @@ public class GuiListener implements Listener {
 
         ItemStack itemStack = event.getCurrentItem();
         Material item = itemStack.getType();
+        if(itemStack.getItemMeta().getDisplayName() == null){
+            return;
+        }
         String itemName = itemStack.getItemMeta().getDisplayName().substring(2);
         Player player = (Player) event.getWhoClicked();
         PlayerDataClass playerStat = PlayerStatStorage.findStatUUID(player.getUniqueId().toString());
@@ -133,7 +136,7 @@ public class GuiListener implements Listener {
 
         //Gui menu addTownRelation //////////
         if(title.equalsIgnoreCase(ChatColor.BLACK + "Town Relation - War")){
-
+            System.out.println("test");
             if(checkItem(itemStack, Material.PLAYER_HEAD, "add town")){
                 GuiManager.OpenTownRelationInteraction(player,"add","war");
             }

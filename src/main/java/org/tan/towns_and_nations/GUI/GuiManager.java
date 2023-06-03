@@ -171,9 +171,9 @@ public class GuiManager {
         ItemStack AllianceCategory = getCustomLoreItem(Material.CAMPFIRE,"Alliance","Manage town you are allied with");
 
 
-
-
         ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+
+
 
         inventory.setItem(10, warCategory);
         inventory.setItem(12, EmbargoCategory);
