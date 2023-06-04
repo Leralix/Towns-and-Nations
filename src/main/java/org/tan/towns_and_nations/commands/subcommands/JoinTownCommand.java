@@ -46,9 +46,6 @@ public class JoinTownCommand extends SubCommand {
 
             for (String town : townInvited){
 
-                System.out.println(townID);
-                System.out.println(town);
-
                 if(town.equals(townID)){
                     TownDataStorage.getTown(townID).addPlayer(player.getUniqueId().toString());
                     PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).setTownId(townID);
@@ -59,7 +56,6 @@ public class JoinTownCommand extends SubCommand {
                 }
 
             }
-            System.out.println("testJointown");
         }
         else{
             player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +  " Too many arguments");

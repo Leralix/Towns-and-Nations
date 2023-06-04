@@ -20,19 +20,21 @@ import org.tan.towns_and_nations.utils.TownDataStorage;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public final class TownsAndNations extends JavaPlugin {
 
     private static TownsAndNations plugin;
 
     private static List<PlayerDataClass> playerDataClasses;
-
+    static Logger logger ;
     @Override
     public void onEnable() {
         // Plugin startup logic
         plugin = this;
+        logger = this.getLogger();
+        logger.info("[TaN] Loading Plugin");
 
-        System.out.println("[TaN] Loading Plugin");
 
         try {
             PlayerStatStorage.loadStats();
@@ -57,13 +59,13 @@ public final class TownsAndNations extends JavaPlugin {
         Objects.requireNonNull(getCommand("tan")).setExecutor(new CommandManager());
         Objects.requireNonNull(getCommand("tandebug")).setExecutor(new DebugCommand());
 
-        System.out.println("[TaN] Plugin successfully loaded");
+        logger.info("[TaN] Plugin successfully loaded");
     }
 
 
     @Override
     public void onDisable() {
-        System.out.println("[TaN] Savings Data");
+        logger.info("[TaN] Savings Data");
         try {
             PlayerStatStorage.saveStats();
         } catch (IOException e) {
@@ -74,7 +76,7 @@ public final class TownsAndNations extends JavaPlugin {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("[TaN] Plugin disabled");
+        logger.info("[TaN] Plugin disabled");
     }
 
 
@@ -93,5 +95,5 @@ public final class TownsAndNations extends JavaPlugin {
         return plugin;
     }
 
-
+    public static Logger getPluginLogger(){return logger;}
 }

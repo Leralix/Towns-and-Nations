@@ -24,7 +24,6 @@ public class VillagerInteractionListener implements Listener {
             if (villager.getCustomName() != null && villager.getCustomName().equals("Goldsmith")) {
 
                 ItemStack item = player.getInventory().getItemInMainHand();
-                System.out.println(item);
 
 
                 if(item.getItemMeta() == null){

@@ -97,7 +97,6 @@ public class GuiManager {
             i++;
 
 
-            System.out.println(townDataClass.getTownName() + i);
 
         }
 
@@ -222,7 +221,7 @@ public class GuiManager {
         p.openInventory(inventory);
     }
     public static void OpenTownRelationInteraction(Player p,String action,String relation) {
-        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town Settings");
+        Inventory inventory = Bukkit.createInventory(p,27, ChatColor.BLACK + "Town relation - selection");
 
         int i = 0;
         LinkedHashMap<String,TownDataClass> towns =  TownDataStorage.getTownList();
@@ -234,12 +233,12 @@ public class GuiManager {
 
             NamespacedKey key = new NamespacedKey(TownsAndNations.getPlugin(), "townId");
             townItemMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, town.getTownId());
+            key = new NamespacedKey(TownsAndNations.getPlugin(), "action");
+            townItemMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, action);
+            key = new NamespacedKey(TownsAndNations.getPlugin(), "relation");
+            townItemMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, relation);
 
-            /* Le code pour récupérer la valeur
-            if (meta.getPersistentDataContainer().has(key, PersistentDataType.STRING)) {
-                String chaineCachee = meta.getPersistentDataContainer().get(key, PersistentDataType.STRING);
-            }
-            */
+
 
 
             townIcon.setItemMeta(townItemMeta);

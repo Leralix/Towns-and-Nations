@@ -2,6 +2,7 @@ package org.tan.towns_and_nations.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,13 +10,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.GUI.GuiManager;
+import org.tan.towns_and_nations.TownsAndNations;
 import org.tan.towns_and_nations.commands.subcommands.OpenGuiCommand;
 import org.tan.towns_and_nations.utils.PlayerChatListenerStorage;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
 import org.tan.towns_and_nations.utils.TownDataStorage;
+
+import java.util.logging.Logger;
 
 public class GuiListener implements Listener {
 
@@ -43,10 +49,14 @@ public class GuiListener implements Listener {
         String itemName = itemStack.getItemMeta().getDisplayName().substring(2);
         Player player = (Player) event.getWhoClicked();
         PlayerDataClass playerStat = PlayerStatStorage.findStatUUID(player.getUniqueId().toString());
+        Logger logger = TownsAndNations.getPluginLogger();
 
 
         boolean back = item.equals(Material.ARROW) && itemName.equals("Back");
         String title = event.getView().getTitle();
+
+        logger.info("Title name: " + title);
+
         //Gui menu intro //////////
         if(title.equalsIgnoreCase(ChatColor.BLACK + "Towns and Nations")){
             //Kingdom
@@ -136,10 +146,47 @@ public class GuiListener implements Listener {
 
         //Gui menu addTownRelation //////////
         if(title.equalsIgnoreCase(ChatColor.BLACK + "Town Relation - War")){
-            System.out.println("test");
             if(checkItem(itemStack, Material.PLAYER_HEAD, "add town")){
                 GuiManager.OpenTownRelationInteraction(player,"add","war");
             }
+
+            /* Le code pour récupérer la valeur
+            if (meta.getPersistentDataContainer().has(key, PersistentDataType.STRING)) {
+                String chaineCachee = meta.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+            }
+            */
+
+            event.setCancelled(true);
+        }
+
+        //Gui menu RelationSelection
+        if(title.equalsIgnoreCase(ChatColor.BLACK + "Town Relation - selection")){
+
+            TownDataClass playerTown = TownDataStorage.getTown(PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).getTownId());
+            TownDataClass clickTown = TownDataStorage.getTown(PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).getTownId());
+
+            ItemMeta meta = itemStack.getItemMeta();
+
+            NamespacedKey key;
+            key = new NamespacedKey(TownsAndNations.getPlugin(), "townId");
+            if (meta.getPersistentDataContainer().has(key, PersistentDataType.STRING)) {
+                String selectedTownID = meta.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+                System.out.println("TownID: " + selectedTownID);
+            }
+
+            key = new NamespacedKey(TownsAndNations.getPlugin(), "action");
+            if (meta.getPersistentDataContainer().has(key, PersistentDataType.STRING)) {
+                String action = meta.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+                System.out.println("Action: " + action);
+            }
+
+            key = new NamespacedKey(TownsAndNations.getPlugin(), "relation");
+            if (meta.getPersistentDataContainer().has(key, PersistentDataType.STRING)) {
+                String relation = meta.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+                System.out.println("Relation: " + relation);
+            }
+
+
 
             event.setCancelled(true);
         }
@@ -198,7 +245,6 @@ public class GuiListener implements Listener {
 
         Material itemMaterial = item.getType();
         String itemName = item.getItemMeta().getDisplayName().substring(2);
-        System.out.println(itemName);
         return itemMaterial.equals(materialtest) && itemName.equals(nameTest);
 
     }
