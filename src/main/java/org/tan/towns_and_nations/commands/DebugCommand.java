@@ -1,5 +1,10 @@
 package org.tan.towns_and_nations.commands;
 
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.components.GuiType;
+import dev.triumphteam.gui.guis.Gui;
+import dev.triumphteam.gui.guis.GuiItem;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,6 +21,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
+import org.tan.towns_and_nations.GUI.GuiManager2;
+import org.tan.towns_and_nations.utils.HeadUtils;
 import org.tan.towns_and_nations.utils.PlayerChatListenerStorage;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
 import org.tan.towns_and_nations.utils.TownDataStorage;
@@ -28,7 +35,7 @@ import java.util.Map;
 
 public class DebugCommand implements CommandExecutor, TabExecutor {
 
-    private String[] commandes = {"playerstats", "savestats", "itemtab", "getplayerstorage", "gettownstats", "spawnvillager"};
+    private String[] commandes = {"playerstats", "savestats", "itemtab", "getplayerstorage", "gettownstats", "spawnvillager", "newgui"};
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
@@ -48,6 +55,13 @@ public class DebugCommand implements CommandExecutor, TabExecutor {
         if (label.equalsIgnoreCase("tandebug")) {
             sender.sendMessage(args[0]);
             switch (args[0]) {
+
+                case "newgui":
+
+                    GuiManager2.openMainMenu(player);
+
+
+
 
                 case "reloadtown":
                     HashMap<String,TownDataClass> towns =  TownDataStorage.getTownList();

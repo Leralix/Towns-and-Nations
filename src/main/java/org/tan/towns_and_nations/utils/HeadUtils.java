@@ -8,10 +8,13 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class HeadUtils {
@@ -25,6 +28,15 @@ public class HeadUtils {
         PlayerHead.setItemMeta(skullMeta);
         return PlayerHead;
     }
+
+    public static ItemStack getPlayerHead(Player p){
+        ItemStack PlayerHead = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta skullMeta = (SkullMeta) PlayerHead.getItemMeta();
+        skullMeta.setOwningPlayer(p);
+        PlayerHead.setItemMeta(skullMeta);
+        return PlayerHead;
+    }
+
 
     public static ItemStack getPlayerHead(String headName, OfflinePlayer p){
         ItemStack PlayerHead = new ItemStack(Material.PLAYER_HEAD);
@@ -70,6 +82,21 @@ public class HeadUtils {
         }
 
     }
+
+    public static ItemStack getCustomLoreItem(Material itemMaterial, String itemName, String itemLoreOneLine){
+        ItemStack item = new ItemStack(itemMaterial);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + itemName);
+        if(itemLoreOneLine != null){
+            List<String> itemLore = new ArrayList<String>();
+            itemLore.add(itemLoreOneLine);
+            meta.setLore(itemLore);
+        }
+
+        item.setItemMeta(meta);
+        return item;
+    }
+
 
 
 }

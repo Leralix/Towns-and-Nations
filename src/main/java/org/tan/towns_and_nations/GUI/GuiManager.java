@@ -15,6 +15,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.*;
 
+import static org.tan.towns_and_nations.utils.HeadUtils.getCustomLoreItem;
 import static org.tan.towns_and_nations.utils.HeadUtils.getTownIcon;
 
 public class GuiManager {
@@ -245,8 +246,6 @@ public class GuiManager {
 
 
             inventory.setItem(i, townIcon);
-
-
             i = i+1;
 
         }
@@ -274,8 +273,6 @@ public class GuiManager {
 
         p.openInventory(inventory);
     }
-
-
 
     //Gui menu TownMembers //////////
     public static void OpenTownMemberList(Player p) {
@@ -312,27 +309,6 @@ public class GuiManager {
     public static void OpenTownEconomy(Player p){
 
     }
-
-
-
-
-
-    public static ItemStack getCustomLoreItem(Material itemMaterial, String itemName, String itemLoreOneLine){
-        ItemStack item = new ItemStack(itemMaterial);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + itemName);
-        if(itemLoreOneLine != null){
-            List<String> itemLore = new ArrayList<String>();
-            itemLore.add(itemLoreOneLine);
-            meta.setLore(itemLore);
-        }
-
-        item.setItemMeta(meta);
-        return item;
-    }
-
-
-
 
 
 

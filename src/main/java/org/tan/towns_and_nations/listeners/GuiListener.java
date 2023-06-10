@@ -71,6 +71,8 @@ public class GuiListener implements Listener {
             event.setCancelled(true);
         } else if (title.equalsIgnoreCase("Kingdom")) {
             event.setCancelled(true);
+        }else{
+            return;
         }
 
         if (back) {

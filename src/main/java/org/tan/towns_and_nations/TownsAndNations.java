@@ -10,6 +10,7 @@ import net.luckperms.api.model.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.tan.towns_and_nations.GUI.GuiManager2;
 import org.tan.towns_and_nations.commands.CommandManager;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.commands.DebugCommand;
@@ -27,7 +28,9 @@ public final class TownsAndNations extends JavaPlugin {
     private static TownsAndNations plugin;
 
     private static List<PlayerDataClass> playerDataClasses;
-    static Logger logger ;
+    static Logger logger;
+
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -35,7 +38,7 @@ public final class TownsAndNations extends JavaPlugin {
         logger = this.getLogger();
         logger.info("[TaN] Loading Plugin");
 
-
+        //Loading data
         try {
             PlayerStatStorage.loadStats();
         } catch (IOException e) {
@@ -44,14 +47,12 @@ public final class TownsAndNations extends JavaPlugin {
         }
         TownDataStorage.loadStats();
 
-
         //getConfig().options().copyDefaults();
 
-
+        //API luckperms
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         if (provider != null) {
             LuckPerms api = provider.getProvider();
-
         }
 
 
