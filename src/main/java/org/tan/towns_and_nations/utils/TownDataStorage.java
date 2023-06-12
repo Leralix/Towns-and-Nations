@@ -2,6 +2,7 @@ package org.tan.towns_and_nations.utils;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
@@ -75,28 +76,18 @@ public class TownDataStorage {
 
     public static void saveStats() {
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNTownsStats.json");
-        file.getParentFile().mkdir();
+        file.getParentFile().mkdirs();
         try {
-            file.createNewFile();
+            if (!file.exists()) {
+                file.createNewFile();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Writer writer = null;
-        try {
-            writer = new FileWriter(file, false);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        gson.toJson(townDataMap, writer);
-        try {
-            writer.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            writer.close();
+        try (Writer writer = new FileWriter(file, false)) {
+            gson.toJson(townDataMap, writer);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
