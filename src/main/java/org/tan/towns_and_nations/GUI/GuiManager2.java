@@ -198,7 +198,7 @@ public class GuiManager2 {
 
             TownDataClass townDataClass = entry.getValue();
             String townId = townDataClass.getTownId();
-            ItemStack townIcon = getTownIcon(townId);
+            ItemStack townIcon = HeadUtils.getTownIconWithInformations(townId);
 
             GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
@@ -418,6 +418,19 @@ public class GuiManager2 {
             event.setCancelled(true);
             OpenTownMenuHaveTown(player);
         });
+        GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+        gui.setItem(0, _decorativeGlass);
+        gui.setItem(1, _decorativeGlass);
+        gui.setItem(2, _decorativeGlass);
+        gui.setItem(3, _decorativeGlass);
+        gui.setItem(4, _decorativeGlass);
+        gui.setItem(5, _decorativeGlass);
+        gui.setItem(6, _decorativeGlass);
+        gui.setItem(7, _decorativeGlass);
+        gui.setItem(8, _decorativeGlass);
+
 
         gui.setItem(10, _warCategory);
         gui.setItem(12, _EmbargoCategory);
@@ -425,6 +438,15 @@ public class GuiManager2 {
         gui.setItem(16, _AllianceCategory);
 
         gui.setItem(18, _getBackArrow);
+
+        gui.setItem(19, _decorativeGlass);
+        gui.setItem(20, _decorativeGlass);
+        gui.setItem(21, _decorativeGlass);
+        gui.setItem(22, _decorativeGlass);
+        gui.setItem(23, _decorativeGlass);
+        gui.setItem(24, _decorativeGlass);
+        gui.setItem(25, _decorativeGlass);
+        gui.setItem(26, _decorativeGlass);
 
         gui.open(player);
     }
@@ -445,12 +467,9 @@ public class GuiManager2 {
         TownDataClass playerTown = TownDataStorage.getTown(playerStat.getTownId());
 
         ArrayList<String> TownListUUID = playerTown.getRelations().getOne(relation);
-        player.sendMessage(relation);
-        player.sendMessage(TownListUUID.toString());
-        player.sendMessage(playerTown.getRelations().getAll().toString());
         int i = 0;
         for(String townUUID : TownListUUID){
-            ItemStack townIcon = HeadUtils.getTownIcon(townUUID);
+            ItemStack townIcon = HeadUtils.getTownIconWithInformations(townUUID);
 
             GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
@@ -487,13 +506,22 @@ public class GuiManager2 {
         GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
             event.setCancelled(true);
         });
+        GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.WHITE_STAINED_GLASS_PANE)).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
 
         gui.setItem(4,1, _back);
-        gui.setItem(4,3,_add);
+        gui.setItem(4,4,_add);
         gui.setItem(4,5,_remove);
 
         gui.setItem(4,7,_next);
         gui.setItem(4,8,_previous);
+
+
+        gui.setItem(4,2, _decorativeGlass);
+        gui.setItem(4,3, _decorativeGlass);
+        gui.setItem(4,6, _decorativeGlass);
+        gui.setItem(4,9, _decorativeGlass);
 
         gui.open(player);
     }
@@ -510,47 +538,61 @@ public class GuiManager2 {
                 .rows(nRow)
                 .create();
 
-
         TownDataClass playerTown = TownDataStorage.getTown(PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).getTownId());
 
         LinkedHashMap<String, TownDataClass> allTown = getTownList();
         ArrayList<String> TownListUUID = playerTown.getRelations().getOne(relation);
+        GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.WHITE_STAINED_GLASS)).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+        if(action.equals("add")){
+            List<String> townNoRelation = new ArrayList<>(allTown.keySet());
+            townNoRelation.removeAll(TownListUUID);
+            townNoRelation.remove(playerTown.getTownId());
+            int i = 0;
+            for(String townUUID : townNoRelation){
+                ItemStack townIcon = HeadUtils.getTownIconWithInformations(townUUID);
 
-        List<String> townNoRelation = new ArrayList<>(allTown.keySet());
-
-        // Retirer tous les éléments de la seconde liste de la première
-        townNoRelation.removeAll(TownListUUID);
-        townNoRelation.remove(playerTown.getTownId());
-
-        int i = 0;
-        for(String townUUID : townNoRelation){
-            ItemStack townIcon = HeadUtils.getTownIcon(townUUID);
-
-            GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
-                event.setCancelled(true);
-
-                String message = "Guerre déclarée à : " + townIcon.getItemMeta().getDisplayName();
-                player.sendMessage(message);
-
-                if(action.equals("add")){
-                    player.sendMessage("test");
-                    player.sendMessage(TownDataStorage.getTown(playerTown.getTownId()).toString());
-                    player.sendMessage("test");
+                GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
+                    event.setCancelled(true);
+                    String message = "Guerre déclarée à : " + townIcon.getItemMeta().getDisplayName();
+                    player.sendMessage(message);
                     TownDataStorage.getTown(playerTown.getTownId()).addTownRelations(relation,townUUID);
-                }
-                else
-                    TownDataStorage.getTown(playerTown.getTownId()).removeTownRelations(relation,player.getUniqueId().toString());
+                    OpenTownRelation(player,relation);
+                });
+                gui.setItem(i, _town);
+                i = i+1;
+                _decorativeGlass = ItemBuilder.from(new ItemStack(Material.GREEN_STAINED_GLASS_PANE)).asGuiItem(event -> {
+                    event.setCancelled(true);
+                });
+            }
 
 
-
-                OpenTownRelation(player,relation);
-            });
-
-            gui.setItem(i, _town);
-
-
-            i = i+1;
         }
+        else if(action.equals("remove")){
+            int i = 0;
+            player.sendMessage("remove");
+            for(String townUUID : TownListUUID){
+                ItemStack townIcon = HeadUtils.getTownIconWithInformations(townUUID);
+                GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
+                    event.setCancelled(true);
+                    String message = "Guerre retirée à : " + townIcon.getItemMeta().getDisplayName();
+                    player.sendMessage(message);
+                    TownDataStorage.getTown(playerTown.getTownId()).removeTownRelations(relation,townUUID);
+                    OpenTownRelation(player,relation);
+                });
+                gui.setItem(i, _town);
+                i = i+1;
+            }
+            TownDataStorage.getTown(playerTown.getTownId()).removeTownRelations(relation,player.getUniqueId().toString());
+            _decorativeGlass = ItemBuilder.from(new ItemStack(Material.RED_STAINED_GLASS_PANE)).asGuiItem(event -> {
+                event.setCancelled(true);
+            });
+        }
+
+
+
+
 
 
         ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
@@ -573,6 +615,14 @@ public class GuiManager2 {
 
         gui.setItem(4,7,_next);
         gui.setItem(4,8,_previous);
+
+        gui.setItem(4,2, _decorativeGlass);
+        gui.setItem(4,3, _decorativeGlass);
+        gui.setItem(4,4, _decorativeGlass);
+        gui.setItem(4,5, _decorativeGlass);
+        gui.setItem(4,6, _decorativeGlass);
+        gui.setItem(4,9, _decorativeGlass);
+
 
         gui.open(player);
     }

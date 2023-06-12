@@ -1,13 +1,11 @@
 package org.tan.towns_and_nations.DataClass;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.tan.towns_and_nations.utils.TownDataStorage;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class TownDataClass {
 
@@ -31,7 +29,7 @@ public class TownDataClass {
         this.Description = "Description";
         this.open = false;
         this.DateCreated = new Date().toString();
-        this.Overlord = null;
+        this.Overlord = Bukkit.getPlayer(UUID.fromString(uuidLeader)).toString();
         this.townIconMaterialCode = null;
 
         ArrayList<String> list = new ArrayList<>();
@@ -129,9 +127,6 @@ public class TownDataClass {
         return relations;
     }
 
-    public void addRelations(){
-        this.relations = new TownRelationClass();
-    }
     public void addTownRelations(String relation,String townId){
         this.relations.addRelation(relation,townId);
     }

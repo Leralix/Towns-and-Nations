@@ -83,6 +83,31 @@ public class HeadUtils {
 
     }
 
+    public static ItemStack getTownIconWithInformations(String TownId){
+
+        if(TownId == null){
+            System.out.println("Erreur critique: Fonction accesible seulement a un joueur qui a une ville apellée par un joueur qui n'en possède pas");
+            return null;
+        }
+
+        TownDataClass town = TownDataStorage.getTown(TownId);
+        ItemStack icon = town.getTownIconItemStack();
+
+        if (icon == null){
+            icon =  HeadUtils.getPlayerHead(town.getTownName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
+        }
+        ItemMeta meta = icon.getItemMeta();
+        List<String> lore = new ArrayList<>();
+
+        lore.add("Baron: " + town.getOverlord());
+        lore.add("Membres: " + town.getPlayerList().size());
+        lore.add("Chunks: 0");
+        meta.setLore(lore);
+        icon.setItemMeta(meta);
+        return icon;
+
+    }
+
     public static ItemStack getCustomLoreItem(Material itemMaterial, String itemName, String itemLoreOneLine){
         ItemStack item = new ItemStack(itemMaterial);
         ItemMeta meta = item.getItemMeta();

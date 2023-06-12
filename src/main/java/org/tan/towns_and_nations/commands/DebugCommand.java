@@ -28,10 +28,7 @@ import org.tan.towns_and_nations.utils.PlayerStatStorage;
 import org.tan.towns_and_nations.utils.TownDataStorage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DebugCommand implements CommandExecutor, TabExecutor {
 
@@ -57,20 +54,15 @@ public class DebugCommand implements CommandExecutor, TabExecutor {
             switch (args[0]) {
 
                 case "newgui":
-
                     GuiManager2.openMainMenu(player);
-
-
-
-
-                case "reloadtown":
-                    HashMap<String,TownDataClass> towns =  TownDataStorage.getTownList();
-                    for (Map.Entry<String, TownDataClass> entry : towns.entrySet()) {
-                        String cle = entry.getKey();
-                        TownDataClass town = entry.getValue();
-
-                        town.addRelations();
+                    break;
+                case "addnewfeatures":
+                    LinkedHashMap<String, TownDataClass> towns  = TownDataStorage.getTownList();
+                    for (Map.Entry<String, TownDataClass> e : towns.entrySet()) {
+                        TownDataClass value = e.getValue();
+                        value.setOverlord(Bukkit.getServer().getOfflinePlayer(UUID.fromString(value.getUuidLeader())).getName());
                     }
+                    player.sendMessage("Commande executée");
                     break;
 
                 case "addmoney":
