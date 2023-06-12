@@ -17,12 +17,14 @@ public class ClaimListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         Chunk chunk = event.getBlock().getChunk();
         Player player = event.getPlayer();
-
+        /*
         if (chunkClaimer.isChunkClaimed(chunk)) {
             if (!chunkClaimer.isOwner(chunk, player)) {
                 player.sendMessage("Ce chunk a été claim, vous ne pouvez pas casser de blocs ici.");
                 event.setCancelled(true);
             }
         }
+
+         */
     }
 }

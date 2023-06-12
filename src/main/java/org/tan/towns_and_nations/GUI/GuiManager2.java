@@ -16,13 +16,12 @@ import org.tan.towns_and_nations.utils.PlayerChatListenerStorage;
 import org.tan.towns_and_nations.utils.PlayerStatStorage;
 import org.tan.towns_and_nations.utils.TownDataStorage;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
 import static org.tan.towns_and_nations.utils.HeadUtils.getCustomLoreItem;
 import static org.tan.towns_and_nations.utils.HeadUtils.getTownIcon;
+import static org.tan.towns_and_nations.utils.TownDataStorage.getTownList;
 
 
 public class GuiManager2 {
@@ -191,7 +190,7 @@ public class GuiManager2 {
                 .create();
 
 
-        HashMap<String, TownDataClass> townDataStorage = TownDataStorage.getTownList();
+        HashMap<String, TownDataClass> townDataStorage = getTownList();
 
         int i = 0;
         for (Map.Entry<String, TownDataClass> entry : townDataStorage.entrySet()) {
@@ -212,7 +211,7 @@ public class GuiManager2 {
         }
         gui.open(player);
     }
-
+    //Done
     public static void OpenTownMenuHaveTown(Player player) {
 
         String name = "Town";
@@ -251,7 +250,7 @@ public class GuiManager2 {
         });
         GuiItem _relationIcon = ItemBuilder.from(RelationIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownRelation(player);
+            OpenTownRelations(player);
         });
         GuiItem _levelIcon = ItemBuilder.from(LevelIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -314,7 +313,7 @@ public class GuiManager2 {
             OpenTownMenuHaveTown(player);
         });
 
-        gui.setItem(i, _getBackArrow);
+        gui.setItem(3,1, _getBackArrow);
 
         gui.open(player);
 
@@ -377,7 +376,7 @@ public class GuiManager2 {
         gui.open(player);
     }
 
-    public static void OpenTownRelation(Player player) {
+    public static void OpenTownRelations(Player player) {
 
         String name = "Town";
         int nRow = 3;
@@ -399,19 +398,21 @@ public class GuiManager2 {
 
         GuiItem _warCategory = ItemBuilder.from(warCategory).asGuiItem(event -> {
             event.setCancelled(true);
-            openMainMenu(player);
+            OpenTownRelation(player,"war");
         });
         GuiItem _EmbargoCategory = ItemBuilder.from(EmbargoCategory).asGuiItem(event -> {
             event.setCancelled(true);
-            openMainMenu(player);
+            OpenTownRelation(player,"embargo");
+
         });
         GuiItem _NAPCategory = ItemBuilder.from(NAPCategory).asGuiItem(event -> {
             event.setCancelled(true);
-            openMainMenu(player);
+            OpenTownRelation(player,"nap");
+
         });
         GuiItem _AllianceCategory = ItemBuilder.from(AllianceCategory).asGuiItem(event -> {
             event.setCancelled(true);
-            openMainMenu(player);
+            OpenTownRelation(player,"alliance");
         });
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
@@ -427,6 +428,155 @@ public class GuiManager2 {
 
         gui.open(player);
     }
+
+    public static void OpenTownRelation(Player player, String relation) {
+
+        String name = "Town - Relation";
+        int nRow = 4;
+        PlayerDataClass playerStat = PlayerStatStorage.findStatUUID(player.getUniqueId().toString());
+
+        Gui gui = Gui.gui()
+                .title(Component.text(name))
+                .type(GuiType.CHEST)
+                .rows(nRow)
+                .create();
+
+
+        TownDataClass playerTown = TownDataStorage.getTown(playerStat.getTownId());
+
+        ArrayList<String> TownListUUID = playerTown.getRelations().getOne(relation);
+        player.sendMessage(relation);
+        player.sendMessage(TownListUUID.toString());
+        player.sendMessage(playerTown.getRelations().getAll().toString());
+        int i = 0;
+        for(String townUUID : TownListUUID){
+            ItemStack townIcon = HeadUtils.getTownIcon(townUUID);
+
+            GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
+                event.setCancelled(true);
+            });
+            gui.setItem(i, _town);
+
+            i = i+1;
+        }
+
+
+        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+
+        ItemStack addTownButton = HeadUtils.makeSkull("add town","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
+        ItemStack removeTownButton = HeadUtils.makeSkull("remove town","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=");
+
+        ItemStack nextPageButton = HeadUtils.makeSkull("next page","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0=");
+        ItemStack previousPageButton = HeadUtils.makeSkull("previous page","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19");
+
+        GuiItem _back = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownRelations(player);
+        });
+        GuiItem _add = ItemBuilder.from(addTownButton).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownRelationModification(player,"add",relation);
+        });
+        GuiItem _remove = ItemBuilder.from(removeTownButton).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownRelationModification(player,"remove",relation);
+        });
+        GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+        GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+
+        gui.setItem(4,1, _back);
+        gui.setItem(4,3,_add);
+        gui.setItem(4,5,_remove);
+
+        gui.setItem(4,7,_next);
+        gui.setItem(4,8,_previous);
+
+        gui.open(player);
+    }
+
+    public static void OpenTownRelationModification(Player player, String action, String relation) {
+
+        String name = "Town - Relation";
+        int nRow = 4;
+        PlayerDataClass playerStat = PlayerStatStorage.findStatUUID(player.getUniqueId().toString());
+
+        Gui gui = Gui.gui()
+                .title(Component.text(name))
+                .type(GuiType.CHEST)
+                .rows(nRow)
+                .create();
+
+
+        TownDataClass playerTown = TownDataStorage.getTown(PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).getTownId());
+
+        LinkedHashMap<String, TownDataClass> allTown = getTownList();
+        ArrayList<String> TownListUUID = playerTown.getRelations().getOne(relation);
+
+        List<String> townNoRelation = new ArrayList<>(allTown.keySet());
+
+        // Retirer tous les éléments de la seconde liste de la première
+        townNoRelation.removeAll(TownListUUID);
+        townNoRelation.remove(playerTown.getTownId());
+
+        int i = 0;
+        for(String townUUID : townNoRelation){
+            ItemStack townIcon = HeadUtils.getTownIcon(townUUID);
+
+            GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
+                event.setCancelled(true);
+
+                String message = "Guerre déclarée à : " + townIcon.getItemMeta().getDisplayName();
+                player.sendMessage(message);
+
+                if(action.equals("add")){
+                    player.sendMessage("test");
+                    player.sendMessage(TownDataStorage.getTown(playerTown.getTownId()).toString());
+                    player.sendMessage("test");
+                    TownDataStorage.getTown(playerTown.getTownId()).addTownRelations(relation,townUUID);
+                }
+                else
+                    TownDataStorage.getTown(playerTown.getTownId()).removeTownRelations(relation,player.getUniqueId().toString());
+
+
+
+                OpenTownRelation(player,relation);
+            });
+
+            gui.setItem(i, _town);
+
+
+            i = i+1;
+        }
+
+
+        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+
+        ItemStack nextPageButton = HeadUtils.makeSkull("next page","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0=");
+        ItemStack previousPageButton = HeadUtils.makeSkull("previous page","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19");
+
+        GuiItem _back = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownRelation(player,relation);
+        });
+        GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+        GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+
+        gui.setItem(4,1, _back);
+
+        gui.setItem(4,7,_next);
+        gui.setItem(4,8,_previous);
+
+        gui.open(player);
+    }
+
 
 
 }

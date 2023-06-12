@@ -2,6 +2,8 @@ package org.tan.towns_and_nations.utils;
 
 import org.bukkit.Chunk;
 
+import java.util.Objects;
+
 class ClaimedChunk {
     private final int x, z;
     private final String worldUUID, townUUID;

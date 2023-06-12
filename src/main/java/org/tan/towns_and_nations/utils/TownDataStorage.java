@@ -16,7 +16,6 @@ public class TownDataStorage {
     public static LinkedHashMap<String, TownDataClass> townDataMap = new LinkedHashMap<>();
 
     public static int newTownId = 1;
-
     public static void newTown(String townName, Player leader){
         String townId = "T"+newTownId;
         TownDataClass newTown = new TownDataClass( townId, townName, leader.getUniqueId().toString());
@@ -27,7 +26,6 @@ public class TownDataStorage {
         newTownId = newTownId+1;
 
     }
-
     public static void removeTown(String TownId){
 
         TownDataClass townDataClass = townDataMap.get(TownId);
@@ -40,16 +38,12 @@ public class TownDataStorage {
         townDataMap.remove(TownId);
         saveStats();
     }
-
     public static LinkedHashMap<String, TownDataClass> getTownList(){
         return townDataMap;
     }
-
     public static TownDataClass getTown(String townId){
         return townDataMap.get(townId);
     }
-
-
     public static void loadStats() {
 
         Gson gson = new Gson();

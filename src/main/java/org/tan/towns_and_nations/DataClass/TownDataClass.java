@@ -37,6 +37,7 @@ public class TownDataClass {
         ArrayList<String> list = new ArrayList<>();
         list.add(uuidLeader);
         this.townPlayerListId.add(uuidLeader);
+
         this.relations = new TownRelationClass();
     }
 
@@ -129,6 +130,13 @@ public class TownDataClass {
     }
 
     public void addRelations(){
-        relations = new TownRelationClass();
+        this.relations = new TownRelationClass();
+    }
+    public void addTownRelations(String relation,String townId){
+        this.relations.addRelation(relation,townId);
+    }
+
+    public void removeTownRelations(String relation, String townId) {
+        this.relations.removeRelation(relation,townId);
     }
 }

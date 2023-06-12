@@ -7,6 +7,11 @@ shadowJar {
     relocate("dev.triumphteam.gui", "org.tan.towns_and_nations.gui")
 }
 
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 
 group = 'org.tan'
 version = '1.0-SNAPSHOT'

@@ -11,16 +11,14 @@ public class TownRelationClass {
 
 
     public TownRelationClass(){
-        ArrayList<String> emptyList = new ArrayList<>();
-        this.townRelations.put("alliance",emptyList);
-        this.townRelations.put("nap",emptyList);
-        this.townRelations.put("embargo",emptyList);
-        this.townRelations.put("war",emptyList);
+        this.townRelations.put("alliance",new ArrayList<>());
+        this.townRelations.put("nap",new ArrayList<>());
+        this.townRelations.put("embargo",new ArrayList<>());
+        this.townRelations.put("war",new ArrayList<>());
     }
 
     public void addRelation(String relationName, String townID){
-        townRelations.get(relationName).add(townID);
-
+        this.townRelations.get(relationName).add(townID);
     }
 
     public void removeRelation(String relationName, String townID){
@@ -34,6 +32,8 @@ public class TownRelationClass {
     public ArrayList<String> getOne(String relation){
         return this.townRelations.get(relation);
     }
+
+
 
 
 
