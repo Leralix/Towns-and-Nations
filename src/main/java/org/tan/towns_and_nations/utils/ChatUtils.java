@@ -17,4 +17,8 @@ public class ChatUtils {
         // Send it!
         player.spigot().sendMessage(component);
     }
+
+    public static String getTANString(){
+        return org.bukkit.ChatColor.GOLD + "[TAN]" + org.bukkit.ChatColor.WHITE;
+    }
 }

@@ -1,10 +1,9 @@
-package org.tan.towns_and_nations.utils;
+package org.tan.towns_and_nations.storage;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.entity.Player;
-import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.TownsAndNations;
 
@@ -20,7 +19,7 @@ public class TownDataStorage {
     public static void newTown(String townName, Player leader){
         String townId = "T"+newTownId;
         TownDataClass newTown = new TownDataClass( townId, townName, leader.getUniqueId().toString());
-        PlayerStatStorage.findStatUUID(leader.getUniqueId().toString()).setTownId(townId);
+        PlayerStatStorage.getStatUUID(leader.getUniqueId().toString()).setTownId(townId);
         townDataMap.put(townId,newTown);
 
         saveStats();
@@ -33,7 +32,7 @@ public class TownDataStorage {
 
          ArrayList<String> array = townDataClass.getPlayerList();
             for(String playerUUID : array) {
-                PlayerStatStorage.findStatUUID(playerUUID).setTownId(null);
+                PlayerStatStorage.getStatUUID(playerUUID).setTownId(null);
             }
 
         townDataMap.remove(TownId);

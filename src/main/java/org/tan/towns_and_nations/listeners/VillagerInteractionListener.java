@@ -7,8 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.tan.towns_and_nations.utils.PlayerStatStorage;
-import org.tan.towns_and_nations.utils.TownDataStorage;
+import org.tan.towns_and_nations.storage.PlayerStatStorage;
 
 public class VillagerInteractionListener implements Listener {
 
@@ -33,7 +32,7 @@ public class VillagerInteractionListener implements Listener {
                 if(item.getType().toString().equals("EMERALD") && item.getItemMeta().getDisplayName().equals("Rare Stone") && item.getItemMeta().getCustomModelData() == 101){
                     player.sendMessage("You sold " + item.getAmount() + " emeralds for " + item.getAmount() + " $");
                     player.getInventory().setItemInMainHand(new ItemStack( Material.AIR,1));
-                    PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).addToBalance(item.getAmount());
+                    PlayerStatStorage.getStatUUID(player.getUniqueId().toString()).addToBalance(item.getAmount());
                     return;
                 }
 

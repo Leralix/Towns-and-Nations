@@ -7,21 +7,19 @@ import dev.triumphteam.gui.guis.GuiItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.utils.HeadUtils;
-import org.tan.towns_and_nations.utils.PlayerChatListenerStorage;
-import org.tan.towns_and_nations.utils.PlayerStatStorage;
-import org.tan.towns_and_nations.utils.TownDataStorage;
+import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
+import org.tan.towns_and_nations.storage.PlayerStatStorage;
+import org.tan.towns_and_nations.storage.TownDataStorage;
 
-import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 import static org.tan.towns_and_nations.utils.HeadUtils.getCustomLoreItem;
 import static org.tan.towns_and_nations.utils.HeadUtils.getTownIcon;
-import static org.tan.towns_and_nations.utils.TownDataStorage.getTownList;
+import static org.tan.towns_and_nations.storage.TownDataStorage.getTownList;
 
 
 public class GuiManager2 {
@@ -56,7 +54,7 @@ public class GuiManager2 {
         });
         GuiItem Town = ItemBuilder.from(TownHead).asGuiItem(event -> {
             event.setCancelled(true);
-            if(PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).haveTown()){
+            if(PlayerStatStorage.getStatUUID(player.getUniqueId().toString()).haveTown()){
                 OpenTownMenuHaveTown(player);
             }
             else{
@@ -93,7 +91,7 @@ public class GuiManager2 {
 
 
         ItemStack PlayerHead = HeadUtils.getPlayerHead("Votre Profil",player);
-        ItemStack GoldPurse = getCustomLoreItem(Material.GOLD_NUGGET, "Balance","You have " + PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).getBalance() + " gold");
+        ItemStack GoldPurse = getCustomLoreItem(Material.GOLD_NUGGET, "Balance","You have " + PlayerStatStorage.getStatUUID(player.getUniqueId().toString()).getBalance() + " gold");
         ItemStack killList = getCustomLoreItem(Material.IRON_SWORD, "Kills","You killed " + player.getStatistic(Statistic.MOB_KILLS) + " mobs");
         int time = player.getStatistic(Statistic.PLAY_ONE_MINUTE) /20 / 86400;
         ItemStack lastDeath = getCustomLoreItem(Material.SKELETON_SKULL, "Time Alive","You survived for " + time + " days");
@@ -152,7 +150,7 @@ public class GuiManager2 {
 
         GuiItem _create = ItemBuilder.from(createNewland).asGuiItem(event -> {
             event.setCancelled(true);
-            PlayerDataClass playerStat = PlayerStatStorage.findStatUUID(player.getUniqueId().toString());
+            PlayerDataClass playerStat = PlayerStatStorage.getStatUUID(player.getUniqueId().toString());
             if (playerStat.getBalance() < 100) {
                 player.sendMessage("You don't have enough money");
             } else {
@@ -224,7 +222,7 @@ public class GuiManager2 {
                 .create();
 
 
-        ItemStack TownIcon = getTownIcon(PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).getTownId());
+        ItemStack TownIcon = getTownIcon(PlayerStatStorage.getStatUUID(player.getUniqueId().toString()).getTownId());
         ItemStack GoldIcon = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
         ItemStack SkullIcon = HeadUtils.makeSkull("Members","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Q0ZDQ5NmIxZGEwNzUzNmM5NGMxMzEyNGE1ODMzZWJlMGM1MzgyYzhhMzM2YWFkODQ2YzY4MWEyOGQ5MzU2MyJ9fX0=");
         ItemStack ClaimIcon = HeadUtils.makeSkull("Claims","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
@@ -290,7 +288,7 @@ public class GuiManager2 {
                 .create();
 
 
-        TownDataClass town = TownDataStorage.getTown(PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).getTownId());
+        TownDataClass town = TownDataStorage.getTown(PlayerStatStorage.getStatUUID(player.getUniqueId().toString()).getTownId());
         ArrayList<String> players = town.getPlayerList();
 
         int i = 0;
@@ -323,7 +321,7 @@ public class GuiManager2 {
 
         String name = "Town";
         int nRow = 3;
-        PlayerDataClass playerStat = PlayerStatStorage.findStatUUID(player.getUniqueId().toString());
+        PlayerDataClass playerStat = PlayerStatStorage.getStatUUID(player.getUniqueId().toString());
 
         Gui gui = Gui.gui()
                 .title(Component.text(name))
@@ -332,9 +330,9 @@ public class GuiManager2 {
                 .create();
 
 
-        ItemStack TownIcon = getTownIcon(PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).getTownId());
-        ItemStack leaveTown = getCustomLoreItem(Material.BARRIER, "Leave Town", "Quit the town \"" + TownDataStorage.getTown(PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).getTownId()).getTownName() + "\" ?");
-        ItemStack deleteTown = getCustomLoreItem(Material.BARRIER, "Delete Town", "Delete the town \"" + TownDataStorage.getTown(PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).getTownId()).getTownName() + "\" ?");
+        ItemStack TownIcon = getTownIcon(PlayerStatStorage.getStatUUID(player.getUniqueId().toString()).getTownId());
+        ItemStack leaveTown = getCustomLoreItem(Material.BARRIER, "Leave Town", "Quit the town \"" + TownDataStorage.getTown(PlayerStatStorage.getStatUUID(player.getUniqueId().toString()).getTownId()).getTownName() + "\" ?");
+        ItemStack deleteTown = getCustomLoreItem(Material.BARRIER, "Delete Town", "Delete the town \"" + TownDataStorage.getTown(PlayerStatStorage.getStatUUID(player.getUniqueId().toString()).getTownId()).getTownName() + "\" ?");
         ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
 
         GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {
@@ -380,7 +378,7 @@ public class GuiManager2 {
 
         String name = "Town";
         int nRow = 3;
-        PlayerDataClass playerStat = PlayerStatStorage.findStatUUID(player.getUniqueId().toString());
+        PlayerDataClass playerStat = PlayerStatStorage.getStatUUID(player.getUniqueId().toString());
 
         Gui gui = Gui.gui()
                 .title(Component.text(name))
@@ -433,7 +431,7 @@ public class GuiManager2 {
 
         String name = "Town - Relation";
         int nRow = 4;
-        PlayerDataClass playerStat = PlayerStatStorage.findStatUUID(player.getUniqueId().toString());
+        PlayerDataClass playerStat = PlayerStatStorage.getStatUUID(player.getUniqueId().toString());
 
         Gui gui = Gui.gui()
                 .title(Component.text(name))
@@ -502,7 +500,7 @@ public class GuiManager2 {
 
         String name = "Town - Relation";
         int nRow = 4;
-        PlayerDataClass playerStat = PlayerStatStorage.findStatUUID(player.getUniqueId().toString());
+        PlayerDataClass playerStat = PlayerStatStorage.getStatUUID(player.getUniqueId().toString());
 
         Gui gui = Gui.gui()
                 .title(Component.text(name))
@@ -511,7 +509,7 @@ public class GuiManager2 {
                 .create();
 
 
-        TownDataClass playerTown = TownDataStorage.getTown(PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).getTownId());
+        TownDataClass playerTown = TownDataStorage.getTown(PlayerStatStorage.getStatUUID(player.getUniqueId().toString()).getTownId());
 
         LinkedHashMap<String, TownDataClass> allTown = getTownList();
         ArrayList<String> TownListUUID = playerTown.getRelations().getOne(relation);

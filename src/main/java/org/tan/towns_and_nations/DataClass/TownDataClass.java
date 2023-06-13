@@ -2,12 +2,10 @@ package org.tan.towns_and_nations.DataClass;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.tan.towns_and_nations.utils.TownDataStorage;
+import org.tan.towns_and_nations.storage.TownDataStorage;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 public class TownDataClass {
 

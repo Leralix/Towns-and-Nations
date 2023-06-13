@@ -3,9 +3,9 @@ package org.tan.towns_and_nations.commands.subcommands;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.commands.SubCommand;
-import org.tan.towns_and_nations.utils.PlayerStatStorage;
-import org.tan.towns_and_nations.utils.TownDataStorage;
-import org.tan.towns_and_nations.utils.TownInviteDataStorage;
+import org.tan.towns_and_nations.storage.PlayerStatStorage;
+import org.tan.towns_and_nations.storage.TownDataStorage;
+import org.tan.towns_and_nations.storage.TownInviteDataStorage;
 
 import java.util.ArrayList;
 
@@ -48,7 +48,7 @@ public class JoinTownCommand extends SubCommand {
 
                 if(town.equals(townID)){
                     TownDataStorage.getTown(townID).addPlayer(player.getUniqueId().toString());
-                    PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).setTownId(townID);
+                    PlayerStatStorage.getStatUUID(player.getUniqueId().toString()).setTownId(townID);
                     player.sendMessage("Vous avez rejoins la ville");
 
 

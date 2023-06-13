@@ -4,7 +4,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
@@ -13,12 +12,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
-import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.GUI.GuiManager;
 import org.tan.towns_and_nations.TownsAndNations;
-import org.tan.towns_and_nations.utils.PlayerChatListenerStorage;
-import org.tan.towns_and_nations.utils.PlayerStatStorage;
-import org.tan.towns_and_nations.utils.TownDataStorage;
+import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
+import org.tan.towns_and_nations.storage.PlayerStatStorage;
+import org.tan.towns_and_nations.storage.TownDataStorage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +38,7 @@ public class GuiListener implements Listener {
         String itemName = ChatColor.stripColor(itemStack.getItemMeta().getDisplayName());
         Material itemType = itemStack.getType();
         Player player = (Player) event.getWhoClicked();
-        PlayerDataClass playerStat = PlayerStatStorage.findStatUUID(player.getUniqueId().toString());
+        PlayerDataClass playerStat = PlayerStatStorage.getStatUUID(player.getUniqueId().toString());
         Logger logger = TownsAndNations.getPluginLogger();
 
         boolean back = itemType.equals(Material.ARROW) && itemName.equals("Back");
@@ -153,7 +151,6 @@ public class GuiListener implements Listener {
             for (String rel : relations) {
                 commandDict.get(act).put(rel, () -> {
                     // Commande spécifique pour l'action et la relation actuelles
-                    System.out.println("Commande : " + act + " " + rel);
                 });
             }
         }
@@ -161,8 +158,6 @@ public class GuiListener implements Listener {
         // Exécution de la commande correspondant aux métadonnées
         if (commandDict.containsKey(action) && commandDict.get(action).containsKey(relation)) {
             commandDict.get(action).get(relation).run();
-        } else {
-            System.out.println("Combinaison invalide !");
         }
 
     }
