@@ -48,7 +48,7 @@ public class JoinTownCommand extends SubCommand {
 
                 if(town.equals(townID)){
                     TownDataStorage.getTown(townID).addPlayer(player.getUniqueId().toString());
-                    PlayerStatStorage.getStatUUID(player.getUniqueId().toString()).setTownId(townID);
+                    PlayerStatStorage.getStat(player.getUniqueId().toString()).setTownId(townID);
                     player.sendMessage("Vous avez rejoins la ville");
 
 

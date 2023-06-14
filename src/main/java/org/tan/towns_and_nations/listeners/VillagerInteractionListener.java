@@ -32,7 +32,7 @@ public class VillagerInteractionListener implements Listener {
                 if(item.getType().toString().equals("EMERALD") && item.getItemMeta().getDisplayName().equals("Rare Stone") && item.getItemMeta().getCustomModelData() == 101){
                     player.sendMessage("You sold " + item.getAmount() + " emeralds for " + item.getAmount() + " $");
                     player.getInventory().setItemInMainHand(new ItemStack( Material.AIR,1));
-                    PlayerStatStorage.getStatUUID(player.getUniqueId().toString()).addToBalance(item.getAmount());
+                    PlayerStatStorage.getStat(player.getUniqueId().toString()).addToBalance(item.getAmount());
                     return;
                 }
 

@@ -38,7 +38,7 @@ public class GuiListener implements Listener {
         String itemName = ChatColor.stripColor(itemStack.getItemMeta().getDisplayName());
         Material itemType = itemStack.getType();
         Player player = (Player) event.getWhoClicked();
-        PlayerDataClass playerStat = PlayerStatStorage.getStatUUID(player.getUniqueId().toString());
+        PlayerDataClass playerStat = PlayerStatStorage.getStat(player.getUniqueId().toString());
         Logger logger = TownsAndNations.getPluginLogger();
 
         boolean back = itemType.equals(Material.ARROW) && itemName.equals("Back");

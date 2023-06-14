@@ -26,7 +26,7 @@ public class ChatListener implements Listener {
             Bukkit.broadcastMessage(ChatColor.GOLD + "[TAN]" + ChatColor.YELLOW + player.getName() + ChatColor.WHITE + " has created his city: " + ChatColor.YELLOW + "" + ChatColor.BOLD + townName);
 
             PlayerChatListenerStorage.removePlayer(player);
-            PlayerDataClass sender = PlayerStatStorage.getStatUUID(player.getUniqueId().toString());
+            PlayerDataClass sender = PlayerStatStorage.getStat(player.getUniqueId().toString());
             sender.removeFromBalance(100);
             TownDataStorage.newTown(townName,player);
 

@@ -36,8 +36,8 @@ public class PayCommand extends SubCommand  {
             player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +  " Correct Syntax: " + getSyntax());
         }
         else if(args.length == 3){
-            PlayerDataClass receiver = PlayerStatStorage.getStatUUID(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
-            PlayerDataClass sender = PlayerStatStorage.getStatUUID(player.getUniqueId().toString());
+            PlayerDataClass receiver = PlayerStatStorage.getStat(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
+            PlayerDataClass sender = PlayerStatStorage.getStat(player.getUniqueId().toString());
             int amount = 0;
 
             try{

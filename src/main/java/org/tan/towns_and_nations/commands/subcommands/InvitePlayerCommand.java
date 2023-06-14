@@ -41,7 +41,7 @@ public class InvitePlayerCommand extends SubCommand {
                 player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +" Invalid name, or Player isn't connected");
             }
             else{
-                TownDataClass town = TownDataStorage.getTown(PlayerStatStorage.getStatUUID(player.getUniqueId().toString()).getTownId());
+                TownDataClass town = TownDataStorage.getTown(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());
                 TownInviteDataStorage.addInvitation(invite.getUniqueId().toString(),town.getTownId() );
 
                 player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE + " Invitation sent to " + ChatColor.YELLOW + invite.getName());

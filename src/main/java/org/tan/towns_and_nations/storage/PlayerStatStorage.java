@@ -8,6 +8,7 @@ import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.UUID;
 
 public class PlayerStatStorage {
 
@@ -30,14 +31,25 @@ public class PlayerStatStorage {
         saveStats();
     }
 
-    public static PlayerDataClass getStatUUID(String uuid){
+    public static PlayerDataClass getStat(String id){
         for (PlayerDataClass stat : stats) {
-            if (stat.getUuid().equalsIgnoreCase(uuid)) {
+            if (stat.getUuid().equalsIgnoreCase(id)) {
                 return stat;
             }
         }
         return null;
     }
+
+    public static PlayerDataClass getStat(Player player){
+        String id = player.getUniqueId().toString();
+        for (PlayerDataClass stat : stats) {
+            if (stat.getUuid().equalsIgnoreCase(id)) {
+                return stat;
+            }
+        }
+        return null;
+    }
+
 
     public static PlayerDataClass getStatUsername(String username){
         for (PlayerDataClass stat : stats) {

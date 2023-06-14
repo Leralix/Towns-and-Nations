@@ -19,7 +19,7 @@ public class TownDataStorage {
     public static void newTown(String townName, Player leader){
         String townId = "T"+newTownId;
         TownDataClass newTown = new TownDataClass( townId, townName, leader.getUniqueId().toString());
-        PlayerStatStorage.getStatUUID(leader.getUniqueId().toString()).setTownId(townId);
+        PlayerStatStorage.getStat(leader.getUniqueId().toString()).setTownId(townId);
         townDataMap.put(townId,newTown);
 
         saveStats();
@@ -32,7 +32,7 @@ public class TownDataStorage {
 
          ArrayList<String> array = townDataClass.getPlayerList();
             for(String playerUUID : array) {
-                PlayerStatStorage.getStatUUID(playerUUID).setTownId(null);
+                PlayerStatStorage.getStat(playerUUID).setTownId(null);
             }
 
         townDataMap.remove(TownId);

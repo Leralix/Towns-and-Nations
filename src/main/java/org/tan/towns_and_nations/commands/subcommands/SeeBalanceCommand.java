@@ -28,7 +28,7 @@ public class SeeBalanceCommand extends SubCommand  {
     @Override
     public void perform(Player player, String[] args){
         if (args.length == 1){
-            player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +     "Your Balance: " + ChatColor.YELLOW + PlayerStatStorage.getStatUUID(player.getUniqueId().toString()).getBalance() + "$");
+            player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +     "Your Balance: " + ChatColor.YELLOW + PlayerStatStorage.getStat(player.getUniqueId().toString()).getBalance() + "$");
         }else if(args.length > 1){
             player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +  " Too many arguments");
             player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +  " Correct Syntax: " + getSyntax());

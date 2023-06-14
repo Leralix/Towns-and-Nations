@@ -4,6 +4,8 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 public class ChatUtils {
 
@@ -18,7 +20,8 @@ public class ChatUtils {
         player.spigot().sendMessage(component);
     }
 
-    public static String getTANString(){
+    @Contract(pure = true)
+    public static @NotNull String getTANString(){
         return org.bukkit.ChatColor.GOLD + "[TAN]" + org.bukkit.ChatColor.WHITE;
     }
 }

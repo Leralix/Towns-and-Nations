@@ -3,7 +3,6 @@ package org.tan.towns_and_nations.commands.subcommands;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-import org.tan.towns_and_nations.DataClass.ClaimedChunkDataClass;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.commands.SubCommand;
@@ -39,7 +38,7 @@ public class ClaimCommand extends SubCommand {
             return;
         }
 
-        PlayerDataClass playerStat = PlayerStatStorage.getStatUUID(player.getUniqueId().toString());
+        PlayerDataClass playerStat = PlayerStatStorage.getStat(player.getUniqueId().toString());
         if(!playerStat.haveTown()){
             player.sendMessage(getTANString() + " You do not have a Town");
         }

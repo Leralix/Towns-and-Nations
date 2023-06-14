@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class DebugCommand implements CommandExecutor, TabExecutor {
 
-    private String[] commandes = {"playerstats", "savestats", "itemtab", "getplayerstorage", "gettownstats", "spawnvillager", "newgui"};
+    private final String[] commandes = {"playerstats", "savestats", "itemtab", "getplayerstorage", "gettownstats", "spawnvillager", "newgui"};
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
@@ -45,7 +45,7 @@ public class DebugCommand implements CommandExecutor, TabExecutor {
 
                 case "newgui":
 
-                    GuiManager2.openMainMenu(player);
+                    GuiManager2.OpenMainMenu(player);
 
 
 
@@ -64,7 +64,7 @@ public class DebugCommand implements CommandExecutor, TabExecutor {
                     if (args.length < 3) {
                         player.sendMessage("Not enough arguments");
                     } else if (args.length == 3) {
-                        PlayerDataClass target = PlayerStatStorage.getStatUUID(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
+                        PlayerDataClass target = PlayerStatStorage.getStat(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
                         int amount = 0;
                         try {
                             amount = Integer.parseInt(args[2]);

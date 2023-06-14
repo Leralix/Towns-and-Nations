@@ -18,7 +18,7 @@ public class OnPlayerFirstJoin implements Listener {
     public void onPlayerFirstJoin(PlayerJoinEvent event) throws IOException {
         Player player = event.getPlayer();
 
-        if (PlayerStatStorage.getStatUUID(player.getUniqueId().toString()) == null) {
+        if (PlayerStatStorage.getStat(player.getUniqueId().toString()) == null) {
 
             PlayerStatStorage.createPlayerDataClass(player);
 
