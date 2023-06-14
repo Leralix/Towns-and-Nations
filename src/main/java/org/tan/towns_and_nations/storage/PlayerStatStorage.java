@@ -1,4 +1,4 @@
-package org.tan.towns_and_nations.utils;
+package org.tan.towns_and_nations.storage;
 
 import com.google.gson.Gson;
 import org.bukkit.entity.Player;
@@ -31,16 +31,27 @@ public class PlayerStatStorage {
         saveStats();
     }
 
-    public static PlayerDataClass findStatUUID(String uuid){
+    public static PlayerDataClass getStat(String id){
         for (PlayerDataClass stat : stats) {
-            if (stat.getUuid().equalsIgnoreCase(uuid)) {
+            if (stat.getUuid().equalsIgnoreCase(id)) {
                 return stat;
             }
         }
         return null;
     }
 
-    public static PlayerDataClass findStatUsername(String username){
+    public static PlayerDataClass getStat(Player player){
+        String id = player.getUniqueId().toString();
+        for (PlayerDataClass stat : stats) {
+            if (stat.getUuid().equalsIgnoreCase(id)) {
+                return stat;
+            }
+        }
+        return null;
+    }
+
+
+    public static PlayerDataClass getStatUsername(String username){
         for (PlayerDataClass stat : stats) {
             if (stat.getPlayerName().equalsIgnoreCase(username)) {
                 return stat;

@@ -2,21 +2,16 @@ package org.tan.towns_and_nations;
 
 
 import net.luckperms.api.LuckPerms;
-import net.luckperms.api.node.Node;
-import net.luckperms.api.node.NodeBuilder;
-import net.luckperms.api.node.types.PermissionNode;
-import net.luckperms.api.model.user.User;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.tan.towns_and_nations.GUI.GuiManager2;
 import org.tan.towns_and_nations.commands.CommandManager;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.commands.DebugCommand;
 import org.tan.towns_and_nations.listeners.*;
-import org.tan.towns_and_nations.utils.PlayerStatStorage;
-import org.tan.towns_and_nations.utils.TownDataStorage;
+import org.tan.towns_and_nations.storage.PlayerStatStorage;
+import org.tan.towns_and_nations.storage.TownDataStorage;
 
 import java.io.IOException;
 import java.util.List;

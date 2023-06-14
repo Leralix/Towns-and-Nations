@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.commands.SubCommand;
-import org.tan.towns_and_nations.utils.PlayerStatStorage;
+import org.tan.towns_and_nations.storage.PlayerStatStorage;
 
 
 public class PayCommand extends SubCommand  {
@@ -36,8 +36,8 @@ public class PayCommand extends SubCommand  {
             player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +  " Correct Syntax: " + getSyntax());
         }
         else if(args.length == 3){
-            PlayerDataClass receiver = PlayerStatStorage.findStatUUID(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
-            PlayerDataClass sender = PlayerStatStorage.findStatUUID(player.getUniqueId().toString());
+            PlayerDataClass receiver = PlayerStatStorage.getStat(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
+            PlayerDataClass sender = PlayerStatStorage.getStat(player.getUniqueId().toString());
             int amount = 0;
 
             try{

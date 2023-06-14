@@ -4,12 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
-import org.tan.towns_and_nations.GUI.GuiManager;
 import org.tan.towns_and_nations.commands.SubCommand;
 import org.tan.towns_and_nations.utils.ChatUtils;
-import org.tan.towns_and_nations.utils.PlayerStatStorage;
-import org.tan.towns_and_nations.utils.TownDataStorage;
-import org.tan.towns_and_nations.utils.TownInviteDataStorage;
+import org.tan.towns_and_nations.storage.PlayerStatStorage;
+import org.tan.towns_and_nations.storage.TownDataStorage;
+import org.tan.towns_and_nations.storage.TownInviteDataStorage;
 
 public class InvitePlayerCommand extends SubCommand {
     @Override
@@ -27,7 +26,7 @@ public class InvitePlayerCommand extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/tan invite <playerList>";
+        return "/tan invite <playerName>";
     }
 
     @Override
@@ -42,7 +41,7 @@ public class InvitePlayerCommand extends SubCommand {
                 player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +" Invalid name, or Player isn't connected");
             }
             else{
-                TownDataClass town = TownDataStorage.getTown(PlayerStatStorage.findStatUUID(player.getUniqueId().toString()).getTownId());
+                TownDataClass town = TownDataStorage.getTown(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());
                 TownInviteDataStorage.addInvitation(invite.getUniqueId().toString(),town.getTownId() );
 
                 player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE + " Invitation sent to " + ChatColor.YELLOW + invite.getName());

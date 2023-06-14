@@ -2,10 +2,13 @@ package org.tan.towns_and_nations.DataClass;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.tan.towns_and_nations.utils.TownDataStorage;
+import org.tan.towns_and_nations.storage.TownDataStorage;
 
 import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class TownDataClass {
 
@@ -18,8 +21,8 @@ public class TownDataClass {
     private String Overlord;
     private String townIconMaterialCode;
     private final ArrayList<String> townPlayerListId = new ArrayList<String>();
-
     private TownRelationClass relations;
+    private ClaimedChunkSettings chunkSettings;
 
 
     public TownDataClass( String townId, String townName, String uuidLeader){
@@ -32,11 +35,10 @@ public class TownDataClass {
         this.Overlord = Bukkit.getPlayer(UUID.fromString(uuidLeader)).toString();
         this.townIconMaterialCode = null;
 
-        ArrayList<String> list = new ArrayList<>();
-        list.add(uuidLeader);
         this.townPlayerListId.add(uuidLeader);
 
         this.relations = new TownRelationClass();
+        this.chunkSettings = new ClaimedChunkSettings();
     }
 
     public String getTownId() {
@@ -103,11 +105,19 @@ public class TownDataClass {
             return new ItemStack(Material.getMaterial(this.townIconMaterialCode));
 
     }
+    public boolean isPlayerIn(Player player){
+        String uuid = player.getUniqueId().toString();
+        for (String townPlayerUUID : this.townPlayerListId) {
+            if(uuid.equals(townPlayerUUID)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void setTownIconMaterialCode(Material material) {
         this.townIconMaterialCode = material.name();
     }
-
 
     public void addPlayer(String playerUUID){
         townPlayerListId.add(playerUUID);
@@ -130,7 +140,6 @@ public class TownDataClass {
     public void addTownRelations(String relation,String townId){
         this.relations.addRelation(relation,townId);
     }
-
     public void removeTownRelations(String relation, String townId) {
         this.relations.removeRelation(relation,townId);
     }

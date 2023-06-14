@@ -1,13 +1,12 @@
 package org.tan.towns_and_nations.commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.commands.subcommands.*;
-import org.tan.towns_and_nations.utils.PlayerStatStorage;
+import org.tan.towns_and_nations.storage.PlayerStatStorage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,6 +21,8 @@ public class CommandManager implements CommandExecutor, TabExecutor {
         subcommands.add(new InvitePlayerCommand());
         subcommands.add(new JoinTownCommand());
 
+        subcommands.add(new ClaimCommand());
+        subcommands.add(new UnclaimCommand());
 
         subcommands.add(new SeeBalanceCommand());
         subcommands.add(new PayCommand());

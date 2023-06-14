@@ -8,6 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.tan.towns_and_nations.GUI.GuiManager;
+import org.tan.towns_and_nations.GUI.GuiManager2;
 import org.tan.towns_and_nations.commands.SubCommand;
 import com.mojang.authlib.GameProfile;
 
@@ -52,7 +53,7 @@ public class OpenGuiCommand extends SubCommand  {
     }
 
     private void getOpeningGui(Player player) {
-        GuiManager.OpenMainMenu(player);
+        GuiManager2.OpenMainMenu(player);
     }
 
 

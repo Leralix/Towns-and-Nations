@@ -1,4 +1,4 @@
-package org.tan.towns_and_nations.utils;
+package org.tan.towns_and_nations.storage;
 
 import org.bukkit.entity.Player;
 
