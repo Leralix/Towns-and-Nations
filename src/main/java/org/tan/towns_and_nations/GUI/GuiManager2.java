@@ -207,6 +207,13 @@ public class GuiManager2 {
             i++;
 
         }
+        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Quit", null);
+        GuiItem _back = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenMainMenu(player);
+        });
+        gui.setItem(3,1, _back);
+
         gui.open(player);
     }
     //Done

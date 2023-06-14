@@ -44,6 +44,9 @@ public class TownDataStorage {
     public static TownDataClass getTown(String townId){
         return townDataMap.get(townId);
     }
+    public static TownDataClass getTown(Player player){
+        return townDataMap.get(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());
+    }
     public static void loadStats() {
 
         Gson gson = new Gson();

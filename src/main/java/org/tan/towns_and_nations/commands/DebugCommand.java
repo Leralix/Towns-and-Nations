@@ -41,7 +41,7 @@ public class DebugCommand implements CommandExecutor, TabExecutor {
             switch (args[0]) {
 
                 case "newgui":
-                    GuiManager2.openMainMenu(player);
+                    GuiManager2.OpenMainMenu(player);
                     break;
                 case "addnewfeatures":
                     LinkedHashMap<String, TownDataClass> towns  = TownDataStorage.getTownList();

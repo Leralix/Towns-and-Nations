@@ -41,15 +41,18 @@ public class ClaimCommand extends SubCommand {
         PlayerDataClass playerStat = PlayerStatStorage.getStat(player.getUniqueId().toString());
         if(!playerStat.haveTown()){
             player.sendMessage(getTANString() + " You do not have a Town");
+            return;
         }
 
         TownDataClass townStat = TownDataStorage.getTown(playerStat.getTownId());
         if(!townStat.getUuidLeader().equals(playerStat.getUuid())){
             player.sendMessage(getTANString() + " You are not the leader of your town. For now, only the leader of a town can claim");
+            return;
         }
         Chunk chunk = player.getLocation().getChunk();
         if(ClaimedChunkStorage.isChunkClaimed(chunk)){
-            player.sendMessage(getTANString() + " This chunk is already claimed by: " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwner(chunk));
+            player.sendMessage(getTANString() + " This chunk is already claimed by: " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
+            return;
         }
 
         ClaimedChunkStorage.claimChunk(player.getLocation().getChunk(),townStat.getTownId());
