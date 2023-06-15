@@ -4,12 +4,14 @@ package org.tan.towns_and_nations;
 import net.luckperms.api.LuckPerms;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tan.towns_and_nations.commands.CommandManager;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.commands.DebugCommand;
 import org.tan.towns_and_nations.listeners.*;
+import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 
@@ -33,14 +35,18 @@ public final class TownsAndNations extends JavaPlugin {
         logger = this.getLogger();
         logger.info("[TaN] Loading Plugin");
 
+        //loading config
+        this.saveDefaultConfig();
+        FileConfiguration config = this.getConfig();
+        config.addDefault("test",true);
+
+        config.options().copyDefaults(true);
+        saveConfig();
+
         //Loading data
-        try {
-            PlayerStatStorage.loadStats();
-        } catch (IOException e) {
-            System.out.println("[TaN] Error while loading plugin's data");
-            throw new RuntimeException(e);
-        }
+        PlayerStatStorage.loadStats();
         TownDataStorage.loadStats();
+        ClaimedChunkStorage.loadStats();
 
         //getConfig().options().copyDefaults();
 

@@ -1,15 +1,20 @@
 package org.tan.towns_and_nations.storage;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.DataClass.ClaimedChunkDataClass;
+import org.tan.towns_and_nations.DataClass.TownDataClass;
+import org.tan.towns_and_nations.TownsAndNations;
 
-import java.util.Objects;
-import java.util.Set;
-import java.util.HashSet;
+import java.io.*;
+import java.lang.reflect.Type;
+import java.util.*;
 
 
 public class ClaimedChunkStorage {
-    private static final Set<ClaimedChunkDataClass> claimedChunks = new HashSet<>();
+    private static Set<ClaimedChunkDataClass> claimedChunks = new HashSet<>();
 
     public static boolean isChunkClaimed(Chunk chunk) {
         return claimedChunks.contains(new ClaimedChunkDataClass(chunk));
@@ -28,10 +33,12 @@ public class ClaimedChunkStorage {
 
     public static void claimChunk(Chunk chunk, String townID) {
         claimedChunks.add(new ClaimedChunkDataClass(chunk, townID));
+        saveStats();
     }
 
     public static void unclaimChunk(Chunk chunk) {
         claimedChunks.remove(new ClaimedChunkDataClass(chunk));
+        saveStats();
     }
 
     public static ClaimedChunkDataClass getClaimedChunk(Chunk chunk){
@@ -42,5 +49,48 @@ public class ClaimedChunkStorage {
         }
         return null;
     }
+
+
+    public static void loadStats() {
+
+        Gson gson = new Gson();
+        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNTownsStats.json");
+        if (file.exists()){
+            Reader reader = null;
+            try {
+                reader = new FileReader(file);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+
+            Type type = new TypeToken<Set<ClaimedChunkDataClass>>() {}.getType();
+            claimedChunks = gson.fromJson(reader, type);
+
+            System.out.println("[TaN]Claimed chunks Loaded");
+        }
+
+    }
+
+    public static void saveStats() {
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNchunks.json");
+        file.getParentFile().mkdirs();
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try (Writer writer = new FileWriter(file, false)) {
+            gson.toJson(claimedChunks, writer);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("[TaN]Claimed chunks saved");
+    }
+
+
 }
 

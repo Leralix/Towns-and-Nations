@@ -78,13 +78,18 @@ public class PlayerStatStorage {
         return stats;
     }
 
-    public static void loadStats() throws IOException {
+    public static void loadStats(){
 
         Gson gson = new Gson();
         System.out.println(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNstats.json");
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNstats.json");
         if (file.exists()){
-            Reader reader = new FileReader(file);
+            Reader reader = null;
+            try {
+                reader = new FileReader(file);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
             PlayerDataClass[] n = gson.fromJson(reader, PlayerDataClass[].class);
             stats = new ArrayList<>(Arrays.asList(n));
             System.out.println("[TaN]Stats Loaded");
