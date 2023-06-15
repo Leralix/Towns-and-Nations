@@ -46,7 +46,7 @@ public final class TownsAndNations extends JavaPlugin {
         //Loading data
         PlayerStatStorage.loadStats();
         TownDataStorage.loadStats();
-        ClaimedChunkStorage.loadStats();
+        //ClaimedChunkStorage.loadStats();
 
         //getConfig().options().copyDefaults();
 
@@ -78,6 +78,7 @@ public final class TownsAndNations extends JavaPlugin {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        ClaimedChunkStorage.saveStats();
         logger.info("[TaN] Plugin disabled");
     }
 

@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
+import org.tan.towns_and_nations.DataClass.ClaimedChunkSettings;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.GUI.GuiManager2;
@@ -19,7 +20,7 @@ import java.util.*;
 
 public class DebugCommand implements CommandExecutor, TabExecutor {
 
-    private final String[] commandes = {"playerstats", "savestats", "itemtab", "getplayerstorage", "gettownstats", "spawnvillager", "newgui"};
+    private final String[] commandes = {"playerstats", "savestats", "itemtab", "getplayerstorage", "gettownstats", "spawnvillager", "newgui","addmoney","setmoney","addnewfeatures"};
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
@@ -46,8 +47,9 @@ public class DebugCommand implements CommandExecutor, TabExecutor {
                 case "addnewfeatures":
                     LinkedHashMap<String, TownDataClass> towns  = TownDataStorage.getTownList();
                     for (Map.Entry<String, TownDataClass> e : towns.entrySet()) {
-                        TownDataClass value = e.getValue();
-                        value.setOverlord(Bukkit.getServer().getOfflinePlayer(UUID.fromString(value.getUuidLeader())).getName());
+                        TownDataClass townDataClass = e.getValue();
+                        townDataClass.setOverlord(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townDataClass.getUuidLeader())).getName());
+                        townDataClass.setChunkSettings(new ClaimedChunkSettings());
                     }
                     player.sendMessage("Commande executée");
                     break;
@@ -67,6 +69,26 @@ public class DebugCommand implements CommandExecutor, TabExecutor {
 
                         target.addToBalance(amount);
                         player.sendMessage("Added " + amount + " Ecu to " + target.getPlayerName());
+                    } else {
+                        player.sendMessage("Too many arguments");
+                    }
+                    break;
+
+                case "setmoney":
+                    if (args.length < 3) {
+                        player.sendMessage("Not enough arguments");
+                    } else if (args.length == 3) {
+                        PlayerDataClass target = PlayerStatStorage.getStat(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
+                        int amount = 0;
+                        try {
+                            amount = Integer.parseInt(args[2]);
+                        } catch (NumberFormatException e) {
+                            player.sendMessage("Invalid Syntax for the amount of money");
+                            throw new RuntimeException(e);
+                        }
+
+                        target.setBalance(amount);
+                        player.sendMessage("Set Balance of "+ target.getPlayerName() + " to " + amount);
                     } else {
                         player.sendMessage("Too many arguments");
                     }

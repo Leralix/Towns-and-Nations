@@ -5,6 +5,7 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
+import org.tan.towns_and_nations.TownsAndNations;
 import org.tan.towns_and_nations.commands.SubCommand;
 import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
@@ -44,7 +45,7 @@ public class ClaimCommand extends SubCommand {
             return;
         }
 
-        TownDataClass townStat = TownDataStorage.getTown(playerStat.getTownId());
+        TownDataClass townStat = TownDataStorage.getTown(player);
         if(!townStat.getUuidLeader().equals(playerStat.getUuid())){
             player.sendMessage(getTANString() + " You are not the leader of your town. For now, only the leader of a town can claim");
             return;
@@ -54,9 +55,22 @@ public class ClaimCommand extends SubCommand {
             player.sendMessage(getTANString() + " This chunk is already claimed by: " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
             return;
         }
+        if(ClaimedChunkStorage.isChunkClaimed(chunk)){
+            player.sendMessage(getTANString() + " This chunk is already claimed by: " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
+            return;
+        }
+
+        if(townStat.getChunkSettings().getNumberOfClaimedChunk() > 5){
+            if(playerStat.getBalance() < 2){
+                player.sendMessage(getTANString() + " You need at least 1$ to claim more chunks");
+                return;
+            }
+            playerStat.removeFromBalance(1);
+        }
 
         ClaimedChunkStorage.claimChunk(player.getLocation().getChunk(),townStat.getTownId());
-        player.sendMessage(getTANString() + " Chunk claimed !");
+        TownDataStorage.getTown(player).getChunkSettings().incrementNumberOfClaimedChunk();
+        player.sendMessage(getTANString() + " Chunk claimed ! Current number of chunk: " + ChatColor.YELLOW + townStat.getChunkSettings().getNumberOfClaimedChunk());
 
     }
 

@@ -32,7 +32,7 @@ public class TownDataClass {
         this.Description = "Description";
         this.open = false;
         this.DateCreated = new Date().toString();
-        this.Overlord = Bukkit.getPlayer(UUID.fromString(uuidLeader)).toString();
+        this.Overlord = Bukkit.getServer().getOfflinePlayer(UUID.fromString(uuidLeader)).toString();
         this.townIconMaterialCode = null;
 
         this.townPlayerListId.add(uuidLeader);
@@ -143,4 +143,12 @@ public class TownDataClass {
     public void removeTownRelations(String relation, String townId) {
         this.relations.removeRelation(relation,townId);
     }
+
+    public ClaimedChunkSettings getChunkSettings() {
+        return chunkSettings;
+    }
+    public void setChunkSettings(ClaimedChunkSettings claimedChunkSettings) {
+        this.chunkSettings = claimedChunkSettings;
+    }
+
 }

@@ -1,12 +1,14 @@
 package org.tan.towns_and_nations.DataClass;
 
 public class ClaimedChunkSettings {
+    private int NumberOfClaimedChunk;
     private boolean openChest;
     private boolean openDoor;
     private boolean breakBlock;
     private boolean placeBlock;
 
     public ClaimedChunkSettings(){
+        this.NumberOfClaimedChunk = 0;
         this.openChest = false;
         this.openDoor = false;
         this.breakBlock = false;
@@ -14,7 +16,7 @@ public class ClaimedChunkSettings {
     }
 
     public boolean isOpenChest() {
-        return openChest;
+        return this.openChest;
     }
 
     public void setOpenChest(boolean openChest) {
@@ -22,7 +24,7 @@ public class ClaimedChunkSettings {
     }
 
     public boolean isOpenDoor() {
-        return openDoor;
+        return this.openDoor;
     }
 
     public void setOpenDoor(boolean openDoor) {
@@ -30,7 +32,7 @@ public class ClaimedChunkSettings {
     }
 
     public boolean isBreakBlock() {
-        return breakBlock;
+        return this.breakBlock;
     }
 
     public void setBreakBlock(boolean breakBlock) {
@@ -38,7 +40,7 @@ public class ClaimedChunkSettings {
     }
 
     public boolean isPlaceBlock() {
-        return placeBlock;
+        return this.placeBlock;
     }
 
     public void setPlaceBlock(boolean placeBlock) {
@@ -46,4 +48,15 @@ public class ClaimedChunkSettings {
     }
 
 
+    public int getNumberOfClaimedChunk() {
+        return this.NumberOfClaimedChunk;
+    }
+
+    public void setNumberOfClaimedChunk(int numberOfClaimedChunk) {
+        this.NumberOfClaimedChunk = numberOfClaimedChunk;
+    }
+
+    public void incrementNumberOfClaimedChunk() {
+        this.NumberOfClaimedChunk = this.NumberOfClaimedChunk + 1;
+    }
 }
