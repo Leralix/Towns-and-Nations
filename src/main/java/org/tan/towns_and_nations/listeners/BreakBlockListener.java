@@ -24,26 +24,19 @@ public class BreakBlockListener implements Listener {
         Player player = event.getPlayer();
         String blockName = event.getBlock().getType().name();
 
-
-
-
-
-
-
-
         ItemStack item = player.getInventory().getItemInMainHand();
+
 
 
         if(item.getEnchantments().containsKey(Enchantment.SILK_TOUCH)){
             return;
         }
 
-
         if(blockName.equals("GOLD_ORE")){
             Random rand = new Random();
             int int_random = rand.nextInt(100);
 
-            if(int_random > 70){
+            if(int_random > 65){
                 event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), getRareStone());
 
             }
@@ -53,7 +46,27 @@ public class BreakBlockListener implements Listener {
             Random rand = new Random();
             int int_random = rand.nextInt(100);
 
-            if(int_random > 70  ){
+            if(int_random > 65){
+                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), getRareStone());
+
+            }
+        }
+
+        if(blockName.equals("BIRCH_LOG")){
+            Random rand = new Random();
+            int int_random = rand.nextInt(100);
+
+            if(int_random > 98  ){
+                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), getRareStone());
+
+            }
+        }
+
+        if(blockName.equals("OAK_LOG")){
+            Random rand = new Random();
+            int int_random = rand.nextInt(100);
+
+            if(int_random > 98  ){
                 event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), getRareStone());
 
             }

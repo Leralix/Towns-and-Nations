@@ -4,7 +4,9 @@ package org.tan.towns_and_nations;
 import net.luckperms.api.LuckPerms;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tan.towns_and_nations.commands.CommandManager;
@@ -15,7 +17,11 @@ import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -23,9 +29,8 @@ import java.util.logging.Logger;
 public final class TownsAndNations extends JavaPlugin {
 
     private static TownsAndNations plugin;
-
-    private static List<PlayerDataClass> playerDataClasses;
     static Logger logger;
+    FileConfiguration config;
 
 
     @Override
@@ -96,4 +101,18 @@ public final class TownsAndNations extends JavaPlugin {
     }
 
     public static Logger getPluginLogger(){return logger;}
+
+    private void loadConfig(){
+
+        File configFile = new File(this.getDataFolder(), "config.yml");
+
+        if (!configFile.exists()) {
+            System.out.println("pas de fichier config");
+            return;
+        }
+
+        this.config = YamlConfiguration.loadConfiguration(configFile);
+
+    }
+
 }

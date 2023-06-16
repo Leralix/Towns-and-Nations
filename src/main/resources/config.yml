@@ -1,3 +1,13 @@
 BooleanDeTest: true
 NumberOfFreeChunk: 6
 CostOfChunk: 1
+rareStoneBlock:
+  GOLD_ORE: 65
+  DEEPSLATE_GOLD_ORE: 65
+  ACACIA_LOG: 98
+  BIRCH_LOG: 98
+  DARK_OAK_LOG: 98
+  JUNGLE_LOG: 98
+  OAK_LOG: 98
+  SPRUCE_LOG: 98
+
