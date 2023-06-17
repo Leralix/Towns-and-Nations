@@ -98,17 +98,34 @@ public class PlayerStatStorage {
 
     }
 
-    public static void saveStats() throws IOException {
+    public static void saveStats() {
 
         Gson gson = new Gson();
         System.out.println(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath());
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNstats.json");
         file.getParentFile().mkdir();
-        file.createNewFile();
-        Writer writer = new FileWriter(file, false);
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Writer writer = null;
+        try {
+            writer = new FileWriter(file, false);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         gson.toJson(stats, writer);
-        writer.flush();
-        writer.close();
+        try {
+            writer.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("[TaN]Stats saved");
 
     }

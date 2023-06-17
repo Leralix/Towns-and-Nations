@@ -37,11 +37,11 @@ public class ClaimedChunkSettings {
     }
 
     public void nextBreakAuth() {
-        this.breakAuth = nextAuth(this.doorAuth);
+        this.breakAuth = nextAuth(this.breakAuth);
     }
 
     public void nextPlaceAuth() {
-        this.placeAuth = nextAuth(this.doorAuth);
+        this.placeAuth = nextAuth(this.placeAuth);
     }
 
     public String nextAuth(String auth) {

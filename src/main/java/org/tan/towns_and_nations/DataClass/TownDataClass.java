@@ -151,4 +151,13 @@ public class TownDataClass {
         this.chunkSettings = claimedChunkSettings;
     }
 
+    public boolean getTownRelation(String relation, String checkTownId){
+        for (String townId : getRelations().getOne(relation)){
+            if(townId.equals(checkTownId)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

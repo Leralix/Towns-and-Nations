@@ -28,13 +28,15 @@ public class ChunkListener implements Listener {
         if(!ClaimedChunkStorage.isChunkClaimed(chunk))
             return;
         Player player = event.getPlayer();
-        TownDataClass town = TownDataStorage.getTown(player);
 
-        if(town.getChunkSettings().getBreakAuth().equals("foreign"))
+        TownDataClass chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
+        TownDataClass playerTown = TownDataStorage.getTown(player);
+
+        if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getTownId()))
             return;
-        if(town.getChunkSettings().getBreakAuth().equals("alliance") && PlayerStatStorage.getStat(player).checkAuth(town))
+        if(chunkTown.getChunkSettings().getBreakAuth().equals("alliance") && chunkTown.getTownRelation("alliance",playerTown.getTownId()))
             return;
-        if(ClaimedChunkStorage.getChunkOwner(chunk).equals(town.getTownId()))
+        if(chunkTown.getChunkSettings().getBreakAuth().equals("foreign"))
             return;
 
         player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
@@ -51,13 +53,15 @@ public class ChunkListener implements Listener {
 
                 Player player = event.getPlayer();
                 Chunk chunk = block.getLocation().getChunk();
-                TownDataClass town = TownDataStorage.getTown(player);
+                TownDataClass chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
+                TownDataClass playerTown = TownDataStorage.getTown(player);
 
-                if(town.getChunkSettings().getChestAuth().equals("foreign"))
+
+                if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getTownId()))
                     return;
-                if(town.getChunkSettings().getChestAuth().equals("alliance") && PlayerStatStorage.getStat(player).checkAuth(town))
+                if(chunkTown.getChunkSettings().getChestAuth().equals("alliance") && chunkTown.getTownRelation("alliance",playerTown.getTownId()))
                     return;
-                if(ClaimedChunkStorage.getChunkOwner(chunk).equals(town.getTownId()))
+                if(chunkTown.getChunkSettings().getChestAuth().equals("foreign"))
                     return;
 
                 player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
@@ -68,13 +72,17 @@ public class ChunkListener implements Listener {
 
                 Player player = event.getPlayer();
                 Chunk chunk = block.getLocation().getChunk();
-                TownDataClass town = TownDataStorage.getTown(player);
+                TownDataClass chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
+                TownDataClass playerTown = TownDataStorage.getTown(player);
 
-                if(town.getChunkSettings().getDoorAuth().equals("foreign"))
+                player.sendMessage(chunkTown.getChunkSettings().getChestAuth());
+                player.sendMessage(chunkTown.getChunkSettings().getChestAuth());
+
+                if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getTownId()))
                     return;
-                if(town.getChunkSettings().getDoorAuth().equals("alliance") && PlayerStatStorage.getStat(player).checkAuth(town))
+                if(chunkTown.getChunkSettings().getDoorAuth().equals("alliance") && chunkTown.getTownRelation("alliance",playerTown.getTownId()))
                     return;
-                if(ClaimedChunkStorage.getChunkOwner(chunk).equals(town.getTownId()))
+                if(chunkTown.getChunkSettings().getDoorAuth().equals("foreign"))
                     return;
 
                 player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
@@ -87,23 +95,21 @@ public class ChunkListener implements Listener {
     public void OnBlocPlaced(BlockPlaceEvent event){
 
         Block block = event.getBlock();
-        String blockName = block.getType().name();
-        if(blockName.equals("CHEST")){
 
-            Player player = event.getPlayer();
-            Chunk chunk = block.getLocation().getChunk();
-            TownDataClass town = TownDataStorage.getTown(player);
+        Player player = event.getPlayer();
+        Chunk chunk = block.getLocation().getChunk();
+        TownDataClass chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
+        TownDataClass playerTown = TownDataStorage.getTown(player);
 
-            if(town.getChunkSettings().getPlaceAuth().equals("foreign"))
-                return;
-            if(town.getChunkSettings().getPlaceAuth().equals("alliance") && PlayerStatStorage.getStat(player).checkAuth(town))
-                return;
-            if(ClaimedChunkStorage.getChunkOwner(chunk).equals(town.getTownId()))
-                return;
+        if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getTownId()))
+            return;
+        if(chunkTown.getChunkSettings().getPlaceAuth().equals("alliance") && chunkTown.getTownRelation("alliance",playerTown.getTownId()))
+            return;
+        if(chunkTown.getChunkSettings().getPlaceAuth().equals("foreign"))
+            return;
 
-            player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
-            event.setCancelled(true);
-        }
+        player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
+        event.setCancelled(true);
     }
 
 

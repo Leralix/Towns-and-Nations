@@ -39,8 +39,7 @@ public class CommandManager implements CommandExecutor, TabExecutor {
                     if (args[0].equalsIgnoreCase(getSubcommands().get(i).getName())){
                         getSubcommands().get(i).perform(p, args);
 
-                        try {PlayerStatStorage.saveStats();
-                        } catch (IOException e) {throw new RuntimeException(e);}
+                        PlayerStatStorage.saveStats();
                         return true;
                     }
                 }

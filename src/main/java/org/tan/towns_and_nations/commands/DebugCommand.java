@@ -11,6 +11,7 @@ import org.tan.towns_and_nations.DataClass.ClaimedChunkSettings;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.GUI.GuiManager2;
+import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
 import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
@@ -139,11 +140,9 @@ public class DebugCommand implements CommandExecutor, TabExecutor {
                     break;
 
                 case "savestats":
-                    try {
-                        PlayerStatStorage.saveStats();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    PlayerStatStorage.saveStats();
+                    TownDataStorage.saveStats();
+                    ClaimedChunkStorage.saveStats();
                     break;
                 default:
                     player.sendMessage("Unknown debug, commands are:");

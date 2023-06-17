@@ -73,17 +73,16 @@ public final class TownsAndNations extends JavaPlugin {
     @Override
     public void onDisable() {
         logger.info("[TaN] Savings Data");
-        try {
-            PlayerStatStorage.saveStats();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+        ClaimedChunkStorage.saveStats();
+        PlayerStatStorage.saveStats();
+        ClaimedChunkStorage.saveStats();
         try {
             Thread.sleep(50);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        ClaimedChunkStorage.saveStats();
+
         logger.info("[TaN] Plugin disabled");
     }
 
