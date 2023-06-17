@@ -52,7 +52,9 @@ public class UnclaimCommand extends SubCommand {
 
             if(ClaimedChunkStorage.isOwner(chunk, townStat.getTownId())) {
                 ClaimedChunkStorage.unclaimChunk(player.getLocation().getChunk());
-                player.sendMessage(getTANString() + " Chunk unclaimed !");
+                TownDataStorage.getTown(player).getChunkSettings().decreaseNumberOfClaimedChunk();
+                player.sendMessage(getTANString() + " Chunk unclaimed ! Current number of chunk: " + ChatColor.YELLOW + townStat.getChunkSettings().getNumberOfClaimedChunk());
+
                 return;
             }
             player.sendMessage(getTANString() + " This chunk is claimed by: " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwner(chunk)+ " , not your town");

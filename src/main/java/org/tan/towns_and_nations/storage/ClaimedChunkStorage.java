@@ -54,7 +54,7 @@ public class ClaimedChunkStorage {
     public static void loadStats() {
 
         Gson gson = new Gson();
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNTownsStats.json");
+        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNchunks.json");
         if (file.exists()){
             Reader reader = null;
             try {

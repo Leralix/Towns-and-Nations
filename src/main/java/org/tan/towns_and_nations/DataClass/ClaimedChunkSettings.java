@@ -2,51 +2,62 @@ package org.tan.towns_and_nations.DataClass;
 
 public class ClaimedChunkSettings {
     private int NumberOfClaimedChunk;
-    private boolean openChest;
-    private boolean openDoor;
-    private boolean breakBlock;
-    private boolean placeBlock;
+    private String chestAuth;
+    private String doorAuth;
+    private String breakAuth;
+    private String placeAuth;
 
     public ClaimedChunkSettings(){
         this.NumberOfClaimedChunk = 0;
-        this.openChest = false;
-        this.openDoor = false;
-        this.breakBlock = false;
-        this.placeBlock = false;
+        this.chestAuth = "town";
+        this.doorAuth = "town";
+        this.breakAuth = "town";
+        this.placeAuth = "town";
     }
 
-    public boolean isOpenChest() {
-        return this.openChest;
+    public String getChestAuth() {
+        return this.chestAuth;
+    }
+    public String getDoorAuth() {
+        return this.doorAuth;
+    }
+    public String getBreakAuth() {
+        return this.breakAuth;
+    }
+    public String getPlaceAuth() {
+        return this.placeAuth;
     }
 
-    public void setOpenChest(boolean openChest) {
-        this.openChest = openChest;
+    public void nextChestAuth() {
+        this.chestAuth = nextAuth(this.chestAuth);
     }
 
-    public boolean isOpenDoor() {
-        return this.openDoor;
+    public void nextDoorAuth() {
+        this.doorAuth = nextAuth(this.doorAuth);
     }
 
-    public void setOpenDoor(boolean openDoor) {
-        this.openDoor = openDoor;
+    public void nextBreakAuth() {
+        this.breakAuth = nextAuth(this.doorAuth);
     }
 
-    public boolean isBreakBlock() {
-        return this.breakBlock;
+    public void nextPlaceAuth() {
+        this.placeAuth = nextAuth(this.doorAuth);
     }
 
-    public void setBreakBlock(boolean breakBlock) {
-        this.breakBlock = breakBlock;
+    public String nextAuth(String auth) {
+        switch (auth) {
+            case "town" -> {
+                return "ally";
+            }
+            case "ally" -> {
+                return "foreign";
+            }
+            case "foreign" -> {
+                return "town";
+            }
+        }
+        return null;
     }
-
-    public boolean isPlaceBlock() {
-        return this.placeBlock;
-    }
-
-    public void setPlaceBlock(boolean placeBlock) {
-        this.placeBlock = placeBlock;
-    }
-
 
     public int getNumberOfClaimedChunk() {
         return this.NumberOfClaimedChunk;
@@ -59,4 +70,8 @@ public class ClaimedChunkSettings {
     public void incrementNumberOfClaimedChunk() {
         this.NumberOfClaimedChunk = this.NumberOfClaimedChunk + 1;
     }
+    public void decreaseNumberOfClaimedChunk() {
+        this.NumberOfClaimedChunk = this.NumberOfClaimedChunk - 1;
+    }
+
 }

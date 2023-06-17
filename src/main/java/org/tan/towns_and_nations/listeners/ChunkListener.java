@@ -29,11 +29,16 @@ public class ChunkListener implements Listener {
             return;
         Player player = event.getPlayer();
         TownDataClass town = TownDataStorage.getTown(player);
-        if(!ClaimedChunkStorage.getChunkOwner(chunk).equals(town.getTownId())){
-            player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
-            event.setCancelled(true);
-        }
 
+        if(town.getChunkSettings().getBreakAuth().equals("foreign"))
+            return;
+        if(town.getChunkSettings().getBreakAuth().equals("alliance") && PlayerStatStorage.getStat(player).checkAuth(town))
+            return;
+        if(ClaimedChunkStorage.getChunkOwner(chunk).equals(town.getTownId()))
+            return;
+
+        player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
+        event.setCancelled(true);
     }
 
     @EventHandler
@@ -48,10 +53,32 @@ public class ChunkListener implements Listener {
                 Chunk chunk = block.getLocation().getChunk();
                 TownDataClass town = TownDataStorage.getTown(player);
 
-                if(!ClaimedChunkStorage.getChunkOwner(chunk).equals(town.getTownId())){
-                    player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
-                    event.setCancelled(true);
-                }
+                if(town.getChunkSettings().getChestAuth().equals("foreign"))
+                    return;
+                if(town.getChunkSettings().getChestAuth().equals("alliance") && PlayerStatStorage.getStat(player).checkAuth(town))
+                    return;
+                if(ClaimedChunkStorage.getChunkOwner(chunk).equals(town.getTownId()))
+                    return;
+
+                player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
+                event.setCancelled(true);
+
+            }
+            else if(blockName.contains("DOOR")){
+
+                Player player = event.getPlayer();
+                Chunk chunk = block.getLocation().getChunk();
+                TownDataClass town = TownDataStorage.getTown(player);
+
+                if(town.getChunkSettings().getDoorAuth().equals("foreign"))
+                    return;
+                if(town.getChunkSettings().getDoorAuth().equals("alliance") && PlayerStatStorage.getStat(player).checkAuth(town))
+                    return;
+                if(ClaimedChunkStorage.getChunkOwner(chunk).equals(town.getTownId()))
+                    return;
+
+                player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
+                event.setCancelled(true);
             }
         }
     }
@@ -67,10 +94,15 @@ public class ChunkListener implements Listener {
             Chunk chunk = block.getLocation().getChunk();
             TownDataClass town = TownDataStorage.getTown(player);
 
-            if(!ClaimedChunkStorage.getChunkOwner(chunk).equals(town.getTownId())){
-                player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
-                event.setCancelled(true);
-            }
+            if(town.getChunkSettings().getPlaceAuth().equals("foreign"))
+                return;
+            if(town.getChunkSettings().getPlaceAuth().equals("alliance") && PlayerStatStorage.getStat(player).checkAuth(town))
+                return;
+            if(ClaimedChunkStorage.getChunkOwner(chunk).equals(town.getTownId()))
+                return;
+
+            player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
+            event.setCancelled(true);
         }
     }
 

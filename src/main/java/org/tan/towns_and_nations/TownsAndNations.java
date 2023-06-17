@@ -51,9 +51,9 @@ public final class TownsAndNations extends JavaPlugin {
         //Loading data
         PlayerStatStorage.loadStats();
         TownDataStorage.loadStats();
-        //ClaimedChunkStorage.loadStats();
+        ClaimedChunkStorage.loadStats();
 
-        //getConfig().options().copyDefaults();
+        //getConfig().options().co  pyDefaults();
 
         //API luckperms
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);

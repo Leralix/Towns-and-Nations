@@ -251,7 +251,7 @@ public class GuiManager2 {
         });
         GuiItem _claimIcon = ItemBuilder.from(ClaimIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage("en dev");
+            OpenTownChunkMenu(player);
         });
         GuiItem _relationIcon = ItemBuilder.from(RelationIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -561,7 +561,7 @@ public class GuiManager2 {
 
                 GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                     event.setCancelled(true);
-                    String message = "Guerre déclarée à : " + townIcon.getItemMeta().getDisplayName();
+                    String message = "Relation modifiée avec : " + townIcon.getItemMeta().getDisplayName();
                     player.sendMessage(message);
                     TownDataStorage.getTown(playerTown.getTownId()).addTownRelations(relation,townUUID);
                     OpenTownRelation(player,relation);
@@ -633,6 +633,56 @@ public class GuiManager2 {
         gui.open(player);
     }
 
+    public static void OpenTownChunkMenu(Player player){
+        String name = "Town";
+        int nRow = 3;
+        PlayerDataClass playerStat = PlayerStatStorage.getStat(player.getUniqueId().toString());
+        TownDataClass townClass = TownDataStorage.getTown(player);
 
+        Gui gui = Gui.gui()
+                .title(Component.text(name))
+                .type(GuiType.CHEST)
+                .rows(nRow)
+                .create();
+
+        ItemStack doorAccess = getCustomLoreItem(Material.OAK_DOOR, "Manage doors access", "Current permission: " + townClass.getChunkSettings().getDoorAuth());
+        ItemStack chestAccess = getCustomLoreItem(Material.CHEST, "Manage Chest access", "Current permission: " + townClass.getChunkSettings().getChestAuth());
+        ItemStack placeBlockAccess = getCustomLoreItem(Material.BRICKS, "Manage building rights", "Current permission: "  + townClass.getChunkSettings().getPlaceAuth());
+        ItemStack breakBlockAccess = getCustomLoreItem(Material.IRON_PICKAXE, "Manage destroying rights",  "Current permission: "  + townClass.getChunkSettings().getBreakAuth());
+        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+
+
+
+        GuiItem _doorAccessManager = ItemBuilder.from(doorAccess).asGuiItem(event -> {
+            townClass.getChunkSettings().nextDoorAuth();
+            OpenTownChunkMenu(player);
+        });
+        GuiItem _chestAccessManager = ItemBuilder.from(chestAccess).asGuiItem(event -> {
+            townClass.getChunkSettings().nextChestAuth();
+            OpenTownChunkMenu(player);
+        });
+        GuiItem _placeBlockAccessManager = ItemBuilder.from(placeBlockAccess).asGuiItem(event -> {
+            townClass.getChunkSettings().nextPlaceAuth();
+            OpenTownChunkMenu(player);
+        });
+        GuiItem _breakBlockAccessManager = ItemBuilder.from(breakBlockAccess).asGuiItem(event -> {
+            townClass.getChunkSettings().nextBreakAuth();
+            OpenTownChunkMenu(player);
+        });
+
+        GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownMenuHaveTown(player);
+        });
+
+        gui.setItem(10, _doorAccessManager);
+        gui.setItem(12, _chestAccessManager);
+        gui.setItem(14, _placeBlockAccessManager);
+        gui.setItem(16, _breakBlockAccessManager);
+
+        gui.setItem(18, _getBackArrow);
+
+        gui.open(player);
+    }
 
 }
