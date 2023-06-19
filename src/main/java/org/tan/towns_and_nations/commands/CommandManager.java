@@ -60,10 +60,11 @@ public class CommandManager implements CommandExecutor, TabExecutor {
         if (args.length == 1){
             List<String> TabCompleteList = new ArrayList<>();
             for (SubCommand subCommand : subcommands) {
-                TabCompleteList.add(subCommand.getName());
+                if (subCommand.getName().startsWith(args[0])) {
+                    TabCompleteList.add(subCommand.getName());
+                }
             }
             return TabCompleteList;
-
         }
         return null;
 
