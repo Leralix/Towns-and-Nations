@@ -14,12 +14,10 @@ import org.tan.towns_and_nations.utils.HeadUtils;
 import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
+import static org.tan.towns_and_nations.storage.TownDataStorage.getTownList;
 
 import java.util.*;
 
-import static org.tan.towns_and_nations.utils.HeadUtils.getCustomLoreItem;
-import static org.tan.towns_and_nations.utils.HeadUtils.getTownIcon;
-import static org.tan.towns_and_nations.storage.TownDataStorage.getTownList;
 
 
 public class GuiManager2 {
@@ -41,7 +39,7 @@ public class GuiManager2 {
         ItemStack RegionHead = HeadUtils.makeSkull("Region","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
         ItemStack TownHead = HeadUtils.makeSkull("Town","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
         ItemStack PlayerHead = HeadUtils.getPlayerHead("Profil",player);
-        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Quit", null);
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Quit", null);
 
 
         GuiItem Kingdom = ItemBuilder.from(KingdomHead).asGuiItem(event -> {
@@ -91,12 +89,12 @@ public class GuiManager2 {
 
 
         ItemStack PlayerHead = HeadUtils.getPlayerHead("Votre Profil",player);
-        ItemStack GoldPurse = getCustomLoreItem(Material.GOLD_NUGGET, "Balance","You have " + PlayerStatStorage.getStat(player.getUniqueId().toString()).getBalance() + " gold");
-        ItemStack killList = getCustomLoreItem(Material.IRON_SWORD, "Kills","You killed " + player.getStatistic(Statistic.MOB_KILLS) + " mobs");
+        ItemStack GoldPurse = HeadUtils.getCustomLoreItem(Material.GOLD_NUGGET, "Balance","You have " + PlayerStatStorage.getStat(player.getUniqueId().toString()).getBalance() + " gold");
+        ItemStack killList = HeadUtils.getCustomLoreItem(Material.IRON_SWORD, "Kills","You killed " + player.getStatistic(Statistic.MOB_KILLS) + " mobs");
         int time = player.getStatistic(Statistic.PLAY_ONE_MINUTE) /20 / 86400;
-        ItemStack lastDeath = getCustomLoreItem(Material.SKELETON_SKULL, "Time Alive","You survived for " + time + " days");
-        ItemStack totalRpKills = getCustomLoreItem(Material.SKELETON_SKULL, "Murder","You killed " + "//En developpement//" + " players");
-        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+        ItemStack lastDeath = HeadUtils.getCustomLoreItem(Material.SKELETON_SKULL, "Time Alive","You survived for " + time + " days");
+        ItemStack totalRpKills = HeadUtils.getCustomLoreItem(Material.SKELETON_SKULL, "Murder","You killed " + "//En developpement//" + " players");
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Back", null);
 
         GuiItem Head = ItemBuilder.from(PlayerHead).asGuiItem(event -> {
             event.setCancelled(true);
@@ -144,9 +142,9 @@ public class GuiManager2 {
                 .create();
 
 
-        ItemStack createNewland = getCustomLoreItem(Material.GRASS_BLOCK, "Create new Town","Cost: 100 gold");
-        ItemStack joinLand = getCustomLoreItem(Material.ANVIL, "Join a Town","Look at every public town");
-        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+        ItemStack createNewland = HeadUtils.getCustomLoreItem(Material.GRASS_BLOCK, "Create new Town","Cost: 100 gold");
+        ItemStack joinLand = HeadUtils.getCustomLoreItem(Material.ANVIL, "Join a Town","Look at every public town");
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Back", null);
 
         GuiItem _create = ItemBuilder.from(createNewland).asGuiItem(event -> {
             event.setCancelled(true);
@@ -207,7 +205,7 @@ public class GuiManager2 {
             i++;
 
         }
-        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Quit", null);
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Quit", null);
         GuiItem _back = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
             OpenMainMenu(player);
@@ -229,14 +227,14 @@ public class GuiManager2 {
                 .create();
 
 
-        ItemStack TownIcon = getTownIcon(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());
+        ItemStack TownIcon = HeadUtils.getTownIcon(PlayerStatStorage.getStat(player).getTownId());
         ItemStack GoldIcon = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
         ItemStack SkullIcon = HeadUtils.makeSkull("Members","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Q0ZDQ5NmIxZGEwNzUzNmM5NGMxMzEyNGE1ODMzZWJlMGM1MzgyYzhhMzM2YWFkODQ2YzY4MWEyOGQ5MzU2MyJ9fX0=");
         ItemStack ClaimIcon = HeadUtils.makeSkull("Claims","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
         ItemStack RelationIcon = HeadUtils.makeSkull("Relations","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=");
         ItemStack LevelIcon = HeadUtils.makeSkull("Town Level","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmJlNTI5YWI2YjJlYTdjNTBkOTE5MmQ4OWY4OThmZDdkYThhOWU3NTBkMzc4Mjk1ZGY3MzIwNWU3YTdlZWFlMCJ9fX0=");
         ItemStack SettingIcon = HeadUtils.makeSkull("Settings","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkMmNiMzg0NThkYTE3ZmI2Y2RhY2Y3ODcxNjE2MDJhMjQ5M2NiZjkzMjMzNjM2MjUzY2ZmMDdjZDg4YTljMCJ9fX0=");
-        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Back", null);
 
         GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -312,7 +310,51 @@ public class GuiManager2 {
             gui.setItem(i, _playerIcon);
             i++;
         }
-        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Back", null);
+        GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownMenuHaveTown(player);
+        });
+
+        gui.setItem(3,1, _getBackArrow);
+
+        gui.open(player);
+
+    }
+    //Done
+    public static void OpenTownEconomics(Player player) {
+
+        String name = "Town";
+        int nRow = 3;
+
+        Gui gui = Gui.gui()
+                .title(Component.text(name))
+                .type(GuiType.CHEST)
+                .rows(nRow)
+                .create();
+
+
+        TownDataClass town = TownDataStorage.getTown(player);
+
+
+        ItemStack GoldIcon = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack GoldSpendingIcon = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack lowerTax = HeadUtils.getCustomLoreItem(Material.ARROW, "Lower the tax", null);
+        ItemStack increaseTax = HeadUtils.getCustomLoreItem(Material.ARROW, "Increase the tax", null);
+        ItemStack taxInfo = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack taxHistory = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack salarySpending = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack chunkSpending = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack workbenchSpending = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack donation = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack donationHistory = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Back", null);
+
+        GoldIcon = HeadUtils.addLore(GoldIcon, "Town current treasury:" + town.get);
+
+
+
+
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
             OpenTownMenuHaveTown(player);
@@ -337,10 +379,10 @@ public class GuiManager2 {
                 .create();
 
 
-        ItemStack TownIcon = getTownIcon(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());
-        ItemStack leaveTown = getCustomLoreItem(Material.BARRIER, "Leave Town", "Quit the town \"" + TownDataStorage.getTown(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId()).getTownName() + "\" ?");
-        ItemStack deleteTown = getCustomLoreItem(Material.BARRIER, "Delete Town", "Delete the town \"" + TownDataStorage.getTown(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId()).getTownName() + "\" ?");
-        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+        ItemStack TownIcon = HeadUtils.getTownIcon(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());
+        ItemStack leaveTown = HeadUtils.getCustomLoreItem(Material.BARRIER, "Leave Town", "Quit the town \"" + TownDataStorage.getTown(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId()).getTownName() + "\" ?");
+        ItemStack deleteTown = HeadUtils.getCustomLoreItem(Material.BARRIER, "Delete Town", "Delete the town \"" + TownDataStorage.getTown(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId()).getTownName() + "\" ?");
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Back", null);
 
         GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -394,12 +436,12 @@ public class GuiManager2 {
                 .create();
 
 
-        ItemStack warCategory = getCustomLoreItem(Material.IRON_SWORD,"War","Manage town you are at war with");
-        ItemStack EmbargoCategory = getCustomLoreItem(Material.BARRIER,"Embargo","Manage town you are at war with");
-        ItemStack NAPCategory = getCustomLoreItem(Material.WRITABLE_BOOK,"Non-aggression pact","Manage town you are at war with");
-        ItemStack AllianceCategory = getCustomLoreItem(Material.CAMPFIRE,"Alliance","Manage town you are allied with");
+        ItemStack warCategory = HeadUtils.getCustomLoreItem(Material.IRON_SWORD,"War","Manage town you are at war with");
+        ItemStack EmbargoCategory = HeadUtils.getCustomLoreItem(Material.BARRIER,"Embargo","Manage town you are at war with");
+        ItemStack NAPCategory = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK,"Non-aggression pact","Manage town you are at war with");
+        ItemStack AllianceCategory = HeadUtils.getCustomLoreItem(Material.CAMPFIRE,"Alliance","Manage town you are allied with");
 
-        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Back", null);
 
         GuiItem _warCategory = ItemBuilder.from(warCategory).asGuiItem(event -> {
             event.setCancelled(true);
@@ -485,7 +527,7 @@ public class GuiManager2 {
         }
 
 
-        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Back", null);
 
         ItemStack addTownButton = HeadUtils.makeSkull("add town","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
         ItemStack removeTownButton = HeadUtils.makeSkull("remove town","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=");
@@ -601,7 +643,7 @@ public class GuiManager2 {
 
 
 
-        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Back", null);
 
         ItemStack nextPageButton = HeadUtils.makeSkull("next page","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0=");
         ItemStack previousPageButton = HeadUtils.makeSkull("previous page","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19");
@@ -645,11 +687,11 @@ public class GuiManager2 {
                 .rows(nRow)
                 .create();
 
-        ItemStack doorAccess = getCustomLoreItem(Material.OAK_DOOR, "Manage doors access", "Current permission: " + townClass.getChunkSettings().getDoorAuth());
-        ItemStack chestAccess = getCustomLoreItem(Material.CHEST, "Manage Chest access", "Current permission: " + townClass.getChunkSettings().getChestAuth());
-        ItemStack placeBlockAccess = getCustomLoreItem(Material.BRICKS, "Manage building rights", "Current permission: "  + townClass.getChunkSettings().getPlaceAuth());
-        ItemStack breakBlockAccess = getCustomLoreItem(Material.IRON_PICKAXE, "Manage destroying rights",  "Current permission: "  + townClass.getChunkSettings().getBreakAuth());
-        ItemStack getBackArrow = getCustomLoreItem(Material.ARROW, "Back", null);
+        ItemStack doorAccess = HeadUtils.getCustomLoreItem(Material.OAK_DOOR, "Manage doors access", "Current permission: " + townClass.getChunkSettings().getDoorAuth());
+        ItemStack chestAccess = HeadUtils.getCustomLoreItem(Material.CHEST, "Manage Chest access", "Current permission: " + townClass.getChunkSettings().getChestAuth());
+        ItemStack placeBlockAccess = HeadUtils.getCustomLoreItem(Material.BRICKS, "Manage building rights", "Current permission: "  + townClass.getChunkSettings().getPlaceAuth());
+        ItemStack breakBlockAccess = HeadUtils.getCustomLoreItem(Material.IRON_PICKAXE, "Manage destroying rights",  "Current permission: "  + townClass.getChunkSettings().getBreakAuth());
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Back", null);
 
 
 

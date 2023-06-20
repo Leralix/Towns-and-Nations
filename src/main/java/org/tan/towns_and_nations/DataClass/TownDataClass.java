@@ -24,6 +24,8 @@ public class TownDataClass {
     private TownRelationClass relations;
     private ClaimedChunkSettings chunkSettings;
 
+    private TownTreasury townTreasury;
+
 
     public TownDataClass( String townId, String townName, String uuidLeader){
         this.TownId = townId;

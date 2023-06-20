@@ -10,25 +10,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.NotNull;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 public class HeadUtils {
 
 
-    public static ItemStack getPlayerHead(String headName, Player p){
-        ItemStack PlayerHead = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta skullMeta = (SkullMeta) PlayerHead.getItemMeta();
-        skullMeta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + headName);
-        skullMeta.setOwningPlayer(p);
-        PlayerHead.setItemMeta(skullMeta);
-        return PlayerHead;
-    }
 
     public static ItemStack getPlayerHead(Player p){
         ItemStack PlayerHead = new ItemStack(Material.PLAYER_HEAD);
@@ -37,8 +31,6 @@ public class HeadUtils {
         PlayerHead.setItemMeta(skullMeta);
         return PlayerHead;
     }
-
-
     public static ItemStack getPlayerHead(String headName, OfflinePlayer p){
         ItemStack PlayerHead = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) PlayerHead.getItemMeta();
@@ -83,7 +75,6 @@ public class HeadUtils {
         }
 
     }
-
     public static ItemStack getTownIconWithInformations(String TownId){
 
         if(TownId == null){
@@ -123,6 +114,22 @@ public class HeadUtils {
         return item;
     }
 
+    public static ItemStack addLore(ItemStack itemStack, ArrayList<String> lore){
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
 
+    public static ItemStack addLore( ItemStack itemStack, String... loreLines) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        List<String> lore = Arrays.asList(loreLines);
+        itemMeta.setLore(lore);
+
+        itemStack.setItemMeta(itemMeta);
+
+        return itemStack;
+    }
 
 }

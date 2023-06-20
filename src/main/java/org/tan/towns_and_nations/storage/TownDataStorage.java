@@ -30,13 +30,16 @@ public class TownDataStorage {
 
         TownDataClass townDataClass = townDataMap.get(TownId);
 
-         ArrayList<String> array = townDataClass.getPlayerList();
-            for(String playerUUID : array) {
-                PlayerStatStorage.getStat(playerUUID).setTownId(null);
-            }
+        ArrayList<String> array = townDataClass.getPlayerList();
+        for(String playerUUID : array) {
+            PlayerStatStorage.getStat(playerUUID).setTownId(null);
+        }
 
         townDataMap.remove(TownId);
         saveStats();
+    }
+    public static void removeTown(TownDataClass townData){
+        removeTown(townData.getTownId());
     }
     public static LinkedHashMap<String, TownDataClass> getTownList(){
         return townDataMap;

@@ -44,7 +44,6 @@ public final class TownsAndNations extends JavaPlugin {
         this.saveDefaultConfig();
         FileConfiguration config = this.getConfig();
         config.addDefault("test",true);
-
         config.options().copyDefaults(true);
         saveConfig();
 
@@ -53,7 +52,7 @@ public final class TownsAndNations extends JavaPlugin {
         TownDataStorage.loadStats();
         ClaimedChunkStorage.loadStats();
 
-        //getConfig().options().co  pyDefaults();
+        //getConfig().options().copyDefaults();
 
         //API luckperms
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
