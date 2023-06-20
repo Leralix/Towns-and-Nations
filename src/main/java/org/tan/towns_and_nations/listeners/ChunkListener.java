@@ -75,9 +75,6 @@ public class ChunkListener implements Listener {
                 TownDataClass chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
                 TownDataClass playerTown = TownDataStorage.getTown(player);
 
-                player.sendMessage(chunkTown.getChunkSettings().getChestAuth());
-                player.sendMessage(chunkTown.getChunkSettings().getChestAuth());
-
                 if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getTownId()))
                     return;
                 if(chunkTown.getChunkSettings().getDoorAuth().equals("alliance") && chunkTown.getTownRelation("alliance",playerTown.getTownId()))
