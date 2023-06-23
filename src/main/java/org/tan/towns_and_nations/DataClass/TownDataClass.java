@@ -21,11 +21,10 @@ public class TownDataClass {
     private String Overlord;
     private String townIconMaterialCode;
     private final ArrayList<String> townPlayerListId = new ArrayList<String>();
+    private TownTreasury townTreasury;
     private TownRelationClass relations;
     private ClaimedChunkSettings chunkSettings;
-
-    private TownTreasury townTreasury;
-
+    private TownLevel townLevel;
 
     public TownDataClass( String townId, String townName, String uuidLeader){
         this.TownId = townId;
@@ -41,6 +40,8 @@ public class TownDataClass {
 
         this.relations = new TownRelationClass();
         this.chunkSettings = new ClaimedChunkSettings();
+
+        this.townLevel = new TownLevel();
     }
 
     public String getTownId() {
