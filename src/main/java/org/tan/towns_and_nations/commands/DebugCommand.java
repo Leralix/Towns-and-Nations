@@ -10,6 +10,7 @@ import org.bukkit.entity.Villager;
 import org.tan.towns_and_nations.DataClass.ClaimedChunkSettings;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
+import org.tan.towns_and_nations.DataClass.TownTreasury;
 import org.tan.towns_and_nations.GUI.GuiManager2;
 import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
 import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
@@ -50,12 +51,13 @@ public class DebugCommand implements CommandExecutor, TabExecutor {
                     for (Map.Entry<String, TownDataClass> e : towns.entrySet()) {
                         TownDataClass townDataClass = e.getValue();
                         townDataClass.setOverlord(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townDataClass.getUuidLeader())).getName());
-                        townDataClass.setChunkSettings(new ClaimedChunkSettings());
+                        //townDataClass.setChunkSettings(new ClaimedChunkSettings());
+                        townDataClass.setTreasury(new TownTreasury());
                     }
                     player.sendMessage("Commande executée");
                     break;
 
-                case "addmoney":
+                    case "addmoney":
                     if (args.length < 3) {
                         player.sendMessage("Not enough arguments");
                     } else if (args.length == 3) {

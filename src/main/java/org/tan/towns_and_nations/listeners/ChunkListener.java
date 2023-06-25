@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.tan.towns_and_nations.DataClass.ClaimedChunkDataClass;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
@@ -49,10 +50,16 @@ public class ChunkListener implements Listener {
         Block block = event.getClickedBlock();
         if (block != null){
             String blockName = block.getType().name();
+
+            Chunk chunk = block.getLocation().getChunk();
+            Player player = event.getPlayer();
+
+            if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+                return;
+
             if(blockName.equals("CHEST")){
 
-                Player player = event.getPlayer();
-                Chunk chunk = block.getLocation().getChunk();
+
                 TownDataClass chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
                 TownDataClass playerTown = TownDataStorage.getTown(player);
 
@@ -70,8 +77,6 @@ public class ChunkListener implements Listener {
             }
             else if(blockName.contains("DOOR")){
 
-                Player player = event.getPlayer();
-                Chunk chunk = block.getLocation().getChunk();
                 TownDataClass chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
                 TownDataClass playerTown = TownDataStorage.getTown(player);
 
@@ -92,9 +97,13 @@ public class ChunkListener implements Listener {
     public void OnBlocPlaced(BlockPlaceEvent event){
 
         Block block = event.getBlock();
+        Chunk chunk = block.getLocation().getChunk();
+        if(!ClaimedChunkStorage.isChunkClaimed(chunk)){
+            return;
+        }
 
         Player player = event.getPlayer();
-        Chunk chunk = block.getLocation().getChunk();
+
         TownDataClass chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
         TownDataClass playerTown = TownDataStorage.getTown(player);
 

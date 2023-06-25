@@ -33,7 +33,7 @@ public class TownDataClass {
         this.Description = "Description";
         this.open = false;
         this.DateCreated = new Date().toString();
-        this.Overlord = Bukkit.getServer().getOfflinePlayer(UUID.fromString(uuidLeader)).toString();
+        this.Overlord = Bukkit.getServer().getOfflinePlayer(UUID.fromString(uuidLeader)).getName();
         this.townIconMaterialCode = null;
 
         this.townPlayerListId.add(uuidLeader);
@@ -42,6 +42,7 @@ public class TownDataClass {
         this.chunkSettings = new ClaimedChunkSettings();
 
         this.townLevel = new TownLevel();
+        this.townTreasury = new TownTreasury();
     }
 
     public String getTownId() {
@@ -153,6 +154,9 @@ public class TownDataClass {
     public void setChunkSettings(ClaimedChunkSettings claimedChunkSettings) {
         this.chunkSettings = claimedChunkSettings;
     }
+    public void setTreasury(TownTreasury townTreasury) {
+        this.townTreasury = townTreasury;
+    }
 
     public boolean getTownRelation(String relation, String checkTownId){
         for (String townId : getRelations().getOne(relation)){
@@ -163,4 +167,10 @@ public class TownDataClass {
         return false;
     }
 
+    public int getBalance(){
+        return this.townTreasury.getBalance();
+    }
+    public TownTreasury getTreasury(){
+        return this.townTreasury;
+    }
 }

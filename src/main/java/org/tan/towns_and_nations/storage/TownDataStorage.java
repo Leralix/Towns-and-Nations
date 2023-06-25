@@ -3,6 +3,7 @@ package org.tan.towns_and_nations.storage;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.internal.bind.DateTypeAdapter;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.TownsAndNations;
@@ -52,7 +53,10 @@ public class TownDataStorage {
     }
     public static void loadStats() {
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateTypeAdapter())
+                .create();
+
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNTownsStats.json");
         if (file.exists()){
             Reader reader = null;

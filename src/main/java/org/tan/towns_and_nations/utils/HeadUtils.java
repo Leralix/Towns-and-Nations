@@ -100,6 +100,9 @@ public class HeadUtils {
 
     }
 
+    public static ItemStack getCustomLoreItem(Material itemMaterial, String itemName){
+        return getCustomLoreItem(itemMaterial,itemName,null);
+    }
     public static ItemStack getCustomLoreItem(Material itemMaterial, String itemName, String itemLoreOneLine){
         ItemStack item = new ItemStack(itemMaterial);
         ItemMeta meta = item.getItemMeta();

@@ -1,10 +1,12 @@
 package org.tan.towns_and_nations.DataClass;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class TransactionHistoryClass {
 
-    private final LocalDate date;
+    private final String date;
     private final String transactionParty;
     private final int amount;
 
@@ -14,7 +16,12 @@ public class TransactionHistoryClass {
 
     // Constructeur principal avec ID du joueur et quantité
     public TransactionHistoryClass(String transactionParty, int amount) {
-        this.date = LocalDate.now();
+
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
+        String formattedDate = today.format(formatter);
+
+        this.date = formattedDate;
         this.transactionParty = transactionParty;
         this.amount = amount;
     }
@@ -23,7 +30,7 @@ public class TransactionHistoryClass {
         return "Transaction [date=" + date + ", transactionParty=" + transactionParty + ", amount=" + amount + "]";
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 

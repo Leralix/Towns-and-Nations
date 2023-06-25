@@ -241,7 +241,7 @@ public class GuiManager2 {
         });
         GuiItem _goldIcon = ItemBuilder.from(GoldIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage("en dev");
+            OpenTownEconomics(player);
         });
         GuiItem _membersIcon = ItemBuilder.from(SkullIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -325,7 +325,7 @@ public class GuiManager2 {
     public static void OpenTownEconomics(Player player) {
 
         String name = "Town";
-        int nRow = 3;
+        int nRow = 4;
 
         Gui gui = Gui.gui()
                 .title(Component.text(name))
@@ -337,30 +337,108 @@ public class GuiManager2 {
         TownDataClass town = TownDataStorage.getTown(player);
 
 
-        ItemStack GoldIcon = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack GoldSpendingIcon = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack lowerTax = HeadUtils.getCustomLoreItem(Material.ARROW, "Lower the tax", null);
-        ItemStack increaseTax = HeadUtils.getCustomLoreItem(Material.ARROW, "Increase the tax", null);
-        ItemStack taxInfo = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack taxHistory = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack salarySpending = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack chunkSpending = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack workbenchSpending = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack donation = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack donationHistory = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Back", null);
+        ItemStack goldIcon = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack goldSpendingIcon = HeadUtils.makeSkull("Spendings","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack lowerTax = HeadUtils.makeSkull("Lower the tax","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=");
+        ItemStack increaseTax = HeadUtils.makeSkull("Increase the tax","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
+        ItemStack taxInfo = HeadUtils.makeSkull("Flat tax","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk4ZGY0MmY0NzdmMjEzZmY1ZTlkN2ZhNWE0Y2M0YTY5ZjIwZDljZWYyYjkwYzRhZTRmMjliZDE3Mjg3YjUifX19");
+        ItemStack taxHistory = HeadUtils.makeSkull("Tax history","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmU1OWYyZDNiOWU3ZmI5NTBlOGVkNzkyYmU0OTIwZmI3YTdhOWI5MzQ1NjllNDQ1YjJiMzUwM2ZlM2FiOTAyIn19fQ==");
+        ItemStack salarySpending = HeadUtils.makeSkull("Salary history","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjlhNjAwYWIwYTgzMDk3MDY1Yjk1YWUyODRmODA1OTk2MTc3NDYwOWFkYjNkYmQzYTRjYTI2OWQ0NDQwOTU1MSJ9fX0=");
+        ItemStack chunkSpending = HeadUtils.makeSkull("Chunk spending history","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack workbenchSpending = HeadUtils.makeSkull("Workbench spending","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGMzNjA0NTIwOGY5YjVkZGNmOGM0NDMzZTQyNGIxY2ExN2I5NGY2Yjk2MjAyZmIxZTUyNzBlZThkNTM4ODFiMSJ9fX0=");
+        ItemStack donation = HeadUtils.getCustomLoreItem(Material.DIAMOND,"Make a donation","Donate money to the town to help development");
+        ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,"Donation history");
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Back");
 
-        GoldIcon = HeadUtils.addLore(GoldIcon, "Town current treasury:" + town.get);
+        goldIcon = HeadUtils.addLore(goldIcon, ChatColor.WHITE +"Town current treasury: " + ChatColor.YELLOW + town.getBalance());
+        goldSpendingIcon = HeadUtils.addLore(goldSpendingIcon, ChatColor.WHITE +"Town current spending: " + ChatColor.RED + 0);
+
+        lowerTax = HeadUtils.addLore(lowerTax, ChatColor.WHITE +"Decrease the tax by " + ChatColor.YELLOW + "1$");
+        taxInfo = HeadUtils.addLore(taxInfo, ChatColor.WHITE +"Town current tax: " + ChatColor.YELLOW + town.getTreasury().getFlatTax() + "$");
+        taxHistory = HeadUtils.addLore(taxHistory, ChatColor.WHITE +"Increase the tax by " + ChatColor.YELLOW + "1$");
+
+        salarySpending = HeadUtils.addLore(salarySpending, ChatColor.WHITE +"Salary spending are up to: " + ChatColor.YELLOW + "0$");
+        chunkSpending = HeadUtils.addLore(chunkSpending, ChatColor.WHITE +"Chunk spending are up to: " + ChatColor.YELLOW + "0$", ChatColor.WHITE +"Chunk spending cost: " + ChatColor.YELLOW + "1$" + ChatColor.WHITE + " for every "+ ChatColor.YELLOW + 100 + ChatColor.WHITE + " Chunks claimed" );
+        workbenchSpending = HeadUtils.addLore(workbenchSpending, ChatColor.WHITE +"Miscellanous spendings: are not yet implemented");
 
 
 
+        GuiItem _goldInfo = ItemBuilder.from(goldIcon).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+        GuiItem _goldSpendingIcon = ItemBuilder.from(goldSpendingIcon).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+        GuiItem _taxHistory = ItemBuilder.from(taxHistory).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+        GuiItem _salarySpending = ItemBuilder.from(salarySpending).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+        GuiItem _chunkSpending = ItemBuilder.from(chunkSpending).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+        GuiItem _workbenchSpending = ItemBuilder.from(workbenchSpending).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+        GuiItem _donation = ItemBuilder.from(donation).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+        GuiItem _donationHistory = ItemBuilder.from(donationHistory).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+
+        GuiItem _lessTax = ItemBuilder.from(lowerTax).asGuiItem(event -> {
+            town.getTreasury().remove1FlatTax();
+            event.setCancelled(true);
+            OpenTownEconomics(player);
+        });
+        GuiItem _taxInfo = ItemBuilder.from(taxInfo).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownEconomics(player);
+        });
+        GuiItem _moreTax = ItemBuilder.from(increaseTax).asGuiItem(event -> {
+            town.getTreasury().add1FlatTax();
+            event.setCancelled(true);
+            OpenTownEconomics(player);
+        });
+
+        GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE)).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
 
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
             OpenTownMenuHaveTown(player);
         });
 
-        gui.setItem(3,1, _getBackArrow);
+
+        gui.setItem(1,1, _decorativeGlass);
+        gui.setItem(1,2, _decorativeGlass);
+        gui.setItem(1,3, _decorativeGlass);
+        gui.setItem(1,5, _decorativeGlass);
+        gui.setItem(1,7, _decorativeGlass);
+        gui.setItem(1,8, _decorativeGlass);
+        gui.setItem(1,9, _decorativeGlass);
+
+        gui.setItem(1,4, _goldInfo);
+        gui.setItem(1,6, _goldSpendingIcon);
+
+        gui.setItem(2,1, _lessTax);
+        gui.setItem(2,2, _taxInfo);
+        gui.setItem(2,3, _moreTax);
+        gui.setItem(2,4, _taxHistory);
+
+        gui.setItem(2,6, _salarySpending);
+        gui.setItem(2,7, _chunkSpending);
+        gui.setItem(2,8, _workbenchSpending);
+
+        gui.setItem(3,2, _donation);
+        gui.setItem(3,3, _donationHistory);
+
+
+
+        gui.setItem(4,1, _getBackArrow);
 
         gui.open(player);
 

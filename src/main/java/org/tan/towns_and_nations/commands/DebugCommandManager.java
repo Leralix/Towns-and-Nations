@@ -11,6 +11,7 @@ import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
 public class DebugCommandManager implements CommandExecutor, TabExecutor {
 
     private final ArrayList<SubCommand> subcommands = new ArrayList<>();
@@ -76,3 +77,4 @@ public class DebugCommandManager implements CommandExecutor, TabExecutor {
 
 
 }
+*/
