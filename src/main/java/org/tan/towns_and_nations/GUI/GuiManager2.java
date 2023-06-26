@@ -354,14 +354,14 @@ public class GuiManager2 {
         goldSpendingIcon = HeadUtils.addLore(goldSpendingIcon, ChatColor.WHITE +"Town current spending: " + ChatColor.RED + 0);
 
         lowerTax = HeadUtils.addLore(lowerTax, ChatColor.WHITE +"Decrease the tax by " + ChatColor.YELLOW + "1$");
-        taxInfo = HeadUtils.addLore(taxInfo, ChatColor.WHITE +"Town current tax: " + ChatColor.YELLOW + town.getTreasury().getFlatTax() + "$");
+        taxInfo = HeadUtils.addLore(taxInfo, ChatColor.WHITE +"Town current tax: " + ChatColor.YELLOW + town.getTreasury().getFlatTax() + "$" + ChatColor.WHITE +" weekly");
         taxHistory = HeadUtils.addLore(taxHistory, ChatColor.WHITE +"Increase the tax by " + ChatColor.YELLOW + "1$");
 
         salarySpending = HeadUtils.addLore(salarySpending, ChatColor.WHITE +"Salary spending are up to: " + ChatColor.YELLOW + "0$");
         chunkSpending = HeadUtils.addLore(chunkSpending, ChatColor.WHITE +"Chunk spending are up to: " + ChatColor.YELLOW + "0$", ChatColor.WHITE +"Chunk spending cost: " + ChatColor.YELLOW + "1$" + ChatColor.WHITE + " for every "+ ChatColor.YELLOW + 100 + ChatColor.WHITE + " Chunks claimed" );
         workbenchSpending = HeadUtils.addLore(workbenchSpending, ChatColor.WHITE +"Miscellanous spendings: are not yet implemented");
 
-
+        donation = HeadUtils.addLore(donation, ChatColor.WHITE +"Donate money to help it grow");
 
         GuiItem _goldInfo = ItemBuilder.from(goldIcon).asGuiItem(event -> {
             event.setCancelled(true);

@@ -16,7 +16,7 @@ public class TownTreasury {
     ArrayList<TransactionHistoryClass> donationHistory;
     LinkedHashMap<String,ArrayList<TransactionHistoryClass>> salaryHistory;
     LinkedHashMap<String,TransactionHistoryClass> chunkHistory;
-    ArrayList<TransactionHistoryClass>  miscellaneousPurchaseHistory;
+    ArrayList<TransactionHistoryClass> miscellaneousPurchaseHistory;
 
     public TownTreasury(){
         this.balance = 0;
@@ -83,6 +83,43 @@ public class TownTreasury {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
         String formattedDate = date.format(formatter);
         this.miscellaneousPurchaseHistory.add(new TransactionHistoryClass(miscellaneous, amount));
+    }
+
+    public ArrayList<String> getTaxLimitedHistory(int wantedNumberOfRows){
+
+
+            return null;
+    }
+    public ArrayList<String> getDonationLimitedHistory(int wantedNumberOfRows){
+
+        if (this.donationHistory.size() < wantedNumberOfRows) {
+            wantedNumberOfRows = this.donationHistory.size();
+        }
+
+        ArrayList<String> latestDonations = new ArrayList<>();
+        for (int i = this.donationHistory.size() - 1; i >= this.donationHistory.size() - wantedNumberOfRows; i--) {
+
+            latestDonations.add(this.donationHistory.get(i).getTransactionLine());
+
+        }
+        return latestDonations;
+    }
+
+    public ArrayList<String> getMiscellaneousLimitedHistory(int wantedNumberOfRows){
+
+        int miscSize = this.miscellaneousPurchaseHistory.size();
+
+        if (miscSize < wantedNumberOfRows) {
+            wantedNumberOfRows = miscSize;
+        }
+
+        ArrayList<String> latestDonations = new ArrayList<>();
+        for (int i = miscSize - 1; i >= miscSize - wantedNumberOfRows; i--) {
+
+            latestDonations.add(this.miscellaneousPurchaseHistory.get(i).getTransactionLine());
+
+        }
+        return latestDonations;
     }
 
 }

@@ -1,5 +1,7 @@
 package org.tan.towns_and_nations.DataClass;
 
+import org.bukkit.ChatColor;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -28,6 +30,18 @@ public class TransactionHistoryClass {
     @Override
     public String toString() {
         return "Transaction [date=" + date + ", transactionParty=" + transactionParty + ", amount=" + amount + "]";
+    }
+
+    public String getTransactionLine() {
+        ChatColor color;
+        if(amount > 0)
+            color = ChatColor.GREEN;
+        else if(amount < 0 )
+            color = ChatColor.RED;
+        else
+            color = ChatColor.WHITE;
+
+        return "" + date + "  " + transactionParty + ": " + color +  amount;
     }
 
     public String getDate() {
