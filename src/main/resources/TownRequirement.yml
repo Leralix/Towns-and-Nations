@@ -1,0 +1,5 @@
+default:
+  expression: 'squareMultiplier * level ^ 2 + flatMultiplier * level + base'
+  squareMultiplier: 8.0
+  flatMultiplier: 10.0
+  base: 100.0
