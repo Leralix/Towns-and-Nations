@@ -22,9 +22,10 @@ public class TownDataClass {
     private String townIconMaterialCode;
     private final ArrayList<String> townPlayerListId = new ArrayList<String>();
     private TownTreasury townTreasury;
-    private TownRelationClass relations;
-    private ClaimedChunkSettings chunkSettings;
     private TownLevel townLevel;
+    private ClaimedChunkSettings chunkSettings;
+    private TownRelationClass relations;
+
 
     public TownDataClass( String townId, String townName, String uuidLeader){
         this.TownId = townId;

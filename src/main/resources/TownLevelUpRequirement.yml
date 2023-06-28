@@ -1,5 +1,6 @@
 default:
   expression: 'squareMultiplier * level ^ 2 + flatMultiplier * level + base'
+  TownExpression: '(squareMultiplier * level ^ 2 + flatMultiplier * level + base) * 2'
   squareMultiplier: 8.0
   flatMultiplier: 10.0
   base: 100.0

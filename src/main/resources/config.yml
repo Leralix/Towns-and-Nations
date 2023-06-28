@@ -11,7 +11,10 @@ rareStoneBlock:
   OAK_LOG: 98
   SPRUCE_LOG: 98
 
-TownStartingMembers: 5
+TownMaxLevel: 10
+TownStartingMembersCap: 5
+TownStartingChunksCap: 50
+
 UpgradeMembers: 3
 UpgradeMaxChunk: 100
 
