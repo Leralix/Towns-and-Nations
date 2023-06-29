@@ -22,7 +22,7 @@ import java.util.*;
 
 public class DebugCommand implements CommandExecutor, TabExecutor {
 
-    private final String[] commandes = {"playerstats", "savestats", "itemtab", "getplayerstorage", "gettownstats", "spawnvillager", "newgui","addmoney","setmoney","addnewfeatures"};
+    private final String[] commandes = {"playerstats", "savestats","chatstorage", "itemtab", "getplayerstorage", "gettownstats", "spawnvillager", "newgui","addmoney","setmoney","addnewfeatures"};
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
@@ -109,7 +109,9 @@ public class DebugCommand implements CommandExecutor, TabExecutor {
                     break;
 
                 case "chatstorage":
-                    player.sendMessage(PlayerChatListenerStorage.getData().toString());
+                    player.sendMessage(PlayerChatListenerStorage.getData("creationVille").toString());
+                    player.sendMessage(PlayerChatListenerStorage.getData("donation").toString());
+
                     break;
 
                 case "townstats":

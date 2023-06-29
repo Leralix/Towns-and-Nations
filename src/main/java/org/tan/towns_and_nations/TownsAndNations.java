@@ -14,6 +14,7 @@ import org.tan.towns_and_nations.commands.CommandManager;
 import org.tan.towns_and_nations.commands.DebugCommand;
 import org.tan.towns_and_nations.listeners.*;
 import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
+import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 
@@ -50,6 +51,7 @@ public final class TownsAndNations extends JavaPlugin {
         PlayerStatStorage.loadStats();
         TownDataStorage.loadStats();
         ClaimedChunkStorage.loadStats();
+        PlayerChatListenerStorage.load();
 
 
         //API luckperms

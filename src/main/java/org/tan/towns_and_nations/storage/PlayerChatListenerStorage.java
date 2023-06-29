@@ -2,26 +2,31 @@ package org.tan.towns_and_nations.storage;
 
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerChatListenerStorage {
 
 
-    private static Set<UUID> UuidDialogue = new HashSet<UUID>();
-    public static void addPlayer(Player p){
-        UuidDialogue.add(p.getUniqueId());
+    private static Map<String,ArrayList<UUID>> ChatListenerStorage = new HashMap<>();
+
+    public static void load(){
+        ChatListenerStorage.put("creationVille", new ArrayList<>());
+        ChatListenerStorage.put("donation", new ArrayList<>());
     }
-    public static void removePlayer(Player p){
-        UuidDialogue.remove(p.getUniqueId());
+    public static void addPlayer(String key,Player p){
+
+        if(!ChatListenerStorage.get(key).contains(p.getUniqueId()))
+            ChatListenerStorage.get(key).add(p.getUniqueId());
+
     }
-    public static boolean checkIfPlayerIn(UUID uuid){
-        return UuidDialogue.contains(uuid);
+    public static void removePlayer(String key,Player p){
+        ChatListenerStorage.get(key).remove(p.getUniqueId());
     }
-    public static Set<UUID> getData(){
-        return UuidDialogue;
+    public static boolean checkIfPlayerIn(String key,UUID uuid){
+        return ChatListenerStorage.get(key).contains(uuid);
+    }
+    public static ArrayList<UUID> getData(String key){
+        return ChatListenerStorage.get(key);
     }
 
 }

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
+import org.tan.towns_and_nations.utils.ChatUtils;
 import org.tan.towns_and_nations.utils.HeadUtils;
 import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
@@ -154,7 +155,7 @@ public class GuiManager2 {
             } else {
                 player.sendMessage("Write the name of the town in the chat");
                 player.closeInventory();
-                PlayerChatListenerStorage.addPlayer(player);
+                PlayerChatListenerStorage.addPlayer("creationVille",player);
             }
         });
 
@@ -350,7 +351,7 @@ public class GuiManager2 {
         ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,"Donation history");
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Back");
 
-        goldIcon = HeadUtils.addLore(goldIcon, ChatColor.WHITE +"Town current treasury: " + ChatColor.YELLOW + town.getBalance());
+            goldIcon = HeadUtils.addLore(goldIcon, ChatColor.WHITE +"Town current treasury: " + ChatColor.YELLOW + town.getBalance());
         goldSpendingIcon = HeadUtils.addLore(goldSpendingIcon, ChatColor.WHITE +"Town current spending: " + ChatColor.RED + 0);
 
         lowerTax = HeadUtils.addLore(lowerTax, ChatColor.WHITE +"Decrease the tax by " + ChatColor.YELLOW + "1$");
@@ -362,6 +363,7 @@ public class GuiManager2 {
         workbenchSpending = HeadUtils.addLore(workbenchSpending, ChatColor.WHITE +"Miscellanous spendings: are not yet implemented");
 
         donation = HeadUtils.addLore(donation, ChatColor.WHITE +"Donate money to help it grow");
+        donationHistory = HeadUtils.addLore(donationHistory, town.getTreasury().getDonationLimitedHistory(5));
 
         GuiItem _goldInfo = ItemBuilder.from(goldIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -382,7 +384,11 @@ public class GuiManager2 {
             event.setCancelled(true);
         });
         GuiItem _donation = ItemBuilder.from(donation).asGuiItem(event -> {
+            player.sendMessage(ChatUtils.getTANString() + "Write the amount of money you want to give");
+            PlayerChatListenerStorage.addPlayer("donation",player);
+            player.closeInventory();
             event.setCancelled(true);
+
         });
         GuiItem _donationHistory = ItemBuilder.from(donationHistory).asGuiItem(event -> {
             event.setCancelled(true);
@@ -390,8 +396,9 @@ public class GuiManager2 {
 
         GuiItem _lessTax = ItemBuilder.from(lowerTax).asGuiItem(event -> {
             town.getTreasury().remove1FlatTax();
-            event.setCancelled(true);
             OpenTownEconomics(player);
+            event.setCancelled(true);
+
         });
         GuiItem _taxInfo = ItemBuilder.from(taxInfo).asGuiItem(event -> {
             event.setCancelled(true);

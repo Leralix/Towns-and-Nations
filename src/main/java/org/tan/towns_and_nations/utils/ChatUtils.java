@@ -24,4 +24,7 @@ public class ChatUtils {
     public static @NotNull String getTANString(){
         return org.bukkit.ChatColor.GOLD + "[TAN]" + org.bukkit.ChatColor.WHITE;
     }
+
+
+
 }

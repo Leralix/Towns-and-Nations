@@ -31,6 +31,10 @@ public class TownTreasury {
     public int getBalance(){
         return this.balance;
     }
+    public void modifyBalance(int amount){
+        this.balance = this.balance + amount;
+    }
+
 
     public void add1FlatTax(){
         this.flatTax = this.flatTax + 1;
