@@ -36,13 +36,14 @@ public final class TownsAndNations extends JavaPlugin {
         // Plugin startup logic
         plugin = this;
         logger = this.getLogger();
-        getLogger().info("\u001B[33mTowns & Nations.\u001B[0m");
+        getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
 
         logger.info("[TaN] Loading Plugin");
 
         logger.info("[TaN] Loading Configs");
 
         loadCustomConfig("config.yml");
+        loadXpRequirements();
         loadCustomConfig("townLevelUpRequirement.yml");
 
         logger.info("[TaN] Loading Stats");
@@ -87,21 +88,24 @@ public final class TownsAndNations extends JavaPlugin {
     }
 
 
-    private void EnableEventList(){
-        getServer().getPluginManager().registerEvents(new OnPlayerFirstJoin(),this);
-        getServer().getPluginManager().registerEvents(new ChatListener(),this);
+    private void EnableEventList() {
+        getServer().getPluginManager().registerEvents(new OnPlayerFirstJoin(), this);
+        getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new BreakBlockListener(), this);
         getServer().getPluginManager().registerEvents(new VillagerInteractionListener(), this);
-        getServer().getPluginManager().registerEvents(new ChunkListener(),this);
+        getServer().getPluginManager().registerEvents(new ChunkListener(), this);
     }
 
-    public static TownsAndNations getPlugin(){
+    public static TownsAndNations getPlugin() {
         return plugin;
     }
 
-    public static Logger getPluginLogger(){return logger;}
+    public static Logger getPluginLogger() {
+        return logger;
+    }
 
     public void loadCustomConfig(String fileName) {
+
         File configFile = new File(getDataFolder(), fileName);
         if (!configFile.exists()) {
             getLogger().severe(fileName + " does not exist!");
@@ -113,6 +117,13 @@ public final class TownsAndNations extends JavaPlugin {
 
     public static FileConfiguration getCustomConfig(String fileName) {
         return configs.get(fileName);
+    }
+
+    public void loadXpRequirements() {
+        File file = new File(plugin.getDataFolder(), "townLevelUpRequirement.yml");
+        if (!file.exists()) {
+            plugin.saveResource("townLevelUpRequirement.yml", false);
+        }
     }
 
 

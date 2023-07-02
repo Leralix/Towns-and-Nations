@@ -81,7 +81,6 @@ public class PlayerStatStorage {
     public static void loadStats(){
 
         Gson gson = new Gson();
-        System.out.println(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNstats.json");
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNstats.json");
         if (file.exists()){
             Reader reader = null;
@@ -92,7 +91,6 @@ public class PlayerStatStorage {
             }
             PlayerDataClass[] n = gson.fromJson(reader, PlayerDataClass[].class);
             stats = new ArrayList<>(Arrays.asList(n));
-            System.out.println("[TaN]Stats Loaded");
 
         }
 

@@ -258,7 +258,7 @@ public class GuiManager2 {
         });
         GuiItem _levelIcon = ItemBuilder.from(LevelIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage("en dev");
+            OpenTownLevel(player);
         });
         GuiItem _settingsIcon = ItemBuilder.from(SettingIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -351,12 +351,12 @@ public class GuiManager2 {
         ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,"Donation history");
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Back");
 
-            goldIcon = HeadUtils.addLore(goldIcon, ChatColor.WHITE +"Town current treasury: " + ChatColor.YELLOW + town.getBalance());
+        goldIcon = HeadUtils.addLore(goldIcon, ChatColor.WHITE +"Town current treasury: " + ChatColor.YELLOW + town.getBalance());
         goldSpendingIcon = HeadUtils.addLore(goldSpendingIcon, ChatColor.WHITE +"Town current spending: " + ChatColor.RED + 0);
 
         lowerTax = HeadUtils.addLore(lowerTax, ChatColor.WHITE +"Decrease the tax by " + ChatColor.YELLOW + "1$");
         taxInfo = HeadUtils.addLore(taxInfo, ChatColor.WHITE +"Town current tax: " + ChatColor.YELLOW + town.getTreasury().getFlatTax() + "$" + ChatColor.WHITE +" weekly");
-        taxHistory = HeadUtils.addLore(taxHistory, ChatColor.WHITE +"Increase the tax by " + ChatColor.YELLOW + "1$");
+        increaseTax = HeadUtils.addLore(increaseTax, ChatColor.WHITE +"Increase the tax by " + ChatColor.YELLOW + "1$");
 
         salarySpending = HeadUtils.addLore(salarySpending, ChatColor.WHITE +"Salary spending are up to: " + ChatColor.YELLOW + "0$");
         chunkSpending = HeadUtils.addLore(chunkSpending, ChatColor.WHITE +"Chunk spending are up to: " + ChatColor.YELLOW + "0$", ChatColor.WHITE +"Chunk spending cost: " + ChatColor.YELLOW + "1$" + ChatColor.WHITE + " for every "+ ChatColor.YELLOW + 100 + ChatColor.WHITE + " Chunks claimed" );
@@ -450,6 +450,51 @@ public class GuiManager2 {
         gui.open(player);
 
     }
+
+    public static void OpenTownLevel(Player player){
+        String name = "Town";
+        int nRow = 3;
+        PlayerDataClass playerStat = PlayerStatStorage.getStat(player);
+        TownDataClass townData = TownDataStorage.getTown(player);
+        Gui gui = Gui.gui()
+                .title(Component.text(name))
+                .type(GuiType.CHEST)
+                .rows(nRow)
+                .create();
+
+        ItemStack TownIcon = HeadUtils.getTownIcon(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());
+        ItemStack upgradeTownLevel = HeadUtils.getCustomLoreItem(Material.EMERALD, "Upgrade town level");
+        ItemStack upgradeChunkCap = HeadUtils.makeSkull("Upgrade claim cap","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
+        ItemStack upgradePlayerCap = HeadUtils.makeSkull("Upgrade player Cap","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==");
+
+        upgradeTownLevel = HeadUtils.addLore(upgradeTownLevel,"Town's current level is : " + townData.getTownLevel().getTownLevel(),"Upgrade cost: " +townData.getTownLevel().getMoneyRequiredTownLevel());
+
+
+
+        GuiItem _TownIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+        GuiItem _upgradeTownLevel = ItemBuilder.from(upgradeTownLevel).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+        GuiItem _upgradeChunkCap = ItemBuilder.from(upgradeChunkCap).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+        GuiItem _upgradePlayerCap = ItemBuilder.from(upgradePlayerCap).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+
+
+
+        gui.setItem(1,5, _TownIcon);
+        gui.setItem(2,3, _upgradeTownLevel);
+        gui.setItem(2,5, _upgradeChunkCap);
+        gui.setItem(2,7, _upgradePlayerCap);
+
+        gui.open(player);
+
+    }
+
     //Done
     public static void OpenTownSettings(Player player) {
 

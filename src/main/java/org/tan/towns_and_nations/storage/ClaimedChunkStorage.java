@@ -65,8 +65,6 @@ public class ClaimedChunkStorage {
 
             Type type = new TypeToken<Set<ClaimedChunkDataClass>>() {}.getType();
             claimedChunks = gson.fromJson(reader, type);
-
-            System.out.println("[TaN]Claimed chunks Loaded");
         }
 
     }

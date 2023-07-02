@@ -49,7 +49,6 @@ public class TownDataClass {
     public String getTownId() {
         return this.TownId;
     }
-
     public void setTownId(String townId) {
         this.TownId = townId;
     }
@@ -173,5 +172,9 @@ public class TownDataClass {
     }
     public TownTreasury getTreasury(){
         return this.townTreasury;
+    }
+
+    public TownLevel getTownLevel(){
+        return this.townLevel;
     }
 }

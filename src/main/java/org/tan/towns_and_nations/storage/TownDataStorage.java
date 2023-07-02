@@ -76,8 +76,6 @@ public class TownDataStorage {
                     ID = newID;
             }
             newTownId = ID+1;
-            System.out.println("[TaN]Town Stats Loaded");
-            System.out.println("[TaN]First Free Number in town ID:" + ID);
 
         }
 

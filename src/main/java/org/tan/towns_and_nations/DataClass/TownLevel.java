@@ -56,15 +56,15 @@ public class TownLevel {
     }
 
     public int getMoneyRequiredTownLevel() {
-        return getRequiredMoney("TownLevelUpRequirement.yml", "TownExpression", getTownLevel());
+        return getRequiredMoney("townLevelUpRequirement.yml", "TownExpression", getTownLevel());
     }
 
     public int getMoneyRequiredPlayerCap() {
-        return getRequiredMoney("TownLevelUpRequirement.yml", "expression", getPlayerCapLevel());
+        return getRequiredMoney("townLevelUpRequirement.yml", "expression", getPlayerCapLevel());
     }
 
     public int getMoneyRequiredChunkCap() {
-        return getRequiredMoney("TownLevelUpRequirement.yml", "expression", getChunkCapLevel());
+        return getRequiredMoney("townLevelUpRequirement.yml", "expression", getChunkCapLevel());
     }
 
     private int getRequiredMoney(String configFileName, String expressionKey, int level) {
