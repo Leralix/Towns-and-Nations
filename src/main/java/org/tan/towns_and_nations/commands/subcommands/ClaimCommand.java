@@ -19,7 +19,6 @@ public class ClaimCommand extends SubCommand {
         return "claim";
     }
 
-
     @Override
     public String getDescription() {
         return "claim a chunk";
@@ -50,27 +49,21 @@ public class ClaimCommand extends SubCommand {
             player.sendMessage(getTANString() + " You are not the leader of your town. For now, only the leader of a town can claim");
             return;
         }
+
         Chunk chunk = player.getLocation().getChunk();
         if(ClaimedChunkStorage.isChunkClaimed(chunk)){
             player.sendMessage(getTANString() + " This chunk is already claimed by: " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
             return;
         }
-        if(ClaimedChunkStorage.isChunkClaimed(chunk)){
-            player.sendMessage(getTANString() + " This chunk is already claimed by: " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
-            return;
+        if(townStat.getChunkSettings().getNumberOfClaimedChunk() > townStat.getTownLevel().getChunkCap()){
+            player.sendMessage(getTANString() + " You reached the maximum number of chunk claimed, upgrade your town to get more");
         }
 
-        if(townStat.getChunkSettings().getNumberOfClaimedChunk() > 5){
-            if(playerStat.getBalance() < 2){
-                player.sendMessage(getTANString() + " You need at least 1$ to claim more chunks");
-                return;
-            }
-            playerStat.removeFromBalance(1);
-        }
+
 
         ClaimedChunkStorage.claimChunk(player.getLocation().getChunk(),townStat.getTownId());
         TownDataStorage.getTown(player).getChunkSettings().incrementNumberOfClaimedChunk();
-        player.sendMessage(getTANString() + " Chunk claimed ! Current number of chunk: " + ChatColor.YELLOW + townStat.getChunkSettings().getNumberOfClaimedChunk());
+        player.sendMessage(getTANString() + " Chunk claimed ! Current number of chunk: " + ChatColor.YELLOW + townStat.getChunkSettings().getNumberOfClaimedChunk() + "/" + townStat.getTownLevel().getChunkCap());
 
     }
 

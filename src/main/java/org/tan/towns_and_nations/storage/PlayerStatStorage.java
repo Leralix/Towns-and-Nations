@@ -14,14 +14,14 @@ public class PlayerStatStorage {
 
     private static ArrayList<PlayerDataClass> stats = new ArrayList<PlayerDataClass>();
 
-    public static void createPlayerDataClass(Player p) throws IOException {
+    public static void createPlayerDataClass(Player p) {
 
         PlayerDataClass stat = new PlayerDataClass(p);
         stats.add(stat);
         saveStats();
     }
 
-    public static void deleteStat(String uuid) throws IOException {
+    public static void deleteStat(String uuid) {
         for (PlayerDataClass stat : stats) {
             if (stat.getUuid().equalsIgnoreCase(uuid)) {
                 stats.remove(stat);

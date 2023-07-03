@@ -25,7 +25,10 @@ public class GuiManager2 {
 
     //done
     public static void OpenMainMenu(Player player){
-        //Paramètres pincipaux
+
+        if(PlayerStatStorage.getStat(player) == null){
+            PlayerStatStorage.createPlayerDataClass(player);
+        }
 
         String name = "Main menu";
         int nRow = 3;
@@ -53,7 +56,7 @@ public class GuiManager2 {
         });
         GuiItem Town = ItemBuilder.from(TownHead).asGuiItem(event -> {
             event.setCancelled(true);
-            if(PlayerStatStorage.getStat(player.getUniqueId().toString()).haveTown()){
+            if(Objects.requireNonNull(PlayerStatStorage.getStat(player)).haveTown()){
                 OpenTownMenuHaveTown(player);
             }
             else{
@@ -99,23 +102,18 @@ public class GuiManager2 {
 
         GuiItem Head = ItemBuilder.from(PlayerHead).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage("En developpement");
         });
         GuiItem Gold = ItemBuilder.from(GoldPurse).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage("En developpement");
         });
         GuiItem Kill = ItemBuilder.from(killList).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage("En developpement");
         });
         GuiItem LD = ItemBuilder.from(lastDeath).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage("En developpement");
         });
         GuiItem RPkill = ItemBuilder.from(totalRpKills).asGuiItem(event -> {
             event.setCancelled(true);
-            player.closeInventory();
         });
         GuiItem Back = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
@@ -133,9 +131,12 @@ public class GuiManager2 {
     }
     //Done
     public static void openTownMenuNoTown(Player player){
+
+
+        PlayerDataClass playerStat = PlayerStatStorage.getStat(player);
+
         String name = "Town";
         int nRow = 3;
-
         Gui gui = Gui.gui()
                 .title(Component.text(name))
                 .type(GuiType.CHEST)
@@ -143,20 +144,20 @@ public class GuiManager2 {
                 .create();
 
 
-        ItemStack createNewland = HeadUtils.getCustomLoreItem(Material.GRASS_BLOCK, "Create new Town","Cost: 100 gold");
+        ItemStack createNewLand = HeadUtils.getCustomLoreItem(Material.GRASS_BLOCK, "Create new Town","Cost: 100 gold");
         ItemStack joinLand = HeadUtils.getCustomLoreItem(Material.ANVIL, "Join a Town","Look at every public town");
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Back", null);
 
-        GuiItem _create = ItemBuilder.from(createNewland).asGuiItem(event -> {
+        GuiItem _create = ItemBuilder.from(createNewLand).asGuiItem(event -> {
             event.setCancelled(true);
-            PlayerDataClass playerStat = PlayerStatStorage.getStat(player.getUniqueId().toString());
-            if (playerStat.getBalance() < 100) {
-                player.sendMessage("You don't have enough money");
-            } else {
-                player.sendMessage("Write the name of the town in the chat");
-                player.closeInventory();
-                PlayerChatListenerStorage.addPlayer("creationVille",player);
-            }
+            assert playerStat != null;
+                if (playerStat.getBalance() < 100) {
+                    player.sendMessage("You don't have enough money");
+                } else {
+                    player.sendMessage("Write the name of the town in the chat");
+                    player.closeInventory();
+                    PlayerChatListenerStorage.addPlayer("creationVille",player);
+                }
         });
 
         GuiItem _join = ItemBuilder.from(joinLand).asGuiItem(event -> {
@@ -557,7 +558,6 @@ public class GuiManager2 {
 
         String name = "Town";
         int nRow = 3;
-        PlayerDataClass playerStat = PlayerStatStorage.getStat(player.getUniqueId().toString());
 
         Gui gui = Gui.gui()
                 .title(Component.text(name))
