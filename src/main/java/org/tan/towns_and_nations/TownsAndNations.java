@@ -47,7 +47,7 @@ public final class TownsAndNations extends JavaPlugin {
         loadXpRequirements();
         loadCustomConfig("townLevelUpRequirement.yml");
 
-        logger.info("[TaN] -Loading Configs");
+        logger.info("[TaN] -Loading Lang");
         ChatMessage.loadTranslations();
 
         logger.info("[TaN] -Loading Stats");
@@ -100,6 +100,7 @@ public final class TownsAndNations extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BreakBlockListener(), this);
         getServer().getPluginManager().registerEvents(new VillagerInteractionListener(), this);
         getServer().getPluginManager().registerEvents(new ChunkListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
     }
 
     public static TownsAndNations getPlugin() {

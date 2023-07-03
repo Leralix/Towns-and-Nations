@@ -178,7 +178,4 @@ public class TownDataClass {
         return this.townTreasury;
     }
 
-    public TownLevel getTownLevel(){
-        return this.townLevel;
-    }
 }
