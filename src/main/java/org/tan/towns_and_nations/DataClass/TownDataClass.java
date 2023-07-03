@@ -168,6 +168,10 @@ public class TownDataClass {
         return false;
     }
 
+    public TownLevel getTownLevel() {
+        return townLevel;
+    }
+
     public int getBalance(){
         return this.townTreasury.getBalance();
     }

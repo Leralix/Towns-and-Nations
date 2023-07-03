@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.tan.towns_and_nations.Lang.ChatMessage;
 import org.tan.towns_and_nations.commands.CommandManager;
 import org.tan.towns_and_nations.commands.DebugCommand;
 import org.tan.towns_and_nations.listeners.*;
@@ -40,18 +41,23 @@ public final class TownsAndNations extends JavaPlugin {
 
         logger.info("[TaN] Loading Plugin");
 
-        logger.info("[TaN] Loading Configs");
+        logger.info("[TaN] -Loading Configs");
 
         loadCustomConfig("config.yml");
         loadCustomConfig("townLevelUpRequirement.yml");
 
-        logger.info("[TaN] Loading Stats");
+        logger.info("[TaN] -Loading Configs");
+        ChatMessage.loadTranslations();
+
+        logger.info("[TaN] -Loading Stats");
 
         //Loading data
         PlayerStatStorage.loadStats();
         TownDataStorage.loadStats();
         ClaimedChunkStorage.loadStats();
         PlayerChatListenerStorage.load();
+
+
 
 
         //API luckperms

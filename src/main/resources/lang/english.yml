@@ -1,0 +1,49 @@
+messages:
+  WELCOME: "Welcome"
+
+  PLUGIN_STRING: "[TAN]"
+
+  #Commands
+  NOT_ENOUGH_ARGS_ERROR: "Not enough arguments"
+  TOO_MANY_ARGS_ERROR: "Too many arguments"
+  SYNTAX_ERROR: "Incorrect syntax"
+  CORRECT_SYNTAX: "Correct syntax: {value1}"
+
+  #Claim chunk command
+  CHUNK_CLAIMED_COMMAND_DESC: "Claim a chunk"
+  PLAYER_NO_TOWN: "You do not have a town !"
+  PLAYER_NOT_LEADER_WARNING: "You are not the leader of your town"
+  CHUNK_ALREADY_CLAIMED_WARNING: "This chunk is already claimed by: {value1}"
+  MAX_CHUNK_LIMIT_REACHED: "You reached the maximum number of chunk claimed, upgrade your town to get more"
+  CHUNK_CLAIMED_SUCCESS: "Chunk claimed ! Current number of chunk: {value1} /{value2})"
+
+  #Invite player to town command
+  TOWN_INVITE_COMMAND_DESC: "invite a player to the town"
+  PLAYER_NOT_FOUND: "Invalid name, or the player is not connected"
+  INVITATION_SENT_SUCCESS: "Invitation sent to {value1}"
+  INVITATION_RECEIVED_1: "You have been invited by {value1} to the town: {value2}"
+  INVITATION_RECEIVED_2: "To join his town, write /tan join {value1}"
+  INVITATION_RECEIVED_3: "[Or click here]"
+
+  #Accept the town invitation
+  TOWN_ACCEPT_INVITE_DESC: "Join a town that invited you"
+  TOWN_INVITATION_ACCEPTED: "You are now a member of the town: {value1}"
+
+  #Town and Nation GUI
+  TOWN_GUI_COMMAND_DESC: "Open the town and nation GUI"
+
+  #Pay command
+  PAY_COMMAND_DESC: "Give money to another player"
+  PAY_INVALID_SYNTAX: "Invalid syntax for the amount of money"
+  PAY_MINIMUM_REQUIRED: "You need to send a least 1$"
+  PAY_NOT_ENOUGH_MONEY: "You do not have enough money. You need {value1} more"
+
+
+
+
+
+
+
+
+
+
