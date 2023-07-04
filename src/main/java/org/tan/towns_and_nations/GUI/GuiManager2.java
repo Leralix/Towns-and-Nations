@@ -518,7 +518,7 @@ public class GuiManager2 {
             else{
                 player.sendMessage("The town do not have enough money to upgrade");
             }
-            
+
         });
 
 

@@ -2,42 +2,37 @@ package org.tan.towns_and_nations.Lang;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.tan.towns_and_nations.TownsAndNations;
-import org.tan.towns_and_nations.utils.ConfigUtil;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum ChatMessage {
+public enum Lang {
     WELCOME,
+    LANGUAGE_SUCCESSFULLY_LOADED,
     PLUGIN_STRING;
 
-    private static final Map<ChatMessage, String> translations = new HashMap<>();
+    private static final Map<Lang, String> translations = new HashMap<>();
 
-
-
-    public static void loadTranslations() {
+    public static void loadTranslations(String filename) {
 
         File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
 
         if (!langFolder.exists()) {
             langFolder.mkdir();
         }
-        ConfigUtil.saveResource("lang/english.yml");
-        loadTranslations("lang/english.yml");
 
-    }
+        File file = new File(langFolder, filename);
 
-    private static void loadTranslations(String filename) {
+        if (!file.exists()) {
+            TownsAndNations.getPlugin().saveResource("lang/" + filename, false);
+        }
 
-
-        File file = new File(filename);
         System.out.println(file);
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         System.out.println(config);
 
-        for (ChatMessage key : ChatMessage.values()) {
+        for (Lang key : Lang.values()) {
             String message = config.getString("chatMessage." + key.name());
             if (message != null) {
                 translations.put(key, message);
@@ -49,4 +44,18 @@ public enum ChatMessage {
     public String getTranslation() {
         return translations.get(this);
     }
+
+    public String getTranslation(Object... placeholders) {
+        String translation = translations.get(this);
+
+        if (translation != null) {
+            for (int i = 0; i < placeholders.length; i++) {
+                translation = translation.replace("{" + i + "}", placeholders[i].toString());
+            }
+        }
+
+        return translation;
+    }
+
+
 }

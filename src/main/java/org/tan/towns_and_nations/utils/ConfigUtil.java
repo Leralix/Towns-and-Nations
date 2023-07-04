@@ -19,7 +19,7 @@ public class ConfigUtil {
     public static void saveResource(String fileName) {
         File file = new File(TownsAndNations.getPlugin().getDataFolder(),fileName);
         if (!file.exists()) {
-            TownsAndNations.getPlugin().saveResource("townLevelUpRequirement.yml", false);
+            TownsAndNations.getPlugin().saveResource(fileName, false);
         }
     }
 

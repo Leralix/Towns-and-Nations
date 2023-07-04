@@ -1,16 +1,8 @@
 package org.tan.towns_and_nations;
 
 
-import net.luckperms.api.LuckPerms;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.tan.towns_and_nations.Lang.ChatMessage;
+import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.commands.CommandManager;
 import org.tan.towns_and_nations.commands.DebugCommand;
 import org.tan.towns_and_nations.listeners.*;
@@ -20,9 +12,6 @@ import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 import org.tan.towns_and_nations.utils.ConfigUtil;
 
-import java.beans.Expression;
-import java.io.File;
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -48,7 +37,8 @@ public final class TownsAndNations extends JavaPlugin {
         ConfigUtil.loadCustomConfig("townLevelUpRequirement.yml");
 
         logger.info("[TaN] -Loading Lang");
-        ChatMessage.loadTranslations();
+        Lang.loadTranslations("lang/english.yml");
+        logger.info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.getTranslation());
 
         logger.info("[TaN] -Loading Stats");
 
