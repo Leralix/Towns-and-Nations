@@ -1,4 +1,4 @@
-messages:
+language:
   WELCOME: "Welcome"
   LANGUAGE_SUCCESSFULLY_LOADED: "English language successfully loaded"
   PLUGIN_STRING: "[TAN]"
@@ -156,7 +156,7 @@ messages:
 
 
   #Transaction
-  TRANSACTION_BASE_STRING: "Transaction [date= {0} , transaction party= {1} , amount= {2} ";
+  TRANSACTION_BASE_STRING: "Transaction [date= {0} , transaction party= {1} , amount= {2} "
 
 
 

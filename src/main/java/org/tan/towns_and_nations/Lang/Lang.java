@@ -24,21 +24,19 @@ public enum Lang {
 
         File file = new File(langFolder, filename);
 
-        if (!file.exists()) {
-            TownsAndNations.getPlugin().saveResource("lang/" + filename, false);
-        }
+        TownsAndNations.getPlugin().saveResource("lang/" + filename, false);
 
-        System.out.println(file);
+
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        System.out.println(config);
+
 
         for (Lang key : Lang.values()) {
-            String message = config.getString("chatMessage." + key.name());
+
+            String message = config.getString("language." + key.name());
             if (message != null) {
                 translations.put(key, message);
             }
         }
-        System.out.println(translations);
     }
 
     public String getTranslation() {
