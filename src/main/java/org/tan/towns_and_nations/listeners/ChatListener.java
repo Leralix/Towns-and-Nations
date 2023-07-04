@@ -62,7 +62,7 @@ public class ChatListener implements Listener {
             TownDataClass playerTown = TownDataStorage.getTown(player);
 
             sender.removeFromBalance(amount);
-            playerTown.getTreasury().modifyBalance(amount);
+            playerTown.getTreasury().addToBalance(amount);
 
             playerTown.getTreasury().addDonation(LocalDate.now(),player.getName(),amount);
             player.sendMessage(ChatUtils.getTANString() + "You sent " + ChatColor.YELLOW + amount + "$"+ ChatColor.WHITE +" to your town");

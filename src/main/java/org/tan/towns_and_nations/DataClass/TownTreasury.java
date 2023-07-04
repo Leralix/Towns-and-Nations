@@ -31,10 +31,12 @@ public class TownTreasury {
     public int getBalance(){
         return this.balance;
     }
-    public void modifyBalance(int amount){
+    public void addToBalance(int amount){
         this.balance = this.balance + amount;
     }
-
+    public void removeToBalance(int amount){
+        this.balance = this.balance - amount;
+    }
 
     public void add1FlatTax(){
         this.flatTax = this.flatTax + 1;
@@ -91,7 +93,6 @@ public class TownTreasury {
 
     public ArrayList<String> getTaxLimitedHistory(int wantedNumberOfRows){
 
-
             return null;
     }
     public ArrayList<String> getDonationLimitedHistory(int wantedNumberOfRows){
@@ -108,7 +109,6 @@ public class TownTreasury {
         }
         return latestDonations;
     }
-
     public ArrayList<String> getMiscellaneousLimitedHistory(int wantedNumberOfRows){
 
         int miscSize = this.miscellaneousPurchaseHistory.size();

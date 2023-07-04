@@ -18,6 +18,7 @@ import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
 import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
+import org.tan.towns_and_nations.utils.ConfigUtil;
 
 import java.beans.Expression;
 import java.io.File;
@@ -29,7 +30,6 @@ public final class TownsAndNations extends JavaPlugin {
 
     private static TownsAndNations plugin;
     static Logger logger;
-    private static final Map<String, FileConfiguration> configs = new HashMap<>();
 
 
     @Override
@@ -43,9 +43,9 @@ public final class TownsAndNations extends JavaPlugin {
 
         logger.info("[TaN] -Loading Configs");
 
-        loadCustomConfig("config.yml");
-        loadXpRequirements();
-        loadCustomConfig("townLevelUpRequirement.yml");
+        ConfigUtil.loadCustomConfig("config.yml");
+        ConfigUtil.saveResource("townLevelUpRequirement.yml");
+        ConfigUtil.loadCustomConfig("townLevelUpRequirement.yml");
 
         logger.info("[TaN] -Loading Lang");
         ChatMessage.loadTranslations();
@@ -111,27 +111,7 @@ public final class TownsAndNations extends JavaPlugin {
         return logger;
     }
 
-    public void loadCustomConfig(String fileName) {
 
-        File configFile = new File(getDataFolder(), fileName);
-        if (!configFile.exists()) {
-            getLogger().severe(fileName + " does not exist!");
-            return;
-        }
-        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
-        configs.put(fileName, config);
-    }
-
-    public static FileConfiguration getCustomConfig(String fileName) {
-        return configs.get(fileName);
-    }
-
-    public void loadXpRequirements() {
-        File file = new File(plugin.getDataFolder(), "townLevelUpRequirement.yml");
-        if (!file.exists()) {
-            plugin.saveResource("townLevelUpRequirement.yml", false);
-        }
-    }
 
 
 }

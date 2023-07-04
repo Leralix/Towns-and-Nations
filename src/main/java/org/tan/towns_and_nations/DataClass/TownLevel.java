@@ -4,6 +4,7 @@ import net.objecthunter.exp4j.Expression;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.tan.towns_and_nations.TownsAndNations;
+import org.tan.towns_and_nations.utils.ConfigUtil;
 import org.tan.towns_and_nations.utils.YAMLutil;
 
 public class TownLevel {
@@ -18,34 +19,38 @@ public class TownLevel {
         this.chunkCapUpgrade = 0;
 
     }
+
     public int getTownLevel() {
         return this.townLevel;
     }
-
-    public void setTownLevel(int townLevel) {
-        this.townLevel = townLevel;
+    public void TownLevelUp(){
+        this.townLevel = this.townLevel + 1;
     }
 
     public int getPlayerCapLevel() {
         return this.playerCapLevel;
     }
+    public void PlayerCapLevelUp(){
+        this.playerCapLevel = this.playerCapLevel + 1;
+    }
     public int getPlayerCap() {
-        FileConfiguration config =  TownsAndNations.getCustomConfig("config.yml");
+        FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
         int basePlayerCap = config.getInt("TownStartingMembersCap");
         int multiplierPlayerCap = config.getInt("UpgradeMembers");
 
         return basePlayerCap + getPlayerCapLevel() * multiplierPlayerCap;
     }
 
-    public void setPlayerCapLevel(int playerCapLevel) {
-        this.playerCapLevel = playerCapLevel;
-    }
 
     public int getChunkCapLevel() {
         return this.chunkCapUpgrade;
     }
+    public void chunkCapLevelUp(){
+        this.chunkCapUpgrade = this.chunkCapUpgrade + 1;
+    }
+
     public int getChunkCap() {
-        FileConfiguration config =  TownsAndNations.getCustomConfig("config.yml");
+        FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
         int baseChunkCap = config.getInt("TownStartingChunksCap");
         int multiplierChunkCap = config.getInt("UpgradeMaxChunk");
         return baseChunkCap + getPlayerCapLevel() * multiplierChunkCap;
@@ -68,7 +73,7 @@ public class TownLevel {
     }
 
     private int getRequiredMoney(String configFileName, String expressionKey, int level) {
-        FileConfiguration fg = TownsAndNations.getPlugin().getCustomConfig(configFileName);
+        FileConfiguration fg = ConfigUtil.getCustomConfig(configFileName);
         ConfigurationSection section = fg.getConfigurationSection("default");
         Expression price = YAMLutil.getExpression(section, expressionKey);
         price.setVariable("level", level);

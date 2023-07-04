@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
+import org.tan.towns_and_nations.DataClass.TownLevel;
 import org.tan.towns_and_nations.utils.ChatUtils;
 import org.tan.towns_and_nations.utils.HeadUtils;
 import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
@@ -340,7 +341,7 @@ public class GuiManager2 {
 
 
         ItemStack goldIcon = HeadUtils.makeSkull("Treasury","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack goldSpendingIcon = HeadUtils.makeSkull("Spendings","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack goldSpendingIcon = HeadUtils.makeSkull("Spending","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
         ItemStack lowerTax = HeadUtils.makeSkull("Lower the tax","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=");
         ItemStack increaseTax = HeadUtils.makeSkull("Increase the tax","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
         ItemStack taxInfo = HeadUtils.makeSkull("Flat tax","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk4ZGY0MmY0NzdmMjEzZmY1ZTlkN2ZhNWE0Y2M0YTY5ZjIwZDljZWYyYjkwYzRhZTRmMjliZDE3Mjg3YjUifX19");
@@ -457,6 +458,8 @@ public class GuiManager2 {
         int nRow = 3;
         PlayerDataClass playerStat = PlayerStatStorage.getStat(player);
         TownDataClass townData = TownDataStorage.getTown(player);
+        TownLevel townLevel = townData.getTownLevel();
+
         Gui gui = Gui.gui()
                 .title(Component.text(name))
                 .type(GuiType.CHEST)
@@ -468,8 +471,9 @@ public class GuiManager2 {
         ItemStack upgradeChunkCap = HeadUtils.makeSkull("Upgrade claim cap","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
         ItemStack upgradePlayerCap = HeadUtils.makeSkull("Upgrade player Cap","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==");
 
-        upgradeTownLevel = HeadUtils.addLore(upgradeTownLevel,"Town's current level is : " + townData.getTownLevel().getTownLevel(),"Upgrade cost: " +townData.getTownLevel().getMoneyRequiredTownLevel());
-
+        upgradeTownLevel = HeadUtils.addLore(upgradeTownLevel,"Town's current level is : " + townLevel.getTownLevel(),"Upgrade cost: " + townLevel.getMoneyRequiredTownLevel());
+        upgradeChunkCap = HeadUtils.addLore(upgradeChunkCap,"Chunk cap current level is : " + townLevel.getChunkCapLevel(),"Upgrade cost: " + townLevel.getMoneyRequiredChunkCap());
+        upgradePlayerCap = HeadUtils.addLore(upgradePlayerCap,"Chunk player current level is : " + townLevel.getPlayerCapLevel(),"Upgrade cost: " + townLevel.getMoneyRequiredPlayerCap());
 
 
         GuiItem _TownIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {
@@ -477,12 +481,44 @@ public class GuiManager2 {
         });
         GuiItem _upgradeTownLevel = ItemBuilder.from(upgradeTownLevel).asGuiItem(event -> {
             event.setCancelled(true);
+
+            if(townData.getTreasury().getBalance() > townLevel.getMoneyRequiredTownLevel()){
+                townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredTownLevel());
+                townLevel.TownLevelUp();
+                player.sendMessage("Level up !");
+                OpenTownLevel(player);
+            }
+            else{
+                player.sendMessage("The town do not have enough money to upgrade");
+            }
+
         });
         GuiItem _upgradeChunkCap = ItemBuilder.from(upgradeChunkCap).asGuiItem(event -> {
             event.setCancelled(true);
+
+            if(townData.getTreasury().getBalance() > townLevel.getMoneyRequiredChunkCap()){
+                townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredChunkCap());
+                townLevel.chunkCapLevelUp();
+                player.sendMessage("Level up !");
+                OpenTownLevel(player);
+            }
+            else{
+                player.sendMessage("The town do not have enough money to upgrade");
+            }
         });
         GuiItem _upgradePlayerCap = ItemBuilder.from(upgradePlayerCap).asGuiItem(event -> {
             event.setCancelled(true);
+
+            if(townData.getTreasury().getBalance() > townLevel.getMoneyRequiredPlayerCap()){
+                townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredPlayerCap());
+                townLevel.PlayerCapLevelUp();
+                player.sendMessage("Level up !");
+                OpenTownLevel(player);
+            }
+            else{
+                player.sendMessage("The town do not have enough money to upgrade");
+            }
+            
         });
 
 
@@ -749,12 +785,11 @@ public class GuiManager2 {
         }
         else if(action.equals("remove")){
             int i = 0;
-            player.sendMessage("remove");
             for(String townUUID : TownListUUID){
                 ItemStack townIcon = HeadUtils.getTownIconWithInformations(townUUID);
                 GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                     event.setCancelled(true);
-                    String message = "Guerre retirée à : " + townIcon.getItemMeta().getDisplayName();
+                    String message = "Relation modifiée avec : " + townIcon.getItemMeta().getDisplayName();
                     player.sendMessage(message);
                     TownDataStorage.getTown(playerTown.getTownId()).removeTownRelations(relation,townUUID);
                     OpenTownRelation(player,relation);
@@ -767,11 +802,6 @@ public class GuiManager2 {
                 event.setCancelled(true);
             });
         }
-
-
-
-
-
 
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Back", null);
 

@@ -3,6 +3,10 @@ messages:
 
   PLUGIN_STRING: "[TAN]"
 
+  #Common errors
+  PLAYER_NO_TOWN: "You do not have a town !"
+  PLAYER_NO_PERMISSION: "You do not have the permission of performing this action"
+
   #Commands
   NOT_ENOUGH_ARGS_ERROR: "Not enough arguments"
   TOO_MANY_ARGS_ERROR: "Too many arguments"
@@ -10,9 +14,7 @@ messages:
   CORRECT_SYNTAX: "Correct syntax: {value1}"
 
   #Claim chunk command
-  CHUNK_CLAIMED_COMMAND_DESC: "Claim a chunk"
-  PLAYER_NO_TOWN: "You do not have a town !"
-  PLAYER_NOT_LEADER_WARNING: "You are not the leader of your town"
+  CLAIM_CHUNK_COMMAND_DESC: "Claim a chunk"
   CHUNK_ALREADY_CLAIMED_WARNING: "This chunk is already claimed by: {value1}"
   MAX_CHUNK_LIMIT_REACHED: "You reached the maximum number of chunk claimed, upgrade your town to get more"
   CHUNK_CLAIMED_SUCCESS: "Chunk claimed ! Current number of chunk: {value1} /{value2})"
@@ -37,6 +39,132 @@ messages:
   PAY_INVALID_SYNTAX: "Invalid syntax for the amount of money"
   PAY_MINIMUM_REQUIRED: "You need to send a least 1$"
   PAY_NOT_ENOUGH_MONEY: "You do not have enough money. You need {value1} more"
+
+  #Balance command
+  BAL_COMMAND_DESC: "Look at your balance"
+  BAL_AMOUNT: "Your balance: {value1}"
+
+  #Uncliam command
+  UNCLAIM_CHUNK_COMMAND_DESC: "Unclaim a chunk"
+  UNCLAIMED_CHUNK_SUCCESS: "Chunk unclaimed ! Current number of chunk: {value1}"
+  UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "This chunk is claimed by another town: {value1}"
+
+  #Debug commands
+  UNKNOWN_DEBUG_COMMAND: "Unknown debug, commands are:"
+  TOWN_LIST_DEBUG: "List of every towns:"
+  TOWN_NEXT_KEY_MESSAGE: "Next town ID: {value1}"
+  COMMAND_GENERIC_SUCCESS: "Command successfully executed"
+
+  #Chat commands
+  PLAYER_NOT_ENOUGH_MONEY: "You do not have enough money to perform this action"
+  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Write the name of the town if the chat. It cannot be changed afterward for now"
+
+  #Villager names
+  NPC_GOLDSMITH: "Goldsmith"
+
+  #GUI text
+
+  GUI_WARNING_STILL_IN_DEV: "Still in developpement"
+  GUI_BACK_ARROW: "Return"
+  GUI_QUIT_ARROW: "Quit"
+  GUI_NEXT_PAGE: "Next"
+  GUI_PREVIOUS_PAGE: "Previous"
+
+  GUI_KINGDOM_ICON: "Kingdom"
+  GUI_REGION_ICON: "Region"
+  GUI_TOWN_ICON: "Town"
+  GUI_PROFILE_ICON: "Profile"
+
+  GUI_YOUR_PROFILE: "Your profile"
+  GUI_CURRENT_BALANCE: "Current balance: {value1}"
+  GUI_CURRENT_PVE_KILLS: "Current mobs killed: {value1}"
+  GUI_CURRENT_TIME_ALIVE: "Current time alive: {value1}"
+  GUI_CURRENT_MURDER: "You killed {value1} player"
+
+  GUI_TOWN_TREASURY_ICON: "Treasury"
+  GUI_TOWN_MEMBERS_ICON: "Members"
+  GUI_CLAIM_ICON: "Land"
+  GUI_RELATION_ICON: "Relation"
+  GUI_TOWN_LEVEL_ICON: "Town level"
+  GUI_TOWN_SETTINGS_ICON: "Settings"
+
+  GUI_TREASURY_STORAGE: "Treasury"
+  GUI_TREASURY_STORAGE_DESC1: "Town current treasury: {value1}"
+  GUI_TREASURY_STORAGE_DESC2: "Evolution next week: {value1}"
+  GUI_TREASURY_SPENDING: "Spending"
+  GUI_TREASURY_SPENDING_DESC1: "Town current spending: {value1}"
+  GUI_TREASURY_SPENDING_DESC2: "From Salary: {value1}"
+  GUI_TREASURY_SPENDING_DESC3: "From Chunks: {value1}"
+  GUI_TREASURY_LOWER_TAX: "Lower the tax"
+  GUI_TREASURY_LOWER_TAX_DESC1: "Lower the tax by 1$"
+  GUI_TREASURY_INCREASE_TAX: "Increase the tax"
+  GUI_TREASURY_INCREASE_TAX_DESC1: "Increase the tax by 1$"
+  GUI_TREASURY_FLAT_TAX: "Flat tax"
+  GUI_TREASURY_FLAT_TAX_DESC1: "Town current tax"
+  GUI_TREASURY_TAX_HISTORY: "Tax History"
+  GUI_TREASURY_SALARY_HISTORY: "Salary history"
+  GUI_TREASURY_SALARY_HISTORY_DESC1: "Salary spending are up to: {value1}"
+  GUI_TREASURY_CHUNK_SPENDING_HISTORY: "Chunk spending history"
+  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1: "Chunk spending are up to: {value1}"
+  GUI_MISCELLANEOUS_SPENDING: "Miscellaneous spending"
+  GUI_MISCELLANEOUS_SPENDING_DESC1: "Miscellaneous spending are not yet implemented"
+  GUI_TREASURY_DONATION: "Make a donation"
+  GUI_TREASURY_DONATION_DESC1: "Donate money to the town to help it grow"
+  GUI_TREASURY_DONATION_HISTORY: "Donation history"
+
+  GUI_TOWN_LEVEL_INFO: "{value1}" #town's name
+
+  GUI_TOWN_LEVEL_UP: "Upgrade town level"
+  GUI_TOWN_LEVEL_UP_DESC1: "{value1} current level is: {value2}"
+  GUI_TOWN_LEVEL_UP_DESC2: "Level {value1} upgrade cost: {value2}"
+  GUI_TOWN_LEVEL_UP_CHUNK_CAP: "Upgrade claim max amount"
+  GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC1: "{value1} current level is: {value2}"
+  GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC2: "Level {value1} upgrade cost: {value2}"
+
+  GUI_TOWN_LEVEL_UP_PLAYER_CAP: "Upgrade player cap"
+  GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC1: "{value1} current level is: {value2}"
+  GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC2: "Level {value1} upgrade cost: {value2}"
+
+  GUI_TOWN_SETTINGS_LEAVE_TOWN: "Leave the town"
+  GUI_TOWN_SETTINGS_DELETE_TOWN: "Disband the town"
+  GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP: "Transfer town ownership"
+
+  GUI_TOWN_RELATION_WAR: "War"
+  GUI_TOWN_RELATION_EMBARGO: "Embargo"
+  GUI_TOWN_RELATION_NAP: "Non-aggression pact"
+  GUI_TOWN_RELATION_ALLIANCE: "Alliance"
+
+  GUI_TOWN_RELATION_ADD_TOWN: "Add town"
+  GUI_TOWN_RELATION_REMOVE_TOWN: "Remove town"
+  GUI_TOWN_CHANGED_RELATION_RESUME: "Your town has now the following relation with {value1}: {value2}"
+
+  GUI_TOWN_CLAIM_SETTINGS_DOOR: "Manage door access"
+  GUI_TOWN_CLAIM_SETTINGS_DOOR_DESC1: "Current door permission: {value1}"
+  GUI_TOWN_CLAIM_SETTINGS_CHEST: "Manage chest access"
+  GUI_TOWN_CLAIM_SETTINGS_CHEST_DESC1: "Current chest permission: {value1}"
+  GUI_TOWN_CLAIM_SETTINGS_BUILD: "Manage building permission"
+  GUI_TOWN_CLAIM_SETTINGS_BUILD_DESC1: "Current building permission: {value1}"
+  GUI_TOWN_CLAIM_SETTINGS_BREAK: "Manage breaking permission"
+  GUI_TOWN_CLAIM_SETTINGS_BREAK_DESC1: "Current breaking permission: {value1}"
+
+  #Chat Information
+
+  CHAT_CANT_LEAVE_TOWN_IF_LEADER: "You can't leave a town you are the leader, you need to disband it or give the leadership to someone else"
+  CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "You can't delete a town if you are not the leader"
+
+
+
+
+  #Transaction
+  TRANSACTION_BASE_STRING: "Transaction [date= {value1} , transaction party= {value2} , amount= {value3} ";
+
+
+
+
+
+
+
+
 
 
 
