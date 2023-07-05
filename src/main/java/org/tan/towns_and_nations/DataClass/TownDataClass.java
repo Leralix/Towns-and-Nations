@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 
 import java.util.*;
@@ -177,5 +178,15 @@ public class TownDataClass {
     public TownTreasury getTreasury(){
         return this.townTreasury;
     }
+
+
+    public void broadCastMessage(String message){
+        for (String playerId : townPlayerListId){
+            Objects.requireNonNull(Bukkit.getServer().getPlayer(playerId)).sendMessage(message);
+        }
+
+    }
+
+
 
 }

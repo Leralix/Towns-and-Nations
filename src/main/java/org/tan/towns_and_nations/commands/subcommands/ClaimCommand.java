@@ -3,8 +3,10 @@ package org.tan.towns_and_nations.commands.subcommands;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
+import org.tan.towns_and_nations.DataClass.ClaimedChunkSettings;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
+import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.TownsAndNations;
 import org.tan.towns_and_nations.commands.SubCommand;
 import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
@@ -21,7 +23,7 @@ public class ClaimCommand extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "claim a chunk";
+        return Lang.CLAIM_CHUNK_COMMAND_DESC.getTranslation();
     }
     public int getArguments(){ return 1;}
 
@@ -33,38 +35,42 @@ public class ClaimCommand extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args){
+        //Incorrect syntax
         if (args.length != 1){
-            player.sendMessage(getTANString() +  " Correct Syntax: " + getSyntax());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()) );
             return;
         }
-
+        //No town
         PlayerDataClass playerStat = PlayerStatStorage.getStat(player.getUniqueId().toString());
         if(!playerStat.haveTown()){
-            player.sendMessage(getTANString() + " You do not have a Town");
+            player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.getTranslation());
             return;
         }
-
+        //No permission
         TownDataClass townStat = TownDataStorage.getTown(player);
+        ClaimedChunkSettings townChunkInfo = townStat.getChunkSettings();
         if(!townStat.getUuidLeader().equals(playerStat.getUuid())){
-            player.sendMessage(getTANString() + " You are not the leader of your town. For now, only the leader of a town can claim");
+            player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION);
             return;
         }
-
-        Chunk chunk = player.getLocation().getChunk();
-        if(ClaimedChunkStorage.isChunkClaimed(chunk)){
-            player.sendMessage(getTANString() + " This chunk is already claimed by: " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
+        //Chunk already claimed
+        Chunk chunkToClaim = player.getLocation().getChunk();
+        if(ClaimedChunkStorage.isChunkClaimed(chunkToClaim)){
+            player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.getTranslation(
+                    ClaimedChunkStorage.getChunkOwnerName(chunkToClaim)));
             return;
         }
-        if(townStat.getChunkSettings().getNumberOfClaimedChunk() > townStat.getTownLevel().getChunkCap()){
-            player.sendMessage(getTANString() + " You reached the maximum number of chunk claimed, upgrade your town to get more");
+        //Chunk limit reached
+        if(townChunkInfo.getNumberOfClaimedChunk() > townStat.getTownLevel().getChunkCap()){
+            player.sendMessage(getTANString() + Lang.MAX_CHUNK_LIMIT_REACHED.getTranslation());
         }
 
+        ClaimedChunkStorage.claimChunk(chunkToClaim,townStat.getTownId());
+        townChunkInfo.incrementNumberOfClaimedChunk();
 
-
-        ClaimedChunkStorage.claimChunk(player.getLocation().getChunk(),townStat.getTownId());
-        TownDataStorage.getTown(player).getChunkSettings().incrementNumberOfClaimedChunk();
-        player.sendMessage(getTANString() + " Chunk claimed ! Current number of chunk: " + ChatColor.YELLOW + townStat.getChunkSettings().getNumberOfClaimedChunk() + "/" + townStat.getTownLevel().getChunkCap());
-
+        player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.getTranslation(
+                townChunkInfo.getNumberOfClaimedChunk(),
+                townStat.getTownLevel().getChunkCap()));
     }
 
 }

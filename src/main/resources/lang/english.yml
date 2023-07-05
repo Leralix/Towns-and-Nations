@@ -11,13 +11,13 @@ language:
   NOT_ENOUGH_ARGS_ERROR: "Not enough arguments"
   TOO_MANY_ARGS_ERROR: "Too many arguments"
   SYNTAX_ERROR: "Incorrect syntax"
-  CORRECT_SYNTAX: "Correct syntax: {0}"
+  CORRECT_SYNTAX_INFO: "Correct syntax: {0}"
 
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "Claim a chunk"
   CHUNK_ALREADY_CLAIMED_WARNING: "This chunk is already claimed by: {0}"
   MAX_CHUNK_LIMIT_REACHED: "You reached the maximum number of chunk claimed, upgrade your town to get more"
-  CHUNK_CLAIMED_SUCCESS: "Chunk claimed ! Current number of chunk: {0} /{1})"
+  CHUNK_CLAIMED_SUCCESS: "Chunk claimed ! Current number of chunk: {0}/{1})"
 
   #Invite player to town command
   TOWN_INVITE_COMMAND_DESC: "invite a player to the town"
@@ -29,7 +29,8 @@ language:
 
   #Accept the town invitation
   TOWN_ACCEPT_INVITE_DESC: "Join a town that invited you"
-  TOWN_INVITATION_ACCEPTED: "You are now a member of the town: {0}"
+  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "You are now a member of the town: {0}"
+  TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "{0} has joined the town !"
 
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Open the town and nation GUI"
@@ -39,6 +40,10 @@ language:
   PAY_INVALID_SYNTAX: "Invalid syntax for the amount of money"
   PAY_MINIMUM_REQUIRED: "You need to send a least 1$"
   PAY_NOT_ENOUGH_MONEY: "You do not have enough money. You need {0} more"
+  PAY_CONFIRMED_SENDER: "Sending {0}$ to {1}"
+  PAY_CONFIRMED_RECEIVER: "Receiving {0}$ from {1}"
+
+
 
   #Balance command
   BAL_COMMAND_DESC: "Look at your balance"

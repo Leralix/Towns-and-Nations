@@ -22,7 +22,7 @@ public class ChatUtils {
 
     @Contract(pure = true)
     public static @NotNull String getTANString(){
-        return org.bukkit.ChatColor.GOLD + "[TAN]" + org.bukkit.ChatColor.WHITE;
+        return org.bukkit.ChatColor.GOLD + "[TAN] " + org.bukkit.ChatColor.WHITE;
     }
 
     public static @NotNull String getTANDebugString(){

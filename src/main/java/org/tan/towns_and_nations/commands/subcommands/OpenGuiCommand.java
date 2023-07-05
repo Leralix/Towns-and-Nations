@@ -3,10 +3,13 @@ package org.tan.towns_and_nations.commands.subcommands;
 
 import org.bukkit.ChatColor;
 import org.tan.towns_and_nations.GUI.GuiManager2;
+import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.commands.SubCommand;
 
 
 import org.bukkit.entity.Player;
+
+import static org.tan.towns_and_nations.utils.ChatUtils.getTANString;
 
 
 public class OpenGuiCommand extends SubCommand  {
@@ -18,7 +21,7 @@ public class OpenGuiCommand extends SubCommand  {
 
     @Override
     public String getDescription() {
-        return "open the Town and Nation's gui";
+        return Lang.TOWN_GUI_COMMAND_DESC.getTranslation();
     }
     public int getArguments(){ return 2;}
 
@@ -34,8 +37,8 @@ public class OpenGuiCommand extends SubCommand  {
 
             getOpeningGui(player);
         }else if(args.length > 1){
-            player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +  " Too many arguments");
-            player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +  " Correct Syntax: " + getSyntax());
+            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.getTranslation());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
         }
 
     }

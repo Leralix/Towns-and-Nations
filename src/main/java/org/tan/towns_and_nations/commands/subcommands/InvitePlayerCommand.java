@@ -4,11 +4,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
+import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.commands.SubCommand;
 import org.tan.towns_and_nations.utils.ChatUtils;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 import org.tan.towns_and_nations.storage.TownInviteDataStorage;
+import static org.tan.towns_and_nations.utils.ChatUtils.getTANString;
 
 public class InvitePlayerCommand extends SubCommand {
     @Override
@@ -19,7 +21,7 @@ public class InvitePlayerCommand extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "invite to the town";
+        return Lang.TOWN_INVITE_COMMAND_DESC.getTranslation();
     }
     public int getArguments(){ return 2;}
 
@@ -32,30 +34,30 @@ public class InvitePlayerCommand extends SubCommand {
     @Override
     public void perform(Player player, String[] args){
         if (args.length <= 1){
-            player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +  " Not enough arguments");
-            player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +  " Correct Syntax: " + getSyntax());
+            player.sendMessage(getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.getTranslation());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
 
         }else if(args.length == 2){
             Player invite = Bukkit.getPlayer(args[1]);
             if(invite == null){
-                player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +" Invalid name, or Player isn't connected");
+                player.sendMessage(getTANString() + Lang.PLAYER_NOT_FOUND.getTranslation());
+
             }
             else{
-                TownDataClass town = TownDataStorage.getTown(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());
-                TownInviteDataStorage.addInvitation(invite.getUniqueId().toString(),town.getTownId() );
+                TownDataClass town = TownDataStorage.getTown(player);
+                TownInviteDataStorage.addInvitation(invite.getUniqueId().toString(),town.getTownId());
 
-                player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE + " Invitation sent to " + ChatColor.YELLOW + invite.getName());
-                invite.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE + " You have been invited by "+ ChatColor.YELLOW + player.getName() + ChatColor.WHITE + " to his town: " + ChatColor.YELLOW + town.getTownName());
-                invite.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE + " To join his town, type " + ChatColor.BOLD + ChatColor.YELLOW +  "/tan join "  + town.getTownId());
+                player.sendMessage(getTANString() + Lang.INVITATION_SENT_SUCCESS.getTranslation(invite.getName()));
 
-                ChatUtils.sendClickableCommand(invite,  ChatColor.GOLD + "" +ChatColor.BOLD + "[Or click here]",  "tan join "  + town.getTownId());
-
+                invite.sendMessage(getTANString() + Lang.INVITATION_RECEIVED_1.getTranslation(player.getName(),town.getTownName()));
+                invite.sendMessage(getTANString() + Lang.INVITATION_RECEIVED_2.getTranslation(town.getTownId()));
+                ChatUtils.sendClickableCommand(invite,  getTANString() + Lang.INVITATION_RECEIVED_3.getTranslation(),"tan join "  + town.getTownId());
 
 
             }
         }else {
-            player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +  " Too many arguments");
-            player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +  " Correct Syntax: " + getSyntax());
+            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.getTranslation());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
         }
 
     }
