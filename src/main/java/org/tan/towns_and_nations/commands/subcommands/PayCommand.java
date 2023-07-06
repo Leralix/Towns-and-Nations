@@ -41,8 +41,13 @@ public class PayCommand extends SubCommand  {
             player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
         }
         else if(args.length == 3){
-            PlayerDataClass receiver = PlayerStatStorage.getStat(Objects.requireNonNull(Bukkit.getServer().getPlayer(args[1])));
-            PlayerDataClass sender = PlayerStatStorage.getStat(player);
+            Player receiver = Bukkit.getServer().getPlayer(args[1]);
+            if(receiver == null){
+                player.sendMessage(getTANString() + Lang.PLAYER_NOT_FOUND);
+                return;
+            }
+            PlayerDataClass receiverDataClass = PlayerStatStorage.getStat(receiver);
+            PlayerDataClass senderDataClass = PlayerStatStorage.getStat(player);
             int amount = 0;
 
             try{
@@ -56,19 +61,16 @@ public class PayCommand extends SubCommand  {
                 player.sendMessage(getTANString() + Lang.PAY_MINIMUM_REQUIRED.getTranslation());
                 return;
             }
-            if(sender.getBalance() < amount){
+            if(senderDataClass.getBalance() < amount){
                 player.sendMessage(getTANString() + Lang.PAY_NOT_ENOUGH_MONEY.getTranslation(
-                        amount - sender.getBalance()));
+                        amount - senderDataClass.getBalance()));
                 return;
             }
 
-            sender.removeFromBalance(amount);
-            receiver.addToBalance(amount);
-            player.sendMessage(getTANString() +   " Sending "  + ChatColor.YELLOW + amount + ChatColor.WHITE + " $ to " + receiver.getPlayerName());
-            player.sendMessage(getTANString() +   " Sending "  + ChatColor.YELLOW + amount + ChatColor.WHITE + " $ to " + receiver.getPlayerName());
-
-            Bukkit.getOfflinePlayer(args[1]).getPlayer().sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +" Received "  + ChatColor.YELLOW + amount + ChatColor.WHITE + " Ecu to " + receiver.getPlayerName());
-
+            senderDataClass.removeFromBalance(amount);
+            receiverDataClass.addToBalance(amount);
+            player.sendMessage(getTANString() + Lang.PAY_CONFIRMED_SENDER.getTranslation(amount,receiver.getName()));
+            receiver.sendMessage(getTANString() + Lang.PAY_CONFIRMED_RECEIVER.getTranslation(amount,player.getName()));
         }
         else {
             player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.getTranslation());

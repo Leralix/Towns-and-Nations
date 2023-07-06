@@ -5,6 +5,7 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
+import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.commands.SubCommand;
 import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
@@ -21,7 +22,7 @@ public class UnclaimCommand extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "un-claim a chunk";
+        return Lang.UNCLAIM_CHUNK_COMMAND_DESC.getTranslation();
     }
     public int getArguments(){ return 1;}
 
@@ -34,30 +35,34 @@ public class UnclaimCommand extends SubCommand {
     @Override
     public void perform(Player player, String[] args){
         if (args.length != 1){
-            player.sendMessage(getTANString() +  " Correct Syntax: " + getSyntax());
+            player.sendMessage(getTANString() +  Lang.CORRECT_SYNTAX_INFO.getTranslation());
             return;
         }
 
         PlayerDataClass playerStat = PlayerStatStorage.getStat(player.getUniqueId().toString());
         if(!playerStat.haveTown()){
-            player.sendMessage(getTANString() + " You do not have a Town");
+            player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.getTranslation());
         }
 
         TownDataClass townStat = TownDataStorage.getTown(playerStat.getTownId());
         if(!townStat.getUuidLeader().equals(playerStat.getUuid())){
-            player.sendMessage(getTANString() + " You are not the leader of your town. For now, only the leader of a town can un-claim");
+            player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
         }
+
         Chunk chunk = player.getLocation().getChunk();
         if(ClaimedChunkStorage.isChunkClaimed(chunk)){
 
             if(ClaimedChunkStorage.isOwner(chunk, townStat.getTownId())) {
                 ClaimedChunkStorage.unclaimChunk(player.getLocation().getChunk());
                 TownDataStorage.getTown(player).getChunkSettings().decreaseNumberOfClaimedChunk();
-                player.sendMessage(getTANString() + " Chunk unclaimed ! Current number of chunk: " + ChatColor.YELLOW + townStat.getChunkSettings().getNumberOfClaimedChunk());
+
+                player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS.getTranslation(townStat.getChunkSettings().getNumberOfClaimedChunk(),townStat.getTownLevel().getChunkCap()));
 
                 return;
             }
-            player.sendMessage(getTANString() + " This chunk is claimed by: " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwner(chunk)+ " , not your town");
+            TownDataClass otherTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
+            player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_TOWN.getTranslation(otherTown.getTownName()));
+
         }
 
 

@@ -2,8 +2,10 @@ package org.tan.towns_and_nations.commands.subcommands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.commands.SubCommand;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
+import static org.tan.towns_and_nations.utils.ChatUtils.getTANString;
 
 
 public class SeeBalanceCommand extends SubCommand  {
@@ -14,7 +16,7 @@ public class SeeBalanceCommand extends SubCommand  {
 
     @Override
     public String getDescription() {
-        return "Look at your balance";
+        return Lang.BAL_COMMAND_DESC.getTranslation();
     }
     public int getArguments(){
         return 1;
@@ -28,10 +30,11 @@ public class SeeBalanceCommand extends SubCommand  {
     @Override
     public void perform(Player player, String[] args){
         if (args.length == 1){
-            player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +     "Your Balance: " + ChatColor.YELLOW + PlayerStatStorage.getStat(player.getUniqueId().toString()).getBalance() + "$");
+            player.sendMessage(getTANString() + Lang.BAL_AMOUNT.getTranslation(PlayerStatStorage.getStat(player).getBalance()));
+
         }else if(args.length > 1){
-            player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +  " Too many arguments");
-            player.sendMessage(ChatColor.GOLD + "[TAN]" + ChatColor.WHITE +  " Correct Syntax: " + getSyntax());
+            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.getTranslation());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
         }
     }
 

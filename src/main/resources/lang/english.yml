@@ -7,6 +7,10 @@ language:
   PLAYER_NO_TOWN: "You do not have a town !"
   PLAYER_NO_PERMISSION: "You do not have the permission of performing this action"
 
+  #Level up
+  BASIC_LEVEL_UP: "Level up !"
+
+
   #Commands
   NOT_ENOUGH_ARGS_ERROR: "Not enough arguments"
   TOO_MANY_ARGS_ERROR: "Too many arguments"
@@ -39,11 +43,8 @@ language:
   PAY_COMMAND_DESC: "Give money to another player"
   PAY_INVALID_SYNTAX: "Invalid syntax for the amount of money"
   PAY_MINIMUM_REQUIRED: "You need to send a least 1$"
-  PAY_NOT_ENOUGH_MONEY: "You do not have enough money. You need {0} more"
   PAY_CONFIRMED_SENDER: "Sending {0}$ to {1}"
   PAY_CONFIRMED_RECEIVER: "Receiving {0}$ from {1}"
-
-
 
   #Balance command
   BAL_COMMAND_DESC: "Look at your balance"
@@ -51,7 +52,7 @@ language:
 
   #Uncliam command
   UNCLAIM_CHUNK_COMMAND_DESC: "Unclaim a chunk"
-  UNCLAIMED_CHUNK_SUCCESS: "Chunk unclaimed ! Current number of chunk: {0}"
+  UNCLAIMED_CHUNK_SUCCESS: "Chunk unclaimed ! Current number of chunk: {0}/ {1}"
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "This chunk is claimed by another town: {0}"
 
   #Debug commands
@@ -62,10 +63,15 @@ language:
 
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "You do not have enough money to perform this action"
+  PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "You do not have enough money. You need {0} more"
+  TOWN_NOT_ENOUGH_MONEY: "The town do not have enough money to perform this action"
+  TOWN_NOT_ENOUGH_MONEY_EXTENDED: "The town do not have enough money to perform this action. It need {0}"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Write the name of the town if the chat. It cannot be changed afterward for now"
+
 
   #Villager names
   NPC_GOLDSMITH: "Goldsmith"
+
 
   #GUI text
 
@@ -81,10 +87,19 @@ language:
   GUI_PROFILE_ICON: "Profile"
 
   GUI_YOUR_PROFILE: "Your profile"
-  GUI_CURRENT_BALANCE: "Current balance: {0}"
-  GUI_CURRENT_PVE_KILLS: "Current mobs killed: {0}"
-  GUI_CURRENT_TIME_ALIVE: "Current time alive: {0}"
-  GUI_CURRENT_MURDER: "You killed {0} player"
+  GUI_YOUR_BALANCE: "Your Balance"
+  GUI_YOUR_BALANCE_DESC1: "Current balance: {0}"
+  GUI_YOUR_PVE_KILLS: "Mobs"
+  GUI_YOUR_PVE_KILLS_DESC1: "Current mobs killed: {0}"
+  GUI_YOUR_CURRENT_TIME_ALIVE: "Time alive"
+  GUI_YOUR_CURRENT_TIME_ALIVE_DESC1: "Current time alive: {0}"
+  GUI_YOUR_CURRENT_MURDER: "Kills"
+  GUI_YOUR_CURRENT_MURDER_DESC1: "You killed {0} player"
+
+  GUI_NO_TOWN_CREATE_NEW_TOWN: "Create a new town"
+  GUI_NO_TOWN_CREATE_NEW_TOWN_DESC: "Cost: {0}$"
+  GUI_NO_TOWN_JOIN_A_TOWN: "Join a town"
+  GUI_NO_TOWN_JOIN_A_TOWN_DESC1: "There are currently {0} towns in total"
 
   GUI_TOWN_TREASURY_ICON: "Treasury"
   GUI_TOWN_MEMBERS_ICON: "Members"
@@ -105,25 +120,28 @@ language:
   GUI_TREASURY_INCREASE_TAX: "Increase the tax"
   GUI_TREASURY_INCREASE_TAX_DESC1: "Increase the tax by 1$"
   GUI_TREASURY_FLAT_TAX: "Flat tax"
-  GUI_TREASURY_FLAT_TAX_DESC1: "Town current tax"
+  GUI_TREASURY_FLAT_TAX_DESC1: "Town current tax: {0}$ weekly"
   GUI_TREASURY_TAX_HISTORY: "Tax History"
   GUI_TREASURY_SALARY_HISTORY: "Salary history"
   GUI_TREASURY_SALARY_HISTORY_DESC1: "Salary spending are up to: {0}"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY: "Chunk spending history"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1: "Chunk spending are up to: {0}"
-  GUI_MISCELLANEOUS_SPENDING: "Miscellaneous spending"
-  GUI_MISCELLANEOUS_SPENDING_DESC1: "Miscellaneous spending are not yet implemented"
+  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "-{0}$ for every 100 chunks claimed"
+  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3: "Your town have {0} chunks"
+  GUI_TREASURY_MISCELLANEOUS_SPENDING: "Miscellaneous spending"
+  GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1: "Miscellaneous spending are not yet implemented"
   GUI_TREASURY_DONATION: "Make a donation"
   GUI_TREASURY_DONATION_DESC1: "Donate money to the town to help it grow"
+  WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_TOWN_DONATION: "Write the amount of money you want to give"
   GUI_TREASURY_DONATION_HISTORY: "Donation history"
 
   GUI_TOWN_LEVEL_INFO: "{0}" #town's name
 
   GUI_TOWN_LEVEL_UP: "Upgrade town level"
-  GUI_TOWN_LEVEL_UP_DESC1: "{0} current level is: {1}"
+  GUI_TOWN_LEVEL_UP_DESC1: "Current level is: {1}"
   GUI_TOWN_LEVEL_UP_DESC2: "Level {0} upgrade cost: {1}"
   GUI_TOWN_LEVEL_UP_CHUNK_CAP: "Upgrade claim max amount"
-  GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC1: "{0} current level is: {1}"
+  GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC1: "Current level is: {1}"
   GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC2: "Level {0} upgrade cost: {1}"
 
   GUI_TOWN_LEVEL_UP_PLAYER_CAP: "Upgrade player cap"
