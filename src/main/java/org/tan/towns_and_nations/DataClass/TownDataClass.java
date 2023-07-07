@@ -133,6 +133,9 @@ public class TownDataClass {
         townPlayerListId.remove(playerUUID);
         TownDataStorage.saveStats();
     }
+    public void removePlayer(Player player){
+        removePlayer(player.getUniqueId().toString());
+    }
 
     public ArrayList<String> getPlayerList(){
         return townPlayerListId;

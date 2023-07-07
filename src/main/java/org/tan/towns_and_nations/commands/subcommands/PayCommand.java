@@ -62,7 +62,7 @@ public class PayCommand extends SubCommand  {
                 return;
             }
             if(senderDataClass.getBalance() < amount){
-                player.sendMessage(getTANString() + Lang.PAY_NOT_ENOUGH_MONEY.getTranslation(
+                player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.getTranslation(
                         amount - senderDataClass.getBalance()));
                 return;
             }

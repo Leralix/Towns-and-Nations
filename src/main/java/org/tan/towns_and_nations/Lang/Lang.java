@@ -1,5 +1,6 @@
 package org.tan.towns_and_nations.Lang;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.tan.towns_and_nations.TownsAndNations;
 
@@ -117,12 +118,20 @@ public enum Lang {
     GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC1,
     GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC2,
     GUI_TOWN_SETTINGS_LEAVE_TOWN,
+    GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1,
+    GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2,
     GUI_TOWN_SETTINGS_DELETE_TOWN,
+    GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1,
+    GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2,
     GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP,
     GUI_TOWN_RELATION_WAR,
+    GUI_TOWN_RELATION_WAR_DESC1,
     GUI_TOWN_RELATION_EMBARGO,
+    GUI_TOWN_RELATION_EMBARGO_DESC1,
     GUI_TOWN_RELATION_NAP,
+    GUI_TOWN_RELATION_NAP_DESC1,
     GUI_TOWN_RELATION_ALLIANCE,
+    GUI_TOWN_RELATION_ALLIANCE_DESC1,
     GUI_TOWN_RELATION_ADD_TOWN,
     GUI_TOWN_RELATION_REMOVE_TOWN,
     GUI_TOWN_CHANGED_RELATION_RESUME,
@@ -136,6 +145,8 @@ public enum Lang {
     GUI_TOWN_CLAIM_SETTINGS_BREAK_DESC1,
     CHAT_CANT_LEAVE_TOWN_IF_LEADER,
     CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER,
+    CHAT_PLAYER_LEFT_THE_TOWN,
+    CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED,
     TRANSACTION_BASE_STRING;
 
     private static final Map<Lang, String> translations = new HashMap<>();
@@ -163,21 +174,27 @@ public enum Lang {
                 translations.put(key, message);
             }
         }
+        TownsAndNations.getPluginLogger().info(LANGUAGE_SUCCESSFULLY_LOADED.getTranslation());
+
+
     }
 
     public String getTranslation() {
-        return translations.get(this);
+        String translation = translations.get(this);
+        if (translation != null) {
+            return ChatColor.translateAlternateColorCodes('§', translation);
+        }
+        return null;
     }
 
     public String getTranslation(Object... placeholders) {
         String translation = translations.get(this);
-
         if (translation != null) {
+            translation = ChatColor.translateAlternateColorCodes('§', translation);
             for (int i = 0; i < placeholders.length; i++) {
                 translation = translation.replace("{" + i + "}", placeholders[i].toString());
             }
         }
-
         return translation;
     }
 

@@ -101,17 +101,18 @@ public class HeadUtils {
     }
 
     public static ItemStack getCustomLoreItem(Material itemMaterial, String itemName){
-        return getCustomLoreItem(itemMaterial,itemName,null);
+        return getCustomLoreItem(itemMaterial,itemName,(String)null);
     }
-    public static ItemStack getCustomLoreItem(Material itemMaterial, String itemName, String itemLoreOneLine){
+    public static ItemStack getCustomLoreItem(Material itemMaterial, String itemName, String... loreLines){
         ItemStack item = new ItemStack(itemMaterial);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + itemName);
-        if(itemLoreOneLine != null){
-            List<String> itemLore = new ArrayList<String>();
-            itemLore.add(itemLoreOneLine);
-            meta.setLore(itemLore);
+
+        if(loreLines != null){
+            List<String> lore = Arrays.asList(loreLines);
+            meta.setLore(lore);
         }
+
 
         item.setItemMeta(meta);
         return item;
@@ -124,7 +125,7 @@ public class HeadUtils {
         return itemStack;
     }
 
-    public static ItemStack addLore( ItemStack itemStack, String... loreLines) {
+    public static ItemStack addLore(ItemStack itemStack, String... loreLines) {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         List<String> lore = Arrays.asList(loreLines);

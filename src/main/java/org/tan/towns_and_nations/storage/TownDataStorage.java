@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
 import org.bukkit.entity.Player;
+import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.TownsAndNations;
 
@@ -47,6 +48,9 @@ public class TownDataStorage {
     }
     public static TownDataClass getTown(String townId){
         return townDataMap.get(townId);
+    }
+    public static TownDataClass getTown(PlayerDataClass playerDataClass){
+        return townDataMap.get(playerDataClass.getTownId());
     }
     public static TownDataClass getTown(Player player){
         return townDataMap.get(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());

@@ -2,7 +2,10 @@ package org.tan.towns_and_nations;
 
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.towns_and_nations.Lang.Lang;
+import org.tan.towns_and_nations.Tasks.TaxPayments;
+import org.tan.towns_and_nations.Tasks.TestTask;
 import org.tan.towns_and_nations.commands.CommandManager;
 import org.tan.towns_and_nations.commands.DebugCommand;
 import org.tan.towns_and_nations.listeners.*;
@@ -48,7 +51,9 @@ public final class TownsAndNations extends JavaPlugin {
         ClaimedChunkStorage.loadStats();
         PlayerChatListenerStorage.load();
 
-
+        logger.info("[TaN] -Loading Scheduled commands");
+        TestTask.startSchedule();
+        TaxPayments.scheduleMidnightTask();
 
 
         //API luckperms
