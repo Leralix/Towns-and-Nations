@@ -99,7 +99,6 @@ public class PlayerStatStorage {
     public static void saveStats() {
 
         Gson gson = new Gson();
-        System.out.println(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath());
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNstats.json");
         file.getParentFile().mkdir();
         try {
@@ -124,7 +123,6 @@ public class PlayerStatStorage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("[TaN]Stats saved");
 
     }
 

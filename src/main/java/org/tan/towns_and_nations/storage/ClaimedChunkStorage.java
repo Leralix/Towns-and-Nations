@@ -86,7 +86,6 @@ public class ClaimedChunkStorage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("[TaN]Claimed chunks saved");
     }
 
 

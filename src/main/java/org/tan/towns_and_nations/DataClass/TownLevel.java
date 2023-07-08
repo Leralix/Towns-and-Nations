@@ -1,6 +1,7 @@
 package org.tan.towns_and_nations.DataClass;
 
 import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.tan.towns_and_nations.TownsAndNations;
@@ -75,9 +76,25 @@ public class TownLevel {
     private int getRequiredMoney(String configFileName, String expressionKey, int level) {
         FileConfiguration fg = ConfigUtil.getCustomConfig(configFileName);
         ConfigurationSection section = fg.getConfigurationSection("default");
-        Expression price = YAMLutil.getExpression(section, expressionKey);
-        price.setVariable("level", level);
-        return (int) price.evaluate();
+
+        String expressionString = section.getString(expressionKey);
+
+        double squareMultiplier = section.getDouble("squareMultiplier");
+        double flatMultiplier = section.getDouble("flatMultiplier");
+        double base = section.getDouble("base");
+
+        Expression expression = new ExpressionBuilder(expressionString)
+                .variable("level")
+                .variable("squareMultiplier")
+                .variable("flatMultiplier")
+                .variable("base")
+                .build()
+                .setVariable("level", level)
+                .setVariable("squareMultiplier", squareMultiplier)
+                .setVariable("flatMultiplier", flatMultiplier)
+                .setVariable("base", base);
+        System.out.println((int) expression.evaluate());
+        return (int) expression.evaluate();
     }
 
 }

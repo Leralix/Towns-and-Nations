@@ -105,7 +105,6 @@ public class TownDataStorage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("[TaN]Stats saved");
 
     }
 

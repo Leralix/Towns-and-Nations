@@ -76,9 +76,9 @@ public final class TownsAndNations extends JavaPlugin {
     public void onDisable() {
         logger.info("[TaN] Savings Data");
 
+        TownDataStorage.saveStats();
         ClaimedChunkStorage.saveStats();
         PlayerStatStorage.saveStats();
-        ClaimedChunkStorage.saveStats();
         try {
             Thread.sleep(50);
         } catch (InterruptedException e) {

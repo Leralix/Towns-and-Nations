@@ -356,8 +356,10 @@ public class GuiManager2 {
         ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.getTranslation());
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
-        goldIcon = HeadUtils.addLore(goldIcon, Lang.GUI_TREASURY_STORAGE_DESC1.getTranslation(town.getBalance()));
-        goldSpendingIcon = HeadUtils.addLore(goldSpendingIcon, Lang.GUI_TREASURY_STORAGE_DESC2.getTranslation(0) );
+        goldIcon = HeadUtils.addLore(goldIcon, Lang.GUI_TREASURY_STORAGE_DESC1.getTranslation(town.getBalance()),Lang.GUI_TREASURY_STORAGE_DESC2.getTranslation(0));
+        goldSpendingIcon = HeadUtils.addLore(goldSpendingIcon, Lang.GUI_TREASURY_SPENDING_DESC1.getTranslation(0), Lang.GUI_TREASURY_SPENDING_DESC2.getTranslation(0),Lang.GUI_TREASURY_SPENDING_DESC3.getTranslation(0));
+
+
 
         lowerTax = HeadUtils.addLore(lowerTax, Lang.GUI_TREASURY_LOWER_TAX_DESC1.getTranslation());
         taxInfo = HeadUtils.addLore(taxInfo, Lang.GUI_TREASURY_FLAT_TAX_DESC1.getTranslation(town.getTreasury().getFlatTax()));
@@ -474,6 +476,8 @@ public class GuiManager2 {
         ItemStack upgradeChunkCap = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
         ItemStack upgradePlayerCap = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==");
 
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
+
         upgradeTownLevel = HeadUtils.addLore(upgradeTownLevel,Lang.GUI_TOWN_LEVEL_UP_DESC1.getTranslation(townLevel.getTownLevel()),Lang.GUI_TOWN_LEVEL_UP_DESC2.getTranslation(townLevel.getTownLevel()+1, townLevel.getMoneyRequiredTownLevel()));
         upgradeChunkCap = HeadUtils.addLore(upgradeChunkCap,Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC1.getTranslation(townLevel.getChunkCapLevel()) ,Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC2.getTranslation(townLevel.getChunkCapLevel()+1,townLevel.getMoneyRequiredChunkCap()));
         upgradePlayerCap = HeadUtils.addLore(upgradePlayerCap,Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC1.getTranslation(townLevel.getPlayerCapLevel()) ,Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC2.getTranslation(townLevel.getPlayerCapLevel()+1,townLevel.getMoneyRequiredPlayerCap()));
@@ -512,16 +516,19 @@ public class GuiManager2 {
         GuiItem _upgradePlayerCap = ItemBuilder.from(upgradePlayerCap).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if(townData.getTreasury().getBalance() > townLevel.getMoneyRequiredPlayerCap()){
+            if (townData.getTreasury().getBalance() > townLevel.getMoneyRequiredPlayerCap()) {
                 townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredPlayerCap());
                 townLevel.PlayerCapLevelUp();
                 player.sendMessage(Lang.GUI_TOWN_LEVEL_UP.getTranslation());
                 OpenTownLevel(player);
-            }
-            else{
+            } else {
                 player.sendMessage(Lang.TOWN_NOT_ENOUGH_MONEY.getTranslation());
             }
+        });
 
+        GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownMenuHaveTown(player);
         });
 
 
@@ -530,6 +537,7 @@ public class GuiManager2 {
         gui.setItem(2,3, _upgradeTownLevel);
         gui.setItem(2,5, _upgradeChunkCap);
         gui.setItem(2,7, _upgradePlayerCap);
+        gui.setItem(3,1, _getBackArrow);
 
         gui.open(player);
 
