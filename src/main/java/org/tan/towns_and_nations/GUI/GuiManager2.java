@@ -569,6 +569,11 @@ public class GuiManager2 {
                 Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1.getTranslation(TownDataStorage.getTown(playerStat).getTownName()),
                 Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2.getTranslation());
 
+        ItemStack changeOwnershipTown = HeadUtils.getCustomLoreItem(Material.BEEHIVE,
+                Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.getTranslation(),
+                Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.getTranslation(TownDataStorage.getTown(playerStat).getTownName()),
+                Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.getTranslation());
+
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW,
                 Lang.GUI_BACK_ARROW.getTranslation());
 
@@ -598,6 +603,11 @@ public class GuiManager2 {
                 player.sendMessage(Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.getTranslation());
             }
         });
+
+        GuiItem _changeOwnershipTown = ItemBuilder.from(changeOwnershipTown).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
             OpenTownMenuHaveTown(player);

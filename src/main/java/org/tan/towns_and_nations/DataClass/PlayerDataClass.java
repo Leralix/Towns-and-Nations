@@ -8,6 +8,7 @@ public class PlayerDataClass {
     private String PlayerName;
     private int Balance;
     private String TownId;
+    private String TownRank;
 
     public PlayerDataClass(Player player) {
         this.UUID = player.getUniqueId().toString();
