@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 
 import java.util.*;
@@ -16,6 +15,7 @@ public class TownDataClass {
     private String TownId;
     private String TownName;
     private String UuidLeader;
+    private List<TownRank> roles;
     private String Description;
     public boolean open;
     public String DateCreated;
@@ -32,13 +32,17 @@ public class TownDataClass {
         this.TownId = townId;
         this.UuidLeader = uuidLeader;
         this.TownName = townName;
-        this.Description = "Description";
+        this.Description = "Description par défaut";
         this.open = false;
         this.DateCreated = new Date().toString();
         this.Overlord = Bukkit.getServer().getOfflinePlayer(UUID.fromString(uuidLeader)).getName();
         this.townIconMaterialCode = null;
 
         this.townPlayerListId.add(uuidLeader);
+
+        this.roles = new ArrayList<>();
+        this.roles.add(new TownRank("default"));
+
 
         this.relations = new TownRelationClass();
         this.chunkSettings = new ClaimedChunkSettings();
@@ -53,7 +57,6 @@ public class TownDataClass {
     public void setTownId(String townId) {
         this.TownId = townId;
     }
-
     public void setTownName(String townName) {
         this.TownName = townName;
     }
@@ -61,7 +64,6 @@ public class TownDataClass {
     public String getTownName(){
         return this.TownName;
     }
-
     public String getUuidLeader() {
         return this.UuidLeader;
     }
@@ -69,7 +71,6 @@ public class TownDataClass {
     public void setUuidLeader(String uuidLeader) {
         this.UuidLeader = uuidLeader;
     }
-
     public String getDescription() {
         return this.Description;
     }
@@ -77,11 +78,9 @@ public class TownDataClass {
     public void setDescription(String description) {
         this.Description = description;
     }
-
     public boolean isOpen() {
         return this.open;
     }
-
     public void setOpen(boolean openValue) {
         this.open = openValue;
     }

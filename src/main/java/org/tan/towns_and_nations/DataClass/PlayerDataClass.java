@@ -8,6 +8,9 @@ public class PlayerDataClass {
     private String PlayerName;
     private int Balance;
     private String TownId;
+
+
+
     private String TownRank;
 
     public PlayerDataClass(Player player) {
@@ -47,6 +50,15 @@ public class PlayerDataClass {
     public void setTownId(String newTownId){
         this.TownId = newTownId;
     }
+
+    public String getTownRank() {
+        return TownRank;
+    }
+
+    public void setTownRank(String townRank) {
+        TownRank = townRank;
+    }
+
     public void addToBalance(int money) {
         this.Balance = this.Balance + money;
     }
