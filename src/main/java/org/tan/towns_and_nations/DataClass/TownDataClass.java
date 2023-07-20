@@ -15,7 +15,7 @@ public class TownDataClass {
     private String TownId;
     private String TownName;
     private String UuidLeader;
-    private List<TownRank> roles;
+    private HashMap<String,TownRank> roles;
     private String Description;
     public boolean open;
     public String DateCreated;
@@ -40,9 +40,10 @@ public class TownDataClass {
 
         this.townPlayerListId.add(uuidLeader);
 
-        this.roles = new ArrayList<>();
-        this.roles.add(new TownRank("default"));
+        this.roles = new HashMap<>();
+        this.roles.put("default",new TownRank("default"));
 
+        this.roles.get("default").addPlayer(uuidLeader);
 
         this.relations = new TownRelationClass();
         this.chunkSettings = new ClaimedChunkSettings();
@@ -186,9 +187,28 @@ public class TownDataClass {
         for (String playerId : townPlayerListId){
             Objects.requireNonNull(Bukkit.getServer().getPlayer(playerId)).sendMessage(message);
         }
+    }
+
+    public void changeRank(String playerUuid, String newRank) {
+        
+        // Add the player to the new rank
+        if (roles.containsKey(newRank)) {
+            roles.get(newRank).addPlayer(playerUuid);
+        } else {
+            System.out.println("Error: The rank " + newRank + " does not exist.");
+            return;
+        }
+
+        // Remove the player from all ranks
+        for (TownRank rank : roles.values()) {
+            rank.removePlayer(playerUuid);
+        }
 
     }
 
+    public TownRank getRank(String rankName){
+        return this.getRank(rankName);
+    }
 
 
 }
