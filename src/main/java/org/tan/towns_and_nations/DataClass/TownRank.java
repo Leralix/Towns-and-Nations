@@ -1,5 +1,6 @@
 package org.tan.towns_and_nations.DataClass;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.enums.Permission;
 
@@ -8,12 +9,16 @@ import java.util.*;
 public class TownRank {
 
     private String name;
+    private int level;
+    private String rankIconName;
     private List<String> players;
     private Map<Permission, Boolean> permissions;
 
 
     public TownRank(String name){
         this.name = name;
+        this.rankIconName = "DANDELION";
+        this.level = 5;
         this.players = new ArrayList<>();
         this.permissions = new EnumMap<>(Permission.class);
 
@@ -21,6 +26,13 @@ public class TownRank {
         for (Permission permission : Permission.values()) {
             this.permissions.put(permission, false);
         }
+    }
+
+    public String getName(){
+        return this.name;
+    }
+    public String getRankIconName(){
+        return this.rankIconName;
     }
 
     public void grantPermission(Permission permission) {

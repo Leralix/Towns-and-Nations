@@ -2,7 +2,6 @@ package org.tan.towns_and_nations.enums;
 
 public enum Permission {
 
-
     CAN_CLAIM,
     CAN_UNCLAIM,
     CAN_CHANGE_TAX,

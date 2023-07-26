@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.DataClass.TownLevel;
+import org.tan.towns_and_nations.DataClass.TownRank;
 import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.utils.ChatUtils;
 import org.tan.towns_and_nations.utils.HeadUtils;
@@ -316,10 +317,59 @@ public class GuiManager2 {
             gui.setItem(i, _playerIcon);
             i++;
         }
+
+        ItemStack manageRanks = HeadUtils.getCustomLoreItem(Material.LADDER, Lang.GUI_TOWN_MEMBERS_MANAGE_ROLES.getTranslation());
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
+
+
+        GuiItem _manageRanks = ItemBuilder.from(manageRanks).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownMenuRoles(player);
+        });
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
             OpenTownMenuHaveTown(player);
+        });
+
+        gui.setItem(3,1, _getBackArrow);
+        gui.setItem(3,2, _manageRanks);
+
+        gui.open(player);
+
+    }
+
+    public static void OpenTownMenuRoles(Player player) {
+
+        String name = "Town";
+        int nRow = 3;
+
+        Gui gui = Gui.gui()
+                .title(Component.text(name))
+                .type(GuiType.CHEST)
+                .rows(nRow)
+                .create();
+
+
+        TownDataClass town = TownDataStorage.getTown(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());
+        HashMap<String,TownRank> ranks = town.getTownRanks();
+
+        int i = 0;
+        for (TownRank townRank: ranks.values()) {
+
+            Material townMaterial = Material.getMaterial(townRank.getRankIconName());
+            ItemStack townRankItemStack = HeadUtils.getCustomLoreItem(townMaterial, townRank.getName());
+            GuiItem _townRankItemStack = ItemBuilder.from(townRankItemStack).asGuiItem(event -> {
+                event.setCancelled(true);
+            });
+            gui.setItem(i, _townRankItemStack);
+            i = i+1;
+        }
+
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
+
+        GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownMemberList(player);
         });
 
         gui.setItem(3,1, _getBackArrow);

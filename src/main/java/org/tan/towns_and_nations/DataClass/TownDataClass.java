@@ -209,6 +209,8 @@ public class TownDataClass {
     public TownRank getRank(String rankName){
         return this.getRank(rankName);
     }
-
+    public HashMap<String,TownRank> getTownRanks(){
+        return this.roles;
+    }
 
 }
