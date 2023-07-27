@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
+import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 
 import java.lang.reflect.Field;
@@ -134,6 +135,46 @@ public class HeadUtils {
         itemStack.setItemMeta(itemMeta);
 
         return itemStack;
+    }
+
+    public static ItemStack getRankLevelColor(int level){
+
+        ItemStack skull;
+        switch(level){
+
+            case 1:
+                skull = makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_1.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODIxNGEyYmUzM2YwMzdiZmU2ZmEzZTI0YjFjMmZlMDRmMWU1ZmZkNzQ4ODA5NGQ0ZmY3YWJiMGIzNzBlZjViZSJ9fX0=");
+                break;
+
+            case 2:
+                skull = makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_2.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWEwZjQ2MDQ2YWUxM2QzMTkzZDQyNTcyZmRiY2I2MmVhMWQ2OWMzODA3ZjA2ZTQwYmQxMTc4MmY1MTQxNGM0NCJ9fX0=");
+                break;
+
+            case 3:
+                skull = makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_3.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTlhMWMxOTFlMGViYWJlODlkZGYxOGE4YmFjOGY0MjgwZTNhYzZiYzY2MWMxM2NlMWRmZjY3NGRhZDI4ODVlMyJ9fX0=");
+                break;
+
+            case 4:
+                skull = makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_4.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTFmZGM4YTk1YzEzM2NlYTRlZDNlNGQ0Njg0MWNkMjM1YmRmYmJlZjYwN2I0MDAzYjM5ZjQ0NzQ1NzQ5OTQyMSJ9fX0=");
+                break;
+
+            case 5:
+                skull = makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_5.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmNmZTg2ODQ4MjdiMDUxM2UzMTBiNDVlODAyMzc2ZTEzM2YxYTI4MmZkYzEzNTBjZGQ0ZjdiZWExYmNjNzllZiJ9fX0=");
+                break;
+
+            default:
+                System.out.println("Error in role color");
+                skull = makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_5.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODIxNGEyYmUzM2YwMzdiZmU2ZmEzZTI0YjFjMmZlMDRmMWU1ZmZkNzQ4ODA5NGQ0ZmY3YWJiMGIzNzBlZjViZSJ9fX0=");
+                break;
+        }
+
+        skull = addLore(
+                skull,
+                Lang.GUI_TOWN_MEMBERS_CHANGE_ROLE_PRIORITY_DESC1.getTranslation()
+        );
+        return skull;
+
+
     }
 
 }

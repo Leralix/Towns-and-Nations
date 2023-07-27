@@ -2,6 +2,7 @@ package org.tan.towns_and_nations.commands.subcommands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.commands.SubCommand;
@@ -53,8 +54,9 @@ public class JoinTownCommand extends SubCommand {
                 if(town.equals(townID)){
                     TownDataClass townClass = TownDataStorage.getTown(townID);
                     townClass.addPlayer(player.getUniqueId().toString());
-                    PlayerStatStorage.getStat(player.getUniqueId().toString()).setTownId(townID);
-
+                    PlayerDataClass playerStat = PlayerStatStorage.getStat(player);
+                    playerStat.setTownId(townID);
+                    playerStat.setRank(townClass.getTownDefaultRank());
                     player.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.getTranslation());
                     townClass.broadCastMessage(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.getTranslation(player.getName()));
                     return;

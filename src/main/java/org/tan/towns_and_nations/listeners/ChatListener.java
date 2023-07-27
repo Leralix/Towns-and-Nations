@@ -8,6 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
+import org.tan.towns_and_nations.GUI.GuiManager2;
+import org.tan.towns_and_nations.TownsAndNations;
 import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
@@ -34,7 +36,7 @@ public class ChatListener implements Listener {
             PlayerDataClass sender = PlayerStatStorage.getStat(player.getUniqueId().toString());
             sender.removeFromBalance(100);
             TownDataStorage.newTown(townName,player);
-
+            sender.setRank(TownDataStorage.getTown(sender).getTownDefaultRank());
             event.setCancelled(true);
         }
 
@@ -71,10 +73,18 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
         }
 
+        if(PlayerChatListenerStorage.checkIfPlayerIn("rank creation",player.getUniqueId())){
+            PlayerChatListenerStorage.removePlayer("rank creation",player);
+            String townName = event.getMessage();
+            TownDataClass playerTown = TownDataStorage.getTown(player);
+            playerTown.createTownRank(townName);
+            Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, townName));
+            event.setCancelled(true);
+
+        }
+
 
 
 
     }
-
-
 }

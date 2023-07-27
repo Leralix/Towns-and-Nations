@@ -19,6 +19,7 @@ import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 import static org.tan.towns_and_nations.storage.TownDataStorage.getTownList;
+import static org.tan.towns_and_nations.storage.TownDataStorage.townDataMap;
 
 import java.util.*;
 
@@ -307,9 +308,10 @@ public class GuiManager2 {
         for (String playerUUID: players) {
 
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
+            PlayerDataClass playerStat = PlayerStatStorage.getStat(playerUUID);
 
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate.getName(),playerIterate);
-
+            HeadUtils.addLore(playerHead,Lang.GUI_TOWN_MEMBER_DESC1.getTranslation(),Lang.GUI_TOWN_MEMBER_DESC2.getTranslation(playerStat.getBalance()));
             GuiItem _playerIcon = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
             });
@@ -360,23 +362,84 @@ public class GuiManager2 {
             ItemStack townRankItemStack = HeadUtils.getCustomLoreItem(townMaterial, townRank.getName());
             GuiItem _townRankItemStack = ItemBuilder.from(townRankItemStack).asGuiItem(event -> {
                 event.setCancelled(true);
+                OpenTownMenuRoleManager(player,townRank.getName());
             });
             gui.setItem(i, _townRankItemStack);
             i = i+1;
         }
 
+        ItemStack createNewRole = HeadUtils.getCustomLoreItem(Material.EGG, Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES.getTranslation());
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
+
+        GuiItem _createNewRole = ItemBuilder.from(createNewRole).asGuiItem(event -> {
+            event.setCancelled(true);
+            player.sendMessage(""+Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.getTranslation());
+            player.closeInventory();
+            PlayerChatListenerStorage.addPlayer("rank creation",player);
+
+        });
+        GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownMemberList(player);
+        });
+
+
+        gui.setItem(3,1, _getBackArrow);
+        gui.setItem(3,3, _createNewRole);
+
+        gui.open(player);
+
+    }
+    public static void OpenTownMenuRoleManager(Player player, String roleName) {
+
+        String name = "Town";
+        int nRow = 3;
+
+        Gui gui = Gui.gui()
+                .title(Component.text(name))
+                .type(GuiType.CHEST)
+                .rows(nRow)
+                .create();
+
+
+        TownDataClass town = TownDataStorage.getTown(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());
+        TownRank townRank = town.getRank(roleName);
+
+        Material roleMaterial = Material.getMaterial(townRank.getRankIconName());
+        int rankLevel = townRank.getLevel();
+
+        ItemStack roleIcon = HeadUtils.getCustomLoreItem(roleMaterial, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack roleRankIcon = HeadUtils.getRankLevelColor(rankLevel);
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
+
+
+
+        GuiItem _roleIcon = ItemBuilder.from(roleIcon).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+
+        GuiItem _roleRankIcon = ItemBuilder.from(roleRankIcon).asGuiItem(event -> {
+            townRank.incrementLevel();
+            OpenTownMenuRoleManager(player, roleName);
+            event.setCancelled(true);
+        });
 
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
             OpenTownMemberList(player);
         });
 
+        gui.setItem(1,5, _roleIcon);
+
+        gui.setItem(2,2, _roleRankIcon);
+
+
         gui.setItem(3,1, _getBackArrow);
 
         gui.open(player);
 
     }
+
     //Done
     public static void OpenTownEconomics(Player player) {
 

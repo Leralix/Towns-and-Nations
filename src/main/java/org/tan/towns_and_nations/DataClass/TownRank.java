@@ -14,14 +14,12 @@ public class TownRank {
     private List<String> players;
     private Map<Permission, Boolean> permissions;
 
-
     public TownRank(String name){
         this.name = name;
         this.rankIconName = "DANDELION";
         this.level = 5;
         this.players = new ArrayList<>();
         this.permissions = new EnumMap<>(Permission.class);
-
         // initialiser toutes les permissions à false par défaut
         for (Permission permission : Permission.values()) {
             this.permissions.put(permission, false);
@@ -31,10 +29,13 @@ public class TownRank {
     public String getName(){
         return this.name;
     }
+    public int getLevel(){return this.level;}
+    public void incrementLevel(){
+        this.level = (this.level % 5) + 1;
+    }
     public String getRankIconName(){
         return this.rankIconName;
     }
-
     public void grantPermission(Permission permission) {
         permissions.put(permission, true);
     }

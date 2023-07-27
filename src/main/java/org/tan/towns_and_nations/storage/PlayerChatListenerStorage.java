@@ -12,6 +12,7 @@ public class PlayerChatListenerStorage {
     public static void load(){
         ChatListenerStorage.put("creationVille", new ArrayList<>());
         ChatListenerStorage.put("donation", new ArrayList<>());
+        ChatListenerStorage.put("rank creation", new ArrayList<>());
     }
     public static void addPlayer(String key,Player p){
 

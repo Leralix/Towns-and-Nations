@@ -16,6 +16,7 @@ public class TownDataClass {
     private String TownName;
     private String UuidLeader;
     private HashMap<String,TownRank> roles;
+    private String townDefaultRank;
     private String Description;
     public boolean open;
     public String DateCreated;
@@ -39,11 +40,11 @@ public class TownDataClass {
         this.townIconMaterialCode = null;
 
         this.townPlayerListId.add(uuidLeader);
-
         this.roles = new HashMap<>();
-        this.roles.put("default",new TownRank("default"));
 
+        this.roles.put("default",new TownRank("default"));
         this.roles.get("default").addPlayer(uuidLeader);
+        this.townDefaultRank = "default";
 
         this.relations = new TownRelationClass();
         this.chunkSettings = new ClaimedChunkSettings();
@@ -119,11 +120,9 @@ public class TownDataClass {
         }
         return false;
     }
-
     public void setTownIconMaterialCode(Material material) {
         this.townIconMaterialCode = material.name();
     }
-
     public void addPlayer(String playerUUID){
         townPlayerListId.add(playerUUID);
         TownDataStorage.saveStats();
@@ -189,7 +188,7 @@ public class TownDataClass {
         }
     }
 
-    public void changeRank(String playerUuid, String newRank) {
+    public void playerChangeRank(String playerUuid, String newRank) {
         
         // Add the player to the new rank
         if (roles.containsKey(newRank)) {
@@ -207,10 +206,29 @@ public class TownDataClass {
     }
 
     public TownRank getRank(String rankName){
-        return this.getRank(rankName);
+        return this.roles.get(rankName);
     }
+    public TownRank isRankExist(String rankName){
+        return this.roles.get(rankName);
+    }
+
     public HashMap<String,TownRank> getTownRanks(){
         return this.roles;
+    }
+    public void createTownRank(String rankName){
+        this.roles.put(rankName,new TownRank(rankName));
+    }
+
+    public void changeTownDefaultRank(String newRank){
+        if(roles.containsKey(newRank)){
+            this.townDefaultRank = newRank;
+        }
+        else{
+            System.out.println("erreur: le nom du rang n'existe pas");
+        }
+    }
+    public String getTownDefaultRank(){
+        return this.townDefaultRank;
     }
 
 }
