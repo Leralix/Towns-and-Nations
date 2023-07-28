@@ -20,8 +20,8 @@ public class TownInviteDataStorage {
     }
 
 
-    public static void removeInvitation(String playerName){
-        townInviteList.get(playerName).remove(playerName);
+    public static void removeInvitation(String playerName,String townId){
+        townInviteList.get(playerName).remove(townId);
     }
 
     public static ArrayList<String> checkInvitation(String playerName){

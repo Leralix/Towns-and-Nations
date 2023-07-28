@@ -49,17 +49,29 @@ public class JoinTownCommand extends SubCommand {
 
             ArrayList<String> townInvited = TownInviteDataStorage.checkInvitation(player.getUniqueId().toString());
 
+            if(townInvited == null){
+                player.sendMessage(getTANString() + Lang.TOWN_INVITATION_NO_INVITATION.getTranslation());
+                return;
+            }
+
             for (String town : townInvited){
 
                 if(town.equals(townID)){
+
+
                     TownDataClass townClass = TownDataStorage.getTown(townID);
                     townClass.addPlayer(player.getUniqueId().toString());
+                    townClass.getRank(townClass.getTownDefaultRank()).addPlayer(player);
                     PlayerDataClass playerStat = PlayerStatStorage.getStat(player);
                     playerStat.setTownId(townID);
                     playerStat.setRank(townClass.getTownDefaultRank());
-                    player.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.getTranslation());
+                    player.sendMessage(getTANString() + Lang.TOWN_INVITATION_NO_INVITATION.getTranslation());
                     townClass.broadCastMessage(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.getTranslation(player.getName()));
+                    TownInviteDataStorage.removeInvitation(player.getUniqueId().toString(),townClass.getTownId());
+
                     return;
+
+
                 }
 
             }

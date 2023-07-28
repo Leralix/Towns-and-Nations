@@ -39,17 +39,14 @@ public class TownRank {
     public void grantPermission(Permission permission) {
         permissions.put(permission, true);
     }
-
     // Révoquer une permission
     public void revokePermission(Permission permission) {
         permissions.put(permission, false);
     }
 
-    // Vérifier si le rôle a une permission
     public boolean hasPermission(Permission permission) {
         return permissions.getOrDefault(permission, false);
     }
-
     public void addPlayer(String playerUUID){
         this.players.add(playerUUID);
     }
@@ -73,6 +70,8 @@ public class TownRank {
         return isPlayerIn(player.getUniqueId().toString());
     }
 
-
+    public List<String> getPlayers(){
+        return this.players;
+    }
 
 }

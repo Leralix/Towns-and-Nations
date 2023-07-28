@@ -20,6 +20,9 @@ import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 import static org.tan.towns_and_nations.storage.TownDataStorage.getTownList;
 import static org.tan.towns_and_nations.storage.TownDataStorage.townDataMap;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 
 import java.util.*;
 
@@ -311,7 +314,11 @@ public class GuiManager2 {
             PlayerDataClass playerStat = PlayerStatStorage.getStat(playerUUID);
 
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate.getName(),playerIterate);
-            HeadUtils.addLore(playerHead,Lang.GUI_TOWN_MEMBER_DESC1.getTranslation(),Lang.GUI_TOWN_MEMBER_DESC2.getTranslation(playerStat.getBalance()));
+            HeadUtils.addLore(
+                    playerHead,
+                    Lang.GUI_TOWN_MEMBER_DESC1.getTranslation(playerStat.getTownRank()),
+                    Lang.GUI_TOWN_MEMBER_DESC2.getTranslation(playerStat.getBalance())
+            );
             GuiItem _playerIcon = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
             });
@@ -408,10 +415,19 @@ public class GuiManager2 {
         Material roleMaterial = Material.getMaterial(townRank.getRankIconName());
         int rankLevel = townRank.getLevel();
 
-        ItemStack roleIcon = HeadUtils.getCustomLoreItem(roleMaterial, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack roleIcon = HeadUtils.getCustomLoreItem(roleMaterial, townRank.getName());
         ItemStack roleRankIcon = HeadUtils.getRankLevelColor(rankLevel);
-        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack membersRank = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==");
 
+        ArrayList<String> playerNames = townRank.getPlayers().stream()
+                .map(PlayerStatStorage::getStat) // transforme chaque ID en un objet Player
+                .map(PlayerDataClass::getPlayerName) // appelle getName() sur chaque PlayerDataClass
+                .collect(Collectors.toCollection(ArrayList::new)); // recueille le résultat dans une nouvelle ArrayList
+
+
+        HeadUtils.addLore(membersRank, playerNames);
+
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
 
         GuiItem _roleIcon = ItemBuilder.from(roleIcon).asGuiItem(event -> {
@@ -419,6 +435,11 @@ public class GuiManager2 {
         });
 
         GuiItem _roleRankIcon = ItemBuilder.from(roleRankIcon).asGuiItem(event -> {
+            townRank.incrementLevel();
+            OpenTownMenuRoleManager(player, roleName);
+            event.setCancelled(true);
+        });
+        GuiItem _membersRank = ItemBuilder.from(membersRank).asGuiItem(event -> {
             townRank.incrementLevel();
             OpenTownMenuRoleManager(player, roleName);
             event.setCancelled(true);
@@ -432,6 +453,7 @@ public class GuiManager2 {
         gui.setItem(1,5, _roleIcon);
 
         gui.setItem(2,2, _roleRankIcon);
+        gui.setItem(2,4, _membersRank);
 
 
         gui.setItem(3,1, _getBackArrow);

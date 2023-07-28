@@ -33,7 +33,8 @@ language:
 
   #Accept the town invitation
   TOWN_ACCEPT_INVITE_DESC: "Join a town that invited you"
-  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "You are now a member of the town: §3{0}"
+  TOWN_INVITATION_NO_INVITATION: "§aYou have no pending invitation"
+  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fYou are now a member of the town: §3{0}"
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§e{0}§f has joined the town !"
 
   #Town and Nation GUI
@@ -179,6 +180,8 @@ language:
   GUI_TOWN_MEMBERS_ADD_NEW_ROLES_DESC1: "§f8 ranks max"
   GUI_TOWN_MEMBERS_CHANGE_ROLE_PRIORITY: "§aChange the rank priority"
   GUI_TOWN_MEMBERS_CHANGE_ROLE_PRIORITY_DESC1: "§fleft click to change priority"
+  GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO: "§aList of players with this role:"
+  GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC: "§f{0}"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_1: "§6Rank 1"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_2: "§5Rank 2"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_3: "§1Rank 3"

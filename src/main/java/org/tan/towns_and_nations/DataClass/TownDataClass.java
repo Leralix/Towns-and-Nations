@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 
 import java.util.*;
@@ -45,6 +46,9 @@ public class TownDataClass {
         this.roles.put("default",new TownRank("default"));
         this.roles.get("default").addPlayer(uuidLeader);
         this.townDefaultRank = "default";
+
+        PlayerStatStorage.getStat(uuidLeader).setRank(this.townDefaultRank);
+
 
         this.relations = new TownRelationClass();
         this.chunkSettings = new ClaimedChunkSettings();
@@ -184,7 +188,10 @@ public class TownDataClass {
 
     public void broadCastMessage(String message){
         for (String playerId : townPlayerListId){
-            Objects.requireNonNull(Bukkit.getServer().getPlayer(playerId)).sendMessage(message);
+            Player player = Bukkit.getServer().getPlayer(UUID.fromString(playerId));
+            if (player != null && player.isOnline()) {
+                player.sendMessage(message);
+            }
         }
     }
 
