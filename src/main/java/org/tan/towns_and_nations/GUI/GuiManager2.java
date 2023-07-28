@@ -424,8 +424,23 @@ public class GuiManager2 {
                 .map(PlayerDataClass::getPlayerName) // appelle getName() sur chaque PlayerDataClass
                 .collect(Collectors.toCollection(ArrayList::new)); // recueille le résultat dans une nouvelle ArrayList
 
-
         HeadUtils.addLore(membersRank, playerNames);
+
+        ItemStack renameRole = HeadUtils.getCustomLoreItem(Material.NAME_TAG,Lang.GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME.getTranslation());
+        String title;
+        if(townRank.isPayingTaxes()){
+            title = Lang.GUI_TOWN_MEMBERS_ROLE_PAY_TAXES.getTranslation();
+        }
+        else{
+            title = Lang.GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES.getTranslation();
+        }
+        ItemStack changeRoleTaxRelation = HeadUtils.getCustomLoreItem(
+                Material.GOLD_NUGGET,
+                title,
+                Lang.GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1.getTranslation()
+        );
+
+
 
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
@@ -440,8 +455,14 @@ public class GuiManager2 {
             event.setCancelled(true);
         });
         GuiItem _membersRank = ItemBuilder.from(membersRank).asGuiItem(event -> {
-            townRank.incrementLevel();
-            OpenTownMenuRoleManager(player, roleName);
+            event.setCancelled(true);
+        });
+        GuiItem _renameRole = ItemBuilder.from(renameRole).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+        GuiItem _changeRoleTaxRelation = ItemBuilder.from(changeRoleTaxRelation).asGuiItem(event -> {
+            townRank.swapPayingTaxes();
+            OpenTownMenuRoleManager(player,roleName);
             event.setCancelled(true);
         });
 
@@ -454,7 +475,8 @@ public class GuiManager2 {
 
         gui.setItem(2,2, _roleRankIcon);
         gui.setItem(2,4, _membersRank);
-
+        gui.setItem(2,6, _renameRole);
+        gui.setItem(2,8, _changeRoleTaxRelation);
 
         gui.setItem(3,1, _getBackArrow);
 

@@ -14,6 +14,19 @@ public class TownRank {
     private List<String> players;
     private Map<Permission, Boolean> permissions;
 
+    public boolean isPayingTaxes() {
+        return this.isPayingTaxes;
+    }
+
+    public void setPayingTaxes(boolean payingTaxes) {
+        this.isPayingTaxes = payingTaxes;
+    }
+    public void swapPayingTaxes() {
+        this.isPayingTaxes = !this.isPayingTaxes;
+    }
+
+    private boolean isPayingTaxes;
+
     public TownRank(String name){
         this.name = name;
         this.rankIconName = "DANDELION";
@@ -24,6 +37,7 @@ public class TownRank {
         for (Permission permission : Permission.values()) {
             this.permissions.put(permission, false);
         }
+        this.isPayingTaxes = true;
     }
 
     public String getName(){
