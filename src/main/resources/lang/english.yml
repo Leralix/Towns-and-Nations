@@ -173,13 +173,18 @@ language:
   GUI_TOWN_CLAIM_SETTINGS_BREAK_DESC1: "§fCurrent breaking permission: §e{0}"
 
   GUI_TOWN_MEMBER_DESC1: "§fRank: §e{0}"
-  GUI_TOWN_MEMBER_DESC2: "§fCurrent: §e{0}"
+  GUI_TOWN_MEMBER_DESC2: "§fCurrent balance: §e{0}$"
 
-  GUI_TOWN_MEMBERS_MANAGE_ROLES: "§aManage rank"
+
+  GUI_TOWN_MEMBERS_MANAGE_ROLES: "§aManage ranks  "
   GUI_TOWN_MEMBERS_ADD_NEW_ROLES: "§aCreate a new rank"
   GUI_TOWN_MEMBERS_ADD_NEW_ROLES_DESC1: "§f8 ranks max"
+  GUI_TOWN_MEMBERS_ROLE_NAME: "§a{0}"
+  GUI_TOWN_MEMBERS_ROLE_NAME_DESC1: "§fDrag an item in the slot to change the rank icon"
+  GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED: "§cYou need to have an item in your cursor in order to change the icon"
+  GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS: "§aSuccessfully changed the icon"
   GUI_TOWN_MEMBERS_CHANGE_ROLE_PRIORITY: "§aChange the rank priority"
-  GUI_TOWN_MEMBERS_CHANGE_ROLE_PRIORITY_DESC1: "§fleft click to change priority"
+  GUI_TOWN_MEMBERS_CHANGE_ROLE_PRIORITY_DESC1: "§fLeft click to change priority"
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO: "§aList of players with this role:"
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC: "§f{0}"
   GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME: "§aRename the rank"

@@ -415,7 +415,11 @@ public class GuiManager2 {
         Material roleMaterial = Material.getMaterial(townRank.getRankIconName());
         int rankLevel = townRank.getLevel();
 
-        ItemStack roleIcon = HeadUtils.getCustomLoreItem(roleMaterial, townRank.getName());
+        ItemStack roleIcon = HeadUtils.getCustomLoreItem(
+                roleMaterial,
+                Lang.GUI_TOWN_MEMBERS_ROLE_NAME.getTranslation(townRank.getName()),
+                Lang.GUI_TOWN_MEMBERS_ROLE_NAME_DESC1.getTranslation()
+        );
         ItemStack roleRankIcon = HeadUtils.getRankLevelColor(rankLevel);
         ItemStack membersRank = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==");
 
@@ -446,6 +450,19 @@ public class GuiManager2 {
 
 
         GuiItem _roleIcon = ItemBuilder.from(roleIcon).asGuiItem(event -> {
+            if(event.getCursor() == null)
+                return;
+            Material itemMaterial = event.getCursor().getType();
+            if(itemMaterial == Material.AIR){
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.getTranslation());
+            }
+            else {
+
+                townRank.setRankIconName(itemMaterial.toString());
+                OpenTownMenuRoleManager(player, roleName);
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.getTranslation());
+
+            }
             event.setCancelled(true);
         });
 

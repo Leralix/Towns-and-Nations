@@ -13,14 +13,6 @@ public class TownRank {
     private String rankIconName;
     private List<String> players;
     private Map<Permission, Boolean> permissions;
-
-    public boolean isPayingTaxes() {
-        return this.isPayingTaxes;
-    }
-
-    public void setPayingTaxes(boolean payingTaxes) {
-        this.isPayingTaxes = payingTaxes;
-    }
     public void swapPayingTaxes() {
         this.isPayingTaxes = !this.isPayingTaxes;
     }
@@ -87,5 +79,17 @@ public class TownRank {
     public List<String> getPlayers(){
         return this.players;
     }
+
+    public boolean isPayingTaxes() {
+        return this.isPayingTaxes;
+    }
+
+    public void setPayingTaxes(boolean payingTaxes) {
+        this.isPayingTaxes = payingTaxes;
+    }
+    public void setRankIconName(String rankIconName) {
+        this.rankIconName = rankIconName;
+    }
+
 
 }
