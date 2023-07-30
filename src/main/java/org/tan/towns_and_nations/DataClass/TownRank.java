@@ -35,6 +35,9 @@ public class TownRank {
     public String getName(){
         return this.name;
     }
+    public void setName(String newName){
+        this.name = newName;
+    }
     public int getLevel(){return this.level;}
     public void incrementLevel(){
         this.level = (this.level % 5) + 1;

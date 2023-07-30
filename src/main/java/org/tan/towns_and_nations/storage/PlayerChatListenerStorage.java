@@ -6,28 +6,61 @@ import java.util.*;
 
 public class PlayerChatListenerStorage {
 
+    /*
+    First map: Category
+    Second map: Player
+    Third map: Player infos
+     */
+    private static Map<String,Map<String, Map<String,String>>> ChatListenerStorage = new HashMap<>();
 
-    private static Map<String,ArrayList<UUID>> ChatListenerStorage = new HashMap<>();
-
-    public static void load(){
-        ChatListenerStorage.put("creationVille", new ArrayList<>());
-        ChatListenerStorage.put("donation", new ArrayList<>());
-        ChatListenerStorage.put("rank creation", new ArrayList<>());
-    }
     public static void addPlayer(String key,Player p){
 
-        if(!ChatListenerStorage.get(key).contains(p.getUniqueId()))
-            ChatListenerStorage.get(key).add(p.getUniqueId());
+        String playerId = p.getUniqueId().toString();
+
+        //if Category doesn't exist, create it
+        if(!ChatListenerStorage.containsKey(key)){
+            ChatListenerStorage.put(key,new HashMap<String, Map<String,String>>());
+        }
+        if(!ChatListenerStorage.get(key).containsKey(playerId)){
+            ChatListenerStorage.get(key).put(playerId,new HashMap<String,String>());
+        }
+    }
+
+    public static void addPlayer(String key,Player p, HashMap<String, String> data){
+
+        addPlayer(key,p);
+        System.out.println(data);
+        System.out.println(ChatListenerStorage);
+        System.out.println(ChatListenerStorage.get(key));
+
+        ChatListenerStorage.get(key).get(p.getUniqueId().toString()).putAll(data);
+        System.out.println(ChatListenerStorage.get(key));
 
     }
+
     public static void removePlayer(String key,Player p){
-        ChatListenerStorage.get(key).remove(p.getUniqueId());
+        String playerId = p.getUniqueId().toString();
+        ChatListenerStorage.get(key).remove(playerId);
     }
-    public static boolean checkIfPlayerIn(String key,UUID uuid){
-        return ChatListenerStorage.get(key).contains(uuid);
+    public static boolean checkIfPlayerIn(String key,String uuid){
+        System.out.println("la key: " + key);
+        System.out.println(ChatListenerStorage.keySet());
+
+        if(!ChatListenerStorage.containsKey(key)){
+            return false;
+        }
+
+        return ChatListenerStorage.get(key).containsKey(uuid);
     }
-    public static ArrayList<UUID> getData(String key){
+    public static Map<String,Map<String, Map<String,String>>> getAllData(){
+        return ChatListenerStorage;
+    }
+    public static Map<String, Map<String,String>> getData(String key){
         return ChatListenerStorage.get(key);
     }
+    public static Map<String,String> getPlayerData(String key, String playerUUID){
+        return ChatListenerStorage.get(key).get(playerUUID);
+    }
+
 
 }

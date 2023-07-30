@@ -382,7 +382,7 @@ public class GuiManager2 {
             event.setCancelled(true);
             player.sendMessage(""+Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.getTranslation());
             player.closeInventory();
-            PlayerChatListenerStorage.addPlayer("rank creation",player);
+            PlayerChatListenerStorage.addPlayer("rankCreation",player);
 
         });
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
@@ -475,6 +475,13 @@ public class GuiManager2 {
             event.setCancelled(true);
         });
         GuiItem _renameRole = ItemBuilder.from(renameRole).asGuiItem(event -> {
+
+            player.closeInventory();
+            player.sendMessage(ChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.getTranslation());
+
+            HashMap<String, String> newMap = new HashMap<>();
+            newMap.put("rankName",roleName);
+            PlayerChatListenerStorage.addPlayer("rankRename",player,newMap);
             event.setCancelled(true);
         });
         GuiItem _changeRoleTaxRelation = ItemBuilder.from(changeRoleTaxRelation).asGuiItem(event -> {

@@ -17,6 +17,8 @@ import org.tan.towns_and_nations.utils.ChatUtils;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Dictionary;
+import java.util.Map;
 
 
 public class ChatListener implements Listener {
@@ -24,10 +26,10 @@ public class ChatListener implements Listener {
     @EventHandler
     public void OnPlayerChat(AsyncPlayerChatEvent event){
         Player player = event.getPlayer();
-
+        String playerUUID = player.getUniqueId().toString();
 
         //Listener: Player create his city
-        if(PlayerChatListenerStorage.checkIfPlayerIn("creationVille",player.getUniqueId())){
+        if(PlayerChatListenerStorage.checkIfPlayerIn("creationVille",playerUUID)){
             String townName = event.getMessage();
 
             Bukkit.broadcastMessage(ChatColor.GOLD + "[TAN]" + ChatColor.YELLOW + player.getName() + ChatColor.WHITE + " has created his city: " + ChatColor.YELLOW + "" + ChatColor.BOLD + townName);
@@ -40,7 +42,7 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
         }
 
-        if(PlayerChatListenerStorage.checkIfPlayerIn("donation",player.getUniqueId())){
+        if(PlayerChatListenerStorage.checkIfPlayerIn("donation",playerUUID)){
 
             String stringAmount = event.getMessage();
             PlayerDataClass sender = PlayerStatStorage.getStat(player.getUniqueId().toString());
@@ -73,17 +75,29 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
         }
 
-        if(PlayerChatListenerStorage.checkIfPlayerIn("rank creation",player.getUniqueId())){
-            PlayerChatListenerStorage.removePlayer("rank creation",player);
-            String townName = event.getMessage();
+        if(PlayerChatListenerStorage.checkIfPlayerIn("rankCreation",playerUUID)){
+            PlayerChatListenerStorage.removePlayer("rankCreation",player);
+            String rankName = event.getMessage();
             TownDataClass playerTown = TownDataStorage.getTown(player);
-            playerTown.createTownRank(townName);
-            Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, townName));
+            playerTown.createTownRank(rankName);
+            Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, rankName));
             event.setCancelled(true);
 
         }
 
+        if(PlayerChatListenerStorage.checkIfPlayerIn("rankRename",playerUUID)){
+            Map<String,String> datas = PlayerChatListenerStorage.getPlayerData("rankRename",playerUUID);
 
+            String newRankName = event.getMessage();
+            TownDataClass playerTown = TownDataStorage.getTown(player);
+            playerTown.getRank(datas.get("rankName")).setName(newRankName);
+
+            Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, newRankName));
+
+            PlayerChatListenerStorage.removePlayer("rankRename",player);
+            event.setCancelled(true);
+
+        }
 
 
     }

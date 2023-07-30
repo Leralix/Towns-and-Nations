@@ -109,9 +109,7 @@ public class DebugCommand implements CommandExecutor, TabExecutor {
                     break;
 
                 case "chatstorage":
-                    player.sendMessage(PlayerChatListenerStorage.getData("creationVille").toString());
-                    player.sendMessage(PlayerChatListenerStorage.getData("donation").toString());
-                    player.sendMessage(PlayerChatListenerStorage.getData("rank creation").toString());
+                    player.sendMessage(PlayerChatListenerStorage.getAllData().toString());
                     break;
 
                 case "townstats":

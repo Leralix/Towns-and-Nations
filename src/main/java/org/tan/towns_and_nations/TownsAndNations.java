@@ -49,7 +49,6 @@ public final class TownsAndNations extends JavaPlugin {
         PlayerStatStorage.loadStats();
         TownDataStorage.loadStats();
         ClaimedChunkStorage.loadStats();
-        PlayerChatListenerStorage.load();
 
         logger.info("[TaN] -Loading Scheduled commands");
         TestTask.startSchedule();

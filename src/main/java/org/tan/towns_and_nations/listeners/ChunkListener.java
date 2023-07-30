@@ -8,13 +8,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.tan.towns_and_nations.DataClass.ClaimedChunkDataClass;
-import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
-import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 
 import static org.tan.towns_and_nations.utils.ChatUtils.getTANString;
@@ -45,7 +41,7 @@ public class ChunkListener implements Listener {
     }
 
     @EventHandler
-    public void OnCointainersOpen(PlayerInteractEvent event){
+    public void OnContainersOpen(PlayerInteractEvent event){
 
         Block block = event.getClickedBlock();
         if (block != null){
