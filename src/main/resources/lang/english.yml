@@ -198,7 +198,10 @@ language:
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_5: "§aRank 5"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§fLeft clic to change the role"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fThe smaller the number, the better the rank is"
+  GUI_TOWN_MEMBERS_ROLE_DELETE: "Delete the rank"
+  GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY: "You cannot delete a rank if there are player with the rank"
 
+  TOWN_RANK_CAP_REACHED: "§cYou reached the town cap"
   WRITE_IN_CHAT_NEW_ROLE_NAME: "§fWrite in the chat the name of the rank"
 
   GUI_TOWN_SETTINGS_LEAVE_TOWN: "§aLeave the town"

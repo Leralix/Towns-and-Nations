@@ -43,9 +43,9 @@ public class TownDataClass {
         this.townPlayerListId.add(uuidLeader);
         this.roles = new HashMap<>();
 
-        this.roles.put("default",new TownRank("default"));
-        this.roles.get("default").addPlayer(uuidLeader);
-        this.townDefaultRank = "default";
+        String townDefaultRankName = "default";
+        addTownRank(townDefaultRankName);
+        setTownDefaultRank(townDefaultRankName);
 
         PlayerStatStorage.getStat(uuidLeader).setRank(this.townDefaultRank);
 
@@ -56,6 +56,17 @@ public class TownDataClass {
         this.townLevel = new TownLevel();
         this.townTreasury = new TownTreasury();
     }
+
+    public void addTownRank(String rankName){
+        this.roles.put(rankName,new TownRank(rankName));
+    }
+    public void addTownRank(String rankName, TownRank townRank){
+        this.roles.put(rankName,townRank);
+    }
+    public void removeTownRank(String key){
+        this.roles.remove(key);
+    }
+
 
     public String getTownId() {
         return this.TownId;
@@ -226,7 +237,7 @@ public class TownDataClass {
         this.roles.put(rankName,new TownRank(rankName));
     }
 
-    public void changeTownDefaultRank(String newRank){
+    public void setTownDefaultRank(String newRank){
         if(roles.containsKey(newRank)){
             this.townDefaultRank = newRank;
         }
@@ -237,5 +248,10 @@ public class TownDataClass {
     public String getTownDefaultRank(){
         return this.townDefaultRank;
     }
+
+    public int getNumberOfRank(){
+        return roles.size();
+    }
+
 
 }

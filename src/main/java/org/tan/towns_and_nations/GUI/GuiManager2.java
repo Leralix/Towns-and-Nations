@@ -19,7 +19,7 @@ import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 import static org.tan.towns_and_nations.storage.TownDataStorage.getTownList;
-import static org.tan.towns_and_nations.storage.TownDataStorage.townDataMap;
+
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -380,6 +380,13 @@ public class GuiManager2 {
 
         GuiItem _createNewRole = ItemBuilder.from(createNewRole).asGuiItem(event -> {
             event.setCancelled(true);
+
+            if(town.getNumberOfRank() >= 8){
+                player.sendMessage(""+Lang.TOWN_RANK_CAP_REACHED.getTranslation());
+                return;
+            }
+
+
             player.sendMessage(""+Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.getTranslation());
             player.closeInventory();
             PlayerChatListenerStorage.addPlayer("rankCreation",player);
@@ -430,7 +437,7 @@ public class GuiManager2 {
 
         HeadUtils.addLore(membersRank, playerNames);
 
-        ItemStack renameRole = HeadUtils.getCustomLoreItem(Material.NAME_TAG,Lang.GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME.getTranslation());
+        ItemStack renameRank = HeadUtils.getCustomLoreItem(Material.NAME_TAG,Lang.GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME.getTranslation());
         String title;
         if(townRank.isPayingTaxes()){
             title = Lang.GUI_TOWN_MEMBERS_ROLE_PAY_TAXES.getTranslation();
@@ -445,7 +452,7 @@ public class GuiManager2 {
         );
 
 
-
+        ItemStack removeRank = HeadUtils.getCustomLoreItem(Material.BARRIER, Lang.GUI_TOWN_MEMBERS_ROLE_DELETE.getTranslation());
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
 
@@ -474,7 +481,7 @@ public class GuiManager2 {
         GuiItem _membersRank = ItemBuilder.from(membersRank).asGuiItem(event -> {
             event.setCancelled(true);
         });
-        GuiItem _renameRole = ItemBuilder.from(renameRole).asGuiItem(event -> {
+        GuiItem _renameRank = ItemBuilder.from(renameRank).asGuiItem(event -> {
 
             player.closeInventory();
             player.sendMessage(ChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.getTranslation());
@@ -490,6 +497,19 @@ public class GuiManager2 {
             event.setCancelled(true);
         });
 
+        GuiItem _removeRank = ItemBuilder.from(removeRank).asGuiItem(event -> {
+            if(townRank.getNumberOfPlayer() != 0){
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY.getTranslation());
+                event.setCancelled(true);
+            }
+            else{
+                town.removeTownRank(townRank.getName());
+                OpenTownMenuRoles(player);
+                event.setCancelled(true);
+            }
+
+        });
+
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
             OpenTownMemberList(player);
@@ -499,8 +519,9 @@ public class GuiManager2 {
 
         gui.setItem(2,2, _roleRankIcon);
         gui.setItem(2,4, _membersRank);
-        gui.setItem(2,6, _renameRole);
-        gui.setItem(2,8, _changeRoleTaxRelation);
+        gui.setItem(2,6, _renameRank);
+        gui.setItem(2,7, _changeRoleTaxRelation);
+        gui.setItem(2,8, _removeRank);
 
         gui.setItem(3,1, _getBackArrow);
 

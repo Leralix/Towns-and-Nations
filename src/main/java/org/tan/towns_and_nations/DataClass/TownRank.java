@@ -1,6 +1,5 @@
 package org.tan.towns_and_nations.DataClass;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.enums.Permission;
 
@@ -94,5 +93,8 @@ public class TownRank {
         this.rankIconName = rankIconName;
     }
 
+    public int getNumberOfPlayer(){
+        return players.size();
+    }
 
 }

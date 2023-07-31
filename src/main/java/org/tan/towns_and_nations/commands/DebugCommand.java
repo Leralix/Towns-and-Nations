@@ -22,7 +22,7 @@ import java.util.*;
 
 public class DebugCommand implements CommandExecutor, TabExecutor {
 
-    private final String[] commandes = {"playerstats", "savestats","chatstorage", "itemtab", "getplayerstorage", "gettownstats", "spawnvillager", "newgui","addmoney","setmoney","addnewfeatures"};
+    private final String[] commandes = {"saveall","playerstats", "savestats","chatstorage", "itemtab", "getplayerstorage", "gettownstats", "spawnvillager", "newgui","addmoney","setmoney","addnewfeatures"};
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
@@ -43,9 +43,16 @@ public class DebugCommand implements CommandExecutor, TabExecutor {
             sender.sendMessage(args[0]);
             switch (args[0]) {
 
+                case "saveall":
+                    TownDataStorage.saveStats();
+                    ClaimedChunkStorage.saveStats();
+                    PlayerStatStorage.saveStats();
+                    break;
+
                 case "newgui":
                     GuiManager2.OpenMainMenu(player);
                     break;
+
                 case "addnewfeatures":
                     LinkedHashMap<String, TownDataClass> towns  = TownDataStorage.getTownList();
                     for (Map.Entry<String, TownDataClass> e : towns.entrySet()) {

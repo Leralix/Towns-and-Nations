@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
+import org.tan.towns_and_nations.DataClass.TownRank;
 import org.tan.towns_and_nations.GUI.GuiManager2;
 import org.tan.towns_and_nations.TownsAndNations;
 import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
@@ -90,7 +91,11 @@ public class ChatListener implements Listener {
 
             String newRankName = event.getMessage();
             TownDataClass playerTown = TownDataStorage.getTown(player);
-            playerTown.getRank(datas.get("rankName")).setName(newRankName);
+            TownRank playerTownRank = playerTown.getRank(datas.get("rankName"));
+            playerTownRank.setName(newRankName);
+
+            playerTown.addTownRank(newRankName,playerTownRank);
+            playerTown.removeTownRank(datas.get("rankName"));
 
             Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, newRankName));
 
