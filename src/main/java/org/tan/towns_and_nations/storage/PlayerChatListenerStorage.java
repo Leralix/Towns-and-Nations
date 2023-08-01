@@ -29,12 +29,7 @@ public class PlayerChatListenerStorage {
     public static void addPlayer(String key,Player p, HashMap<String, String> data){
 
         addPlayer(key,p);
-        System.out.println(data);
-        System.out.println(ChatListenerStorage);
-        System.out.println(ChatListenerStorage.get(key));
-
         ChatListenerStorage.get(key).get(p.getUniqueId().toString()).putAll(data);
-        System.out.println(ChatListenerStorage.get(key));
 
     }
 

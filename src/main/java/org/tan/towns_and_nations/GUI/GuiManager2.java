@@ -87,7 +87,6 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-    //Done
     public static void openProfileMenu(Player player){
         String name = "Profile";
         PlayerDataClass playerStat = PlayerStatStorage.getStat(player);
@@ -138,7 +137,6 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-    //Done
     public static void openTownMenuNoTown(Player player){
 
 
@@ -184,7 +182,6 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-    //Done
     public static void OpenSearchTownMenu(Player player) {
 
         String name = "Town";
@@ -225,7 +222,6 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-    //Done
     public static void OpenTownMenuHaveTown(Player player) {
 
         String name = "Town";
@@ -291,7 +287,6 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-    //Done
     public static void OpenTownMemberList(Player player) {
 
         String name = "Town";
@@ -346,7 +341,6 @@ public class GuiManager2 {
         gui.open(player);
 
     }
-
     public static void OpenTownMenuRoles(Player player) {
 
         String name = "Town";
@@ -437,6 +431,8 @@ public class GuiManager2 {
 
         HeadUtils.addLore(membersRank, playerNames);
 
+        ItemStack managePermission = HeadUtils.getCustomLoreItem(Material.ANVIL,Lang.GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION.getTranslation());
+
         ItemStack renameRank = HeadUtils.getCustomLoreItem(Material.NAME_TAG,Lang.GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME.getTranslation());
         String title;
         if(townRank.isPayingTaxes()){
@@ -478,6 +474,10 @@ public class GuiManager2 {
             OpenTownMenuRoleManager(player, roleName);
             event.setCancelled(true);
         });
+        GuiItem _managePermission = ItemBuilder.from(managePermission).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownMenuRoleManagerPermissions(player,roleName);
+        });
         GuiItem _membersRank = ItemBuilder.from(membersRank).asGuiItem(event -> {
             event.setCancelled(true);
         });
@@ -518,7 +518,9 @@ public class GuiManager2 {
         gui.setItem(1,5, _roleIcon);
 
         gui.setItem(2,2, _roleRankIcon);
-        gui.setItem(2,4, _membersRank);
+        gui.setItem(2,3, _membersRank);
+        gui.setItem(2,3, _managePermission);
+
         gui.setItem(2,6, _renameRank);
         gui.setItem(2,7, _changeRoleTaxRelation);
         gui.setItem(2,8, _removeRank);
@@ -528,8 +530,56 @@ public class GuiManager2 {
         gui.open(player);
 
     }
+    public static void OpenTownMenuRoleManagerPermissions(Player player, String roleName) {
 
-    //Done
+        String name = "Town";
+        int nRow = 3;
+
+        Gui gui = Gui.gui()
+                .title(Component.text(name))
+                .type(GuiType.CHEST)
+                .rows(nRow)
+                .create();
+
+
+        TownDataClass town = TownDataStorage.getTown(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());
+        TownRank townRank = town.getRank(roleName);
+
+
+        ItemStack manage_taxes = HeadUtils.getCustomLoreItem(Material.GOLD_INGOT, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack promote_rank_player = HeadUtils.getCustomLoreItem(Material.EMERALD, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack derank_player = HeadUtils.getCustomLoreItem(Material.REDSTONE, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack claim_chunk = HeadUtils.getCustomLoreItem(Material.EMERALD_BLOCK, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack unclaim_chunk = HeadUtils.getCustomLoreItem(Material.REDSTONE_BLOCK, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack upgrade_town = HeadUtils.getCustomLoreItem(Material.SPECTRAL_ARROW, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack invite_player = HeadUtils.getCustomLoreItem(Material.SKELETON_SKULL, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack kick_player = HeadUtils.getCustomLoreItem(Material.CREEPER_HEAD, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack create_rank = HeadUtils.getCustomLoreItem(Material.LADDER, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack delete_rank = HeadUtils.getCustomLoreItem(Material.CHAIN, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack modify_rank = HeadUtils.getCustomLoreItem(Material.STONE_PICKAXE, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack manage_claim_settings = HeadUtils.getCustomLoreItem(Material.GRASS_BLOCK, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack manage_town_relation = HeadUtils.getCustomLoreItem(Material.FLOWER_POT, Lang.GUI_BACK_ARROW.getTranslation());
+
+
+
+
+
+
+
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
+
+
+        GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownMemberList(player);
+        });
+
+        gui.setItem(3,1, _getBackArrow);
+
+        gui.open(player);
+
+    }
+
     public static void OpenTownEconomics(Player player) {
 
         String name = "Town";
@@ -659,7 +709,6 @@ public class GuiManager2 {
         gui.open(player);
 
     }
-
     public static void OpenTownLevel(Player player){
         String name = "Town";
         int nRow = 3;
@@ -744,8 +793,6 @@ public class GuiManager2 {
         gui.open(player);
 
     }
-
-    //Done
     public static void OpenTownSettings(Player player) {
 
         String name = "Town";
@@ -807,7 +854,14 @@ public class GuiManager2 {
         });
 
         GuiItem _changeOwnershipTown = ItemBuilder.from(changeOwnershipTown).asGuiItem(event -> {
+
             event.setCancelled(true);
+
+            if(playerStat.isTownLeader())
+                OpenTownChangeOwnershipPlayerSelect(player);
+            else
+                player.sendMessage(ChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.getTranslation());
+
         });
 
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
@@ -819,11 +873,62 @@ public class GuiManager2 {
         gui.setItem(4, _townIcon);
         gui.setItem(10, _leaveTown);
         gui.setItem(11, _deleteTown);
+        gui.setItem(12, _changeOwnershipTown);
         gui.setItem(18, _getBackArrow);
 
         gui.open(player);
     }
+    public static void OpenTownChangeOwnershipPlayerSelect(Player player) {
 
+        String name = "Town";
+        int nRow = 3;
+
+        Gui gui = Gui.gui()
+                .title(Component.text(name))
+                .type(GuiType.CHEST)
+                .rows(nRow)
+                .create();
+
+        PlayerDataClass senderStat = PlayerStatStorage.getStat(player);
+        TownDataClass playerTown = TownDataStorage.getTown(player);
+
+        int i = 0;
+        for (String playerUUID : playerTown.getPlayerList()){
+            OfflinePlayer townPlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerUUID));
+
+            ItemStack playerHead = HeadUtils.getPlayerHead(townPlayer.getName(),townPlayer);
+            HeadUtils.addLore(playerHead,
+                    Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1.getTranslation(player.getName()),
+                    Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2.getTranslation()
+            );
+
+            GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> {
+                playerTown.setOverlord(townPlayer.getUniqueId().toString());
+                event.setCancelled(true);
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCESS.getTranslation(townPlayer.getName()));
+                OpenTownMenuHaveTown(player);
+            });
+
+            gui.setItem(i, _playerHead);
+
+            i = i+1;
+        }
+
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW,
+                Lang.GUI_BACK_ARROW.getTranslation());
+
+
+
+        GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownSettings(player);
+        });
+
+
+        gui.setItem(18, _getBackArrow);
+
+        gui.open(player);
+    }
     public static void OpenTownRelations(Player player) {
 
         String name = "Town";
@@ -906,7 +1011,6 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-
     public static void OpenTownRelation(Player player, String relation) {
 
         String name = "Town - Relation";
@@ -993,7 +1097,6 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-
     public static void OpenTownRelationModification(Player player, String action, String relation) {
 
         String name = "Town - Relation";
@@ -1093,7 +1196,6 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-
     public static void OpenTownChunkMenu(Player player){
         String name = "Town";
         int nRow = 3;

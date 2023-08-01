@@ -1,6 +1,7 @@
 package org.tan.towns_and_nations.DataClass;
 
 import org.bukkit.entity.Player;
+import org.tan.towns_and_nations.storage.TownDataStorage;
 
 public class PlayerDataClass {
 
@@ -69,6 +70,10 @@ public class PlayerDataClass {
 
     public boolean checkAuth(TownDataClass Town){
         return Town.getRelations().getOne("alliance").contains(this.TownId);
+    }
+
+    public boolean isTownLeader(){
+        return TownDataStorage.getTown(this).getUuidLeader().equals(this.UUID);
     }
 
 }

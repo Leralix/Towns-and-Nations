@@ -16,7 +16,7 @@ public class TownDataClass {
     private String TownId;
     private String TownName;
     private String UuidLeader;
-    private HashMap<String,TownRank> roles;
+    private final HashMap<String,TownRank> roles;
     private String townDefaultRank;
     private String Description;
     public boolean open;
@@ -37,7 +37,6 @@ public class TownDataClass {
         this.Description = "Description par défaut";
         this.open = false;
         this.DateCreated = new Date().toString();
-        this.Overlord = Bukkit.getServer().getOfflinePlayer(UUID.fromString(uuidLeader)).getName();
         this.townIconMaterialCode = null;
 
         this.townPlayerListId.add(uuidLeader);
@@ -46,6 +45,8 @@ public class TownDataClass {
         String townDefaultRankName = "default";
         addTownRank(townDefaultRankName);
         setTownDefaultRank(townDefaultRankName);
+        getRank(townDefaultRankName).addPlayer(uuidLeader);
+
 
         PlayerStatStorage.getStat(uuidLeader).setRank(this.townDefaultRank);
 

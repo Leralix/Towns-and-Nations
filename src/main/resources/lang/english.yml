@@ -188,6 +188,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO: "§aList of players with this role:"
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC: "§f{0}"
   GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME: "§aRename the rank"
+  GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION: "§aManage permissions"
   GUI_TOWN_MEMBERS_ROLE_PAY_TAXES: "§aThis rank pay taxes"
   GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES: "§aThis rank do not pay taxes"
   GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1: "§fLeft click to change"
@@ -205,17 +206,23 @@ language:
   WRITE_IN_CHAT_NEW_ROLE_NAME: "§fWrite in the chat the name of the rank"
 
   GUI_TOWN_SETTINGS_LEAVE_TOWN: "§aLeave the town"
-  GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1: "§fLeave the town {0}"
+  GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1: "§fLeave the town §e{0}"
   GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2: "§fYou can't leave a town if you are the leader, you must delete it"
   GUI_TOWN_SETTINGS_DELETE_TOWN: "§aDisband the town"
-  GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1: "§fDisband the town {0}"
+  GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1: "§fDisband the town §e{0}"
   GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2: "§fYou cannot disband a town if you are not the leader"
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP: "§fTransfer town ownership"
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1: "§fGive the leadership of the town to another player"
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2: "§cYou will loose your status of town leader"
+  GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1: "§fGive the town leadership to §e{0}"
+  GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2: "§cYou will loose your status and get ranked as the default rank"
+
+  GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCESS: "Successully transfer town leadership to: {0}"
   #Chat Information
 
   CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§fYou can't leave a town you are the leader, you need to disband it or give the leadership to someone else"
+  NOT_TOWN_LEADER_ERROR: "§cYou need to be the leader of the town to execute this action"
+
   CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§fYou can't delete a town if you are not the leader"
 
   CHAT_PLAYER_LEFT_THE_TOWN: "§fYou left the town"

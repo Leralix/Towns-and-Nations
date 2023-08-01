@@ -10,8 +10,9 @@ public class TownRank {
     private String name;
     private int level;
     private String rankIconName;
-    private List<String> players;
-    private Map<Permission, Boolean> permissions;
+    private final List<String> players;
+    private final Set<Permission> permissions = EnumSet.noneOf(Permission.class);
+
     public void swapPayingTaxes() {
         this.isPayingTaxes = !this.isPayingTaxes;
     }
@@ -23,11 +24,7 @@ public class TownRank {
         this.rankIconName = "DANDELION";
         this.level = 5;
         this.players = new ArrayList<>();
-        this.permissions = new EnumMap<>(Permission.class);
-        // initialiser toutes les permissions à false par défaut
-        for (Permission permission : Permission.values()) {
-            this.permissions.put(permission, false);
-        }
+
         this.isPayingTaxes = true;
     }
 
@@ -44,17 +41,7 @@ public class TownRank {
     public String getRankIconName(){
         return this.rankIconName;
     }
-    public void grantPermission(Permission permission) {
-        permissions.put(permission, true);
-    }
     // Révoquer une permission
-    public void revokePermission(Permission permission) {
-        permissions.put(permission, false);
-    }
-
-    public boolean hasPermission(Permission permission) {
-        return permissions.getOrDefault(permission, false);
-    }
     public void addPlayer(String playerUUID){
         this.players.add(playerUUID);
     }
@@ -97,4 +84,10 @@ public class TownRank {
         return players.size();
     }
 
+    public void addPermission(Permission permission) {
+        permissions.add(permission);
+    }
+    public boolean hasPermission(Permission permission) {
+        return permissions.contains(permission);
+    }
 }
