@@ -1,4 +1,4 @@
-package org.tan.towns_and_nations.Lang;
+package org.tan.towns_and_nations.enums;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,7 +1,7 @@
 package org.tan.towns_and_nations.DataClass;
 
 import org.bukkit.entity.Player;
-import org.tan.towns_and_nations.enums.Permission;
+import org.tan.towns_and_nations.enums.TownRolePermission;
 
 import java.util.*;
 
@@ -11,7 +11,7 @@ public class TownRank {
     private int level;
     private String rankIconName;
     private final List<String> players;
-    private final Set<Permission> permissions = EnumSet.noneOf(Permission.class);
+    private final Set<TownRolePermission> permissions = EnumSet.noneOf(TownRolePermission.class);
 
     public void swapPayingTaxes() {
         this.isPayingTaxes = !this.isPayingTaxes;
@@ -84,10 +84,20 @@ public class TownRank {
         return players.size();
     }
 
-    public void addPermission(Permission permission) {
+    public void addPermission(TownRolePermission permission) {
         permissions.add(permission);
     }
-    public boolean hasPermission(Permission permission) {
+    public boolean hasPermission(TownRolePermission permission) {
         return permissions.contains(permission);
+    }
+    public void removePermission(TownRolePermission permission) {
+        permissions.remove(permission);
+    }
+
+    public void switchPermission(TownRolePermission permission) {
+        if(hasPermission(permission))
+            removePermission(permission);
+        else
+            addPermission(permission);
     }
 }
