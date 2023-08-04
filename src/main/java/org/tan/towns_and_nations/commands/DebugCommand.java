@@ -57,7 +57,6 @@ public class DebugCommand implements CommandExecutor, TabExecutor {
                     LinkedHashMap<String, TownDataClass> towns  = TownDataStorage.getTownList();
                     for (Map.Entry<String, TownDataClass> e : towns.entrySet()) {
                         TownDataClass townDataClass = e.getValue();
-                        townDataClass.setOverlord(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townDataClass.getUuidLeader())).getName());
                         //townDataClass.setChunkSettings(new ClaimedChunkSettings());
                         townDataClass.setTreasury(new TownTreasury());
                     }

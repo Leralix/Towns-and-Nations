@@ -37,6 +37,9 @@ language:
   TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fYou are now a member of the town: §3{0}"
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§e{0}§f has joined the town !"
 
+  #Leave a town
+  TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§e{0}§c has left the town !"
+
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Open the town and nation GUI"
 

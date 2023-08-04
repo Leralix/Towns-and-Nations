@@ -19,6 +19,7 @@ import org.tan.towns_and_nations.utils.ChatUtils;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Dictionary;
+import java.util.List;
 import java.util.Map;
 
 
@@ -92,6 +93,13 @@ public class ChatListener implements Listener {
             String newRankName = event.getMessage();
             TownDataClass playerTown = TownDataStorage.getTown(player);
             TownRank playerTownRank = playerTown.getRank(datas.get("rankName"));
+
+            List<String> playerList = playerTownRank.getPlayers();
+            for(String playerWithRoleUUID : playerList){
+                PlayerStatStorage.getStat(playerWithRoleUUID).setRank(newRankName);
+            }
+
+
             playerTownRank.setName(newRankName);
 
             playerTown.addTownRank(newRankName,playerTownRank);

@@ -939,8 +939,10 @@ public class GuiManager2 {
                 player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.getTranslation());
             } else {
                 playerTown.removePlayer(player.getUniqueId().toString());
+                playerTown.getRank(playerStat.getTownRank()).removePlayer(playerStat.getUuid());
                 playerStat.setTownId(null);
                 player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_LEFT_THE_TOWN.getTranslation());
+                playerTown.broadCastMessage(ChatUtils.getTANString() + Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.getTranslation(Bukkit.getOfflinePlayer(UUID.fromString(playerStat.getUuid())).getName()));
                 player.closeInventory();
             }
         });
