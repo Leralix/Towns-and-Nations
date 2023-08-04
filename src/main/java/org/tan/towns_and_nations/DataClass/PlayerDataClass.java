@@ -1,6 +1,7 @@
 package org.tan.towns_and_nations.DataClass;
 
 import org.bukkit.entity.Player;
+import org.tan.towns_and_nations.enums.TownRolePermission;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 
 public class PlayerDataClass {
@@ -51,15 +52,12 @@ public class PlayerDataClass {
     public void setTownId(String newTownId){
         this.TownId = newTownId;
     }
-
     public String getTownRank() {
         return TownRank;
     }
-
     public void setTownRank(String townRank) {
         TownRank = townRank;
     }
-
     public void addToBalance(int money) {
         this.Balance = this.Balance + money;
     }
@@ -71,9 +69,14 @@ public class PlayerDataClass {
     public boolean checkAuth(TownDataClass Town){
         return Town.getRelations().getOne("alliance").contains(this.TownId);
     }
-
     public boolean isTownLeader(){
         return TownDataStorage.getTown(this).getUuidLeader().equals(this.UUID);
+    }
+
+    public boolean hasPermission(TownRolePermission rolePermission){
+        if(isTownLeader())
+            return true;
+        return TownDataStorage.getTown(this).getRank(this.TownRank).hasPermission(rolePermission) ;
     }
 
 }

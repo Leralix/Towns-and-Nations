@@ -353,8 +353,9 @@ public class GuiManager2 {
                 .rows(nRow)
                 .create();
 
+        PlayerDataClass playerStat = PlayerStatStorage.getStat(player);
+        TownDataClass town = TownDataStorage.getTown(playerStat);
 
-        TownDataClass town = TownDataStorage.getTown(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());
         HashMap<String,TownRank> ranks = town.getTownRanks();
 
         int i = 0;
@@ -364,7 +365,10 @@ public class GuiManager2 {
             ItemStack townRankItemStack = HeadUtils.getCustomLoreItem(townMaterial, townRank.getName());
             GuiItem _townRankItemStack = ItemBuilder.from(townRankItemStack).asGuiItem(event -> {
                 event.setCancelled(true);
-                OpenTownMenuRoleManager(player,townRank.getName());
+                if(playerStat.hasPermission(TownRolePermission.MANAGE_RANKS))
+                    OpenTownMenuRoleManager(player,townRank.getName());
+                else
+                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
             });
             gui.setItem(i, _townRankItemStack);
             i = i+1;
@@ -372,19 +376,22 @@ public class GuiManager2 {
 
         ItemStack createNewRole = HeadUtils.getCustomLoreItem(Material.EGG, Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES.getTranslation());
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
-
         GuiItem _createNewRole = ItemBuilder.from(createNewRole).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if(town.getNumberOfRank() >= 8){
-                player.sendMessage(""+Lang.TOWN_RANK_CAP_REACHED.getTranslation());
-                return;
+            if(playerStat.hasPermission(TownRolePermission.CREATE_RANK)){
+                if(town.getNumberOfRank() >= 8){
+                    player.sendMessage(""+Lang.TOWN_RANK_CAP_REACHED.getTranslation());
+                    return;
+                }
+
+                player.sendMessage(""+Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.getTranslation());
+                player.closeInventory();
+                PlayerChatListenerStorage.addPlayer("rankCreation",player);
             }
+            else
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
 
-
-            player.sendMessage(""+Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.getTranslation());
-            player.closeInventory();
-            PlayerChatListenerStorage.addPlayer("rankCreation",player);
 
         });
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
@@ -548,18 +555,18 @@ public class GuiManager2 {
 
 
         ItemStack manage_taxes = HeadUtils.getCustomLoreItem(Material.GOLD_INGOT, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TAXES.getTranslation(),(townRank.hasPermission(TownRolePermission.MANAGE_TAXES)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
-        ItemStack promote_rank_player = HeadUtils.getCustomLoreItem(Material.EMERALD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_PROMOTE_RANK_PLAYER.getTranslation());
-        ItemStack derank_player = HeadUtils.getCustomLoreItem(Material.REDSTONE, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DERANK_RANK_PLAYER.getTranslation());
-        ItemStack claim_chunk = HeadUtils.getCustomLoreItem(Material.EMERALD_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CLAIM_CHUNK.getTranslation());
-        ItemStack unclaim_chunk = HeadUtils.getCustomLoreItem(Material.REDSTONE_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_UNCLAIM_CHUNK.getTranslation());
-        ItemStack upgrade_town = HeadUtils.getCustomLoreItem(Material.SPECTRAL_ARROW, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_UPGRADE_TOWN.getTranslation());
-        ItemStack invite_player = HeadUtils.getCustomLoreItem(Material.SKELETON_SKULL, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_INVITE_PLAYER.getTranslation());
-        ItemStack kick_player = HeadUtils.getCustomLoreItem(Material.CREEPER_HEAD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_KICK_PLAYER.getTranslation());
-        ItemStack create_rank = HeadUtils.getCustomLoreItem(Material.LADDER, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_RANK.getTranslation());
-        ItemStack delete_rank = HeadUtils.getCustomLoreItem(Material.CHAIN, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DELETE_RANK.getTranslation());
-        ItemStack modify_rank = HeadUtils.getCustomLoreItem(Material.STONE_PICKAXE, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MODIFY_RANK.getTranslation());
-        ItemStack manage_claim_settings = HeadUtils.getCustomLoreItem(Material.GRASS_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_CLAIM_SETTINGS.getTranslation());
-        ItemStack manage_town_relation = HeadUtils.getCustomLoreItem(Material.FLOWER_POT, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION.getTranslation());
+        ItemStack promote_rank_player = HeadUtils.getCustomLoreItem(Material.EMERALD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_PROMOTE_RANK_PLAYER.getTranslation(),(townRank.hasPermission(TownRolePermission.PROMOTE_RANK_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
+        ItemStack derank_player = HeadUtils.getCustomLoreItem(Material.REDSTONE, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DERANK_RANK_PLAYER.getTranslation(),(townRank.hasPermission(TownRolePermission.DERANK_RANK_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
+        ItemStack claim_chunk = HeadUtils.getCustomLoreItem(Material.EMERALD_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CLAIM_CHUNK.getTranslation(),(townRank.hasPermission(TownRolePermission.CLAIM_CHUNK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
+        ItemStack unclaim_chunk = HeadUtils.getCustomLoreItem(Material.REDSTONE_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_UNCLAIM_CHUNK.getTranslation(),(townRank.hasPermission(TownRolePermission.UNCLAIM_CHUNK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
+        ItemStack upgrade_town = HeadUtils.getCustomLoreItem(Material.SPECTRAL_ARROW, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_UPGRADE_TOWN.getTranslation(),(townRank.hasPermission(TownRolePermission.UPGRADE_TOWN)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
+        ItemStack invite_player = HeadUtils.getCustomLoreItem(Material.SKELETON_SKULL, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_INVITE_PLAYER.getTranslation(),(townRank.hasPermission(TownRolePermission.INVITE_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
+        ItemStack kick_player = HeadUtils.getCustomLoreItem(Material.CREEPER_HEAD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_KICK_PLAYER.getTranslation(),(townRank.hasPermission(TownRolePermission.KICK_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
+        ItemStack create_rank = HeadUtils.getCustomLoreItem(Material.LADDER, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_RANK.getTranslation(),(townRank.hasPermission(TownRolePermission.CREATE_RANK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
+        ItemStack delete_rank = HeadUtils.getCustomLoreItem(Material.CHAIN, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DELETE_RANK.getTranslation(),(townRank.hasPermission(TownRolePermission.DELETE_RANK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
+        ItemStack modify_rank = HeadUtils.getCustomLoreItem(Material.STONE_PICKAXE, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MODIFY_RANK.getTranslation(),(townRank.hasPermission(TownRolePermission.MANAGE_RANKS)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
+        ItemStack manage_claim_settings = HeadUtils.getCustomLoreItem(Material.GRASS_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_CLAIM_SETTINGS.getTranslation(),(townRank.hasPermission(TownRolePermission.MANAGE_CLAIM_SETTINGS)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
+        ItemStack manage_town_relation = HeadUtils.getCustomLoreItem(Material.FLOWER_POT, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION.getTranslation(),(townRank.hasPermission(TownRolePermission.MANAGE_TOWN_RELATION)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
 
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
@@ -617,7 +624,7 @@ public class GuiManager2 {
             event.setCancelled(true);
         });
         GuiItem _modify_rank = ItemBuilder.from(modify_rank).asGuiItem(event -> {
-            townRank.switchPermission(TownRolePermission.MODIFY_RANK);
+            townRank.switchPermission(TownRolePermission.MANAGE_RANKS);
             OpenTownMenuRoleManagerPermissions(player, roleName);
             event.setCancelled(true);
         });
@@ -669,6 +676,7 @@ public class GuiManager2 {
 
 
         TownDataClass town = TownDataStorage.getTown(player);
+        PlayerDataClass playerStat = PlayerStatStorage.getStat(player);
 
 
         ItemStack goldIcon = HeadUtils.makeSkull(Lang.GUI_TREASURY_STORAGE.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
@@ -730,9 +738,14 @@ public class GuiManager2 {
         });
 
         GuiItem _lessTax = ItemBuilder.from(lowerTax).asGuiItem(event -> {
-            town.getTreasury().remove1FlatTax();
-            OpenTownEconomics(player);
             event.setCancelled(true);
+            if(playerStat.hasPermission(TownRolePermission.MANAGE_TAXES)){
+                town.getTreasury().remove1FlatTax();
+                OpenTownEconomics(player);
+            }
+            else
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+
 
         });
         GuiItem _taxInfo = ItemBuilder.from(taxInfo).asGuiItem(event -> {
@@ -740,9 +753,14 @@ public class GuiManager2 {
             OpenTownEconomics(player);
         });
         GuiItem _moreTax = ItemBuilder.from(increaseTax).asGuiItem(event -> {
-            town.getTreasury().add1FlatTax();
             event.setCancelled(true);
-            OpenTownEconomics(player);
+
+            if(playerStat.hasPermission(TownRolePermission.MANAGE_TAXES)){
+                town.getTreasury().add1FlatTax();
+                OpenTownEconomics(player);
+            }
+            else
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
         });
 
         GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE)).asGuiItem(event -> {
@@ -815,7 +833,10 @@ public class GuiManager2 {
         });
         GuiItem _upgradeTownLevel = ItemBuilder.from(upgradeTownLevel).asGuiItem(event -> {
             event.setCancelled(true);
-
+            if(!playerStat.hasPermission(TownRolePermission.UPGRADE_TOWN)){
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                return;
+            }
             if(townData.getTreasury().getBalance() > townLevel.getMoneyRequiredTownLevel()){
                 townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredTownLevel());
                 townLevel.TownLevelUp();
@@ -829,7 +850,10 @@ public class GuiManager2 {
         });
         GuiItem _upgradeChunkCap = ItemBuilder.from(upgradeChunkCap).asGuiItem(event -> {
             event.setCancelled(true);
-
+            if(!playerStat.hasPermission(TownRolePermission.UPGRADE_TOWN)){
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                return;
+            }
             if(townData.getTreasury().getBalance() > townLevel.getMoneyRequiredChunkCap()){
                 townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredChunkCap());
                 townLevel.chunkCapLevelUp();
@@ -842,7 +866,10 @@ public class GuiManager2 {
         });
         GuiItem _upgradePlayerCap = ItemBuilder.from(upgradePlayerCap).asGuiItem(event -> {
             event.setCancelled(true);
-
+            if(!playerStat.hasPermission(TownRolePermission.UPGRADE_TOWN)){
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                return;
+            }
             if (townData.getTreasury().getBalance() > townLevel.getMoneyRequiredPlayerCap()) {
                 townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredPlayerCap());
                 townLevel.PlayerCapLevelUp();
@@ -908,24 +935,24 @@ public class GuiManager2 {
 
         GuiItem _leaveTown = ItemBuilder.from(leaveTown).asGuiItem(event -> {
             event.setCancelled(true);
-            if (playerTown.getUuidLeader().equals(playerStat.getUuid())) {
-                player.sendMessage(Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.getTranslation());
+            if (playerStat.isTownLeader()) {
+                player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.getTranslation());
             } else {
                 playerTown.removePlayer(player.getUniqueId().toString());
                 playerStat.setTownId(null);
-                player.sendMessage(Lang.CHAT_PLAYER_LEFT_THE_TOWN.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_LEFT_THE_TOWN.getTranslation());
                 player.closeInventory();
             }
         });
         GuiItem _deleteTown = ItemBuilder.from(deleteTown).asGuiItem(event -> {
             event.setCancelled(true);
-            if (!playerTown.getUuidLeader().equals(playerStat.getUuid())) {
-                player.sendMessage(Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.getTranslation());
+            if (!playerStat.isTownLeader()) {
+                player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.getTranslation());
             } else {
                 TownDataStorage.removeTown(playerStat.getTownId());
                 playerStat.setTownId(null);
                 player.closeInventory();
-                player.sendMessage(Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.getTranslation());
             }
         });
 
@@ -979,8 +1006,9 @@ public class GuiManager2 {
             );
 
             GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> {
-                playerTown.setOverlord(townPlayer.getUniqueId().toString());
                 event.setCancelled(true);
+
+                playerTown.setUuidLeader(townPlayer.getUniqueId().toString());
                 player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCESS.getTranslation(townPlayer.getName()));
                 OpenTownMenuHaveTown(player);
             });
@@ -1142,10 +1170,18 @@ public class GuiManager2 {
         });
         GuiItem _add = ItemBuilder.from(addTownButton).asGuiItem(event -> {
             event.setCancelled(true);
+            if(!playerStat.hasPermission(TownRolePermission.MANAGE_TOWN_RELATION)){
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                return;
+            }
             OpenTownRelationModification(player,"add",relation);
         });
         GuiItem _remove = ItemBuilder.from(removeTownButton).asGuiItem(event -> {
             event.setCancelled(true);
+            if(!playerStat.hasPermission(TownRolePermission.MANAGE_TOWN_RELATION)){
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                return;
+            }
             OpenTownRelationModification(player,"remove",relation);
         });
         GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
@@ -1158,7 +1194,7 @@ public class GuiManager2 {
             event.setCancelled(true);
         });
 
-        gui.setItem(4,1, _back);
+        gui.setItem(4,1,_back);
         gui.setItem(4,4,_add);
         gui.setItem(4,5,_remove);
 
@@ -1302,18 +1338,38 @@ public class GuiManager2 {
 
 
         GuiItem _doorAccessManager = ItemBuilder.from(doorAccess).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(!playerStat.hasPermission(TownRolePermission.MANAGE_CLAIM_SETTINGS)){
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                return;
+            }
             townClass.getChunkSettings().nextDoorAuth();
             OpenTownChunkMenu(player);
         });
         GuiItem _chestAccessManager = ItemBuilder.from(chestAccess).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(!playerStat.hasPermission(TownRolePermission.MANAGE_CLAIM_SETTINGS)){
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                return;
+            }
             townClass.getChunkSettings().nextChestAuth();
             OpenTownChunkMenu(player);
         });
         GuiItem _placeBlockAccessManager = ItemBuilder.from(placeBlockAccess).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(!playerStat.hasPermission(TownRolePermission.MANAGE_CLAIM_SETTINGS)){
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                return;
+            }
             townClass.getChunkSettings().nextPlaceAuth();
             OpenTownChunkMenu(player);
         });
         GuiItem _breakBlockAccessManager = ItemBuilder.from(breakBlockAccess).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(!playerStat.hasPermission(TownRolePermission.MANAGE_CLAIM_SETTINGS)){
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                return;
+            }
             townClass.getChunkSettings().nextBreakAuth();
             OpenTownChunkMenu(player);
         });

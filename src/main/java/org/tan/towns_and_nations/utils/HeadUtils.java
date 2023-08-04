@@ -92,9 +92,9 @@ public class HeadUtils {
         ItemMeta meta = icon.getItemMeta();
         List<String> lore = new ArrayList<>();
 
-        lore.add("Baron: " + town.getOverlord());
+        lore.add("Baron: " + Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())).getName());
         lore.add("Membres: " + town.getPlayerList().size());
-        lore.add("Chunks: 0");
+        lore.add("Chunks: " + town.getChunkSettings().getNumberOfClaimedChunk());
         meta.setLore(lore);
         icon.setItemMeta(meta);
         return icon;

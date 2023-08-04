@@ -21,7 +21,6 @@ public class TownDataClass {
     private String Description;
     public boolean open;
     public String DateCreated;
-    private String Overlord;
     private String townIconMaterialCode;
     private final ArrayList<String> townPlayerListId = new ArrayList<String>();
     private TownTreasury townTreasury;
@@ -111,14 +110,6 @@ public class TownDataClass {
         this.DateCreated = dateCreated;
     }
 
-    public String getOverlord() {
-        return this.Overlord;
-    }
-
-    public void setOverlord(String overlord) {
-        this.Overlord = overlord;
-    }
-
     public ItemStack getTownIconItemStack() {
         if(this.townIconMaterialCode == null){
             return null;
@@ -159,14 +150,12 @@ public class TownDataClass {
     public TownRelationClass getRelations(){
         return relations;
     }
-
     public void addTownRelations(String relation,String townId){
         this.relations.addRelation(relation,townId);
     }
     public void removeTownRelations(String relation, String townId) {
         this.relations.removeRelation(relation,townId);
     }
-
     public ClaimedChunkSettings getChunkSettings() {
         return chunkSettings;
     }
@@ -176,7 +165,6 @@ public class TownDataClass {
     public void setTreasury(TownTreasury townTreasury) {
         this.townTreasury = townTreasury;
     }
-
     public boolean getTownRelation(String relation, String checkTownId){
         for (String townId : getRelations().getOne(relation)){
             if(townId.equals(checkTownId)){
@@ -185,19 +173,15 @@ public class TownDataClass {
         }
         return false;
     }
-
     public TownLevel getTownLevel() {
         return townLevel;
     }
-
     public int getBalance(){
         return this.townTreasury.getBalance();
     }
     public TownTreasury getTreasury(){
         return this.townTreasury;
     }
-
-
     public void broadCastMessage(String message){
         for (String playerId : townPlayerListId){
             Player player = Bukkit.getServer().getPlayer(UUID.fromString(playerId));
@@ -206,7 +190,6 @@ public class TownDataClass {
             }
         }
     }
-
     public void playerChangeRank(String playerUuid, String newRank) {
         
         // Add the player to the new rank
@@ -223,14 +206,12 @@ public class TownDataClass {
         }
 
     }
-
     public TownRank getRank(String rankName){
         return this.roles.get(rankName);
     }
     public TownRank isRankExist(String rankName){
         return this.roles.get(rankName);
     }
-
     public HashMap<String,TownRank> getTownRanks(){
         return this.roles;
     }

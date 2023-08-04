@@ -1,8 +1,5 @@
 package org.tan.towns_and_nations.enums;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public enum TownRolePermission {
 
     MANAGE_TAXES,
@@ -15,7 +12,7 @@ public enum TownRolePermission {
     KICK_PLAYER,
     CREATE_RANK,
     DELETE_RANK,
-    MODIFY_RANK,
+    MANAGE_RANKS,
     MANAGE_CLAIM_SETTINGS,
     MANAGE_TOWN_RELATION;
 
