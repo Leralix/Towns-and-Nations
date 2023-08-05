@@ -100,4 +100,5 @@ public class TownRank {
         else
             addPermission(permission);
     }
+
 }

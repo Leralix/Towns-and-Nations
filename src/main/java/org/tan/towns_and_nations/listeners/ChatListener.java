@@ -17,10 +17,7 @@ import org.tan.towns_and_nations.storage.TownDataStorage;
 import org.tan.towns_and_nations.utils.ChatUtils;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Dictionary;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class ChatListener implements Listener {
@@ -99,6 +96,10 @@ public class ChatListener implements Listener {
                 PlayerStatStorage.getStat(playerWithRoleUUID).setRank(newRankName);
             }
 
+
+            if(Objects.equals(playerTownRank.getName(), playerTown.getTownDefaultRank())){
+                playerTown.setTownDefaultRank(newRankName);
+            }
 
             playerTownRank.setName(newRankName);
 

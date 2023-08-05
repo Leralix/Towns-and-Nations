@@ -490,7 +490,7 @@ public class GuiManager2 {
             OpenTownMenuRoleManagerPermissions(player,roleName);
         });
         GuiItem _membersRank = ItemBuilder.from(membersRank).asGuiItem(event -> {
-
+            OpenTownMenuRoleManagerAddPlayer(player,roleName);
             event.setCancelled(true);
         });
         GuiItem _renameRank = ItemBuilder.from(renameRank).asGuiItem(event -> {
@@ -557,17 +557,29 @@ public class GuiManager2 {
         TownDataClass town = TownDataStorage.getTown(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());
         TownRank townRank = town.getRank(roleName);
         int i = 0;
-        for (String playerUUID : town.getPlayerList()){
 
-            for (String playerWithRoleUUID : townRank.getPlayers())
-                if(playerUUID.equals(playerWithRoleUUID))
+        outer: // this is the label for the outer loop
+        for (String playerUUID : town.getPlayerList()){
+            boolean skip = false;
+
+            for (String playerWithRoleUUID : townRank.getPlayers()){
+                if(playerUUID.equals(playerWithRoleUUID)){
+                    skip = true;
                     break;
-            ItemStack playerHead = HeadUtils.getPlayerHead(PlayerStatStorage.getStat(playerUUID).getPlayerName(),Bukkit.getOfflinePlayer(UUID.fromString(playerUUID)));
+                }
+            }
+
+            if (skip) {
+                continue;
+            }
+
+            ItemStack playerHead = HeadUtils.getPlayerHead(PlayerStatStorage.getStat(playerUUID).getPlayerName(), Bukkit.getOfflinePlayer(UUID.fromString(playerUUID)));
 
             GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
 
                 PlayerDataClass playerStat = PlayerStatStorage.getStat(playerUUID);
+                town.getRank(playerStat.getTownRank()).removePlayer(playerUUID);
                 playerStat.setRank(roleName);
                 townRank.addPlayer(playerUUID);
 
