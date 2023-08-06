@@ -420,7 +420,7 @@ public class GuiManager2 {
 
         TownDataClass town = TownDataStorage.getTown(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());
         TownRank townRank = town.getRank(roleName);
-
+        Boolean isDefaultRank = town.getTownDefaultRank().equals(townRank.getName());
         Material roleMaterial = Material.getMaterial(townRank.getRankIconName());
         int rankLevel = townRank.getLevel();
 
@@ -458,6 +458,18 @@ public class GuiManager2 {
                 Lang.GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1.getTranslation()
         );
 
+        ItemStack makeRankDefault;
+        if(isDefaultRank){
+            makeRankDefault = HeadUtils.getCustomLoreItem(Material.RED_BED,
+                    Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT.getTranslation(),
+                    Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1.getTranslation());
+        }
+        else{
+            makeRankDefault = HeadUtils.getCustomLoreItem(Material.RED_BED,
+                    Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT.getTranslation(),
+                    Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1.getTranslation(),
+                    Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2.getTranslation());
+        }
 
         ItemStack removeRank = HeadUtils.getCustomLoreItem(Material.BARRIER, Lang.GUI_TOWN_MEMBERS_ROLE_DELETE.getTranslation());
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
@@ -508,6 +520,16 @@ public class GuiManager2 {
             OpenTownMenuRoleManager(player,roleName);
             event.setCancelled(true);
         });
+        GuiItem _makeRankDefault = ItemBuilder.from(makeRankDefault).asGuiItem(event -> {
+            if(isDefaultRank){
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT.getTranslation());
+            }
+            else{
+                town.setTownDefaultRank(roleName);
+            }
+            event.setCancelled(true);
+            OpenTownMenuRoleManager(player,roleName);
+        });
 
         GuiItem _removeRank = ItemBuilder.from(removeRank).asGuiItem(event -> {
             if(townRank.getNumberOfPlayer() != 0){
@@ -532,9 +554,9 @@ public class GuiManager2 {
         gui.setItem(2,2, _roleRankIcon);
         gui.setItem(2,3, _membersRank);
         gui.setItem(2,4, _managePermission);
-
-        gui.setItem(2,6, _renameRank);
-        gui.setItem(2,7, _changeRoleTaxRelation);
+        gui.setItem(2,5, _renameRank);
+        gui.setItem(2,6, _changeRoleTaxRelation);
+        gui.setItem(2,7, _makeRankDefault);
         gui.setItem(2,8, _removeRank);
 
         gui.setItem(3,1, _getBackArrow);
@@ -568,7 +590,6 @@ public class GuiManager2 {
                     break;
                 }
             }
-
             if (skip) {
                 continue;
             }

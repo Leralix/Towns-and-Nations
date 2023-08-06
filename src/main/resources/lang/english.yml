@@ -203,6 +203,11 @@ language:
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_5: "§aRank 5"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§fLeft clic to change the role"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fThe smaller the number, the better the rank is"
+  GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT: "§aThis rank is the default role"
+  GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§aThis rank §cis not §athe default role"
+  GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fPlayer that are invited in the town automatically join the default rank"
+  GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2: "§fLeft click to make this role as default"
+  GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT: "§cThis rank is already the default rank"
   GUI_TOWN_MEMBERS_ROLE_DELETE: "Delete the rank"
   GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY: "You cannot delete a rank if there are player with the rank"
 
