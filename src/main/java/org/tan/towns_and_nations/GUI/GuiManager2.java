@@ -7,6 +7,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
@@ -313,9 +314,20 @@ public class GuiManager2 {
             HeadUtils.addLore(
                     playerHead,
                     Lang.GUI_TOWN_MEMBER_DESC1.getTranslation(playerStat.getTownRank()),
-                    Lang.GUI_TOWN_MEMBER_DESC2.getTranslation(playerStat.getBalance())
+                    Lang.GUI_TOWN_MEMBER_DESC2.getTranslation(playerStat.getBalance()),
+                    Lang.GUI_TOWN_MEMBER_DESC3.getTranslation()
             );
             GuiItem _playerIcon = ItemBuilder.from(playerHead).asGuiItem(event -> {
+                if(event.getClick() == ClickType.RIGHT){
+
+                    town.getRank(playerStat.getTownRank()).removePlayer(playerUUID);
+                    town.removePlayer(playerUUID);
+                    playerStat.leaveTown();
+                    town.broadCastMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.getTranslation(playerIterate.getName()));
+                    if(playerIterate.isOnline())
+                        playerIterate.getPlayer().sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.getTranslation());
+                }
+                OpenTownMemberList(player);
                 event.setCancelled(true);
             });
 
@@ -541,7 +553,6 @@ public class GuiManager2 {
                 OpenTownMenuRoles(player);
                 event.setCancelled(true);
             }
-
         });
 
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
@@ -1030,7 +1041,7 @@ public class GuiManager2 {
             } else {
                 playerTown.removePlayer(player.getUniqueId().toString());
                 playerTown.getRank(playerStat.getTownRank()).removePlayer(playerStat.getUuid());
-                playerStat.setTownId(null);
+                playerStat.leaveTown();
                 player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_LEFT_THE_TOWN.getTranslation());
                 playerTown.broadCastMessage(ChatUtils.getTANString() + Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.getTranslation(Bukkit.getOfflinePlayer(UUID.fromString(playerStat.getUuid())).getName()));
                 player.closeInventory();
@@ -1045,8 +1056,7 @@ public class GuiManager2 {
 
                 for(String memberUUID : playerTown.getPlayerList()){
                     PlayerDataClass memberStat = PlayerStatStorage.getStat(memberUUID);
-                    memberStat.setTownId(null);
-                    memberStat.setRank(null);
+                    memberStat.leaveTown();
                 }
 
 

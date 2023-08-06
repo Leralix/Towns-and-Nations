@@ -38,23 +38,40 @@ public class InvitePlayerCommand extends SubCommand {
             player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
 
         }else if(args.length == 2){
+
+            if(PlayerStatStorage.getStat(player).getTownId() == null){
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.getTranslation());
+                return;
+            }
+
             Player invite = Bukkit.getPlayer(args[1]);
             if(invite == null){
                 player.sendMessage(getTANString() + Lang.PLAYER_NOT_FOUND.getTranslation());
-
+                return;
             }
-            else{
-                TownDataClass town = TownDataStorage.getTown(player);
-                TownInviteDataStorage.addInvitation(invite.getUniqueId().toString(),town.getTownId());
 
-                player.sendMessage(getTANString() + Lang.INVITATION_SENT_SUCCESS.getTranslation(invite.getName()));
+            TownDataClass town = TownDataStorage.getTown(player);
 
-                invite.sendMessage(getTANString() + Lang.INVITATION_RECEIVED_1.getTranslation(player.getName(),town.getTownName()));
-                invite.sendMessage(getTANString() + Lang.INVITATION_RECEIVED_2.getTranslation(town.getTownId()));
-                ChatUtils.sendClickableCommand(invite,  getTANString() + Lang.INVITATION_RECEIVED_3.getTranslation(),"tan join "  + town.getTownId());
-
-
+            if(PlayerStatStorage.getStat(invite).getTownId() != null){
+                player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN.getTranslation());
+                return;
             }
+
+            for (String uuidTownPlayer : town.getPlayerList()){
+                if(uuidTownPlayer.equals(invite.getUniqueId().toString())){
+                    player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN.getTranslation());
+                    return;
+                }
+            }
+
+            TownInviteDataStorage.addInvitation(invite.getUniqueId().toString(),town.getTownId());
+
+            player.sendMessage(getTANString() + Lang.INVITATION_SENT_SUCCESS.getTranslation(invite.getName()));
+
+            invite.sendMessage(getTANString() + Lang.INVITATION_RECEIVED_1.getTranslation(player.getName(),town.getTownName()));
+            invite.sendMessage(getTANString() + Lang.INVITATION_RECEIVED_2.getTranslation(town.getTownId()));
+            ChatUtils.sendClickableCommand(invite,  getTANString() + Lang.INVITATION_RECEIVED_3.getTranslation(),"tan join "  + town.getTownId());
+
         }else {
             player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.getTranslation());
             player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));

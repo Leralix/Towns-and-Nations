@@ -4,7 +4,7 @@ language:
   PLUGIN_STRING: "[TAN]"
 
   #Common errors
-  PLAYER_NO_TOWN: "§cYou do not have a town !"
+  PLAYER_NO_TOWN: "§cYou do not have a town"
   PLAYER_NO_PERMISSION: "§cYou do not have the permission of performing this action"
 
   #Level up
@@ -27,6 +27,8 @@ language:
   TOWN_INVITE_COMMAND_DESC: "invite a player to the town"
   PLAYER_NOT_FOUND: "§cInvalid name, or the player is not connected"
   INVITATION_SENT_SUCCESS: "Invitation sent to §e{0}"
+  INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN: "§e{0}§f is already in your town"
+  INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN: "§e{0}§f already have a town: {1}"
   INVITATION_RECEIVED_1: "You have been invited by §e{0}§f to the town: §3{0}"
   INVITATION_RECEIVED_2: "To join his town, write §e/tan join {0}"
   INVITATION_RECEIVED_3: "§l§2[Or click here]"
@@ -177,7 +179,9 @@ language:
 
   GUI_TOWN_MEMBER_DESC1: "§fRank: §e{0}"
   GUI_TOWN_MEMBER_DESC2: "§fCurrent balance: §e{0}$"
-
+  GUI_TOWN_MEMBER_DESC3: "§cRight click to kick player"
+  GUI_TOWN_MEMBER_KICKED_SUCCESS: "§a{0}§f has been kicked out of the town"
+  GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER: "§cYou have been kicked out of the town"
 
   GUI_TOWN_MEMBERS_MANAGE_ROLES: "§aManage ranks  "
   GUI_TOWN_MEMBERS_ADD_NEW_ROLES: "§aCreate a new rank"
@@ -237,7 +241,7 @@ language:
   GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1: "§fLeave the town §e{0}"
   GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2: "§fYou can't leave a town if you are the leader, you must delete it"
   GUI_TOWN_SETTINGS_DELETE_TOWN: "§aDisband the town"
-  GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1: "§fDisband the town §e{0}"
+  GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1: "§cDisband the town §e{0}"
   GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2: "§fYou cannot disband a town if you are not the leader"
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP: "§fTransfer town ownership"
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1: "§fGive the leadership of the town to another player"

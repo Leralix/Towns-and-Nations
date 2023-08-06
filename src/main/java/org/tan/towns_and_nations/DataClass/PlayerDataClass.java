@@ -79,4 +79,9 @@ public class PlayerDataClass {
         return TownDataStorage.getTown(this).getRank(this.TownRank).hasPermission(rolePermission) ;
     }
 
+    public void leaveTown(){
+        this.TownId = null;
+        this.TownRank = null;
+    }
+
 }
