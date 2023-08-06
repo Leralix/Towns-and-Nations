@@ -1,43 +1,50 @@
 package org.tan.towns_and_nations.DataClass;
 
+import org.tan.towns_and_nations.enums.TownRelation;
+
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class TownRelationClass {
 
-    private final LinkedHashMap<String, ArrayList<String>> townRelations = new LinkedHashMap<String, ArrayList<String>>();
+    private final LinkedHashMap<TownRelation, ArrayList<String>> townRelations = new LinkedHashMap<>();;
 
 
     public TownRelationClass(){
-        this.townRelations.put("alliance",new ArrayList<>());
-        this.townRelations.put("nap",new ArrayList<>());
-        this.townRelations.put("embargo",new ArrayList<>());
-        this.townRelations.put("war",new ArrayList<>());
+        for(TownRelation relation : TownRelation.values()){
+            this.townRelations.put(relation, new ArrayList<>());
+        }
     }
 
-    public void addRelation(String relationName, String townID){
-        this.townRelations.get(relationName).add(townID);
+    public void addRelation(TownRelation relation, String townID){
+        this.townRelations.get(relation).add(townID);
     }
 
-    public void removeRelation(String relationName, String townID){
-        townRelations.get(relationName).remove(townID);
+    public void removeRelation(TownRelation relation, String townID){
+        townRelations.get(relation).remove(townID);
     }
 
-    public HashMap<String, ArrayList<String>> getAll(){
+    public LinkedHashMap<TownRelation, ArrayList<String>> getAll(){
         return this.townRelations;
     }
 
-    public ArrayList<String> getOne(String relation){
+    public ArrayList<String> getOne(TownRelation relation){
         return this.townRelations.get(relation);
     }
 
 
+    public TownRelation getRelationWith(TownDataClass Town) {
+        for (Map.Entry<TownRelation, ArrayList<String>> entry : townRelations.entrySet()) {
+            TownRelation relation = entry.getKey();
+            ArrayList<String> list = entry.getValue();
 
-
-
-
-
-
+            for (String townUUID : list) {
+                if (Town.getTownId().equals(townUUID)) {
+                    return relation;
+                }
+            }
+        }
+        return null;
+    }
 }

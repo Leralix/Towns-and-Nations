@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.tan.towns_and_nations.enums.TownRelation;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 
@@ -150,10 +151,10 @@ public class TownDataClass {
     public TownRelationClass getRelations(){
         return relations;
     }
-    public void addTownRelations(String relation,String townId){
+    public void addTownRelations(TownRelation relation,String townId){
         this.relations.addRelation(relation,townId);
     }
-    public void removeTownRelations(String relation, String townId) {
+    public void removeTownRelations(TownRelation relation, String townId) {
         this.relations.removeRelation(relation,townId);
     }
     public ClaimedChunkSettings getChunkSettings() {
@@ -165,7 +166,7 @@ public class TownDataClass {
     public void setTreasury(TownTreasury townTreasury) {
         this.townTreasury = townTreasury;
     }
-    public boolean getTownRelation(String relation, String checkTownId){
+    public boolean getTownRelation(TownRelation relation, String checkTownId){
         for (String townId : getRelations().getOne(relation)){
             if(townId.equals(checkTownId)){
                 return true;
@@ -231,4 +232,10 @@ public class TownDataClass {
     }
 
 
+    public TownRelation getRelationWith(TownDataClass otherPlayerTown) {
+        return this.relations.getRelationWith(otherPlayerTown);
+
+
+
+    }
 }

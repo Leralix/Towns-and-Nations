@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
+import org.tan.towns_and_nations.enums.TownRelation;
 import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 
@@ -31,7 +32,7 @@ public class ChunkListener implements Listener {
 
         if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getTownId()))
             return;
-        if(chunkTown.getChunkSettings().getBreakAuth().equals("alliance") && chunkTown.getTownRelation("alliance",playerTown.getTownId()))
+        if(chunkTown.getChunkSettings().getBreakAuth().equals("alliance") && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getTownId()))
             return;
         if(chunkTown.getChunkSettings().getBreakAuth().equals("foreign"))
             return;
@@ -62,7 +63,7 @@ public class ChunkListener implements Listener {
 
                 if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getTownId()))
                     return;
-                if(chunkTown.getChunkSettings().getChestAuth().equals("alliance") && chunkTown.getTownRelation("alliance",playerTown.getTownId()))
+                if(chunkTown.getChunkSettings().getChestAuth().equals("alliance") && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getTownId()))
                     return;
                 if(chunkTown.getChunkSettings().getChestAuth().equals("foreign"))
                     return;
@@ -78,7 +79,7 @@ public class ChunkListener implements Listener {
 
                 if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getTownId()))
                     return;
-                if(chunkTown.getChunkSettings().getDoorAuth().equals("alliance") && chunkTown.getTownRelation("alliance",playerTown.getTownId()))
+                if(chunkTown.getChunkSettings().getDoorAuth().equals("alliance") && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getTownId()))
                     return;
                 if(chunkTown.getChunkSettings().getDoorAuth().equals("foreign"))
                     return;
@@ -105,7 +106,7 @@ public class ChunkListener implements Listener {
 
         if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getTownId()))
             return;
-        if(chunkTown.getChunkSettings().getPlaceAuth().equals("alliance") && chunkTown.getTownRelation("alliance",playerTown.getTownId()))
+        if(chunkTown.getChunkSettings().getPlaceAuth().equals("alliance") && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getTownId()))
             return;
         if(chunkTown.getChunkSettings().getPlaceAuth().equals("foreign"))
             return;

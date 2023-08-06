@@ -66,9 +66,7 @@ public class PlayerDataClass {
         this.Balance = this.Balance - money;
     }
 
-    public boolean checkAuth(TownDataClass Town){
-        return Town.getRelations().getOne("alliance").contains(this.TownId);
-    }
+
     public boolean isTownLeader(){
         return TownDataStorage.getTown(this).getUuidLeader().equals(this.UUID);
     }

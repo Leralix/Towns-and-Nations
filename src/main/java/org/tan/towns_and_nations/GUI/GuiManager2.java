@@ -14,6 +14,7 @@ import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.DataClass.TownLevel;
 import org.tan.towns_and_nations.DataClass.TownRank;
 import org.tan.towns_and_nations.Lang.Lang;
+import org.tan.towns_and_nations.enums.TownRelation;
 import org.tan.towns_and_nations.enums.TownRolePermission;
 import org.tan.towns_and_nations.utils.ChatUtils;
 import org.tan.towns_and_nations.utils.HeadUtils;
@@ -638,7 +639,6 @@ public class GuiManager2 {
         gui.open(player);
 
     }
-
     public static void OpenTownMenuRoleManagerPermissions(Player player, String roleName) {
 
         String name = "Town";
@@ -763,7 +763,6 @@ public class GuiManager2 {
         gui.open(player);
 
     }
-
     public static void OpenTownEconomics(Player player) {
 
         String name = "Town";
@@ -1174,21 +1173,21 @@ public class GuiManager2 {
 
         GuiItem _warCategory = ItemBuilder.from(warCategory).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownRelation(player,"war");
+            OpenTownRelation(player,TownRelation.WAR);
         });
         GuiItem _EmbargoCategory = ItemBuilder.from(EmbargoCategory).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownRelation(player,"embargo");
+            OpenTownRelation(player,TownRelation.EMBARGO);
 
         });
         GuiItem _NAPCategory = ItemBuilder.from(NAPCategory).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownRelation(player,"nap");
+            OpenTownRelation(player,TownRelation.NON_AGGRESSION);
 
         });
         GuiItem _AllianceCategory = ItemBuilder.from(AllianceCategory).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownRelation(player,"alliance");
+            OpenTownRelation(player,TownRelation.ALLIANCE);
         });
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1226,7 +1225,7 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-    public static void OpenTownRelation(Player player, String relation) {
+    public static void OpenTownRelation(Player player, TownRelation relation) {
 
         String name = "Town - Relation";
         int nRow = 4;
@@ -1320,7 +1319,7 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-    public static void OpenTownRelationModification(Player player, String action, String relation) {
+    public static void OpenTownRelationModification(Player player, String action, TownRelation relation) {
 
         String name = "Town - Relation";
         int nRow = 4;

@@ -89,7 +89,6 @@ public final class TownsAndNations extends JavaPlugin {
 
 
     private void EnableEventList() {
-        getServer().getPluginManager().registerEvents(new OnPlayerFirstJoin(), this);
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new BreakBlockListener(), this);
         getServer().getPluginManager().registerEvents(new VillagerInteractionListener(), this);
