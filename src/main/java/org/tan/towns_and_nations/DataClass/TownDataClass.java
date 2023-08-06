@@ -220,12 +220,7 @@ public class TownDataClass {
     }
 
     public void setTownDefaultRank(String newRank){
-        if(roles.containsKey(newRank)){
-            this.townDefaultRank = newRank;
-        }
-        else{
-            System.out.println("erreur: le nom du rang n'existe pas");
-        }
+        this.townDefaultRank = newRank;
     }
     public String getTownDefaultRank(){
         return this.townDefaultRank;
