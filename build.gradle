@@ -30,12 +30,17 @@ repositories {
         name = 'minecraft-repo'
         url = 'https://libraries.minecraft.net/'
         // this lets gradle know where to look for authlib
-    }}
+    }
+    maven {
+        url 'https://repo.dmulloy2.net/repository/public/'
+    }
+}
 
 dependencies {
     compileOnly "org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT"
     compileOnly 'com.mojang:authlib:1.5.21'
     compileOnly 'net.luckperms:api:5.4'
+    compileOnly  'com.comphenix.protocol:ProtocolLib:5.1.0'
     implementation 'dev.triumphteam:triumph-gui:3.1.5'
     implementation 'net.objecthunter:exp4j:0.4.8'
 }

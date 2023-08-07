@@ -233,6 +233,9 @@ public class TownDataClass {
 
 
     public TownRelation getRelationWith(TownDataClass otherPlayerTown) {
+
+        if(otherPlayerTown.getTownId().equals(this.getTownId()))
+            return TownRelation.CITY;
         return this.relations.getRelationWith(otherPlayerTown);
 
 
