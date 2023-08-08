@@ -17,12 +17,14 @@ import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.enums.Action;
 import org.tan.towns_and_nations.enums.TownRelation;
 import org.tan.towns_and_nations.enums.TownRolePermission;
+import org.tan.towns_and_nations.storage.TownRelationConfirmStorage;
 import org.tan.towns_and_nations.utils.ChatUtils;
 import org.tan.towns_and_nations.utils.HeadUtils;
 import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 import static org.tan.towns_and_nations.storage.TownDataStorage.getTownList;
+import static org.tan.towns_and_nations.utils.ChatUtils.getTANString;
 import static org.tan.towns_and_nations.utils.RelationUtil.*;
 
 import java.util.ArrayList;
@@ -1360,7 +1362,15 @@ public class GuiManager2 {
                         return;
                     }
                     if(relation.getNeedsConfirmationToStart()){
-                        player.sendMessage("Current relation can't start solo");
+                        player.sendMessage(ChatUtils.getTANString() + "Sent to the leader of the other town");
+
+                        Player otherTownLeader = Bukkit.getPlayer(UUID.fromString(otherTown.getUuidLeader()));
+
+                        TownRelationConfirmStorage.addInvitation(otherTown.getUuidLeader(), playerTown.getTownId(), relation);
+
+                        otherTownLeader.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.getTranslation(playerTown.getTownName(),relation.getColor() + relation.getName()));
+                        ChatUtils.sendClickableCommand(otherTownLeader,  getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.getTranslation(),"tan accept "  + playerTown.getTownId());
+
                         return;
                     }
 

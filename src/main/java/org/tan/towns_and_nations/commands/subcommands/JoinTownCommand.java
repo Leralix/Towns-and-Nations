@@ -65,7 +65,7 @@ public class JoinTownCommand extends SubCommand {
                     PlayerDataClass playerStat = PlayerStatStorage.getStat(player);
                     playerStat.setTownId(townID);
                     playerStat.setRank(townClass.getTownDefaultRank());
-                    player.sendMessage(getTANString() + Lang.TOWN_INVITATION_NO_INVITATION.getTranslation());
+                    player.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.getTranslation(townClass.getTownName()));
                     townClass.broadCastMessage(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.getTranslation(player.getName()));
                     TownInviteDataStorage.removeInvitation(player.getUniqueId().toString(),townClass.getTownId());
 

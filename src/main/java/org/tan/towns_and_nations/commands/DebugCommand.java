@@ -12,10 +12,7 @@ import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.DataClass.TownTreasury;
 import org.tan.towns_and_nations.GUI.GuiManager2;
-import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
-import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
-import org.tan.towns_and_nations.storage.PlayerStatStorage;
-import org.tan.towns_and_nations.storage.TownDataStorage;
+import org.tan.towns_and_nations.storage.*;
 
 import java.io.IOException;
 import java.util.*;
@@ -51,6 +48,10 @@ public class DebugCommand implements CommandExecutor, TabExecutor {
 
                 case "newgui":
                     GuiManager2.OpenMainMenu(player);
+                    break;
+
+                case "test":
+                    player.sendMessage("" + TownRelationConfirmStorage.List.toString());
                     break;
 
                 case "addnewfeatures":

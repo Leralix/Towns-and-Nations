@@ -7,7 +7,6 @@ public class TownInviteDataStorage {
 
     public static HashMap<String, ArrayList<String>> townInviteList = new HashMap<>();
 
-
     public static void addInvitation(String playerUUID, String townId){
         if(townInviteList.get(playerUUID) == null){
             ArrayList<String> list = new ArrayList<>();
@@ -20,15 +19,12 @@ public class TownInviteDataStorage {
     }
 
 
-    public static void removeInvitation(String playerName,String townId){
-        townInviteList.get(playerName).remove(townId);
+    public static void removeInvitation(String playerUUID,String townId){
+        townInviteList.get(playerUUID).remove(townId);
     }
 
-    public static ArrayList<String> checkInvitation(String playerName){
-        return townInviteList.get(playerName);
+    public static ArrayList<String> checkInvitation(String playerUUID){
+        return townInviteList.get(playerUUID);
     }
-
-
-
 
 }

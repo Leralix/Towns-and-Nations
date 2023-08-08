@@ -27,6 +27,7 @@ public class CommandManager implements CommandExecutor, TabExecutor {
         subcommands.add(new SeeBalanceCommand());
         subcommands.add(new PayCommand());
         subcommands.add(new OpenGuiCommand());
+        subcommands.add(new AcceptRelationCommand());
     }
 
     @Override

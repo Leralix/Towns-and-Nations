@@ -39,6 +39,20 @@ language:
   TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fYou are now a member of the town: §3{0}"
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§e{0}§f has joined the town !"
 
+  #Diplomatic relation confirmation
+  TOWN_DIPLOMATIC_INVITATION_RECEIVED_1: "The town §e{0}§f wants to change their diplomatic status to: §3{1}"
+  TOWN_DIPLOMATIC_INVITATION_RECEIVED_2: "To accept, click here"
+
+
+
+  #Accept a town relation
+  TOWN_ACCEPT_RELATION_DESC: "Accept a town relation"
+  TOWN_RELATION_NO_INVITATION: "§aYou have no pending relation"
+  TOWN_RELATION_ACCEPTED_MEMBER_SIDE: "§fYour town now have the relation {0} with §3{1}"
+  TOWN_RELATION_ACCEPTED_TOWN_SIDE: "§e{0}§f has accepted the relation {1} with your town"
+
+
+
   #Leave a town
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§e{0}§c has left the town !"
 
