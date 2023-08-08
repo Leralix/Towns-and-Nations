@@ -237,8 +237,11 @@ public class TownDataClass {
         if(otherPlayerTown.getTownId().equals(this.getTownId()))
             return TownRelation.CITY;
         return this.relations.getRelationWith(otherPlayerTown);
+    }
+    public TownRelation getRelationWith(String otherPlayerTownID) {
 
-
-
+        if(otherPlayerTownID.equals(this.getTownId()))
+            return TownRelation.CITY;
+        return this.relations.getRelationWith(otherPlayerTownID);
     }
 }

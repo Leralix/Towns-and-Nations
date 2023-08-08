@@ -164,9 +164,17 @@ language:
   GUI_TOWN_RELATION_ALLIANCE: "§aAlliance"
   GUI_TOWN_RELATION_ALLIANCE_DESC1: "§fManage tows you have a military alliance with"
 
+  GUI_TOWN_RELATION_NEUTRAL: "Neutral"
+
+
   GUI_TOWN_RELATION_ADD_TOWN: "§aAdd town"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aRemove town"
   GUI_TOWN_CHANGED_RELATION_RESUME: "§fYour town has now the following relation with {0}: {1}"
+
+  GUI_TOWN_INFO_DESC_1: "§fLeader: §e{0}"
+  GUI_TOWN_INFO_DESC_2: "§fMembers: §e{0}"
+  GUI_TOWN_INFO_DESC_3: "§fChunks: §e{0}"
+  GUI_TOWN_INFO_TOWN_RELATION: "§fCurrent relation with the town: §e{0}"
 
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aManage door access"
   GUI_TOWN_CLAIM_SETTINGS_DOOR_DESC1: "§fCurrent door permission: §e{0}"

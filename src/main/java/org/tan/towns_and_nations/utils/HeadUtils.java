@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.Lang.Lang;
+import org.tan.towns_and_nations.enums.TownRelation;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 
 import java.lang.reflect.Field;
@@ -78,10 +79,25 @@ public class HeadUtils {
     }
     public static ItemStack getTownIconWithInformations(String TownId){
 
-        if(TownId == null){
-            System.out.println("Erreur critique: Fonction accesible seulement a un joueur qui a une ville apellée par un joueur qui n'en possède pas");
-            return null;
+        TownDataClass town = TownDataStorage.getTown(TownId);
+        ItemStack icon = town.getTownIconItemStack();
+
+        if (icon == null){
+            icon =  HeadUtils.getPlayerHead(town.getTownName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
         }
+        ItemMeta meta = icon.getItemMeta();
+        List<String> lore = new ArrayList<>();
+
+        lore.add(Lang.GUI_TOWN_INFO_DESC_1.getTranslation(Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())).getName()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC_2.getTranslation(town.getPlayerList().size()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC_3.getTranslation(town.getChunkSettings().getNumberOfClaimedChunk()));
+
+        meta.setLore(lore);
+        icon.setItemMeta(meta);
+        return icon;
+    }
+
+    public static ItemStack getTownIconWithInformations(String TownId,String ownTownID){
 
         TownDataClass town = TownDataStorage.getTown(TownId);
         ItemStack icon = town.getTownIconItemStack();
@@ -92,13 +108,23 @@ public class HeadUtils {
         ItemMeta meta = icon.getItemMeta();
         List<String> lore = new ArrayList<>();
 
-        lore.add("Baron: " + Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())).getName());
-        lore.add("Membres: " + town.getPlayerList().size());
-        lore.add("Chunks: " + town.getChunkSettings().getNumberOfClaimedChunk());
+        TownRelation relation = town.getRelationWith(ownTownID);
+        String relationName;
+        if(relation == null){
+            relationName = Lang.GUI_TOWN_RELATION_NEUTRAL.getTranslation();
+        }
+        else {
+            relationName = relation.getColor() + relation.getName();
+        }
+
+        lore.add(Lang.GUI_TOWN_INFO_DESC_1.getTranslation(Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())).getName()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC_2.getTranslation(town.getPlayerList().size()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC_3.getTranslation(town.getChunkSettings().getNumberOfClaimedChunk()));
+        lore.add(Lang.GUI_TOWN_INFO_TOWN_RELATION.getTranslation(relationName));
+
         meta.setLore(lore);
         icon.setItemMeta(meta);
         return icon;
-
     }
 
     public static ItemStack getCustomLoreItem(Material itemMaterial, String itemName){

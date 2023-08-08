@@ -14,6 +14,7 @@ import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.DataClass.TownLevel;
 import org.tan.towns_and_nations.DataClass.TownRank;
 import org.tan.towns_and_nations.Lang.Lang;
+import org.tan.towns_and_nations.enums.Action;
 import org.tan.towns_and_nations.enums.TownRelation;
 import org.tan.towns_and_nations.enums.TownRolePermission;
 import org.tan.towns_and_nations.utils.ChatUtils;
@@ -22,6 +23,7 @@ import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 import static org.tan.towns_and_nations.storage.TownDataStorage.getTownList;
+import static org.tan.towns_and_nations.utils.RelationUtil.*;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -1284,7 +1286,7 @@ public class GuiManager2 {
                 player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
                 return;
             }
-            OpenTownRelationModification(player,"add",relation);
+            OpenTownRelationModification(player,Action.ADD,relation);
         });
         GuiItem _remove = ItemBuilder.from(removeTownButton).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1292,7 +1294,7 @@ public class GuiManager2 {
                 player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
                 return;
             }
-            OpenTownRelationModification(player,"remove",relation);
+            OpenTownRelationModification(player,Action.REMOVE,relation);
         });
         GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1319,7 +1321,7 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-    public static void OpenTownRelationModification(Player player, String action, TownRelation relation) {
+    public static void OpenTownRelationModification(Player player, Action action, TownRelation relation) {
 
         String name = "Town - Relation";
         int nRow = 4;
@@ -1335,22 +1337,38 @@ public class GuiManager2 {
 
         LinkedHashMap<String, TownDataClass> allTown = getTownList();
         ArrayList<String> TownListUUID = playerTown.getRelations().getOne(relation);
-        GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.WHITE_STAINED_GLASS)).asGuiItem(event -> {
+
+        GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.GREEN_STAINED_GLASS_PANE)).asGuiItem(event -> {
             event.setCancelled(true);
         });
-        if(action.equals("add")){
+
+        if(action == Action.ADD){
             List<String> townNoRelation = new ArrayList<>(allTown.keySet());
             townNoRelation.removeAll(TownListUUID);
             townNoRelation.remove(playerTown.getTownId());
             int i = 0;
-            for(String townUUID : townNoRelation){
-                ItemStack townIcon = HeadUtils.getTownIconWithInformations(townUUID);
+            for(String otherTownUUID : townNoRelation){
+                TownDataClass otherTown = TownDataStorage.getTown(otherTownUUID);
+                ItemStack townIcon = HeadUtils.getTownIconWithInformations(otherTownUUID, playerTown.getTownId());
 
                 GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                     event.setCancelled(true);
 
-                    player.sendMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(townIcon.getItemMeta().getDisplayName(),relation));
-                    TownDataStorage.getTown(playerTown.getTownId()).addTownRelations(relation,townUUID);
+
+                    if(HaveRelation(playerTown, otherTown)){
+                        player.sendMessage("Already a relation with this town, end it before changing");
+                        return;
+                    }
+                    if(relation.getNeedsConfirmationToStart()){
+                        player.sendMessage("Current relation can't start solo");
+                        return;
+                    }
+
+                    playerTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getTownName(),relation.getColor() + relation.getName()));
+                    otherTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(playerTown.getTownName(),relation.getColor() + relation.getName()));
+
+                    addTownRelation(playerTown,otherTown,relation);
+
                     OpenTownRelation(player,relation);
                 });
                 gui.setItem(i, _town);
@@ -1362,14 +1380,28 @@ public class GuiManager2 {
 
 
         }
-        else if(action.equals("remove")){
+        else if(action == Action.REMOVE){
             int i = 0;
-            for(String townUUID : TownListUUID){
-                ItemStack townIcon = HeadUtils.getTownIconWithInformations(townUUID);
+            for(String otherTownUUID : TownListUUID){
+                TownDataClass otherTown = TownDataStorage.getTown(otherTownUUID);
+                ItemStack townIcon = HeadUtils.getTownIconWithInformations(otherTownUUID);
                 GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                     event.setCancelled(true);
-                    player.sendMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(townIcon.getItemMeta().getDisplayName(),relation));
-                    TownDataStorage.getTown(playerTown.getTownId()).removeTownRelations(relation,townUUID);
+
+
+                    if(HaveRelation(playerTown, otherTown)){
+                        player.sendMessage("Current relation can't end");
+                    }
+                    else{
+                        playerTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getTownName(),relation.getColor() + relation.getName()));
+                        otherTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(playerTown.getTownName(),relation.getColor() + relation.getName()));
+
+                        removeRelation(playerTown,otherTown,relation);
+                    }
+
+
+
+                    TownDataStorage.getTown(playerTown.getTownId()).removeTownRelations(relation,otherTownUUID);
                     OpenTownRelation(player,relation);
                 });
                 gui.setItem(i, _town);

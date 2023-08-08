@@ -47,4 +47,18 @@ public class TownRelationClass {
         }
         return null;
     }
+
+    public TownRelation getRelationWith(String TownID) {
+        for (Map.Entry<TownRelation, ArrayList<String>> entry : townRelations.entrySet()) {
+            TownRelation relation = entry.getKey();
+            ArrayList<String> list = entry.getValue();
+
+            for (String townUUID : list) {
+                if (TownID.equals(townUUID)) {
+                    return relation;
+                }
+            }
+        }
+        return null;
+    }
 }

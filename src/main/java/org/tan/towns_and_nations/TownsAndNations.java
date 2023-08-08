@@ -63,45 +63,9 @@ public final class TownsAndNations extends JavaPlugin {
         TaxPayments.scheduleMidnightTask();
 
 
-
-
-
-
-
-        //API luckperms
-        /*
-        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-        if (provider != null) {
-            LuckPerms api = provider.getProvider();
-        }
-        */
-
         EnableEventList();
         Objects.requireNonNull(getCommand("tan")).setExecutor(new CommandManager());
         Objects.requireNonNull(getCommand("tandebug")).setExecutor(new DebugCommand());
-
-        logger.info("[TaN] Loading ProtocolLib");
-
-        System.out.println(ProtocolLibrary.getProtocolManager());
-
-        protocolManager = ProtocolLibrary.getProtocolManager();
-
-        if(protocolManager == null) {
-            getLogger().severe("Failed to get ProtocolManager from ProtocolLib. Disabling plugin.");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-
-        protocolManager.addPacketListener(new PacketAdapter(this, ListenerPriority.HIGH, PacketType.Play.Server.PLAYER_INFO) {
-            @Override
-            public void onPacketSending(PacketEvent event) {
-                logger.info("[TaN] Test dans protocolLib");
-
-                //TeamUtils.handlePlayerInfoPacket(event);
-            }
-        });
-
-
 
         
         logger.info("[TaN] Plugin successfully loaded");
