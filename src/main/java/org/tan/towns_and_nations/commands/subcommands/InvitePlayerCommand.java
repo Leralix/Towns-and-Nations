@@ -3,9 +3,11 @@ package org.tan.towns_and_nations.commands.subcommands;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.commands.SubCommand;
+import org.tan.towns_and_nations.enums.TownRolePermission;
 import org.tan.towns_and_nations.utils.ChatUtils;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
@@ -39,7 +41,13 @@ public class InvitePlayerCommand extends SubCommand {
 
         }else if(args.length == 2){
 
-            if(PlayerStatStorage.getStat(player).getTownId() == null){
+            PlayerDataClass playerData = PlayerStatStorage.getStat(player);
+
+            if(playerData.getTownId() == null){
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.getTranslation());
+                return;
+            }
+            if(playerData.hasPermission(TownRolePermission.INVITE_PLAYER)){
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.getTranslation());
                 return;
             }
@@ -50,18 +58,21 @@ public class InvitePlayerCommand extends SubCommand {
                 return;
             }
 
-            TownDataClass town = TownDataStorage.getTown(player);
 
-            if(PlayerStatStorage.getStat(invite).getTownId() != null){
-                player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN.getTranslation());
+            TownDataClass town = TownDataStorage.getTown(player);
+            if(!town.canAddMorePlayer()){
+                player.sendMessage(getTANString() + Lang.PLAYER_NOT_FOUND.getTranslation());
                 return;
             }
+            PlayerDataClass inviteStat = PlayerStatStorage.getStat(invite);
 
-            for (String uuidTownPlayer : town.getPlayerList()){
-                if(uuidTownPlayer.equals(invite.getUniqueId().toString())){
+            if(inviteStat.getTownId() != null){
+                if(inviteStat.getTownId().equals(town.getTownId())){
                     player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN.getTranslation());
                     return;
                 }
+                player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN.getTranslation(invite.getName(),TownDataStorage.getTown(inviteStat.getTownId())));
+                return;
             }
 
             TownInviteDataStorage.addInvitation(invite.getUniqueId().toString(),town.getTownId());
@@ -69,20 +80,13 @@ public class InvitePlayerCommand extends SubCommand {
             player.sendMessage(getTANString() + Lang.INVITATION_SENT_SUCCESS.getTranslation(invite.getName()));
 
             invite.sendMessage(getTANString() + Lang.INVITATION_RECEIVED_1.getTranslation(player.getName(),town.getTownName()));
-            invite.sendMessage(getTANString() + Lang.INVITATION_RECEIVED_2.getTranslation(town.getTownId()));
-            ChatUtils.sendClickableCommand(invite,  getTANString() + Lang.INVITATION_RECEIVED_3.getTranslation(),"tan join "  + town.getTownId());
+            ChatUtils.sendClickableCommand(invite,  getTANString() + Lang.INVITATION_RECEIVED_2.getTranslation(),"tan join "  + town.getTownId());
 
         }else {
             player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.getTranslation());
             player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
         }
-
     }
-
-
-
-
-
 }
 
 

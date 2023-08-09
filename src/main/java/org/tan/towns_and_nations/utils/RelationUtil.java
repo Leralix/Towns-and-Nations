@@ -17,14 +17,6 @@ public class RelationUtil {
         return true;
     }
 
-    public static void changeRelation(TownDataClass town, TownDataClass targetTown, TownRelation newRelation) {
-
-        TownRelation oldRelation = town.getRelationWith(targetTown);
-
-        removeRelation(town, targetTown, oldRelation);
-        addTownRelation(town, targetTown, newRelation);
-
-    }
 
     public static void addTownRelation(TownDataClass town, TownDataClass targetTown, TownRelation newRelation) {
         town.addTownRelations(newRelation, targetTown.getTownId());
@@ -36,6 +28,10 @@ public class RelationUtil {
         targetTown.removeTownRelations(oldRelation, town.getTownId());
     }
 
+    public static void removeRelation(TownDataClass town, TownDataClass targetTown){
+        TownRelation oldRelation = town.getRelationWith(targetTown);
+        removeRelation(town,targetTown,oldRelation);
+    }
 
 
 }

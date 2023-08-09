@@ -244,4 +244,16 @@ public class TownDataClass {
             return TownRelation.CITY;
         return this.relations.getRelationWith(otherPlayerTownID);
     }
+
+    public boolean canAddMorePlayer(){
+        return this.townPlayerListId.size() < this.townLevel.getPlayerCap();
+    }
+    public boolean canClaimMoreChunk(){
+        return this.chunkSettings.getNumberOfClaimedChunk() < this.townLevel.getChunkCap();
+    }
+
+    public boolean isLeader(Player player){
+        return this.UuidLeader.equals(player.getUniqueId().toString());
+    }
+
 }

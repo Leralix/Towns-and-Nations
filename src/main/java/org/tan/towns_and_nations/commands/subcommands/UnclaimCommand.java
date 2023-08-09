@@ -7,6 +7,7 @@ import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.commands.SubCommand;
+import org.tan.towns_and_nations.enums.TownRolePermission;
 import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
@@ -44,10 +45,17 @@ public class UnclaimCommand extends SubCommand {
             player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.getTranslation());
         }
 
+        if(!playerStat.hasPermission(TownRolePermission.UNCLAIM_CHUNK)){
+            player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION);
+            return;
+        }
+
         TownDataClass townStat = TownDataStorage.getTown(playerStat.getTownId());
         if(!townStat.getUuidLeader().equals(playerStat.getUuid())){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
         }
+
+
 
         Chunk chunk = player.getLocation().getChunk();
         if(ClaimedChunkStorage.isChunkClaimed(chunk)){

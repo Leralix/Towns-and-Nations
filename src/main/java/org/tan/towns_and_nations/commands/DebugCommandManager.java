@@ -5,28 +5,28 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.tan.towns_and_nations.commands.debugsubcommands.*;
 import org.tan.towns_and_nations.commands.subcommands.*;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/*
 public class DebugCommandManager implements CommandExecutor, TabExecutor {
 
-    private final ArrayList<SubCommand> subcommands = new ArrayList<>();
+    private final ArrayList<SubCommand> subCommands = new ArrayList<>();
 
     public DebugCommandManager(){
 
-        subcommands.add(new InvitePlayerCommand());
-        subcommands.add(new JoinTownCommand());
+        subCommands.add(new AddMoney());
+        subCommands.add(new org.tan.towns_and_nations.commands.AddNewFeatures());
+        subCommands.add(new ChatStorage());
+        subCommands.add(new PlayerStat());
+        subCommands.add(new SaveAll());
+        subCommands.add(new SetMoney());
+        subCommands.add(new SpawnVillager());
+        subCommands.add(new TownStat());
 
-        subcommands.add(new ClaimCommand());
-        subcommands.add(new UnclaimCommand());
-
-        subcommands.add(new SeeBalanceCommand());
-        subcommands.add(new PayCommand());
-        subcommands.add(new OpenGuiCommand());
     }
 
     @Override
@@ -55,26 +55,25 @@ public class DebugCommandManager implements CommandExecutor, TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        List<String> suggestions = new ArrayList<>();
 
-        if (args.length == 1){
-            List<String> TabCompleteList = new ArrayList<>();
-            for (SubCommand subCommand : subcommands) {
-                if (subCommand.getName().startsWith(args[0])) {
-                    TabCompleteList.add(subCommand.getName());
+        // If the player is just starting to type the command
+        if(args.length == 1) {
+            for(SubCommand subCmd : subCommands) {
+                // Add all sub-commands that start with the entered text
+                if(subCmd.getName().startsWith(args[0].toLowerCase())) {
+                    suggestions.add(subCmd.getName());
                 }
             }
-            return TabCompleteList;
-
         }
-        return null;
 
+        return suggestions;
     }
 
     public ArrayList<SubCommand> getSubcommands(){
-        return subcommands;
+        return subCommands;
     }
 
 
 }
-*/

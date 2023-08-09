@@ -1369,17 +1369,16 @@ public class GuiManager2 {
                         TownRelationConfirmStorage.addInvitation(otherTown.getUuidLeader(), playerTown.getTownId(), relation);
 
                         otherTownLeader.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.getTranslation(playerTown.getTownName(),relation.getColor() + relation.getName()));
-                        ChatUtils.sendClickableCommand(otherTownLeader,  getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.getTranslation(),"tan accept "  + playerTown.getTownId());
+                        ChatUtils.sendClickableCommand(otherTownLeader,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.getTranslation(),"tan accept "  + playerTown.getTownId());
 
-                        return;
+                        player.closeInventory();
                     }
-
-                    playerTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getTownName(),relation.getColor() + relation.getName()));
-                    otherTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(playerTown.getTownName(),relation.getColor() + relation.getName()));
-
-                    addTownRelation(playerTown,otherTown,relation);
-
-                    OpenTownRelation(player,relation);
+                    else{
+                        playerTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getTownName(),relation.getColor() + relation.getName()));
+                        otherTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(playerTown.getTownName(),relation.getColor() + relation.getName()));
+                        addTownRelation(playerTown,otherTown,relation);
+                        OpenTownRelation(player,relation);
+                    }
                 });
                 gui.setItem(i, _town);
                 i = i+1;
@@ -1398,20 +1397,26 @@ public class GuiManager2 {
                 GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                     event.setCancelled(true);
 
+                    if(relation.getNeedsConfirmationToEnd()){
+                        player.sendMessage(ChatUtils.getTANString() + "Sent to the leader of the other town");
 
-                    if(HaveRelation(playerTown, otherTown)){
-                        player.sendMessage("Current relation can't end");
+                        Player otherTownLeader = Bukkit.getPlayer(UUID.fromString(otherTown.getUuidLeader()));
+
+                        TownRelationConfirmStorage.addInvitation(otherTown.getUuidLeader(), playerTown.getTownId(), null);
+
+                        otherTownLeader.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.getTranslation(playerTown.getTownName(),"neutral"));
+                        ChatUtils.sendClickableCommand(otherTownLeader,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.getTranslation(),"tan accept "  + playerTown.getTownId());
+                        player.closeInventory();
                     }
                     else{
-                        playerTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getTownName(),relation.getColor() + relation.getName()));
-                        otherTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(playerTown.getTownName(),relation.getColor() + relation.getName()));
-
+                        playerTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getTownName(),"neutral"));
+                        otherTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(playerTown.getTownName(),"neutral"));
                         removeRelation(playerTown,otherTown,relation);
+                        OpenTownRelation(player,relation);
                     }
 
 
 
-                    TownDataStorage.getTown(playerTown.getTownId()).removeTownRelations(relation,otherTownUUID);
                     OpenTownRelation(player,relation);
                 });
                 gui.setItem(i, _town);

@@ -1,33 +1,15 @@
 package org.tan.towns_and_nations.utils;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.reflect.StructureModifier;
-import com.comphenix.protocol.wrappers.EnumWrappers;
-import com.comphenix.protocol.wrappers.PlayerInfoData;
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
-import com.comphenix.protocol.wrappers.WrappedGameProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
-import org.tan.towns_and_nations.TownsAndNations;
 import org.tan.towns_and_nations.enums.TownRelation;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class TeamUtils {
     public static void setScoreBoard(Player player) {
@@ -53,19 +35,7 @@ public class TeamUtils {
 
 
         }
-        /* Old code
-        for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
-            System.out.println("Case: " + otherPlayer.getName());
-            for (TownRelation relation : TownRelation.values()) {
-                System.out.println("Relation: " + relation.getName());
-                if (haveRelation(player, otherPlayer, relation)) {
-                    player.getScoreboard().getTeam(relation.getName().toLowerCase()).addEntry(otherPlayer.getName());
-                    System.out.println("Adding " + otherPlayer.getName() + " to team " + relation.getName().toLowerCase());
-                }
-            }
-        }
-        *
-         */
+
     }
 
     public static void addPlayerToCorrectTeam(Scoreboard scoreboard, Player owner, Player toAdd) {

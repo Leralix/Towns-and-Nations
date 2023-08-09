@@ -9,6 +9,7 @@ import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.TownsAndNations;
 import org.tan.towns_and_nations.commands.SubCommand;
+import org.tan.towns_and_nations.enums.TownRolePermission;
 import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
@@ -35,24 +36,30 @@ public class ClaimCommand extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args){
+
         //Incorrect syntax
         if (args.length != 1){
             player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()) );
             return;
         }
+
         //No town
         PlayerDataClass playerStat = PlayerStatStorage.getStat(player.getUniqueId().toString());
         if(!playerStat.haveTown()){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.getTranslation());
             return;
         }
+
         //No permission
         TownDataClass townStat = TownDataStorage.getTown(player);
         ClaimedChunkSettings townChunkInfo = townStat.getChunkSettings();
-        if(!townStat.getUuidLeader().equals(playerStat.getUuid())){
-            player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION);
-            return;
+        if(!playerStat.hasPermission(TownRolePermission.CLAIM_CHUNK)){
+            if(!playerStat.isTownLeader()){
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION);
+                return;
+            }
         }
+
         //Chunk already claimed
         Chunk chunkToClaim = player.getLocation().getChunk();
         if(ClaimedChunkStorage.isChunkClaimed(chunkToClaim)){
@@ -60,8 +67,9 @@ public class ClaimCommand extends SubCommand {
                     ClaimedChunkStorage.getChunkOwnerName(chunkToClaim)));
             return;
         }
+
         //Chunk limit reached
-        if(townChunkInfo.getNumberOfClaimedChunk() > townStat.getTownLevel().getChunkCap()){
+        if(!townStat.canClaimMoreChunk()){
             player.sendMessage(getTANString() + Lang.MAX_CHUNK_LIMIT_REACHED.getTranslation());
         }
 

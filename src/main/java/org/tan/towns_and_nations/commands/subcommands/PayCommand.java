@@ -42,27 +42,29 @@ public class PayCommand extends SubCommand  {
         }
         else if(args.length == 3){
             Player receiver = Bukkit.getServer().getPlayer(args[1]);
+
             if(receiver == null){
                 player.sendMessage(getTANString() + Lang.PLAYER_NOT_FOUND);
                 return;
             }
+
             PlayerDataClass receiverDataClass = PlayerStatStorage.getStat(receiver);
             PlayerDataClass senderDataClass = PlayerStatStorage.getStat(player);
-            int amount = 0;
+            int amount;
 
             try{
                 amount = Integer.parseInt(args[2]);
 
             } catch (NumberFormatException e) {
                 player.sendMessage(getTANString() + Lang.PAY_INVALID_SYNTAX.getTranslation());
-                throw new RuntimeException(e);
+                return;
             }
             if(amount <1){
                 player.sendMessage(getTANString() + Lang.PAY_MINIMUM_REQUIRED.getTranslation());
                 return;
             }
             if(senderDataClass.getBalance() < amount){
-                player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.getTranslation(
+                player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.getTranslation(
                         amount - senderDataClass.getBalance()));
                 return;
             }

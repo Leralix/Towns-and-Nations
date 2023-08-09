@@ -1,26 +1,18 @@
 package org.tan.towns_and_nations;
 
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.Tasks.TaxPayments;
 import org.tan.towns_and_nations.Tasks.TestTask;
 import org.tan.towns_and_nations.commands.CommandManager;
-import org.tan.towns_and_nations.commands.DebugCommand;
+import org.tan.towns_and_nations.commands.DebugCommandManager;
 import org.tan.towns_and_nations.listeners.*;
 import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
-import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 import org.tan.towns_and_nations.utils.ConfigUtil;
-import org.tan.towns_and_nations.utils.TeamUtils;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -43,6 +35,7 @@ public final class TownsAndNations extends JavaPlugin {
 
         logger.info("[TaN] -Loading Configs");
 
+        ConfigUtil.saveResource("config.yml");
         ConfigUtil.loadCustomConfig("config.yml");
         ConfigUtil.saveResource("townLevelUpRequirement.yml");
         ConfigUtil.loadCustomConfig("townLevelUpRequirement.yml");
@@ -65,15 +58,20 @@ public final class TownsAndNations extends JavaPlugin {
 
         EnableEventList();
         Objects.requireNonNull(getCommand("tan")).setExecutor(new CommandManager());
-        Objects.requireNonNull(getCommand("tandebug")).setExecutor(new DebugCommand());
+        Objects.requireNonNull(getCommand("tandebug")).setExecutor(new DebugCommandManager());
+
+        //Objects.requireNonNull(getCommand("tandebug2")).setExecutor(new DebugCommand());
 
         
         logger.info("[TaN] Plugin successfully loaded");
+        getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
+
     }
 
 
     @Override
     public void onDisable() {
+        getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
         logger.info("[TaN] Savings Data");
 
         TownDataStorage.saveStats();
@@ -86,6 +84,8 @@ public final class TownsAndNations extends JavaPlugin {
         }
 
         logger.info("[TaN] Plugin disabled");
+        getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
+
     }
 
 

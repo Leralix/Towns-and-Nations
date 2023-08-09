@@ -6,6 +6,7 @@ language:
   #Common errors
   PLAYER_NO_TOWN: "§cYou do not have a town"
   PLAYER_NO_PERMISSION: "§cYou do not have the permission of performing this action"
+  PLAYER_NOT_FOUND: "§cInvalid name, or the player is not connected"
 
   #Level up
   BASIC_LEVEL_UP: "§aLevel up !"
@@ -25,13 +26,12 @@ language:
 
   #Invite player to town command
   TOWN_INVITE_COMMAND_DESC: "invite a player to the town"
-  PLAYER_NOT_FOUND: "§cInvalid name, or the player is not connected"
+  INVITATION_TOWN_FULL: "§cThe town has reached full capacity, upgrade player cap to get more"
   INVITATION_SENT_SUCCESS: "Invitation sent to §e{0}"
   INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN: "§e{0}§f is already in your town"
   INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN: "§e{0}§f already have a town: {1}"
   INVITATION_RECEIVED_1: "You have been invited by §e{0}§f to the town: §3{0}"
-  INVITATION_RECEIVED_2: "To join his town, write §e/tan join {0}"
-  INVITATION_RECEIVED_3: "§l§2[Or click here]"
+  INVITATION_RECEIVED_2: "§l§2[click here to accept]"
 
   #Accept the town invitation
   TOWN_ACCEPT_INVITE_DESC: "Join a town that invited you"
@@ -41,7 +41,7 @@ language:
 
   #Diplomatic relation confirmation
   TOWN_DIPLOMATIC_INVITATION_RECEIVED_1: "The town §e{0}§f wants to change their diplomatic status to: §3{1}"
-  TOWN_DIPLOMATIC_INVITATION_RECEIVED_2: "To accept, click here"
+  TOWN_DIPLOMATIC_INVITATION_RECEIVED_2: "§l§2To accept, click here"
 
 
 
