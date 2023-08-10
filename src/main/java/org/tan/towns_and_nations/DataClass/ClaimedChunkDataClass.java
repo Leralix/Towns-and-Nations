@@ -22,8 +22,7 @@ public class ClaimedChunkDataClass {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ClaimedChunkDataClass)) return false;
-        ClaimedChunkDataClass that = (ClaimedChunkDataClass) o;
+        if (!(o instanceof ClaimedChunkDataClass that)) return false;
         return x == that.x && z == that.z && worldUUID.equals(that.worldUUID);
     }
 

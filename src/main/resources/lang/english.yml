@@ -202,6 +202,9 @@ language:
   GUI_TOWN_MEMBER_DESC1: "§fRank: §e{0}"
   GUI_TOWN_MEMBER_DESC2: "§fCurrent balance: §e{0}$"
   GUI_TOWN_MEMBER_DESC3: "§cRight click to kick player"
+  GUI_TOWN_MEMBER_CANT_KICK_LEADER: "You can't kick the leader of the town"
+  GUI_TOWN_MEMBER_CANT_KICK_YOURSELF: "You can't kick yourself, you can leave the town from the town settings menu"
+
   GUI_TOWN_MEMBER_KICKED_SUCCESS: "§a{0}§f has been kicked out of the town"
   GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER: "§cYou have been kicked out of the town"
 

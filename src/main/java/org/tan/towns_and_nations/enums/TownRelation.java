@@ -23,7 +23,6 @@ public enum TownRelation {
         this.color = color;
         this.needsConfirmationToStart = needsConfirmationToStart;
         this.needsConfirmationToEnd = needsConfirmationToEnd;
-
     }
 
     public String getName() {

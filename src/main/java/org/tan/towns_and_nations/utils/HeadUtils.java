@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.Lang.Lang;
+import org.tan.towns_and_nations.TownsAndNations;
 import org.tan.towns_and_nations.enums.TownRelation;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 
@@ -62,14 +63,10 @@ public class HeadUtils {
 
     public static ItemStack getTownIcon(String TownId){
 
-        if(TownId == null){
-            System.out.println("Erreur critique: Fonction accesible seulement a un joueur qui a une ville apellée par un joueur qui n'en possède pas");
-            return null;
-        }
 
         TownDataClass town = TownDataStorage.getTown(TownId);
         ItemStack itemStack = town.getTownIconItemStack();
-        if (itemStack == null){
+        if(itemStack == null){
             return HeadUtils.getPlayerHead(town.getTownName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
         }
         else {
@@ -189,7 +186,7 @@ public class HeadUtils {
                 break;
 
             default:
-                System.out.println("Error in role color");
+                TownsAndNations.getPluginLogger().info("Error in role color");
                 skull = makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_5.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODIxNGEyYmUzM2YwMzdiZmU2ZmEzZTI0YjFjMmZlMDRmMWU1ZmZkNzQ4ODA5NGQ0ZmY3YWJiMGIzNzBlZjViZSJ9fX0=");
                 break;
         }

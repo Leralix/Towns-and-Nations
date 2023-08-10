@@ -191,22 +191,7 @@ public class TownDataClass {
             }
         }
     }
-    public void playerChangeRank(String playerUuid, String newRank) {
-        
-        // Add the player to the new rank
-        if (roles.containsKey(newRank)) {
-            roles.get(newRank).addPlayer(playerUuid);
-        } else {
-            System.out.println("Error: The rank " + newRank + " does not exist.");
-            return;
-        }
 
-        // Remove the player from all ranks
-        for (TownRank rank : roles.values()) {
-            rank.removePlayer(playerUuid);
-        }
-
-    }
     public TownRank getRank(String rankName){
         return this.roles.get(rankName);
     }

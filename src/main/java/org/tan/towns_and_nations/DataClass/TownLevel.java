@@ -91,7 +91,6 @@ public class TownLevel {
                 .setVariable("squareMultiplier", squareMultiplier)
                 .setVariable("flatMultiplier", flatMultiplier)
                 .setVariable("base", base);
-        System.out.println((int) expression.evaluate());
         return (int) expression.evaluate();
     }
 

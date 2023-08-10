@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
+import org.tan.towns_and_nations.enums.TownChunkPermission;
 import org.tan.towns_and_nations.enums.TownRelation;
 import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
@@ -30,11 +31,14 @@ public class ChunkListener implements Listener {
         TownDataClass chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
         TownDataClass playerTown = TownDataStorage.getTown(player);
 
+        //Same town
         if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getTownId()))
             return;
-        if(chunkTown.getChunkSettings().getBreakAuth().equals("alliance") && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getTownId()))
+        //Same alliance
+        if(chunkTown.getChunkSettings().getBreakAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getTownId()))
             return;
-        if(chunkTown.getChunkSettings().getBreakAuth().equals("foreign"))
+        //permission is on foreign
+        if(chunkTown.getChunkSettings().getBreakAuth() == TownChunkPermission.FOREIGN)
             return;
 
         player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
@@ -60,12 +64,14 @@ public class ChunkListener implements Listener {
                 TownDataClass chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
                 TownDataClass playerTown = TownDataStorage.getTown(player);
 
-
+                //Same town
                 if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getTownId()))
                     return;
-                if(chunkTown.getChunkSettings().getChestAuth().equals("alliance") && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getTownId()))
+                //Same alliance
+                if(chunkTown.getChunkSettings().getChestAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getTownId()))
                     return;
-                if(chunkTown.getChunkSettings().getChestAuth().equals("foreign"))
+                //permission is on foreign
+                if(chunkTown.getChunkSettings().getChestAuth() == TownChunkPermission.FOREIGN)
                     return;
 
                 player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
@@ -77,11 +83,14 @@ public class ChunkListener implements Listener {
                 TownDataClass chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
                 TownDataClass playerTown = TownDataStorage.getTown(player);
 
+                //Same town
                 if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getTownId()))
                     return;
-                if(chunkTown.getChunkSettings().getDoorAuth().equals("alliance") && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getTownId()))
+                //Same alliance
+                if(chunkTown.getChunkSettings().getDoorAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getTownId()))
                     return;
-                if(chunkTown.getChunkSettings().getDoorAuth().equals("foreign"))
+                //permission is on foreign
+                if(chunkTown.getChunkSettings().getDoorAuth() == TownChunkPermission.FOREIGN)
                     return;
 
                 player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
@@ -104,11 +113,14 @@ public class ChunkListener implements Listener {
         TownDataClass chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
         TownDataClass playerTown = TownDataStorage.getTown(player);
 
+        //Same town
         if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getTownId()))
             return;
-        if(chunkTown.getChunkSettings().getPlaceAuth().equals("alliance") && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getTownId()))
+        //Same alliance
+        if(chunkTown.getChunkSettings().getPlaceAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getTownId()))
             return;
-        if(chunkTown.getChunkSettings().getPlaceAuth().equals("foreign"))
+        //Permission is on foreign
+        if(chunkTown.getChunkSettings().getPlaceAuth() == TownChunkPermission.FOREIGN)
             return;
 
         player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));

@@ -21,7 +21,6 @@ public class TeamUtils {
             Team team = board.registerNewTeam(relation.getName().toLowerCase());
             team.setColor(relation.getColor());
             team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
-            System.out.println("Setting prefix for team: " + relation.getName().toLowerCase() + " to: " + relation.getColor() + "");
         }
         player.setScoreboard(board);
 
@@ -40,10 +39,8 @@ public class TeamUtils {
 
     public static void addPlayerToCorrectTeam(Scoreboard scoreboard, Player owner, Player toAdd) {
         for (TownRelation relation : TownRelation.values()) {
-            System.out.println("Relation: " + relation.getName());
             if (haveRelation(owner, toAdd, relation)) {
                 scoreboard.getTeam(relation.getName().toLowerCase()).addEntry(toAdd.getName());
-                System.out.println("Adding " + toAdd.getName() + " to team " + relation.getName().toLowerCase());
             }
         }
     }

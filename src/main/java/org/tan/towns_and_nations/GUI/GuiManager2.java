@@ -9,10 +9,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import org.tan.towns_and_nations.DataClass.PlayerDataClass;
-import org.tan.towns_and_nations.DataClass.TownDataClass;
-import org.tan.towns_and_nations.DataClass.TownLevel;
-import org.tan.towns_and_nations.DataClass.TownRank;
+import org.tan.towns_and_nations.DataClass.*;
 import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.enums.Action;
 import org.tan.towns_and_nations.enums.TownRelation;
@@ -305,35 +302,45 @@ public class GuiManager2 {
                 .rows(nRow)
                 .create();
 
+        PlayerDataClass playerStat = PlayerStatStorage.getStat(player);
+        TownDataClass town = TownDataStorage.getTown(playerStat);
 
-        TownDataClass town = TownDataStorage.getTown(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());
         ArrayList<String> players = town.getPlayerList();
 
         int i = 0;
         for (String playerUUID: players) {
 
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
-            PlayerDataClass playerStat = PlayerStatStorage.getStat(playerUUID);
+            PlayerDataClass otherPlayerStat = PlayerStatStorage.getStat(playerUUID);
 
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate.getName(),playerIterate);
             HeadUtils.addLore(
                     playerHead,
-                    Lang.GUI_TOWN_MEMBER_DESC1.getTranslation(playerStat.getTownRank()),
-                    Lang.GUI_TOWN_MEMBER_DESC2.getTranslation(playerStat.getBalance()),
+                    Lang.GUI_TOWN_MEMBER_DESC1.getTranslation(otherPlayerStat.getTownRank()),
+                    Lang.GUI_TOWN_MEMBER_DESC2.getTranslation(otherPlayerStat.getBalance()),
                     Lang.GUI_TOWN_MEMBER_DESC3.getTranslation()
             );
             GuiItem _playerIcon = ItemBuilder.from(playerHead).asGuiItem(event -> {
+                event.setCancelled(true);
                 if(event.getClick() == ClickType.RIGHT){
 
-                    town.getRank(playerStat.getTownRank()).removePlayer(playerUUID);
+                    if(otherPlayerStat.isTownLeader()){
+                        player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.getTranslation());
+                        return;
+                    }
+                    if(otherPlayerStat.getUuid().equals(playerStat.getUuid())){
+                        player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_YOURSELF.getTranslation());
+                        return;
+                    }
+
+                    town.getRank(otherPlayerStat.getTownRank()).removePlayer(playerUUID);
                     town.removePlayer(playerUUID);
-                    playerStat.leaveTown();
+                    otherPlayerStat.leaveTown();
                     town.broadCastMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.getTranslation(playerIterate.getName()));
                     if(playerIterate.isOnline())
                         playerIterate.getPlayer().sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.getTranslation());
                 }
                 OpenTownMemberList(player);
-                event.setCancelled(true);
             });
 
             gui.setItem(i, _playerIcon);
@@ -1477,19 +1484,20 @@ public class GuiManager2 {
 
         PlayerDataClass playerStat = PlayerStatStorage.getStat(player.getUniqueId().toString());
         TownDataClass townClass = TownDataStorage.getTown(player);
+        ClaimedChunkSettings townChunkSettings = townClass.getChunkSettings();
 
         ItemStack doorAccess = HeadUtils.getCustomLoreItem(Material.OAK_DOOR,
                 Lang.GUI_TOWN_CLAIM_SETTINGS_DOOR.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DOOR_DESC1.getTranslation(townClass.getChunkSettings().getDoorAuth()));
+                Lang.GUI_TOWN_CLAIM_SETTINGS_DOOR_DESC1.getTranslation(townChunkSettings.getDoorAuth().getColor() + townChunkSettings.getDoorAuth().getName()));
         ItemStack chestAccess = HeadUtils.getCustomLoreItem(Material.CHEST,
                 Lang.GUI_TOWN_CLAIM_SETTINGS_CHEST.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_CHEST_DESC1.getTranslation(townClass.getChunkSettings().getChestAuth()));
+                Lang.GUI_TOWN_CLAIM_SETTINGS_CHEST_DESC1.getTranslation(townChunkSettings.getChestAuth().getColor() + townChunkSettings.getChestAuth().getName()));
         ItemStack placeBlockAccess = HeadUtils.getCustomLoreItem(Material.BRICKS,
                 Lang.GUI_TOWN_CLAIM_SETTINGS_BUILD.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_BUILD_DESC1.getTranslation(townClass.getChunkSettings().getPlaceAuth()));
+                Lang.GUI_TOWN_CLAIM_SETTINGS_BUILD_DESC1.getTranslation(townChunkSettings.getPlaceAuth().getColor() + townChunkSettings.getPlaceAuth().getName()));
         ItemStack breakBlockAccess = HeadUtils.getCustomLoreItem(Material.IRON_PICKAXE,
                 Lang.GUI_TOWN_CLAIM_SETTINGS_BREAK.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_BREAK_DESC1.getTranslation(townClass.getChunkSettings().getBreakAuth()));
+                Lang.GUI_TOWN_CLAIM_SETTINGS_BREAK_DESC1.getTranslation(townChunkSettings.getBreakAuth().getColor() + townChunkSettings.getBreakAuth().getName()));
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
 

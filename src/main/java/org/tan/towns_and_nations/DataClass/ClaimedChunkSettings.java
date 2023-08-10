@@ -1,30 +1,32 @@
 package org.tan.towns_and_nations.DataClass;
 
+import org.tan.towns_and_nations.enums.TownChunkPermission;
+
 public class ClaimedChunkSettings {
     private int NumberOfClaimedChunk;
-    private String chestAuth;
-    private String doorAuth;
-    private String breakAuth;
-    private String placeAuth;
+    private TownChunkPermission chestAuth;
+    private TownChunkPermission doorAuth;
+    private TownChunkPermission breakAuth;
+    private TownChunkPermission placeAuth;
 
     public ClaimedChunkSettings(){
         this.NumberOfClaimedChunk = 0;
-        this.chestAuth = "town";
-        this.doorAuth = "town";
-        this.breakAuth = "town";
-        this.placeAuth = "town";
+        this.chestAuth = TownChunkPermission.TOWN;
+        this.doorAuth = TownChunkPermission.TOWN;
+        this.breakAuth = TownChunkPermission.TOWN;
+        this.placeAuth = TownChunkPermission.TOWN;
     }
 
-    public String getChestAuth() {
+    public TownChunkPermission getChestAuth() {
         return this.chestAuth;
     }
-    public String getDoorAuth() {
+    public TownChunkPermission getDoorAuth() {
         return this.doorAuth;
     }
-    public String getBreakAuth() {
+    public TownChunkPermission getBreakAuth() {
         return this.breakAuth;
     }
-    public String getPlaceAuth() {
+    public TownChunkPermission getPlaceAuth() {
         return this.placeAuth;
     }
 
@@ -44,16 +46,16 @@ public class ClaimedChunkSettings {
         this.placeAuth = nextAuth(this.placeAuth);
     }
 
-    public String nextAuth(String auth) {
+    public TownChunkPermission nextAuth(TownChunkPermission auth) {
         switch (auth) {
-            case "town" -> {
-                return "ally";
+            case TOWN -> {
+                return TownChunkPermission.ALLIANCE;
             }
-            case "ally" -> {
-                return "foreign";
+            case ALLIANCE -> {
+                return TownChunkPermission.FOREIGN;
             }
-            case "foreign" -> {
-                return "town";
+            case FOREIGN -> {
+                return TownChunkPermission.TOWN;
             }
         }
         return null;
@@ -62,11 +64,6 @@ public class ClaimedChunkSettings {
     public int getNumberOfClaimedChunk() {
         return this.NumberOfClaimedChunk;
     }
-
-    public void setNumberOfClaimedChunk(int numberOfClaimedChunk) {
-        this.NumberOfClaimedChunk = numberOfClaimedChunk;
-    }
-
     public void incrementNumberOfClaimedChunk() {
         this.NumberOfClaimedChunk = this.NumberOfClaimedChunk + 1;
     }

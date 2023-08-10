@@ -38,8 +38,6 @@ public class PlayerChatListenerStorage {
         ChatListenerStorage.get(key).remove(playerId);
     }
     public static boolean checkIfPlayerIn(String key,String uuid){
-        System.out.println("la key: " + key);
-        System.out.println(ChatListenerStorage.keySet());
 
         if(!ChatListenerStorage.containsKey(key)){
             return false;

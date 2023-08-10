@@ -10,7 +10,6 @@ public class RelationUtil {
     public static boolean HaveRelation(TownDataClass town, TownDataClass targetTown){
 
         TownRelation currentRelation = town.getRelationWith(targetTown);
-        System.out.println("DEBUG: currentRelation = " + currentRelation);
         if(currentRelation == null){
             return false;
         }
