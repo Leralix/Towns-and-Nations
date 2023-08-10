@@ -230,7 +230,8 @@ public class GuiManager2 {
 
         String name = "Town";
         int nRow = 3;
-
+        PlayerDataClass playerStat = PlayerStatStorage.getStat(player);
+        TownDataClass playerTown = TownDataStorage.getTown(playerStat);
         Gui gui = Gui.gui()
                 .title(Component.text(name))
                 .type(GuiType.CHEST)
@@ -238,17 +239,56 @@ public class GuiManager2 {
                 .create();
 
 
-        ItemStack TownIcon = HeadUtils.getTownIcon(PlayerStatStorage.getStat(player).getTownId());
+        ItemStack TownIcon = HeadUtils.getTownIcon(playerTown.getTownId());
+        HeadUtils.addLore(TownIcon,
+                Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerTown.getUuidLeader()))),
+                Lang.GUI_TOWN_INFO_DESC2.getTranslation(playerTown.getChunkSettings().getNumberOfClaimedChunk()),
+                Lang.GUI_TOWN_INFO_DESC3.getTranslation(playerTown.getPlayerList().size()),
+                Lang.GUI_TOWN_INFO_DESC4.getTranslation(playerTown.getTreasury())
+        );
+
+
+
+
+
         ItemStack GoldIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_TREASURY_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        HeadUtils.addLore(GoldIcon, Lang.GUI_TOWN_TREASURY_ICON_DESC1.getTranslation());
+
         ItemStack SkullIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Q0ZDQ5NmIxZGEwNzUzNmM5NGMxMzEyNGE1ODMzZWJlMGM1MzgyYzhhMzM2YWFkODQ2YzY4MWEyOGQ5MzU2MyJ9fX0=");
+        HeadUtils.addLore(SkullIcon, Lang.GUI_TOWN_MEMBERS_ICON_DESC1.getTranslation());
+
         ItemStack ClaimIcon = HeadUtils.makeSkull(Lang.GUI_CLAIM_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
+        HeadUtils.addLore(ClaimIcon, Lang.GUI_CLAIM_ICON_DESC1.getTranslation());
+
         ItemStack RelationIcon = HeadUtils.makeSkull(Lang.GUI_RELATION_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=");
+        HeadUtils.addLore(RelationIcon, Lang.GUI_RELATION_ICON_DESC1.getTranslation());
+
         ItemStack LevelIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmJlNTI5YWI2YjJlYTdjNTBkOTE5MmQ4OWY4OThmZDdkYThhOWU3NTBkMzc4Mjk1ZGY3MzIwNWU3YTdlZWFlMCJ9fX0=");
+        HeadUtils.addLore(LevelIcon, Lang.GUI_TOWN_LEVEL_ICON_DESC1.getTranslation());
+
         ItemStack SettingIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_SETTINGS_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkMmNiMzg0NThkYTE3ZmI2Y2RhY2Y3ODcxNjE2MDJhMjQ5M2NiZjkzMjMzNjM2MjUzY2ZmMDdjZDg4YTljMCJ9fX0=");
+        HeadUtils.addLore(SettingIcon, Lang.GUI_TOWN_SETTINGS_ICON_DESC1.getTranslation());
+
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
         GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {
             event.setCancelled(true);
+
+            if(!playerStat.isTownLeader())
+                return;
+            if(event.getCursor() == null)
+                return;
+
+            Material itemMaterial = event.getCursor().getType();
+            if(itemMaterial == Material.AIR){
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.getTranslation());
+            }
+
+            else {
+                playerTown.setTownIconMaterialCode(itemMaterial);
+                OpenTownMenuHaveTown(player);
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.getTranslation());
+            }
         });
         GuiItem _goldIcon = ItemBuilder.from(GoldIcon).asGuiItem(event -> {
             event.setCancelled(true);

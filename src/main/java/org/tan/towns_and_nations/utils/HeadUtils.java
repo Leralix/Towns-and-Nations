@@ -63,22 +63,23 @@ public class HeadUtils {
 
     public static ItemStack getTownIcon(String TownId){
 
-
         TownDataClass town = TownDataStorage.getTown(TownId);
         ItemStack itemStack = town.getTownIconItemStack();
         if(itemStack == null){
             return HeadUtils.getPlayerHead(town.getTownName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
         }
         else {
+            ItemMeta meta = itemStack.getItemMeta();
+            meta.setDisplayName(ChatColor.GREEN + town.getTownName());
+            itemStack.setItemMeta(meta);
             return itemStack;
         }
-
     }
+
     public static ItemStack getTownIconWithInformations(String TownId){
 
         TownDataClass town = TownDataStorage.getTown(TownId);
-        ItemStack icon = town.getTownIconItemStack();
-
+        ItemStack icon = HeadUtils.getTownIcon(town.getTownId());
         if (icon == null){
             icon =  HeadUtils.getPlayerHead(town.getTownName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
         }

@@ -121,12 +121,24 @@ language:
   GUI_NO_TOWN_JOIN_A_TOWN: "§aJoin a town"
   GUI_NO_TOWN_JOIN_A_TOWN_DESC1: "§fThere are currently §e{0}§f towns in total"
 
+  GUI_TOWN_INFO_DESC1: "§fLeader: §e{0}"
+  GUI_TOWN_INFO_DESC2: "§fTerritory: §e{0}"
+  GUI_TOWN_INFO_DESC3: "§fMembers: §e{0}"
+  GUI_TOWN_INFO_DESC4: "§fTreasury: §e{0}"
+
   GUI_TOWN_TREASURY_ICON: "§aTreasury"
+  GUI_TOWN_TREASURY_ICON_DESC1: "§fManage taxes and town treasury"
   GUI_TOWN_MEMBERS_ICON: "§aMembers"
+  GUI_TOWN_MEMBERS_ICON_DESC1: "§fManage members and roles"
   GUI_CLAIM_ICON: "§aLand"
-  GUI_RELATION_ICON: "§aRelation"
+  GUI_CLAIM_ICON_DESC1: "§fManage town territory"
+  GUI_RELATION_ICON: "§aDiplomacy"
+  GUI_RELATION_ICON_DESC1: "§fManage diplomacy"
   GUI_TOWN_LEVEL_ICON: "§aTown level"
+  GUI_TOWN_LEVEL_ICON_DESC1: "§fCheck and upgrade town level"
   GUI_TOWN_SETTINGS_ICON: "§aSettings"
+  GUI_TOWN_SETTINGS_ICON_DESC1: "§fGeneral town settings"
+
 
   GUI_TREASURY_STORAGE: "§aTreasury"
   GUI_TREASURY_STORAGE_DESC1: "§fTown current treasury: §e{0}"
