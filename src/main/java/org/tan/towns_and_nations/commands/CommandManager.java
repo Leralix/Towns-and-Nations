@@ -58,13 +58,16 @@ public class CommandManager implements CommandExecutor, TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         List<String> suggestions = new ArrayList<>();
 
-        // If the player is just starting to type the command
         if(args.length == 1) {
             for(SubCommand subCmd : subCommands) {
-                // Add all sub-commands that start with the entered text
                 if(subCmd.getName().startsWith(args[0].toLowerCase())) {
                     suggestions.add(subCmd.getName());
                 }
+            }
+        } else {
+            SubCommand subCmd = subCommands.stream().filter(cmd -> cmd.getName().equalsIgnoreCase(args[0])).findFirst().orElse(null);
+            if(subCmd != null) {
+                suggestions = subCmd.getTabCompleteSuggestions((Player) sender, args);
             }
         }
 

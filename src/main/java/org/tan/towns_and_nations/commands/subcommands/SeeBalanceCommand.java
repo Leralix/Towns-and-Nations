@@ -1,10 +1,15 @@
 package org.tan.towns_and_nations.commands.subcommands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.commands.SubCommand;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.tan.towns_and_nations.utils.ChatUtils.getTANString;
 
 
@@ -25,6 +30,9 @@ public class SeeBalanceCommand extends SubCommand  {
     @Override
     public String getSyntax() {
         return "/tan balance";
+    }
+    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+        return null;
     }
 
     @Override

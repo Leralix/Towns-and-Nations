@@ -12,6 +12,10 @@ import org.tan.towns_and_nations.utils.ChatUtils;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 import org.tan.towns_and_nations.storage.TownInviteDataStorage;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.tan.towns_and_nations.utils.ChatUtils.getTANString;
 
 public class InvitePlayerCommand extends SubCommand {
@@ -26,13 +30,21 @@ public class InvitePlayerCommand extends SubCommand {
         return Lang.TOWN_INVITE_COMMAND_DESC.getTranslation();
     }
     public int getArguments(){ return 2;}
-
-
     @Override
     public String getSyntax() {
         return "/tan invite <playerName>";
     }
 
+    @Override
+    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+        List<String> suggestions = new ArrayList<>();
+        if (args.length == 2) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                suggestions.add(p.getName());
+            }
+        }
+        return suggestions;
+    }
     @Override
     public void perform(Player player, String[] args){
         if (args.length <= 1){

@@ -8,6 +8,8 @@ import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.commands.SubCommand;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static org.tan.towns_and_nations.utils.ChatUtils.getTANString;
@@ -33,6 +35,19 @@ public class PayCommand extends SubCommand  {
         return 3;
     }
 
+    @Override
+    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+        List<String> suggestions = new ArrayList<>();
+        if (args.length == 2) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                suggestions.add(p.getName());
+            }
+        }
+        if (args.length == 3) {
+            suggestions.add("<amount>");
+        }
+        return suggestions;
+    }
 
     @Override
     public void perform(Player player, String[] args){

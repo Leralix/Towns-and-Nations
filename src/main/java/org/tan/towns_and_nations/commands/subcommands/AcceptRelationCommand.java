@@ -11,6 +11,7 @@ import org.tan.towns_and_nations.enums.TownRelation;
 import org.tan.towns_and_nations.storage.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.tan.towns_and_nations.utils.ChatUtils.getTANString;
 import static org.tan.towns_and_nations.utils.RelationUtil.addTownRelation;
@@ -32,6 +33,14 @@ public class AcceptRelationCommand extends SubCommand {
     @Override
     public String getSyntax() {
         return "/tan accept <town name>";
+    }
+    @Override
+    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+        List<String> suggestions = new ArrayList<>();
+        if (args.length == 2) {
+            suggestions.add("<town name>");
+        }
+        return suggestions;
     }
 
     @Override

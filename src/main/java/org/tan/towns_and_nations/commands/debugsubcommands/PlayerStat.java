@@ -1,5 +1,6 @@
 package org.tan.towns_and_nations.commands.debugsubcommands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
@@ -8,6 +9,7 @@ import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerStat extends SubCommand {
 
@@ -30,7 +32,15 @@ public class PlayerStat extends SubCommand {
     public String getSyntax() {
         return "/tandebug playerstats";
     }
-
+    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+        List<String> suggestions = new ArrayList<>();
+        if (args.length == 2) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                suggestions.add(p.getName());
+            }
+        }
+        return suggestions;
+    }
     @Override
     public void perform(Player player, String[] args) {
         ArrayList<PlayerDataClass> stats = PlayerStatStorage.getStats();

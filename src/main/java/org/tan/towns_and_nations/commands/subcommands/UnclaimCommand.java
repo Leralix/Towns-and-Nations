@@ -1,5 +1,6 @@
 package org.tan.towns_and_nations.commands.subcommands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
@@ -11,6 +12,9 @@ import org.tan.towns_and_nations.enums.TownRolePermission;
 import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.tan.towns_and_nations.utils.ChatUtils.getTANString;
 
@@ -32,7 +36,9 @@ public class UnclaimCommand extends SubCommand {
     public String getSyntax() {
         return "/tan unclaim";
     }
-
+    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+        return null;
+    }
     @Override
     public void perform(Player player, String[] args){
         if (args.length != 1){

@@ -1,9 +1,13 @@
 package org.tan.towns_and_nations.commands.debugsubcommands;
 
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.tan.towns_and_nations.commands.SubCommand;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SpawnVillager extends SubCommand {
 
@@ -26,7 +30,9 @@ public class SpawnVillager extends SubCommand {
     public String getSyntax() {
         return "/tandebug spawnvillager";
     }
-
+    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+        return null;
+    }
     @Override
     public void perform(Player player, String[] args) {
         Villager villager = player.getWorld().spawn(player.getLocation(), Villager.class);

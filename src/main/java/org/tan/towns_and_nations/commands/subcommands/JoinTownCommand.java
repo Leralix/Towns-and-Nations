@@ -1,5 +1,6 @@
 package org.tan.towns_and_nations.commands.subcommands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.DataClass.PlayerDataClass;
@@ -11,6 +12,7 @@ import org.tan.towns_and_nations.storage.TownDataStorage;
 import org.tan.towns_and_nations.storage.TownInviteDataStorage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.tan.towns_and_nations.utils.ChatUtils.getTANString;
 
@@ -34,6 +36,15 @@ public class JoinTownCommand extends SubCommand {
     @Override
     public String getSyntax() {
         return "/tan join <Town ID>";
+    }
+
+    @Override
+    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+        List<String> suggestions = new ArrayList<>();
+        if (args.length == 2) {
+            suggestions.add("<Town ID>");
+        }
+        return suggestions;
     }
 
     @Override

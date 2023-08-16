@@ -9,6 +9,9 @@ import org.tan.towns_and_nations.commands.SubCommand;
 
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.tan.towns_and_nations.utils.ChatUtils.getTANString;
 
 
@@ -31,6 +34,10 @@ public class OpenGuiCommand extends SubCommand  {
         return "/tan gui";
     }
 
+    @Override
+    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+        return null;
+    }
     @Override
     public void perform(Player player, String[] args){
         if (args.length == 1){

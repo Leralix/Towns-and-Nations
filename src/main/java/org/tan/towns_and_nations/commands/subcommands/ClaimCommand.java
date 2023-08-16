@@ -14,6 +14,9 @@ import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
 import org.tan.towns_and_nations.storage.TownDataStorage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.tan.towns_and_nations.utils.ChatUtils.getTANString;
 
 public class ClaimCommand extends SubCommand {
@@ -33,7 +36,10 @@ public class ClaimCommand extends SubCommand {
     public String getSyntax() {
         return "/tan claim";
     }
-
+    @Override
+    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+        return null;
+    }
     @Override
     public void perform(Player player, String[] args){
 

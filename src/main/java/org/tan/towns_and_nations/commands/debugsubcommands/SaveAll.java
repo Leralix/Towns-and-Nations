@@ -1,8 +1,12 @@
 package org.tan.towns_and_nations.commands.debugsubcommands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.tan.towns_and_nations.commands.SubCommand;
 import org.tan.towns_and_nations.storage.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SaveAll extends SubCommand {
 
@@ -25,7 +29,9 @@ public class SaveAll extends SubCommand {
     public String getSyntax() {
         return "/tandebug saveall";
     }
-
+    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+        return null;
+    }
     @Override
     public void perform(Player player, String[] args) {
         TownDataStorage.saveStats();
