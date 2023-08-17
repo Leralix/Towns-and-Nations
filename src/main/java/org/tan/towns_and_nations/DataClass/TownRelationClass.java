@@ -20,34 +20,15 @@ public class TownRelationClass {
     public void addRelation(TownRelation relation, String townID){
         this.townRelations.get(relation).add(townID);
     }
-
     public void removeRelation(TownRelation relation, String townID){
         townRelations.get(relation).remove(townID);
     }
-
-    public LinkedHashMap<TownRelation, ArrayList<String>> getAll(){
-        return this.townRelations;
-    }
-
     public ArrayList<String> getOne(TownRelation relation){
         return this.townRelations.get(relation);
     }
-
-
     public TownRelation getRelationWith(TownDataClass Town) {
-        for (Map.Entry<TownRelation, ArrayList<String>> entry : townRelations.entrySet()) {
-            TownRelation relation = entry.getKey();
-            ArrayList<String> list = entry.getValue();
-
-            for (String townUUID : list) {
-                if (Town.getTownId().equals(townUUID)) {
-                    return relation;
-                }
-            }
-        }
-        return null;
+        return getRelationWith(Town.getTownId());
     }
-
     public TownRelation getRelationWith(String TownID) {
         for (Map.Entry<TownRelation, ArrayList<String>> entry : townRelations.entrySet()) {
             TownRelation relation = entry.getKey();

@@ -1,20 +1,41 @@
-BooleanDeTest: true
-NumberOfFreeChunk: 6
+#The cost of a chunk
 CostOfChunk: 1
-rareStoneBlock:
-  GOLD_ORE: 65
-  DEEPSLATE_GOLD_ORE: 65
-  ACACIA_LOG: 98
-  BIRCH_LOG: 98
-  DARK_OAK_LOG: 98
-  JUNGLE_LOG: 98
-  OAK_LOG: 98
-  SPRUCE_LOG: 98
 
+#The stat of getting a rare Stone, used to get money
+# (20 = 20% drop chance)
+rareStone:
+  GOLD_ORE: 20
+  DEEPSLATE_GOLD_ORE: 20
+  DIAMOND_ORE: 40
+  DEEPSLATE_DIAMOND_ORE: 40
+
+rareStoneValue: 5
+
+
+#The stat of getting rare Wood, used to get money
+rareWood:
+  ACACIA_LOG: 2
+  BIRCH_LOG: 2
+  DARK_OAK_LOG: 2
+  JUNGLE_LOG: 2
+  OAK_LOG: 2
+  SPRUCE_LOG: 2
+
+rareWoodValue: 2
+
+#The stat of getting rare Crops, used to get money
+rareCrops:
+  WHEAT: 3
+
+rareCropsValue: 2
+
+#Town Levels
 TownMaxLevel: 10
-TownStartingMembersCap: 5
-TownStartingChunksCap: 50
 
+TownStartingMembersCap: 5
 UpgradeMembers: 3
-UpgradeMaxChunk: 100
+
+TownStartingChunksCap: 50
+TownUpgradeChunk: 25
+
 

@@ -37,18 +37,15 @@ public class TownTreasury {
     public void removeToBalance(int amount){
         this.balance = this.balance - amount;
     }
-
     public void add1FlatTax(){
         this.flatTax = this.flatTax + 1;
     }
     public void remove1FlatTax(){
         this.flatTax = this.flatTax - 1;
     }
-
     public int getFlatTax(){
         return this.flatTax;
     }
-
     public void addTaxHistory(LocalDate date, String playerID, int amount){
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
@@ -59,11 +56,9 @@ public class TownTreasury {
         }
         this.taxHistory.get(formattedDate).add(new TransactionHistoryClass(playerID, amount));
     }
-
     public void addDonation(LocalDate date, String playerID, int amount){
         this.donationHistory.add(new TransactionHistoryClass(playerID, amount));
     }
-
     public void addSalary(LocalDate date, String playerID, int amount){
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
@@ -74,7 +69,6 @@ public class TownTreasury {
         }
         this.salaryHistory.get(formattedDate).add(new TransactionHistoryClass(playerID, amount));
     }
-
     public void addChunkHistory(LocalDate date, String playerID, int amount){
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
@@ -84,13 +78,11 @@ public class TownTreasury {
             this.chunkHistory.put(formattedDate,new TransactionHistoryClass("Chunks", amount));
         }
     }
-
     public void addMiscellaneousPurchase(LocalDate date, String miscellaneous, int amount){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
         String formattedDate = date.format(formatter);
         this.miscellaneousPurchaseHistory.add(new TransactionHistoryClass(miscellaneous, amount));
     }
-
     public ArrayList<String> getTaxLimitedHistory(int wantedNumberOfRows){
 
             return null;
@@ -125,5 +117,4 @@ public class TownTreasury {
         }
         return latestDonations;
     }
-
 }

@@ -41,7 +41,6 @@ public class TownRank {
     public String getRankIconName(){
         return this.rankIconName;
     }
-    // Révoquer une permission
     public void addPlayer(String playerUUID){
         this.players.add(playerUUID);
     }

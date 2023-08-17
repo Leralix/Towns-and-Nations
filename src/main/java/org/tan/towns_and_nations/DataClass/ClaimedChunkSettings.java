@@ -31,34 +31,19 @@ public class ClaimedChunkSettings {
     }
 
     public void nextChestAuth() {
-        this.chestAuth = nextAuth(this.chestAuth);
+        this.chestAuth = this.chestAuth.getNext();
     }
 
     public void nextDoorAuth() {
-        this.doorAuth = nextAuth(this.doorAuth);
+        this.doorAuth = this.doorAuth.getNext();
     }
 
     public void nextBreakAuth() {
-        this.breakAuth = nextAuth(this.breakAuth);
+        this.breakAuth = this.breakAuth.getNext();
     }
 
     public void nextPlaceAuth() {
-        this.placeAuth = nextAuth(this.placeAuth);
-    }
-
-    public TownChunkPermission nextAuth(TownChunkPermission auth) {
-        switch (auth) {
-            case TOWN -> {
-                return TownChunkPermission.ALLIANCE;
-            }
-            case ALLIANCE -> {
-                return TownChunkPermission.FOREIGN;
-            }
-            case FOREIGN -> {
-                return TownChunkPermission.TOWN;
-            }
-        }
-        return null;
+        this.placeAuth = this.placeAuth.getNext();
     }
 
     public int getNumberOfClaimedChunk() {

@@ -30,8 +30,6 @@ import java.util.stream.Collectors;
 
 import java.util.*;
 
-
-
 public class GuiManager2 {
 
     //done
@@ -41,6 +39,8 @@ public class GuiManager2 {
             PlayerStatStorage.createPlayerDataClass(player);
         }
 
+        PlayerDataClass playerStat = PlayerStatStorage.getStat(player);
+        Boolean playerHaveTown = playerStat.getTownId() != null;
         String name = "Main menu";
         int nRow = 3;
 
@@ -56,6 +56,11 @@ public class GuiManager2 {
         ItemStack PlayerHead = HeadUtils.getPlayerHead(Lang.GUI_PROFILE_ICON.getTranslation(),player);
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Quit");
 
+        HeadUtils.addLore(KingdomHead, Lang.GUI_KINGDOM_ICON_DESC1.getTranslation());
+        HeadUtils.addLore(RegionHead, Lang.GUI_REGION_ICON_DESC1.getTranslation());
+        HeadUtils.addLore(TownHead, playerHaveTown? Lang.GUI_KINGDOM_ICON_DESC1_HAVE_TOWN.getTranslation(TownDataStorage.getTown(playerStat).getTownName()):Lang.GUI_KINGDOM_ICON_DESC1_NO_TOWN.getTranslation() );
+        HeadUtils.addLore(PlayerHead, Lang.GUI_PROFILE_ICON_DESC1.getTranslation());
+
 
         GuiItem Kingdom = ItemBuilder.from(KingdomHead).asGuiItem(event -> {
             event.setCancelled(true);
@@ -67,7 +72,7 @@ public class GuiManager2 {
         });
         GuiItem Town = ItemBuilder.from(TownHead).asGuiItem(event -> {
             event.setCancelled(true);
-            if(Objects.requireNonNull(PlayerStatStorage.getStat(player)).haveTown()){
+            if(PlayerStatStorage.getStat(player).haveTown()){
                 OpenTownMenuHaveTown(player);
             }
             else{

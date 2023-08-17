@@ -1,11 +1,10 @@
 package org.tan.towns_and_nations;
 
 
-import com.comphenix.protocol.ProtocolManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.Tasks.TaxPayments;
-import org.tan.towns_and_nations.Tasks.TestTask;
+import org.tan.towns_and_nations.Tasks.SaveStats;
 import org.tan.towns_and_nations.commands.CommandManager;
 import org.tan.towns_and_nations.commands.DebugCommandManager;
 import org.tan.towns_and_nations.listeners.*;
@@ -21,8 +20,6 @@ public final class TownsAndNations extends JavaPlugin {
 
     private static TownsAndNations plugin;
     static Logger logger;
-    public ProtocolManager protocolManager;
-
 
     @Override
     public void onEnable() {
@@ -46,22 +43,18 @@ public final class TownsAndNations extends JavaPlugin {
 
         logger.info("[TaN] -Loading Stats");
 
-        //Loading data
         PlayerStatStorage.loadStats();
         TownDataStorage.loadStats();
         ClaimedChunkStorage.loadStats();
 
         logger.info("[TaN] -Loading Scheduled commands");
-        TestTask.startSchedule();
+        SaveStats.startSchedule();
         TaxPayments.scheduleMidnightTask();
 
 
         EnableEventList();
         Objects.requireNonNull(getCommand("tan")).setExecutor(new CommandManager());
         Objects.requireNonNull(getCommand("tandebug")).setExecutor(new DebugCommandManager());
-
-        //Objects.requireNonNull(getCommand("tandebug2")).setExecutor(new DebugCommand());
-
         
         logger.info("[TaN] Plugin successfully loaded");
         getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");

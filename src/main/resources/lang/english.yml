@@ -29,7 +29,7 @@ language:
   INVITATION_TOWN_FULL: "§cThe town has reached full capacity, upgrade player cap to get more"
   INVITATION_SENT_SUCCESS: "Invitation sent to §e{0}"
   INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN: "§e{0}§f is already in your town"
-  INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN: "§e{0}§f already have a town: {1}"
+  INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN: "§e{0}§f already have a town: §e{1}"
   INVITATION_RECEIVED_1: "You have been invited by §e{0}§f to the town: §3{0}"
   INVITATION_RECEIVED_2: "§l§2[click here to accept]"
 
@@ -95,26 +95,31 @@ language:
 
   #GUI text
 
-  GUI_WARNING_STILL_IN_DEV: "§eStill in developpement"
+  GUI_WARNING_STILL_IN_DEV: "§eStill in development"
   GUI_BACK_ARROW: "Return"
   GUI_QUIT_ARROW: "Quit"
   GUI_NEXT_PAGE: "Next"
   GUI_PREVIOUS_PAGE: "Previous"
 
   GUI_KINGDOM_ICON: "§aKingdom"
+  GUI_KINGDOM_ICON_DESC1: "§fIn development"
   GUI_REGION_ICON: "§aRegion"
+  GUI_REGION_ICON_DESC1: "§fIn development"
   GUI_TOWN_ICON: "§aTown"
+  GUI_KINGDOM_ICON_DESC1_NO_TOWN: "§fJoin or create your own town"
+  GUI_KINGDOM_ICON_DESC1_HAVE_TOWN: "§fYour current town: §e{}"
   GUI_PROFILE_ICON: "§aProfile"
+  GUI_PROFILE_ICON_DESC1: "Look at your stats"
 
   GUI_YOUR_PROFILE: "§aYour profile"
   GUI_YOUR_BALANCE: "§aYour Balance"
-  GUI_YOUR_BALANCE_DESC1: "§fCurrent balance: {0}"
+  GUI_YOUR_BALANCE_DESC1: "§fCurrent balance: §e{0}"
   GUI_YOUR_PVE_KILLS: "§aMobs"
-  GUI_YOUR_PVE_KILLS_DESC1: "§fCurrent mobs killed: {0}"
+  GUI_YOUR_PVE_KILLS_DESC1: "§fCurrent mobs killed: §e{0}"
   GUI_YOUR_CURRENT_TIME_ALIVE: "§aTime alive"
-  GUI_YOUR_CURRENT_TIME_ALIVE_DESC1: "§fCurrent time alive: {0}"
+  GUI_YOUR_CURRENT_TIME_ALIVE_DESC1: "§fCurrent time alive: §e{0}"
   GUI_YOUR_CURRENT_MURDER: "§aKills"
-  GUI_YOUR_CURRENT_MURDER_DESC1: "§fYou killed {0} player"
+  GUI_YOUR_CURRENT_MURDER_DESC1: "§fYou killed §e{0} §fplayer"
 
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCreate a new town"
   GUI_NO_TOWN_CREATE_NEW_TOWN_DESC: "§fCost: §e{0}$"

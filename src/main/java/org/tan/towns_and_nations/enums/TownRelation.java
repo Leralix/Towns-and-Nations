@@ -6,7 +6,7 @@ public enum TownRelation {
 
     CITY("City", ChatColor.GREEN, Boolean.FALSE, Boolean.FALSE),
     ALLIANCE("Alliance", ChatColor.BLUE, Boolean.TRUE, Boolean.FALSE),
-    NON_AGGRESSION("Non-Aggression", ChatColor.YELLOW, Boolean.TRUE, Boolean.FALSE),
+    NON_AGGRESSION("Non-Aggression", ChatColor.DARK_AQUA, Boolean.TRUE, Boolean.FALSE),
     EMBARGO("Embargo", ChatColor.GOLD, Boolean.FALSE, Boolean.TRUE),
     WAR("War", ChatColor.RED, Boolean.FALSE, Boolean.TRUE);
 
@@ -14,9 +14,6 @@ public enum TownRelation {
     private final ChatColor color;
     private final Boolean needsConfirmationToStart;
     private final Boolean needsConfirmationToEnd;
-
-
-
 
     TownRelation(String name, ChatColor color, Boolean needsConfirmationToStart, Boolean needsConfirmationToEnd){
         this.name = name;
@@ -28,7 +25,6 @@ public enum TownRelation {
     public String getName() {
         return name;
     }
-
     public ChatColor getColor() {
         return color;
     }
