@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class TownTreasury {
 
@@ -83,11 +84,11 @@ public class TownTreasury {
         String formattedDate = date.format(formatter);
         this.miscellaneousPurchaseHistory.add(new TransactionHistoryClass(miscellaneous, amount));
     }
-    public ArrayList<String> getTaxLimitedHistory(int wantedNumberOfRows){
+    public List<String> getTaxLimitedHistory(int wantedNumberOfRows){
 
             return null;
     }
-    public ArrayList<String> getDonationLimitedHistory(int wantedNumberOfRows){
+    public List<String> getDonationLimitedHistory(int wantedNumberOfRows){
 
         if (this.donationHistory.size() < wantedNumberOfRows) {
             wantedNumberOfRows = this.donationHistory.size();
@@ -101,7 +102,7 @@ public class TownTreasury {
         }
         return latestDonations;
     }
-    public ArrayList<String> getMiscellaneousLimitedHistory(int wantedNumberOfRows){
+    public List<String> getMiscellaneousLimitedHistory(int wantedNumberOfRows){
 
         int miscSize = this.miscellaneousPurchaseHistory.size();
 

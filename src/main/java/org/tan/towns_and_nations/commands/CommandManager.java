@@ -74,7 +74,7 @@ public class CommandManager implements CommandExecutor, TabExecutor {
         return suggestions;
     }
 
-    public ArrayList<SubCommand> getSubCommands(){
+    public List<SubCommand> getSubCommands(){
         return subCommands;
     }
 

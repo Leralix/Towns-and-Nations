@@ -15,9 +15,9 @@ import java.util.*;
 
 public class TownDataStorage {
 
-    public static LinkedHashMap<String, TownDataClass> townDataMap = new LinkedHashMap<>();
+    private static LinkedHashMap<String, TownDataClass> townDataMap = new LinkedHashMap<>();
+    private static int newTownId = 1;
 
-    public static int newTownId = 1;
     public static void newTown(String townName, Player leader){
         String townId = "T"+newTownId;
         TownDataClass newTown = new TownDataClass( townId, townName, leader.getUniqueId().toString());
@@ -32,7 +32,7 @@ public class TownDataStorage {
 
         TownDataClass townDataClass = townDataMap.get(TownId);
 
-        ArrayList<String> array = townDataClass.getPlayerList();
+        List<String> array = townDataClass.getPlayerList();
         for(String playerUUID : array) {
             PlayerStatStorage.getStat(playerUUID).setTownId(null);
         }
@@ -107,6 +107,8 @@ public class TownDataStorage {
         }
 
     }
-
+    public static int getNewTownId() {
+        return newTownId;
+    }
 
 }

@@ -143,14 +143,14 @@ public class HeadUtils {
         return item;
     }
 
-    public static ItemStack addLore(ItemStack itemStack, ArrayList<String> lore){
+    public static ItemStack addLore(ItemStack itemStack, List<String> lore){
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
 
-    public static ItemStack addLore(ItemStack itemStack, String... loreLines) {
+    public static void addLore(ItemStack itemStack, String... loreLines) {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         List<String> lore = Arrays.asList(loreLines);
@@ -158,7 +158,7 @@ public class HeadUtils {
 
         itemStack.setItemMeta(itemMeta);
 
-        return itemStack;
+        return;
     }
 
     public static ItemStack getRankLevelColor(int level){
@@ -192,7 +192,7 @@ public class HeadUtils {
                 break;
         }
 
-        skull = addLore(
+        addLore(
                 skull,
                 Lang.GUI_TOWN_MEMBERS_CHANGE_ROLE_PRIORITY_DESC1.getTranslation()
         );

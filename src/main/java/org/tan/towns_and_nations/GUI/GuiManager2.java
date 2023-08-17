@@ -40,7 +40,7 @@ public class GuiManager2 {
         }
 
         PlayerDataClass playerStat = PlayerStatStorage.getStat(player);
-        Boolean playerHaveTown = playerStat.getTownId() != null;
+        boolean playerHaveTown = playerStat.getTownId() != null;
         String name = "Main menu";
         int nRow = 3;
 
@@ -350,7 +350,7 @@ public class GuiManager2 {
         PlayerDataClass playerStat = PlayerStatStorage.getStat(player);
         TownDataClass town = TownDataStorage.getTown(playerStat);
 
-        ArrayList<String> players = town.getPlayerList();
+        List<String> players = town.getPlayerList();
 
         int i = 0;
         for (String playerUUID: players) {
@@ -425,7 +425,7 @@ public class GuiManager2 {
         PlayerDataClass playerStat = PlayerStatStorage.getStat(player);
         TownDataClass town = TownDataStorage.getTown(playerStat);
 
-        HashMap<String,TownRank> ranks = town.getTownRanks();
+        Map<String,TownRank> ranks = town.getTownRanks();
 
         int i = 0;
         for (TownRank townRank: ranks.values()) {
@@ -489,7 +489,10 @@ public class GuiManager2 {
 
         TownDataClass town = TownDataStorage.getTown(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());
         TownRank townRank = town.getRank(roleName);
-        Boolean isDefaultRank = town.getTownDefaultRank().equals(townRank.getName());
+
+        boolean isDefaultRank;
+        isDefaultRank = town.getTownDefaultRank().equals(townRank.getName());
+
         Material roleMaterial = Material.getMaterial(townRank.getRankIconName());
         int rankLevel = townRank.getLevel();
 
@@ -848,21 +851,21 @@ public class GuiManager2 {
         ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.getTranslation());
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
-        goldIcon = HeadUtils.addLore(goldIcon, Lang.GUI_TREASURY_STORAGE_DESC1.getTranslation(town.getBalance()),Lang.GUI_TREASURY_STORAGE_DESC2.getTranslation(0));
-        goldSpendingIcon = HeadUtils.addLore(goldSpendingIcon, Lang.GUI_TREASURY_SPENDING_DESC1.getTranslation(0), Lang.GUI_TREASURY_SPENDING_DESC2.getTranslation(0),Lang.GUI_TREASURY_SPENDING_DESC3.getTranslation(0));
+        HeadUtils.addLore(goldIcon, Lang.GUI_TREASURY_STORAGE_DESC1.getTranslation(town.getBalance()),Lang.GUI_TREASURY_STORAGE_DESC2.getTranslation(0));
+        HeadUtils.addLore(goldSpendingIcon, Lang.GUI_TREASURY_SPENDING_DESC1.getTranslation(0), Lang.GUI_TREASURY_SPENDING_DESC2.getTranslation(0),Lang.GUI_TREASURY_SPENDING_DESC3.getTranslation(0));
 
 
 
-        lowerTax = HeadUtils.addLore(lowerTax, Lang.GUI_TREASURY_LOWER_TAX_DESC1.getTranslation());
-        taxInfo = HeadUtils.addLore(taxInfo, Lang.GUI_TREASURY_FLAT_TAX_DESC1.getTranslation(town.getTreasury().getFlatTax()));
-        increaseTax = HeadUtils.addLore(increaseTax, Lang.GUI_TREASURY_INCREASE_TAX_DESC1.getTranslation());
+        HeadUtils.addLore(lowerTax, Lang.GUI_TREASURY_LOWER_TAX_DESC1.getTranslation());
+        HeadUtils.addLore(taxInfo, Lang.GUI_TREASURY_FLAT_TAX_DESC1.getTranslation(town.getTreasury().getFlatTax()));
+        HeadUtils.addLore(increaseTax, Lang.GUI_TREASURY_INCREASE_TAX_DESC1.getTranslation());
 
-        salarySpending = HeadUtils.addLore(salarySpending, Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.getTranslation("0"));
-        chunkSpending = HeadUtils.addLore(chunkSpending, Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.getTranslation(0), Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.getTranslation(0),Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.getTranslation(town.getChunkSettings().getNumberOfClaimedChunk()));
-        workbenchSpending = HeadUtils.addLore(workbenchSpending, Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1.getTranslation());
+        HeadUtils.addLore(salarySpending, Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.getTranslation("0"));
+        HeadUtils.addLore(chunkSpending, Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.getTranslation(0), Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.getTranslation(0),Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.getTranslation(town.getChunkSettings().getNumberOfClaimedChunk()));
+        HeadUtils.addLore(workbenchSpending, Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1.getTranslation());
 
-        donation = HeadUtils.addLore(donation, Lang.GUI_TREASURY_DONATION_DESC1.getTranslation());
-        donationHistory = HeadUtils.addLore(donationHistory, town.getTreasury().getDonationLimitedHistory(5));
+        HeadUtils.addLore(donation, Lang.GUI_TREASURY_DONATION_DESC1.getTranslation());
+        HeadUtils.addLore(donationHistory, town.getTreasury().getDonationLimitedHistory(5));
 
         GuiItem _goldInfo = ItemBuilder.from(goldIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -979,9 +982,9 @@ public class GuiManager2 {
 
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
-        upgradeTownLevel = HeadUtils.addLore(upgradeTownLevel,Lang.GUI_TOWN_LEVEL_UP_DESC1.getTranslation(townLevel.getTownLevel()),Lang.GUI_TOWN_LEVEL_UP_DESC2.getTranslation(townLevel.getTownLevel()+1, townLevel.getMoneyRequiredTownLevel()));
-        upgradeChunkCap = HeadUtils.addLore(upgradeChunkCap,Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC1.getTranslation(townLevel.getChunkCapLevel()) ,Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC2.getTranslation(townLevel.getChunkCapLevel()+1,townLevel.getMoneyRequiredChunkCap()));
-        upgradePlayerCap = HeadUtils.addLore(upgradePlayerCap,Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC1.getTranslation(townLevel.getPlayerCapLevel()) ,Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC2.getTranslation(townLevel.getPlayerCapLevel()+1,townLevel.getMoneyRequiredPlayerCap()));
+        HeadUtils.addLore(upgradeTownLevel,Lang.GUI_TOWN_LEVEL_UP_DESC1.getTranslation(townLevel.getTownLevel()),Lang.GUI_TOWN_LEVEL_UP_DESC2.getTranslation(townLevel.getTownLevel()+1, townLevel.getMoneyRequiredTownLevel()));
+        HeadUtils.addLore(upgradeChunkCap,Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC1.getTranslation(townLevel.getChunkCapLevel()) ,Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC2.getTranslation(townLevel.getChunkCapLevel()+1,townLevel.getMoneyRequiredChunkCap()));
+        HeadUtils.addLore(upgradePlayerCap,Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC1.getTranslation(townLevel.getPlayerCapLevel()) ,Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC2.getTranslation(townLevel.getPlayerCapLevel()+1,townLevel.getMoneyRequiredPlayerCap()));
 
 
         GuiItem _TownIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {

@@ -57,7 +57,7 @@ public class JoinTownCommand extends SubCommand {
         } else if (args.length == 2){
 
             String townID = args[1];
-            ArrayList<String> townInvited = TownInviteDataStorage.checkInvitation(player.getUniqueId().toString());
+            List<String> townInvited = TownInviteDataStorage.checkInvitation(player.getUniqueId().toString());
 
             if(townInvited == null){
                 player.sendMessage(getTANString() + Lang.TOWN_INVITATION_NO_INVITATION.getTranslation());

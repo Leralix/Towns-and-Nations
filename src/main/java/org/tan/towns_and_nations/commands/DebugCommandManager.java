@@ -19,7 +19,7 @@ public class DebugCommandManager implements CommandExecutor, TabExecutor {
     public DebugCommandManager(){
 
         subCommands.add(new AddMoney());
-        subCommands.add(new org.tan.towns_and_nations.commands.AddNewFeatures());
+        subCommands.add(new AddNewFeatures());
         subCommands.add(new ChatStorage());
         subCommands.add(new PlayerStat());
         subCommands.add(new SaveAll());
@@ -71,7 +71,7 @@ public class DebugCommandManager implements CommandExecutor, TabExecutor {
         return suggestions;
     }
 
-    public ArrayList<SubCommand> getSubcommands(){
+    public List<SubCommand> getSubcommands(){
         return subCommands;
     }
 

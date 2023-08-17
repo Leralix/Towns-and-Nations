@@ -8,6 +8,7 @@ import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 public class PlayerStatStorage {
@@ -50,7 +51,6 @@ public class PlayerStatStorage {
         return null;
     }
 
-
     public static PlayerDataClass getStatUsername(String username){
         for (PlayerDataClass stat : stats) {
             if (stat.getPlayerName().equalsIgnoreCase(username)) {
@@ -59,7 +59,6 @@ public class PlayerStatStorage {
         }
         return null;
     }
-
 
     public static PlayerDataClass updateStat(String uuid, PlayerDataClass newStat) throws IOException {
         for (PlayerDataClass stat : stats) {
@@ -72,9 +71,7 @@ public class PlayerStatStorage {
         return null;
     }
 
-    // Ajouter une fonction pour modifier une seule valeure
-
-    public static ArrayList<PlayerDataClass> getStats(){
+    public static List<PlayerDataClass> getStats(){
         return stats;
     }
 

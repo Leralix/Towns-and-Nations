@@ -2,10 +2,12 @@ package org.tan.towns_and_nations.storage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TownInviteDataStorage {
 
-    public static HashMap<String, ArrayList<String>> townInviteList = new HashMap<>();
+    public static Map<String, ArrayList<String>> townInviteList = new HashMap<>();
 
     public static void addInvitation(String playerUUID, String townId){
         if(townInviteList.get(playerUUID) == null){
@@ -23,7 +25,7 @@ public class TownInviteDataStorage {
         townInviteList.get(playerUUID).remove(townId);
     }
 
-    public static ArrayList<String> checkInvitation(String playerUUID){
+    public static List<String> checkInvitation(String playerUUID){
         return townInviteList.get(playerUUID);
     }
 

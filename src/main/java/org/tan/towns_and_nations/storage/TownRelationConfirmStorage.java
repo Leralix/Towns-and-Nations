@@ -5,10 +5,11 @@ import org.tan.towns_and_nations.enums.TownRelation;
 import javax.management.relation.Relation;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class TownRelationConfirmStorage {
 
-    public static HashMap<String, HashMap<String, TownRelation>> map = new HashMap<>();
+    private static Map<String, HashMap<String, TownRelation>> map = new HashMap<>();
 
     public static void addInvitation(String playerUUID, String townId, TownRelation relation) {
 
@@ -17,7 +18,6 @@ public class TownRelationConfirmStorage {
         }
         map.get(playerUUID).put(townId, relation);
     }
-
 
     public static void removeInvitation(String playerUUID,String townId){
         map.get(playerUUID).remove(townId);

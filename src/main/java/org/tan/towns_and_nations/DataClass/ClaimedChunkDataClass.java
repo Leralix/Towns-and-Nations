@@ -5,8 +5,10 @@ import org.bukkit.Chunk;
 import java.util.Objects;
 
 public class ClaimedChunkDataClass {
-    private final int x, z;
-    private final String worldUUID, townUUID;
+    private final int x;
+    private final int z;
+    private final String worldUUID;
+    private final String townUUID;
 
     public ClaimedChunkDataClass(Chunk chunk) {
         this(chunk, null);

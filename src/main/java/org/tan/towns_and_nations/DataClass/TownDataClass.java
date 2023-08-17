@@ -23,7 +23,7 @@ public class TownDataClass {
     public boolean open;
     public String DateCreated;
     private String townIconMaterialCode;
-    private final ArrayList<String> townPlayerListId = new ArrayList<String>();
+    private final List<String> townPlayerListId = new ArrayList<String>();
     private TownTreasury townTreasury;
     private TownLevel townLevel;
     private ClaimedChunkSettings chunkSettings;
@@ -144,7 +144,7 @@ public class TownDataClass {
         removePlayer(player.getUniqueId().toString());
     }
 
-    public ArrayList<String> getPlayerList(){
+    public List<String> getPlayerList(){
         return townPlayerListId;
     }
 
@@ -198,7 +198,7 @@ public class TownDataClass {
     public TownRank isRankExist(String rankName){
         return this.roles.get(rankName);
     }
-    public HashMap<String,TownRank> getTownRanks(){
+    public Map<String,TownRank> getTownRanks(){
         return this.roles;
     }
     public void createTownRank(String rankName){

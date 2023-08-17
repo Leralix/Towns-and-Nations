@@ -43,7 +43,7 @@ public class PlayerStat extends SubCommand {
     }
     @Override
     public void perform(Player player, String[] args) {
-        ArrayList<PlayerDataClass> stats = PlayerStatStorage.getStats();
+        List<PlayerDataClass> stats = PlayerStatStorage.getStats();
         for (PlayerDataClass stat : stats) {
             String name = stat.getPlayerName();
             int balance = stat.getBalance();
