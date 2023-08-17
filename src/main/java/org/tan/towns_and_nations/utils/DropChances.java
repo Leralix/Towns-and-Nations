@@ -70,5 +70,4 @@ public class DropChances {
         rareStoneItem.setItemMeta(rareStoneItemMeta);
         return rareStoneItem;
     }
-
 }

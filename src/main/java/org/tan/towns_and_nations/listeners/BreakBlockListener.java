@@ -43,9 +43,9 @@ public class BreakBlockListener implements Listener {
             return;
 
         Random rand = new Random();
-        int int_random = rand.nextInt(100);
+        int int_random = rand.nextInt(1, 100);
 
-        if(int_random < rareItem.getDropChance()){
+        if(int_random <= rareItem.getDropChance()){
             event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), rareItem.getRareItem());
         }
     }
