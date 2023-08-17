@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.towns_and_nations.DataClass.RareItem;
+import org.tan.towns_and_nations.Lang.Lang;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,9 +41,9 @@ public class DropChances {
         ItemStack rareStoneItem = new ItemStack(Material.EMERALD);
         ItemMeta rareStoneItemMeta = rareStoneItem.getItemMeta();
         rareStoneItemMeta.setCustomModelData(101);
-        rareStoneItemMeta.setDisplayName("Rare Stone");
+        rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_STONE.getTranslation());
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("Can be traded for money");
+        lore.add(Lang.RARE_ITEM_DESC_1.getTranslation());
         rareStoneItemMeta.setLore(lore);
         rareStoneItem.setItemMeta(rareStoneItemMeta);
         return rareStoneItem;
@@ -51,9 +52,9 @@ public class DropChances {
         ItemStack rareStoneItem = new ItemStack(Material.STICK);
         ItemMeta rareStoneItemMeta = rareStoneItem.getItemMeta();
         rareStoneItemMeta.setCustomModelData(101);
-        rareStoneItemMeta.setDisplayName("Rare Wood");
+        rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_WOOD.getTranslation());
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("Can be traded for money");
+        lore.add(Lang.RARE_ITEM_DESC_1.getTranslation());
         rareStoneItemMeta.setLore(lore);
         rareStoneItem.setItemMeta(rareStoneItemMeta);
         return rareStoneItem;
@@ -62,9 +63,9 @@ public class DropChances {
         ItemStack rareStoneItem = new ItemStack(Material.WHEAT);
         ItemMeta rareStoneItemMeta = rareStoneItem.getItemMeta();
         rareStoneItemMeta.setCustomModelData(101);
-        rareStoneItemMeta.setDisplayName("Rare Crop");
+        rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_CROP.getTranslation());
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("Can be traded for money");
+        lore.add(Lang.RARE_ITEM_DESC_1.getTranslation());
         rareStoneItemMeta.setLore(lore);
         rareStoneItem.setItemMeta(rareStoneItemMeta);
         return rareStoneItem;

@@ -303,6 +303,13 @@ language:
   CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fTown successfully deleted"
 
 
+  #Custom Item
+  ITEM_RARE_STONE: "Rare stone"
+  ITEM_RARE_WOOD: "Rare wood"
+  ITEM_RARE_CROP: "Rare crop"
+  RARE_ITEM_DESC_1: "This item can be traded for money at spawn"
+
+
   #Transaction
   TRANSACTION_BASE_STRING: "§fTransaction [date= {0} , transaction party= {1} , amount= {2} "
 
