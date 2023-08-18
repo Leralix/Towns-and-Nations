@@ -51,9 +51,21 @@ public class TownLevel {
     public int getChunkCap() {
         FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
         int baseChunkCap = config.getInt("TownStartingChunksCap");
-        int multiplierChunkCap = config.getInt("UpgradeMaxChunk");
-        return baseChunkCap + getPlayerCapLevel() * multiplierChunkCap;
+        return baseChunkCap + getChunkCapLevel() * getMultiplierChunkCap();
     }
+
+    public int getMultiplierPlayerCap() {
+        FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
+        int multiplier = config.getInt("UpgradeMembers");
+        return multiplier;
+    }
+
+    public int getMultiplierChunkCap() {
+        FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
+        int multiplier = config.getInt("TownUpgradeChunk");
+        return multiplier;
+    }
+
 
     public void setChunkCapLevel(int chunkCapUpgrade) {
         this.chunkCapUpgrade = chunkCapUpgrade;

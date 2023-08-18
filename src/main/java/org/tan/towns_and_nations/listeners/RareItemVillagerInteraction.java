@@ -26,6 +26,7 @@ public class RareItemVillagerInteraction implements Listener {
 
         if (event.getRightClicked() instanceof Villager villager) {
 
+            event.setCancelled(true);
             CustomVillagerProfession customProfession = null;
 
             Set<String> tags = villager.getScoreboardTags();

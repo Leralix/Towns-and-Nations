@@ -115,7 +115,7 @@ language:
   GUI_KINGDOM_ICON_DESC1_NO_TOWN: "§fJoin or create your own town"
   GUI_KINGDOM_ICON_DESC1_HAVE_TOWN: "§fYour current town: §e{0}"
   GUI_PROFILE_ICON: "§aProfile"
-  GUI_PROFILE_ICON_DESC1: "Look at your stats"
+  GUI_PROFILE_ICON_DESC1: "§fLook at your stats"
 
   GUI_YOUR_PROFILE: "§aYour profile"
   GUI_YOUR_BALANCE: "§aYour Balance"
@@ -183,6 +183,9 @@ language:
   GUI_TOWN_LEVEL_UP: "§aUpgrade town level"
   GUI_TOWN_LEVEL_UP_DESC1: "§fCurrent level is: §e{0}"
   GUI_TOWN_LEVEL_UP_DESC2: "§fLevel §a{0}§f upgrade cost: §e{1}"
+  GUI_TOWN_LEVEL_UP_DESC3: "§fNext upgrade: §2+{0}"
+  GUI_TOWN_LEVEL_UP_DESC4: "§fTotal: §2{0}"
+
 
   GUI_TOWN_LEVEL_UP_CHUNK_CAP: "§aUpgrade claim max amount"
   GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC1: "§fCurrent level is: §e{0}"
