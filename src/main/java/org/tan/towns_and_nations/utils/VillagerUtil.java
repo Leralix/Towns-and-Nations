@@ -6,6 +6,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.TownsAndNations;
 import org.tan.towns_and_nations.enums.CustomVillagerProfession;
+import org.tan.towns_and_nations.enums.ScoreboardTag;
 
 public class VillagerUtil {
 
@@ -20,7 +21,7 @@ public class VillagerUtil {
         villager.setCustomNameVisible(true);
         villager.setInvulnerable(true);
 
-        villager.setMetadata(MetaDataKeys.PROFESSION, new FixedMetadataValue(TownsAndNations.getPlugin(), customProfession.name()));
+        villager.addScoreboardTag(customProfession.name());
 
         player.sendMessage(ChatUtils.getTANString() + Lang.CUSTOM_VILLAGER_CREATED_SUCCESS.getTranslation());
     }

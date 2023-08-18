@@ -26,6 +26,7 @@ public class DebugCommandManager implements CommandExecutor, TabExecutor {
         subCommands.add(new SetMoney());
         subCommands.add(new SpawnVillager());
         subCommands.add(new TownStat());
+        subCommands.add(new getRareItem());
 
     }
 

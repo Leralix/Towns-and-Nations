@@ -15,6 +15,8 @@ import org.tan.towns_and_nations.utils.ConfigUtil;
 import org.tan.towns_and_nations.utils.DropChances;
 import org.tan.towns_and_nations.utils.MetaDataKeys;
 
+import java.util.Set;
+
 public class RareItemVillagerInteraction implements Listener {
 
     @EventHandler
@@ -24,8 +26,14 @@ public class RareItemVillagerInteraction implements Listener {
 
         if (event.getRightClicked() instanceof Villager villager) {
 
-            String professionName = villager.getMetadata(MetaDataKeys.PROFESSION).get(0).asString();
-            CustomVillagerProfession customProfession = CustomVillagerProfession.fromString(professionName);
+            CustomVillagerProfession customProfession = null;
+
+            Set<String> tags = villager.getScoreboardTags();
+            if (!tags.isEmpty()) {
+                String tag = tags.iterator().next();
+                customProfession = CustomVillagerProfession.getVillager(tag);
+            }
+
             if(customProfession == null)
                 return;
 

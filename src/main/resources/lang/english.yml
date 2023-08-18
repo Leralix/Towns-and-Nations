@@ -68,13 +68,13 @@ language:
   #Pay command
   PAY_COMMAND_DESC: "Give money to another player"
   PAY_INVALID_SYNTAX: "§cInvalid syntax for the amount of money"
-  PAY_MINIMUM_REQUIRED: "§cYou need to send a least 1$"
-  PAY_CONFIRMED_SENDER: "Sending §e{0}$§f to §e{1}"
-  PAY_CONFIRMED_RECEIVER: "Receiving §e{0}$§f from §e{1}"
+  PAY_MINIMUM_REQUIRED: "§cYou need to send a least 1✦"
+  PAY_CONFIRMED_SENDER: "Sending §e{0}✦§f to §e{1}"
+  PAY_CONFIRMED_RECEIVER: "Receiving §e{0}✦§f from §e{1}"
 
   #Balance command
   BAL_COMMAND_DESC: "Look at your balance"
-  BAL_AMOUNT: "Your balance: §e{0}$"
+  BAL_AMOUNT: "Your balance: §e{0}✦"
 
   #Uncliam command
   UNCLAIM_CHUNK_COMMAND_DESC: "Unclaim a chunk"
@@ -128,7 +128,7 @@ language:
   GUI_YOUR_CURRENT_MURDER_DESC1: "§fYou killed §e{0} §fplayer"
 
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCreate a new town"
-  GUI_NO_TOWN_CREATE_NEW_TOWN_DESC: "§fCost: §e{0}$"
+  GUI_NO_TOWN_CREATE_NEW_TOWN_DESC: "§fCost: §e{0}✦"
   GUI_NO_TOWN_JOIN_A_TOWN: "§aJoin a town"
   GUI_NO_TOWN_JOIN_A_TOWN_DESC1: "§fThere are currently §e{0}§f towns in total"
 
@@ -159,17 +159,17 @@ language:
   GUI_TREASURY_SPENDING_DESC2: "§fFrom Salary: §c{0}"
   GUI_TREASURY_SPENDING_DESC3: "§fFrom Chunks: §c{0}"
   GUI_TREASURY_LOWER_TAX: "§aLower the tax"
-  GUI_TREASURY_LOWER_TAX_DESC1: "§fLower the tax by §e1$"
+  GUI_TREASURY_LOWER_TAX_DESC1: "§fLower the tax by §e1✦"
   GUI_TREASURY_INCREASE_TAX: "§aIncrease the tax"
-  GUI_TREASURY_INCREASE_TAX_DESC1: "§fIncrease the tax by §e1$"
+  GUI_TREASURY_INCREASE_TAX_DESC1: "§fIncrease the tax by §e1✦"
   GUI_TREASURY_FLAT_TAX: "§aFlat tax"
-  GUI_TREASURY_FLAT_TAX_DESC1: "§fTown current tax: §e{0}$§f weekly"
+  GUI_TREASURY_FLAT_TAX_DESC1: "§fTown current tax: §e{0}✦§f weekly"
   GUI_TREASURY_TAX_HISTORY: "§aTax History"
   GUI_TREASURY_SALARY_HISTORY: "§aSalary history"
   GUI_TREASURY_SALARY_HISTORY_DESC1: "§fSalary spending are up to: §c{0}"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY: "§aChunk spending history"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1: "§fChunk spending are up to: §c{0}"
-  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "§c-{0}$§f for every 100 chunks claimed"
+  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "§c-{0}✦§f for every 100 chunks claimed"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3: "§fYour town have §a{0}§f chunks"
   GUI_TREASURY_MISCELLANEOUS_SPENDING: "§aMiscellaneous spending"
   GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1: "§fMiscellaneous spending are not yet implemented"
@@ -223,7 +223,7 @@ language:
   GUI_TOWN_CLAIM_SETTINGS_BREAK_DESC1: "§fCurrent breaking permission: §e{0}"
 
   GUI_TOWN_MEMBER_DESC1: "§fRank: §e{0}"
-  GUI_TOWN_MEMBER_DESC2: "§fCurrent balance: §e{0}$"
+  GUI_TOWN_MEMBER_DESC2: "§fCurrent balance: §e{0}✦"
   GUI_TOWN_MEMBER_DESC3: "§cRight click to kick player"
   GUI_TOWN_MEMBER_CANT_KICK_LEADER: "You can't kick the leader of the town"
   GUI_TOWN_MEMBER_CANT_KICK_YOURSELF: "You can't kick yourself, you can leave the town from the town settings menu"
@@ -313,7 +313,7 @@ language:
   ITEM_RARE_STONE: "§3Rare stone"
   ITEM_RARE_WOOD: "§3Rare wood"
   ITEM_RARE_CROP: "§3Rare crop"
-  RARE_ITEM_DESC_1: "This item can be traded for money at spawn"
+  RARE_ITEM_DESC_1: "§fThis item can be traded for money at spawn"
 
   #Custom villager jobs
   VILLAGER_GOLDSMITH: "Goldsmith"
@@ -321,9 +321,9 @@ language:
   VILLAGER_COOK: "Cook"
 
   #Villager Interaction Success
-  RARE_ITEM_NO_ITEM_IN_HANDS: "Right click with §e{0} to sell it for §e{1}"
+  RARE_ITEM_NO_ITEM_IN_HANDS: "Right click with §e{0}§f to sell it for §e{1}"
   RARE_ITEM_WRONG_ITEM: "This villager is only buying §e{0}"
-  RARE_ITEM_SELLING_SUCCESS: "Successfully sold §e{0}x {1}§f for §e{2}$"
+  RARE_ITEM_SELLING_SUCCESS: "Successfully sold §e{0}x {1}§f for §e{2}✦"
 
   #Transaction
   TRANSACTION_BASE_STRING: "§fTransaction [date= {0} , transaction party= {1} , amount= {2} "
