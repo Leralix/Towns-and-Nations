@@ -15,7 +15,7 @@ TownUpgradeChunk: 25
 
 
 #The stat of getting a rare Stone, used to get money
-# (20 = 20% drop chance)
+# (20 = 20% drop chance when breaking this block without a silk touch pick)
 rareStone:
   GOLD_ORE: 20
   DEEPSLATE_GOLD_ORE: 20

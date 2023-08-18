@@ -37,7 +37,7 @@ public class DropChances {
         }
     }
 
-    private static ItemStack getRareStone(){
+    public static ItemStack getRareStone(){
         ItemStack rareStoneItem = new ItemStack(Material.EMERALD);
         ItemMeta rareStoneItemMeta = rareStoneItem.getItemMeta();
         rareStoneItemMeta.setCustomModelData(101);
@@ -48,7 +48,7 @@ public class DropChances {
         rareStoneItem.setItemMeta(rareStoneItemMeta);
         return rareStoneItem;
     }
-    private static ItemStack getRareWood(){
+    public static ItemStack getRareWood(){
         ItemStack rareStoneItem = new ItemStack(Material.STICK);
         ItemMeta rareStoneItemMeta = rareStoneItem.getItemMeta();
         rareStoneItemMeta.setCustomModelData(101);
@@ -59,7 +59,7 @@ public class DropChances {
         rareStoneItem.setItemMeta(rareStoneItemMeta);
         return rareStoneItem;
     }
-    private static ItemStack getRareCrops(){
+    public static ItemStack getRareCrops(){
         ItemStack rareStoneItem = new ItemStack(Material.WHEAT);
         ItemMeta rareStoneItemMeta = rareStoneItem.getItemMeta();
         rareStoneItemMeta.setCustomModelData(101);

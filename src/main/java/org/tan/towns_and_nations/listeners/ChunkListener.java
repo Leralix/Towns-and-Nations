@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
+import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.enums.TownChunkPermission;
 import org.tan.towns_and_nations.enums.TownRelation;
 import org.tan.towns_and_nations.storage.ClaimedChunkStorage;
@@ -41,7 +42,7 @@ public class ChunkListener implements Listener {
         if(chunkTown.getChunkSettings().getBreakAuth() == TownChunkPermission.FOREIGN)
             return;
 
-        player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
+        playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
         event.setCancelled(true);
     }
 
@@ -74,7 +75,7 @@ public class ChunkListener implements Listener {
                 if(chunkTown.getChunkSettings().getChestAuth() == TownChunkPermission.FOREIGN)
                     return;
 
-                player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
+                playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
                 event.setCancelled(true);
 
             }
@@ -93,7 +94,7 @@ public class ChunkListener implements Listener {
                 if(chunkTown.getChunkSettings().getDoorAuth() == TownChunkPermission.FOREIGN)
                     return;
 
-                player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
+                playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
                 event.setCancelled(true);
             }
         }
@@ -123,15 +124,13 @@ public class ChunkListener implements Listener {
         if(chunkTown.getChunkSettings().getPlaceAuth() == TownChunkPermission.FOREIGN)
             return;
 
-        player.sendMessage(getTANString() + "This chunk belongs to " + ChatColor.GREEN + ClaimedChunkStorage.getChunkOwnerName(chunk));
+        playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
         event.setCancelled(true);
     }
 
-
-
-
-
-
-
+    private void playerCantPerformAction(Player player, String ChunkOwner){
+        player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+        player.sendMessage(getTANString() + Lang.CHUNK_BELONGS_TO.getTranslation(ChunkOwner));
+    }
 
 }
