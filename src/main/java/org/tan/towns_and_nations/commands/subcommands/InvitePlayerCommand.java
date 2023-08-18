@@ -60,7 +60,7 @@ public class InvitePlayerCommand extends SubCommand {
                 return;
             }
             if(playerData.hasPermission(TownRolePermission.INVITE_PLAYER)){
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.getTranslation());
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
                 return;
             }
 

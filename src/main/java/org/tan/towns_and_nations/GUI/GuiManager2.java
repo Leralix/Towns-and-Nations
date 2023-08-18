@@ -246,10 +246,10 @@ public class GuiManager2 {
 
         ItemStack TownIcon = HeadUtils.getTownIcon(playerTown.getTownId());
         HeadUtils.addLore(TownIcon,
-                Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerTown.getUuidLeader()))),
+                Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerTown.getUuidLeader())).getName()),
                 Lang.GUI_TOWN_INFO_DESC2.getTranslation(playerTown.getChunkSettings().getNumberOfClaimedChunk()),
                 Lang.GUI_TOWN_INFO_DESC3.getTranslation(playerTown.getPlayerList().size()),
-                Lang.GUI_TOWN_INFO_DESC4.getTranslation(playerTown.getTreasury())
+                Lang.GUI_TOWN_INFO_DESC4.getTranslation(playerTown.getTreasury().getBalance())
         );
 
 

@@ -113,7 +113,7 @@ language:
   GUI_REGION_ICON_DESC1: "§fIn development"
   GUI_TOWN_ICON: "§aTown"
   GUI_KINGDOM_ICON_DESC1_NO_TOWN: "§fJoin or create your own town"
-  GUI_KINGDOM_ICON_DESC1_HAVE_TOWN: "§fYour current town: §e{}"
+  GUI_KINGDOM_ICON_DESC1_HAVE_TOWN: "§fYour current town: §e{0}"
   GUI_PROFILE_ICON: "§aProfile"
   GUI_PROFILE_ICON_DESC1: "Look at your stats"
 
