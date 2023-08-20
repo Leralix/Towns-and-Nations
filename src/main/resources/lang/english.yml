@@ -21,6 +21,9 @@ language:
   SYNTAX_ERROR: "§cIncorrect syntax"
   CORRECT_SYNTAX_INFO: "§cCorrect syntax: {0}"
 
+  #Create town
+  TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the city: §e{1}"
+
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "Claim a chunk"
   CHUNK_ALREADY_CLAIMED_WARNING: "§cThis chunk is already claimed by: §e{0}"
@@ -90,10 +93,13 @@ language:
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cYou do not have enough money to perform this action"
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cYou do not have enough money. You need {0} more"
+  PLAYER_NEED_1_OR_ABOVE: "§fYou need at least §e1✦"
+
   TOWN_NOT_ENOUGH_MONEY: "§cThe town do not have enough money to perform this action"
-  TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§c§cThe town do not have enough money to perform this action. It need {0}"
+  TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cThe town do not have enough money to perform this action. It need {0}"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Write the name of the town if the chat. §cIt cannot be changed afterward for now"
 
+  PLAYER_SEND_MONEY_TO_TOWN: "§fYou sent §e{0}✦§f to the town"
 
   #Villager names
   NPC_GOLDSMITH: "Goldsmith"
@@ -106,6 +112,7 @@ language:
   GUI_QUIT_ARROW: "Quit"
   GUI_NEXT_PAGE: "Next"
   GUI_PREVIOUS_PAGE: "Previous"
+  GUI_LEFT_CLICK_TO_INTERACT: "§eLeft click to interact"
 
   GUI_KINGDOM_ICON: "§aKingdom"
   GUI_KINGDOM_ICON_DESC1: "§fIn development"
@@ -144,7 +151,7 @@ language:
   GUI_CLAIM_ICON: "§aLand"
   GUI_CLAIM_ICON_DESC1: "§fManage town territory"
   GUI_RELATION_ICON: "§aDiplomacy"
-  GUI_RELATION_ICON_DESC1: "§fManage diplomacy"
+  GUI_RELATION_ICON_DESC1: "§fManage foreign diplomacy"
   GUI_TOWN_LEVEL_ICON: "§aTown level"
   GUI_TOWN_LEVEL_ICON_DESC1: "§fCheck and upgrade town level"
   GUI_TOWN_SETTINGS_ICON: "§aSettings"
@@ -159,22 +166,22 @@ language:
   GUI_TREASURY_SPENDING_DESC2: "§fFrom Salary: §c{0}"
   GUI_TREASURY_SPENDING_DESC3: "§fFrom Chunks: §c{0}"
   GUI_TREASURY_LOWER_TAX: "§aLower the tax"
-  GUI_TREASURY_LOWER_TAX_DESC1: "§fLower the tax by §e1✦"
+  GUI_TREASURY_LOWER_TAX_DESC1: "§fLower the tax by §c-1✦"
   GUI_TREASURY_INCREASE_TAX: "§aIncrease the tax"
-  GUI_TREASURY_INCREASE_TAX_DESC1: "§fIncrease the tax by §e1✦"
+  GUI_TREASURY_INCREASE_TAX_DESC1: "§fIncrease the tax by §a+1✦"
   GUI_TREASURY_FLAT_TAX: "§aFlat tax"
-  GUI_TREASURY_FLAT_TAX_DESC1: "§fTown current tax: §e{0}✦§f weekly"
+  GUI_TREASURY_FLAT_TAX_DESC1: "§fTown current tax: §e{0}✦§f daily"
   GUI_TREASURY_TAX_HISTORY: "§aTax History"
   GUI_TREASURY_SALARY_HISTORY: "§aSalary history"
-  GUI_TREASURY_SALARY_HISTORY_DESC1: "§fSalary spending are up to: §c{0}"
+  GUI_TREASURY_SALARY_HISTORY_DESC1: "§fSalary spending are up to: §c-{0}✦"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY: "§aChunk spending history"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1: "§fChunk spending are up to: §c{0}"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "§c-{0}✦§f for every 100 chunks claimed"
-  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3: "§fYour town have §a{0}§f chunks"
+  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3: "§fYour town have §e{0}§f chunks"
   GUI_TREASURY_MISCELLANEOUS_SPENDING: "§aMiscellaneous spending"
   GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1: "§fMiscellaneous spending are not yet implemented"
   GUI_TREASURY_DONATION: "§aMake a donation"
-  GUI_TREASURY_DONATION_DESC1: "§fDonate money to the town to help it grow"
+  GUI_TREASURY_DONATION_DESC1: "§fDonate money to the town"
   WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_TOWN_DONATION: "§aWrite the amount of money you want to give"
   GUI_TREASURY_DONATION_HISTORY: "§aDonation history"
 
@@ -202,7 +209,7 @@ language:
   GUI_TOWN_RELATION_NAP: "§aNon-aggression pact"
   GUI_TOWN_RELATION_NAP_DESC1: "§fManage towns you have a non-aggression pact with"
   GUI_TOWN_RELATION_ALLIANCE: "§aAlliance"
-  GUI_TOWN_RELATION_ALLIANCE_DESC1: "§fManage tows you have a military alliance with"
+  GUI_TOWN_RELATION_ALLIANCE_DESC1: "§fManage towns you have a military alliance with"
 
   GUI_TOWN_RELATION_NEUTRAL: "Neutral"
 
@@ -300,7 +307,12 @@ language:
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1: "§fGive the town leadership to §e{0}"
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2: "§cYou will loose your status and get ranked as the default rank"
 
-  GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCESS: "Successully transfer town leadership to: §e{0}"
+  GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS: "Successfully transfer town leadership to: §e{0}"
+
+  #Transaction history
+  TRANSACTION_HISTORY: "§f[{0}] - §e{1} : §a+{2}✦"
+
+
   #Chat Information
 
   CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§fYou can't leave a town you are the leader, you need to disband it or give the leadership to someone else"
@@ -324,9 +336,9 @@ language:
   VILLAGER_COOK: "Cook"
 
   #Villager Interaction Success
-  RARE_ITEM_NO_ITEM_IN_HANDS: "Right click with §e{0}§f to sell it for §e{1}"
+  RARE_ITEM_NO_ITEM_IN_HANDS: "Right click with §e{0}§f to sell it for §e{1}✦"
   RARE_ITEM_WRONG_ITEM: "This villager is only buying §e{0}"
-  RARE_ITEM_SELLING_SUCCESS: "Successfully sold §e{0}x {1}§f for §e{2}✦"
+  RARE_ITEM_SELLING_SUCCESS: "Successfully sold §e{0}x {1}§f for §a+{2}✦"
 
   #Transaction
   TRANSACTION_BASE_STRING: "§fTransaction [date= {0} , transaction party= {1} , amount= {2} "

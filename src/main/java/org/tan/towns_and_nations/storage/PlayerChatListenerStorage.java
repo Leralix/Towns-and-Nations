@@ -2,58 +2,67 @@ package org.tan.towns_and_nations.storage;
 
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlayerChatListenerStorage {
 
-    /*
-    First map: Category
-    Second map: Player
-    Third map: Player infos
-     */
-    private static Map<String,Map<String, Map<String,String>>> ChatListenerStorage = new HashMap<>();
+    public static class PlayerChatData {
+        private ChatCategory category;
+        private String playerUUID;
+        private Map<String, String> data;
 
-    public static void addPlayer(String key,Player p){
+        public PlayerChatData(ChatCategory category, String playerUUID, Map<String, String> data) {
+            this.category = category;
+            this.playerUUID = playerUUID;
+            this.data = data;
+        }
 
+        public ChatCategory getCategory() {
+            return category;
+        }
+        public String getPlayerUUID() {
+            return playerUUID;
+        }
+        public Map<String, String> getData() {
+            return data;
+        }
+    }
+
+    public enum ChatCategory {
+        CREATE_CITY, RANK_CREATION,RANK_RENAME, DONATION; // Vous pouvez renommer ces catégories comme vous le souhaitez
+
+    }
+
+    private static Map<String, PlayerChatData> ChatStorage = new HashMap<>();
+
+    public static void addPlayer(ChatCategory category, Player p) {
+        addPlayer(category, p, new HashMap<>());
+    }
+
+    public static void addPlayer(ChatCategory category, Player p, Map<String, String> data) {
         String playerId = p.getUniqueId().toString();
 
-        //if Category doesn't exist, create it
-        if(!ChatListenerStorage.containsKey(key)){
-            ChatListenerStorage.put(key,new HashMap<String, Map<String,String>>());
+        if(ChatStorage.containsKey(playerId)){
+            removePlayer(playerId);
         }
-        if(!ChatListenerStorage.get(key).containsKey(playerId)){
-            ChatListenerStorage.get(key).put(playerId,new HashMap<String,String>());
-        }
+        PlayerChatData playerData = new PlayerChatData(category, playerId, data);
+        ChatStorage.put(playerId, playerData);
     }
 
-    public static void addPlayer(String key,Player p, Map<String, String> data){
-
-        addPlayer(key,p);
-        ChatListenerStorage.get(key).get(p.getUniqueId().toString()).putAll(data);
-
-    }
-
-    public static void removePlayer(String key,Player p){
+    public static void removePlayer(Player p) {
         String playerId = p.getUniqueId().toString();
-        ChatListenerStorage.get(key).remove(playerId);
+        ChatStorage.remove(playerId);
     }
-    public static boolean checkIfPlayerIn(String key,String uuid){
-
-        if(!ChatListenerStorage.containsKey(key)){
-            return false;
-        }
-
-        return ChatListenerStorage.get(key).containsKey(uuid);
-    }
-    public static Map<String,Map<String, Map<String,String>>> getAllData(){
-        return ChatListenerStorage;
-    }
-    public static Map<String, Map<String,String>> getData(String key){
-        return ChatListenerStorage.get(key);
-    }
-    public static Map<String,String> getPlayerData(String key, String playerUUID){
-        return ChatListenerStorage.get(key).get(playerUUID);
+    public static void removePlayer(String playerUUID) {
+        ChatStorage.remove(playerUUID);
     }
 
+    public static Map<String, PlayerChatData> getAllData() {
+        return ChatStorage;
+    }
 
+    public static PlayerChatData getPlayerData(String playerUUID) {
+        return ChatStorage.get(playerUUID);
+    }
 }

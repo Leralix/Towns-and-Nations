@@ -1,6 +1,7 @@
 package org.tan.towns_and_nations.DataClass;
 
 import org.bukkit.ChatColor;
+import org.tan.towns_and_nations.Lang.Lang;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,11 +17,10 @@ public class TransactionHistoryClass {
         this(null, amount);
     }
 
-    // Constructeur principal avec ID du joueur et quantité
     public TransactionHistoryClass(String transactionParty, int amount) {
 
         LocalDate today = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
         String formattedDate = today.format(formatter);
 
         this.date = formattedDate;
@@ -29,7 +29,7 @@ public class TransactionHistoryClass {
     }
     @Override
     public String toString() {
-        return "Transaction [date=" + date + ", transactionParty=" + transactionParty + ", amount=" + amount + "]";
+        return Lang.TRANSACTION_HISTORY.getTranslation(date, transactionParty, amount);
     }
 
     public String getTransactionLine() {
@@ -41,7 +41,7 @@ public class TransactionHistoryClass {
         else
             color = ChatColor.WHITE;
 
-        return "" + date + "  " + transactionParty + ": " + color +  amount;
+        return Lang.TRANSACTION_HISTORY.getTranslation(date, transactionParty, color + String.valueOf(amount));
     }
 
     public String getDate() {

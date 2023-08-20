@@ -10,6 +10,7 @@ import org.tan.towns_and_nations.DataClass.PlayerDataClass;
 import org.tan.towns_and_nations.DataClass.TownDataClass;
 import org.tan.towns_and_nations.DataClass.TownRank;
 import org.tan.towns_and_nations.GUI.GuiManager2;
+import org.tan.towns_and_nations.Lang.Lang;
 import org.tan.towns_and_nations.TownsAndNations;
 import org.tan.towns_and_nations.storage.PlayerChatListenerStorage;
 import org.tan.towns_and_nations.storage.PlayerStatStorage;
@@ -27,13 +28,18 @@ public class ChatListener implements Listener {
         Player player = event.getPlayer();
         String playerUUID = player.getUniqueId().toString();
 
+        PlayerChatListenerStorage.PlayerChatData chatData = PlayerChatListenerStorage.getPlayerData(playerUUID);
+
+        if(chatData == null)
+            return;
+
         //Listener: Player create his city
-        if(PlayerChatListenerStorage.checkIfPlayerIn("creationVille",playerUUID)){
+        if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.CREATE_CITY){
             String townName = event.getMessage();
 
-            Bukkit.broadcastMessage(ChatColor.GOLD + "[TAN]" + ChatColor.YELLOW + player.getName() + ChatColor.WHITE + " has created his city: " + ChatColor.YELLOW + "" + ChatColor.BOLD + townName);
+            Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.getTranslation(player.getName(),townName));
 
-            PlayerChatListenerStorage.removePlayer("creationVille",player);
+            PlayerChatListenerStorage.removePlayer(player);
             PlayerDataClass sender = PlayerStatStorage.getStat(player.getUniqueId().toString());
             sender.removeFromBalance(100);
             TownDataStorage.newTown(townName,player);
@@ -41,7 +47,7 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
         }
 
-        if(PlayerChatListenerStorage.checkIfPlayerIn("donation",playerUUID)){
+        if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.DONATION){
 
             String stringAmount = event.getMessage();
             PlayerDataClass sender = PlayerStatStorage.getStat(player.getUniqueId().toString());
@@ -49,16 +55,16 @@ public class ChatListener implements Listener {
             try {
                 amount = Integer.parseInt(stringAmount);
             } catch (NumberFormatException e) {
-                player.sendMessage("Invalid Syntax for the amount of money");
+                player.sendMessage(ChatUtils.getTANString() + Lang.PAY_INVALID_SYNTAX.getTranslation());
                 throw new RuntimeException(e);
             }
             if(sender.getBalance() < amount ){
-                player.sendMessage("Not enough money");
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.getTranslation());
                 event.setCancelled(true);
                 return;
             }
             if(amount <= 0 ){
-                player.sendMessage("Money need to 1 or above");
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NEED_1_OR_ABOVE.getTranslation());
                 event.setCancelled(true);
                 return;
             }
@@ -68,14 +74,14 @@ public class ChatListener implements Listener {
             playerTown.getTreasury().addToBalance(amount);
 
             playerTown.getTreasury().addDonation(LocalDate.now(),player.getName(),amount);
-            player.sendMessage(ChatUtils.getTANString() + "You sent " + ChatColor.YELLOW + amount + "$"+ ChatColor.WHITE +" to your town");
-            PlayerChatListenerStorage.removePlayer("donation",player);
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_TOWN.getTranslation(amount));
+            PlayerChatListenerStorage.removePlayer(player);
 
             event.setCancelled(true);
         }
 
-        if(PlayerChatListenerStorage.checkIfPlayerIn("rankCreation",playerUUID)){
-            PlayerChatListenerStorage.removePlayer("rankCreation",player);
+        if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.RANK_CREATION){
+            PlayerChatListenerStorage.removePlayer(player);
             String rankName = event.getMessage();
             TownDataClass playerTown = TownDataStorage.getTown(player);
             playerTown.createTownRank(rankName);
@@ -84,12 +90,13 @@ public class ChatListener implements Listener {
 
         }
 
-        if(PlayerChatListenerStorage.checkIfPlayerIn("rankRename",playerUUID)){
-            Map<String,String> datas = PlayerChatListenerStorage.getPlayerData("rankRename",playerUUID);
+        if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.RANK_RENAME){
+            PlayerChatListenerStorage.PlayerChatData ChatData = PlayerChatListenerStorage.getPlayerData(playerUUID);
 
             String newRankName = event.getMessage();
             TownDataClass playerTown = TownDataStorage.getTown(player);
-            TownRank playerTownRank = playerTown.getRank(datas.get("rankName"));
+            String rankName = ChatData.getData().get("rankName");
+            TownRank playerTownRank = playerTown.getRank(rankName);
 
             List<String> playerList = playerTownRank.getPlayers();
             for(String playerWithRoleUUID : playerList){
@@ -104,11 +111,11 @@ public class ChatListener implements Listener {
             playerTownRank.setName(newRankName);
 
             playerTown.addTownRank(newRankName,playerTownRank);
-            playerTown.removeTownRank(datas.get("rankName"));
+            playerTown.removeTownRank(rankName);
 
             Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, newRankName));
 
-            PlayerChatListenerStorage.removePlayer("rankRename",player);
+            PlayerChatListenerStorage.removePlayer(player);
             event.setCancelled(true);
 
         }
