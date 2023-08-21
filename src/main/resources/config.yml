@@ -39,5 +39,3 @@ rareWoodValue: 2
 #The stat of getting rare Crops, used to get money
 rareCrops:
   WHEAT: 3
-
-rareCropsValue: 2

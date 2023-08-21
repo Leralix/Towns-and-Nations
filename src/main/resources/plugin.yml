@@ -1,9 +1,9 @@
 name: TownsAndNations
 version: '${version}'
-main: org.tan.towns_and_nations.TownsAndNations
+main: org.tan.TownsAndNations.TownsAndNations
 api-version: 1.19
 authors: [ Leralix ]
-description: My first big plugin
+description: A town plugin with rp tools
 commands:
   tan:
     description: base command of Town and Nation
@@ -14,5 +14,4 @@ commands:
     permission: townandnation.admin
     usage: /<command> 
 
-depend: [LuckPerms, ProtocolLib]
 
