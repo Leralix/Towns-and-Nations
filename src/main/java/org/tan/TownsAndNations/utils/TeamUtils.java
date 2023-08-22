@@ -4,9 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-import org.tan.TownsAndNations.DataClass.TownDataClass;
+import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.enums.TownRelation;
-import org.tan.TownsAndNations.storage.PlayerStatStorage;
+import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
 
@@ -26,7 +26,7 @@ public class TeamUtils {
 
         // Add online players to the new player's scoreboard
         for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
-            if(PlayerStatStorage.getStat(otherPlayer).getTownId() != null){
+            if(PlayerDataStorage.getStat(otherPlayer).getTownId() != null){
                 addPlayerToCorrectTeam(player.getScoreboard(), player, otherPlayer);
                 addPlayerToCorrectTeam(otherPlayer.getScoreboard(), otherPlayer, player);
             }
@@ -52,8 +52,8 @@ public class TeamUtils {
 
     private static boolean haveRelation(Player player, Player otherPlayer, TownRelation TargetedRelation){
 
-        TownDataClass playerTown = TownDataStorage.getTown(player);
-        TownDataClass otherPlayerTown = TownDataStorage.getTown(otherPlayer);
+        TownData playerTown = TownDataStorage.getTown(player);
+        TownData otherPlayerTown = TownDataStorage.getTown(otherPlayer);
 
         if(otherPlayerTown == null){
             return false;

@@ -2,10 +2,10 @@ package org.tan.TownsAndNations.Tasks;
 
 
 import org.bukkit.scheduler.BukkitRunnable;
-import org.tan.TownsAndNations.DataClass.PlayerDataClass;
-import org.tan.TownsAndNations.DataClass.TownDataClass;
+import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.storage.PlayerStatStorage;
+import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import java.util.Calendar;
@@ -33,10 +33,10 @@ public class TaxPayments {
         TownsAndNations.getPluginLogger().info("Commande executée a minuit!");
 
 
-        for (PlayerDataClass playerStat : PlayerStatStorage.getStats()){
+        for (PlayerData playerStat : PlayerDataStorage.getStats()){
 
             if (!playerStat.haveTown()) continue;
-            TownDataClass playerTown = TownDataStorage.getTown(playerStat);
+            TownData playerTown = TownDataStorage.getTown(playerStat);
             if (!playerTown.getRank(playerStat.getTownRank()).isPayingTaxes()) continue;
             int tax = playerTown.getTreasury().getFlatTax();
 

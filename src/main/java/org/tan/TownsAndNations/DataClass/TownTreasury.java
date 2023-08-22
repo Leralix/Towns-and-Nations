@@ -11,11 +11,11 @@ public class TownTreasury {
     private int balance;
     private int flatTax;
     private float percentTax;
-    LinkedHashMap<String,ArrayList<TransactionHistoryClass>> taxHistory;
-    ArrayList<TransactionHistoryClass> donationHistory;
-    LinkedHashMap<String,ArrayList<TransactionHistoryClass>> salaryHistory;
-    LinkedHashMap<String,TransactionHistoryClass> chunkHistory;
-    ArrayList<TransactionHistoryClass> miscellaneousPurchaseHistory;
+    LinkedHashMap<String,ArrayList<TransactionHistory>> taxHistory;
+    ArrayList<TransactionHistory> donationHistory;
+    LinkedHashMap<String,ArrayList<TransactionHistory>> salaryHistory;
+    LinkedHashMap<String, TransactionHistory> chunkHistory;
+    ArrayList<TransactionHistory> miscellaneousPurchaseHistory;
 
     public TownTreasury(){
         this.balance = 0;
@@ -53,10 +53,10 @@ public class TownTreasury {
         if (!this.taxHistory.containsKey(formattedDate)) {
             this.taxHistory.put(formattedDate, new ArrayList<>());
         }
-        this.taxHistory.get(formattedDate).add(new TransactionHistoryClass(playerID, amount));
+        this.taxHistory.get(formattedDate).add(new TransactionHistory(playerID, amount));
     }
     public void addDonation(LocalDate date, String playerID, int amount){
-        this.donationHistory.add(new TransactionHistoryClass(playerID, amount));
+        this.donationHistory.add(new TransactionHistory(playerID, amount));
     }
     public void addSalary(LocalDate date, String playerID, int amount){
 
@@ -66,7 +66,7 @@ public class TownTreasury {
         if (!this.salaryHistory.containsKey(formattedDate)) {
             this.salaryHistory.put(formattedDate, new ArrayList<>());
         }
-        this.salaryHistory.get(formattedDate).add(new TransactionHistoryClass(playerID, amount));
+        this.salaryHistory.get(formattedDate).add(new TransactionHistory(playerID, amount));
     }
     public void addChunkHistory(LocalDate date, String playerID, int amount){
 
@@ -74,13 +74,13 @@ public class TownTreasury {
         String formattedDate = date.format(formatter);
 
         if (!this.chunkHistory.containsKey(formattedDate)) {
-            this.chunkHistory.put(formattedDate,new TransactionHistoryClass("Chunks", amount));
+            this.chunkHistory.put(formattedDate,new TransactionHistory("Chunks", amount));
         }
     }
     public void addMiscellaneousPurchase(LocalDate date, String miscellaneous, int amount){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
         String formattedDate = date.format(formatter);
-        this.miscellaneousPurchaseHistory.add(new TransactionHistoryClass(miscellaneous, amount));
+        this.miscellaneousPurchaseHistory.add(new TransactionHistory(miscellaneous, amount));
     }
     public List<String> getTaxLimitedHistory(int wantedNumberOfRows){
 

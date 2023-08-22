@@ -3,7 +3,7 @@ package org.tan.TownsAndNations.commands.subcommands;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.storage.PlayerStatStorage;
+import org.tan.TownsAndNations.storage.PlayerDataStorage;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class SeeBalanceCommand extends SubCommand  {
     @Override
     public void perform(Player player, String[] args){
         if (args.length == 1){
-            player.sendMessage(getTANString() + Lang.BAL_AMOUNT.getTranslation(PlayerStatStorage.getStat(player).getBalance()));
+            player.sendMessage(getTANString() + Lang.BAL_AMOUNT.getTranslation(PlayerDataStorage.getStat(player).getBalance()));
 
         }else if(args.length > 1){
             player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.getTranslation());

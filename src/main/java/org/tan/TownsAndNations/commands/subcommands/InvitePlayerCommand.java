@@ -2,13 +2,13 @@ package org.tan.TownsAndNations.commands.subcommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.PlayerDataClass;
-import org.tan.TownsAndNations.DataClass.TownDataClass;
+import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.utils.ChatUtils;
-import org.tan.TownsAndNations.storage.PlayerStatStorage;
+import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.storage.TownInviteDataStorage;
 
@@ -52,7 +52,7 @@ public class InvitePlayerCommand extends SubCommand {
 
         }else if(args.length == 2){
 
-            PlayerDataClass playerData = PlayerStatStorage.getStat(player);
+            PlayerData playerData = PlayerDataStorage.getStat(player);
 
             if(playerData.getTownId() == null){
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.getTranslation());
@@ -70,15 +70,15 @@ public class InvitePlayerCommand extends SubCommand {
             }
 
 
-            TownDataClass town = TownDataStorage.getTown(player);
+            TownData town = TownDataStorage.getTown(player);
             if(!town.canAddMorePlayer()){
                 player.sendMessage(getTANString() + Lang.PLAYER_NOT_FOUND.getTranslation());
                 return;
             }
-            PlayerDataClass inviteStat = PlayerStatStorage.getStat(invite);
+            PlayerData inviteStat = PlayerDataStorage.getStat(invite);
 
             if(inviteStat.getTownId() != null){
-                if(inviteStat.getTownId().equals(town.getTownId())){
+                if(inviteStat.getTownId().equals(town.getID())){
                     player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN.getTranslation());
                     return;
                 }
@@ -86,12 +86,12 @@ public class InvitePlayerCommand extends SubCommand {
                 return;
             }
 
-            TownInviteDataStorage.addInvitation(invite.getUniqueId().toString(),town.getTownId());
+            TownInviteDataStorage.addInvitation(invite.getUniqueId().toString(),town.getID());
 
             player.sendMessage(getTANString() + Lang.INVITATION_SENT_SUCCESS.getTranslation(invite.getName()));
 
-            invite.sendMessage(getTANString() + Lang.INVITATION_RECEIVED_1.getTranslation(player.getName(),town.getTownName()));
-            ChatUtils.sendClickableCommand(invite,  getTANString() + Lang.INVITATION_RECEIVED_2.getTranslation(),"tan join "  + town.getTownId());
+            invite.sendMessage(getTANString() + Lang.INVITATION_RECEIVED_1.getTranslation(player.getName(),town.getName()));
+            ChatUtils.sendClickableCommand(invite,  getTANString() + Lang.INVITATION_RECEIVED_2.getTranslation(),"tan join "  + town.getID());
 
         }else {
             player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.getTranslation());

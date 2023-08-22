@@ -3,7 +3,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.Chunk;
-import org.tan.TownsAndNations.DataClass.ClaimedChunkDataClass;
+import org.tan.TownsAndNations.DataClass.ClaimedChunk;
 import org.tan.TownsAndNations.TownsAndNations;
 
 import java.io.*;
@@ -12,36 +12,36 @@ import java.util.*;
 
 
 public class ClaimedChunkStorage {
-    private static Set<ClaimedChunkDataClass> claimedChunks = new HashSet<>();
+    private static Set<ClaimedChunk> claimedChunks = new HashSet<>();
 
     public static boolean isChunkClaimed(Chunk chunk) {
-        return claimedChunks.contains(new ClaimedChunkDataClass(chunk));
+        return claimedChunks.contains(new ClaimedChunk(chunk));
     }
 
     public static String getChunkOwner(Chunk chunk) {
         return Objects.requireNonNull(getClaimedChunk(chunk)).getTownID();
     }
     public static String getChunkOwnerName(Chunk chunk) {
-        return TownDataStorage.getTown(getClaimedChunk(chunk).getTownID()).getTownName();
+        return TownDataStorage.getTown(getClaimedChunk(chunk).getTownID()).getName();
     }
 
     public static boolean isOwner(Chunk chunk, String townID) {
-        return claimedChunks.contains(new ClaimedChunkDataClass(chunk, townID));
+        return claimedChunks.contains(new ClaimedChunk(chunk, townID));
     }
 
     public static void claimChunk(Chunk chunk, String townID) {
-        claimedChunks.add(new ClaimedChunkDataClass(chunk, townID));
+        claimedChunks.add(new ClaimedChunk(chunk, townID));
         saveStats();
     }
 
     public static void unclaimChunk(Chunk chunk) {
-        claimedChunks.remove(new ClaimedChunkDataClass(chunk));
+        claimedChunks.remove(new ClaimedChunk(chunk));
         saveStats();
     }
 
-    public static ClaimedChunkDataClass getClaimedChunk(Chunk chunk){
-        for (ClaimedChunkDataClass claimedChunk : claimedChunks){
-            if(claimedChunk.equals(new ClaimedChunkDataClass(chunk))){
+    public static ClaimedChunk getClaimedChunk(Chunk chunk){
+        for (ClaimedChunk claimedChunk : claimedChunks){
+            if(claimedChunk.equals(new ClaimedChunk(chunk))){
                 return claimedChunk;
             }
         }
@@ -61,7 +61,7 @@ public class ClaimedChunkStorage {
                 throw new RuntimeException(e);
             }
 
-            Type type = new TypeToken<Set<ClaimedChunkDataClass>>() {}.getType();
+            Type type = new TypeToken<Set<ClaimedChunk>>() {}.getType();
             claimedChunks = gson.fromJson(reader, type);
         }
 

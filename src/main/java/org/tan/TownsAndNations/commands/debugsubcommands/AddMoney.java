@@ -2,9 +2,9 @@ package org.tan.TownsAndNations.commands.debugsubcommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.PlayerDataClass;
+import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.storage.PlayerStatStorage;
+import org.tan.TownsAndNations.storage.PlayerDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ public class AddMoney extends SubCommand {
         if (args.length < 3) {
             player.sendMessage("Not enough arguments");
         } else if (args.length == 3) {
-            PlayerDataClass target = PlayerStatStorage.getStat(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
+            PlayerData target = PlayerDataStorage.getStat(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
             int amount = 0;
             try {
                 amount = Integer.parseInt(args[2]);
@@ -57,7 +57,7 @@ public class AddMoney extends SubCommand {
             }
 
             target.addToBalance(amount);
-            player.sendMessage("Added " + amount + " Ecu to " + target.getPlayerName());
+            player.sendMessage("Added " + amount + " Ecu to " + target.getName());
         } else {
             player.sendMessage("Too many arguments");
         }

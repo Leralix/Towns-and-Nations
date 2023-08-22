@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.CustomVillagerProfession;
-import org.tan.TownsAndNations.storage.PlayerStatStorage;
+import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 
@@ -63,7 +63,7 @@ public class RareItemVillagerInteraction implements Listener {
                 String itemName = item.getItemMeta().getDisplayName();
 
                 player.getInventory().setItemInMainHand(new ItemStack(Material.AIR, 1));
-                PlayerStatStorage.getStat(player).addToBalance(quantity * price);
+                PlayerDataStorage.getStat(player).addToBalance(quantity * price);
 
 
                 player.sendMessage(

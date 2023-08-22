@@ -4,17 +4,17 @@ import org.bukkit.Chunk;
 
 import java.util.Objects;
 
-public class ClaimedChunkDataClass {
+public class ClaimedChunk {
     private final int x;
     private final int z;
     private final String worldUUID;
     private final String townUUID;
 
-    public ClaimedChunkDataClass(Chunk chunk) {
+    public ClaimedChunk(Chunk chunk) {
         this(chunk, null);
     }
 
-    public ClaimedChunkDataClass(Chunk chunk, String owner) {
+    public ClaimedChunk(Chunk chunk, String owner) {
         this.x = chunk.getX();
         this.z = chunk.getZ();
         this.worldUUID = chunk.getWorld().getUID().toString();
@@ -24,7 +24,7 @@ public class ClaimedChunkDataClass {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ClaimedChunkDataClass that)) return false;
+        if (!(o instanceof ClaimedChunk that)) return false;
         return x == that.x && z == that.z && worldUUID.equals(that.worldUUID);
     }
 

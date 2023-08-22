@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
-public class PlayerDataClass {
+public class PlayerData {
 
     private String UUID;
     private String PlayerName;
@@ -12,7 +12,7 @@ public class PlayerDataClass {
     private String TownId;
     private String TownRank;
 
-    public PlayerDataClass(Player player) {
+    public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
         this.PlayerName = player.getName();
         this.Balance = 0;
@@ -25,11 +25,11 @@ public class PlayerDataClass {
         return UUID;
     }
 
-    public String getPlayerName(){
+    public String getName(){
         return PlayerName;
     }
 
-    public void setPlayerName(String newPlayerName){
+    public void setName(String newPlayerName){
         this.PlayerName = newPlayerName;
     }
 

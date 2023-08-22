@@ -13,10 +13,7 @@ import org.tan.TownsAndNations.utils.DropChances;
 import java.util.Random;
 
 
-public class BreakBlockListener implements Listener {
-
-
-
+public class RareItemDrops implements Listener {
 
     @EventHandler
     public void onBreakBlock(BlockBreakEvent event){

@@ -5,14 +5,14 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.enums.TownRelation;
-import org.tan.TownsAndNations.storage.PlayerStatStorage;
+import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TownDataClass {
+public class TownData {
 
     private String TownId;
     private String TownName;
@@ -27,10 +27,10 @@ public class TownDataClass {
     private TownTreasury townTreasury;
     private TownLevel townLevel;
     private ClaimedChunkSettings chunkSettings;
-    private TownRelationClass relations;
+    private TownRelations relations;
 
 
-    public TownDataClass( String townId, String townName, String uuidLeader){
+    public TownData(String townId, String townName, String uuidLeader){
         this.TownId = townId;
         this.UuidLeader = uuidLeader;
         this.TownName = townName;
@@ -43,59 +43,60 @@ public class TownDataClass {
         this.roles = new HashMap<>();
 
         String townDefaultRankName = "default";
-        addTownRank(townDefaultRankName);
+        addRank(townDefaultRankName);
         setTownDefaultRank(townDefaultRankName);
         getRank(townDefaultRankName).addPlayer(uuidLeader);
 
 
-        PlayerStatStorage.getStat(uuidLeader).setRank(this.townDefaultRank);
+        PlayerDataStorage.getStat(uuidLeader).setRank(this.townDefaultRank);
 
 
-        this.relations = new TownRelationClass();
+        this.relations = new TownRelations();
         this.chunkSettings = new ClaimedChunkSettings();
 
         this.townLevel = new TownLevel();
         this.townTreasury = new TownTreasury();
     }
 
-    public void addTownRank(String rankName){
+    public void addRank(String rankName){
         this.roles.put(rankName,new TownRank(rankName));
     }
-    public void addTownRank(String rankName, TownRank townRank){
+    public void addRank(String rankName, TownRank townRank){
         this.roles.put(rankName,townRank);
     }
-    public void removeTownRank(String key){
+    public void removeRank(String key){
         this.roles.remove(key);
     }
 
 
-    public String getTownId() {
+    public String getID() {
         return this.TownId;
     }
-    public void setTownId(String townId) {
+    public void setID(String townId) {
         this.TownId = townId;
     }
-    public void setTownName(String townName) {
+
+    public String getName(){
+        return this.TownName;
+    }
+    public void setName(String townName) {
         this.TownName = townName;
     }
 
-    public String getTownName(){
-        return this.TownName;
-    }
     public String getUuidLeader() {
         return this.UuidLeader;
     }
-
     public void setUuidLeader(String uuidLeader) {
         this.UuidLeader = uuidLeader;
     }
+
     public String getDescription() {
         return this.Description;
     }
-
     public void setDescription(String description) {
         this.Description = description;
     }
+
     public boolean isOpen() {
         return this.open;
     }
@@ -106,7 +107,6 @@ public class TownDataClass {
     public String getDateCreated() {
         return this.DateCreated;
     }
-
     public void setDateCreated(String dateCreated) {
         this.DateCreated = dateCreated;
     }
@@ -128,6 +128,7 @@ public class TownDataClass {
         }
         return false;
     }
+
     public void setTownIconMaterialCode(Material material) {
         this.townIconMaterialCode = material.name();
     }
@@ -148,13 +149,13 @@ public class TownDataClass {
         return townPlayerListId;
     }
 
-    public TownRelationClass getRelations(){
+    public TownRelations getRelations(){
         return relations;
     }
-    public void addTownRelations(TownRelation relation,String townId){
+    public void addTownRelations(org.tan.TownsAndNations.enums.TownRelation relation, String townId){
         this.relations.addRelation(relation,townId);
     }
-    public void removeTownRelations(TownRelation relation, String townId) {
+    public void removeTownRelations(org.tan.TownsAndNations.enums.TownRelation relation, String townId) {
         this.relations.removeRelation(relation,townId);
     }
     public ClaimedChunkSettings getChunkSettings() {
@@ -163,10 +164,7 @@ public class TownDataClass {
     public void setChunkSettings(ClaimedChunkSettings claimedChunkSettings) {
         this.chunkSettings = claimedChunkSettings;
     }
-    public void setTreasury(TownTreasury townTreasury) {
-        this.townTreasury = townTreasury;
-    }
-    public boolean getTownRelation(TownRelation relation, String checkTownId){
+    public boolean getTownRelation(org.tan.TownsAndNations.enums.TownRelation relation, String checkTownId){
         for (String townId : getRelations().getOne(relation)){
             if(townId.equals(checkTownId)){
                 return true;
@@ -217,15 +215,15 @@ public class TownDataClass {
     }
 
 
-    public TownRelation getRelationWith(TownDataClass otherPlayerTown) {
+    public TownRelation getRelationWith(TownData otherPlayerTown) {
 
-        if(otherPlayerTown.getTownId().equals(this.getTownId()))
+        if(otherPlayerTown.getID().equals(this.getID()))
             return TownRelation.CITY;
         return this.relations.getRelationWith(otherPlayerTown);
     }
     public TownRelation getRelationWith(String otherPlayerTownID) {
 
-        if(otherPlayerTownID.equals(this.getTownId()))
+        if(otherPlayerTownID.equals(this.getID()))
             return TownRelation.CITY;
         return this.relations.getRelationWith(otherPlayerTownID);
     }

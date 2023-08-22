@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.tan.TownsAndNations.DataClass.TownDataClass;
+import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.TownRelation;
@@ -62,14 +62,14 @@ public class HeadUtils {
 
     public static ItemStack getTownIcon(String TownId){
 
-        TownDataClass town = TownDataStorage.getTown(TownId);
+        TownData town = TownDataStorage.getTown(TownId);
         ItemStack itemStack = town.getTownIconItemStack();
         if(itemStack == null){
-            return HeadUtils.getPlayerHead(town.getTownName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
+            return HeadUtils.getPlayerHead(town.getName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
         }
         else {
             ItemMeta meta = itemStack.getItemMeta();
-            meta.setDisplayName(ChatColor.GREEN + town.getTownName());
+            meta.setDisplayName(ChatColor.GREEN + town.getName());
             itemStack.setItemMeta(meta);
             return itemStack;
         }
@@ -77,10 +77,10 @@ public class HeadUtils {
 
     public static ItemStack getTownIconWithInformations(String TownId){
 
-        TownDataClass town = TownDataStorage.getTown(TownId);
-        ItemStack icon = HeadUtils.getTownIcon(town.getTownId());
+        TownData town = TownDataStorage.getTown(TownId);
+        ItemStack icon = HeadUtils.getTownIcon(town.getID());
         if (icon == null){
-            icon =  HeadUtils.getPlayerHead(town.getTownName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
+            icon =  HeadUtils.getPlayerHead(town.getName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
         }
         ItemMeta meta = icon.getItemMeta();
         List<String> lore = new ArrayList<>();
@@ -96,11 +96,11 @@ public class HeadUtils {
 
     public static ItemStack getTownIconWithInformations(String TownId,String ownTownID){
 
-        TownDataClass town = TownDataStorage.getTown(TownId);
+        TownData town = TownDataStorage.getTown(TownId);
         ItemStack icon = town.getTownIconItemStack();
 
         if (icon == null){
-            icon =  HeadUtils.getPlayerHead(town.getTownName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
+            icon =  HeadUtils.getPlayerHead(town.getName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
         }
         ItemMeta meta = icon.getItemMeta();
         List<String> lore = new ArrayList<>();

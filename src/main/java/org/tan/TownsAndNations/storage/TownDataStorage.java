@@ -5,8 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.PlayerDataClass;
-import org.tan.TownsAndNations.DataClass.TownDataClass;
+import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.TownsAndNations;
 
 import java.io.*;
@@ -15,13 +15,13 @@ import java.util.*;
 
 public class TownDataStorage {
 
-    private static LinkedHashMap<String, TownDataClass> townDataMap = new LinkedHashMap<>();
+    private static LinkedHashMap<String, TownData> townDataMap = new LinkedHashMap<>();
     private static int newTownId = 1;
 
     public static void newTown(String townName, Player leader){
         String townId = "T"+newTownId;
-        TownDataClass newTown = new TownDataClass( townId, townName, leader.getUniqueId().toString());
-        PlayerStatStorage.getStat(leader.getUniqueId().toString()).setTownId(townId);
+        TownData newTown = new TownData( townId, townName, leader.getUniqueId().toString());
+        PlayerDataStorage.getStat(leader.getUniqueId().toString()).setTownId(townId);
         townDataMap.put(townId,newTown);
 
         saveStats();
@@ -30,30 +30,30 @@ public class TownDataStorage {
     }
     public static void removeTown(String TownId){
 
-        TownDataClass townDataClass = townDataMap.get(TownId);
+        TownData townData = townDataMap.get(TownId);
 
-        List<String> array = townDataClass.getPlayerList();
+        List<String> array = townData.getPlayerList();
         for(String playerUUID : array) {
-            PlayerStatStorage.getStat(playerUUID).setTownId(null);
+            PlayerDataStorage.getStat(playerUUID).setTownId(null);
         }
 
         townDataMap.remove(TownId);
         saveStats();
     }
-    public static void removeTown(TownDataClass townData){
-        removeTown(townData.getTownId());
+    public static void removeTown(TownData townData){
+        removeTown(townData.getID());
     }
-    public static LinkedHashMap<String, TownDataClass> getTownList(){
+    public static LinkedHashMap<String, TownData> getTownList(){
         return townDataMap;
     }
-    public static TownDataClass getTown(String townId){
+    public static TownData getTown(String townId){
         return townDataMap.get(townId);
     }
-    public static TownDataClass getTown(PlayerDataClass playerDataClass){
-        return townDataMap.get(playerDataClass.getTownId());
+    public static TownData getTown(PlayerData playerData){
+        return townDataMap.get(playerData.getTownId());
     }
-    public static TownDataClass getTown(Player player){
-        return townDataMap.get(PlayerStatStorage.getStat(player.getUniqueId().toString()).getTownId());
+    public static TownData getTown(Player player){
+        return townDataMap.get(PlayerDataStorage.getStat(player.getUniqueId().toString()).getTownId());
     }
     public static int getNumberOfTown(){
         return townDataMap.size();
@@ -72,11 +72,11 @@ public class TownDataStorage {
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            Type type = new TypeToken<LinkedHashMap<String, TownDataClass>>() {}.getType();
+            Type type = new TypeToken<LinkedHashMap<String, TownData>>() {}.getType();
             townDataMap = gson.fromJson(reader, type);
 
             int ID = 0;
-            for (Map.Entry<String, TownDataClass> entry : townDataMap.entrySet()) {
+            for (Map.Entry<String, TownData> entry : townDataMap.entrySet()) {
                 String cle = entry.getKey();
                 int newID =  Integer.parseInt(cle.substring(1));
                 if(newID > ID)

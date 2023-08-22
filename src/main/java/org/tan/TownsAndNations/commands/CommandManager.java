@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.commands.subcommands.*;
-import org.tan.TownsAndNations.storage.PlayerStatStorage;
+import org.tan.TownsAndNations.storage.PlayerDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class CommandManager implements CommandExecutor, TabExecutor {
                     if (args[0].equalsIgnoreCase(getSubCommands().get(i).getName())){
                         getSubCommands().get(i).perform(p, args);
 
-                        PlayerStatStorage.saveStats();
+                        PlayerDataStorage.saveStats();
                         return true;
                     }
                 }

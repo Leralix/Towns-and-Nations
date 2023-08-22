@@ -2,7 +2,7 @@ package org.tan.TownsAndNations.commands.debugsubcommands;
 
 
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.TownDataClass;
+import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
@@ -37,11 +37,11 @@ public class TownStat extends SubCommand {
     @Override
     public void perform(Player player, String[] args) {
         player.sendMessage("Liste des villes:");
-        HashMap<String, TownDataClass> towns = TownDataStorage.getTownList();
-        for (Map.Entry<String, TownDataClass> e : towns.entrySet()) {
+        HashMap<String, TownData> towns = TownDataStorage.getTownList();
+        for (Map.Entry<String, TownData> e : towns.entrySet()) {
             String key = e.getKey();
-            TownDataClass value = e.getValue();
-            player.sendMessage(key + ": " + value.getTownName());
+            TownData value = e.getValue();
+            player.sendMessage(key + ": " + value.getName());
         }
         player.sendMessage("Prochaine clef: " + TownDataStorage.getNewTownId());
     }

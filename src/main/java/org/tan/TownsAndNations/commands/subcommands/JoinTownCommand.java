@@ -1,11 +1,11 @@
 package org.tan.TownsAndNations.commands.subcommands;
 
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.PlayerDataClass;
-import org.tan.TownsAndNations.DataClass.TownDataClass;
+import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.storage.PlayerStatStorage;
+import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.storage.TownInviteDataStorage;
 
@@ -66,8 +66,8 @@ public class JoinTownCommand extends SubCommand {
 
                 if(town.equals(townID)){
 
-                    TownDataClass townClass = TownDataStorage.getTown(townID);
-                    PlayerDataClass playerStat = PlayerStatStorage.getStat(player);
+                    TownData townClass = TownDataStorage.getTown(townID);
+                    PlayerData playerStat = PlayerDataStorage.getStat(player);
 
                     townClass.addPlayer(player.getUniqueId().toString());
                     townClass.getRank(townClass.getTownDefaultRank()).addPlayer(player);
@@ -75,10 +75,10 @@ public class JoinTownCommand extends SubCommand {
                     playerStat.setTownId(townID);
                     playerStat.setRank(townClass.getTownDefaultRank());
 
-                    player.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.getTranslation(townClass.getTownName()));
+                    player.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.getTranslation(townClass.getName()));
                     townClass.broadCastMessage(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.getTranslation(player.getName()));
 
-                    TownInviteDataStorage.removeInvitation(player.getUniqueId().toString(),townClass.getTownId());
+                    TownInviteDataStorage.removeInvitation(player.getUniqueId().toString(),townClass.getID());
 
                     return;
                 }

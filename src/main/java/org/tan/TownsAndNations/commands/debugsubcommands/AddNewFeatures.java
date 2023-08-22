@@ -1,7 +1,7 @@
 package org.tan.TownsAndNations.commands.debugsubcommands;
 
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.TownDataClass;
+import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.TownTreasury;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.TownDataStorage;
@@ -36,11 +36,7 @@ public class AddNewFeatures extends SubCommand {
     }
     @Override
     public void perform(Player player, String[] args) {
-        LinkedHashMap<String, TownDataClass> towns = TownDataStorage.getTownList();
-        for (Map.Entry<String, TownDataClass> e : towns.entrySet()) {
-            TownDataClass townDataClass = e.getValue();
-            townDataClass.setTreasury(new TownTreasury());
-        }
+
         player.sendMessage("Commande executée");
     }
 }

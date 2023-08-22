@@ -10,7 +10,7 @@ import org.tan.TownsAndNations.commands.CommandManager;
 import org.tan.TownsAndNations.commands.DebugCommandManager;
 import org.tan.TownsAndNations.listeners.*;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.PlayerStatStorage;
+import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 
@@ -43,7 +43,7 @@ public final class TownsAndNations extends JavaPlugin {
         logger.info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.getTranslation());
 
         logger.info("[TaN] -Loading Stats");
-        PlayerStatStorage.loadStats();
+        PlayerDataStorage.loadStats();
         TownDataStorage.loadStats();
         ClaimedChunkStorage.loadStats();
 
@@ -71,7 +71,7 @@ public final class TownsAndNations extends JavaPlugin {
 
         TownDataStorage.saveStats();
         ClaimedChunkStorage.saveStats();
-        PlayerStatStorage.saveStats();
+        PlayerDataStorage.saveStats();
         try {
             Thread.sleep(50);
         } catch (InterruptedException e) {
@@ -86,7 +86,7 @@ public final class TownsAndNations extends JavaPlugin {
 
     private void EnableEventList() {
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
-        getServer().getPluginManager().registerEvents(new BreakBlockListener(), this);
+        getServer().getPluginManager().registerEvents(new RareItemDrops(), this);
         getServer().getPluginManager().registerEvents(new RareItemVillagerInteraction(), this);
         getServer().getPluginManager().registerEvents(new ChunkListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);

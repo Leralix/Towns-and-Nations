@@ -2,10 +2,10 @@ package org.tan.TownsAndNations.commands.subcommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.PlayerDataClass;
+import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.storage.PlayerStatStorage;
+import org.tan.TownsAndNations.storage.PlayerDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,8 +61,8 @@ public class PayCommand extends SubCommand  {
                 return;
             }
 
-            PlayerDataClass receiverDataClass = PlayerStatStorage.getStat(receiver);
-            PlayerDataClass senderDataClass = PlayerStatStorage.getStat(player);
+            PlayerData receiverDataClass = PlayerDataStorage.getStat(receiver);
+            PlayerData senderDataClass = PlayerDataStorage.getStat(player);
             int amount;
 
             try{

@@ -5,14 +5,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.tan.TownsAndNations.DataClass.PlayerDataClass;
-import org.tan.TownsAndNations.DataClass.TownDataClass;
+import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.TownRank;
 import org.tan.TownsAndNations.GUI.GuiManager2;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
-import org.tan.TownsAndNations.storage.PlayerStatStorage;
+import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
 
@@ -39,7 +39,7 @@ public class ChatListener implements Listener {
             Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.getTranslation(player.getName(),townName));
 
             PlayerChatListenerStorage.removePlayer(player);
-            PlayerDataClass sender = PlayerStatStorage.getStat(player.getUniqueId().toString());
+            PlayerData sender = PlayerDataStorage.getStat(player.getUniqueId().toString());
             sender.removeFromBalance(100);
             TownDataStorage.newTown(townName,player);
             sender.setRank(TownDataStorage.getTown(sender).getTownDefaultRank());
@@ -49,7 +49,7 @@ public class ChatListener implements Listener {
         if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.DONATION){
 
             String stringAmount = event.getMessage();
-            PlayerDataClass sender = PlayerStatStorage.getStat(player.getUniqueId().toString());
+            PlayerData sender = PlayerDataStorage.getStat(player.getUniqueId().toString());
             int amount = 0;
             try {
                 amount = Integer.parseInt(stringAmount);
@@ -67,7 +67,7 @@ public class ChatListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
-            TownDataClass playerTown = TownDataStorage.getTown(player);
+            TownData playerTown = TownDataStorage.getTown(player);
 
             sender.removeFromBalance(amount);
             playerTown.getTreasury().addToBalance(amount);
@@ -82,7 +82,7 @@ public class ChatListener implements Listener {
         if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.RANK_CREATION){
             PlayerChatListenerStorage.removePlayer(player);
             String rankName = event.getMessage();
-            TownDataClass playerTown = TownDataStorage.getTown(player);
+            TownData playerTown = TownDataStorage.getTown(player);
             playerTown.createTownRank(rankName);
             Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, rankName));
             event.setCancelled(true);
@@ -93,13 +93,13 @@ public class ChatListener implements Listener {
             PlayerChatListenerStorage.PlayerChatData ChatData = PlayerChatListenerStorage.getPlayerData(playerUUID);
 
             String newRankName = event.getMessage();
-            TownDataClass playerTown = TownDataStorage.getTown(player);
+            TownData playerTown = TownDataStorage.getTown(player);
             String rankName = ChatData.getData().get("rankName");
             TownRank playerTownRank = playerTown.getRank(rankName);
 
             List<String> playerList = playerTownRank.getPlayers();
             for(String playerWithRoleUUID : playerList){
-                PlayerStatStorage.getStat(playerWithRoleUUID).setRank(newRankName);
+                PlayerDataStorage.getStat(playerWithRoleUUID).setRank(newRankName);
             }
 
 
@@ -109,8 +109,8 @@ public class ChatListener implements Listener {
 
             playerTownRank.setName(newRankName);
 
-            playerTown.addTownRank(newRankName,playerTownRank);
-            playerTown.removeTownRank(rankName);
+            playerTown.addRank(newRankName,playerTownRank);
+            playerTown.removeRank(rankName);
 
             Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, newRankName));
 

@@ -2,9 +2,9 @@ package org.tan.TownsAndNations.commands.debugsubcommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.PlayerDataClass;
+import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.storage.PlayerStatStorage;
+import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import java.util.ArrayList;
@@ -42,13 +42,13 @@ public class PlayerStat extends SubCommand {
     }
     @Override
     public void perform(Player player, String[] args) {
-        List<PlayerDataClass> stats = PlayerStatStorage.getStats();
-        for (PlayerDataClass stat : stats) {
-            String name = stat.getPlayerName();
+        List<PlayerData> stats = PlayerDataStorage.getStats();
+        for (PlayerData stat : stats) {
+            String name = stat.getName();
             int balance = stat.getBalance();
             String townName;
             if (TownDataStorage.getTown(stat.getTownId()) != null) {
-                townName = TownDataStorage.getTown(stat.getTownId()).getTownName();
+                townName = TownDataStorage.getTown(stat.getTownId()).getName();
             } else {
                 townName = null;
             }

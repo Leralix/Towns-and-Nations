@@ -3,26 +3,26 @@ package org.tan.TownsAndNations.storage;
 import com.google.gson.Gson;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.DataClass.PlayerDataClass;
+import org.tan.TownsAndNations.DataClass.PlayerData;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class PlayerStatStorage {
+public class PlayerDataStorage {
 
-    private static ArrayList<PlayerDataClass> stats = new ArrayList<PlayerDataClass>();
+    private static ArrayList<PlayerData> stats = new ArrayList<PlayerData>();
 
     public static void createPlayerDataClass(Player p) {
 
-        PlayerDataClass stat = new PlayerDataClass(p);
+        PlayerData stat = new PlayerData(p);
         stats.add(stat);
         saveStats();
     }
 
     public static void deleteStat(String uuid) {
-        for (PlayerDataClass stat : stats) {
+        for (PlayerData stat : stats) {
             if (stat.getUuid().equalsIgnoreCase(uuid)) {
                 stats.remove(stat);
                 break;
@@ -31,8 +31,8 @@ public class PlayerStatStorage {
         saveStats();
     }
 
-    public static PlayerDataClass getStat(String id){
-        for (PlayerDataClass stat : stats) {
+    public static PlayerData getStat(String id){
+        for (PlayerData stat : stats) {
             if (stat.getUuid().equalsIgnoreCase(id)) {
                 return stat;
             }
@@ -40,9 +40,9 @@ public class PlayerStatStorage {
         return null;
     }
 
-    public static PlayerDataClass getStat(Player player){
+    public static PlayerData getStat(Player player){
         String id = player.getUniqueId().toString();
-        for (PlayerDataClass stat : stats) {
+        for (PlayerData stat : stats) {
             if (stat.getUuid().equalsIgnoreCase(id)) {
                 return stat;
             }
@@ -50,19 +50,19 @@ public class PlayerStatStorage {
         return null;
     }
 
-    public static PlayerDataClass getStatUsername(String username){
-        for (PlayerDataClass stat : stats) {
-            if (stat.getPlayerName().equalsIgnoreCase(username)) {
+    public static PlayerData getStatUsername(String username){
+        for (PlayerData stat : stats) {
+            if (stat.getName().equalsIgnoreCase(username)) {
                 return stat;
             }
         }
         return null;
     }
 
-    public static PlayerDataClass updateStat(String uuid, PlayerDataClass newStat) throws IOException {
-        for (PlayerDataClass stat : stats) {
+    public static PlayerData updateStat(String uuid, PlayerData newStat) throws IOException {
+        for (PlayerData stat : stats) {
             if (stat.getUuid().equalsIgnoreCase(uuid)) {
-                stat.setPlayerName(newStat.getPlayerName());
+                stat.setName(newStat.getName());
                 stat.setBalance(newStat.getBalance());
             }
         }
@@ -70,7 +70,7 @@ public class PlayerStatStorage {
         return null;
     }
 
-    public static List<PlayerDataClass> getStats(){
+    public static List<PlayerData> getStats(){
         return stats;
     }
 
@@ -85,7 +85,7 @@ public class PlayerStatStorage {
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            PlayerDataClass[] n = gson.fromJson(reader, PlayerDataClass[].class);
+            PlayerData[] n = gson.fromJson(reader, PlayerData[].class);
             stats = new ArrayList<>(Arrays.asList(n));
 
         }

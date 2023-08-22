@@ -1,7 +1,7 @@
 package org.tan.TownsAndNations.commands.subcommands;
 
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.TownDataClass;
+import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.TownRelation;
@@ -49,8 +49,8 @@ public class AcceptRelationCommand extends SubCommand {
         } else if (args.length == 2){
 
             String OtherTownID = args[1];
-            TownDataClass otherTown = TownDataStorage.getTown(OtherTownID);
-            TownDataClass town = TownDataStorage.getTown(player);
+            TownData otherTown = TownDataStorage.getTown(OtherTownID);
+            TownData town = TownDataStorage.getTown(player);
             System.out.println("1");
             if(otherTown == null){
                 return;
@@ -59,18 +59,18 @@ public class AcceptRelationCommand extends SubCommand {
             if(TownRelationConfirmStorage.checkInvitation(player.getUniqueId().toString(),OtherTownID)){
                 System.out.println("3");
 
-                TownRelation newRelation = TownRelationConfirmStorage.getRelation(player.getUniqueId().toString(),otherTown.getTownId());
-                TownRelationConfirmStorage.removeInvitation(player.getUniqueId().toString(), otherTown.getTownId());
+                TownRelation newRelation = TownRelationConfirmStorage.getRelation(player.getUniqueId().toString(),otherTown.getID());
+                TownRelationConfirmStorage.removeInvitation(player.getUniqueId().toString(), otherTown.getID());
 
                 if(newRelation == null){
                     System.out.println("4");
-                    town.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getTownName(),"neutral"));
-                    otherTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(town.getTownName(),"neutral"));
+                    town.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),"neutral"));
+                    otherTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(town.getName(),"neutral"));
                     removeRelation(town,otherTown);
                 }
                 else {
-                    town.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getTownName(),newRelation.getColor() + newRelation.getName()));
-                    otherTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(town.getTownName(),newRelation.getColor() + newRelation.getName()));
+                    town.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),newRelation.getColor() + newRelation.getName()));
+                    otherTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(town.getName(),newRelation.getColor() + newRelation.getName()));
 
                     addTownRelation(town,otherTown,newRelation);
                 }

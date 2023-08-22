@@ -6,17 +6,17 @@ import org.tan.TownsAndNations.Lang.Lang;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class TransactionHistoryClass {
+public class TransactionHistory {
 
     private final String date;
     private final String transactionParty;
     private final int amount;
 
-    public TransactionHistoryClass(int amount) {
+    public TransactionHistory(int amount) {
         this(null, amount);
     }
 
-    public TransactionHistoryClass(String transactionParty, int amount) {
+    public TransactionHistory(String transactionParty, int amount) {
 
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");

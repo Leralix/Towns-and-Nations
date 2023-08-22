@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.tan.TownsAndNations.DataClass.TownDataClass;
+import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.TownRelation;
@@ -28,14 +28,14 @@ public class ChunkListener implements Listener {
             return;
         Player player = event.getPlayer();
 
-        TownDataClass chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
-        TownDataClass playerTown = TownDataStorage.getTown(player);
+        TownData chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
+        TownData playerTown = TownDataStorage.getTown(player);
 
         //Same town
-        if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getTownId()))
+        if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getID()))
             return;
         //Same alliance
-        if(chunkTown.getChunkSettings().getBreakAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getTownId()))
+        if(chunkTown.getChunkSettings().getBreakAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
             return;
         //permission is on foreign
         if(chunkTown.getChunkSettings().getBreakAuth() == TownChunkPermission.FOREIGN)
@@ -61,14 +61,14 @@ public class ChunkListener implements Listener {
             if(blockName.equals("CHEST")){
 
 
-                TownDataClass chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
-                TownDataClass playerTown = TownDataStorage.getTown(player);
+                TownData chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
+                TownData playerTown = TownDataStorage.getTown(player);
 
                 //Same town
-                if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getTownId()))
+                if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getID()))
                     return;
                 //Same alliance
-                if(chunkTown.getChunkSettings().getChestAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getTownId()))
+                if(chunkTown.getChunkSettings().getChestAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
                     return;
                 //permission is on foreign
                 if(chunkTown.getChunkSettings().getChestAuth() == TownChunkPermission.FOREIGN)
@@ -80,14 +80,14 @@ public class ChunkListener implements Listener {
             }
             else if(blockName.contains("DOOR")){
 
-                TownDataClass chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
-                TownDataClass playerTown = TownDataStorage.getTown(player);
+                TownData chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
+                TownData playerTown = TownDataStorage.getTown(player);
 
                 //Same town
-                if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getTownId()))
+                if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getID()))
                     return;
                 //Same alliance
-                if(chunkTown.getChunkSettings().getDoorAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getTownId()))
+                if(chunkTown.getChunkSettings().getDoorAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
                     return;
                 //permission is on foreign
                 if(chunkTown.getChunkSettings().getDoorAuth() == TownChunkPermission.FOREIGN)
@@ -110,14 +110,14 @@ public class ChunkListener implements Listener {
 
         Player player = event.getPlayer();
 
-        TownDataClass chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
-        TownDataClass playerTown = TownDataStorage.getTown(player);
+        TownData chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
+        TownData playerTown = TownDataStorage.getTown(player);
 
         //Same town
-        if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getTownId()))
+        if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getID()))
             return;
         //Same alliance
-        if(chunkTown.getChunkSettings().getPlaceAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getTownId()))
+        if(chunkTown.getChunkSettings().getPlaceAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
             return;
         //Permission is on foreign
         if(chunkTown.getChunkSettings().getPlaceAuth() == TownChunkPermission.FOREIGN)

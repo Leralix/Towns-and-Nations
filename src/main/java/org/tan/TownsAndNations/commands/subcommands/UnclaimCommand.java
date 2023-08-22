@@ -2,13 +2,13 @@ package org.tan.TownsAndNations.commands.subcommands;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.PlayerDataClass;
-import org.tan.TownsAndNations.DataClass.TownDataClass;
+import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.PlayerStatStorage;
+import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import java.util.List;
@@ -43,7 +43,7 @@ public class UnclaimCommand extends SubCommand {
             return;
         }
 
-        PlayerDataClass playerStat = PlayerStatStorage.getStat(player.getUniqueId().toString());
+        PlayerData playerStat = PlayerDataStorage.getStat(player.getUniqueId().toString());
         if(!playerStat.haveTown()){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.getTranslation());
         }
@@ -53,7 +53,7 @@ public class UnclaimCommand extends SubCommand {
             return;
         }
 
-        TownDataClass townStat = TownDataStorage.getTown(playerStat.getTownId());
+        TownData townStat = TownDataStorage.getTown(playerStat.getTownId());
         if(!townStat.getUuidLeader().equals(playerStat.getUuid())){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
         }
@@ -63,7 +63,7 @@ public class UnclaimCommand extends SubCommand {
         Chunk chunk = player.getLocation().getChunk();
         if(ClaimedChunkStorage.isChunkClaimed(chunk)){
 
-            if(ClaimedChunkStorage.isOwner(chunk, townStat.getTownId())) {
+            if(ClaimedChunkStorage.isOwner(chunk, townStat.getID())) {
                 ClaimedChunkStorage.unclaimChunk(player.getLocation().getChunk());
                 TownDataStorage.getTown(player).getChunkSettings().decreaseNumberOfClaimedChunk();
 
@@ -71,8 +71,8 @@ public class UnclaimCommand extends SubCommand {
 
                 return;
             }
-            TownDataClass otherTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
-            player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_TOWN.getTranslation(otherTown.getTownName()));
+            TownData otherTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
+            player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_TOWN.getTranslation(otherTown.getName()));
 
         }
 

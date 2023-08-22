@@ -34,7 +34,7 @@ public class SaveAll extends SubCommand {
     public void perform(Player player, String[] args) {
         TownDataStorage.saveStats();
         ClaimedChunkStorage.saveStats();
-        PlayerStatStorage.saveStats();
+        PlayerDataStorage.saveStats();
         player.sendMessage("All stats saved successfully!");
     }
 }
