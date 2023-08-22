@@ -47,7 +47,7 @@ public class SetMoney extends SubCommand {
         if (args.length < 3) {
             player.sendMessage("Not enough arguments");
         } else if (args.length == 3) {
-            PlayerData target = PlayerDataStorage.getStat(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
+            PlayerData target = PlayerDataStorage.get(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
             int amount;
             try {
                 amount = Integer.parseInt(args[2]);

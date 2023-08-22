@@ -45,17 +45,18 @@ public class getRareItem extends SubCommand {
         switch (args[1]) {
             case "rarestone" -> {
                 player.getLocation().getWorld().dropItemNaturally(player.getLocation(), DropChances.getRareStone());
-                return;
             }
             case "rarewood" -> {
                 player.getLocation().getWorld().dropItemNaturally(player.getLocation(), DropChances.getRareWood());
-                return;
             }
             case "rarecrops" -> {
                 player.getLocation().getWorld().dropItemNaturally(player.getLocation(), DropChances.getRareCrops());
+            }
+            default -> {
+                player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR.getTranslation());
                 return;
             }
         }
-        player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR.getTranslation());
+        player.sendMessage(ChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.getTranslation());
     }
 }

@@ -66,8 +66,8 @@ public class JoinTownCommand extends SubCommand {
 
                 if(town.equals(townID)){
 
-                    TownData townClass = TownDataStorage.getTown(townID);
-                    PlayerData playerStat = PlayerDataStorage.getStat(player);
+                    TownData townClass = TownDataStorage.get(townID);
+                    PlayerData playerStat = PlayerDataStorage.get(player);
 
                     townClass.addPlayer(player.getUniqueId().toString());
                     townClass.getRank(townClass.getTownDefaultRank()).addPlayer(player);

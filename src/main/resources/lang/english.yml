@@ -19,6 +19,7 @@ language:
   NOT_ENOUGH_ARGS_ERROR: "§cNot enough arguments"
   TOO_MANY_ARGS_ERROR: "§cToo many arguments"
   SYNTAX_ERROR: "§cIncorrect syntax"
+  SYNTAX_ERROR_AMOUNT: "§cIncorrect syntax for the amount"
   CORRECT_SYNTAX_INFO: "§cCorrect syntax: {0}"
 
   #Create town
@@ -60,6 +61,8 @@ language:
   TOWN_RELATION_ACCEPTED_MEMBER_SIDE: "§fYour town now have the relation {0} with §3{1}"
   TOWN_RELATION_ACCEPTED_TOWN_SIDE: "§e{0}§f has accepted the relation {1} with your town"
 
+  ###Admins commands
+  ADD_MONEY_COMMAND_SUCCESS: "Added §e{0}✦§f to + §e{1}"
 
 
   #Leave a town
@@ -340,23 +343,5 @@ language:
   RARE_ITEM_WRONG_ITEM: "This villager is only buying §e{0}"
   RARE_ITEM_SELLING_SUCCESS: "Successfully sold §e{0}x {1}§f for §a+{2}✦"
 
-  #Transaction
-  TRANSACTION_BASE_STRING: "§fTransaction [date= {0} , transaction party= {1} , amount= {2} "
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  #Taxes
+  DAILY_TAXES_SUCCESS_LOG: "Town taxes has been collected"

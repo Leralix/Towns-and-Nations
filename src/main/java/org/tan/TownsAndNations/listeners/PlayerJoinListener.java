@@ -20,13 +20,13 @@ public class PlayerJoinListener implements Listener {
         Player player = event.getPlayer();
 
 
-        if (PlayerDataStorage.getStat(player) == null) {
+        if (PlayerDataStorage.get(player) == null) {
             PlayerDataStorage.createPlayerDataClass(player);
             //PluginInstance = TownsAndNations.getPlugin();
             //PluginInstance.getServer().broadcastMessage(player.getName() + "à rejoint le serveur pour la premiere fois");
         }
 
-        PlayerData playerStat = PlayerDataStorage.getStat(player);
+        PlayerData playerStat = PlayerDataStorage.get(player);
         if(playerStat.getTownId() != null)
             TeamUtils.setScoreBoard(player);
 

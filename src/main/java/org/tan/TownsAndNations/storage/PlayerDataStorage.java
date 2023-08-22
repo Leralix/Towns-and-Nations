@@ -31,7 +31,7 @@ public class PlayerDataStorage {
         saveStats();
     }
 
-    public static PlayerData getStat(String id){
+    public static PlayerData get(String id){
         for (PlayerData stat : stats) {
             if (stat.getUuid().equalsIgnoreCase(id)) {
                 return stat;
@@ -40,7 +40,7 @@ public class PlayerDataStorage {
         return null;
     }
 
-    public static PlayerData getStat(Player player){
+    public static PlayerData get(Player player){
         String id = player.getUniqueId().toString();
         for (PlayerData stat : stats) {
             if (stat.getUuid().equalsIgnoreCase(id)) {

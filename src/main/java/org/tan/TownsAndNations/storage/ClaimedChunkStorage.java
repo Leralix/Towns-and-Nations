@@ -19,10 +19,10 @@ public class ClaimedChunkStorage {
     }
 
     public static String getChunkOwner(Chunk chunk) {
-        return Objects.requireNonNull(getClaimedChunk(chunk)).getTownID();
+        return Objects.requireNonNull(get(chunk)).getTownID();
     }
     public static String getChunkOwnerName(Chunk chunk) {
-        return TownDataStorage.getTown(getClaimedChunk(chunk).getTownID()).getName();
+        return TownDataStorage.get(get(chunk).getTownID()).getName();
     }
 
     public static boolean isOwner(Chunk chunk, String townID) {
@@ -39,7 +39,7 @@ public class ClaimedChunkStorage {
         saveStats();
     }
 
-    public static ClaimedChunk getClaimedChunk(Chunk chunk){
+    public static ClaimedChunk get(Chunk chunk){
         for (ClaimedChunk claimedChunk : claimedChunks){
             if(claimedChunk.equals(new ClaimedChunk(chunk))){
                 return claimedChunk;

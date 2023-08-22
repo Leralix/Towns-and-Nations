@@ -47,14 +47,14 @@ public class ClaimCommand extends SubCommand {
         }
 
         //No town
-        PlayerData playerStat = PlayerDataStorage.getStat(player.getUniqueId().toString());
+        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
         if(!playerStat.haveTown()){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.getTranslation());
             return;
         }
 
         //No permission
-        TownData townStat = TownDataStorage.getTown(player);
+        TownData townStat = TownDataStorage.get(player);
         ClaimedChunkSettings townChunkInfo = townStat.getChunkSettings();
         if(!playerStat.hasPermission(TownRolePermission.CLAIM_CHUNK)){
             if(!playerStat.isTownLeader()){

@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.commands.debugsubcommands.*;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 
@@ -18,19 +19,20 @@ public class DebugCommandManager implements CommandExecutor, TabExecutor {
     public DebugCommandManager(){
 
         subCommands.add(new AddMoney());
-        subCommands.add(new AddNewFeatures());
-        subCommands.add(new ChatStorage());
-        subCommands.add(new PlayerStat());
-        subCommands.add(new SaveAll());
         subCommands.add(new SetMoney());
         subCommands.add(new SpawnVillager());
-        subCommands.add(new TownStat());
         subCommands.add(new getRareItem());
+
+        subCommands.add(new AddNewFeatures());
+        subCommands.add(new ChatStorage());
+        subCommands.add(new SaveAll());
+
+        subCommands.add(new TownStat());
 
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
         if (sender instanceof Player p){
 
@@ -55,7 +57,7 @@ public class DebugCommandManager implements CommandExecutor, TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label, String[] args) {
         List<String> suggestions = new ArrayList<>();
 
         // If the player is just starting to type the command

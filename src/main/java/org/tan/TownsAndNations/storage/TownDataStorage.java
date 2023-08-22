@@ -21,7 +21,7 @@ public class TownDataStorage {
     public static void newTown(String townName, Player leader){
         String townId = "T"+newTownId;
         TownData newTown = new TownData( townId, townName, leader.getUniqueId().toString());
-        PlayerDataStorage.getStat(leader.getUniqueId().toString()).setTownId(townId);
+        PlayerDataStorage.get(leader.getUniqueId().toString()).setTownId(townId);
         townDataMap.put(townId,newTown);
 
         saveStats();
@@ -34,7 +34,7 @@ public class TownDataStorage {
 
         List<String> array = townData.getPlayerList();
         for(String playerUUID : array) {
-            PlayerDataStorage.getStat(playerUUID).setTownId(null);
+            PlayerDataStorage.get(playerUUID).setTownId(null);
         }
 
         townDataMap.remove(TownId);
@@ -46,14 +46,14 @@ public class TownDataStorage {
     public static LinkedHashMap<String, TownData> getTownList(){
         return townDataMap;
     }
-    public static TownData getTown(String townId){
+    public static TownData get(String townId){
         return townDataMap.get(townId);
     }
-    public static TownData getTown(PlayerData playerData){
+    public static TownData get(PlayerData playerData){
         return townDataMap.get(playerData.getTownId());
     }
-    public static TownData getTown(Player player){
-        return townDataMap.get(PlayerDataStorage.getStat(player.getUniqueId().toString()).getTownId());
+    public static TownData get(Player player){
+        return townDataMap.get(PlayerDataStorage.get(player.getUniqueId().toString()).getTownId());
     }
     public static int getNumberOfTown(){
         return townDataMap.size();

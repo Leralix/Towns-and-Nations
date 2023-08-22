@@ -62,7 +62,7 @@ public class HeadUtils {
 
     public static ItemStack getTownIcon(String TownId){
 
-        TownData town = TownDataStorage.getTown(TownId);
+        TownData town = TownDataStorage.get(TownId);
         ItemStack itemStack = town.getTownIconItemStack();
         if(itemStack == null){
             return HeadUtils.getPlayerHead(town.getName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
@@ -77,7 +77,7 @@ public class HeadUtils {
 
     public static ItemStack getTownIconWithInformations(String TownId){
 
-        TownData town = TownDataStorage.getTown(TownId);
+        TownData town = TownDataStorage.get(TownId);
         ItemStack icon = HeadUtils.getTownIcon(town.getID());
         if (icon == null){
             icon =  HeadUtils.getPlayerHead(town.getName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
@@ -96,7 +96,7 @@ public class HeadUtils {
 
     public static ItemStack getTownIconWithInformations(String TownId,String ownTownID){
 
-        TownData town = TownDataStorage.getTown(TownId);
+        TownData town = TownDataStorage.get(TownId);
         ItemStack icon = town.getTownIconItemStack();
 
         if (icon == null){

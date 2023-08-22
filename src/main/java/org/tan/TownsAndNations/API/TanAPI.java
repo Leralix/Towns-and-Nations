@@ -10,7 +10,7 @@ public class TanAPI {
 
 
     public static String test(){
-        return "test effectué avec succès";
+        return "TAN api is working";
     }
 
     public static String getVersion(){
@@ -18,31 +18,31 @@ public class TanAPI {
     }
 
     public static int getPlayerAmount(String playerUUID){
-        return PlayerDataStorage.getStat(playerUUID).getBalance();
+        return PlayerDataStorage.get(playerUUID).getBalance();
     }
     public static int getPlayerAmount(Player player){
-        return PlayerDataStorage.getStat(player).getBalance();
+        return PlayerDataStorage.get(player).getBalance();
     }
 
     public static void addPlayerAmount(Player player,int amount){
-        PlayerDataStorage.getStat(player).addToBalance(amount);
+        PlayerDataStorage.get(player).addToBalance(amount);
     }
     public static void addPlayerAmount(String playerUUID,int amount){
-        PlayerDataStorage.getStat(playerUUID).addToBalance(amount);
+        PlayerDataStorage.get(playerUUID).addToBalance(amount);
     }
 
     public static void setPlayerAmount(Player player,int amount){
-        PlayerDataStorage.getStat(player).setBalance(amount);
+        PlayerDataStorage.get(player).setBalance(amount);
     }
     public static void setPlayerAmount(String playerUUID,int amount){
-        PlayerDataStorage.getStat(playerUUID).setBalance(amount);
+        PlayerDataStorage.get(playerUUID).setBalance(amount);
     }
 
     public static TownData getPlayerTown(Player player){
-        return TownDataStorage.getTown(player);
+        return TownDataStorage.get(player);
     }
     public static TownData getPlayerTown(String playerUUID){
-        return TownDataStorage.getTown(playerUUID);
+        return TownDataStorage.get(playerUUID);
     }
 
 

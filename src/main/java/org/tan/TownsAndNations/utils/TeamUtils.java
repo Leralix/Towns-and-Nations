@@ -26,7 +26,7 @@ public class TeamUtils {
 
         // Add online players to the new player's scoreboard
         for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
-            if(PlayerDataStorage.getStat(otherPlayer).getTownId() != null){
+            if(PlayerDataStorage.get(otherPlayer).getTownId() != null){
                 addPlayerToCorrectTeam(player.getScoreboard(), player, otherPlayer);
                 addPlayerToCorrectTeam(otherPlayer.getScoreboard(), otherPlayer, player);
             }
@@ -52,8 +52,8 @@ public class TeamUtils {
 
     private static boolean haveRelation(Player player, Player otherPlayer, TownRelation TargetedRelation){
 
-        TownData playerTown = TownDataStorage.getTown(player);
-        TownData otherPlayerTown = TownDataStorage.getTown(otherPlayer);
+        TownData playerTown = TownDataStorage.get(player);
+        TownData otherPlayerTown = TownDataStorage.get(otherPlayer);
 
         if(otherPlayerTown == null){
             return false;

@@ -49,8 +49,8 @@ public class AcceptRelationCommand extends SubCommand {
         } else if (args.length == 2){
 
             String OtherTownID = args[1];
-            TownData otherTown = TownDataStorage.getTown(OtherTownID);
-            TownData town = TownDataStorage.getTown(player);
+            TownData otherTown = TownDataStorage.get(OtherTownID);
+            TownData town = TownDataStorage.get(player);
             System.out.println("1");
             if(otherTown == null){
                 return;

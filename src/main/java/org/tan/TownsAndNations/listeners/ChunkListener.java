@@ -28,8 +28,8 @@ public class ChunkListener implements Listener {
             return;
         Player player = event.getPlayer();
 
-        TownData chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
-        TownData playerTown = TownDataStorage.getTown(player);
+        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwner(chunk));
+        TownData playerTown = TownDataStorage.get(player);
 
         //Same town
         if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getID()))
@@ -61,8 +61,8 @@ public class ChunkListener implements Listener {
             if(blockName.equals("CHEST")){
 
 
-                TownData chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
-                TownData playerTown = TownDataStorage.getTown(player);
+                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwner(chunk));
+                TownData playerTown = TownDataStorage.get(player);
 
                 //Same town
                 if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getID()))
@@ -80,8 +80,8 @@ public class ChunkListener implements Listener {
             }
             else if(blockName.contains("DOOR")){
 
-                TownData chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
-                TownData playerTown = TownDataStorage.getTown(player);
+                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwner(chunk));
+                TownData playerTown = TownDataStorage.get(player);
 
                 //Same town
                 if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getID()))
@@ -110,8 +110,8 @@ public class ChunkListener implements Listener {
 
         Player player = event.getPlayer();
 
-        TownData chunkTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
-        TownData playerTown = TownDataStorage.getTown(player);
+        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwner(chunk));
+        TownData playerTown = TownDataStorage.get(player);
 
         //Same town
         if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getID()))

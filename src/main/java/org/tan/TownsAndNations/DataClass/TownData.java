@@ -48,7 +48,7 @@ public class TownData {
         getRank(townDefaultRankName).addPlayer(uuidLeader);
 
 
-        PlayerDataStorage.getStat(uuidLeader).setRank(this.townDefaultRank);
+        PlayerDataStorage.get(uuidLeader).setRank(this.townDefaultRank);
 
 
         this.relations = new TownRelations();

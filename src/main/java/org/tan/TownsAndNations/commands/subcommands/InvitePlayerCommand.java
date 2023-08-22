@@ -52,7 +52,7 @@ public class InvitePlayerCommand extends SubCommand {
 
         }else if(args.length == 2){
 
-            PlayerData playerData = PlayerDataStorage.getStat(player);
+            PlayerData playerData = PlayerDataStorage.get(player);
 
             if(playerData.getTownId() == null){
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.getTranslation());
@@ -70,19 +70,19 @@ public class InvitePlayerCommand extends SubCommand {
             }
 
 
-            TownData town = TownDataStorage.getTown(player);
+            TownData town = TownDataStorage.get(player);
             if(!town.canAddMorePlayer()){
                 player.sendMessage(getTANString() + Lang.PLAYER_NOT_FOUND.getTranslation());
                 return;
             }
-            PlayerData inviteStat = PlayerDataStorage.getStat(invite);
+            PlayerData inviteStat = PlayerDataStorage.get(invite);
 
             if(inviteStat.getTownId() != null){
                 if(inviteStat.getTownId().equals(town.getID())){
                     player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN.getTranslation());
                     return;
                 }
-                player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN.getTranslation(invite.getName(),TownDataStorage.getTown(inviteStat.getTownId())));
+                player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN.getTranslation(invite.getName(),TownDataStorage.get(inviteStat.getTownId())));
                 return;
             }
 

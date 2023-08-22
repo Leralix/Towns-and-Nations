@@ -63,7 +63,7 @@ public class RareItemVillagerInteraction implements Listener {
                 String itemName = item.getItemMeta().getDisplayName();
 
                 player.getInventory().setItemInMainHand(new ItemStack(Material.AIR, 1));
-                PlayerDataStorage.getStat(player).addToBalance(quantity * price);
+                PlayerDataStorage.get(player).addToBalance(quantity * price);
 
 
                 player.sendMessage(

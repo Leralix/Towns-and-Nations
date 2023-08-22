@@ -61,8 +61,8 @@ public class PayCommand extends SubCommand  {
                 return;
             }
 
-            PlayerData receiverDataClass = PlayerDataStorage.getStat(receiver);
-            PlayerData senderDataClass = PlayerDataStorage.getStat(player);
+            PlayerData receiverDataClass = PlayerDataStorage.get(receiver);
+            PlayerData senderDataClass = PlayerDataStorage.get(player);
             int amount;
 
             try{

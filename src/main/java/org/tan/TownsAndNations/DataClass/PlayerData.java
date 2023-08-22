@@ -65,12 +65,12 @@ public class PlayerData {
         this.Balance = this.Balance - money;
     }
     public boolean isTownLeader(){
-        return TownDataStorage.getTown(this).getUuidLeader().equals(this.UUID);
+        return TownDataStorage.get(this).getUuidLeader().equals(this.UUID);
     }
     public boolean hasPermission(TownRolePermission rolePermission){
         if(isTownLeader())
             return true;
-        return TownDataStorage.getTown(this).getRank(this.TownRank).hasPermission(rolePermission) ;
+        return TownDataStorage.get(this).getRank(this.TownRank).hasPermission(rolePermission) ;
     }
     public void leaveTown(){
         this.TownId = null;

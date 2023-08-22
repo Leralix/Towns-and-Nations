@@ -1,8 +1,10 @@
 package org.tan.TownsAndNations.commands.debugsubcommands;
 
 import org.bukkit.entity.Player;
+import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.*;
+import org.tan.TownsAndNations.utils.ChatUtils;
 
 import java.util.List;
 
@@ -35,6 +37,6 @@ public class SaveAll extends SubCommand {
         TownDataStorage.saveStats();
         ClaimedChunkStorage.saveStats();
         PlayerDataStorage.saveStats();
-        player.sendMessage("All stats saved successfully!");
+        player.sendMessage(ChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.getTranslation());
     }
 }

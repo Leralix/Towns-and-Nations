@@ -1,14 +1,9 @@
 package org.tan.TownsAndNations.commands.debugsubcommands;
 
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.TownData;
-import org.tan.TownsAndNations.DataClass.TownTreasury;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.storage.TownDataStorage;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AddNewFeatures extends SubCommand {
 

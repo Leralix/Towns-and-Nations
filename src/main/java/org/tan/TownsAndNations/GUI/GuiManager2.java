@@ -36,11 +36,11 @@ public class GuiManager2 {
     //done
     public static void OpenMainMenu(Player player){
 
-        if(PlayerDataStorage.getStat(player) == null){
+        if(PlayerDataStorage.get(player) == null){
             PlayerDataStorage.createPlayerDataClass(player);
         }
 
-        PlayerData playerStat = PlayerDataStorage.getStat(player);
+        PlayerData playerStat = PlayerDataStorage.get(player);
         boolean playerHaveTown = playerStat.getTownId() != null;
         String name = "Main menu";
         int nRow = 3;
@@ -59,7 +59,7 @@ public class GuiManager2 {
 
         HeadUtils.addLore(KingdomHead, Lang.GUI_KINGDOM_ICON_DESC1.getTranslation());
         HeadUtils.addLore(RegionHead, Lang.GUI_REGION_ICON_DESC1.getTranslation());
-        HeadUtils.addLore(TownHead, playerHaveTown? Lang.GUI_KINGDOM_ICON_DESC1_HAVE_TOWN.getTranslation(TownDataStorage.getTown(playerStat).getName()):Lang.GUI_KINGDOM_ICON_DESC1_NO_TOWN.getTranslation() );
+        HeadUtils.addLore(TownHead, playerHaveTown? Lang.GUI_KINGDOM_ICON_DESC1_HAVE_TOWN.getTranslation(TownDataStorage.get(playerStat).getName()):Lang.GUI_KINGDOM_ICON_DESC1_NO_TOWN.getTranslation() );
         HeadUtils.addLore(PlayerHead, Lang.GUI_PROFILE_ICON_DESC1.getTranslation());
 
 
@@ -73,7 +73,7 @@ public class GuiManager2 {
         });
         GuiItem Town = ItemBuilder.from(TownHead).asGuiItem(event -> {
             event.setCancelled(true);
-            if(PlayerDataStorage.getStat(player).haveTown()){
+            if(PlayerDataStorage.get(player).haveTown()){
                 OpenTownMenuHaveTown(player);
             }
             else{
@@ -99,7 +99,7 @@ public class GuiManager2 {
     }
     public static void openProfileMenu(Player player){
         String name = "Profile";
-        PlayerData playerStat = PlayerDataStorage.getStat(player);
+        PlayerData playerStat = PlayerDataStorage.get(player);
 
         int nRow = 3;
 
@@ -150,7 +150,7 @@ public class GuiManager2 {
     public static void openTownMenuNoTown(Player player){
 
 
-        PlayerData playerStat = PlayerDataStorage.getStat(player);
+        PlayerData playerStat = PlayerDataStorage.get(player);
 
         String name = "Town";
         int nRow = 3;
@@ -236,8 +236,8 @@ public class GuiManager2 {
 
         String name = "Town";
         int nRow = 3;
-        PlayerData playerStat = PlayerDataStorage.getStat(player);
-        TownData playerTown = TownDataStorage.getTown(playerStat);
+        PlayerData playerStat = PlayerDataStorage.get(player);
+        TownData playerTown = TownDataStorage.get(playerStat);
         Gui gui = Gui.gui()
                 .title(Component.text(name))
                 .type(GuiType.CHEST)
@@ -348,8 +348,8 @@ public class GuiManager2 {
                 .rows(nRow)
                 .create();
 
-        PlayerData playerStat = PlayerDataStorage.getStat(player);
-        TownData town = TownDataStorage.getTown(playerStat);
+        PlayerData playerStat = PlayerDataStorage.get(player);
+        TownData town = TownDataStorage.get(playerStat);
 
         List<String> players = town.getPlayerList();
 
@@ -357,7 +357,7 @@ public class GuiManager2 {
         for (String playerUUID: players) {
 
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
-            PlayerData otherPlayerStat = PlayerDataStorage.getStat(playerUUID);
+            PlayerData otherPlayerStat = PlayerDataStorage.get(playerUUID);
 
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate.getName(),playerIterate);
             HeadUtils.addLore(
@@ -423,8 +423,8 @@ public class GuiManager2 {
                 .rows(nRow)
                 .create();
 
-        PlayerData playerStat = PlayerDataStorage.getStat(player);
-        TownData town = TownDataStorage.getTown(playerStat);
+        PlayerData playerStat = PlayerDataStorage.get(player);
+        TownData town = TownDataStorage.get(playerStat);
 
         Map<String,TownRank> ranks = town.getTownRanks();
 
@@ -488,7 +488,7 @@ public class GuiManager2 {
                 .create();
 
 
-        TownData town = TownDataStorage.getTown(PlayerDataStorage.getStat(player.getUniqueId().toString()).getTownId());
+        TownData town = TownDataStorage.get(PlayerDataStorage.get(player.getUniqueId().toString()).getTownId());
         TownRank townRank = town.getRank(roleName);
 
         boolean isDefaultRank;
@@ -508,7 +508,7 @@ public class GuiManager2 {
         ArrayList<String> playerNames = new ArrayList<>();
         playerNames.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1.getTranslation());
         for (String playerUUID : townRank.getPlayers()) {
-            PlayerData playerData = PlayerDataStorage.getStat(playerUUID);
+            PlayerData playerData = PlayerDataStorage.get(playerUUID);
             String playerName = playerData.getName();
             playerNames.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC.getTranslation(playerName));
         }
@@ -648,7 +648,7 @@ public class GuiManager2 {
                 .create();
 
 
-        TownData town = TownDataStorage.getTown(PlayerDataStorage.getStat(player.getUniqueId().toString()).getTownId());
+        TownData town = TownDataStorage.get(PlayerDataStorage.get(player.getUniqueId().toString()).getTownId());
         TownRank townRank = town.getRank(roleName);
         int i = 0;
 
@@ -666,12 +666,12 @@ public class GuiManager2 {
                 continue;
             }
 
-            ItemStack playerHead = HeadUtils.getPlayerHead(PlayerDataStorage.getStat(playerUUID).getName(), Bukkit.getOfflinePlayer(UUID.fromString(playerUUID)));
+            ItemStack playerHead = HeadUtils.getPlayerHead(PlayerDataStorage.get(playerUUID).getName(), Bukkit.getOfflinePlayer(UUID.fromString(playerUUID)));
 
             GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
 
-                PlayerData playerStat = PlayerDataStorage.getStat(playerUUID);
+                PlayerData playerStat = PlayerDataStorage.get(playerUUID);
                 town.getRank(playerStat.getTownRank()).removePlayer(playerUUID);
                 playerStat.setRank(roleName);
                 townRank.addPlayer(playerUUID);
@@ -711,7 +711,7 @@ public class GuiManager2 {
                 .create();
 
 
-        TownData town = TownDataStorage.getTown(PlayerDataStorage.getStat(player.getUniqueId().toString()).getTownId());
+        TownData town = TownDataStorage.get(PlayerDataStorage.get(player.getUniqueId().toString()).getTownId());
         TownRank townRank = town.getRank(roleName);
 
 
@@ -835,8 +835,8 @@ public class GuiManager2 {
                 .create();
 
 
-        TownData town = TownDataStorage.getTown(player);
-        PlayerData playerStat = PlayerDataStorage.getStat(player);
+        TownData town = TownDataStorage.get(player);
+        PlayerData playerStat = PlayerDataStorage.get(player);
 
 
         ItemStack goldIcon = HeadUtils.makeSkull(Lang.GUI_TREASURY_STORAGE.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
@@ -966,8 +966,8 @@ public class GuiManager2 {
     public static void OpenTownLevel(Player player){
         String name = "Town";
         int nRow = 3;
-        PlayerData playerStat = PlayerDataStorage.getStat(player);
-        TownData townData = TownDataStorage.getTown(player);
+        PlayerData playerStat = PlayerDataStorage.get(player);
+        TownData townData = TownDataStorage.get(player);
         TownLevel townLevel = townData.getTownLevel();
 
         Gui gui = Gui.gui()
@@ -976,7 +976,7 @@ public class GuiManager2 {
                 .rows(nRow)
                 .create();
 
-        ItemStack TownIcon = HeadUtils.getTownIcon(PlayerDataStorage.getStat(player.getUniqueId().toString()).getTownId());
+        ItemStack TownIcon = HeadUtils.getTownIcon(PlayerDataStorage.get(player.getUniqueId().toString()).getTownId());
         ItemStack upgradeTownLevel = HeadUtils.getCustomLoreItem(Material.EMERALD, Lang.GUI_TOWN_LEVEL_UP.getTranslation());
         ItemStack upgradeChunkCap = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
         ItemStack upgradePlayerCap = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==");
@@ -1080,23 +1080,23 @@ public class GuiManager2 {
                 .rows(nRow)
                 .create();
 
-        PlayerData playerStat = PlayerDataStorage.getStat(player);
-        TownData playerTown = TownDataStorage.getTown(player);
+        PlayerData playerStat = PlayerDataStorage.get(player);
+        TownData playerTown = TownDataStorage.get(player);
 
         ItemStack TownIcon = HeadUtils.getTownIcon(playerStat.getTownId());
         ItemStack leaveTown = HeadUtils.getCustomLoreItem(Material.BARRIER,
                 Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN.getTranslation(),
-                Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1.getTranslation(TownDataStorage.getTown(playerStat).getName()),
+                Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1.getTranslation(TownDataStorage.get(playerStat).getName()),
                 Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2.getTranslation());
 
         ItemStack deleteTown = HeadUtils.getCustomLoreItem(Material.BARRIER,
                 Lang.GUI_TOWN_SETTINGS_DELETE_TOWN.getTranslation(),
-                Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1.getTranslation(TownDataStorage.getTown(playerStat).getName()),
+                Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1.getTranslation(TownDataStorage.get(playerStat).getName()),
                 Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2.getTranslation());
 
         ItemStack changeOwnershipTown = HeadUtils.getCustomLoreItem(Material.BEEHIVE,
                 Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.getTranslation(),
-                Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.getTranslation(TownDataStorage.getTown(playerStat).getName()),
+                Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.getTranslation(TownDataStorage.get(playerStat).getName()),
                 Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.getTranslation());
 
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW,
@@ -1127,7 +1127,7 @@ public class GuiManager2 {
                 TownDataStorage.removeTown(playerStat.getTownId());
 
                 for(String memberUUID : playerTown.getPlayerList()){
-                    PlayerData memberStat = PlayerDataStorage.getStat(memberUUID);
+                    PlayerData memberStat = PlayerDataStorage.get(memberUUID);
                     memberStat.leaveTown();
                 }
 
@@ -1175,8 +1175,8 @@ public class GuiManager2 {
                 .rows(nRow)
                 .create();
 
-        PlayerData senderStat = PlayerDataStorage.getStat(player);
-        TownData playerTown = TownDataStorage.getTown(player);
+        PlayerData senderStat = PlayerDataStorage.get(player);
+        TownData playerTown = TownDataStorage.get(player);
 
         int i = 0;
         for (String playerUUID : playerTown.getPlayerList()){
@@ -1309,8 +1309,8 @@ public class GuiManager2 {
                 .rows(nRow)
                 .create();
 
-        PlayerData playerStat = PlayerDataStorage.getStat(player);
-        TownData playerTown = TownDataStorage.getTown(playerStat);
+        PlayerData playerStat = PlayerDataStorage.get(player);
+        TownData playerTown = TownDataStorage.get(playerStat);
 
         ArrayList<String> TownListUUID = playerTown.getRelations().getOne(relation);
         int i = 0;
@@ -1403,8 +1403,8 @@ public class GuiManager2 {
                 .rows(nRow)
                 .create();
 
-        PlayerData playerStat = PlayerDataStorage.getStat(player.getUniqueId().toString());
-        TownData playerTown = TownDataStorage.getTown(playerStat);
+        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
+        TownData playerTown = TownDataStorage.get(playerStat);
 
         LinkedHashMap<String, TownData> allTown = getTownList();
         ArrayList<String> TownListUUID = playerTown.getRelations().getOne(relation);
@@ -1419,7 +1419,7 @@ public class GuiManager2 {
             townNoRelation.remove(playerTown.getID());
             int i = 0;
             for(String otherTownUUID : townNoRelation){
-                TownData otherTown = TownDataStorage.getTown(otherTownUUID);
+                TownData otherTown = TownDataStorage.get(otherTownUUID);
                 ItemStack townIcon = HeadUtils.getTownIconWithInformations(otherTownUUID, playerTown.getID());
 
                 GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
@@ -1461,7 +1461,7 @@ public class GuiManager2 {
         else if(action == Action.REMOVE){
             int i = 0;
             for(String otherTownUUID : TownListUUID){
-                TownData otherTown = TownDataStorage.getTown(otherTownUUID);
+                TownData otherTown = TownDataStorage.get(otherTownUUID);
                 ItemStack townIcon = HeadUtils.getTownIconWithInformations(otherTownUUID);
                 GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                     event.setCancelled(true);
@@ -1491,7 +1491,7 @@ public class GuiManager2 {
                 gui.setItem(i, _town);
                 i = i+1;
             }
-            TownDataStorage.getTown(playerTown.getID()).removeTownRelations(relation,player.getUniqueId().toString());
+            TownDataStorage.get(playerTown.getID()).removeTownRelations(relation,player.getUniqueId().toString());
             _decorativeGlass = ItemBuilder.from(new ItemStack(Material.RED_STAINED_GLASS_PANE)).asGuiItem(event -> {
                 event.setCancelled(true);
             });
@@ -1544,8 +1544,8 @@ public class GuiManager2 {
                 .rows(nRow)
                 .create();
 
-        PlayerData playerStat = PlayerDataStorage.getStat(player.getUniqueId().toString());
-        TownData townClass = TownDataStorage.getTown(player);
+        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
+        TownData townClass = TownDataStorage.get(player);
         ClaimedChunkSettings townChunkSettings = townClass.getChunkSettings();
 
         ItemStack doorAccess = HeadUtils.getCustomLoreItem(Material.OAK_DOOR,

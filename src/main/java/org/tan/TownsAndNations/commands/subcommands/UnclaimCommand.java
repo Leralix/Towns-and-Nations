@@ -43,7 +43,7 @@ public class UnclaimCommand extends SubCommand {
             return;
         }
 
-        PlayerData playerStat = PlayerDataStorage.getStat(player.getUniqueId().toString());
+        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
         if(!playerStat.haveTown()){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.getTranslation());
         }
@@ -53,7 +53,7 @@ public class UnclaimCommand extends SubCommand {
             return;
         }
 
-        TownData townStat = TownDataStorage.getTown(playerStat.getTownId());
+        TownData townStat = TownDataStorage.get(playerStat.getTownId());
         if(!townStat.getUuidLeader().equals(playerStat.getUuid())){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
         }
@@ -65,13 +65,13 @@ public class UnclaimCommand extends SubCommand {
 
             if(ClaimedChunkStorage.isOwner(chunk, townStat.getID())) {
                 ClaimedChunkStorage.unclaimChunk(player.getLocation().getChunk());
-                TownDataStorage.getTown(player).getChunkSettings().decreaseNumberOfClaimedChunk();
+                TownDataStorage.get(player).getChunkSettings().decreaseNumberOfClaimedChunk();
 
                 player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS.getTranslation(townStat.getChunkSettings().getNumberOfClaimedChunk(),townStat.getTownLevel().getChunkCap()));
 
                 return;
             }
-            TownData otherTown = TownDataStorage.getTown(ClaimedChunkStorage.getChunkOwner(chunk));
+            TownData otherTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwner(chunk));
             player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_TOWN.getTranslation(otherTown.getName()));
 
         }
