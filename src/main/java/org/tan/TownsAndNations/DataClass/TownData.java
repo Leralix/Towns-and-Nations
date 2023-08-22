@@ -24,10 +24,10 @@ public class TownData {
     public String DateCreated;
     private String townIconMaterialCode;
     private final List<String> townPlayerListId = new ArrayList<String>();
-    private TownTreasury townTreasury;
-    private TownLevel townLevel;
+    private final TownTreasury townTreasury;
+    private final TownLevel townLevel;
     private ClaimedChunkSettings chunkSettings;
-    private TownRelations relations;
+    private final TownRelations relations;
 
 
     public TownData(String townId, String townName, String uuidLeader){

@@ -14,7 +14,7 @@ public enum TownRolePermission {
     DELETE_RANK,
     MANAGE_RANKS,
     MANAGE_CLAIM_SETTINGS,
-    MANAGE_TOWN_RELATION;
+    MANAGE_TOWN_RELATION
 
 
 }

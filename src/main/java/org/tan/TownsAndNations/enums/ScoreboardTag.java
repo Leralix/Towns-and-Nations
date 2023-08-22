@@ -4,7 +4,7 @@ public enum ScoreboardTag {
 
     GOLDSMITH,
     BOTANIST,
-    VILLAGER_COOK;
+    VILLAGER_COOK
 
 
 }

@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class TownRelations {
 
-    private final LinkedHashMap<TownRelation, ArrayList<String>> townRelations = new LinkedHashMap<>();;
+    private final LinkedHashMap<TownRelation, ArrayList<String>> townRelations = new LinkedHashMap<>();
 
 
     public TownRelations(){

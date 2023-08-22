@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class TownRelationConfirmStorage {
 
-    private static Map<String, HashMap<String, TownRelation>> map = new HashMap<>();
+    private static final Map<String, HashMap<String, TownRelation>> map = new HashMap<>();
 
     public static void addInvitation(String playerUUID, String townId, TownRelation relation) {
 

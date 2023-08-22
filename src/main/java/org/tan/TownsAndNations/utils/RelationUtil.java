@@ -9,10 +9,7 @@ public class RelationUtil {
     public static boolean HaveRelation(TownData town, TownData targetTown){
 
         TownRelation currentRelation = town.getRelationWith(targetTown);
-        if(currentRelation == null){
-            return false;
-        }
-        return true;
+        return currentRelation != null;
     }
 
 

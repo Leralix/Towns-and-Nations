@@ -157,7 +157,6 @@ public class HeadUtils {
 
         itemStack.setItemMeta(itemMeta);
 
-        return;
     }
 
     public static ItemStack getRankLevelColor(int level){

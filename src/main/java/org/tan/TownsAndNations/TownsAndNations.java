@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations;
 
 
+import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tan.TownsAndNations.API.TanAPI;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -13,6 +14,7 @@ import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.DropChances;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -37,6 +39,8 @@ public final class TownsAndNations extends JavaPlugin {
         ConfigUtil.loadCustomConfig("config.yml");
         ConfigUtil.saveResource("townLevelUpRequirement.yml");
         ConfigUtil.loadCustomConfig("townLevelUpRequirement.yml");
+
+        DropChances.load();
 
         logger.info("[TaN] -Loading Lang");
         Lang.loadTranslations("english.yml");

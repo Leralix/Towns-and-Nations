@@ -6,7 +6,7 @@ import org.tan.TownsAndNations.storage.TownDataStorage;
 
 public class PlayerData {
 
-    private String UUID;
+    private final String UUID;
     private String PlayerName;
     private int Balance;
     private String TownId;

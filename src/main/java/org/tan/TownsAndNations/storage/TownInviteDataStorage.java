@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class TownInviteDataStorage {
 
-    private static Map<String, ArrayList<String>> townInviteList = new HashMap<>();
+    private static final Map<String, ArrayList<String>> townInviteList = new HashMap<>();
 
     public static void addInvitation(String playerUUID, String townId){
         if(townInviteList.get(playerUUID) == null){

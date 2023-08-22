@@ -29,10 +29,15 @@ public class DropChances {
         return dropChances.get(material);
     }
 
+    public static Map<Material, RareItem> dropChanceMap(){
+        return dropChances;
+    }
+
     private static void loadDropChances(String section, FileConfiguration config, ItemStack rareMaterial) {
         for (String key : config.getConfigurationSection(section).getKeys(false)) {
             int dropChance = config.getInt(section + "." + key);
-            dropChances.put(Material.valueOf(key), new RareItem(dropChance, rareMaterial));
+
+            dropChances.put(Material.getMaterial(key), new RareItem(dropChance, rareMaterial));
         }
     }
 
@@ -69,4 +74,5 @@ public class DropChances {
         rareStoneItem.setItemMeta(rareStoneItemMeta);
         return rareStoneItem;
     }
+
 }

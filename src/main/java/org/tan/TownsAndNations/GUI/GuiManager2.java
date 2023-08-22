@@ -451,11 +451,11 @@ public class GuiManager2 {
 
             if(playerStat.hasPermission(TownRolePermission.CREATE_RANK)){
                 if(town.getNumberOfRank() >= 8){
-                    player.sendMessage(""+Lang.TOWN_RANK_CAP_REACHED.getTranslation());
+                    player.sendMessage(Lang.TOWN_RANK_CAP_REACHED.getTranslation());
                     return;
                 }
 
-                player.sendMessage(""+Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.getTranslation());
+                player.sendMessage(Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.getTranslation());
                 player.closeInventory();
                 PlayerChatListenerStorage.addPlayer(RANK_CREATION,player);
             }
@@ -652,12 +652,12 @@ public class GuiManager2 {
         TownRank townRank = town.getRank(roleName);
         int i = 0;
 
-        outer: // this is the label for the outer loop
-        for (String playerUUID : town.getPlayerList()){
+        // this is the label for the outer loop
+        for (String playerUUID : town.getPlayerList()) {
             boolean skip = false;
 
-            for (String playerWithRoleUUID : townRank.getPlayers()){
-                if(playerUUID.equals(playerWithRoleUUID)){
+            for (String playerWithRoleUUID : townRank.getPlayers()) {
+                if (playerUUID.equals(playerWithRoleUUID)) {
                     skip = true;
                     break;
                 }
@@ -676,11 +676,11 @@ public class GuiManager2 {
                 playerStat.setRank(roleName);
                 townRank.addPlayer(playerUUID);
 
-                OpenTownMenuRoleManager(player,roleName);
+                OpenTownMenuRoleManager(player, roleName);
             });
 
             gui.setItem(i, _playerHead);
-            i = i+1;
+            i = i + 1;
         }
 
 

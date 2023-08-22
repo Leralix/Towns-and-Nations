@@ -8,9 +8,9 @@ import java.util.Map;
 public class PlayerChatListenerStorage {
 
     public static class PlayerChatData {
-        private ChatCategory category;
-        private String playerUUID;
-        private Map<String, String> data;
+        private final ChatCategory category;
+        private final String playerUUID;
+        private final Map<String, String> data;
 
         public PlayerChatData(ChatCategory category, String playerUUID, Map<String, String> data) {
             this.category = category;
@@ -30,11 +30,11 @@ public class PlayerChatListenerStorage {
     }
 
     public enum ChatCategory {
-        CREATE_CITY, RANK_CREATION,RANK_RENAME, DONATION; // Vous pouvez renommer ces catégories comme vous le souhaitez
+        CREATE_CITY, RANK_CREATION,RANK_RENAME, DONATION // Vous pouvez renommer ces catégories comme vous le souhaitez
 
     }
 
-    private static Map<String, PlayerChatData> ChatStorage = new HashMap<>();
+    private static final Map<String, PlayerChatData> ChatStorage = new HashMap<>();
 
     public static void addPlayer(ChatCategory category, Player p) {
         addPlayer(category, p, new HashMap<>());

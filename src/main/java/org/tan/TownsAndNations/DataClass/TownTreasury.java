@@ -10,7 +10,7 @@ public class TownTreasury {
 
     private int balance;
     private int flatTax;
-    private float percentTax;
+    private final float percentTax;
     LinkedHashMap<String,ArrayList<TransactionHistory>> taxHistory;
     ArrayList<TransactionHistory> donationHistory;
     LinkedHashMap<String,ArrayList<TransactionHistory>> salaryHistory;
