@@ -6,6 +6,7 @@ import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -16,6 +17,7 @@ import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.TownRelationConfirmStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
+import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.HeadUtils;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
@@ -160,20 +162,29 @@ public class GuiManager2 {
                 .rows(nRow)
                 .create();
 
+        FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
+        int townPrice = config.getInt("CostOfCreatingTown");
 
-        ItemStack createNewLand = HeadUtils.getCustomLoreItem(Material.GRASS_BLOCK, Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.getTranslation(),Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.getTranslation("100"));
+        ItemStack createNewLand = HeadUtils.getCustomLoreItem(Material.GRASS_BLOCK,
+                Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.getTranslation(),
+                Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.getTranslation(townPrice)
+        );
         ItemStack joinLand = HeadUtils.getCustomLoreItem(Material.ANVIL, Lang.GUI_NO_TOWN_JOIN_A_TOWN.getTranslation(),Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.getTranslation(TownDataStorage.getNumberOfTown()));
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
         GuiItem _create = ItemBuilder.from(createNewLand).asGuiItem(event -> {
             event.setCancelled(true);
             assert playerStat != null;
-                if (playerStat.getBalance() < 100) {
-                    player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.getTranslation(100 - playerStat.getBalance()));
+                if (playerStat.getBalance() < townPrice) {
+                    player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.getTranslation(townPrice - playerStat.getBalance()));
                 } else {
                     player.sendMessage(Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.getTranslation());
                     player.closeInventory();
-                    PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CREATE_CITY,player);
+
+                    Map<String,String> data = new HashMap<>();
+                    data.put("town cost", String.valueOf(townPrice));
+
+                    PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CREATE_CITY,player,data);
                 }
         });
 

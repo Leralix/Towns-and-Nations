@@ -10,12 +10,12 @@ shadowJar {
 
 compileJava.options.encoding = 'UTF-8'
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
 group = 'org.tan'
-version = '0.9.4'
+version = '0.10.3'
 
 repositories {
     mavenCentral()

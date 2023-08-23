@@ -50,26 +50,6 @@ public class PlayerDataStorage {
         return null;
     }
 
-    public static PlayerData getStatUsername(String username){
-        for (PlayerData stat : stats) {
-            if (stat.getName().equalsIgnoreCase(username)) {
-                return stat;
-            }
-        }
-        return null;
-    }
-
-    public static PlayerData updateStat(String uuid, PlayerData newStat) throws IOException {
-        for (PlayerData stat : stats) {
-            if (stat.getUuid().equalsIgnoreCase(uuid)) {
-                stat.setName(newStat.getName());
-                stat.setBalance(newStat.getBalance());
-            }
-        }
-        saveStats();
-        return null;
-    }
-
     public static List<PlayerData> getStats(){
         return stats;
     }

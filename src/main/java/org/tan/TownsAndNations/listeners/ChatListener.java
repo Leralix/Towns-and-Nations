@@ -34,13 +34,25 @@ public class ChatListener implements Listener {
 
         //Listener: Player create his city
         if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.CREATE_CITY){
-            String townName = event.getMessage();
 
+            int townPrice = Integer.parseInt(chatData.getData().get("town cost"));
+            PlayerData playerData = PlayerDataStorage.get(player);
+            assert playerData != null;
+            if(playerData.getBalance() < townPrice){
+                player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.getTranslation(townPrice - playerData.getBalance()));
+                PlayerChatListenerStorage.removePlayer(player);
+                return;
+            }
+
+            String townName = event.getMessage();
             Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.getTranslation(player.getName(),townName));
 
             PlayerChatListenerStorage.removePlayer(player);
             PlayerData sender = PlayerDataStorage.get(player.getUniqueId().toString());
-            sender.removeFromBalance(100);
+
+
+            assert sender != null;
+            sender.removeFromBalance(townPrice);
             TownDataStorage.newTown(townName,player);
             sender.setRank(TownDataStorage.get(sender).getTownDefaultRank());
             event.setCancelled(true);
@@ -50,13 +62,14 @@ public class ChatListener implements Listener {
 
             String stringAmount = event.getMessage();
             PlayerData sender = PlayerDataStorage.get(player.getUniqueId().toString());
-            int amount = 0;
+            int amount;
             try {
                 amount = Integer.parseInt(stringAmount);
             } catch (NumberFormatException e) {
                 player.sendMessage(ChatUtils.getTANString() + Lang.PAY_INVALID_SYNTAX.getTranslation());
                 throw new RuntimeException(e);
             }
+            assert sender != null;
             if(sender.getBalance() < amount ){
                 player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.getTranslation());
                 event.setCancelled(true);
@@ -99,7 +112,7 @@ public class ChatListener implements Listener {
 
             List<String> playerList = playerTownRank.getPlayers();
             for(String playerWithRoleUUID : playerList){
-                PlayerDataStorage.get(playerWithRoleUUID).setRank(newRankName);
+                Objects.requireNonNull(PlayerDataStorage.get(playerWithRoleUUID)).setRank(newRankName);
             }
 
 
