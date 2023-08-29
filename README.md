@@ -5,4 +5,6 @@ Towns and Nations is a Minecraft plugin designed to provide players with an imme
 The completion of Towns and Nations is expected by the end of August.
 
 For updates, discussions, or to join our growing community, please visit our Discord server.
-https://discord.gg/4gjGjrgEpd
+https://discord.gg/Q8gZSFUuzb
+
+Arcadia server discord (French server) can message me from this server.

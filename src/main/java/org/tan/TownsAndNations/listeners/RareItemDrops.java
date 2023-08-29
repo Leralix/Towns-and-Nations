@@ -21,9 +21,8 @@ public class RareItemDrops implements Listener {
         ItemStack item = player.getInventory().getItemInMainHand();
 
 
-        if(item.getEnchantments().containsKey(Enchantment.SILK_TOUCH)){
+        if(item.getEnchantments().containsKey(Enchantment.SILK_TOUCH))
             return;
-        }
         if(player.getGameMode() != GameMode.SURVIVAL)
             return;
 

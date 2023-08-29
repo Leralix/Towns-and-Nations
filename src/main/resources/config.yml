@@ -1,3 +1,9 @@
+
+#The language of the plugin
+##Language available: en, fr.
+##<languageCode>.yml
+Language: en.yml
+
 #The cost of a chunk
 CostOfChunk: 0
 

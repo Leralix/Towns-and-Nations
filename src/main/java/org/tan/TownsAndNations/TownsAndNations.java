@@ -43,7 +43,9 @@ public final class TownsAndNations extends JavaPlugin {
         DropChances.load();
 
         logger.info("[TaN] -Loading Lang");
-        Lang.loadTranslations("english.yml");
+        logger.info(ConfigUtil.getCustomConfig("config.yml").getString("Language"));
+
+        Lang.loadTranslations(ConfigUtil.getCustomConfig("config.yml").getString("Language"));
         logger.info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.getTranslation());
 
         logger.info("[TaN] -Loading Stats");
