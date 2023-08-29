@@ -28,11 +28,11 @@ public class ChunkListener implements Listener {
             return;
         Player player = event.getPlayer();
 
-        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwner(chunk));
+        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
         TownData playerTown = TownDataStorage.get(player);
 
         //Same town
-        if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getID()))
+        if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
             return;
         //Same alliance
         if(chunkTown.getChunkSettings().getBreakAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
@@ -61,11 +61,11 @@ public class ChunkListener implements Listener {
             if(blockName.equals("CHEST")){
 
 
-                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwner(chunk));
+                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
                 TownData playerTown = TownDataStorage.get(player);
 
                 //Same town
-                if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getID()))
+                if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
                     return;
                 //Same alliance
                 if(chunkTown.getChunkSettings().getChestAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
@@ -80,11 +80,11 @@ public class ChunkListener implements Listener {
             }
             else if(blockName.contains("DOOR")){
 
-                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwner(chunk));
+                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
                 TownData playerTown = TownDataStorage.get(player);
 
                 //Same town
-                if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getID()))
+                if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
                     return;
                 //Same alliance
                 if(chunkTown.getChunkSettings().getDoorAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
@@ -110,11 +110,11 @@ public class ChunkListener implements Listener {
 
         Player player = event.getPlayer();
 
-        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwner(chunk));
+        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
         TownData playerTown = TownDataStorage.get(player);
 
         //Same town
-        if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getID()))
+        if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
             return;
         //Same alliance
         if(chunkTown.getChunkSettings().getPlaceAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))

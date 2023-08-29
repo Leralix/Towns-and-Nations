@@ -71,7 +71,7 @@ public class UnclaimCommand extends SubCommand {
 
                 return;
             }
-            TownData otherTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwner(chunk));
+            TownData otherTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
             player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_TOWN.getTranslation(otherTown.getName()));
 
         }

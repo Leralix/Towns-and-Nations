@@ -27,7 +27,7 @@ public class JoinTownCommand extends SubCommand {
     }
 
     public int getArguments() {
-        return 99;
+        return 2;
     }
 
 

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.Chunk;
 import org.tan.TownsAndNations.DataClass.ClaimedChunk;
+import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.TownsAndNations;
 
 import java.io.*;
@@ -12,47 +13,52 @@ import java.util.*;
 
 
 public class ClaimedChunkStorage {
-    private static Set<ClaimedChunk> claimedChunks = new HashSet<>();
+    private static Map<String, ClaimedChunk> claimedChunksMap = new HashMap<>();
+
+    private static String getChunkKey(Chunk chunk) {
+        return chunk.getX() + "," + chunk.getZ() + "," + chunk.getWorld().getUID();
+    }
 
     public static boolean isChunkClaimed(Chunk chunk) {
-        return claimedChunks.contains(new ClaimedChunk(chunk));
+        return claimedChunksMap.containsKey(getChunkKey(chunk));
     }
 
-    public static String getChunkOwner(Chunk chunk) {
-        return Objects.requireNonNull(get(chunk)).getTownID();
+    public static String getChunkOwnerID(Chunk chunk) {
+        return claimedChunksMap.get(getChunkKey(chunk)).getTownID();
     }
+
+    public static TownData getChunkOwnerTown(Chunk chunk) {
+        return TownDataStorage.get(getChunkOwnerID(chunk));
+    }
+
     public static String getChunkOwnerName(Chunk chunk) {
-        return TownDataStorage.get(get(chunk).getTownID()).getName();
+        return getChunkOwnerTown(chunk).getName();
     }
 
     public static boolean isOwner(Chunk chunk, String townID) {
-        return claimedChunks.contains(new ClaimedChunk(chunk, townID));
+        ClaimedChunk cChunk = claimedChunksMap.get(getChunkKey(chunk));
+        return cChunk != null && cChunk.getTownID().equals(townID);
     }
 
     public static void claimChunk(Chunk chunk, String townID) {
-        claimedChunks.add(new ClaimedChunk(chunk, townID));
+        claimedChunksMap.put(getChunkKey(chunk), new ClaimedChunk(chunk, townID));
         saveStats();
     }
 
     public static void unclaimChunk(Chunk chunk) {
-        claimedChunks.remove(new ClaimedChunk(chunk));
+        claimedChunksMap.remove(getChunkKey(chunk));
         saveStats();
     }
 
-    public static ClaimedChunk get(Chunk chunk){
-        for (ClaimedChunk claimedChunk : claimedChunks){
-            if(claimedChunk.equals(new ClaimedChunk(chunk))){
-                return claimedChunk;
-            }
-        }
-        return null;
+    public static ClaimedChunk get(Chunk chunk) {
+        return claimedChunksMap.get(getChunkKey(chunk));
     }
 
 
     public static void loadStats() {
 
         Gson gson = new Gson();
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNchunks.json");
+        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TanChunks.json");
         if (file.exists()){
             Reader reader = null;
             try {
@@ -62,7 +68,7 @@ public class ClaimedChunkStorage {
             }
 
             Type type = new TypeToken<Set<ClaimedChunk>>() {}.getType();
-            claimedChunks = gson.fromJson(reader, type);
+            claimedChunksMap = gson.fromJson(reader, type);
         }
 
     }
@@ -70,7 +76,7 @@ public class ClaimedChunkStorage {
     public static void saveStats() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNchunks.json");
+        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TanChunks.json");
         file.getParentFile().mkdirs();
         try {
             if (!file.exists()) {
@@ -80,7 +86,7 @@ public class ClaimedChunkStorage {
             throw new RuntimeException(e);
         }
         try (Writer writer = new FileWriter(file, false)) {
-            gson.toJson(claimedChunks, writer);
+            gson.toJson(claimedChunksMap, writer);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
