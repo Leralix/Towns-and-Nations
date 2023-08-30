@@ -1,7 +1,6 @@
 package org.tan.TownsAndNations;
 
 
-import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tan.TownsAndNations.API.TanAPI;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -31,6 +30,7 @@ public final class TownsAndNations extends JavaPlugin {
         plugin = this;
         logger = this.getLogger();
         getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
+        getLogger().info("To report a bug, please ask on my discord server: https://discord.gg/Q8gZSFUuzb");
 
         logger.info("[TaN] Loading Plugin");
 
@@ -96,6 +96,7 @@ public final class TownsAndNations extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new RareItemVillagerInteraction(), this);
         getServer().getPluginManager().registerEvents(new ChunkListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerEnterChunkListener(), this);    
     }
 
     public static TownsAndNations getPlugin() {

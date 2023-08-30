@@ -1,15 +1,13 @@
 package org.tan.TownsAndNations.commands.subcommands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
-import org.tan.TownsAndNations.storage.TownInviteDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,23 +60,59 @@ public class MapCommand extends SubCommand {
 
             List<Chunk> claimedChunks = new ArrayList<>();
             for (Chunk chunk : nearbyChunks) {
-                if (ClaimedChunkStorage.isChunkClaimed(chunk)) { // isClaimed est une méthode hypothétique que vous devez créer
+                if (ClaimedChunkStorage.isChunkClaimed(chunk)) {
                     claimedChunks.add(chunk);
                 }
             }
 
+            player.sendMessage("▬▬▬▬▬▬▬▬▬▬");
+
             for (int dx = -radius; dx <= radius; dx++) {
                 StringBuilder line = new StringBuilder();
+
+                if (dx == -radius) {
+                    line.append("↑N↑");
+                } else if (dx == radius) {
+                    line.append("↓S↓");
+                } else {
+                    line.append("   ");
+                }
+
                 for (int dz = -radius; dz <= radius; dz++) {
                     Chunk chunk = player.getWorld().getChunkAt(currentChunk.getX() + dx, currentChunk.getZ() + dz);
                     if (claimedChunks.contains(chunk)) {
-                        line.append("■");
+
+                        TownData playerTown = TownDataStorage.get(player);
+                        TownData otherTown = TownDataStorage.get(ClaimedChunkStorage.get(chunk).getTownID());
+                        ChatColor townColor = playerTown.getRelationWith(otherTown).getColor();
+
+                        if (dx == 0 && dz == 0) {
+                            line.append(townColor + "★");
+                        }
+                        else{
+                            line.append(townColor + "■");
+                        }
+
                     } else {
-                        line.append("□");
+                        if (dx == 0 && dz == 0) {
+                            line.append(ChatColor.WHITE + "★");
+                        }
+                        else{
+                            line.append(ChatColor.WHITE + "□");
+                        }
                     }
                 }
+
+                if (dx == 0) {
+                    line.append("→E→");
+                } else {
+                    line.append("   ");
+                }
+
                 player.sendMessage(line.toString());
             }
+
+            player.sendMessage("▬▬▬▬▬▬▬▬▬▬");
 
         }
         else {

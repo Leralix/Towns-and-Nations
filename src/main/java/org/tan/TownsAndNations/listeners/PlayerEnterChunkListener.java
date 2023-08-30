@@ -1,20 +1,24 @@
 package org.tan.TownsAndNations.listeners;
 
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
 
 public class PlayerEnterChunkListener implements Listener {
 
     @EventHandler
-    public void PlayerMoveEvent(Player player, Location from, Location to){
+    public void PlayerMoveEvent(PlayerMoveEvent e){
 
-        Chunk currentChunk = from.getChunk();
-        Chunk nextChunk = to.getChunk();
+        Chunk currentChunk = e.getFrom().getChunk();
+        if(e.getTo() == null){
+            return;
+        }
+        Chunk nextChunk = e.getTo().getChunk();
+        Player player = e.getPlayer();
 
         if(currentChunk.equals(nextChunk)){
             return;
