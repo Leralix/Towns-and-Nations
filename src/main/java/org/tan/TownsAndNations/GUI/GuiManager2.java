@@ -294,7 +294,7 @@ public class GuiManager2 {
             if(event.getCursor() == null)
                 return;
 
-            Material itemMaterial = event.getCursor().getType();
+            Material itemMaterial = event.getCursor().getData().getItemType();
             if(itemMaterial == Material.AIR){
                 player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.getTranslation());
             }
@@ -560,7 +560,7 @@ public class GuiManager2 {
         GuiItem _roleIcon = ItemBuilder.from(roleIcon).asGuiItem(event -> {
             if(event.getCursor() == null)
                 return;
-            Material itemMaterial = event.getCursor().getType();
+            Material itemMaterial = event.getCursor().getData().getItemType();
             if(itemMaterial == Material.AIR){
                 player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.getTranslation());
             }

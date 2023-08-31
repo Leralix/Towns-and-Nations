@@ -2,6 +2,9 @@ package org.tan.TownsAndNations.listeners;
 
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Door;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -50,7 +53,8 @@ public class ChunkListener implements Listener {
 
         Block block = event.getClickedBlock();
         if (block != null){
-            String blockName = block.getType().name();
+
+            BlockData blockData = block.getBlockData();
 
             Chunk chunk = block.getLocation().getChunk();
             Player player = event.getPlayer();
@@ -58,7 +62,7 @@ public class ChunkListener implements Listener {
             if(!ClaimedChunkStorage.isChunkClaimed(chunk))
                 return;
 
-            if(blockName.equals("CHEST")){
+            if(blockData instanceof Chest){
 
 
                 TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
@@ -78,7 +82,7 @@ public class ChunkListener implements Listener {
                 event.setCancelled(true);
 
             }
-            else if(blockName.contains("DOOR")){
+            else if(blockData instanceof Door){
 
                 TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
                 TownData playerTown = TownDataStorage.get(player);

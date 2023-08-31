@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.commands.subcommands;
 
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -8,6 +9,7 @@ import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.storage.TownInviteDataStorage;
+import org.tan.TownsAndNations.utils.TeamUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,21 +66,29 @@ public class JoinTownCommand extends SubCommand {
 
             for (String town : townInvited){
 
-                if(town.equals(townID)){
+                if(town.equals(townID)){ //if the player is invited to the town
 
-                    TownData townClass = TownDataStorage.get(townID);
+                    TownData townData = TownDataStorage.get(townID);
                     PlayerData playerStat = PlayerDataStorage.get(player);
 
-                    townClass.addPlayer(player.getUniqueId().toString());
-                    townClass.getRank(townClass.getTownDefaultRank()).addPlayer(player);
+                    if(!townData.canAddMorePlayer()){
+                        player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_TOWN_FULL.getTranslation());
+                        return;
+                    }
+
+
+                    townData.addPlayer(player.getUniqueId().toString());
+                    townData.getRank(townData.getTownDefaultRank()).addPlayer(player);
 
                     playerStat.setTownId(townID);
-                    playerStat.setRank(townClass.getTownDefaultRank());
+                    playerStat.setRank(townData.getTownDefaultRank());
 
-                    player.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.getTranslation(townClass.getName()));
-                    townClass.broadCastMessage(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.getTranslation(player.getName()));
+                    player.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.getTranslation(townData.getName()));
+                    townData.broadCastMessage(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.getTranslation(player.getName()));
 
-                    TownInviteDataStorage.removeInvitation(player.getUniqueId().toString(),townClass.getID());
+                    TownInviteDataStorage.removeInvitation(player.getUniqueId().toString(),townData.getID());
+
+                    TeamUtils.updateColor();
 
                     return;
                 }

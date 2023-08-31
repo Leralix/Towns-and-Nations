@@ -49,8 +49,14 @@ public final class TownsAndNations extends JavaPlugin {
         logger.info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.getTranslation());
 
         logger.info("[TaN] -Loading Stats");
+        logger.info("[TaN] -test");
+
         PlayerDataStorage.loadStats();
+        logger.info("[TaN] -test");
+
         TownDataStorage.loadStats();
+        logger.info("[TaN] -test");
+
         ClaimedChunkStorage.loadStats();
 
         logger.info("[TaN] -Loading Scheduled commands");

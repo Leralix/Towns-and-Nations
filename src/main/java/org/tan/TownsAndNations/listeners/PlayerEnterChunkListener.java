@@ -13,6 +13,7 @@ public class PlayerEnterChunkListener implements Listener {
     @EventHandler
     public void PlayerMoveEvent(PlayerMoveEvent e){
 
+        /*
         Chunk currentChunk = e.getFrom().getChunk();
         if(e.getTo() == null){
             return;
@@ -37,6 +38,7 @@ public class PlayerEnterChunkListener implements Listener {
         else{
             player.sendMessage("You enter: " + townTo.getName());
         }
+         */
 
 
     }

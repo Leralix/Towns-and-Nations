@@ -39,7 +39,8 @@ language:
   INVITATION_SENT_SUCCESS: "Invitation envoyée à §e{0}"
   INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN: "§e{0}§f est déjà dans votre ville"
   INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN: "§e{0}§f a déjà une ville : §e{1}"
-  INVITATION_RECEIVED_1: "Vous avez été invité par §e{0}§f à rejoindre la ville : §3{0}"
+  INVITATION_ERROR_PLAYER_TOWN_FULL: "§cLa ville est pleine, vous ne pouvez pas inviter plus de joueurs"
+  INVITATION_RECEIVED_1: "Vous avez été invité par §e{0}§f à rejoindre la ville : §3{1}"
   INVITATION_RECEIVED_2: "§l§2[Cliquez ici pour accepter]"
 
   # Accepter l'invitation à la ville
@@ -274,3 +275,70 @@ language:
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT: "§cCe rang est déjà le rang par défaut"
   GUI_TOWN_MEMBERS_ROLE_DELETE: "Supprimer le rang"
   GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY: "Vous ne pouvez pas supprimer un rang s'il y a des joueurs ayant ce rang"
+
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TAXES: "§aGérer les taxes"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_PROMOTE_RANK_PLAYER: "§aPromouvoir le joueur"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DERANK_RANK_PLAYER: "§aRétrograder le joueur"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_CLAIM_CHUNK: "§aRevendiquer un chunk"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_UNCLAIM_CHUNK: "§aLibérer un chunk"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_UPGRADE_TOWN: "§aAméliorer la ville"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_INVITE_PLAYER: "§aInviter un joueur"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_INVITE_PLAYER_DESC1: ""
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_KICK_PLAYER: "§aExpulser le joueur"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_RANK: "§aCréer un grade"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DELETE_RANK: "§aSupprimer un grade"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_MODIFY_RANK: "§aGérer les taxes"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_CLAIM_SETTINGS: "§aGérer les paramètres de revendication"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION: "§aGérer les taxes"
+
+  GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION: "§fCe grade §aa §fcette permission"
+  GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION: "§fCe grade §cn'a pas§f cette permission"
+
+  TOWN_RANK_CAP_REACHED: "§cVous avez atteint le nombre maximum de grades"
+  WRITE_IN_CHAT_NEW_ROLE_NAME: "§fÉcrivez dans le chat le nom du grade"
+
+  GUI_TOWN_SETTINGS_LEAVE_TOWN: "§aQuitter la ville"
+  GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1: "§fQuitter la ville §e{0}"
+  GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2: "§fVous ne pouvez pas quitter la ville si vous en êtes le leader, vous devez la supprimer"
+  GUI_TOWN_SETTINGS_DELETE_TOWN: "§aDissoudre la ville"
+  GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1: "§cDissoudre la ville §e{0}"
+  GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2: "§fVous ne pouvez pas dissoudre la ville si vous n'en êtes pas le leader"
+  GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP: "§fTransférer la propriété de la ville"
+  GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1: "§fDonner la direction de la ville à un autre joueur"
+  GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2: "§cVous perdrez votre statut de leader de la ville"
+  GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1: "§fDonner la direction de la ville à §e{0}"
+  GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2: "§cVous perdrez votre statut et serez classé au grade par défaut"
+
+  GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS: "Transfert réussi de la direction de la ville à : §e{0}"
+
+  #Historique des transactions
+  TRANSACTION_HISTORY: "§f[{0}] - §e{1} : §a+{2}✦"
+
+  #Informations Chat
+
+  CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§fVous ne pouvez pas quitter la ville si vous en êtes le leader, vous devez la dissoudre ou donner la direction à quelqu'un d'autre"
+  NOT_TOWN_LEADER_ERROR: "§cVous devez être le leader de la ville pour exécuter cette action"
+
+  CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§fVous ne pouvez pas dissoudre la ville si vous n'en êtes pas le leader"
+
+  CHAT_PLAYER_LEFT_THE_TOWN: "§fVous avez quitté la ville"
+  CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fVille supprimée avec succès"
+
+  #Objet personnalisé
+  ITEM_RARE_STONE: "§3Pierre rare"
+  ITEM_RARE_WOOD: "§3Bois rare"
+  ITEM_RARE_CROP: "§3Culture rare"
+  RARE_ITEM_DESC_1: "§fCet objet peut être échangé contre de l'argent au spawn"
+
+  #Métiers de villageois personnalisés
+  VILLAGER_GOLDSMITH: "Orfèvre"
+  VILLAGER_BOTANIST: "Botaniste"
+  VILLAGER_COOK: "Cuisinier"
+
+  #Interaction avec le villageois réussie
+  RARE_ITEM_NO_ITEM_IN_HANDS: "Cliquez-droit avec §e{0}§f pour le vendre pour §e{1}✦"
+  RARE_ITEM_WRONG_ITEM: "Ce villageois n'achète que §e{0}"
+  RARE_ITEM_SELLING_SUCCESS: "Vendu avec succès §e{0}x {1}§f pour §a+{2}✦"
+
+  #Taxes
+  DAILY_TAXES_SUCCESS_LOG: "Les taxes de la ville ont été collectées"

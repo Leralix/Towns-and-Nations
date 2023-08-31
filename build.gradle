@@ -37,11 +37,11 @@ repositories {
 }
 
 dependencies {
-    compileOnly "org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT"
-    compileOnly 'com.mojang:authlib:1.5.21'
+    compileOnly "org.spigotmc:spigot-api:+"
+    compileOnly 'com.mojang:authlib:4.0.43'
     compileOnly 'net.luckperms:api:5.4'
     compileOnly  'com.comphenix.protocol:ProtocolLib:5.1.0'
-    implementation 'dev.triumphteam:triumph-gui:3.1.5'
+    implementation 'dev.triumphteam:triumph-gui:+'
     implementation 'net.objecthunter:exp4j:0.4.8'
 }
 

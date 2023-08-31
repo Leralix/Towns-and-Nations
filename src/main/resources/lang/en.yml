@@ -40,7 +40,8 @@ language:
   INVITATION_SENT_SUCCESS: "Invitation sent to §e{0}"
   INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN: "§e{0}§f is already in your town"
   INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN: "§e{0}§f already have a town: §e{1}"
-  INVITATION_RECEIVED_1: "You have been invited by §e{0}§f to the town: §3{0}"
+  INVITATION_ERROR_PLAYER_TOWN_FULL: "§c town has reached full capacity, upgrade it to get more slot"
+  INVITATION_RECEIVED_1: "You have been invited by §e{0}§f to the town: §3{1}"
   INVITATION_RECEIVED_2: "§l§2[click here to accept]"
 
   #Accept the town invitation

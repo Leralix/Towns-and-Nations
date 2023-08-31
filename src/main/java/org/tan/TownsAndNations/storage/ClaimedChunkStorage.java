@@ -67,7 +67,7 @@ public class ClaimedChunkStorage {
                 throw new RuntimeException(e);
             }
 
-            Type type = new TypeToken<Set<ClaimedChunk>>() {}.getType();
+            Type type = new TypeToken<Map<String, ClaimedChunk>>() {}.getType();
             claimedChunksMap = gson.fromJson(reader, type);
         }
 

@@ -72,7 +72,7 @@ public class InvitePlayerCommand extends SubCommand {
 
             TownData town = TownDataStorage.get(player);
             if(!town.canAddMorePlayer()){
-                player.sendMessage(getTANString() + Lang.PLAYER_NOT_FOUND.getTranslation());
+                player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_TOWN_FULL.getTranslation());
                 return;
             }
             PlayerData inviteStat = PlayerDataStorage.get(invite);

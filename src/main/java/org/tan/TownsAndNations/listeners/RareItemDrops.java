@@ -26,7 +26,7 @@ public class RareItemDrops implements Listener {
         if(player.getGameMode() != GameMode.SURVIVAL)
             return;
 
-        RareItem rareItem = DropChances.getRareItem(event.getBlock().getType());
+        RareItem rareItem = DropChances.getRareItem(event.getBlock());
 
         if(rareItem == null)
             return;
