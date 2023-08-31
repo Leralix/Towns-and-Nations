@@ -11,6 +11,13 @@ import org.tan.TownsAndNations.storage.TownDataStorage;
 
 
 public class TeamUtils {
+
+    public static void updateColor(){
+        for(Player player : Bukkit.getOnlinePlayers()){
+            setScoreBoard(player);
+        }
+    }
+
     public static void setScoreBoard(Player player) {
 
         Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();

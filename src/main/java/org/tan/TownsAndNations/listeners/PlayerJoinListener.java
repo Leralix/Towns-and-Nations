@@ -21,10 +21,7 @@ public class PlayerJoinListener implements Listener {
 
 
         if (PlayerDataStorage.get(player) == null) {
-            PlayerDataStorage.createPlayerDataClass(player);
-            //PluginInstance = TownsAndNations.getPlugin();
-            //PluginInstance.getServer().broadcastMessage(player.getName() + "à rejoint le serveur pour la premiere fois");
-        }
+            PlayerDataStorage.createPlayerDataClass(player);}
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         if(playerStat.getTownId() != null)

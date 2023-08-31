@@ -10,10 +10,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.TownRank;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.TownRelation;
+import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import java.lang.reflect.Field;
@@ -26,12 +29,41 @@ public class HeadUtils {
 
 
 
-    public static ItemStack getPlayerHead(Player p){
-        ItemStack PlayerHead = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta skullMeta = (SkullMeta) PlayerHead.getItemMeta();
+    public static ItemStack getPlayerHeadInformation(Player p){
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
+
         skullMeta.setOwningPlayer(p);
-        PlayerHead.setItemMeta(skullMeta);
-        return PlayerHead;
+        skullMeta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + p.getName());
+
+        head.setItemMeta(skullMeta);
+
+        PlayerData playerData = PlayerDataStorage.get(p);
+        TownData playerTown = TownDataStorage.get(playerData);
+
+        String townName;
+        String playerTownRank;
+        if(playerTown != null){
+            addLore(head,
+                    Lang.GUI_PLAYER_PROFILE_DESC1.getTranslation(playerData.getBalance()),
+                    Lang.GUI_PLAYER_PROFILE_DESC2.getTranslation(playerTown.getName()),
+                    Lang.GUI_PLAYER_PROFILE_DESC3.getTranslation(playerTown.getRank(playerData.getTownRank()).getName())
+            );
+
+        }
+        else {
+            addLore(head,
+                    Lang.GUI_PLAYER_PROFILE_DESC1.getTranslation(playerData.getBalance()),
+                    Lang.GUI_PLAYER_PROFILE_NO_TOWN.getTranslation()
+            );
+        }
+
+
+
+
+
+
+        return head;
     }
     public static ItemStack getPlayerHead(String headName, OfflinePlayer p){
         ItemStack PlayerHead = new ItemStack(Material.PLAYER_HEAD);

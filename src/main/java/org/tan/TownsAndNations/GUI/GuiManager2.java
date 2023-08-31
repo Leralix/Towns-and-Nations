@@ -56,13 +56,12 @@ public class GuiManager2 {
         ItemStack KingdomHead = HeadUtils.makeSkull(Lang.GUI_KINGDOM_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=");
         ItemStack RegionHead = HeadUtils.makeSkull(Lang.GUI_REGION_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
         ItemStack TownHead = HeadUtils.makeSkull(Lang.GUI_TOWN_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
-        ItemStack PlayerHead = HeadUtils.getPlayerHead(Lang.GUI_PROFILE_ICON.getTranslation(),player);
+        ItemStack PlayerHead = HeadUtils.getPlayerHeadInformation(player);
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Quit");
 
         HeadUtils.addLore(KingdomHead, Lang.GUI_KINGDOM_ICON_DESC1.getTranslation());
         HeadUtils.addLore(RegionHead, Lang.GUI_REGION_ICON_DESC1.getTranslation());
         HeadUtils.addLore(TownHead, playerHaveTown? Lang.GUI_KINGDOM_ICON_DESC1_HAVE_TOWN.getTranslation(TownDataStorage.get(playerStat).getName()):Lang.GUI_KINGDOM_ICON_DESC1_NO_TOWN.getTranslation() );
-        HeadUtils.addLore(PlayerHead, Lang.GUI_PROFILE_ICON_DESC1.getTranslation());
 
 
         GuiItem Kingdom = ItemBuilder.from(KingdomHead).asGuiItem(event -> {
@@ -84,7 +83,6 @@ public class GuiManager2 {
         });
         GuiItem Player = ItemBuilder.from(PlayerHead).asGuiItem(event -> {
             event.setCancelled(true);
-            openProfileMenu(player);
         });
         GuiItem Back = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
@@ -296,7 +294,7 @@ public class GuiManager2 {
             if(event.getCursor() == null)
                 return;
 
-            Material itemMaterial = event.getCursor().getType();
+            Material itemMaterial = event.getCursor().getData().getItemType();
             if(itemMaterial == Material.AIR){
                 player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.getTranslation());
             }
@@ -562,7 +560,7 @@ public class GuiManager2 {
         GuiItem _roleIcon = ItemBuilder.from(roleIcon).asGuiItem(event -> {
             if(event.getCursor() == null)
                 return;
-            Material itemMaterial = event.getCursor().getType();
+            Material itemMaterial = event.getCursor().getData().getItemType();
             if(itemMaterial == Material.AIR){
                 player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.getTranslation());
             }
@@ -910,14 +908,17 @@ public class GuiManager2 {
 
         GuiItem _lessTax = ItemBuilder.from(lowerTax).asGuiItem(event -> {
             event.setCancelled(true);
-            if(playerStat.hasPermission(TownRolePermission.MANAGE_TAXES)){
-                town.getTreasury().remove1FlatTax();
-                OpenTownEconomics(player);
-            }
-            else
+            if(!playerStat.hasPermission(TownRolePermission.MANAGE_TAXES)) {
                 player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                return;
+            }
+            if(town.getTreasury().getFlatTax() <= 1){
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.getTranslation());
+                return;
+            }
 
-
+            town.getTreasury().remove1FlatTax();
+            OpenTownEconomics(player);
         });
         GuiItem _taxInfo = ItemBuilder.from(taxInfo).asGuiItem(event -> {
             event.setCancelled(true);
@@ -926,12 +927,13 @@ public class GuiManager2 {
         GuiItem _moreTax = ItemBuilder.from(increaseTax).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if(playerStat.hasPermission(TownRolePermission.MANAGE_TAXES)){
-                town.getTreasury().add1FlatTax();
-                OpenTownEconomics(player);
-            }
-            else
+            if(!playerStat.hasPermission(TownRolePermission.MANAGE_TAXES)){
                 player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                return;
+            }
+
+            town.getTreasury().add1FlatTax();
+            OpenTownEconomics(player);
         });
 
         GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE)).asGuiItem(event -> {

@@ -40,7 +40,8 @@ language:
   INVITATION_SENT_SUCCESS: "Invitation sent to §e{0}"
   INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN: "§e{0}§f is already in your town"
   INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN: "§e{0}§f already have a town: §e{1}"
-  INVITATION_RECEIVED_1: "You have been invited by §e{0}§f to the town: §3{0}"
+  INVITATION_ERROR_PLAYER_TOWN_FULL: "§c town has reached full capacity, upgrade it to get more slot"
+  INVITATION_RECEIVED_1: "You have been invited by §e{0}§f to the town: §3{1}"
   INVITATION_RECEIVED_2: "§l§2[click here to accept]"
 
   #Accept the town invitation
@@ -62,7 +63,7 @@ language:
   TOWN_RELATION_ACCEPTED_TOWN_SIDE: "§e{0}§f has accepted the relation {1} with your town"
 
   ###Admins commands
-  ADD_MONEY_COMMAND_SUCCESS: "Added §e{0}✦§f to + §e{1}"
+  ADD_MONEY_COMMAND_SUCCESS: "Added §e+{0}✦§f to §e{1}"
 
 
   #Leave a town
@@ -127,6 +128,13 @@ language:
   GUI_PROFILE_ICON: "§aProfile"
   GUI_PROFILE_ICON_DESC1: "§fLook at your stats"
 
+  GUI_PLAYER_PROFILE: "§a{0}" #//Player's name
+  GUI_PLAYER_PROFILE_DESC1: "§fBalance : §e{0}✦"
+  GUI_PLAYER_PROFILE_DESC2: "§fTown : §e{0}"
+  GUI_PLAYER_PROFILE_DESC3: "§fTown rank : §e{0}"
+  GUI_PLAYER_PROFILE_NO_TOWN: "§fNo town"
+
+
   GUI_YOUR_PROFILE: "§aYour profile"
   GUI_YOUR_BALANCE: "§aYour Balance"
   GUI_YOUR_BALANCE_DESC1: "§fCurrent balance: §e{0}"
@@ -138,7 +146,7 @@ language:
   GUI_YOUR_CURRENT_MURDER_DESC1: "§fYou killed §e{0} §fplayer"
 
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCreate a new town"
-  GUI_NO_TOWN_CREATE_NEW_TOWN_DESC: "§fCost: §e{0}✦"
+  GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fCost: §e{0}✦"
   GUI_NO_TOWN_JOIN_A_TOWN: "§aJoin a town"
   GUI_NO_TOWN_JOIN_A_TOWN_DESC1: "§fThere are currently §e{0}§f towns in total"
 
@@ -170,6 +178,7 @@ language:
   GUI_TREASURY_SPENDING_DESC3: "§fFrom Chunks: §c{0}"
   GUI_TREASURY_LOWER_TAX: "§aLower the tax"
   GUI_TREASURY_LOWER_TAX_DESC1: "§fLower the tax by §c-1✦"
+  GUI_TREASURY_CANT_TAX_LESS: "You can't tax less that §e1✦"
   GUI_TREASURY_INCREASE_TAX: "§aIncrease the tax"
   GUI_TREASURY_INCREASE_TAX_DESC1: "§fIncrease the tax by §a+1✦"
   GUI_TREASURY_FLAT_TAX: "§aFlat tax"
@@ -328,9 +337,9 @@ language:
 
 
   #Custom Item
-  ITEM_RARE_STONE: "§3Rare stone"
-  ITEM_RARE_WOOD: "§3Rare wood"
-  ITEM_RARE_CROP: "§3Rare crop"
+  ITEM_RARE_STONE: "§3Rare Stone"
+  ITEM_RARE_WOOD: "§3Rare Wood"
+  ITEM_RARE_CROP: "§3Rare Crop"
   RARE_ITEM_DESC_1: "§fThis item can be traded for money at spawn"
 
   #Custom villager jobs

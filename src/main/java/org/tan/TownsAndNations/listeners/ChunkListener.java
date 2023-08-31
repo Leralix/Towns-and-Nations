@@ -2,6 +2,9 @@ package org.tan.TownsAndNations.listeners;
 
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Door;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,11 +31,11 @@ public class ChunkListener implements Listener {
             return;
         Player player = event.getPlayer();
 
-        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwner(chunk));
+        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
         TownData playerTown = TownDataStorage.get(player);
 
         //Same town
-        if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getID()))
+        if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
             return;
         //Same alliance
         if(chunkTown.getChunkSettings().getBreakAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
@@ -50,7 +53,8 @@ public class ChunkListener implements Listener {
 
         Block block = event.getClickedBlock();
         if (block != null){
-            String blockName = block.getType().name();
+
+            BlockData blockData = block.getBlockData();
 
             Chunk chunk = block.getLocation().getChunk();
             Player player = event.getPlayer();
@@ -58,14 +62,14 @@ public class ChunkListener implements Listener {
             if(!ClaimedChunkStorage.isChunkClaimed(chunk))
                 return;
 
-            if(blockName.equals("CHEST")){
+            if(blockData instanceof Chest){
 
 
-                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwner(chunk));
+                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
                 TownData playerTown = TownDataStorage.get(player);
 
                 //Same town
-                if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getID()))
+                if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
                     return;
                 //Same alliance
                 if(chunkTown.getChunkSettings().getChestAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
@@ -78,13 +82,13 @@ public class ChunkListener implements Listener {
                 event.setCancelled(true);
 
             }
-            else if(blockName.contains("DOOR")){
+            else if(blockData instanceof Door){
 
-                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwner(chunk));
+                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
                 TownData playerTown = TownDataStorage.get(player);
 
                 //Same town
-                if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getID()))
+                if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
                     return;
                 //Same alliance
                 if(chunkTown.getChunkSettings().getDoorAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
@@ -110,11 +114,11 @@ public class ChunkListener implements Listener {
 
         Player player = event.getPlayer();
 
-        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwner(chunk));
+        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
         TownData playerTown = TownDataStorage.get(player);
 
         //Same town
-        if(ClaimedChunkStorage.getChunkOwner(chunk).equals(playerTown.getID()))
+        if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
             return;
         //Same alliance
         if(chunkTown.getChunkSettings().getPlaceAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))

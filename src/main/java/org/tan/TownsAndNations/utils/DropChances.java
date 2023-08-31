@@ -1,6 +1,8 @@
 package org.tan.TownsAndNations.utils;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -13,7 +15,7 @@ import java.util.Map;
 
 public class DropChances {
 
-    private static final Map<Material, RareItem> dropChances = new HashMap<>();
+    private static final Map<String, RareItem> dropChances = new HashMap<>();
 
     public static void load(){
 
@@ -25,11 +27,11 @@ public class DropChances {
     }
 
 
-    public static RareItem getRareItem(Material material) {
-        return dropChances.get(material);
+    public static RareItem getRareItem(Block block) {
+        return dropChances.get(block.getBlockData().getAsString());
     }
 
-    public static Map<Material, RareItem> dropChanceMap(){
+    public static Map<String, RareItem> dropChanceMap(){
         return dropChances;
     }
 
@@ -37,7 +39,7 @@ public class DropChances {
         for (String key : config.getConfigurationSection(section).getKeys(false)) {
             int dropChance = config.getInt(section + "." + key);
 
-            dropChances.put(Material.getMaterial(key), new RareItem(dropChance, rareMaterial));
+            dropChances.put(key, new RareItem(dropChance, rareMaterial));
         }
     }
 

@@ -22,6 +22,7 @@ public class CommandManager implements CommandExecutor, TabExecutor {
 
         subCommands.add(new ClaimCommand());
         subCommands.add(new UnclaimCommand());
+        subCommands.add(new MapCommand());
 
         subCommands.add(new SeeBalanceCommand());
         subCommands.add(new PayCommand());
