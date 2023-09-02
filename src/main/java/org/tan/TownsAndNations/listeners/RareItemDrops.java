@@ -27,7 +27,7 @@ public class RareItemDrops implements Listener {
             return;
 
         RareItem rareItem = DropChances.getRareItem(event.getBlock());
-
+        System.out.println(rareItem);
         if(rareItem == null)
             return;
 

@@ -12,7 +12,7 @@ language:
   BASIC_LEVEL_UP: "§aLevel up !"
 
   #ChunkListener
-  CHUNK_BELONGS_TO: "§cThis chunk belongs to: §e{0}"
+  CHUNK_BELONGS_TO: "§cThis chunk belongs to: §9{0}"
 
 
   #Commands
@@ -23,13 +23,13 @@ language:
   CORRECT_SYNTAX_INFO: "§cCorrect syntax: {0}"
 
   #Create town
-  TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the city: §e{1}"
+  TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the city: §9{1}"
 
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "Claim a chunk"
-  CHUNK_ALREADY_CLAIMED_WARNING: "§cThis chunk is already claimed by: §e{0}"
+  CHUNK_ALREADY_CLAIMED_WARNING: "§cThis chunk is already claimed by: §9{0}"
   MAX_CHUNK_LIMIT_REACHED: "§cYou reached the maximum number of chunk claimed, upgrade your town to get more"
-  CHUNK_CLAIMED_SUCCESS: "Chunk claimed ! Current number of claimed chunk: §e{0}/{1})"
+  CHUNK_CLAIMED_SUCCESS: "Chunk claimed ! Current number of claimed chunk: §2{0}/{1}♦)"
 
   #CustomVillager
   CUSTOM_VILLAGER_CREATED_SUCCESS: "Villager created"
@@ -38,20 +38,20 @@ language:
   TOWN_INVITE_COMMAND_DESC: "invite a player to the town"
   INVITATION_TOWN_FULL: "§cThe town has reached full capacity, upgrade player cap to get more"
   INVITATION_SENT_SUCCESS: "Invitation sent to §e{0}"
-  INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN: "§e{0}§f is already in your town"
-  INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN: "§e{0}§f already have a town: §e{1}"
+  INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN: "§3{0}§f is already in your town"
+  INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN: "§3{0}§f already have a town: §9{1}"
   INVITATION_ERROR_PLAYER_TOWN_FULL: "§c town has reached full capacity, upgrade it to get more slot"
-  INVITATION_RECEIVED_1: "You have been invited by §e{0}§f to the town: §3{1}"
+  INVITATION_RECEIVED_1: "You have been invited by §3{0}§f to the town: §9{1}"
   INVITATION_RECEIVED_2: "§l§2[click here to accept]"
 
   #Accept the town invitation
   TOWN_ACCEPT_INVITE_DESC: "Join a town that invited you"
   TOWN_INVITATION_NO_INVITATION: "§aYou have no pending invitation"
   TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fYou are now a member of the town: §3{0}"
-  TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§e{0}§f has joined the town !"
+  TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f has joined the town !"
 
   #Diplomatic relation confirmation
-  TOWN_DIPLOMATIC_INVITATION_RECEIVED_1: "The town §e{0}§f wants to change their diplomatic status to: §3{1}"
+  TOWN_DIPLOMATIC_INVITATION_RECEIVED_1: "The town §9{0}§f wants to change their diplomatic status to: §3{1}"
   TOWN_DIPLOMATIC_INVITATION_RECEIVED_2: "§l§2To accept, click here"
 
 
@@ -59,15 +59,15 @@ language:
   #Accept a town relation
   TOWN_ACCEPT_RELATION_DESC: "Accept a town relation"
   TOWN_RELATION_NO_INVITATION: "§aYou have no pending relation"
-  TOWN_RELATION_ACCEPTED_MEMBER_SIDE: "§fYour town now have the relation {0} with §3{1}"
+  TOWN_RELATION_ACCEPTED_MEMBER_SIDE: "§fYour town now have the relation {0} with §9{1}"
   TOWN_RELATION_ACCEPTED_TOWN_SIDE: "§e{0}§f has accepted the relation {1} with your town"
 
   ###Admins commands
-  ADD_MONEY_COMMAND_SUCCESS: "Added §e+{0}✦§f to §e{1}"
+  ADD_MONEY_COMMAND_SUCCESS: "Added §6+{0}✦§f to §3{1}"
 
 
   #Leave a town
-  TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§e{0}§c has left the town !"
+  TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c has left the town !"
 
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Open the town and nation GUI"
@@ -76,16 +76,16 @@ language:
   PAY_COMMAND_DESC: "Give money to another player"
   PAY_INVALID_SYNTAX: "§cInvalid syntax for the amount of money"
   PAY_MINIMUM_REQUIRED: "§cYou need to send a least 1✦"
-  PAY_CONFIRMED_SENDER: "Sending §e{0}✦§f to §e{1}"
-  PAY_CONFIRMED_RECEIVER: "Receiving §e{0}✦§f from §e{1}"
+  PAY_CONFIRMED_SENDER: "Sending §6{0}✦§f to §3{1}"
+  PAY_CONFIRMED_RECEIVER: "Receiving §6+{0}✦§f from §3{1}"
 
   #Balance command
   BAL_COMMAND_DESC: "Look at your balance"
-  BAL_AMOUNT: "Your balance: §e{0}✦"
+  BAL_AMOUNT: "Your balance: §6{0}✦"
 
   #Uncliam command
   UNCLAIM_CHUNK_COMMAND_DESC: "Unclaim a chunk"
-  UNCLAIMED_CHUNK_SUCCESS: "Chunk unclaimed ! Current number of chunk: §e{0}/ {1}"
+  UNCLAIMED_CHUNK_SUCCESS: "Chunk unclaimed ! Current number of chunk: §2{0}/{1}♦"
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cThis chunk is claimed by another town: §e{0}"
 
   #Debug commands
@@ -97,13 +97,13 @@ language:
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cYou do not have enough money to perform this action"
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cYou do not have enough money. You need {0} more"
-  PLAYER_NEED_1_OR_ABOVE: "§fYou need at least §e1✦"
+  PLAYER_NEED_1_OR_ABOVE: "§fYou need at least §61✦"
 
   TOWN_NOT_ENOUGH_MONEY: "§cThe town do not have enough money to perform this action"
   TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cThe town do not have enough money to perform this action. It need {0}"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Write the name of the town if the chat. §cIt cannot be changed afterward for now"
 
-  PLAYER_SEND_MONEY_TO_TOWN: "§fYou sent §e{0}✦§f to the town"
+  PLAYER_SEND_MONEY_TO_TOWN: "§fYou sent §6{0}✦§f to the town"
 
   #Villager names
   NPC_GOLDSMITH: "Goldsmith"
@@ -129,8 +129,8 @@ language:
   GUI_PROFILE_ICON_DESC1: "§fLook at your stats"
 
   GUI_PLAYER_PROFILE: "§a{0}" #//Player's name
-  GUI_PLAYER_PROFILE_DESC1: "§fBalance : §e{0}✦"
-  GUI_PLAYER_PROFILE_DESC2: "§fTown : §e{0}"
+  GUI_PLAYER_PROFILE_DESC1: "§fBalance : §6{0}✦"
+  GUI_PLAYER_PROFILE_DESC2: "§fTown : §9{0}"
   GUI_PLAYER_PROFILE_DESC3: "§fTown rank : §e{0}"
   GUI_PLAYER_PROFILE_NO_TOWN: "§fNo town"
 
@@ -146,14 +146,14 @@ language:
   GUI_YOUR_CURRENT_MURDER_DESC1: "§fYou killed §e{0} §fplayer"
 
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCreate a new town"
-  GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fCost: §e{0}✦"
+  GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fCost: §6{0}✦"
   GUI_NO_TOWN_JOIN_A_TOWN: "§aJoin a town"
   GUI_NO_TOWN_JOIN_A_TOWN_DESC1: "§fThere are currently §e{0}§f towns in total"
 
-  GUI_TOWN_INFO_DESC1: "§fLeader: §e{0}"
-  GUI_TOWN_INFO_DESC2: "§fTerritory: §e{0}"
-  GUI_TOWN_INFO_DESC3: "§fMembers: §e{0}"
-  GUI_TOWN_INFO_DESC4: "§fTreasury: §e{0}"
+  GUI_TOWN_INFO_DESC1: "§fLeader: §b{0}"
+  GUI_TOWN_INFO_DESC2: "§fTerritory: §2{0}♦"
+  GUI_TOWN_INFO_DESC3: "§fMembers: §9{0}♣"
+  GUI_TOWN_INFO_DESC4: "§fTreasury: §6{0}✦"
 
   GUI_TOWN_TREASURY_ICON: "§aTreasury"
   GUI_TOWN_TREASURY_ICON_DESC1: "§fManage taxes and town treasury"
@@ -170,19 +170,19 @@ language:
 
 
   GUI_TREASURY_STORAGE: "§aTreasury"
-  GUI_TREASURY_STORAGE_DESC1: "§fTown current treasury: §e{0}"
-  GUI_TREASURY_STORAGE_DESC2: "§fEvolution next week: §a{0}"
+  GUI_TREASURY_STORAGE_DESC1: "§fTown current treasury: §6{0}✦"
+  GUI_TREASURY_STORAGE_DESC2: "§fEvolution next week: §a+{0}✦"
   GUI_TREASURY_SPENDING: "§aSpending"
-  GUI_TREASURY_SPENDING_DESC1: "§fTown current spending: §c{0}"
-  GUI_TREASURY_SPENDING_DESC2: "§fFrom Salary: §c{0}"
-  GUI_TREASURY_SPENDING_DESC3: "§fFrom Chunks: §c{0}"
+  GUI_TREASURY_SPENDING_DESC1: "§fTown current spending: §c-{0}"
+  GUI_TREASURY_SPENDING_DESC2: "§fFrom Salary: §c-{0}"
+  GUI_TREASURY_SPENDING_DESC3: "§fFrom Chunks: §c-{0}"
   GUI_TREASURY_LOWER_TAX: "§aLower the tax"
   GUI_TREASURY_LOWER_TAX_DESC1: "§fLower the tax by §c-1✦"
-  GUI_TREASURY_CANT_TAX_LESS: "You can't tax less that §e1✦"
+  GUI_TREASURY_CANT_TAX_LESS: "You can't tax less that §61✦"
   GUI_TREASURY_INCREASE_TAX: "§aIncrease the tax"
   GUI_TREASURY_INCREASE_TAX_DESC1: "§fIncrease the tax by §a+1✦"
   GUI_TREASURY_FLAT_TAX: "§aFlat tax"
-  GUI_TREASURY_FLAT_TAX_DESC1: "§fTown current tax: §e{0}✦§f daily"
+  GUI_TREASURY_FLAT_TAX_DESC1: "§fTown current tax: §6{0}✦§f daily"
   GUI_TREASURY_TAX_HISTORY: "§aTax History"
   GUI_TREASURY_SALARY_HISTORY: "§aSalary history"
   GUI_TREASURY_SALARY_HISTORY_DESC1: "§fSalary spending are up to: §c-{0}✦"
@@ -208,11 +208,15 @@ language:
 
   GUI_TOWN_LEVEL_UP_CHUNK_CAP: "§aUpgrade claim max amount"
   GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC1: "§fCurrent level is: §e{0}"
-  GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC2: "§fLevel §a{0}§f upgrade cost: §e{1}"
+  GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC2: "§fLevel §a{0}§f upgrade cost: §6{1}✦"
+  GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC3: "§fNext upgrade: §2+{0}♦"
+  GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC4: "§fTotal: §2{0}♦"
 
   GUI_TOWN_LEVEL_UP_PLAYER_CAP: "§aUpgrade player cap"
   GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC1: "§fCurrent level is: §e{0}"
-  GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC2: "§fLevel §a{0}§f upgrade cost: §e{1}"
+  GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC2: "§fLevel §a{0}§f upgrade cost: §6{1}✦"
+  GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC3: "§fNext upgrade: §9+{0}♣"
+  GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC4: "§fTotal: §9{0}♣"
 
   GUI_TOWN_RELATION_WAR: "§aWar"
   GUI_TOWN_RELATION_WAR_DESC1: "§fManage towns you are at war with"
@@ -230,9 +234,10 @@ language:
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aRemove town"
   GUI_TOWN_CHANGED_RELATION_RESUME: "§fYour town has now the following relation with {0}: {1}"
 
-  GUI_TOWN_INFO_DESC_1: "§fLeader: §e{0}"
-  GUI_TOWN_INFO_DESC_2: "§fMembers: §e{0}"
-  GUI_TOWN_INFO_DESC_3: "§fChunks: §e{0}"
+
+  GUI_TOWN_INFO_DESC_1: "§fLeader: §3{0}"
+  GUI_TOWN_INFO_DESC_2: "§fMembers: §9{0}♣"
+  GUI_TOWN_INFO_DESC_3: "§fChunks: §2{0}♦"
   GUI_TOWN_INFO_TOWN_RELATION: "§fCurrent relation with the town: §e{0}"
 
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aManage door access"
@@ -245,7 +250,7 @@ language:
   GUI_TOWN_CLAIM_SETTINGS_BREAK_DESC1: "§fCurrent breaking permission: §e{0}"
 
   GUI_TOWN_MEMBER_DESC1: "§fRank: §e{0}"
-  GUI_TOWN_MEMBER_DESC2: "§fCurrent balance: §e{0}✦"
+  GUI_TOWN_MEMBER_DESC2: "§fCurrent balance: §6{0}✦"
   GUI_TOWN_MEMBER_DESC3: "§cRight click to kick player"
   GUI_TOWN_MEMBER_CANT_KICK_LEADER: "You can't kick the leader of the town"
   GUI_TOWN_MEMBER_CANT_KICK_YOURSELF: "You can't kick yourself, you can leave the town from the town settings menu"
@@ -308,10 +313,10 @@ language:
   WRITE_IN_CHAT_NEW_ROLE_NAME: "§fWrite in the chat the name of the rank"
 
   GUI_TOWN_SETTINGS_LEAVE_TOWN: "§aLeave the town"
-  GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1: "§fLeave the town §e{0}"
+  GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1: "§fLeave the town §9{0}"
   GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2: "§fYou can't leave a town if you are the leader, you must delete it"
   GUI_TOWN_SETTINGS_DELETE_TOWN: "§aDisband the town"
-  GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1: "§cDisband the town §e{0}"
+  GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1: "§cDisband the town §9{0}"
   GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2: "§fYou cannot disband a town if you are not the leader"
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP: "§fTransfer town ownership"
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1: "§fGive the leadership of the town to another player"
@@ -322,7 +327,7 @@ language:
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS: "Successfully transfer town leadership to: §e{0}"
 
   #Transaction history
-  TRANSACTION_HISTORY: "§f[{0}] - §e{1} : §a+{2}✦"
+  TRANSACTION_HISTORY: "§f[{0}] - §3{1} : §6+{2}✦"
 
 
   #Chat Information
@@ -348,9 +353,9 @@ language:
   VILLAGER_COOK: "Cook"
 
   #Villager Interaction Success
-  RARE_ITEM_NO_ITEM_IN_HANDS: "Right click with §e{0}§f to sell it for §e{1}✦"
+  RARE_ITEM_NO_ITEM_IN_HANDS: "Right click with §e{0}§f to sell it for §6{1}✦"
   RARE_ITEM_WRONG_ITEM: "This villager is only buying §e{0}"
-  RARE_ITEM_SELLING_SUCCESS: "Successfully sold §e{0}x {1}§f for §a+{2}✦"
+  RARE_ITEM_SELLING_SUCCESS: "Successfully sold §e{0}x {1}§f for §6+{2}✦"
 
   #Taxes
   DAILY_TAXES_SUCCESS_LOG: "Town taxes has been collected"

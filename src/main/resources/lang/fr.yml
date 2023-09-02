@@ -12,7 +12,7 @@ language:
   BASIC_LEVEL_UP: "§aNiveau supérieur !"
 
   # ChunkListener
-  CHUNK_BELONGS_TO: "§cCe chunk appartient à : §e{0}"
+  CHUNK_BELONGS_TO: "§cCe chunk appartient à : §9{0}"
 
   # Commandes
   NOT_ENOUGH_ARGS_ERROR: "§cPas assez d'arguments"
@@ -22,13 +22,13 @@ language:
   CORRECT_SYNTAX_INFO: "§cSyntaxe correcte : {0}"
 
   # Créer une ville
-  TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f a créé avec succès la ville : §e{1}"
+  TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f a créé avec succès la ville : §9{1}"
 
   # Commande pour revendiquer un chunk
   CLAIM_CHUNK_COMMAND_DESC: "Revendiquer un chunk"
-  CHUNK_ALREADY_CLAIMED_WARNING: "§cCe chunk est déjà revendiqué par : §e{0}"
+  CHUNK_ALREADY_CLAIMED_WARNING: "§cCe chunk est déjà revendiqué par : §9{0}"
   MAX_CHUNK_LIMIT_REACHED: "§cVous avez atteint le nombre maximum de chunks revendiqués, améliorez votre ville pour en obtenir plus"
-  CHUNK_CLAIMED_SUCCESS: "Chunk revendiqué ! Nombre actuel de chunks revendiqués : §e{0}/{1})"
+  CHUNK_CLAIMED_SUCCESS: "Chunk revendiqué ! Nombre actuel de chunks revendiqués : §2{0}/{1}♦)"
 
   # CustomVillager
   CUSTOM_VILLAGER_CREATED_SUCCESS: "Villageois créé"
@@ -37,33 +37,33 @@ language:
   TOWN_INVITE_COMMAND_DESC: "inviter un joueur à la ville"
   INVITATION_TOWN_FULL: "§cLa ville a atteint sa capacité maximale, augmentez la capacité de joueurs pour en accueillir plus"
   INVITATION_SENT_SUCCESS: "Invitation envoyée à §e{0}"
-  INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN: "§e{0}§f est déjà dans votre ville"
-  INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN: "§e{0}§f a déjà une ville : §e{1}"
+  INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN: "§3{0}§f est déjà dans votre ville"
+  INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN: "§3{0}§f a déjà une ville : §9{1}"
   INVITATION_ERROR_PLAYER_TOWN_FULL: "§cLa ville est pleine, vous ne pouvez pas inviter plus de joueurs"
-  INVITATION_RECEIVED_1: "Vous avez été invité par §e{0}§f à rejoindre la ville : §3{1}"
+  INVITATION_RECEIVED_1: "Vous avez été invité par §3{0}§f à rejoindre la ville : §9{1}"
   INVITATION_RECEIVED_2: "§l§2[Cliquez ici pour accepter]"
 
   # Accepter l'invitation à la ville
   TOWN_ACCEPT_INVITE_DESC: "Rejoindre une ville qui vous a invité"
   TOWN_INVITATION_NO_INVITATION: "§aVous n'avez pas d'invitation en attente"
-  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fVous êtes maintenant membre de la ville : §3{0}"
-  TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§e{0}§f a rejoint la ville !"
+  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fVous êtes maintenant membre de la ville : §9{0}"
+  TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f a rejoint la ville !"
 
   # Confirmation des relations diplomatiques
-  TOWN_DIPLOMATIC_INVITATION_RECEIVED_1: "La ville §e{0}§f souhaite changer son statut diplomatique pour : §3{1}"
+  TOWN_DIPLOMATIC_INVITATION_RECEIVED_1: "La ville §9{0}§f souhaite changer son statut diplomatique pour : §3{1}"
   TOWN_DIPLOMATIC_INVITATION_RECEIVED_2: "§l§2Pour accepter, cliquez ici"
 
   # Accepter une relation de ville
   TOWN_ACCEPT_RELATION_DESC: "Accepter une relation de ville"
   TOWN_RELATION_NO_INVITATION: "§aVous n'avez pas de relation en attente"
-  TOWN_RELATION_ACCEPTED_MEMBER_SIDE: "§fVotre ville a maintenant la relation {0} avec §3{1}"
-  TOWN_RELATION_ACCEPTED_TOWN_SIDE: "§e{0}§f a accepté la relation {1} avec votre ville"
+  TOWN_RELATION_ACCEPTED_MEMBER_SIDE: "§fVotre ville a maintenant la relation {0} avec §9{1}"
+  TOWN_RELATION_ACCEPTED_TOWN_SIDE: "§9{0}§f a accepté la relation {1} avec votre ville"
 
   ### Commandes des administrateurs
-  ADD_MONEY_COMMAND_SUCCESS: "Ajout de §e+{0}✦§f à §e{1}"
+  ADD_MONEY_COMMAND_SUCCESS: "Ajout de §6+{0}✦§f à §3{1}"
 
   # Quitter une ville
-  TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§e{0}§c a quitté la ville !"
+  TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c a quitté la ville !"
 
   # Interface utilisateur de la ville et de la nation
   TOWN_GUI_COMMAND_DESC: "Ouvrir l'interface de la ville et de la nation"
@@ -72,17 +72,17 @@ language:
   PAY_COMMAND_DESC: "Donner de l'argent à un autre joueur"
   PAY_INVALID_SYNTAX: "§cSyntaxe invalide pour le montant d'argent"
   PAY_MINIMUM_REQUIRED: "§cVous devez envoyer au moins 1✦"
-  PAY_CONFIRMED_SENDER: "Envoi de §e{0}✦§f à §e{1}"
-  PAY_CONFIRMED_RECEIVER: "Réception de §e{0}✦§f de §e{1}"
+  PAY_CONFIRMED_SENDER: "Envoi de §6{0}✦§f à §3{1}"
+  PAY_CONFIRMED_RECEIVER: "Réception de §+6{0}✦§f de §3{1}"
 
   # Commande de solde
   BAL_COMMAND_DESC: "Consultez votre solde"
-  BAL_AMOUNT: "Votre solde : §e{0}✦"
+  BAL_AMOUNT: "Votre solde : §6{0}✦"
 
   # Commande pour déclarer un chunk
   UNCLAIM_CHUNK_COMMAND_DESC: "Désaffecter un chunk"
-  UNCLAIMED_CHUNK_SUCCESS: "Chunk désaffecté ! Nombre actuel de chunks : §e{0}/ {1}"
-  UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cCe chunk est revendiqué par une autre ville : §e{0}"
+  UNCLAIMED_CHUNK_SUCCESS: "Chunk désaffecté ! Nombre actuel de chunks : §2{0}/{1}♦"
+  UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cCe chunk est revendiqué par une autre ville : §9{0}"
 
   # Commandes de débogage
   UNKNOWN_DEBUG_COMMAND: "§cCommande de débogage inconnue, les commandes sont :"
@@ -93,13 +93,13 @@ language:
   # Commandes du chat
   PLAYER_NOT_ENOUGH_MONEY: "§cVous n'avez pas assez d'argent pour effectuer cette action"
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cVous n'avez pas assez d'argent. Il vous manque {0} de plus"
-  PLAYER_NEED_1_OR_ABOVE: "§fVous devez avoir au moins §e1✦"
+  PLAYER_NEED_1_OR_ABOVE: "§fVous devez avoir au moins §61✦"
 
   TOWN_NOT_ENOUGH_MONEY: "§cLa ville n'a pas assez d'argent pour effectuer cette action"
   TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cLa ville n'a pas assez d'argent pour effectuer cette action. Il lui manque {0}"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Écrivez le nom de la ville dans le chat. §cIl ne pourra pas être modifié par la suite pour le moment"
 
-  PLAYER_SEND_MONEY_TO_TOWN: "§fVous avez envoyé §e{0}✦§f à la ville"
+  PLAYER_SEND_MONEY_TO_TOWN: "§fVous avez envoyé §6{0}✦§f à la ville"
 
   # Noms des PNJ
   NPC_GOLDSMITH: "Orfèvre"
@@ -124,8 +124,8 @@ language:
   GUI_PROFILE_ICON_DESC1: "§fConsultez vos statistiques"
 
   GUI_PLAYER_PROFILE: "§a{0}" #//Nom du joueur
-  GUI_PLAYER_PROFILE_DESC1: "§fSolde : §e{0}✦"
-  GUI_PLAYER_PROFILE_DESC2: "§fVille : §e{0}"
+  GUI_PLAYER_PROFILE_DESC1: "§fSolde : §6{0}✦"
+  GUI_PLAYER_PROFILE_DESC2: "§fVille : §9{0}"
   GUI_PLAYER_PROFILE_DESC3: "§fRang dans la ville : §e{0}"
   GUI_PLAYER_PROFILE_NO_TOWN: "§fAucune ville"
 
@@ -140,14 +140,14 @@ language:
   GUI_YOUR_CURRENT_MURDER_DESC1: "§fVous avez tué §e{0} §fjoueur"
 
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCréer une nouvelle ville"
-  GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fCoût : §e{0}✦"
+  GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fCoût : §6{0}✦"
   GUI_NO_TOWN_JOIN_A_TOWN: "§aRejoindre une ville"
   GUI_NO_TOWN_JOIN_A_TOWN_DESC1: "§fIl y a actuellement §e{0}§f villes en tout"
 
-  GUI_TOWN_INFO_DESC1: "§fLeader : §e{0}"
-  GUI_TOWN_INFO_DESC2: "§fTerritoire : §e{0}"
-  GUI_TOWN_INFO_DESC3: "§fMembres : §e{0}"
-  GUI_TOWN_INFO_DESC4: "§fTrésorerie : §e{0}"
+  GUI_TOWN_INFO_DESC1: "§fLeader : §b{0}"
+  GUI_TOWN_INFO_DESC2: "§fChunks : §2{0}♦"
+  GUI_TOWN_INFO_DESC3: "§fMembres : §9{0}♣"
+  GUI_TOWN_INFO_DESC4: "§fTrésorerie : §6{0}✦"
 
   GUI_TOWN_TREASURY_ICON: "§aTrésorerie"
   GUI_TOWN_TREASURY_ICON_DESC1: "§fGérer les impôts et la trésorerie de la ville"
@@ -163,19 +163,19 @@ language:
   GUI_TOWN_SETTINGS_ICON_DESC1: "§fParamètres généraux de la ville"
 
   GUI_TREASURY_STORAGE: "§aTrésorerie"
-  GUI_TREASURY_STORAGE_DESC1: "§fTrésorerie actuelle de la ville: §e{0}"
-  GUI_TREASURY_STORAGE_DESC2: "§fÉvolution la semaine prochaine: §a{0}"
+  GUI_TREASURY_STORAGE_DESC1: "§fTrésorerie actuelle de la ville: §6{0}✦"
+  GUI_TREASURY_STORAGE_DESC2: "§fÉvolution la semaine prochaine: §a+{0}✦"
   GUI_TREASURY_SPENDING: "§aDépenses"
   GUI_TREASURY_SPENDING_DESC1: "§fDépenses actuelles de la ville: §c{0}"
   GUI_TREASURY_SPENDING_DESC2: "§fDe Salaire: §c{0}"
   GUI_TREASURY_SPENDING_DESC3: "§fDe Parcelles: §c{0}"
   GUI_TREASURY_LOWER_TAX: "§aDiminuer les taxes"
   GUI_TREASURY_LOWER_TAX_DESC1: "§fDiminuer les taxes de §c-1✦"
-  GUI_TREASURY_CANT_TAX_LESS: "Vous ne pouvez pas taxer moins que §e1✦"
+  GUI_TREASURY_CANT_TAX_LESS: "Vous ne pouvez pas taxer moins que §61✦"
   GUI_TREASURY_INCREASE_TAX: "§aAugmenter les taxes"
   GUI_TREASURY_INCREASE_TAX_DESC1: "§fAugmenter les taxes de §a+1✦"
   GUI_TREASURY_FLAT_TAX: "§aTaxe fixe"
-  GUI_TREASURY_FLAT_TAX_DESC1: "§fTaxe actuelle de la ville: §e{0}✦§f par jour"
+  GUI_TREASURY_FLAT_TAX_DESC1: "§fTaxe actuelle de la ville: §6{0}✦§f par jour"
   GUI_TREASURY_TAX_HISTORY: "§aHistorique des taxes"
   GUI_TREASURY_SALARY_HISTORY: "§aHistorique des salaires"
   GUI_TREASURY_SALARY_HISTORY_DESC1: "§fLes dépenses de salaire s'élèvent à: §c-{0}✦"
@@ -200,11 +200,15 @@ language:
 
   GUI_TOWN_LEVEL_UP_CHUNK_CAP: "§aAugmenter le nombre max de terrains revendiqués"
   GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC1: "§fLe niveau actuel est : §e{0}"
-  GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC2: "§fCoût de l'amélioration du niveau §a{0}§f : §e{1}"
+  GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC2: "§fCoût de l'amélioration du niveau §a{0}§f : §6{1}✦"
+  GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC3: "§fProchaine amélioration : §2+{0}♦"
+  GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC4: "§fTotal: §2{0}♦"
 
   GUI_TOWN_LEVEL_UP_PLAYER_CAP: "§aAugmenter le plafond de joueurs"
   GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC1: "§fLe niveau actuel est : §e{0}"
-  GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC2: "§fCoût de l'amélioration du niveau §a{0}§f : §e{1}"
+  GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC2: "§fCoût de l'amélioration du niveau §a{0}§f : §e{1}✦"
+  GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC3: "§fProchaine amélioration : §9+{0}♣"
+  GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC4: "§fTotal: §9{0}♣"
 
   GUI_TOWN_RELATION_WAR: "§aGuerre"
   GUI_TOWN_RELATION_WAR_DESC1: "§fGérer les villes avec lesquelles vous êtes en guerre"
@@ -221,9 +225,9 @@ language:
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aRetirer une ville"
   GUI_TOWN_CHANGED_RELATION_RESUME: "§fVotre ville a maintenant la relation suivante avec {0} : {1}"
 
-  GUI_TOWN_INFO_DESC_1: "§fLeader : §e{0}"
-  GUI_TOWN_INFO_DESC_2: "§fMembres : §e{0}"
-  GUI_TOWN_INFO_DESC_3: "§fTerritoires : §e{0}"
+  GUI_TOWN_INFO_DESC_1: "§fLeader : §3{0}"
+  GUI_TOWN_INFO_DESC_2: "§fMembres : §9{0}♣"
+  GUI_TOWN_INFO_DESC_3: "§fChunks : §2{0}♦"
   GUI_TOWN_INFO_TOWN_RELATION: "§fRelation actuelle avec la ville : §e{0}"
 
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aGérer l'accès aux portes"
@@ -236,7 +240,7 @@ language:
   GUI_TOWN_CLAIM_SETTINGS_BREAK_DESC1: "§fPermission actuelle de destruction : §e{0}"
 
   GUI_TOWN_MEMBER_DESC1: "§fRang: §e{0}"
-  GUI_TOWN_MEMBER_DESC2: "§fSolde actuel: §e{0}✦"
+  GUI_TOWN_MEMBER_DESC2: "§fSolde actuel: §6{0}✦"
   GUI_TOWN_MEMBER_DESC3: "§cClic droit pour expulser le joueur"
   GUI_TOWN_MEMBER_CANT_KICK_LEADER: "Vous ne pouvez pas expulser le leader de la ville"
   GUI_TOWN_MEMBER_CANT_KICK_YOURSELF: "Vous ne pouvez pas vous expulser, vous pouvez quitter la ville depuis le menu des paramètres de la ville"
@@ -298,10 +302,10 @@ language:
   WRITE_IN_CHAT_NEW_ROLE_NAME: "§fÉcrivez dans le chat le nom du grade"
 
   GUI_TOWN_SETTINGS_LEAVE_TOWN: "§aQuitter la ville"
-  GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1: "§fQuitter la ville §e{0}"
+  GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1: "§fQuitter la ville §9{0}"
   GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2: "§fVous ne pouvez pas quitter la ville si vous en êtes le leader, vous devez la supprimer"
   GUI_TOWN_SETTINGS_DELETE_TOWN: "§aDissoudre la ville"
-  GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1: "§cDissoudre la ville §e{0}"
+  GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1: "§cDissoudre la ville §9{0}"
   GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2: "§fVous ne pouvez pas dissoudre la ville si vous n'en êtes pas le leader"
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP: "§fTransférer la propriété de la ville"
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1: "§fDonner la direction de la ville à un autre joueur"
@@ -336,9 +340,9 @@ language:
   VILLAGER_COOK: "Cuisinier"
 
   #Interaction avec le villageois réussie
-  RARE_ITEM_NO_ITEM_IN_HANDS: "Cliquez-droit avec §e{0}§f pour le vendre pour §e{1}✦"
+  RARE_ITEM_NO_ITEM_IN_HANDS: "Cliquez-droit avec §e{0}§f pour le vendre pour §6{1}✦"
   RARE_ITEM_WRONG_ITEM: "Ce villageois n'achète que §e{0}"
-  RARE_ITEM_SELLING_SUCCESS: "Vendu avec succès §e{0}x {1}§f pour §a+{2}✦"
+  RARE_ITEM_SELLING_SUCCESS: "Vendu avec succès §e{0}x {1}§f pour §6+{2}✦"
 
   #Taxes
   DAILY_TAXES_SUCCESS_LOG: "Les taxes de la ville ont été collectées"
