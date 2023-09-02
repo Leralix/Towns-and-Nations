@@ -28,6 +28,8 @@ public class DebugCommandManager implements CommandExecutor, TabExecutor {
         subCommands.add(new SaveAll());
 
         subCommands.add(new TownStat());
+        subCommands.add(new ColorCode());
+        subCommands.add(new DropChance());
 
     }
 

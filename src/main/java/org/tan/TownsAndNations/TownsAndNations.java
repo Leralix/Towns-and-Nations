@@ -102,7 +102,9 @@ public final class TownsAndNations extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new RareItemVillagerInteraction(), this);
         getServer().getPluginManager().registerEvents(new ChunkListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerEnterChunkListener(), this);    
+        getServer().getPluginManager().registerEvents(new PlayerEnterChunkListener(), this);
+        getServer().getPluginManager().registerEvents(new OnSmithingCraft(), this);
+
     }
 
     public static TownsAndNations getPlugin() {

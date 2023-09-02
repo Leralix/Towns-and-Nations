@@ -1003,14 +1003,14 @@ public class GuiManager2 {
         HeadUtils.addLore(upgradeChunkCap,
                 Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC1.getTranslation(townLevel.getChunkCapLevel()),
                 Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC2.getTranslation(townLevel.getChunkCapLevel()+1,townLevel.getMoneyRequiredChunkCap()),
-                Lang.GUI_TOWN_LEVEL_UP_DESC3.getTranslation(townLevel.getMultiplierChunkCap()),
-                Lang.GUI_TOWN_LEVEL_UP_DESC4.getTranslation(townLevel.getChunkCap())
+                Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC3.getTranslation(townLevel.getMultiplierChunkCap()),
+                Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC4.getTranslation(townLevel.getChunkCap())
         );
         HeadUtils.addLore(upgradePlayerCap,
                 Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC1.getTranslation(townLevel.getPlayerCapLevel()),
                 Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC2.getTranslation(townLevel.getPlayerCapLevel()+1,townLevel.getMoneyRequiredPlayerCap()),
-                Lang.GUI_TOWN_LEVEL_UP_DESC3.getTranslation(townLevel.getMultiplierPlayerCap()),
-                Lang.GUI_TOWN_LEVEL_UP_DESC4.getTranslation(townLevel.getPlayerCap())
+                Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC3.getTranslation(townLevel.getMultiplierPlayerCap()),
+                Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC4.getTranslation(townLevel.getPlayerCap())
         );
 
 

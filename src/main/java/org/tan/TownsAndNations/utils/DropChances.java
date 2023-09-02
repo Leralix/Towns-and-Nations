@@ -6,6 +6,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SuspiciousStewMeta;
 import org.tan.TownsAndNations.DataClass.RareItem;
 import org.tan.TownsAndNations.Lang.Lang;
 
@@ -28,10 +29,16 @@ public class DropChances {
 
 
     public static RareItem getRareItem(Block block) {
+        System.out.println("block");
+        System.out.println(block);
+        System.out.println("block");
+        System.out.println(block.getType().toString());
+        System.out.println("block");
+        System.out.println(block.getBlockData().getAsString());
         return dropChances.get(block.getBlockData().getAsString());
     }
 
-    public static Map<String, RareItem> dropChanceMap(){
+    public static Map<String, RareItem> getDropChances(){
         return dropChances;
     }
 
