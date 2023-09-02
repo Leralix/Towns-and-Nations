@@ -20,10 +20,6 @@ public class RareItemDrops implements Listener {
         Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        System.out.println(event.getBlock());
-        System.out.println(event.getBlock().getType());
-        System.out.println(event.getBlock().getBlockData());
-
 
         if(item.getEnchantments().containsKey(Enchantment.SILK_TOUCH))
             return;
@@ -31,7 +27,7 @@ public class RareItemDrops implements Listener {
             return;
 
         RareItem rareItem = DropChances.getRareItem(event.getBlock());
-
+        System.out.println(rareItem);
         if(rareItem == null)
             return;
 

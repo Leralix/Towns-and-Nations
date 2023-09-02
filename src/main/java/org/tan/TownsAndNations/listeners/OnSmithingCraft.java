@@ -5,7 +5,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.inventory.PrepareSmithingEvent;
-import org.bukkit.inventory.ItemType;
 
 public class OnSmithingCraft implements Listener {
 
@@ -18,9 +17,10 @@ public class OnSmithingCraft implements Listener {
         ItemStack base = contents[0];
         ItemStack addition = contents[1];
 
-        if (addition != null && addition.getType() == ItemType.NETHERITE_INGOT) {
+        if (addition != null && addition.getType() == Material.NETHERITE_INGOT) {
             // Si l'ingrédient principal est un outil/armure en diamant, et le secondaire un lingot de netherite
             if (isDiamondGear(base)) {
+                System.out.println("annulation d'un craft de netherite");
                 event.setResult(null);
 
             }

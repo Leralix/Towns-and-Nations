@@ -29,13 +29,8 @@ public class DropChances {
 
 
     public static RareItem getRareItem(Block block) {
-        System.out.println("block");
-        System.out.println(block);
-        System.out.println("block");
-        System.out.println(block.getType().toString());
-        System.out.println("block");
-        System.out.println(block.getBlockData().getAsString());
-        return dropChances.get(block.getBlockData().getAsString());
+        System.out.println(block.getType().name());
+        return dropChances.get(block.getType().name());
     }
 
     public static Map<String, RareItem> getDropChances(){

@@ -23,25 +23,27 @@ TownUpgradeChunk: 25
 #The stat of getting a rare Stone, used to get money
 # (20 = 20% drop chance when breaking this block without a silk touch pick)
 rareStone:
-  GOLD_ORE: 20
-  DEEPSLATE_GOLD_ORE: 20
-  DIAMOND_ORE: 40
-  DEEPSLATE_DIAMOND_ORE: 40
+  GOLD_ORE: 30
+  DEEPSLATE_GOLD_ORE: 30
+  DIAMOND_ORE: 50
+  DEEPSLATE_DIAMOND_ORE: 50
 
 rareStoneValue: 5
 
 
 #The stat of getting rare Wood, used to get money
 rareWood:
-  ACACIA_LOG: 2
-  BIRCH_LOG: 2
-  DARK_OAK_LOG: 2
-  JUNGLE_LOG: 2
-  OAK_LOG: 2
-  SPRUCE_LOG: 2
+  ACACIA_LOG: 3
+  BIRCH_LOG: 3
+  DARK_OAK_LOG: 3
+  JUNGLE_LOG: 3
+  OAK_LOG: 3
+  SPRUCE_LOG: 3
 
-rareWoodValue: 2
+rareWoodValue: 3
 
 #The stat of getting rare Crops, used to get money
 rareCrops:
-  WHEAT: 3
+  WHEAT: 5
+
+rareCropsValue: 3
