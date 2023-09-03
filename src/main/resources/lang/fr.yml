@@ -329,9 +329,9 @@ language:
   CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fVille supprimée avec succès"
 
   #Objet personnalisé
-  ITEM_RARE_STONE: "§3Pierre rare"
+  ITEM_RARE_STONE: "§3Pierre précieuse"
   ITEM_RARE_WOOD: "§3Bois rare"
-  ITEM_RARE_CROP: "§3Culture rare"
+  ITEM_RARE_CROP: "§3Plante rare"
   RARE_ITEM_DESC_1: "§fCet objet peut être échangé contre de l'argent au spawn"
 
   #Métiers de villageois personnalisés

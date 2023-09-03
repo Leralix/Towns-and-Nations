@@ -1,0 +1,4 @@
+#The language of the plugin
+##Language available: en, fr.
+##Syntax: <languageCode>.yml
+language: en.yml

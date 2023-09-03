@@ -34,29 +34,26 @@ public final class TownsAndNations extends JavaPlugin {
 
         logger.info("[TaN] Loading Plugin");
 
+        logger.info("[TaN] -Loading Lang");
+        ConfigUtil.saveResource("lang.yml");
+        ConfigUtil.loadCustomConfig("lang.yml");
+
+        logger.info(ConfigUtil.getCustomConfig("lang.yml").getString("language"));
+        Lang.loadTranslations(ConfigUtil.getCustomConfig("lang.yml").getString("language"));
+        logger.info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.getTranslation());
+
+
         logger.info("[TaN] -Loading Configs");
         ConfigUtil.saveResource("config.yml");
         ConfigUtil.loadCustomConfig("config.yml");
         ConfigUtil.saveResource("townLevelUpRequirement.yml");
         ConfigUtil.loadCustomConfig("townLevelUpRequirement.yml");
-
         DropChances.load();
 
-        logger.info("[TaN] -Loading Lang");
-        logger.info(ConfigUtil.getCustomConfig("config.yml").getString("Language"));
-
-        Lang.loadTranslations(ConfigUtil.getCustomConfig("config.yml").getString("Language"));
-        logger.info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.getTranslation());
 
         logger.info("[TaN] -Loading Stats");
-        logger.info("[TaN] -test");
-
         PlayerDataStorage.loadStats();
-        logger.info("[TaN] -test");
-
         TownDataStorage.loadStats();
-        logger.info("[TaN] -test");
-
         ClaimedChunkStorage.loadStats();
 
         logger.info("[TaN] -Loading Scheduled commands");

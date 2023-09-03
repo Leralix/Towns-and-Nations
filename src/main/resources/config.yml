@@ -1,9 +1,3 @@
-
-#The language of the plugin
-##Language available: en, fr.
-##<languageCode>.yml
-Language: en.yml
-
 #The cost of a chunk
 CostOfChunk: 0
 
@@ -23,10 +17,16 @@ TownUpgradeChunk: 25
 #The stat of getting a rare Stone, used to get money
 # (20 = 20% drop chance when breaking this block without a silk touch pick)
 rareStone:
-  GOLD_ORE: 30
-  DEEPSLATE_GOLD_ORE: 30
-  DIAMOND_ORE: 50
-  DEEPSLATE_DIAMOND_ORE: 50
+  GOLD_ORE: 35
+  DEEPSLATE_GOLD_ORE: 35
+  DIAMOND_ORE: 30
+  DEEPSLATE_DIAMOND_ORE: 30
+  EMERALD_ORE: 50
+  DEEPSLATE_EMERALD_ORE: 50
+  REDSTONE_ORE: 15
+  DEEPSLATE_REDSTONE_ORE: 15
+  LAPIS_ORE: 25
+  DEEPSLATE_LAPIS_ORE: 25
 
 rareStoneValue: 5
 
@@ -45,5 +45,10 @@ rareWoodValue: 3
 #The stat of getting rare Crops, used to get money
 rareCrops:
   WHEAT: 5
+  CARROTS: 5
+  POTATOES: 5
+  BEETROOTS: 5
+  PUMPKIN: 1
+  MELON: 1
 
 rareCropsValue: 3
