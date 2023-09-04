@@ -36,7 +36,7 @@ public class getRareItem extends SubCommand {
         if (args.length == 2) {
             suggestions.add("rarestone");
             suggestions.add("rarewood");
-            suggestions.add("rarecrops");
+            suggestions.add("rarecrop");
         }
         return suggestions;
     }
@@ -49,7 +49,7 @@ public class getRareItem extends SubCommand {
             case "rarewood" -> {
                 player.getLocation().getWorld().dropItemNaturally(player.getLocation(), DropChances.getRareWood());
             }
-            case "rarecrops" -> {
+            case "rarecrop" -> {
                 player.getLocation().getWorld().dropItemNaturally(player.getLocation(), DropChances.getRareCrops());
             }
             default -> {

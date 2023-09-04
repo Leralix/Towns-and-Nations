@@ -1,9 +1,6 @@
 package org.tan.TownsAndNations.commands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.commands.debugsubcommands.*;
@@ -12,7 +9,7 @@ import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DebugCommandManager implements CommandExecutor, TabExecutor {
+public class DebugCommandManager implements CommandExecutor, TabExecutor, TabCompleter {
 
     private final ArrayList<SubCommand> subCommands = new ArrayList<>();
 
@@ -62,13 +59,16 @@ public class DebugCommandManager implements CommandExecutor, TabExecutor {
     public List<String> onTabComplete(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label, String[] args) {
         List<String> suggestions = new ArrayList<>();
 
-        // If the player is just starting to type the command
         if(args.length == 1) {
             for(SubCommand subCmd : subCommands) {
-                // Add all sub-commands that start with the entered text
                 if(subCmd.getName().startsWith(args[0].toLowerCase())) {
                     suggestions.add(subCmd.getName());
                 }
+            }
+        }else {
+            SubCommand subCmd = subCommands.stream().filter(cmd -> cmd.getName().equalsIgnoreCase(args[0])).findFirst().orElse(null);
+            if(subCmd != null && sender instanceof Player) {
+                suggestions = subCmd.getTabCompleteSuggestions((Player) sender, args);
             }
         }
 

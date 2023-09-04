@@ -34,6 +34,7 @@ public class AddMoney extends SubCommand {
         return "/tandebug addmoney <player> <amount>";
     }
     public List<String> getTabCompleteSuggestions(Player player, String[] args){
+
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
             for (Player p : Bukkit.getOnlinePlayers()) {
@@ -52,7 +53,7 @@ public class AddMoney extends SubCommand {
             player.sendMessage(getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.getTranslation());
             player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
         }
-        if (args.length == 3) {
+        else if (args.length == 3) {
             PlayerData target = PlayerDataStorage.get(Bukkit.getServer().getPlayer(args[1]));
             int amount;
             try {

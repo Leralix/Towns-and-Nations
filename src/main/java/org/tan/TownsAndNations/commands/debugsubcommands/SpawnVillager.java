@@ -8,6 +8,7 @@ import org.tan.TownsAndNations.enums.CustomVillagerProfession;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.VillagerUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpawnVillager extends SubCommand {
@@ -32,20 +33,26 @@ public class SpawnVillager extends SubCommand {
         return "/tandebug spawnvillager <Villager Name>";
     }
     public List<String> getTabCompleteSuggestions(Player player, String[] args){
-        return null;
+        List<String> suggestions = new ArrayList<>();
+        if (args.length == 2) {
+            suggestions.add("goldsmith");
+            suggestions.add("cook");
+            suggestions.add("botanist");
+        }
+        return suggestions;
     }
     @Override
     public void perform(Player player, String[] args) {
         switch (args[1]) {
-            case "g" -> {
+            case "goldsmith" -> {
                 VillagerUtil.createCustomVillager(player, CustomVillagerProfession.GOLDSMITH);
                 return;
             }
-            case "c" -> {
+            case "cook" -> {
                 VillagerUtil.createCustomVillager(player, CustomVillagerProfession.COOK);
                 return;
             }
-            case "b" -> {
+            case "botanist" -> {
                 VillagerUtil.createCustomVillager(player, CustomVillagerProfession.BOTANIST);
                 return;
             }

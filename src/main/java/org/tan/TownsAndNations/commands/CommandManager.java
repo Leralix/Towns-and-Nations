@@ -1,9 +1,6 @@
 package org.tan.TownsAndNations.commands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.commands.subcommands.*;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
@@ -11,7 +8,7 @@ import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandManager implements CommandExecutor, TabExecutor {
+public class CommandManager implements CommandExecutor, TabExecutor, TabCompleter {
 
     private final ArrayList<SubCommand> subCommands = new ArrayList<>();
 
@@ -65,9 +62,9 @@ public class CommandManager implements CommandExecutor, TabExecutor {
                     suggestions.add(subCmd.getName());
                 }
             }
-        } else {
+        }else {
             SubCommand subCmd = subCommands.stream().filter(cmd -> cmd.getName().equalsIgnoreCase(args[0])).findFirst().orElse(null);
-            if(subCmd != null) {
+            if(subCmd != null && sender instanceof Player) {
                 suggestions = subCmd.getTabCompleteSuggestions((Player) sender, args);
             }
         }
