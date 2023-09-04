@@ -220,8 +220,15 @@ public class GuiManager2 {
 
 
             TownData townData = entry.getValue();
-            String townId = townData.getID();
-            ItemStack townIcon = HeadUtils.getTownIconWithInformations(townId);
+            TownData playerTown = TownDataStorage.get(townData.getID());
+
+            ItemStack townIcon = HeadUtils.getTownIcon(playerTown.getID());
+
+            HeadUtils.addLore(townIcon,
+                    Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerTown.getUuidLeader())).getName()),
+                    Lang.GUI_TOWN_INFO_DESC2.getTranslation(playerTown.getChunkSettings().getNumberOfClaimedChunk()),
+                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(playerTown.getPlayerList().size())
+            );
 
             GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
@@ -275,6 +282,9 @@ public class GuiManager2 {
         ItemStack ClaimIcon = HeadUtils.makeSkull(Lang.GUI_CLAIM_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
         HeadUtils.addLore(ClaimIcon, Lang.GUI_CLAIM_ICON_DESC1.getTranslation());
 
+        ItemStack otherTownIcon = HeadUtils.makeSkull(Lang.GUI_OTHER_TOWN_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=");
+        HeadUtils.addLore(otherTownIcon, Lang.GUI_OTHER_TOWN_ICON_DESC1.getTranslation());
+
         ItemStack RelationIcon = HeadUtils.makeSkull(Lang.GUI_RELATION_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=");
         HeadUtils.addLore(RelationIcon, Lang.GUI_RELATION_ICON_DESC1.getTranslation());
 
@@ -317,6 +327,10 @@ public class GuiManager2 {
             event.setCancelled(true);
             OpenTownChunkMenu(player);
         });
+        GuiItem _otherTownIcon = ItemBuilder.from(otherTownIcon).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownMenuOtherTown(player);
+        });
         GuiItem _relationIcon = ItemBuilder.from(RelationIcon).asGuiItem(event -> {
             event.setCancelled(true);
             OpenTownRelations(player);
@@ -339,6 +353,7 @@ public class GuiManager2 {
         gui.setItem(10, _goldIcon);
         gui.setItem(11, _membersIcon);
         gui.setItem(12, _claimIcon);
+        gui.setItem(13, _otherTownIcon);
         gui.setItem(14, _relationIcon);
         gui.setItem(15, _levelIcon);
         gui.setItem(16, _settingsIcon);
@@ -346,6 +361,53 @@ public class GuiManager2 {
 
         gui.open(player);
     }
+    public static void OpenTownMenuOtherTown(Player player) {
+
+        String name = "Town";
+        int nRow = 3;
+
+        Gui gui = Gui.gui()
+                .title(Component.text(name))
+                .type(GuiType.CHEST)
+                .rows(nRow)
+                .create();
+
+
+        HashMap<String, TownData> townDataStorage = getTownList();
+
+        int i = 0;
+        for (Map.Entry<String, TownData> entry : townDataStorage.entrySet()) {
+
+
+            TownData townData = entry.getValue();
+            TownData playerTown = TownDataStorage.get(townData.getID());
+
+            ItemStack townIcon = HeadUtils.getTownIcon(playerTown.getID());
+
+            HeadUtils.addLore(townIcon,
+                    Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerTown.getUuidLeader())).getName()),
+                    Lang.GUI_TOWN_INFO_DESC2.getTranslation(playerTown.getChunkSettings().getNumberOfClaimedChunk()),
+                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(playerTown.getPlayerList().size())
+            );
+
+            GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> {
+                event.setCancelled(true);
+            });
+
+            gui.setItem(i, _townIteration);
+            i++;
+
+        }
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
+        GuiItem _back = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownMenuHaveTown(player);
+        });
+        gui.setItem(3,1, _back);
+
+        gui.open(player);
+    }
+
     public static void OpenTownMemberList(Player player) {
 
         String name = "Town";

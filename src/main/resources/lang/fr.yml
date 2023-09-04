@@ -155,6 +155,8 @@ language:
   GUI_TOWN_MEMBERS_ICON_DESC1: "§fGérer les membres et les rôles"
   GUI_CLAIM_ICON: "§aTerrains"
   GUI_CLAIM_ICON_DESC1: "§fGérer le territoire de la ville"
+  GUI_OTHER_TOWN_ICON: "§aAutres villes"
+  GUI_OTHER_TOWN_ICON_DESC1: "§fInformations sur les autres villes"
   GUI_RELATION_ICON: "§aDiplomatie"
   GUI_RELATION_ICON_DESC1: "§fGérer la diplomatie étrangère"
   GUI_TOWN_LEVEL_ICON: "§aNiveau de la ville"

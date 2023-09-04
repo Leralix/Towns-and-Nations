@@ -161,6 +161,8 @@ language:
   GUI_TOWN_MEMBERS_ICON_DESC1: "§fManage members and roles"
   GUI_CLAIM_ICON: "§aLand"
   GUI_CLAIM_ICON_DESC1: "§fManage town territory"
+  GUI_OTHER_TOWN_ICON: "§aOther Town"
+  GUI_OTHER_TOWN_ICON_DESC1: "§fGet information on other towns"
   GUI_RELATION_ICON: "§aDiplomacy"
   GUI_RELATION_ICON_DESC1: "§fManage foreign diplomacy"
   GUI_TOWN_LEVEL_ICON: "§aTown level"
