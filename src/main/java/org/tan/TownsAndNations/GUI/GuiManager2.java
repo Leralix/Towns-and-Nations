@@ -372,6 +372,8 @@ public class GuiManager2 {
                 .rows(nRow)
                 .create();
 
+        PlayerData playerStat = PlayerDataStorage.get(player);
+        TownData playerTown = TownDataStorage.get(playerStat);
 
         HashMap<String, TownData> townDataStorage = getTownList();
 
@@ -379,15 +381,25 @@ public class GuiManager2 {
         for (Map.Entry<String, TownData> entry : townDataStorage.entrySet()) {
 
 
-            TownData townData = entry.getValue();
-            TownData playerTown = TownDataStorage.get(townData.getID());
+            TownData otherTown = entry.getValue();
 
             ItemStack townIcon = HeadUtils.getTownIcon(playerTown.getID());
+
+            TownRelation relation = otherTown.getRelationWith(playerTown);
+
+            String relationName;
+            if(relation == null){
+                relationName = Lang.GUI_TOWN_RELATION_NEUTRAL.getTranslation();
+            }
+            else {
+                relationName = relation.getColor() + relation.getName();
+            }
 
             HeadUtils.addLore(townIcon,
                     Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerTown.getUuidLeader())).getName()),
                     Lang.GUI_TOWN_INFO_DESC2.getTranslation(playerTown.getChunkSettings().getNumberOfClaimedChunk()),
-                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(playerTown.getPlayerList().size())
+                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(playerTown.getPlayerList().size()),
+                    Lang.GUI_TOWN_INFO_TOWN_RELATION.getTranslation(relationName)
             );
 
             GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> {
@@ -407,7 +419,6 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-
     public static void OpenTownMemberList(Player player) {
 
         String name = "Town";
@@ -433,7 +444,7 @@ public class GuiManager2 {
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate.getName(),playerIterate);
             HeadUtils.addLore(
                     playerHead,
-                    Lang.GUI_TOWN_MEMBER_DESC1.getTranslation(otherPlayerStat.getTownRank()),
+                    Lang.GUI_TOWN_MEMBER_DESC1.getTranslation(otherPlayerStat.getTownRankID()),
                     Lang.GUI_TOWN_MEMBER_DESC2.getTranslation(otherPlayerStat.getBalance()),
                     Lang.GUI_TOWN_MEMBER_DESC3.getTranslation()
             );
@@ -450,7 +461,7 @@ public class GuiManager2 {
                         return;
                     }
 
-                    town.getRank(otherPlayerStat.getTownRank()).removePlayer(playerUUID);
+                    town.getRank(otherPlayerStat.getTownRankID()).removePlayer(playerUUID);
                     town.removePlayer(playerUUID);
                     otherPlayerStat.leaveTown();
                     town.broadCastMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.getTranslation(playerIterate.getName()));
@@ -743,7 +754,7 @@ public class GuiManager2 {
                 event.setCancelled(true);
 
                 PlayerData playerStat = PlayerDataStorage.get(playerUUID);
-                town.getRank(playerStat.getTownRank()).removePlayer(playerUUID);
+                town.getRank(playerStat.getTownRankID()).removePlayer(playerUUID);
                 playerStat.setRank(roleName);
                 townRank.addPlayer(playerUUID);
 
@@ -923,7 +934,27 @@ public class GuiManager2 {
         ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.getTranslation());
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
-        HeadUtils.addLore(goldIcon, Lang.GUI_TREASURY_STORAGE_DESC1.getTranslation(town.getBalance()),Lang.GUI_TREASURY_STORAGE_DESC2.getTranslation(0));
+
+
+        int nextTaxes = 0;
+
+        for (String playerID : town.getPlayerList()){
+            PlayerData otherPlayer = PlayerDataStorage.get(playerID);
+
+            if(!otherPlayer.getTownRank().isPayingTaxes()){
+                continue;
+            }
+            if(otherPlayer.getBalance() < town.getTreasury().getFlatTax()){
+                continue;
+            }
+            nextTaxes = nextTaxes + town.getTreasury().getFlatTax();
+
+        }
+
+        HeadUtils.addLore(goldIcon,
+                Lang.GUI_TREASURY_STORAGE_DESC1.getTranslation(town.getBalance()),
+                Lang.GUI_TREASURY_STORAGE_DESC2.getTranslation(nextTaxes)
+        );
         HeadUtils.addLore(goldSpendingIcon, Lang.GUI_TREASURY_SPENDING_DESC1.getTranslation(0), Lang.GUI_TREASURY_SPENDING_DESC2.getTranslation(0),Lang.GUI_TREASURY_SPENDING_DESC3.getTranslation(0));
 
 
@@ -1187,7 +1218,7 @@ public class GuiManager2 {
                 player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.getTranslation());
             } else {
                 playerTown.removePlayer(player);
-                playerTown.getRank(playerStat.getTownRank()).removePlayer(playerStat.getUuid());
+                playerTown.getRank(playerStat.getTownRankID()).removePlayer(playerStat.getUuid());
                 playerStat.leaveTown();
                 player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_LEFT_THE_TOWN.getTranslation());
                 playerTown.broadCastMessage(ChatUtils.getTANString() + Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.getTranslation(Bukkit.getOfflinePlayer(UUID.fromString(playerStat.getUuid())).getName()));

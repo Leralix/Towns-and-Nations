@@ -12,7 +12,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
-import org.tan.TownsAndNations.DataClass.TownRank;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.TownRelation;
@@ -47,7 +46,7 @@ public class HeadUtils {
             addLore(head,
                     Lang.GUI_PLAYER_PROFILE_DESC1.getTranslation(playerData.getBalance()),
                     Lang.GUI_PLAYER_PROFILE_DESC2.getTranslation(playerTown.getName()),
-                    Lang.GUI_PLAYER_PROFILE_DESC3.getTranslation(playerTown.getRank(playerData.getTownRank()).getName())
+                    Lang.GUI_PLAYER_PROFILE_DESC3.getTranslation(playerTown.getRank(playerData.getTownRankID()).getName())
             );
 
         }
