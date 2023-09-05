@@ -6,39 +6,63 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.utils.ChatUtils;
 
 public class PlayerEnterChunkListener implements Listener {
 
     @EventHandler
     public void PlayerMoveEvent(PlayerMoveEvent e){
 
-        /*
+
         Chunk currentChunk = e.getFrom().getChunk();
         if(e.getTo() == null){
             return;
         }
         Chunk nextChunk = e.getTo().getChunk();
-        Player player = e.getPlayer();
 
         if(currentChunk.equals(nextChunk)){
             return;
         }
 
+        if(!ClaimedChunkStorage.isChunkClaimed(currentChunk) && !ClaimedChunkStorage.isChunkClaimed(nextChunk)){
+            return;
+        }
+
+
         TownData townFrom = ClaimedChunkStorage.getChunkOwnerTown(currentChunk);
         TownData townTo = ClaimedChunkStorage.getChunkOwnerTown(nextChunk);
+
+        System.out.println();
 
         if(equalsWithNulls(townFrom,townTo)){
             return;
         }
 
+        Player player = e.getPlayer();
+
         if(townFrom == null){
-            player.sendMessage("Wilderness");
+            player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_ENTER_WILDERNESS.getTranslation());
         }
         else{
-            player.sendMessage("You enter: " + townTo.getName());
+            player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_ENTER_TOWN.getTranslation(townTo.getName()));
+
+            TownRelation relation = TownDataStorage.get(player).getRelationWith(townTo);
+            if(relation == TownRelation.WAR){
+
+                player.sendMessage(ChatUtils.getTANString() +
+                        Lang.CHUNK_ENTER_TOWN_AT_WAR.getTranslation()
+                );
+
+                townTo.broadCastMessage(ChatUtils.getTANString() +
+                                Lang.CHUNK_INTRUSION_ALERT.getTranslation(TownDataStorage.get(player).getName(),player.getName())
+                );
+            }
         }
-         */
+
 
 
     }

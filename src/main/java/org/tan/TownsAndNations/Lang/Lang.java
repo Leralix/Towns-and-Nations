@@ -271,7 +271,11 @@ public enum Lang {
     RARE_ITEM_NO_ITEM_IN_HANDS,
     RARE_ITEM_WRONG_ITEM,
     RARE_ITEM_SELLING_SUCCESS,
-    DAILY_TAXES_SUCCESS_LOG;
+    DAILY_TAXES_SUCCESS_LOG,
+    CHUNK_ENTER_WILDERNESS,
+    CHUNK_ENTER_TOWN,
+    CHUNK_ENTER_TOWN_AT_WAR,
+    CHUNK_INTRUSION_ALERT;
 
 
     private static final Map<Lang, String> translations = new HashMap<>();

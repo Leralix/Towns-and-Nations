@@ -348,3 +348,9 @@ language:
 
   #Taxes
   DAILY_TAXES_SUCCESS_LOG: "Les taxes de la ville ont été collectées"
+
+  #Intéractions avec les chunks
+  CHUNK_ENTER_WILDERNESS: "§fSortie de la ville"
+  CHUNK_ENTER_TOWN: "§fVous entrez dans la ville: {0}"
+  CHUNK_ENTER_TOWN_AT_WAR: "§cVous êtes en guerre avec cette ville, les joueurs y ont été alertés."
+  CHUNK_INTRUSION_ALERT: "§cUn ennemi de la ville {0} a traverser vos frontières: {1}"

@@ -430,7 +430,7 @@ public class GuiManager2 {
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData town = TownDataStorage.get(playerStat);
 
-        List<String> players = town.getPlayerList();
+        HashSet<String> players = town.getPlayerList();
 
         int i = 0;
         for (String playerUUID: players) {
@@ -1421,11 +1421,20 @@ public class GuiManager2 {
 
         ArrayList<String> TownListUUID = playerTown.getRelations().getOne(relation);
         int i = 0;
-        for(String townUUID : TownListUUID){
-            ItemStack townIcon = HeadUtils.getTownIconWithInformations(townUUID);
+        for(String otherTownUUID : TownListUUID){
+            ItemStack townIcon = HeadUtils.getTownIconWithInformations(otherTownUUID);
 
             GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
+
+                if(relation == TownRelation.WAR){
+                    player.sendMessage("bagarre");
+                    WarTaggedPlayer.addPlayersToTown(otherTownUUID,playerTown.getPlayerList());
+                    player.sendMessage("joueurs ajoutés");
+
+                }
+
+
             });
             gui.setItem(i, _town);
 

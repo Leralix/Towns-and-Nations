@@ -17,6 +17,7 @@ import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.WarTaggedPlayer;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
@@ -42,6 +43,9 @@ public class ChunkListener implements Listener {
             return;
         //permission is on foreign
         if(chunkTown.getChunkSettings().getBreakAuth() == TownChunkPermission.FOREIGN)
+            return;
+        //war has been declared
+        if(WarTaggedPlayer.isPlayerInWarWithTown(player,chunkTown))
             return;
 
         playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));

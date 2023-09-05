@@ -32,7 +32,7 @@ public class TownDataStorage {
 
         TownData townData = townDataMap.get(TownId);
 
-        List<String> array = townData.getPlayerList();
+        HashSet<String> array = townData.getPlayerList();
         for(String playerUUID : array) {
             PlayerDataStorage.get(playerUUID).setTownId(null);
         }
