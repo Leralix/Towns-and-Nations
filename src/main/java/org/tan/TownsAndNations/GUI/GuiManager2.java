@@ -15,13 +15,10 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.Action;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.enums.TownRolePermission;
-import org.tan.TownsAndNations.storage.TownRelationConfirmStorage;
+import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.HeadUtils;
-import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.ChatCategory.RANK_CREATION;
 import static org.tan.TownsAndNations.storage.TownDataStorage.getTownList;
@@ -1229,20 +1226,24 @@ public class GuiManager2 {
             event.setCancelled(true);
             if (!playerStat.isTownLeader()) {
                 player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.getTranslation());
-            } else {
-                TownDataStorage.removeTown(playerStat.getTownId());
-
-                for(String memberUUID : playerTown.getPlayerList()){
-                    PlayerData memberStat = PlayerDataStorage.get(memberUUID);
-                    memberStat.leaveTown();
-                }
-
-
-                playerStat.setTownId(null);
-                playerStat.setRank(null);
-                player.closeInventory();
-                player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.getTranslation());
+                return;
             }
+
+            ClaimedChunkStorage.unclaimAllChunkFrom(playerStat.getTownId());
+
+            TownDataStorage.removeTown(playerStat.getTownId());
+
+            for(String memberUUID : playerTown.getPlayerList()){
+                PlayerData memberStat = PlayerDataStorage.get(memberUUID);
+                memberStat.leaveTown();
+            }
+
+
+            playerStat.setTownId(null);
+            playerStat.setRank(null);
+            player.closeInventory();
+            player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.getTranslation());
+
         });
 
         GuiItem _changeOwnershipTown = ItemBuilder.from(changeOwnershipTown).asGuiItem(event -> {

@@ -4,8 +4,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.TownRelations;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
+import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
@@ -84,7 +86,17 @@ public class MapCommand extends SubCommand {
 
                         TownData playerTown = TownDataStorage.get(player);
                         TownData otherTown = TownDataStorage.get(ClaimedChunkStorage.get(chunk).getTownID());
-                        ChatColor townColor = playerTown.getRelationWith(otherTown).getColor();
+
+                        TownRelation relation = playerTown.getRelationWith(otherTown);
+
+                        ChatColor townColor;
+                        if(relation == null){
+                            townColor = ChatColor.WHITE;
+                        }
+                        else{
+                            townColor = relation.getColor();
+                        }
+
 
                         if (dx == 0 && dz == 0) {
                             line.append(townColor + "★");

@@ -50,6 +50,20 @@ public class ClaimedChunkStorage {
         saveStats();
     }
 
+    public static void unclaimAllChunkFrom(String townID) {
+
+        for (Map.Entry<String, ClaimedChunk> entry : claimedChunksMap.entrySet()) {
+            ClaimedChunk value = entry.getValue();
+            String key = entry.getKey();
+
+            if (value.getTownID().equals(townID)){
+                claimedChunksMap.remove(key);
+            }
+
+        }
+
+    }
+
     public static ClaimedChunk get(Chunk chunk) {
         return claimedChunksMap.get(getChunkKey(chunk));
     }
