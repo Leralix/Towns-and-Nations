@@ -67,15 +67,13 @@ public class MapCommand extends SubCommand {
                 }
             }
 
-            player.sendMessage("▬▬▬▬▬▬▬▬▬▬");
+            player.sendMessage("▬▬▬▬▬↑O↑▬▬▬▬▬");
 
             for (int dx = -radius; dx <= radius; dx++) {
                 StringBuilder line = new StringBuilder();
 
                 if (dx == -radius) {
-                    line.append("↑N↑");
-                } else if (dx == radius) {
-                    line.append("↓S↓");
+                    line.append("");
                 } else {
                     line.append("   ");
                 }
@@ -115,16 +113,13 @@ public class MapCommand extends SubCommand {
                     }
                 }
 
-                if (dx == 0) {
-                    line.append("→E→");
-                } else {
-                    line.append("   ");
-                }
+                line.append("   ");
+
 
                 player.sendMessage(line.toString());
             }
 
-            player.sendMessage("▬▬▬▬▬▬▬▬▬▬");
+            player.sendMessage("▬▬▬▬▬↓E↓▬▬▬▬▬");
 
         }
         else {

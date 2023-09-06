@@ -29,6 +29,7 @@ language:
   CLAIM_CHUNK_COMMAND_DESC: "Claim a chunk"
   CHUNK_ALREADY_CLAIMED_WARNING: "§cThis chunk is already claimed by: §9{0}"
   MAX_CHUNK_LIMIT_REACHED: "§cYou reached the maximum number of chunk claimed, upgrade your town to get more"
+  CHUNK_NOT_ADJACENT: "§cThis chunk is not adjacent to your town"
   CHUNK_CLAIMED_SUCCESS: "Chunk claimed ! Current number of claimed chunk: §2{0}/{1}♦)"
 
   #CustomVillager

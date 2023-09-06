@@ -28,6 +28,7 @@ language:
   CLAIM_CHUNK_COMMAND_DESC: "Revendiquer un chunk"
   CHUNK_ALREADY_CLAIMED_WARNING: "§cCe chunk est déjà revendiqué par : §9{0}"
   MAX_CHUNK_LIMIT_REACHED: "§cVous avez atteint le nombre maximum de chunks revendiqués, améliorez votre ville pour en obtenir plus"
+  CHUNK_NOT_ADJACENT: "§cCe chunk n'est pas adjacent à votre ville"
   CHUNK_CLAIMED_SUCCESS: "Chunk revendiqué ! Nombre actuel de chunks revendiqués : §2{0}/{1}♦)"
 
   # CustomVillager
