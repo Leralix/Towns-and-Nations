@@ -28,6 +28,9 @@ public class ClaimedChunkStorage {
     }
 
     public static TownData getChunkOwnerTown(Chunk chunk) {
+        if(!isChunkClaimed(chunk)){
+            return null;
+        }
         return TownDataStorage.get(getChunkOwnerID(chunk));
     }
 
@@ -45,9 +48,45 @@ public class ClaimedChunkStorage {
         saveStats();
     }
 
+    public static boolean isAdjacentChunkClaimedBySameTown(Chunk chunk, String townID) {
+        String originalChunkKey = getChunkKey(chunk);
+
+        List<String> adjacentChunkKeys = Arrays.asList(
+                (chunk.getX() + 1) + "," + chunk.getZ() + "," + chunk.getWorld().getUID(),
+                (chunk.getX() - 1) + "," + chunk.getZ() + "," + chunk.getWorld().getUID(),
+                chunk.getX() + "," + (chunk.getZ() + 1) + "," + chunk.getWorld().getUID(),
+                chunk.getX() + "," + (chunk.getZ() - 1) + "," + chunk.getWorld().getUID()
+        );
+
+        for (String adjacentChunkKey : adjacentChunkKeys) {
+            ClaimedChunk adjacentClaimedChunk = claimedChunksMap.get(adjacentChunkKey);
+            if (adjacentClaimedChunk != null && adjacentClaimedChunk.getTownID().equals(townID)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+
     public static void unclaimChunk(Chunk chunk) {
         claimedChunksMap.remove(getChunkKey(chunk));
         saveStats();
+    }
+
+    public static void unclaimAllChunkFrom(String townID) {
+
+        for (Map.Entry<String, ClaimedChunk> entry : claimedChunksMap.entrySet()) {
+            ClaimedChunk value = entry.getValue();
+            String key = entry.getKey();
+
+            if (value.getTownID().equals(townID)){
+                claimedChunksMap.remove(key);
+            }
+
+        }
+
     }
 
     public static ClaimedChunk get(Chunk chunk) {

@@ -4,8 +4,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.TownRelations;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
+import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
@@ -65,18 +67,14 @@ public class MapCommand extends SubCommand {
                 }
             }
 
-            player.sendMessage("▬▬▬▬▬▬▬▬▬▬");
+            player.sendMessage("▬▬▬▬▬↑O↑▬▬▬▬▬");
 
             for (int dx = -radius; dx <= radius; dx++) {
                 StringBuilder line = new StringBuilder();
 
-                if (dx == -radius) {
-                    line.append("↑N↑");
-                } else if (dx == radius) {
-                    line.append("↓S↓");
-                } else {
-                    line.append("   ");
-                }
+
+                line.append("   ");
+
 
                 for (int dz = -radius; dz <= radius; dz++) {
                     Chunk chunk = player.getWorld().getChunkAt(currentChunk.getX() + dx, currentChunk.getZ() + dz);
@@ -84,7 +82,17 @@ public class MapCommand extends SubCommand {
 
                         TownData playerTown = TownDataStorage.get(player);
                         TownData otherTown = TownDataStorage.get(ClaimedChunkStorage.get(chunk).getTownID());
-                        ChatColor townColor = playerTown.getRelationWith(otherTown).getColor();
+
+                        TownRelation relation = playerTown.getRelationWith(otherTown);
+
+                        ChatColor townColor;
+                        if(relation == null){
+                            townColor = ChatColor.WHITE;
+                        }
+                        else{
+                            townColor = relation.getColor();
+                        }
+
 
                         if (dx == 0 && dz == 0) {
                             line.append(townColor + "★");
@@ -103,16 +111,13 @@ public class MapCommand extends SubCommand {
                     }
                 }
 
-                if (dx == 0) {
-                    line.append("→E→");
-                } else {
-                    line.append("   ");
-                }
+                line.append("   ");
+
 
                 player.sendMessage(line.toString());
             }
 
-            player.sendMessage("▬▬▬▬▬▬▬▬▬▬");
+            player.sendMessage("▬▬▬▬▬↓E↓▬▬▬▬▬");
 
         }
         else {

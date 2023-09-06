@@ -28,6 +28,7 @@ language:
   CLAIM_CHUNK_COMMAND_DESC: "Revendiquer un chunk"
   CHUNK_ALREADY_CLAIMED_WARNING: "§cCe chunk est déjà revendiqué par : §9{0}"
   MAX_CHUNK_LIMIT_REACHED: "§cVous avez atteint le nombre maximum de chunks revendiqués, améliorez votre ville pour en obtenir plus"
+  CHUNK_NOT_ADJACENT: "§cCe chunk n'est pas adjacent à votre ville"
   CHUNK_CLAIMED_SUCCESS: "Chunk revendiqué ! Nombre actuel de chunks revendiqués : §2{0}/{1}♦)"
 
   # CustomVillager
@@ -73,7 +74,7 @@ language:
   PAY_INVALID_SYNTAX: "§cSyntaxe invalide pour le montant d'argent"
   PAY_MINIMUM_REQUIRED: "§cVous devez envoyer au moins 1✦"
   PAY_CONFIRMED_SENDER: "Envoi de §6{0}✦§f à §3{1}"
-  PAY_CONFIRMED_RECEIVER: "Réception de §+6{0}✦§f de §3{1}"
+  PAY_CONFIRMED_RECEIVER: "Réception de §6+{0}✦§f de §3{1}"
 
   # Commande de solde
   BAL_COMMAND_DESC: "Consultez votre solde"
@@ -155,6 +156,8 @@ language:
   GUI_TOWN_MEMBERS_ICON_DESC1: "§fGérer les membres et les rôles"
   GUI_CLAIM_ICON: "§aTerrains"
   GUI_CLAIM_ICON_DESC1: "§fGérer le territoire de la ville"
+  GUI_OTHER_TOWN_ICON: "§aAutres villes"
+  GUI_OTHER_TOWN_ICON_DESC1: "§fInformations sur les autres villes"
   GUI_RELATION_ICON: "§aDiplomatie"
   GUI_RELATION_ICON_DESC1: "§fGérer la diplomatie étrangère"
   GUI_TOWN_LEVEL_ICON: "§aNiveau de la ville"
@@ -329,9 +332,9 @@ language:
   CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fVille supprimée avec succès"
 
   #Objet personnalisé
-  ITEM_RARE_STONE: "§3Pierre rare"
+  ITEM_RARE_STONE: "§3Pierre précieuse"
   ITEM_RARE_WOOD: "§3Bois rare"
-  ITEM_RARE_CROP: "§3Culture rare"
+  ITEM_RARE_CROP: "§3Plante rare"
   RARE_ITEM_DESC_1: "§fCet objet peut être échangé contre de l'argent au spawn"
 
   #Métiers de villageois personnalisés
@@ -346,3 +349,9 @@ language:
 
   #Taxes
   DAILY_TAXES_SUCCESS_LOG: "Les taxes de la ville ont été collectées"
+
+  #Intéractions avec les chunks
+  CHUNK_ENTER_WILDERNESS: "§fSortie de la ville"
+  CHUNK_ENTER_TOWN: "§fVous entrez dans la ville: {0}"
+  CHUNK_ENTER_TOWN_AT_WAR: "§cVous êtes en guerre avec cette ville, les joueurs y ont été alertés."
+  CHUNK_INTRUSION_ALERT: "§cUn ennemi de la ville {0} a traverser vos frontières: {1}"

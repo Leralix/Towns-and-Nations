@@ -52,9 +52,14 @@ public class PlayerData {
     public void setTownId(String newTownId){
         this.TownId = newTownId;
     }
-    public String getTownRank() {
+    public String getTownRankID() {
         return TownRank;
     }
+    public TownRank getTownRank() {
+        return TownDataStorage.get(this).getRank(getTownRankID());
+    }
+
+
     public void setTownRank(String townRank) {
         TownRank = townRank;
     }

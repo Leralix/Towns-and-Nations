@@ -23,7 +23,7 @@ public class TownData {
     public boolean open;
     public String DateCreated;
     private String townIconMaterialCode;
-    private final List<String> townPlayerListId = new ArrayList<String>();
+    private final HashSet<String> townPlayerListId = new HashSet<>();
     private final TownTreasury townTreasury;
     private final TownLevel townLevel;
     private ClaimedChunkSettings chunkSettings;
@@ -145,7 +145,7 @@ public class TownData {
         removePlayer(player.getUniqueId().toString());
     }
 
-    public List<String> getPlayerList(){
+    public HashSet<String> getPlayerList(){
         return townPlayerListId;
     }
 

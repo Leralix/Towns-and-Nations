@@ -38,7 +38,7 @@ public class TaxPayments {
 
             if (!playerStat.haveTown()) continue;
             TownData playerTown = TownDataStorage.get(playerStat);
-            if (!playerTown.getRank(playerStat.getTownRank()).isPayingTaxes()) continue;
+            if (!playerTown.getRank(playerStat.getTownRankID()).isPayingTaxes()) continue;
             int tax = playerTown.getTreasury().getFlatTax();
 
             if(playerStat.getBalance() > tax){

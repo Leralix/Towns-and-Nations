@@ -1,6 +1,10 @@
 package org.tan.TownsAndNations.listeners;
 
 import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,8 +30,25 @@ public class RareItemDrops implements Listener {
         if(player.getGameMode() != GameMode.SURVIVAL)
             return;
 
+        Block block = event.getBlock();
+        Material type = block.getType();
+
+        if(type == Material.WHEAT || type == Material.BEETROOTS || type == Material.POTATOES || type == Material.CARROTS) {
+            BlockData data = block.getBlockData();
+            if(data instanceof Ageable) {
+                Ageable ageable = (Ageable) data;
+
+                if(ageable.getAge() < ageable.getMaximumAge()) {
+                    return;
+
+                }
+
+            }
+        }
+
         RareItem rareItem = DropChances.getRareItem(event.getBlock());
-        System.out.println(rareItem);
+
+
         if(rareItem == null)
             return;
 

@@ -2,11 +2,9 @@ package org.tan.TownsAndNations.utils;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SuspiciousStewMeta;
 import org.tan.TownsAndNations.DataClass.RareItem;
 import org.tan.TownsAndNations.Lang.Lang;
 
@@ -29,7 +27,6 @@ public class DropChances {
 
 
     public static RareItem getRareItem(Block block) {
-        System.out.println(block.getType().name());
         return dropChances.get(block.getType().name());
     }
 
@@ -37,11 +34,12 @@ public class DropChances {
         return dropChances;
     }
 
-    private static void loadDropChances(String section, FileConfiguration config, ItemStack rareMaterial) {
+    private static void loadDropChances(String section, FileConfiguration config, ItemStack item) {
         for (String key : config.getConfigurationSection(section).getKeys(false)) {
             int dropChance = config.getInt(section + "." + key);
 
-            dropChances.put(key, new RareItem(dropChance, rareMaterial));
+            System.out.println("LoadDropChance - Item: " + item.getItemMeta().getDisplayName());
+            dropChances.put(key, new RareItem(dropChance, item));
         }
     }
 

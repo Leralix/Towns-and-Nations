@@ -29,6 +29,7 @@ language:
   CLAIM_CHUNK_COMMAND_DESC: "Claim a chunk"
   CHUNK_ALREADY_CLAIMED_WARNING: "§cThis chunk is already claimed by: §9{0}"
   MAX_CHUNK_LIMIT_REACHED: "§cYou reached the maximum number of chunk claimed, upgrade your town to get more"
+  CHUNK_NOT_ADJACENT: "§cThis chunk is not adjacent to your town"
   CHUNK_CLAIMED_SUCCESS: "Chunk claimed ! Current number of claimed chunk: §2{0}/{1}♦)"
 
   #CustomVillager
@@ -161,6 +162,8 @@ language:
   GUI_TOWN_MEMBERS_ICON_DESC1: "§fManage members and roles"
   GUI_CLAIM_ICON: "§aLand"
   GUI_CLAIM_ICON_DESC1: "§fManage town territory"
+  GUI_OTHER_TOWN_ICON: "§aOther Town"
+  GUI_OTHER_TOWN_ICON_DESC1: "§fGet information on other towns"
   GUI_RELATION_ICON: "§aDiplomacy"
   GUI_RELATION_ICON_DESC1: "§fManage foreign diplomacy"
   GUI_TOWN_LEVEL_ICON: "§aTown level"
@@ -359,3 +362,9 @@ language:
 
   #Taxes
   DAILY_TAXES_SUCCESS_LOG: "Town taxes has been collected"
+
+  #Chunk interactions
+  CHUNK_ENTER_WILDERNESS: "§fWilderness"
+  CHUNK_ENTER_TOWN: "§fYou enter: {0}"
+  CHUNK_ENTER_TOWN_AT_WAR: "§cYou are at war with this town, players have been alerted"
+  CHUNK_INTRUSION_ALERT: "§cAn ennemy from the town {0} has enter your boundaries: {1}"
