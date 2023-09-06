@@ -28,6 +28,9 @@ public class ClaimedChunkStorage {
     }
 
     public static TownData getChunkOwnerTown(Chunk chunk) {
+        if(!isChunkClaimed(chunk)){
+            return null;
+        }
         return TownDataStorage.get(getChunkOwnerID(chunk));
     }
 

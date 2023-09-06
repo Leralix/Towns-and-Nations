@@ -72,11 +72,9 @@ public class MapCommand extends SubCommand {
             for (int dx = -radius; dx <= radius; dx++) {
                 StringBuilder line = new StringBuilder();
 
-                if (dx == -radius) {
-                    line.append("");
-                } else {
-                    line.append("   ");
-                }
+
+                line.append("   ");
+
 
                 for (int dz = -radius; dz <= radius; dz++) {
                     Chunk chunk = player.getWorld().getChunkAt(currentChunk.getX() + dx, currentChunk.getZ() + dz);

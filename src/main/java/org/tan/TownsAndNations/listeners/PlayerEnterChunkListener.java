@@ -36,7 +36,6 @@ public class PlayerEnterChunkListener implements Listener {
         TownData townFrom = ClaimedChunkStorage.getChunkOwnerTown(currentChunk);
         TownData townTo = ClaimedChunkStorage.getChunkOwnerTown(nextChunk);
 
-        System.out.println();
 
         if(equalsWithNulls(townFrom,townTo)){
             return;
@@ -44,24 +43,26 @@ public class PlayerEnterChunkListener implements Listener {
 
         Player player = e.getPlayer();
 
-        if(townFrom == null){
+        if(townFrom != null){
             player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_ENTER_WILDERNESS.getTranslation());
+            return;
         }
-        else{
-            player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_ENTER_TOWN.getTranslation(townTo.getName()));
 
-            TownRelation relation = TownDataStorage.get(player).getRelationWith(townTo);
-            if(relation == TownRelation.WAR){
+        player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_ENTER_TOWN.getTranslation(townTo.getName()));
 
-                player.sendMessage(ChatUtils.getTANString() +
-                        Lang.CHUNK_ENTER_TOWN_AT_WAR.getTranslation()
-                );
+        TownRelation relation = TownDataStorage.get(player).getRelationWith(townTo);
 
-                townTo.broadCastMessage(ChatUtils.getTANString() +
-                                Lang.CHUNK_INTRUSION_ALERT.getTranslation(TownDataStorage.get(player).getName(),player.getName())
-                );
-            }
+        if(relation == TownRelation.WAR){
+
+            player.sendMessage(ChatUtils.getTANString() +
+                    Lang.CHUNK_ENTER_TOWN_AT_WAR.getTranslation()
+            );
+
+            townTo.broadCastMessage(ChatUtils.getTANString() +
+                            Lang.CHUNK_INTRUSION_ALERT.getTranslation(TownDataStorage.get(player).getName(),player.getName())
+            );
         }
+
 
 
 
