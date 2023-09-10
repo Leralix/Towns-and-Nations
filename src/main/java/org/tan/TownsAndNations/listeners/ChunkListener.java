@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.listeners;
 
 import org.bukkit.Chunk;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.data.BlockData;
@@ -16,6 +17,7 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.storage.WarTaggedPlayer;
 
@@ -34,6 +36,12 @@ public class ChunkListener implements Listener {
 
         TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
         TownData playerTown = TownDataStorage.get(player);
+
+        if(PlayerDataStorage.get(player).getTownId() == null){
+            event.setCancelled(true);
+            return;
+        }
+
 
         //Same town
         if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
@@ -66,7 +74,12 @@ public class ChunkListener implements Listener {
             if(!ClaimedChunkStorage.isChunkClaimed(chunk))
                 return;
 
-            if(blockData instanceof Chest){
+            if(PlayerDataStorage.get(player).getTownId() == null){
+                event.setCancelled(true);
+                return;
+            }
+            if(blockData.getMaterial() == Material.CHEST||
+                    blockData.getMaterial() == Material.TRAPPED_CHEST){
 
 
                 TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
@@ -76,17 +89,26 @@ public class ChunkListener implements Listener {
                 if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
                     return;
                 //Same alliance
-                if(chunkTown.getChunkSettings().getChestAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
+                if(chunkTown.getChunkSettings().getBreakAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
                     return;
                 //permission is on foreign
-                if(chunkTown.getChunkSettings().getChestAuth() == TownChunkPermission.FOREIGN)
+                if(chunkTown.getChunkSettings().getBreakAuth() == TownChunkPermission.FOREIGN)
                     return;
 
                 playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
                 event.setCancelled(true);
 
             }
-            else if(blockData instanceof Door){
+            else if(blockData.getMaterial() == Material.OAK_DOOR ||
+                    blockData.getMaterial() == Material.SPRUCE_DOOR ||
+                    blockData.getMaterial() == Material.ACACIA_DOOR ||
+                    blockData.getMaterial() == Material.DARK_OAK_DOOR ||
+                    blockData.getMaterial() == Material.BAMBOO_DOOR ||
+                    blockData.getMaterial() == Material.BIRCH_DOOR ||
+                    blockData.getMaterial() == Material.CRIMSON_DOOR ||
+                    blockData.getMaterial() == Material.JUNGLE_DOOR ||
+                    blockData.getMaterial() == Material.WARPED_DOOR ||
+                    blockData.getMaterial() == Material.IRON_DOOR){
 
                 TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
                 TownData playerTown = TownDataStorage.get(player);
@@ -113,6 +135,10 @@ public class ChunkListener implements Listener {
         Block block = event.getBlock();
         Chunk chunk = block.getLocation().getChunk();
         if(!ClaimedChunkStorage.isChunkClaimed(chunk)){
+            return;
+        }
+        if(PlayerDataStorage.get(event.getPlayer()).getTownId() == null){
+            event.setCancelled(true);
             return;
         }
 

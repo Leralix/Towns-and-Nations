@@ -380,7 +380,7 @@ public class GuiManager2 {
 
             TownData otherTown = entry.getValue();
 
-            ItemStack townIcon = HeadUtils.getTownIcon(playerTown.getID());
+            ItemStack townIcon = HeadUtils.getTownIcon(otherTown.getID());
 
             TownRelation relation = otherTown.getRelationWith(playerTown);
 
@@ -393,9 +393,9 @@ public class GuiManager2 {
             }
 
             HeadUtils.addLore(townIcon,
-                    Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerTown.getUuidLeader())).getName()),
-                    Lang.GUI_TOWN_INFO_DESC2.getTranslation(playerTown.getChunkSettings().getNumberOfClaimedChunk()),
-                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(playerTown.getPlayerList().size()),
+                    Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(otherTown.getUuidLeader())).getName()),
+                    Lang.GUI_TOWN_INFO_DESC2.getTranslation(otherTown.getChunkSettings().getNumberOfClaimedChunk()),
+                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(otherTown.getPlayerList().size()),
                     Lang.GUI_TOWN_INFO_TOWN_RELATION.getTranslation(relationName)
             );
 
