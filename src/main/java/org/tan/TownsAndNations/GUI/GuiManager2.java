@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.Action;
@@ -1424,14 +1425,21 @@ public class GuiManager2 {
         for(String otherTownUUID : TownListUUID){
             ItemStack townIcon = HeadUtils.getTownIconWithInformations(otherTownUUID);
 
-            GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
+            if(relation == TownRelation.WAR) {
+                ItemMeta meta = townIcon.getItemMeta();
+                List<String> lore = meta.getLore();
+                lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC1.getTranslation());
+                lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC2.getTranslation());
+                meta.setLore(lore);
+            }
+
+                GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
 
                 if(relation == TownRelation.WAR){
-                    player.sendMessage("bagarre");
+                    player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.getTranslation());
                     WarTaggedPlayer.addPlayersToTown(otherTownUUID,playerTown.getPlayerList());
-                    player.sendMessage("joueurs ajoutés");
-
+                    TownDataStorage.get(otherTownUUID).broadCastMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_INFO.getTranslation());
                 }
 
 

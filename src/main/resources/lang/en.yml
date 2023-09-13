@@ -237,6 +237,12 @@ language:
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aRemove town"
   GUI_TOWN_CHANGED_RELATION_RESUME: "§fYour town has now the following relation with {0}: {1}"
 
+  GUI_TOWN_ATTACK_TOWN_DESC1: "§cRight clic to launch an attack"
+  GUI_TOWN_ATTACK_TOWN_DESC2: "§cAn attack last an hour. During this period, chunks are not protected anymore"
+
+  GUI_TOWN_ATTACK_TOWN_EXECUTED: "§aYou launched an attack against {0}"
+  GUI_TOWN_ATTACK_TOWN_INFO: "§a{0} have launched an attack against you !"
+  GUI_TOWN_ATTACK_FINISHED: "§aThe attack against {0} has ended !"
 
   GUI_TOWN_INFO_DESC_1: "§fLeader: §3{0}"
   GUI_TOWN_INFO_DESC_2: "§fMembers: §9{0}♣"

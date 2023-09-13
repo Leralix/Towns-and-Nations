@@ -194,6 +194,11 @@ public enum Lang {
     GUI_TOWN_INFO_DESC_3,
     GUI_TOWN_INFO_TOWN_RELATION,
     GUI_TOWN_RELATION_NEUTRAL,
+    GUI_TOWN_ATTACK_TOWN_DESC1,
+    GUI_TOWN_ATTACK_TOWN_DESC2,
+    GUI_TOWN_ATTACK_TOWN_EXECUTED,
+    GUI_TOWN_ATTACK_FINISHED,
+    GUI_TOWN_ATTACK_TOWN_INFO,
     GUI_TOWN_CLAIM_SETTINGS_DOOR,
     GUI_TOWN_CLAIM_SETTINGS_DOOR_DESC1,
     GUI_TOWN_CLAIM_SETTINGS_CHEST,
@@ -291,7 +296,7 @@ public enum Lang {
 
         File file = new File(langFolder, filename);
 
-        TownsAndNations.getPlugin().saveResource("lang/" + filename, false);
+        TownsAndNations.getPlugin().saveResource("lang/" + filename, true);
 
 
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);

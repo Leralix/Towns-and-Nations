@@ -8,6 +8,7 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.utils.ArchiveUtil;
 import org.tan.TownsAndNations.utils.ChatUtils;
 
 import java.util.Calendar;
@@ -25,6 +26,9 @@ public class TaxPayments {
                 Calendar calendar = new GregorianCalendar();
                 if (calendar.get(Calendar.HOUR_OF_DAY) == 0 && calendar.get(Calendar.MINUTE) == 0) {
                     TaxPayment();
+
+                    ArchiveUtil.archiveFiles();
+
                 }
             }
         }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L); // Exécute toutes les 1200 ticks (1 minute en temps Minecraft)

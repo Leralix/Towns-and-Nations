@@ -21,7 +21,6 @@ public class PlayerJoinListener implements Listener {
 
 
         if (PlayerDataStorage.get(player) == null) {
-            Bukkit.broadcastMessage(ChatUtils.getTANString() + player.getName() + " a rejoint le serveur pour la première fois !");
             PlayerDataStorage.createPlayerDataClass(player);
         }
 

@@ -224,6 +224,13 @@ language:
 
   GUI_TOWN_RELATION_NEUTRAL: "Neutre"
 
+  GUI_TOWN_ATTACK_TOWN_DESC1: "§cClic droit pour déclarer une attaque sur la ville"
+  GUI_TOWN_ATTACK_TOWN_DESC2: "§cUne attaque dure une heure. Les chunks de la ville ne sont plus protégés"
+
+  GUI_TOWN_ATTACK_TOWN_EXECUTED: "§cVous avez lancé une attaque contre {0}"
+  GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} a lancé une attaque contre vous !"
+  GUI_TOWN_ATTACK_FINISHED: "§cL'attaque sur {0} est terminée !"
+
   GUI_TOWN_RELATION_ADD_TOWN: "§aAjouter une ville"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aRetirer une ville"
   GUI_TOWN_CHANGED_RELATION_RESUME: "§fVotre ville a maintenant la relation suivante avec {0} : {1}"

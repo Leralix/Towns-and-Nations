@@ -1,9 +1,12 @@
 package org.tan.TownsAndNations.storage;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
+import org.tan.TownsAndNations.utils.ChatUtils;
 
 import java.util.*;
 
@@ -25,6 +28,7 @@ public class WarTaggedPlayer {
                 @Override
                 public void run() {
                     warTagged.get(attackedTownID).remove(playerUUID);
+                    Bukkit.getPlayer(UUID.fromString(playerUUID)).sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_ATTACK_FINISHED.getTranslation(TownDataStorage.get(attackedTownID).getName()));
                 }
             }.runTaskLater(TownsAndNations.getPlugin(), 20 * 60 * 60); // 20 ticks * 60 secondes * 60 minutes = 1 heure
         }
