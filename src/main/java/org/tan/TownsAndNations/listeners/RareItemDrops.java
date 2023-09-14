@@ -12,6 +12,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.RareItem;
+import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.utils.DropChances;
 
 import java.util.Random;
@@ -30,8 +32,14 @@ public class RareItemDrops implements Listener {
         if(player.getGameMode() != GameMode.SURVIVAL)
             return;
 
+
+
         Block block = event.getBlock();
         Material type = block.getType();
+
+        if(ClaimedChunkStorage.isChunkClaimed(block.getChunk()) && !ClaimedChunkStorage.isOwner(block.getChunk(), TownDataStorage.get(player).getID())){
+            return; //chunk is claimed
+        }
 
         if(type == Material.WHEAT || type == Material.BEETROOTS || type == Material.POTATOES || type == Material.CARROTS) {
             BlockData data = block.getBlockData();

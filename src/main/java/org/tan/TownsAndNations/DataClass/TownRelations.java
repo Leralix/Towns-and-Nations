@@ -1,6 +1,9 @@
 package org.tan.TownsAndNations.DataClass;
 
+import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.TownRelation;
+import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.utils.ChatUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -41,5 +44,25 @@ public class TownRelations {
             }
         }
         return null;
+    }
+
+    public void removeAllRelationWith(String townID){
+        for(TownRelation relation : TownRelation.values()){
+            townRelations.get(relation).remove(townID);
+        }
+    }
+
+    public void cleanAll(String ownTownID){
+        for(TownRelation relation : TownRelation.values()){
+            for (String townID : townRelations.get(relation)) {
+                TownDataStorage.get(townID).getRelations().removeAllRelationWith(ownTownID);
+                TownDataStorage.get(townID).broadCastMessage(ChatUtils.getTANString() +
+                        Lang.WARNING_OTHER_TOWN_HAS_BEEN_DELETED.getTranslation(
+                                TownDataStorage.get(ownTownID).getName(),
+                                relation.getColor() + relation.getName())
+                );
+            }
+        }
+
     }
 }

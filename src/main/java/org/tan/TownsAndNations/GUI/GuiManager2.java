@@ -302,8 +302,8 @@ public class GuiManager2 {
             if(event.getCursor() == null)
                 return;
 
-            Material itemMaterial = event.getCursor().getData().getItemType();
-            if(itemMaterial == Material.AIR){
+            Material itemMaterial = event.getCursor().getType();
+            if(itemMaterial == Material.AIR || itemMaterial == Material.LEGACY_AIR){
                 player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.getTranslation());
             }
 
@@ -632,7 +632,7 @@ public class GuiManager2 {
             if(event.getCursor() == null)
                 return;
             Material itemMaterial = event.getCursor().getData().getItemType();
-            if(itemMaterial == Material.AIR){
+            if(itemMaterial == Material.AIR || itemMaterial == Material.LEGACY_AIR){
                 player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.getTranslation());
             }
             else {
@@ -1231,7 +1231,7 @@ public class GuiManager2 {
             }
 
             ClaimedChunkStorage.unclaimAllChunkFrom(playerStat.getTownId());
-
+            playerTown.cancelAllRelation();
             TownDataStorage.removeTown(playerStat.getTownId());
 
             for(String memberUUID : playerTown.getPlayerList()){

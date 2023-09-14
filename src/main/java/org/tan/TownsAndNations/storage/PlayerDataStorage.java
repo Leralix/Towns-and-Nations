@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.storage;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.DataClass.PlayerData;
@@ -56,7 +57,7 @@ public class PlayerDataStorage {
 
     public static void loadStats(){
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Stats.json");
         if (file.exists()){
             Reader reader = null;

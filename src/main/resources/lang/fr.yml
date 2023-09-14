@@ -338,6 +338,8 @@ language:
   CHAT_PLAYER_LEFT_THE_TOWN: "§fVous avez quitté la ville"
   CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fVille supprimée avec succès"
 
+  WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cLa ville §9{0}§c, avec laquelle vous aviez une relation: §e{1}§c a été supprimée"
+
   #Objet personnalisé
   ITEM_RARE_STONE: "§3Pierre précieuse"
   ITEM_RARE_WOOD: "§3Bois rare"

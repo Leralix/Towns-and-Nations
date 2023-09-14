@@ -239,4 +239,8 @@ public class TownData {
         return this.UuidLeader.equals(player.getUniqueId().toString());
     }
 
+    public void cancelAllRelation() {
+
+        relations.cleanAll(getID());
+    }
 }
