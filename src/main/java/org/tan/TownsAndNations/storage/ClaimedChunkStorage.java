@@ -97,7 +97,7 @@ public class ClaimedChunkStorage {
     public static void loadStats() {
 
         Gson gson = new Gson();
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TanChunks.json");
+        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Chunks.json");
         if (file.exists()){
             Reader reader = null;
             try {
@@ -115,7 +115,7 @@ public class ClaimedChunkStorage {
     public static void saveStats() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TanChunks.json");
+        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Chunks.json");
         file.getParentFile().mkdirs();
         try {
             if (!file.exists()) {

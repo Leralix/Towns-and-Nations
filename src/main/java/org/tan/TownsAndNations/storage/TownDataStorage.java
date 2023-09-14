@@ -64,7 +64,7 @@ public class TownDataStorage {
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
                 .create();
 
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNTownsStats.json");
+        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Towns.json");
         if (file.exists()){
             Reader reader = null;
             try {
@@ -91,7 +91,7 @@ public class TownDataStorage {
     public static void saveStats() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNTownsStats.json");
+        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Towns.json");
         file.getParentFile().mkdirs();
         try {
             if (!file.exists()) {

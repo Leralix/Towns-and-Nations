@@ -42,7 +42,7 @@ public class DropChance extends SubCommand {
             String key = entry.getKey();
             RareItem value = entry.getValue();
 
-            System.out.println("Key: " + key + ", Value: " + value.getDropChance());
+            player.sendMessage("Key: " + key + ", Value: " + value.getDropChance());
         }
     }
 

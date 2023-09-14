@@ -57,7 +57,7 @@ public class PlayerDataStorage {
     public static void loadStats(){
 
         Gson gson = new Gson();
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNstats.json");
+        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Stats.json");
         if (file.exists()){
             Reader reader = null;
             try {
@@ -75,7 +75,7 @@ public class PlayerDataStorage {
     public static void saveStats() {
 
         Gson gson = new Gson();
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TaNstats.json");
+        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Stats.json");
         file.getParentFile().mkdir();
         try {
             file.createNewFile();

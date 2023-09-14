@@ -1431,15 +1431,16 @@ public class GuiManager2 {
                 lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC1.getTranslation());
                 lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC2.getTranslation());
                 meta.setLore(lore);
+                townIcon.setItemMeta(meta);
             }
 
                 GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
 
                 if(relation == TownRelation.WAR){
-                    player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.getTranslation());
+                    player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.getTranslation(TownDataStorage.get(otherTownUUID).getName()));
                     WarTaggedPlayer.addPlayersToTown(otherTownUUID,playerTown.getPlayerList());
-                    TownDataStorage.get(otherTownUUID).broadCastMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_INFO.getTranslation());
+                    TownDataStorage.get(otherTownUUID).broadCastMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_INFO.getTranslation(playerTown.getName()));
                 }
 
 
