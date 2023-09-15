@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.Action;
@@ -263,7 +264,8 @@ public class GuiManager2 {
                 Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerTown.getUuidLeader())).getName()),
                 Lang.GUI_TOWN_INFO_DESC2.getTranslation(playerTown.getChunkSettings().getNumberOfClaimedChunk()),
                 Lang.GUI_TOWN_INFO_DESC3.getTranslation(playerTown.getPlayerList().size()),
-                Lang.GUI_TOWN_INFO_DESC4.getTranslation(playerTown.getTreasury().getBalance())
+                Lang.GUI_TOWN_INFO_DESC4.getTranslation(playerTown.getTreasury().getBalance()),
+                Lang.GUI_TOWN_INFO_CHANGE_ICON.getTranslation()
         );
 
 
@@ -301,8 +303,8 @@ public class GuiManager2 {
             if(event.getCursor() == null)
                 return;
 
-            Material itemMaterial = event.getCursor().getData().getItemType();
-            if(itemMaterial == Material.AIR){
+            Material itemMaterial = event.getCursor().getType();
+            if(itemMaterial == Material.AIR || itemMaterial == Material.LEGACY_AIR){
                 player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.getTranslation());
             }
 
@@ -380,7 +382,7 @@ public class GuiManager2 {
 
             TownData otherTown = entry.getValue();
 
-            ItemStack townIcon = HeadUtils.getTownIcon(playerTown.getID());
+            ItemStack townIcon = HeadUtils.getTownIcon(otherTown.getID());
 
             TownRelation relation = otherTown.getRelationWith(playerTown);
 
@@ -393,9 +395,9 @@ public class GuiManager2 {
             }
 
             HeadUtils.addLore(townIcon,
-                    Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerTown.getUuidLeader())).getName()),
-                    Lang.GUI_TOWN_INFO_DESC2.getTranslation(playerTown.getChunkSettings().getNumberOfClaimedChunk()),
-                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(playerTown.getPlayerList().size()),
+                    Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(otherTown.getUuidLeader())).getName()),
+                    Lang.GUI_TOWN_INFO_DESC2.getTranslation(otherTown.getChunkSettings().getNumberOfClaimedChunk()),
+                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(otherTown.getPlayerList().size()),
                     Lang.GUI_TOWN_INFO_TOWN_RELATION.getTranslation(relationName)
             );
 
@@ -631,7 +633,7 @@ public class GuiManager2 {
             if(event.getCursor() == null)
                 return;
             Material itemMaterial = event.getCursor().getData().getItemType();
-            if(itemMaterial == Material.AIR){
+            if(itemMaterial == Material.AIR || itemMaterial == Material.LEGACY_AIR){
                 player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.getTranslation());
             }
             else {
@@ -1230,7 +1232,7 @@ public class GuiManager2 {
             }
 
             ClaimedChunkStorage.unclaimAllChunkFrom(playerStat.getTownId());
-
+            playerTown.cancelAllRelation();
             TownDataStorage.removeTown(playerStat.getTownId());
 
             for(String memberUUID : playerTown.getPlayerList()){
@@ -1424,14 +1426,22 @@ public class GuiManager2 {
         for(String otherTownUUID : TownListUUID){
             ItemStack townIcon = HeadUtils.getTownIconWithInformations(otherTownUUID);
 
-            GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
+            if(relation == TownRelation.WAR) {
+                ItemMeta meta = townIcon.getItemMeta();
+                List<String> lore = meta.getLore();
+                lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC1.getTranslation());
+                lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC2.getTranslation());
+                meta.setLore(lore);
+                townIcon.setItemMeta(meta);
+            }
+
+                GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
 
                 if(relation == TownRelation.WAR){
-                    player.sendMessage("bagarre");
+                    player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.getTranslation(TownDataStorage.get(otherTownUUID).getName()));
                     WarTaggedPlayer.addPlayersToTown(otherTownUUID,playerTown.getPlayerList());
-                    player.sendMessage("joueurs ajoutés");
-
+                    TownDataStorage.get(otherTownUUID).broadCastMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_INFO.getTranslation(playerTown.getName()));
                 }
 
 

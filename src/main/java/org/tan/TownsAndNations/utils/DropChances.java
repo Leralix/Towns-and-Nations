@@ -37,8 +37,6 @@ public class DropChances {
     private static void loadDropChances(String section, FileConfiguration config, ItemStack item) {
         for (String key : config.getConfigurationSection(section).getKeys(false)) {
             int dropChance = config.getInt(section + "." + key);
-
-            System.out.println("LoadDropChance - Item: " + item.getItemMeta().getDisplayName());
             dropChances.put(key, new RareItem(dropChance, item));
         }
     }

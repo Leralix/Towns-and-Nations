@@ -102,8 +102,14 @@ language:
 
   PLAYER_SEND_MONEY_TO_TOWN: "§fVous avez envoyé §6{0}✦§f à la ville"
 
-  # Noms des PNJ
-  NPC_GOLDSMITH: "Orfèvre"
+  #Town Relations
+  ##Colors are to be defined in another config file
+  RELATION_NEUTRAL_NAME: "Neutre"
+  RELATION_CITY_NAME: "Ville"
+  RELATION_ALLIANCE_NAME: "Alliance"
+  RELATION_NON_AGGRESSION_NAME: "Non-aggression"
+  RELATION_EMBARGO_NAME: "Embargo"
+  RELATION_WAR_NAME: "Guerre"
 
   # Texte de l'interface graphique (GUI)
 
@@ -149,6 +155,8 @@ language:
   GUI_TOWN_INFO_DESC2: "§fChunks : §2{0}♦"
   GUI_TOWN_INFO_DESC3: "§fMembres : §9{0}♣"
   GUI_TOWN_INFO_DESC4: "§fTrésorerie : §6{0}✦"
+
+  GUI_TOWN_INFO_CHANGE_ICON: "§f Glissez-déposez un item de votre inventaire dans cette case pour changer l'icone de la ville"
 
   GUI_TOWN_TREASURY_ICON: "§aTrésorerie"
   GUI_TOWN_TREASURY_ICON_DESC1: "§fGérer les impôts et la trésorerie de la ville"
@@ -223,6 +231,13 @@ language:
   GUI_TOWN_RELATION_ALLIANCE_DESC1: "§fGérer les villes avec lesquelles vous avez une alliance militaire"
 
   GUI_TOWN_RELATION_NEUTRAL: "Neutre"
+
+  GUI_TOWN_ATTACK_TOWN_DESC1: "§cClic droit pour déclarer une attaque sur la ville"
+  GUI_TOWN_ATTACK_TOWN_DESC2: "§cUne attaque dure une heure. Les chunks de la ville ne sont plus protégés"
+
+  GUI_TOWN_ATTACK_TOWN_EXECUTED: "§cVous avez lancé une attaque contre {0}"
+  GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} a lancé une attaque contre vous !"
+  GUI_TOWN_ATTACK_FINISHED: "§cL'attaque sur {0} est terminée !"
 
   GUI_TOWN_RELATION_ADD_TOWN: "§aAjouter une ville"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aRetirer une ville"
@@ -330,6 +345,8 @@ language:
 
   CHAT_PLAYER_LEFT_THE_TOWN: "§fVous avez quitté la ville"
   CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fVille supprimée avec succès"
+
+  WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cLa ville §9{0}§c, avec laquelle vous aviez une relation: §e{1}§c a été supprimée"
 
   #Objet personnalisé
   ITEM_RARE_STONE: "§3Pierre précieuse"

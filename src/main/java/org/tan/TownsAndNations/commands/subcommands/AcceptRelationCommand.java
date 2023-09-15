@@ -51,19 +51,15 @@ public class AcceptRelationCommand extends SubCommand {
             String OtherTownID = args[1];
             TownData otherTown = TownDataStorage.get(OtherTownID);
             TownData town = TownDataStorage.get(player);
-            System.out.println("1");
             if(otherTown == null){
                 return;
             }
-            System.out.println("2");
             if(TownRelationConfirmStorage.checkInvitation(player.getUniqueId().toString(),OtherTownID)){
-                System.out.println("3");
 
                 TownRelation newRelation = TownRelationConfirmStorage.getRelation(player.getUniqueId().toString(),otherTown.getID());
                 TownRelationConfirmStorage.removeInvitation(player.getUniqueId().toString(), otherTown.getID());
 
                 if(newRelation == null){
-                    System.out.println("4");
                     town.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),"neutral"));
                     otherTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(town.getName(),"neutral"));
                     removeRelation(town,otherTown);
