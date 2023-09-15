@@ -106,8 +106,15 @@ language:
 
   PLAYER_SEND_MONEY_TO_TOWN: "§fYou sent §6{0}✦§f to the town"
 
-  #Villager names
-  NPC_GOLDSMITH: "Goldsmith"
+  #Town Relations
+  ##Colors are to be defined in another config file
+  RELATION_NEUTRAL_NAME: "Neutral"
+  RELATION_CITY_NAME: "Town"
+  RELATION_ALLIANCE_NAME: "Alliance"
+  RELATION_NON_AGGRESSION_NAME: "Non-aggression"
+  RELATION_EMBARGO_NAME: "Embargo"
+  RELATION_WAR_NAME: "War"
+
 
 
   #GUI text
