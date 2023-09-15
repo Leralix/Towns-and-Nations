@@ -163,6 +163,8 @@ language:
   GUI_TOWN_INFO_DESC3: "§fMembers: §9{0}♣"
   GUI_TOWN_INFO_DESC4: "§fTreasury: §6{0}✦"
 
+  GUI_TOWN_INFO_CHANGE_ICON: "§fDrag and drop an item to change the town's icon"
+
   GUI_TOWN_TREASURY_ICON: "§aTreasury"
   GUI_TOWN_TREASURY_ICON_DESC1: "§fManage taxes and town treasury"
   GUI_TOWN_MEMBERS_ICON: "§aMembers"

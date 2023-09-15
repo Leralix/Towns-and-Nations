@@ -156,6 +156,8 @@ language:
   GUI_TOWN_INFO_DESC3: "§fMembres : §9{0}♣"
   GUI_TOWN_INFO_DESC4: "§fTrésorerie : §6{0}✦"
 
+  GUI_TOWN_INFO_CHANGE_ICON: "§f Glissez-déposez un item de votre inventaire dans cette case pour changer l'icone de la ville"
+
   GUI_TOWN_TREASURY_ICON: "§aTrésorerie"
   GUI_TOWN_TREASURY_ICON_DESC1: "§fGérer les impôts et la trésorerie de la ville"
   GUI_TOWN_MEMBERS_ICON: "§aMembres"
