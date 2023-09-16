@@ -330,13 +330,13 @@ language:
 
   #Informations Chat
 
-  CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§fVous ne pouvez pas quitter la ville si vous en êtes le leader, vous devez la dissoudre ou donner la direction à quelqu'un d'autre"
+  CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cVous ne pouvez pas quitter la ville si vous en êtes le leader, vous devez la dissoudre ou donner la direction à quelqu'un d'autre"
   NOT_TOWN_LEADER_ERROR: "§cVous devez être le leader de la ville pour exécuter cette action"
 
-  CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§fVous ne pouvez pas dissoudre la ville si vous n'en êtes pas le leader"
+  CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§cVous ne pouvez pas dissoudre la ville si vous n'en êtes pas le leader"
 
-  CHAT_PLAYER_LEFT_THE_TOWN: "§fVous avez quitté la ville"
-  CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fVille supprimée avec succès"
+  CHAT_PLAYER_LEFT_THE_TOWN: "§cVous avez quitté la ville"
+  CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§cVille supprimée avec succès"
 
   WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cLa ville §9{0}§c, avec laquelle vous aviez une relation: §e{1}§c a été supprimée"
 

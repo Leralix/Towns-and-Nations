@@ -341,10 +341,10 @@ language:
 
   #Chat Information
 
-  CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§fYou can't leave a town you are the leader, you need to disband it or give the leadership to someone else"
+  CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cYou can't leave a town if you are the leader, you need to disband it or give the leadership to someone else"
   NOT_TOWN_LEADER_ERROR: "§cYou need to be the leader of the town to execute this action"
 
-  CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§fYou can't delete a town if you are not the leader"
+  CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§cYou can't delete a town if you are not the leader"
 
   CHAT_PLAYER_LEFT_THE_TOWN: "§fYou left the town"
   CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fTown successfully deleted"
