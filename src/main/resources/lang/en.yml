@@ -106,8 +106,15 @@ language:
 
   PLAYER_SEND_MONEY_TO_TOWN: "§fYou sent §6{0}✦§f to the town"
 
-  #Villager names
-  NPC_GOLDSMITH: "Goldsmith"
+  #Town Relations
+  ##Colors are to be defined in another config file
+  RELATION_NEUTRAL_NAME: "Neutral"
+  RELATION_CITY_NAME: "Town"
+  RELATION_ALLIANCE_NAME: "Alliance"
+  RELATION_NON_AGGRESSION_NAME: "Non-aggression"
+  RELATION_EMBARGO_NAME: "Embargo"
+  RELATION_WAR_NAME: "War"
+
 
 
   #GUI text
@@ -155,6 +162,8 @@ language:
   GUI_TOWN_INFO_DESC2: "§fTerritory: §2{0}♦"
   GUI_TOWN_INFO_DESC3: "§fMembers: §9{0}♣"
   GUI_TOWN_INFO_DESC4: "§fTreasury: §6{0}✦"
+
+  GUI_TOWN_INFO_CHANGE_ICON: "§fDrag and drop an item to change the town's icon"
 
   GUI_TOWN_TREASURY_ICON: "§aTreasury"
   GUI_TOWN_TREASURY_ICON_DESC1: "§fManage taxes and town treasury"

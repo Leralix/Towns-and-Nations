@@ -102,8 +102,14 @@ language:
 
   PLAYER_SEND_MONEY_TO_TOWN: "§fVous avez envoyé §6{0}✦§f à la ville"
 
-  # Noms des PNJ
-  NPC_GOLDSMITH: "Orfèvre"
+  #Town Relations
+  ##Colors are to be defined in another config file
+  RELATION_NEUTRAL_NAME: "Neutre"
+  RELATION_CITY_NAME: "Ville"
+  RELATION_ALLIANCE_NAME: "Alliance"
+  RELATION_NON_AGGRESSION_NAME: "Non-aggression"
+  RELATION_EMBARGO_NAME: "Embargo"
+  RELATION_WAR_NAME: "Guerre"
 
   # Texte de l'interface graphique (GUI)
 
@@ -149,6 +155,8 @@ language:
   GUI_TOWN_INFO_DESC2: "§fChunks : §2{0}♦"
   GUI_TOWN_INFO_DESC3: "§fMembres : §9{0}♣"
   GUI_TOWN_INFO_DESC4: "§fTrésorerie : §6{0}✦"
+
+  GUI_TOWN_INFO_CHANGE_ICON: "§f Glissez-déposez un item de votre inventaire dans cette case pour changer l'icone de la ville"
 
   GUI_TOWN_TREASURY_ICON: "§aTrésorerie"
   GUI_TOWN_TREASURY_ICON_DESC1: "§fGérer les impôts et la trésorerie de la ville"
