@@ -1098,8 +1098,8 @@ public class GuiManager2 {
 
                     ItemStack transactionIcon = HeadUtils.getCustomLoreItem(Material.PAPER,
                             ChatColor.DARK_AQUA + donation.getName(),
-                            Integer.toString(donation.getAmount()),
-                            donation.getDate()
+                            ChatColor.GOLD + Integer.toString(donation.getAmount()) + "✦",
+                            ChatColor.WHITE + donation.getDate()
                     );
 
                     GuiItem _transactionIcon = ItemBuilder.from(transactionIcon).asGuiItem(event -> {
@@ -1315,18 +1315,26 @@ public class GuiManager2 {
         ItemStack TownIcon = HeadUtils.getTownIcon(playerStat.getTownId());
         ItemStack leaveTown = HeadUtils.getCustomLoreItem(Material.BARRIER,
                 Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN.getTranslation(),
-                Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1.getTranslation(TownDataStorage.get(playerStat).getName()),
-                Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2.getTranslation());
+                Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1.getTranslation(playerTown.getName()),
+                Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2.getTranslation()
+        );
 
         ItemStack deleteTown = HeadUtils.getCustomLoreItem(Material.BARRIER,
                 Lang.GUI_TOWN_SETTINGS_DELETE_TOWN.getTranslation(),
-                Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1.getTranslation(TownDataStorage.get(playerStat).getName()),
-                Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2.getTranslation());
+                Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1.getTranslation(playerTown.getName()),
+                Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2.getTranslation()
+        );
 
         ItemStack changeOwnershipTown = HeadUtils.getCustomLoreItem(Material.BEEHIVE,
                 Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.getTranslation(),
-                Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.getTranslation(TownDataStorage.get(playerStat).getName()),
-                Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.getTranslation());
+                Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.getTranslation(),
+                Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.getTranslation()
+        );
+
+        ItemStack changeMessage = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK,
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE.getTranslation(),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1.getTranslation(playerTown.getDescription())
+        );
 
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW,
                 Lang.GUI_BACK_ARROW.getTranslation());
@@ -1363,8 +1371,6 @@ public class GuiManager2 {
                 PlayerData memberStat = PlayerDataStorage.get(memberUUID);
                 memberStat.leaveTown();
             }
-
-
             playerStat.setTownId(null);
             playerStat.setRank(null);
             player.closeInventory();
@@ -1383,6 +1389,19 @@ public class GuiManager2 {
 
         });
 
+        GuiItem _changeMessage = ItemBuilder.from(changeMessage).asGuiItem(event -> {
+
+
+            player.closeInventory();
+
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.getTranslation());
+
+
+            PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CHANGE_DESCRIPTION,player);
+            event.setCancelled(true);
+
+        });
+
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
             OpenTownMenuHaveTown(player);
@@ -1393,6 +1412,8 @@ public class GuiManager2 {
         gui.setItem(10, _leaveTown);
         gui.setItem(11, _deleteTown);
         gui.setItem(12, _changeOwnershipTown);
+        gui.setItem(13, _changeMessage);
+
         gui.setItem(18, _getBackArrow);
 
         gui.open(player);

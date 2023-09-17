@@ -133,5 +133,16 @@ public class ChatListener implements Listener {
         }
 
 
+        if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.CHANGE_DESCRIPTION){
+
+            String newDesc = event.getMessage();
+
+            TownDataStorage.get(player).setDescription(newDesc);
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS.getTranslation());
+            event.setCancelled(true);
+
+        }
+
+
     }
 }

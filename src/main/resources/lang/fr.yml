@@ -188,7 +188,7 @@ language:
   GUI_TREASURY_FLAT_TAX: "§aTaxe fixe"
   GUI_TREASURY_FLAT_TAX_DESC1: "§fTaxe actuelle de la ville: §6{0}✦§f par jour"
   GUI_TREASURY_TAX_HISTORY: "§aHistorique des taxes"
-  GUI_TREASURY_TAX_HISTORY_DESC1: "Clic pour ouvrir"
+  GUI_TREASURY_TAX_HISTORY_DESC1: "§fClic pour ouvrir"
   GUI_TREASURY_SALARY_HISTORY: "§aHistorique des salaires"
   GUI_TREASURY_SALARY_HISTORY_DESC1: "§fLes dépenses de salaire s'élèvent à: §c-{0}✦"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY: "§aHistorique des dépenses de parcelles"
@@ -244,6 +244,7 @@ language:
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aRetirer une ville"
   GUI_TOWN_CHANGED_RELATION_RESUME: "§fVotre ville a maintenant la relation suivante avec {0} : {1}"
 
+  GUI_TOWN_INFO_DESC_0: "§o\"{0}\"" #town's quote
   GUI_TOWN_INFO_DESC_1: "§fLeader : §3{0}"
   GUI_TOWN_INFO_DESC_2: "§fMembres : §9{0}♣"
   GUI_TOWN_INFO_DESC_3: "§fChunks : §2{0}♦"
@@ -333,6 +334,12 @@ language:
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2: "§cVous perdrez votre statut et serez classé au grade par défaut"
 
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS: "Transfert réussi de la direction de la ville à : §e{0}"
+
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE: "§aChanger le message de la ville "
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1: "§fMessage actuel: §o\"{0}\""
+
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT: "Ecrivez le nouveau message"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS: "Mise a jour du message de la ville avec succès"
 
   #Historique des transactions
   TRANSACTION_HISTORY: "§f[{0}] - §e{1} : §a+{2}✦"
