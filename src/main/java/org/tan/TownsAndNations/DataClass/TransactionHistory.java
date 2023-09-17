@@ -10,22 +10,28 @@ public class TransactionHistory {
 
     private final String date;
     private final String transactionParty;
+    private final String uuid;
     private final int amount;
 
     public TransactionHistory(int amount) {
         this(null, amount);
     }
-
     public TransactionHistory(String transactionParty, int amount) {
+
+        this(transactionParty,null, amount);
+    }
+    public TransactionHistory(String transactionParty, String UUID, int amount) {
 
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
-        String formattedDate = today.format(formatter);
 
-        this.date = formattedDate;
+        this.date = today.format(formatter);
         this.transactionParty = transactionParty;
+        this.uuid = UUID;
         this.amount = amount;
     }
+
+
     @Override
     public String toString() {
         return Lang.TRANSACTION_HISTORY.getTranslation(date, transactionParty, amount);
@@ -47,12 +53,16 @@ public class TransactionHistory {
         return date;
     }
 
-    public String getPlayerId() {
+    public String getName() {
         return transactionParty;
     }
 
     public int getAmount() {
         return amount;
+    }
+
+    public String getUUID(){
+        return this.uuid;
     }
 
 }

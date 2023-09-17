@@ -4,6 +4,7 @@ package org.tan.TownsAndNations.Tasks;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.TownTreasury;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
@@ -14,7 +15,7 @@ import org.tan.TownsAndNations.utils.ChatUtils;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class TaxPayments {
+public class DailyTasks {
 
 
 
@@ -48,14 +49,13 @@ public class TaxPayments {
             if(playerStat.getBalance() > tax){
                 playerStat.removeFromBalance(tax);
                 playerTown.getTreasury().addToBalance(tax);
-
+                playerTown.getTreasury().addTaxHistory(playerStat.getName(), playerStat.getUuid(), tax);
                 TownsAndNations.getPluginLogger().info(playerStat.getName() + " has paid " + tax + "$ to the town " + playerTown.getName());
             }
             else{
                 TownsAndNations.getPluginLogger().info(playerStat.getName() + " has not enough money to pay " + tax + "$ to the town " + playerTown.getName());
+                playerTown.getTreasury().addTaxHistory(playerStat.getName(), playerStat.getUuid(), -1);
             }
-
-
         }
 
         TownsAndNations.getPluginLogger().info(ChatUtils.getTANString() + Lang.DAILY_TAXES_SUCCESS_LOG.getTranslation());

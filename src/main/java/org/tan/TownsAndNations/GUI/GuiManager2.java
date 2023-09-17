@@ -14,6 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.Action;
+import org.tan.TownsAndNations.enums.HistoryEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.*;
@@ -976,12 +977,17 @@ public class GuiManager2 {
             event.setCancelled(true);
         });
         GuiItem _taxHistory = ItemBuilder.from(taxHistory).asGuiItem(event -> {
+            OpenTownEconomicsHistory(player,HistoryEnum.TAX);
             event.setCancelled(true);
         });
         GuiItem _salarySpending = ItemBuilder.from(salarySpending).asGuiItem(event -> {
+            OpenTownEconomicsHistory(player,HistoryEnum.SALARY);
+
             event.setCancelled(true);
         });
         GuiItem _chunkSpending = ItemBuilder.from(chunkSpending).asGuiItem(event -> {
+            OpenTownEconomicsHistory(player,HistoryEnum.CHUNK);
+
             event.setCancelled(true);
         });
         GuiItem _workbenchSpending = ItemBuilder.from(workbenchSpending).asGuiItem(event -> {
@@ -995,6 +1001,7 @@ public class GuiManager2 {
 
         });
         GuiItem _donationHistory = ItemBuilder.from(donationHistory).asGuiItem(event -> {
+            OpenTownEconomicsHistory(player,HistoryEnum.DONATION);
             event.setCancelled(true);
         });
 
@@ -1068,6 +1075,69 @@ public class GuiManager2 {
         gui.open(player);
 
     }
+    public static void OpenTownEconomicsHistory(Player player, HistoryEnum historyType) {
+
+        String name = "Town";
+        int nRow = 6;
+
+        Gui gui = Gui.gui()
+                .title(Component.text(name))
+                .type(GuiType.CHEST)
+                .rows(nRow)
+                .create();
+
+        PlayerData playerStat = PlayerDataStorage.get(player);
+        TownData town = TownDataStorage.get(playerStat.getTownId());
+
+
+        switch (historyType){
+
+            case DONATION -> {
+
+                int i = 0;
+                for(TransactionHistory donation : town.getTreasury().getDonationHistory()){
+
+                    ItemStack transactionIcon = HeadUtils.getCustomLoreItem(Material.PAPER,
+                            ChatColor.DARK_AQUA + donation.getName(),
+                            Integer.toString(donation.getAmount()),
+                            donation.getDate()
+                    );
+
+                    GuiItem _transactionIcon = ItemBuilder.from(transactionIcon).asGuiItem(event -> {
+                        event.setCancelled(true);
+                    });
+
+                    gui.setItem(i,_transactionIcon);
+                    i = i + 1;
+                }
+            }
+            case TAX -> {
+
+            }
+            case CHUNK -> {
+
+            }
+            case SALARY -> {
+
+            }
+
+        }
+
+
+
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
+
+        GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownEconomics(player);
+        });
+
+        gui.setItem(6,1, _getBackArrow);
+
+        gui.open(player);
+
+    }
+
     public static void OpenTownLevel(Player player){
         String name = "Town";
         int nRow = 3;

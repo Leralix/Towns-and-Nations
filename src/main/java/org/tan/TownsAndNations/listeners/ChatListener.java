@@ -85,7 +85,7 @@ public class ChatListener implements Listener {
             sender.removeFromBalance(amount);
             playerTown.getTreasury().addToBalance(amount);
 
-            playerTown.getTreasury().addDonation(LocalDate.now(),player.getName(),amount);
+            playerTown.getTreasury().addDonation(player.getName(),playerUUID,amount);
             player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_TOWN.getTranslation(amount));
             PlayerChatListenerStorage.removePlayer(player);
 
