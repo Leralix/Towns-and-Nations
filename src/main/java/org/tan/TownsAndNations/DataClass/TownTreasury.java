@@ -38,6 +38,10 @@ public class TownTreasury {
         return donationHistory;
     }
 
+    public LinkedHashMap<String, TransactionHistory> getChunkHistory(){
+        return this.chunkHistory;
+    }
+
 
     public void addToBalance(int amount){
         this.balance = this.balance + amount;
@@ -75,7 +79,6 @@ public class TownTreasury {
         TransactionHistory newDonation = new TransactionHistory(playerName,playerID, amount);
         this.donationHistory.add(newDonation);
     }
-
     public void addSalary(LocalDate date, String playerID, int amount){
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
@@ -86,14 +89,19 @@ public class TownTreasury {
         }
         this.salaryHistory.get(formattedDate).add(new TransactionHistory(playerID, amount));
     }
-    public void addChunkHistory(LocalDate date, String playerID, int amount){
+
+
+
+    public void addChunkHistory(LocalDate date, int numberOfChunk,int amount){
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
         String formattedDate = date.format(formatter);
 
-        if (!this.chunkHistory.containsKey(formattedDate)) {
-            this.chunkHistory.put(formattedDate,new TransactionHistory("Chunks", amount));
-        }
+        this.chunkHistory.put(formattedDate,new TransactionHistory(String.valueOf(numberOfChunk), amount));
+
+    }
+    public void addChunkHistory(int numberOfChunk,int amount){
+        addChunkHistory(LocalDate.now(),numberOfChunk,amount);
     }
     public void addMiscellaneousPurchase(LocalDate date, String miscellaneous, int amount){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");

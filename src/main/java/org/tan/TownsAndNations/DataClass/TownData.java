@@ -181,6 +181,7 @@ public class TownData {
     public TownTreasury getTreasury(){
         return this.townTreasury;
     }
+
     public void broadCastMessage(String message){
         for (String playerId : townPlayerListId){
             Player player = Bukkit.getServer().getPlayer(UUID.fromString(playerId));

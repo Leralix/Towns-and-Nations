@@ -934,7 +934,7 @@ public class GuiManager2 {
         ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.getTranslation());
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
-
+        HeadUtils.addLore(taxHistory,Lang.GUI_TREASURY_TAX_HISTORY_DESC1.getTranslation());
 
         int nextTaxes = 0;
 
@@ -982,7 +982,6 @@ public class GuiManager2 {
         });
         GuiItem _salarySpending = ItemBuilder.from(salarySpending).asGuiItem(event -> {
             OpenTownEconomicsHistory(player,HistoryEnum.SALARY);
-
             event.setCancelled(true);
         });
         GuiItem _chunkSpending = ItemBuilder.from(chunkSpending).asGuiItem(event -> {
@@ -1113,8 +1112,64 @@ public class GuiManager2 {
             }
             case TAX -> {
 
+                LinkedHashMap<String, ArrayList<TransactionHistory>> taxHistory = town.getTreasury().getTaxHistory();
+
+                int i = 0;
+
+                for(Map.Entry<String,ArrayList<TransactionHistory>> oneDay : taxHistory.entrySet()){
+
+                    String date = oneDay.getKey();
+                    ArrayList<TransactionHistory> taxes = oneDay.getValue();
+
+
+                    List<String> lines = new ArrayList<>();
+
+                    for (TransactionHistory singleTax : taxes){
+
+                        if(singleTax.getAmount() == -1){
+                            lines.add(Lang.TAX_SINGLE_LINE_NOT_ENOUGH.getTranslation(singleTax.getName()));
+                        }
+                        else{
+                            lines.add(Lang.TAX_SINGLE_LINE.getTranslation(singleTax.getName(), singleTax.getAmount()));
+                        }
+                    }
+
+                    ItemStack transactionHistoryItem = HeadUtils.getCustomLoreItem(Material.PAPER,date);
+
+                    HeadUtils.addLore(transactionHistoryItem,lines);
+
+                    GuiItem _transactionHistoryItem = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> {
+                        event.setCancelled(true);
+                    });
+
+                    gui.setItem(i,_transactionHistoryItem);
+
+                }
+
             }
             case CHUNK -> {
+
+                int i = 0;
+
+                float upkeepCost = ConfigUtil.getCustomConfig("config.yml").getInt("ChunkUpkeepCost");
+
+                for(TransactionHistory chunkTax : town.getTreasury().getChunkHistory().values()){
+
+
+                    ItemStack transactionIcon = HeadUtils.getCustomLoreItem(Material.PAPER,
+                            ChatColor.DARK_AQUA + chunkTax.getDate(),
+                            Lang.CHUNK_HISTORY_DESC1.getTranslation(chunkTax.getAmount()),
+                            Lang.CHUNK_HISTORY_DESC2.getTranslation(chunkTax.getName(), String.format("%.2f", upkeepCost/10),chunkTax.getAmount())
+
+                    );
+
+                    GuiItem _transactionIcon = ItemBuilder.from(transactionIcon).asGuiItem(event -> {
+                        event.setCancelled(true);
+                    });
+
+                    gui.setItem(i,_transactionIcon);
+                    i = i + 1;
+                }
 
             }
             case SALARY -> {
@@ -1137,7 +1192,6 @@ public class GuiManager2 {
         gui.open(player);
 
     }
-
     public static void OpenTownLevel(Player player){
         String name = "Town";
         int nRow = 3;

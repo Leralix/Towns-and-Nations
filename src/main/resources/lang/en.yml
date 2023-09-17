@@ -196,6 +196,7 @@ language:
   GUI_TREASURY_FLAT_TAX: "§aFlat tax"
   GUI_TREASURY_FLAT_TAX_DESC1: "§fTown current tax: §6{0}✦§f daily"
   GUI_TREASURY_TAX_HISTORY: "§aTax History"
+  GUI_TREASURY_TAX_HISTORY_DESC1: "§fClick to open"
   GUI_TREASURY_SALARY_HISTORY: "§aSalary history"
   GUI_TREASURY_SALARY_HISTORY_DESC1: "§fSalary spending are up to: §c-{0}✦"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY: "§aChunk spending history"
@@ -346,8 +347,10 @@ language:
 
   #Transaction history
   TRANSACTION_HISTORY: "§f[{0}] - §3{1} : §6+{2}✦"
-
-
+  TAX_SINGLE_LINE: "§3{1} : §6+{2}✦"
+  TAX_SINGLE_LINE_NOT_ENOUGH: "§3{1} :§c not enough money"
+  CHUNK_HISTORY_DESC1: "§fTotal cost:§c {1}✦"
+  CHUNK_HISTORY_DESC2: "§f{0} × §2{1}♦§f = {2}"
   #Chat Information
 
   CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cYou can't leave a town if you are the leader, you need to disband it or give the leadership to someone else"

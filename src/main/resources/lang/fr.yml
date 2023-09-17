@@ -188,6 +188,7 @@ language:
   GUI_TREASURY_FLAT_TAX: "§aTaxe fixe"
   GUI_TREASURY_FLAT_TAX_DESC1: "§fTaxe actuelle de la ville: §6{0}✦§f par jour"
   GUI_TREASURY_TAX_HISTORY: "§aHistorique des taxes"
+  GUI_TREASURY_TAX_HISTORY_DESC1: "Clic pour ouvrir"
   GUI_TREASURY_SALARY_HISTORY: "§aHistorique des salaires"
   GUI_TREASURY_SALARY_HISTORY_DESC1: "§fLes dépenses de salaire s'élèvent à: §c-{0}✦"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY: "§aHistorique des dépenses de parcelles"
@@ -335,6 +336,10 @@ language:
 
   #Historique des transactions
   TRANSACTION_HISTORY: "§f[{0}] - §e{1} : §a+{2}✦"
+  TAX_SINGLE_LINE: "§3{1} : §6+{2}✦"
+  TAX_SINGLE_LINE_NOT_ENOUGH: "§3{1} :§c pas assez d'argent"
+  CHUNK_HISTORY_DESC1: "§fCoût total:§c {0}✦"
+  CHUNK_HISTORY_DESC2: "§f{0} × §2{1}♦§f = {2}"
 
   #Informations Chat
 
