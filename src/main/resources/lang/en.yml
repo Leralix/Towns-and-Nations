@@ -354,6 +354,8 @@ language:
 
   #Transaction history
   TRANSACTION_HISTORY: "§f[{0}] - §3{1} : §6+{2}✦"
+  DONATION_SINGLE_LINE_1: "§3+{0}✦"
+  DONATION_SINGLE_LINE_2: "§f{0}"
   TAX_SINGLE_LINE: "§3{1} : §6+{2}✦"
   TAX_SINGLE_LINE_NOT_ENOUGH: "§3{1} :§c not enough money"
   CHUNK_HISTORY_DESC1: "§fTotal cost:§c {1}✦"

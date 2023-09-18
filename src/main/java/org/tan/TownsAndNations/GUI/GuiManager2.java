@@ -1098,8 +1098,8 @@ public class GuiManager2 {
 
                     ItemStack transactionIcon = HeadUtils.getCustomLoreItem(Material.PAPER,
                             ChatColor.DARK_AQUA + donation.getName(),
-                            ChatColor.GOLD + Integer.toString(donation.getAmount()) + "✦",
-                            ChatColor.WHITE + donation.getDate()
+                            Lang.DONATION_SINGLE_LINE_1.getTranslation(donation.getAmount()),
+                            Lang.DONATION_SINGLE_LINE_2.getTranslation(donation.getDate())
                     );
 
                     GuiItem _transactionIcon = ItemBuilder.from(transactionIcon).asGuiItem(event -> {
