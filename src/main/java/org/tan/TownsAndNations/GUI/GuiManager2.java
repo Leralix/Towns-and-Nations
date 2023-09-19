@@ -224,9 +224,10 @@ public class GuiManager2 {
             ItemStack townIcon = HeadUtils.getTownIcon(playerTown.getID());
 
             HeadUtils.addLore(townIcon,
+                    Lang.GUI_TOWN_INFO_DESC0.getTranslation(playerTown.getDescription()),
                     Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerTown.getUuidLeader())).getName()),
-                    Lang.GUI_TOWN_INFO_DESC2.getTranslation(playerTown.getChunkSettings().getNumberOfClaimedChunk()),
-                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(playerTown.getPlayerList().size())
+                    Lang.GUI_TOWN_INFO_DESC2.getTranslation(playerTown.getPlayerList().size()),
+                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(playerTown.getChunkSettings().getNumberOfClaimedChunk())
             );
 
             GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> {
@@ -262,9 +263,10 @@ public class GuiManager2 {
 
         ItemStack TownIcon = HeadUtils.getTownIcon(playerTown.getID());
         HeadUtils.addLore(TownIcon,
+                Lang.GUI_TOWN_INFO_DESC0.getTranslation(playerTown.getDescription()),
                 Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerTown.getUuidLeader())).getName()),
-                Lang.GUI_TOWN_INFO_DESC2.getTranslation(playerTown.getChunkSettings().getNumberOfClaimedChunk()),
-                Lang.GUI_TOWN_INFO_DESC3.getTranslation(playerTown.getPlayerList().size()),
+                Lang.GUI_TOWN_INFO_DESC2.getTranslation(playerTown.getPlayerList().size()),
+                Lang.GUI_TOWN_INFO_DESC3.getTranslation(playerTown.getChunkSettings().getNumberOfClaimedChunk()),
                 Lang.GUI_TOWN_INFO_DESC4.getTranslation(playerTown.getTreasury().getBalance()),
                 Lang.GUI_TOWN_INFO_CHANGE_ICON.getTranslation()
         );
@@ -396,9 +398,10 @@ public class GuiManager2 {
             }
 
             HeadUtils.addLore(townIcon,
+                    Lang.GUI_TOWN_INFO_DESC0.getTranslation(otherTown.getDescription()),
                     Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(otherTown.getUuidLeader())).getName()),
-                    Lang.GUI_TOWN_INFO_DESC2.getTranslation(otherTown.getChunkSettings().getNumberOfClaimedChunk()),
-                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(otherTown.getPlayerList().size()),
+                    Lang.GUI_TOWN_INFO_DESC2.getTranslation(otherTown.getPlayerList().size()),
+                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(otherTown.getChunkSettings().getNumberOfClaimedChunk()),
                     Lang.GUI_TOWN_INFO_TOWN_RELATION.getTranslation(relationName)
             );
 

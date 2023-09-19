@@ -116,9 +116,10 @@ public class HeadUtils {
         ItemMeta meta = icon.getItemMeta();
         List<String> lore = new ArrayList<>();
 
-        lore.add(Lang.GUI_TOWN_INFO_DESC_1.getTranslation(Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())).getName()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC_2.getTranslation(town.getPlayerList().size()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC_3.getTranslation(town.getChunkSettings().getNumberOfClaimedChunk()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC0.getTranslation(town.getDescription()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())).getName()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC2.getTranslation(town.getPlayerList().size()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC3.getTranslation(town.getChunkSettings().getNumberOfClaimedChunk()));
 
         meta.setLore(lore);
         icon.setItemMeta(meta);
@@ -145,10 +146,10 @@ public class HeadUtils {
             relationName = relation.getColor() + relation.getName();
         }
 
-        lore.add(Lang.GUI_TOWN_INFO_DESC_0.getTranslation(town.getDescription()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC_1.getTranslation(Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())).getName()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC_2.getTranslation(town.getPlayerList().size()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC_3.getTranslation(town.getChunkSettings().getNumberOfClaimedChunk()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC0.getTranslation(town.getDescription()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())).getName()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC2.getTranslation(town.getPlayerList().size()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC3.getTranslation(town.getChunkSettings().getNumberOfClaimedChunk()));
         lore.add(Lang.GUI_TOWN_INFO_TOWN_RELATION.getTranslation(relationName));
 
         meta.setLore(lore);

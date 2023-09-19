@@ -158,10 +158,12 @@ language:
   GUI_NO_TOWN_JOIN_A_TOWN: "§aJoin a town"
   GUI_NO_TOWN_JOIN_A_TOWN_DESC1: "§fThere are currently §e{0}§f towns in total"
 
-  GUI_TOWN_INFO_DESC1: "§fLeader: §b{0}"
-  GUI_TOWN_INFO_DESC2: "§fTerritory: §2{0}♦"
-  GUI_TOWN_INFO_DESC3: "§fMembers: §9{0}♣"
+  GUI_TOWN_INFO_DESC0: "§7§o\"{0}\"" #town's quote
+  GUI_TOWN_INFO_DESC1: "§fLeader: §3{0}"
+  GUI_TOWN_INFO_DESC2: "§fMembers: §9{0}♣"
+  GUI_TOWN_INFO_DESC3: "§fChunks: §2{0}♦"
   GUI_TOWN_INFO_DESC4: "§fTreasury: §6{0}✦"
+  GUI_TOWN_INFO_TOWN_RELATION: "§fCurrent relation with the town: §e{0}"
 
   GUI_TOWN_INFO_CHANGE_ICON: "§fDrag and drop an item to change the town's icon"
 
@@ -253,12 +255,6 @@ language:
   GUI_TOWN_ATTACK_TOWN_EXECUTED: "§aYou launched an attack against {0}"
   GUI_TOWN_ATTACK_TOWN_INFO: "§a{0} have launched an attack against you !"
   GUI_TOWN_ATTACK_FINISHED: "§aThe attack against {0} has ended !"
-
-  GUI_TOWN_INFO_DESC_0: "§o\"{0}\"" #town's quote
-  GUI_TOWN_INFO_DESC_1: "§fLeader: §3{0}"
-  GUI_TOWN_INFO_DESC_2: "§fMembers: §9{0}♣"
-  GUI_TOWN_INFO_DESC_3: "§fChunks: §2{0}♦"
-  GUI_TOWN_INFO_TOWN_RELATION: "§fCurrent relation with the town: §e{0}"
 
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aManage door access"
   GUI_TOWN_CLAIM_SETTINGS_DOOR_DESC1: "§fCurrent door permission: §e{0}"
@@ -354,12 +350,12 @@ language:
 
   #Transaction history
   TRANSACTION_HISTORY: "§f[{0}] - §3{1} : §6+{2}✦"
-  DONATION_SINGLE_LINE_1: "§3+{0}✦"
+  DONATION_SINGLE_LINE_1: "§a+{0}✦"
   DONATION_SINGLE_LINE_2: "§f{0}"
   TAX_SINGLE_LINE: "§3{1} : §6+{2}✦"
   TAX_SINGLE_LINE_NOT_ENOUGH: "§3{1} :§c not enough money"
   CHUNK_HISTORY_DESC1: "§fTotal cost:§c {1}✦"
-  CHUNK_HISTORY_DESC2: "§f{0} × §2{1}♦§f = {2}"
+  CHUNK_HISTORY_DESC2: "§2{0}♦§f × {1} = §c{2}"
   #Chat Information
 
   CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cYou can't leave a town if you are the leader, you need to disband it or give the leadership to someone else"

@@ -139,6 +139,7 @@ public class ChatListener implements Listener {
 
             TownDataStorage.get(player).setDescription(newDesc);
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS.getTranslation());
+            PlayerChatListenerStorage.removePlayer(player);
             event.setCancelled(true);
 
         }
