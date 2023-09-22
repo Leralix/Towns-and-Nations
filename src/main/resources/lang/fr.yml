@@ -21,6 +21,11 @@ language:
   SYNTAX_ERROR_AMOUNT: "§cSyntaxe incorrecte pour le montant"
   CORRECT_SYNTAX_INFO: "§cSyntaxe correcte : {0}"
 
+  #Demande de rejoindre une ville
+  PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f a demandé de rejoindre la ville. Vous pouvez retrouver sa candidature dans le menu des membres"
+  PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "§fVous avez demandé de rejoindre la ville: §9{0}§f. Clic droit sur la ville pour annuler la demande."
+  PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "§fAnnulation de la demande"
+
   # Créer une ville
   TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f a créé avec succès la ville : §9{1}"
 
@@ -158,6 +163,13 @@ language:
   GUI_TOWN_INFO_DESC4: "§fTrésorerie : §6{0}✦"
   GUI_TOWN_INFO_TOWN_RELATION: "§fRelation actuelle avec la ville : §e{0}"
 
+  GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN: "§fClic gauche pour demander a rejoindre la ville"
+  GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL: "§cClic droit pour annuler la demande de rejoindre une ville"
+
+  GUI_PLAYER_ASK_JOIN_PROFILE_DESC1: "§fLa demande a été effectuée le: "
+  GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fClic gauche pour§a accepter §fla demande"
+  GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§fClic droit pour§c refuser §fla demande"
+
   GUI_TOWN_INFO_CHANGE_ICON: "§f Changez l'icone en déposant un autre objet dans cette case"
 
   GUI_TOWN_TREASURY_ICON: "§aTrésorerie"
@@ -247,13 +259,17 @@ language:
   GUI_TOWN_CHANGED_RELATION_RESUME: "§fVotre ville a maintenant la relation suivante avec {0} : {1}"
 
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aGérer l'accès aux portes"
-  GUI_TOWN_CLAIM_SETTINGS_DOOR_DESC1: "§fPermission actuelle de porte : §e{0}"
   GUI_TOWN_CLAIM_SETTINGS_CHEST: "§aGérer l'accès aux coffres"
-  GUI_TOWN_CLAIM_SETTINGS_CHEST_DESC1: "§fPermission actuelle de coffre : §e{0}"
   GUI_TOWN_CLAIM_SETTINGS_BUILD: "§aGérer la permission de construction"
-  GUI_TOWN_CLAIM_SETTINGS_BUILD_DESC1: "§fPermission actuelle de construction : §e{0}"
   GUI_TOWN_CLAIM_SETTINGS_BREAK: "§aGérer la permission de destruction"
-  GUI_TOWN_CLAIM_SETTINGS_BREAK_DESC1: "§fPermission actuelle de destruction : §e{0}"
+  GUI_TOWN_CLAIM_SETTINGS_ATTACK_PASSIVE_MOBS: "§aGérer l'attaque des mobs passifs"
+  GUI_TOWN_CLAIM_SETTINGS_BUTTON: "§aGérer l'utilisation des boutons"
+  GUI_TOWN_CLAIM_SETTINGS_LEVER: "§aGérer l'utilisation des leviers"
+  GUI_TOWN_CLAIM_SETTINGS_FURNACE: "§aGérer l'utilisation des fours"
+  GUI_TOWN_CLAIM_SETTINGS_INTERACT_ITEM_FRAME: "§aGérer l'utilisation des cadres d'objets"
+  GUI_TOWN_CLAIM_SETTINGS_INTERACT_ARMOR_STAND: "§aGérer l'utilisation des présentoirs d'armures"
+
+  GUI_TOWN_CLAIM_SETTINGS_DESC1: "§fPermission actuelle: §e{0}"
 
   GUI_TOWN_MEMBER_DESC1: "§fRang: §e{0}"
   GUI_TOWN_MEMBER_DESC2: "§fSolde actuel: §6{0}✦"
@@ -265,6 +281,7 @@ language:
   GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER: "§cVous avez été expulsé de la ville"
 
   GUI_TOWN_MEMBERS_MANAGE_ROLES: "§aGérer les rangs"
+  GUI_TOWN_MEMBERS_MANAGE_APPLICATION: "§aGérer les candidatures"
   GUI_TOWN_MEMBERS_ADD_NEW_ROLES: "§aCréer un nouveau rang"
   GUI_TOWN_MEMBERS_ADD_NEW_ROLES_DESC1: "§f8 rangs max"
   GUI_TOWN_MEMBERS_ROLE_NAME: "§a{0}"

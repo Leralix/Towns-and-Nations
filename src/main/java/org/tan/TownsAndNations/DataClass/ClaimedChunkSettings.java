@@ -8,6 +8,13 @@ public class ClaimedChunkSettings {
     private TownChunkPermission doorAuth;
     private TownChunkPermission breakAuth;
     private TownChunkPermission placeAuth;
+    private TownChunkPermission attackPassiveMobAuth;
+    private TownChunkPermission useButtonsAuth;
+    private TownChunkPermission useLeverAuth;
+    private TownChunkPermission useFurnaceAuth;
+    private TownChunkPermission interactItemFrameAuth;
+    private TownChunkPermission interactArmorStandAuth;
+
 
     public ClaimedChunkSettings(){
         this.NumberOfClaimedChunk = 0;
@@ -15,6 +22,13 @@ public class ClaimedChunkSettings {
         this.doorAuth = TownChunkPermission.TOWN;
         this.breakAuth = TownChunkPermission.TOWN;
         this.placeAuth = TownChunkPermission.TOWN;
+        this.attackPassiveMobAuth = TownChunkPermission.TOWN;
+        this.useButtonsAuth = TownChunkPermission.TOWN;
+        this.useLeverAuth = TownChunkPermission.TOWN;
+        this.useFurnaceAuth = TownChunkPermission.TOWN;
+        this.interactItemFrameAuth = TownChunkPermission.TOWN;
+        this.interactArmorStandAuth = TownChunkPermission.TOWN;
+
     }
 
     public TownChunkPermission getChestAuth() {
@@ -29,6 +43,25 @@ public class ClaimedChunkSettings {
     public TownChunkPermission getPlaceAuth() {
         return this.placeAuth;
     }
+    public TownChunkPermission getAttackPassiveMobAuth() {
+        return this.attackPassiveMobAuth;
+    }
+    public TownChunkPermission getUseButtonsAuth() {
+        return this.useButtonsAuth;
+    }
+    public TownChunkPermission getUseLeverAuth() {
+        return this.useLeverAuth;
+    }
+    public TownChunkPermission getUseFurnaceAuth() {
+        return this.useFurnaceAuth;
+    }
+    public TownChunkPermission getInteractItemFrameAuth() {
+        return this.interactItemFrameAuth;
+    }
+    public TownChunkPermission getInteractArmorStandAuth() {
+        return this.interactArmorStandAuth;
+    }
+
 
     public void nextChestAuth() {
         this.chestAuth = this.chestAuth.getNext();
@@ -45,6 +78,32 @@ public class ClaimedChunkSettings {
     public void nextPlaceAuth() {
         this.placeAuth = this.placeAuth.getNext();
     }
+
+    public void nextAttackPassiveMobAuth() {
+        this.attackPassiveMobAuth = this.attackPassiveMobAuth.getNext();
+    }
+
+    public void nextUseButtonsAuth() {
+        this.useButtonsAuth = this.useButtonsAuth.getNext();
+    }
+
+    public void nextUseLeverAuth() {
+        this.useLeverAuth = this.useLeverAuth.getNext();
+    }
+
+    public void nextUseFurnaceAuth() {
+        this.useFurnaceAuth = this.useFurnaceAuth.getNext();
+    }
+
+    public void nextInteractItemFrameAuth() {
+        this.interactItemFrameAuth = this.interactItemFrameAuth.getNext();
+    }
+
+    public void nextInteractArmorStandAuth() {
+        this.interactArmorStandAuth = this.interactArmorStandAuth.getNext();
+    }
+
+
 
     public int getNumberOfClaimedChunk() {
         return this.NumberOfClaimedChunk;

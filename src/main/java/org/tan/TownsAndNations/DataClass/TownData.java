@@ -24,6 +24,8 @@ public class TownData {
     public String DateCreated;
     private String townIconMaterialCode;
     private final HashSet<String> townPlayerListId = new HashSet<>();
+    private final HashSet<String> PlayerJoinRequestSet = new HashSet<>();
+
     private final TownTreasury townTreasury;
     private final TownLevel townLevel;
     private ClaimedChunkSettings chunkSettings;
@@ -244,4 +246,30 @@ public class TownData {
 
         relations.cleanAll(getID());
     }
+
+
+    public void addPlayerJoinRequest(String playerUUID) {
+        PlayerJoinRequestSet.add(playerUUID);
+    }
+    public void addPlayerJoinRequest(Player player) {
+        PlayerJoinRequestSet.add(player.getUniqueId().toString());
+    }
+    public void removePlayerJoinRequest(String playerUUID) {
+        PlayerJoinRequestSet.remove(playerUUID);
+    }
+    public void removePlayerJoinRequest(Player player) {
+        PlayerJoinRequestSet.remove(player.getUniqueId().toString());
+    }
+    public boolean isPlayerJoinRequest(String playerUUID) {
+        return PlayerJoinRequestSet.contains(playerUUID);
+    }
+    public boolean isPlayerJoinRequest(Player player) {
+        return PlayerJoinRequestSet.contains(player.getUniqueId().toString());
+    }
+    public HashSet<String> getPlayerJoinRequestSet(){
+            return this.PlayerJoinRequestSet;
+    }
+
+
+
 }
