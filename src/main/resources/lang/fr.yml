@@ -21,6 +21,11 @@ language:
   SYNTAX_ERROR_AMOUNT: "§cSyntaxe incorrecte pour le montant"
   CORRECT_SYNTAX_INFO: "§cSyntaxe correcte : {0}"
 
+  #Demande de rejoindre une ville
+  PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f a demandé de rejoindre la ville. Vous pouvez retrouver sa candidature dans le menu des membres"
+  PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "§fVous avez demandé de rejoindre la ville: §9{0}§f. Clic droit sur la ville pour annuler la demande."
+  PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "§fAnnulation de la demande"
+
   # Créer une ville
   TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f a créé avec succès la ville : §9{1}"
 
@@ -151,12 +156,21 @@ language:
   GUI_NO_TOWN_JOIN_A_TOWN: "§aRejoindre une ville"
   GUI_NO_TOWN_JOIN_A_TOWN_DESC1: "§fIl y a actuellement §e{0}§f villes en tout"
 
+  GUI_TOWN_INFO_DESC0: "§7§o\"{0}\"" #town's quote
   GUI_TOWN_INFO_DESC1: "§fLeader : §b{0}"
-  GUI_TOWN_INFO_DESC2: "§fChunks : §2{0}♦"
-  GUI_TOWN_INFO_DESC3: "§fMembres : §9{0}♣"
+  GUI_TOWN_INFO_DESC2: "§fMembres : §9{0}♣"
+  GUI_TOWN_INFO_DESC3: "§fChunks : §2{0}♦"
   GUI_TOWN_INFO_DESC4: "§fTrésorerie : §6{0}✦"
+  GUI_TOWN_INFO_TOWN_RELATION: "§fRelation actuelle avec la ville : §e{0}"
 
-  GUI_TOWN_INFO_CHANGE_ICON: "§f Glissez-déposez un item de votre inventaire dans cette case pour changer l'icone de la ville"
+  GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN: "§fClic gauche pour demander a rejoindre la ville"
+  GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL: "§cClic droit pour annuler la demande de rejoindre une ville"
+
+  GUI_PLAYER_ASK_JOIN_PROFILE_DESC1: "§fLa demande a été effectuée le: "
+  GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fClic gauche pour§a accepter §fla demande"
+  GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§fClic droit pour§c refuser §fla demande"
+
+  GUI_TOWN_INFO_CHANGE_ICON: "§f Changez l'icone en déposant un autre objet dans cette case"
 
   GUI_TOWN_TREASURY_ICON: "§aTrésorerie"
   GUI_TOWN_TREASURY_ICON_DESC1: "§fGérer les impôts et la trésorerie de la ville"
@@ -188,6 +202,7 @@ language:
   GUI_TREASURY_FLAT_TAX: "§aTaxe fixe"
   GUI_TREASURY_FLAT_TAX_DESC1: "§fTaxe actuelle de la ville: §6{0}✦§f par jour"
   GUI_TREASURY_TAX_HISTORY: "§aHistorique des taxes"
+  GUI_TREASURY_TAX_HISTORY_DESC1: "§fClic pour ouvrir"
   GUI_TREASURY_SALARY_HISTORY: "§aHistorique des salaires"
   GUI_TREASURY_SALARY_HISTORY_DESC1: "§fLes dépenses de salaire s'élèvent à: §c-{0}✦"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY: "§aHistorique des dépenses de parcelles"
@@ -243,19 +258,18 @@ language:
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aRetirer une ville"
   GUI_TOWN_CHANGED_RELATION_RESUME: "§fVotre ville a maintenant la relation suivante avec {0} : {1}"
 
-  GUI_TOWN_INFO_DESC_1: "§fLeader : §3{0}"
-  GUI_TOWN_INFO_DESC_2: "§fMembres : §9{0}♣"
-  GUI_TOWN_INFO_DESC_3: "§fChunks : §2{0}♦"
-  GUI_TOWN_INFO_TOWN_RELATION: "§fRelation actuelle avec la ville : §e{0}"
-
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aGérer l'accès aux portes"
-  GUI_TOWN_CLAIM_SETTINGS_DOOR_DESC1: "§fPermission actuelle de porte : §e{0}"
   GUI_TOWN_CLAIM_SETTINGS_CHEST: "§aGérer l'accès aux coffres"
-  GUI_TOWN_CLAIM_SETTINGS_CHEST_DESC1: "§fPermission actuelle de coffre : §e{0}"
   GUI_TOWN_CLAIM_SETTINGS_BUILD: "§aGérer la permission de construction"
-  GUI_TOWN_CLAIM_SETTINGS_BUILD_DESC1: "§fPermission actuelle de construction : §e{0}"
   GUI_TOWN_CLAIM_SETTINGS_BREAK: "§aGérer la permission de destruction"
-  GUI_TOWN_CLAIM_SETTINGS_BREAK_DESC1: "§fPermission actuelle de destruction : §e{0}"
+  GUI_TOWN_CLAIM_SETTINGS_ATTACK_PASSIVE_MOBS: "§aGérer l'attaque des mobs passifs"
+  GUI_TOWN_CLAIM_SETTINGS_BUTTON: "§aGérer l'utilisation des boutons"
+  GUI_TOWN_CLAIM_SETTINGS_LEVER: "§aGérer l'utilisation des leviers"
+  GUI_TOWN_CLAIM_SETTINGS_FURNACE: "§aGérer l'utilisation des fours"
+  GUI_TOWN_CLAIM_SETTINGS_INTERACT_ITEM_FRAME: "§aGérer l'utilisation des cadres d'objets"
+  GUI_TOWN_CLAIM_SETTINGS_INTERACT_ARMOR_STAND: "§aGérer l'utilisation des présentoirs d'armures"
+
+  GUI_TOWN_CLAIM_SETTINGS_DESC1: "§fPermission actuelle: §e{0}"
 
   GUI_TOWN_MEMBER_DESC1: "§fRang: §e{0}"
   GUI_TOWN_MEMBER_DESC2: "§fSolde actuel: §6{0}✦"
@@ -267,6 +281,7 @@ language:
   GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER: "§cVous avez été expulsé de la ville"
 
   GUI_TOWN_MEMBERS_MANAGE_ROLES: "§aGérer les rangs"
+  GUI_TOWN_MEMBERS_MANAGE_APPLICATION: "§aGérer les candidatures"
   GUI_TOWN_MEMBERS_ADD_NEW_ROLES: "§aCréer un nouveau rang"
   GUI_TOWN_MEMBERS_ADD_NEW_ROLES_DESC1: "§f8 rangs max"
   GUI_TOWN_MEMBERS_ROLE_NAME: "§a{0}"
@@ -333,18 +348,30 @@ language:
 
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS: "Transfert réussi de la direction de la ville à : §e{0}"
 
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE: "§aChanger le message de la ville "
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1: "§fMessage actuel: §o\"{0}\""
+
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT: "Ecrivez le nouveau message"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS: "Mise a jour du message de la ville avec succès"
+
   #Historique des transactions
   TRANSACTION_HISTORY: "§f[{0}] - §e{1} : §a+{2}✦"
+  DONATION_SINGLE_LINE_1: "§a+{0}✦"
+  DONATION_SINGLE_LINE_2: "§f{0}"
+  TAX_SINGLE_LINE: "§3{0} : §a+{1}✦"
+  TAX_SINGLE_LINE_NOT_ENOUGH: "§3{0} :§c pas assez d'argent"
+  CHUNK_HISTORY_DESC1: "§fCoût total:§c {0}✦"
+  CHUNK_HISTORY_DESC2: "§2{0}♦§f × {1} = §c{2}"
 
   #Informations Chat
 
-  CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§fVous ne pouvez pas quitter la ville si vous en êtes le leader, vous devez la dissoudre ou donner la direction à quelqu'un d'autre"
+  CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cVous ne pouvez pas quitter la ville si vous en êtes le leader, vous devez la dissoudre ou donner la direction à quelqu'un d'autre"
   NOT_TOWN_LEADER_ERROR: "§cVous devez être le leader de la ville pour exécuter cette action"
 
-  CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§fVous ne pouvez pas dissoudre la ville si vous n'en êtes pas le leader"
+  CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§cVous ne pouvez pas dissoudre la ville si vous n'en êtes pas le leader"
 
-  CHAT_PLAYER_LEFT_THE_TOWN: "§fVous avez quitté la ville"
-  CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fVille supprimée avec succès"
+  CHAT_PLAYER_LEFT_THE_TOWN: "§cVous avez quitté la ville"
+  CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§cVille supprimée avec succès"
 
   WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cLa ville §9{0}§c, avec laquelle vous aviez une relation: §e{1}§c a été supprimée"
 

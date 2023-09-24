@@ -30,6 +30,9 @@ public enum TownChunkPermission {
     public ChatColor getColor() {
         return color;
     }
+    public String getColoredName(){
+        return this.color + this.name;
+    }
     public TownChunkPermission getNext(){
         return this.next;
     }

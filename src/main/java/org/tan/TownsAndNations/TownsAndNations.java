@@ -4,7 +4,7 @@ package org.tan.TownsAndNations;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tan.TownsAndNations.API.TanAPI;
 import org.tan.TownsAndNations.Lang.Lang;
-import org.tan.TownsAndNations.Tasks.TaxPayments;
+import org.tan.TownsAndNations.Tasks.DailyTasks;
 import org.tan.TownsAndNations.Tasks.SaveStats;
 import org.tan.TownsAndNations.commands.CommandManager;
 import org.tan.TownsAndNations.commands.DebugCommandManager;
@@ -59,7 +59,7 @@ public final class TownsAndNations extends JavaPlugin {
 
         logger.info("[TaN] -Loading Scheduled commands");
         SaveStats.startSchedule();
-        TaxPayments.scheduleMidnightTask();
+        DailyTasks.scheduleMidnightTask();
 
         logger.info("[TaN] -Loading API");
         api = new TanAPI();

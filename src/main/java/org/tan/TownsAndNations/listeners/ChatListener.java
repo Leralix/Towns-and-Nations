@@ -85,7 +85,7 @@ public class ChatListener implements Listener {
             sender.removeFromBalance(amount);
             playerTown.getTreasury().addToBalance(amount);
 
-            playerTown.getTreasury().addDonation(LocalDate.now(),player.getName(),amount);
+            playerTown.getTreasury().addDonation(player.getName(),playerUUID,amount);
             player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_TOWN.getTranslation(amount));
             PlayerChatListenerStorage.removePlayer(player);
 
@@ -127,6 +127,18 @@ public class ChatListener implements Listener {
 
             Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, newRankName));
 
+            PlayerChatListenerStorage.removePlayer(player);
+            event.setCancelled(true);
+
+        }
+
+
+        if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.CHANGE_DESCRIPTION){
+
+            String newDesc = event.getMessage();
+
+            TownDataStorage.get(player).setDescription(newDesc);
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS.getTranslation());
             PlayerChatListenerStorage.removePlayer(player);
             event.setCancelled(true);
 
