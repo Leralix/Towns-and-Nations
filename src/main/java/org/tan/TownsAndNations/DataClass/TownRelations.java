@@ -29,10 +29,10 @@ public class TownRelations {
     public ArrayList<String> getOne(TownRelation relation){
         return this.townRelations.get(relation);
     }
-    public org.tan.TownsAndNations.enums.TownRelation getRelationWith(TownData Town) {
+    public TownRelation getRelationWith(TownData Town) {
         return getRelationWith(Town.getID());
     }
-    public org.tan.TownsAndNations.enums.TownRelation getRelationWith(String TownID) {
+    public TownRelation getRelationWith(String TownID) {
         for (Map.Entry<TownRelation, ArrayList<String>> entry : townRelations.entrySet()) {
             TownRelation relation = entry.getKey();
             ArrayList<String> list = entry.getValue();

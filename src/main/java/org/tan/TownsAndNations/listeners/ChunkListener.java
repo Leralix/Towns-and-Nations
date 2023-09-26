@@ -46,6 +46,7 @@ public class ChunkListener implements Listener {
         TownData playerTown = TownDataStorage.get(player);
 
         if(PlayerDataStorage.get(player).getTownId() == null){
+            playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
             event.setCancelled(true);
             return;
         }

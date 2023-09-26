@@ -10,6 +10,7 @@ import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.utils.RelationUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +84,12 @@ public class MapCommand extends SubCommand {
                         TownData playerTown = TownDataStorage.get(player);
                         TownData otherTown = TownDataStorage.get(ClaimedChunkStorage.get(chunk).getTownID());
 
-                        TownRelation relation = playerTown.getRelationWith(otherTown);
+                        TownRelation relation;
+                        if(playerTown == null ){
+                            relation = TownRelation.NEUTRAL;                        }
+                        else{
+                            relation = playerTown.getRelationWith(otherTown);
+                        }
 
                         ChatColor townColor;
                         if(relation == null){

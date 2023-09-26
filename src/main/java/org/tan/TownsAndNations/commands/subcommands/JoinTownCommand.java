@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
+import static org.tan.TownsAndNations.utils.TeamUtils.setScoreBoard;
 
 public class JoinTownCommand extends SubCommand {
     @Override
@@ -88,6 +89,7 @@ public class JoinTownCommand extends SubCommand {
 
                     TownInviteDataStorage.removeInvitation(player.getUniqueId().toString(),townData.getID());
 
+                    setScoreBoard(player);
                     TeamUtils.updateColor();
 
                     return;
