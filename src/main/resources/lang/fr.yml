@@ -268,6 +268,7 @@ language:
   GUI_TOWN_CLAIM_SETTINGS_FURNACE: "§aGérer l'utilisation des fours"
   GUI_TOWN_CLAIM_SETTINGS_INTERACT_ITEM_FRAME: "§aGérer l'utilisation des cadres d'objets"
   GUI_TOWN_CLAIM_SETTINGS_INTERACT_ARMOR_STAND: "§aGérer l'utilisation des présentoirs d'armures"
+  GUI_TOWN_CLAIM_SETTINGS_DECORATIVE_BLOCK: "§aGérer l'interaction avec les décorations"
 
   GUI_TOWN_CLAIM_SETTINGS_DESC1: "§fPermission actuelle: §e{0}"
 

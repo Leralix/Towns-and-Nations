@@ -278,6 +278,7 @@ language:
   GUI_TOWN_CLAIM_SETTINGS_FURNACE: "§aManage using furnace"
   GUI_TOWN_CLAIM_SETTINGS_INTERACT_ITEM_FRAME: "§aManage using item frame"
   GUI_TOWN_CLAIM_SETTINGS_INTERACT_ARMOR_STAND: "§aManage using armor stand"
+  GUI_TOWN_CLAIM_SETTINGS_DECORATIVE_BLOCK: "§aManage interaction with decorations"
 
   GUI_TOWN_CLAIM_SETTINGS_DESC1: "§fCurrent permission: §e{0}"
 

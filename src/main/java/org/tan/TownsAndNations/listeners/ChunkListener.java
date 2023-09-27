@@ -85,8 +85,14 @@ public class ChunkListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
-            if(blockData.getMaterial() == Material.CHEST||
-                    blockData.getMaterial() == Material.TRAPPED_CHEST){
+            if(blockData.getMaterial() == Material.CHEST ||
+                    blockData.getMaterial() == Material.TRAPPED_CHEST ||
+                    blockData.getMaterial() == Material.BARREL ||
+                    blockData.getMaterial() == Material.HOPPER ||
+                    blockData.getMaterial() == Material.DISPENSER ||
+                    blockData.getMaterial() == Material.DROPPER
+
+            ){
 
 
                 TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
@@ -106,7 +112,8 @@ public class ChunkListener implements Listener {
                 event.setCancelled(true);
 
             }
-            else if(blockData.getMaterial() == Material.OAK_DOOR ||
+            else if(
+                    blockData.getMaterial() == Material.OAK_DOOR ||
                     blockData.getMaterial() == Material.SPRUCE_DOOR ||
                     blockData.getMaterial() == Material.ACACIA_DOOR ||
                     blockData.getMaterial() == Material.DARK_OAK_DOOR ||
@@ -115,7 +122,37 @@ public class ChunkListener implements Listener {
                     blockData.getMaterial() == Material.CRIMSON_DOOR ||
                     blockData.getMaterial() == Material.JUNGLE_DOOR ||
                     blockData.getMaterial() == Material.WARPED_DOOR ||
-                    blockData.getMaterial() == Material.IRON_DOOR){
+                    blockData.getMaterial() == Material.MANGROVE_DOOR ||
+                    blockData.getMaterial() == Material.CHERRY_DOOR ||
+                    blockData.getMaterial() == Material.IRON_DOOR ||
+
+
+                    blockData.getMaterial() == Material.OAK_TRAPDOOR ||
+                    blockData.getMaterial() == Material.SPRUCE_TRAPDOOR ||
+                    blockData.getMaterial() == Material.ACACIA_TRAPDOOR ||
+                    blockData.getMaterial() == Material.DARK_OAK_TRAPDOOR ||
+                    blockData.getMaterial() == Material.BAMBOO_TRAPDOOR ||
+                    blockData.getMaterial() == Material.BIRCH_TRAPDOOR ||
+                    blockData.getMaterial() == Material.CRIMSON_TRAPDOOR ||
+                    blockData.getMaterial() == Material.JUNGLE_TRAPDOOR ||
+                    blockData.getMaterial() == Material.WARPED_TRAPDOOR ||
+                    blockData.getMaterial() == Material.MANGROVE_TRAPDOOR ||
+                    blockData.getMaterial() == Material.CHERRY_TRAPDOOR ||
+                    blockData.getMaterial() == Material.IRON_TRAPDOOR ||
+
+                    blockData.getMaterial() == Material.OAK_FENCE_GATE ||
+                    blockData.getMaterial() == Material.SPRUCE_FENCE_GATE ||
+                    blockData.getMaterial() == Material.ACACIA_FENCE_GATE ||
+                    blockData.getMaterial() == Material.DARK_OAK_FENCE_GATE ||
+                    blockData.getMaterial() == Material.BAMBOO_FENCE_GATE ||
+                    blockData.getMaterial() == Material.BIRCH_FENCE_GATE ||
+                    blockData.getMaterial() == Material.CRIMSON_FENCE_GATE ||
+                    blockData.getMaterial() == Material.JUNGLE_FENCE_GATE ||
+                    blockData.getMaterial() == Material.WARPED_FENCE_GATE ||
+                    blockData.getMaterial() == Material.MANGROVE_FENCE_GATE ||
+                    blockData.getMaterial() == Material.CHERRY_FENCE_GATE
+
+            ){
 
                 TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
                 TownData playerTown = TownDataStorage.get(player);
@@ -132,6 +169,52 @@ public class ChunkListener implements Listener {
 
                 playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
                 event.setCancelled(true);
+            }
+            else if (
+                            blockData.getMaterial() == Material.CANDLE ||
+                            blockData.getMaterial() == Material.WHITE_CANDLE ||
+                            blockData.getMaterial() == Material.LIGHT_GRAY_CANDLE ||
+                            blockData.getMaterial() == Material.GRAY_CANDLE ||
+                            blockData.getMaterial() == Material.BLACK_CANDLE ||
+                            blockData.getMaterial() == Material.BROWN_CANDLE ||
+                            blockData.getMaterial() == Material.RED_CANDLE ||
+                            blockData.getMaterial() == Material.ORANGE_CANDLE ||
+                            blockData.getMaterial() == Material.YELLOW_CANDLE ||
+                            blockData.getMaterial() == Material.LIME_CANDLE ||
+                            blockData.getMaterial() == Material.GREEN_CANDLE ||
+                            blockData.getMaterial() == Material.CYAN_CANDLE ||
+                            blockData.getMaterial() == Material.LIGHT_BLUE_CANDLE ||
+                            blockData.getMaterial() == Material.BLUE_CANDLE ||
+                            blockData.getMaterial() == Material.PURPLE_CANDLE ||
+                            blockData.getMaterial() == Material.MAGENTA_CANDLE ||
+                            blockData.getMaterial() == Material.PINK_CANDLE ||
+
+                            blockData.getMaterial() == Material.FLOWER_POT ||
+
+                            blockData.getMaterial() == Material.CAULDRON ||
+                            blockData.getMaterial() == Material.LAVA_CAULDRON ||
+                            blockData.getMaterial() == Material.WATER_CAULDRON ||
+                            blockData.getMaterial() == Material.POWDER_SNOW_CAULDRON ||
+
+                            blockData.getMaterial() == Material.COMPOSTER
+            ) {
+
+                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+                TownData playerTown = TownDataStorage.get(player);
+
+                //Same town
+                if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
+                    return;
+                //Same alliance
+                if(chunkTown.getChunkSettings().getDecorativeBlockAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
+                    return;
+                //permission is on foreign
+                if(chunkTown.getChunkSettings().getDecorativeBlockAuth() == TownChunkPermission.FOREIGN)
+                    return;
+
+                playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
+                event.setCancelled(true);
+
             }
         }
     }

@@ -14,6 +14,7 @@ public class ClaimedChunkSettings {
     private TownChunkPermission useFurnaceAuth;
     private TownChunkPermission interactItemFrameAuth;
     private TownChunkPermission interactArmorStandAuth;
+    private TownChunkPermission decorativeBlockAuth;
 
 
     public ClaimedChunkSettings(){
@@ -28,6 +29,7 @@ public class ClaimedChunkSettings {
         this.useFurnaceAuth = TownChunkPermission.TOWN;
         this.interactItemFrameAuth = TownChunkPermission.TOWN;
         this.interactArmorStandAuth = TownChunkPermission.TOWN;
+        this.decorativeBlockAuth = TownChunkPermission.TOWN;
 
     }
 
@@ -60,6 +62,9 @@ public class ClaimedChunkSettings {
     }
     public TownChunkPermission getInteractArmorStandAuth() {
         return this.interactArmorStandAuth;
+    }
+    public TownChunkPermission getDecorativeBlockAuth() {
+        return this.decorativeBlockAuth;
     }
 
 
@@ -101,6 +106,9 @@ public class ClaimedChunkSettings {
 
     public void nextInteractArmorStandAuth() {
         this.interactArmorStandAuth = this.interactArmorStandAuth.getNext();
+    }
+    public void nextDecorativeBlockAuth() {
+        this.decorativeBlockAuth = this.decorativeBlockAuth.getNext();
     }
 
 
