@@ -16,9 +16,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.FurnaceInventory;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -66,6 +64,41 @@ public class ChunkListener implements Listener {
 
         playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
         event.setCancelled(true);
+    }
+    @EventHandler
+    public void onBucketEvent(PlayerBucketEvent event){
+
+        Chunk chunk = event.getBlock().getLocation().getChunk();
+
+        if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+            return;
+
+        Player player = event.getPlayer();
+
+        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+        TownData playerTown = TownDataStorage.get(player);
+
+        if(PlayerDataStorage.get(player).getTownId() == null){
+            event.setCancelled(true);
+            return;
+        }
+
+        //Same town
+        if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
+            return;
+        //Same alliance
+        if(chunkTown.getChunkSettings().getBreakAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
+            return;
+        //permission is on foreign
+        if(chunkTown.getChunkSettings().getBreakAuth() == TownChunkPermission.FOREIGN)
+            return;
+        //war has been declared
+        if(WarTaggedPlayer.isPlayerInWarWithTown(player,chunkTown))
+            return;
+
+        playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
+        event.setCancelled(true);
+
     }
     @EventHandler
     public void OnContainersOpen(PlayerInteractEvent event){
@@ -171,32 +204,32 @@ public class ChunkListener implements Listener {
                 event.setCancelled(true);
             }
             else if (
-                            blockData.getMaterial() == Material.CANDLE ||
-                            blockData.getMaterial() == Material.WHITE_CANDLE ||
-                            blockData.getMaterial() == Material.LIGHT_GRAY_CANDLE ||
-                            blockData.getMaterial() == Material.GRAY_CANDLE ||
-                            blockData.getMaterial() == Material.BLACK_CANDLE ||
-                            blockData.getMaterial() == Material.BROWN_CANDLE ||
-                            blockData.getMaterial() == Material.RED_CANDLE ||
-                            blockData.getMaterial() == Material.ORANGE_CANDLE ||
-                            blockData.getMaterial() == Material.YELLOW_CANDLE ||
-                            blockData.getMaterial() == Material.LIME_CANDLE ||
-                            blockData.getMaterial() == Material.GREEN_CANDLE ||
-                            blockData.getMaterial() == Material.CYAN_CANDLE ||
-                            blockData.getMaterial() == Material.LIGHT_BLUE_CANDLE ||
-                            blockData.getMaterial() == Material.BLUE_CANDLE ||
-                            blockData.getMaterial() == Material.PURPLE_CANDLE ||
-                            blockData.getMaterial() == Material.MAGENTA_CANDLE ||
-                            blockData.getMaterial() == Material.PINK_CANDLE ||
+                    blockData.getMaterial() == Material.CANDLE ||
+                    blockData.getMaterial() == Material.WHITE_CANDLE ||
+                    blockData.getMaterial() == Material.LIGHT_GRAY_CANDLE ||
+                    blockData.getMaterial() == Material.GRAY_CANDLE ||
+                    blockData.getMaterial() == Material.BLACK_CANDLE ||
+                    blockData.getMaterial() == Material.BROWN_CANDLE ||
+                    blockData.getMaterial() == Material.RED_CANDLE ||
+                    blockData.getMaterial() == Material.ORANGE_CANDLE ||
+                    blockData.getMaterial() == Material.YELLOW_CANDLE ||
+                    blockData.getMaterial() == Material.LIME_CANDLE ||
+                    blockData.getMaterial() == Material.GREEN_CANDLE ||
+                    blockData.getMaterial() == Material.CYAN_CANDLE ||
+                    blockData.getMaterial() == Material.LIGHT_BLUE_CANDLE ||
+                    blockData.getMaterial() == Material.BLUE_CANDLE ||
+                    blockData.getMaterial() == Material.PURPLE_CANDLE ||
+                    blockData.getMaterial() == Material.MAGENTA_CANDLE ||
+                    blockData.getMaterial() == Material.PINK_CANDLE ||
 
-                            blockData.getMaterial() == Material.FLOWER_POT ||
+                    blockData.getMaterial() == Material.FLOWER_POT ||
 
-                            blockData.getMaterial() == Material.CAULDRON ||
-                            blockData.getMaterial() == Material.LAVA_CAULDRON ||
-                            blockData.getMaterial() == Material.WATER_CAULDRON ||
-                            blockData.getMaterial() == Material.POWDER_SNOW_CAULDRON ||
+                    blockData.getMaterial() == Material.CAULDRON ||
+                    blockData.getMaterial() == Material.LAVA_CAULDRON ||
+                    blockData.getMaterial() == Material.WATER_CAULDRON ||
+                    blockData.getMaterial() == Material.POWDER_SNOW_CAULDRON ||
 
-                            blockData.getMaterial() == Material.COMPOSTER
+                    blockData.getMaterial() == Material.COMPOSTER
             ) {
 
                 TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
@@ -210,6 +243,28 @@ public class ChunkListener implements Listener {
                     return;
                 //permission is on foreign
                 if(chunkTown.getChunkSettings().getDecorativeBlockAuth() == TownChunkPermission.FOREIGN)
+                    return;
+
+                playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
+                event.setCancelled(true);
+
+            }
+            else if (
+                    blockData.getMaterial() == Material.JUKEBOX ||
+                    blockData.getMaterial() == Material.NOTE_BLOCK
+            ) {
+
+                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+                TownData playerTown = TownDataStorage.get(player);
+
+                //Same town
+                if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
+                    return;
+                //Same alliance
+                if(chunkTown.getChunkSettings().getMusicBlockAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
+                    return;
+                //permission is on foreign
+                if(chunkTown.getChunkSettings().getMusicBlockAuth() == TownChunkPermission.FOREIGN)
                     return;
 
                 playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
