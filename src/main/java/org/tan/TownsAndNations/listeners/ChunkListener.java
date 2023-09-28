@@ -118,12 +118,14 @@ public class ChunkListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
-            if(blockData.getMaterial() == Material.CHEST ||
+            if(
+                    blockData.getMaterial() == Material.CHEST ||
                     blockData.getMaterial() == Material.TRAPPED_CHEST ||
                     blockData.getMaterial() == Material.BARREL ||
                     blockData.getMaterial() == Material.HOPPER ||
                     blockData.getMaterial() == Material.DISPENSER ||
-                    blockData.getMaterial() == Material.DROPPER
+                    blockData.getMaterial() == Material.DROPPER ||
+                    blockData.getMaterial() == Material.BREWING_STAND
 
             ){
 
@@ -229,7 +231,40 @@ public class ChunkListener implements Listener {
                     blockData.getMaterial() == Material.WATER_CAULDRON ||
                     blockData.getMaterial() == Material.POWDER_SNOW_CAULDRON ||
 
-                    blockData.getMaterial() == Material.COMPOSTER
+                    blockData.getMaterial() == Material.COMPOSTER ||
+
+                    blockData.getMaterial() == Material.OAK_SIGN ||
+                    blockData.getMaterial() == Material.OAK_HANGING_SIGN ||
+                    blockData.getMaterial() == Material.SPRUCE_SIGN ||
+                    blockData.getMaterial() == Material.SPRUCE_HANGING_SIGN ||
+                    blockData.getMaterial() == Material.BIRCH_SIGN ||
+                    blockData.getMaterial() == Material.BIRCH_HANGING_SIGN ||
+                    blockData.getMaterial() == Material.JUNGLE_SIGN ||
+                    blockData.getMaterial() == Material.JUNGLE_HANGING_SIGN ||
+                    blockData.getMaterial() == Material.ACACIA_SIGN ||
+                    blockData.getMaterial() == Material.ACACIA_SIGN ||
+                    blockData.getMaterial() == Material.DARK_OAK_SIGN ||
+                    blockData.getMaterial() == Material.DARK_OAK_HANGING_SIGN ||
+                    blockData.getMaterial() == Material.MANGROVE_SIGN ||
+                    blockData.getMaterial() == Material.MANGROVE_HANGING_SIGN ||
+                    blockData.getMaterial() == Material.CHERRY_SIGN ||
+                    blockData.getMaterial() == Material.CHERRY_HANGING_SIGN ||
+                    blockData.getMaterial() == Material.BAMBOO_SIGN ||
+                    blockData.getMaterial() == Material.BAMBOO_HANGING_SIGN ||
+                    blockData.getMaterial() == Material.CRIMSON_SIGN ||
+                    blockData.getMaterial() == Material.CRIMSON_HANGING_SIGN ||
+                    blockData.getMaterial() == Material.WARPED_SIGN ||
+                    blockData.getMaterial() == Material.WARPED_HANGING_SIGN ||
+
+                    blockData.getMaterial() == Material.CHISELED_BOOKSHELF ||
+
+                    blockData.getMaterial() == Material.CAMPFIRE ||
+                    blockData.getMaterial() == Material.SOUL_CAMPFIRE ||
+
+                    blockData.getMaterial() == Material.BEACON
+
+
+
             ) {
 
                 TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
@@ -310,11 +345,44 @@ public class ChunkListener implements Listener {
             Player player = (Player) event.getDamager();
             Entity entity = event.getEntity();
 
-            if(entity instanceof Cow || entity instanceof Chicken || entity instanceof Sheep ||
-                    entity instanceof Donkey || entity instanceof Cat || entity instanceof SkeletonHorse ||
-                    entity instanceof Axolotl || entity instanceof Golem || entity instanceof Rabbit ||
-                    entity instanceof WanderingTrader || entity instanceof Fish || entity instanceof Mule ||
-                    entity instanceof Turtle || entity instanceof Villager || entity instanceof ArmorStand) {
+            if(
+                entity instanceof Allay ||
+                entity instanceof Axolotl ||
+                entity instanceof Bat ||
+                entity instanceof Camel ||
+                entity instanceof Cat ||
+                entity instanceof Chicken ||
+                entity instanceof Cow ||
+                entity instanceof Donkey ||
+                entity instanceof Fox ||
+                entity instanceof Frog ||
+                entity instanceof Horse ||
+                entity instanceof Mule ||
+                entity instanceof Ocelot ||
+                entity instanceof Parrot ||
+                entity instanceof Pig ||
+                entity instanceof Rabbit ||
+                entity instanceof Sheep ||
+                entity instanceof SkeletonHorse ||
+                entity instanceof Sniffer ||
+                entity instanceof Snowman ||
+                entity instanceof Squid ||
+                entity instanceof Strider ||
+                entity instanceof Turtle ||
+                entity instanceof Villager ||
+                entity instanceof WanderingTrader ||
+                entity instanceof Fish ||
+                entity instanceof Bee ||
+                entity instanceof Dolphin ||
+                entity instanceof Goat ||
+                entity instanceof IronGolem ||
+                entity instanceof Llama ||
+                entity instanceof Panda ||
+                entity instanceof PolarBear ||
+                entity instanceof Wolf ||
+                entity instanceof ArmorStand
+
+            ) {
 
                 Chunk chunk = entity.getLocation().getChunk();
 
@@ -339,6 +407,77 @@ public class ChunkListener implements Listener {
 
 
             }
+        }
+
+        if(event.getDamager() instanceof Projectile) {
+            if(((Projectile) event.getDamager()).getShooter() instanceof Player){
+                Player player = (Player) ((Projectile) event.getDamager()).getShooter();
+                Entity entity = event.getEntity();
+
+                if(
+                    entity instanceof Allay ||
+                    entity instanceof Axolotl ||
+                    entity instanceof Bat ||
+                    entity instanceof Camel ||
+                    entity instanceof Cat ||
+                    entity instanceof Chicken ||
+                    entity instanceof Cow ||
+                    entity instanceof Donkey ||
+                    entity instanceof Fox ||
+                    entity instanceof Frog ||
+                    entity instanceof Horse ||
+                    entity instanceof Mule ||
+                    entity instanceof Ocelot ||
+                    entity instanceof Parrot ||
+                    entity instanceof Pig ||
+                    entity instanceof Rabbit ||
+                    entity instanceof Sheep ||
+                    entity instanceof SkeletonHorse ||
+                    entity instanceof Sniffer ||
+                    entity instanceof Snowman ||
+                    entity instanceof Squid ||
+                    entity instanceof Strider ||
+                    entity instanceof Turtle ||
+                    entity instanceof Villager ||
+                    entity instanceof WanderingTrader ||
+                    entity instanceof Fish ||
+                    entity instanceof Bee ||
+                    entity instanceof Dolphin ||
+                    entity instanceof Goat ||
+                    entity instanceof IronGolem ||
+                    entity instanceof Llama ||
+                    entity instanceof Panda ||
+                    entity instanceof PolarBear ||
+                    entity instanceof Wolf ||
+                    entity instanceof ArmorStand
+
+                ) {
+
+                    Chunk chunk = entity.getLocation().getChunk();
+
+                    if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+                        return;
+
+                    TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+                    TownData playerTown = TownDataStorage.get(player);
+
+                    //Same town
+                    if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
+                        return;
+                    //Same alliance
+                    if(chunkTown.getChunkSettings().getAttackPassiveMobAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
+                        return;
+                    //Permission is on foreign
+                    if(chunkTown.getChunkSettings().getAttackPassiveMobAuth() == TownChunkPermission.FOREIGN)
+                        return;
+
+                    playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
+                    event.setCancelled(true);
+
+
+                }
+            }
+
         }
     }
     //Button
