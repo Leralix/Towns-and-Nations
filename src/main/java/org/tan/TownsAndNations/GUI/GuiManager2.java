@@ -1925,7 +1925,7 @@ public class GuiManager2 {
     }
     public static void OpenTownChunkMenu(Player player){
         String name = "Town";
-        int nRow = 3;
+        int nRow = 4;
 
         Gui gui = Gui.gui()
                 .title(Component.text(name))
@@ -2030,10 +2030,10 @@ public class GuiManager2 {
         gui.setItem(8, _interactItemFrame);
         gui.setItem(9, _interactArmorStand);
         gui.setItem(10, _useDecorativeBlockManager);
-        gui.setItem(10, _useMusicBlockManager);
+        gui.setItem(11, _useMusicBlockManager);
 
 
-        gui.setItem(18, _getBackArrow);
+        gui.setItem(27, _getBackArrow);
 
         gui.open(player);
     }
