@@ -8,6 +8,10 @@ language:
   PLAYER_NO_PERMISSION: "§cVous n'avez pas la permission d'effectuer cette action"
   PLAYER_NOT_FOUND: "§cNom invalide, ou le joueur n'est pas connecté"
 
+  #Chat scope
+  CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
+  CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance]§3 {1}: §f{2}"
+
   # Passage au niveau supérieur
   BASIC_LEVEL_UP: "§aNiveau supérieur !"
 
@@ -64,6 +68,12 @@ language:
   TOWN_RELATION_NO_INVITATION: "§aVous n'avez pas de relation en attente"
   TOWN_RELATION_ACCEPTED_MEMBER_SIDE: "§fVotre ville a maintenant la relation {0} avec §9{1}"
   TOWN_RELATION_ACCEPTED_TOWN_SIDE: "§9{0}§f a accepté la relation {1} avec votre ville"
+
+  # Changer le canal de communication
+  TOWN_CHAT_COMMAND_DESC: "Changer le cannal de communication du chat"
+  CHAT_CHANGED: "§fVous parlez maintenant dans le cannal: §a{0}"
+  TOWN_CHAT_ALREADY_IN_TOWN_CHAT: "§cVous parlez déjà dans le cannal de la ville"
+  CHAT_SCOPE_NOT_FOUND: "§cCannal de communication introuvable"
 
   ### Commandes des administrateurs
   ADD_MONEY_COMMAND_SUCCESS: "Ajout de §6+{0}✦§f à §3{1}"

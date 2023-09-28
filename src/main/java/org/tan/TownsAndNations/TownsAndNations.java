@@ -102,6 +102,7 @@ public final class TownsAndNations extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerEnterChunkListener(), this);
         getServer().getPluginManager().registerEvents(new OnSmithingCraft(), this);
+        getServer().getPluginManager().registerEvents(new ChatScopeListener(), this);
 
     }
 

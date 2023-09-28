@@ -8,11 +8,16 @@ language:
   PLAYER_NO_PERMISSION: "§cYou do not have the permission of performing this action"
   PLAYER_NOT_FOUND: "§cInvalid name, or the player is not connected"
 
+  #Chat scope
+  CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
+  CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance]§3 {1}: §f{2}"
+
   #Level up
   BASIC_LEVEL_UP: "§aLevel up !"
 
   #ChunkListener
   CHUNK_BELONGS_TO: "§cThis chunk belongs to: §9{0}"
+
 
 
   #Commands
@@ -66,6 +71,12 @@ language:
   TOWN_RELATION_NO_INVITATION: "§aYou have no pending relation"
   TOWN_RELATION_ACCEPTED_MEMBER_SIDE: "§fYour town now have the relation {0} with §9{1}"
   TOWN_RELATION_ACCEPTED_TOWN_SIDE: "§e{0}§f has accepted the relation {1} with your town"
+
+  #Chance chat
+  TOWN_CHAT_COMMAND_DESC: "Change chat range"
+  CHAT_CHANGED: "§fChat is now set to: §e{0}"
+  TOWN_CHAT_ALREADY_IN_TOWN_CHAT: "§cYou are already sending message in the town chat"
+  CHAT_SCOPE_NOT_FOUND: "§cUnfound chat scope"
 
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Added §6+{0}✦§f to §3{1}"

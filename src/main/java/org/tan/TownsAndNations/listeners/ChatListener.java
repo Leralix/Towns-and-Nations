@@ -11,9 +11,7 @@ import org.tan.TownsAndNations.DataClass.TownRank;
 import org.tan.TownsAndNations.GUI.GuiManager2;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.utils.ChatUtils;
 
 import java.time.LocalDate;
@@ -31,6 +29,7 @@ public class ChatListener implements Listener {
 
         if(chatData == null)
             return;
+
 
         //Listener: Player create his city
         if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.CREATE_CITY){
@@ -55,6 +54,16 @@ public class ChatListener implements Listener {
             sender.removeFromBalance(townPrice);
             TownDataStorage.newTown(townName,player);
             sender.setRank(TownDataStorage.get(sender).getTownDefaultRank());
+
+
+            for (TownData otherTown : TownDataStorage.getTownList().values()) {
+                if(otherTown == TownDataStorage.get(townName)){
+                    continue;
+                }
+                TownInviteDataStorage.removeInvitation(player.getUniqueId().toString(),otherTown.getID());
+            }
+
+
             event.setCancelled(true);
         }
 

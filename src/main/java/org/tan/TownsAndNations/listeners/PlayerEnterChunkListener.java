@@ -50,6 +50,10 @@ public class PlayerEnterChunkListener implements Listener {
 
         player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_ENTER_TOWN.getTranslation(townTo.getName()));
 
+        TownData playerTown = TownDataStorage.get(player);
+        if(playerTown == null){
+            return;
+        }
         TownRelation relation = TownDataStorage.get(player).getRelationWith(townTo);
 
         if(relation == TownRelation.WAR){
@@ -59,7 +63,7 @@ public class PlayerEnterChunkListener implements Listener {
             );
 
             townTo.broadCastMessage(ChatUtils.getTANString() +
-                            Lang.CHUNK_INTRUSION_ALERT.getTranslation(TownDataStorage.get(player).getName(),player.getName())
+                    Lang.CHUNK_INTRUSION_ALERT.getTranslation(TownDataStorage.get(player).getName(),player.getName())
             );
         }
 

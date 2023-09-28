@@ -25,6 +25,7 @@ public class CommandManager implements CommandExecutor, TabExecutor, TabComplete
         subCommands.add(new PayCommand());
         subCommands.add(new OpenGuiCommand());
         subCommands.add(new AcceptRelationCommand());
+        subCommands.add(new ChannelChatScopeCommand());
     }
 
     @Override
