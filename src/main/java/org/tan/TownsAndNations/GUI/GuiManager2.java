@@ -1944,7 +1944,7 @@ public class GuiManager2 {
     }
     public static void OpenTownChunkMenu(Player player){
         String name = "Town";
-        int nRow = 3;
+        int nRow = 4;
 
         Gui gui = Gui.gui()
                 .title(Component.text(name))
@@ -2006,6 +2006,16 @@ public class GuiManager2 {
                 Lang.GUI_TOWN_CLAIM_SETTINGS_INTERACT_ARMOR_STAND_DESC1.getTranslation(townChunkSettings.getInteractArmorStandAuth().getColoredName()),
                 Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
         );
+        ItemStack useDecorativeBlock = HeadUtils.getCustomLoreItem(Material.CAULDRON,
+                Lang.GUI_TOWN_CLAIM_SETTINGS_DECORATIVE_BLOCK.getTranslation(),
+                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getDecorativeBlockAuth().getColoredName()),
+                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
+        );
+        ItemStack useMusicBlock = HeadUtils.getCustomLoreItem(Material.JUKEBOX,
+                Lang.GUI_TOWN_CLAIM_SETTINGS_MUSIC_BLOCK.getTranslation(),
+                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getMusicBlockAuth().getColoredName()),
+                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
+        );
 
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
@@ -2019,6 +2029,8 @@ public class GuiManager2 {
         GuiItem _useFurnace = createGuiItem(useFurnace, playerStat, player,(v) -> townClass.getChunkSettings().nextUseFurnaceAuth());
         GuiItem _interactItemFrame = createGuiItem(interactItemFrame, playerStat, player,(v) -> townClass.getChunkSettings().nextInteractItemFrameAuth());
         GuiItem _interactArmorStand = createGuiItem(interactArmorStand, playerStat, player,(v) -> townClass.getChunkSettings().nextInteractArmorStandAuth());
+        GuiItem _useDecorativeBlockManager = createGuiItem(useDecorativeBlock, playerStat, player,(v) -> townClass.getChunkSettings().nextDecorativeBlockAuth());
+        GuiItem _useMusicBlockManager = createGuiItem(useMusicBlock, playerStat, player,(v) -> townClass.getChunkSettings().nextMusicBlockAuth());
 
 
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
@@ -2036,9 +2048,11 @@ public class GuiManager2 {
         gui.setItem(7, _useFurnace);
         gui.setItem(8, _interactItemFrame);
         gui.setItem(9, _interactArmorStand);
+        gui.setItem(10, _useDecorativeBlockManager);
+        gui.setItem(11, _useMusicBlockManager);
 
 
-        gui.setItem(18, _getBackArrow);
+        gui.setItem(27, _getBackArrow);
 
         gui.open(player);
     }
