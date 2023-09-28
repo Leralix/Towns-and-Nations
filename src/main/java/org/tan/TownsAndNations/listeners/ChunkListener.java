@@ -380,7 +380,8 @@ public class ChunkListener implements Listener {
                 entity instanceof Panda ||
                 entity instanceof PolarBear ||
                 entity instanceof Wolf ||
-                entity instanceof ArmorStand
+                entity instanceof ArmorStand ||
+                entity instanceof LeashHitch
 
             ) {
 
@@ -409,7 +410,7 @@ public class ChunkListener implements Listener {
             }
         }
 
-        if(event.getDamager() instanceof Projectile) {
+        /*if(event.getDamager() instanceof Projectile) {
             if(((Projectile) event.getDamager()).getShooter() instanceof Player){
                 Player player = (Player) ((Projectile) event.getDamager()).getShooter();
                 Entity entity = event.getEntity();
@@ -449,7 +450,9 @@ public class ChunkListener implements Listener {
                     entity instanceof Panda ||
                     entity instanceof PolarBear ||
                     entity instanceof Wolf ||
-                    entity instanceof ArmorStand
+                    entity instanceof ArmorStand ||
+                    entity instanceof LeashHitch
+
 
                 ) {
 
@@ -478,7 +481,7 @@ public class ChunkListener implements Listener {
                 }
             }
 
-        }
+        }*/
     }
     //Button
     @EventHandler
