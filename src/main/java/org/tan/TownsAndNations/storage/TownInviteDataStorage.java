@@ -22,7 +22,9 @@ public class TownInviteDataStorage {
 
 
     public static void removeInvitation(String playerUUID,String townId){
-        townInviteList.get(playerUUID).remove(townId);
+        if(townInviteList.containsKey(playerUUID)){
+            townInviteList.get(playerUUID).remove(townId);
+        }
     }
 
     public static List<String> checkInvitation(String playerUUID){

@@ -44,6 +44,7 @@ public class ChunkListener implements Listener {
         TownData playerTown = TownDataStorage.get(player);
 
         if(PlayerDataStorage.get(player).getTownId() == null){
+            playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
             event.setCancelled(true);
             return;
         }
@@ -411,6 +412,7 @@ public class ChunkListener implements Listener {
         }
 
         /*if(event.getDamager() instanceof Projectile) {
+
             if(((Projectile) event.getDamager()).getShooter() instanceof Player){
                 Player player = (Player) ((Projectile) event.getDamager()).getShooter();
                 Entity entity = event.getEntity();
@@ -452,6 +454,7 @@ public class ChunkListener implements Listener {
                     entity instanceof Wolf ||
                     entity instanceof ArmorStand ||
                     entity instanceof LeashHitch
+
 
 
                 ) {

@@ -21,7 +21,6 @@ public enum CustomVillagerProfession {
         this.buyingItem = _buyingItem;
     }
     public static CustomVillagerProfession getVillager(String tag){
-        System.out.println(tag);
         return CustomVillagerProfession.valueOf(tag);
     }
     public String getDisplayName(){

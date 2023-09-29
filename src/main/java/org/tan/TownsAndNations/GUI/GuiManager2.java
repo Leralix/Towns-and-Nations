@@ -219,9 +219,8 @@ public class GuiManager2 {
 
 
             TownData townData = entry.getValue();
-            TownData playerTown = TownDataStorage.get(townData.getID());
 
-            ItemStack townIcon = HeadUtils.getTownIcon(playerTown.getID());
+            ItemStack townIcon = HeadUtils.getTownIcon(townData.getID());
 
             String description;
             if(townData.isPlayerJoinRequest(player)){
@@ -232,10 +231,10 @@ public class GuiManager2 {
             }
 
             HeadUtils.addLore(townIcon,
-                    Lang.GUI_TOWN_INFO_DESC0.getTranslation(playerTown.getDescription()),
-                    Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerTown.getUuidLeader())).getName()),
-                    Lang.GUI_TOWN_INFO_DESC2.getTranslation(playerTown.getPlayerList().size()),
-                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(playerTown.getChunkSettings().getNumberOfClaimedChunk()),
+                    Lang.GUI_TOWN_INFO_DESC0.getTranslation(townData.getDescription()),
+                    Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getUuidLeader())).getName()),
+                    Lang.GUI_TOWN_INFO_DESC2.getTranslation(townData.getPlayerList().size()),
+                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(townData.getChunkSettings().getNumberOfClaimedChunk()),
                     "",
                     description
             );
@@ -249,6 +248,7 @@ public class GuiManager2 {
                     }
                     townData.addPlayerJoinRequest(player);
                     player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.getTranslation(townData.getName()));
+                    OpenSearchTownMenu(player);
                 }
 
                 if(event.isRightClick()){
@@ -257,6 +257,7 @@ public class GuiManager2 {
                     }
                     townData.removePlayerJoinRequest(player);
                     player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.getTranslation());
+                    OpenSearchTownMenu(player);
                 }
 
             });
@@ -555,7 +556,7 @@ public class GuiManager2 {
         for (String playerUUID: players) {
 
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
-            PlayerData otherPlayerStat = PlayerDataStorage.get(playerUUID);
+            PlayerData playerIterateData = PlayerDataStorage.get(playerUUID);
 
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate.getName(),playerIterate);
 
@@ -570,6 +571,7 @@ public class GuiManager2 {
                 if(event.isLeftClick()){
 
                     if(!playerStat.hasPermission(TownRolePermission.INVITE_PLAYER)){
+                        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
                         return;
                     }
                     if(!town.canAddMorePlayer()){
@@ -577,19 +579,36 @@ public class GuiManager2 {
                         return;
                     }
 
-                    town.addPlayer(player.getUniqueId().toString());
-                    town.getRank(town.getTownDefaultRank()).addPlayer(player);
+                    town.addPlayer(playerIterateData.getUuid());
+                    town.getRank(town.getTownDefaultRank()).addPlayer(playerIterateData.getUuid());
 
-                    playerStat.setTownId(town.getID());
-                    playerStat.setRank(town.getTownDefaultRank());
+                    playerIterateData.setTownId(town.getID());
+                    playerIterateData.setRank(town.getTownDefaultRank());
 
-                    player.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.getTranslation(town.getName()));
+                    Player playerIterateOnline = playerIterate.getPlayer();
+                    if(playerIterateOnline != null){
+                        playerIterateOnline.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.getTranslation(town.getName()));
+                    }
                     town.broadCastMessage(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.getTranslation(player.getName()));
-
-                    TownInviteDataStorage.removeInvitation(player.getUniqueId().toString(),town.getID());
 
                     TeamUtils.updateColor();
 
+                    town.removePlayerJoinRequest(playerIterateData.getUuid());
+
+                    for (TownData allTown : TownDataStorage.getTownList().values()){
+                        allTown.removePlayerJoinRequest(playerIterateData.getUuid());
+                    }
+
+                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.getTranslation());
+
+                }
+                if(event.isRightClick()){
+                    if(!playerStat.hasPermission(TownRolePermission.INVITE_PLAYER)){
+                        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                        return;
+                    }
+                    town.removePlayerJoinRequest(playerIterateData.getUuid());
+                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.getTranslation());
                 }
                 OpenTownMemberList(player);
             });

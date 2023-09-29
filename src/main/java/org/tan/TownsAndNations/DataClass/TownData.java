@@ -24,7 +24,7 @@ public class TownData {
     public String DateCreated;
     private String townIconMaterialCode;
     private final HashSet<String> townPlayerListId = new HashSet<>();
-    private final HashSet<String> PlayerJoinRequestSet = new HashSet<>();
+    private HashSet<String> PlayerJoinRequestSet;
 
     private final TownTreasury townTreasury;
     private final TownLevel townLevel;
@@ -40,7 +40,7 @@ public class TownData {
         this.open = false;
         this.DateCreated = new Date().toString();
         this.townIconMaterialCode = null;
-
+        this.PlayerJoinRequestSet= new HashSet<>();
         this.townPlayerListId.add(uuidLeader);
         this.roles = new HashMap<>();
 
@@ -270,6 +270,8 @@ public class TownData {
             return this.PlayerJoinRequestSet;
     }
 
-
+    public void update(){
+        this.PlayerJoinRequestSet= new HashSet<>();
+    }
 
 }
