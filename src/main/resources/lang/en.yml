@@ -291,6 +291,7 @@ language:
   GUI_TOWN_CLAIM_SETTINGS_INTERACT_ARMOR_STAND: "§aManage using armor stand"
   GUI_TOWN_CLAIM_SETTINGS_DECORATIVE_BLOCK: "§aManage interaction with decorations"
   GUI_TOWN_CLAIM_SETTINGS_MUSIC_BLOCK: "§aManage interaction with music blocks"
+  GUI_TOWN_CLAIM_SETTINGS_LEAD: "§aManage interaction with Lead related actions"
 
   GUI_TOWN_CLAIM_SETTINGS_DESC1: "§fCurrent permission: §e{0}"
 

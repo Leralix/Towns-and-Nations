@@ -2016,6 +2016,11 @@ public class GuiManager2 {
                 Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getMusicBlockAuth().getColoredName()),
                 Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
         );
+        ItemStack interactLead = HeadUtils.getCustomLoreItem(Material.LEAD,
+                Lang.GUI_TOWN_CLAIM_SETTINGS_LEAD.getTranslation(),
+                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getLeadAuth().getColoredName()),
+                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
+        );
 
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
@@ -2031,6 +2036,7 @@ public class GuiManager2 {
         GuiItem _interactArmorStand = createGuiItem(interactArmorStand, playerStat, player,(v) -> townClass.getChunkSettings().nextInteractArmorStandAuth());
         GuiItem _useDecorativeBlockManager = createGuiItem(useDecorativeBlock, playerStat, player,(v) -> townClass.getChunkSettings().nextDecorativeBlockAuth());
         GuiItem _useMusicBlockManager = createGuiItem(useMusicBlock, playerStat, player,(v) -> townClass.getChunkSettings().nextMusicBlockAuth());
+        GuiItem _interactLeadManager = createGuiItem(interactLead, playerStat, player,(v) -> townClass.getChunkSettings().nextLeadAuth());
 
 
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
@@ -2050,6 +2056,7 @@ public class GuiManager2 {
         gui.setItem(9, _interactArmorStand);
         gui.setItem(10, _useDecorativeBlockManager);
         gui.setItem(11, _useMusicBlockManager);
+        gui.setItem(12, _interactLeadManager);
 
 
         gui.setItem(27, _getBackArrow);
