@@ -2,6 +2,7 @@ package org.tan.TownsAndNations.listeners;
 
 import org.bukkit.Chunk;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.BlastFurnace;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -15,6 +16,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerLeashEntityEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.FurnaceInventory;
@@ -43,7 +45,42 @@ public class ChunkListener implements Listener {
         CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getBreakAuth());
     }
     @EventHandler
-    public void onBucketEvent(PlayerBucketEvent event){
+    public void onBucketFillEvent(PlayerBucketFillEvent event){
+
+        Chunk chunk = event.getBlock().getLocation().getChunk();
+
+        if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+            return;
+
+        Player player = event.getPlayer();
+
+        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+        TownData playerTown = TownDataStorage.get(player);
+
+        if(PlayerDataStorage.get(player).getTownId() == null){
+            event.setCancelled(true);
+            return;
+        }
+
+        //Same town
+        if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
+            return;
+        //Same alliance
+        if(chunkTown.getChunkSettings().getBreakAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
+            return;
+        //permission is on foreign
+        if(chunkTown.getChunkSettings().getBreakAuth() == TownChunkPermission.FOREIGN)
+            return;
+        //war has been declared
+        if(WarTaggedPlayer.isPlayerInWarWithTown(player,chunkTown))
+            return;
+
+        playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
+        event.setCancelled(true);
+
+    }
+    @EventHandler
+    public void onBucketEmptyEvent(PlayerBucketEmptyEvent event){
 
         Chunk chunk = event.getBlock().getLocation().getChunk();
 
@@ -82,114 +119,115 @@ public class ChunkListener implements Listener {
                 CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getChestAuth() );
             }
             else if(
-                    blockData.getMaterial() == Material.OAK_DOOR ||
-                    blockData.getMaterial() == Material.SPRUCE_DOOR ||
-                    blockData.getMaterial() == Material.ACACIA_DOOR ||
-                    blockData.getMaterial() == Material.DARK_OAK_DOOR ||
-                    blockData.getMaterial() == Material.BAMBOO_DOOR ||
-                    blockData.getMaterial() == Material.BIRCH_DOOR ||
-                    blockData.getMaterial() == Material.CRIMSON_DOOR ||
-                    blockData.getMaterial() == Material.JUNGLE_DOOR ||
-                    blockData.getMaterial() == Material.WARPED_DOOR ||
-                    blockData.getMaterial() == Material.MANGROVE_DOOR ||
-                    blockData.getMaterial() == Material.CHERRY_DOOR ||
-                    blockData.getMaterial() == Material.IRON_DOOR ||
+                    materialBlock == Material.OAK_DOOR ||
+                    materialBlock == Material.SPRUCE_DOOR ||
+                    materialBlock == Material.ACACIA_DOOR ||
+                    materialBlock == Material.DARK_OAK_DOOR ||
+                    materialBlock == Material.BAMBOO_DOOR ||
+                    materialBlock == Material.BIRCH_DOOR ||
+                    materialBlock == Material.CRIMSON_DOOR ||
+                    materialBlock == Material.JUNGLE_DOOR ||
+                    materialBlock == Material.WARPED_DOOR ||
+                    materialBlock == Material.MANGROVE_DOOR ||
+                    materialBlock == Material.CHERRY_DOOR ||
+                    materialBlock == Material.IRON_DOOR ||
 
 
-                    blockData.getMaterial() == Material.OAK_TRAPDOOR ||
-                    blockData.getMaterial() == Material.SPRUCE_TRAPDOOR ||
-                    blockData.getMaterial() == Material.ACACIA_TRAPDOOR ||
-                    blockData.getMaterial() == Material.DARK_OAK_TRAPDOOR ||
-                    blockData.getMaterial() == Material.BAMBOO_TRAPDOOR ||
-                    blockData.getMaterial() == Material.BIRCH_TRAPDOOR ||
-                    blockData.getMaterial() == Material.CRIMSON_TRAPDOOR ||
-                    blockData.getMaterial() == Material.JUNGLE_TRAPDOOR ||
-                    blockData.getMaterial() == Material.WARPED_TRAPDOOR ||
-                    blockData.getMaterial() == Material.MANGROVE_TRAPDOOR ||
-                    blockData.getMaterial() == Material.CHERRY_TRAPDOOR ||
-                    blockData.getMaterial() == Material.IRON_TRAPDOOR ||
+                    materialBlock == Material.OAK_TRAPDOOR ||
+                    materialBlock == Material.SPRUCE_TRAPDOOR ||
+                    materialBlock == Material.ACACIA_TRAPDOOR ||
+                    materialBlock == Material.DARK_OAK_TRAPDOOR ||
+                    materialBlock == Material.BAMBOO_TRAPDOOR ||
+                    materialBlock == Material.BIRCH_TRAPDOOR ||
+                    materialBlock == Material.CRIMSON_TRAPDOOR ||
+                    materialBlock == Material.JUNGLE_TRAPDOOR ||
+                    materialBlock == Material.WARPED_TRAPDOOR ||
+                    materialBlock == Material.MANGROVE_TRAPDOOR ||
+                    materialBlock == Material.CHERRY_TRAPDOOR ||
+                    materialBlock == Material.IRON_TRAPDOOR ||
 
-                    blockData.getMaterial() == Material.OAK_FENCE_GATE ||
-                    blockData.getMaterial() == Material.SPRUCE_FENCE_GATE ||
-                    blockData.getMaterial() == Material.ACACIA_FENCE_GATE ||
-                    blockData.getMaterial() == Material.DARK_OAK_FENCE_GATE ||
-                    blockData.getMaterial() == Material.BAMBOO_FENCE_GATE ||
-                    blockData.getMaterial() == Material.BIRCH_FENCE_GATE ||
-                    blockData.getMaterial() == Material.CRIMSON_FENCE_GATE ||
-                    blockData.getMaterial() == Material.JUNGLE_FENCE_GATE ||
-                    blockData.getMaterial() == Material.WARPED_FENCE_GATE ||
-                    blockData.getMaterial() == Material.MANGROVE_FENCE_GATE ||
-                    blockData.getMaterial() == Material.CHERRY_FENCE_GATE
+                    /*
+                    materialBlock == Material.OAK_FENCE_GATE ||
+                    materialBlock == Material.SPRUCE_FENCE_GATE ||
+                    materialBlock == Material.ACACIA_FENCE_GATE ||
+                    materialBlock == Material.DARK_OAK_FENCE_GATE ||
+                    materialBlock == Material.BAMBOO_FENCE_GATE ||
+                    materialBlock == Material.BIRCH_FENCE_GATE ||
+                    materialBlock == Material.CRIMSON_FENCE_GATE ||
+                    materialBlock == Material.JUNGLE_FENCE_GATE ||
+                    materialBlock == Material.WARPED_FENCE_GATE ||
+                    materialBlock == Material.MANGROVE_FENCE_GATE ||
+                    materialBlock == Material.CHERRY_FENCE_GATE
+                     */
+                    Tag.FENCE_GATES.isTagged(materialType)
 
             ){
                 CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getDoorAuth());
             }
             else if (
-                    blockData.getMaterial() == Material.CANDLE ||
-                    blockData.getMaterial() == Material.WHITE_CANDLE ||
-                    blockData.getMaterial() == Material.LIGHT_GRAY_CANDLE ||
-                    blockData.getMaterial() == Material.GRAY_CANDLE ||
-                    blockData.getMaterial() == Material.BLACK_CANDLE ||
-                    blockData.getMaterial() == Material.BROWN_CANDLE ||
-                    blockData.getMaterial() == Material.RED_CANDLE ||
-                    blockData.getMaterial() == Material.ORANGE_CANDLE ||
-                    blockData.getMaterial() == Material.YELLOW_CANDLE ||
-                    blockData.getMaterial() == Material.LIME_CANDLE ||
-                    blockData.getMaterial() == Material.GREEN_CANDLE ||
-                    blockData.getMaterial() == Material.CYAN_CANDLE ||
-                    blockData.getMaterial() == Material.LIGHT_BLUE_CANDLE ||
-                    blockData.getMaterial() == Material.BLUE_CANDLE ||
-                    blockData.getMaterial() == Material.PURPLE_CANDLE ||
-                    blockData.getMaterial() == Material.MAGENTA_CANDLE ||
-                    blockData.getMaterial() == Material.PINK_CANDLE ||
+                    materialBlock == Material.CANDLE ||
+                    materialBlock == Material.WHITE_CANDLE ||
+                    materialBlock == Material.LIGHT_GRAY_CANDLE ||
+                    materialBlock == Material.GRAY_CANDLE ||
+                    materialBlock == Material.BLACK_CANDLE ||
+                    materialBlock == Material.BROWN_CANDLE ||
+                    materialBlock == Material.RED_CANDLE ||
+                    materialBlock == Material.ORANGE_CANDLE ||
+                    materialBlock == Material.YELLOW_CANDLE ||
+                    materialBlock == Material.LIME_CANDLE ||
+                    materialBlock == Material.GREEN_CANDLE ||
+                    materialBlock == Material.CYAN_CANDLE ||
+                    materialBlock == Material.LIGHT_BLUE_CANDLE ||
+                    materialBlock == Material.BLUE_CANDLE ||
+                    materialBlock == Material.PURPLE_CANDLE ||
+                    materialBlock == Material.MAGENTA_CANDLE ||
+                    materialBlock == Material.PINK_CANDLE ||
 
-                    blockData.getMaterial() == Material.FLOWER_POT ||
+                    materialBlock == Material.FLOWER_POT ||
 
-                    blockData.getMaterial() == Material.CAULDRON ||
-                    blockData.getMaterial() == Material.LAVA_CAULDRON ||
-                    blockData.getMaterial() == Material.WATER_CAULDRON ||
-                    blockData.getMaterial() == Material.POWDER_SNOW_CAULDRON ||
+                    materialBlock == Material.CAULDRON ||
+                    materialBlock == Material.LAVA_CAULDRON ||
+                    materialBlock == Material.WATER_CAULDRON ||
+                    materialBlock == Material.POWDER_SNOW_CAULDRON ||
 
-                    blockData.getMaterial() == Material.COMPOSTER ||
+                    materialBlock == Material.COMPOSTER ||
 
-                    blockData.getMaterial() == Material.OAK_SIGN ||
-                    blockData.getMaterial() == Material.OAK_HANGING_SIGN ||
-                    blockData.getMaterial() == Material.SPRUCE_SIGN ||
-                    blockData.getMaterial() == Material.SPRUCE_HANGING_SIGN ||
-                    blockData.getMaterial() == Material.BIRCH_SIGN ||
-                    blockData.getMaterial() == Material.BIRCH_HANGING_SIGN ||
-                    blockData.getMaterial() == Material.JUNGLE_SIGN ||
-                    blockData.getMaterial() == Material.JUNGLE_HANGING_SIGN ||
-                    blockData.getMaterial() == Material.ACACIA_SIGN ||
-                    blockData.getMaterial() == Material.ACACIA_SIGN ||
-                    blockData.getMaterial() == Material.DARK_OAK_SIGN ||
-                    blockData.getMaterial() == Material.DARK_OAK_HANGING_SIGN ||
-                    blockData.getMaterial() == Material.MANGROVE_SIGN ||
-                    blockData.getMaterial() == Material.MANGROVE_HANGING_SIGN ||
-                    blockData.getMaterial() == Material.CHERRY_SIGN ||
-                    blockData.getMaterial() == Material.CHERRY_HANGING_SIGN ||
-                    blockData.getMaterial() == Material.BAMBOO_SIGN ||
-                    blockData.getMaterial() == Material.BAMBOO_HANGING_SIGN ||
-                    blockData.getMaterial() == Material.CRIMSON_SIGN ||
-                    blockData.getMaterial() == Material.CRIMSON_HANGING_SIGN ||
-                    blockData.getMaterial() == Material.WARPED_SIGN ||
-                    blockData.getMaterial() == Material.WARPED_HANGING_SIGN ||
+                    materialBlock == Material.OAK_SIGN ||
+                    materialBlock == Material.OAK_HANGING_SIGN ||
+                    materialBlock == Material.SPRUCE_SIGN ||
+                    materialBlock == Material.SPRUCE_HANGING_SIGN ||
+                    materialBlock == Material.BIRCH_SIGN ||
+                    materialBlock == Material.BIRCH_HANGING_SIGN ||
+                    materialBlock == Material.JUNGLE_SIGN ||
+                    materialBlock == Material.JUNGLE_HANGING_SIGN ||
+                    materialBlock == Material.ACACIA_SIGN ||
+                    materialBlock == Material.ACACIA_HANGING_SIGN ||
+                    materialBlock == Material.DARK_OAK_SIGN ||
+                    materialBlock == Material.DARK_OAK_HANGING_SIGN ||
+                    materialBlock == Material.MANGROVE_SIGN ||
+                    materialBlock == Material.MANGROVE_HANGING_SIGN ||
+                    materialBlock == Material.CHERRY_SIGN ||
+                    materialBlock == Material.CHERRY_HANGING_SIGN ||
+                    materialBlock == Material.BAMBOO_SIGN ||
+                    materialBlock == Material.BAMBOO_HANGING_SIGN ||
+                    materialBlock == Material.CRIMSON_SIGN ||
+                    materialBlock == Material.CRIMSON_HANGING_SIGN ||
+                    materialBlock == Material.WARPED_SIGN ||
+                    materialBlock == Material.WARPED_HANGING_SIGN ||
 
-                    blockData.getMaterial() == Material.CHISELED_BOOKSHELF ||
+                    materialBlock == Material.CHISELED_BOOKSHELF ||
 
-                    blockData.getMaterial() == Material.CAMPFIRE ||
-                    blockData.getMaterial() == Material.SOUL_CAMPFIRE ||
+                    materialBlock == Material.CAMPFIRE ||
+                    materialBlock == Material.SOUL_CAMPFIRE ||
 
-                    blockData.getMaterial() == Material.BEACON
-
-
+                    materialBlock == Material.BEACON
 
             ) {
                 CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getDecorativeBlockAuth());
             }
             else if (
-                    blockData.getMaterial() == Material.JUKEBOX ||
-                    blockData.getMaterial() == Material.NOTE_BLOCK
+                    materialBlock == Material.JUKEBOX ||
+                    materialBlock == Material.NOTE_BLOCK
             ) {
                 CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getMusicBlockAuth());
             }
@@ -311,7 +349,75 @@ public class ChunkListener implements Listener {
                     entity instanceof ArmorStand ||
                     entity instanceof LeashHitch
 
+            ) {
 
+                Chunk chunk = entity.getLocation().getChunk();
+
+                if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+                    return;
+
+                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+                TownData playerTown = TownDataStorage.get(player);
+
+                //Same town
+                if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
+                    return;
+                //Same alliance
+                if(chunkTown.getChunkSettings().getAttackPassiveMobAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
+                    return;
+                //Permission is on foreign
+                if(chunkTown.getChunkSettings().getAttackPassiveMobAuth() == TownChunkPermission.FOREIGN)
+                    return;
+
+                playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
+                event.setCancelled(true);
+
+
+            }
+        }
+
+        if(event.getDamager() instanceof Projectile) {
+            if(((Projectile) event.getDamager()).getShooter() instanceof Player){
+                Player player = (Player) ((Projectile) event.getDamager()).getShooter();
+                Entity entity = event.getEntity();
+
+                if(
+                        entity instanceof Allay ||
+                        entity instanceof Axolotl ||
+                        entity instanceof Bat ||
+                        entity instanceof Camel ||
+                        entity instanceof Cat ||
+                        entity instanceof Chicken ||
+                        entity instanceof Cow ||
+                        entity instanceof Donkey ||
+                        entity instanceof Fox ||
+                        entity instanceof Frog ||
+                        entity instanceof Horse ||
+                        entity instanceof Mule ||
+                        entity instanceof Ocelot ||
+                        entity instanceof Parrot ||
+                        entity instanceof Pig ||
+                        entity instanceof Rabbit ||
+                        entity instanceof Sheep ||
+                        entity instanceof SkeletonHorse ||
+                        entity instanceof Sniffer ||
+                        entity instanceof Snowman ||
+                        entity instanceof Squid ||
+                        entity instanceof Strider ||
+                        entity instanceof Turtle ||
+                        entity instanceof Villager ||
+                        entity instanceof WanderingTrader ||
+                        entity instanceof Fish ||
+                        entity instanceof Bee ||
+                        entity instanceof Dolphin ||
+                        entity instanceof Goat ||
+                        entity instanceof IronGolem ||
+                        entity instanceof Llama ||
+                        entity instanceof Panda ||
+                        entity instanceof PolarBear ||
+                        entity instanceof Wolf ||
+                        entity instanceof ArmorStand||
+                        entity instanceof LeashHitch
 
                 ) {
 
@@ -403,6 +509,62 @@ public class ChunkListener implements Listener {
 
             CanPlayerDoAction(chunk, player,chunkTown.getChunkSettings().getInteractItemFrameAuth());
         }
+
+        if(event.getRightClicked() instanceof LeashHitch) {
+            Player player = event.getPlayer();
+            LeashHitch leashHitch = (LeashHitch) event.getRightClicked();
+
+            Chunk chunk = leashHitch.getLocation().getChunk();
+
+            if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+                return;
+
+            TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+            TownData playerTown = TownDataStorage.get(player);
+
+            //Same town
+            if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
+                return;
+            //Same alliance
+            if(chunkTown.getChunkSettings().getInteractItemFrameAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
+                return;
+            //Permission is on foreign
+            if(chunkTown.getChunkSettings().getInteractItemFrameAuth() == TownChunkPermission.FOREIGN)
+                return;
+
+            playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
+            event.setCancelled(true);
+        }
+
+        if(event.getRightClicked() instanceof LivingEntity) {
+
+            LivingEntity livingEntity = (LivingEntity) event.getRightClicked();
+
+            if(livingEntity.isLeashed()) {
+
+                Player player = event.getPlayer();
+                Chunk chunk = livingEntity.getLocation().getChunk();
+
+                if (!ClaimedChunkStorage.isChunkClaimed(chunk))
+                    return;
+
+                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+                TownData playerTown = TownDataStorage.get(player);
+
+                //Same town
+                if (ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
+                    return;
+                //Same alliance
+                if (chunkTown.getChunkSettings().getInteractItemFrameAuth() == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE, playerTown.getID()))
+                    return;
+                //Permission is on foreign
+                if (chunkTown.getChunkSettings().getInteractItemFrameAuth() == TownChunkPermission.FOREIGN)
+                    return;
+
+                playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
+                event.setCancelled(true);
+            }
+        }
     }
 
     @EventHandler
@@ -421,8 +583,22 @@ public class ChunkListener implements Listener {
         }
     }
 
+        @EventHandler
+    public void onPlayerLeashEntityEvent(PlayerLeashEntityEvent event) {
+        Player player = event.getPlayer();
+        Entity entity = event.getEntity();
+        Chunk chunk = entity.getLocation().getChunk();
+
+        if (!ClaimedChunkStorage.isChunkClaimed(chunk))
+            return;
+
+        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+        TownData playerTown = TownDataStorage.get(player);
+
+        CanPlayerDoAction(chunk,player,chunkTown.getChunkSettings().getInteractArmoreStandAuth())
 
 
+    }
 
     private boolean CanPlayerDoAction(Chunk chunk, Player player, TownChunkPermission permission){
 
@@ -430,13 +606,7 @@ public class ChunkListener implements Listener {
         if(!ClaimedChunkStorage.isChunkClaimed(chunk))
             return true;
 
-        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
-        TownData playerTown = TownDataStorage.get(player);
-
-
-
-
-        //Chunk is claimed yet player have no town
+                //Chunk is claimed yet player have no town
         if(PlayerDataStorage.get(player).getTownId() == null){
             playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
             return false;
@@ -459,6 +629,8 @@ public class ChunkListener implements Listener {
         playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
         return false;
     }
+
+
 
 
     private boolean isButton(Material material) {

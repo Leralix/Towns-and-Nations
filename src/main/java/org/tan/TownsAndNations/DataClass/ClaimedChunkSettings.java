@@ -16,6 +16,7 @@ public class ClaimedChunkSettings {
     private TownChunkPermission interactArmorStandAuth;
     private TownChunkPermission decorativeBlockAuth;
     private TownChunkPermission musicBlockAuth;
+    private TownChunkPermission leadAuth;
 
 
     public ClaimedChunkSettings(){
@@ -32,6 +33,7 @@ public class ClaimedChunkSettings {
         this.interactArmorStandAuth = TownChunkPermission.TOWN;
         this.decorativeBlockAuth = TownChunkPermission.TOWN;
         this.musicBlockAuth = TownChunkPermission.TOWN;
+        this.leadAuth = TownChunkPermission.TOWN;
 
     }
 
@@ -70,6 +72,9 @@ public class ClaimedChunkSettings {
     }
     public TownChunkPermission getMusicBlockAuth() {
         return this.musicBlockAuth;
+    }
+    public TownChunkPermission getLeadAuth() {
+        return this.leadAuth;
     }
 
 
@@ -117,6 +122,9 @@ public class ClaimedChunkSettings {
     }
     public void nextMusicBlockAuth() {
         this.musicBlockAuth = this.musicBlockAuth.getNext();
+    }
+    public void nextLeadAuth() {
+        this.leadAuth = this.leadAuth.getNext();
     }
 
 
