@@ -5,18 +5,13 @@ import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.ChatScope;
-import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.LocalChatStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
-import org.tan.TownsAndNations.storage.TownRelationConfirmStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
-import static org.tan.TownsAndNations.utils.RelationUtil.addTownRelation;
-import static org.tan.TownsAndNations.utils.RelationUtil.removeRelation;
-
 public class ChannelChatScopeCommand extends SubCommand{
     @Override
     public String getName() {
@@ -39,6 +34,7 @@ public class ChannelChatScopeCommand extends SubCommand{
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
             suggestions.add("town");
+            suggestions.add("alliance");
             suggestions.add("global");
         }
         return suggestions;
@@ -70,6 +66,16 @@ public class ChannelChatScopeCommand extends SubCommand{
                 }
 
                 LocalChatStorage.setPlayerChatScope(player, ChatScope.CITY);
+                player.sendMessage(getTANString() + Lang.CHAT_CHANGED.getTranslation(channelName));
+            }
+            if(channelName.equalsIgnoreCase("alliance")){
+
+                if(LocalChatStorage.getPlayerChatScope(player) == ChatScope.ALLIANCE){
+                    player.sendMessage(getTANString() + Lang.TOWN_CHAT_ALREADY_IN_TOWN_CHAT.getTranslation());
+                    return;
+                }
+
+                LocalChatStorage.setPlayerChatScope(player, ChatScope.ALLIANCE);
                 player.sendMessage(getTANString() + Lang.CHAT_CHANGED.getTranslation(channelName));
             }
             else{

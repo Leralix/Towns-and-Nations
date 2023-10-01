@@ -5,6 +5,7 @@ import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChatScope;
+import org.tan.TownsAndNations.enums.TownRelation;
 
 import java.util.HashMap;
 
@@ -45,7 +46,7 @@ public class LocalChatStorage {
         return isPlayerInChatScope(player.getUniqueId().toString());
     }
 
-    public static void broadcastInScope(Player player, String message){
+    public static void broadcastInTownScope(Player player, String message){
         PlayerData playerData = PlayerDataStorage.get(player);
 
         if(!playerData.haveTown()){
@@ -58,6 +59,16 @@ public class LocalChatStorage {
             TownData townData = TownDataStorage.get(playerData.getTownId());
 
             townData.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.getTranslation(townData.getName(),player.getName(),message));
+        }
+
+        if(scope == ChatScope.ALLIANCE){
+            TownData playerTown = TownDataStorage.get(playerData.getTownId());
+
+            playerTown.getRelations().getOne(TownRelation.ALLIANCE).forEach(townID -> {
+                TownDataStorage.get(townID).broadCastMessage(Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.getTranslation(playerTown.getName(),player.getName(),message));
+            }
+            );
+
         }
 
     }

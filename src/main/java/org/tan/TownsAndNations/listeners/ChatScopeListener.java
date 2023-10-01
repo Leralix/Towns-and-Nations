@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.tan.TownsAndNations.enums.ChatScope;
 import org.tan.TownsAndNations.storage.LocalChatStorage;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 
@@ -17,18 +18,28 @@ public class ChatScopeListener implements Listener {
         Player player = event.getPlayer();
         String playerUUID = player.getUniqueId().toString();
 
-
+        //If player has better commands to do
         if(PlayerChatListenerStorage.getPlayerData(playerUUID) != null)
             return;
 
-        if(LocalChatStorage.isPlayerInChatScope(playerUUID)){
+        if(!LocalChatStorage.isPlayerInChatScope(playerUUID))
+            return;
 
-            LocalChatStorage.broadcastInScope(player, event.getMessage());
+
+        ChatScope scope = LocalChatStorage.getPlayerChatScope(playerUUID);
+
+        if(scope == ChatScope.CITY){
+            LocalChatStorage.broadcastInTownScope(player, event.getMessage());
             event.setCancelled(true);
-
-
+            return;
+        }
+        if(scope == ChatScope.ALLIANCE){
 
         }
+
+
+
+        event.setCancelled(true);
 
 
 

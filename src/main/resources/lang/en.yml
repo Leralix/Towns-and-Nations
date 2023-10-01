@@ -10,7 +10,7 @@ language:
 
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
-  CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance]§3 {1}: §f{2}"
+  CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 {1}: §f{2}"
 
   #Level up
   BASIC_LEVEL_UP: "§aLevel up !"
