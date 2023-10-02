@@ -24,6 +24,8 @@ language:
   SYNTAX_ERROR: "§cSyntaxe incorrecte"
   SYNTAX_ERROR_AMOUNT: "§cSyntaxe incorrecte pour le montant"
   CORRECT_SYNTAX_INFO: "§cSyntaxe correcte : {0}"
+  MESSAGE_TOO_LONG: "§cLe message est trop long ({0} max)"
+
 
   #Demande de rejoindre une ville
   PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f a demandé de rejoindre la ville. Vous pouvez retrouver sa candidature dans le menu des membres"

@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.listeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,6 +14,7 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.utils.ChatUtils;
+import org.tan.TownsAndNations.utils.ConfigUtil;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -44,6 +46,15 @@ public class ChatListener implements Listener {
             }
 
             String townName = event.getMessage();
+
+            FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
+            int maxSize = config.getInt("TownNameSize");
+            if(townName.length() > maxSize){
+                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.getTranslation(maxSize));
+                event.setCancelled(true);
+            }
+
+
             Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.getTranslation(player.getName(),townName));
 
             PlayerChatListenerStorage.removePlayer(player);
@@ -104,6 +115,14 @@ public class ChatListener implements Listener {
         if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.RANK_CREATION){
             PlayerChatListenerStorage.removePlayer(player);
             String rankName = event.getMessage();
+
+            FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
+            int maxSize = config.getInt("RankNameSize");
+            if(rankName.length() > maxSize){
+                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.getTranslation(maxSize));
+                event.setCancelled(true);
+            }
+
             TownData playerTown = TownDataStorage.get(player);
             playerTown.createTownRank(rankName);
             Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, rankName));
@@ -115,6 +134,14 @@ public class ChatListener implements Listener {
             PlayerChatListenerStorage.PlayerChatData ChatData = PlayerChatListenerStorage.getPlayerData(playerUUID);
 
             String newRankName = event.getMessage();
+
+            FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
+            int maxSize = config.getInt("RankNameSize");
+            if(newRankName.length() > maxSize){
+                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.getTranslation(maxSize));
+                event.setCancelled(true);
+            }
+
             TownData playerTown = TownDataStorage.get(player);
             String rankName = ChatData.getData().get("rankName");
             TownRank playerTownRank = playerTown.getRank(rankName);
@@ -141,10 +168,17 @@ public class ChatListener implements Listener {
 
         }
 
-
         if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.CHANGE_DESCRIPTION){
 
             String newDesc = event.getMessage();
+
+            FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
+            int maxSize = config.getInt("TownDescSize");
+            if(newDesc.length() > maxSize){
+                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.getTranslation(maxSize));
+                event.setCancelled(true);
+            }
+
 
             TownDataStorage.get(player).setDescription(newDesc);
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS.getTranslation());

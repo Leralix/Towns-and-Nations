@@ -26,6 +26,8 @@ language:
   SYNTAX_ERROR: "§cIncorrect syntax"
   SYNTAX_ERROR_AMOUNT: "§cIncorrect syntax for the amount"
   CORRECT_SYNTAX_INFO: "§cCorrect syntax: {0}"
+  MESSAGE_TOO_LONG: "§cMessage is too long: {0} max"
+
 
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f ask to join the town. You cna find his application in the members menu"

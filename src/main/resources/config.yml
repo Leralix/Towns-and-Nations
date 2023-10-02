@@ -19,6 +19,14 @@ TownStartingChunksCap: 50
 TownUpgradeChunk: 25
 
 
+#The max size of names
+
+TownNameSize: 40
+RankNameSize: 25
+TownDescSize: 50
+
+
+
 #The stat of getting a rare Stone, used to get money
 # (20 = 20% drop chance when breaking this block without a silk touch pick)
 rareStone:
