@@ -2,6 +2,7 @@ language:
   WELCOME: "§fBienvenue"
   LANGUAGE_SUCCESSFULLY_LOADED: "Langue française chargée avec succès"
   PLUGIN_STRING: "[TAN]"
+  NEWSLETTER_STRING: "§f[TAN - Newsletter]§f "
 
   # Erreurs communes
   PLAYER_NO_TOWN: "§cVous n'avez pas de ville"
@@ -295,6 +296,7 @@ language:
 
   GUI_TOWN_MEMBERS_MANAGE_ROLES: "§aGérer les rangs"
   GUI_TOWN_MEMBERS_MANAGE_APPLICATION: "§aGérer les candidatures"
+  GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1: "§fIl y a actuellement §e{0}§f candidatures"
   GUI_TOWN_MEMBERS_ADD_NEW_ROLES: "§aCréer un nouveau rang"
   GUI_TOWN_MEMBERS_ADD_NEW_ROLES_DESC1: "§f8 rangs max"
   GUI_TOWN_MEMBERS_ROLE_NAME: "§a{0}"

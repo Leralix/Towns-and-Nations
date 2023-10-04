@@ -2,6 +2,7 @@ language:
   WELCOME: "§fWelcome"
   LANGUAGE_SUCCESSFULLY_LOADED: "English language successfully loaded"
   PLUGIN_STRING: "[TAN]"
+  NEWSLETTER_STRING: "§f[TAN - Newsletter]§f "
 
   #Common errors
   PLAYER_NO_TOWN: "§cYou do not have a town"
@@ -307,6 +308,7 @@ language:
 
   GUI_TOWN_MEMBERS_MANAGE_ROLES: "§aManage ranks"
   GUI_TOWN_MEMBERS_MANAGE_APPLICATION: "§aManage application"
+  GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1: "§fThere is §e{0}§f applications"
   GUI_TOWN_MEMBERS_ADD_NEW_ROLES: "§aCreate a new rank"
   GUI_TOWN_MEMBERS_ADD_NEW_ROLES_DESC1: "§f8 ranks max"
   GUI_TOWN_MEMBERS_ROLE_NAME: "§a{0}"

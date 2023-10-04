@@ -508,7 +508,10 @@ public class GuiManager2 {
         }
 
         ItemStack manageRanks = HeadUtils.getCustomLoreItem(Material.LADDER, Lang.GUI_TOWN_MEMBERS_MANAGE_ROLES.getTranslation());
-        ItemStack manageApplication = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK, Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION.getTranslation());
+        ItemStack manageApplication = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK,
+                Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION.getTranslation(),
+                Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.getTranslation(town.getPlayerJoinRequestSet().size())
+        );
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
 
@@ -1280,7 +1283,7 @@ public class GuiManager2 {
                     });
 
                     gui.setItem(i,_transactionHistoryItem);
-
+                    i = i+1;
                 }
 
             }
