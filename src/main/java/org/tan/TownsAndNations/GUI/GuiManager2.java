@@ -1026,19 +1026,19 @@ public class GuiManager2 {
             OpenTownMenuRoleManager(player,roleName);
         });
 
-        gui.setItem(1,1, _manage_taxes);
-        gui.setItem(1,2, _promote_rank_player);
-        gui.setItem(1,3, _derank_player);
-        gui.setItem(1,4, _claim_chunk);
-        gui.setItem(1,5, _unclaim_chunk);
-        gui.setItem(1,6, _upgrade_town);
-        gui.setItem(1,7, _invite_player);
-        gui.setItem(2,1, _kick_player);
-        gui.setItem(2,2, _create_rank);
-        gui.setItem(2,3, _delete_rank);
-        gui.setItem(2,4, _modify_rank);
-        gui.setItem(2,5, _manage_claim_settings);
-        gui.setItem(2,6, _manage_town_relation);
+        gui.setItem(1, _manage_taxes);
+        gui.setItem(2, _promote_rank_player);
+        gui.setItem(3, _derank_player);
+        gui.setItem(4, _claim_chunk);
+        gui.setItem(5, _unclaim_chunk);
+        gui.setItem(6, _upgrade_town);
+        gui.setItem(7, _invite_player);
+        gui.setItem(8, _kick_player);
+        gui.setItem(9, _create_rank);
+        gui.setItem(10, _delete_rank);
+        gui.setItem(11, _modify_rank);
+        gui.setItem(12, _manage_claim_settings);
+        gui.setItem(13, _manage_town_relation);
 
         gui.setItem(3,1, _getBackArrow);
 

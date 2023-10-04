@@ -27,6 +27,8 @@ language:
   SYNTAX_ERROR: "§cIncorrect syntax"
   SYNTAX_ERROR_AMOUNT: "§cIncorrect syntax for the amount"
   CORRECT_SYNTAX_INFO: "§cCorrect syntax: {0}"
+  MESSAGE_TOO_LONG: "§cMessage is too long: {0} max"
+
 
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f ask to join the town. You cna find his application in the members menu"
@@ -347,13 +349,12 @@ language:
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_UNCLAIM_CHUNK: "§aUnclaim chunk"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_UPGRADE_TOWN: "§aUpgrade town"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_INVITE_PLAYER: "§aInvite Player"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_INVITE_PLAYER_DESC1: ""
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_KICK_PLAYER: "§aKick player"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_RANK: "§aCreate rank"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DELETE_RANK: "§aDelete rank"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_MODIFY_RANK: "§aManage taxes"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_MODIFY_RANK: "§aManage ranks"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_CLAIM_SETTINGS: "§aManage claim settings"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION: "§aManage taxes"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION: "§aManage diplomacy"
 
   GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION: "§fThis rank §ahave §fthis permission"
   GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION: "§fThis rank §cdo not have§f this permission"
