@@ -277,13 +277,14 @@ language:
   GUI_TOWN_CLAIM_SETTINGS_BREAK: "§aGérer la permission de destruction"
   GUI_TOWN_CLAIM_SETTINGS_ATTACK_PASSIVE_MOBS: "§aGérer l'attaque des mobs passifs"
   GUI_TOWN_CLAIM_SETTINGS_BUTTON: "§aGérer l'utilisation des boutons"
-  GUI_TOWN_CLAIM_SETTINGS_LEVER: "§aGérer l'utilisation des leviers"
+  GUI_TOWN_CLAIM_SETTINGS_REDSTONE: "§aGérer l'utilisation des composants de redstone"
   GUI_TOWN_CLAIM_SETTINGS_FURNACE: "§aGérer l'utilisation des fours"
   GUI_TOWN_CLAIM_SETTINGS_INTERACT_ITEM_FRAME: "§aGérer l'utilisation des cadres d'objets"
   GUI_TOWN_CLAIM_SETTINGS_INTERACT_ARMOR_STAND: "§aGérer l'utilisation des présentoirs d'armures"
   GUI_TOWN_CLAIM_SETTINGS_DECORATIVE_BLOCK: "§aGérer l'interaction avec les décorations"
   GUI_TOWN_CLAIM_SETTINGS_MUSIC_BLOCK: "§aGérer l'interaction avec les blocs musicaux"
   GUI_TOWN_CLAIM_SETTINGS_LEAD: "§aGérer l'interaction avec les actions en rapport avec les laisses"
+  GUI_TOWN_CLAIM_SETTINGS_SHEARS: "§aGérer l'interaction avec des cisailles"
 
   GUI_TOWN_CLAIM_SETTINGS_DESC1: "§fPermission actuelle: §e{0}"
 

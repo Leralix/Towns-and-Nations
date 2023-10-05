@@ -1989,9 +1989,9 @@ public class GuiManager2 {
                 Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getUseButtonsAuth().getColoredName()),
                 Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
         );
-        ItemStack useLever = HeadUtils.getCustomLoreItem(Material.LEVER,
-                Lang.GUI_TOWN_CLAIM_SETTINGS_LEVER.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getUseLeverAuth().getColoredName()),
+        ItemStack useRedstone = HeadUtils.getCustomLoreItem(Material.REDSTONE,
+                Lang.GUI_TOWN_CLAIM_SETTINGS_REDSTONE.getTranslation(),
+                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getUseRedstoneAuth().getColoredName()),
                 Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
         );
         ItemStack useFurnace = HeadUtils.getCustomLoreItem(Material.FURNACE,
@@ -2024,6 +2024,11 @@ public class GuiManager2 {
                 Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getLeadAuth().getColoredName()),
                 Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
         );
+        ItemStack interactShears = HeadUtils.getCustomLoreItem(Material.SHEARS,
+                Lang.GUI_TOWN_CLAIM_SETTINGS_SHEARS.getTranslation(),
+                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getLeadAuth().getColoredName()),
+                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
+        );
 
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
@@ -2033,7 +2038,7 @@ public class GuiManager2 {
         GuiItem _breakBlockAccessManager = createGuiItem(breakBlockAccess, playerStat, player,(v) -> townClass.getChunkSettings().nextBreakAuth());
         GuiItem _attackPassiveMob = createGuiItem(attackPassiveMob, playerStat, player,(v) -> townClass.getChunkSettings().nextAttackPassiveMobAuth());
         GuiItem _useButton = createGuiItem(useButton, playerStat, player,(v) -> townClass.getChunkSettings().nextUseButtonsAuth());
-        GuiItem _useLever = createGuiItem(useLever, playerStat, player,(v) -> townClass.getChunkSettings().nextUseLeverAuth());
+        GuiItem _useRedstone = createGuiItem(useRedstone, playerStat, player,(v) -> townClass.getChunkSettings().nextUseRedstoneAuth());
         GuiItem _useFurnace = createGuiItem(useFurnace, playerStat, player,(v) -> townClass.getChunkSettings().nextUseFurnaceAuth());
         GuiItem _interactItemFrame = createGuiItem(interactItemFrame, playerStat, player,(v) -> townClass.getChunkSettings().nextInteractItemFrameAuth());
         GuiItem _interactArmorStand = createGuiItem(interactArmorStand, playerStat, player,(v) -> townClass.getChunkSettings().nextInteractArmorStandAuth());
@@ -2053,7 +2058,7 @@ public class GuiManager2 {
         gui.setItem(3, _breakBlockAccessManager);
         gui.setItem(4, _attackPassiveMob);
         gui.setItem(5, _useButton);
-        gui.setItem(6, _useLever);
+        gui.setItem(6, _useRedstone);
         gui.setItem(7, _useFurnace);
         gui.setItem(8, _interactItemFrame);
         gui.setItem(9, _interactArmorStand);

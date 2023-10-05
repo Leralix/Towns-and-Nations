@@ -78,7 +78,7 @@ public class ChunkListener implements Listener {
 
     }
     @EventHandler
-    public void OnContainersOpen(PlayerInteractEvent event){
+    public void OnPlayerInteractEvent(PlayerInteractEvent event){
 
         Block block = event.getClickedBlock();
 
@@ -89,25 +89,34 @@ public class ChunkListener implements Listener {
             Material materialBlock = blockData.getMaterial();
 
             Chunk chunk = block.getLocation().getChunk();
-            Player player = event.getPlayer();
+            //Player player = event.getPlayer();
 
             if(!ClaimedChunkStorage.isChunkClaimed(chunk))
                 return;
             TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
 
+            if(
+                Tag.BUTTONS.isTagged(materialType) ||
+                materialBlock == Material.LEVER
+            ){
+                if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getUseButtonsAuth())){
+                    event.setCancelled(true);
+                }
+            }
+
 
             if(
-                    materialBlock == Material.CHEST ||
-                    materialBlock == Material.TRAPPED_CHEST ||
-                    materialBlock == Material.BARREL ||
-                    materialBlock == Material.HOPPER ||
-                    materialBlock == Material.DISPENSER ||
-                    materialBlock == Material.DROPPER ||
-                    materialBlock == Material.BREWING_STAND
+                materialBlock == Material.CHEST ||
+                materialBlock == Material.TRAPPED_CHEST ||
+                materialBlock == Material.BARREL ||
+                materialBlock == Material.HOPPER ||
+                materialBlock == Material.DISPENSER ||
+                materialBlock == Material.DROPPER ||
+                materialBlock == Material.BREWING_STAND
             ){
                 if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getChestAuth())){
                     event.setCancelled(true);
-                };
+                }
             }
             else if(
                     /*
@@ -239,7 +248,7 @@ public class ChunkListener implements Listener {
             ) {
                 if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getDecorativeBlockAuth())){
                     event.setCancelled(true);
-                };
+                }
             }
             else if (
                     materialBlock == Material.JUKEBOX ||
@@ -247,7 +256,17 @@ public class ChunkListener implements Listener {
             ) {
                 if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getMusicBlockAuth())){
                     event.setCancelled(true);
-                };
+                }
+            }
+            else if (
+                    materialBlock == Material.REDSTONE_WIRE ||
+                    materialBlock == Material.REPEATER ||
+                    materialBlock == Material.COMPARATOR ||
+                    materialBlock == Material.DAYLIGHT_DETECTOR
+            ) {
+                if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getUseRedstoneAuth())){
+                    event.setCancelled(true);
+                }
             }
         }
     }
@@ -394,33 +413,6 @@ public class ChunkListener implements Listener {
 
     }
 
-    //Button
-    @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event) {
-        if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            Material material = event.getClickedBlock().getType();
-            Player player = event.getPlayer();
-
-            Chunk chunk = event.getClickedBlock().getLocation().getChunk();
-
-            if(!ClaimedChunkStorage.isChunkClaimed(chunk))
-                return;
-            TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
-
-
-            if(isButton(material)) {
-                if(!CanPlayerDoAction(chunk, player,chunkTown.getChunkSettings().getUseButtonsAuth())){
-                    event.setCancelled(true);
-                };
-            }
-
-            if(material == Material.LEVER) {
-                if(!CanPlayerDoAction(chunk, player,chunkTown.getChunkSettings().getUseLeverAuth())){
-                    event.setCancelled(true);
-                };
-            }
-        }
-    }
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
         if(event.getPlayer() instanceof Player) {
@@ -530,7 +522,6 @@ public class ChunkListener implements Listener {
             return;
 
         TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
-        TownData playerTown = TownDataStorage.get(player);
 
         if(!CanPlayerDoAction(chunk,player,chunkTown.getChunkSettings().getLeadAuth())){
             event.setCancelled(true);
@@ -600,6 +591,23 @@ public class ChunkListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onPlayerShearEntityEvent(PlayerShearEntityEvent event){
+        Player player = event.getPlayer();
+        Entity entity = event.getEntity();
+        Chunk chunk = entity.getLocation().getChunk();
+
+        if (!ClaimedChunkStorage.isChunkClaimed(chunk))
+            return;
+
+        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+
+        if(!CanPlayerDoAction(chunk,player,chunkTown.getChunkSettings().getShearsAuth())){
+            event.setCancelled(true);
+        }
+    }
+
+
     private boolean CanPlayerDoAction(Chunk chunk, Player player, TownChunkPermission permission){
 
         //Chunk is not claimed
@@ -634,15 +642,6 @@ public class ChunkListener implements Listener {
     }
 
 
-
-
-    private boolean isButton(Material material) {
-        return material == Material.STONE_BUTTON || material == Material.OAK_BUTTON ||
-                material == Material.SPRUCE_BUTTON || material == Material.BIRCH_BUTTON ||
-                material == Material.JUNGLE_BUTTON || material == Material.ACACIA_BUTTON ||
-                material == Material.DARK_OAK_BUTTON || material == Material.CRIMSON_BUTTON ||
-                material == Material.WARPED_BUTTON || material == Material.POLISHED_BLACKSTONE_BUTTON;
-    }
 
     private void playerCantPerformAction(Player player, String ChunkOwner){
         player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
