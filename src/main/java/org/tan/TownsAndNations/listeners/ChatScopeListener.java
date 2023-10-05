@@ -26,16 +26,7 @@ public class ChatScopeListener implements Listener {
             return;
 
 
-        ChatScope scope = LocalChatStorage.getPlayerChatScope(playerUUID);
-
-        if(scope == ChatScope.CITY){
-            LocalChatStorage.broadcastInTownScope(player, event.getMessage());
-            event.setCancelled(true);
-            return;
-        }
-        if(scope == ChatScope.ALLIANCE){
-
-        }
+        LocalChatStorage.broadcastInScope(player, event.getMessage());
 
 
 
