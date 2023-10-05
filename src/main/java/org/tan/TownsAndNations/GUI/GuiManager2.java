@@ -2045,6 +2045,7 @@ public class GuiManager2 {
         GuiItem _useDecorativeBlockManager = createGuiItem(useDecorativeBlock, playerStat, player,(v) -> townClass.getChunkSettings().nextDecorativeBlockAuth());
         GuiItem _useMusicBlockManager = createGuiItem(useMusicBlock, playerStat, player,(v) -> townClass.getChunkSettings().nextMusicBlockAuth());
         GuiItem _interactLeadManager = createGuiItem(interactLead, playerStat, player,(v) -> townClass.getChunkSettings().nextLeadAuth());
+        GuiItem _interactShearsManager = createGuiItem(interactShears, playerStat, player,(v) -> townClass.getChunkSettings().nextShearsAuth());
 
 
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
@@ -2065,6 +2066,7 @@ public class GuiManager2 {
         gui.setItem(10, _useDecorativeBlockManager);
         gui.setItem(11, _useMusicBlockManager);
         gui.setItem(12, _interactLeadManager);
+        gui.setItem(13, _interactShearsManager);
 
 
         gui.setItem(27, _getBackArrow);
