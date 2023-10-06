@@ -10,13 +10,14 @@ public class ClaimedChunkSettings {
     private TownChunkPermission placeAuth;
     private TownChunkPermission attackPassiveMobAuth;
     private TownChunkPermission useButtonsAuth;
-    private TownChunkPermission useLeverAuth;
+    private TownChunkPermission useRedstoneAuth;
     private TownChunkPermission useFurnaceAuth;
     private TownChunkPermission interactItemFrameAuth;
     private TownChunkPermission interactArmorStandAuth;
     private TownChunkPermission decorativeBlockAuth;
     private TownChunkPermission musicBlockAuth;
     private TownChunkPermission leadAuth;
+    private TownChunkPermission shearsAuth;
 
 
     public ClaimedChunkSettings(){
@@ -27,13 +28,14 @@ public class ClaimedChunkSettings {
         this.placeAuth = TownChunkPermission.TOWN;
         this.attackPassiveMobAuth = TownChunkPermission.TOWN;
         this.useButtonsAuth = TownChunkPermission.TOWN;
-        this.useLeverAuth = TownChunkPermission.TOWN;
+        this.useRedstoneAuth = TownChunkPermission.TOWN;
         this.useFurnaceAuth = TownChunkPermission.TOWN;
         this.interactItemFrameAuth = TownChunkPermission.TOWN;
         this.interactArmorStandAuth = TownChunkPermission.TOWN;
         this.decorativeBlockAuth = TownChunkPermission.TOWN;
         this.musicBlockAuth = TownChunkPermission.TOWN;
         this.leadAuth = TownChunkPermission.TOWN;
+        this.shearsAuth = TownChunkPermission.TOWN;
 
     }
 
@@ -55,8 +57,8 @@ public class ClaimedChunkSettings {
     public TownChunkPermission getUseButtonsAuth() {
         return this.useButtonsAuth;
     }
-    public TownChunkPermission getUseLeverAuth() {
-        return this.useLeverAuth;
+    public TownChunkPermission getUseRedstoneAuth() {
+        return this.useRedstoneAuth;
     }
     public TownChunkPermission getUseFurnaceAuth() {
         return this.useFurnaceAuth;
@@ -76,6 +78,10 @@ public class ClaimedChunkSettings {
     public TownChunkPermission getLeadAuth() {
         return this.leadAuth;
     }
+    public TownChunkPermission getShearsAuth() {
+        return this.shearsAuth;
+    }
+
 
 
     public void nextChestAuth() {
@@ -102,8 +108,8 @@ public class ClaimedChunkSettings {
         this.useButtonsAuth = this.useButtonsAuth.getNext();
     }
 
-    public void nextUseLeverAuth() {
-        this.useLeverAuth = this.useLeverAuth.getNext();
+    public void nextUseRedstoneAuth() {
+        this.useRedstoneAuth = this.useRedstoneAuth.getNext();
     }
 
     public void nextUseFurnaceAuth() {
@@ -125,6 +131,9 @@ public class ClaimedChunkSettings {
     }
     public void nextLeadAuth() {
         this.leadAuth = this.leadAuth.getNext();
+    }
+    public void nextShearsAuth() {
+        this.shearsAuth = this.shearsAuth.getNext();
     }
 
 

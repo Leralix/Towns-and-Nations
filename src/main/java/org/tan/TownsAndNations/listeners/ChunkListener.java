@@ -17,6 +17,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.FurnaceInventory;
@@ -70,13 +72,13 @@ public class ChunkListener implements Listener {
             return;
         TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
 
-        if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getDecorativeBlockAuth())){
+        if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getPlaceAuth())){
             event.setCancelled(true);
         };
 
     }
     @EventHandler
-    public void OnContainersOpen(PlayerInteractEvent event){
+    public void OnPlayerInteractEvent(PlayerInteractEvent event){
 
         Block block = event.getClickedBlock();
 
@@ -87,26 +89,37 @@ public class ChunkListener implements Listener {
             Material materialBlock = blockData.getMaterial();
 
             Chunk chunk = block.getLocation().getChunk();
-            Player player = event.getPlayer();
+            //Player player = event.getPlayer();
 
             if(!ClaimedChunkStorage.isChunkClaimed(chunk))
                 return;
             TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
 
+            if(
+                Tag.BUTTONS.isTagged(materialType) ||
+                materialBlock == Material.LEVER
+            ){
+                if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getUseButtonsAuth())){
+                    event.setCancelled(true);
+                }
+            }
 
-            if(blockData.getMaterial() == Material.CHEST ||
-                    materialBlock == Material.TRAPPED_CHEST ||
-                    materialBlock == Material.BARREL ||
-                    materialBlock == Material.HOPPER ||
-                    materialBlock == Material.DISPENSER ||
-                    materialBlock == Material.DROPPER ||
-                    materialBlock == Material.BREWING_STAND
+
+            if(
+                materialBlock == Material.CHEST ||
+                materialBlock == Material.TRAPPED_CHEST ||
+                materialBlock == Material.BARREL ||
+                materialBlock == Material.HOPPER ||
+                materialBlock == Material.DISPENSER ||
+                materialBlock == Material.DROPPER ||
+                materialBlock == Material.BREWING_STAND
             ){
                 if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getChestAuth())){
                     event.setCancelled(true);
-                };
+                }
             }
             else if(
+                    /*
                     materialBlock == Material.OAK_DOOR ||
                     materialBlock == Material.SPRUCE_DOOR ||
                     materialBlock == Material.ACACIA_DOOR ||
@@ -119,8 +132,10 @@ public class ChunkListener implements Listener {
                     materialBlock == Material.MANGROVE_DOOR ||
                     materialBlock == Material.CHERRY_DOOR ||
                     materialBlock == Material.IRON_DOOR ||
+                     */
+                    Tag.DOORS.isTagged(materialType) ||
 
-
+                    /*
                     materialBlock == Material.OAK_TRAPDOOR ||
                     materialBlock == Material.SPRUCE_TRAPDOOR ||
                     materialBlock == Material.ACACIA_TRAPDOOR ||
@@ -133,6 +148,8 @@ public class ChunkListener implements Listener {
                     materialBlock == Material.MANGROVE_TRAPDOOR ||
                     materialBlock == Material.CHERRY_TRAPDOOR ||
                     materialBlock == Material.IRON_TRAPDOOR ||
+                    */
+                    Tag.TRAPDOORS.isTagged(materialType) ||
 
                     /*
                     materialBlock == Material.OAK_FENCE_GATE ||
@@ -155,6 +172,7 @@ public class ChunkListener implements Listener {
                 };
             }
             else if (
+                    /*
                     materialBlock == Material.CANDLE ||
                     materialBlock == Material.WHITE_CANDLE ||
                     materialBlock == Material.LIGHT_GRAY_CANDLE ||
@@ -172,16 +190,27 @@ public class ChunkListener implements Listener {
                     materialBlock == Material.PURPLE_CANDLE ||
                     materialBlock == Material.MAGENTA_CANDLE ||
                     materialBlock == Material.PINK_CANDLE ||
+                     */
+                    Tag.CANDLES.isTagged(materialType) ||
+                    Tag.CANDLE_CAKES.isTagged(materialType) ||
 
-                    materialBlock == Material.FLOWER_POT ||
+                    Tag.FLOWER_POTS.isTagged(materialType) ||
 
+                    //materialBlock == Material.FLOWER_POT ||
+
+                    /*
                     materialBlock == Material.CAULDRON ||
                     materialBlock == Material.LAVA_CAULDRON ||
                     materialBlock == Material.WATER_CAULDRON ||
                     materialBlock == Material.POWDER_SNOW_CAULDRON ||
+                     */
+
+                    Tag.CAULDRONS.isTagged(materialType) ||
 
                     materialBlock == Material.COMPOSTER ||
 
+                    Tag.ALL_SIGNS.isTagged(materialType) ||
+                    /*
                     materialBlock == Material.OAK_SIGN ||
                     materialBlock == Material.OAK_HANGING_SIGN ||
                     materialBlock == Material.SPRUCE_SIGN ||
@@ -204,18 +233,22 @@ public class ChunkListener implements Listener {
                     materialBlock == Material.CRIMSON_HANGING_SIGN ||
                     materialBlock == Material.WARPED_SIGN ||
                     materialBlock == Material.WARPED_HANGING_SIGN ||
+                     */
 
                     materialBlock == Material.CHISELED_BOOKSHELF ||
 
+                    Tag.CAMPFIRES.isTagged(materialType) ||
+                    /*
                     materialBlock == Material.CAMPFIRE ||
                     materialBlock == Material.SOUL_CAMPFIRE ||
+                    */
 
                     materialBlock == Material.BEACON
 
             ) {
                 if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getDecorativeBlockAuth())){
                     event.setCancelled(true);
-                };
+                }
             }
             else if (
                     materialBlock == Material.JUKEBOX ||
@@ -223,7 +256,17 @@ public class ChunkListener implements Listener {
             ) {
                 if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getMusicBlockAuth())){
                     event.setCancelled(true);
-                };
+                }
+            }
+            else if (
+                    materialBlock == Material.REDSTONE_WIRE ||
+                    materialBlock == Material.REPEATER ||
+                    materialBlock == Material.COMPARATOR ||
+                    materialBlock == Material.DAYLIGHT_DETECTOR
+            ) {
+                if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getUseRedstoneAuth())){
+                    event.setCancelled(true);
+                }
             }
         }
     }
@@ -244,8 +287,7 @@ public class ChunkListener implements Listener {
     }
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if(event.getDamager() instanceof Player) {
-            Player player = (Player) event.getDamager();
+        if(event.getDamager() instanceof Player player) {
             Entity entity = event.getEntity();
 
 
@@ -284,11 +326,11 @@ public class ChunkListener implements Listener {
                 entity instanceof Panda ||
                 entity instanceof PolarBear ||
                 entity instanceof Wolf ||
-                entity instanceof ArmorStand ||
+                entity instanceof ArmorStand /*||
                 entity instanceof LeashHitch ||
                 entity instanceof Painting ||
                 entity instanceof ItemFrame ||
-                entity instanceof GlowItemFrame
+                entity instanceof GlowItemFrame*/
 
 
             ) {
@@ -348,11 +390,11 @@ public class ChunkListener implements Listener {
                     entity instanceof Panda ||
                     entity instanceof PolarBear ||
                     entity instanceof Wolf ||
-                    entity instanceof ArmorStand ||
+                    entity instanceof ArmorStand /*||
                     entity instanceof LeashHitch ||
                     entity instanceof Painting ||
                     entity instanceof ItemFrame ||
-                    entity instanceof GlowItemFrame
+                    entity instanceof GlowItemFrame*/
 
             ) {
 
@@ -371,33 +413,6 @@ public class ChunkListener implements Listener {
 
     }
 
-    //Button
-    @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event) {
-        if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            Material material = event.getClickedBlock().getType();
-            Player player = event.getPlayer();
-
-            Chunk chunk = event.getClickedBlock().getLocation().getChunk();
-
-            if(!ClaimedChunkStorage.isChunkClaimed(chunk))
-                return;
-            TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
-
-
-            if(isButton(material)) {
-                if(!CanPlayerDoAction(chunk, player,chunkTown.getChunkSettings().getUseButtonsAuth())){
-                    event.setCancelled(true);
-                };
-            }
-
-            if(material == Material.LEVER) {
-                if(!CanPlayerDoAction(chunk, player,chunkTown.getChunkSettings().getUseLeverAuth())){
-                    event.setCancelled(true);
-                };
-            }
-        }
-    }
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
         if(event.getPlayer() instanceof Player) {
@@ -497,7 +512,7 @@ public class ChunkListener implements Listener {
         }
     }
 
-        @EventHandler
+    @EventHandler
     public void onPlayerLeashEntityEvent(PlayerLeashEntityEvent event) {
         Player player = event.getPlayer();
         Entity entity = event.getEntity();
@@ -507,14 +522,91 @@ public class ChunkListener implements Listener {
             return;
 
         TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
-        TownData playerTown = TownDataStorage.get(player);
 
-            if(!CanPlayerDoAction(chunk,player,chunkTown.getChunkSettings().getLeadAuth())){
-                event.setCancelled(true);
-            };
+        if(!CanPlayerDoAction(chunk,player,chunkTown.getChunkSettings().getLeadAuth())){
+            event.setCancelled(true);
+        }
 
 
     }
+
+    @EventHandler
+    public void onHangingBreakByEntityEvent(HangingBreakByEntityEvent event){
+        Entity remover = event.getRemover();
+        if(remover instanceof Player player){
+            Entity entity = event.getEntity();
+            Chunk chunk = entity.getLocation().getChunk();
+            if (!ClaimedChunkStorage.isChunkClaimed(chunk))
+                return;
+            TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+            if(entity instanceof LeashHitch) {
+                if (!CanPlayerDoAction(chunk, player, chunkTown.getChunkSettings().getLeadAuth())) {
+                    event.setCancelled(true);
+                }
+            }
+            else{
+                if (!CanPlayerDoAction(chunk, player, chunkTown.getChunkSettings().getBreakAuth())) {
+                    event.setCancelled(true);
+                }
+            }
+        } else if (remover instanceof Projectile projectile) {
+            if(projectile.getShooter() instanceof Player player){
+                Entity entity = event.getEntity();
+                Chunk chunk = entity.getLocation().getChunk();
+                if (!ClaimedChunkStorage.isChunkClaimed(chunk))
+                    return;
+                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+                if(entity instanceof LeashHitch) {
+                    if (!CanPlayerDoAction(chunk, player, chunkTown.getChunkSettings().getLeadAuth())) {
+                        event.setCancelled(true);
+                    }
+                }
+                else{
+                    if (!CanPlayerDoAction(chunk, player, chunkTown.getChunkSettings().getBreakAuth())) {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onHangingPlaceEvent(HangingPlaceEvent event){
+        Block block = event.getBlock();
+        Chunk chunk = block.getLocation().getChunk();
+
+        if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+            return;
+        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+
+        Entity entity = event.getEntity();
+        if(entity instanceof LeashHitch){
+            if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getLeadAuth())){
+                event.setCancelled(true);
+            }
+        } else {
+            if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getPlaceAuth())){
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerShearEntityEvent(PlayerShearEntityEvent event){
+        Player player = event.getPlayer();
+        Entity entity = event.getEntity();
+        Chunk chunk = entity.getLocation().getChunk();
+
+        if (!ClaimedChunkStorage.isChunkClaimed(chunk))
+            return;
+
+        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+
+        if(!CanPlayerDoAction(chunk,player,chunkTown.getChunkSettings().getShearsAuth())){
+            event.setCancelled(true);
+        }
+    }
+
 
     private boolean CanPlayerDoAction(Chunk chunk, Player player, TownChunkPermission permission){
 
@@ -550,15 +642,6 @@ public class ChunkListener implements Listener {
     }
 
 
-
-
-    private boolean isButton(Material material) {
-        return material == Material.STONE_BUTTON || material == Material.OAK_BUTTON ||
-                material == Material.SPRUCE_BUTTON || material == Material.BIRCH_BUTTON ||
-                material == Material.JUNGLE_BUTTON || material == Material.ACACIA_BUTTON ||
-                material == Material.DARK_OAK_BUTTON || material == Material.CRIMSON_BUTTON ||
-                material == Material.WARPED_BUTTON || material == Material.POLISHED_BLACKSTONE_BUTTON;
-    }
 
     private void playerCantPerformAction(Player player, String ChunkOwner){
         player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
