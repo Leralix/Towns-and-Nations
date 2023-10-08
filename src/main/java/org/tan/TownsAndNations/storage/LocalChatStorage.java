@@ -61,8 +61,10 @@ public class LocalChatStorage {
             townData.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.getTranslation(townData.getName(),player.getName(),message));
         }
 
-        if(scope == ChatScope.ALLIANCE){
+        else if(scope == ChatScope.ALLIANCE){
             TownData playerTown = TownDataStorage.get(playerData.getTownId());
+
+            playerTown.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.getTranslation(playerTown.getName(),player.getName(),message));
 
             playerTown.getRelations().getOne(TownRelation.ALLIANCE).forEach(townID -> {
                 TownDataStorage.get(townID).broadCastMessage(Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.getTranslation(playerTown.getName(),player.getName(),message));
