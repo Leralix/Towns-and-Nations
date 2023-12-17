@@ -9,7 +9,6 @@ import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import java.util.*;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class TownData {
@@ -24,7 +23,9 @@ public class TownData {
     public String DateCreated;
     private String townIconMaterialCode;
     private final HashSet<String> townPlayerListId = new HashSet<>();
+    private boolean isRecruiting = false;
     private HashSet<String> PlayerJoinRequestSet;
+
 
     private final TownTreasury townTreasury;
     private final TownLevel townLevel;
@@ -120,15 +121,6 @@ public class TownData {
         else
             return new ItemStack(Material.getMaterial(this.townIconMaterialCode));
 
-    }
-    public boolean isPlayerIn(Player player){
-        String uuid = player.getUniqueId().toString();
-        for (String townPlayerUUID : this.townPlayerListId) {
-            if(uuid.equals(townPlayerUUID)){
-                return true;
-            }
-        }
-        return false;
     }
 
     public void setTownIconMaterialCode(Material material) {
@@ -260,10 +252,10 @@ public class TownData {
     public void removePlayerJoinRequest(Player player) {
         PlayerJoinRequestSet.remove(player.getUniqueId().toString());
     }
-    public boolean isPlayerJoinRequest(String playerUUID) {
+    public boolean isPlayerAlreadyJoined(String playerUUID) {
         return PlayerJoinRequestSet.contains(playerUUID);
     }
-    public boolean isPlayerJoinRequest(Player player) {
+    public boolean isPlayerAlreadyJoined(Player player) {
         return PlayerJoinRequestSet.contains(player.getUniqueId().toString());
     }
     public HashSet<String> getPlayerJoinRequestSet(){
@@ -271,7 +263,26 @@ public class TownData {
     }
 
     public void update(){
-        this.PlayerJoinRequestSet= new HashSet<>();
+        if(this.PlayerJoinRequestSet == null)
+            this.PlayerJoinRequestSet= new HashSet<>();
     }
+
+    public boolean isRecruiting() {
+        return isRecruiting;
+    }
+
+    public void setRecruiting(boolean isRecruiting) {
+        this.isRecruiting = isRecruiting;
+    }
+
+    public void swapRecruiting() {
+        this.isRecruiting = !this.isRecruiting;
+    }
+
+    public boolean isPlayerInTown(Player player){
+        return this.townPlayerListId.contains(player.getUniqueId().toString());
+    }
+
+
 
 }

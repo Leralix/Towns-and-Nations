@@ -25,7 +25,6 @@ import static org.tan.TownsAndNations.storage.TownDataStorage.getTownList;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.RelationUtil.*;
 
-import java.security.Permission;
 import java.util.ArrayList;
 
 
@@ -58,9 +57,9 @@ public class GuiManager2 {
         ItemStack PlayerHead = HeadUtils.getPlayerHeadInformation(player);
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Quit");
 
-        HeadUtils.addLore(KingdomHead, Lang.GUI_KINGDOM_ICON_DESC1.getTranslation());
-        HeadUtils.addLore(RegionHead, Lang.GUI_REGION_ICON_DESC1.getTranslation());
-        HeadUtils.addLore(TownHead, playerHaveTown? Lang.GUI_KINGDOM_ICON_DESC1_HAVE_TOWN.getTranslation(TownDataStorage.get(playerStat).getName()):Lang.GUI_KINGDOM_ICON_DESC1_NO_TOWN.getTranslation() );
+        HeadUtils.setLore(KingdomHead, Lang.GUI_KINGDOM_ICON_DESC1.getTranslation());
+        HeadUtils.setLore(RegionHead, Lang.GUI_REGION_ICON_DESC1.getTranslation());
+        HeadUtils.setLore(TownHead, playerHaveTown? Lang.GUI_KINGDOM_ICON_DESC1_HAVE_TOWN.getTranslation(TownDataStorage.get(playerStat).getName()):Lang.GUI_KINGDOM_ICON_DESC1_NO_TOWN.getTranslation() );
 
 
         GuiItem Kingdom = ItemBuilder.from(KingdomHead).asGuiItem(event -> {
@@ -223,14 +222,14 @@ public class GuiManager2 {
             ItemStack townIcon = HeadUtils.getTownIcon(townData.getID());
 
             String description;
-            if(townData.isPlayerJoinRequest(player)){
+            if(townData.isPlayerAlreadyJoined(player)){
                 description = Lang.GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL.getTranslation();
             }
             else{
                 description = Lang.GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN.getTranslation();
             }
 
-            HeadUtils.addLore(townIcon,
+            HeadUtils.setLore(townIcon,
                     Lang.GUI_TOWN_INFO_DESC0.getTranslation(townData.getDescription()),
                     Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getUuidLeader())).getName()),
                     Lang.GUI_TOWN_INFO_DESC2.getTranslation(townData.getPlayerList().size()),
@@ -243,8 +242,12 @@ public class GuiManager2 {
                 event.setCancelled(true);
 
                 if(event.isLeftClick()){
-                    if(townData.isPlayerJoinRequest(player)){
+                    if(townData.isPlayerAlreadyJoined(player)){
                        return;
+                    }
+                    if(!townData.isRecruiting()){
+                        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_TOWN_NOT_RECRUITING.getTranslation());
+                        return;
                     }
                     townData.addPlayerJoinRequest(player);
                     player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.getTranslation(townData.getName()));
@@ -252,7 +255,7 @@ public class GuiManager2 {
                 }
 
                 if(event.isRightClick()){
-                    if(!townData.isPlayerJoinRequest(player)){
+                    if(!townData.isPlayerAlreadyJoined(player)){
                         return;
                     }
                     townData.removePlayerJoinRequest(player);
@@ -289,7 +292,7 @@ public class GuiManager2 {
 
 
         ItemStack TownIcon = HeadUtils.getTownIcon(playerTown.getID());
-        HeadUtils.addLore(TownIcon,
+        HeadUtils.setLore(TownIcon,
                 Lang.GUI_TOWN_INFO_DESC0.getTranslation(playerTown.getDescription()),
                 Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerTown.getUuidLeader())).getName()),
                 Lang.GUI_TOWN_INFO_DESC2.getTranslation(playerTown.getPlayerList().size()),
@@ -303,25 +306,25 @@ public class GuiManager2 {
 
 
         ItemStack GoldIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_TREASURY_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        HeadUtils.addLore(GoldIcon, Lang.GUI_TOWN_TREASURY_ICON_DESC1.getTranslation());
+        HeadUtils.setLore(GoldIcon, Lang.GUI_TOWN_TREASURY_ICON_DESC1.getTranslation());
 
         ItemStack SkullIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Q0ZDQ5NmIxZGEwNzUzNmM5NGMxMzEyNGE1ODMzZWJlMGM1MzgyYzhhMzM2YWFkODQ2YzY4MWEyOGQ5MzU2MyJ9fX0=");
-        HeadUtils.addLore(SkullIcon, Lang.GUI_TOWN_MEMBERS_ICON_DESC1.getTranslation());
+        HeadUtils.setLore(SkullIcon, Lang.GUI_TOWN_MEMBERS_ICON_DESC1.getTranslation());
 
         ItemStack ClaimIcon = HeadUtils.makeSkull(Lang.GUI_CLAIM_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
-        HeadUtils.addLore(ClaimIcon, Lang.GUI_CLAIM_ICON_DESC1.getTranslation());
+        HeadUtils.setLore(ClaimIcon, Lang.GUI_CLAIM_ICON_DESC1.getTranslation());
 
         ItemStack otherTownIcon = HeadUtils.makeSkull(Lang.GUI_OTHER_TOWN_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=");
-        HeadUtils.addLore(otherTownIcon, Lang.GUI_OTHER_TOWN_ICON_DESC1.getTranslation());
+        HeadUtils.setLore(otherTownIcon, Lang.GUI_OTHER_TOWN_ICON_DESC1.getTranslation());
 
         ItemStack RelationIcon = HeadUtils.makeSkull(Lang.GUI_RELATION_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=");
-        HeadUtils.addLore(RelationIcon, Lang.GUI_RELATION_ICON_DESC1.getTranslation());
+        HeadUtils.setLore(RelationIcon, Lang.GUI_RELATION_ICON_DESC1.getTranslation());
 
         ItemStack LevelIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmJlNTI5YWI2YjJlYTdjNTBkOTE5MmQ4OWY4OThmZDdkYThhOWU3NTBkMzc4Mjk1ZGY3MzIwNWU3YTdlZWFlMCJ9fX0=");
-        HeadUtils.addLore(LevelIcon, Lang.GUI_TOWN_LEVEL_ICON_DESC1.getTranslation());
+        HeadUtils.setLore(LevelIcon, Lang.GUI_TOWN_LEVEL_ICON_DESC1.getTranslation());
 
         ItemStack SettingIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_SETTINGS_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkMmNiMzg0NThkYTE3ZmI2Y2RhY2Y3ODcxNjE2MDJhMjQ5M2NiZjkzMjMzNjM2MjUzY2ZmMDdjZDg4YTljMCJ9fX0=");
-        HeadUtils.addLore(SettingIcon, Lang.GUI_TOWN_SETTINGS_ICON_DESC1.getTranslation());
+        HeadUtils.setLore(SettingIcon, Lang.GUI_TOWN_SETTINGS_ICON_DESC1.getTranslation());
 
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
@@ -424,7 +427,7 @@ public class GuiManager2 {
                 relationName = relation.getColor() + relation.getName();
             }
 
-            HeadUtils.addLore(townIcon,
+            HeadUtils.setLore(townIcon,
                     Lang.GUI_TOWN_INFO_DESC0.getTranslation(otherTown.getDescription()),
                     Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(otherTown.getUuidLeader())).getName()),
                     Lang.GUI_TOWN_INFO_DESC2.getTranslation(otherTown.getPlayerList().size()),
@@ -474,7 +477,7 @@ public class GuiManager2 {
             PlayerData otherPlayerStat = PlayerDataStorage.get(playerUUID);
 
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate.getName(),playerIterate);
-            HeadUtils.addLore(
+            HeadUtils.setLore(
                     playerHead,
                     Lang.GUI_TOWN_MEMBER_DESC1.getTranslation(otherPlayerStat.getTownRankID()),
                     Lang.GUI_TOWN_MEMBER_DESC2.getTranslation(otherPlayerStat.getBalance()),
@@ -563,7 +566,7 @@ public class GuiManager2 {
 
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate.getName(),playerIterate);
 
-            HeadUtils.addLore(
+            HeadUtils.setLore(
                     playerHead,
                     Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC2.getTranslation(),
                     Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC3.getTranslation()
@@ -735,7 +738,7 @@ public class GuiManager2 {
             playerNames.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC.getTranslation(playerName));
         }
 
-        HeadUtils.addLore(membersRank, playerNames);
+        HeadUtils.setLore(membersRank, playerNames);
 
         ItemStack managePermission = HeadUtils.getCustomLoreItem(Material.ANVIL,Lang.GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION.getTranslation());
 
@@ -1074,7 +1077,7 @@ public class GuiManager2 {
         ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.getTranslation());
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
-        HeadUtils.addLore(taxHistory,Lang.GUI_TREASURY_TAX_HISTORY_DESC1.getTranslation());
+        HeadUtils.setLore(taxHistory,Lang.GUI_TREASURY_TAX_HISTORY_DESC1.getTranslation());
 
         int nextTaxes = 0;
 
@@ -1091,24 +1094,24 @@ public class GuiManager2 {
 
         }
 
-        HeadUtils.addLore(goldIcon,
+        HeadUtils.setLore(goldIcon,
                 Lang.GUI_TREASURY_STORAGE_DESC1.getTranslation(town.getBalance()),
                 Lang.GUI_TREASURY_STORAGE_DESC2.getTranslation(nextTaxes)
         );
-        HeadUtils.addLore(goldSpendingIcon, Lang.GUI_TREASURY_SPENDING_DESC1.getTranslation(0), Lang.GUI_TREASURY_SPENDING_DESC2.getTranslation(0),Lang.GUI_TREASURY_SPENDING_DESC3.getTranslation(0));
+        HeadUtils.setLore(goldSpendingIcon, Lang.GUI_TREASURY_SPENDING_DESC1.getTranslation(0), Lang.GUI_TREASURY_SPENDING_DESC2.getTranslation(0),Lang.GUI_TREASURY_SPENDING_DESC3.getTranslation(0));
 
 
 
-        HeadUtils.addLore(lowerTax, Lang.GUI_TREASURY_LOWER_TAX_DESC1.getTranslation());
-        HeadUtils.addLore(taxInfo, Lang.GUI_TREASURY_FLAT_TAX_DESC1.getTranslation(town.getTreasury().getFlatTax()));
-        HeadUtils.addLore(increaseTax, Lang.GUI_TREASURY_INCREASE_TAX_DESC1.getTranslation());
+        HeadUtils.setLore(lowerTax, Lang.GUI_TREASURY_LOWER_TAX_DESC1.getTranslation());
+        HeadUtils.setLore(taxInfo, Lang.GUI_TREASURY_FLAT_TAX_DESC1.getTranslation(town.getTreasury().getFlatTax()));
+        HeadUtils.setLore(increaseTax, Lang.GUI_TREASURY_INCREASE_TAX_DESC1.getTranslation());
 
-        HeadUtils.addLore(salarySpending, Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.getTranslation("0"));
-        HeadUtils.addLore(chunkSpending, Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.getTranslation(0), Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.getTranslation(0),Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.getTranslation(town.getChunkSettings().getNumberOfClaimedChunk()));
-        HeadUtils.addLore(workbenchSpending, Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1.getTranslation());
+        HeadUtils.setLore(salarySpending, Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.getTranslation("0"));
+        HeadUtils.setLore(chunkSpending, Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.getTranslation(0), Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.getTranslation(0),Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.getTranslation(town.getChunkSettings().getNumberOfClaimedChunk()));
+        HeadUtils.setLore(workbenchSpending, Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1.getTranslation());
 
-        HeadUtils.addLore(donation, Lang.GUI_TREASURY_DONATION_DESC1.getTranslation());
-        HeadUtils.addLore(donationHistory, town.getTreasury().getDonationLimitedHistory(5));
+        HeadUtils.setLore(donation, Lang.GUI_TREASURY_DONATION_DESC1.getTranslation());
+        HeadUtils.setLore(donationHistory, town.getTreasury().getDonationLimitedHistory(5));
 
         GuiItem _goldInfo = ItemBuilder.from(goldIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1276,7 +1279,7 @@ public class GuiManager2 {
 
                     ItemStack transactionHistoryItem = HeadUtils.getCustomLoreItem(Material.PAPER,date);
 
-                    HeadUtils.addLore(transactionHistoryItem,lines);
+                    HeadUtils.setLore(transactionHistoryItem,lines);
 
                     GuiItem _transactionHistoryItem = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> {
                         event.setCancelled(true);
@@ -1352,17 +1355,17 @@ public class GuiManager2 {
 
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
-        HeadUtils.addLore(upgradeTownLevel,
+        HeadUtils.setLore(upgradeTownLevel,
                 Lang.GUI_TOWN_LEVEL_UP_DESC1.getTranslation(townLevel.getTownLevel()),
                 Lang.GUI_TOWN_LEVEL_UP_DESC2.getTranslation(townLevel.getTownLevel()+1, townLevel.getMoneyRequiredTownLevel())
         );
-        HeadUtils.addLore(upgradeChunkCap,
+        HeadUtils.setLore(upgradeChunkCap,
                 Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC1.getTranslation(townLevel.getChunkCapLevel()),
                 Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC2.getTranslation(townLevel.getChunkCapLevel()+1,townLevel.getMoneyRequiredChunkCap()),
                 Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC3.getTranslation(townLevel.getMultiplierChunkCap()),
                 Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC4.getTranslation(townLevel.getChunkCap())
         );
-        HeadUtils.addLore(upgradePlayerCap,
+        HeadUtils.setLore(upgradePlayerCap,
                 Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC1.getTranslation(townLevel.getPlayerCapLevel()),
                 Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC2.getTranslation(townLevel.getPlayerCapLevel()+1,townLevel.getMoneyRequiredPlayerCap()),
                 Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC3.getTranslation(townLevel.getMultiplierPlayerCap()),
@@ -1577,7 +1580,7 @@ public class GuiManager2 {
             OfflinePlayer townPlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerUUID));
 
             ItemStack playerHead = HeadUtils.getPlayerHead(townPlayer.getName(),townPlayer);
-            HeadUtils.addLore(playerHead,
+            HeadUtils.setLore(playerHead,
                     Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1.getTranslation(player.getName()),
                     Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2.getTranslation()
             );

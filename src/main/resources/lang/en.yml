@@ -31,9 +31,10 @@ language:
 
 
   #Ask to join a town
-  PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f ask to join the town. You cna find his application in the members menu"
+  PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f ask to join the town. You can find his application in the members menu"
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "You successfully ask to join the town: §9{0}§f. Right click on the city to cancel"
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "You cancelled your application"
+  PLAYER_TOWN_NOT_RECRUITING: "§cThe town is not recruiting"
   #Create town
   TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the city: §9{1}"
 
@@ -333,7 +334,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_3: "§1Rank 3"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_4: "§2Rank 4"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_5: "§aRank 5"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§fLeft clic to change the role"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§fLeft click to change the role"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fThe smaller the number, the better the rank is"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT: "§aThis rank is the default role"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§aThis rank §cis not §athe default role"

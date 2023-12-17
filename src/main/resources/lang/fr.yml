@@ -32,6 +32,7 @@ language:
   PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f a demandé de rejoindre la ville. Vous pouvez retrouver sa candidature dans le menu des membres"
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "§fVous avez demandé de rejoindre la ville: §9{0}§f. Clic droit sur la ville pour annuler la demande."
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "§fAnnulation de la demande"
+  PLAYER_TOWN_NOT_RECRUITING: "§cLa ville n'accepte pas de candidatures pour le moment"
 
   # Créer une ville
   TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f a créé avec succès la ville : §9{1}"

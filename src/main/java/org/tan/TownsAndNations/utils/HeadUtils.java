@@ -43,7 +43,7 @@ public class HeadUtils {
         String townName;
         String playerTownRank;
         if(playerTown != null){
-            addLore(head,
+            setLore(head,
                     Lang.GUI_PLAYER_PROFILE_DESC1.getTranslation(playerData.getBalance()),
                     Lang.GUI_PLAYER_PROFILE_DESC2.getTranslation(playerTown.getName()),
                     Lang.GUI_PLAYER_PROFILE_DESC3.getTranslation(playerTown.getRank(playerData.getTownRankID()).getName())
@@ -51,7 +51,7 @@ public class HeadUtils {
 
         }
         else {
-            addLore(head,
+            setLore(head,
                     Lang.GUI_PLAYER_PROFILE_DESC1.getTranslation(playerData.getBalance()),
                     Lang.GUI_PLAYER_PROFILE_NO_TOWN.getTranslation()
             );
@@ -175,14 +175,13 @@ public class HeadUtils {
         return item;
     }
 
-    public static ItemStack addLore(ItemStack itemStack, List<String> lore){
+    public static void setLore(ItemStack itemStack, List<String> lore){
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
-        return itemStack;
     }
 
-    public static void addLore(ItemStack itemStack, String... loreLines) {
+    public static void setLore(ItemStack itemStack, String... loreLines) {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         List<String> lore = Arrays.asList(loreLines);
@@ -223,7 +222,7 @@ public class HeadUtils {
                 break;
         }
 
-        addLore(
+        setLore(
                 skull,
                 Lang.GUI_TOWN_MEMBERS_CHANGE_ROLE_PRIORITY_DESC1.getTranslation()
         );
