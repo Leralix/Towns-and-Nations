@@ -1,6 +1,11 @@
 package org.tan.TownsAndNations;
 
 
+import net.milkbowl.vault.chat.Chat;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
+import net.milkbowl.vault.permission.Permission;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tan.TownsAndNations.API.TanAPI;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -23,6 +28,9 @@ public final class TownsAndNations extends JavaPlugin {
     private static TownsAndNations plugin;
     static Logger logger;
     private static TanAPI api;
+    private static Economy econ = null;
+    private static Permission perms = null;
+    private static Chat chat = null;
 
     @Override
     public void onEnable() {
@@ -67,11 +75,55 @@ public final class TownsAndNations extends JavaPlugin {
         EnableEventList();
         Objects.requireNonNull(getCommand("tan")).setExecutor(new CommandManager());
         Objects.requireNonNull(getCommand("tandebug")).setExecutor(new DebugCommandManager());
-        
+
+
+        logger.info("[TaN] -Initialising Vault API");
+        if (setupEconomy()) {
+            logger.info("[TaN] -Vault API successfully loaded");
+            setupPermissions();
+            logger.info("[TaN] test");
+
+            setupChat();
+        } else {
+            logger.info("[TaN] -Vault API not found");
+        }
+
+
         logger.info("[TaN] Plugin successfully loaded");
         getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
 
     }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
+
+    private boolean setupPermissions() {
+        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+        if(rsp == null){
+            return false;
+        }
+        perms = rsp.getProvider();
+        return perms != null;
+    }
+
+    private boolean setupChat() {
+        RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
+        if(rsp == null){
+            return false;
+        }
+        chat = rsp.getProvider();
+        return chat != null;
+    }
+
 
 
     @Override
