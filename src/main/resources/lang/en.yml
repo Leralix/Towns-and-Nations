@@ -184,6 +184,9 @@ language:
   GUI_TOWN_INFO_DESC4: "§fTreasury: §6{0}✦"
   GUI_TOWN_INFO_TOWN_RELATION: "§fCurrent relation with the town: §e{0}"
 
+  GUI_TOWN_INFO_IS_RECRUITING: "§fRecruiting: §aOpen"
+  GUI_TOWN_INFO_IS_NOT_RECRUITING: "§fRecruiting: §cClosed"
+
   GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN: "§fLeft click to apply to join town"
   GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL: "§cRight click to cancel your application"
 
@@ -384,6 +387,11 @@ language:
 
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT: "Enter the new town message"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS: "Successfully changed the town message"
+
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aModify town application"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fTown §aaccept §fapplication"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fTown §cdo not accept §fapplication"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH: "§fLeft click to switch"
 
   #Transaction history
   TRANSACTION_HISTORY: "§f[{0}] - §3{1} : §6+{2}✦"

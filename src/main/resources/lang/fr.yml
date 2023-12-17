@@ -177,6 +177,9 @@ language:
   GUI_TOWN_INFO_DESC4: "§fTrésorerie : §6{0}✦"
   GUI_TOWN_INFO_TOWN_RELATION: "§fRelation actuelle avec la ville : §e{0}"
 
+  GUI_TOWN_INFO_IS_RECRUITING: "§fRecrutement: §aOuvert"
+  GUI_TOWN_INFO_IS_NOT_RECRUITING: "§fRecrutement: §cFermé"
+
   GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN: "§fClic gauche pour demander a rejoindre la ville"
   GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL: "§cClic droit pour annuler la demande de rejoindre une ville"
 
@@ -371,6 +374,12 @@ language:
 
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT: "Ecrivez le nouveau message"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS: "Mise a jour du message de la ville avec succès"
+
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aModifier la politique de candidature"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fLa ville §aaccepte §fles candidatures"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fLa ville §cn'accepte pas §fles candidatures"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH: "§fClic gauche pour changer la candidature"
+
 
   #Historique des transactions
   TRANSACTION_HISTORY: "§f[{0}] - §e{1} : §a+{2}✦"

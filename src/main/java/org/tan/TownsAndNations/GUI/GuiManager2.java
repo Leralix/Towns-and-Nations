@@ -76,7 +76,7 @@ public class GuiManager2 {
                 OpenTownMenuHaveTown(player);
             }
             else{
-                openTownMenuNoTown(player);
+                OpenTownMenuNoTown(player);
             }
         });
         GuiItem Player = ItemBuilder.from(PlayerHead).asGuiItem(event -> {
@@ -95,7 +95,7 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-    public static void openProfileMenu(Player player){
+    public static void OpenProfileMenu(Player player){
         String name = "Profile";
         PlayerData playerStat = PlayerDataStorage.get(player);
 
@@ -145,7 +145,7 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-    public static void openTownMenuNoTown(Player player){
+    public static void OpenTownMenuNoTown(Player player){
 
 
         PlayerData playerStat = PlayerDataStorage.get(player);
@@ -237,6 +237,10 @@ public class GuiManager2 {
                     "",
                     description
             );
+            if(townData.isRecruiting())
+                HeadUtils.addLore(townIcon,Lang.GUI_TOWN_INFO_IS_RECRUITING.getTranslation());
+            else
+                HeadUtils.addLore(townIcon,Lang.GUI_TOWN_INFO_IS_NOT_RECRUITING.getTranslation());
 
             GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
@@ -1479,6 +1483,12 @@ public class GuiManager2 {
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1.getTranslation(playerTown.getDescription())
         );
 
+        ItemStack toggleApplication = HeadUtils.getCustomLoreItem(Material.PAPER,
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION.getTranslation(),
+                (playerTown.isRecruiting() ? Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT.getTranslation() : Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT.getTranslation()),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH.getTranslation()
+        );
+
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW,
                 Lang.GUI_BACK_ARROW.getTranslation());
 
@@ -1536,13 +1546,17 @@ public class GuiManager2 {
 
 
             player.closeInventory();
-
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.getTranslation());
-
-
             PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CHANGE_DESCRIPTION,player);
             event.setCancelled(true);
 
+        });
+
+        GuiItem _toggleApplication = ItemBuilder.from(toggleApplication).asGuiItem(event -> {
+
+            playerTown.swapRecruiting();
+            OpenTownSettings(player);
+            event.setCancelled(true);
         });
 
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
@@ -1556,6 +1570,7 @@ public class GuiManager2 {
         gui.setItem(11, _deleteTown);
         gui.setItem(12, _changeOwnershipTown);
         gui.setItem(13, _changeMessage);
+        gui.setItem(14, _toggleApplication);
 
         gui.setItem(18, _getBackArrow);
 

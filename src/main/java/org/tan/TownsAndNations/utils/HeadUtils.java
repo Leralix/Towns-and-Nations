@@ -188,7 +188,19 @@ public class HeadUtils {
         itemMeta.setLore(lore);
 
         itemStack.setItemMeta(itemMeta);
+    }
 
+    public static void addLore(ItemStack itemStack, String... loreLines) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        List<String> lore = itemMeta.getLore();
+        if(lore == null){
+            lore = new ArrayList<>();
+        }
+        lore.addAll(Arrays.asList(loreLines));
+        itemMeta.setLore(lore);
+
+        itemStack.setItemMeta(itemMeta);
     }
 
     public static ItemStack getRankLevelColor(int level){

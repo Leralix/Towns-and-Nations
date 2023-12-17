@@ -19,7 +19,6 @@ public class TownData {
     private final HashMap<String,TownRank> roles;
     private String townDefaultRank;
     private String Description;
-    public boolean open;
     public String DateCreated;
     private String townIconMaterialCode;
     private final HashSet<String> townPlayerListId = new HashSet<>();
@@ -38,7 +37,6 @@ public class TownData {
         this.UuidLeader = uuidLeader;
         this.TownName = townName;
         this.Description = "Description par défaut";
-        this.open = false;
         this.DateCreated = new Date().toString();
         this.townIconMaterialCode = null;
         this.PlayerJoinRequestSet= new HashSet<>();
@@ -100,12 +98,7 @@ public class TownData {
         this.Description = description;
     }
 
-    public boolean isOpen() {
-        return this.open;
-    }
-    public void setOpen(boolean openValue) {
-        this.open = openValue;
-    }
+
 
     public String getDateCreated() {
         return this.DateCreated;
@@ -276,6 +269,7 @@ public class TownData {
     }
 
     public void swapRecruiting() {
+        System.out.println("test");
         this.isRecruiting = !this.isRecruiting;
     }
 
