@@ -60,13 +60,13 @@ public class AcceptRelationCommand extends SubCommand {
                 TownRelationConfirmStorage.removeInvitation(player.getUniqueId().toString(), otherTown.getID());
 
                 if(newRelation == null){
-                    town.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),"neutral"));
-                    otherTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(town.getName(),"neutral"));
+                    town.broadCastMessage(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),"neutral"));
+                    otherTown.broadCastMessage(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(town.getName(),"neutral"));
                     removeRelation(town,otherTown);
                 }
                 else {
-                    town.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),newRelation.getColor() + newRelation.getName()));
-                    otherTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(town.getName(),newRelation.getColor() + newRelation.getName()));
+                    town.broadCastMessage(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),newRelation.getColor() + newRelation.getName()));
+                    otherTown.broadCastMessage(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(town.getName(),newRelation.getColor() + newRelation.getName()));
 
                     addTownRelation(town,otherTown,newRelation);
                 }

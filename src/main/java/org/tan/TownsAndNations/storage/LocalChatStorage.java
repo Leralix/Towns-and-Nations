@@ -9,6 +9,8 @@ import org.tan.TownsAndNations.enums.TownRelation;
 
 import java.util.HashMap;
 
+import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
+
 public class LocalChatStorage {
 
 
@@ -58,16 +60,16 @@ public class LocalChatStorage {
         if(scope == ChatScope.CITY){
             TownData townData = TownDataStorage.get(playerData.getTownId());
 
-            townData.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.getTranslation(townData.getName(),player.getName(),message));
+            townData.broadCastMessage(getTANString() + Lang.CHAT_SCOPE_TOWN_MESSAGE.getTranslation(townData.getName(),player.getName(),message));
         }
 
         else if(scope == ChatScope.ALLIANCE){
             TownData playerTown = TownDataStorage.get(playerData.getTownId());
 
-            playerTown.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.getTranslation(playerTown.getName(),player.getName(),message));
+            playerTown.broadCastMessage(getTANString() + Lang.CHAT_SCOPE_TOWN_MESSAGE.getTranslation(playerTown.getName(),player.getName(),message));
 
             playerTown.getRelations().getOne(TownRelation.ALLIANCE).forEach(townID -> {
-                TownDataStorage.get(townID).broadCastMessage(Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.getTranslation(playerTown.getName(),player.getName(),message));
+                TownDataStorage.get(townID).broadCastMessage(getTANString() + Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.getTranslation(playerTown.getName(),player.getName(),message));
             }
             );
 

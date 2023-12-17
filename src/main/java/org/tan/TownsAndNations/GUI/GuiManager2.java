@@ -599,7 +599,7 @@ public class GuiManager2 {
                     if(playerIterateOnline != null){
                         playerIterateOnline.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.getTranslation(town.getName()));
                     }
-                    town.broadCastMessage(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.getTranslation(player.getName()));
+                    town.broadCastMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.getTranslation(player.getName()));
 
                     TeamUtils.updateColor();
 
@@ -1872,8 +1872,8 @@ public class GuiManager2 {
                         player.closeInventory();
                     }
                     else{
-                        playerTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),relation.getColor() + relation.getName()));
-                        otherTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(playerTown.getName(),relation.getColor() + relation.getName()));
+                        playerTown.broadCastMessage(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),relation.getColor() + relation.getName()));
+                        otherTown.broadCastMessage(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(playerTown.getName(),relation.getColor() + relation.getName()));
                         addTownRelation(playerTown,otherTown,relation);
                         OpenTownRelation(player,relation);
                     }
@@ -1907,8 +1907,8 @@ public class GuiManager2 {
                         player.closeInventory();
                     }
                     else{
-                        playerTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),"neutral"));
-                        otherTown.broadCastMessage(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(playerTown.getName(),"neutral"));
+                        playerTown.broadCastMessage(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),"neutral"));
+                        otherTown.broadCastMessage(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(playerTown.getName(),"neutral"));
                         removeRelation(playerTown,otherTown,relation);
                         OpenTownRelation(player,relation);
                     }

@@ -12,6 +12,8 @@ import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
 
+import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
+
 public class PlayerEnterChunkListener implements Listener {
 
     @EventHandler
@@ -62,7 +64,7 @@ public class PlayerEnterChunkListener implements Listener {
                     Lang.CHUNK_ENTER_TOWN_AT_WAR.getTranslation()
             );
 
-            townTo.broadCastMessage(ChatUtils.getTANString() +
+            townTo.broadCastMessage(getTANString() + ChatUtils.getTANString() +
                     Lang.CHUNK_INTRUSION_ALERT.getTranslation(TownDataStorage.get(player).getName(),player.getName())
             );
         }
