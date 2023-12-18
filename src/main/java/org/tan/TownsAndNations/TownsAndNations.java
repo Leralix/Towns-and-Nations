@@ -45,11 +45,7 @@ public final class TownsAndNations extends JavaPlugin {
         logger.info("[TaN] -Loading Lang");
         ConfigUtil.saveResource("lang.yml");
         ConfigUtil.loadCustomConfig("lang.yml");
-
-        String lang = ConfigUtil.getCustomConfig("lang.yml").getString("language");
-        logger.info(lang);
-        Lang.loadTranslations(lang);
-        logger.info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.getTranslation());
+        Lang.loadTranslations(ConfigUtil.getCustomConfig("lang.yml").getString("language"));
 
 
         logger.info("[TaN] -Loading Configs");
