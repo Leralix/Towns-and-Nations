@@ -2,6 +2,7 @@ package org.tan.TownsAndNations.commands.subcommands;
 
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 
@@ -34,6 +35,10 @@ public class SeeBalanceCommand extends SubCommand  {
 
     @Override
     public void perform(Player player, String[] args){
+        if(TownsAndNations.hasEconomy()){
+            player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.getTranslation());
+            return;
+        }
         if (args.length == 1){
             player.sendMessage(getTANString() + Lang.BAL_AMOUNT.getTranslation(PlayerDataStorage.get(player).getBalance()));
 

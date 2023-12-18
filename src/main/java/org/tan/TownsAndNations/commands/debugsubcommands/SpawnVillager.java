@@ -3,6 +3,7 @@ package org.tan.TownsAndNations.commands.debugsubcommands;
 
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.CustomVillagerProfession;
 import org.tan.TownsAndNations.utils.ChatUtils;
@@ -10,6 +11,8 @@ import org.tan.TownsAndNations.utils.VillagerUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 public class SpawnVillager extends SubCommand {
 
@@ -43,6 +46,11 @@ public class SpawnVillager extends SubCommand {
     }
     @Override
     public void perform(Player player, String[] args) {
+
+        if(TownsAndNations.hasEconomy()){
+            player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.getTranslation());
+        }
+
         switch (args[1]) {
             case "goldsmith" -> {
                 VillagerUtil.createCustomVillager(player, CustomVillagerProfession.GOLDSMITH);

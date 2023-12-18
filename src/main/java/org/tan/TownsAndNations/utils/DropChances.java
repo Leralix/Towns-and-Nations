@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.TownsAndNations.DataClass.RareItem;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.TownsAndNations;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,8 +19,14 @@ public class DropChances {
 
     public static void load(){
 
+
         FileConfiguration config = ConfigUtil.getCustomConfig("config.yml");
 
+        if(!config.getBoolean("RARE_RESOURCES_SPAWN")){
+            TownsAndNations.getPluginLogger().info("Rare item drops are disabled in the config");
+            return;
+        }
+        TownsAndNations.getPluginLogger().info("Rare item drops are enable in the config");
         loadDropChances("rareStone", config, getRareStone());
         loadDropChances("rareWood", config, getRareWood());
         loadDropChances("rareCrops", config, getRareCrops());

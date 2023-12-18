@@ -15,9 +15,12 @@ import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.TownUtil;
 
 import java.time.LocalDate;
 import java.util.*;
+
+import static org.tan.TownsAndNations.utils.TownUtil.DonateToTown;
 
 
 public class ChatListener implements Listener {
@@ -33,47 +36,12 @@ public class ChatListener implements Listener {
             return;
 
 
-        //Listener: Player create his city
         if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.CREATE_CITY){
 
             int townPrice = Integer.parseInt(chatData.getData().get("town cost"));
-            PlayerData playerData = PlayerDataStorage.get(player);
-            assert playerData != null;
-            if(playerData.getBalance() < townPrice){
-                player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.getTranslation(townPrice - playerData.getBalance()));
-                PlayerChatListenerStorage.removePlayer(player);
-                return;
-            }
-
             String townName = event.getMessage();
 
-            FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
-            int maxSize = config.getInt("TownNameSize");
-            if(townName.length() > maxSize){
-                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.getTranslation(maxSize));
-                event.setCancelled(true);
-            }
-
-
-            Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.getTranslation(player.getName(),townName));
-
-            PlayerChatListenerStorage.removePlayer(player);
-            PlayerData sender = PlayerDataStorage.get(player.getUniqueId().toString());
-
-
-            assert sender != null;
-            sender.removeFromBalance(townPrice);
-            TownDataStorage.newTown(townName,player);
-            sender.setRank(TownDataStorage.get(sender).getTownDefaultRank());
-
-
-            for (TownData otherTown : TownDataStorage.getTownList().values()) {
-                if(otherTown == TownDataStorage.get(townName)){
-                    continue;
-                }
-                TownInviteDataStorage.removeInvitation(player.getUniqueId().toString(),otherTown.getID());
-            }
-
+            TownUtil.CreateTown(player, townPrice, townName);
 
             event.setCancelled(true);
         }
@@ -81,33 +49,15 @@ public class ChatListener implements Listener {
         if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.DONATION){
 
             String stringAmount = event.getMessage();
-            PlayerData sender = PlayerDataStorage.get(player.getUniqueId().toString());
+
             int amount;
-            try {
-                amount = Integer.parseInt(stringAmount);
-            } catch (NumberFormatException e) {
+            try {amount = Integer.parseInt(stringAmount);}
+            catch (NumberFormatException e) {
                 player.sendMessage(ChatUtils.getTANString() + Lang.PAY_INVALID_SYNTAX.getTranslation());
                 throw new RuntimeException(e);
             }
-            assert sender != null;
-            if(sender.getBalance() < amount ){
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.getTranslation());
-                event.setCancelled(true);
-                return;
-            }
-            if(amount <= 0 ){
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NEED_1_OR_ABOVE.getTranslation());
-                event.setCancelled(true);
-                return;
-            }
-            TownData playerTown = TownDataStorage.get(player);
 
-            sender.removeFromBalance(amount);
-            playerTown.getTreasury().addToBalance(amount);
-
-            playerTown.getTreasury().addDonation(player.getName(),playerUUID,amount);
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_TOWN.getTranslation(amount));
-            PlayerChatListenerStorage.removePlayer(player);
+            DonateToTown(player, amount);
 
             event.setCancelled(true);
         }

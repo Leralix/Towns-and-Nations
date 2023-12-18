@@ -38,7 +38,7 @@ public final class TownsAndNations extends JavaPlugin {
         plugin = this;
         logger = this.getLogger();
         getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
-        getLogger().info("To report a bug, please ask on my discord server: https://discord.gg/Q8gZSFUuzb");
+        getLogger().info("To report a bug or request a feature, please ask on my discord server: https://discord.gg/Q8gZSFUuzb");
 
         logger.info("[TaN] Loading Plugin");
 
@@ -170,7 +170,13 @@ public final class TownsAndNations extends JavaPlugin {
         return api;
     }
 
+    public static Economy getEconomy() {
+        return econ;
+    }
 
+    public static boolean hasEconomy(){
+        return econ != null;
+    }
 
 
 }

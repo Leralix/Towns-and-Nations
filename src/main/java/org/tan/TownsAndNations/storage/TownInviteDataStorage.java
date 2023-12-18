@@ -1,5 +1,7 @@
 package org.tan.TownsAndNations.storage;
 
+import org.bukkit.entity.Player;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +27,9 @@ public class TownInviteDataStorage {
         if(townInviteList.containsKey(playerUUID)){
             townInviteList.get(playerUUID).remove(townId);
         }
+    }
+    public static void removeInvitation(Player player, String townId){
+        removeInvitation(player.getUniqueId().toString(),townId);
     }
 
     public static List<String> checkInvitation(String playerUUID){

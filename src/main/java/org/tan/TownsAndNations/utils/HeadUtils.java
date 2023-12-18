@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
+
 public class HeadUtils {
 
 
@@ -40,11 +42,10 @@ public class HeadUtils {
         PlayerData playerData = PlayerDataStorage.get(p);
         TownData playerTown = TownDataStorage.get(playerData);
 
-        String townName;
-        String playerTownRank;
+
         if(playerTown != null){
             setLore(head,
-                    Lang.GUI_PLAYER_PROFILE_DESC1.getTranslation(playerData.getBalance()),
+                    Lang.GUI_PLAYER_PROFILE_DESC1.getTranslation(getBalance(p)),
                     Lang.GUI_PLAYER_PROFILE_DESC2.getTranslation(playerTown.getName()),
                     Lang.GUI_PLAYER_PROFILE_DESC3.getTranslation(playerTown.getRank(playerData.getTownRankID()).getName())
             );

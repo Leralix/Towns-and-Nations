@@ -29,6 +29,8 @@ language:
   CORRECT_SYNTAX_INFO: "§cCorrect syntax: {0}"
   MESSAGE_TOO_LONG: "§cMessage is too long: {0} max"
 
+  ECONOMY_EXISTS: "§cAn economy plugin is handling the economy. Use it instead"
+
 
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f ask to join the town. You can find his application in the members menu"

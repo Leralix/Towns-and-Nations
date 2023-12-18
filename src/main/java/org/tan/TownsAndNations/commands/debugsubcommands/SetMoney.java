@@ -3,11 +3,15 @@ package org.tan.TownsAndNations.commands.debugsubcommands;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 public class SetMoney extends SubCommand {
 
@@ -44,6 +48,12 @@ public class SetMoney extends SubCommand {
     }
     @Override
     public void perform(Player player, String[] args) {
+
+        if(TownsAndNations.hasEconomy()){
+            player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.getTranslation());
+            return;
+        }
+
         if (args.length < 3) {
             player.sendMessage("Not enough arguments");
         } else if (args.length == 3) {

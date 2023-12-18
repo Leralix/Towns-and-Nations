@@ -6,7 +6,7 @@ CostOfCreatingTown: 1000
 #The cost of a chunk to claim
 CostOfChunk: 0
 
-#The cost of upkeeping 10 chunks
+#The cost of upkeeping 10 chunks (not implemented yet)
 ChunkUpkeepCost: 0
 
 #Town Levels (town level cost are in the townLevelUpRequirement.yml file)
@@ -26,6 +26,9 @@ RankNameSize: 25
 TownDescSize: 50
 
 
+#Rare items, used for the economy when no economy plugin is added to the server
+##You can disable rare Item dropping with RAREITEMSPAWN: FALSE
+RARE_RESOURCES_SPAWN: true
 
 #The stat of getting a rare Stone, used to get money
 # (20 = 20% drop chance when breaking this block without a silk touch pick)

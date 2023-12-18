@@ -20,7 +20,6 @@ public class DebugCommandManager implements CommandExecutor, TabExecutor, TabCom
         subCommands.add(new SpawnVillager());
         subCommands.add(new getRareItem());
 
-        subCommands.add(new AddNewFeatures());
         subCommands.add(new ChatStorage());
         subCommands.add(new SaveAll());
         subCommands.add(new CreateBackup());

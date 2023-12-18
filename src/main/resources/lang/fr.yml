@@ -27,6 +27,8 @@ language:
   CORRECT_SYNTAX_INFO: "§cSyntaxe correcte : {0}"
   MESSAGE_TOO_LONG: "§cLe message est trop long ({0} max)"
 
+  ECONOMY_EXISTS: "§cUn plugin externe gère l'économie. Utiliser les commandes de ce plugin pour gérer l'argent"
+
 
   #Demande de rejoindre une ville
   PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f a demandé de rejoindre la ville. Vous pouvez retrouver sa candidature dans le menu des membres"
