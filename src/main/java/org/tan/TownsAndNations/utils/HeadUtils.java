@@ -53,15 +53,10 @@ public class HeadUtils {
         }
         else {
             setLore(head,
-                    Lang.GUI_PLAYER_PROFILE_DESC1.getTranslation(playerData.getBalance()),
+                    Lang.GUI_PLAYER_PROFILE_DESC1.getTranslation(EconomyUtil.getBalance(p)),
                     Lang.GUI_PLAYER_PROFILE_NO_TOWN.getTranslation()
             );
         }
-
-
-
-
-
 
         return head;
     }

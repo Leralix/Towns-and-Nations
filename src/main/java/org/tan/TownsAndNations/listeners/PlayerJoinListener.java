@@ -1,13 +1,11 @@
 package org.tan.TownsAndNations.listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.Lang.Lang;
-import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
@@ -22,9 +20,7 @@ public class PlayerJoinListener implements Listener {
         Player player = event.getPlayer();
 
 
-        if (PlayerDataStorage.get(player) == null) {
-            PlayerDataStorage.createPlayerDataClass(player);
-        }
+        PlayerDataStorage.get(player);
 
 
         PlayerData playerStat = PlayerDataStorage.get(player);
@@ -35,7 +31,7 @@ public class PlayerJoinListener implements Listener {
             if(!TownDataStorage.get(playerStat).getPlayerJoinRequestSet().isEmpty()  && playerStat.hasPermission(TownRolePermission.INVITE_PLAYER)){
                 player.sendMessage(
                         Lang.NEWSLETTER_STRING.getTranslation() +
-                                Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.getTranslation(TownDataStorage.get(playerStat).getPlayerJoinRequestSet().size())
+                        Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.getTranslation(TownDataStorage.get(playerStat).getPlayerJoinRequestSet().size())
                 );
             }
         }

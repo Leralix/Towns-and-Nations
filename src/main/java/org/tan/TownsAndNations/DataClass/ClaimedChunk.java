@@ -5,14 +5,8 @@ import org.bukkit.Chunk;
 import java.util.Objects;
 
 public class ClaimedChunk {
-    private final int x;
-    private final int z;
-    private final String worldUUID;
-    private final String townUUID;
-
-    public ClaimedChunk(Chunk chunk) {
-        this(chunk, null);
-    }
+    private final int x, z;
+    private final String worldUUID, townUUID;
 
     public ClaimedChunk(Chunk chunk, String owner) {
         this.x = chunk.getX();

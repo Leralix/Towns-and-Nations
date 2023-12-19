@@ -66,6 +66,10 @@ language:
   TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fYou are now a member of the town: §3{0}"
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f has joined the town !"
 
+  # Relation diplomatique
+  TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§cYou already have a relation with this town"
+  TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Invitation sent to §e{0}"
+
   #Diplomatic relation confirmation
   TOWN_DIPLOMATIC_INVITATION_RECEIVED_1: "The town §9{0}§f wants to change their diplomatic status to: §3{1}"
   TOWN_DIPLOMATIC_INVITATION_RECEIVED_2: "§l§2To accept, click here"
@@ -118,6 +122,7 @@ language:
 
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cYou do not have enough money to perform this action"
+  LEADER_NOT_ONLINE: "§cThe town leader is not online"
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cYou do not have enough money. You need {0} more"
   PLAYER_NEED_1_OR_ABOVE: "§fYou need at least §61✦"
 

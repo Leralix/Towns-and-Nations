@@ -10,10 +10,13 @@ import java.util.Objects;
 public class EconomyUtil {
 
 
-    public static int getBalance(Player player){
 
-        if(TownsAndNations.hasEconomy())
+
+    public static int getBalance(Player player){
+        if(TownsAndNations.hasEconomy()){
             return (int)TownsAndNations.getEconomy().getBalance(player);
+        }
+
         else
             return Objects.requireNonNull(PlayerDataStorage.get(player)).getBalance();
     }

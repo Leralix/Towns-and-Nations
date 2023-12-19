@@ -1,6 +1,8 @@
 package org.tan.TownsAndNations.Tasks;
 
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
@@ -12,9 +14,11 @@ import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ArchiveUtil;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.EconomyUtil;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.UUID;
 
 public class DailyTasks {
 
@@ -41,14 +45,15 @@ public class DailyTasks {
 
 
         for (PlayerData playerStat : PlayerDataStorage.getStats()){
+            Player player = Bukkit.getPlayer(UUID.fromString(playerStat.getUuid()));
 
             if (!playerStat.haveTown()) continue;
             TownData playerTown = TownDataStorage.get(playerStat);
             if (!playerTown.getRank(playerStat.getTownRankID()).isPayingTaxes()) continue;
             int tax = playerTown.getTreasury().getFlatTax();
 
-            if(playerStat.getBalance() > tax){
-                playerStat.removeFromBalance(tax);
+            if(EconomyUtil.getBalance(player) > tax){
+                EconomyUtil.removeFromBalance(player,tax);
                 playerTown.getTreasury().addToBalance(tax);
                 playerTown.getTreasury().addTaxHistory(playerStat.getName(), playerStat.getUuid(), tax);
                 TownsAndNations.getPluginLogger().info(playerStat.getName() + " has paid " + tax + "$ to the town " + playerTown.getName());

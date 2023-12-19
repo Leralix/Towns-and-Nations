@@ -15,11 +15,10 @@ import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.*;
 import org.tan.TownsAndNations.storage.*;
-import org.tan.TownsAndNations.utils.ChatUtils;
-import org.tan.TownsAndNations.utils.ConfigUtil;
-import org.tan.TownsAndNations.utils.HeadUtils;
-import org.tan.TownsAndNations.utils.TeamUtils;
+import org.tan.TownsAndNations.utils.*;
 
+import static org.tan.TownsAndNations.enums.MessageKey.RANK_NAME;
+import static org.tan.TownsAndNations.enums.MessageKey.TOWN_COST;
 import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.ChatCategory.RANK_CREATION;
 import static org.tan.TownsAndNations.storage.TownDataStorage.getTownList;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
@@ -36,9 +35,6 @@ public class GuiManager2 {
     //done
     public static void OpenMainMenu(Player player){
 
-        if(PlayerDataStorage.get(player) == null){
-            PlayerDataStorage.createPlayerDataClass(player);
-        }
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         boolean playerHaveTown = playerStat.getTownId() != null;
@@ -64,11 +60,11 @@ public class GuiManager2 {
 
         GuiItem Kingdom = ItemBuilder.from(KingdomHead).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage(Lang.GUI_WARNING_STILL_IN_DEV.getTranslation());
+            player.sendMessage(getTANString() + Lang.GUI_WARNING_STILL_IN_DEV.getTranslation());
         });
         GuiItem Region = ItemBuilder.from(RegionHead).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage(Lang.GUI_WARNING_STILL_IN_DEV.getTranslation());
+            player.sendMessage(getTANString() + Lang.GUI_WARNING_STILL_IN_DEV.getTranslation());
         });
         GuiItem Town = ItemBuilder.from(TownHead).asGuiItem(event -> {
             event.setCancelled(true);
@@ -79,9 +75,7 @@ public class GuiManager2 {
                 OpenTownMenuNoTown(player);
             }
         });
-        GuiItem Player = ItemBuilder.from(PlayerHead).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
+        GuiItem Player = ItemBuilder.from(PlayerHead).asGuiItem(event -> event.setCancelled(true));
         GuiItem Back = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
             player.closeInventory();
@@ -109,28 +103,18 @@ public class GuiManager2 {
 
 
         ItemStack PlayerHead = HeadUtils.getPlayerHead(Lang.GUI_YOUR_PROFILE.getTranslation(),player);
-        ItemStack GoldPurse = HeadUtils.getCustomLoreItem(Material.GOLD_NUGGET, Lang.GUI_YOUR_BALANCE.getTranslation(),Lang.GUI_YOUR_BALANCE_DESC1.getTranslation(playerStat.getBalance()));
+        ItemStack GoldPurse = HeadUtils.getCustomLoreItem(Material.GOLD_NUGGET, Lang.GUI_YOUR_BALANCE.getTranslation(),Lang.GUI_YOUR_BALANCE_DESC1.getTranslation(EconomyUtil.getBalance(player)));
         ItemStack killList = HeadUtils.getCustomLoreItem(Material.IRON_SWORD, Lang.GUI_YOUR_PVE_KILLS.getTranslation(),Lang.GUI_YOUR_PVE_KILLS_DESC1.getTranslation(player.getStatistic(Statistic.MOB_KILLS)));
         int time = player.getStatistic(Statistic.PLAY_ONE_MINUTE) /20 / 86400;
         ItemStack lastDeath = HeadUtils.getCustomLoreItem(Material.SKELETON_SKULL, Lang.GUI_YOUR_CURRENT_TIME_ALIVE.getTranslation(),Lang.GUI_YOUR_CURRENT_TIME_ALIVE_DESC1.getTranslation(time));
         ItemStack totalRpKills = HeadUtils.getCustomLoreItem(Material.SKELETON_SKULL, Lang.GUI_YOUR_CURRENT_MURDER.getTranslation(),Lang.GUI_YOUR_CURRENT_MURDER_DESC1.getTranslation("0"));
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
-        GuiItem Head = ItemBuilder.from(PlayerHead).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
-        GuiItem Gold = ItemBuilder.from(GoldPurse).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
-        GuiItem Kill = ItemBuilder.from(killList).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
-        GuiItem LD = ItemBuilder.from(lastDeath).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
-        GuiItem RPkill = ItemBuilder.from(totalRpKills).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
+        GuiItem Head = ItemBuilder.from(PlayerHead).asGuiItem(event -> event.setCancelled(true));
+        GuiItem Gold = ItemBuilder.from(GoldPurse).asGuiItem(event -> event.setCancelled(true));
+        GuiItem Kill = ItemBuilder.from(killList).asGuiItem(event -> event.setCancelled(true));
+        GuiItem LD = ItemBuilder.from(lastDeath).asGuiItem(event -> event.setCancelled(true));
+        GuiItem RPkill = ItemBuilder.from(totalRpKills).asGuiItem(event -> event.setCancelled(true));
         GuiItem Back = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
             OpenMainMenu(player);
@@ -168,20 +152,22 @@ public class GuiManager2 {
         ItemStack joinLand = HeadUtils.getCustomLoreItem(Material.ANVIL, Lang.GUI_NO_TOWN_JOIN_A_TOWN.getTranslation(),Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.getTranslation(TownDataStorage.getNumberOfTown()));
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
+
+        int playerMoney = EconomyUtil.getBalance(player);
+
         GuiItem _create = ItemBuilder.from(createNewLand).asGuiItem(event -> {
             event.setCancelled(true);
-            assert playerStat != null;
-                if (playerStat.getBalance() < townPrice) {
-                    player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.getTranslation(townPrice - playerStat.getBalance()));
-                } else {
-                    player.sendMessage(Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.getTranslation());
-                    player.closeInventory();
+            if (playerMoney < townPrice) {
+                player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.getTranslation(townPrice - playerMoney));
+            } else {
+                player.sendMessage(getTANString() + Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.getTranslation());
+                player.closeInventory();
 
-                    Map<String,String> data = new HashMap<>();
-                    data.put("town cost", String.valueOf(townPrice));
+                Map<MessageKey,String> data = new HashMap<>();
+                data.put(TOWN_COST, String.valueOf(townPrice));
 
-                    PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CREATE_CITY,player,data);
-                }
+                PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CREATE_CITY,player,data);
+            }
         });
 
         GuiItem _join = ItemBuilder.from(joinLand).asGuiItem(event -> {
@@ -439,11 +425,7 @@ public class GuiManager2 {
                     Lang.GUI_TOWN_INFO_TOWN_RELATION.getTranslation(relationName)
             );
 
-            GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> {
-
-
-                event.setCancelled(true);
-            });
+            GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
 
             gui.setItem(i, _townIteration);
             i++;
@@ -479,12 +461,13 @@ public class GuiManager2 {
 
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
             PlayerData otherPlayerStat = PlayerDataStorage.get(playerUUID);
+            assert otherPlayerStat != null;
 
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate.getName(),playerIterate);
             HeadUtils.setLore(
                     playerHead,
                     Lang.GUI_TOWN_MEMBER_DESC1.getTranslation(otherPlayerStat.getTownRankID()),
-                    Lang.GUI_TOWN_MEMBER_DESC2.getTranslation(otherPlayerStat.getBalance()),
+                    Lang.GUI_TOWN_MEMBER_DESC2.getTranslation(EconomyUtil.getBalance(playerIterate.getPlayer())),
                     Lang.GUI_TOWN_MEMBER_DESC3.getTranslation()
             );
             GuiItem _playerIcon = ItemBuilder.from(playerHead).asGuiItem(event -> {
@@ -505,7 +488,7 @@ public class GuiManager2 {
                     otherPlayerStat.leaveTown();
                     town.broadCastMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.getTranslation(playerIterate.getName()));
                     if(playerIterate.isOnline())
-                        playerIterate.getPlayer().sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.getTranslation());
+                        Objects.requireNonNull(playerIterate.getPlayer()).sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.getTranslation());
                 }
                 OpenTownMemberList(player);
             });
@@ -567,6 +550,7 @@ public class GuiManager2 {
 
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
             PlayerData playerIterateData = PlayerDataStorage.get(playerUUID);
+            assert playerIterateData != null;
 
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate.getName(),playerIterate);
 
@@ -617,6 +601,7 @@ public class GuiManager2 {
                         player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
                         return;
                     }
+
                     town.removePlayerJoinRequest(playerIterateData.getUuid());
                     player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.getTranslation());
                 }
@@ -680,11 +665,11 @@ public class GuiManager2 {
 
             if(playerStat.hasPermission(TownRolePermission.CREATE_RANK)){
                 if(town.getNumberOfRank() >= 8){
-                    player.sendMessage(Lang.TOWN_RANK_CAP_REACHED.getTranslation());
+                    player.sendMessage(getTANString() + Lang.TOWN_RANK_CAP_REACHED.getTranslation());
                     return;
                 }
 
-                player.sendMessage(Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.getTranslation());
+                player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.getTranslation());
                 player.closeInventory();
                 PlayerChatListenerStorage.addPlayer(RANK_CREATION,player);
             }
@@ -717,7 +702,7 @@ public class GuiManager2 {
                 .create();
 
 
-        TownData town = TownDataStorage.get(PlayerDataStorage.get(player.getUniqueId().toString()).getTownId());
+        TownData town = TownDataStorage.get(player);
         TownRank townRank = town.getRank(roleName);
 
         boolean isDefaultRank;
@@ -738,6 +723,7 @@ public class GuiManager2 {
         playerNames.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1.getTranslation());
         for (String playerUUID : townRank.getPlayers()) {
             PlayerData playerData = PlayerDataStorage.get(playerUUID);
+            assert playerData != null;
             String playerName = playerData.getName();
             playerNames.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC.getTranslation(playerName));
         }
@@ -812,8 +798,8 @@ public class GuiManager2 {
             player.closeInventory();
             player.sendMessage(ChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.getTranslation());
 
-            HashMap<String, String> newMap = new HashMap<>();
-            newMap.put("rankName",roleName);
+            HashMap<MessageKey, String> newMap = new HashMap<>();
+            newMap.put(RANK_NAME,roleName);
             PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.RANK_RENAME,player,newMap);
             event.setCancelled(true);
         });
@@ -877,11 +863,10 @@ public class GuiManager2 {
                 .create();
 
 
-        TownData town = TownDataStorage.get(PlayerDataStorage.get(player.getUniqueId().toString()).getTownId());
+        TownData town = TownDataStorage.get(player);
         TownRank townRank = town.getRank(roleName);
         int i = 0;
 
-        // this is the label for the outer loop
         for (String playerUUID : town.getPlayerList()) {
             boolean skip = false;
 
@@ -901,6 +886,7 @@ public class GuiManager2 {
                 event.setCancelled(true);
 
                 PlayerData playerStat = PlayerDataStorage.get(playerUUID);
+                assert playerStat != null;
                 town.getRank(playerStat.getTownRankID()).removePlayer(playerUUID);
                 playerStat.setRank(roleName);
                 townRank.addPlayer(playerUUID);
@@ -940,7 +926,7 @@ public class GuiManager2 {
                 .create();
 
 
-        TownData town = TownDataStorage.get(PlayerDataStorage.get(player.getUniqueId().toString()).getTownId());
+        TownData town = TownDataStorage.get(player);
         TownRank townRank = town.getRank(roleName);
 
 
@@ -1086,12 +1072,12 @@ public class GuiManager2 {
         int nextTaxes = 0;
 
         for (String playerID : town.getPlayerList()){
-            PlayerData otherPlayer = PlayerDataStorage.get(playerID);
-
-            if(!otherPlayer.getTownRank().isPayingTaxes()){
+            PlayerData otherPlayerData = PlayerDataStorage.get(playerID);assert otherPlayerData != null;
+            Player otherPlayer = Bukkit.getPlayer(UUID.fromString(playerID));
+            if(!otherPlayerData.getTownRank().isPayingTaxes()){
                 continue;
             }
-            if(otherPlayer.getBalance() < town.getTreasury().getFlatTax()){
+            if(EconomyUtil.getBalance(otherPlayer) < town.getTreasury().getFlatTax()){
                 continue;
             }
             nextTaxes = nextTaxes + town.getTreasury().getFlatTax();
@@ -1117,12 +1103,8 @@ public class GuiManager2 {
         HeadUtils.setLore(donation, Lang.GUI_TREASURY_DONATION_DESC1.getTranslation());
         HeadUtils.setLore(donationHistory, town.getTreasury().getDonationLimitedHistory(5));
 
-        GuiItem _goldInfo = ItemBuilder.from(goldIcon).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
-        GuiItem _goldSpendingIcon = ItemBuilder.from(goldSpendingIcon).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
+        GuiItem _goldInfo = ItemBuilder.from(goldIcon).asGuiItem(event -> event.setCancelled(true));
+        GuiItem _goldSpendingIcon = ItemBuilder.from(goldSpendingIcon).asGuiItem(event -> event.setCancelled(true));
         GuiItem _taxHistory = ItemBuilder.from(taxHistory).asGuiItem(event -> {
             OpenTownEconomicsHistory(player,HistoryEnum.TAX);
             event.setCancelled(true);
@@ -1136,9 +1118,7 @@ public class GuiManager2 {
 
             event.setCancelled(true);
         });
-        GuiItem _workbenchSpending = ItemBuilder.from(workbenchSpending).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
+        GuiItem _workbenchSpending = ItemBuilder.from(workbenchSpending).asGuiItem(event -> event.setCancelled(true));
         GuiItem _donation = ItemBuilder.from(donation).asGuiItem(event -> {
             player.sendMessage(ChatUtils.getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_TOWN_DONATION.getTranslation());
             PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.DONATION,player);
@@ -1181,9 +1161,7 @@ public class GuiManager2 {
             OpenTownEconomics(player);
         });
 
-        GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE)).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
+        GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
 
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1249,9 +1227,7 @@ public class GuiManager2 {
                             Lang.DONATION_SINGLE_LINE_2.getTranslation(donation.getDate())
                     );
 
-                    GuiItem _transactionIcon = ItemBuilder.from(transactionIcon).asGuiItem(event -> {
-                        event.setCancelled(true);
-                    });
+                    GuiItem _transactionIcon = ItemBuilder.from(transactionIcon).asGuiItem(event -> event.setCancelled(true));
 
                     gui.setItem(i,_transactionIcon);
                     i = i + 1;
@@ -1285,9 +1261,7 @@ public class GuiManager2 {
 
                     HeadUtils.setLore(transactionHistoryItem,lines);
 
-                    GuiItem _transactionHistoryItem = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> {
-                        event.setCancelled(true);
-                    });
+                    GuiItem _transactionHistoryItem = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> event.setCancelled(true));
 
                     gui.setItem(i,_transactionHistoryItem);
                     i = i+1;
@@ -1310,9 +1284,7 @@ public class GuiManager2 {
 
                     );
 
-                    GuiItem _transactionIcon = ItemBuilder.from(transactionIcon).asGuiItem(event -> {
-                        event.setCancelled(true);
-                    });
+                    GuiItem _transactionIcon = ItemBuilder.from(transactionIcon).asGuiItem(event -> event.setCancelled(true));
 
                     gui.setItem(i,_transactionIcon);
                     i = i + 1;
@@ -1377,9 +1349,7 @@ public class GuiManager2 {
         );
 
 
-        GuiItem _TownIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
+        GuiItem _TownIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> event.setCancelled(true));
         GuiItem _upgradeTownLevel = ItemBuilder.from(upgradeTownLevel).asGuiItem(event -> {
             event.setCancelled(true);
             if(!playerStat.hasPermission(TownRolePermission.UPGRADE_TOWN)){
@@ -1389,11 +1359,11 @@ public class GuiManager2 {
             if(townData.getTreasury().getBalance() > townLevel.getMoneyRequiredTownLevel()){
                 townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredTownLevel());
                 townLevel.TownLevelUp();
-                player.sendMessage(Lang.BASIC_LEVEL_UP.getTranslation());
+                player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.getTranslation());
                 OpenTownLevel(player);
             }
             else{
-                player.sendMessage(Lang.TOWN_NOT_ENOUGH_MONEY.getTranslation());
+                player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.getTranslation());
             }
 
         });
@@ -1406,26 +1376,26 @@ public class GuiManager2 {
             if(townData.getTreasury().getBalance() > townLevel.getMoneyRequiredChunkCap()){
                 townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredChunkCap());
                 townLevel.chunkCapLevelUp();
-                player.sendMessage(Lang.GUI_TOWN_LEVEL_UP.getTranslation());
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_LEVEL_UP.getTranslation());
                 OpenTownLevel(player);
             }
             else{
-                player.sendMessage(Lang.TOWN_NOT_ENOUGH_MONEY.getTranslation());
+                player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.getTranslation());
             }
         });
         GuiItem _upgradePlayerCap = ItemBuilder.from(upgradePlayerCap).asGuiItem(event -> {
             event.setCancelled(true);
             if(!playerStat.hasPermission(TownRolePermission.UPGRADE_TOWN)){
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
                 return;
             }
             if (townData.getTreasury().getBalance() > townLevel.getMoneyRequiredPlayerCap()) {
                 townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredPlayerCap());
                 townLevel.PlayerCapLevelUp();
-                player.sendMessage(Lang.GUI_TOWN_LEVEL_UP.getTranslation());
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_LEVEL_UP.getTranslation());
                 OpenTownLevel(player);
             } else {
-                player.sendMessage(Lang.TOWN_NOT_ENOUGH_MONEY.getTranslation());
+                player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.getTranslation());
             }
         });
 
@@ -1492,9 +1462,7 @@ public class GuiManager2 {
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW,
                 Lang.GUI_BACK_ARROW.getTranslation());
 
-        GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
+        GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> event.setCancelled(true));
 
         GuiItem _leaveTown = ItemBuilder.from(leaveTown).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1522,6 +1490,7 @@ public class GuiManager2 {
 
             for(String memberUUID : playerTown.getPlayerList()){
                 PlayerData memberStat = PlayerDataStorage.get(memberUUID);
+                assert memberStat != null;
                 memberStat.leaveTown();
             }
             playerStat.setTownId(null);
@@ -1587,7 +1556,6 @@ public class GuiManager2 {
                 .rows(nRow)
                 .create();
 
-        PlayerData senderStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(player);
 
         int i = 0;
@@ -1678,9 +1646,7 @@ public class GuiManager2 {
             event.setCancelled(true);
             OpenTownMenuHaveTown(player);
         });
-        GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
+        GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
         gui.setItem(0, _decorativeGlass);
         gui.setItem(1, _decorativeGlass);
         gui.setItem(2, _decorativeGlass);
@@ -1731,7 +1697,9 @@ public class GuiManager2 {
 
             if(relation == TownRelation.WAR) {
                 ItemMeta meta = townIcon.getItemMeta();
+                assert meta != null;
                 List<String> lore = meta.getLore();
+                assert lore != null;
                 lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC1.getTranslation());
                 lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC2.getTranslation());
                 meta.setLore(lore);
@@ -1796,12 +1764,8 @@ public class GuiManager2 {
             }
             OpenTownRelationModification(player,Action.REMOVE,relation);
         });
-        GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
-        GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
+        GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> event.setCancelled(true));
+        GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> event.setCancelled(true));
         GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.WHITE_STAINED_GLASS_PANE)).asGuiItem(event -> {
             event.setCancelled(true);
         });
@@ -1856,18 +1820,25 @@ public class GuiManager2 {
 
 
                     if(HaveRelation(playerTown, otherTown)){
-                        player.sendMessage("Already a relation with this town, end it before changing");
+                        player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION.getTranslation());
                         return;
                     }
                     if(relation.getNeedsConfirmationToStart()){
-                        player.sendMessage(ChatUtils.getTANString() + "Sent to the leader of the other town");
 
-                        Player otherTownLeader = Bukkit.getPlayer(UUID.fromString(otherTown.getUuidLeader()));
+                        OfflinePlayer otherTownLeader = Bukkit.getOfflinePlayer(UUID.fromString(otherTown.getUuidLeader()));
+
+                        if (!otherTownLeader.isOnline()) {
+                            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ONLINE.getTranslation());
+                            return;
+                        }
+                        Player otherTownLeaderOnline = otherTownLeader.getPlayer();assert otherTownLeaderOnline != null;
 
                         TownRelationConfirmStorage.addInvitation(otherTown.getUuidLeader(), playerTown.getID(), relation);
 
-                        otherTownLeader.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.getTranslation(playerTown.getName(),relation.getColor() + relation.getName()));
-                        ChatUtils.sendClickableCommand(otherTownLeader,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.getTranslation(),"tan accept "  + playerTown.getID());
+                        otherTownLeaderOnline.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.getTranslation(playerTown.getName(),relation.getColor() + relation.getName()));
+                        ChatUtils.sendClickableCommand(otherTownLeaderOnline,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.getTranslation(),"tan accept "  + playerTown.getID());
+
+                        player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS.getTranslation(otherTownLeaderOnline.getName()));
 
                         player.closeInventory();
                     }
@@ -1921,9 +1892,7 @@ public class GuiManager2 {
                 i = i+1;
             }
             TownDataStorage.get(playerTown.getID()).removeTownRelations(relation,player.getUniqueId().toString());
-            _decorativeGlass = ItemBuilder.from(new ItemStack(Material.RED_STAINED_GLASS_PANE)).asGuiItem(event -> {
-                event.setCancelled(true);
-            });
+            _decorativeGlass = ItemBuilder.from(new ItemStack(Material.RED_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
         }
 
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
@@ -1941,12 +1910,8 @@ public class GuiManager2 {
             event.setCancelled(true);
             OpenTownRelation(player,relation);
         });
-        GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
-        GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
+        GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> event.setCancelled(true));
+        GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> event.setCancelled(true));
 
         gui.setItem(4,1, _back);
 
@@ -2050,20 +2015,22 @@ public class GuiManager2 {
 
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
 
-        GuiItem _doorAccessManager = createGuiItem(doorAccess, playerStat, player,(v) -> townClass.getChunkSettings().nextDoorAuth());
-        GuiItem _chestAccessManager = createGuiItem(chestAccess, playerStat, player,(v) -> townClass.getChunkSettings().nextChestAuth());
-        GuiItem _placeBlockAccessManager = createGuiItem(placeBlockAccess, playerStat, player,(v) -> townClass.getChunkSettings().nextPlaceAuth());
-        GuiItem _breakBlockAccessManager = createGuiItem(breakBlockAccess, playerStat, player,(v) -> townClass.getChunkSettings().nextBreakAuth());
-        GuiItem _attackPassiveMob = createGuiItem(attackPassiveMob, playerStat, player,(v) -> townClass.getChunkSettings().nextAttackPassiveMobAuth());
-        GuiItem _useButton = createGuiItem(useButton, playerStat, player,(v) -> townClass.getChunkSettings().nextUseButtonsAuth());
-        GuiItem _useRedstone = createGuiItem(useRedstone, playerStat, player,(v) -> townClass.getChunkSettings().nextUseRedstoneAuth());
-        GuiItem _useFurnace = createGuiItem(useFurnace, playerStat, player,(v) -> townClass.getChunkSettings().nextUseFurnaceAuth());
-        GuiItem _interactItemFrame = createGuiItem(interactItemFrame, playerStat, player,(v) -> townClass.getChunkSettings().nextInteractItemFrameAuth());
-        GuiItem _interactArmorStand = createGuiItem(interactArmorStand, playerStat, player,(v) -> townClass.getChunkSettings().nextInteractArmorStandAuth());
-        GuiItem _useDecorativeBlockManager = createGuiItem(useDecorativeBlock, playerStat, player,(v) -> townClass.getChunkSettings().nextDecorativeBlockAuth());
-        GuiItem _useMusicBlockManager = createGuiItem(useMusicBlock, playerStat, player,(v) -> townClass.getChunkSettings().nextMusicBlockAuth());
-        GuiItem _interactLeadManager = createGuiItem(interactLead, playerStat, player,(v) -> townClass.getChunkSettings().nextLeadAuth());
-        GuiItem _interactShearsManager = createGuiItem(interactShears, playerStat, player,(v) -> townClass.getChunkSettings().nextShearsAuth());
+
+        ClaimedChunkSettings settings = townClass.getChunkSettings();
+        GuiItem _doorAccessManager = createGuiItem(doorAccess, playerStat, player,(v) -> settings.nextDoorAuth());
+        GuiItem _chestAccessManager = createGuiItem(chestAccess, playerStat, player,(v) -> settings.nextChestAuth());
+        GuiItem _placeBlockAccessManager = createGuiItem(placeBlockAccess, playerStat, player,(v) -> settings.nextPlaceAuth());
+        GuiItem _breakBlockAccessManager = createGuiItem(breakBlockAccess, playerStat, player,(v) -> settings.nextBreakAuth());
+        GuiItem _attackPassiveMob = createGuiItem(attackPassiveMob, playerStat, player,(v) -> settings.nextAttackPassiveMobAuth());
+        GuiItem _useButton = createGuiItem(useButton, playerStat, player,(v) -> settings.nextUseButtonsAuth());
+        GuiItem _useRedstone = createGuiItem(useRedstone, playerStat, player,(v) -> settings.nextUseRedstoneAuth());
+        GuiItem _useFurnace = createGuiItem(useFurnace, playerStat, player,(v) -> settings.nextUseFurnaceAuth());
+        GuiItem _interactItemFrame = createGuiItem(interactItemFrame, playerStat, player,(v) -> settings.nextInteractItemFrameAuth());
+        GuiItem _interactArmorStand = createGuiItem(interactArmorStand, playerStat, player,(v) -> settings.nextInteractArmorStandAuth());
+        GuiItem _useDecorativeBlockManager = createGuiItem(useDecorativeBlock, playerStat, player,(v) -> settings.nextDecorativeBlockAuth());
+        GuiItem _useMusicBlockManager = createGuiItem(useMusicBlock, playerStat, player,(v) -> settings.nextMusicBlockAuth());
+        GuiItem _interactLeadManager = createGuiItem(interactLead, playerStat, player,(v) -> settings.nextLeadAuth());
+        GuiItem _interactShearsManager = createGuiItem(interactShears, playerStat, player,(v) -> settings.nextShearsAuth());
 
 
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {

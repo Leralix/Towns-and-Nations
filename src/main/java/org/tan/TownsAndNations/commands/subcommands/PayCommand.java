@@ -7,6 +7,7 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
+import org.tan.TownsAndNations.utils.EconomyUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,13 +82,13 @@ public class PayCommand extends SubCommand  {
                 player.sendMessage(getTANString() + Lang.PAY_MINIMUM_REQUIRED.getTranslation());
                 return;
             }
-            if(senderDataClass.getBalance() < amount){
+            if(EconomyUtil.getBalance(player) < amount){
                 player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.getTranslation(
-                        amount - senderDataClass.getBalance()));
+                        amount - EconomyUtil.getBalance(player)));
                 return;
             }
 
-            senderDataClass.removeFromBalance(amount);
+            EconomyUtil.removeFromBalance(player,amount);
             receiverDataClass.addToBalance(amount);
             player.sendMessage(getTANString() + Lang.PAY_CONFIRMED_SENDER.getTranslation(amount,receiver.getName()));
             receiver.sendMessage(getTANString() + Lang.PAY_CONFIRMED_RECEIVER.getTranslation(amount,player.getName()));

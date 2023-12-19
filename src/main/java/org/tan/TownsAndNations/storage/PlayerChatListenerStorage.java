@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.storage;
 
 import org.bukkit.entity.Player;
+import org.tan.TownsAndNations.enums.MessageKey;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,9 +11,9 @@ public class PlayerChatListenerStorage {
     public static class PlayerChatData {
         private final ChatCategory category;
         private final String playerUUID;
-        private final Map<String, String> data;
+        private final Map<MessageKey, String> data;
 
-        public PlayerChatData(ChatCategory category, String playerUUID, Map<String, String> data) {
+        public PlayerChatData(ChatCategory category, String playerUUID, Map<MessageKey, String> data) {
             this.category = category;
             this.playerUUID = playerUUID;
             this.data = data;
@@ -24,7 +25,7 @@ public class PlayerChatListenerStorage {
         public String getPlayerUUID() {
             return playerUUID;
         }
-        public Map<String, String> getData() {
+        public Map<MessageKey, String> getData() {
             return data;
         }
     }
@@ -40,7 +41,8 @@ public class PlayerChatListenerStorage {
         addPlayer(category, p, new HashMap<>());
     }
 
-    public static void addPlayer(ChatCategory category, Player p, Map<String, String> data) {
+
+    public static void addPlayer(ChatCategory category, Player p, Map<MessageKey, String> data) {
         String playerId = p.getUniqueId().toString();
 
         if(ChatStorage.containsKey(playerId)){

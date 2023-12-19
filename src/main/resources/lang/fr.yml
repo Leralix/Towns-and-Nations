@@ -65,6 +65,10 @@ language:
   TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fVous êtes maintenant membre de la ville : §9{0}"
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f a rejoint la ville !"
 
+  # Relation diplomatique
+  TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§cVous avez déjà une relation avec cette ville : {0}"
+  TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Invitation envoyée !"
+
   # Confirmation des relations diplomatiques
   TOWN_DIPLOMATIC_INVITATION_RECEIVED_1: "La ville §9{0}§f souhaite changer son statut diplomatique pour : §3{1}"
   TOWN_DIPLOMATIC_INVITATION_RECEIVED_2: "§l§2Pour accepter, cliquez ici"
@@ -114,6 +118,7 @@ language:
 
   # Commandes du chat
   PLAYER_NOT_ENOUGH_MONEY: "§cVous n'avez pas assez d'argent pour effectuer cette action"
+  LEADER_NOT_ONLINE: "§cLe leader de la ville n'est pas connecté"
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cVous n'avez pas assez d'argent. Il vous manque {0} de plus"
   PLAYER_NEED_1_OR_ABOVE: "§fVous devez avoir au moins §61✦"
 

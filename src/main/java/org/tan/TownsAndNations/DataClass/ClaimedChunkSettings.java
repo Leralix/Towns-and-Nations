@@ -4,20 +4,8 @@ import org.tan.TownsAndNations.enums.TownChunkPermission;
 
 public class ClaimedChunkSettings {
     private int NumberOfClaimedChunk;
-    private TownChunkPermission chestAuth;
-    private TownChunkPermission doorAuth;
-    private TownChunkPermission breakAuth;
-    private TownChunkPermission placeAuth;
-    private TownChunkPermission attackPassiveMobAuth;
-    private TownChunkPermission useButtonsAuth;
-    private TownChunkPermission useRedstoneAuth;
-    private TownChunkPermission useFurnaceAuth;
-    private TownChunkPermission interactItemFrameAuth;
-    private TownChunkPermission interactArmorStandAuth;
-    private TownChunkPermission decorativeBlockAuth;
-    private TownChunkPermission musicBlockAuth;
-    private TownChunkPermission leadAuth;
-    private TownChunkPermission shearsAuth;
+    private TownChunkPermission chestAuth, doorAuth, breakAuth, placeAuth, attackPassiveMobAuth, useButtonsAuth, useRedstoneAuth, useFurnaceAuth, interactItemFrameAuth, interactArmorStandAuth, decorativeBlockAuth, musicBlockAuth, leadAuth, shearsAuth;
+
 
 
     public ClaimedChunkSettings(){
@@ -36,7 +24,6 @@ public class ClaimedChunkSettings {
         this.musicBlockAuth = TownChunkPermission.TOWN;
         this.leadAuth = TownChunkPermission.TOWN;
         this.shearsAuth = TownChunkPermission.TOWN;
-
     }
 
     public TownChunkPermission getChestAuth() {
@@ -81,7 +68,6 @@ public class ClaimedChunkSettings {
     public TownChunkPermission getShearsAuth() {
         return this.shearsAuth;
     }
-
 
 
     public void nextChestAuth() {

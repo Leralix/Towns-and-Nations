@@ -25,7 +25,6 @@ public class TownUtil {
 
         int playerBalance = getBalance(player);
 
-
         if(playerBalance < townCost){
             player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.getTranslation(townCost - playerBalance));
             PlayerChatListenerStorage.removePlayer(player);

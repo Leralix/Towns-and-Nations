@@ -269,7 +269,6 @@ public class TownData {
     }
 
     public void swapRecruiting() {
-        System.out.println("test");
         this.isRecruiting = !this.isRecruiting;
     }
 

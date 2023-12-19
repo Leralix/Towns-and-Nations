@@ -8,7 +8,7 @@ import org.tan.TownsAndNations.storage.TownDataStorage;
 
 public class TanAPI {
 
-
+/*
     public static String test(){
         return "TAN api is working";
     }
@@ -45,7 +45,7 @@ public class TanAPI {
         return TownDataStorage.get(playerUUID);
     }
 
-
+*/
 
 
 

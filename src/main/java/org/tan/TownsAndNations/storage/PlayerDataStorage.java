@@ -13,16 +13,19 @@ import java.util.List;
 
 public class PlayerDataStorage {
 
-    private static ArrayList<PlayerData> stats = new ArrayList<PlayerData>();
+    private static ArrayList<PlayerData> stats = new ArrayList<>();
 
-    public static void createPlayerDataClass(Player p) {
+    public static PlayerData createPlayerDataClass(Player p) {
 
         PlayerData stat = new PlayerData(p);
         stats.add(stat);
         saveStats();
+        return stat;
     }
 
-    public static void deleteStat(String uuid) {
+
+
+    public static void deleteData(String uuid) {
         for (PlayerData stat : stats) {
             if (stat.getUuid().equalsIgnoreCase(uuid)) {
                 stats.remove(stat);
@@ -41,14 +44,14 @@ public class PlayerDataStorage {
         return null;
     }
 
-    public static PlayerData get(Player player){
+    public static PlayerData get(Player player) {
         String id = player.getUniqueId().toString();
         for (PlayerData stat : stats) {
             if (stat.getUuid().equalsIgnoreCase(id)) {
                 return stat;
             }
         }
-        return null;
+        return(PlayerDataStorage.createPlayerDataClass(player));
     }
 
     public static List<PlayerData> getStats(){
@@ -60,7 +63,7 @@ public class PlayerDataStorage {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Stats.json");
         if (file.exists()){
-            Reader reader = null;
+            Reader reader;
             try {
                 reader = new FileReader(file);
             } catch (FileNotFoundException e) {
@@ -78,12 +81,13 @@ public class PlayerDataStorage {
         Gson gson = new Gson();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Stats.json");
         file.getParentFile().mkdir();
+
         try {
             file.createNewFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Writer writer = null;
+        Writer writer;
         try {
             writer = new FileWriter(file, false);
         } catch (IOException e) {

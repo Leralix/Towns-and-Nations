@@ -12,6 +12,7 @@ import org.tan.TownsAndNations.DataClass.TownRank;
 import org.tan.TownsAndNations.GUI.GuiManager2;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
+import org.tan.TownsAndNations.enums.MessageKey;
 import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ConfigUtil;
@@ -20,6 +21,8 @@ import org.tan.TownsAndNations.utils.TownUtil;
 import java.time.LocalDate;
 import java.util.*;
 
+import static org.tan.TownsAndNations.enums.MessageKey.RANK_NAME;
+import static org.tan.TownsAndNations.enums.MessageKey.TOWN_COST;
 import static org.tan.TownsAndNations.utils.TownUtil.DonateToTown;
 
 
@@ -37,8 +40,7 @@ public class ChatListener implements Listener {
 
 
         if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.CREATE_CITY){
-
-            int townPrice = Integer.parseInt(chatData.getData().get("town cost"));
+            int townPrice = Integer.parseInt(chatData.getData().get(TOWN_COST));
             String townName = event.getMessage();
 
             TownUtil.CreateTown(player, townPrice, townName);
@@ -93,7 +95,7 @@ public class ChatListener implements Listener {
             }
 
             TownData playerTown = TownDataStorage.get(player);
-            String rankName = ChatData.getData().get("rankName");
+            String rankName = ChatData.getData().get(RANK_NAME);
             TownRank playerTownRank = playerTown.getRank(rankName);
 
             List<String> playerList = playerTownRank.getPlayers();
