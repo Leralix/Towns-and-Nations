@@ -12,6 +12,7 @@ import org.tan.TownsAndNations.enums.CustomVillagerProfession;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.EconomyUtil;
 
 import java.util.Set;
 
@@ -63,7 +64,8 @@ public class RareItemVillagerInteraction implements Listener {
                 String itemName = item.getItemMeta().getDisplayName();
 
                 player.getInventory().setItemInMainHand(new ItemStack(Material.AIR, 1));
-                PlayerDataStorage.get(player).addToBalance(quantity * price);
+
+                EconomyUtil.addFromBalance(player, quantity * price);
 
 
                 player.sendMessage(

@@ -28,4 +28,11 @@ public class EconomyUtil {
             Objects.requireNonNull(PlayerDataStorage.get(player)).removeFromBalance(amount);
     }
 
+    public static void addFromBalance(Player player, int amount){
+        if(TownsAndNations.hasEconomy())
+            TownsAndNations.getEconomy().depositPlayer(player,amount);
+        else
+            Objects.requireNonNull(PlayerDataStorage.get(player)).addToBalance(amount);
+    }
+
 }

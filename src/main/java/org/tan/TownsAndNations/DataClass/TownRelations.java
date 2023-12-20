@@ -48,6 +48,9 @@ public class TownRelations {
 
     public void removeAllRelationWith(String townID){
         for(TownRelation relation : TownRelation.values()){
+            System.out.println(relation);
+            if(relation == TownRelation.NEUTRAL)
+                continue;
             townRelations.get(relation).remove(townID);
         }
     }
