@@ -60,11 +60,11 @@ rareWoodValue: 3
 
 #The stat of getting rare Crops, used to get money
 rareCrops:
-  WHEAT: 5
+  WHEAT: 4
   CARROTS: 3
   POTATOES: 3
   BEETROOTS: 3
-  PUMPKIN: 1
-  MELON: 1
+  PUMPKIN: 0
+  MELON: 0
 
 rareCropsValue: 3

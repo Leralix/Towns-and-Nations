@@ -2,12 +2,15 @@ package org.tan.TownsAndNations.commands.debugsubcommands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.utils.DropChances;
 import org.tan.TownsAndNations.DataClass.RareItem;
 
 import java.util.List;
 import java.util.Map;
+
+import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 public class DropChance extends SubCommand {
 
@@ -44,6 +47,7 @@ public class DropChance extends SubCommand {
 
             player.sendMessage("Key: " + key + ", Value: " + value.getDropChance());
         }
+        player.sendMessage(getTANString() + Lang.COMMAND_GENERIC_SUCCESS.getTranslation());
     }
 
 

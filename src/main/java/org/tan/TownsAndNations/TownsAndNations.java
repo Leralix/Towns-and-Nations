@@ -53,6 +53,7 @@ public final class TownsAndNations extends JavaPlugin {
         ConfigUtil.loadCustomConfig("config.yml");
         ConfigUtil.saveResource("townLevelUpRequirement.yml");
         ConfigUtil.loadCustomConfig("townLevelUpRequirement.yml");
+
         DropChances.load();
 
 
@@ -77,11 +78,9 @@ public final class TownsAndNations extends JavaPlugin {
         if (setupEconomy()) {
             logger.info("[TaN] -Vault API successfully loaded");
             setupPermissions();
-            logger.info("[TaN] test");
-
             setupChat();
         } else {
-            logger.info("[TaN] -Vault API not found");
+            logger.info("[TaN] -Vault API not found, using own economy system");
         }
 
 
