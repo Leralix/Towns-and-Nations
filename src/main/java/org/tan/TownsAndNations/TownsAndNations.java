@@ -1,9 +1,10 @@
 package org.tan.TownsAndNations;
 
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,7 +21,11 @@ import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.DropChances;
 
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public final class TownsAndNations extends JavaPlugin {
@@ -32,6 +37,10 @@ public final class TownsAndNations extends JavaPlugin {
     private static Permission perms = null;
     private static Chat chat = null;
 
+    private static final String USER_AGENT = "Mozilla/5.0";
+    private static final String GITHUB_API_URL = "https://api.github.com/repos/leralix/towns-and-nations/releases/latest";
+    private static final String CURRENT_VERSION = "v0.1.2";
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -41,6 +50,9 @@ public final class TownsAndNations extends JavaPlugin {
         getLogger().info("To report a bug or request a feature, please ask on my discord server: https://discord.gg/Q8gZSFUuzb");
 
         logger.info("[TaN] Loading Plugin");
+
+        checkForUpdate();
+
 
         logger.info("[TaN] -Loading Lang");
         ConfigUtil.saveResource("lang.yml");
@@ -170,6 +182,49 @@ public final class TownsAndNations extends JavaPlugin {
 
     public static boolean hasEconomy(){
         return econ != null;
+    }
+
+    private void checkForUpdate() {
+        try {
+            URL url = new URL(GITHUB_API_URL);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("User-Agent", USER_AGENT);
+
+            int responseCode = con.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                String latestVersion = extractVersionFromResponse(response.toString());
+                if (!CURRENT_VERSION.equals(latestVersion)) {
+                    getPluginLogger().info("Une nouvelle version est disponible : " + latestVersion);
+                } else {
+                    getPluginLogger().info("Votre plugin est à jour.");
+                }
+            } else {
+                getPluginLogger().info("Une erreur s'est produite lors de la vérification de la mise à jour.");
+                getPluginLogger().info("Code de réponse : " + con.getInputStream());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String extractVersionFromResponse(String response) {
+
+        JsonParser parser = new JsonParser();
+        JsonObject jsonResponse = parser.parse(response).getAsJsonObject();
+        String name = jsonResponse.get("name").getAsString();
+        System.out.println(name);
+        return name;
+
     }
 
 
