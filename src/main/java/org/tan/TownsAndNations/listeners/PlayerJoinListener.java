@@ -6,11 +6,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.TeamUtils;
+
+import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 
 public class PlayerJoinListener implements Listener {
@@ -38,7 +41,10 @@ public class PlayerJoinListener implements Listener {
 
 
         if(player.hasPermission("tan.debug"))
-            player.sendMessage(ChatUtils.getTANDebugString() + Lang.WELCOME.getTranslation());
+            if(!TownsAndNations.isLatestVersion()){
+                player.sendMessage(getTANString() + Lang.NEW_VERSION_AVAILABLE.getTranslation(TownsAndNations.getLatestVersion()));
+                player.sendMessage(getTANString() + Lang.NEW_VERSION_AVAILABLE_2.getTranslation());
+            }
 
     }
 }

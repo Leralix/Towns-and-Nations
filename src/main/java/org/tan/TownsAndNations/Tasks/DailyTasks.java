@@ -2,6 +2,7 @@ package org.tan.TownsAndNations.Tasks;
 
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.PlayerData;
@@ -45,15 +46,17 @@ public class DailyTasks {
 
 
         for (PlayerData playerStat : PlayerDataStorage.getStats()){
-            Player player = Bukkit.getPlayer(UUID.fromString(playerStat.getUuid()));
+            OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerStat.getUuid()));
+
+
 
             if (!playerStat.haveTown()) continue;
             TownData playerTown = TownDataStorage.get(playerStat);
             if (!playerTown.getRank(playerStat.getTownRankID()).isPayingTaxes()) continue;
             int tax = playerTown.getTreasury().getFlatTax();
 
-            if(EconomyUtil.getBalance(player) > tax){
-                EconomyUtil.removeFromBalance(player,tax);
+            if(EconomyUtil.getBalance(offlinePlayer) > tax){
+                EconomyUtil.removeFromBalance(offlinePlayer,tax);
                 playerTown.getTreasury().addToBalance(tax);
                 playerTown.getTreasury().addTaxHistory(playerStat.getName(), playerStat.getUuid(), tax);
                 TownsAndNations.getPluginLogger().info(playerStat.getName() + " has paid " + tax + "$ to the town " + playerTown.getName());

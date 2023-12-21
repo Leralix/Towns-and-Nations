@@ -29,6 +29,8 @@ public class DebugCommandManager implements CommandExecutor, TabExecutor, TabCom
         subCommands.add(new DropChance());
         subCommands.add(new Update());
 
+        subCommands.add(new TaxPay());
+
     }
 
     @Override

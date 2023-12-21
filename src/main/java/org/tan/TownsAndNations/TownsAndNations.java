@@ -9,6 +9,7 @@ import net.milkbowl.vault.permission.Permission;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tan.TownsAndNations.API.TanAPI;
+import org.tan.TownsAndNations.Bstats.Metrics;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.Tasks.DailyTasks;
 import org.tan.TownsAndNations.Tasks.SaveStats;
@@ -39,7 +40,8 @@ public final class TownsAndNations extends JavaPlugin {
 
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String GITHUB_API_URL = "https://api.github.com/repos/leralix/towns-and-nations/releases/latest";
-    private static final String CURRENT_VERSION = "v0.1.2";
+    private static final String CURRENT_VERSION = "v0.1.3";
+    private static String LATEST_VERSION;
 
     @Override
     public void onEnable() {
@@ -98,6 +100,9 @@ public final class TownsAndNations extends JavaPlugin {
 
         logger.info("[TaN] Plugin successfully loaded");
         getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
+
+        int pluginId = 20527; // <-- Replace with the id of your plugin!
+        Metrics metrics = new Metrics(this, pluginId);
 
     }
 
@@ -202,15 +207,15 @@ public final class TownsAndNations extends JavaPlugin {
                 }
                 in.close();
 
-                String latestVersion = extractVersionFromResponse(response.toString());
-                if (!CURRENT_VERSION.equals(latestVersion)) {
-                    getPluginLogger().info("Une nouvelle version est disponible : " + latestVersion);
+                LATEST_VERSION = extractVersionFromResponse(response.toString());
+                if (!CURRENT_VERSION.equals(LATEST_VERSION)) {
+                    getPluginLogger().info("[TaN] A new version is available : " + LATEST_VERSION);
                 } else {
-                    getPluginLogger().info("Votre plugin est à jour.");
+                    getPluginLogger().info("[TaN] Towns and Nation is up to date.");
                 }
             } else {
-                getPluginLogger().info("Une erreur s'est produite lors de la vérification de la mise à jour.");
-                getPluginLogger().info("Code de réponse : " + con.getInputStream());
+                getPluginLogger().info("[TaN] An error occurerd while trying to accesss github API.");
+                getPluginLogger().info("[TaN] Error log : " + con.getInputStream());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -221,10 +226,15 @@ public final class TownsAndNations extends JavaPlugin {
 
         JsonParser parser = new JsonParser();
         JsonObject jsonResponse = parser.parse(response).getAsJsonObject();
-        String name = jsonResponse.get("name").getAsString();
-        System.out.println(name);
-        return name;
+        return jsonResponse.get("name").getAsString();
+    }
 
+    public static boolean isLatestVersion(){
+        return CURRENT_VERSION.equals(LATEST_VERSION);
+    }
+
+    public static String getLatestVersion(){
+        return LATEST_VERSION;
     }
 
 

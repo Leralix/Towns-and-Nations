@@ -13,6 +13,10 @@ language:
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 {1}: §f{2}"
 
+  # Mise a jour nécessaire
+  NEW_VERSION_AVAILABLE: "§cUne nouvelle version est disponible: §f{0}"
+  NEW_VERSION_AVAILABLE_2: "§cTéléchargez la dernière version sur spigot ou github"
+
   # Passage au niveau supérieur
   BASIC_LEVEL_UP: "§aNiveau supérieur !"
 
