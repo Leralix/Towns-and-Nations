@@ -1,7 +1,5 @@
 package org.tan.TownsAndNations.utils;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -18,7 +16,6 @@ import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -70,18 +67,14 @@ public class HeadUtils {
     }
 
     public static ItemStack makeSkull(String name, String base64EncodedString) {
-        final ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+        UUID id = UUID.nameUUIDFromBytes(base64EncodedString.getBytes());
+        int less = (int)id.getLeastSignificantBits();
+        int most = (int)id.getMostSignificantBits();
+        ItemStack skull = Bukkit.getUnsafe().modifyItemStack(new ItemStack(Material.PLAYER_HEAD),
+                "{SkullOwner:{Id:[I;" + less * most + "," + (less >> 23) + "," + most/less + "," +
+                        most * 8731 + "],Properties:{textures:[{Value:\"" + base64EncodedString + "\"}]}}}");
+
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        assert meta != null;
-        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-        profile.getProperties().put("textures", new Property("textures", base64EncodedString));
-        try {
-            Field profileField = meta.getClass().getDeclaredField("profile");
-            profileField.setAccessible(true);
-            profileField.set(meta, profile);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
         meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + name);
         skull.setItemMeta(meta);
         return skull;

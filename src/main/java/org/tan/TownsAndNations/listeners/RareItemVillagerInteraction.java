@@ -25,7 +25,6 @@ public class RareItemVillagerInteraction implements Listener {
 
         if (event.getRightClicked() instanceof Villager villager) {
 
-            event.setCancelled(true);
             CustomVillagerProfession customProfession = null;
 
             Set<String> tags = villager.getScoreboardTags();
@@ -36,6 +35,9 @@ public class RareItemVillagerInteraction implements Listener {
 
             if(customProfession == null)
                 return;
+
+            event.setCancelled(true);
+
 
             int price = 0;
             if (customProfession == CustomVillagerProfession.GOLDSMITH ) {
@@ -81,6 +83,8 @@ public class RareItemVillagerInteraction implements Listener {
             player.sendMessage(ChatUtils.getTANString() + Lang.RARE_ITEM_WRONG_ITEM.getTranslation(
                     customProfession.getBuyingItem().getItemMeta().getDisplayName()
             ));
+
+
 
         }
 
