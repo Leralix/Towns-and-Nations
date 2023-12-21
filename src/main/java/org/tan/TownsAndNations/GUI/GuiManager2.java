@@ -467,7 +467,7 @@ public class GuiManager2 {
             HeadUtils.setLore(
                     playerHead,
                     Lang.GUI_TOWN_MEMBER_DESC1.getTranslation(otherPlayerStat.getTownRankID()),
-                    Lang.GUI_TOWN_MEMBER_DESC2.getTranslation(EconomyUtil.getBalance(playerIterate.getPlayer())),
+                    Lang.GUI_TOWN_MEMBER_DESC2.getTranslation(EconomyUtil.getBalance(playerIterate)),
                     Lang.GUI_TOWN_MEMBER_DESC3.getTranslation()
             );
             GuiItem _playerIcon = ItemBuilder.from(playerHead).asGuiItem(event -> {
@@ -1073,7 +1073,7 @@ public class GuiManager2 {
 
         for (String playerID : town.getPlayerList()){
             PlayerData otherPlayerData = PlayerDataStorage.get(playerID);assert otherPlayerData != null;
-            Player otherPlayer = Bukkit.getPlayer(UUID.fromString(playerID));
+            OfflinePlayer otherPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
             if(!otherPlayerData.getTownRank().isPayingTaxes()){
                 continue;
             }
