@@ -40,7 +40,7 @@ public final class TownsAndNations extends JavaPlugin {
 
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String GITHUB_API_URL = "https://api.github.com/repos/leralix/towns-and-nations/releases/latest";
-    private static final String CURRENT_VERSION = "v0.1.3";
+    private static final String CURRENT_VERSION = "v0.1.6";
     private static String LATEST_VERSION;
 
     @Override
@@ -118,22 +118,20 @@ public final class TownsAndNations extends JavaPlugin {
         return econ != null;
     }
 
-    private boolean setupPermissions() {
+    private void setupPermissions() {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
         if(rsp == null){
-            return false;
+            return;
         }
         perms = rsp.getProvider();
-        return perms != null;
     }
 
-    private boolean setupChat() {
+    private void setupChat() {
         RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
         if(rsp == null){
-            return false;
+            return;
         }
         chat = rsp.getProvider();
-        return chat != null;
     }
 
 
@@ -211,10 +209,10 @@ public final class TownsAndNations extends JavaPlugin {
                 if (!CURRENT_VERSION.equals(LATEST_VERSION)) {
                     getPluginLogger().info("[TaN] A new version is available : " + LATEST_VERSION);
                 } else {
-                    getPluginLogger().info("[TaN] Towns and Nation is up to date.");
+                    getPluginLogger().info("[TaN] Towns and Nation is up to date: "+ CURRENT_VERSION);
                 }
             } else {
-                getPluginLogger().info("[TaN] An error occurerd while trying to accesss github API.");
+                getPluginLogger().info("[TaN] An error occurred while trying to accesses github API.");
                 getPluginLogger().info("[TaN] Error log : " + con.getInputStream());
             }
         } catch (Exception e) {

@@ -1,137 +1,42 @@
 package org.tan.TownsAndNations.DataClass;
 
 import org.tan.TownsAndNations.enums.TownChunkPermission;
+import org.tan.TownsAndNations.enums.TownChunkPermissionType;
+
+import java.util.EnumMap;
+import java.util.Map;
 
 public class ClaimedChunkSettings {
-    private int NumberOfClaimedChunk;
-    private TownChunkPermission chestAuth, doorAuth, breakAuth, placeAuth, attackPassiveMobAuth, useButtonsAuth, useRedstoneAuth, useFurnaceAuth, interactItemFrameAuth, interactArmorStandAuth, decorativeBlockAuth, musicBlockAuth, leadAuth, shearsAuth;
+    private int numberOfClaimedChunk;
+    private final Map<TownChunkPermissionType, TownChunkPermission> permissions;
 
 
 
     public ClaimedChunkSettings(){
-        this.NumberOfClaimedChunk = 0;
-        this.chestAuth = TownChunkPermission.TOWN;
-        this.doorAuth = TownChunkPermission.TOWN;
-        this.breakAuth = TownChunkPermission.TOWN;
-        this.placeAuth = TownChunkPermission.TOWN;
-        this.attackPassiveMobAuth = TownChunkPermission.TOWN;
-        this.useButtonsAuth = TownChunkPermission.TOWN;
-        this.useRedstoneAuth = TownChunkPermission.TOWN;
-        this.useFurnaceAuth = TownChunkPermission.TOWN;
-        this.interactItemFrameAuth = TownChunkPermission.TOWN;
-        this.interactArmorStandAuth = TownChunkPermission.TOWN;
-        this.decorativeBlockAuth = TownChunkPermission.TOWN;
-        this.musicBlockAuth = TownChunkPermission.TOWN;
-        this.leadAuth = TownChunkPermission.TOWN;
-        this.shearsAuth = TownChunkPermission.TOWN;
+        this.numberOfClaimedChunk = 0;
+        this.permissions = new EnumMap<>(TownChunkPermissionType.class);
+        for (TownChunkPermissionType type : TownChunkPermissionType.values()) {
+            permissions.put(type, TownChunkPermission.TOWN);
+        }
     }
 
-    public TownChunkPermission getChestAuth() {
-        return this.chestAuth;
-    }
-    public TownChunkPermission getDoorAuth() {
-        return this.doorAuth;
-    }
-    public TownChunkPermission getBreakAuth() {
-        return this.breakAuth;
-    }
-    public TownChunkPermission getPlaceAuth() {
-        return this.placeAuth;
-    }
-    public TownChunkPermission getAttackPassiveMobAuth() {
-        return this.attackPassiveMobAuth;
-    }
-    public TownChunkPermission getUseButtonsAuth() {
-        return this.useButtonsAuth;
-    }
-    public TownChunkPermission getUseRedstoneAuth() {
-        return this.useRedstoneAuth;
-    }
-    public TownChunkPermission getUseFurnaceAuth() {
-        return this.useFurnaceAuth;
-    }
-    public TownChunkPermission getInteractItemFrameAuth() {
-        return this.interactItemFrameAuth;
-    }
-    public TownChunkPermission getInteractArmorStandAuth() {
-        return this.interactArmorStandAuth;
-    }
-    public TownChunkPermission getDecorativeBlockAuth() {
-        return this.decorativeBlockAuth;
-    }
-    public TownChunkPermission getMusicBlockAuth() {
-        return this.musicBlockAuth;
-    }
-    public TownChunkPermission getLeadAuth() {
-        return this.leadAuth;
-    }
-    public TownChunkPermission getShearsAuth() {
-        return this.shearsAuth;
+    public TownChunkPermission getPermission(TownChunkPermissionType type) {
+        return this.permissions.get(type);
     }
 
-
-    public void nextChestAuth() {
-        this.chestAuth = this.chestAuth.getNext();
+    public void nextPermission(TownChunkPermissionType type) {
+        this.permissions.put(type, this.permissions.get(type).getNext());
     }
-
-    public void nextDoorAuth() {
-        this.doorAuth = this.doorAuth.getNext();
-    }
-
-    public void nextBreakAuth() {
-        this.breakAuth = this.breakAuth.getNext();
-    }
-
-    public void nextPlaceAuth() {
-        this.placeAuth = this.placeAuth.getNext();
-    }
-
-    public void nextAttackPassiveMobAuth() {
-        this.attackPassiveMobAuth = this.attackPassiveMobAuth.getNext();
-    }
-
-    public void nextUseButtonsAuth() {
-        this.useButtonsAuth = this.useButtonsAuth.getNext();
-    }
-
-    public void nextUseRedstoneAuth() {
-        this.useRedstoneAuth = this.useRedstoneAuth.getNext();
-    }
-
-    public void nextUseFurnaceAuth() {
-        this.useFurnaceAuth = this.useFurnaceAuth.getNext();
-    }
-
-    public void nextInteractItemFrameAuth() {
-        this.interactItemFrameAuth = this.interactItemFrameAuth.getNext();
-    }
-
-    public void nextInteractArmorStandAuth() {
-        this.interactArmorStandAuth = this.interactArmorStandAuth.getNext();
-    }
-    public void nextDecorativeBlockAuth() {
-        this.decorativeBlockAuth = this.decorativeBlockAuth.getNext();
-    }
-    public void nextMusicBlockAuth() {
-        this.musicBlockAuth = this.musicBlockAuth.getNext();
-    }
-    public void nextLeadAuth() {
-        this.leadAuth = this.leadAuth.getNext();
-    }
-    public void nextShearsAuth() {
-        this.shearsAuth = this.shearsAuth.getNext();
-    }
-
-
 
     public int getNumberOfClaimedChunk() {
-        return this.NumberOfClaimedChunk;
-    }
-    public void incrementNumberOfClaimedChunk() {
-        this.NumberOfClaimedChunk = this.NumberOfClaimedChunk + 1;
-    }
-    public void decreaseNumberOfClaimedChunk() {
-        this.NumberOfClaimedChunk = this.NumberOfClaimedChunk - 1;
+        return this.numberOfClaimedChunk;
     }
 
+    public void incrementNumberOfClaimedChunk() {
+        this.numberOfClaimedChunk++;
+    }
+
+    public void decreaseNumberOfClaimedChunk() {
+        this.numberOfClaimedChunk--;
+    }
 }

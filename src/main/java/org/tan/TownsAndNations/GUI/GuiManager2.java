@@ -29,6 +29,7 @@ import java.util.ArrayList;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class GuiManager2 {
 
@@ -1940,120 +1941,52 @@ public class GuiManager2 {
 
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
         TownData townClass = TownDataStorage.get(player);
-        ClaimedChunkSettings townChunkSettings = townClass.getChunkSettings();
+        ClaimedChunkSettings settings = townClass.getChunkSettings();
 
-        ItemStack doorAccess = HeadUtils.getCustomLoreItem(Material.OAK_DOOR,
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DOOR.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getDoorAuth().getColoredName()),
-                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
-        );
-        ItemStack chestAccess = HeadUtils.getCustomLoreItem(Material.CHEST,
-                Lang.GUI_TOWN_CLAIM_SETTINGS_CHEST.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getChestAuth().getColoredName()),
-                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
-        );
-        ItemStack placeBlockAccess = HeadUtils.getCustomLoreItem(Material.BRICKS,
-                Lang.GUI_TOWN_CLAIM_SETTINGS_BUILD.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getPlaceAuth().getColoredName()),
-                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
-        );
-        ItemStack breakBlockAccess = HeadUtils.getCustomLoreItem(Material.IRON_PICKAXE,
-                Lang.GUI_TOWN_CLAIM_SETTINGS_BREAK.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getBreakAuth().getColoredName()),
-                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
-        );
-        ItemStack attackPassiveMob = HeadUtils.getCustomLoreItem(Material.BEEF,
-                Lang.GUI_TOWN_CLAIM_SETTINGS_ATTACK_PASSIVE_MOBS.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getAttackPassiveMobAuth().getColoredName()),
-                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
-        );
-        ItemStack useButton = HeadUtils.getCustomLoreItem(Material.STONE_BUTTON,
-                Lang.GUI_TOWN_CLAIM_SETTINGS_BUTTON.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getUseButtonsAuth().getColoredName()),
-                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
-        );
-        ItemStack useRedstone = HeadUtils.getCustomLoreItem(Material.REDSTONE,
-                Lang.GUI_TOWN_CLAIM_SETTINGS_REDSTONE.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getUseRedstoneAuth().getColoredName()),
-                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
-        );
-        ItemStack useFurnace = HeadUtils.getCustomLoreItem(Material.FURNACE,
-                Lang.GUI_TOWN_CLAIM_SETTINGS_FURNACE.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getUseFurnaceAuth().getColoredName()),
-                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
-        );
-        ItemStack interactItemFrame = HeadUtils.getCustomLoreItem(Material.ITEM_FRAME,
-                Lang.GUI_TOWN_CLAIM_SETTINGS_INTERACT_ITEM_FRAME.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getInteractItemFrameAuth().getColoredName()),
-                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
-        );
-        ItemStack interactArmorStand = HeadUtils.getCustomLoreItem(Material.ARMOR_STAND,
-                Lang.GUI_TOWN_CLAIM_SETTINGS_INTERACT_ARMOR_STAND.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_INTERACT_ARMOR_STAND_DESC1.getTranslation(townChunkSettings.getInteractArmorStandAuth().getColoredName()),
-                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
-        );
-        ItemStack useDecorativeBlock = HeadUtils.getCustomLoreItem(Material.CAULDRON,
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DECORATIVE_BLOCK.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getDecorativeBlockAuth().getColoredName()),
-                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
-        );
-        ItemStack useMusicBlock = HeadUtils.getCustomLoreItem(Material.JUKEBOX,
-                Lang.GUI_TOWN_CLAIM_SETTINGS_MUSIC_BLOCK.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getMusicBlockAuth().getColoredName()),
-                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
-        );
-        ItemStack interactLead = HeadUtils.getCustomLoreItem(Material.LEAD,
-                Lang.GUI_TOWN_CLAIM_SETTINGS_LEAD.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getLeadAuth().getColoredName()),
-                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
-        );
-        ItemStack interactShears = HeadUtils.getCustomLoreItem(Material.SHEARS,
-                Lang.GUI_TOWN_CLAIM_SETTINGS_SHEARS.getTranslation(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(townChunkSettings.getLeadAuth().getColoredName()),
-                Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
-        );
+        Material[] materials = {Material.OAK_DOOR, Material.CHEST,Material.BRICKS,Material.IRON_PICKAXE,Material.BEEF,
+                Material.STONE_BUTTON,Material.REDSTONE,Material.FURNACE,Material.ITEM_FRAME,Material.ARMOR_STAND,
+                Material.CAULDRON,Material.JUKEBOX,Material.LEAD,Material.SHEARS};
+
+
+        Object[][] itemData = {
+                {TownChunkPermissionType.DOOR, Material.OAK_DOOR, Lang.GUI_TOWN_CLAIM_SETTINGS_DOOR},
+                {TownChunkPermissionType.CHEST, Material.CHEST, Lang.GUI_TOWN_CLAIM_SETTINGS_CHEST},
+                {TownChunkPermissionType.PLACE, Material.BRICKS, Lang.GUI_TOWN_CLAIM_SETTINGS_BUILD},
+                {TownChunkPermissionType.BREAK, Material.IRON_PICKAXE, Lang.GUI_TOWN_CLAIM_SETTINGS_BREAK},
+                {TownChunkPermissionType.ATTACK_PASSIVE_MOB, Material.BEEF, Lang.GUI_TOWN_CLAIM_SETTINGS_ATTACK_PASSIVE_MOBS},
+                {TownChunkPermissionType.USE_BUTTONS, Material.STONE_BUTTON, Lang.GUI_TOWN_CLAIM_SETTINGS_BUTTON},
+                {TownChunkPermissionType.USE_REDSTONE, Material.REDSTONE, Lang.GUI_TOWN_CLAIM_SETTINGS_REDSTONE},
+                {TownChunkPermissionType.USE_FURNACE, Material.FURNACE, Lang.GUI_TOWN_CLAIM_SETTINGS_FURNACE},
+                {TownChunkPermissionType.INTERACT_ITEM_FRAME, Material.ITEM_FRAME, Lang.GUI_TOWN_CLAIM_SETTINGS_INTERACT_ITEM_FRAME},
+                {TownChunkPermissionType.INTERACT_ARMOR_STAND, Material.ARMOR_STAND, Lang.GUI_TOWN_CLAIM_SETTINGS_INTERACT_ARMOR_STAND},
+                {TownChunkPermissionType.DECORATIVE_BLOCK, Material.CAULDRON, Lang.GUI_TOWN_CLAIM_SETTINGS_DECORATIVE_BLOCK},
+                {TownChunkPermissionType.MUSIC_BLOCK, Material.JUKEBOX, Lang.GUI_TOWN_CLAIM_SETTINGS_MUSIC_BLOCK},
+                {TownChunkPermissionType.LEAD, Material.LEAD, Lang.GUI_TOWN_CLAIM_SETTINGS_LEAD},
+                {TownChunkPermissionType.SHEARS, Material.SHEARS, Lang.GUI_TOWN_CLAIM_SETTINGS_SHEARS}
+        };
+
+        for (int i = 0; i < itemData.length; i++) {
+            TownChunkPermissionType type = (TownChunkPermissionType) itemData[i][0];
+            Material material = (Material) itemData[i][1];
+            Lang label = (Lang) itemData[i][2];
+
+            TownChunkPermission permission = settings.getPermission(type);
+            ItemStack itemStack = HeadUtils.getCustomLoreItem(
+                    material,
+                    label.getTranslation(),
+                    Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(permission.getColoredName()),
+                    Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
+            );
+
+            GuiItem guiItem = createGuiItem(itemStack, playerStat, player, v -> settings.nextPermission(type));
+            gui.setItem(i, guiItem);
+        }
 
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
-
-
-        ClaimedChunkSettings settings = townClass.getChunkSettings();
-        GuiItem _doorAccessManager = createGuiItem(doorAccess, playerStat, player,(v) -> settings.nextDoorAuth());
-        GuiItem _chestAccessManager = createGuiItem(chestAccess, playerStat, player,(v) -> settings.nextChestAuth());
-        GuiItem _placeBlockAccessManager = createGuiItem(placeBlockAccess, playerStat, player,(v) -> settings.nextPlaceAuth());
-        GuiItem _breakBlockAccessManager = createGuiItem(breakBlockAccess, playerStat, player,(v) -> settings.nextBreakAuth());
-        GuiItem _attackPassiveMob = createGuiItem(attackPassiveMob, playerStat, player,(v) -> settings.nextAttackPassiveMobAuth());
-        GuiItem _useButton = createGuiItem(useButton, playerStat, player,(v) -> settings.nextUseButtonsAuth());
-        GuiItem _useRedstone = createGuiItem(useRedstone, playerStat, player,(v) -> settings.nextUseRedstoneAuth());
-        GuiItem _useFurnace = createGuiItem(useFurnace, playerStat, player,(v) -> settings.nextUseFurnaceAuth());
-        GuiItem _interactItemFrame = createGuiItem(interactItemFrame, playerStat, player,(v) -> settings.nextInteractItemFrameAuth());
-        GuiItem _interactArmorStand = createGuiItem(interactArmorStand, playerStat, player,(v) -> settings.nextInteractArmorStandAuth());
-        GuiItem _useDecorativeBlockManager = createGuiItem(useDecorativeBlock, playerStat, player,(v) -> settings.nextDecorativeBlockAuth());
-        GuiItem _useMusicBlockManager = createGuiItem(useMusicBlock, playerStat, player,(v) -> settings.nextMusicBlockAuth());
-        GuiItem _interactLeadManager = createGuiItem(interactLead, playerStat, player,(v) -> settings.nextLeadAuth());
-        GuiItem _interactShearsManager = createGuiItem(interactShears, playerStat, player,(v) -> settings.nextShearsAuth());
-
-
         GuiItem _getBackArrow = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
             OpenTownMenuHaveTown(player);
         });
-
-        gui.setItem(0, _doorAccessManager);
-        gui.setItem(1, _chestAccessManager);
-        gui.setItem(2, _placeBlockAccessManager);
-        gui.setItem(3, _breakBlockAccessManager);
-        gui.setItem(4, _attackPassiveMob);
-        gui.setItem(5, _useButton);
-        gui.setItem(6, _useRedstone);
-        gui.setItem(7, _useFurnace);
-        gui.setItem(8, _interactItemFrame);
-        gui.setItem(9, _interactArmorStand);
-        gui.setItem(10, _useDecorativeBlockManager);
-        gui.setItem(11, _useMusicBlockManager);
-        gui.setItem(12, _interactLeadManager);
-        gui.setItem(13, _interactShearsManager);
-
-
         gui.setItem(27, _getBackArrow);
 
         gui.open(player);
