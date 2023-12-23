@@ -188,8 +188,7 @@ public class ChunkListener implements Listener {
             Entity entity = event.getEntity();
 
 
-            if(
-                entity instanceof Allay ||
+            if( entity instanceof Allay ||
                 entity instanceof Axolotl ||
                 entity instanceof Bat ||
                 entity instanceof Camel ||
@@ -228,8 +227,6 @@ public class ChunkListener implements Listener {
                 entity instanceof Painting ||
                 entity instanceof ItemFrame ||
                 entity instanceof GlowItemFrame*/
-
-
             ) {
 
                 Chunk chunk = entity.getLocation().getChunk();
@@ -241,9 +238,21 @@ public class ChunkListener implements Listener {
                 if(!CanPlayerDoAction(chunk, player,chunkTown.getChunkSettings().getPermission(TownChunkPermissionType.ATTACK_PASSIVE_MOB))){
                     event.setCancelled(true);
                 };
-
-
             }
+
+            if(entity instanceof ItemFrame) {
+                Chunk chunk = entity.getLocation().getChunk();
+
+                if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+                    return;
+                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+
+                if(!CanPlayerDoAction(chunk, player,chunkTown.getChunkSettings().getPermission(TownChunkPermissionType.INTERACT_ITEM_FRAME))){
+                    event.setCancelled(true);
+                };
+            }
+
+
         }
 
         if(event.getDamager() instanceof Projectile) {
@@ -291,17 +300,27 @@ public class ChunkListener implements Listener {
                     entity instanceof LeashHitch ||
                     entity instanceof Painting ||
                     entity instanceof ItemFrame ||
-                    entity instanceof GlowItemFrame*/
+                    entity instanceof GlowItemFrame*/) {
 
-            ) {
+                    Chunk chunk = entity.getLocation().getChunk();
 
-                Chunk chunk = entity.getLocation().getChunk();
+                    if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+                        return;
 
-                if(!ClaimedChunkStorage.isChunkClaimed(chunk))
-                    return;
-                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+                    TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
 
                     if(!CanPlayerDoAction(chunk, player,chunkTown.getChunkSettings().getPermission(TownChunkPermissionType.ATTACK_PASSIVE_MOB))){
+                        event.setCancelled(true);
+                    }
+                }
+                if(entity instanceof ItemFrame) {
+                    Chunk chunk = entity.getLocation().getChunk();
+
+                    if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+                        return;
+                    TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+
+                    if(!CanPlayerDoAction(chunk, player,chunkTown.getChunkSettings().getPermission(TownChunkPermissionType.INTERACT_ITEM_FRAME))){
                         event.setCancelled(true);
                     };
                 }
