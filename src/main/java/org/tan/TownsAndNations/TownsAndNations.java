@@ -8,7 +8,6 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.tan.TownsAndNations.API.TanAPI;
 import org.tan.TownsAndNations.Bstats.Metrics;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.Tasks.DailyTasks;
@@ -33,7 +32,6 @@ public final class TownsAndNations extends JavaPlugin {
 
     private static TownsAndNations plugin;
     static Logger logger;
-    private static TanAPI api;
     private static Economy econ = null;
     private static Permission perms = null;
     private static Chat chat = null;
@@ -81,7 +79,6 @@ public final class TownsAndNations extends JavaPlugin {
         DailyTasks.scheduleMidnightTask();
 
         logger.info("[TaN] -Loading API");
-        api = new TanAPI();
 
         EnableEventList();
         Objects.requireNonNull(getCommand("tan")).setExecutor(new CommandManager());
@@ -173,10 +170,6 @@ public final class TownsAndNations extends JavaPlugin {
 
     public static Logger getPluginLogger() {
         return logger;
-    }
-
-    public TanAPI getPluginAPI(){
-        return api;
     }
 
     public static Economy getEconomy() {

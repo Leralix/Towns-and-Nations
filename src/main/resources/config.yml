@@ -6,8 +6,11 @@ CostOfCreatingTown: 1000
 #The cost of a chunk to claim
 CostOfChunk: 0
 
-#The cost of upkeeping 10 chunks (not implemented yet)
+#The cost of upkeeping 10 chunks
 ChunkUpkeepCost: 0
+
+#Allow non-adjacent chunks to be claimed
+AllowNonAdjacentChunks: false
 
 #Town Levels (town level cost are in the townLevelUpRequirement.yml file)
 TownMaxLevel: 10

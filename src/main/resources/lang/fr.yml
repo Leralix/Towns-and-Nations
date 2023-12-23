@@ -84,10 +84,10 @@ language:
   TOWN_RELATION_ACCEPTED_TOWN_SIDE: "§9{0}§f a accepté la relation {1} avec votre ville"
 
   # Changer le canal de communication
-  TOWN_CHAT_COMMAND_DESC: "Changer le cannal de communication du chat"
-  CHAT_CHANGED: "§fVous parlez maintenant dans le cannal: §a{0}"
-  TOWN_CHAT_ALREADY_IN_TOWN_CHAT: "§cVous parlez déjà dans le cannal de la ville"
-  CHAT_SCOPE_NOT_FOUND: "§cCannal de communication introuvable"
+  TOWN_CHAT_COMMAND_DESC: "Changer le canal de communication du chat"
+  CHAT_CHANGED: "§fVous parlez maintenant dans le canal: §a{0}"
+  TOWN_CHAT_ALREADY_IN_TOWN_CHAT: "§cVous parlez déjà dans le canal de la ville"
+  CHAT_SCOPE_NOT_FOUND: "§cCanal de communication introuvable"
 
   ### Commandes des administrateurs
   ADD_MONEY_COMMAND_SUCCESS: "Ajout de §6+{0}✦§f à §3{1}"
@@ -174,7 +174,7 @@ language:
   GUI_YOUR_CURRENT_TIME_ALIVE: "§aTemps vécu"
   GUI_YOUR_CURRENT_TIME_ALIVE_DESC1: "§fTemps actuel vécu : §e{0}"
   GUI_YOUR_CURRENT_MURDER: "§aTués"
-  GUI_YOUR_CURRENT_MURDER_DESC1: "§fVous avez tué §e{0} §fjoueur"
+  GUI_YOUR_CURRENT_MURDER_DESC1: "§fVous avez tué §e{0}§f joueur"
 
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCréer une nouvelle ville"
   GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fCoût : §6{0}✦"
@@ -198,7 +198,7 @@ language:
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fClic gauche pour§a accepter §fla demande"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§fClic droit pour§c refuser §fla demande"
 
-  GUI_TOWN_INFO_CHANGE_ICON: "§f Changez l'icone en déposant un autre objet dans cette case"
+  GUI_TOWN_INFO_CHANGE_ICON: "§f Changez l'icône en déposant un autre objet dans cette case"
 
   GUI_TOWN_TREASURY_ICON: "§aTrésorerie"
   GUI_TOWN_TREASURY_ICON_DESC1: "§fGérer les impôts et la trésorerie de la ville"
@@ -217,11 +217,11 @@ language:
 
   GUI_TREASURY_STORAGE: "§aTrésorerie"
   GUI_TREASURY_STORAGE_DESC1: "§fTrésorerie actuelle de la ville: §6{0}✦"
-  GUI_TREASURY_STORAGE_DESC2: "§fÉvolution la semaine prochaine: §a+{0}✦"
+  GUI_TREASURY_STORAGE_DESC2: "§fÉvolution au prochain impôt: §a+{0}✦"
   GUI_TREASURY_SPENDING: "§aDépenses"
-  GUI_TREASURY_SPENDING_DESC1: "§fDépenses actuelles de la ville: §c{0}"
-  GUI_TREASURY_SPENDING_DESC2: "§fDe Salaire: §c{0}"
-  GUI_TREASURY_SPENDING_DESC3: "§fDe Parcelles: §c{0}"
+  GUI_TREASURY_SPENDING_DESC1: "§fDépenses actuelles de la ville: §c{0}✦"
+  GUI_TREASURY_SPENDING_DESC2: "§f- De Salaire: §c{0}✦"
+  GUI_TREASURY_SPENDING_DESC3: "§f- De Chunks: §c{0}✦"
   GUI_TREASURY_LOWER_TAX: "§aDiminuer les taxes"
   GUI_TREASURY_LOWER_TAX_DESC1: "§fDiminuer les taxes de §c-1✦"
   GUI_TREASURY_CANT_TAX_LESS: "Vous ne pouvez pas taxer moins que §61✦"
@@ -233,10 +233,10 @@ language:
   GUI_TREASURY_TAX_HISTORY_DESC1: "§fClic pour ouvrir"
   GUI_TREASURY_SALARY_HISTORY: "§aHistorique des salaires"
   GUI_TREASURY_SALARY_HISTORY_DESC1: "§fLes dépenses de salaire s'élèvent à: §c-{0}✦"
-  GUI_TREASURY_CHUNK_SPENDING_HISTORY: "§aHistorique des dépenses de parcelles"
-  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1: "§fLes dépenses de parcelles s'élèvent à: §c{0}"
-  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "§c-{0}✦§f pour chaque 100 parcelles revendiquées"
-  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3: "§fVotre ville a §e{0}§f parcelles"
+  GUI_TREASURY_CHUNK_SPENDING_HISTORY: "§aHistorique des dépenses de Chunks"
+  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1: "§fLes dépenses de Chunks s'élèvent à: §c{0}"
+  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "§c-{0}✦§f pour chaque 10 Chunks revendiquées"
+  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3: "§fVotre ville a §2{0}♦§f Chunks"
   GUI_TREASURY_MISCELLANEOUS_SPENDING: "§aDépenses diverses"
   GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1: "§fLes dépenses diverses ne sont pas encore implémentées"
   GUI_TREASURY_DONATION: "§aFaire un don"
@@ -339,7 +339,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§fClic gauche pour changer le rôle"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fPlus le nombre est petit, meilleur est le rang"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT: "§aCe rang est le rôle par défaut"
-  GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§aCe rang §cn'est pas §ale rôle par défaut"
+  GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§aCe rang§c n'est pas §ale rôle par défaut"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fLes joueurs invités en ville rejoignent automatiquement le rang par défaut"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2: "§fClic gauche pour définir ce rôle comme défaut"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT: "§cCe rang est déjà le rang par défaut"
@@ -360,8 +360,8 @@ language:
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_CLAIM_SETTINGS: "§aGérer les paramètres de revendication"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION: "§aGérer la diplomatie"
 
-  GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION: "§fCe grade §aa §fcette permission"
-  GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION: "§fCe grade §cn'a pas§f cette permission"
+  GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION: "§fCe grade §aa§f cette permission"
+  GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION: "§fCe grade§c n'a pas§f cette permission"
 
   TOWN_RANK_CAP_REACHED: "§cVous avez atteint le nombre maximum de grades"
   WRITE_IN_CHAT_NEW_ROLE_NAME: "§fÉcrivez dans le chat le nom du grade"
@@ -383,12 +383,12 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE: "§aChanger le message de la ville "
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1: "§fMessage actuel: §o\"{0}\""
 
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT: "Ecrivez le nouveau message"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT: "Écrivez le nouveau message"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS: "Mise a jour du message de la ville avec succès"
 
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aModifier la politique de candidature"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fLa ville §aaccepte §fles candidatures"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fLa ville §cn'accepte pas §fles candidatures"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fLa ville§a accepte§f les candidatures"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fLa ville§c n'accepte pas§f les candidatures"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH: "§fClic gauche pour changer la candidature"
 
 
@@ -399,7 +399,7 @@ language:
   TAX_SINGLE_LINE: "§3{0} : §a+{1}✦"
   TAX_SINGLE_LINE_NOT_ENOUGH: "§3{0} :§c pas assez d'argent"
   CHUNK_HISTORY_DESC1: "§fCoût total:§c {0}✦"
-  CHUNK_HISTORY_DESC2: "§2{0}♦§f × {1} = §c{2}"
+  CHUNK_HISTORY_DESC2: "§2{0}♦§f × {1} = §c{2}✦"
 
   #Informations Chat
 
@@ -434,6 +434,6 @@ language:
 
   #Intéractions avec les chunks
   CHUNK_ENTER_WILDERNESS: "§fSortie de la ville"
-  CHUNK_ENTER_TOWN: "§fVous entrez dans la ville: {0}"
+  CHUNK_ENTER_TOWN: "§fVous entrez dans la ville: §9{0}"
   CHUNK_ENTER_TOWN_AT_WAR: "§cVous êtes en guerre avec cette ville, les joueurs y ont été alertés."
   CHUNK_INTRUSION_ALERT: "§cUn ennemi de la ville {0} a traverser vos frontières: {1}"

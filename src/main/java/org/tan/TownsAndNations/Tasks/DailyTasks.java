@@ -70,19 +70,17 @@ public class DailyTasks {
         TownsAndNations.getPluginLogger().info(ChatUtils.getTANString() + Lang.DAILY_TAXES_SUCCESS_LOG.getTranslation());
 
     }
-
     public static void ChunkPayment(){
 
-        int upkeepCost = ConfigUtil.getCustomConfig("config.yml").getInt("ChunkUpkeepCost");
+        float upkeepCost = ConfigUtil.getCustomConfig("config.yml").getInt("ChunkUpkeepCost");
 
         for(TownData town : TownDataStorage.getTownList().values()){
 
-            int numberOfChunk = town.getChunkSettings().getNumberOfClaimedChunk();
+            int numberClaimedChunk = town.getChunkSettings().getNumberOfClaimedChunk();
+            int totalUpkeep = (int) ( numberClaimedChunk * upkeepCost/10);
 
-            int totalCost = Math.floorDiv(numberOfChunk,10) * upkeepCost;
-
-            town.getTreasury().removeToBalance(totalCost);
-            town.getTreasury().addChunkHistory(numberOfChunk,totalCost);
+            town.getTreasury().removeToBalance(totalUpkeep);
+            town.getTreasury().addChunkHistory(numberClaimedChunk,totalUpkeep);
         }
 
 

@@ -1085,6 +1085,11 @@ public class GuiManager2 {
 
         }
 
+
+        int numberClaimedChunk = town.getChunkSettings().getNumberOfClaimedChunk();
+        float upkeepCost = ConfigUtil.getCustomConfig("config.yml").getInt("ChunkUpkeepCost");
+        float totalUpkeep = numberClaimedChunk * upkeepCost/10;
+
         HeadUtils.setLore(goldIcon,
                 Lang.GUI_TREASURY_STORAGE_DESC1.getTranslation(town.getBalance()),
                 Lang.GUI_TREASURY_STORAGE_DESC2.getTranslation(nextTaxes)
@@ -1098,7 +1103,10 @@ public class GuiManager2 {
         HeadUtils.setLore(increaseTax, Lang.GUI_TREASURY_INCREASE_TAX_DESC1.getTranslation());
 
         HeadUtils.setLore(salarySpending, Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.getTranslation("0"));
-        HeadUtils.setLore(chunkSpending, Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.getTranslation(0), Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.getTranslation(0),Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.getTranslation(town.getChunkSettings().getNumberOfClaimedChunk()));
+        HeadUtils.setLore(chunkSpending,
+                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.getTranslation(totalUpkeep),
+                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.getTranslation(upkeepCost),
+                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.getTranslation(numberClaimedChunk));
         HeadUtils.setLore(workbenchSpending, Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1.getTranslation());
 
         HeadUtils.setLore(donation, Lang.GUI_TREASURY_DONATION_DESC1.getTranslation());

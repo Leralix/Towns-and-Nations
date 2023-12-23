@@ -90,7 +90,7 @@ language:
   TOWN_CHAT_COMMAND_DESC: "Change chat range"
   CHAT_CHANGED: "§fChat is now set to: §e{0}"
   TOWN_CHAT_ALREADY_IN_TOWN_CHAT: "§cYou are already sending message in the town chat"
-  CHAT_SCOPE_NOT_FOUND: "§cUnfound chat scope"
+  CHAT_SCOPE_NOT_FOUND: "§cUnfounded chat scope"
 
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Added §6+{0}✦§f to §3{1}"
@@ -181,7 +181,7 @@ language:
   GUI_YOUR_CURRENT_TIME_ALIVE: "§aTime alive"
   GUI_YOUR_CURRENT_TIME_ALIVE_DESC1: "§fCurrent time alive: §e{0}"
   GUI_YOUR_CURRENT_MURDER: "§aKills"
-  GUI_YOUR_CURRENT_MURDER_DESC1: "§fYou killed §e{0} §fplayer"
+  GUI_YOUR_CURRENT_MURDER_DESC1: "§fYou killed §e{0}§f player"
 
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCreate a new town"
   GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fCost: §6{0}✦"
@@ -226,11 +226,11 @@ language:
 
   GUI_TREASURY_STORAGE: "§aTreasury"
   GUI_TREASURY_STORAGE_DESC1: "§fTown current treasury: §6{0}✦"
-  GUI_TREASURY_STORAGE_DESC2: "§fEvolution next week: §a+{0}✦"
+  GUI_TREASURY_STORAGE_DESC2: "§fBalance tomorrow: §a+{0}✦"
   GUI_TREASURY_SPENDING: "§aSpending"
-  GUI_TREASURY_SPENDING_DESC1: "§fTown current spending: §c-{0}"
-  GUI_TREASURY_SPENDING_DESC2: "§fFrom Salary: §c-{0}"
-  GUI_TREASURY_SPENDING_DESC3: "§fFrom Chunks: §c-{0}"
+  GUI_TREASURY_SPENDING_DESC1: "§fTown current spending: §c-{0}✦"
+  GUI_TREASURY_SPENDING_DESC2: "§f- From Salary: §c-{0}✦"
+  GUI_TREASURY_SPENDING_DESC3: "§f- From Chunks: §c-{0}✦"
   GUI_TREASURY_LOWER_TAX: "§aLower the tax"
   GUI_TREASURY_LOWER_TAX_DESC1: "§fLower the tax by §c-1✦"
   GUI_TREASURY_CANT_TAX_LESS: "You can't tax less that §61✦"
@@ -243,9 +243,9 @@ language:
   GUI_TREASURY_SALARY_HISTORY: "§aSalary history"
   GUI_TREASURY_SALARY_HISTORY_DESC1: "§fSalary spending are up to: §c-{0}✦"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY: "§aChunk spending history"
-  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1: "§fChunk spending are up to: §c{0}"
-  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "§c-{0}✦§f for every 100 chunks claimed"
-  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3: "§fYour town have §e{0}§f chunks"
+  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1: "§fChunk spending are up to: §c{0}✦"
+  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "§c-{0}✦§f for every 10 chunks claimed"
+  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3: "§fYour town have §2{0}♦§f chunks"
   GUI_TREASURY_MISCELLANEOUS_SPENDING: "§aMiscellaneous spending"
   GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1: "§fMiscellaneous spending are not yet implemented"
   GUI_TREASURY_DONATION: "§aMake a donation"
@@ -351,7 +351,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§fLeft click to change the role"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fThe smaller the number, the better the rank is"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT: "§aThis rank is the default role"
-  GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§aThis rank §cis not §athe default role"
+  GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§aThis rank §cis not§a the default role"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fPlayer that are invited in the town automatically join the default rank"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2: "§fLeft click to make this role as default"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT: "§cThis rank is already the default rank"
@@ -360,7 +360,7 @@ language:
 
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TAXES: "§aManage taxes"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_PROMOTE_RANK_PLAYER: "§aPromote player"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DERANK_RANK_PLAYER: "§aDerank player"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DERANK_RANK_PLAYER: "§aUnrank player"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_CLAIM_CHUNK: "§aClaim chunk"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_UNCLAIM_CHUNK: "§aUnclaim chunk"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_UPGRADE_TOWN: "§aUpgrade town"
@@ -372,7 +372,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_CLAIM_SETTINGS: "§aManage claim settings"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION: "§aManage diplomacy"
 
-  GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION: "§fThis rank §ahave §fthis permission"
+  GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION: "§fThis rank§a have§f this permission"
   GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION: "§fThis rank §cdo not have§f this permission"
 
 
@@ -408,12 +408,12 @@ language:
   TRANSACTION_HISTORY: "§f[{0}] - §3{1} : §6+{2}✦"
   DONATION_SINGLE_LINE_1: "§a+{0}✦"
   DONATION_SINGLE_LINE_2: "§f{0}"
-  TAX_SINGLE_LINE: "§3{1} : §6+{2}✦"
-  TAX_SINGLE_LINE_NOT_ENOUGH: "§3{1} :§c not enough money"
-  CHUNK_HISTORY_DESC1: "§fTotal cost:§c {1}✦"
-  CHUNK_HISTORY_DESC2: "§2{0}♦§f × {1} = §c{2}"
-  #Chat Information
+  TAX_SINGLE_LINE: "§3{0} : §6+{1}✦"
+  TAX_SINGLE_LINE_NOT_ENOUGH: "§3{0} :§c not enough money"
+  CHUNK_HISTORY_DESC1: "§fTotal cost:§c {0}✦"
+  CHUNK_HISTORY_DESC2: "§2{0}♦§f × {1} = §c{2}✦"
 
+  #Chat Information
   CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cYou can't leave a town if you are the leader, you need to disband it or give the leadership to someone else"
   NOT_TOWN_LEADER_ERROR: "§cYou need to be the leader of the town to execute this action"
 
@@ -445,6 +445,6 @@ language:
 
   #Chunk interactions
   CHUNK_ENTER_WILDERNESS: "§fWilderness"
-  CHUNK_ENTER_TOWN: "§fYou enter: {0}"
+  CHUNK_ENTER_TOWN: "§fYou enter: §9{0}"
   CHUNK_ENTER_TOWN_AT_WAR: "§cYou are at war with this town, players have been alerted"
   CHUNK_INTRUSION_ALERT: "§cAn ennemy from the town {0} has enter your boundaries: {1}"
