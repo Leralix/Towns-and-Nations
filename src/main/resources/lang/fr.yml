@@ -111,7 +111,8 @@ language:
 
   # Commande pour déclarer un chunk
   UNCLAIM_CHUNK_COMMAND_DESC: "Désaffecter un chunk"
-  UNCLAIMED_CHUNK_SUCCESS: "Chunk désaffecté ! Nombre actuel de chunks : §2{0}/{1}♦"
+  UNCLAIMED_CHUNK_SUCCESS: "Chunk désaffecté ! Nombre actuel de chunks : §9{0}/{1}♦"
+  DEBUG_UNCLAIMED_CHUNK_SUCCESS: "Chunk désaffecté ! Nombre actuel de chunks de la ville §2{0} §f: §2{1}/{2}♦"
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cCe chunk est revendiqué par une autre ville : §9{0}"
 
   # Commandes de débogage

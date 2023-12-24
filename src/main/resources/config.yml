@@ -12,6 +12,10 @@ ChunkUpkeepCost: 0
 #Allow non-adjacent chunks to be claimed
 AllowNonAdjacentChunks: false
 
+#Notify if a player from an enemy town enters his town
+notifyEnemyTownEnter: true
+
+
 #Town Levels (town level cost are in the townLevelUpRequirement.yml file)
 TownMaxLevel: 10
 

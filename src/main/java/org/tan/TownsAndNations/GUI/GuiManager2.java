@@ -1124,7 +1124,6 @@ public class GuiManager2 {
         });
         GuiItem _chunkSpending = ItemBuilder.from(chunkSpending).asGuiItem(event -> {
             OpenTownEconomicsHistory(player,HistoryEnum.CHUNK);
-
             event.setCancelled(true);
         });
         GuiItem _workbenchSpending = ItemBuilder.from(workbenchSpending).asGuiItem(event -> event.setCancelled(true));
@@ -1240,6 +1239,9 @@ public class GuiManager2 {
 
                     gui.setItem(i,_transactionIcon);
                     i = i + 1;
+                    if (i > 44){
+                        break;
+                    }
                 }
             }
             case TAX -> {
@@ -1274,10 +1276,13 @@ public class GuiManager2 {
 
                     gui.setItem(i,_transactionHistoryItem);
                     i = i+1;
+                    if (i > 44){
+                        break;
+                    }
                 }
 
             }
-            case CHUNK -> {
+            case CHUNK  -> {
 
                 int i = 0;
 
@@ -1297,6 +1302,10 @@ public class GuiManager2 {
 
                     gui.setItem(i,_transactionIcon);
                     i = i + 1;
+
+                    if (i > 44){
+                        break;
+                    }
                 }
 
             }

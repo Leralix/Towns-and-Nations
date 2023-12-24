@@ -88,6 +88,7 @@ language:
   # Uncliam command
   UNCLAIM_CHUNK_COMMAND_DESC: "Einen Chunk zurückfordern"
   UNCLAIMED_CHUNK_SUCCESS: "Chunk nicht beansprucht ! Aktuelle Nummer des Chunks: §2{0}/{1}♦"
+  DEBUG_UNCLAIMED_CHUNK_SUCCESS: "Chunk nicht beansprucht ! Aktuelle Nummer des Chunks fur §9{0} §f: §2{1}/{2}♦"
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cDieser Brocken wird von einer anderen Stadt beansprucht: §e{0}"
   # Debug commands
   UNKNOWN_DEBUG_COMMAND: "§cUnknown debug, Befehle sind:"

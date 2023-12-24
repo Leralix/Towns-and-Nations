@@ -116,6 +116,7 @@ language:
   #Uncliam command
   UNCLAIM_CHUNK_COMMAND_DESC: "Unclaim a chunk"
   UNCLAIMED_CHUNK_SUCCESS: "Chunk unclaimed ! Current number of chunk: §2{0}/{1}♦"
+  DEBUG_UNCLAIMED_CHUNK_SUCCESS: "Chunk unclaimed ! Current number of chunk of §9{0} §f: §2{1}/{2}♦"
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cThis chunk is claimed by another town: §e{0}"
 
   #Debug commands
