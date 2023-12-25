@@ -6,10 +6,7 @@ import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
-import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
-import org.tan.TownsAndNations.storage.TownInviteDataStorage;
+import org.tan.TownsAndNations.storage.*;
 
 import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
 import static org.tan.TownsAndNations.utils.EconomyUtil.removeFromBalance;
@@ -83,5 +80,21 @@ public class TownUtil {
 
         player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_TOWN.getTranslation(amountDonated));
         PlayerChatListenerStorage.removePlayer(player);
+    }
+
+    public static void deleteTown(TownData townToDelete){
+
+        TownData playerTown = TownDataStorage.get(townToDelete.getID());
+
+        ClaimedChunkStorage.unclaimAllChunkFrom(townToDelete.getID());
+
+        playerTown.cancelAllRelation();
+        TownDataStorage.removeTown(townToDelete.getID());
+
+        for(String memberUUID : playerTown.getPlayerList()){
+            PlayerData memberStat = PlayerDataStorage.get(memberUUID);
+            assert memberStat != null;
+            memberStat.leaveTown();
+        }
     }
 }

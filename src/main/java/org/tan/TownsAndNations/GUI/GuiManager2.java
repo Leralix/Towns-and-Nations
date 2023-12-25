@@ -23,6 +23,7 @@ import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.ChatCate
 import static org.tan.TownsAndNations.storage.TownDataStorage.getTownList;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.RelationUtil.*;
+import static org.tan.TownsAndNations.utils.TownUtil.deleteTown;
 
 import java.util.ArrayList;
 
@@ -1501,21 +1502,10 @@ public class GuiManager2 {
                 player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.getTranslation());
                 return;
             }
+            deleteTown(playerTown);
 
-            ClaimedChunkStorage.unclaimAllChunkFrom(playerStat.getTownId());
-            playerTown.cancelAllRelation();
-            TownDataStorage.removeTown(playerStat.getTownId());
-
-            for(String memberUUID : playerTown.getPlayerList()){
-                PlayerData memberStat = PlayerDataStorage.get(memberUUID);
-                assert memberStat != null;
-                memberStat.leaveTown();
-            }
-            playerStat.setTownId(null);
-            playerStat.setRank(null);
             player.closeInventory();
             player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.getTranslation());
-
         });
 
         GuiItem _changeOwnershipTown = ItemBuilder.from(changeOwnershipTown).asGuiItem(event -> {
@@ -1529,7 +1519,7 @@ public class GuiManager2 {
 
         });
 
-        GuiItem _changeMessage = ItemBuilder.from(changeMessage).asGuiItem(event -> {
+            GuiItem _changeMessage = ItemBuilder.from(changeMessage).asGuiItem(event -> {
 
 
             player.closeInventory();
