@@ -49,7 +49,7 @@ public class UnclaimCommand extends SubCommand {
         }
 
         if(!playerStat.hasPermission(TownRolePermission.UNCLAIM_CHUNK)){
-            player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION);
+            player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
             return;
         }
 

@@ -31,7 +31,7 @@ public class PlayerChatListenerStorage {
     }
 
     public enum ChatCategory {
-        CREATE_CITY, RANK_CREATION,RANK_RENAME, DONATION, CHANGE_DESCRIPTION
+        CREATE_CITY, RANK_CREATION,RANK_RENAME, DONATION, CHANGE_TOWN_NAME, CHANGE_DESCRIPTION
 
     }
 

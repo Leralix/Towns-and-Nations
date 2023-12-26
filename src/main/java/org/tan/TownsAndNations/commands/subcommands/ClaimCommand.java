@@ -58,7 +58,7 @@ public class ClaimCommand extends SubCommand {
         ClaimedChunkSettings townChunkInfo = townStat.getChunkSettings();
         if(!playerStat.hasPermission(TownRolePermission.CLAIM_CHUNK)){
             if(!playerStat.isTownLeader()){
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION);
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
                 return;
             }
         }

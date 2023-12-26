@@ -38,7 +38,7 @@ public final class TownsAndNations extends JavaPlugin {
 
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String GITHUB_API_URL = "https://api.github.com/repos/leralix/towns-and-nations/releases/latest";
-    private static final String CURRENT_VERSION = "v0.1.8";
+    private static final String CURRENT_VERSION = "v0.1.9";
     private static String LATEST_VERSION;
 
     @Override
@@ -61,10 +61,11 @@ public final class TownsAndNations extends JavaPlugin {
 
 
         logger.info("[TaN] -Loading Configs");
-        ConfigUtil.saveResource("config.yml");
+        ConfigUtil.saveAndUpdateResource("config.yml", "config.yml");
         ConfigUtil.loadCustomConfig("config.yml");
-        ConfigUtil.saveResource("townLevelUpRequirement.yml");
+        ConfigUtil.saveAndUpdateResource("townLevelUpRequirement.yml", "townLevelUpRequirement.yml");
         ConfigUtil.loadCustomConfig("townLevelUpRequirement.yml");
+        System.out.println("test load dropchances");
 
         DropChances.load();
 

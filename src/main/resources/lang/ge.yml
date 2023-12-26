@@ -197,7 +197,7 @@ language:
   GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "§c-{0}✦§f für jeweils 100 beanspruchte Chunks"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3: "§fDeine Stadt hat §e{0}§f Brocken"
   GUI_TREASURY_MISCELLANEOUS_SPENDING: "§aVerschiedene Ausgaben"
-  GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1: "§fSonstige Ausgaben werden noch nicht ausgeführt"
+  GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1: "§fLinksklick zum Öffnen"
   GUI_TREASURY_DONATION: "§aSpendet eine Spende"
   GUI_TREASURY_DONATION_DESC1: "§fGeld an die Stadt spenden"
   WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_TOWN_DONATION: "§aSchreiben Sie den Geldbetrag auf, den Sie spenden möchten"
@@ -328,6 +328,16 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fTown §cdo not accept §fapplication"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH: "§fLinksklick zum Umschalten"
 
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME: "§aStadtname ändern"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1: "§fAktueller Name: §9{0}"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC2: "§fLinksklick zum Ändern des Namens"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3: "§fKosten: §6{0}✦"
+
+  GUI_TOWN_SETTINGS_WRITE_NEW_NAME_IN_CHAT: "§fSchreibe den neuen Namen der Stadt in den Chat"
+  GUI_TOWN_SETTINGS_WRITE_NEW_NAME_IN_CHAT_SUCCESS: "§aErfolgreich den Namen der Stadt geändert"
+
+  GUI_TOWN_SETTINGS_NEW_TOWN_NAME_HISTORY: "§fOrtsnamen ändern: §9{0}§f -> §9{1}"
+
   ADMIN_GUI_TOWN_DESC: "§fClick to manage towns"
   ADMIN_GUI_PLAYER_DESC: "§fClick to manage players"
 
@@ -351,6 +361,8 @@ language:
   TAX_SINGLE_LINE_NOT_ENOUGH: "§3{1} :§c nicht genug Geld"
   CHUNK_HISTORY_DESC1: "§fGesamtkosten:§c {1}✦"
   CHUNK_HISTORY_DESC2: "§2{0}♦§f × {1} = §c{2}"
+  MISCELLANEOUS_HISTORY_DESC1: "§f{0}"
+  MISCELLANEOUS_HISTORY_DESC2: "§c-{0}♦"
   # Chat Information
   CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cDu kannst eine Stadt nicht verlassen, wenn du der Anführer bist, du musst sie auflösen oder die Führung an jemand anderen abgeben"
   NOT_TOWN_LEADER_ERROR: "§cDu musst der Anführer der Stadt sein, um diese Aktion durchzuführen"

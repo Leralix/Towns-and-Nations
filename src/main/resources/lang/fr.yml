@@ -239,7 +239,7 @@ language:
   GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "§c-{0}✦§f pour chaque 10 Chunks revendiquées"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3: "§fVotre ville a §2{0}♦§f Chunks"
   GUI_TREASURY_MISCELLANEOUS_SPENDING: "§aDépenses diverses"
-  GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1: "§fLes dépenses diverses ne sont pas encore implémentées"
+  GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1: "§fClic gauche pour ouvrir"
   GUI_TREASURY_DONATION: "§aFaire un don"
   GUI_TREASURY_DONATION_DESC1: "§fDonner de l'argent à la ville"
   WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_TOWN_DONATION: "§aÉcrivez le montant que vous souhaitez donner"
@@ -392,6 +392,17 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fLa ville§c n'accepte pas§f les candidatures"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH: "§fClic gauche pour changer la candidature"
 
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME: "§aChanger le nom de la ville"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1: "§fNom actuel: §9{0}"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC2: "§fClic gauche pour changer le nom de la ville"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3: "§fCoût: §6{0}✦"
+
+  GUI_TOWN_SETTINGS_WRITE_NEW_NAME_IN_CHAT: "§fÉcrivez le nouveau nom de la ville dans le chat"
+  GUI_TOWN_SETTINGS_WRITE_NEW_NAME_IN_CHAT_SUCCESS: "§aNom de la ville changé avec succès"
+
+  GUI_TOWN_SETTINGS_NEW_TOWN_NAME_HISTORY: "§fModification du nom de ville: §9{0}§f -> §9{1}"
+
+
   ADMIN_GUI_TOWN_DESC: "§fClic gauche pour gérer les villes"
   ADMIN_GUI_PLAYER_DESC: "§fClic gauche pour gérer les joueurs"
 
@@ -415,6 +426,8 @@ language:
   TAX_SINGLE_LINE_NOT_ENOUGH: "§3{0} :§c pas assez d'argent"
   CHUNK_HISTORY_DESC1: "§fCoût total:§c {0}✦"
   CHUNK_HISTORY_DESC2: "§2{0}♦§f × {1} = §c{2}✦"
+  MISCELLANEOUS_HISTORY_DESC1: "§f{0}"
+  MISCELLANEOUS_HISTORY_DESC2: "§c-{0}♦"
 
   #Informations Chat
 

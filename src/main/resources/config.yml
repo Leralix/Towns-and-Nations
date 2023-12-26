@@ -75,3 +75,7 @@ rareCrops:
   MELON: 0
 
 rareCropsValue: 3
+
+##
+#Cost of renaming a town:
+ChangeTownNameCost: 100

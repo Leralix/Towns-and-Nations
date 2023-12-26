@@ -248,7 +248,7 @@ language:
   GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "§c-{0}✦§f for every 10 chunks claimed"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3: "§fYour town have §2{0}♦§f chunks"
   GUI_TREASURY_MISCELLANEOUS_SPENDING: "§aMiscellaneous spending"
-  GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1: "§fMiscellaneous spending are not yet implemented"
+  GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1: "§fLeft clic to open Miscellaneous spending history"
   GUI_TREASURY_DONATION: "§aMake a donation"
   GUI_TREASURY_DONATION_DESC1: "§fDonate money to the town"
   WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_TOWN_DONATION: "§aWrite the amount of money you want to give"
@@ -405,6 +405,16 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fTown §cdo not accept §fapplication"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH: "§fLeft click to switch"
 
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME: "§aChange town name"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1: "§fCurrent name: §9{0}"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC2: "§fLeft click to change the name"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3: "§fCost: §6{0}✦"
+
+  GUI_TOWN_SETTINGS_WRITE_NEW_NAME_IN_CHAT: "§fWrite the new name in the chat"
+  GUI_TOWN_SETTINGS_WRITE_NEW_NAME_IN_CHAT_SUCCESS: "§aName successfully changed"
+
+  GUI_TOWN_SETTINGS_NEW_TOWN_NAME_HISTORY: "§fModify town name: §9{0}§f -> §9{1}"
+
   ADMIN_GUI_TOWN_DESC: "§fClick to manage towns"
   ADMIN_GUI_PLAYER_DESC: "§fClick to manage players"
 
@@ -420,7 +430,6 @@ language:
   ADMIN_GUI_DELETE_TOWN: "§aDelete town"
   ADMIN_GUI_DELETE_TOWN_DESC1: "§cDelete the town: §9{0}"
 
-
   #Transaction history
   TRANSACTION_HISTORY: "§f[{0}] - §3{1} : §6+{2}✦"
   DONATION_SINGLE_LINE_1: "§a+{0}✦"
@@ -429,6 +438,8 @@ language:
   TAX_SINGLE_LINE_NOT_ENOUGH: "§3{0} :§c not enough money"
   CHUNK_HISTORY_DESC1: "§fTotal cost:§c {0}✦"
   CHUNK_HISTORY_DESC2: "§2{0}♦§f × {1} = §c{2}✦"
+  MISCELLANEOUS_HISTORY_DESC1: "§f{0}"
+  MISCELLANEOUS_HISTORY_DESC2: "§c-{0}♦"
 
   #Chat Information
   CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cYou can't leave a town if you are the leader, you need to disband it or give the leadership to someone else"

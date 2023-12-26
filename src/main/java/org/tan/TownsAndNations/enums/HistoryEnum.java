@@ -4,5 +4,6 @@ public enum HistoryEnum {
     TAX,
     DONATION,
     SALARY,
-    CHUNK;
+    CHUNK,
+    MISCELLANEOUS
 }

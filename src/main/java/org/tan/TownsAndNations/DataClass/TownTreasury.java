@@ -42,6 +42,14 @@ public class TownTreasury {
         return this.chunkHistory;
     }
 
+    public LinkedHashMap<String,ArrayList<TransactionHistory>> getSalaryHistory(){
+        return salaryHistory;
+    }
+
+    public ArrayList<TransactionHistory> getMiscellaneousPurchaseHistory(){
+        return miscellaneousPurchaseHistory;
+    }
+
 
     public void addToBalance(int amount){
         this.balance = this.balance + amount;
@@ -103,9 +111,7 @@ public class TownTreasury {
     public void addChunkHistory(int numberOfChunk,int amount){
         addChunkHistory(LocalDate.now(),numberOfChunk,amount);
     }
-    public void addMiscellaneousPurchase(LocalDate date, String miscellaneous, int amount){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
-        String formattedDate = date.format(formatter);
+    public void addMiscellaneousPurchase(String miscellaneous, int amount){
         this.miscellaneousPurchaseHistory.add(new TransactionHistory(miscellaneous, amount));
     }
     public List<String> getTaxLimitedHistory(int wantedNumberOfRows){
