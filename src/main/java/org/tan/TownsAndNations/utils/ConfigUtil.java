@@ -5,10 +5,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.tan.TownsAndNations.TownsAndNations;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ConfigUtil {
 
@@ -25,39 +22,73 @@ public class ConfigUtil {
         }
     }
 
-    public static void saveAndUpdateResource(String oldFileName, String baseFileName) {
-        File file = new File(TownsAndNations.getPlugin().getDataFolder(),oldFileName);
-        if (!file.exists()) {
-            TownsAndNations.getPlugin().saveResource(oldFileName, false);
-            return;
+    public static void saveAndUpdateResource(String fileName) {
+
+        File currentFile = new File(TownsAndNations.getPlugin().getDataFolder(),fileName);
+        if (!currentFile.exists()) {
+            TownsAndNations.getPlugin().saveResource(fileName, false);
         }
 
-        // Lire le contenu du fichier existant
-        Set<String> existingLines = new HashSet<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        InputStream baseFile = TownsAndNations.getPlugin().getResource(fileName);
+
+        List<String> baseFileLines = new ArrayList<>();
+        List<String> currentFileLines = new ArrayList<>();
+
+        //Read base file
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(currentFile)))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                existingLines.add(line);
+                currentFileLines.add(line);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        try (InputStream is = TownsAndNations.getPlugin().getResource(baseFileName);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-             FileWriter fw = new FileWriter(file, true);
-             BufferedWriter writer = new BufferedWriter(fw)) {
+        //Read current file
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(baseFile))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (!existingLines.contains(line)) {
-                    writer.write(line);
-                    writer.newLine();
-                }
+                baseFileLines.add(line);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        TownsAndNations.getPlugin().saveResource(oldFileName, true);
+
+        updateCurrentFileWithBaseFile(currentFile, baseFileLines, currentFileLines);
+
+    }
+
+
+
+    public static void updateCurrentFileWithBaseFile(File file, List<String> baseFileLines, List<String> currentFileLines) {
+        // Créer une map pour stocker les clés et les lignes du fichier actuel
+        Map<String, String> currentFileMap = new HashMap<>();
+        for (String line : currentFileLines) {
+            String key = line.contains(":") ? line.split(":")[0].trim() : line;
+            currentFileMap.put(key, line);
+        }
+
+        // Parcourir les lignes du fichier de base et les comparer
+        for (String baseLine : baseFileLines) {
+            String baseKey = baseLine.contains(":") ? baseLine.split(":")[0].trim() : baseLine;
+            if (!currentFileMap.containsKey(baseKey)) {
+                // Si la clé n'est pas présente dans le fichier actuel, ajouter la ligne
+                TownsAndNations.getPluginLogger().warning("Adding config line : " + baseLine + " in config file");
+                currentFileLines.add(baseLine);
+            }
+        }
+        writeToFile(currentFileLines, file);
+    }
+
+    public static void writeToFile(List<String> lines, File fileToWrite) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileToWrite, false))) { // false pour écraser le contenu existant
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void loadCustomConfig(String fileName) {

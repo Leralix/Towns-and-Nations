@@ -18,6 +18,8 @@ notifyEnemyTownEnter: true
 
 #Town Levels (town level cost are in the townLevelUpRequirement.yml file)
 TownMaxLevel: 10
+TownMaxMemberLevel: 10
+TownMaxChunkLevel: 10
 
 TownStartingMembersCap: 5
 UpgradeMembers: 3
@@ -79,3 +81,6 @@ rareCropsValue: 3
 ##
 #Cost of renaming a town:
 ChangeTownNameCost: 100
+
+#Duration of a war in minutes
+WarDurationTime: 60

@@ -23,10 +23,8 @@ public class DropChances {
         FileConfiguration config = ConfigUtil.getCustomConfig("config.yml");
 
         if(!config.getBoolean("RARE_RESOURCES_SPAWN")){
-            TownsAndNations.getPluginLogger().info("Rare item drops are disabled in the config");
             return;
         }
-        TownsAndNations.getPluginLogger().info("Rare item drops are enable in the config");
         loadDropChances("rareStone", config, getRareStone());
         loadDropChances("rareWood", config, getRareWood());
         loadDropChances("rareCrops", config, getRareCrops());
