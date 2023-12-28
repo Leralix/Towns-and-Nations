@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.TownRank;
 import org.tan.TownsAndNations.DataClass.TownTreasury;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
@@ -19,12 +20,10 @@ import org.tan.TownsAndNations.utils.EconomyUtil;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.UUID;
 
 public class DailyTasks {
-
-
-
 
     public static void scheduleMidnightTask() {
         new BukkitRunnable() {
@@ -34,6 +33,7 @@ public class DailyTasks {
                 if (calendar.get(Calendar.HOUR_OF_DAY) == 0 && calendar.get(Calendar.MINUTE) == 0) {
                     TaxPayment();
                     ChunkPayment();
+                    SalaryPayment();
                     ArchiveUtil.archiveFiles();
 
                 }
@@ -82,9 +82,30 @@ public class DailyTasks {
             town.getTreasury().removeToBalance(totalUpkeep);
             town.getTreasury().addChunkHistory(numberClaimedChunk,totalUpkeep);
         }
+    }
 
+    public static void SalaryPayment(){
 
+        for (TownData town: TownDataStorage.getTownList().values()){
+            //Loop through each rank, only paying if everyone of the rank can be paid
+            for (TownRank rank : town.getTownRanks().values()){
 
+                int rankSalary = rank.getSalary();
+                List<String> playerIdList = rank.getPlayers();
+                int costOfSalary = playerIdList.size() * rankSalary;
+
+                if(rankSalary == 0 || costOfSalary > town.getBalance() ){
+                    continue;
+                }
+
+                town.getTreasury().removeToBalance(costOfSalary);
+                for(String playerId : playerIdList){
+                    PlayerData player = PlayerDataStorage.get(playerId);
+                    player.addToBalance(rankSalary);
+                }
+            }
+
+        }
     }
 
 

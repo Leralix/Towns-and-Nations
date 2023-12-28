@@ -12,6 +12,7 @@ import org.tan.TownsAndNations.Bstats.Metrics;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.Tasks.DailyTasks;
 import org.tan.TownsAndNations.Tasks.SaveStats;
+import org.tan.TownsAndNations.commands.AdminCommandManager;
 import org.tan.TownsAndNations.commands.CommandManager;
 import org.tan.TownsAndNations.commands.DebugCommandManager;
 import org.tan.TownsAndNations.listeners.*;
@@ -82,6 +83,7 @@ public final class TownsAndNations extends JavaPlugin {
 
         EnableEventList();
         Objects.requireNonNull(getCommand("tan")).setExecutor(new CommandManager());
+        Objects.requireNonNull(getCommand("tanadmin")).setExecutor(new AdminCommandManager());
         Objects.requireNonNull(getCommand("tandebug")).setExecutor(new DebugCommandManager());
 
 

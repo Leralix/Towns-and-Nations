@@ -133,7 +133,7 @@ language:
 
   TOWN_NOT_ENOUGH_MONEY: "§cThe town do not have enough money to perform this action"
   TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cThe town do not have enough money to perform this action. It need {0}"
-  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Write the name of the town if the chat. §cIt cannot be changed afterward for now"
+  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Write the name of the town if the chat."
 
   PLAYER_SEND_MONEY_TO_TOWN: "§fYou sent §6{0}✦§f to the town"
 
@@ -234,7 +234,7 @@ language:
   GUI_TREASURY_SPENDING_DESC3: "§f- From Chunks: §c-{0}✦"
   GUI_TREASURY_LOWER_TAX: "§aLower the tax"
   GUI_TREASURY_LOWER_TAX_DESC1: "§fLower the tax by §c-1✦"
-  GUI_TREASURY_CANT_TAX_LESS: "You can't tax less that §61✦"
+  GUI_TREASURY_CANT_TAX_LESS: "§cYou can't tax less that §61✦"
   GUI_TREASURY_INCREASE_TAX: "§aIncrease the tax"
   GUI_TREASURY_INCREASE_TAX_DESC1: "§fIncrease the tax by §a+1✦"
   GUI_TREASURY_FLAT_TAX: "§aFlat tax"
@@ -319,8 +319,8 @@ language:
   GUI_TOWN_MEMBER_DESC1: "§fRank: §e{0}"
   GUI_TOWN_MEMBER_DESC2: "§fCurrent balance: §6{0}✦"
   GUI_TOWN_MEMBER_DESC3: "§cRight click to kick player"
-  GUI_TOWN_MEMBER_CANT_KICK_LEADER: "You can't kick the leader of the town"
-  GUI_TOWN_MEMBER_CANT_KICK_YOURSELF: "You can't kick yourself, you can leave the town from the town settings menu"
+  GUI_TOWN_MEMBER_CANT_KICK_LEADER: "§cYou can't kick the leader of the town"
+  GUI_TOWN_MEMBER_CANT_KICK_YOURSELF: "§cYou can't kick yourself, you can leave the town from the town settings menu"
 
   GUI_TOWN_MEMBER_KICKED_SUCCESS: "§a{0}§f has been kicked out of the town"
   GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER: "§cYou have been kicked out of the town"
@@ -355,6 +355,8 @@ language:
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§aThis rank §cis not§a the default role"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fPlayer that are invited in the town automatically join the default rank"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2: "§fLeft click to make this role as default"
+  GUI_TOWN_MEMBERS_ROLE_SALARY: "§aSalary"
+  GUI_TOWN_MEMBERS_ROLE_SALARY_DESC1: "§fCurrent role salary: §6{0}✦"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT: "§cThis rank is already the default rank"
   GUI_TOWN_MEMBERS_ROLE_DELETE: "Delete the rank"
   GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY: "You cannot delete a rank if there are player with the rank"

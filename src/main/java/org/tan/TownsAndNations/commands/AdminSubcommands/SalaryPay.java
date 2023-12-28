@@ -1,23 +1,22 @@
-package org.tan.TownsAndNations.commands.debugsubcommands;
+package org.tan.TownsAndNations.commands.AdminSubcommands;
 
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.commands.SubCommand;
 
 import java.util.List;
 
-import static org.tan.TownsAndNations.Tasks.DailyTasks.ChunkPayment;
-import static org.tan.TownsAndNations.Tasks.DailyTasks.TaxPayment;
+import static org.tan.TownsAndNations.Tasks.DailyTasks.SalaryPayment;
 
-public class ChunkPay extends SubCommand {
+public class SalaryPay extends SubCommand {
 
     @Override
     public String getName() {
-        return "chunkPay";
+        return "salarypay";
     }
 
     @Override
     public String getDescription() {
-        return "Pay taxes for all chunks in towns";
+        return "Pay salaries for all players in towns";
     }
 
     @Override
@@ -27,14 +26,14 @@ public class ChunkPay extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/tandebug chunkPay";
+        return "/tanadmin salarypay";
     }
     public List<String> getTabCompleteSuggestions(Player player, String[] args){
         return null;
     }
     @Override
     public void perform(Player player, String[] args) {
-        ChunkPayment();
+        SalaryPayment();
     }
 }
 

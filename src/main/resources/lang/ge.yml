@@ -102,7 +102,7 @@ language:
   PLAYER_NEED_1_OR_ABOVE: "§fYou need at least §61✦"
   TOWN_NOT_ENOUGH_MONEY: "§cDie Stadt hat nicht genug Geld, um diese Aktion durchzuführen"
   TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cDie Stadt hat nicht genug Geld, um diese Aktion durchzuführen. Sie braucht {0}"
-  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Schreibe den Namen der Stadt in den Chat. §cEs kann nicht nachträglich geändert werden für jetzt"
+  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Schreibe den Namen der Stadt in den Chat"
   PLAYER_SEND_MONEY_TO_TOWN: "§fYou sent §6{0}✦§f to the town"
   # Town Relations
   ##Colors are to be defined in another config file
@@ -287,6 +287,8 @@ language:
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§aThis rank §cis not §athe default role"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fSpieler, die in der Stadt eingeladen werden, treten automatisch dem Standardrang bei"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2: "§fLinksklick, um diese Rolle als Standard festzulegen"
+  GUI_TOWN_MEMBERS_ROLE_SALARY: "§aSalary"
+  GUI_TOWN_MEMBERS_ROLE_SALARY_DESC1: "§fCurrent role salary: §6{0}✦"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT: "§cDieser Rang ist bereits der Standardrang"
   GUI_TOWN_MEMBERS_ROLE_DELETE: "Löschen Sie den Rang"
   GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY: "Sie können einen Rang nicht löschen, wenn es Spieler mit diesem Rang gibt."

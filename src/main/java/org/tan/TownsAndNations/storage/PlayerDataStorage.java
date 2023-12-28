@@ -26,6 +26,7 @@ public class PlayerDataStorage {
 
 
     public static void deleteData(String uuid) {
+
         for (PlayerData stat : stats) {
             if (stat.getUuid().equalsIgnoreCase(uuid)) {
                 stats.remove(stat);

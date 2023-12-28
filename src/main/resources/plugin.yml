@@ -10,9 +10,14 @@ commands:
     description: base command of Town and Nation
     permission: townandnation.base
     usage: /<command>
+  tanadmin:
+    description: admin command of Town and Nation
+    permission: townandnation.admin
+    usage: /<command>
   tandebug:
     description: debug command of Town and Nation
     permission: townandnation.admin
-    usage: /<command> 
+    usage: /<command>
+
 
 

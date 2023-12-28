@@ -11,6 +11,7 @@ public class TownRank {
     private int level;
     private String rankIconName;
     private final List<String> players;
+    private int salary;
     private final Set<TownRolePermission> permissions = EnumSet.noneOf(TownRolePermission.class);
 
     public void swapPayingTaxes() {
@@ -26,6 +27,7 @@ public class TownRank {
         this.players = new ArrayList<>();
 
         this.isPayingTaxes = true;
+        this.salary = 0;
     }
 
     public String getName(){
@@ -98,6 +100,21 @@ public class TownRank {
             removePermission(permission);
         else
             addPermission(permission);
+    }
+
+
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
+    public void addOneFromSalary() {
+        this.salary += 1;
+    }
+    public void removeOneFromSalary() {
+        this.salary -= 1;
+    }
+
+    public int getSalary() {
+        return this.salary;
     }
 
 }

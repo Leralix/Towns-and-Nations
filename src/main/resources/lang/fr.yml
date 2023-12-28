@@ -129,7 +129,7 @@ language:
 
   TOWN_NOT_ENOUGH_MONEY: "§cLa ville n'a pas assez d'argent pour effectuer cette action"
   TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cLa ville n'a pas assez d'argent pour effectuer cette action. Il lui manque {0}"
-  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Écrivez le nom de la ville dans le chat. §cIl ne pourra pas être modifié par la suite pour le moment"
+  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Écrivez le nom de la ville dans le chat"
 
   PLAYER_SEND_MONEY_TO_TOWN: "§fVous avez envoyé §6{0}✦§f à la ville"
 
@@ -199,7 +199,7 @@ language:
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fClic gauche pour§a accepter §fla demande"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§fClic droit pour§c refuser §fla demande"
 
-  GUI_TOWN_INFO_CHANGE_ICON: "§f Changez l'icône en déposant un autre objet dans cette case"
+  GUI_TOWN_INFO_CHANGE_ICON: "§fChangez l'icône en déposant un autre objet dans cette case"
 
   GUI_TOWN_TREASURY_ICON: "§aTrésorerie"
   GUI_TOWN_TREASURY_ICON_DESC1: "§fGérer les impôts et la trésorerie de la ville"
@@ -343,6 +343,8 @@ language:
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§aCe rang§c n'est pas §ale rôle par défaut"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fLes joueurs invités en ville rejoignent automatiquement le rang par défaut"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2: "§fClic gauche pour définir ce rôle comme défaut"
+  GUI_TOWN_MEMBERS_ROLE_SALARY: "§aSalaire du rang"
+  GUI_TOWN_MEMBERS_ROLE_SALARY_DESC1: "§fSalaire actuel: §6{0}✦"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT: "§cCe rang est déjà le rang par défaut"
   GUI_TOWN_MEMBERS_ROLE_DELETE: "Supprimer le rang"
   GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY: "Vous ne pouvez pas supprimer un rang s'il y a des joueurs ayant ce rang"
@@ -382,7 +384,7 @@ language:
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS: "Transfert réussi de la direction de la ville à : §e{0}"
 
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE: "§aChanger le message de la ville "
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1: "§fMessage actuel: §o\"{0}\""
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1: "§fMessage actuel: §o§7\"{0}\""
 
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT: "Écrivez le nouveau message"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS: "Mise a jour du message de la ville avec succès"

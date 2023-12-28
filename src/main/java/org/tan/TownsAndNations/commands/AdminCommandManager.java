@@ -3,32 +3,28 @@ package org.tan.TownsAndNations.commands;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.tan.TownsAndNations.commands.AdminSubcommands.ChunkPay;
-import org.tan.TownsAndNations.commands.AdminSubcommands.SalaryPay;
+import org.tan.TownsAndNations.commands.AdminSubcommands.AddMoney;
+import org.tan.TownsAndNations.commands.AdminSubcommands.SpawnVillager;
+import org.tan.TownsAndNations.commands.AdminSubcommands.getRareItem;
 import org.tan.TownsAndNations.commands.debugsubcommands.*;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DebugCommandManager implements CommandExecutor, TabExecutor, TabCompleter {
+public class AdminCommandManager implements CommandExecutor, TabExecutor, TabCompleter {
 
     private final ArrayList<SubCommand> subCommands = new ArrayList<>();
 
-    public DebugCommandManager(){
+    public AdminCommandManager(){
 
-        subCommands.add(new ChatStorage());
-        subCommands.add(new SaveAll());
-        subCommands.add(new CreateBackup());
+        subCommands.add(new AddMoney());
+        subCommands.add(new SetMoney());
+        subCommands.add(new SpawnVillager());
+        subCommands.add(new getRareItem());
 
-        subCommands.add(new TownStat());
-        subCommands.add(new ColorCode());
-        subCommands.add(new DropChance());
-        subCommands.add(new Update());
-
-        subCommands.add(new TaxPay());
-        subCommands.add(new ChunkPay());
-        subCommands.add(new SalaryPay());
+        subCommands.add(new UnclaimDebugCommand());
+        subCommands.add(new OpenAdminGUI());
     }
 
     @Override

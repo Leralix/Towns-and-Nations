@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.commands.debugsubcommands;
+package org.tan.TownsAndNations.commands.AdminSubcommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
