@@ -566,8 +566,7 @@ public class GuiManager2 {
         TownData town = TownDataStorage.get(player);
         TownRank townRank = town.getRank(roleName);
 
-        boolean isDefaultRank;
-        isDefaultRank = town.getTownDefaultRank().equals(townRank.getName());
+        boolean isDefaultRank = town.getTownDefaultRank().equals(townRank.getName());
 
         Material roleMaterial = Material.getMaterial(townRank.getRankIconName());
         int rankLevel = townRank.getLevel();
@@ -575,8 +574,7 @@ public class GuiManager2 {
         ItemStack roleIcon = HeadUtils.getCustomLoreItem(
                 roleMaterial,
                 Lang.GUI_TOWN_MEMBERS_ROLE_NAME.getTranslation(townRank.getName()),
-                Lang.GUI_TOWN_MEMBERS_ROLE_NAME_DESC1.getTranslation()
-        );
+                Lang.GUI_TOWN_MEMBERS_ROLE_NAME_DESC1.getTranslation());
         ItemStack roleRankIcon = HeadUtils.getRankLevelColor(rankLevel);
         ItemStack membersRank = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==");
 
@@ -676,23 +674,23 @@ public class GuiManager2 {
             if(townRank.getNumberOfPlayer() != 0){
                 player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY.getTranslation());
                 event.setCancelled(true);
-                OpenTownMenuRoleManager(player,roleName);
             }
             else{
                 town.removeRank(townRank.getName());
                 OpenTownMenuRoles(player);
                 event.setCancelled(true);
-                OpenTownMenuRoleManager(player,roleName);
             }
         });
 
         GuiItem _lowerSalary = ItemBuilder.from(lowerSalary).asGuiItem(event -> {
             event.setCancelled(true);
             townRank.removeOneFromSalary();
+            OpenTownMenuRoleManager(player,roleName);
         });
-        GuiItem _IncreaseSalary = ItemBuilder.from(salary).asGuiItem(event -> {
+        GuiItem _IncreaseSalary = ItemBuilder.from(increaseSalary).asGuiItem(event -> {
             event.setCancelled(true);
             townRank.addOneFromSalary();
+            OpenTownMenuRoleManager(player,roleName);
         });
 
         GuiItem _salary = ItemBuilder.from(salary).asGuiItem(event -> {
@@ -909,16 +907,28 @@ public class GuiManager2 {
 
         }
 
-
+        // Chunk upkeep
         int numberClaimedChunk = town.getChunkSettings().getNumberOfClaimedChunk();
         float upkeepCost = ConfigUtil.getCustomConfig("config.yml").getInt("ChunkUpkeepCost");
         float totalUpkeep = numberClaimedChunk * upkeepCost/10;
+        //total salary
+        int totalSalary = 0;
+        for (TownRank rank : town.getTownRanks().values()) {
+
+            List<String> playerIdList = rank.getPlayers();
+            totalSalary += playerIdList.size() * rank.getSalary();
+        }
+
 
         HeadUtils.setLore(goldIcon,
                 Lang.GUI_TREASURY_STORAGE_DESC1.getTranslation(town.getBalance()),
-                Lang.GUI_TREASURY_STORAGE_DESC2.getTranslation(nextTaxes)
-        );
-        HeadUtils.setLore(goldSpendingIcon, Lang.GUI_TREASURY_SPENDING_DESC1.getTranslation(0), Lang.GUI_TREASURY_SPENDING_DESC2.getTranslation(0),Lang.GUI_TREASURY_SPENDING_DESC3.getTranslation(0));
+                Lang.GUI_TREASURY_STORAGE_DESC2.getTranslation(nextTaxes));
+
+
+        HeadUtils.setLore(goldSpendingIcon,
+                Lang.GUI_TREASURY_SPENDING_DESC1.getTranslation(totalSalary + totalUpkeep),
+                Lang.GUI_TREASURY_SPENDING_DESC2.getTranslation(totalSalary),
+                Lang.GUI_TREASURY_SPENDING_DESC3.getTranslation(totalUpkeep));
 
 
 

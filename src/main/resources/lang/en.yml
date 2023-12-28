@@ -337,7 +337,7 @@ language:
   GUI_TOWN_MEMBERS_CHANGE_ROLE_PRIORITY: "§aChange the rank priority"
   GUI_TOWN_MEMBERS_CHANGE_ROLE_PRIORITY_DESC1: "§fLeft click to change priority"
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO: "§aList of players with this role:"
-  GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1: "Left click to add a player to this rank"
+  GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1: "§fLeft click to add a player to this rank"
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC: "§f{0}"
   GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME: "§aRename the rank"
   GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION: "§aManage permissions"
