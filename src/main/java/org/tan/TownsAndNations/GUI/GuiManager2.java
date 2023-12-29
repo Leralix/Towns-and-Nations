@@ -6,7 +6,6 @@ import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -17,8 +16,8 @@ import org.tan.TownsAndNations.enums.*;
 import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.utils.*;
 
-import static org.tan.TownsAndNations.enums.MessageKey.RANK_NAME;
-import static org.tan.TownsAndNations.enums.MessageKey.TOWN_COST;
+import static org.tan.TownsAndNations.enums.MessageKey.*;
+import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.enums.TownRolePermission.KICK_PLAYER;
 import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.ChatCategory.RANK_CREATION;
 import static org.tan.TownsAndNations.storage.TownDataStorage.getTownList;
@@ -354,10 +353,8 @@ public class GuiManager2 {
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData town = TownDataStorage.get(playerStat);
 
-        HashSet<String> players = town.getPlayerList();
-
         int i = 0;
-        for (String playerUUID: players) {
+        for (String playerUUID: town.getPlayerList()) {
 
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
             PlayerData otherPlayerStat = PlayerDataStorage.get(playerUUID);
@@ -373,26 +370,7 @@ public class GuiManager2 {
             GuiItem _playerIcon = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(event.getClick() == ClickType.RIGHT){
-
-                    if(playerStat.hasPermission(KICK_PLAYER)){
-                        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
-                        return;
-                    }
-                    if(otherPlayerStat.isTownLeader()){
-                        player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.getTranslation());
-                        return;
-                    }
-                    if(otherPlayerStat.getUuid().equals(playerStat.getUuid())){
-                        player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_YOURSELF.getTranslation());
-                        return;
-                    }
-
-                    town.getRank(otherPlayerStat.getTownRankID()).removePlayer(playerUUID);
-                    town.removePlayer(playerUUID);
-                    otherPlayerStat.leaveTown();
-                    town.broadCastMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.getTranslation(playerIterate.getName()));
-                    if(playerIterate.isOnline())
-                        Objects.requireNonNull(playerIterate.getPlayer()).sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.getTranslation());
+                    TownUtil.kickPlayer(player,playerIterate);
                 }
                 OpenTownMemberList(player);
             });
@@ -471,7 +449,8 @@ public class GuiManager2 {
                     if(playerIterateOnline != null){
                         playerIterateOnline.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.getTranslation(town.getName()));
                     }
-                    town.broadCastMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.getTranslation(player.getName()));
+                    town.broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.getTranslation(player.getName()),
+                            MINOR_GOOD);
 
                     TeamUtils.updateColor();
 
@@ -685,11 +664,13 @@ public class GuiManager2 {
         GuiItem _lowerSalary = ItemBuilder.from(lowerSalary).asGuiItem(event -> {
             event.setCancelled(true);
             townRank.removeOneFromSalary();
+            SoundUtil.playSound(player, REMOVE);
             OpenTownMenuRoleManager(player,roleName);
         });
         GuiItem _IncreaseSalary = ItemBuilder.from(increaseSalary).asGuiItem(event -> {
             event.setCancelled(true);
             townRank.addOneFromSalary();
+            SoundUtil.playSound(player, ADD);
             OpenTownMenuRoleManager(player,roleName);
         });
 
@@ -985,6 +966,7 @@ public class GuiManager2 {
                 player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.getTranslation());
                 return;
             }
+            SoundUtil.playSound(player, REMOVE);
 
             town.getTreasury().remove1FlatTax();
             OpenTownEconomics(player);
@@ -1002,6 +984,7 @@ public class GuiManager2 {
             }
 
             town.getTreasury().add1FlatTax();
+            SoundUtil.playSound(player, ADD);
             OpenTownEconomics(player);
         });
 
@@ -1200,16 +1183,19 @@ public class GuiManager2 {
             event.setCancelled(true);
             if(!playerStat.hasPermission(TownRolePermission.UPGRADE_TOWN)){
                 player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                SoundUtil.playSound(player,NOT_ALLOWED);
                 return;
             }
             if(townData.getTreasury().getBalance() > townLevel.getMoneyRequiredTownLevel()){
                 townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredTownLevel());
                 townLevel.TownLevelUp();
+                SoundUtil.playSound(player,LEVEL_UP);
                 player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.getTranslation());
                 OpenTownLevel(player);
             }
             else{
                 player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.getTranslation());
+                SoundUtil.playSound(player,NOT_ALLOWED);
             }
 
         });
@@ -1217,31 +1203,37 @@ public class GuiManager2 {
             event.setCancelled(true);
             if(!playerStat.hasPermission(TownRolePermission.UPGRADE_TOWN)){
                 player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                SoundUtil.playSound(player,NOT_ALLOWED);
                 return;
             }
             if(townData.getTreasury().getBalance() > townLevel.getMoneyRequiredChunkCap()){
                 townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredChunkCap());
                 townLevel.chunkCapLevelUp();
-                player.sendMessage(getTANString() + Lang.GUI_TOWN_LEVEL_UP.getTranslation());
+                SoundUtil.playSound(player,LEVEL_UP);
+                player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.getTranslation());
                 OpenTownLevel(player);
             }
             else{
                 player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.getTranslation());
+                SoundUtil.playSound(player,NOT_ALLOWED);
             }
         });
         GuiItem _upgradePlayerCap = ItemBuilder.from(upgradePlayerCap).asGuiItem(event -> {
             event.setCancelled(true);
             if(!playerStat.hasPermission(TownRolePermission.UPGRADE_TOWN)){
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                SoundUtil.playSound(player,NOT_ALLOWED);
                 return;
             }
             if (townData.getTreasury().getBalance() > townLevel.getMoneyRequiredPlayerCap()) {
                 townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredPlayerCap());
                 townLevel.PlayerCapLevelUp();
-                player.sendMessage(getTANString() + Lang.GUI_TOWN_LEVEL_UP.getTranslation());
+                SoundUtil.playSound(player,LEVEL_UP);
+                player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.getTranslation());
                 OpenTownLevel(player);
             } else {
                 player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.getTranslation());
+                SoundUtil.playSound(player,NOT_ALLOWED);
             }
         });
 
@@ -1309,13 +1301,16 @@ public class GuiManager2 {
         GuiItem _leaveTown = ItemBuilder.from(leaveTown).asGuiItem(event -> {
             event.setCancelled(true);
             if (playerStat.isTownLeader()) {
+                SoundUtil.playSound(player, NOT_ALLOWED);
                 player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.getTranslation());
             } else {
                 playerTown.removePlayer(player);
                 playerTown.getRank(playerStat.getTownRankID()).removePlayer(playerStat.getUuid());
-                playerStat.leaveTown();
+
                 player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_LEFT_THE_TOWN.getTranslation());
-                playerTown.broadCastMessage(ChatUtils.getTANString() + Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.getTranslation(Bukkit.getOfflinePlayer(UUID.fromString(playerStat.getUuid())).getName()));
+                playerStat.leaveTown();
+                playerTown.broadCastMessageWithSound(Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.getTranslation(playerStat.getName()),
+                        BAD);
                 player.closeInventory();
             }
         });
@@ -1328,6 +1323,7 @@ public class GuiManager2 {
             deleteTown(playerTown);
 
             player.closeInventory();
+            SoundUtil.playSound(player,GOOD);
             player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.getTranslation());
         });
 
@@ -1513,16 +1509,15 @@ public class GuiManager2 {
                 townIcon.setItemMeta(meta);
             }
 
-                GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
+            GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
 
                 if(relation == TownRelation.WAR){
                     player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.getTranslation(TownDataStorage.get(otherTownUUID).getName()));
                     WarTaggedPlayer.addPlayersToTown(otherTownUUID,playerTown.getPlayerList());
-                    TownDataStorage.get(otherTownUUID).broadCastMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_INFO.getTranslation(playerTown.getName()));
+                    TownDataStorage.get(otherTownUUID).broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.getTranslation(playerTown.getName()),
+                            WAR);
                 }
-
-
             });
             gui.setItem(i, _town);
 
@@ -1611,13 +1606,13 @@ public class GuiManager2 {
                 GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                     event.setCancelled(true);
 
-
                     if(HaveRelation(playerTown, otherTown)){
                         player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION.getTranslation());
+                        SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
                     if(relation.getNeedsConfirmationToStart()){
-
+                        // Can only be good relations
                         OfflinePlayer otherTownLeader = Bukkit.getOfflinePlayer(UUID.fromString(otherTown.getUuidLeader()));
 
                         if (!otherTownLeader.isOnline()) {
@@ -1635,9 +1630,11 @@ public class GuiManager2 {
 
                         player.closeInventory();
                     }
-                    else{
-                        playerTown.broadCastMessage(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),relation.getColor() + relation.getName()));
-                        otherTown.broadCastMessage(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(playerTown.getName(),relation.getColor() + relation.getName()));
+                    else{ //Can only be bad relations
+                        playerTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),relation.getColoredName()),
+                                BAD);
+                        otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(playerTown.getName(),relation.getColoredName()),
+                                BAD);
                         addTownRelation(playerTown,otherTown,relation);
                         OpenTownRelation(player,relation);
                     }
@@ -1659,7 +1656,7 @@ public class GuiManager2 {
                 GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                     event.setCancelled(true);
 
-                    if(relation.getNeedsConfirmationToEnd()){
+                    if(relation.getNeedsConfirmationToEnd()){ //Can only be better relations
                         player.sendMessage(ChatUtils.getTANString() + "Sent to the leader of the other town");
 
                         Player otherTownLeader = Bukkit.getPlayer(UUID.fromString(otherTown.getUuidLeader()));
@@ -1670,9 +1667,11 @@ public class GuiManager2 {
                         ChatUtils.sendClickableCommand(otherTownLeader,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.getTranslation(),"tan accept "  + playerTown.getID());
                         player.closeInventory();
                     }
-                    else{
-                        playerTown.broadCastMessage(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),"neutral"));
-                        otherTown.broadCastMessage(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(playerTown.getName(),"neutral"));
+                    else{ //Can only be worst relations
+                        playerTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),"neutral"),
+                                BAD);
+                        otherTown.broadCastMessageWithSound(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(playerTown.getName(),"neutral"),
+                                BAD);
                         removeRelation(playerTown,otherTown,relation);
                         OpenTownRelation(player,relation);
                     }

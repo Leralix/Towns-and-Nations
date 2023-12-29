@@ -3,6 +3,7 @@ package org.tan.TownsAndNations.DataClass;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.utils.ConfigUtil;
 
 public class PlayerData {
 
@@ -15,7 +16,7 @@ public class PlayerData {
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
         this.PlayerName = player.getName();
-        this.Balance = 0;
+        this.Balance = ConfigUtil.getCustomConfig("config.yml").getInt("StartingMoney");;
         this.TownId = null;
         this.TownRank = null;
     }

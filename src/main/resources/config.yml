@@ -1,4 +1,6 @@
 
+#The amount of money a player starts with (only if no economy plugin is linked to the server)
+StartingMoney: 100
 
 #The cost of creating a town
 CostOfCreatingTown: 1000

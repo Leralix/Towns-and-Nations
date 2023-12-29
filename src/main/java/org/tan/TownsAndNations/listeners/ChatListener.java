@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static org.tan.TownsAndNations.enums.MessageKey.*;
+import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.ChatCategory.*;
 import static org.tan.TownsAndNations.utils.TownUtil.DonateToTown;
 
 
@@ -38,7 +39,7 @@ public class ChatListener implements Listener {
             return;
 
 
-        if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.CREATE_CITY){
+        if(chatData.getCategory() == CREATE_CITY){
             int townPrice = Integer.parseInt(chatData.getData().get(TOWN_COST));
             String townName = event.getMessage();
 
@@ -47,7 +48,7 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
         }
 
-        if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.DONATION){
+        if(chatData.getCategory() == DONATION){
 
             String stringAmount = event.getMessage();
 
@@ -63,7 +64,7 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
         }
 
-        if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.RANK_CREATION){
+        if(chatData.getCategory() == RANK_CREATION){
             PlayerChatListenerStorage.removePlayer(player);
             String rankName = event.getMessage();
 
@@ -81,7 +82,7 @@ public class ChatListener implements Listener {
 
         }
 
-        if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.RANK_RENAME){
+        if(chatData.getCategory() == RANK_RENAME){
             PlayerChatListenerStorage.PlayerChatData ChatData = PlayerChatListenerStorage.getPlayerData(playerUUID);
 
             String newRankName = event.getMessage();
@@ -119,7 +120,7 @@ public class ChatListener implements Listener {
 
         }
 
-        if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.CHANGE_DESCRIPTION){
+        if(chatData.getCategory() == CHANGE_DESCRIPTION){
 
             String newDesc = event.getMessage();
             String townId = chatData.getData().get(TOWN_ID);
@@ -139,7 +140,7 @@ public class ChatListener implements Listener {
 
         }
 
-        if(chatData.getCategory() == PlayerChatListenerStorage.ChatCategory.CHANGE_TOWN_NAME){
+        if(chatData.getCategory() == CHANGE_TOWN_NAME){
             TownData town = TownDataStorage.get(chatData.getData().get(TOWN_ID));
             int townCost = Integer.parseInt(chatData.getData().get(COST));
 

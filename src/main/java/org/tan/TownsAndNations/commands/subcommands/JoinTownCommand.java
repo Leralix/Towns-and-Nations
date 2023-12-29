@@ -14,6 +14,7 @@ import org.tan.TownsAndNations.utils.TeamUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.tan.TownsAndNations.enums.SoundEnum.GOOD;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.TeamUtils.setScoreBoard;
 
@@ -85,7 +86,8 @@ public class JoinTownCommand extends SubCommand {
                     playerStat.setRank(townData.getTownDefaultRank());
 
                     player.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.getTranslation(townData.getName()));
-                    townData.broadCastMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.getTranslation(player.getName()));
+                    townData.broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.getTranslation(player.getName()),
+                            GOOD);
 
                     TownInviteDataStorage.removeInvitation(player,townData.getID());
 
