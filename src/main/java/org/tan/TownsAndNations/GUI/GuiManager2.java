@@ -501,10 +501,15 @@ public class GuiManager2 {
             ItemStack townRankItemStack = HeadUtils.getCustomLoreItem(townMaterial, townRank.getColoredName());
             GuiItem _townRankItemStack = ItemBuilder.from(townRankItemStack).asGuiItem(event -> {
                 event.setCancelled(true);
-                if(playerStat.hasPermission(TownRolePermission.MANAGE_RANKS))
-                    OpenTownMenuRoleManager(player,townRank.getName());
-                else
+                if(!playerStat.hasPermission(TownRolePermission.MANAGE_RANKS)) {
                     player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                    return;
+                }
+                if(town.getRank(playerStat).getLevel() >= townRank.getLevel()){
+                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.getTranslation());
+                    return;
+                }
+                OpenTownMenuRoleManager(player,townRank.getName());
             });
             gui.setItem(i, _townRankItemStack);
             i = i+1;

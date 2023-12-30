@@ -7,6 +7,7 @@ language:
   #Common errors
   PLAYER_NO_TOWN: "§cYou do not have a town"
   PLAYER_NO_PERMISSION: "§cYou do not have the permission of performing this action"
+  PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cYou do not have the permission of performing this action on a rank higher or same than you"
   PLAYER_NOT_FOUND: "§cInvalid name, or the player is not connected"
 
   #Chat scope

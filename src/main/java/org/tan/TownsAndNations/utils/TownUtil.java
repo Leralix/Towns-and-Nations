@@ -108,10 +108,17 @@ public class TownUtil {
     public static void kickPlayer(Player player, OfflinePlayer kickedPlayer) {
         PlayerData playerData = PlayerDataStorage.get(player);
         PlayerData kickedPlayerData = PlayerDataStorage.get(kickedPlayer);
+        TownData townData = TownDataStorage.get(playerData);
 
 
         if(playerData.hasPermission(KICK_PLAYER)){
             player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+            return;
+        }
+        int playerLevel = townData.getRank(playerData).getLevel();
+        int kickedPlayerLevel = townData.getRank(kickedPlayerData).getLevel();
+        if(playerLevel >= kickedPlayerLevel){
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.getTranslation());
             return;
         }
         if(kickedPlayerData.isTownLeader()){

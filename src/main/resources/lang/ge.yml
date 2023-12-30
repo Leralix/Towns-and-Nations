@@ -6,6 +6,7 @@ language:
   # Common errors
   PLAYER_NO_TOWN: "§cSie haben keine Stadt"
   PLAYER_NO_PERMISSION: "§cSie haben nicht die Erlaubnis, diese Aktion durchzuführen"
+  PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cSie haben nicht die Erlaubnis, diese Aktion gegenüber einem Spieler mit einem höheren Rang als Ihnen durchzuführen"
   PLAYER_NOT_FOUND: "§cUngültiger Name, oder der Player ist nicht verbunden"
   # Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"

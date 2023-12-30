@@ -7,6 +7,7 @@ language:
   # Erreurs communes
   PLAYER_NO_TOWN: "§cVous n'avez pas de ville"
   PLAYER_NO_PERMISSION: "§cVous n'avez pas la permission d'effectuer cette action"
+  PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cVous n'avez pas la permission d'effectuer cette action sur un rang supérieur"
   PLAYER_NOT_FOUND: "§cNom invalide, ou le joueur n'est pas connecté"
 
   #Chat scope
