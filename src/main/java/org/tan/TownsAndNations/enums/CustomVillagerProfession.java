@@ -21,7 +21,12 @@ public enum CustomVillagerProfession {
         this.buyingItem = _buyingItem;
     }
     public static CustomVillagerProfession getVillager(String tag){
-        return CustomVillagerProfession.valueOf(tag);
+
+        for(CustomVillagerProfession profession : CustomVillagerProfession.values()){
+            if(profession.name().equalsIgnoreCase(tag))
+                return profession;
+        }
+        return null;
     }
     public String getDisplayName(){
         return this.name;

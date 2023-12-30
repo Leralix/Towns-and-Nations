@@ -21,6 +21,7 @@ import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.DropChances;
+import org.tan.TownsAndNations.utils.UpdateUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -96,6 +97,7 @@ public final class TownsAndNations extends JavaPlugin {
             logger.info("[TaN] -Vault API not found, using own economy system");
         }
 
+        UpdateUtil.update();
 
         logger.info("[TaN] Plugin successfully loaded");
         getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");

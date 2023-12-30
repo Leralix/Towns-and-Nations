@@ -363,7 +363,7 @@ public class GuiManager2 {
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate.getName(),playerIterate);
             HeadUtils.setLore(
                     playerHead,
-                    Lang.GUI_TOWN_MEMBER_DESC1.getTranslation(otherPlayerStat.getTownRankID()),
+                    Lang.GUI_TOWN_MEMBER_DESC1.getTranslation(town.getRank(otherPlayerStat.getTownRankID()).getColoredName()),
                     Lang.GUI_TOWN_MEMBER_DESC2.getTranslation(EconomyUtil.getBalance(playerIterate)),
                     playerStat.hasPermission(KICK_PLAYER) ? Lang.GUI_TOWN_MEMBER_DESC3.getTranslation() : ""
             );
@@ -498,7 +498,7 @@ public class GuiManager2 {
         for (TownRank townRank: ranks.values()) {
 
             Material townMaterial = Material.getMaterial(townRank.getRankIconName());
-            ItemStack townRankItemStack = HeadUtils.getCustomLoreItem(townMaterial, townRank.getName());
+            ItemStack townRankItemStack = HeadUtils.getCustomLoreItem(townMaterial, townRank.getColoredName());
             GuiItem _townRankItemStack = ItemBuilder.from(townRankItemStack).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(playerStat.hasPermission(TownRolePermission.MANAGE_RANKS))
@@ -548,13 +548,16 @@ public class GuiManager2 {
         boolean isDefaultRank = town.getTownDefaultRank().equals(townRank.getName());
 
         Material roleMaterial = Material.getMaterial(townRank.getRankIconName());
-        int rankLevel = townRank.getLevel();
 
         ItemStack roleIcon = HeadUtils.getCustomLoreItem(
                 roleMaterial,
-                Lang.GUI_TOWN_MEMBERS_ROLE_NAME.getTranslation(townRank.getName()),
+                Lang.GUI_TOWN_MEMBERS_ROLE_NAME.getTranslation(townRank.getColoredName()),
                 Lang.GUI_TOWN_MEMBERS_ROLE_NAME_DESC1.getTranslation());
-        ItemStack roleRankIcon = HeadUtils.getRankLevelColor(rankLevel);
+
+        ItemStack roleRankIcon = townRank.getRankEnum().getRankGuiIcon();
+        HeadUtils.addLore(roleRankIcon, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1.getTranslation(),
+                Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2.getTranslation());
+
         ItemStack membersRank = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==");
 
         ArrayList<String> playerNames = new ArrayList<>();

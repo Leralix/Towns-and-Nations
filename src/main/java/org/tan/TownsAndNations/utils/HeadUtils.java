@@ -44,7 +44,7 @@ public class HeadUtils {
             setLore(head,
                     Lang.GUI_PLAYER_PROFILE_DESC1.getTranslation(getBalance(p)),
                     Lang.GUI_PLAYER_PROFILE_DESC2.getTranslation(playerTown.getName()),
-                    Lang.GUI_PLAYER_PROFILE_DESC3.getTranslation(playerTown.getRank(playerData.getTownRankID()).getName())
+                    Lang.GUI_PLAYER_PROFILE_DESC3.getTranslation(playerTown.getRank(playerData.getTownRankID()).getColoredName())
             );
 
         }
@@ -190,46 +190,6 @@ public class HeadUtils {
         itemMeta.setLore(lore);
 
         itemStack.setItemMeta(itemMeta);
-    }
-
-    public static ItemStack getRankLevelColor(int level){
-
-        ItemStack skull;
-        switch(level){
-
-            case 1:
-                skull = makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_1.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODIxNGEyYmUzM2YwMzdiZmU2ZmEzZTI0YjFjMmZlMDRmMWU1ZmZkNzQ4ODA5NGQ0ZmY3YWJiMGIzNzBlZjViZSJ9fX0=");
-                break;
-
-            case 2:
-                skull = makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_2.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWEwZjQ2MDQ2YWUxM2QzMTkzZDQyNTcyZmRiY2I2MmVhMWQ2OWMzODA3ZjA2ZTQwYmQxMTc4MmY1MTQxNGM0NCJ9fX0=");
-                break;
-
-            case 3:
-                skull = makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_3.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTlhMWMxOTFlMGViYWJlODlkZGYxOGE4YmFjOGY0MjgwZTNhYzZiYzY2MWMxM2NlMWRmZjY3NGRhZDI4ODVlMyJ9fX0=");
-                break;
-
-            case 4:
-                skull = makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_4.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTFmZGM4YTk1YzEzM2NlYTRlZDNlNGQ0Njg0MWNkMjM1YmRmYmJlZjYwN2I0MDAzYjM5ZjQ0NzQ1NzQ5OTQyMSJ9fX0=");
-                break;
-
-            case 5:
-                skull = makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_5.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmNmZTg2ODQ4MjdiMDUxM2UzMTBiNDVlODAyMzc2ZTEzM2YxYTI4MmZkYzEzNTBjZGQ0ZjdiZWExYmNjNzllZiJ9fX0=");
-                break;
-
-            default:
-                TownsAndNations.getPluginLogger().info("Error in role color");
-                skull = makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_5.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODIxNGEyYmUzM2YwMzdiZmU2ZmEzZTI0YjFjMmZlMDRmMWU1ZmZkNzQ4ODA5NGQ0ZmY3YWJiMGIzNzBlZjViZSJ9fX0=");
-                break;
-        }
-
-        setLore(
-                skull,
-                Lang.GUI_TOWN_MEMBERS_CHANGE_ROLE_PRIORITY_DESC1.getTranslation()
-        );
-        return skull;
-
-
     }
 
 }

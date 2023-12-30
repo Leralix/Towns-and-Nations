@@ -1,44 +1,54 @@
 package org.tan.TownsAndNations.DataClass;
 
 import org.bukkit.entity.Player;
+import org.tan.TownsAndNations.enums.TownRankEnum;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 
 import java.util.*;
 
+import static org.tan.TownsAndNations.enums.TownRankEnum.FIVE;
+
 public class TownRank {
 
     private String name;
-    private int level;
+    private TownRankEnum rankEnum;
     private String rankIconName;
     private final List<String> players;
     private int salary;
     private final Set<TownRolePermission> permissions = EnumSet.noneOf(TownRolePermission.class);
 
-    public void swapPayingTaxes() {
-        this.isPayingTaxes = !this.isPayingTaxes;
-    }
-
     private boolean isPayingTaxes;
 
     public TownRank(String name){
         this.name = name;
+        this.rankEnum = FIVE;
         this.rankIconName = "DANDELION";
-        this.level = 5;
         this.players = new ArrayList<>();
-
         this.isPayingTaxes = true;
         this.salary = 0;
     }
 
+    public void swapPayingTaxes() {
+        this.isPayingTaxes = !this.isPayingTaxes;
+    }
     public String getName(){
         return this.name;
+    }
+    public String getColoredName(){
+        return this.rankEnum.getColor() + this.name;
     }
     public void setName(String newName){
         this.name = newName;
     }
-    public int getLevel(){return this.level;}
+    public TownRankEnum getRankEnum(){
+        return this.rankEnum;
+    }
+    public void setRankEnum(TownRankEnum rankEnum){
+        this.rankEnum = rankEnum;
+    }
+    public int getLevel(){return this.rankEnum.getLevel();}
     public void incrementLevel(){
-        this.level = (this.level % 5) + 1;
+        this.rankEnum = rankEnum.nextRank();
     }
     public String getRankIconName(){
         return this.rankIconName;
