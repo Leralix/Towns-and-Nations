@@ -6,6 +6,7 @@ language:
   # Common errors
   PLAYER_NO_TOWN: "§cSie haben keine Stadt"
   PLAYER_NO_PERMISSION: "§cSie haben nicht die Erlaubnis, diese Aktion durchzuführen"
+  PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cSie haben nicht die Erlaubnis, diese Aktion gegenüber einem Spieler mit einem höheren Rang als Ihnen durchzuführen"
   PLAYER_NOT_FOUND: "§cUngültiger Name, oder der Player ist nicht verbunden"
   # Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
@@ -276,11 +277,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_PAY_TAXES: "§aDieser Rang zahlt Steuern"
   GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES: "§aDieser Rang zahlt keine Steuern"
   GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1: "§fLinksklick zum Ändern"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_1: "§6Rang 1"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_2: "§5Rang 2"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_3: "§1Rang 3"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_4: "§2Rang 4"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_5: "§aRang 5"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_X: "Rang {0}"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§fLinksklick zum Ändern der Rolle"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§Je kleiner die Zahl, desto besser ist der Rang"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT: "§aDieser Rang ist die Standardrolle"

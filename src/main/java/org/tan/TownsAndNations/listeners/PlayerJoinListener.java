@@ -7,12 +7,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
-import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.TeamUtils;
 
+import static org.tan.TownsAndNations.enums.TownRolePermission.INVITE_PLAYER;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 
@@ -22,16 +21,12 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-
-        PlayerDataStorage.get(player);
-
-
         PlayerData playerStat = PlayerDataStorage.get(player);
         if(playerStat.getTownId() != null)
             TeamUtils.setScoreBoard(player);
 
         if(playerStat.haveTown()){
-            if(!TownDataStorage.get(playerStat).getPlayerJoinRequestSet().isEmpty()  && playerStat.hasPermission(TownRolePermission.INVITE_PLAYER)){
+            if(!TownDataStorage.get(playerStat).getPlayerJoinRequestSet().isEmpty()  && playerStat.hasPermission(INVITE_PLAYER)){
                 player.sendMessage(
                         Lang.NEWSLETTER_STRING.getTranslation() +
                         Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.getTranslation(TownDataStorage.get(playerStat).getPlayerJoinRequestSet().size())

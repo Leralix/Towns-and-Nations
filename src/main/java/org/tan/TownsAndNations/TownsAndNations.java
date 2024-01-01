@@ -21,6 +21,7 @@ import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.DropChances;
+import org.tan.TownsAndNations.utils.UpdateUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -39,7 +40,7 @@ public final class TownsAndNations extends JavaPlugin {
 
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String GITHUB_API_URL = "https://api.github.com/repos/leralix/towns-and-nations/releases/latest";
-    private static final String CURRENT_VERSION = "v0.1.10";
+    private static final String CURRENT_VERSION = "v0.2.0";
     private static String LATEST_VERSION;
 
     @Override
@@ -96,6 +97,7 @@ public final class TownsAndNations extends JavaPlugin {
             logger.info("[TaN] -Vault API not found, using own economy system");
         }
 
+        UpdateUtil.update();
 
         logger.info("[TaN] Plugin successfully loaded");
         getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");

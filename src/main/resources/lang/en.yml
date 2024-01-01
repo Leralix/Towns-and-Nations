@@ -7,6 +7,7 @@ language:
   #Common errors
   PLAYER_NO_TOWN: "§cYou do not have a town"
   PLAYER_NO_PERMISSION: "§cYou do not have the permission of performing this action"
+  PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cYou do not have the permission of performing this action on a rank higher or same than you"
   PLAYER_NOT_FOUND: "§cInvalid name, or the player is not connected"
 
   #Chat scope
@@ -344,11 +345,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_PAY_TAXES: "§aThis rank pay taxes"
   GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES: "§aThis rank do not pay taxes"
   GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1: "§fLeft click to change"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_1: "§6Rank 1"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_2: "§5Rank 2"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_3: "§1Rank 3"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_4: "§2Rank 4"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_5: "§aRank 5"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_X: "Rank {0}"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§fLeft click to change the role"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fThe smaller the number, the better the rank is"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT: "§aThis rank is the default role"

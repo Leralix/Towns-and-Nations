@@ -4,12 +4,14 @@ import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
+import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.tan.TownsAndNations.enums.SoundEnum.GOOD;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.RelationUtil.addTownRelation;
 import static org.tan.TownsAndNations.utils.RelationUtil.removeRelation;
@@ -59,14 +61,18 @@ public class AcceptRelationCommand extends SubCommand {
                 TownRelation newRelation = TownRelationConfirmStorage.getRelation(player.getUniqueId().toString(),otherTown.getID());
                 TownRelationConfirmStorage.removeInvitation(player.getUniqueId().toString(), otherTown.getID());
 
-                if(newRelation == null){
-                    town.broadCastMessage(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),"neutral"));
-                    otherTown.broadCastMessage(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(town.getName(),"neutral"));
+                if(newRelation == null){ // From negative to neutral
+                    town.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),"neutral"),
+                            GOOD);
+                    otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(town.getName(),"neutral"),
+                            GOOD);
                     removeRelation(town,otherTown);
                 }
-                else {
-                    town.broadCastMessage(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),newRelation.getColor() + newRelation.getName()));
-                    otherTown.broadCastMessage(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(town.getName(),newRelation.getColor() + newRelation.getName()));
+                else { // from neutral to positive
+                    town.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),newRelation.getColoredName()),
+                            GOOD);
+                    otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(town.getName(),newRelation.getColoredName()),
+                            GOOD);
 
                     addTownRelation(town,otherTown,newRelation);
                 }

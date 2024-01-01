@@ -2,6 +2,7 @@ package org.tan.TownsAndNations.storage;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.DataClass.PlayerData;
@@ -10,6 +11,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class PlayerDataStorage {
 
@@ -36,24 +38,24 @@ public class PlayerDataStorage {
         saveStats();
     }
 
+    public static PlayerData get(OfflinePlayer player) {
+        return get(player.getUniqueId().toString());
+    }
+    public static PlayerData get(Player player) {
+        return get(player.getUniqueId().toString());
+    }
+
     public static PlayerData get(String id){
         for (PlayerData stat : stats) {
             if (stat.getUuid().equalsIgnoreCase(id)) {
                 return stat;
             }
         }
-        return null;
+        //Player is not yet in the database
+        return createPlayerDataClass(TownsAndNations.getPlugin().getServer().getPlayer(UUID.fromString(id)));
     }
 
-    public static PlayerData get(Player player) {
-        String id = player.getUniqueId().toString();
-        for (PlayerData stat : stats) {
-            if (stat.getUuid().equalsIgnoreCase(id)) {
-                return stat;
-            }
-        }
-        return(PlayerDataStorage.createPlayerDataClass(player));
-    }
+
 
     public static List<PlayerData> getStats(){
         return stats;

@@ -4,12 +4,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.utils.ChatUtils;
+import org.tan.TownsAndNations.utils.SoundUtil;
 
 import java.util.*;
 import java.util.Date;
+
+import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 public class TownData {
 
@@ -173,13 +178,30 @@ public class TownData {
         for (String playerId : townPlayerListId){
             Player player = Bukkit.getServer().getPlayer(UUID.fromString(playerId));
             if (player != null && player.isOnline()) {
-                player.sendMessage(message);
+                player.sendMessage(getTANString() +  message);
+            }
+        }
+    }
+
+    public void broadCastMessageWithSound(String message, SoundEnum soundEnum){
+        for (String playerId : townPlayerListId){
+            Player player = Bukkit.getServer().getPlayer(UUID.fromString(playerId));
+            if (player != null && player.isOnline()) {
+                SoundUtil.playSound(player, soundEnum);
+                player.sendMessage(getTANString() + message);
             }
         }
     }
 
     public TownRank getRank(String rankName){
         return this.roles.get(rankName);
+    }
+    public TownRank getRank(PlayerData playerData){
+        return getRank(playerData.getTownRankID());
+    }
+
+    public TownRank getRank(Player player){
+        return this.roles.get(PlayerDataStorage.get(player).getTownRankID());
     }
     public TownRank isRankExist(String rankName){
         return this.roles.get(rankName);

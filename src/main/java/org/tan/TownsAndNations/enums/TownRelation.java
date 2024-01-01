@@ -30,6 +30,9 @@ public enum TownRelation {
     public ChatColor getColor() {
         return color;
     }
+    public String getColoredName() {
+        return color + name;
+    }
     public Boolean getNeedsConfirmationToStart() {
         return needsConfirmationToStart;
     }

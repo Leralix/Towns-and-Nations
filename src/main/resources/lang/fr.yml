@@ -7,6 +7,7 @@ language:
   # Erreurs communes
   PLAYER_NO_TOWN: "§cVous n'avez pas de ville"
   PLAYER_NO_PERMISSION: "§cVous n'avez pas la permission d'effectuer cette action"
+  PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cVous n'avez pas la permission d'effectuer cette action sur un rang supérieur"
   PLAYER_NOT_FOUND: "§cNom invalide, ou le joueur n'est pas connecté"
 
   #Chat scope
@@ -332,13 +333,9 @@ language:
   GUI_TOWN_MEMBERS_ROLE_PAY_TAXES: "§aCe rang paie des taxes"
   GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES: "§aCe rang ne paie pas de taxes"
   GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1: "§fClic gauche pour changer"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_1: "§6Rang 1"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_2: "§5Rang 2"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_3: "§1Rang 3"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_4: "§2Rang 4"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_5: "§aRang 5"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§fClic gauche pour changer le rôle"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fPlus le nombre est petit, meilleur est le rang"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_X: "Rang {0}"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§fClic gauche pour changer le niveau rôle"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fPlus le niveau est petit, meilleur est le rang"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT: "§aCe rang est le rôle par défaut"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§aCe rang§c n'est pas §ale rôle par défaut"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fLes joueurs invités en ville rejoignent automatiquement le rang par défaut"
