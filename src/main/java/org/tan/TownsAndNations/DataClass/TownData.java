@@ -199,6 +199,10 @@ public class TownData {
     public TownRank getRank(PlayerData playerData){
         return getRank(playerData.getTownRankID());
     }
+
+    public TownRank getRank(Player player){
+        return this.roles.get(PlayerDataStorage.get(player).getTownRankID());
+    }
     public TownRank isRankExist(String rankName){
         return this.roles.get(rankName);
     }

@@ -11,6 +11,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class PlayerDataStorage {
 
@@ -50,7 +51,8 @@ public class PlayerDataStorage {
                 return stat;
             }
         }
-        return null;
+        //Player is not yet in the database
+        return createPlayerDataClass(TownsAndNations.getPlugin().getServer().getPlayer(UUID.fromString(id)));
     }
 
 

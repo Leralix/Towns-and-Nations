@@ -61,7 +61,7 @@ public class TownRelations {
             for (String townID : townRelations.get(relation)) {
                 TownDataStorage.get(townID).getRelations().removeAllRelationWith(ownTownID);
                 TownDataStorage.get(townID).broadCastMessageWithSound(
-                        Lang.WARNING_OTHER_TOWN_HAS_BEEN_DELETED.getTranslation( relation.getColoredName()),
+                        Lang.WARNING_OTHER_TOWN_HAS_BEEN_DELETED.getTranslation(TownDataStorage.get(townID).getName(),relation.getColoredName()),
                         SoundEnum.MINOR_BAD
                 );
             }

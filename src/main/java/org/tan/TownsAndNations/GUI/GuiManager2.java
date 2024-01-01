@@ -505,7 +505,7 @@ public class GuiManager2 {
                     player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
                     return;
                 }
-                if(town.getRank(playerStat).getLevel() >= townRank.getLevel()){
+                if(town.getRank(playerStat).getLevel() >= townRank.getLevel() && !town.isLeader(player)){
                     player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.getTranslation());
                     return;
                 }
@@ -714,11 +714,12 @@ public class GuiManager2 {
         TownRank townRank = town.getRank(roleName);
         int i = 0;
 
-        for (String playerUUID : town.getPlayerList()) {
+        for (String otherPlayerUUID : town.getPlayerList()) {
+            PlayerData otherPlayerData = PlayerDataStorage.get(otherPlayerUUID);
             boolean skip = false;
 
             for (String playerWithRoleUUID : townRank.getPlayers()) {
-                if (playerUUID.equals(playerWithRoleUUID)) {
+                if (otherPlayerUUID.equals(playerWithRoleUUID)) {
                     skip = true;
                     break;
                 }
@@ -727,16 +728,22 @@ public class GuiManager2 {
                 continue;
             }
 
-            ItemStack playerHead = HeadUtils.getPlayerHead(PlayerDataStorage.get(playerUUID).getName(), Bukkit.getOfflinePlayer(UUID.fromString(playerUUID)));
+            ItemStack playerHead = HeadUtils.getPlayerHead(PlayerDataStorage.get(otherPlayerUUID).getName(),
+                    Bukkit.getOfflinePlayer(UUID.fromString(otherPlayerUUID)));
 
             GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
 
-                PlayerData playerStat = PlayerDataStorage.get(playerUUID);
+                if(town.getRank(player).getLevel() >= town.getRank(otherPlayerData).getLevel() && !town.isLeader(player)){
+                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.getTranslation());
+                    return;
+                }
+
+                PlayerData playerStat = PlayerDataStorage.get(otherPlayerUUID);
                 assert playerStat != null;
-                town.getRank(playerStat.getTownRankID()).removePlayer(playerUUID);
+                town.getRank(playerStat.getTownRankID()).removePlayer(otherPlayerUUID);
                 playerStat.setRank(roleName);
-                townRank.addPlayer(playerUUID);
+                townRank.addPlayer(otherPlayerUUID);
 
                 OpenTownMenuRoleManager(player, roleName);
             });
