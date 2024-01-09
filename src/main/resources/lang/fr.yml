@@ -152,6 +152,11 @@ language:
   GUI_PREVIOUS_PAGE: "Précédent"
   GUI_LEFT_CLICK_TO_INTERACT: "§eClic gauche pour interagir"
 
+  GUI_INCREASE_1_DESC: "§fClic: §a+1✦"
+  GUI_INCREASE_10_DESC: "§fShift + click: §a+10✦"
+  GUI_DECREASE_1_DESC: "§fClic: §c-1✦"
+  GUI_DECREASE_10_DESC: "§fShift + click: §c-10✦"
+
   GUI_KINGDOM_ICON: "§aRoyaume"
   GUI_KINGDOM_ICON_DESC1: "§fEn développement"
   GUI_REGION_ICON: "§aRégion"
@@ -225,10 +230,8 @@ language:
   GUI_TREASURY_SPENDING_DESC2: "§f- De Salaire: §c{0}✦"
   GUI_TREASURY_SPENDING_DESC3: "§f- De Chunks: §c{0}✦"
   GUI_TREASURY_LOWER_TAX: "§aDiminuer les taxes"
-  GUI_TREASURY_LOWER_TAX_DESC1: "§fDiminuer les taxes de §c-1✦"
   GUI_TREASURY_CANT_TAX_LESS: "Vous ne pouvez pas taxer moins que §61✦"
   GUI_TREASURY_INCREASE_TAX: "§aAugmenter les taxes"
-  GUI_TREASURY_INCREASE_TAX_DESC1: "§fAugmenter les taxes de §a+1✦"
   GUI_TREASURY_FLAT_TAX: "§aTaxe fixe"
   GUI_TREASURY_FLAT_TAX_DESC1: "§fTaxe actuelle de la ville: §6{0}✦§f par jour"
   GUI_TREASURY_TAX_HISTORY: "§aHistorique des taxes"
@@ -362,6 +365,7 @@ language:
 
   GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION: "§fCe grade §aa§f cette permission"
   GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION: "§fCe grade§c n'a pas§f cette permission"
+  GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER: "§cLe salaire ne peut pas être inférieur à 0✦"
 
   TOWN_RANK_CAP_REACHED: "§cVous avez atteint le nombre maximum de grades"
   WRITE_IN_CHAT_NEW_ROLE_NAME: "§fÉcrivez dans le chat le nom du grade"

@@ -158,6 +158,11 @@ language:
   GUI_PREVIOUS_PAGE: "Previous"
   GUI_LEFT_CLICK_TO_INTERACT: "§eLeft click to interact"
 
+  GUI_INCREASE_1_DESC: "§fClick: §a+1✦"
+  GUI_INCREASE_10_DESC: "§fShift + click: §a+10✦"
+  GUI_DECREASE_1_DESC: "§fClick: §c-1✦"
+  GUI_DECREASE_10_DESC: "§fShift + click: §c-10✦"
+
   GUI_KINGDOM_ICON: "§aKingdom"
   GUI_KINGDOM_ICON_DESC1: "§fIn development"
   GUI_REGION_ICON: "§aRegion"
@@ -234,10 +239,9 @@ language:
   GUI_TREASURY_SPENDING_DESC2: "§f- From Salary: §c-{0}✦"
   GUI_TREASURY_SPENDING_DESC3: "§f- From Chunks: §c-{0}✦"
   GUI_TREASURY_LOWER_TAX: "§aLower the tax"
-  GUI_TREASURY_LOWER_TAX_DESC1: "§fLower the tax by §c-1✦"
   GUI_TREASURY_CANT_TAX_LESS: "§cYou can't tax less that §61✦"
   GUI_TREASURY_INCREASE_TAX: "§aIncrease the tax"
-  GUI_TREASURY_INCREASE_TAX_DESC1: "§fIncrease the tax by §a+1✦"
+
   GUI_TREASURY_FLAT_TAX: "§aFlat tax"
   GUI_TREASURY_FLAT_TAX_DESC1: "§fTown current tax: §6{0}✦§f daily"
   GUI_TREASURY_TAX_HISTORY: "§aTax History"
@@ -374,7 +378,7 @@ language:
 
   GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION: "§fThis rank§a have§f this permission"
   GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION: "§fThis rank §cdo not have§f this permission"
-
+  GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER: "§cYou cannot set a salary lower than 0✦"
 
   TOWN_RANK_CAP_REACHED: "§cYou reached the town cap"
   WRITE_IN_CHAT_NEW_ROLE_NAME: "§fWrite in the chat the name of the rank"

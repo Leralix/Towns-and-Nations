@@ -119,8 +119,11 @@ public class TownRank {
     public void addOneFromSalary() {
         this.salary += 1;
     }
-    public void removeOneFromSalary() {
-        this.salary -= 1;
+    public void addFromSalary(int amount) {
+        this.salary += amount;
+    }
+    public void removeFromSalary(int amount) {
+        this.salary -= amount;
     }
 
     public int getSalary() {
