@@ -23,6 +23,7 @@ import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.ChatCate
 import static org.tan.TownsAndNations.storage.TownDataStorage.getTownList;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.RelationUtil.*;
+import static org.tan.TownsAndNations.utils.TeamUtils.updateAllScoreboardColor;
 import static org.tan.TownsAndNations.utils.TownUtil.deleteTown;
 
 import java.util.ArrayList;
@@ -452,7 +453,7 @@ public class GuiManager2 {
                     town.broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.getTranslation(player.getName()),
                             MINOR_GOOD);
 
-                    TeamUtils.updateColor();
+                    updateAllScoreboardColor();
 
                     town.removePlayerJoinRequest(playerIterateData.getUuid());
 

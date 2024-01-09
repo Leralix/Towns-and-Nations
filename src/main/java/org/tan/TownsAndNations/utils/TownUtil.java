@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.*;
 
 import java.util.Objects;
@@ -15,6 +16,8 @@ import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.enums.TownRolePermission.KICK_PLAYER;
 import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
 import static org.tan.TownsAndNations.utils.EconomyUtil.removeFromBalance;
+import static org.tan.TownsAndNations.utils.TeamUtils.setIndividualScoreBoard;
+import static org.tan.TownsAndNations.utils.TeamUtils.updateAllScoreboardColor;
 
 public class TownUtil {
 
@@ -60,6 +63,7 @@ public class TownUtil {
         }
         SoundUtil.playSound(player, LEVEL_UP);
 
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> setIndividualScoreBoard(player));
     }
 
     public static void DonateToTown(Player player, int amountDonated){
@@ -103,6 +107,7 @@ public class TownUtil {
             assert memberStat != null;
             memberStat.leaveTown();
         }
+        updateAllScoreboardColor();
     }
 
     public static void kickPlayer(Player player, OfflinePlayer kickedPlayer) {

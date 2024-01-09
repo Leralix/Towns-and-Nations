@@ -144,12 +144,21 @@ public class TownData {
     public TownRelations getRelations(){
         return relations;
     }
-    public void addTownRelations(org.tan.TownsAndNations.enums.TownRelation relation, String townId){
+
+    public void addTownRelations(TownRelation relation, TownData townData){
+        addTownRelations(relation,townData.getID());
+    }
+    public void addTownRelations(TownRelation relation, String townId){
         this.relations.addRelation(relation,townId);
     }
-    public void removeTownRelations(org.tan.TownsAndNations.enums.TownRelation relation, String townId) {
+    public void removeTownRelations(TownRelation relation, TownData townData) {
+        removeTownRelations(relation,townData.getID());
+    }
+    public void removeTownRelations(TownRelation relation, String townId) {
         this.relations.removeRelation(relation,townId);
     }
+
+
     public ClaimedChunkSettings getChunkSettings() {
         return chunkSettings;
     }
