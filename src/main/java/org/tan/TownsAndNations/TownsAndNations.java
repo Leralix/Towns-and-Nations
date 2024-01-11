@@ -8,6 +8,7 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.tan.TownsAndNations.API.tanAPI;
 import org.tan.TownsAndNations.Bstats.Metrics;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.Tasks.DailyTasks;
@@ -42,6 +43,7 @@ public final class TownsAndNations extends JavaPlugin {
     private static final String GITHUB_API_URL = "https://api.github.com/repos/leralix/towns-and-nations/releases/latest";
     private static final String CURRENT_VERSION = "v0.2.0";
     private static String LATEST_VERSION;
+    private static tanAPI api;
 
     @Override
     public void onEnable() {
@@ -100,10 +102,14 @@ public final class TownsAndNations extends JavaPlugin {
         UpdateUtil.update();
 
         logger.info("[TaN] Plugin successfully loaded");
-        getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
+
+        api = new tanAPI();
 
         int pluginId = 20527; // <-- Replace with the id of your plugin!
         Metrics metrics = new Metrics(this, pluginId);
+        getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
+
+
 
     }
 
@@ -230,6 +236,10 @@ public final class TownsAndNations extends JavaPlugin {
 
     public static String getLatestVersion(){
         return LATEST_VERSION;
+    }
+
+    public static tanAPI getAPI(){
+        return api;
     }
 
 

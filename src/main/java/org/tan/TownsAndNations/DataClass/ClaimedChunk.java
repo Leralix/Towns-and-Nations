@@ -31,4 +31,16 @@ public class ClaimedChunk {
         return this.townUUID;
     }
 
+    public int getX() {
+        return this.x;
+    }
+
+    public int getZ() {
+        return this.z;
+    }
+
+    public String getWorldUUID() {
+        return this.worldUUID;
+    }
+
 }
