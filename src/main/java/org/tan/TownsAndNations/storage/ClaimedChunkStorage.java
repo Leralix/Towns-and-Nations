@@ -19,6 +19,10 @@ public class ClaimedChunkStorage {
         return chunk.getX() + "," + chunk.getZ() + "," + chunk.getWorld().getUID();
     }
 
+    public static Map<String, ClaimedChunk> getClaimedChunksMap() {
+        return claimedChunksMap;
+    }
+
     public static boolean isChunkClaimed(Chunk chunk) {
         return claimedChunksMap.containsKey(getChunkKey(chunk));
     }
