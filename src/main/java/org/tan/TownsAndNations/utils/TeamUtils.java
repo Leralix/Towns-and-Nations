@@ -24,7 +24,6 @@ public class TeamUtils {
         for (TownRelation relation : TownRelation.values()) {
             Team team = board.getTeam(relation.getName().toLowerCase());
 
-            // Si l'équipe n'existe pas déjà, créez-la
             if (team == null) {
                 team = board.registerNewTeam(relation.getName().toLowerCase());
             }

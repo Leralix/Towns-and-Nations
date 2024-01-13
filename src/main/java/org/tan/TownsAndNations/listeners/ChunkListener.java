@@ -252,6 +252,18 @@ public class ChunkListener implements Listener {
                 };
             }
 
+            if(entity instanceof EnderCrystal){
+                Chunk chunk = entity.getLocation().getChunk();
+
+                if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+                    return;
+                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+
+                if(!CanPlayerDoAction(chunk, player,chunkTown.getChunkSettings().getPermission(TownChunkPermissionType.BREAK))){
+                    event.setCancelled(true);
+                };
+            }
+
 
         }
 
@@ -324,9 +336,23 @@ public class ChunkListener implements Listener {
                         event.setCancelled(true);
                     };
                 }
+                if(entity instanceof EnderCrystal){
+                    Chunk chunk = entity.getLocation().getChunk();
+
+                    if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+                        return;
+                    TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+
+                    if(!CanPlayerDoAction(chunk, player,chunkTown.getChunkSettings().getPermission(TownChunkPermissionType.BREAK))){
+                        event.setCancelled(true);
+                    };
+                }
             }
         }
 
+        System.out.println("damager" + event.getDamager());
+        System.out.println("entity" + event.getEntity());
+        System.out.println("entitytype" + event.getEntityType());
     }
 
     @EventHandler
@@ -369,7 +395,7 @@ public class ChunkListener implements Listener {
 
             if(!CanPlayerDoAction(chunk, player,chunkTown.getChunkSettings().getPermission(TownChunkPermissionType.INTERACT_ITEM_FRAME))){
                 event.setCancelled(true);
-            };
+            }
         }
 
         if(event.getRightClicked() instanceof LeashHitch) {
