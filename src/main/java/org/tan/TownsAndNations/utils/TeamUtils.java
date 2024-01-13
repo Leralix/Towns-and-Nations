@@ -20,26 +20,26 @@ public class TeamUtils {
 
     public static void setScoreBoard(Player player) {
 
-        Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
-
-
+        Scoreboard board = player.getScoreboard();
         for (TownRelation relation : TownRelation.values()) {
-            Team team = board.registerNewTeam(relation.getName().toLowerCase());
+            Team team = board.getTeam(relation.getName().toLowerCase());
+
+            // Si l'équipe n'existe pas déjà, créez-la
+            if (team == null) {
+                team = board.registerNewTeam(relation.getName().toLowerCase());
+            }
+
             team.setColor(relation.getColor());
             team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
         }
         player.setScoreboard(board);
-
 
         for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
             if(PlayerDataStorage.get(otherPlayer).getTownId() != null){
                 addPlayerToCorrectTeam(player.getScoreboard(), player, otherPlayer);
                 addPlayerToCorrectTeam(otherPlayer.getScoreboard(), otherPlayer, player);
             }
-
-
         }
-
     }
 
     public static void addPlayerToCorrectTeam(Scoreboard scoreboard, Player owner, Player toAdd) {

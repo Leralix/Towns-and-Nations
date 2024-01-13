@@ -41,7 +41,7 @@ public final class TownsAndNations extends JavaPlugin {
 
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String GITHUB_API_URL = "https://api.github.com/repos/leralix/towns-and-nations/releases/latest";
-    private static final String CURRENT_VERSION = "v0.2.0";
+    private static final String CURRENT_VERSION = "v0.3.1";
     private static String LATEST_VERSION;
     private static tanAPI api;
 
