@@ -349,10 +349,6 @@ public class ChunkListener implements Listener {
                 }
             }
         }
-
-        System.out.println("damager" + event.getDamager());
-        System.out.println("entity" + event.getEntity());
-        System.out.println("entitytype" + event.getEntityType());
     }
 
     @EventHandler
