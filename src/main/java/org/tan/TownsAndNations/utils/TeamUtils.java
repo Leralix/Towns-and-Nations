@@ -19,6 +19,11 @@ public class TeamUtils {
     }
 
     public static void setScoreBoard(Player player) {
+
+        if(!ConfigUtil.getCustomConfig("config.yml").getBoolean("EnablePlayerColorCode")){
+            return;
+        }
+
         Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
 
         for (TownRelation relation : TownRelation.values()) {
