@@ -19,8 +19,8 @@ public class TeamUtils {
     }
 
     public static void setScoreBoard(Player player) {
+        Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
 
-        Scoreboard board = player.getScoreboard();
         for (TownRelation relation : TownRelation.values()) {
             Team team = board.getTeam(relation.getName().toLowerCase());
 
