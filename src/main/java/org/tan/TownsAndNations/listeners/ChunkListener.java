@@ -5,10 +5,8 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.BlastFurnace;
 import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
 import org.bukkit.block.Smoker;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.Door;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -122,9 +120,7 @@ public class ChunkListener implements Listener {
             else if(
                     Tag.DOORS.isTagged(materialType) ||
                     Tag.TRAPDOORS.isTagged(materialType) ||
-                    Tag.FENCE_GATES.isTagged(materialType)
-
-            ){
+                    Tag.FENCE_GATES.isTagged(materialType)){
                 if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getPermission(TownChunkPermissionType.DOOR))){
                     event.setCancelled(true);
                 };
@@ -159,14 +155,28 @@ public class ChunkListener implements Listener {
                     materialBlock == Material.REDSTONE_WIRE ||
                     materialBlock == Material.REPEATER ||
                     materialBlock == Material.COMPARATOR ||
-                    materialBlock == Material.DAYLIGHT_DETECTOR
-            ) {
+                    materialBlock == Material.DAYLIGHT_DETECTOR) {
                 if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getPermission(TownChunkPermissionType.USE_REDSTONE))){
                     event.setCancelled(true);
                 }
             }
+
+
+            else if (event.getAction() == Action.PHYSICAL &&
+                    (event.getClickedBlock().getType() == Material.FARMLAND ||
+                    event.getClickedBlock().getType() == Material.LEGACY_SOIL)) {
+
+                if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getChunkSettings().getPermission(TownChunkPermissionType.BREAK))){
+                    event.setCancelled(true);
+                };
+            }
         }
+
+
     }
+
+
+
     @EventHandler
     public void OnBlocPlaced(BlockPlaceEvent event){
 
