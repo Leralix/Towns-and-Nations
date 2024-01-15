@@ -61,11 +61,13 @@ public class TownTreasury {
     public int getFlatTax(){
         return this.flatTax;
     }
-    public void add1FlatTax(){
-        this.flatTax = this.flatTax + 1;
+
+    public void addFlatTax(int amount){
+        this.flatTax += amount;
     }
-    public void remove1FlatTax(){
-        this.flatTax = this.flatTax - 1;
+
+    public void removeFlatTax(int amount){
+        this.flatTax -= amount;
     }
 
     public void addTaxHistory(LocalDate date, String playerName, String playerID, int amount){

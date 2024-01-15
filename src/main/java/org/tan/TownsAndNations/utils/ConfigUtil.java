@@ -61,14 +61,12 @@ public class ConfigUtil {
 
 
     public static void updateCurrentFileWithBaseFile(File file, List<String> baseFileLines, List<String> currentFileLines) {
-        // Créer une map pour stocker les clés et les lignes du fichier actuel
         Map<String, String> currentFileMap = new HashMap<>();
         for (String line : currentFileLines) {
             String key = line.contains(":") ? line.split(":")[0].trim() : line;
             currentFileMap.put(key, line);
         }
 
-        // Parcourir les lignes du fichier de base et les comparer
         for (String baseLine : baseFileLines) {
             String baseKey = baseLine.contains(":") ? baseLine.split(":")[0].trim() : baseLine;
             if (!currentFileMap.containsKey(baseKey)) {

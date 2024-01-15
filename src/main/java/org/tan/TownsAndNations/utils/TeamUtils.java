@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
@@ -12,16 +13,21 @@ import org.tan.TownsAndNations.storage.TownDataStorage;
 
 public class TeamUtils {
 
-    public static void updateColor(){
+    public static void updateAllScoreboardColor(){
+        if(!TownsAndNations.colorCodeIsEnabled()){
+            return;
+        }
         for(Player player : Bukkit.getOnlinePlayers()){
-            setScoreBoard(player);
+            setIndividualScoreBoard(player);
         }
     }
 
-    public static void setScoreBoard(Player player) {
+    public static void setIndividualScoreBoard(Player player) {
+        if(!TownsAndNations.colorCodeIsEnabled()){
+            return;
+        }
 
         Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
-
 
         for (TownRelation relation : TownRelation.values()) {
             Team team = board.registerNewTeam(relation.getName().toLowerCase());
@@ -30,11 +36,10 @@ public class TeamUtils {
         }
         player.setScoreboard(board);
 
-
         for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
             if(PlayerDataStorage.get(otherPlayer).getTownId() != null){
-                addPlayerToCorrectTeam(player.getScoreboard(), player, otherPlayer);
                 addPlayerToCorrectTeam(otherPlayer.getScoreboard(), otherPlayer, player);
+                addPlayerToCorrectTeam(player.getScoreboard(), player, otherPlayer);
             }
 
 
@@ -42,10 +47,24 @@ public class TeamUtils {
 
     }
 
-    public static void addPlayerToCorrectTeam(Scoreboard scoreboard, Player owner, Player toAdd) {
+    public static void addPlayerToCorrectTeam(Scoreboard scoreboard, Player player, Player toAdd) {
+
+        if(PlayerDataStorage.get(toAdd).getTownId() == null)
+            return;
+
+        if(!PlayerDataStorage.get(player).haveTown())
+            return;
+
         for (TownRelation relation : TownRelation.values()) {
-            if (haveRelation(owner, toAdd, relation)) {
-                scoreboard.getTeam(relation.getName().toLowerCase()).addEntry(toAdd.getName());
+            if (haveRelation(player, toAdd, relation)) {
+                Team playerTeam = scoreboard.getTeam(relation.getName().toLowerCase());
+                if(playerTeam == null){ //Player did not have a town when he logged in. No team was created for him.
+                    TeamUtils.setIndividualScoreBoard(player);
+                    playerTeam = scoreboard.getTeam(relation.getName().toLowerCase());
+                }
+                playerTeam.addEntry(toAdd.getName());
+
+
             }
         }
     }

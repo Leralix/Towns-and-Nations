@@ -23,6 +23,7 @@ import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.ChatCate
 import static org.tan.TownsAndNations.storage.TownDataStorage.getTownList;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.RelationUtil.*;
+import static org.tan.TownsAndNations.utils.TeamUtils.updateAllScoreboardColor;
 import static org.tan.TownsAndNations.utils.TownUtil.deleteTown;
 
 import java.util.ArrayList;
@@ -452,7 +453,7 @@ public class GuiManager2 {
                     town.broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.getTranslation(player.getName()),
                             MINOR_GOOD);
 
-                    TeamUtils.updateColor();
+                    updateAllScoreboardColor();
 
                     town.removePlayerJoinRequest(playerIterateData.getUuid());
 
@@ -601,7 +602,14 @@ public class GuiManager2 {
 
         ItemStack lowerSalary = HeadUtils.makeSkull(Lang.GUI_TREASURY_LOWER_TAX.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=");
         ItemStack increaseSalary = HeadUtils.makeSkull(Lang.GUI_TREASURY_INCREASE_TAX.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
-
+        HeadUtils.setLore(lowerSalary,
+                Lang.GUI_DECREASE_1_DESC.getTranslation(),
+                Lang.GUI_DECREASE_10_DESC.getTranslation()
+        );
+        HeadUtils.setLore(increaseSalary,
+                Lang.GUI_INCREASE_1_DESC.getTranslation(),
+                Lang.GUI_INCREASE_10_DESC.getTranslation()
+        );
 
 
         GuiItem _roleIcon = ItemBuilder.from(roleIcon).asGuiItem(event -> {
@@ -671,15 +679,28 @@ public class GuiManager2 {
 
         GuiItem _lowerSalary = ItemBuilder.from(lowerSalary).asGuiItem(event -> {
             event.setCancelled(true);
-            townRank.removeOneFromSalary();
+
+            int currentSalary = townRank.getSalary();
+            int amountToRemove = event.isShiftClick() && currentSalary >= 10 ? 10 : 1;
+
+            if (currentSalary <= 0) {
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER.getTranslation());
+                return;
+            }
+
+            townRank.removeFromSalary(amountToRemove);
             SoundUtil.playSound(player, REMOVE);
-            OpenTownMenuRoleManager(player,roleName);
+            OpenTownMenuRoleManager(player, roleName);
         });
         GuiItem _IncreaseSalary = ItemBuilder.from(increaseSalary).asGuiItem(event -> {
+
             event.setCancelled(true);
-            townRank.addOneFromSalary();
+
+            int amountToAdd = event.isShiftClick() ? 10 : 1;
+
+            townRank.addFromSalary(amountToAdd);
             SoundUtil.playSound(player, ADD);
-            OpenTownMenuRoleManager(player,roleName);
+            OpenTownMenuRoleManager(player, roleName);
         });
 
         GuiItem _salary = ItemBuilder.from(salary).asGuiItem(event -> {
@@ -740,7 +761,6 @@ public class GuiManager2 {
                 }
 
                 PlayerData playerStat = PlayerDataStorage.get(otherPlayerUUID);
-                assert playerStat != null;
                 town.getRank(playerStat.getTownRankID()).removePlayer(otherPlayerUUID);
                 playerStat.setRank(roleName);
                 townRank.addPlayer(otherPlayerUUID);
@@ -928,9 +948,15 @@ public class GuiManager2 {
 
 
 
-        HeadUtils.setLore(lowerTax, Lang.GUI_TREASURY_LOWER_TAX_DESC1.getTranslation());
+        HeadUtils.setLore(lowerTax,
+                Lang.GUI_DECREASE_1_DESC.getTranslation(),
+                Lang.GUI_DECREASE_10_DESC.getTranslation()
+        );
         HeadUtils.setLore(taxInfo, Lang.GUI_TREASURY_FLAT_TAX_DESC1.getTranslation(town.getTreasury().getFlatTax()));
-        HeadUtils.setLore(increaseTax, Lang.GUI_TREASURY_INCREASE_TAX_DESC1.getTranslation());
+        HeadUtils.setLore(increaseTax,
+                Lang.GUI_INCREASE_1_DESC.getTranslation(),
+                Lang.GUI_INCREASE_10_DESC.getTranslation()
+        );
 
         HeadUtils.setLore(salarySpending, Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.getTranslation("0"));
         HeadUtils.setLore(chunkSpending,
@@ -977,13 +1003,17 @@ public class GuiManager2 {
                 player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
                 return;
             }
-            if(town.getTreasury().getFlatTax() <= 1){
+
+            int currentTax = town.getTreasury().getFlatTax();
+            int amountToRemove = event.isShiftClick() && currentTax >= 10 ? 10 : 1;
+
+            if(currentTax <= 1){
                 player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.getTranslation());
                 return;
             }
             SoundUtil.playSound(player, REMOVE);
 
-            town.getTreasury().remove1FlatTax();
+            town.getTreasury().removeFlatTax(amountToRemove);
             OpenTownEconomics(player);
         });
         GuiItem _taxInfo = ItemBuilder.from(taxInfo).asGuiItem(event -> {
@@ -998,7 +1028,9 @@ public class GuiManager2 {
                 return;
             }
 
-            town.getTreasury().add1FlatTax();
+            int amountToAdd = event.isShiftClick() ? 10 : 1;
+
+            town.getTreasury().addFlatTax(amountToAdd);
             SoundUtil.playSound(player, ADD);
             OpenTownEconomics(player);
         });
@@ -1780,6 +1812,7 @@ public class GuiManager2 {
 
         gui.open(player);
     }
+
     private static GuiItem createGuiItem(ItemStack itemStack, PlayerData playerStat, Player player, Consumer<Void> action) {
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);

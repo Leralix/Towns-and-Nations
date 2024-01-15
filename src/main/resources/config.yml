@@ -86,3 +86,6 @@ ChangeTownNameCost: 100
 
 #Duration of a war in minutes
 WarDurationTime: 60
+
+#Allow color coding in username. May cause problem if mixed with other plugins
+AllowColorInUsername: true

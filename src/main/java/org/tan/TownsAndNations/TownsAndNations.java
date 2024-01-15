@@ -44,6 +44,7 @@ public final class TownsAndNations extends JavaPlugin {
     private static final String CURRENT_VERSION = "v0.2.0";
     private static String LATEST_VERSION;
     private static tanAPI api;
+    private static boolean allowColorCodes = false;
 
     @Override
     public void onEnable() {
@@ -98,6 +99,8 @@ public final class TownsAndNations extends JavaPlugin {
         } else {
             logger.info("[TaN] -Vault API not found, using own economy system");
         }
+
+        allowColorCodes = ConfigUtil.getCustomConfig("config.yml").getBoolean("AllowColorInUsername");
 
         UpdateUtil.update();
 
@@ -240,6 +243,8 @@ public final class TownsAndNations extends JavaPlugin {
 
     public static tanAPI getAPI(){
         return api;
+    public static boolean colorCodeIsEnabled(){
+        return allowColorCodes;
     }
 
 

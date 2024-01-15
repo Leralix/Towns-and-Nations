@@ -1,7 +1,6 @@
 package org.tan.TownsAndNations.commands.subcommands;
 
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Team;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -9,14 +8,13 @@ import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.storage.TownInviteDataStorage;
-import org.tan.TownsAndNations.utils.TeamUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.tan.TownsAndNations.enums.SoundEnum.GOOD;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
-import static org.tan.TownsAndNations.utils.TeamUtils.setScoreBoard;
+import static org.tan.TownsAndNations.utils.TeamUtils.updateAllScoreboardColor;
 
 public class JoinTownCommand extends SubCommand {
     @Override
@@ -91,9 +89,7 @@ public class JoinTownCommand extends SubCommand {
 
                     TownInviteDataStorage.removeInvitation(player,townData.getID());
 
-                    setScoreBoard(player);
-                    TeamUtils.updateColor();
-
+                    updateAllScoreboardColor();
                     return;
                 }
 

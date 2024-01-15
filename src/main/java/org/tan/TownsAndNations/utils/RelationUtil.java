@@ -13,17 +13,17 @@ public class RelationUtil {
 
 
     public static void addTownRelation(TownData town, TownData targetTown, TownRelation newRelation) {
-        town.addTownRelations(newRelation, targetTown.getID());
-        targetTown.addTownRelations(newRelation, town.getID());
+        town.addTownRelations(newRelation, targetTown);
+        targetTown.addTownRelations(newRelation, town);
 
-        TeamUtils.updateColor();
+        TeamUtils.updateAllScoreboardColor();
     }
 
     public static void removeRelation(TownData town, TownData targetTown, TownRelation oldRelation){
-        town.removeTownRelations(oldRelation, targetTown.getID());
-        targetTown.removeTownRelations(oldRelation, town.getID());
+        town.removeTownRelations(oldRelation, targetTown);
+        targetTown.removeTownRelations(oldRelation, town);
 
-        TeamUtils.updateColor();
+        TeamUtils.updateAllScoreboardColor();
 
     }
 
@@ -31,7 +31,7 @@ public class RelationUtil {
         TownRelation oldRelation = town.getRelationWith(targetTown);
         removeRelation(town,targetTown,oldRelation);
 
-        TeamUtils.updateColor();
+        TeamUtils.updateAllScoreboardColor();
 
     }
 
