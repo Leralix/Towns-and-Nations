@@ -27,10 +27,19 @@ public class TeamUtils {
             return;
         }
 
+        if(!ConfigUtil.getCustomConfig("config.yml").getBoolean("EnablePlayerColorCode")){
+            return;
+        }
+
         Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
 
         for (TownRelation relation : TownRelation.values()) {
-            Team team = board.registerNewTeam(relation.getName().toLowerCase());
+            Team team = board.getTeam(relation.getName().toLowerCase());
+
+            if (team == null) {
+                team = board.registerNewTeam(relation.getName().toLowerCase());
+            }
+
             team.setColor(relation.getColor());
             team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
         }
@@ -41,10 +50,7 @@ public class TeamUtils {
                 addPlayerToCorrectTeam(otherPlayer.getScoreboard(), otherPlayer, player);
                 addPlayerToCorrectTeam(player.getScoreboard(), player, otherPlayer);
             }
-
-
         }
-
     }
 
     public static void addPlayerToCorrectTeam(Scoreboard scoreboard, Player player, Player toAdd) {

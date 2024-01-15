@@ -1,3 +1,7 @@
+#IMPORTANT !! Enable the player color code.
+#Enabling the color code will create a separate scoreboard for each player, thus BREAKING THE VANILLA SCOREBOARD
+#Only enable this if you are not using any other scoreboard plugin
+EnablePlayerColorCode: false
 
 #The amount of money a player starts with (only if no economy plugin is linked to the server)
 StartingMoney: 100

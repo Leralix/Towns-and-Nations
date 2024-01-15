@@ -41,10 +41,9 @@ public class ArchiveUtil {
             addFileToZip(zipOutputStream, file1);
             addFileToZip(zipOutputStream, file2);
             addFileToZip(zipOutputStream, file3);
-            TownsAndNations.getPluginLogger().info("Les fichiers ont été archivés avec succès!");
 
         } catch (IOException e) {
-            TownsAndNations.getPluginLogger().severe("Erreur lors de l'archivage des fichiers : " + e.getMessage());
+            TownsAndNations.getPluginLogger().severe("Error while archiving files : " + e.getMessage());
         }
     }
 
