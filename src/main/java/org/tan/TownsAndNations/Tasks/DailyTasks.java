@@ -59,10 +59,10 @@ public class DailyTasks {
                 EconomyUtil.removeFromBalance(offlinePlayer,tax);
                 playerTown.getTreasury().addToBalance(tax);
                 playerTown.getTreasury().addTaxHistory(playerStat.getName(), playerStat.getUuid(), tax);
-                TownsAndNations.getPluginLogger().info(playerStat.getName() + " has paid " + tax + "$ to the town " + playerTown.getName());
+                //TownsAndNations.getPluginLogger().info(playerStat.getName() + " has paid " + tax + "$ to the town " + playerTown.getName());
             }
             else{
-                TownsAndNations.getPluginLogger().info(playerStat.getName() + " has not enough money to pay " + tax + "$ to the town " + playerTown.getName());
+                //TownsAndNations.getPluginLogger().info(playerStat.getName() + " has not enough money to pay " + tax + "$ to the town " + playerTown.getName());
                 playerTown.getTreasury().addTaxHistory(playerStat.getName(), playerStat.getUuid(), -1);
             }
         }

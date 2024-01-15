@@ -6,7 +6,6 @@ import org.tan.TownsAndNations.commands.SubCommand;
 import java.util.List;
 
 import static org.tan.TownsAndNations.Tasks.DailyTasks.ChunkPayment;
-import static org.tan.TownsAndNations.Tasks.DailyTasks.TaxPayment;
 
 public class ChunkPay extends SubCommand {
 
