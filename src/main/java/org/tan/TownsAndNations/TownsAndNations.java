@@ -241,8 +241,9 @@ public final class TownsAndNations extends JavaPlugin {
         return LATEST_VERSION;
     }
 
-    public static tanAPI getAPI(){
+    public static tanAPI getAPI() {
         return api;
+    }
     public static boolean colorCodeIsEnabled(){
         return allowColorCodes;
     }
