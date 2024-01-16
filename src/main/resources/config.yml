@@ -93,3 +93,10 @@ WarDurationTime: 60
 
 #Allow color coding in username. May cause problem if mixed with other plugins
 AllowColorInUsername: true
+
+##Corss server config
+#Enable cross server (will require a MySQL database)
+EnableCrossServer: false
+
+#ip of the server
+CrossServerIP: 127.0.0.1:3306

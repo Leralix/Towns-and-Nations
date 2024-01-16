@@ -45,6 +45,7 @@ public final class TownsAndNations extends JavaPlugin {
     private static String LATEST_VERSION;
     private static tanAPI api;
     private static boolean allowColorCodes = false;
+    private static boolean sqlEnable = false;
 
     @Override
     public void onEnable() {
@@ -73,6 +74,11 @@ public final class TownsAndNations extends JavaPlugin {
 
         DropChances.load();
 
+        sqlEnable = ConfigUtil.getCustomConfig("config.yml").getBoolean("EnableCrossServer", false);
+        if(sqlEnable){
+            logger.info("[TaN] -Loading SQL connections");
+            ClaimedChunkStorage.initialize();
+        }
 
         logger.info("[TaN] -Loading Stats");
         PlayerDataStorage.loadStats();
@@ -248,5 +254,8 @@ public final class TownsAndNations extends JavaPlugin {
         return allowColorCodes;
     }
 
+    public static boolean isSqlEnable() {
+        return sqlEnable;
+    }
 
 }

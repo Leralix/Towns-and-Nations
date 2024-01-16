@@ -14,6 +14,12 @@ public class ClaimedChunk {
         this.worldUUID = chunk.getWorld().getUID().toString();
         this.townUUID = owner;
     }
+    public ClaimedChunk(int x, int z, String worldUUID , String owner) {
+        this.x = x;
+        this.z = z;
+        this.worldUUID = worldUUID;
+        this.townUUID = owner;
+    }
 
     @Override
     public boolean equals(Object o) {
