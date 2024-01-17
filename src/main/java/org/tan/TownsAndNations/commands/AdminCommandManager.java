@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.commands.AdminSubcommands.AddMoney;
 import org.tan.TownsAndNations.commands.AdminSubcommands.SpawnVillager;
+import org.tan.TownsAndNations.commands.AdminSubcommands.UnclaimAdminCommand;
 import org.tan.TownsAndNations.commands.AdminSubcommands.getRareItem;
 import org.tan.TownsAndNations.commands.debugsubcommands.*;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
@@ -23,7 +24,7 @@ public class AdminCommandManager implements CommandExecutor, TabExecutor, TabCom
         subCommands.add(new SpawnVillager());
         subCommands.add(new getRareItem());
 
-        subCommands.add(new UnclaimDebugCommand());
+        subCommands.add(new UnclaimAdminCommand());
         subCommands.add(new OpenAdminGUI());
     }
 

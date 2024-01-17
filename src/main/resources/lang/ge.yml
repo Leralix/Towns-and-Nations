@@ -96,6 +96,7 @@ language:
   TOWN_LIST_DEBUG: "Liste der einzelnen Städte:"
   TOWN_NEXT_KEY_MESSAGE: "Nächste Stadt ID: §e{0}"
   COMMAND_GENERIC_SUCCESS: "§aBefehl erfolgreich ausgeführt"
+  ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED: "§cDieser Chunk wird nicht beansprucht"
   # Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cSie haben nicht genug Geld, um diese Aktion durchzuführen"
   LEADER_NOT_ONLINE: "§cDas Stadtoberhaupt ist nicht online"

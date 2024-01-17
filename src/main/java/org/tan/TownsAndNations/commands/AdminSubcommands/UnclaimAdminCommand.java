@@ -1,21 +1,18 @@
-package org.tan.TownsAndNations.commands.debugsubcommands;
+package org.tan.TownsAndNations.commands.AdminSubcommands;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import java.util.List;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
-public class UnclaimDebugCommand extends SubCommand {
+public class UnclaimAdminCommand extends SubCommand {
     @Override
     public String getName() {
         return "unclaim";
@@ -56,8 +53,7 @@ public class UnclaimDebugCommand extends SubCommand {
 
             return;
         }
-        TownData otherTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
-        player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_TOWN.getTranslation(otherTown.getName()));
+        player.sendMessage(getTANString() + Lang.ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED.getTranslation());
 
     }
 }

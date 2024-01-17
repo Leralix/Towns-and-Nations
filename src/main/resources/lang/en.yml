@@ -125,6 +125,7 @@ language:
   TOWN_LIST_DEBUG: "List of every towns:"
   TOWN_NEXT_KEY_MESSAGE: "Next town ID: §e{0}"
   COMMAND_GENERIC_SUCCESS: "§aCommand successfully executed"
+  ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED: "§cThis chunk is not claimed"
 
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cYou do not have enough money to perform this action"

@@ -26,7 +26,7 @@ public class TownDataStorage {
 
         saveStats();
         newTownId = newTownId+1;
-
+        return newTown;
     }
     public static void removeTown(String TownId){
 

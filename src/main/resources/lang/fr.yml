@@ -121,6 +121,7 @@ language:
   TOWN_LIST_DEBUG: "Liste de toutes les villes :"
   TOWN_NEXT_KEY_MESSAGE: "ID de la ville suivante : §e{0}"
   COMMAND_GENERIC_SUCCESS: "§aCommande exécutée avec succès"
+  ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED: "§cCe chunk n'est pas revendiqué"
 
   # Commandes du chat
   PLAYER_NOT_ENOUGH_MONEY: "§cVous n'avez pas assez d'argent pour effectuer cette action"
