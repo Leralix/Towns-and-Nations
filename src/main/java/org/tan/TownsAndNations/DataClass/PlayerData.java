@@ -5,6 +5,9 @@ import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 
+import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
+import static org.tan.TownsAndNations.storage.PlayerDataStorage.updatePlayerDataInDatabase;
+
 public class PlayerData {
 
     private final String UUID;
@@ -47,9 +50,13 @@ public class PlayerData {
     }
     public void setRank(String rankName){
         this.TownRank = rankName;
+        if(isSqlEnable())
+            updatePlayerDataInDatabase(this);
     }
     public void setBalance(int balance) {
         this.Balance = balance;
+        if(isSqlEnable())
+            updatePlayerDataInDatabase(this);
     }
 
     public String getTownId(){
@@ -60,23 +67,24 @@ public class PlayerData {
     }
     public void setTownId(String newTownId){
         this.TownId = newTownId;
+        if(isSqlEnable())
+            updatePlayerDataInDatabase(this);
     }
     public String getTownRankID() {
         return TownRank;
     }
     public TownRank getTownRank() {
-        return TownDataStorage.get(this).getRank(getTownRankID());
-    }
-
-
-    public void setTownRank(String townRank) {
-        TownRank = townRank;
+        return TownDataStorage.get(this).getRank(this.TownRank);
     }
     public void addToBalance(int money) {
         this.Balance = this.Balance + money;
+        if(isSqlEnable())
+            updatePlayerDataInDatabase(this);
     }
     public void removeFromBalance(int money) {
         this.Balance = this.Balance - money;
+        if(isSqlEnable())
+            updatePlayerDataInDatabase(this);
     }
     public boolean isTownLeader(){
         return TownDataStorage.get(this).getUuidLeader().equals(this.UUID);
@@ -89,6 +97,8 @@ public class PlayerData {
     public void leaveTown(){
         this.TownId = null;
         this.TownRank = null;
+        if(isSqlEnable())
+            updatePlayerDataInDatabase(this);
     }
 
 }

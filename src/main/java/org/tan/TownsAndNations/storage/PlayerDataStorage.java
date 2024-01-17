@@ -73,9 +73,6 @@ public class PlayerDataStorage {
         }
     }
 
-
-
-
     public static PlayerData get(OfflinePlayer player) {
         return get(player.getUniqueId().toString());
     }
@@ -224,5 +221,20 @@ public class PlayerDataStorage {
             e.printStackTrace();
         }
     }
+    public static void updatePlayerDataInDatabase(PlayerData playerData) {
+        String sql = "UPDATE tan_player_data SET player_name = ?, balance = ?, town_id = ?, town_rank = ? WHERE player_id = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, playerData.getName());
+            ps.setInt(2, playerData.getBalance());
+            ps.setString(3, playerData.getTownId());
+            ps.setString(4, playerData.getTownRankID());
+            ps.setString(5, playerData.getUuid());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

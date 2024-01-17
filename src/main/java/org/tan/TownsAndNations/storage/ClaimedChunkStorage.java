@@ -339,7 +339,7 @@ public class ClaimedChunkStorage {
             String password = "password";
             connection = DriverManager.getConnection(url, username, password);
             try (Statement statement = connection.createStatement()){
-                String sql = "CREATE TABLE IF NOT EXISTS claimed_chunks (chunk_key VARCHAR(255) PRIMARY KEY,town_id VARCHAR(255))";
+                String sql = "CREATE TABLE IF NOT EXISTS claimed_chunks (chunk_key VARCHAR(255) PRIMARY KEY,x INT,z INT,world_id VARCHAR(255),town_id VARCHAR(255))";
                 statement.executeUpdate(sql);
             }
         } catch (SQLException e) {

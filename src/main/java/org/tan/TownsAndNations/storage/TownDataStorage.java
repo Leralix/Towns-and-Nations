@@ -18,7 +18,7 @@ public class TownDataStorage {
     private static LinkedHashMap<String, TownData> townDataMap = new LinkedHashMap<>();
     private static int newTownId = 1;
 
-    public static void newTown(String townName, Player leader){
+    public static TownData newTown(String townName, Player leader){
         String townId = "T"+newTownId;
         TownData newTown = new TownData( townId, townName, leader.getUniqueId().toString());
         PlayerDataStorage.get(leader.getUniqueId().toString()).setTownId(townId);

@@ -51,8 +51,9 @@ public class TownUtil {
 
 
         removeFromBalance(player,townCost);
-        TownDataStorage.newTown(townName,player);
-        playerData.setRank(TownDataStorage.get(playerData).getTownDefaultRank());
+        TownData newTown = TownDataStorage.newTown(townName,player);
+
+        playerData.setRank(newTown.getTownDefaultRank());
 
 
         for (TownData otherTown : TownDataStorage.getTownList().values()) {
