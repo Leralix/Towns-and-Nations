@@ -21,6 +21,14 @@ public class PlayerData {
         this.TownRank = null;
     }
 
+    public PlayerData(String UUID, String playerName, int balance, String townId, String townRank) {
+        this.UUID = UUID;
+        this.PlayerName = playerName;
+        this.Balance = balance;
+        this.TownId = townId;
+        this.TownRank = townRank;
+    }
+
 
     public String getUuid() {
         return UUID;
