@@ -79,6 +79,7 @@ public final class TownsAndNations extends JavaPlugin {
             logger.info("[TaN] -Loading SQL connections");
             ClaimedChunkStorage.initialize();
             PlayerDataStorage.initialize();
+            TownDataStorage.initialize();
         }
 
         logger.info("[TaN] -Loading Stats");

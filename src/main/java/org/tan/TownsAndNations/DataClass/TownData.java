@@ -14,6 +14,7 @@ import org.tan.TownsAndNations.utils.SoundUtil;
 import java.util.*;
 import java.util.Date;
 
+import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 public class TownData {
@@ -27,7 +28,7 @@ public class TownData {
     public String DateCreated;
     private String townIconMaterialCode;
     private final HashSet<String> townPlayerListId = new HashSet<>();
-    private boolean isRecruiting = false;
+    private boolean isRecruiting;
     private HashSet<String> PlayerJoinRequestSet;
 
 
@@ -47,10 +48,39 @@ public class TownData {
         this.PlayerJoinRequestSet= new HashSet<>();
         this.townPlayerListId.add(uuidLeader);
         this.roles = new HashMap<>();
+        this.isRecruiting = false;
 
         String townDefaultRankName = "default";
         addRank(townDefaultRankName);
         setTownDefaultRank(townDefaultRankName);
+        getRank(townDefaultRankName).addPlayer(uuidLeader);
+
+
+        PlayerDataStorage.get(uuidLeader).setRank(this.townDefaultRank);
+
+
+        this.relations = new TownRelations();
+        this.chunkSettings = new ClaimedChunkSettings();
+
+        this.townLevel = new TownLevel();
+        this.townTreasury = new TownTreasury();
+    }
+
+    public TownData(String townId, String townName, String uuidLeader, String description,String dateCreated,
+                    String townIconMaterialCode, String townDefaultRankName, Boolean isRecruiting){
+        this.TownId = townId;
+        this.TownName = townName;
+        this.UuidLeader = uuidLeader;
+        this.Description = description;
+        this.DateCreated = dateCreated;
+        this.townIconMaterialCode = townIconMaterialCode;
+        this.PlayerJoinRequestSet= new HashSet<>();
+        this.townPlayerListId.add(uuidLeader);
+        this.roles = new HashMap<>();
+        this.townDefaultRank = townDefaultRankName;
+        this.isRecruiting = isRecruiting;
+
+        addRank(townDefaultRankName);
         getRank(townDefaultRankName).addPlayer(uuidLeader);
 
 
@@ -87,6 +117,8 @@ public class TownData {
     }
     public void setName(String townName) {
         this.TownName = townName;
+        if(isSqlEnable())
+            TownDataStorage.updateTownData(this);
     }
 
     public String getUuidLeader() {
@@ -94,6 +126,8 @@ public class TownData {
     }
     public void setUuidLeader(String uuidLeader) {
         this.UuidLeader = uuidLeader;
+        if(isSqlEnable())
+            TownDataStorage.updateTownData(this);
     }
 
     public String getDescription() {
@@ -101,6 +135,8 @@ public class TownData {
     }
     public void setDescription(String description) {
         this.Description = description;
+        if(isSqlEnable())
+            TownDataStorage.updateTownData(this);
     }
 
 
@@ -110,6 +146,8 @@ public class TownData {
     }
     public void setDateCreated(String dateCreated) {
         this.DateCreated = dateCreated;
+        if(isSqlEnable())
+            TownDataStorage.updateTownData(this);
     }
 
     public ItemStack getTownIconItemStack() {
@@ -118,20 +156,35 @@ public class TownData {
         }
         else
             return new ItemStack(Material.getMaterial(this.townIconMaterialCode));
-
+    }
+    public String getTownIconName() {
+        return townIconMaterialCode;
     }
 
     public void setTownIconMaterialCode(Material material) {
         this.townIconMaterialCode = material.name();
+        if(isSqlEnable())
+            TownDataStorage.updateTownData(this);
     }
     public void addPlayer(String playerUUID){
-        townPlayerListId.add(playerUUID);
-        TownDataStorage.saveStats();
+        if(isSqlEnable()){
+            TownDataStorage.addPlayerToTownDatabase(TownId,playerUUID);
+        }
+        else {
+            townPlayerListId.add(playerUUID);
+            TownDataStorage.saveStats();
+        }
     }
 
     public void removePlayer(String playerUUID){
-        townPlayerListId.remove(playerUUID);
-        TownDataStorage.saveStats();
+        if(isSqlEnable()){
+            TownDataStorage.removePlayerFromTownDatabase(playerUUID);
+        }
+        else {
+            townPlayerListId.remove(playerUUID);
+            TownDataStorage.saveStats();
+        }
+
     }
     public void removePlayer(Player player){
         removePlayer(player.getUniqueId().toString());
