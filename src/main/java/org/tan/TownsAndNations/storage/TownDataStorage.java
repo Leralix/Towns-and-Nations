@@ -21,7 +21,6 @@ public class TownDataStorage {
     public static TownData newTown(String townName, Player leader){
         String townId = "T"+newTownId;
         TownData newTown = new TownData( townId, townName, leader.getUniqueId().toString());
-        PlayerDataStorage.get(leader.getUniqueId().toString()).setTownId(townId);
         townDataMap.put(townId,newTown);
 
         saveStats();

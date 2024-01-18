@@ -54,7 +54,7 @@ public class TownUtil {
         TownData newTown = TownDataStorage.newTown(townName,player);
 
         playerData.setRank(newTown.getTownDefaultRank());
-
+        playerData.setTownId(newTown.getID());
 
         for (TownData otherTown : TownDataStorage.getTownList().values()) {
             if(otherTown == TownDataStorage.get(townName)){
