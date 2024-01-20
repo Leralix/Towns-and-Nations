@@ -16,6 +16,7 @@ import org.tan.TownsAndNations.enums.*;
 import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.utils.*;
 
+import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 import static org.tan.TownsAndNations.enums.MessageKey.*;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.enums.TownRolePermission.KICK_PLAYER;
@@ -162,7 +163,7 @@ public class GuiManager2 {
                     Lang.GUI_TOWN_INFO_DESC0.getTranslation(townData.getDescription()),
                     Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getUuidLeader())).getName()),
                     Lang.GUI_TOWN_INFO_DESC2.getTranslation(townData.getPlayerList().size()),
-                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(townData.getChunkSettings().getNumberOfClaimedChunk()),
+                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(townData.getNumberOfClaimedChunk()),
                     "",
                     (townData.isRecruiting()) ? Lang.GUI_TOWN_INFO_IS_RECRUITING.getTranslation() : Lang.GUI_TOWN_INFO_IS_NOT_RECRUITING.getTranslation(),
                     (townData.isPlayerAlreadyJoined(player)) ? Lang.GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL.getTranslation() : Lang.GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN.getTranslation()
@@ -216,8 +217,8 @@ public class GuiManager2 {
                 "",
                 Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerTown.getUuidLeader())).getName()),
                 Lang.GUI_TOWN_INFO_DESC2.getTranslation(playerTown.getPlayerList().size()),
-                Lang.GUI_TOWN_INFO_DESC3.getTranslation(playerTown.getChunkSettings().getNumberOfClaimedChunk()),
-                Lang.GUI_TOWN_INFO_DESC4.getTranslation(playerTown.getTreasury().getBalance()),
+                Lang.GUI_TOWN_INFO_DESC3.getTranslation(playerTown.getNumberOfClaimedChunk()),
+                Lang.GUI_TOWN_INFO_DESC4.getTranslation(playerTown.getBalance()),
                 Lang.GUI_TOWN_INFO_CHANGE_ICON.getTranslation()
         );
 
@@ -333,7 +334,7 @@ public class GuiManager2 {
                     Lang.GUI_TOWN_INFO_DESC0.getTranslation(otherTown.getDescription()),
                     Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(otherTown.getUuidLeader())).getName()),
                     Lang.GUI_TOWN_INFO_DESC2.getTranslation(otherTown.getPlayerList().size()),
-                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(otherTown.getChunkSettings().getNumberOfClaimedChunk()),
+                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(otherTown.getNumberOfClaimedChunk()),
                     Lang.GUI_TOWN_INFO_TOWN_RELATION.getTranslation(relationName)
             );
 
@@ -924,7 +925,7 @@ public class GuiManager2 {
         }
 
         // Chunk upkeep
-        int numberClaimedChunk = town.getChunkSettings().getNumberOfClaimedChunk();
+        int numberClaimedChunk = town.getNumberOfClaimedChunk();
         float upkeepCost = ConfigUtil.getCustomConfig("config.yml").getInt("ChunkUpkeepCost");
         float totalUpkeep = numberClaimedChunk * upkeepCost/10;
         //total salary
@@ -1233,9 +1234,11 @@ public class GuiManager2 {
                 SoundUtil.playSound(player,NOT_ALLOWED);
                 return;
             }
-            if(townData.getTreasury().getBalance() > townLevel.getMoneyRequiredTownLevel()){
+            if(townData.getBalance() > townLevel.getMoneyRequiredTownLevel()){
                 townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredTownLevel());
                 townLevel.TownLevelUp();
+                if(isSqlEnable())
+                    TownDataStorage.updateTownUpgradeFromDatabase(townData.getID(),townLevel);
                 SoundUtil.playSound(player,LEVEL_UP);
                 player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.getTranslation());
                 OpenTownLevel(player);
@@ -1253,9 +1256,11 @@ public class GuiManager2 {
                 SoundUtil.playSound(player,NOT_ALLOWED);
                 return;
             }
-            if(townData.getTreasury().getBalance() > townLevel.getMoneyRequiredChunkCap()){
+            if(townData.getBalance() > townLevel.getMoneyRequiredChunkCap()){
                 townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredChunkCap());
                 townLevel.chunkCapLevelUp();
+                if(isSqlEnable())
+                    TownDataStorage.updateTownUpgradeFromDatabase(townData.getID(),townLevel);
                 SoundUtil.playSound(player,LEVEL_UP);
                 player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.getTranslation());
                 OpenTownLevel(player);
@@ -1272,7 +1277,7 @@ public class GuiManager2 {
                 SoundUtil.playSound(player,NOT_ALLOWED);
                 return;
             }
-            if (townData.getTreasury().getBalance() > townLevel.getMoneyRequiredPlayerCap()) {
+            if (townData.getBalance() > townLevel.getMoneyRequiredPlayerCap()) {
                 townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredPlayerCap());
                 townLevel.PlayerCapLevelUp();
                 SoundUtil.playSound(player,LEVEL_UP);

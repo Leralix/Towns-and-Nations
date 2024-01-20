@@ -108,7 +108,7 @@ public class HeadUtils {
         lore.add(Lang.GUI_TOWN_INFO_DESC0.getTranslation(town.getDescription()));
         lore.add(Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())).getName()));
         lore.add(Lang.GUI_TOWN_INFO_DESC2.getTranslation(town.getPlayerList().size()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC3.getTranslation(town.getChunkSettings().getNumberOfClaimedChunk()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC3.getTranslation(town.getNumberOfClaimedChunk()));
 
         meta.setLore(lore);
         icon.setItemMeta(meta);
@@ -138,7 +138,7 @@ public class HeadUtils {
         lore.add(Lang.GUI_TOWN_INFO_DESC0.getTranslation(town.getDescription()));
         lore.add(Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())).getName()));
         lore.add(Lang.GUI_TOWN_INFO_DESC2.getTranslation(town.getPlayerList().size()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC3.getTranslation(town.getChunkSettings().getNumberOfClaimedChunk()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC3.getTranslation(town.getNumberOfClaimedChunk()));
         lore.add(Lang.GUI_TOWN_INFO_TOWN_RELATION.getTranslation(relationName));
 
         meta.setLore(lore);

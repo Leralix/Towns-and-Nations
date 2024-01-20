@@ -76,7 +76,7 @@ public class DailyTasks {
 
         for(TownData town : TownDataStorage.getTownList().values()){
 
-            int numberClaimedChunk = town.getChunkSettings().getNumberOfClaimedChunk();
+            int numberClaimedChunk = town.getNumberOfClaimedChunk();
             int totalUpkeep = (int) ( numberClaimedChunk * upkeepCost/10);
 
             town.getTreasury().removeToBalance(totalUpkeep);

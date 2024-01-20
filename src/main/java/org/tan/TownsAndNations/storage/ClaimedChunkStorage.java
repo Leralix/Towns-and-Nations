@@ -332,6 +332,24 @@ public class ClaimedChunkStorage {
         }
     }
 
+    public static int getNumberOfChunks(String townId) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM claimed_chunks WHERE town_id = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt(1); // Le premier et unique résultat sera le nombre de chunks
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return count;
+    }
+
     public static void initialize() {
         try {
             String url = "jdbc:mysql://localhost:3306/minecraft";

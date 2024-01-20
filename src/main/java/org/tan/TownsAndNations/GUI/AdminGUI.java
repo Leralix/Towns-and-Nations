@@ -90,7 +90,7 @@ public class AdminGUI {
                     Lang.GUI_TOWN_INFO_DESC0.getTranslation(townData.getDescription()),
                     Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getUuidLeader())).getName()),
                     Lang.GUI_TOWN_INFO_DESC2.getTranslation(townData.getPlayerList().size()),
-                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(townData.getChunkSettings().getNumberOfClaimedChunk()),
+                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(townData.getNumberOfClaimedChunk()),
                     "",
                     Lang.ADMIN_GUI_LEFT_CLICK_TO_MANAGE_TOWN.getTranslation()
             );

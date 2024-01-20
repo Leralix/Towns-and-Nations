@@ -4,11 +4,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
+import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
-import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.SoundUtil;
 
 import java.util.*;
@@ -31,13 +32,19 @@ public class TownData {
     private boolean isRecruiting;
     private HashSet<String> PlayerJoinRequestSet;
 
+    private Integer balance;
+    private Integer flatTax;
+
+    private Integer numberOfClaimedChunk;
+
+
 
     private final TownTreasury townTreasury;
     private final TownLevel townLevel;
     private ClaimedChunkSettings chunkSettings;
     private final TownRelations relations;
 
-
+    //used for json
     public TownData(String townId, String townName, String uuidLeader){
         this.TownId = townId;
         this.UuidLeader = uuidLeader;
@@ -49,6 +56,8 @@ public class TownData {
         this.townPlayerListId.add(uuidLeader);
         this.roles = new HashMap<>();
         this.isRecruiting = false;
+        this.balance = 0;
+        this.flatTax = 1;
 
         String townDefaultRankName = "default";
         addRank(townDefaultRankName);
@@ -66,8 +75,9 @@ public class TownData {
         this.townTreasury = new TownTreasury();
     }
 
+    //used for sql
     public TownData(String townId, String townName, String uuidLeader, String description,String dateCreated,
-                    String townIconMaterialCode, String townDefaultRankName, Boolean isRecruiting){
+                    String townIconMaterialCode, String townDefaultRankName, Boolean isRecruiting, int balance,int flatTax){
         this.TownId = townId;
         this.TownName = townName;
         this.UuidLeader = uuidLeader;
@@ -79,6 +89,8 @@ public class TownData {
         this.roles = new HashMap<>();
         this.townDefaultRank = townDefaultRankName;
         this.isRecruiting = isRecruiting;
+        this.balance = balance;
+        this.flatTax = flatTax;
 
         addRank(townDefaultRankName);
         getRank(townDefaultRankName).addPlayer(uuidLeader);
@@ -87,11 +99,26 @@ public class TownData {
         PlayerDataStorage.get(uuidLeader).setRank(this.townDefaultRank);
 
 
-        this.relations = new TownRelations();
-        this.chunkSettings = new ClaimedChunkSettings();
+        this.relations = null;
+        this.chunkSettings = null;
 
-        this.townLevel = new TownLevel();
-        this.townTreasury = new TownTreasury();
+        this.townLevel = null;
+        this.townTreasury = null;
+    }
+
+    public String getID() {
+        return this.TownId;
+    }
+    public void setID(String townId) {
+        this.TownId = townId;
+    }
+    public String getName(){
+        return this.TownName;
+    }
+    public void setName(String townName) {
+        this.TownName = townName;
+        if(isSqlEnable())
+            TownDataStorage.updateTownData(this);
     }
 
     public void addRank(String rankName){
@@ -104,23 +131,6 @@ public class TownData {
         this.roles.remove(key);
     }
 
-
-    public String getID() {
-        return this.TownId;
-    }
-    public void setID(String townId) {
-        this.TownId = townId;
-    }
-
-    public String getName(){
-        return this.TownName;
-    }
-    public void setName(String townName) {
-        this.TownName = townName;
-        if(isSqlEnable())
-            TownDataStorage.updateTownData(this);
-    }
-
     public String getUuidLeader() {
         return this.UuidLeader;
     }
@@ -129,7 +139,6 @@ public class TownData {
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);
     }
-
     public String getDescription() {
         return this.Description;
     }
@@ -138,9 +147,6 @@ public class TownData {
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);
     }
-
-
-
     public String getDateCreated() {
         return this.DateCreated;
     }
@@ -149,7 +155,6 @@ public class TownData {
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);
     }
-
     public ItemStack getTownIconItemStack() {
         if(this.townIconMaterialCode == null){
             return null;
@@ -157,19 +162,17 @@ public class TownData {
         else
             return new ItemStack(Material.getMaterial(this.townIconMaterialCode));
     }
-    public String getTownIconName() {
+    public String getTownIconMaterialCode() {
         return townIconMaterialCode;
     }
-
     public void setTownIconMaterialCode(Material material) {
         this.townIconMaterialCode = material.name();
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);
     }
     public void addPlayer(String playerUUID){
-        if(isSqlEnable()){
+        if(isSqlEnable())
             TownDataStorage.addPlayerToTownDatabase(TownId,playerUUID);
-        }
         else {
             townPlayerListId.add(playerUUID);
             TownDataStorage.saveStats();
@@ -177,27 +180,26 @@ public class TownData {
     }
 
     public void removePlayer(String playerUUID){
-        if(isSqlEnable()){
+        if(isSqlEnable())
             TownDataStorage.removePlayerFromTownDatabase(playerUUID);
-        }
         else {
             townPlayerListId.remove(playerUUID);
             TownDataStorage.saveStats();
         }
-
     }
     public void removePlayer(Player player){
         removePlayer(player.getUniqueId().toString());
     }
 
     public HashSet<String> getPlayerList(){
-        return townPlayerListId;
+        if(isSqlEnable())
+            return TownDataStorage.getPlayersInTown(TownId);
+        else
+            return townPlayerListId;
     }
-
     public TownRelations getRelations(){
         return relations;
     }
-
     public void addTownRelations(TownRelation relation, TownData townData){
         addTownRelations(relation,townData.getID());
     }
@@ -227,10 +229,20 @@ public class TownData {
         return false;
     }
     public TownLevel getTownLevel() {
-        return townLevel;
+        if(isSqlEnable())
+            return TownDataStorage.getTownUpgradeFromDatabase(TownId);
+        else
+            return townLevel;
     }
     public int getBalance(){
-        return this.townTreasury.getBalance();
+        Integer _bal = this.balance;
+
+        //used to transition from 0.3.1 -> 0.4.0 when balance were stored in the treasury class
+        if(_bal == null){
+            this.balance = this.getTreasury().getBalance();
+            return this.balance;
+        }
+        return _bal;
     }
     public TownTreasury getTreasury(){
         return this.townTreasury;
@@ -304,7 +316,7 @@ public class TownData {
         return this.townPlayerListId.size() < this.townLevel.getPlayerCap();
     }
     public boolean canClaimMoreChunk(){
-        return this.chunkSettings.getNumberOfClaimedChunk() < this.townLevel.getChunkCap();
+        return this.getNumberOfClaimedChunk() < this.townLevel.getChunkCap();
     }
 
     public boolean isLeader(Player player){
@@ -359,6 +371,30 @@ public class TownData {
     public boolean isPlayerInTown(Player player){
         return this.townPlayerListId.contains(player.getUniqueId().toString());
     }
+
+    public int getFlatTax() {
+        Integer _tax = this.flatTax;
+        if(_tax == null){
+            this.flatTax = this.getTreasury().getFlatTax();
+            return this.flatTax;
+        }
+        return _tax;
+    }
+
+    public int getNumberOfClaimedChunk() {
+        if(isSqlEnable())
+            return ClaimedChunkStorage.getNumberOfChunks(this.TownId);
+        else{
+            if(this.numberOfClaimedChunk == null)
+                this.numberOfClaimedChunk = this.getChunkSettings().getNumberOfClaimedChunk();
+            return this.numberOfClaimedChunk;
+        }
+    }
+    public void addNumberOfClaimChunk(int number) {
+        if(!isSqlEnable())
+            this.numberOfClaimedChunk += number;
+    }
+
 
 
 

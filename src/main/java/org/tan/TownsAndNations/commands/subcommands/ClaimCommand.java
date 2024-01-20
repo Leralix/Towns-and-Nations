@@ -77,13 +77,13 @@ public class ClaimCommand extends SubCommand {
             return;
         }
 
-        if(townStat.getChunkSettings().getNumberOfClaimedChunk() == 0){
+        if(townStat.getNumberOfClaimedChunk() == 0){
 
             ClaimedChunkStorage.claimChunk(chunkToClaim,townStat.getID());
             townChunkInfo.incrementNumberOfClaimedChunk();
 
             player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.getTranslation(
-                    townChunkInfo.getNumberOfClaimedChunk(),
+                    townStat.getNumberOfClaimedChunk(),
                     townStat.getTownLevel().getChunkCap())
             );
             return;
@@ -98,7 +98,7 @@ public class ClaimCommand extends SubCommand {
         townChunkInfo.incrementNumberOfClaimedChunk();
 
         player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.getTranslation(
-                townChunkInfo.getNumberOfClaimedChunk(),
+                townStat.getNumberOfClaimedChunk(),
                 townStat.getTownLevel().getChunkCap())
         );
     }

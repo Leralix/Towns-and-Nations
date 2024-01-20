@@ -7,6 +7,7 @@ import com.google.gson.internal.bind.DateTypeAdapter;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.TownLevel;
 import org.tan.TownsAndNations.TownsAndNations;
 
 import java.io.*;
@@ -32,6 +33,7 @@ public class TownDataStorage {
 
         if(isSqlEnable()){
             saveTownDataToDatabase(newTown);
+            addTownLevelToDatabase(townId, new TownLevel());
             addPlayerToTownDatabase(townId, playerID);
         }
         else{
@@ -44,8 +46,9 @@ public class TownDataStorage {
     private static void saveTownDataToDatabase(TownData newTown) {
 
         String sql = "INSERT INTO tan_town_data (town_key, name, uuid_leader," +
-                " townDefaultRank, Description, DateCreated, townIconMaterialCode, isRecruiting)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                " townDefaultRank, Description, DateCreated, townIconMaterialCode, isRecruiting," +
+                "balance,taxRate)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, newTown.getID());
@@ -54,8 +57,10 @@ public class TownDataStorage {
             ps.setString(4, newTown.getTownDefaultRank());
             ps.setString(5, newTown.getDescription());
             ps.setString(6, newTown.getDateCreated());
-            ps.setString(7, newTown.getTownIconName());
+            ps.setString(7, newTown.getTownIconMaterialCode());
             ps.setBoolean(8, newTown.isRecruiting());
+            ps.setInt(9, newTown.getBalance());
+            ps.setInt(10, newTown.getFlatTax());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -74,6 +79,25 @@ public class TownDataStorage {
         }
     }
 
+    public static HashSet<String> getPlayersInTown(String townId) {
+        HashSet<String> playerIds = new HashSet<>();
+        String sql = "SELECT player_id FROM tan_player_current_town WHERE town_key = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String playerId = rs.getString("player_id");
+                    playerIds.add(playerId);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return playerIds;
+    }
+
     public static void removePlayerFromTownDatabase(String playerUUID) {
         String sql = "DELETE FROM tan_player_current_town WHERE  player_id = ?";
 
@@ -84,6 +108,8 @@ public class TownDataStorage {
             e.printStackTrace();
         }
     }
+
+
 
 
     public static void removeTown(String TownId) {
@@ -184,7 +210,9 @@ public class TownDataStorage {
                             rs.getString("DateCreated"),
                             rs.getString("townIconMaterialCode"),
                             rs.getString("townDefaultRank"),
-                            rs.getBoolean("isRecruiting")
+                            rs.getBoolean("isRecruiting"),
+                            rs.getInt("balance"),
+                            rs.getInt("taxRate")
                     );
                 }
             }
@@ -284,7 +312,9 @@ public class TownDataStorage {
                         "Description VARCHAR(255)," +
                         "DateCreated VARCHAR(255)," +
                         "townIconMaterialCode VARCHAR(255)," +
-                        "isRecruiting BOOLEAN)";
+                        "isRecruiting BOOLEAN," +
+                        "balance INT," +
+                        "taxRate INT)";
                 statement.executeUpdate(sql);
             }
 
@@ -310,6 +340,15 @@ public class TownDataStorage {
                         "isPayingTaxes BOOLEAN)";
                 statement.executeUpdate(sql);
             }
+            try (Statement statement = connection.createStatement()){
+                String sql = "CREATE TABLE IF NOT EXISTS tan_town_upgrades (" +
+                        "rank_key VARCHAR(255) PRIMARY KEY," +
+                        "level VARCHAR(255)," +
+                        "chunk_level VARCHAR(255)," +
+                        "player_cap_level VARCHAR(255)," +
+                        "town_spawn_bought BOOL)";
+                statement.executeUpdate(sql);
+            }
 
 
 
@@ -330,7 +369,7 @@ public class TownDataStorage {
                 ps.setString(3, townData.getTownDefaultRank());
                 ps.setString(4, townData.getDescription());
                 ps.setString(5, townData.getDateCreated());
-                ps.setString(6, townData.getTownIconName());
+                ps.setString(6, townData.getTownIconMaterialCode());
                 ps.setBoolean(7, townData.isRecruiting());
                 ps.setString(8, townData.getID());
                 ps.executeUpdate();
@@ -339,5 +378,65 @@ public class TownDataStorage {
             }
         }
     }
+
+    public static void addTownLevelToDatabase(String townId, TownLevel townLevel) {
+        if (townLevel == null) return;
+        System.out.println("test");
+        String sql = "INSERT INTO tan_town_upgrades (rank_key, level, chunk_level, player_cap_level, town_spawn_bought) VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townId);
+            ps.setInt(2, townLevel.getTownLevel());
+            ps.setInt(3, townLevel.getChunkCapLevel());
+            ps.setInt(4, townLevel.getPlayerCapLevel());
+            ps.setBoolean(5, townLevel.isTownSpawnUnlocked());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static TownLevel getTownUpgradeFromDatabase(String town_id) {
+        TownLevel townUpgrade = null;
+        String sql = "SELECT * FROM tan_town_upgrades WHERE rank_key = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, town_id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    townUpgrade = new TownLevel(
+                            rs.getInt("level"),
+                            rs.getInt("chunk_level"),
+                            rs.getInt("player_cap_level"),
+                            rs.getBoolean("town_spawn_bought")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return townUpgrade;
+    }
+
+    public static void updateTownUpgradeFromDatabase(String town_id, TownLevel townUpgrade) {
+        if (townUpgrade == null) return;
+
+        String sql = "UPDATE tan_town_upgrades SET level = ?, chunk_level = ?, " +
+                "player_cap_level = ?, town_spawn_bought = ? WHERE rank_key = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, townUpgrade.getTownLevel());
+            ps.setInt(2, townUpgrade.getChunkCapLevel());
+            ps.setInt(3, townUpgrade.getPlayerCapLevel());
+            ps.setBoolean(4, townUpgrade.isTownSpawnUnlocked());
+            ps.setString(5, town_id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 }

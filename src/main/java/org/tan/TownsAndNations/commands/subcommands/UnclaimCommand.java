@@ -67,7 +67,7 @@ public class UnclaimCommand extends SubCommand {
                 ClaimedChunkStorage.unclaimChunk(player.getLocation().getChunk());
                 TownDataStorage.get(player).getChunkSettings().decreaseNumberOfClaimedChunk();
 
-                player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS.getTranslation(townStat.getChunkSettings().getNumberOfClaimedChunk(),townStat.getTownLevel().getChunkCap()));
+                player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS.getTranslation(townStat.getNumberOfClaimedChunk(),townStat.getTownLevel().getChunkCap()));
 
                 return;
             }

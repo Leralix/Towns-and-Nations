@@ -27,15 +27,15 @@ public class ClaimedChunkSettings {
     public void nextPermission(TownChunkPermissionType type) {
         this.permissions.put(type, this.permissions.get(type).getNext());
     }
-
+    //Old methods only here to not break old saves. Will be deleted in the future
     public int getNumberOfClaimedChunk() {
         return this.numberOfClaimedChunk;
     }
-
+    //Old methods only here to not break old saves. Will be deleted in the future
     public void incrementNumberOfClaimedChunk() {
         this.numberOfClaimedChunk++;
     }
-
+    //Old methods only here to not break old saves. Will be deleted in the future
     public void decreaseNumberOfClaimedChunk() {
         this.numberOfClaimedChunk--;
     }
