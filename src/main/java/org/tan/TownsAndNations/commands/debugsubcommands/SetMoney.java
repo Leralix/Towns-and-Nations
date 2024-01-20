@@ -50,7 +50,7 @@ public class SetMoney extends SubCommand {
     public void perform(Player player, String[] args) {
 
         if(TownsAndNations.hasEconomy()){
-            player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.getTranslation());
+            player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.get());
             return;
         }
 

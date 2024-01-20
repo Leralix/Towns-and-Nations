@@ -25,7 +25,7 @@ public class JoinTownCommand extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.TOWN_ACCEPT_INVITE_DESC.getTranslation();
+        return Lang.TOWN_ACCEPT_INVITE_DESC.get();
     }
 
     public int getArguments() {
@@ -52,15 +52,15 @@ public class JoinTownCommand extends SubCommand {
 
 
         if (args.length == 1) {
-            player.sendMessage(getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.getTranslation());
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
+            player.sendMessage(getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         } else if (args.length == 2){
 
             String townID = args[1];
             List<String> townInvited = TownInviteDataStorage.checkInvitation(player.getUniqueId().toString());
 
             if(townInvited == null){
-                player.sendMessage(getTANString() + Lang.TOWN_INVITATION_NO_INVITATION.getTranslation());
+                player.sendMessage(getTANString() + Lang.TOWN_INVITATION_NO_INVITATION.get());
                 return;
             }
 
@@ -72,7 +72,7 @@ public class JoinTownCommand extends SubCommand {
                     PlayerData playerStat = PlayerDataStorage.get(player);
 
                     if(!townData.canAddMorePlayer()){
-                        player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_TOWN_FULL.getTranslation());
+                        player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_TOWN_FULL.get());
                         return;
                     }
 
@@ -83,8 +83,8 @@ public class JoinTownCommand extends SubCommand {
                     playerStat.setTownId(townID);
                     playerStat.setRank(townData.getTownDefaultRank());
 
-                    player.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.getTranslation(townData.getName()));
-                    townData.broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.getTranslation(player.getName()),
+                    player.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(townData.getName()));
+                    townData.broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(player.getName()),
                             GOOD);
 
                     TownInviteDataStorage.removeInvitation(player,townData.getID());
@@ -94,13 +94,13 @@ public class JoinTownCommand extends SubCommand {
                 }
 
             }
-            player.sendMessage(getTANString() + Lang.TOWN_INVITATION_NO_INVITATION.getTranslation());
+            player.sendMessage(getTANString() + Lang.TOWN_INVITATION_NO_INVITATION.get());
 
 
         }
         else{
-            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.getTranslation());
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
+            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
     }
 }

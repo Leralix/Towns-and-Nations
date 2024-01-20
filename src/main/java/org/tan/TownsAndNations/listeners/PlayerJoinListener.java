@@ -28,8 +28,8 @@ public class PlayerJoinListener implements Listener {
         if(playerStat.haveTown()){
             if(!TownDataStorage.get(playerStat).getPlayerJoinRequestSet().isEmpty()  && playerStat.hasPermission(INVITE_PLAYER)){
                 player.sendMessage(
-                        Lang.NEWSLETTER_STRING.getTranslation() +
-                        Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.getTranslation(TownDataStorage.get(playerStat).getPlayerJoinRequestSet().size())
+                        Lang.NEWSLETTER_STRING.get() +
+                        Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(TownDataStorage.get(playerStat).getPlayerJoinRequestSet().size())
                 );
             }
         }
@@ -37,8 +37,8 @@ public class PlayerJoinListener implements Listener {
 
         if(player.hasPermission("tan.debug"))
             if(!TownsAndNations.isLatestVersion()){
-                player.sendMessage(getTANString() + Lang.NEW_VERSION_AVAILABLE.getTranslation(TownsAndNations.getLatestVersion()));
-                player.sendMessage(getTANString() + Lang.NEW_VERSION_AVAILABLE_2.getTranslation());
+                player.sendMessage(getTANString() + Lang.NEW_VERSION_AVAILABLE.get(TownsAndNations.getLatestVersion()));
+                player.sendMessage(getTANString() + Lang.NEW_VERSION_AVAILABLE_2.get());
             }
 
     }

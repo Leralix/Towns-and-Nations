@@ -53,10 +53,10 @@ public class getRareItem extends SubCommand {
                 player.getLocation().getWorld().dropItemNaturally(player.getLocation(), DropChances.getRareCrops());
             }
             default -> {
-                player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR.get());
                 return;
             }
         }
-        player.sendMessage(ChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.getTranslation());
+        player.sendMessage(ChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
 }

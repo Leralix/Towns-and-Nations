@@ -19,7 +19,7 @@ public class SeeBalanceCommand extends SubCommand  {
 
     @Override
     public String getDescription() {
-        return Lang.BAL_COMMAND_DESC.getTranslation();
+        return Lang.BAL_COMMAND_DESC.get();
     }
     public int getArguments(){
         return 1;
@@ -36,15 +36,15 @@ public class SeeBalanceCommand extends SubCommand  {
     @Override
     public void perform(Player player, String[] args){
         if(TownsAndNations.hasEconomy()){
-            player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.getTranslation());
+            player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.get());
             return;
         }
         if (args.length == 1){
-            player.sendMessage(getTANString() + Lang.BAL_AMOUNT.getTranslation(PlayerDataStorage.get(player).getBalance()));
+            player.sendMessage(getTANString() + Lang.BAL_AMOUNT.get(PlayerDataStorage.get(player).getBalance()));
 
         }else if(args.length > 1){
-            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.getTranslation());
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
+            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
     }
 

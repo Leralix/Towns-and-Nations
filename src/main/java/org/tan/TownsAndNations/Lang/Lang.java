@@ -390,12 +390,12 @@ public enum Lang {
                 translations.put(key, message);
             }
         }
-        TownsAndNations.getPluginLogger().info(LANGUAGE_SUCCESSFULLY_LOADED.getTranslation());
+        TownsAndNations.getPluginLogger().info(LANGUAGE_SUCCESSFULLY_LOADED.get());
 
 
     }
 
-    public String getTranslation() {
+    public String get() {
         String translation = translations.get(this);
         if (translation != null) {
             return ChatColor.translateAlternateColorCodes('§', translation);
@@ -403,7 +403,7 @@ public enum Lang {
         return null;
     }
 
-    public String getTranslation(Object... placeholders) {
+    public String get(Object... placeholders) {
         String translation = translations.get(this);
         if (translation != null) {
             translation = ChatColor.translateAlternateColorCodes('§', translation);

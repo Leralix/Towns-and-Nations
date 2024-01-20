@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
@@ -244,6 +243,20 @@ public class TownData {
         }
         return _bal;
     }
+
+    public void addToBalance(int balance){
+        this.balance += balance;
+        if(isSqlEnable())
+            TownDataStorage.updateTownData(this);
+    }
+
+    public void removeToBalance(int balance){
+        this.balance -= balance;
+        if(isSqlEnable())
+            TownDataStorage.updateTownData(this);
+    }
+
+
     public TownTreasury getTreasury(){
         return this.townTreasury;
     }
@@ -324,33 +337,54 @@ public class TownData {
     }
 
     public void cancelAllRelation() {
-
-        relations.cleanAll(getID());
+        if(isSqlEnable())
+            //TownDataStorage.removeTownRelation(this);
+            return;
+        else
+            this.relations.cleanAll(getID());
     }
 
 
     public void addPlayerJoinRequest(String playerUUID) {
-        PlayerJoinRequestSet.add(playerUUID);
+        if(isSqlEnable()){
+            TownDataStorage.addPlayerJoinRequestToDB(playerUUID,this.getID());
+        }
+        else{
+            this.PlayerJoinRequestSet.add(playerUUID);
+        }
     }
     public void addPlayerJoinRequest(Player player) {
-        PlayerJoinRequestSet.add(player.getUniqueId().toString());
+        addPlayerJoinRequest(player.getUniqueId().toString());
     }
     public void removePlayerJoinRequest(String playerUUID) {
-        PlayerJoinRequestSet.remove(playerUUID);
+        if(isSqlEnable()){
+            TownDataStorage.removePlayerJoinRequestFromDB(playerUUID,this.getID());
+        }
+        else{
+            PlayerJoinRequestSet.remove(playerUUID);
+        }
+
     }
     public void removePlayerJoinRequest(Player player) {
-        PlayerJoinRequestSet.remove(player.getUniqueId().toString());
+        removePlayerJoinRequest(player.getUniqueId().toString());
     }
-    public boolean isPlayerAlreadyJoined(String playerUUID) {
-        return PlayerJoinRequestSet.contains(playerUUID);
+    public boolean isPlayerAlreadyRequested(String playerUUID) {
+        if(isSqlEnable())
+            return TownDataStorage.isPlayerAlreadyAppliedFromDB(playerUUID,this.getID());
+        else
+            return PlayerJoinRequestSet.contains(playerUUID);
     }
-    public boolean isPlayerAlreadyJoined(Player player) {
-        return PlayerJoinRequestSet.contains(player.getUniqueId().toString());
+    public boolean isPlayerAlreadyRequested(Player player) {
+        return isPlayerAlreadyRequested(player.getUniqueId().toString());
     }
     public HashSet<String> getPlayerJoinRequestSet(){
+        if(isSqlEnable())
+            return TownDataStorage.getAllPlayerApplicationFrom(this.getID());
+        else
             return this.PlayerJoinRequestSet;
     }
 
+    //used to transition from 0.0.5 -> 0.0.6, will soon be deleted
     public void update(){
         if(this.PlayerJoinRequestSet == null)
             this.PlayerJoinRequestSet= new HashSet<>();
@@ -362,10 +396,14 @@ public class TownData {
 
     public void setRecruiting(boolean isRecruiting) {
         this.isRecruiting = isRecruiting;
+        if(isSqlEnable())
+            TownDataStorage.updateTownData(this);
     }
 
     public void swapRecruiting() {
         this.isRecruiting = !this.isRecruiting;
+        if(isSqlEnable())
+            TownDataStorage.updateTownData(this);
     }
 
     public boolean isPlayerInTown(Player player){
@@ -374,11 +412,22 @@ public class TownData {
 
     public int getFlatTax() {
         Integer _tax = this.flatTax;
-        if(_tax == null){
+        if(_tax == null){ //used to transition from 0.3.1 -> 0.4.0 when balance were stored in the treasury class
             this.flatTax = this.getTreasury().getFlatTax();
             return this.flatTax;
         }
         return _tax;
+    }
+
+    public void addToFlatTax(int flatTax) {
+        Integer _currentTax = this.flatTax;
+        if(_currentTax == null) //used to transition from 0.3.1 -> 0.4.0 when balance were stored in the treasury class
+            this.flatTax = this.getTreasury().getFlatTax() + flatTax;
+        else{
+            this.flatTax += flatTax;
+            if(isSqlEnable())
+                TownDataStorage.updateTownData(this);
+        }
     }
 
     public int getNumberOfClaimedChunk() {

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
+
 public class TownTreasury {
 
     private int balance;
@@ -25,50 +27,56 @@ public class TownTreasury {
         this.chunkHistory = new LinkedHashMap<>();
         this.miscellaneousPurchaseHistory = new ArrayList<>();
     }
+    //Old methods getBalance and getFlatTax only here to not break old saves. Will be deleted in the future
     public int getBalance(){
         return this.balance;
     }
-
-
-    public LinkedHashMap<String,ArrayList<TransactionHistory>> getTaxHistory(){
-        return taxHistory;
-    }
-
-    public ArrayList<TransactionHistory> getDonationHistory(){
-        return donationHistory;
-    }
-
-    public LinkedHashMap<String, TransactionHistory> getChunkHistory(){
-        return this.chunkHistory;
-    }
-
-    public LinkedHashMap<String,ArrayList<TransactionHistory>> getSalaryHistory(){
-        return salaryHistory;
-    }
-
-    public ArrayList<TransactionHistory> getMiscellaneousPurchaseHistory(){
-        return miscellaneousPurchaseHistory;
-    }
-
-
-    public void addToBalance(int amount){
-        this.balance = this.balance + amount;
-    }
-    public void removeToBalance(int amount){
-        this.balance = this.balance - amount;
-    }
-
     public int getFlatTax(){
         return this.flatTax;
     }
 
-    public void addFlatTax(int amount){
-        this.flatTax += amount;
+
+    public LinkedHashMap<String,ArrayList<TransactionHistory>> getTaxHistory(){
+        //Will fix later
+        if(isSqlEnable())
+            return null;
+        return taxHistory;
     }
 
-    public void removeFlatTax(int amount){
-        this.flatTax -= amount;
+    public ArrayList<TransactionHistory> getDonationHistory(){
+        //Will fix later
+        if(isSqlEnable())
+            return null;
+        return donationHistory;
     }
+
+    public LinkedHashMap<String, TransactionHistory> getChunkHistory(){
+        //Will fix later
+        if(isSqlEnable())
+            return null;
+        return this.chunkHistory;
+    }
+
+    public LinkedHashMap<String,ArrayList<TransactionHistory>> getSalaryHistory(){
+        //Will fix later
+        if(isSqlEnable())
+            return null;
+        return salaryHistory;
+    }
+
+    public ArrayList<TransactionHistory> getMiscellaneousPurchaseHistory(){
+        //Will fix later
+        if(isSqlEnable())
+            return null;
+        return miscellaneousPurchaseHistory;
+    }
+
+
+    public void removeToBalance(int amount){
+        this.balance = this.balance - amount;
+    }
+
+
 
     public void addTaxHistory(LocalDate date, String playerName, String playerID, int amount){
 
@@ -117,10 +125,14 @@ public class TownTreasury {
         this.miscellaneousPurchaseHistory.add(new TransactionHistory(miscellaneous, amount));
     }
     public List<String> getTaxLimitedHistory(int wantedNumberOfRows){
-
+        //Will fix later
+        if(isSqlEnable())
             return null;
+        return null;
     }
     public List<String> getDonationLimitedHistory(int wantedNumberOfRows){
+
+
 
         if (this.donationHistory.size() < wantedNumberOfRows) {
             wantedNumberOfRows = this.donationHistory.size();
@@ -135,6 +147,9 @@ public class TownTreasury {
         return latestDonations;
     }
     public List<String> getMiscellaneousLimitedHistory(int wantedNumberOfRows){
+        //Will fix later
+        if(isSqlEnable())
+            return null;
 
         int miscSize = this.miscellaneousPurchaseHistory.size();
 

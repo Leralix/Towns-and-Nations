@@ -1,6 +1,5 @@
 package org.tan.TownsAndNations.commands.debugsubcommands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
@@ -47,7 +46,7 @@ public class DropChance extends SubCommand {
 
             player.sendMessage("Key: " + key + ", Value: " + value.getDropChance());
         }
-        player.sendMessage(getTANString() + Lang.COMMAND_GENERIC_SUCCESS.getTranslation());
+        player.sendMessage(getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
 
 

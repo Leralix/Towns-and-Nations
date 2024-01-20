@@ -169,9 +169,14 @@ public class TownDataStorage {
                 TownData townData = new TownData(
                         rs.getString("town_key"),
                         rs.getString("name"),
-                        rs.getString("uuid_leader")
-
-
+                        rs.getString("uuid_leader"),
+                        rs.getString("Description"),
+                        rs.getString("DateCreated"),
+                        rs.getString("townIconMaterialCode"),
+                        rs.getString("townDefaultRank"),
+                        rs.getBoolean("isRecruiting"),
+                        rs.getInt("balance"),
+                        rs.getInt("taxRate")
                 );
                 townList.put(townData.getID(), townData);
             }
@@ -360,7 +365,8 @@ public class TownDataStorage {
     public static void updateTownData(TownData townData) {
         if (isSqlEnable() && townData != null) {
             String sql = "UPDATE tan_town_data SET name = ?, uuid_leader = ?, townDefaultRank = ?, " +
-                    "Description = ?, DateCreated = ?, townIconMaterialCode = ?, isRecruiting = ? " +
+                    "Description = ?, DateCreated = ?, townIconMaterialCode = ?, isRecruiting = ?, " +
+                    "Balance = ?, taxRate = ? " +
                     "WHERE town_key = ?";
 
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -371,7 +377,9 @@ public class TownDataStorage {
                 ps.setString(5, townData.getDateCreated());
                 ps.setString(6, townData.getTownIconMaterialCode());
                 ps.setBoolean(7, townData.isRecruiting());
-                ps.setString(8, townData.getID());
+                ps.setInt(8, townData.getBalance());
+                ps.setInt(9, townData.getFlatTax());
+                ps.setString(10, townData.getID());
                 ps.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -381,7 +389,6 @@ public class TownDataStorage {
 
     public static void addTownLevelToDatabase(String townId, TownLevel townLevel) {
         if (townLevel == null) return;
-        System.out.println("test");
         String sql = "INSERT INTO tan_town_upgrades (rank_key, level, chunk_level, player_cap_level, town_spawn_bought) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -437,6 +444,59 @@ public class TownDataStorage {
         }
     }
 
+    public static void addPlayerJoinRequestToDB(String playerUUID, String townID) {
+        String sql = "INSERT INTO tan_player_town_application (town_key, player_id) VALUES (?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townID);
+            ps.setString(2, playerUUID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public static void removePlayerJoinRequestFromDB(String playerUUID, String townID) {
+        String sql = "DELETE FROM tan_player_town_application WHERE town_key = ? AND player_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townID);
+            ps.setString(2, playerUUID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean isPlayerAlreadyAppliedFromDB(String playerUUID, String townID) {
+
+        String sql = "SELECT COUNT(*) FROM tan_player_town_application WHERE town_key = ? AND player_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townID);
+            ps.setString(2, playerUUID);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static HashSet<String> getAllPlayerApplicationFrom(String townID) {
+        HashSet<String> requests = new HashSet<>();
+        String sql = "SELECT player_id FROM tan_player_town_application WHERE town_key = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townID);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    requests.add(rs.getString("player_id"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return requests;
+    }
 
 }

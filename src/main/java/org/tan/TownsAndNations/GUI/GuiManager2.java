@@ -43,23 +43,23 @@ public class GuiManager2 {
 
         Gui gui = createChestGui("Main menu",3);
 
-        ItemStack KingdomHead = HeadUtils.makeSkull(Lang.GUI_KINGDOM_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=");
-        ItemStack RegionHead = HeadUtils.makeSkull(Lang.GUI_REGION_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
-        ItemStack TownHead = HeadUtils.makeSkull(Lang.GUI_TOWN_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
+        ItemStack KingdomHead = HeadUtils.makeSkull(Lang.GUI_KINGDOM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=");
+        ItemStack RegionHead = HeadUtils.makeSkull(Lang.GUI_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
+        ItemStack TownHead = HeadUtils.makeSkull(Lang.GUI_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
         ItemStack PlayerHead = HeadUtils.getPlayerHeadInformation(player);
 
-        HeadUtils.setLore(KingdomHead, Lang.GUI_KINGDOM_ICON_DESC1.getTranslation());
-        HeadUtils.setLore(RegionHead, Lang.GUI_REGION_ICON_DESC1.getTranslation());
-        HeadUtils.setLore(TownHead, playerHaveTown? Lang.GUI_KINGDOM_ICON_DESC1_HAVE_TOWN.getTranslation(TownDataStorage.get(playerStat).getName()):Lang.GUI_KINGDOM_ICON_DESC1_NO_TOWN.getTranslation() );
+        HeadUtils.setLore(KingdomHead, Lang.GUI_KINGDOM_ICON_DESC1.get());
+        HeadUtils.setLore(RegionHead, Lang.GUI_REGION_ICON_DESC1.get());
+        HeadUtils.setLore(TownHead, playerHaveTown? Lang.GUI_KINGDOM_ICON_DESC1_HAVE_TOWN.get(TownDataStorage.get(playerStat).getName()):Lang.GUI_KINGDOM_ICON_DESC1_NO_TOWN.get() );
 
 
         GuiItem Kingdom = ItemBuilder.from(KingdomHead).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage(getTANString() + Lang.GUI_WARNING_STILL_IN_DEV.getTranslation());
+            player.sendMessage(getTANString() + Lang.GUI_WARNING_STILL_IN_DEV.get());
         });
         GuiItem Region = ItemBuilder.from(RegionHead).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage(getTANString() + Lang.GUI_WARNING_STILL_IN_DEV.getTranslation());
+            player.sendMessage(getTANString() + Lang.GUI_WARNING_STILL_IN_DEV.get());
         });
         GuiItem Town = ItemBuilder.from(TownHead).asGuiItem(event -> {
             event.setCancelled(true);
@@ -85,12 +85,12 @@ public class GuiManager2 {
         Gui gui = createChestGui("Profile",3);
 
 
-        ItemStack PlayerHead = HeadUtils.getPlayerHead(Lang.GUI_YOUR_PROFILE.getTranslation(),player);
-        ItemStack GoldPurse = HeadUtils.getCustomLoreItem(Material.GOLD_NUGGET, Lang.GUI_YOUR_BALANCE.getTranslation(),Lang.GUI_YOUR_BALANCE_DESC1.getTranslation(EconomyUtil.getBalance(player)));
-        ItemStack killList = HeadUtils.getCustomLoreItem(Material.IRON_SWORD, Lang.GUI_YOUR_PVE_KILLS.getTranslation(),Lang.GUI_YOUR_PVE_KILLS_DESC1.getTranslation(player.getStatistic(Statistic.MOB_KILLS)));
+        ItemStack PlayerHead = HeadUtils.getPlayerHead(Lang.GUI_YOUR_PROFILE.get(),player);
+        ItemStack GoldPurse = HeadUtils.getCustomLoreItem(Material.GOLD_NUGGET, Lang.GUI_YOUR_BALANCE.get(),Lang.GUI_YOUR_BALANCE_DESC1.get(EconomyUtil.getBalance(player)));
+        ItemStack killList = HeadUtils.getCustomLoreItem(Material.IRON_SWORD, Lang.GUI_YOUR_PVE_KILLS.get(),Lang.GUI_YOUR_PVE_KILLS_DESC1.get(player.getStatistic(Statistic.MOB_KILLS)));
         int time = player.getStatistic(Statistic.PLAY_ONE_MINUTE) /20 / 86400;
-        ItemStack lastDeath = HeadUtils.getCustomLoreItem(Material.SKELETON_SKULL, Lang.GUI_YOUR_CURRENT_TIME_ALIVE.getTranslation(),Lang.GUI_YOUR_CURRENT_TIME_ALIVE_DESC1.getTranslation(time));
-        ItemStack totalRpKills = HeadUtils.getCustomLoreItem(Material.SKELETON_SKULL, Lang.GUI_YOUR_CURRENT_MURDER.getTranslation(),Lang.GUI_YOUR_CURRENT_MURDER_DESC1.getTranslation("0"));
+        ItemStack lastDeath = HeadUtils.getCustomLoreItem(Material.SKELETON_SKULL, Lang.GUI_YOUR_CURRENT_TIME_ALIVE.get(),Lang.GUI_YOUR_CURRENT_TIME_ALIVE_DESC1.get(time));
+        ItemStack totalRpKills = HeadUtils.getCustomLoreItem(Material.SKELETON_SKULL, Lang.GUI_YOUR_CURRENT_MURDER.get(),Lang.GUI_YOUR_CURRENT_MURDER_DESC1.get("0"));
 
         GuiItem Head = ItemBuilder.from(PlayerHead).asGuiItem(event -> event.setCancelled(true));
         GuiItem Gold = ItemBuilder.from(GoldPurse).asGuiItem(event -> event.setCancelled(true));
@@ -114,25 +114,24 @@ public class GuiManager2 {
         int townPrice = ConfigUtil.getCustomConfig("config.yml").getInt("CostOfCreatingTown");
 
         ItemStack createNewLand = HeadUtils.getCustomLoreItem(Material.GRASS_BLOCK,
-                Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.getTranslation(),
-                Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.getTranslation(townPrice)
+                Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.get(),
+                Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.get(townPrice)
         );
-        ItemStack joinLand = HeadUtils.getCustomLoreItem(Material.ANVIL, Lang.GUI_NO_TOWN_JOIN_A_TOWN.getTranslation(),Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.getTranslation(TownDataStorage.getNumberOfTown()));
+        ItemStack joinLand = HeadUtils.getCustomLoreItem(Material.ANVIL, Lang.GUI_NO_TOWN_JOIN_A_TOWN.get(),Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(TownDataStorage.getNumberOfTown()));
 
         GuiItem _create = ItemBuilder.from(createNewLand).asGuiItem(event -> {
             event.setCancelled(true);
 
             int playerMoney = EconomyUtil.getBalance(player);
             if (playerMoney < townPrice) {
-                player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.getTranslation(townPrice - playerMoney));
+                player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(townPrice - playerMoney));
             }
             else {
-                player.sendMessage(getTANString() + Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.getTranslation());
+                player.sendMessage(getTANString() + Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get());
                 player.closeInventory();
 
                 Map<MessageKey,String> data = new HashMap<>();
                 data.put(TOWN_COST, String.valueOf(townPrice));
-
                 PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CREATE_CITY,player,data);
             }
         });
@@ -160,37 +159,37 @@ public class GuiManager2 {
             ItemStack townIcon = HeadUtils.getTownIcon(townData.getID());
 
             HeadUtils.setLore(townIcon,
-                    Lang.GUI_TOWN_INFO_DESC0.getTranslation(townData.getDescription()),
-                    Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getUuidLeader())).getName()),
-                    Lang.GUI_TOWN_INFO_DESC2.getTranslation(townData.getPlayerList().size()),
-                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(townData.getNumberOfClaimedChunk()),
+                    Lang.GUI_TOWN_INFO_DESC0.get(townData.getDescription()),
+                    Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getUuidLeader())).getName()),
+                    Lang.GUI_TOWN_INFO_DESC2.get(townData.getPlayerList().size()),
+                    Lang.GUI_TOWN_INFO_DESC3.get(townData.getNumberOfClaimedChunk()),
                     "",
-                    (townData.isRecruiting()) ? Lang.GUI_TOWN_INFO_IS_RECRUITING.getTranslation() : Lang.GUI_TOWN_INFO_IS_NOT_RECRUITING.getTranslation(),
-                    (townData.isPlayerAlreadyJoined(player)) ? Lang.GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL.getTranslation() : Lang.GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN.getTranslation()
+                    (townData.isRecruiting()) ? Lang.GUI_TOWN_INFO_IS_RECRUITING.get() : Lang.GUI_TOWN_INFO_IS_NOT_RECRUITING.get(),
+                    (townData.isPlayerAlreadyRequested(player)) ? Lang.GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL.get() : Lang.GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN.get()
             );
 
             GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
 
                 if(event.isLeftClick()){
-                    if(townData.isPlayerAlreadyJoined(player)){
+                    if(townData.isPlayerAlreadyRequested(player)){
                        return;
                     }
                     if(!townData.isRecruiting()){
-                        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_TOWN_NOT_RECRUITING.getTranslation());
+                        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_TOWN_NOT_RECRUITING.get());
                         return;
                     }
                     townData.addPlayerJoinRequest(player);
-                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.getTranslation(townData.getName()));
+                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(townData.getName()));
                     OpenSearchTownMenu(player);
                 }
 
                 if(event.isRightClick()){
-                    if(!townData.isPlayerAlreadyJoined(player)){
+                    if(!townData.isPlayerAlreadyRequested(player)){
                         return;
                     }
                     townData.removePlayerJoinRequest(player);
-                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.getTranslation());
+                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get());
                     OpenSearchTownMenu(player);
                 }
 
@@ -201,7 +200,7 @@ public class GuiManager2 {
 
         }
 
-        gui.setItem(3,1, CreateBackArrow(player,p -> OpenMainMenu(player)));
+        gui.setItem(3,1, CreateBackArrow(player,p -> OpenTownMenuNoTown(player)));
 
         gui.open(player);
     }
@@ -213,35 +212,35 @@ public class GuiManager2 {
 
         ItemStack TownIcon = HeadUtils.getTownIcon(playerTown.getID());
         HeadUtils.setLore(TownIcon,
-                Lang.GUI_TOWN_INFO_DESC0.getTranslation(playerTown.getDescription()),
+                Lang.GUI_TOWN_INFO_DESC0.get(playerTown.getDescription()),
                 "",
-                Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerTown.getUuidLeader())).getName()),
-                Lang.GUI_TOWN_INFO_DESC2.getTranslation(playerTown.getPlayerList().size()),
-                Lang.GUI_TOWN_INFO_DESC3.getTranslation(playerTown.getNumberOfClaimedChunk()),
-                Lang.GUI_TOWN_INFO_DESC4.getTranslation(playerTown.getBalance()),
-                Lang.GUI_TOWN_INFO_CHANGE_ICON.getTranslation()
+                Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerTown.getUuidLeader())).getName()),
+                Lang.GUI_TOWN_INFO_DESC2.get(playerTown.getPlayerList().size()),
+                Lang.GUI_TOWN_INFO_DESC3.get(playerTown.getNumberOfClaimedChunk()),
+                Lang.GUI_TOWN_INFO_DESC4.get(playerTown.getBalance()),
+                Lang.GUI_TOWN_INFO_CHANGE_ICON.get()
         );
 
-        ItemStack GoldIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_TREASURY_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        HeadUtils.setLore(GoldIcon, Lang.GUI_TOWN_TREASURY_ICON_DESC1.getTranslation());
+        ItemStack GoldIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_TREASURY_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        HeadUtils.setLore(GoldIcon, Lang.GUI_TOWN_TREASURY_ICON_DESC1.get());
 
-        ItemStack SkullIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Q0ZDQ5NmIxZGEwNzUzNmM5NGMxMzEyNGE1ODMzZWJlMGM1MzgyYzhhMzM2YWFkODQ2YzY4MWEyOGQ5MzU2MyJ9fX0=");
-        HeadUtils.setLore(SkullIcon, Lang.GUI_TOWN_MEMBERS_ICON_DESC1.getTranslation());
+        ItemStack SkullIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Q0ZDQ5NmIxZGEwNzUzNmM5NGMxMzEyNGE1ODMzZWJlMGM1MzgyYzhhMzM2YWFkODQ2YzY4MWEyOGQ5MzU2MyJ9fX0=");
+        HeadUtils.setLore(SkullIcon, Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get());
 
-        ItemStack ClaimIcon = HeadUtils.makeSkull(Lang.GUI_CLAIM_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
-        HeadUtils.setLore(ClaimIcon, Lang.GUI_CLAIM_ICON_DESC1.getTranslation());
+        ItemStack ClaimIcon = HeadUtils.makeSkull(Lang.GUI_CLAIM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
+        HeadUtils.setLore(ClaimIcon, Lang.GUI_CLAIM_ICON_DESC1.get());
 
-        ItemStack otherTownIcon = HeadUtils.makeSkull(Lang.GUI_OTHER_TOWN_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=");
-        HeadUtils.setLore(otherTownIcon, Lang.GUI_OTHER_TOWN_ICON_DESC1.getTranslation());
+        ItemStack otherTownIcon = HeadUtils.makeSkull(Lang.GUI_OTHER_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=");
+        HeadUtils.setLore(otherTownIcon, Lang.GUI_OTHER_TOWN_ICON_DESC1.get());
 
-        ItemStack RelationIcon = HeadUtils.makeSkull(Lang.GUI_RELATION_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=");
-        HeadUtils.setLore(RelationIcon, Lang.GUI_RELATION_ICON_DESC1.getTranslation());
+        ItemStack RelationIcon = HeadUtils.makeSkull(Lang.GUI_RELATION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=");
+        HeadUtils.setLore(RelationIcon, Lang.GUI_RELATION_ICON_DESC1.get());
 
-        ItemStack LevelIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmJlNTI5YWI2YjJlYTdjNTBkOTE5MmQ4OWY4OThmZDdkYThhOWU3NTBkMzc4Mjk1ZGY3MzIwNWU3YTdlZWFlMCJ9fX0=");
-        HeadUtils.setLore(LevelIcon, Lang.GUI_TOWN_LEVEL_ICON_DESC1.getTranslation());
+        ItemStack LevelIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmJlNTI5YWI2YjJlYTdjNTBkOTE5MmQ4OWY4OThmZDdkYThhOWU3NTBkMzc4Mjk1ZGY3MzIwNWU3YTdlZWFlMCJ9fX0=");
+        HeadUtils.setLore(LevelIcon, Lang.GUI_TOWN_LEVEL_ICON_DESC1.get());
 
-        ItemStack SettingIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_SETTINGS_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkMmNiMzg0NThkYTE3ZmI2Y2RhY2Y3ODcxNjE2MDJhMjQ5M2NiZjkzMjMzNjM2MjUzY2ZmMDdjZDg4YTljMCJ9fX0=");
-        HeadUtils.setLore(SettingIcon, Lang.GUI_TOWN_SETTINGS_ICON_DESC1.getTranslation());
+        ItemStack SettingIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_SETTINGS_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkMmNiMzg0NThkYTE3ZmI2Y2RhY2Y3ODcxNjE2MDJhMjQ5M2NiZjkzMjMzNjM2MjUzY2ZmMDdjZDg4YTljMCJ9fX0=");
+        HeadUtils.setLore(SettingIcon, Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get());
 
         GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -253,13 +252,13 @@ public class GuiManager2 {
 
             Material itemMaterial = event.getCursor().getType();
             if(itemMaterial == Material.AIR || itemMaterial == Material.LEGACY_AIR){
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.get());
             }
 
             else {
                 playerTown.setTownIconMaterialCode(itemMaterial);
                 OpenTownMenuHaveTown(player);
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get());
             }
         });
         GuiItem _goldIcon = ItemBuilder.from(GoldIcon).asGuiItem(event -> {
@@ -324,18 +323,18 @@ public class GuiManager2 {
 
             String relationName;
             if(relation == null){
-                relationName = Lang.GUI_TOWN_RELATION_NEUTRAL.getTranslation();
+                relationName = Lang.GUI_TOWN_RELATION_NEUTRAL.get();
             }
             else {
                 relationName = relation.getColor() + relation.getName();
             }
 
             HeadUtils.setLore(townIcon,
-                    Lang.GUI_TOWN_INFO_DESC0.getTranslation(otherTown.getDescription()),
-                    Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(otherTown.getUuidLeader())).getName()),
-                    Lang.GUI_TOWN_INFO_DESC2.getTranslation(otherTown.getPlayerList().size()),
-                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(otherTown.getNumberOfClaimedChunk()),
-                    Lang.GUI_TOWN_INFO_TOWN_RELATION.getTranslation(relationName)
+                    Lang.GUI_TOWN_INFO_DESC0.get(otherTown.getDescription()),
+                    Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(otherTown.getUuidLeader())).getName()),
+                    Lang.GUI_TOWN_INFO_DESC2.get(otherTown.getPlayerList().size()),
+                    Lang.GUI_TOWN_INFO_DESC3.get(otherTown.getNumberOfClaimedChunk()),
+                    Lang.GUI_TOWN_INFO_TOWN_RELATION.get(relationName)
             );
 
             GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
@@ -365,9 +364,9 @@ public class GuiManager2 {
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate.getName(),playerIterate);
             HeadUtils.setLore(
                     playerHead,
-                    Lang.GUI_TOWN_MEMBER_DESC1.getTranslation(town.getRank(otherPlayerStat.getTownRankID()).getColoredName()),
-                    Lang.GUI_TOWN_MEMBER_DESC2.getTranslation(EconomyUtil.getBalance(playerIterate)),
-                    playerStat.hasPermission(KICK_PLAYER) ? Lang.GUI_TOWN_MEMBER_DESC3.getTranslation() : ""
+                    Lang.GUI_TOWN_MEMBER_DESC1.get(town.getRank(otherPlayerStat.getTownRankID()).getColoredName()),
+                    Lang.GUI_TOWN_MEMBER_DESC2.get(EconomyUtil.getBalance(playerIterate)),
+                    playerStat.hasPermission(KICK_PLAYER) ? Lang.GUI_TOWN_MEMBER_DESC3.get() : ""
             );
             GuiItem _playerIcon = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
@@ -381,10 +380,10 @@ public class GuiManager2 {
             i++;
         }
 
-        ItemStack manageRanks = HeadUtils.getCustomLoreItem(Material.LADDER, Lang.GUI_TOWN_MEMBERS_MANAGE_ROLES.getTranslation());
+        ItemStack manageRanks = HeadUtils.getCustomLoreItem(Material.LADDER, Lang.GUI_TOWN_MEMBERS_MANAGE_ROLES.get());
         ItemStack manageApplication = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK,
-                Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION.getTranslation(),
-                Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.getTranslation(town.getPlayerJoinRequestSet().size())
+                Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION.get(),
+                Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(town.getPlayerJoinRequestSet().size())
         );
 
         GuiItem _manageRanks = ItemBuilder.from(manageRanks).asGuiItem(event -> {
@@ -424,8 +423,8 @@ public class GuiManager2 {
 
             HeadUtils.setLore(
                     playerHead,
-                    Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC2.getTranslation(),
-                    Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC3.getTranslation()
+                    Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC2.get(),
+                    Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC3.get()
             );
 
             GuiItem _playerIcon = ItemBuilder.from(playerHead).asGuiItem(event -> {
@@ -433,11 +432,11 @@ public class GuiManager2 {
                 if(event.isLeftClick()){
 
                     if(!playerStat.hasPermission(TownRolePermission.INVITE_PLAYER)){
-                        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                         return;
                     }
                     if(!town.canAddMorePlayer()){
-                        player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_TOWN_FULL.getTranslation());
+                        player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_TOWN_FULL.get());
                         return;
                     }
 
@@ -449,9 +448,9 @@ public class GuiManager2 {
 
                     Player playerIterateOnline = playerIterate.getPlayer();
                     if(playerIterateOnline != null){
-                        playerIterateOnline.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.getTranslation(town.getName()));
+                        playerIterateOnline.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(town.getName()));
                     }
-                    town.broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.getTranslation(player.getName()),
+                    town.broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(player.getName()),
                             MINOR_GOOD);
 
                     updateAllScoreboardColor();
@@ -462,17 +461,17 @@ public class GuiManager2 {
                         allTown.removePlayerJoinRequest(playerIterateData.getUuid());
                     }
 
-                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.getTranslation());
+                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get());
 
                 }
                 if(event.isRightClick()){
                     if(!playerStat.hasPermission(TownRolePermission.INVITE_PLAYER)){
-                        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                         return;
                     }
 
                     town.removePlayerJoinRequest(playerIterateData.getUuid());
-                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.getTranslation());
+                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get());
                 }
                 OpenTownMemberList(player);
             });
@@ -504,11 +503,11 @@ public class GuiManager2 {
             GuiItem _townRankItemStack = ItemBuilder.from(townRankItemStack).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(!playerStat.hasPermission(TownRolePermission.MANAGE_RANKS)) {
-                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                     return;
                 }
                 if(town.getRank(playerStat).getLevel() >= townRank.getLevel() && !town.isLeader(player)){
-                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.getTranslation());
+                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
                     return;
                 }
                 OpenTownMenuRoleManager(player,townRank.getName());
@@ -517,22 +516,22 @@ public class GuiManager2 {
             i = i+1;
         }
 
-        ItemStack createNewRole = HeadUtils.getCustomLoreItem(Material.EGG, Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES.getTranslation());
+        ItemStack createNewRole = HeadUtils.getCustomLoreItem(Material.EGG, Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES.get());
         GuiItem _createNewRole = ItemBuilder.from(createNewRole).asGuiItem(event -> {
             event.setCancelled(true);
 
             if(playerStat.hasPermission(TownRolePermission.CREATE_RANK)){
                 if(town.getNumberOfRank() >= 8){
-                    player.sendMessage(getTANString() + Lang.TOWN_RANK_CAP_REACHED.getTranslation());
+                    player.sendMessage(getTANString() + Lang.TOWN_RANK_CAP_REACHED.get());
                     return;
                 }
 
-                player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.getTranslation());
+                player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get());
                 player.closeInventory();
                 PlayerChatListenerStorage.addPlayer(RANK_CREATION,player);
             }
             else
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
 
 
         });
@@ -558,58 +557,58 @@ public class GuiManager2 {
 
         ItemStack roleIcon = HeadUtils.getCustomLoreItem(
                 roleMaterial,
-                Lang.GUI_TOWN_MEMBERS_ROLE_NAME.getTranslation(townRank.getColoredName()),
-                Lang.GUI_TOWN_MEMBERS_ROLE_NAME_DESC1.getTranslation());
+                Lang.GUI_TOWN_MEMBERS_ROLE_NAME.get(townRank.getColoredName()),
+                Lang.GUI_TOWN_MEMBERS_ROLE_NAME_DESC1.get());
 
         ItemStack roleRankIcon = townRank.getRankEnum().getRankGuiIcon();
-        HeadUtils.addLore(roleRankIcon, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1.getTranslation(),
-                Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2.getTranslation());
+        HeadUtils.addLore(roleRankIcon, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1.get(),
+                Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2.get());
 
-        ItemStack membersRank = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==");
+        ItemStack membersRank = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==");
 
         ArrayList<String> playerNames = new ArrayList<>();
-        playerNames.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1.getTranslation());
+        playerNames.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1.get());
         for (String playerUUID : townRank.getPlayers()) {
             PlayerData playerData = PlayerDataStorage.get(playerUUID);
             assert playerData != null;
             String playerName = playerData.getName();
-            playerNames.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC.getTranslation(playerName));
+            playerNames.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC.get(playerName));
         }
 
         HeadUtils.setLore(membersRank, playerNames);
 
-        ItemStack managePermission = HeadUtils.getCustomLoreItem(Material.ANVIL,Lang.GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION.getTranslation());
+        ItemStack managePermission = HeadUtils.getCustomLoreItem(Material.ANVIL,Lang.GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION.get());
 
-        ItemStack renameRank = HeadUtils.getCustomLoreItem(Material.NAME_TAG,Lang.GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME.getTranslation());
+        ItemStack renameRank = HeadUtils.getCustomLoreItem(Material.NAME_TAG,Lang.GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME.get());
 
         ItemStack changeRoleTaxRelation = HeadUtils.getCustomLoreItem(
                 Material.GOLD_NUGGET,
-                townRank.isPayingTaxes() ? Lang.GUI_TOWN_MEMBERS_ROLE_PAY_TAXES.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES.getTranslation(),
-                Lang.GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1.getTranslation()
+                townRank.isPayingTaxes() ? Lang.GUI_TOWN_MEMBERS_ROLE_PAY_TAXES.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES.get(),
+                Lang.GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1.get()
         );
 
 
         ItemStack makeRankDefault = HeadUtils.getCustomLoreItem(Material.RED_BED,
-                isDefaultRank ? Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT.getTranslation(),
-                Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1.getTranslation(),
-                isDefaultRank ? "" : Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2.getTranslation());
+                isDefaultRank ? Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT.get() : Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT.get(),
+                Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1.get(),
+                isDefaultRank ? "" : Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2.get());
 
 
-        ItemStack removeRank = HeadUtils.getCustomLoreItem(Material.BARRIER, Lang.GUI_TOWN_MEMBERS_ROLE_DELETE.getTranslation());
+        ItemStack removeRank = HeadUtils.getCustomLoreItem(Material.BARRIER, Lang.GUI_TOWN_MEMBERS_ROLE_DELETE.get());
 
         ItemStack salary = HeadUtils.getCustomLoreItem(Material.GOLD_INGOT,
-                Lang.GUI_TOWN_MEMBERS_ROLE_SALARY.getTranslation(),
-                Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_DESC1.getTranslation(townRank.getSalary()));
+                Lang.GUI_TOWN_MEMBERS_ROLE_SALARY.get(),
+                Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_DESC1.get(townRank.getSalary()));
 
-        ItemStack lowerSalary = HeadUtils.makeSkull(Lang.GUI_TREASURY_LOWER_TAX.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=");
-        ItemStack increaseSalary = HeadUtils.makeSkull(Lang.GUI_TREASURY_INCREASE_TAX.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
+        ItemStack lowerSalary = HeadUtils.makeSkull(Lang.GUI_TREASURY_LOWER_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=");
+        ItemStack increaseSalary = HeadUtils.makeSkull(Lang.GUI_TREASURY_INCREASE_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
         HeadUtils.setLore(lowerSalary,
-                Lang.GUI_DECREASE_1_DESC.getTranslation(),
-                Lang.GUI_DECREASE_10_DESC.getTranslation()
+                Lang.GUI_DECREASE_1_DESC.get(),
+                Lang.GUI_DECREASE_10_DESC.get()
         );
         HeadUtils.setLore(increaseSalary,
-                Lang.GUI_INCREASE_1_DESC.getTranslation(),
-                Lang.GUI_INCREASE_10_DESC.getTranslation()
+                Lang.GUI_INCREASE_1_DESC.get(),
+                Lang.GUI_INCREASE_10_DESC.get()
         );
 
 
@@ -617,12 +616,12 @@ public class GuiManager2 {
             event.getCursor();
             Material itemMaterial = event.getCursor().getData().getItemType();
             if(itemMaterial == Material.AIR || itemMaterial == Material.LEGACY_AIR){
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.get());
             }
             else {
                 townRank.setRankIconName(itemMaterial.toString());
                 OpenTownMenuRoleManager(player, roleName);
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get());
             }
             event.setCancelled(true);
         });
@@ -643,7 +642,7 @@ public class GuiManager2 {
         GuiItem _renameRank = ItemBuilder.from(renameRank).asGuiItem(event -> {
 
             player.closeInventory();
-            player.sendMessage(ChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.getTranslation());
+            player.sendMessage(ChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get());
 
             HashMap<MessageKey, String> newMap = new HashMap<>();
             newMap.put(RANK_NAME,roleName);
@@ -657,7 +656,7 @@ public class GuiManager2 {
         });
         GuiItem _makeRankDefault = ItemBuilder.from(makeRankDefault).asGuiItem(event -> {
             if(isDefaultRank){
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT.get());
             }
             else{
                 town.setTownDefaultRank(roleName);
@@ -668,7 +667,7 @@ public class GuiManager2 {
 
         GuiItem _removeRank = ItemBuilder.from(removeRank).asGuiItem(event -> {
             if(townRank.getNumberOfPlayer() != 0){
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY.get());
                 event.setCancelled(true);
             }
             else{
@@ -685,7 +684,7 @@ public class GuiManager2 {
             int amountToRemove = event.isShiftClick() && currentSalary >= 10 ? 10 : 1;
 
             if (currentSalary <= 0) {
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER.get());
                 return;
             }
 
@@ -757,7 +756,7 @@ public class GuiManager2 {
                 event.setCancelled(true);
 
                 if(town.getRank(player).getLevel() >= town.getRank(otherPlayerData).getLevel() && !town.isLeader(player)){
-                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.getTranslation());
+                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
                     return;
                 }
 
@@ -784,19 +783,19 @@ public class GuiManager2 {
         TownRank townRank = town.getRank(roleName);
 
 
-        ItemStack manage_taxes = HeadUtils.getCustomLoreItem(Material.GOLD_INGOT, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TAXES.getTranslation(),(townRank.hasPermission(TownRolePermission.MANAGE_TAXES)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
-        ItemStack promote_rank_player = HeadUtils.getCustomLoreItem(Material.EMERALD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_PROMOTE_RANK_PLAYER.getTranslation(),(townRank.hasPermission(TownRolePermission.PROMOTE_RANK_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
-        ItemStack derank_player = HeadUtils.getCustomLoreItem(Material.REDSTONE, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DERANK_RANK_PLAYER.getTranslation(),(townRank.hasPermission(TownRolePermission.DERANK_RANK_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
-        ItemStack claim_chunk = HeadUtils.getCustomLoreItem(Material.EMERALD_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CLAIM_CHUNK.getTranslation(),(townRank.hasPermission(TownRolePermission.CLAIM_CHUNK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
-        ItemStack unclaim_chunk = HeadUtils.getCustomLoreItem(Material.REDSTONE_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_UNCLAIM_CHUNK.getTranslation(),(townRank.hasPermission(TownRolePermission.UNCLAIM_CHUNK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
-        ItemStack upgrade_town = HeadUtils.getCustomLoreItem(Material.SPECTRAL_ARROW, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_UPGRADE_TOWN.getTranslation(),(townRank.hasPermission(TownRolePermission.UPGRADE_TOWN)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
-        ItemStack invite_player = HeadUtils.getCustomLoreItem(Material.SKELETON_SKULL, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_INVITE_PLAYER.getTranslation(),(townRank.hasPermission(TownRolePermission.INVITE_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
-        ItemStack kick_player = HeadUtils.getCustomLoreItem(Material.CREEPER_HEAD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_KICK_PLAYER.getTranslation(),(townRank.hasPermission(KICK_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
-        ItemStack create_rank = HeadUtils.getCustomLoreItem(Material.LADDER, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_RANK.getTranslation(),(townRank.hasPermission(TownRolePermission.CREATE_RANK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
-        ItemStack delete_rank = HeadUtils.getCustomLoreItem(Material.CHAIN, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DELETE_RANK.getTranslation(),(townRank.hasPermission(TownRolePermission.DELETE_RANK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
-        ItemStack modify_rank = HeadUtils.getCustomLoreItem(Material.STONE_PICKAXE, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MODIFY_RANK.getTranslation(),(townRank.hasPermission(TownRolePermission.MANAGE_RANKS)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
-        ItemStack manage_claim_settings = HeadUtils.getCustomLoreItem(Material.GRASS_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_CLAIM_SETTINGS.getTranslation(),(townRank.hasPermission(TownRolePermission.MANAGE_CLAIM_SETTINGS)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
-        ItemStack manage_town_relation = HeadUtils.getCustomLoreItem(Material.FLOWER_POT, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION.getTranslation(),(townRank.hasPermission(TownRolePermission.MANAGE_TOWN_RELATION)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.getTranslation() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.getTranslation());
+        ItemStack manage_taxes = HeadUtils.getCustomLoreItem(Material.GOLD_INGOT, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TAXES.get(),(townRank.hasPermission(TownRolePermission.MANAGE_TAXES)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack promote_rank_player = HeadUtils.getCustomLoreItem(Material.EMERALD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_PROMOTE_RANK_PLAYER.get(),(townRank.hasPermission(TownRolePermission.PROMOTE_RANK_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack derank_player = HeadUtils.getCustomLoreItem(Material.REDSTONE, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DERANK_RANK_PLAYER.get(),(townRank.hasPermission(TownRolePermission.DERANK_RANK_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack claim_chunk = HeadUtils.getCustomLoreItem(Material.EMERALD_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CLAIM_CHUNK.get(),(townRank.hasPermission(TownRolePermission.CLAIM_CHUNK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack unclaim_chunk = HeadUtils.getCustomLoreItem(Material.REDSTONE_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_UNCLAIM_CHUNK.get(),(townRank.hasPermission(TownRolePermission.UNCLAIM_CHUNK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack upgrade_town = HeadUtils.getCustomLoreItem(Material.SPECTRAL_ARROW, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_UPGRADE_TOWN.get(),(townRank.hasPermission(TownRolePermission.UPGRADE_TOWN)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack invite_player = HeadUtils.getCustomLoreItem(Material.SKELETON_SKULL, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_INVITE_PLAYER.get(),(townRank.hasPermission(TownRolePermission.INVITE_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack kick_player = HeadUtils.getCustomLoreItem(Material.CREEPER_HEAD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_KICK_PLAYER.get(),(townRank.hasPermission(KICK_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack create_rank = HeadUtils.getCustomLoreItem(Material.LADDER, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_RANK.get(),(townRank.hasPermission(TownRolePermission.CREATE_RANK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack delete_rank = HeadUtils.getCustomLoreItem(Material.CHAIN, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DELETE_RANK.get(),(townRank.hasPermission(TownRolePermission.DELETE_RANK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack modify_rank = HeadUtils.getCustomLoreItem(Material.STONE_PICKAXE, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MODIFY_RANK.get(),(townRank.hasPermission(TownRolePermission.MANAGE_RANKS)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack manage_claim_settings = HeadUtils.getCustomLoreItem(Material.GRASS_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_CLAIM_SETTINGS.get(),(townRank.hasPermission(TownRolePermission.MANAGE_CLAIM_SETTINGS)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack manage_town_relation = HeadUtils.getCustomLoreItem(Material.FLOWER_POT, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION.get(),(townRank.hasPermission(TownRolePermission.MANAGE_TOWN_RELATION)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
 
 
         GuiItem _manage_taxes = ItemBuilder.from(manage_taxes).asGuiItem(event -> {
@@ -895,19 +894,19 @@ public class GuiManager2 {
         PlayerData playerStat = PlayerDataStorage.get(player);
 
 
-        ItemStack goldIcon = HeadUtils.makeSkull(Lang.GUI_TREASURY_STORAGE.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack goldSpendingIcon = HeadUtils.makeSkull(Lang.GUI_TREASURY_SPENDING.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack lowerTax = HeadUtils.makeSkull(Lang.GUI_TREASURY_LOWER_TAX.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=");
-        ItemStack increaseTax = HeadUtils.makeSkull(Lang.GUI_TREASURY_INCREASE_TAX.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
-        ItemStack taxInfo = HeadUtils.makeSkull(Lang.GUI_TREASURY_FLAT_TAX.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk4ZGY0MmY0NzdmMjEzZmY1ZTlkN2ZhNWE0Y2M0YTY5ZjIwZDljZWYyYjkwYzRhZTRmMjliZDE3Mjg3YjUifX19");
-        ItemStack taxHistory = HeadUtils.makeSkull(Lang.GUI_TREASURY_TAX_HISTORY.getTranslation(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmU1OWYyZDNiOWU3ZmI5NTBlOGVkNzkyYmU0OTIwZmI3YTdhOWI5MzQ1NjllNDQ1YjJiMzUwM2ZlM2FiOTAyIn19fQ==");
-        ItemStack salarySpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_SALARY_HISTORY.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjlhNjAwYWIwYTgzMDk3MDY1Yjk1YWUyODRmODA1OTk2MTc3NDYwOWFkYjNkYmQzYTRjYTI2OWQ0NDQwOTU1MSJ9fX0=");
-        ItemStack chunkSpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack workbenchSpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGMzNjA0NTIwOGY5YjVkZGNmOGM0NDMzZTQyNGIxY2ExN2I5NGY2Yjk2MjAyZmIxZTUyNzBlZThkNTM4ODFiMSJ9fX0=");
-        ItemStack donation = HeadUtils.getCustomLoreItem(Material.DIAMOND,Lang.GUI_TREASURY_DONATION.getTranslation(),Lang.GUI_TREASURY_DONATION_DESC1.getTranslation());
-        ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.getTranslation());
+        ItemStack goldIcon = HeadUtils.makeSkull(Lang.GUI_TREASURY_STORAGE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack goldSpendingIcon = HeadUtils.makeSkull(Lang.GUI_TREASURY_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack lowerTax = HeadUtils.makeSkull(Lang.GUI_TREASURY_LOWER_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=");
+        ItemStack increaseTax = HeadUtils.makeSkull(Lang.GUI_TREASURY_INCREASE_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
+        ItemStack taxInfo = HeadUtils.makeSkull(Lang.GUI_TREASURY_FLAT_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk4ZGY0MmY0NzdmMjEzZmY1ZTlkN2ZhNWE0Y2M0YTY5ZjIwZDljZWYyYjkwYzRhZTRmMjliZDE3Mjg3YjUifX19");
+        ItemStack taxHistory = HeadUtils.makeSkull(Lang.GUI_TREASURY_TAX_HISTORY.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmU1OWYyZDNiOWU3ZmI5NTBlOGVkNzkyYmU0OTIwZmI3YTdhOWI5MzQ1NjllNDQ1YjJiMzUwM2ZlM2FiOTAyIn19fQ==");
+        ItemStack salarySpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_SALARY_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjlhNjAwYWIwYTgzMDk3MDY1Yjk1YWUyODRmODA1OTk2MTc3NDYwOWFkYjNkYmQzYTRjYTI2OWQ0NDQwOTU1MSJ9fX0=");
+        ItemStack chunkSpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack workbenchSpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGMzNjA0NTIwOGY5YjVkZGNmOGM0NDMzZTQyNGIxY2ExN2I5NGY2Yjk2MjAyZmIxZTUyNzBlZThkNTM4ODFiMSJ9fX0=");
+        ItemStack donation = HeadUtils.getCustomLoreItem(Material.DIAMOND,Lang.GUI_TREASURY_DONATION.get(),Lang.GUI_TREASURY_DONATION_DESC1.get());
+        ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.get());
 
-        HeadUtils.setLore(taxHistory,Lang.GUI_TREASURY_TAX_HISTORY_DESC1.getTranslation());
+        HeadUtils.setLore(taxHistory,Lang.GUI_TREASURY_TAX_HISTORY_DESC1.get());
 
         int nextTaxes = 0;
 
@@ -917,10 +916,10 @@ public class GuiManager2 {
             if(!otherPlayerData.getTownRank().isPayingTaxes()){
                 continue;
             }
-            if(EconomyUtil.getBalance(otherPlayer) < town.getTreasury().getFlatTax()){
+            if(EconomyUtil.getBalance(otherPlayer) < town.getFlatTax()){
                 continue;
             }
-            nextTaxes = nextTaxes + town.getTreasury().getFlatTax();
+            nextTaxes = nextTaxes + town.getFlatTax();
 
         }
 
@@ -936,85 +935,86 @@ public class GuiManager2 {
             totalSalary += playerIdList.size() * rank.getSalary();
         }
 
-
         HeadUtils.setLore(goldIcon,
-                Lang.GUI_TREASURY_STORAGE_DESC1.getTranslation(town.getBalance()),
-                Lang.GUI_TREASURY_STORAGE_DESC2.getTranslation(nextTaxes));
-
-
+                Lang.GUI_TREASURY_STORAGE_DESC1.get(town.getBalance()),
+                Lang.GUI_TREASURY_STORAGE_DESC2.get(nextTaxes));
         HeadUtils.setLore(goldSpendingIcon,
-                Lang.GUI_TREASURY_SPENDING_DESC1.getTranslation(totalSalary + totalUpkeep),
-                Lang.GUI_TREASURY_SPENDING_DESC2.getTranslation(totalSalary),
-                Lang.GUI_TREASURY_SPENDING_DESC3.getTranslation(totalUpkeep));
-
-
-
+                Lang.GUI_TREASURY_SPENDING_DESC1.get(totalSalary + totalUpkeep),
+                Lang.GUI_TREASURY_SPENDING_DESC2.get(totalSalary),
+                Lang.GUI_TREASURY_SPENDING_DESC3.get(totalUpkeep));
         HeadUtils.setLore(lowerTax,
-                Lang.GUI_DECREASE_1_DESC.getTranslation(),
-                Lang.GUI_DECREASE_10_DESC.getTranslation()
-        );
-        HeadUtils.setLore(taxInfo, Lang.GUI_TREASURY_FLAT_TAX_DESC1.getTranslation(town.getTreasury().getFlatTax()));
+                Lang.GUI_DECREASE_1_DESC.get(),
+                Lang.GUI_DECREASE_10_DESC.get());
+        HeadUtils.setLore(taxInfo,
+                Lang.GUI_TREASURY_FLAT_TAX_DESC1.get(town.getFlatTax()));
         HeadUtils.setLore(increaseTax,
-                Lang.GUI_INCREASE_1_DESC.getTranslation(),
-                Lang.GUI_INCREASE_10_DESC.getTranslation()
-        );
-
-        HeadUtils.setLore(salarySpending, Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.getTranslation("0"));
+                Lang.GUI_INCREASE_1_DESC.get(),
+                Lang.GUI_INCREASE_10_DESC.get());
+        HeadUtils.setLore(salarySpending,
+                Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.get(totalSalary));
         HeadUtils.setLore(chunkSpending,
-                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.getTranslation(totalUpkeep),
-                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.getTranslation(upkeepCost),
-                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.getTranslation(numberClaimedChunk));
-        HeadUtils.setLore(workbenchSpending, Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1.getTranslation());
+                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.get(totalUpkeep),
+                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(upkeepCost),
+                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(numberClaimedChunk));
+        HeadUtils.setLore(workbenchSpending,
+                Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1.get());
+        HeadUtils.setLore(donation,
+                Lang.GUI_TREASURY_DONATION_DESC1.get());
 
-        HeadUtils.setLore(donation, Lang.GUI_TREASURY_DONATION_DESC1.getTranslation());
-        HeadUtils.setLore(donationHistory, town.getTreasury().getDonationLimitedHistory(5));
+        if(!isSqlEnable())
+            HeadUtils.setLore(donationHistory, town.getTreasury().getDonationLimitedHistory(5));
 
         GuiItem _goldInfo = ItemBuilder.from(goldIcon).asGuiItem(event -> event.setCancelled(true));
         GuiItem _goldSpendingIcon = ItemBuilder.from(goldSpendingIcon).asGuiItem(event -> event.setCancelled(true));
         GuiItem _taxHistory = ItemBuilder.from(taxHistory).asGuiItem(event -> {
-            OpenTownEconomicsHistory(player,HistoryEnum.TAX);
+            if(!isSqlEnable())
+                OpenTownEconomicsHistory(player,HistoryEnum.TAX);
             event.setCancelled(true);
         });
         GuiItem _salarySpending = ItemBuilder.from(salarySpending).asGuiItem(event -> {
-            OpenTownEconomicsHistory(player,HistoryEnum.SALARY);
+            if(!isSqlEnable())
+                OpenTownEconomicsHistory(player,HistoryEnum.SALARY);
             event.setCancelled(true);
         });
         GuiItem _chunkSpending = ItemBuilder.from(chunkSpending).asGuiItem(event -> {
-            OpenTownEconomicsHistory(player,HistoryEnum.CHUNK);
+            if(!isSqlEnable())
+                OpenTownEconomicsHistory(player,HistoryEnum.CHUNK);
             event.setCancelled(true);
         });
         GuiItem _workbenchSpending = ItemBuilder.from(workbenchSpending).asGuiItem(event -> {
-            OpenTownEconomicsHistory(player,HistoryEnum.MISCELLANEOUS);
+            if(!isSqlEnable())
+                OpenTownEconomicsHistory(player,HistoryEnum.MISCELLANEOUS);
             event.setCancelled(true);
         });
         GuiItem _donation = ItemBuilder.from(donation).asGuiItem(event -> {
-            player.sendMessage(ChatUtils.getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_TOWN_DONATION.getTranslation());
+            player.sendMessage(ChatUtils.getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_TOWN_DONATION.get());
             PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.DONATION,player);
             player.closeInventory();
             event.setCancelled(true);
         });
         GuiItem _donationHistory = ItemBuilder.from(donationHistory).asGuiItem(event -> {
-            OpenTownEconomicsHistory(player,HistoryEnum.DONATION);
+            if(!isSqlEnable())
+                OpenTownEconomicsHistory(player,HistoryEnum.DONATION);
             event.setCancelled(true);
         });
 
         GuiItem _lessTax = ItemBuilder.from(lowerTax).asGuiItem(event -> {
             event.setCancelled(true);
             if(!playerStat.hasPermission(TownRolePermission.MANAGE_TAXES)) {
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
 
-            int currentTax = town.getTreasury().getFlatTax();
+            int currentTax = town.getFlatTax();
             int amountToRemove = event.isShiftClick() && currentTax >= 10 ? 10 : 1;
 
             if(currentTax <= 1){
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get());
                 return;
             }
             SoundUtil.playSound(player, REMOVE);
 
-            town.getTreasury().removeFlatTax(amountToRemove);
+            town.addToFlatTax(-amountToRemove);
             OpenTownEconomics(player);
         });
         GuiItem _taxInfo = ItemBuilder.from(taxInfo).asGuiItem(event -> {
@@ -1025,13 +1025,13 @@ public class GuiManager2 {
             event.setCancelled(true);
 
             if(!playerStat.hasPermission(TownRolePermission.MANAGE_TAXES)){
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
 
             int amountToAdd = event.isShiftClick() ? 10 : 1;
 
-            town.getTreasury().addFlatTax(amountToAdd);
+            town.addToFlatTax(amountToAdd);
             SoundUtil.playSound(player, ADD);
             OpenTownEconomics(player);
         });
@@ -1087,8 +1087,8 @@ public class GuiManager2 {
 
                     ItemStack transactionIcon = HeadUtils.getCustomLoreItem(Material.PAPER,
                             ChatColor.DARK_AQUA + donation.getName(),
-                            Lang.DONATION_SINGLE_LINE_1.getTranslation(donation.getAmount()),
-                            Lang.DONATION_SINGLE_LINE_2.getTranslation(donation.getDate())
+                            Lang.DONATION_SINGLE_LINE_1.get(donation.getAmount()),
+                            Lang.DONATION_SINGLE_LINE_2.get(donation.getDate())
                     );
 
                     GuiItem _transactionIcon = ItemBuilder.from(transactionIcon).asGuiItem(event -> event.setCancelled(true));
@@ -1117,10 +1117,10 @@ public class GuiManager2 {
                     for (TransactionHistory singleTax : taxes){
 
                         if(singleTax.getAmount() == -1){
-                            lines.add(Lang.TAX_SINGLE_LINE_NOT_ENOUGH.getTranslation(singleTax.getName()));
+                            lines.add(Lang.TAX_SINGLE_LINE_NOT_ENOUGH.get(singleTax.getName()));
                         }
                         else{
-                            lines.add(Lang.TAX_SINGLE_LINE.getTranslation(singleTax.getName(), singleTax.getAmount()));
+                            lines.add(Lang.TAX_SINGLE_LINE.get(singleTax.getName(), singleTax.getAmount()));
                         }
                     }
 
@@ -1149,8 +1149,8 @@ public class GuiManager2 {
 
                     ItemStack transactionIcon = HeadUtils.getCustomLoreItem(Material.PAPER,
                             ChatColor.DARK_AQUA + chunkTax.getDate(),
-                            Lang.CHUNK_HISTORY_DESC1.getTranslation(chunkTax.getAmount()),
-                            Lang.CHUNK_HISTORY_DESC2.getTranslation(chunkTax.getName(), String.format("%.2f", upkeepCost/10),chunkTax.getAmount())
+                            Lang.CHUNK_HISTORY_DESC1.get(chunkTax.getAmount()),
+                            Lang.CHUNK_HISTORY_DESC2.get(chunkTax.getName(), String.format("%.2f", upkeepCost/10),chunkTax.getAmount())
 
                     );
 
@@ -1175,8 +1175,8 @@ public class GuiManager2 {
 
                     ItemStack transactionIcon = HeadUtils.getCustomLoreItem(Material.PAPER,
                             ChatColor.DARK_AQUA + miscellaneous.getDate(),
-                            Lang.MISCELLANEOUS_HISTORY_DESC1.getTranslation(miscellaneous.getName()),
-                            Lang.MISCELLANEOUS_HISTORY_DESC2.getTranslation(miscellaneous.getAmount())
+                            Lang.MISCELLANEOUS_HISTORY_DESC1.get(miscellaneous.getName()),
+                            Lang.MISCELLANEOUS_HISTORY_DESC2.get(miscellaneous.getAmount())
                     );
 
                     GuiItem _transactionIcon = ItemBuilder.from(transactionIcon).asGuiItem(event -> event.setCancelled(true));
@@ -1204,25 +1204,25 @@ public class GuiManager2 {
         TownLevel townLevel = townData.getTownLevel();
 
         ItemStack TownIcon = HeadUtils.getTownIcon(PlayerDataStorage.get(player.getUniqueId().toString()).getTownId());
-        ItemStack upgradeTownLevel = HeadUtils.getCustomLoreItem(Material.EMERALD, Lang.GUI_TOWN_LEVEL_UP.getTranslation());
-        ItemStack upgradeChunkCap = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
-        ItemStack upgradePlayerCap = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==");
+        ItemStack upgradeTownLevel = HeadUtils.getCustomLoreItem(Material.EMERALD, Lang.GUI_TOWN_LEVEL_UP.get());
+        ItemStack upgradeChunkCap = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
+        ItemStack upgradePlayerCap = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==");
 
         HeadUtils.setLore(upgradeTownLevel,
-                Lang.GUI_TOWN_LEVEL_UP_DESC1.getTranslation(townLevel.getTownLevel()),
-                Lang.GUI_TOWN_LEVEL_UP_DESC2.getTranslation(townLevel.getTownLevel()+1, townLevel.getMoneyRequiredTownLevel())
+                Lang.GUI_TOWN_LEVEL_UP_DESC1.get(townLevel.getTownLevel()),
+                Lang.GUI_TOWN_LEVEL_UP_DESC2.get(townLevel.getTownLevel()+1, townLevel.getMoneyRequiredTownLevel())
         );
         HeadUtils.setLore(upgradeChunkCap,
-                Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC1.getTranslation(townLevel.getChunkCapLevel()),
-                Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC2.getTranslation(townLevel.getChunkCapLevel()+1,townLevel.getMoneyRequiredChunkCap()),
-                Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC3.getTranslation(townLevel.getMultiplierChunkCap()),
-                Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC4.getTranslation(townLevel.getChunkCap())
+                Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC1.get(townLevel.getChunkCapLevel()),
+                Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC2.get(townLevel.getChunkCapLevel()+1,townLevel.getMoneyRequiredChunkCap()),
+                Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC3.get(townLevel.getMultiplierChunkCap()),
+                Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC4.get(townLevel.getChunkCap())
         );
         HeadUtils.setLore(upgradePlayerCap,
-                Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC1.getTranslation(townLevel.getPlayerCapLevel()),
-                Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC2.getTranslation(townLevel.getPlayerCapLevel()+1,townLevel.getMoneyRequiredPlayerCap()),
-                Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC3.getTranslation(townLevel.getMultiplierPlayerCap()),
-                Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC4.getTranslation(townLevel.getPlayerCap())
+                Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC1.get(townLevel.getPlayerCapLevel()),
+                Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC2.get(townLevel.getPlayerCapLevel()+1,townLevel.getMoneyRequiredPlayerCap()),
+                Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC3.get(townLevel.getMultiplierPlayerCap()),
+                Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC4.get(townLevel.getPlayerCap())
         );
 
 
@@ -1230,21 +1230,21 @@ public class GuiManager2 {
         GuiItem _upgradeTownLevel = ItemBuilder.from(upgradeTownLevel).asGuiItem(event -> {
             event.setCancelled(true);
             if(!playerStat.hasPermission(TownRolePermission.UPGRADE_TOWN)){
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 SoundUtil.playSound(player,NOT_ALLOWED);
                 return;
             }
             if(townData.getBalance() > townLevel.getMoneyRequiredTownLevel()){
-                townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredTownLevel());
+                townData.removeToBalance(townLevel.getMoneyRequiredTownLevel());
                 townLevel.TownLevelUp();
                 if(isSqlEnable())
                     TownDataStorage.updateTownUpgradeFromDatabase(townData.getID(),townLevel);
                 SoundUtil.playSound(player,LEVEL_UP);
-                player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.getTranslation());
+                player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());
                 OpenTownLevel(player);
             }
             else{
-                player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.getTranslation());
+                player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
                 SoundUtil.playSound(player,NOT_ALLOWED);
             }
 
@@ -1252,39 +1252,39 @@ public class GuiManager2 {
         GuiItem _upgradeChunkCap = ItemBuilder.from(upgradeChunkCap).asGuiItem(event -> {
             event.setCancelled(true);
             if(!playerStat.hasPermission(TownRolePermission.UPGRADE_TOWN)){
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 SoundUtil.playSound(player,NOT_ALLOWED);
                 return;
             }
             if(townData.getBalance() > townLevel.getMoneyRequiredChunkCap()){
-                townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredChunkCap());
+                townData.removeToBalance(townLevel.getMoneyRequiredChunkCap());
                 townLevel.chunkCapLevelUp();
                 if(isSqlEnable())
                     TownDataStorage.updateTownUpgradeFromDatabase(townData.getID(),townLevel);
                 SoundUtil.playSound(player,LEVEL_UP);
-                player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.getTranslation());
+                player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());
                 OpenTownLevel(player);
             }
             else{
-                player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.getTranslation());
+                player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
                 SoundUtil.playSound(player,NOT_ALLOWED);
             }
         });
         GuiItem _upgradePlayerCap = ItemBuilder.from(upgradePlayerCap).asGuiItem(event -> {
             event.setCancelled(true);
             if(!playerStat.hasPermission(TownRolePermission.UPGRADE_TOWN)){
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 SoundUtil.playSound(player,NOT_ALLOWED);
                 return;
             }
             if (townData.getBalance() > townLevel.getMoneyRequiredPlayerCap()) {
-                townData.getTreasury().removeToBalance(townLevel.getMoneyRequiredPlayerCap());
+                townData.removeToBalance(townLevel.getMoneyRequiredPlayerCap());
                 townLevel.PlayerCapLevelUp();
                 SoundUtil.playSound(player,LEVEL_UP);
-                player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.getTranslation());
+                player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());
                 OpenTownLevel(player);
             } else {
-                player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.getTranslation());
+                player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
                 SoundUtil.playSound(player,NOT_ALLOWED);
             }
         });
@@ -1310,41 +1310,41 @@ public class GuiManager2 {
 
         ItemStack TownIcon = HeadUtils.getTownIcon(playerStat.getTownId());
         ItemStack leaveTown = HeadUtils.getCustomLoreItem(Material.BARRIER,
-                Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN.getTranslation(),
-                Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1.getTranslation(playerTown.getName()),
-                Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2.getTranslation()
+                Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN.get(),
+                Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1.get(playerTown.getName()),
+                Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2.get()
         );
 
         ItemStack deleteTown = HeadUtils.getCustomLoreItem(Material.BARRIER,
-                Lang.GUI_TOWN_SETTINGS_DELETE_TOWN.getTranslation(),
-                Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1.getTranslation(playerTown.getName()),
-                Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2.getTranslation()
+                Lang.GUI_TOWN_SETTINGS_DELETE_TOWN.get(),
+                Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1.get(playerTown.getName()),
+                Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2.get()
         );
 
         ItemStack changeOwnershipTown = HeadUtils.getCustomLoreItem(Material.BEEHIVE,
-                Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.getTranslation(),
-                Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.getTranslation(),
-                Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.getTranslation()
+                Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.get(),
+                Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.get(),
+                Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.get()
         );
 
         ItemStack changeMessage = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK,
-                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE.getTranslation(),
-                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1.getTranslation(playerTown.getDescription())
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE.get(),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1.get(playerTown.getDescription())
         );
 
         ItemStack toggleApplication = HeadUtils.getCustomLoreItem(Material.PAPER,
-                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION.getTranslation(),
-                (playerTown.isRecruiting() ? Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT.getTranslation() : Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT.getTranslation()),
-                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH.getTranslation()
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION.get(),
+                (playerTown.isRecruiting() ? Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT.get() : Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT.get()),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH.get()
         );
 
         int changeTownNameCost = ConfigUtil.getCustomConfig("config.yml").getInt("ChangeTownNameCost");
 
         ItemStack changeTownName = HeadUtils.getCustomLoreItem(Material.NAME_TAG,
-                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME.getTranslation(),
-                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1.getTranslation(playerTown.getName()),
-                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC2.getTranslation(),
-                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3.getTranslation(changeTownNameCost)
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME.get(),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1.get(playerTown.getName()),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC2.get(),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3.get(changeTownNameCost)
         );
 
 
@@ -1354,14 +1354,14 @@ public class GuiManager2 {
             event.setCancelled(true);
             if (playerStat.isTownLeader()) {
                 SoundUtil.playSound(player, NOT_ALLOWED);
-                player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.get());
             } else {
                 playerTown.removePlayer(player);
                 playerTown.getRank(playerStat.getTownRankID()).removePlayer(playerStat.getUuid());
 
-                player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_LEFT_THE_TOWN.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_LEFT_THE_TOWN.get());
                 playerStat.leaveTown();
-                playerTown.broadCastMessageWithSound(Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.getTranslation(playerStat.getName()),
+                playerTown.broadCastMessageWithSound(Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(playerStat.getName()),
                         BAD);
                 player.closeInventory();
             }
@@ -1369,14 +1369,14 @@ public class GuiManager2 {
         GuiItem _deleteTown = ItemBuilder.from(deleteTown).asGuiItem(event -> {
             event.setCancelled(true);
             if (!playerStat.isTownLeader()) {
-                player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.get());
                 return;
             }
             deleteTown(playerTown);
 
             player.closeInventory();
             SoundUtil.playSound(player,GOOD);
-            player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.getTranslation());
+            player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get());
         });
 
         GuiItem _changeOwnershipTown = ItemBuilder.from(changeOwnershipTown).asGuiItem(event -> {
@@ -1386,13 +1386,13 @@ public class GuiManager2 {
             if(playerStat.isTownLeader())
                 OpenTownChangeOwnershipPlayerSelect(player, playerTown);
             else
-                player.sendMessage(ChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
 
         });
 
         GuiItem _changeMessage = ItemBuilder.from(changeMessage).asGuiItem(event -> {
             player.closeInventory();
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.getTranslation());
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.get());
             Map<MessageKey, String> data = new HashMap<>();
             data.put(MessageKey.TOWN_ID,playerTown.getID());
             PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CHANGE_DESCRIPTION,player,data);
@@ -1410,12 +1410,12 @@ public class GuiManager2 {
             event.setCancelled(true);
 
             if(playerTown.getBalance() < changeTownNameCost){
-                player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
                 return;
             }
 
             if(playerStat.isTownLeader()){
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.get());
                 Map<MessageKey, String> data = new HashMap<>();
                 data.put(MessageKey.TOWN_ID,playerTown.getID());
                 data.put(MessageKey.COST,Integer.toString(changeTownNameCost));
@@ -1423,7 +1423,7 @@ public class GuiManager2 {
                 player.closeInventory();
             }
             else
-                player.sendMessage(ChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
 
         });
 
@@ -1452,15 +1452,15 @@ public class GuiManager2 {
 
             ItemStack playerHead = HeadUtils.getPlayerHead(townPlayer.getName(),townPlayer);
             HeadUtils.setLore(playerHead,
-                    Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1.getTranslation(player.getName()),
-                    Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2.getTranslation()
+                    Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1.get(player.getName()),
+                    Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2.get()
             );
 
             GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
 
                 townData.setUuidLeader(townPlayer.getUniqueId().toString());
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.getTranslation(townPlayer.getName()));
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(townPlayer.getName()));
                 OpenTownMenuHaveTown(player);
             });
 
@@ -1478,17 +1478,17 @@ public class GuiManager2 {
 
 
         ItemStack warCategory = HeadUtils.getCustomLoreItem(Material.IRON_SWORD,
-                Lang.GUI_TOWN_RELATION_WAR.getTranslation(),
-                Lang.GUI_TOWN_RELATION_WAR_DESC1.getTranslation());
+                Lang.GUI_TOWN_RELATION_WAR.get(),
+                Lang.GUI_TOWN_RELATION_WAR_DESC1.get());
         ItemStack EmbargoCategory = HeadUtils.getCustomLoreItem(Material.BARRIER,
-                Lang.GUI_TOWN_RELATION_EMBARGO.getTranslation(),
-                Lang.GUI_TOWN_RELATION_EMBARGO_DESC1.getTranslation());
+                Lang.GUI_TOWN_RELATION_EMBARGO.get(),
+                Lang.GUI_TOWN_RELATION_EMBARGO_DESC1.get());
         ItemStack NAPCategory = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK,
-                Lang.GUI_TOWN_RELATION_NAP.getTranslation(),
-                Lang.GUI_TOWN_RELATION_NAP_DESC1.getTranslation());
+                Lang.GUI_TOWN_RELATION_NAP.get(),
+                Lang.GUI_TOWN_RELATION_NAP_DESC1.get());
         ItemStack AllianceCategory = HeadUtils.getCustomLoreItem(Material.CAMPFIRE,
-                Lang.GUI_TOWN_RELATION_ALLIANCE.getTranslation(),
-                Lang.GUI_TOWN_RELATION_ALLIANCE_DESC1.getTranslation());
+                Lang.GUI_TOWN_RELATION_ALLIANCE.get(),
+                Lang.GUI_TOWN_RELATION_ALLIANCE_DESC1.get());
 
         GuiItem _warCategory = ItemBuilder.from(warCategory).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1555,8 +1555,8 @@ public class GuiManager2 {
                 assert meta != null;
                 List<String> lore = meta.getLore();
                 assert lore != null;
-                lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC1.getTranslation());
-                lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC2.getTranslation());
+                lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC1.get());
+                lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC2.get());
                 meta.setLore(lore);
                 townIcon.setItemMeta(meta);
             }
@@ -1565,9 +1565,9 @@ public class GuiManager2 {
                 event.setCancelled(true);
 
                 if(relation == TownRelation.WAR){
-                    player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.getTranslation(TownDataStorage.get(otherTownUUID).getName()));
+                    player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.get(TownDataStorage.get(otherTownUUID).getName()));
                     WarTaggedPlayer.addPlayersToTown(otherTownUUID,playerTown.getPlayerList());
-                    TownDataStorage.get(otherTownUUID).broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.getTranslation(playerTown.getName()),
+                    TownDataStorage.get(otherTownUUID).broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(playerTown.getName()),
                             WAR);
                 }
             });
@@ -1579,27 +1579,27 @@ public class GuiManager2 {
 
 
         ItemStack addTownButton = HeadUtils.makeSkull(
-                Lang.GUI_TOWN_RELATION_ADD_TOWN.getTranslation(),
+                Lang.GUI_TOWN_RELATION_ADD_TOWN.get(),
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19"
         );
         ItemStack removeTownButton = HeadUtils.makeSkull(
-                Lang.GUI_TOWN_RELATION_REMOVE_TOWN.getTranslation(),
+                Lang.GUI_TOWN_RELATION_REMOVE_TOWN.get(),
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0="
         );
 
         ItemStack nextPageButton = HeadUtils.makeSkull(
-                Lang.GUI_NEXT_PAGE.getTranslation(),
+                Lang.GUI_NEXT_PAGE.get(),
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0="
         );
 
         ItemStack previousPageButton = HeadUtils.makeSkull(
-                Lang.GUI_PREVIOUS_PAGE.getTranslation(),
+                Lang.GUI_PREVIOUS_PAGE.get(),
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19"
         );
         GuiItem _add = ItemBuilder.from(addTownButton).asGuiItem(event -> {
             event.setCancelled(true);
             if(!playerStat.hasPermission(TownRolePermission.MANAGE_TOWN_RELATION)){
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
             OpenTownRelationModification(player,Action.ADD,relation);
@@ -1607,7 +1607,7 @@ public class GuiManager2 {
         GuiItem _remove = ItemBuilder.from(removeTownButton).asGuiItem(event -> {
             event.setCancelled(true);
             if(!playerStat.hasPermission(TownRolePermission.MANAGE_TOWN_RELATION)){
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
             OpenTownRelationModification(player,Action.REMOVE,relation);
@@ -1659,7 +1659,7 @@ public class GuiManager2 {
                     event.setCancelled(true);
 
                     if(HaveRelation(playerTown, otherTown)){
-                        player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION.getTranslation());
+                        player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION.get());
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
@@ -1668,24 +1668,24 @@ public class GuiManager2 {
                         OfflinePlayer otherTownLeader = Bukkit.getOfflinePlayer(UUID.fromString(otherTown.getUuidLeader()));
 
                         if (!otherTownLeader.isOnline()) {
-                            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ONLINE.getTranslation());
+                            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ONLINE.get());
                             return;
                         }
                         Player otherTownLeaderOnline = otherTownLeader.getPlayer();assert otherTownLeaderOnline != null;
 
                         TownRelationConfirmStorage.addInvitation(otherTown.getUuidLeader(), playerTown.getID(), relation);
 
-                        otherTownLeaderOnline.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.getTranslation(playerTown.getName(),relation.getColor() + relation.getName()));
-                        ChatUtils.sendClickableCommand(otherTownLeaderOnline,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.getTranslation(),"tan accept "  + playerTown.getID());
+                        otherTownLeaderOnline.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(playerTown.getName(),relation.getColor() + relation.getName()));
+                        ChatUtils.sendClickableCommand(otherTownLeaderOnline,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + playerTown.getID());
 
-                        player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS.getTranslation(otherTownLeaderOnline.getName()));
+                        player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS.get(otherTownLeaderOnline.getName()));
 
                         player.closeInventory();
                     }
                     else{ //Can only be bad relations
-                        playerTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),relation.getColoredName()),
+                        playerTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getName(),relation.getColoredName()),
                                 BAD);
-                        otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(playerTown.getName(),relation.getColoredName()),
+                        otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(playerTown.getName(),relation.getColoredName()),
                                 BAD);
                         addTownRelation(playerTown,otherTown,relation);
                         OpenTownRelation(player,relation);
@@ -1715,14 +1715,14 @@ public class GuiManager2 {
 
                         TownRelationConfirmStorage.addInvitation(otherTown.getUuidLeader(), playerTown.getID(), null);
 
-                        otherTownLeader.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.getTranslation(playerTown.getName(),"neutral"));
-                        ChatUtils.sendClickableCommand(otherTownLeader,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.getTranslation(),"tan accept "  + playerTown.getID());
+                        otherTownLeader.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(playerTown.getName(),"neutral"));
+                        ChatUtils.sendClickableCommand(otherTownLeader,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + playerTown.getID());
                         player.closeInventory();
                     }
                     else{ //Can only be worst relations
-                        playerTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),"neutral"),
+                        playerTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getName(),"neutral"),
                                 BAD);
-                        otherTown.broadCastMessageWithSound(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(playerTown.getName(),"neutral"),
+                        otherTown.broadCastMessageWithSound(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(playerTown.getName(),"neutral"),
                                 BAD);
                         removeRelation(playerTown,otherTown,relation);
                         OpenTownRelation(player,relation);
@@ -1741,11 +1741,11 @@ public class GuiManager2 {
 
 
         ItemStack nextPageButton = HeadUtils.makeSkull(
-                Lang.GUI_NEXT_PAGE.getTranslation(),
+                Lang.GUI_NEXT_PAGE.get(),
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0="
         );
         ItemStack previousPageButton = HeadUtils.makeSkull(
-                Lang.GUI_PREVIOUS_PAGE.getTranslation(),
+                Lang.GUI_PREVIOUS_PAGE.get(),
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19"
         );
 
@@ -1804,9 +1804,9 @@ public class GuiManager2 {
             TownChunkPermission permission = settings.getPermission(type);
             ItemStack itemStack = HeadUtils.getCustomLoreItem(
                     material,
-                    label.getTranslation(),
-                    Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.getTranslation(permission.getColoredName()),
-                    Lang.GUI_LEFT_CLICK_TO_INTERACT.getTranslation()
+                    label.get(),
+                    Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.get(permission.getColoredName()),
+                    Lang.GUI_LEFT_CLICK_TO_INTERACT.get()
             );
 
             GuiItem guiItem = createGuiItem(itemStack, playerStat, player, v -> settings.nextPermission(type));
@@ -1822,7 +1822,7 @@ public class GuiManager2 {
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);
             if (!playerStat.hasPermission(TownRolePermission.MANAGE_CLAIM_SETTINGS)) {
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
             action.accept(null);
@@ -1837,7 +1837,7 @@ public class GuiManager2 {
                 .create();
     }
     private static GuiItem CreateBackArrow(Player player, Consumer<Player> openMenuAction) {
-        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.get());
         return ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
             openMenuAction.accept(player);

@@ -48,7 +48,7 @@ public class SpawnVillager extends SubCommand {
     public void perform(Player player, String[] args) {
 
         if(TownsAndNations.hasEconomy()){
-            player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.getTranslation());
+            player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.get());
         }
 
         switch (args[1]) {
@@ -65,7 +65,7 @@ public class SpawnVillager extends SubCommand {
                 return;
             }
         }
-        player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR.getTranslation());
+        player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR.get());
         player.sendMessage(ChatUtils.getTANString() + getSyntax());
 
     }

@@ -24,7 +24,7 @@ public class UnclaimCommand extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.UNCLAIM_CHUNK_COMMAND_DESC.getTranslation();
+        return Lang.UNCLAIM_CHUNK_COMMAND_DESC.get();
     }
     public int getArguments(){ return 1;}
 
@@ -39,23 +39,23 @@ public class UnclaimCommand extends SubCommand {
     @Override
     public void perform(Player player, String[] args){
         if (args.length != 1){
-            player.sendMessage(getTANString() +  Lang.CORRECT_SYNTAX_INFO.getTranslation());
+            player.sendMessage(getTANString() +  Lang.CORRECT_SYNTAX_INFO.get());
             return;
         }
 
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
         if(!playerStat.haveTown()){
-            player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.getTranslation());
+            player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
         }
 
         if(!playerStat.hasPermission(TownRolePermission.UNCLAIM_CHUNK)){
-            player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+            player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             return;
         }
 
         TownData townStat = TownDataStorage.get(playerStat.getTownId());
         if(!townStat.getUuidLeader().equals(playerStat.getUuid())){
-            player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+            player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
         }
 
 
@@ -67,12 +67,12 @@ public class UnclaimCommand extends SubCommand {
                 ClaimedChunkStorage.unclaimChunk(player.getLocation().getChunk());
                 TownDataStorage.get(player).getChunkSettings().decreaseNumberOfClaimedChunk();
 
-                player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS.getTranslation(townStat.getNumberOfClaimedChunk(),townStat.getTownLevel().getChunkCap()));
+                player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS.get(townStat.getNumberOfClaimedChunk(),townStat.getTownLevel().getChunkCap()));
 
                 return;
             }
             TownData otherTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
-            player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_TOWN.getTranslation(otherTown.getName()));
+            player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_TOWN.get(otherTown.getName()));
 
         }
 

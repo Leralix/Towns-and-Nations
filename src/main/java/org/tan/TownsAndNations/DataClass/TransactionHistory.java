@@ -34,7 +34,7 @@ public class TransactionHistory {
 
     @Override
     public String toString() {
-        return Lang.TRANSACTION_HISTORY.getTranslation(date, transactionParty, amount);
+        return Lang.TRANSACTION_HISTORY.get(date, transactionParty, amount);
     }
 
     public String getTransactionLine() {
@@ -46,7 +46,7 @@ public class TransactionHistory {
         else
             color = ChatColor.WHITE;
 
-        return Lang.TRANSACTION_HISTORY.getTranslation(date, transactionParty, color + String.valueOf(amount));
+        return Lang.TRANSACTION_HISTORY.get(date, transactionParty, color + String.valueOf(amount));
     }
 
     public String getDate() {

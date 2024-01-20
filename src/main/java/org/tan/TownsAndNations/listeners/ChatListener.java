@@ -6,19 +6,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.TownRank;
 import org.tan.TownsAndNations.GUI.GuiManager2;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.enums.MessageKey;
 import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.TownUtil;
 
-import java.time.LocalDate;
 import java.util.*;
 
 import static org.tan.TownsAndNations.enums.MessageKey.*;
@@ -55,7 +52,7 @@ public class ChatListener implements Listener {
             int amount;
             try {amount = Integer.parseInt(stringAmount);}
             catch (NumberFormatException e) {
-                player.sendMessage(ChatUtils.getTANString() + Lang.PAY_INVALID_SYNTAX.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.PAY_INVALID_SYNTAX.get());
                 throw new RuntimeException(e);
             }
 
@@ -71,7 +68,7 @@ public class ChatListener implements Listener {
             FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
             int maxSize = config.getInt("RankNameSize");
             if(rankName.length() > maxSize){
-                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.getTranslation(maxSize));
+                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
                 event.setCancelled(true);
             }
 
@@ -90,7 +87,7 @@ public class ChatListener implements Listener {
             FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
             int maxSize = config.getInt("RankNameSize");
             if(newRankName.length() > maxSize){
-                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.getTranslation(maxSize));
+                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
                 event.setCancelled(true);
             }
 
@@ -128,13 +125,13 @@ public class ChatListener implements Listener {
             FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
             int maxSize = config.getInt("TownDescSize");
             if(newDesc.length() > maxSize){
-                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.getTranslation(maxSize));
+                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
                 event.setCancelled(true);
             }
 
 
             TownDataStorage.get(townId).setDescription(newDesc);
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS.getTranslation());
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS.get());
             PlayerChatListenerStorage.removePlayer(player);
             event.setCancelled(true);
 
@@ -150,22 +147,20 @@ public class ChatListener implements Listener {
             int maxSize = config.getInt("TownNameSize");
 
             if(newName.length() > maxSize){
-                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.getTranslation(maxSize));
+                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
                 PlayerChatListenerStorage.removePlayer(player);
                 event.setCancelled(true);
             }
 
             if(town.getBalance() <= townCost){
-                player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.getTranslation());
+                player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
                 PlayerChatListenerStorage.removePlayer(player);
                 event.setCancelled(true);
             }
 
-            PlayerChatListenerStorage.removePlayer(player);
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_NAME_IN_CHAT_SUCCESS.getTranslation(town.getName(),newName));
-            town.getTreasury().addMiscellaneousPurchase(Lang.GUI_TOWN_SETTINGS_NEW_TOWN_NAME_HISTORY.getTranslation(town.getName() ,newName),townCost);
-            town.getTreasury().removeToBalance(townCost);
-            town.setName(newName);
+            TownUtil.renameTown(player, townCost, newName, town);
+
+
             event.setCancelled(true);
         }
 

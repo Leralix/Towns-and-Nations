@@ -22,7 +22,7 @@ public class OpenGuiCommand extends SubCommand  {
 
     @Override
     public String getDescription() {
-        return Lang.TOWN_GUI_COMMAND_DESC.getTranslation();
+        return Lang.TOWN_GUI_COMMAND_DESC.get();
     }
     public int getArguments(){ return 2;}
 
@@ -42,8 +42,8 @@ public class OpenGuiCommand extends SubCommand  {
 
             getOpeningGui(player);
         }else if(args.length > 1){
-            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.getTranslation());
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
+            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
 
     }

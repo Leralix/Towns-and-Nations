@@ -24,7 +24,7 @@ public class ClaimCommand extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.CLAIM_CHUNK_COMMAND_DESC.getTranslation();
+        return Lang.CLAIM_CHUNK_COMMAND_DESC.get();
     }
     public int getArguments(){ return 1;}
 
@@ -42,14 +42,14 @@ public class ClaimCommand extends SubCommand {
 
         //Incorrect syntax
         if (args.length != 1){
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()) );
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()) );
             return;
         }
 
         //No town
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
         if(!playerStat.haveTown()){
-            player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.getTranslation());
+            player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
             return;
         }
 
@@ -58,7 +58,7 @@ public class ClaimCommand extends SubCommand {
         ClaimedChunkSettings townChunkInfo = townStat.getChunkSettings();
         if(!playerStat.hasPermission(TownRolePermission.CLAIM_CHUNK)){
             if(!playerStat.isTownLeader()){
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
         }
@@ -66,14 +66,14 @@ public class ClaimCommand extends SubCommand {
         //Chunk already claimed
         Chunk chunkToClaim = player.getLocation().getChunk();
         if(ClaimedChunkStorage.isChunkClaimed(chunkToClaim)){
-            player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.getTranslation(
+            player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(
                     ClaimedChunkStorage.getChunkOwnerName(chunkToClaim)));
             return;
         }
 
         //Chunk limit reached
         if(!townStat.canClaimMoreChunk()){
-            player.sendMessage(getTANString() + Lang.MAX_CHUNK_LIMIT_REACHED.getTranslation());
+            player.sendMessage(getTANString() + Lang.MAX_CHUNK_LIMIT_REACHED.get());
             return;
         }
 
@@ -82,7 +82,7 @@ public class ClaimCommand extends SubCommand {
             ClaimedChunkStorage.claimChunk(chunkToClaim,townStat.getID());
             townChunkInfo.incrementNumberOfClaimedChunk();
 
-            player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.getTranslation(
+            player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.get(
                     townStat.getNumberOfClaimedChunk(),
                     townStat.getTownLevel().getChunkCap())
             );
@@ -90,14 +90,14 @@ public class ClaimCommand extends SubCommand {
         }
 
         if(!ClaimedChunkStorage.isAdjacentChunkClaimedBySameTown(chunkToClaim,townStat.getID())){
-            player.sendMessage(getTANString() + Lang.CHUNK_NOT_ADJACENT.getTranslation());
+            player.sendMessage(getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
             return;
         }
 
         ClaimedChunkStorage.claimChunk(chunkToClaim,townStat.getID());
         townChunkInfo.incrementNumberOfClaimedChunk();
 
-        player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.getTranslation(
+        player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.get(
                 townStat.getNumberOfClaimedChunk(),
                 townStat.getTownLevel().getChunkCap())
         );

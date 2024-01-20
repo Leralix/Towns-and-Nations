@@ -26,7 +26,7 @@ public class InvitePlayerCommand extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.TOWN_INVITE_COMMAND_DESC.getTranslation();
+        return Lang.TOWN_INVITE_COMMAND_DESC.get();
     }
     public int getArguments(){ return 2;}
     @Override
@@ -47,55 +47,55 @@ public class InvitePlayerCommand extends SubCommand {
     @Override
     public void perform(Player player, String[] args){
         if (args.length <= 1){
-            player.sendMessage(getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.getTranslation());
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
+            player.sendMessage(getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
 
         }else if(args.length == 2){
 
             PlayerData playerData = PlayerDataStorage.get(player);
 
             if(playerData.getTownId() == null){
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.getTranslation());
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
                 return;
             }
             if(!playerData.hasPermission(TownRolePermission.INVITE_PLAYER)){
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
 
             Player invite = Bukkit.getPlayer(args[1]);
             if(invite == null){
-                player.sendMessage(getTANString() + Lang.PLAYER_NOT_FOUND.getTranslation());
+                player.sendMessage(getTANString() + Lang.PLAYER_NOT_FOUND.get());
                 return;
             }
 
 
             TownData town = TownDataStorage.get(player);
             if(!town.canAddMorePlayer()){
-                player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_TOWN_FULL.getTranslation());
+                player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_TOWN_FULL.get());
                 return;
             }
             PlayerData inviteStat = PlayerDataStorage.get(invite);
 
             if(inviteStat.getTownId() != null){
                 if(inviteStat.getTownId().equals(town.getID())){
-                    player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN.getTranslation());
+                    player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN.get());
                     return;
                 }
-                player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN.getTranslation(invite.getName(),TownDataStorage.get(inviteStat.getTownId()).getName()));
+                player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN.get(invite.getName(),TownDataStorage.get(inviteStat.getTownId()).getName()));
                 return;
             }
 
             TownInviteDataStorage.addInvitation(invite.getUniqueId().toString(),town.getID());
 
-            player.sendMessage(getTANString() + Lang.INVITATION_SENT_SUCCESS.getTranslation(invite.getName()));
+            player.sendMessage(getTANString() + Lang.INVITATION_SENT_SUCCESS.get(invite.getName()));
 
-            invite.sendMessage(getTANString() + Lang.INVITATION_RECEIVED_1.getTranslation(player.getName(),town.getName()));
-            ChatUtils.sendClickableCommand(invite,  getTANString() + Lang.INVITATION_RECEIVED_2.getTranslation(),"tan join "  + town.getID());
+            invite.sendMessage(getTANString() + Lang.INVITATION_RECEIVED_1.get(player.getName(),town.getName()));
+            ChatUtils.sendClickableCommand(invite,  getTANString() + Lang.INVITATION_RECEIVED_2.get(),"tan join "  + town.getID());
 
         }else {
-            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.getTranslation());
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
+            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
     }
 }

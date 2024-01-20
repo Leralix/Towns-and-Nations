@@ -14,7 +14,6 @@ import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.SoundUtil;
 
 import static org.tan.TownsAndNations.enums.SoundEnum.BAD;
-import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 public class PlayerEnterChunkListener implements Listener {
 
@@ -48,11 +47,11 @@ public class PlayerEnterChunkListener implements Listener {
         Player player = e.getPlayer();
 
         if(townFrom != null){
-            player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_ENTER_WILDERNESS.getTranslation());
+            player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_ENTER_WILDERNESS.get());
             return;
         }
 
-        player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_ENTER_TOWN.getTranslation(townTo.getName()));
+        player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_ENTER_TOWN.get(townTo.getName()));
 
         TownData playerTown = TownDataStorage.get(player);
         if(playerTown == null){
@@ -62,9 +61,9 @@ public class PlayerEnterChunkListener implements Listener {
 
         if(relation == TownRelation.WAR){
             SoundUtil.playSound(player, BAD);
-            player.sendMessage(Lang.CHUNK_ENTER_TOWN_AT_WAR.getTranslation());
+            player.sendMessage(Lang.CHUNK_ENTER_TOWN_AT_WAR.get());
 
-            townTo.broadCastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.getTranslation(TownDataStorage.get(player).getName(),player.getName()),
+            townTo.broadCastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.get(player).getName(),player.getName()),
                     BAD);
         }
 

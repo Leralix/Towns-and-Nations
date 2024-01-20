@@ -37,6 +37,6 @@ public class SaveAll extends SubCommand {
         TownDataStorage.saveStats();
         ClaimedChunkStorage.saveStats();
         PlayerDataStorage.saveStats();
-        player.sendMessage(ChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.getTranslation());
+        player.sendMessage(ChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
 }

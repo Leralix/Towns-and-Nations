@@ -36,7 +36,7 @@ public enum TownRankEnum {
     }
     //je t'aime mimi
     public String getRankName(){
-        return getColor() + Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_X.getTranslation(getLevel());
+        return getColor() + Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_X.get(getLevel());
     }
 
     public TownRankEnum getRankByLevel(int level){
@@ -62,7 +62,7 @@ public enum TownRankEnum {
     }
 
     public ItemStack getRankGuiIcon(){
-        return makeSkull(this.getColor() + Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_X.getTranslation(getLevel()),getSkullTexture());
+        return makeSkull(this.getColor() + Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_X.get(getLevel()),getSkullTexture());
     }
 
 }

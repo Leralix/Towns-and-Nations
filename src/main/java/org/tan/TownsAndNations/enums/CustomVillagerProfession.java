@@ -7,9 +7,9 @@ import org.tan.TownsAndNations.utils.DropChances;
 
 public enum CustomVillagerProfession {
 
-    GOLDSMITH(Lang.VILLAGER_GOLDSMITH.getTranslation(), Profession.TOOLSMITH, DropChances.getRareStone()),
-    BOTANIST(Lang.VILLAGER_BOTANIST.getTranslation(), Profession.FARMER, DropChances.getRareWood()),
-    COOK(Lang.VILLAGER_COOK.getTranslation(), Profession.BUTCHER, DropChances.getRareCrops());
+    GOLDSMITH(Lang.VILLAGER_GOLDSMITH.get(), Profession.TOOLSMITH, DropChances.getRareStone()),
+    BOTANIST(Lang.VILLAGER_BOTANIST.get(), Profession.FARMER, DropChances.getRareWood()),
+    COOK(Lang.VILLAGER_COOK.get(), Profession.BUTCHER, DropChances.getRareCrops());
 
     private final String name;
     private final Profession profession;

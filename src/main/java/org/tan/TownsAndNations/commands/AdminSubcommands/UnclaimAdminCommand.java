@@ -6,7 +6,6 @@ import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class UnclaimAdminCommand extends SubCommand {
     @Override
     public void perform(Player player, String[] args){
         if (args.length != 1){
-            player.sendMessage(getTANString() +  Lang.CORRECT_SYNTAX_INFO.getTranslation());
+            player.sendMessage(getTANString() +  Lang.CORRECT_SYNTAX_INFO.get());
             return;
         }
 
@@ -49,12 +48,12 @@ public class UnclaimAdminCommand extends SubCommand {
             ClaimedChunkStorage.unclaimChunk(chunk);
             townData.getChunkSettings().decreaseNumberOfClaimedChunk();
 
-            player.sendMessage(getTANString() + Lang.DEBUG_UNCLAIMED_CHUNK_SUCCESS.getTranslation(townData.getName(),
+            player.sendMessage(getTANString() + Lang.DEBUG_UNCLAIMED_CHUNK_SUCCESS.get(townData.getName(),
                     townData.getNumberOfClaimedChunk(),townData.getTownLevel().getChunkCap()));
 
             return;
         }
-        player.sendMessage(getTANString() + Lang.ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED.getTranslation());
+        player.sendMessage(getTANString() + Lang.ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED.get());
 
     }
 }

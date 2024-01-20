@@ -7,7 +7,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.TownsAndNations.DataClass.RareItem;
 import org.tan.TownsAndNations.Lang.Lang;
-import org.tan.TownsAndNations.TownsAndNations;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,9 +49,9 @@ public class DropChances {
         ItemStack rareStoneItem = new ItemStack(Material.EMERALD);
         ItemMeta rareStoneItemMeta = rareStoneItem.getItemMeta();
         rareStoneItemMeta.setCustomModelData(101);
-        rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_STONE.getTranslation());
+        rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_STONE.get());
         ArrayList<String> lore = new ArrayList<>();
-        lore.add(Lang.RARE_ITEM_DESC_1.getTranslation());
+        lore.add(Lang.RARE_ITEM_DESC_1.get());
         rareStoneItemMeta.setLore(lore);
         rareStoneItem.setItemMeta(rareStoneItemMeta);
         return rareStoneItem;
@@ -61,9 +60,9 @@ public class DropChances {
         ItemStack rareStoneItem = new ItemStack(Material.STICK);
         ItemMeta rareStoneItemMeta = rareStoneItem.getItemMeta();
         rareStoneItemMeta.setCustomModelData(101);
-        rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_WOOD.getTranslation());
+        rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_WOOD.get());
         ArrayList<String> lore = new ArrayList<>();
-        lore.add(Lang.RARE_ITEM_DESC_1.getTranslation());
+        lore.add(Lang.RARE_ITEM_DESC_1.get());
         rareStoneItemMeta.setLore(lore);
         rareStoneItem.setItemMeta(rareStoneItemMeta);
         return rareStoneItem;
@@ -72,9 +71,9 @@ public class DropChances {
         ItemStack rareStoneItem = new ItemStack(Material.WHEAT);
         ItemMeta rareStoneItemMeta = rareStoneItem.getItemMeta();
         rareStoneItemMeta.setCustomModelData(101);
-        rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_CROP.getTranslation());
+        rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_CROP.get());
         ArrayList<String> lore = new ArrayList<>();
-        lore.add(Lang.RARE_ITEM_DESC_1.getTranslation());
+        lore.add(Lang.RARE_ITEM_DESC_1.get());
         rareStoneItemMeta.setLore(lore);
         rareStoneItem.setItemMeta(rareStoneItemMeta);
         return rareStoneItem;

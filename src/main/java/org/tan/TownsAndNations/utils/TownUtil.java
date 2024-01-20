@@ -12,6 +12,7 @@ import org.tan.TownsAndNations.storage.*;
 
 import java.util.Objects;
 
+import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.enums.TownRolePermission.KICK_PLAYER;
 import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
@@ -31,7 +32,7 @@ public class TownUtil {
         int playerBalance = getBalance(player);
 
         if(playerBalance < townCost){
-            player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.getTranslation(townCost - playerBalance));
+            player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(townCost - playerBalance));
             PlayerChatListenerStorage.removePlayer(player);
             return;
         }
@@ -40,12 +41,12 @@ public class TownUtil {
         int maxSize = config.getInt("TownNameSize");
 
         if(townName.length() > maxSize){
-            player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.getTranslation(maxSize));
+            player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
             return;
         }
 
 
-        Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.getTranslation(player.getName(),townName));
+        Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(),townName));
 
         PlayerChatListenerStorage.removePlayer(player);
 
@@ -72,12 +73,12 @@ public class TownUtil {
         int playerBalance = getBalance(player);
 
         if(playerBalance < amountDonated ){
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.getTranslation());
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.get());
             PlayerChatListenerStorage.removePlayer(player);
             return;
         }
         if(amountDonated <= 0 ){
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NEED_1_OR_ABOVE.getTranslation());
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NEED_1_OR_ABOVE.get());
             PlayerChatListenerStorage.removePlayer(player);
             return;
         }
@@ -86,29 +87,31 @@ public class TownUtil {
 
         removeFromBalance(player, amountDonated);
 
-        playerTown.getTreasury().addToBalance(amountDonated);
-        playerTown.getTreasury().addDonation(player.getName(),player.getUniqueId().toString(),amountDonated);
+        playerTown.addToBalance(amountDonated);
+        if(!isSqlEnable())
+            playerTown.getTreasury().addDonation(player.getName(),player.getUniqueId().toString(),amountDonated);
 
-        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_TOWN.getTranslation(amountDonated));
+        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_TOWN.get(amountDonated));
         PlayerChatListenerStorage.removePlayer(player);
         SoundUtil.playSound(player, MINOR_LEVEL_UP);
     }
 
     public static void deleteTown(TownData townToDelete){
 
-        TownData playerTown = TownDataStorage.get(townToDelete.getID());
-
         ClaimedChunkStorage.unclaimAllChunkFrom(townToDelete.getID());
-
-        playerTown.cancelAllRelation();
+        townToDelete.cancelAllRelation();
         TownDataStorage.removeTown(townToDelete.getID());
+        removeAllPlayerFromTown(townToDelete);
 
-        for(String memberUUID : playerTown.getPlayerList()){
-            PlayerData memberStat = PlayerDataStorage.get(memberUUID);
-            assert memberStat != null;
-            memberStat.leaveTown();
-        }
         updateAllScoreboardColor();
+    }
+    public static void removeAllPlayerFromTown(TownData townToDelete){
+        for(String playerID : townToDelete.getPlayerList()){
+            if(isSqlEnable())
+                TownDataStorage.removePlayerFromTownDatabase(playerID);
+            else
+                PlayerDataStorage.get(playerID).leaveTown();
+        }
     }
 
     public static void kickPlayer(Player player, OfflinePlayer kickedPlayer) {
@@ -118,30 +121,40 @@ public class TownUtil {
 
 
         if(playerData.hasPermission(KICK_PLAYER)){
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             return;
         }
         int playerLevel = townData.getRank(playerData).getLevel();
         int kickedPlayerLevel = townData.getRank(kickedPlayerData).getLevel();
         if(playerLevel >= kickedPlayerLevel){
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.getTranslation());
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
             return;
         }
         if(kickedPlayerData.isTownLeader()){
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.getTranslation());
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get());
             return;
         }
         if(playerData.getUuid().equals(kickedPlayerData.getUuid())){
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_YOURSELF.getTranslation());
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_YOURSELF.get());
             return;
         }
         TownData town = TownDataStorage.get(playerData);
         town.getRank(kickedPlayerData.getTownRankID()).removePlayer(kickedPlayerData.getUuid());
         town.removePlayer(kickedPlayerData.getUuid());
         kickedPlayerData.leaveTown();
-        town.broadCastMessageWithSound(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.getTranslation(kickedPlayer.getName()),
+        town.broadCastMessageWithSound(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.get(kickedPlayer.getName()),
                 BAD);
         if(kickedPlayer.isOnline())
-            Objects.requireNonNull(kickedPlayer.getPlayer()).sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.getTranslation());
+            Objects.requireNonNull(kickedPlayer.getPlayer()).sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get());
     }
+
+    public static void renameTown(Player player, int townCost, String newName, TownData town) {
+        PlayerChatListenerStorage.removePlayer(player);
+        player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_NAME_IN_CHAT_SUCCESS.get(town.getName(),newName));
+        if(!isSqlEnable())
+            town.getTreasury().addMiscellaneousPurchase(Lang.GUI_TOWN_SETTINGS_NEW_TOWN_NAME_HISTORY.get(town.getName() ,newName),townCost);
+        town.removeToBalance(townCost);
+        town.setName(newName);
+    }
+
 }

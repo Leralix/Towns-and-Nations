@@ -591,8 +591,8 @@ public class ChunkListener implements Listener {
 
 
     private void playerCantPerformAction(Player player, String ChunkOwner){
-        player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.getTranslation());
-        player.sendMessage(getTANString() + Lang.CHUNK_BELONGS_TO.getTranslation(ChunkOwner));
+        player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+        player.sendMessage(getTANString() + Lang.CHUNK_BELONGS_TO.get(ChunkOwner));
     }
 
 

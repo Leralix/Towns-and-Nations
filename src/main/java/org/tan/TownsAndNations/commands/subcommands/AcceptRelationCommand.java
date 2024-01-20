@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.*;
 
@@ -24,7 +23,7 @@ public class AcceptRelationCommand extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.TOWN_ACCEPT_RELATION_DESC.getTranslation();
+        return Lang.TOWN_ACCEPT_RELATION_DESC.get();
     }
     public int getArguments(){ return 1;}
 
@@ -46,8 +45,8 @@ public class AcceptRelationCommand extends SubCommand {
     public void perform(Player player, String[] args){
 
         if (args.length == 1) {
-            player.sendMessage(getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.getTranslation());
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
+            player.sendMessage(getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         } else if (args.length == 2){
 
             String OtherTownID = args[1];
@@ -62,29 +61,29 @@ public class AcceptRelationCommand extends SubCommand {
                 TownRelationConfirmStorage.removeInvitation(player.getUniqueId().toString(), otherTown.getID());
 
                 if(newRelation == null){ // From negative to neutral
-                    town.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),"neutral"),
+                    town.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getName(),"neutral"),
                             GOOD);
-                    otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(town.getName(),"neutral"),
+                    otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(town.getName(),"neutral"),
                             GOOD);
                     removeRelation(town,otherTown);
                 }
                 else { // from neutral to positive
-                    town.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(otherTown.getName(),newRelation.getColoredName()),
+                    town.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getName(),newRelation.getColoredName()),
                             GOOD);
-                    otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.getTranslation(town.getName(),newRelation.getColoredName()),
+                    otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(town.getName(),newRelation.getColoredName()),
                             GOOD);
 
                     addTownRelation(town,otherTown,newRelation);
                 }
             }
             else{
-                player.sendMessage(getTANString() + Lang.TOWN_INVITATION_NO_INVITATION.getTranslation());
+                player.sendMessage(getTANString() + Lang.TOWN_INVITATION_NO_INVITATION.get());
             }
 
         }
         else{
-            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.getTranslation());
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
+            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
     }
 

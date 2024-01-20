@@ -3,12 +3,10 @@ package org.tan.TownsAndNations.Tasks;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.TownRank;
-import org.tan.TownsAndNations.DataClass.TownTreasury;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
@@ -53,11 +51,11 @@ public class DailyTasks {
             if (!playerStat.haveTown()) continue;
             TownData playerTown = TownDataStorage.get(playerStat);
             if (!playerTown.getRank(playerStat.getTownRankID()).isPayingTaxes()) continue;
-            int tax = playerTown.getTreasury().getFlatTax();
+            int tax = playerTown.getFlatTax();
 
             if(EconomyUtil.getBalance(offlinePlayer) > tax){
                 EconomyUtil.removeFromBalance(offlinePlayer,tax);
-                playerTown.getTreasury().addToBalance(tax);
+                playerTown.addToBalance(tax);
                 playerTown.getTreasury().addTaxHistory(playerStat.getName(), playerStat.getUuid(), tax);
                 //TownsAndNations.getPluginLogger().info(playerStat.getName() + " has paid " + tax + "$ to the town " + playerTown.getName());
             }
@@ -67,7 +65,7 @@ public class DailyTasks {
             }
         }
 
-        TownsAndNations.getPluginLogger().info(ChatUtils.getTANString() + Lang.DAILY_TAXES_SUCCESS_LOG.getTranslation());
+        TownsAndNations.getPluginLogger().info(ChatUtils.getTANString() + Lang.DAILY_TAXES_SUCCESS_LOG.get());
 
     }
     public static void ChunkPayment(){
@@ -79,7 +77,7 @@ public class DailyTasks {
             int numberClaimedChunk = town.getNumberOfClaimedChunk();
             int totalUpkeep = (int) ( numberClaimedChunk * upkeepCost/10);
 
-            town.getTreasury().removeToBalance(totalUpkeep);
+            town.removeToBalance(totalUpkeep);
             town.getTreasury().addChunkHistory(numberClaimedChunk,totalUpkeep);
         }
     }
@@ -98,7 +96,7 @@ public class DailyTasks {
                     continue;
                 }
 
-                town.getTreasury().removeToBalance(costOfSalary);
+                town.removeToBalance(costOfSalary);
                 for(String playerId : playerIdList){
                     PlayerData player = PlayerDataStorage.get(playerId);
                     player.addToBalance(rankSalary);

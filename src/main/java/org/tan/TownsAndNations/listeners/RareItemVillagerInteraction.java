@@ -9,7 +9,6 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.CustomVillagerProfession;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.EconomyUtil;
@@ -52,7 +51,7 @@ public class RareItemVillagerInteraction implements Listener {
 
             ItemStack item = player.getInventory().getItemInMainHand();
             if (item.getItemMeta() == null){
-                player.sendMessage(ChatUtils.getTANString() + Lang.RARE_ITEM_NO_ITEM_IN_HANDS.getTranslation(
+                player.sendMessage(ChatUtils.getTANString() + Lang.RARE_ITEM_NO_ITEM_IN_HANDS.get(
                         customProfession.getBuyingItem().getItemMeta().getDisplayName(),
                         price)
                 );
@@ -72,7 +71,7 @@ public class RareItemVillagerInteraction implements Listener {
 
                 player.sendMessage(
                         ChatUtils.getTANString() +
-                        Lang.RARE_ITEM_SELLING_SUCCESS.getTranslation(
+                        Lang.RARE_ITEM_SELLING_SUCCESS.get(
                                 quantity,
                                 itemName,
                                 quantity * price
@@ -80,7 +79,7 @@ public class RareItemVillagerInteraction implements Listener {
                 );
                 return;
             }
-            player.sendMessage(ChatUtils.getTANString() + Lang.RARE_ITEM_WRONG_ITEM.getTranslation(
+            player.sendMessage(ChatUtils.getTANString() + Lang.RARE_ITEM_WRONG_ITEM.get(
                     customProfession.getBuyingItem().getItemMeta().getDisplayName()
             ));
 

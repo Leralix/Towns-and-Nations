@@ -20,7 +20,7 @@ public class ChannelChatScopeCommand extends SubCommand{
 
     @Override
     public String getDescription() {
-        return Lang.TOWN_CHAT_COMMAND_DESC.getTranslation();
+        return Lang.TOWN_CHAT_COMMAND_DESC.get();
     }
     public int getArguments(){ return 1;}
 
@@ -44,14 +44,14 @@ public class ChannelChatScopeCommand extends SubCommand{
     public void perform(Player player, String[] args){
 
         if (args.length == 1) {
-            player.sendMessage(getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.getTranslation());
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
+            player.sendMessage(getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         } else if (args.length == 2){
 
             String channelName = args[1];
             TownData town = TownDataStorage.get(player);
             if(town == null){
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.getTranslation());
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
                 return;
             }
             if(channelName.equalsIgnoreCase("global")){
@@ -61,32 +61,32 @@ public class ChannelChatScopeCommand extends SubCommand{
             if(channelName.equalsIgnoreCase("town")){
 
                 if(LocalChatStorage.getPlayerChatScope(player) == ChatScope.CITY){
-                    player.sendMessage(getTANString() + Lang.TOWN_CHAT_ALREADY_IN_TOWN_CHAT.getTranslation());
+                    player.sendMessage(getTANString() + Lang.TOWN_CHAT_ALREADY_IN_TOWN_CHAT.get());
                     return;
                 }
 
                 LocalChatStorage.setPlayerChatScope(player, ChatScope.CITY);
-                player.sendMessage(getTANString() + Lang.CHAT_CHANGED.getTranslation(channelName));
+                player.sendMessage(getTANString() + Lang.CHAT_CHANGED.get(channelName));
                 return;
             }
             if(channelName.equalsIgnoreCase("alliance")){
 
                 if(LocalChatStorage.getPlayerChatScope(player) == ChatScope.ALLIANCE){
-                    player.sendMessage(getTANString() + Lang.TOWN_CHAT_ALREADY_IN_TOWN_CHAT.getTranslation());
+                    player.sendMessage(getTANString() + Lang.TOWN_CHAT_ALREADY_IN_TOWN_CHAT.get());
                     return;
                 }
 
                 LocalChatStorage.setPlayerChatScope(player, ChatScope.ALLIANCE);
-                player.sendMessage(getTANString() + Lang.CHAT_CHANGED.getTranslation(channelName));
+                player.sendMessage(getTANString() + Lang.CHAT_CHANGED.get(channelName));
                 return;
             }
 
-            player.sendMessage(getTANString() + Lang.CHAT_SCOPE_NOT_FOUND.getTranslation(channelName));
+            player.sendMessage(getTANString() + Lang.CHAT_SCOPE_NOT_FOUND.get(channelName));
 
         }
         else{
-            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.getTranslation());
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
+            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
     }
 

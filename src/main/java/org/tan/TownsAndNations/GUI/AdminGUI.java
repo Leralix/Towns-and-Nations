@@ -9,12 +9,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.MessageKey;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.HeadUtils;
@@ -24,8 +22,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.tan.TownsAndNations.GUI.GuiManager2.OpenTownChangeOwnershipPlayerSelect;
-import static org.tan.TownsAndNations.storage.TownDataStorage.getTownList;
-import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.TownUtil.deleteTown;
 
 public class AdminGUI {
@@ -41,12 +37,12 @@ public class AdminGUI {
                 .rows(nRow)
                 .create();
 
-        ItemStack TownHead = HeadUtils.makeSkull(Lang.GUI_TOWN_ICON.getTranslation(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
+        ItemStack TownHead = HeadUtils.makeSkull(Lang.GUI_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
         ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
         ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Quit");
 
-        HeadUtils.setLore(TownHead, Lang.ADMIN_GUI_TOWN_DESC.getTranslation());
-        HeadUtils.setLore(playerHead, Lang.ADMIN_GUI_PLAYER_DESC.getTranslation());
+        HeadUtils.setLore(TownHead, Lang.ADMIN_GUI_TOWN_DESC.get());
+        HeadUtils.setLore(playerHead, Lang.ADMIN_GUI_PLAYER_DESC.get());
 
         GuiItem Town = ItemBuilder.from(TownHead).asGuiItem(event -> {
             event.setCancelled(true);
@@ -87,12 +83,12 @@ public class AdminGUI {
 
 
             HeadUtils.setLore(townIcon,
-                    Lang.GUI_TOWN_INFO_DESC0.getTranslation(townData.getDescription()),
-                    Lang.GUI_TOWN_INFO_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getUuidLeader())).getName()),
-                    Lang.GUI_TOWN_INFO_DESC2.getTranslation(townData.getPlayerList().size()),
-                    Lang.GUI_TOWN_INFO_DESC3.getTranslation(townData.getNumberOfClaimedChunk()),
+                    Lang.GUI_TOWN_INFO_DESC0.get(townData.getDescription()),
+                    Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getUuidLeader())).getName()),
+                    Lang.GUI_TOWN_INFO_DESC2.get(townData.getPlayerList().size()),
+                    Lang.GUI_TOWN_INFO_DESC3.get(townData.getNumberOfClaimedChunk()),
                     "",
-                    Lang.ADMIN_GUI_LEFT_CLICK_TO_MANAGE_TOWN.getTranslation()
+                    Lang.ADMIN_GUI_LEFT_CLICK_TO_MANAGE_TOWN.get()
             );
 
             GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> {
@@ -106,7 +102,7 @@ public class AdminGUI {
             i++;
 
         }
-        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.get());
         GuiItem _back = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
             OpenMainMenu(player);
@@ -133,25 +129,25 @@ public class AdminGUI {
                 .create();
 
         ItemStack changeTownName = HeadUtils.getCustomLoreItem(Material.NAME_TAG,
-                Lang.ADMIN_GUI_CHANGE_TOWN_NAME.getTranslation(),
-                Lang.ADMIN_GUI_CHANGE_TOWN_NAME_DESC1.getTranslation(),
-                Lang.ADMIN_GUI_CHANGE_TOWN_NAME_DESC2.getTranslation(townData.getName()));
+                Lang.ADMIN_GUI_CHANGE_TOWN_NAME.get(),
+                Lang.ADMIN_GUI_CHANGE_TOWN_NAME_DESC1.get(),
+                Lang.ADMIN_GUI_CHANGE_TOWN_NAME_DESC2.get(townData.getName()));
         ItemStack changeTownDescription = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK,
-                Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION.getTranslation(),
-                Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION_DESC1.getTranslation(townData.getDescription()));
+                Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION.get(),
+                Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION_DESC1.get(townData.getDescription()));
         ItemStack changeTownLeader = HeadUtils.getCustomLoreItem(Material.PLAYER_HEAD,
-                Lang.ADMIN_GUI_CHANGE_TOWN_LEADER.getTranslation(),
-                Lang.ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1.getTranslation(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getUuidLeader())).getName()));
+                Lang.ADMIN_GUI_CHANGE_TOWN_LEADER.get(),
+                Lang.ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getUuidLeader())).getName()));
         ItemStack deleteTown = HeadUtils.getCustomLoreItem(Material.BARRIER,
-                Lang.ADMIN_GUI_DELETE_TOWN.getTranslation(),
-                Lang.ADMIN_GUI_DELETE_TOWN_DESC1.getTranslation(townData.getName()));
+                Lang.ADMIN_GUI_DELETE_TOWN.get(),
+                Lang.ADMIN_GUI_DELETE_TOWN_DESC1.get(townData.getName()));
 
-        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.getTranslation());
+        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.get());
 
 
         GuiItem _changeTownName = ItemBuilder.from(changeTownName).asGuiItem(event -> {
 
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.getTranslation());
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.get());
             Map<MessageKey, String> data = new HashMap<>();
 
             data.put(MessageKey.TOWN_ID,townData.getID());
@@ -163,7 +159,7 @@ public class AdminGUI {
         });
         GuiItem _changeTownDescription = ItemBuilder.from(changeTownDescription).asGuiItem(event -> {
             player.closeInventory();
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.getTranslation());
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.get());
             Map<MessageKey, String> data = new HashMap<>();
             data.put(MessageKey.TOWN_ID,townData.getID());
             PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CHANGE_DESCRIPTION,player,data);
@@ -179,7 +175,7 @@ public class AdminGUI {
             deleteTown(townData);
 
             player.closeInventory();
-            player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.getTranslation());
+            player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get());
         });
         GuiItem _back = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);

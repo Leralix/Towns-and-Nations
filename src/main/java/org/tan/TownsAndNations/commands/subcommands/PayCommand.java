@@ -52,12 +52,12 @@ public class PayCommand extends SubCommand  {
     @Override
     public void perform(Player player, String[] args){
         if(TownsAndNations.hasEconomy()){
-            player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.getTranslation());
+            player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.get());
             return;
         }
         if (args.length < 3){
-            player.sendMessage(getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.getTranslation());
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
+            player.sendMessage(getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
         else if(args.length == 3){
             Player receiver = Bukkit.getServer().getPlayer(args[1]);
@@ -75,27 +75,27 @@ public class PayCommand extends SubCommand  {
                 amount = Integer.parseInt(args[2]);
 
             } catch (NumberFormatException e) {
-                player.sendMessage(getTANString() + Lang.PAY_INVALID_SYNTAX.getTranslation());
+                player.sendMessage(getTANString() + Lang.PAY_INVALID_SYNTAX.get());
                 return;
             }
             if(amount <1){
-                player.sendMessage(getTANString() + Lang.PAY_MINIMUM_REQUIRED.getTranslation());
+                player.sendMessage(getTANString() + Lang.PAY_MINIMUM_REQUIRED.get());
                 return;
             }
             if(EconomyUtil.getBalance(player) < amount){
-                player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.getTranslation(
+                player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(
                         amount - EconomyUtil.getBalance(player)));
                 return;
             }
 
             EconomyUtil.removeFromBalance(player,amount);
             receiverDataClass.addToBalance(amount);
-            player.sendMessage(getTANString() + Lang.PAY_CONFIRMED_SENDER.getTranslation(amount,receiver.getName()));
-            receiver.sendMessage(getTANString() + Lang.PAY_CONFIRMED_RECEIVER.getTranslation(amount,player.getName()));
+            player.sendMessage(getTANString() + Lang.PAY_CONFIRMED_SENDER.get(amount,receiver.getName()));
+            receiver.sendMessage(getTANString() + Lang.PAY_CONFIRMED_RECEIVER.get(amount,player.getName()));
         }
         else {
-            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.getTranslation());
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.getTranslation(getSyntax()));
+            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
     }
 
