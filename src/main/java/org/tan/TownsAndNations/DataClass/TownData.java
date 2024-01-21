@@ -5,6 +5,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.enums.SoundEnum;
+import org.tan.TownsAndNations.enums.TownChunkPermission;
+import org.tan.TownsAndNations.enums.TownChunkPermissionType;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
@@ -438,14 +440,34 @@ public class TownData {
         if(isSqlEnable())
             return ClaimedChunkStorage.getNumberOfChunks(this.TownId);
         else{
-            if(this.numberOfClaimedChunk == null)
+            if(this.numberOfClaimedChunk == null) //used to transition from 0.3.1 -> 0.4.0
                 this.numberOfClaimedChunk = this.getChunkSettings().getNumberOfClaimedChunk();
             return this.numberOfClaimedChunk;
         }
     }
     public void addNumberOfClaimChunk(int number) {
-        if(!isSqlEnable())
-            this.numberOfClaimedChunk += number;
+        if(this.numberOfClaimedChunk == null){ //used to transition from 0.3.1 -> 0.4.0
+            this.numberOfClaimedChunk = this.getChunkSettings().getNumberOfClaimedChunk();
+        }
+        this.numberOfClaimedChunk += number;
+        if(isSqlEnable())
+            TownDataStorage.updateTownData(this);
+    }
+
+    public TownChunkPermission getPermission(TownChunkPermissionType type) {
+        if(isSqlEnable())
+            return TownDataStorage.getPermission(this.getID(),type);
+        return this.chunkSettings.getPermission(type);
+    }
+
+    public void nextPermission(TownChunkPermissionType type) {
+        if(isSqlEnable()){
+            TownChunkPermission perm = TownDataStorage.getPermission(this.getID(),type);
+            perm.getNext();
+            TownDataStorage.updateChunkPermission(this.getID(),type,perm);
+        }
+        else
+            this.chunkSettings.nextPermission(type);
     }
 
 

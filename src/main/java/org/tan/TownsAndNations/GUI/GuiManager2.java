@@ -1771,8 +1771,7 @@ public class GuiManager2 {
         Gui gui = createChestGui("Town",4);
 
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
-        TownData townClass = TownDataStorage.get(player);
-        ClaimedChunkSettings settings = townClass.getChunkSettings();
+        TownData townData = TownDataStorage.get(player);
 
         Material[] materials = {Material.OAK_DOOR, Material.CHEST,Material.BRICKS,Material.IRON_PICKAXE,Material.BEEF,
                 Material.STONE_BUTTON,Material.REDSTONE,Material.FURNACE,Material.ITEM_FRAME,Material.ARMOR_STAND,
@@ -1801,7 +1800,7 @@ public class GuiManager2 {
             Material material = (Material) itemData[i][1];
             Lang label = (Lang) itemData[i][2];
 
-            TownChunkPermission permission = settings.getPermission(type);
+            TownChunkPermission permission = townData.getPermission(type);
             ItemStack itemStack = HeadUtils.getCustomLoreItem(
                     material,
                     label.get(),
@@ -1809,7 +1808,7 @@ public class GuiManager2 {
                     Lang.GUI_LEFT_CLICK_TO_INTERACT.get()
             );
 
-            GuiItem guiItem = createGuiItem(itemStack, playerStat, player, v -> settings.nextPermission(type));
+            GuiItem guiItem = createGuiItem(itemStack, playerStat, player, v -> townData.nextPermission(type));
             gui.setItem(i, guiItem);
         }
 

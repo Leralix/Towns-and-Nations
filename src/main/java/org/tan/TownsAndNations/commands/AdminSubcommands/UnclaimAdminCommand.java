@@ -46,7 +46,7 @@ public class UnclaimAdminCommand extends SubCommand {
             TownData townData = ClaimedChunkStorage.getChunkOwnerTown(chunk);
 
             ClaimedChunkStorage.unclaimChunk(chunk);
-            townData.getChunkSettings().decreaseNumberOfClaimedChunk();
+            townData.addNumberOfClaimChunk(-1);
 
             player.sendMessage(getTANString() + Lang.DEBUG_UNCLAIMED_CHUNK_SUCCESS.get(townData.getName(),
                     townData.getNumberOfClaimedChunk(),townData.getTownLevel().getChunkCap()));

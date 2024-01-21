@@ -2,9 +2,12 @@ package org.tan.TownsAndNations.DataClass;
 
 import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.TownChunkPermissionType;
+import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import java.util.EnumMap;
 import java.util.Map;
+
+import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 
 public class ClaimedChunkSettings {
     private int numberOfClaimedChunk;
@@ -30,13 +33,5 @@ public class ClaimedChunkSettings {
     //Old methods only here to not break old saves. Will be deleted in the future
     public int getNumberOfClaimedChunk() {
         return this.numberOfClaimedChunk;
-    }
-    //Old methods only here to not break old saves. Will be deleted in the future
-    public void incrementNumberOfClaimedChunk() {
-        this.numberOfClaimedChunk++;
-    }
-    //Old methods only here to not break old saves. Will be deleted in the future
-    public void decreaseNumberOfClaimedChunk() {
-        this.numberOfClaimedChunk--;
     }
 }

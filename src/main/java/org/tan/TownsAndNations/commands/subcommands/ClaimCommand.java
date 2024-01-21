@@ -54,8 +54,8 @@ public class ClaimCommand extends SubCommand {
         }
 
         //No permission
-        TownData townStat = TownDataStorage.get(player);
-        ClaimedChunkSettings townChunkInfo = townStat.getChunkSettings();
+        TownData townData = TownDataStorage.get(player);
+        ClaimedChunkSettings townChunkInfo = townData.getChunkSettings();
         if(!playerStat.hasPermission(TownRolePermission.CLAIM_CHUNK)){
             if(!playerStat.isTownLeader()){
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
@@ -72,34 +72,34 @@ public class ClaimCommand extends SubCommand {
         }
 
         //Chunk limit reached
-        if(!townStat.canClaimMoreChunk()){
+        if(!townData.canClaimMoreChunk()){
             player.sendMessage(getTANString() + Lang.MAX_CHUNK_LIMIT_REACHED.get());
             return;
         }
 
-        if(townStat.getNumberOfClaimedChunk() == 0){
+        if(townData.getNumberOfClaimedChunk() == 0){
 
-            ClaimedChunkStorage.claimChunk(chunkToClaim,townStat.getID());
-            townChunkInfo.incrementNumberOfClaimedChunk();
+            ClaimedChunkStorage.claimChunk(chunkToClaim,townData.getID());
+            townData.addNumberOfClaimChunk(1);
 
             player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.get(
-                    townStat.getNumberOfClaimedChunk(),
-                    townStat.getTownLevel().getChunkCap())
+                    townData.getNumberOfClaimedChunk(),
+                    townData.getTownLevel().getChunkCap())
             );
             return;
         }
 
-        if(!ClaimedChunkStorage.isAdjacentChunkClaimedBySameTown(chunkToClaim,townStat.getID())){
+        if(!ClaimedChunkStorage.isAdjacentChunkClaimedBySameTown(chunkToClaim,townData.getID())){
             player.sendMessage(getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
             return;
         }
 
-        ClaimedChunkStorage.claimChunk(chunkToClaim,townStat.getID());
-        townChunkInfo.incrementNumberOfClaimedChunk();
+        ClaimedChunkStorage.claimChunk(chunkToClaim,townData.getID());
+        townData.addNumberOfClaimChunk(1);
 
         player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.get(
-                townStat.getNumberOfClaimedChunk(),
-                townStat.getTownLevel().getChunkCap())
+                townData.getNumberOfClaimedChunk(),
+                townData.getTownLevel().getChunkCap())
         );
     }
 

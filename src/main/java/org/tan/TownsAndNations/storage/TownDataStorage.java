@@ -9,6 +9,8 @@ import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.TownLevel;
 import org.tan.TownsAndNations.TownsAndNations;
+import org.tan.TownsAndNations.enums.TownChunkPermission;
+import org.tan.TownsAndNations.enums.TownChunkPermissionType;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -34,6 +36,7 @@ public class TownDataStorage {
         if(isSqlEnable()){
             saveTownDataToDatabase(newTown);
             addTownLevelToDatabase(townId, new TownLevel());
+            createChunkPermissions(townId);
             addPlayerToTownDatabase(townId, playerID);
         }
         else{
@@ -354,6 +357,16 @@ public class TownDataStorage {
                         "town_spawn_bought BOOL)";
                 statement.executeUpdate(sql);
             }
+            try (Statement statement = connection.createStatement()){
+                String sql = "CREATE TABLE IF NOT EXISTS tan_chunk_permissions (" +
+                        "PermissionId INT AUTO_INCREMENT PRIMARY KEY," +
+                        "TownId VARCHAR(255)," +
+                        "PermissionType VARCHAR(255)," +
+                        "PermissionValue VARCHAR(255))";
+                statement.executeUpdate(sql);
+            }
+
+
 
 
 
@@ -498,5 +511,66 @@ public class TownDataStorage {
         }
         return requests;
     }
+
+    public static void createChunkPermissions(String townId) {
+
+        String sql = "INSERT INTO tan_chunk_permissions (TownId, PermissionType, PermissionValue) VALUES (?, ?, ?)";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            for (TownChunkPermissionType type : TownChunkPermissionType.values()) {
+                ps.setString(1, townId);
+                ps.setString(2, type.toString());
+                ps.setString(3, "TOWN");
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateChunkPermission(String townId, TownChunkPermissionType permissionType, TownChunkPermission newPermission) {
+        String sql = "UPDATE tan_chunk_permissions SET PermissionValue = ? WHERE TownId = ? AND PermissionType = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, newPermission.toString());
+            ps.setString(2, townId);
+            ps.setString(3, permissionType.toString());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteChunkPermissionsFor(String townId) {
+        String sql = "DELETE FROM tan_chunk_permissions WHERE TownId = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static TownChunkPermission getPermission(String townId, TownChunkPermissionType permissionType) {
+        String sql = "SELECT PermissionValue FROM tan_chunk_permissions WHERE TownId = ? AND PermissionType = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townId);
+            ps.setString(2, permissionType.toString());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String permissionValue = rs.getString("PermissionValue");
+                    return TownChunkPermission.valueOf(permissionValue);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 
 }
