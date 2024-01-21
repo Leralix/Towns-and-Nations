@@ -325,8 +325,8 @@ public class TownDataStorage {
 
             try (Statement statement = connection.createStatement()){
                 String sql = "CREATE TABLE IF NOT EXISTS tan_player_current_town (" +
-                        "town_key VARCHAR(255) PRIMARY KEY," +
-                        "player_id VARCHAR(255))";
+                        "town_key VARCHAR(255)," +
+                        "player_id VARCHAR(255) PRIMARY KEY)";
                 statement.executeUpdate(sql);
             }
             try (Statement statement = connection.createStatement()){

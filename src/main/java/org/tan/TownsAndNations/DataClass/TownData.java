@@ -326,9 +326,13 @@ public class TownData {
     }
 
     public boolean canAddMorePlayer(){
+        if(isSqlEnable())
+            return TownDataStorage.getPlayersInTown(getID()).size() < TownDataStorage.getTownUpgradeFromDatabase(getID()).getPlayerCap();
         return this.townPlayerListId.size() < this.townLevel.getPlayerCap();
     }
     public boolean canClaimMoreChunk(){
+        if(isSqlEnable())
+            return this.getNumberOfClaimedChunk() < TownDataStorage.getTownUpgradeFromDatabase(getID()).getChunkCap();
         return this.getNumberOfClaimedChunk() < this.townLevel.getChunkCap();
     }
 
