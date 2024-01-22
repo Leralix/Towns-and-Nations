@@ -51,9 +51,12 @@ public class TownRank {
         return this.rankEnum.getColor() + this.name;
     }
     public void setName(String townID, String newName){
+        String oldName = this.name;
         this.name = newName;
-        if(isSqlEnable())
-            TownDataStorage.updateRole(townID,this);
+        if(isSqlEnable()) {
+            TownDataStorage.updateRole(townID, this);
+            TownDataStorage.renameRankPermission(townID, oldName,this.name);
+        }
     }
     public TownRankEnum getRankEnum(){
         return this.rankEnum;

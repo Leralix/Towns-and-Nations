@@ -741,6 +741,23 @@ public class TownDataStorage {
         }
     }
 
+    public static void renameRankPermission(String townId, String oldRankName, String newRankName) {
+        System.out.println("testt");
+        String sql = "UPDATE tan_town_role_permissions SET RankId = ? WHERE TownId = ? AND RankId = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, newRankName);
+            ps.setString(2, townId);
+            ps.setString(3, oldRankName);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 
 
 

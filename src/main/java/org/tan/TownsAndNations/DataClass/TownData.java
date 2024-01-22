@@ -120,11 +120,8 @@ public class TownData {
         else
             this.roles.put(rankName,newRank);
     }
-    public void addRank(String rankName, TownRank townRank){
-        if(isSqlEnable())
-            TownDataStorage.createRole(getID(),townRank);
-        else
-            this.roles.put(rankName,townRank);
+    public void addRankForRename(String rankName, TownRank townRank){
+        this.roles.put(rankName,townRank);
     }
     public void removeRank(String key){
         if(isSqlEnable())
@@ -299,12 +296,6 @@ public class TownData {
         if(isSqlEnable())
             return TownDataStorage.getRanksByTownId(getID());
         return (List<TownRank>) this.roles.values();
-    }
-    public void createTownRank(String rankName){
-        if(isSqlEnable()){
-            TownDataStorage.createRole(getID(),new TownRank(rankName));
-        }
-        this.roles.put(rankName,new TownRank(rankName));
     }
 
     public void setTownDefaultRank(String newRank){

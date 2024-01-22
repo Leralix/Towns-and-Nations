@@ -18,6 +18,7 @@ import org.tan.TownsAndNations.utils.TownUtil;
 
 import java.util.*;
 
+import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 import static org.tan.TownsAndNations.enums.MessageKey.*;
 import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.ChatCategory.*;
 import static org.tan.TownsAndNations.utils.TownUtil.DonateToTown;
@@ -73,7 +74,7 @@ public class ChatListener implements Listener {
             }
 
             TownData playerTown = TownDataStorage.get(player);
-            playerTown.createTownRank(rankName);
+            playerTown.addRank(rankName);
             Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, rankName));
             event.setCancelled(true);
 
@@ -107,8 +108,11 @@ public class ChatListener implements Listener {
 
             playerTownRank.setName(playerTown.getID(),newRankName);
 
-            playerTown.addRank(newRankName,playerTownRank);
-            playerTown.removeRank(rankName);
+            if(isSqlEnable()){ //Needed to update the Hashmap, not for the DB
+                playerTown.addRankForRename(newRankName,playerTownRank);
+                playerTown.removeRank(rankName);
+            }
+
 
             Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, newRankName));
 
