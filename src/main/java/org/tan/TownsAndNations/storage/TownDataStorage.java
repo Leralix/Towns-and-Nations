@@ -8,9 +8,11 @@ import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.TownLevel;
+import org.tan.TownsAndNations.DataClass.TownRank;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.TownChunkPermissionType;
+import org.tan.TownsAndNations.enums.TownRolePermission;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -343,6 +345,7 @@ public class TownDataStorage {
                         "rank_key VARCHAR(255) PRIMARY KEY," +
                         "town_id VARCHAR(255)," +
                         "name VARCHAR(255)," +
+                        "level VARCHAR(255)," +
                         "rankIconName VARCHAR(255)," +
                         "salary INT," +
                         "isPayingTaxes BOOLEAN)";
@@ -365,10 +368,15 @@ public class TownDataStorage {
                         "PermissionValue VARCHAR(255))";
                 statement.executeUpdate(sql);
             }
-
-
-
-
+            try (Statement statement = connection.createStatement()){
+                String sql = "CREATE TABLE IF NOT EXISTS tan_town_role_permissions(" +
+                        "TownID  VARCHAR(255)," +
+                        "RankId  VARCHAR(255)," +
+                        "PermissionType  VARCHAR(255)," +
+                        "IsGranted  VARCHAR(255)," +
+                        "PRIMARY KEY (TownID, RankId,PermissionType))";
+                statement.executeUpdate(sql);
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -570,6 +578,171 @@ public class TownDataStorage {
         }
         return null;
     }
+
+
+    public static void createRole(String townID, TownRank townRank) {
+        String rankKey = townID + "_" + townRank.getName();
+        String sql = "INSERT INTO tan_player_town_role (rank_key, town_id, name,level, rankIconName, salary, isPayingTaxes) VALUES (?, ?, ?,?, ?, ?, ?)";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, rankKey);
+            ps.setString(2, townID);
+            ps.setString(3, townRank.getName());
+            ps.setString(4, townRank.getRankEnum().toString());
+            ps.setString(5, townRank.getRankIconName());
+            ps.setInt(6, townRank.getSalary());
+            ps.setBoolean(7, townRank.isPayingTaxes());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        createRankPermissions(townID, townRank.getName());
+    }
+    public static TownRank getRole(String townId, String roleName) {
+        String rankKey = townId + "_" + roleName;
+        String sql = "SELECT * FROM tan_player_town_role WHERE rank_key = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, rankKey);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new TownRank(
+                        rs.getString("name"),
+                        rs.getString("level"),
+                        rs.getString("rankIconName"),
+                        rs.getBoolean("isPayingTaxes"),
+                        rs.getInt("salary")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void updateRole(String townId, TownRank townRank) {
+        String rankKey = townId + "_" + townRank.getName();
+        String sql = "UPDATE tan_player_town_role SET level = ?, rankIconName = ?, salary = ?, isPayingTaxes = ?  WHERE rank_key = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, townRank.getRankEnum().toString());
+            ps.setString(2, townRank.getRankIconName());
+            ps.setInt(3, townRank.getSalary());
+            ps.setBoolean(4, townRank.isPayingTaxes());
+            ps.setString(5, rankKey);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteRole(String townId, String roleName) {
+        String rankKey = townId + "_" + roleName;
+        String sql = "DELETE FROM tan_player_town_role WHERE rank_key = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, rankKey);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static List<String> getPlayerIdsByTownAndRank(String townId, String rankName) {
+        List<String> playerIds = new ArrayList<>();
+        String sql = "SELECT player_id FROM tan_player_data WHERE town_id = ? AND town_rank = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townId);
+            ps.setString(2, rankName);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    playerIds.add(rs.getString("player_id"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return playerIds;
+    }
+
+    public static List<TownRank> getRanksByTownId(String townId) {
+        List<TownRank> ranks = new ArrayList<>();
+        String sql = "SELECT * FROM tan_player_town_role WHERE town_id = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+
+                    ranks.add(new TownRank(
+                            rs.getString("name"),
+                            rs.getString("level"),
+                            rs.getString("rankIconName"),
+                            rs.getBoolean("isPayingTaxes"),
+                            rs.getInt("salary"))
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ranks;
+    }
+
+    public static void createRankPermissions(String townId, String rankName) {
+
+        String sql = "INSERT INTO tan_town_role_permissions (TownId, RankId, PermissionType, isGranted) VALUES (?, ?, ?,?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            for (TownRolePermission permission : TownRolePermission.values()) {
+                ps.setString(1, townId);
+                ps.setString(2, rankName);
+                ps.setString(3, permission.toString());
+                ps.setBoolean(4, false);
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean getRankPermission(String townId, String rankName, TownRolePermission permission) {
+        String sql = "SELECT isGranted FROM tan_town_role_permissions WHERE TownId = ? AND RankId = ? AND PermissionType = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townId);
+            ps.setString(2, rankName);
+            ps.setString(3, permission.toString());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBoolean("isGranted");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void swapRankPermission(String townId, String rankName, TownRolePermission permission) {
+        String sql = "UPDATE tan_town_role_permissions SET isGranted = NOT isGranted WHERE TownId = ? AND RankId = ? AND PermissionType = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townId);
+            ps.setString(2, rankName);
+            ps.setString(3, permission.toString());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
 
 

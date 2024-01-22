@@ -95,7 +95,7 @@ public class ChatListener implements Listener {
             String rankName = ChatData.getData().get(RANK_NAME);
             TownRank playerTownRank = playerTown.getRank(rankName);
 
-            List<String> playerList = playerTownRank.getPlayers();
+            List<String> playerList = playerTownRank.getPlayers(playerTown.getID());
             for(String playerWithRoleUUID : playerList){
                 Objects.requireNonNull(PlayerDataStorage.get(playerWithRoleUUID)).setRank(newRankName);
             }
@@ -105,7 +105,7 @@ public class ChatListener implements Listener {
                 playerTown.setTownDefaultRank(newRankName);
             }
 
-            playerTownRank.setName(newRankName);
+            playerTownRank.setName(playerTown.getID(),newRankName);
 
             playerTown.addRank(newRankName,playerTownRank);
             playerTown.removeRank(rankName);

@@ -148,13 +148,13 @@ public class ClaimedChunkStorage {
     private static String getChunkOwnerNameFromDatabase(Chunk chunk) {
         String chunkKey = getChunkKey(chunk);
         String sql = "SELECT t.name FROM claimed_chunks c " +
-                "JOIN towns t ON c.town_id = t.id " + // Remplacer 'towns' et 't.id' par vos noms de table et de colonne réels
+                "JOIN tan_town_data t ON c.town_id = t.town_key " +
                 "WHERE c.chunk_key = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, chunkKey);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getString("name"); // Assurez-vous que la colonne pour le nom de la ville est correctement nommée
+                    return rs.getString("name");
                 }
             }
         } catch (SQLException e) {

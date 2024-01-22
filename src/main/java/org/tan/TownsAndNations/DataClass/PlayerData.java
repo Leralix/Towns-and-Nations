@@ -92,7 +92,8 @@ public class PlayerData {
     public boolean hasPermission(TownRolePermission rolePermission){
         if(isTownLeader())
             return true;
-        return TownDataStorage.get(this).getRank(this.TownRank).hasPermission(rolePermission) ;
+        TownData townData = TownDataStorage.get(this);
+        return townData.getRank(this.TownRank).hasPermission(townData.getID(),rolePermission) ;
     }
     public void leaveTown(){
         this.TownId = null;

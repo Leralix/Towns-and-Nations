@@ -13,10 +13,10 @@ public class UpdateUtil {
     private static void UpdateRankEnum(){
         for(TownData town : TownDataStorage.getTownList().values()) {
 
-            for (TownRank townRank : town.getTownRanks().values()) {
+            for (TownRank townRank : town.getTownRanks()) {
 
                 if (townRank.getRankEnum() == null) {
-                    townRank.setRankEnum(TownRankEnum.FIVE);
+                    townRank.setRankEnum(town.getID(), TownRankEnum.FIVE);
                 }
             }
 

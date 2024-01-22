@@ -45,7 +45,7 @@ public class TownData {
     private ClaimedChunkSettings chunkSettings;
     private final TownRelations relations;
 
-    //used for json
+    //First time creating a town
     public TownData(String townId, String townName, String uuidLeader){
         this.TownId = townId;
         this.UuidLeader = uuidLeader;
@@ -59,12 +59,11 @@ public class TownData {
         this.isRecruiting = false;
         this.balance = 0;
         this.flatTax = 1;
+        this.numberOfClaimedChunk = 0;
+        this.townDefaultRank = "default";
 
-        String townDefaultRankName = "default";
-        addRank(townDefaultRankName);
-        setTownDefaultRank(townDefaultRankName);
-        getRank(townDefaultRankName).addPlayer(uuidLeader);
-
+        addRank(townDefaultRank);
+        getRank(townDefaultRank).addPlayer(uuidLeader);
 
         PlayerDataStorage.get(uuidLeader).setRank(this.townDefaultRank);
 
@@ -76,7 +75,7 @@ public class TownData {
         this.townTreasury = new TownTreasury();
     }
 
-    //used for sql
+    //used for sql, loading a town
     public TownData(String townId, String townName, String uuidLeader, String description,String dateCreated,
                     String townIconMaterialCode, String townDefaultRankName, Boolean isRecruiting, int balance,int flatTax){
         this.TownId = townId;
@@ -93,16 +92,8 @@ public class TownData {
         this.balance = balance;
         this.flatTax = flatTax;
 
-        addRank(townDefaultRankName);
-        getRank(townDefaultRankName).addPlayer(uuidLeader);
-
-
-        PlayerDataStorage.get(uuidLeader).setRank(this.townDefaultRank);
-
-
         this.relations = null;
         this.chunkSettings = null;
-
         this.townLevel = null;
         this.townTreasury = null;
     }
@@ -123,13 +114,23 @@ public class TownData {
     }
 
     public void addRank(String rankName){
-        this.roles.put(rankName,new TownRank(rankName));
+        TownRank newRank = new TownRank(rankName);
+        if(isSqlEnable())
+            TownDataStorage.createRole(getID(),newRank);
+        else
+            this.roles.put(rankName,newRank);
     }
     public void addRank(String rankName, TownRank townRank){
-        this.roles.put(rankName,townRank);
+        if(isSqlEnable())
+            TownDataStorage.createRole(getID(),townRank);
+        else
+            this.roles.put(rankName,townRank);
     }
     public void removeRank(String key){
-        this.roles.remove(key);
+        if(isSqlEnable())
+            TownDataStorage.deleteRole(getID(),key);
+        else
+            this.roles.remove(key);
     }
 
     public String getUuidLeader() {
@@ -283,6 +284,8 @@ public class TownData {
     }
 
     public TownRank getRank(String rankName){
+        if(isSqlEnable())
+            return TownDataStorage.getRole(getID(), rankName);
         return this.roles.get(rankName);
     }
     public TownRank getRank(PlayerData playerData){
@@ -290,20 +293,24 @@ public class TownData {
     }
 
     public TownRank getRank(Player player){
-        return this.roles.get(PlayerDataStorage.get(player).getTownRankID());
+        return getRank(PlayerDataStorage.get(player).getTownRankID());
     }
-    public TownRank isRankExist(String rankName){
-        return this.roles.get(rankName);
-    }
-    public Map<String,TownRank> getTownRanks(){
-        return this.roles;
+    public List<TownRank> getTownRanks(){
+        if(isSqlEnable())
+            return TownDataStorage.getRanksByTownId(getID());
+        return (List<TownRank>) this.roles.values();
     }
     public void createTownRank(String rankName){
+        if(isSqlEnable()){
+            TownDataStorage.createRole(getID(),new TownRank(rankName));
+        }
         this.roles.put(rankName,new TownRank(rankName));
     }
 
     public void setTownDefaultRank(String newRank){
         this.townDefaultRank = newRank;
+        if(isSqlEnable())
+            TownDataStorage.updateTownData(this);
     }
     public String getTownDefaultRank(){
         return this.townDefaultRank;
@@ -446,12 +453,14 @@ public class TownData {
         }
     }
     public void addNumberOfClaimChunk(int number) {
+        if(isSqlEnable())
+            return;
+
         if(this.numberOfClaimedChunk == null){ //used to transition from 0.3.1 -> 0.4.0
             this.numberOfClaimedChunk = this.getChunkSettings().getNumberOfClaimedChunk();
         }
         this.numberOfClaimedChunk += number;
-        if(isSqlEnable())
-            TownDataStorage.updateTownData(this);
+
     }
 
     public TownChunkPermission getPermission(TownChunkPermissionType type) {
@@ -463,7 +472,7 @@ public class TownData {
     public void nextPermission(TownChunkPermissionType type) {
         if(isSqlEnable()){
             TownChunkPermission perm = TownDataStorage.getPermission(this.getID(),type);
-            perm.getNext();
+            perm = perm.getNext();
             TownDataStorage.updateChunkPermission(this.getID(),type,perm);
         }
         else
