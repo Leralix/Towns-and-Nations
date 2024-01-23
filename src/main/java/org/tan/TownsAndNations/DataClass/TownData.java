@@ -202,16 +202,21 @@ public class TownData {
     public void addTownRelations(TownRelation relation, TownData townData){
         addTownRelations(relation,townData.getID());
     }
-    public void addTownRelations(TownRelation relation, String townId){
-        this.relations.addRelation(relation,townId);
+    public void addTownRelations(TownRelation relation, String otherTownID){
+        if(isSqlEnable())
+            TownDataStorage.addTownRelation(this.getID(),otherTownID,relation);
+        else
+            this.relations.addRelation(relation,otherTownID);
     }
     public void removeTownRelations(TownRelation relation, TownData townData) {
         removeTownRelations(relation,townData.getID());
     }
     public void removeTownRelations(TownRelation relation, String townId) {
-        this.relations.removeRelation(relation,townId);
+        if(isSqlEnable())
+            TownDataStorage.removeTownRelation(this.getID(),townId,relation);
+        else
+            this.relations.removeRelation(relation,townId);
     }
-
 
     public ClaimedChunkSettings getChunkSettings() {
         return chunkSettings;
@@ -219,8 +224,8 @@ public class TownData {
     public void setChunkSettings(ClaimedChunkSettings claimedChunkSettings) {
         this.chunkSettings = claimedChunkSettings;
     }
-    public boolean getTownRelation(org.tan.TownsAndNations.enums.TownRelation relation, String checkTownId){
-        for (String townId : getRelations().getOne(relation)){
+    public boolean getTownRelationWithCurrent(TownRelation relation, String checkTownId){
+        for (String townId : getTownWithRelation(relation)){
             if(townId.equals(checkTownId)){
                 return true;
             }
@@ -313,16 +318,19 @@ public class TownData {
 
 
     public TownRelation getRelationWith(TownData otherPlayerTown) {
-
-        if(otherPlayerTown.getID().equals(this.getID()))
-            return TownRelation.CITY;
-        return this.relations.getRelationWith(otherPlayerTown);
+        return getRelationWith(otherPlayerTown.getID());
     }
-    public TownRelation getRelationWith(String otherPlayerTownID) {
+    public TownRelation getRelationWith(String otherTownID) {
 
-        if(otherPlayerTownID.equals(this.getID()))
+        String townID = getID();
+
+        if(townID.equals(otherTownID))
             return TownRelation.CITY;
-        return this.relations.getRelationWith(otherPlayerTownID);
+
+        if(isSqlEnable())
+            return TownDataStorage.getRelationBetweenTowns(townID, otherTownID);
+        else
+            return this.relations.getRelationWith(otherTownID);
     }
 
     public boolean canAddMorePlayer(){
@@ -470,7 +478,10 @@ public class TownData {
             this.chunkSettings.nextPermission(type);
     }
 
-
-
-
+    public ArrayList<String> getTownWithRelation(TownRelation relation){
+        if(isSqlEnable())
+            return TownDataStorage.getTownsRelatedTo(getID(),relation);
+        else
+            return this.relations.getOne(relation);
+    }
 }

@@ -312,14 +312,11 @@ public class GuiManager2 {
         HashMap<String, TownData> townDataStorage = getTownList();
 
         int i = 0;
-        for (Map.Entry<String, TownData> entry : townDataStorage.entrySet()) {
+        for (TownData otherTown: townDataStorage.values()) {
 
-
-            TownData otherTown = entry.getValue();
 
             ItemStack townIcon = HeadUtils.getTownIcon(otherTown.getID());
-
-            TownRelation relation = otherTown.getRelationWith(playerTown);
+            TownRelation relation = playerTown.getRelationWith(otherTown);
 
             String relationName;
             if(relation == null){
@@ -648,7 +645,7 @@ public class GuiManager2 {
             event.setCancelled(true);
         });
         GuiItem _changeRoleTaxRelation = ItemBuilder.from(changeRoleTaxRelation).asGuiItem(event -> {
-            townRank.swapPayingTaxes();
+            townRank.swapPayingTaxes(town.getID());
             OpenTownMenuRoleManager(player,roleName);
             event.setCancelled(true);
         });
@@ -1544,7 +1541,7 @@ public class GuiManager2 {
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
 
-        ArrayList<String> TownListUUID = playerTown.getRelations().getOne(relation);
+        ArrayList<String> TownListUUID = playerTown.getTownWithRelation(relation);
         int i = 0;
         for(String otherTownUUID : TownListUUID){
             ItemStack townIcon = HeadUtils.getTownIconWithInformations(otherTownUUID);
@@ -1639,7 +1636,7 @@ public class GuiManager2 {
         TownData playerTown = TownDataStorage.get(playerStat);
 
         LinkedHashMap<String, TownData> allTown = getTownList();
-        ArrayList<String> TownListUUID = playerTown.getRelations().getOne(relation);
+        ArrayList<String> TownListUUID = playerTown.getTownWithRelation(relation);
 
         GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.GREEN_STAINED_GLASS_PANE)).asGuiItem(event -> {
             event.setCancelled(true);

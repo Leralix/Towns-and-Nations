@@ -29,9 +29,6 @@ public class TownRelations {
     public ArrayList<String> getOne(TownRelation relation){
         return this.townRelations.get(relation);
     }
-    public TownRelation getRelationWith(TownData Town) {
-        return getRelationWith(Town.getID());
-    }
     public TownRelation getRelationWith(String TownID) {
         for (Map.Entry<TownRelation, ArrayList<String>> entry : townRelations.entrySet()) {
             TownRelation relation = entry.getKey();
@@ -45,7 +42,6 @@ public class TownRelations {
         }
         return null;
     }
-
     public void removeAllRelationWith(String townID){
         for(TownRelation relation : TownRelation.values()){
             System.out.println(relation);
@@ -54,8 +50,8 @@ public class TownRelations {
             townRelations.get(relation).remove(townID);
         }
     }
-
     public void cleanAll(String ownTownID){
+
         for(TownRelation relation : TownRelation.values()){
             for (String townID : townRelations.get(relation)) {
                 TownDataStorage.get(townID).getRelations().removeAllRelationWith(ownTownID);

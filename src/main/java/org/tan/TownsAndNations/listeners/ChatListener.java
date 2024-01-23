@@ -62,7 +62,7 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
         }
 
-        if(chatData.getCategory() == RANK_CREATION){
+            if(chatData.getCategory() == RANK_CREATION){
             PlayerChatListenerStorage.removePlayer(player);
             String rankName = event.getMessage();
 
@@ -108,7 +108,7 @@ public class ChatListener implements Listener {
 
             playerTownRank.setName(playerTown.getID(),newRankName);
 
-            if(isSqlEnable()){ //Needed to update the Hashmap, not for the DB
+            if(!isSqlEnable()){ //Needed to update the Hashmap, not for the DB
                 playerTown.addRankForRename(newRankName,playerTownRank);
                 playerTown.removeRank(rankName);
             }

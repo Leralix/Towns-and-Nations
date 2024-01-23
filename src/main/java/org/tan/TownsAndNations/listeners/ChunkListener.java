@@ -575,7 +575,7 @@ public class ChunkListener implements Listener {
         if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
             return true;
         //Same alliance
-        if(permission == TownChunkPermission.ALLIANCE && chunkTown.getTownRelation(TownRelation.ALLIANCE,playerTown.getID()))
+        if(permission == TownChunkPermission.ALLIANCE && chunkTown.getTownRelationWithCurrent(TownRelation.ALLIANCE,playerTown.getID()))
             return true;
         //permission is on foreign
         if(chunkTown.getPermission(TownChunkPermissionType.BREAK) == TownChunkPermission.FOREIGN)
