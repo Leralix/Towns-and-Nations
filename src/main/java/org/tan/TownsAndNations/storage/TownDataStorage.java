@@ -119,11 +119,11 @@ public class TownDataStorage {
         if (isSqlEnable()) {
             removeTownFromDatabase(TownId);
         } else {
-            removeTownFromMemory(TownId);
+            removeTownFromDB(TownId);
         }
     }
 
-    private static void removeTownFromMemory(String TownId) {
+    private static void removeTownFromDB(String TownId) {
         TownData townData = townDataMap.get(TownId);
         if (townData != null) {
             HashSet<String> array = townData.getPlayerList();
@@ -471,6 +471,16 @@ public class TownDataStorage {
         }
     }
 
+    public static void removeTownUpgradeFromDB(String townID) {
+        String sql = "DELETE FROM tan_town_upgrades WHERE rank_key = ? ";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void addPlayerJoinRequestToDB(String playerUUID, String townID) {
         String sql = "INSERT INTO tan_player_town_application (town_key, player_id) VALUES (?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -666,7 +676,31 @@ public class TownDataStorage {
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, townId);
-            ps.setString(1, roleName);
+            ps.setString(2, roleName);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteAllRole(String townId) {
+        String sql = "DELETE FROM tan_player_town_role WHERE town_id = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townId);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteRolePermissionFromTown(String townId) {
+        String sql = "DELETE FROM tan_town_role_permissions WHERE TownID = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townId);
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -829,6 +863,17 @@ public class TownDataStorage {
         }
     }
 
+    public static void removeAllTownRelationWith(String townToDeleteID) {
+        String sql = "DELETE FROM tan_town_relation WHERE town_1_id = ? ";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townToDeleteID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static TownRelation getRelationBetweenTowns(String townId1, String townId2) {
         TownRelation relationType = null;
         String sql = "SELECT relation_type FROM tan_town_relation WHERE " +
@@ -849,6 +894,17 @@ public class TownDataStorage {
         }
 
         return relationType; // Retourne null si aucune relation n'est trouvée
+    }
+
+    public static void removeAllChunkPermissionsForTown(String townId) {
+        String sql = "DELETE FROM tan_chunk_permissions WHERE TownId = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

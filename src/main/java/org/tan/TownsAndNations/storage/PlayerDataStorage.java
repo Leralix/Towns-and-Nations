@@ -213,8 +213,12 @@ public class PlayerDataStorage {
             String password = "password";
             connection = DriverManager.getConnection(url, username, password);
             try (Statement statement = connection.createStatement()){
-                String sql = "CREATE TABLE IF NOT EXISTS tan_player_data (player_id VARCHAR(255) PRIMARY KEY," +
-                        "player_name VARCHAR(255),balance INT,town_id VARCHAR(255),town_rank VARCHAR(255))";
+                String sql = "CREATE TABLE IF NOT EXISTS " +
+                        "tan_player_data (player_id VARCHAR(255) PRIMARY KEY," +
+                        "player_name VARCHAR(255)," +
+                        "balance INT," +
+                        "town_id VARCHAR(255)," +
+                        "town_rank VARCHAR(255))";
                 statement.executeUpdate(sql);
             }
         } catch (SQLException e) {

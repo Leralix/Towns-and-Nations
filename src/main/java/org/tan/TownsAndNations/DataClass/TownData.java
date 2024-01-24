@@ -350,8 +350,7 @@ public class TownData {
 
     public void cancelAllRelation() {
         if(isSqlEnable())
-            //TownDataStorage.removeTownRelation(this);
-            return;
+            TownDataStorage.removeAllTownRelationWith(getID());
         else
             this.relations.cleanAll(getID());
     }

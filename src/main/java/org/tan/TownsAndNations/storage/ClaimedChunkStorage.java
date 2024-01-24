@@ -2,6 +2,7 @@ package org.tan.TownsAndNations.storage;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.tan.TownsAndNations.DataClass.ClaimedChunk;
 import org.tan.TownsAndNations.DataClass.TownData;
@@ -288,10 +289,20 @@ public class ClaimedChunkStorage {
         }
     }
 
+    public static void unclaimAllChunkFromTown(String townID) {;
+        String sql = "DELETE FROM claimed_chunks WHERE town_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void unclaimAllChunkFrom(String townID) {
         for (ClaimedChunk chunk : claimedChunksMap.values()) {
             if (chunk.getTownID().equals(townID))
-                claimedChunksMap.remove(chunk);
+                unclaimChunk(Bukkit.getWorld(UUID.fromString(chunk.getWorldUUID())).getChunkAt(chunk.getX(), chunk.getZ()));
         }
     }
 

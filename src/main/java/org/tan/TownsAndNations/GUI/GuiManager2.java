@@ -1723,15 +1723,11 @@ public class GuiManager2 {
                         removeRelation(playerTown,otherTown,relation);
                         OpenTownRelation(player,relation);
                     }
-
-
-
                     OpenTownRelation(player,relation);
                 });
                 gui.setItem(i, _town);
                 i = i+1;
             }
-            TownDataStorage.get(playerTown.getID()).removeTownRelations(relation,player.getUniqueId().toString());
             _decorativeGlass = ItemBuilder.from(new ItemStack(Material.RED_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
         }
 
