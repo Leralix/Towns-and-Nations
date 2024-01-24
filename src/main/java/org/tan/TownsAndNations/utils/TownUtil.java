@@ -26,10 +26,8 @@ public class TownUtil {
 
     public static void CreateTown(Player player, int townCost, String townName){
 
-
+        System.out.println("test");
         PlayerData playerData = PlayerDataStorage.get(player);
-        assert playerData != null;
-
 
         int playerBalance = getBalance(player);
 
@@ -53,11 +51,16 @@ public class TownUtil {
         PlayerChatListenerStorage.removePlayer(player);
 
 
-        removeFromBalance(player,townCost);
+        System.out.println("newTown");
         TownData newTown = TownDataStorage.newTown(townName,player);
+        System.out.println("setRank");
+        playerData.setRank(newTown.getTownDefaultRank()); //2. Set player rank to default rank
+        System.out.println("setTownId");
+        playerData.setTownId(newTown.getID()); //3. Set player town to the new town
+        System.out.println("removeFromBalance");
+        removeFromBalance(player,townCost); //1. Remove money from player
+        System.out.println("test");
 
-        playerData.setRank(newTown.getTownDefaultRank());
-        playerData.setTownId(newTown.getID());
 
         for (TownData otherTown : TownDataStorage.getTownList().values()) {
             if(otherTown == TownDataStorage.get(townName)){

@@ -472,6 +472,7 @@ public class TownDataStorage {
     }
 
     public static void removeTownUpgradeFromDB(String townID) {
+        System.out.println("removeTownUpgradeFromDB");
         String sql = "DELETE FROM tan_town_upgrades WHERE rank_key = ? ";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, townID);

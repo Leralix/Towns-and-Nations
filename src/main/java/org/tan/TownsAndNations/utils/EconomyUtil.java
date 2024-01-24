@@ -13,19 +13,15 @@ public class EconomyUtil {
         if(TownsAndNations.hasEconomy()){
             return (int)TownsAndNations.getEconomy().getBalance(offlinePlayer);
         }
-
         else
-            return Objects.requireNonNull(PlayerDataStorage.get(offlinePlayer.getUniqueId().toString())).getBalance();
+            return PlayerDataStorage.get(offlinePlayer.getUniqueId().toString()).getBalance();
     }
-
-
     public static int getBalance(Player player){
         if(TownsAndNations.hasEconomy()){
             return (int)TownsAndNations.getEconomy().getBalance(player);
         }
-
         else
-            return Objects.requireNonNull(PlayerDataStorage.get(player)).getBalance();
+            return PlayerDataStorage.get(player).getBalance();
     }
 
     public static void removeFromBalance(OfflinePlayer offlinePlayer, int amount){
