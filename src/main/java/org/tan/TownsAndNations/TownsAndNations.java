@@ -41,7 +41,7 @@ public final class TownsAndNations extends JavaPlugin {
 
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String GITHUB_API_URL = "https://api.github.com/repos/leralix/towns-and-nations/releases/latest";
-    private static final String CURRENT_VERSION = "v0.3.1";
+    private static final String CURRENT_VERSION = "v0.4.0";
     private static String LATEST_VERSION;
     private static tanAPI api;
     private static boolean allowColorCodes = false;
@@ -77,9 +77,14 @@ public final class TownsAndNations extends JavaPlugin {
         sqlEnable = ConfigUtil.getCustomConfig("config.yml").getBoolean("EnableCrossServer", false);
         if(sqlEnable){
             logger.info("[TaN] -Loading SQL connections");
-            ClaimedChunkStorage.initialize();
-            PlayerDataStorage.initialize();
-            TownDataStorage.initialize();
+
+            String host = ConfigUtil.getCustomConfig("config.yml").getString("SQL.address");
+            String username = ConfigUtil.getCustomConfig("config.yml").getString("SQL.username");
+            String password = ConfigUtil.getCustomConfig("config.yml").getString("SQL.password");
+
+            ClaimedChunkStorage.initialize(host,username,password);
+            PlayerDataStorage.initialize(host,username,password);
+            TownDataStorage.initialize(host,username,password);
         }
 
         logger.info("[TaN] -Loading Stats");

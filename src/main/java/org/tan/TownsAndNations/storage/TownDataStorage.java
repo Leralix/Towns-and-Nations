@@ -305,12 +305,9 @@ public class TownDataStorage {
         return newTownId;
     }
 
-    public static void initialize() {
+    public static void initialize(String host, String username, String password) {
         try {
-            String url = "jdbc:mysql://localhost:3306/minecraft";
-            String username = "root";
-            String password = "password";
-            connection = DriverManager.getConnection(url, username, password);
+            connection = DriverManager.getConnection(host, username, password);
             try (Statement statement = connection.createStatement()){
                 String sql = "CREATE TABLE IF NOT EXISTS tan_town_data (" +
                         "town_key VARCHAR(255) PRIMARY KEY," +

@@ -98,5 +98,11 @@ AllowColorInUsername: true
 #Enable cross server (will require a MySQL database)
 EnableCrossServer: false
 
-#ip of the server
-CrossServerIP: 127.0.0.1:3306
+SQL:
+  #ip of the mysql server
+  address: jdbc:mysql://localhost:3306/minecraft
+
+  #username of the database
+  username: root
+  #password of the database
+  password: password
