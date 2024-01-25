@@ -472,7 +472,6 @@ public class TownDataStorage {
     }
 
     public static void removeTownUpgradeFromDB(String townID) {
-        System.out.println("removeTownUpgradeFromDB");
         String sql = "DELETE FROM tan_town_upgrades WHERE rank_key = ? ";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, townID);
@@ -633,7 +632,6 @@ public class TownDataStorage {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("pas de rank");
         return null;
     }
 
@@ -691,6 +689,18 @@ public class TownDataStorage {
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, townId);
 
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteRolePermission(String townId, String rankName) {
+        String sql = "DELETE FROM tan_town_role_permissions WHERE TownID = ? AND RankId = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townId);
+            ps.setString(2, rankName);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -906,6 +916,25 @@ public class TownDataStorage {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static int getNumberOfPlayerByRank(String townId, String rankName) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM tan_player_data WHERE town_id = ? AND town_rank = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, townId);
+            ps.setString(2, rankName);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt(1); // Le premier et unique résultat sera le nombre de joueurs
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return count;
     }
 
 }

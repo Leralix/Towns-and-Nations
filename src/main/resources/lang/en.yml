@@ -109,6 +109,7 @@ language:
   PAY_MINIMUM_REQUIRED: "§cYou need to send a least 1✦"
   PAY_CONFIRMED_SENDER: "Sending §6{0}✦§f to §3{1}"
   PAY_CONFIRMED_RECEIVER: "Receiving §6+{0}✦§f from §3{1}"
+  PAY_SELF_ERROR: "§cYou can't send money to yourself"
 
   #Balance command
   BAL_COMMAND_DESC: "Look at your balance"

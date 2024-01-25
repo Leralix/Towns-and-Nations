@@ -67,8 +67,11 @@ public class PayCommand extends SubCommand  {
                 return;
             }
 
-            PlayerData receiverDataClass = PlayerDataStorage.get(receiver);
-            PlayerData senderDataClass = PlayerDataStorage.get(player);
+            if(receiver.getUniqueId().equals(player.getUniqueId())){
+                player.sendMessage(getTANString() + Lang.PAY_SELF_ERROR.get());
+                return;
+            }
+
             int amount;
 
             try{
@@ -89,7 +92,7 @@ public class PayCommand extends SubCommand  {
             }
 
             EconomyUtil.removeFromBalance(player,amount);
-            receiverDataClass.addToBalance(amount);
+            EconomyUtil.addFromBalance(receiver,amount);
             player.sendMessage(getTANString() + Lang.PAY_CONFIRMED_SENDER.get(amount,receiver.getName()));
             receiver.sendMessage(getTANString() + Lang.PAY_CONFIRMED_RECEIVER.get(amount,player.getName()));
         }

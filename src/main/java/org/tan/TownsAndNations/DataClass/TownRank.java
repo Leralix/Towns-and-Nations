@@ -117,8 +117,11 @@ public class TownRank {
             TownDataStorage.updateRank(townID,this);
     }
 
-    public int getNumberOfPlayer(){
-        return players.size();
+    public int getNumberOfPlayer(String townID){
+        if(isSqlEnable())
+            return TownDataStorage.getNumberOfPlayerByRank(townID,this.getName());
+        else
+            return players.size();
     }
 
     public void addPermission(TownRolePermission permission) {

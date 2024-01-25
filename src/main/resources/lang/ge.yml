@@ -83,6 +83,7 @@ language:
   PAY_MINIMUM_REQUIRED: "§cSie müssen mindestens 1✦ senden."
   PAY_CONFIRMED_SENDER: "Senden von §6{0}✦§f an §3{1}"
   PAY_CONFIRMED_RECEIVER: "Erhalt von §6+{0}✦§f aus §3{1}"
+  PAY_SELF_ERROR: "§cSie können sich nicht selbst bezahlen"
   # Balance command
   BAL_COMMAND_DESC: "Prüfen Sie Ihr Guthaben"
   BAL_AMOUNT: "Ihr Guthaben: §6{0}✦"

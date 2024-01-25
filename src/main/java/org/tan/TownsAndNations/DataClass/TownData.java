@@ -124,8 +124,10 @@ public class TownData {
         this.roles.put(rankName,townRank);
     }
     public void removeRank(String key){
-        if(isSqlEnable())
+        if(isSqlEnable()){
             TownDataStorage.deleteRole(getID(),key);
+            TownDataStorage.deleteRolePermission(getID(),key);
+        }
         else
             this.roles.remove(key);
     }

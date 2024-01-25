@@ -105,6 +105,7 @@ language:
   PAY_MINIMUM_REQUIRED: "§cVous devez envoyer au moins 1✦"
   PAY_CONFIRMED_SENDER: "Envoi de §6{0}✦§f à §3{1}"
   PAY_CONFIRMED_RECEIVER: "Réception de §6+{0}✦§f de §3{1}"
+  PAY_SELF_ERROR: "§cVous ne pouvez pas vous envoyer de l'argent à vous-même"
 
   # Commande de solde
   BAL_COMMAND_DESC: "Consultez votre solde"

@@ -661,7 +661,7 @@ public class GuiManager2 {
         });
 
         GuiItem _removeRank = ItemBuilder.from(removeRank).asGuiItem(event -> {
-            if(townRank.getNumberOfPlayer() != 0){
+            if(townRank.getNumberOfPlayer(town.getID()) != 0){
                 player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY.get());
                 event.setCancelled(true);
             }

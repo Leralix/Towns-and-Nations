@@ -226,11 +226,6 @@ public class PlayerDataStorage {
         }
     }
     public static void updatePlayerDataInDatabase(PlayerData playerData) {
-        System.out.println("Called");
-        System.out.println("Player name: " + playerData.getName());
-        System.out.println("Player money: " + playerData.getBalance());
-        System.out.println("Player town: " + playerData.getTownId());
-        System.out.println("Player rank: " + playerData.getTownRankID());
         String sql = "UPDATE tan_player_data SET player_name = ?, balance = ?, town_id = ?, town_rank = ? WHERE player_id = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
