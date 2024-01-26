@@ -101,7 +101,6 @@ EnableCrossServer: false
 SQL:
   #ip of the mysql server
   address: jdbc:mysql://localhost:3306/minecraft
-
   #username of the database
   username: root
   #password of the database

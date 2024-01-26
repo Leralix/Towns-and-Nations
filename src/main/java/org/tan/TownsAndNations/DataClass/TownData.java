@@ -302,7 +302,7 @@ public class TownData {
     public List<TownRank> getTownRanks(){
         if(isSqlEnable())
             return TownDataStorage.getRanksByTownId(getID());
-        return (List<TownRank>) this.roles.values();
+        return this.roles.values().stream().toList();
     }
 
     public void setTownDefaultRank(String newRank){
