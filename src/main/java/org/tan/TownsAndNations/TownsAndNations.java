@@ -105,7 +105,6 @@ public final class TownsAndNations extends JavaPlugin {
         Objects.requireNonNull(getCommand("tanadmin")).setExecutor(new AdminCommandManager());
         Objects.requireNonNull(getCommand("tandebug")).setExecutor(new DebugCommandManager());
 
-
         logger.info("[TaN] -Initialising Vault API");
         if (setupEconomy()) {
             logger.info("[TaN] -Vault API successfully loaded");
@@ -163,21 +162,19 @@ public final class TownsAndNations extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
-        logger.info("[TaN] Savings Data");
+        if(!isSqlEnable()){
+            logger.info("[TaN] Savings Data");
 
-        TownDataStorage.saveStats();
-        ClaimedChunkStorage.saveStats();
-        PlayerDataStorage.saveStats();
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            TownDataStorage.saveStats();
+            ClaimedChunkStorage.saveStats();
+            PlayerDataStorage.saveStats();
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
-
         logger.info("[TaN] Plugin disabled");
-        getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
-
     }
 
 
@@ -189,7 +186,6 @@ public final class TownsAndNations extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerEnterChunkListener(), this);
         getServer().getPluginManager().registerEvents(new ChatScopeListener(), this);
-
     }
 
     public static TownsAndNations getPlugin() {
@@ -242,7 +238,6 @@ public final class TownsAndNations extends JavaPlugin {
     }
 
     private String extractVersionFromResponse(String response) {
-
         JsonParser parser = new JsonParser();
         JsonObject jsonResponse = parser.parse(response).getAsJsonObject();
         return jsonResponse.get("name").getAsString();
