@@ -50,8 +50,8 @@ public class TownDataStorage {
 
         String sql = "INSERT INTO tan_town_data (town_key, name, uuid_leader," +
                 " townDefaultRank, Description, DateCreated, townIconMaterialCode, isRecruiting," +
-                "balance,taxRate)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "balance,taxRate,color)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, newTown.getID());
@@ -63,7 +63,8 @@ public class TownDataStorage {
             ps.setString(7, newTown.getTownIconMaterialCode());
             ps.setBoolean(8, newTown.isRecruiting());
             ps.setInt(9, newTown.getBalance());
-            ps.setInt(10, newTown.getFlatTax());
+            ps.setInt(10, newTown.getChunkColor());
+            ps.setInt(11, newTown.getFlatTax());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -179,7 +180,8 @@ public class TownDataStorage {
                         rs.getString("townDefaultRank"),
                         rs.getBoolean("isRecruiting"),
                         rs.getInt("balance"),
-                        rs.getInt("taxRate")
+                        rs.getInt("taxRate"),
+                        rs.getInt("color")
                 );
                 townList.put(townData.getID(), townData);
             }
@@ -220,7 +222,8 @@ public class TownDataStorage {
                             rs.getString("townDefaultRank"),
                             rs.getBoolean("isRecruiting"),
                             rs.getInt("balance"),
-                            rs.getInt("taxRate")
+                            rs.getInt("taxRate"),
+                            rs.getInt("color")
                     );
                 }
             }
@@ -307,7 +310,6 @@ public class TownDataStorage {
 
     public static void initialize(String host, String username, String password) {
         try {
-            connection = DriverManager.getConnection(host, username, password);
             try (Statement statement = connection.createStatement()){
                 String sql = "CREATE TABLE IF NOT EXISTS tan_town_data (" +
                         "town_key VARCHAR(255) PRIMARY KEY," +
@@ -319,7 +321,8 @@ public class TownDataStorage {
                         "townIconMaterialCode VARCHAR(255)," +
                         "isRecruiting BOOLEAN," +
                         "balance INT," +
-                        "taxRate INT)";
+                        "taxRate INT," +
+                        "color VARCHAR(255))";
                 statement.executeUpdate(sql);
             }
 
@@ -390,7 +393,7 @@ public class TownDataStorage {
         if (isSqlEnable() && townData != null) {
             String sql = "UPDATE tan_town_data SET name = ?, uuid_leader = ?, townDefaultRank = ?, " +
                     "Description = ?, DateCreated = ?, townIconMaterialCode = ?, isRecruiting = ?, " +
-                    "Balance = ?, taxRate = ? " +
+                    "Balance = ?, taxRate = ?, color = ? " +
                     "WHERE town_key = ?";
 
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -403,7 +406,8 @@ public class TownDataStorage {
                 ps.setBoolean(7, townData.isRecruiting());
                 ps.setInt(8, townData.getBalance());
                 ps.setInt(9, townData.getFlatTax());
-                ps.setString(10, townData.getID());
+                ps.setInt(10, townData.getChunkColor());
+                ps.setString(11, townData.getID());
                 ps.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -932,6 +936,17 @@ public class TownDataStorage {
         }
 
         return count;
+    }
+
+    public static void UpdateTownDataWithColor(){
+        String sql = "ALTER TABLE tan_town_data ADD COLUMN color VARCHAR(255)";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 }

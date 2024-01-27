@@ -30,6 +30,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Objects;
 import java.util.logging.Logger;
+import org.bukkit.plugin.java.JavaPlugin; //DO NOT REMOVE
 
 public final class TownsAndNations extends JavaPlugin {
 
@@ -82,6 +83,7 @@ public final class TownsAndNations extends JavaPlugin {
             String username = ConfigUtil.getCustomConfig("config.yml").getString("SQL.username");
             String password = ConfigUtil.getCustomConfig("config.yml").getString("SQL.password");
 
+
             ClaimedChunkStorage.initialize(host,username,password);
             PlayerDataStorage.initialize(host,username,password);
             TownDataStorage.initialize(host,username,password);
@@ -115,7 +117,7 @@ public final class TownsAndNations extends JavaPlugin {
 
         allowColorCodes = ConfigUtil.getCustomConfig("config.yml").getBoolean("AllowColorInUsername");
 
-        UpdateUtil.update();
+        UpdateUtil.updateDatabase();
 
         logger.info("[TaN] Plugin successfully loaded");
 

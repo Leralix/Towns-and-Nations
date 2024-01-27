@@ -9,6 +9,7 @@ public class UpdateUtil {
 
     public static void update(){
         UpdateRankEnum();
+
     }
     private static void UpdateRankEnum(){
         for(TownData town : TownDataStorage.getTownList().values()) {
@@ -21,5 +22,9 @@ public class UpdateUtil {
             }
 
         }
+    }
+
+    public static void updateDatabase() {
+        //TownDataStorage.UpdateTownDataWithColor();
     }
 }

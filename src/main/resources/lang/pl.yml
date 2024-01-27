@@ -1,0 +1,475 @@
+###########################
+#                         #
+#        Tłumaczenie      #
+# Wykonane przez Szkogisa #
+#Special thanks to Szkogis#
+###########################
+language:
+WELCOME: "§fWitaj"
+LANGUAGE_SUCCESSFULLY_LOADED: "Język angielski został pomyślnie załadowany"
+PLUGIN_STRING: "[TAN]"
+NEWSLETTER_STRING: "§f[TAN - Biuletyn]§f "
+
+#Common errors
+PLAYER_NO_TOWN: "§cNie należysz do żadnego miasta"
+PLAYER_NO_PERMISSION: "§cNie masz uprawnień do wykonania tej akcji"
+PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cNie masz uprawnień do wykonania tej akcji na randze wyższej lub tej samej co twoja"
+PLAYER_NOT_FOUND: "§cNieprawidłowa nazwa lub gracz nie jest podłączony"
+
+#Chat scope
+CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
+CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Sojusz - {0}]§3 {1}: §f{2}"
+
+#Update needed
+NEW_VERSION_AVAILABLE: "§cDostępna jest nowa wersja: §f{0}"
+NEW_VERSION_AVAILABLE_2: "§cPobierz ją na Spigot lub Github"
+
+#Level up
+BASIC_LEVEL_UP: "§aAwansuj !"
+
+#ChunkListener
+CHUNK_BELONGS_TO: "§cTen kawałek należy do: §9{0}"
+
+#Commands
+NOT_ENOUGH_ARGS_ERROR: "§cZa mało argumentów"
+TOO_MANY_ARGS_ERROR: "§cZa dużo argumentów"
+SYNTAX_ERROR: "§cNieprawidłowa składnia"
+SYNTAX_ERROR_AMOUNT: "§cNieprawidłowa składnia dla ilości"
+CORRECT_SYNTAX_INFO: "§cPrawidłowa składnia: {0}"
+MESSAGE_TOO_LONG: "§cWiadomość jest zbyt długa: {0} max"
+
+ECONOMY_EXISTS: "§cPlugin ekonomiczny już zarządza ekonomią. Użyj go zamiast tego"
+
+#Ask to join a town
+PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f prosi o dołączenie do miasta. Możesz znaleźć jego podanie w menu członków"
+PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Pomyślnie poprosiłeś o dołączenie do miasta: §9{0}§f. Kliknij prawym przyciskiem myszy na mieście, aby anulować"
+PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Anulowałeś swoje podanie"
+PLAYER_TOWN_NOT_RECRUITING: "§cMiasto nie prowadzi rekrutacji"
+#Create town
+TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f pomyślnie utworzyło miasto: §9{1}"
+
+#Claim chunk command
+CLAIM_CHUNK_COMMAND_DESC: "Zarezerwuj kawałek terenu"
+CHUNK_ALREADY_CLAIMED_WARNING: "§cTen kawałek jest już zarezerwowany przez: §9{0}"
+MAX_CHUNK_LIMIT_REACHED: "§cOsiągnąłeś maksymalną liczbę zarezerwowanych kawałków, zaktualizuj swoje miasto, aby otrzymać więcej"
+CHUNK_NOT_ADJACENT: "§cTen kawałek nie sąsiaduje z twoim miastem"
+CHUNK_CLAIMED_SUCCESS: "Kawałek zarezerwowany! Obecna liczba zarezerwowanych kawałków: §2{0}/{1}♦)"
+
+#CustomVillager
+CUSTOM_VILLAGER_CREATED_SUCCESS: "Stworzono mieszkańca"
+
+#Invite player to town command
+TOWN_INVITE_COMMAND_DESC: "Zaproś gracza do miasta"
+INVITATION_TOWN_FULL: "§cMiasto osiągnęło maksymalną pojemność, zaktualizuj limit graczy, aby otrzymać więcej"
+INVITATION_SENT_SUCCESS: "Zaproszenie wysłane do §e{0}"
+INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN: "§3{0}§f jest już w twoim mieście"
+INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN: "§3{0}§f ma już miasto: §9{1}"
+INVITATION_ERROR_PLAYER_TOWN_FULL: "§cMiasto osiągnęło maksymalną pojemność, zaktualizuj je, aby uzyskać więcej miejsc"
+INVITATION_RECEIVED_1: "Zostałeś zaproszony przez §3{0}§f do miasta: §9{1}"
+INVITATION_RECEIVED_2: "§l§2[Kliknij tutaj, aby zaakceptować]"
+
+#Accept the town invitation
+TOWN_ACCEPT_INVITE_DESC: "Dołącz do miasta, które cię zaprosiło"
+TOWN_INVITATION_NO_INVITATION: "§aNie masz oczekujących zaproszeń"
+TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fJesteś teraz członkiem miasta: §3{0}"
+TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f dołączył do miasta!"
+
+#Relation diplomatique
+TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§cMasz już relację z tym miastem"
+TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Zaproszenie wysłane do §e{0}"
+
+#Diplomatic relation confirmation
+TOWN_DIPLOMATIC_INVITATION_RECEIVED_1: "Miasto §9{0}§f chce zmienić swój status dyplomatyczny na: §3{1}"
+TOWN_DIPLOMATIC_INVITATION_RECEIVED_2: "§l§2Aby zaakceptować, kliknij tutaj"
+
+#Accept a town relation
+TOWN_ACCEPT_RELATION_DESC: "Zaakceptuj relację miast"
+TOWN_RELATION_NO_INVITATION: "§aNie masz oczekujących relacji"
+TOWN_RELATION_ACCEPTED_MEMBER_SIDE: "§fTwoje miasto ma teraz relację {0} z §9{1}"
+TOWN_RELATION_ACCEPTED_TOWN_SIDE: "§e{0}§f zaakceptował relację {1} z twoim miastem"
+
+#Chance chat
+TOWN_CHAT_COMMAND_DESC: "Zmień zasięg czatu"
+CHAT_CHANGED: "§fCzat jest teraz ustawiony na: §e{0}"
+TOWN_CHAT_ALREADY_IN_TOWN_CHAT: "§cJuż wysyłasz wiadomości w czacie miasta"
+CHAT_SCOPE_NOT_FOUND: "§cNie znaleziono zakresu czatu"
+
+###Admins commands
+ADD_MONEY_COMMAND_SUCCESS: "Dodano §6+{0}✦§f do §3{1}"
+
+#Leave a town
+TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c opuścił miasto!"
+
+#Miasto i GUI dla narodu
+TOWN_GUI_COMMAND_DESC: "Otwórz GUI miasta i narodu"
+
+#Komenda PŁAC
+PAY_COMMAND_DESC: "Prześlij pieniądze innemu graczowi"
+PAY_INVALID_SYNTAX: "§cNieprawidłowa składnia kwoty pieniędzy"
+PAY_MINIMUM_REQUIRED: "§cMusisz przesłać przynajmniej 1✦"
+PAY_CONFIRMED_SENDER: "Wysyłanie §6{0}✦§f do §3{1}"
+PAY_CONFIRMED_RECEIVER: "Otrzymywanie §6+{0}✦§f od §3{1}"
+PAY_SELF_ERROR: "§cNie możesz wysyłać pieniędzy sobie"
+
+#Komenda SALDO
+BAL_COMMAND_DESC: "Sprawdź swoje saldo"
+BAL_AMOUNT: "Twoje saldo: §6{0}✦"
+
+#Komenda ODMÓW
+UNCLAIM_CHUNK_COMMAND_DESC: "Odmapuj kawałek"
+UNCLAIMED_CHUNK_SUCCESS: "Kawałek odmapowany! Aktualna liczba kawałków: §2{0}/{1}♦"
+DEBUG_UNCLAIMED_CHUNK_SUCCESS: "Kawałek odmapowany! Aktualna liczba kawałków §9{0} §f: §2{1}/{2}♦"
+UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cTen kawałek jest zajął inne miasto: §e{0}"
+#Komendy debugowania
+UNKNOWN_DEBUG_COMMAND: "§cNieznane debugowanie, dostępne komendy to:"
+TOWN_LIST_DEBUG: "Lista wszystkich miast:"
+TOWN_NEXT_KEY_MESSAGE: "Następne ID miasta: §e{0}"
+COMMAND_GENERIC_SUCCESS: "§aKomenda została pomyślnie wykonana"
+ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED: "§cTen kawałek nie jest zajął"
+
+#Komendy czatu
+PLAYER_NOT_ENOUGH_MONEY: "§cNie masz wystarczająco pieniędzy, aby wykonać tę czynność"
+LEADER_NOT_ONLINE: "§cLider miasta nie jest online"
+PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cNie masz wystarczająco pieniędzy. Potrzebujesz {0} więcej"
+PLAYER_NEED_1_OR_ABOVE: "§fMusisz mieć przynajmniej §61✦"
+
+TOWN_NOT_ENOUGH_MONEY: "§cMiasto nie ma wystarczająco pieniędzy, aby wykonać tę czynność"
+TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cMiasto nie ma wystarczająco pieniędzy, aby wykonać tę czynność. Potrzebuje {0}"
+PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Wpisz nazwę miasta w czacie."
+
+PLAYER_SEND_MONEY_TO_TOWN: "§fWysłałeś §6{0}✦§f do miasta"
+
+#Relacje międzymiastowe
+##Kolory należy zdefiniować w innym pliku konfiguracyjnym
+RELATION_NEUTRAL_NAME: "Neutralny"
+RELATION_CITY_NAME: "Miasto"
+RELATION_ALLIANCE_NAME: "Sojusz"
+RELATION_NON_AGGRESSION_NAME: "Nieagresja"
+RELATION_EMBARGO_NAME: "Embargo"
+RELATION_WAR_NAME: "Wojna"
+#Tekst GUI
+GUI_WARNING_STILL_IN_DEV: "§eNadal w trakcie rozwoju"
+GUI_BACK_ARROW: "Powrót"
+GUI_QUIT_ARROW: "Wyjdź"
+GUI_NEXT_PAGE: "Dalej"
+GUI_PREVIOUS_PAGE: "Wstecz"
+GUI_LEFT_CLICK_TO_INTERACT: "§eKliknij lewym przyciskiem, aby interaktywować"
+
+GUI_INCREASE_1_DESC: "§fKliknij: §a+1✦"
+GUI_INCREASE_10_DESC: "§fShift + kliknij: §a+10✦"
+GUI_DECREASE_1_DESC: "§fKliknij: §c-1✦"
+GUI_DECREASE_10_DESC: "§fShift + kliknij: §c-10✦"
+
+GUI_KINGDOM_ICON: "§aKrólestwo"
+GUI_KINGDOM_ICON_DESC1: "§fW trakcie rozwoju"
+GUI_REGION_ICON: "§aRegion"
+GUI_REGION_ICON_DESC1: "§fW trakcie rozwoju"
+GUI_TOWN_ICON: "§aMiasto"
+GUI_KINGDOM_ICON_DESC1_NO_TOWN: "§fDołącz lub stwórz swoje własne miasto"
+GUI_KINGDOM_ICON_DESC1_HAVE_TOWN: "§fTwoje obecne miasto: §e{0}"
+GUI_PROFILE_ICON: "§aProfil"
+GUI_PROFILE_ICON_DESC1: "§fZobacz swoje statystyki"
+
+GUI_PLAYER_PROFILE: "§a{0}" #//Nazwa gracza
+GUI_PLAYER_PROFILE_DESC1: "§fSaldo: §6{0}✦"
+GUI_PLAYER_PROFILE_DESC2: "§fMiasto: §9{0}"
+GUI_PLAYER_PROFILE_DESC3: "§fRanga miasta: §e{0}"
+GUI_PLAYER_PROFILE_NO_TOWN: "§fBrak miasta"
+
+GUI_YOUR_PROFILE: "§aTwój profil"
+GUI_YOUR_BALANCE: "§aTwoje saldo"
+GUI_YOUR_BALANCE_DESC1: "§fAktualne saldo: §e{0}"
+GUI_YOUR_PVE_KILLS: "§aPotwory"
+GUI_YOUR_PVE_KILLS_DESC1: "§fLiczba zabitych potworów: §e{0}"
+GUI_YOUR_CURRENT_TIME_ALIVE: "§aCzas życia"
+GUI_YOUR_CURRENT_TIME_ALIVE_DESC1: "§fAktualny czas życia: §e{0}"
+GUI_YOUR_CURRENT_MURDER: "§aZabójstwa"
+GUI_YOUR_CURRENT_MURDER_DESC1: "§fZabiłeś §e{0}§f gracza"
+
+GUI_NO_TOWN_CREATE_NEW_TOWN: "§aStwórz nowe miasto"
+GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fKoszt: §6{0}✦"
+GUI_NO_TOWN_JOIN_A_TOWN: "§aDołącz do miasta"
+GUI_NO_TOWN_JOIN_A_TOWN_DESC1: "§fAktualnie istnieje §e{0}§f miast"
+
+GUI_TOWN_INFO_DESC0: "§7§o„{0}”" #Cytat miasta
+GUI_TOWN_INFO_DESC1: "§fLider: §3{0}"
+GUI_TOWN_INFO_DESC2: "§fCzłonkowie: §9{0}♣"
+GUI_TOWN_INFO_DESC3: "§fKawałki: §2{0}♦"
+GUI_TOWN_INFO_DESC4: "§fSkarbiec: §6{0}✦"
+GUI_TOWN_INFO_TOWN_RELATION: "§fAktualna relacja z miastem: §e{0}"
+
+GUI_TOWN_INFO_IS_RECRUITING: "§fRekrutacja: §aOtwarta"
+GUI_TOWN_INFO_IS_NOT_RECRUITING: "§fRekrutacja: §cZamknięta"
+
+GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN: "§fKliknij lewym przyciskiem, aby ubiegać się o dołączenie do miasta"
+GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL: "§cKliknij prawym przyciskiem, aby anulować swoje zgłoszenie"
+
+GUI_PLAYER_ASK_JOIN_PROFILE_DESC1: "§fData zgłoszenia: {0}"
+GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fKliknij lewym przyciskiem, aby§a zaakceptować"
+GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§fKliknij prawym przyciskiem, aby§c odrzucić"
+
+
+GUI_TOWN_INFO_CHANGE_ICON: "§fPrzeciągnij i upuść przedmiot, aby zmienić ikonę miasta"
+
+GUI_TOWN_TREASURY_ICON: "§aSkarbiec"
+GUI_TOWN_TREASURY_ICON_DESC1: "§fZarządzaj podatkami i skarbcem miasta"
+GUI_TOWN_MEMBERS_ICON: "§aCzłonkowie"
+GUI_TOWN_MEMBERS_ICON_DESC1: "§fZarządzaj członkami i rolami"
+GUI_CLAIM_ICON: "§aTeren"
+GUI_CLAIM_ICON_DESC1: "§fZarządzaj terytorium miasta"
+GUI_OTHER_TOWN_ICON: "§aInne Miasto"
+GUI_OTHER_TOWN_ICON_DESC1: "§fUzyskaj informacje o innych miastach"
+GUI_RELATION_ICON: "§aDyplomacja"
+GUI_RELATION_ICON_DESC1: "§fZarządzaj zagraniczną dyplomacją"
+GUI_TOWN_LEVEL_ICON: "§aPoziom Miasta"
+GUI_TOWN_LEVEL_ICON_DESC1: "§fSprawdź i ulepsz poziom miasta"
+GUI_TOWN_SETTINGS_ICON: "§aUstawienia"
+GUI_TOWN_SETTINGS_ICON_DESC1: "§fOgólne ustawienia miasta"
+
+
+GUI_TREASURY_STORAGE: "§aSkarbiec"
+GUI_TREASURY_STORAGE_DESC1: "§fBieżący skarbiec miasta: §6{0}✦"
+GUI_TREASURY_STORAGE_DESC2: "§fSaldo jutro: §a+{0}✦"
+GUI_TREASURY_SPENDING: "§aWydatki"
+GUI_TREASURY_SPENDING_DESC1: "§fBieżące wydatki miasta: §c-{0}✦"
+GUI_TREASURY_SPENDING_DESC2: "§f- Z Pensji: §c-{0}✦"
+GUI_TREASURY_SPENDING_DESC3: "§f- Z Kawałków: §c-{0}✦"
+GUI_TREASURY_LOWER_TAX: "§aZmniejsz podatek"
+GUI_TREASURY_CANT_TAX_LESS: "§cNie możesz opodatkować mniej niż §61✦"
+GUI_TREASURY_INCREASE_TAX: "§aZwiększ podatek"
+
+GUI_TREASURY_FLAT_TAX: "§aPodatek Stały"
+GUI_TREASURY_FLAT_TAX_DESC1: "§fBieżący podatek miasta: §6{0}✦§f dziennie"
+GUI_TREASURY_TAX_HISTORY: "§aHistoria Podatków"
+GUI_TREASURY_TAX_HISTORY_DESC1: "§fKliknij, aby otworzyć"
+GUI_TREASURY_SALARY_HISTORY: "§aHistoria Wynagrodzeń"
+GUI_TREASURY_SALARY_HISTORY_DESC1: "§fWydatki na pensje wynoszą: §c-{0}✦"
+GUI_TREASURY_CHUNK_SPENDING_HISTORY: "§aHistoria Wydatków na Kawałki"
+GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1: "§fWydatki na kawałki wynoszą: §c{0}✦"
+GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "§c-{0}✦§f za każde 10 zajętych kawałków"
+GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3: "§fTwoje miasto ma §2{0}♦§f kawałków"
+GUI_TREASURY_MISCELLANEOUS_SPENDING: "§aRóżne Wydatki"
+GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1: "§fKliknij lewym przyciskiem, aby otworzyć Historię Różnych Wydatków"
+GUI_TREASURY_DONATION: "§aDokonaj Darowizny"
+GUI_TREASURY_DONATION_DESC1: "§fPrzekaż pieniądze miastu"
+WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_TOWN_DONATION: "§aWpisz kwotę pieniędzy, którą chcesz przekazać"
+GUI_TREASURY_DONATION_HISTORY: "§aHistoria Darowizn"
+
+GUI_TOWN_LEVEL_INFO: "{0}" #Nazwa miasta
+
+GUI_TOWN_LEVEL_UP: "§aUlepsz Poziom Miasta"
+GUI_TOWN_LEVEL_UP_DESC1: "§fAktualny poziom: §e{0}"
+GUI_TOWN_LEVEL_UP_DESC2: "§fKoszt ulepszenia do poziomu §a{0}§f: §e{1}"
+GUI_TOWN_LEVEL_UP_DESC3: "§fNastępne ulepszenie: §2+{0}"
+GUI_TOWN_LEVEL_UP_DESC4: "§fŁącznie: §2{0}"
+
+
+GUI_TOWN_LEVEL_UP_CHUNK_CAP: "§aUlepsz Maksymalną Liczbę Kawałków"
+GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC1: "§fAktualny poziom: §e{0}"
+GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC2: "§fKoszt ulepszenia do poziomu §a{0}§f: §6{1}✦"
+GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC3: "§fNastępne ulepszenie: §2+{0}♦"
+GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC4: "§fŁącznie: §2{0}♦"
+
+GUI_TOWN_LEVEL_UP_PLAYER_CAP: "§aUlepsz Limit Graczy"
+GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC1: "§fAktualny poziom: §e{0}"
+GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC2: "§fKoszt ulepszenia do poziomu §a{0}§f: §6{1}✦"
+GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC3: "§fNastępne ulepszenie: §9+{0}♣"
+GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC4: "§fŁącznie: §9{0}♣"
+
+GUI_TOWN_RELATION_WAR: "§aWojna"
+GUI_TOWN_RELATION_WAR_DESC1: "§fZarządzaj miastami, z którymi jesteś w stanie wojny"
+GUI_TOWN_RELATION_EMBARGO: "§aEmbargo"
+GUI_TOWN_RELATION_EMBARGO_DESC1: "§fZarządzaj miastami, z którymi twoje miasto ma embargo"
+GUI_TOWN_RELATION_NAP: "§aNieagresywny Pakt"
+GUI_TOWN_RELATION_NAP_DESC1: "§fZarządzaj miastami, z którymi masz pakt o nieagresji"
+GUI_TOWN_RELATION_ALLIANCE: "§aSojusz"
+GUI_TOWN_RELATION_ALLIANCE_DESC1: "§fZarządzaj miastami, z którymi masz sojusz wojskowy"
+
+GUI_TOWN_RELATION_NEUTRAL: "Neutralny"
+
+GUI_TOWN_RELATION_ADD_TOWN: "§aDodaj Miasto"
+GUI_TOWN_RELATION_REMOVE_TOWN: "§aUsuń Miasto"
+GUI_TOWN_CHANGED_RELATION_RESUME: "§fTwoje miasto ma obecnie następującą relację z {0}: {1}"
+  
+GUI_TOWN_ATTACK_TOWN_DESC1: "§cKliknij prawym przyciskiem, aby rozpocząć atak"
+GUI_TOWN_ATTACK_TOWN_DESC2: "§cAtak trwa godzinę. W tym czasie kawałki nie są już chronione"
+
+GUI_TOWN_ATTACK_TOWN_EXECUTED: "§cWystąpiłeś w ataku przeciwko {0}"
+GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} zaatakował twoje miasto!"
+GUI_TOWN_ATTACK_FINISHED: "§cAtak na {0} zakończony!"
+ 
+GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aZarządzaj dostępem do drzwi"
+GUI_TOWN_CLAIM_SETTINGS_CHEST: "§aZarządzaj dostępem do skrzyń"
+GUI_TOWN_CLAIM_SETTINGS_BUILD: "§aZarządzaj pozwoleniami na budowę"
+GUI_TOWN_CLAIM_SETTINGS_BREAK: "§aZarządzaj pozwoleniami na niszczenie"
+GUI_TOWN_CLAIM_SETTINGS_ATTACK_PASSIVE_MOBS: "§aZarządzaj zdolnością do obrażeń ze strony mobów"
+GUI_TOWN_CLAIM_SETTINGS_BUTTON: "§aZarządzaj używaniem przycisków"
+GUI_TOWN_CLAIM_SETTINGS_REDSTONE: "§aZarządzaj używaniem elementów redstone"
+GUI_TOWN_CLAIM_SETTINGS_FURNACE: "§aZarządzaj używaniem pieca"
+GUI_TOWN_CLAIM_SETTINGS_INTERACT_ITEM_FRAME: "§aZarządzaj używaniem ramki na przedmioty"
+GUI_TOWN_CLAIM_SETTINGS_INTERACT_ARMOR_STAND: "§aZarządzaj używaniem stojaka na zbroje"
+GUI_TOWN_CLAIM_SETTINGS_DECORATIVE_BLOCK: "§aZarządzaj interakcją z dekoracjami"
+GUI_TOWN_CLAIM_SETTINGS_MUSIC_BLOCK: "§aZarządzaj interakcją z blokami muzycznymi"
+GUI_TOWN_CLAIM_SETTINGS_LEAD: "§aZarządzaj interakcją związanej z obrożą"
+GUI_TOWN_CLAIM_SETTINGS_SHEARS: "§aZarządzaj interakcją z nożycami"
+
+GUI_TOWN_CLAIM_SETTINGS_DESC1: "§fAktualne uprawnienie: §e{0}"
+
+
+GUI_TOWN_MEMBER_DESC1: "§fRanga: §e{0}"
+GUI_TOWN_MEMBER_DESC2: "§fBieżące saldo: §6{0}✦"
+GUI_TOWN_MEMBER_DESC3: "§cKliknij prawym przyciskiem, aby wyrzucić gracza"
+GUI_TOWN_MEMBER_CANT_KICK_LEADER: "§cNie możesz wyrzucić lidera miasta"
+GUI_TOWN_MEMBER_CANT_KICK_YOURSELF: "§cNie możesz wyrzucić samego siebie. Możesz opuścić miasto z menu ustawień miasta"
+
+GUI_TOWN_MEMBER_KICKED_SUCCESS: "§a{0}§f został wyrzucony z miasta"
+GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER: "§cZostałeś wyrzucony z miasta"
+
+GUI_TOWN_MEMBERS_MANAGE_ROLES: "§aZarządzaj rangami"
+GUI_TOWN_MEMBERS_MANAGE_APPLICATION: "§aZarządzaj aplikacjami"
+GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1: "§fIstnieje §e{0}§f aplikacji"
+GUI_TOWN_MEMBERS_ADD_NEW_ROLES: "§aUtwórz nową rangę"
+GUI_TOWN_MEMBERS_ADD_NEW_ROLES_DESC1: "§fMaks. 8 rang"
+GUI_TOWN_MEMBERS_ROLE_NAME: "§a{0}"
+GUI_TOWN_MEMBERS_ROLE_NAME_DESC1: "§fPrzeciągnij przedmiot do zmiany ikony rangi"
+GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED: "§cMusisz trzymać przedmiot, aby zmienić ikonę"
+GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS: "§aPomyślnie zmieniono ikonę"
+GUI_TOWN_MEMBERS_CHANGE_ROLE_PRIORITY: "§aZmień priorytet rangi"
+GUI_TOWN_MEMBERS_CHANGE_ROLE_PRIORITY_DESC1: "§fKliknij lewym przyciskiem, aby zmienić priorytet"
+GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO: "§aLista graczy z tą rangą:"
+GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1: "§fKliknij lewym przyciskiem, aby dodać gracza do tej rangi"
+GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC: "§f{0}"
+GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME: "§aZmień nazwę rangi"
+GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION: "§aZarządzaj uprawnieniami"
+GUI_TOWN_MEMBERS_ROLE_PAY_TAXES: "§aTa ranga płaci podatki"
+GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES: "§aTa ranga nie płaci podatków"
+GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1: "§fKliknij lewym przyciskiem, aby zmienić"
+GUI_TOWN_MEMBERS_ROLE_PRIORITY_X: "Ranga {0}"
+GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§fKliknij lewym przyciskiem, aby zmienić rangę"
+GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fIm mniejsza liczba, tym wyższy priorytet rangi"
+GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT: "§aTa ranga jest domyślną rangą"
+GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§aTa ranga §cnie jest§a domyślną rangą"
+GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fGracze zaproszeni do miasta automatycznie dołączają do domyślnej rangi"
+GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2: "§fKliknij lewym przyciskiem, aby ustawić tę rangę jako domyślną"
+GUI_TOWN_MEMBERS_ROLE_SALARY: "§aWypłata"
+GUI_TOWN_MEMBERS_ROLE_SALARY_DESC1: "§fBieżąca wypłata rangi: §6{0}✦"
+GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT: "§cTa ranga jest już domyślną rangą"
+GUI_TOWN_MEMBERS_ROLE_DELETE: "Usuń rangę"
+GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY: "Nie możesz usunąć rangi, jeśli są w niej gracze"
+
+GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TAXES: "§aZarządzaj podatkami"
+GUI_TOWN_MEMBERS_ROLE_PRIORITY_PROMOTE_RANK_PLAYER: "§aAwansuj gracza"
+GUI_TOWN_MEMBERS_ROLE_PRIORITY_DERANK_RANK_PLAYER: "§aDegradowanie gracza"
+GUI_TOWN_MEMBERS_ROLE_PRIORITY_CLAIM_CHUNK: "§aZakup kawałka"
+GUI_TOWN_MEMBERS_ROLE_PRIORITY_UNCLAIM_CHUNK: "§aZwolnij kawałek"
+GUI_TOWN_MEMBERS_ROLE_PRIORITY_UPGRADE_TOWN: "§aUlepsz miasto"
+GUI_TOWN_MEMBERS_ROLE_PRIORITY_INVITE_PLAYER: "§aZaproś Gracza"
+GUI_TOWN_MEMBERS_ROLE_PRIORITY_KICK_PLAYER: "§aWyrzuć gracza"
+GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_RANK: "§aUtwórz rangę"
+GUI_TOWN_MEMBERS_ROLE_PRIORITY_DELETE_RANK: "§aUsuń rangę"
+GUI_TOWN_MEMBERS_ROLE_PRIORITY_MODIFY_RANK: "§aZarządzaj rangami"
+GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_CLAIM_SETTINGS: "§aZarządzaj ustawieniami zakupu"
+GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION: "§aZarządzaj dyplomacją"
+
+GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION: "§fTa ranga§a posiada§f to uprawnienie"
+GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION: "§fTa ranga §cnie posiada§f tego uprawnienia"
+GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER: "§cNie możesz ustawić wypłaty poniżej 0✦"
+
+TOWN_RANK_CAP_REACHED: "§cOsiągnąłeś limit rang miasta"
+WRITE_IN_CHAT_NEW_ROLE_NAME: "§fWpisz w czacie nazwę nowej rangi"
+
+GUI_TOWN_SETTINGS_LEAVE_TOWN: "§aOpuść miasto"
+GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1: "§fOpuść miasto §9{0}"
+GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2: "§fNie możesz opuścić miasta, jeśli jesteś liderem, musisz je usunąć"
+GUI_TOWN_SETTINGS_DELETE_TOWN: "§aRozwiązanie miasta"
+GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1: "§cRozwiązanie miasta §9{0}"
+GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2: "§fNie możesz rozwiązać miasta, jeśli nie jesteś liderem"
+GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP: "§aPrzekazanie własności miasta"
+GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1: "§fPrzekaż przywództwo miasta innemu graczowi"
+GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2: "§cStracisz swoje status lidera miasta"
+GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1: "§fPrzekaż przywództwo miasta graczowi §e{0}"
+GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2: "§cStracisz swoje status i zostaniesz uznany za domyślną rangę"
+
+GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS: "Pomyślnie przekazano przywództwo miasta graczowi: §e{0}"
+GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE: "§aZmień wiadomość miasta "
+GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1: "§fBieżąca wiadomość: §o\"{0}\""
+
+GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT: "Wprowadź nową wiadomość miasta"
+GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS: "Pomyślnie zmieniono wiadomość miasta"
+
+GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aModyfikuj aplikację miasta"
+GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fMiasto §aakceptuje §faplikację"
+GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fMiasto §cnie akceptuje §faplikacji"
+GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH: "§fKliknij lewym przyciskiem, aby przełączyć"
+
+GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME: "§aZmień nazwę miasta"
+GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1: "§fBieżąca nazwa: §9{0}"
+GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC2: "§fKliknij lewym przyciskiem, aby zmienić nazwę"
+GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3: "§fKoszt: §6{0}✦"
+
+GUI_TOWN_SETTINGS_WRITE_NEW_NAME_IN_CHAT: "§fWpisz nową nazwę w czacie"
+GUI_TOWN_SETTINGS_WRITE_NEW_NAME_IN_CHAT_SUCCESS: "§aNazwa została pomyślnie zmieniona"
+
+GUI_TOWN_SETTINGS_NEW_TOWN_NAME_HISTORY: "§fZmodyfikowano nazwę miasta: §9{0}§f -> §9{1}"
+
+ADMIN_GUI_TOWN_DESC: "§fKliknij, aby zarządzać miastami"
+ADMIN_GUI_PLAYER_DESC: "§fKliknij, aby zarządzać graczami"
+
+ADMIN_GUI_LEFT_CLICK_TO_MANAGE_TOWN: "§fKliknij lewym przyciskiem, aby zarządzać miastem"
+
+ADMIN_GUI_CHANGE_TOWN_NAME: "§aZmień nazwę miasta"
+ADMIN_GUI_CHANGE_TOWN_NAME_DESC1: "§fBieżąca nazwa: §9{0}"
+ADMIN_GUI_CHANGE_TOWN_NAME_DESC2: "§fKliknij lewym przyciskiem, aby zmienić nazwę"
+ADMIN_GUI_CHANGE_TOWN_DESCRIPTION: "§aZmień opis miasta"
+ADMIN_GUI_CHANGE_TOWN_DESCRIPTION_DESC1: "§fBieżący opis: §7\"{0}\""
+ADMIN_GUI_CHANGE_TOWN_LEADER: "§aZmień lidera miasta"
+ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1: "§fBieżący lider: §3{0}"
+ADMIN_GUI_DELETE_TOWN: "§aUsuń miasto"
+ADMIN_GUI_DELETE_TOWN_DESC1: "§cUsuń miasto: §9{0}"
+
+  # Historia transakcji
+TRANSACTION_HISTORY: "§f[{0}] - §3{1} : §6+{2}✦"
+DONATION_SINGLE_LINE_1: "§a+{0}✦"
+DONATION_SINGLE_LINE_2: "§f{0}"
+TAX_SINGLE_LINE: "§3{0} : §6+{1}✦"
+TAX_SINGLE_LINE_NOT_ENOUGH: "§3{0} :§c brak wystarczających środków"
+CHUNK_HISTORY_DESC1: "§fCałkowity koszt:§c {0}✦" 
+CHUNK_HISTORY_DESC2: "§2{0}♦§f × {1} = §c{2}✦"
+MISCELLANEOUS_HISTORY_DESC1: "§f{0}"
+MISCELLANEOUS_HISTORY_DESC2: "§c-{0}♦"
+
+  # Informacje na czacie
+CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cNie możesz opuścić miasta, jeśli jesteś liderem, musisz je rozwiązać lub przekazać przywództwo komuś innemu"
+NOT_TOWN_LEADER_ERROR: "§cMusisz być liderem miasta, aby wykonać tę akcję"
+
+CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§cNie możesz usunąć miasta, jeśli nie jesteś liderem"
+
+CHAT_PLAYER_LEFT_THE_TOWN: "§fOpuściłeś miasto"
+CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fMiasto zostało pomyślnie usunięte"
+
+WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cMiasto §9{0}§c, z którym miałeś relację: §e{1}§c, zostało usunięte"
+
+  # Przedmiot niestandardowy
+ITEM_RARE_STONE: "§3Rzadki kamień"
+ITEM_RARE_WOOD: "§3Rzadkie drewno"
+ITEM_RARE_CROP: "§3Rzadkie uprawy"
+RARE_ITEM_DESC_1: "§fTen przedmiot można sprzedać za pieniądze na spawnie"
+
+#Praca niestandardowych mieszkańców
+VILLAGER_GOLDSMITH: "Złotnik"
+VILLAGER_BOTANIST: "Botanik"
+VILLAGER_COOK: "Kucharz"
+
+#Sukces interakcji z mieszkańcami
+RARE_ITEM_NO_ITEM_IN_HANDS: "Kliknij prawym przyciskiem z §e{0}§f, aby sprzedać za §6{1}✦"
+RARE_ITEM_WRONG_ITEM: "Ten mieszkaniec kupuje tylko §e{0}"
+RARE_ITEM_SELLING_SUCCESS: "Pomyślnie sprzedano §e{0}x {1}§f za §6+{2}✦"
+
+#Podatki
+DAILY_TAXES_SUCCESS_LOG: "Podatki od miasta zostały pobrane"
+
+#Interakcje z kawałkami
+CHUNK_ENTER_WILDERNESS: "§fDzicz"
+CHUNK_ENTER_TOWN: "§fWchodzisz do: §9{0}"
+CHUNK_ENTER_TOWN_AT_WAR: "§cProwadzisz wojnę z tym miastem, gracze zostali zaalarmowani"
+CHUNK_INTRUSION_ALERT: "§cWróg z miasta {0} wkroczył w Twoje granice: {1}"

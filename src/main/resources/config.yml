@@ -94,10 +94,9 @@ WarDurationTime: 60
 #Allow color coding in username. May cause problem if mixed with other plugins
 AllowColorInUsername: true
 
-##Corss server config
+##Cross server config
 #Enable cross server (will require a MySQL database)
 EnableCrossServer: false
-
 SQL:
   #ip of the mysql server
   address: jdbc:mysql://localhost:3306/minecraft

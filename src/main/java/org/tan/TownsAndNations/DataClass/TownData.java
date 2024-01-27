@@ -38,6 +38,8 @@ public class TownData {
 
     private Integer numberOfClaimedChunk;
 
+    private Integer chunkColor;
+
 
 
     private final TownTreasury townTreasury;
@@ -62,6 +64,8 @@ public class TownData {
         this.numberOfClaimedChunk = 0;
         this.townDefaultRank = "default";
 
+        this.chunkColor = 0xff0000;
+
         addRank(townDefaultRank);
         getRank(townDefaultRank).addPlayer(uuidLeader);
 
@@ -77,7 +81,8 @@ public class TownData {
 
     //used for sql, loading a town
     public TownData(String townId, String townName, String uuidLeader, String description,String dateCreated,
-                    String townIconMaterialCode, String townDefaultRankName, Boolean isRecruiting, int balance,int flatTax){
+                    String townIconMaterialCode, String townDefaultRankName, Boolean isRecruiting, int balance,
+                    int flatTax,int chunkColor){
         this.TownId = townId;
         this.TownName = townName;
         this.UuidLeader = uuidLeader;
@@ -91,6 +96,7 @@ public class TownData {
         this.isRecruiting = isRecruiting;
         this.balance = balance;
         this.flatTax = flatTax;
+        this.chunkColor = chunkColor;
 
         this.relations = null;
         this.chunkSettings = null;
@@ -484,5 +490,17 @@ public class TownData {
             return TownDataStorage.getTownsRelatedTo(getID(),relation);
         else
             return this.relations.getOne(relation);
+    }
+
+    public int getChunkColor() {
+        if(this.chunkColor == null)
+            return 0xff0000;
+        return chunkColor;
+    }
+
+    public void setColor(int color) {
+        this.chunkColor = color;
+        if(isSqlEnable())
+            TownDataStorage.updateTownData(this);
     }
 }
