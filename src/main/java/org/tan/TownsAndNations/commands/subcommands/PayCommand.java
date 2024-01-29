@@ -78,7 +78,7 @@ public class PayCommand extends SubCommand  {
                 amount = Integer.parseInt(args[2]);
 
             } catch (NumberFormatException e) {
-                player.sendMessage(getTANString() + Lang.PAY_INVALID_SYNTAX.get());
+                player.sendMessage(getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
                 return;
             }
             if(amount <1){

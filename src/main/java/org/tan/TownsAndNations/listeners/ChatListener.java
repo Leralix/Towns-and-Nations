@@ -21,6 +21,9 @@ import java.util.*;
 import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 import static org.tan.TownsAndNations.enums.MessageKey.*;
 import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.ChatCategory.*;
+import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.removePlayer;
+import static org.tan.TownsAndNations.utils.StringUtil.hexColorToInt;
+import static org.tan.TownsAndNations.utils.StringUtil.isValidColorCode;
 import static org.tan.TownsAndNations.utils.TownUtil.DonateToTown;
 
 
@@ -53,7 +56,7 @@ public class ChatListener implements Listener {
             int amount;
             try {amount = Integer.parseInt(stringAmount);}
             catch (NumberFormatException e) {
-                player.sendMessage(ChatUtils.getTANString() + Lang.PAY_INVALID_SYNTAX.get());
+                player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
                 throw new RuntimeException(e);
             }
 
@@ -63,7 +66,7 @@ public class ChatListener implements Listener {
         }
 
             if(chatData.getCategory() == RANK_CREATION){
-            PlayerChatListenerStorage.removePlayer(player);
+            removePlayer(player);
             String rankName = event.getMessage();
 
             FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
@@ -116,7 +119,7 @@ public class ChatListener implements Listener {
 
             Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, newRankName));
 
-            PlayerChatListenerStorage.removePlayer(player);
+            removePlayer(player);
             event.setCancelled(true);
 
         }
@@ -136,12 +139,13 @@ public class ChatListener implements Listener {
 
             TownDataStorage.get(townId).setDescription(newDesc);
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS.get());
-            PlayerChatListenerStorage.removePlayer(player);
+            removePlayer(player);
             event.setCancelled(true);
 
         }
 
         if(chatData.getCategory() == CHANGE_TOWN_NAME){
+            event.setCancelled(true);
             TownData town = TownDataStorage.get(chatData.getData().get(TOWN_ID));
             int townCost = Integer.parseInt(chatData.getData().get(COST));
 
@@ -152,21 +156,31 @@ public class ChatListener implements Listener {
 
             if(newName.length() > maxSize){
                 player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
-                PlayerChatListenerStorage.removePlayer(player);
-                event.setCancelled(true);
+
             }
 
             if(town.getBalance() <= townCost){
                 player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
-                PlayerChatListenerStorage.removePlayer(player);
-                event.setCancelled(true);
             }
 
             TownUtil.renameTown(player, townCost, newName, town);
-
-
-            event.setCancelled(true);
+            removePlayer(player);
         }
 
+        if(chatData.getCategory() == CHANGE_CHUNK_COLOR){
+            event.setCancelled(true);
+            removePlayer(player);
+
+            TownData town = TownDataStorage.get(chatData.getData().get(TOWN_ID));
+
+            String newColorCode = event.getMessage();
+            if(!isValidColorCode(newColorCode)){
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR.get());
+                return;
+            }
+            int hexColorCode = hexColorToInt(newColorCode);
+            town.setChunkColor(hexColorCode);
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS.get());
+        }
     }
 }

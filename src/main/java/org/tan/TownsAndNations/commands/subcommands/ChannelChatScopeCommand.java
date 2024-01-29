@@ -61,7 +61,7 @@ public class ChannelChatScopeCommand extends SubCommand{
             if(channelName.equalsIgnoreCase("town")){
 
                 if(LocalChatStorage.getPlayerChatScope(player) == ChatScope.CITY){
-                    player.sendMessage(getTANString() + Lang.TOWN_CHAT_ALREADY_IN_TOWN_CHAT.get());
+                    player.sendMessage(getTANString() + Lang.TOWN_CHAT_ALREADY_IN_CHAT.get(ChatScope.CITY));
                     return;
                 }
 
@@ -72,7 +72,7 @@ public class ChannelChatScopeCommand extends SubCommand{
             if(channelName.equalsIgnoreCase("alliance")){
 
                 if(LocalChatStorage.getPlayerChatScope(player) == ChatScope.ALLIANCE){
-                    player.sendMessage(getTANString() + Lang.TOWN_CHAT_ALREADY_IN_TOWN_CHAT.get());
+                    player.sendMessage(getTANString() + Lang.TOWN_CHAT_ALREADY_IN_CHAT.get(ChatScope.ALLIANCE));
                     return;
                 }
 

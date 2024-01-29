@@ -30,7 +30,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Objects;
 import java.util.logging.Logger;
-import org.bukkit.plugin.java.JavaPlugin; //DO NOT REMOVE
 
 public final class TownsAndNations extends JavaPlugin {
 
@@ -47,6 +46,7 @@ public final class TownsAndNations extends JavaPlugin {
     private static tanAPI api;
     private static boolean allowColorCodes = false;
     private static boolean sqlEnable = false;
+    private static boolean dynmapAddonLoaded = true;
 
     @Override
     public void onEnable() {
@@ -254,12 +254,20 @@ public final class TownsAndNations extends JavaPlugin {
     public static tanAPI getAPI() {
         return api;
     }
-    public static boolean colorCodeIsEnabled(){
-        return allowColorCodes;
+    public static boolean colorCodeIsNotEnabled(){
+        return !allowColorCodes;
     }
 
     public static boolean isSqlEnable() {
         return sqlEnable;
+    }
+
+    public static void setDynmapAddonLoaded(boolean dynmapAddonLoaded) {
+        TownsAndNations.dynmapAddonLoaded = dynmapAddonLoaded;
+    }
+
+    public static boolean isDynmapAddonLoaded() {
+        return dynmapAddonLoaded;
     }
 
 }

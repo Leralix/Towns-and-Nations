@@ -20,8 +20,8 @@ version = '0.4.1'
 repositories {
     mavenCentral()
     maven {
-        name = "paper-repo"
-        url = "https://repo.papermc.io/repository/maven-public/"
+        name = "spigot-repo"
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
     }
     maven {
         name = "sonatype"
@@ -43,7 +43,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
+    compileOnly 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'
     compileOnly 'com.mojang:authlib:4.0.43'
     compileOnly 'net.luckperms:api:5.4'
     compileOnly 'com.comphenix.protocol:ProtocolLib:5.1.0'

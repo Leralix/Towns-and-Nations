@@ -494,11 +494,16 @@ public class TownData {
 
     public int getChunkColor() {
         if(this.chunkColor == null)
-            return 0xff0000;
+            this.chunkColor = 0xff0000;
         return chunkColor;
     }
+    public String getChunkColorInHex() {
+        if (this.chunkColor == null)
+            this.chunkColor = 0xff0000;
+        return String.format("#%06X", this.chunkColor);
+    }
 
-    public void setColor(int color) {
+    public void setChunkColor(int color) {
         this.chunkColor = color;
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);

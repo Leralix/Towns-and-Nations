@@ -14,7 +14,7 @@ import org.tan.TownsAndNations.storage.TownDataStorage;
 public class TeamUtils {
 
     public static void updateAllScoreboardColor(){
-        if(!TownsAndNations.colorCodeIsEnabled()){
+        if(TownsAndNations.colorCodeIsNotEnabled()){
             return;
         }
         for(Player player : Bukkit.getOnlinePlayers()){
@@ -23,7 +23,7 @@ public class TeamUtils {
     }
 
     public static void setIndividualScoreBoard(Player player) {
-        if(!TownsAndNations.colorCodeIsEnabled()){
+        if(TownsAndNations.colorCodeIsNotEnabled()){
             return;
         }
 

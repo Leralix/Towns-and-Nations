@@ -16,6 +16,7 @@ import org.tan.TownsAndNations.enums.*;
 import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.utils.*;
 
+import static org.tan.TownsAndNations.TownsAndNations.isDynmapAddonLoaded;
 import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 import static org.tan.TownsAndNations.enums.MessageKey.*;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
@@ -24,6 +25,7 @@ import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.ChatCate
 import static org.tan.TownsAndNations.storage.TownDataStorage.getTownList;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.RelationUtil.*;
+import static org.tan.TownsAndNations.utils.StringUtil.getHexColor;
 import static org.tan.TownsAndNations.utils.TeamUtils.updateAllScoreboardColor;
 import static org.tan.TownsAndNations.utils.TownUtil.deleteTown;
 
@@ -433,7 +435,7 @@ public class GuiManager2 {
                         return;
                     }
                     if(!town.canAddMorePlayer()){
-                        player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_TOWN_FULL.get());
+                        player.sendMessage(getTANString() + Lang.INVITATION_TOWN_FULL.get());
                         return;
                     }
 
@@ -1343,6 +1345,13 @@ public class GuiManager2 {
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3.get(changeTownNameCost)
         );
 
+        ItemStack changeChunkColor = HeadUtils.getCustomLoreItem(Material.PURPLE_WOOL,
+                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR.get(),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(getHexColor(playerTown.getChunkColorInHex()) + playerTown.getChunkColorInHex()),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3.get()
+        );
+
 
         GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> event.setCancelled(true));
 
@@ -1393,7 +1402,6 @@ public class GuiManager2 {
             data.put(MessageKey.TOWN_ID,playerTown.getID());
             PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CHANGE_DESCRIPTION,player,data);
             event.setCancelled(true);
-
         });
 
         GuiItem _toggleApplication = ItemBuilder.from(toggleApplication).asGuiItem(event -> {
@@ -1420,7 +1428,20 @@ public class GuiManager2 {
             }
             else
                 player.sendMessage(ChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
+        });
 
+        GuiItem _changeChunkColor = ItemBuilder.from(changeChunkColor).asGuiItem(event -> {
+            event.setCancelled(true);
+
+            if(playerStat.isTownLeader()){
+                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT.get());
+                Map<MessageKey, String> data = new HashMap<>();
+                data.put(MessageKey.TOWN_ID,playerTown.getID());
+                PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CHANGE_CHUNK_COLOR,player,data);
+                player.closeInventory();
+            }
+            else
+                player.sendMessage(ChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
         });
 
 
@@ -1433,6 +1454,8 @@ public class GuiManager2 {
         gui.setItem(13, _changeMessage);
         gui.setItem(14, _toggleApplication);
         gui.setItem(15, _changeTownName);
+        if(isDynmapAddonLoaded())
+            gui.setItem(16, _changeChunkColor);
 
         gui.setItem(3,1, CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
 
@@ -1765,9 +1788,6 @@ public class GuiManager2 {
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
         TownData townData = TownDataStorage.get(player);
 
-        Material[] materials = {Material.OAK_DOOR, Material.CHEST,Material.BRICKS,Material.IRON_PICKAXE,Material.BEEF,
-                Material.STONE_BUTTON,Material.REDSTONE,Material.FURNACE,Material.ITEM_FRAME,Material.ARMOR_STAND,
-                Material.CAULDRON,Material.JUKEBOX,Material.LEAD,Material.SHEARS};
 
 
         Object[][] itemData = {
