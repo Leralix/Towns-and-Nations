@@ -60,4 +60,11 @@ public class UpgradeStorage {
         return new ArrayList<>(UpgradeMap.values());
     }
 
+
+    public static  void loadIntoMap(Map<String,Integer> map){
+        for(TownUpgrade upgrade : UpgradeStorage.getUpgrades()){
+            map.put(upgrade.getName(),0);
+        }
+    }
+
 }

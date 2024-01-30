@@ -12,14 +12,14 @@ public class PlayerData {
 
     private final String UUID;
     private String PlayerName;
-    private int Balance;
+    private Integer balance;
     private String TownId;
     private String TownRank;
 
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
         this.PlayerName = player.getName();
-        this.Balance = ConfigUtil.getCustomConfig("config.yml").getInt("StartingMoney");;
+        this.balance = ConfigUtil.getCustomConfig("config.yml").getInt("StartingMoney");;
         this.TownId = null;
         this.TownRank = null;
     }
@@ -27,7 +27,7 @@ public class PlayerData {
     public PlayerData(String UUID, String playerName, int balance, String townId, String townRank) {
         this.UUID = UUID;
         this.PlayerName = playerName;
-        this.Balance = balance;
+        this.balance = balance;
         this.TownId = townId;
         this.TownRank = townRank;
     }
@@ -46,7 +46,9 @@ public class PlayerData {
     }
 
     public int getBalance() {
-        return Balance;
+        if(balance == null)
+            balance = 0;
+        return balance;
     }
     public void setRank(String rankName){
         this.TownRank = rankName;
@@ -54,7 +56,7 @@ public class PlayerData {
             updatePlayerDataInDatabase(this);
     }
     public void setBalance(int balance) {
-        this.Balance = balance;
+        this.balance = balance;
         if(isSqlEnable())
             updatePlayerDataInDatabase(this);
     }
@@ -77,12 +79,12 @@ public class PlayerData {
         return TownDataStorage.get(this).getRank(this.TownRank);
     }
     public void addToBalance(int money) {
-        this.Balance = this.Balance + money;
+        this.balance = this.balance + money;
         if(isSqlEnable())
             updatePlayerDataInDatabase(this);
     }
     public void removeFromBalance(int money) {
-        this.Balance = this.Balance - money;
+        this.balance = this.balance - money;
         if(isSqlEnable())
             updatePlayerDataInDatabase(this);
     }

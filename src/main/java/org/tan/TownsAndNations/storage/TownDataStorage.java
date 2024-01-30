@@ -417,14 +417,13 @@ public class TownDataStorage {
 
     public static void addTownLevelToDatabase(String townId, TownLevel townLevel) {
         if (townLevel == null) return;
-        String sql = "INSERT INTO tan_town_upgrades (rank_key, level, chunk_level, player_cap_level, town_spawn_bought) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tan_town_upgrades (rank_key, level, chunk_level, player_cap_level) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, townId);
             ps.setInt(2, townLevel.getTownLevel());
             ps.setInt(3, townLevel.getChunkCapLevel());
             ps.setInt(4, townLevel.getPlayerCapLevel());
-            ps.setBoolean(5, townLevel.isTownSpawnUnlocked());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -458,13 +457,12 @@ public class TownDataStorage {
         if (townUpgrade == null) return;
 
         String sql = "UPDATE tan_town_upgrades SET level = ?, chunk_level = ?, " +
-                "player_cap_level = ?, town_spawn_bought = ? WHERE rank_key = ?";
+                "player_cap_level = ? WHERE rank_key = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, townUpgrade.getTownLevel());
             ps.setInt(2, townUpgrade.getChunkCapLevel());
             ps.setInt(3, townUpgrade.getPlayerCapLevel());
-            ps.setBoolean(4, townUpgrade.isTownSpawnUnlocked());
             ps.setString(5, town_id);
             ps.executeUpdate();
         } catch (SQLException e) {

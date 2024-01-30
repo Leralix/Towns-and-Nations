@@ -7,27 +7,37 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
+import static org.tan.TownsAndNations.storage.UpgradeStorage.loadIntoMap;
 
 public class TownLevel {
     private int townLevel;
     private int playerCapLevel;
     private int chunkCapUpgrade;
-    private boolean townSpawnUnlocked;
+
+
+    Map<String,Integer> levelMap;
 
     //for json
     public TownLevel(){
         this.townLevel = 1;
         this.playerCapLevel = 0;
         this.chunkCapUpgrade = 0;
-        this.townSpawnUnlocked = false;
+
+        levelMap = new HashMap<>();
+        levelMap.put("townLevel",1);
+        loadIntoMap(levelMap);
+
+
     }
     //for SQL
     public TownLevel(int townLevel, int playerCapLevel, int chunkCapUpgrade, boolean townSpawnUnlocked){
         this.townLevel = townLevel;
         this.playerCapLevel = playerCapLevel;
         this.chunkCapUpgrade = chunkCapUpgrade;
-        this.townSpawnUnlocked = townSpawnUnlocked;
     }
 
     public int getTownLevel() {
@@ -35,12 +45,6 @@ public class TownLevel {
     }
     public void TownLevelUp(){
         this.townLevel = this.townLevel + 1;
-    }
-    public void setTownSpawnUnlocked(boolean townSpawnUnlocked) {
-        this.townSpawnUnlocked = townSpawnUnlocked;
-    }
-    public boolean isTownSpawnUnlocked() {
-        return this.townSpawnUnlocked;
     }
 
     public int getPlayerCapLevel() {

@@ -258,12 +258,24 @@ public class TownData {
     }
 
     public void addToBalance(int balance){
+        Integer _bal = this.balance;
+
+        //used to transition from 0.3.1 -> 0.4.0 when balance were stored in the treasury class
+        if(_bal == null){
+            this.balance = this.getTreasury().getBalance();
+        }
         this.balance += balance;
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);
     }
 
     public void removeToBalance(int balance){
+        Integer _bal = this.balance;
+
+        //used to transition from 0.3.1 -> 0.4.0 when balance were stored in the treasury class
+        if(_bal == null){
+            this.balance = this.getTreasury().getBalance();
+        }
         this.balance -= balance;
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);
