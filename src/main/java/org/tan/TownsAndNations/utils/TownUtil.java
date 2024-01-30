@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.TownLevel;
+import org.tan.TownsAndNations.DataClass.TownUpgrade;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.TownRolePermission;
@@ -189,8 +190,33 @@ public class TownUtil {
             TownDataStorage.updateTownUpgradeFromDatabase(townData.getID(),townLevel);
         SoundUtil.playSound(player,LEVEL_UP);
         player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());
-
-
     }
+
+    public static void upgradeTown(Player player, TownUpgrade townUpgrade, TownData townData){
+        PlayerData playerData = PlayerDataStorage.get(player);
+
+        TownLevel townLevel = townData.getTownLevel();
+        if(!playerData.hasPermission(TownRolePermission.UPGRADE_TOWN)){
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+            SoundUtil.playSound(player,NOT_ALLOWED);
+            return;
+        }
+        int cost = townUpgrade.getCost(townLevel.getUpgradeLevel(townUpgrade.getName()));
+        if(townData.getBalance() < cost ) {
+            player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(cost - townData.getBalance()));
+            SoundUtil.playSound(player,NOT_ALLOWED);
+            return;
+        }
+
+        townData.removeToBalance(townLevel.getMoneyRequiredTownLevel());
+        townLevel.levelUp(townUpgrade);
+        if(isSqlEnable())
+            TownDataStorage.updateTownUpgradeFromDatabase(townData.getID(),townLevel);
+        SoundUtil.playSound(player,LEVEL_UP);
+        player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());
+    }
+
+
+
 
 }

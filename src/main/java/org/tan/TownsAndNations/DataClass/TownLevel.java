@@ -30,14 +30,16 @@ public class TownLevel {
         levelMap = new HashMap<>();
         levelMap.put("townLevel",1);
         loadIntoMap(levelMap);
-
-
     }
     //for SQL
     public TownLevel(int townLevel, int playerCapLevel, int chunkCapUpgrade, boolean townSpawnUnlocked){
         this.townLevel = townLevel;
         this.playerCapLevel = playerCapLevel;
         this.chunkCapUpgrade = chunkCapUpgrade;
+    }
+
+    public int getUpgradeLevel(String upgradeName){
+        return levelMap.get(upgradeName);
     }
 
     public int getTownLevel() {
@@ -127,4 +129,7 @@ public class TownLevel {
         return (int) expression.evaluate();
     }
 
+    public void levelUp(TownUpgrade townUpgrade) {
+        this.levelMap.put(townUpgrade.getName(), this.levelMap.get(townUpgrade.getName()) + 1);
+    }
 }

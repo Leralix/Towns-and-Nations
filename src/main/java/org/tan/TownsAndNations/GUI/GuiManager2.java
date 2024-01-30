@@ -1319,7 +1319,7 @@ public class GuiManager2 {
 
         for(TownUpgrade townUpgrade : UpgradeStorage.getUpgrades()){
             GuiItem _guiItem = GuiUtil.makeUpgradeGuiItem(player,townUpgrade,townData);
-            gui.setItem(townUpgrade.getRow() + 1,townUpgrade.getCol() + 1,_guiItem);
+            gui.setItem(townUpgrade.getRow() + 1,townUpgrade.getCol(),_guiItem);
         }
 
 
