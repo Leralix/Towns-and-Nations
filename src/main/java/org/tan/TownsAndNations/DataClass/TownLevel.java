@@ -10,7 +10,6 @@ import org.tan.TownsAndNations.utils.ConfigUtil;
 import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 
 public class TownLevel {
-
     private int townLevel;
     private int playerCapLevel;
     private int chunkCapUpgrade;

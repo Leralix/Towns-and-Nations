@@ -20,6 +20,7 @@ import org.tan.TownsAndNations.listeners.*;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.UpgradeStorage;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.DropChances;
 import org.tan.TownsAndNations.utils.UpdateUtil;
@@ -72,8 +73,11 @@ public final class TownsAndNations extends JavaPlugin {
         ConfigUtil.loadCustomConfig("config.yml");
         ConfigUtil.saveAndUpdateResource("townLevelUpRequirement.yml");
         ConfigUtil.loadCustomConfig("townLevelUpRequirement.yml");
+        ConfigUtil.saveAndUpdateResource("townUpgrades.yml");
+        ConfigUtil.loadCustomConfig("townUpgrades.yml");
 
         DropChances.load();
+        UpgradeStorage.initialize();
 
         sqlEnable = ConfigUtil.getCustomConfig("config.yml").getBoolean("EnableCrossServer", false);
         if(sqlEnable){

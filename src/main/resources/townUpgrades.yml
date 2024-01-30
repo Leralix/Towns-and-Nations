@@ -1,0 +1,32 @@
+upgrades:
+  barracks:
+    col: 1
+    row: 2
+    itemCode: 'COBBLESTONE'
+    maxLevel: 10
+    cost: ['500', '590', '760', '1010', '1340', '1750', '2240', '2810', '3460', '4190', '5000']
+    prerequisites: ['town_level_1']
+    benefits:
+      playerCap: +3
+
+  administration:
+    col: 1
+    row: 4
+    itemCode: 'EMERALD'
+    maxLevel: 10
+    cost: ['500', '590', '760', '1010', '1340', '1750', '2240', '2810', '3460', '4190', '5000']
+    prerequisites: ['town_level_1']
+    benefits:
+      chunkCap: +50
+      playerCap: -1
+
+  portal:
+    col: 2
+    row: 1
+    itemCode: 'BARRIER'
+    maxLevel: 1
+    cost: ['1500']
+    prerequisites: ["town_level_2"]
+    benefits:
+      unlock_town_spawn: +1
+

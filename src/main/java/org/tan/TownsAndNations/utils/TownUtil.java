@@ -6,8 +6,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.TownLevel;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
+import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.*;
 
 import java.util.Objects;
@@ -17,6 +19,7 @@ import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.enums.TownRolePermission.KICK_PLAYER;
 import static org.tan.TownsAndNations.storage.ClaimedChunkStorage.unclaimAllChunkFromTown;
 import static org.tan.TownsAndNations.storage.TownDataStorage.*;
+import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
 import static org.tan.TownsAndNations.utils.EconomyUtil.removeFromBalance;
 import static org.tan.TownsAndNations.utils.TeamUtils.setIndividualScoreBoard;
@@ -129,7 +132,7 @@ public class TownUtil {
         TownData townData = TownDataStorage.get(playerData);
 
 
-        if(playerData.hasPermission(KICK_PLAYER)){
+        if(!playerData.hasPermission(KICK_PLAYER)){
             player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             return;
         }
@@ -164,6 +167,30 @@ public class TownUtil {
             town.getTreasury().addMiscellaneousPurchase(Lang.GUI_TOWN_SETTINGS_NEW_TOWN_NAME_HISTORY.get(town.getName() ,newName),townCost);
         town.removeToBalance(townCost);
         town.setName(newName);
+    }
+
+    public static void upgradeTown(Player player, TownData townData){
+        PlayerData playerData = PlayerDataStorage.get(player);
+        TownLevel townLevel = townData.getTownLevel();
+        if(!playerData.hasPermission(TownRolePermission.UPGRADE_TOWN)){
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+            SoundUtil.playSound(player,NOT_ALLOWED);
+            return;
+        }
+        if(townData.getBalance() < townLevel.getMoneyRequiredTownLevel()) {
+            player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
+            SoundUtil.playSound(player,NOT_ALLOWED);
+            return;
+        }
+
+        townData.removeToBalance(townLevel.getMoneyRequiredTownLevel());
+        townLevel.TownLevelUp();
+        if(isSqlEnable())
+            TownDataStorage.updateTownUpgradeFromDatabase(townData.getID(),townLevel);
+        SoundUtil.playSound(player,LEVEL_UP);
+        player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());
+
+
     }
 
 }

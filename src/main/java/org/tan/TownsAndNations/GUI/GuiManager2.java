@@ -27,7 +27,7 @@ import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.RelationUtil.*;
 import static org.tan.TownsAndNations.utils.StringUtil.getHexColor;
 import static org.tan.TownsAndNations.utils.TeamUtils.updateAllScoreboardColor;
-import static org.tan.TownsAndNations.utils.TownUtil.deleteTown;
+import static org.tan.TownsAndNations.utils.TownUtil.*;
 
 import java.util.ArrayList;
 
@@ -1195,21 +1195,22 @@ public class GuiManager2 {
 
     }
     public static void OpenTownLevel(Player player){
-        Gui gui = createChestGui("Town",3);
+        Gui gui = createChestGui("Town",6);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData townData = TownDataStorage.get(player);
         TownLevel townLevel = townData.getTownLevel();
 
         ItemStack TownIcon = HeadUtils.getTownIcon(PlayerDataStorage.get(player.getUniqueId().toString()).getTownId());
-        ItemStack upgradeTownLevel = HeadUtils.getCustomLoreItem(Material.EMERALD, Lang.GUI_TOWN_LEVEL_UP.get());
         ItemStack upgradeChunkCap = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
         ItemStack upgradePlayerCap = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==");
 
-        HeadUtils.setLore(upgradeTownLevel,
-                Lang.GUI_TOWN_LEVEL_UP_DESC1.get(townLevel.getTownLevel()),
-                Lang.GUI_TOWN_LEVEL_UP_DESC2.get(townLevel.getTownLevel()+1, townLevel.getMoneyRequiredTownLevel())
-        );
+        ItemStack whitePanel = HeadUtils.getCustomLoreItem(Material.WHITE_STAINED_GLASS_PANE,"");
+        ItemStack iron_bars = HeadUtils.getCustomLoreItem(Material.IRON_BARS,"Level locked");
+        ItemStack filler_green = HeadUtils.getCustomLoreItem(Material.LIME_STAINED_GLASS_PANE,"");
+
+
+
         HeadUtils.setLore(upgradeChunkCap,
                 Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC1.get(townLevel.getChunkCapLevel()),
                 Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC2.get(townLevel.getChunkCapLevel()+1,townLevel.getMoneyRequiredChunkCap()),
@@ -1225,28 +1226,7 @@ public class GuiManager2 {
 
 
         GuiItem _TownIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> event.setCancelled(true));
-        GuiItem _upgradeTownLevel = ItemBuilder.from(upgradeTownLevel).asGuiItem(event -> {
-            event.setCancelled(true);
-            if(!playerStat.hasPermission(TownRolePermission.UPGRADE_TOWN)){
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-                SoundUtil.playSound(player,NOT_ALLOWED);
-                return;
-            }
-            if(townData.getBalance() > townLevel.getMoneyRequiredTownLevel()){
-                townData.removeToBalance(townLevel.getMoneyRequiredTownLevel());
-                townLevel.TownLevelUp();
-                if(isSqlEnable())
-                    TownDataStorage.updateTownUpgradeFromDatabase(townData.getID(),townLevel);
-                SoundUtil.playSound(player,LEVEL_UP);
-                player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());
-                OpenTownLevel(player);
-            }
-            else{
-                player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
-                SoundUtil.playSound(player,NOT_ALLOWED);
-            }
 
-        });
         GuiItem _upgradeChunkCap = ItemBuilder.from(upgradeChunkCap).asGuiItem(event -> {
             event.setCancelled(true);
             if(!playerStat.hasPermission(TownRolePermission.UPGRADE_TOWN)){
@@ -1287,14 +1267,66 @@ public class GuiManager2 {
             }
         });
 
+        GuiItem _whitePanel = ItemBuilder.from(whitePanel).asGuiItem(event -> event.setCancelled(true));
+        GuiItem _iron_bars = ItemBuilder.from(iron_bars).asGuiItem(event -> event.setCancelled(true));
+        GuiItem _filler_green = ItemBuilder.from(filler_green).asGuiItem(event -> event.setCancelled(true));
 
+        gui.setItem(1,1,_TownIcon);
+        gui.setItem(2,1,_whitePanel);
+        gui.setItem(3,1,_whitePanel);
+        gui.setItem(4,1,_whitePanel);
+        gui.setItem(5,1,_whitePanel);
+        gui.setItem(6,2,_whitePanel);
+        gui.setItem(6,3,_whitePanel);
+        gui.setItem(6,4,_whitePanel);
+        gui.setItem(6,5,_whitePanel);
+        gui.setItem(6,6,_whitePanel);
+        gui.setItem(6,9,_whitePanel);
+
+        GuiItem _pannel;
+        GuiItem _bottompannel;
+
+        for(int i = 2; i < 10; i++){
+            if(townLevel.getTownLevel() > (i-2)){
+                ItemStack green_level = HeadUtils.getCustomLoreItem(Material.GREEN_STAINED_GLASS_PANE,"Level " + (i-2));
+                _pannel = ItemBuilder.from(green_level).asGuiItem(event -> event.setCancelled(true));
+                _bottompannel = _filler_green;
+            }
+            else if(townLevel.getTownLevel() == i-2){
+                _pannel = _iron_bars;
+                ItemStack upgradeTownLevel = HeadUtils.getCustomLoreItem(Material.ORANGE_STAINED_GLASS_PANE, Lang.GUI_TOWN_LEVEL_UP.get());
+                HeadUtils.setLore(upgradeTownLevel,
+                        Lang.GUI_TOWN_LEVEL_UP_DESC1.get(townLevel.getTownLevel()),
+                        Lang.GUI_TOWN_LEVEL_UP_DESC2.get(townLevel.getTownLevel()+1, townLevel.getMoneyRequiredTownLevel())
+                );
+                _bottompannel = ItemBuilder.from(upgradeTownLevel).asGuiItem(event -> {
+                    event.setCancelled(true);
+                    upgradeTown(player,townData);
+                    OpenTownLevel(player);
+                });
+            }
+            else{
+                _pannel = _iron_bars;
+                ItemStack red_level = HeadUtils.getCustomLoreItem(Material.RED_STAINED_GLASS_PANE,"Town level " + (i-2) + " locked");
+                _bottompannel = ItemBuilder.from(red_level).asGuiItem(event -> event.setCancelled(true));
+            }
+            gui.setItem(1,i, _pannel);
+            gui.setItem(2,i, _pannel);
+            gui.setItem(3,i, _pannel);
+            gui.setItem(4,i, _pannel);
+            gui.setItem(5,i, _bottompannel);
+        }
+
+        for(TownUpgrade townUpgrade : UpgradeStorage.getUpgrades()){
+            GuiItem _guiItem = GuiUtil.makeUpgradeGuiItem(player,townUpgrade,townData);
+            gui.setItem(townUpgrade.getRow() + 1,townUpgrade.getCol() + 1,_guiItem);
+        }
 
 
         gui.setItem(1,5, _TownIcon);
-        gui.setItem(2,3, _upgradeTownLevel);
         gui.setItem(2,5, _upgradeChunkCap);
         gui.setItem(2,7, _upgradePlayerCap);
-        gui.setItem(3,1, CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(6,1, CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
 
         gui.open(player);
 

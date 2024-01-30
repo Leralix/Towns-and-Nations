@@ -7,7 +7,7 @@ public class StringUtil {
     public static boolean isValidColorCode(String colorCode) {
         String regexWith0x = "^0x[0-9A-Fa-f]{6}$";
         String regexWithoutOx = "^[0-9A-Fa-f]{6}$";
-
+ 
         return (colorCode.matches(regexWith0x) || colorCode.matches(regexWithoutOx));
     }
 
