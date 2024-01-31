@@ -1,5 +1,6 @@
 package org.tan.TownsAndNations.DataClass;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,11 +12,11 @@ public class TownUpgrade {
     private int maxLevel;
     private List<Integer> cost;
     private List<String> prerequisites;
-    private Map<String, Integer> benefits;
+    private HashMap<String, Integer> benefits;
 
 
 
-    public TownUpgrade(String name, int col, int row, String materialCode, int maxLevel, List<Integer> cost, List<String> prerequisites, Map<String, Integer> benefits) {
+    public TownUpgrade(String name, int col, int row, String materialCode, int maxLevel, List<Integer> cost, List<String> prerequisites, HashMap<String, Integer> benefits) {
         this.name = name;
         this.col = col;
         this.row = row;
@@ -45,7 +46,7 @@ public class TownUpgrade {
         return prerequisites;
     }
 
-    public Map<String, Integer> getBenefits() {
+    public HashMap<String, Integer> getBenefits() {
         return benefits;
     }
 

@@ -1207,7 +1207,6 @@ public class GuiManager2 {
 
         ItemStack whitePanel = HeadUtils.getCustomLoreItem(Material.WHITE_STAINED_GLASS_PANE,"");
         ItemStack iron_bars = HeadUtils.getCustomLoreItem(Material.IRON_BARS,"Level locked");
-        ItemStack filler_green = HeadUtils.getCustomLoreItem(Material.LIME_STAINED_GLASS_PANE,"");
 
 
 
@@ -1269,7 +1268,7 @@ public class GuiManager2 {
 
         GuiItem _whitePanel = ItemBuilder.from(whitePanel).asGuiItem(event -> event.setCancelled(true));
         GuiItem _iron_bars = ItemBuilder.from(iron_bars).asGuiItem(event -> event.setCancelled(true));
-        GuiItem _filler_green = ItemBuilder.from(filler_green).asGuiItem(event -> event.setCancelled(true));
+        ItemStack green_level = HeadUtils.getCustomLoreItem(Material.GREEN_STAINED_GLASS_PANE,"");
 
         gui.setItem(1,1,_TownIcon);
         gui.setItem(2,1,_whitePanel);
@@ -1288,9 +1287,10 @@ public class GuiManager2 {
 
         for(int i = 2; i < 10; i++){
             if(townLevel.getTownLevel() > (i-2)){
-                ItemStack green_level = HeadUtils.getCustomLoreItem(Material.GREEN_STAINED_GLASS_PANE,"Level " + (i-2));
+                ItemStack filler_green = HeadUtils.getCustomLoreItem(Material.LIME_STAINED_GLASS_PANE,"Level " + (i-2));
+
                 _pannel = ItemBuilder.from(green_level).asGuiItem(event -> event.setCancelled(true));
-                _bottompannel = _filler_green;
+                _bottompannel = ItemBuilder.from(filler_green).asGuiItem(event -> event.setCancelled(true));
             }
             else if(townLevel.getTownLevel() == i-2){
                 _pannel = _iron_bars;
@@ -1319,13 +1319,12 @@ public class GuiManager2 {
 
         for(TownUpgrade townUpgrade : UpgradeStorage.getUpgrades()){
             GuiItem _guiItem = GuiUtil.makeUpgradeGuiItem(player,townUpgrade,townData);
-            gui.setItem(townUpgrade.getRow() + 1,townUpgrade.getCol(),_guiItem);
+            gui.setItem(townUpgrade.getRow(),townUpgrade.getCol() + 1,_guiItem);
         }
 
 
-        gui.setItem(1,5, _TownIcon);
-        gui.setItem(2,5, _upgradeChunkCap);
-        gui.setItem(2,7, _upgradePlayerCap);
+        gui.setItem(6,2, _upgradeChunkCap);
+        gui.setItem(6,3, _upgradePlayerCap);
         gui.setItem(6,1, CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
 
         gui.open(player);

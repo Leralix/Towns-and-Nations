@@ -29,7 +29,7 @@ public class UpgradeStorage {
                 List<String> prerequisites = upgradesSection.getStringList(key + ".prerequisites");
 
                 ConfigurationSection benefitsSection = upgradesSection.getConfigurationSection(key + ".benefits");
-                Map<String, Integer> benefits = new HashMap<>();
+                HashMap<String, Integer> benefits = new HashMap<>();
                 if (benefitsSection != null) {
                     benefits = new HashMap<>();
                     for (String benefitKey : benefitsSection.getKeys(false)) {
