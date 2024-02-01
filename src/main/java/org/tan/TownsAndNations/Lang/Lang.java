@@ -200,9 +200,12 @@ public enum Lang {
     GUI_TOWN_LEVEL_UP_UNI_DESC1,
     GUI_TOWN_LEVEL_UP_UNI_DESC2,
     GUI_TOWN_LEVEL_UP_UNI_DESC3,
-    GUI_TOWN_LEVEL_UP_UNI_DESC3_1,
-    GUI_TOWN_LEVEL_UP_UNI_DESC3_2,
     GUI_TOWN_LEVEL_UP_UNI_DESC4,
+    GUI_TOWN_LEVEL_UP_UNI_DESC4_1,
+    GUI_TOWN_LEVEL_UP_UNI_DESC4_2,
+    GUI_TOWN_LEVEL_UP_UNI_DESC5,
+    TOWN_LEVEL_BONUS_RECAP,
+    TOWN_UPGRADE_MAX_LEVEL,
     GUI_TOWN_SETTINGS_LEAVE_TOWN,
     GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1,
     GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2,
@@ -419,11 +422,11 @@ public enum Lang {
         if (translation != null) {
             translation = ChatColor.translateAlternateColorCodes('§', translation);
             for (int i = 0; i < placeholders.length; i++) {
-                translation = translation.replace("{" + i + "}", placeholders[i].toString());
+                String val = placeholders[i] == null ? "null" : placeholders[i].toString();
+
+                translation = translation.replace("{" + i + "}",val);
             }
         }
         return translation;
     }
-
-
 }

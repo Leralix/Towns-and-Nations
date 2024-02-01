@@ -1201,70 +1201,10 @@ public class GuiManager2 {
         TownData townData = TownDataStorage.get(player);
         TownLevel townLevel = townData.getTownLevel();
 
-        ItemStack TownIcon = HeadUtils.getTownIcon(PlayerDataStorage.get(player.getUniqueId().toString()).getTownId());
-        ItemStack upgradeChunkCap = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
-        ItemStack upgradePlayerCap = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==");
-
         ItemStack whitePanel = HeadUtils.getCustomLoreItem(Material.WHITE_STAINED_GLASS_PANE,"");
         ItemStack iron_bars = HeadUtils.getCustomLoreItem(Material.IRON_BARS,"Level locked");
 
-
-
-        HeadUtils.setLore(upgradeChunkCap,
-                Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC1.get(townLevel.getChunkCapLevel()),
-                Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC2.get(townLevel.getChunkCapLevel()+1,townLevel.getMoneyRequiredChunkCap()),
-                Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC3.get(townLevel.getMultiplierChunkCap()),
-                Lang.GUI_TOWN_LEVEL_UP_CHUNK_CAP_DESC4.get(townLevel.getChunkCap())
-        );
-        HeadUtils.setLore(upgradePlayerCap,
-                Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC1.get(townLevel.getPlayerCapLevel()),
-                Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC2.get(townLevel.getPlayerCapLevel()+1,townLevel.getMoneyRequiredPlayerCap()),
-                Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC3.get(townLevel.getMultiplierPlayerCap()),
-                Lang.GUI_TOWN_LEVEL_UP_PLAYER_CAP_DESC4.get(townLevel.getPlayerCap())
-        );
-
-
-        GuiItem _TownIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> event.setCancelled(true));
-
-        GuiItem _upgradeChunkCap = ItemBuilder.from(upgradeChunkCap).asGuiItem(event -> {
-            event.setCancelled(true);
-            if(!playerStat.hasPermission(TownRolePermission.UPGRADE_TOWN)){
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-                SoundUtil.playSound(player,NOT_ALLOWED);
-                return;
-            }
-            if(townData.getBalance() > townLevel.getMoneyRequiredChunkCap()){
-                townData.removeToBalance(townLevel.getMoneyRequiredChunkCap());
-                townLevel.chunkCapLevelUp();
-                if(isSqlEnable())
-                    TownDataStorage.updateTownUpgradeFromDatabase(townData.getID(),townLevel);
-                SoundUtil.playSound(player,LEVEL_UP);
-                player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());
-                OpenTownLevel(player);
-            }
-            else{
-                player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
-                SoundUtil.playSound(player,NOT_ALLOWED);
-            }
-        });
-        GuiItem _upgradePlayerCap = ItemBuilder.from(upgradePlayerCap).asGuiItem(event -> {
-            event.setCancelled(true);
-            if(!playerStat.hasPermission(TownRolePermission.UPGRADE_TOWN)){
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-                SoundUtil.playSound(player,NOT_ALLOWED);
-                return;
-            }
-            if (townData.getBalance() > townLevel.getMoneyRequiredPlayerCap()) {
-                townData.removeToBalance(townLevel.getMoneyRequiredPlayerCap());
-                townLevel.PlayerCapLevelUp();
-                SoundUtil.playSound(player,LEVEL_UP);
-                player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());
-                OpenTownLevel(player);
-            } else {
-                player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
-                SoundUtil.playSound(player,NOT_ALLOWED);
-            }
-        });
+        GuiItem _TownIcon = GuiUtil.townUpgradeResume(townData);
 
         GuiItem _whitePanel = ItemBuilder.from(whitePanel).asGuiItem(event -> event.setCancelled(true));
         GuiItem _iron_bars = ItemBuilder.from(iron_bars).asGuiItem(event -> event.setCancelled(true));
@@ -1322,9 +1262,6 @@ public class GuiManager2 {
             gui.setItem(townUpgrade.getRow(),townUpgrade.getCol() + 1,_guiItem);
         }
 
-
-        gui.setItem(6,2, _upgradeChunkCap);
-        gui.setItem(6,3, _upgradePlayerCap);
         gui.setItem(6,1, CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
 
         gui.open(player);

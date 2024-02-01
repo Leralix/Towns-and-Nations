@@ -4,13 +4,12 @@ import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.UpgradeStorage;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 import static org.tan.TownsAndNations.storage.UpgradeStorage.loadIntoMap;
 
 public class TownLevel {
@@ -23,15 +22,18 @@ public class TownLevel {
 
     //for json
     public TownLevel(){
+        //Will soon be deleted
         this.townLevel = 1;
         this.playerCapLevel = 0;
         this.chunkCapUpgrade = 0;
+        //Will soon be deleted
 
         levelMap = new HashMap<>();
         levelMap.put("townLevel",1);
         loadIntoMap(levelMap);
+        levelMap.put("CITY_HALL",1);
     }
-    //for SQL
+    //for SQL, need to be update to the new system
     public TownLevel(int townLevel, int playerCapLevel, int chunkCapUpgrade, boolean townSpawnUnlocked){
         this.townLevel = townLevel;
         this.playerCapLevel = playerCapLevel;
@@ -39,8 +41,17 @@ public class TownLevel {
     }
 
     public int getUpgradeLevel(String upgradeName){
-        return levelMap.get(upgradeName);
+        if (upgradeName == null) {
+            return 0; // Retourne 0 si upgradeName est null
+        }
+        Integer level = levelMap.get(upgradeName);
+        if (level == null) {
+            levelMap.put(upgradeName, 0); // Initialise la valeur si elle n'existe pas
+            return 0;
+        }
+        return level; // Retourne la valeur existante
     }
+
 
     public int getTownLevel() {
         return this.townLevel;
@@ -49,62 +60,35 @@ public class TownLevel {
         this.townLevel = this.townLevel + 1;
     }
 
+    //Will soon be deleted
     public int getPlayerCapLevel() {
         return this.playerCapLevel;
     }
-    public void PlayerCapLevelUp(){
-        this.playerCapLevel = this.playerCapLevel + 1;
-    }
-    public int getPlayerCap() {
-        FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
-        int basePlayerCap = config.getInt("TownStartingMembersCap");
-        int multiplierPlayerCap = config.getInt("UpgradeMembers");
-
-        return basePlayerCap + getPlayerCapLevel() * multiplierPlayerCap;
-    }
-
-
+    //Will soon be deleted
     public int getChunkCapLevel() {
         return this.chunkCapUpgrade;
     }
-    public void chunkCapLevelUp(){
-        this.chunkCapUpgrade = this.chunkCapUpgrade + 1;
+
+    public int getPlayerCap() {
+        return getTotalBenefits().get("PLAYER_CAP");
     }
 
     public int getChunkCap() {
-        FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
-        int baseChunkCap = config.getInt("TownStartingChunksCap");
-        return baseChunkCap + getChunkCapLevel() * getMultiplierChunkCap();
+        return getTotalBenefits().get("CHUNK_CAP");
     }
 
-    public int getMultiplierPlayerCap() {
-        FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
-        int multiplier = config.getInt("UpgradeMembers");
-        return multiplier;
-    }
-
-    public int getMultiplierChunkCap() {
-        FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
-        int multiplier = config.getInt("TownUpgradeChunk");
-        return multiplier;
+    public boolean isTownSpawnUnlocked() {
+        return getTotalBenefits().get("TOWN_SPAWN_UNLOCKED") > 1;
     }
 
 
-    public void setChunkCapLevel(int chunkCapUpgrade) {
-        this.chunkCapUpgrade = chunkCapUpgrade;
-    }
+
 
     public int getMoneyRequiredTownLevel() {
         return getRequiredMoney("townLevelUpRequirement.yml", "TownExpression", getTownLevel());
     }
 
-    public int getMoneyRequiredPlayerCap() {
-        return getRequiredMoney("townLevelUpRequirement.yml", "expression", getPlayerCapLevel());
-    }
 
-    public int getMoneyRequiredChunkCap() {
-        return getRequiredMoney("townLevelUpRequirement.yml", "expression", getChunkCapLevel());
-    }
 
     private int getRequiredMoney(String configFileName, String expressionKey, int level) {
         FileConfiguration fg = ConfigUtil.getCustomConfig(configFileName);
@@ -132,4 +116,27 @@ public class TownLevel {
     public void levelUp(TownUpgrade townUpgrade) {
         this.levelMap.put(townUpgrade.getName(), this.levelMap.get(townUpgrade.getName()) + 1);
     }
+
+    public Map<String, Integer> getTotalBenefits() {
+        Map<String, Integer> benefits = new HashMap<>();
+
+        for(TownUpgrade townUpgrade : UpgradeStorage.getUpgrades()){
+
+            String name = townUpgrade.getName();
+            HashMap<String, Integer> map = townUpgrade.getBenefits();
+
+            for(final Map.Entry<String, Integer> entry : map.entrySet()) {
+                String benefitName = entry.getKey();
+                Integer benefitValue = entry.getValue() * this.getUpgradeLevel(name);
+
+                if (benefits.containsKey(benefitName)) {
+                    benefits.put(benefitName, benefits.get(benefitName) + benefitValue);
+                } else {
+                    benefits.put(benefitName, benefitValue);
+                }
+            }
+        }
+        return benefits;
+    }
+
 }

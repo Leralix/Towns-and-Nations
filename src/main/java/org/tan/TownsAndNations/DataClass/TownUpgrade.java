@@ -11,12 +11,12 @@ public class TownUpgrade {
     private int row;
     private int maxLevel;
     private List<Integer> cost;
-    private List<String> prerequisites;
+    private HashMap<String, Integer> prerequisites;
     private HashMap<String, Integer> benefits;
 
 
 
-    public TownUpgrade(String name, int col, int row, String materialCode, int maxLevel, List<Integer> cost, List<String> prerequisites, HashMap<String, Integer> benefits) {
+    public TownUpgrade(String name, int col, int row, String materialCode, int maxLevel, List<Integer> cost, HashMap<String, Integer> prerequisites, HashMap<String, Integer> benefits) {
         this.name = name;
         this.col = col;
         this.row = row;
@@ -33,6 +33,8 @@ public class TownUpgrade {
     }
 
     public String getMaterialCode() {
+        if(materialCode == null)
+            return "BEDROCK";
         return materialCode;
     }
 
@@ -42,7 +44,7 @@ public class TownUpgrade {
         return cost.get(level);
     }
 
-    public List<String> getPrerequisites() {
+    public HashMap<String, Integer> getPrerequisites() {
         return prerequisites;
     }
 

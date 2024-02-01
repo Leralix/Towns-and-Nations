@@ -10,6 +10,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tan.TownsAndNations.API.tanAPI;
 import org.tan.TownsAndNations.Bstats.Metrics;
+import org.tan.TownsAndNations.Lang.DynamicLang;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.Tasks.DailyTasks;
 import org.tan.TownsAndNations.Tasks.SaveStats;
@@ -48,6 +49,7 @@ public final class TownsAndNations extends JavaPlugin {
     private static boolean allowColorCodes = false;
     private static boolean sqlEnable = false;
     private static boolean dynmapAddonLoaded = true;
+    private static boolean autoUpdateLangFiles = true;
 
     @Override
     public void onEnable() {
@@ -61,11 +63,18 @@ public final class TownsAndNations extends JavaPlugin {
 
         checkForUpdate();
 
-
         logger.info("[TaN] -Loading Lang");
+
         ConfigUtil.saveResource("lang.yml");
         ConfigUtil.loadCustomConfig("lang.yml");
-        Lang.loadTranslations(ConfigUtil.getCustomConfig("lang.yml").getString("language"));
+        String lang = ConfigUtil.getCustomConfig("lang.yml").getString("language","en");
+
+        if(lang.contains(".yml")){ // Old lang config needed the .yml, not needed anymore
+            lang = lang.substring(0,2);
+        }
+
+        Lang.loadTranslations(lang + ".yml");
+        DynamicLang.loadTranslations(lang + "-upgrades.yml");
 
 
         logger.info("[TaN] -Loading Configs");
@@ -78,6 +87,8 @@ public final class TownsAndNations extends JavaPlugin {
 
         DropChances.load();
         UpgradeStorage.initialize();
+        autoUpdateLangFiles = ConfigUtil.getCustomConfig("config.yml").getBoolean("AutoUpdateLangFiles", true);
+        allowColorCodes = ConfigUtil.getCustomConfig("config.yml").getBoolean("AllowColorInUsername", false);
 
         sqlEnable = ConfigUtil.getCustomConfig("config.yml").getBoolean("EnableCrossServer", false);
         if(sqlEnable){
@@ -92,11 +103,13 @@ public final class TownsAndNations extends JavaPlugin {
             PlayerDataStorage.initialize(host,username,password);
             TownDataStorage.initialize(host,username,password);
         }
+        else{
+            logger.info("[TaN] -Loading Local data");
+            PlayerDataStorage.loadStats();
+            TownDataStorage.loadStats();
+            ClaimedChunkStorage.loadStats();
+        }
 
-        logger.info("[TaN] -Loading Stats");
-        PlayerDataStorage.loadStats();
-        TownDataStorage.loadStats();
-        ClaimedChunkStorage.loadStats();
 
         logger.info("[TaN] -Loading Scheduled commands");
         SaveStats.startSchedule();
@@ -109,7 +122,6 @@ public final class TownsAndNations extends JavaPlugin {
         Objects.requireNonNull(getCommand("tanadmin")).setExecutor(new AdminCommandManager());
         Objects.requireNonNull(getCommand("tandebug")).setExecutor(new DebugCommandManager());
 
-        logger.info("[TaN] -Initialising Vault API");
         if (setupEconomy()) {
             logger.info("[TaN] -Vault API successfully loaded");
             setupPermissions();
@@ -118,7 +130,6 @@ public final class TownsAndNations extends JavaPlugin {
             logger.info("[TaN] -Vault API not found, using own economy system");
         }
 
-        allowColorCodes = ConfigUtil.getCustomConfig("config.yml").getBoolean("AllowColorInUsername");
 
         UpdateUtil.updateDatabase();
 
@@ -129,9 +140,6 @@ public final class TownsAndNations extends JavaPlugin {
         int pluginId = 20527; // <-- Replace with the id of your plugin!
         Metrics metrics = new Metrics(this, pluginId);
         getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
-
-
-
     }
 
     private boolean setupEconomy() {

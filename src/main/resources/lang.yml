@@ -1,5 +1,4 @@
 #The language of the plugin
 ##Language available: en,fr,ge,pl.
-##Syntax: <languageCode>.yml
 ##Help us translate the plugin in your language! Reach us on our discord !
-language: en.yml
+language: en

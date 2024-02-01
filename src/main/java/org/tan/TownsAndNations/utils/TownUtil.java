@@ -207,6 +207,11 @@ public class TownUtil {
             SoundUtil.playSound(player,NOT_ALLOWED);
             return;
         }
+        if(townLevel.getUpgradeLevel(townUpgrade.getName()) >= townUpgrade.getMaxLevel()){
+            player.sendMessage(getTANString() + Lang.TOWN_UPGRADE_MAX_LEVEL.get());
+            SoundUtil.playSound(player,NOT_ALLOWED);
+            return;
+        }
 
         townData.removeToBalance(townLevel.getMoneyRequiredTownLevel());
         townLevel.levelUp(townUpgrade);

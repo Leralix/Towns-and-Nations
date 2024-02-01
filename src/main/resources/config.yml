@@ -104,3 +104,7 @@ SQL:
   username: root
   #password of the database
   password: password
+
+#Auto Update lang files
+#Remove it if you want to modify translations, but keep in mind that it will not update automatically anymore
+autoUpdateLangFiles: true

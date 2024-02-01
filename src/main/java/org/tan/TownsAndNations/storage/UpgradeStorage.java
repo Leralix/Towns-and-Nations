@@ -26,12 +26,19 @@ public class UpgradeStorage {
                 String itemCode = upgradesSection.getString(key + ".itemCode");
                 int maxLevel = upgradesSection.getInt(key + ".maxLevel");
                 List<Integer> cost = upgradesSection.getIntegerList(key + ".cost");
-                List<String> prerequisites = upgradesSection.getStringList(key + ".prerequisites");
+
+                // Modification here for prerequisites
+                ConfigurationSection prerequisiteSection = upgradesSection.getConfigurationSection(key + ".prerequisites");
+                HashMap<String, Integer> prerequisites = new HashMap<>();
+                if (prerequisiteSection != null) {
+                    for (String prerequisiteKey : prerequisiteSection.getKeys(false)) {
+                        prerequisites.put(prerequisiteKey, prerequisiteSection.getInt(prerequisiteKey));
+                    }
+                }
 
                 ConfigurationSection benefitsSection = upgradesSection.getConfigurationSection(key + ".benefits");
                 HashMap<String, Integer> benefits = new HashMap<>();
                 if (benefitsSection != null) {
-                    benefits = new HashMap<>();
                     for (String benefitKey : benefitsSection.getKeys(false)) {
                         benefits.put(benefitKey, benefitsSection.getInt(benefitKey));
                     }
