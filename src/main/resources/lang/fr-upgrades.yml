@@ -1,12 +1,12 @@
 ##Ugrades
 #Names
 CITY_HALL: "Hôtel de ville"
-BARRACKS: "Barracks"
+BARRACKS: "Casernes"
 ADMINISTRATION: "Administration"
-WATCHTOWER: "Watchtower"
-PORTAL: "Portal"
+WATCHTOWER: "Tour de guet"
+PORTAL: "Téléporteur"
 #Prerequisites
-TOWN_LEVEL: "Town level"
+TOWN_LEVEL: "Niveau de ville"
 #Benefits
 PLAYER_CAP: "Player cap"
 CHUNK_CAP: "Chunk cap"

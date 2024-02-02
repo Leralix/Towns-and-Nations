@@ -178,11 +178,11 @@ public class GuiManager2 {
                        return;
                     }
                     if(!townData.isRecruiting()){
-                        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_TOWN_NOT_RECRUITING.get());
+                        player.sendMessage(getTANString() + Lang.PLAYER_TOWN_NOT_RECRUITING.get());
                         return;
                     }
                     townData.addPlayerJoinRequest(player);
-                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(townData.getName()));
+                    player.sendMessage(getTANString() + Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(townData.getName()));
                     OpenSearchTownMenu(player);
                 }
 
@@ -191,7 +191,7 @@ public class GuiManager2 {
                         return;
                     }
                     townData.removePlayerJoinRequest(player);
-                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get());
+                    player.sendMessage(getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get());
                     OpenSearchTownMenu(player);
                 }
 
@@ -254,13 +254,13 @@ public class GuiManager2 {
 
             Material itemMaterial = event.getCursor().getType();
             if(itemMaterial == Material.AIR || itemMaterial == Material.LEGACY_AIR){
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.get());
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.get());
             }
 
             else {
                 playerTown.setTownIconMaterialCode(itemMaterial);
                 OpenTownMenuHaveTown(player);
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get());
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get());
             }
         });
         GuiItem _goldIcon = ItemBuilder.from(GoldIcon).asGuiItem(event -> {
@@ -431,7 +431,7 @@ public class GuiManager2 {
                 if(event.isLeftClick()){
 
                     if(!playerStat.hasPermission(TownRolePermission.INVITE_PLAYER)){
-                        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                        player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                         return;
                     }
                     if(!town.canAddMorePlayer()){
@@ -460,17 +460,17 @@ public class GuiManager2 {
                         allTown.removePlayerJoinRequest(playerIterateData.getUuid());
                     }
 
-                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get());
+                    player.sendMessage(getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get());
 
                 }
                 if(event.isRightClick()){
                     if(!playerStat.hasPermission(TownRolePermission.INVITE_PLAYER)){
-                        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                        player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                         return;
                     }
 
                     town.removePlayerJoinRequest(playerIterateData.getUuid());
-                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get());
+                    player.sendMessage(getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get());
                 }
                 OpenTownMemberList(player);
             });
@@ -500,11 +500,11 @@ public class GuiManager2 {
             GuiItem _townRankItemStack = ItemBuilder.from(townRankItemStack).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(!playerStat.hasPermission(TownRolePermission.MANAGE_RANKS)) {
-                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                    player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                     return;
                 }
                 if(town.getRank(playerStat).getLevel() >= townRank.getLevel() && !town.isLeader(player)){
-                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
+                    player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
                     return;
                 }
                 OpenTownMenuRoleManager(player,townRank.getName());
@@ -528,7 +528,7 @@ public class GuiManager2 {
                 PlayerChatListenerStorage.addPlayer(RANK_CREATION,player);
             }
             else
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
 
 
         });
@@ -613,12 +613,12 @@ public class GuiManager2 {
             event.getCursor();
             Material itemMaterial = event.getCursor().getData().getItemType();
             if(itemMaterial == Material.AIR || itemMaterial == Material.LEGACY_AIR){
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.get());
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.get());
             }
             else {
                 townRank.setRankIconName(town.getID(), itemMaterial.toString());
                 OpenTownMenuRoleManager(player, roleName);
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get());
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get());
             }
             event.setCancelled(true);
         });
@@ -639,7 +639,7 @@ public class GuiManager2 {
         GuiItem _renameRank = ItemBuilder.from(renameRank).asGuiItem(event -> {
 
             player.closeInventory();
-            player.sendMessage(ChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get());
+            player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get());
 
             HashMap<MessageKey, String> newMap = new HashMap<>();
             newMap.put(RANK_NAME,roleName);
@@ -653,7 +653,7 @@ public class GuiManager2 {
         });
         GuiItem _makeRankDefault = ItemBuilder.from(makeRankDefault).asGuiItem(event -> {
             if(isDefaultRank){
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT.get());
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT.get());
             }
             else{
                 town.setTownDefaultRank(roleName);
@@ -664,7 +664,7 @@ public class GuiManager2 {
 
         GuiItem _removeRank = ItemBuilder.from(removeRank).asGuiItem(event -> {
             if(townRank.getNumberOfPlayer(town.getID()) != 0){
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY.get());
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY.get());
                 event.setCancelled(true);
             }
             else{
@@ -681,7 +681,7 @@ public class GuiManager2 {
             int amountToRemove = event.isShiftClick() && currentSalary >= 10 ? 10 : 1;
 
             if (currentSalary <= 0) {
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER.get());
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER.get());
                 return;
             }
 
@@ -753,7 +753,7 @@ public class GuiManager2 {
                 event.setCancelled(true);
 
                 if(town.getRank(player).getLevel() >= town.getRank(otherPlayerData).getLevel() && !town.isLeader(player)){
-                    player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
+                    player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
                     return;
                 }
 
@@ -985,7 +985,7 @@ public class GuiManager2 {
             event.setCancelled(true);
         });
         GuiItem _donation = ItemBuilder.from(donation).asGuiItem(event -> {
-            player.sendMessage(ChatUtils.getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_TOWN_DONATION.get());
+            player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_TOWN_DONATION.get());
             PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.DONATION,player);
             player.closeInventory();
             event.setCancelled(true);
@@ -999,7 +999,7 @@ public class GuiManager2 {
         GuiItem _lessTax = ItemBuilder.from(lowerTax).asGuiItem(event -> {
             event.setCancelled(true);
             if(!playerStat.hasPermission(MANAGE_TAXES)) {
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
 
@@ -1007,7 +1007,7 @@ public class GuiManager2 {
             int amountToRemove = event.isShiftClick() && currentTax >= 10 ? 10 : 1;
 
             if(currentTax <= 1){
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get());
+                player.sendMessage(getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get());
                 return;
             }
             SoundUtil.playSound(player, REMOVE);
@@ -1023,7 +1023,7 @@ public class GuiManager2 {
             event.setCancelled(true);
 
             if(!playerStat.hasPermission(MANAGE_TAXES)){
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
 
@@ -1327,12 +1327,12 @@ public class GuiManager2 {
             event.setCancelled(true);
             if (playerStat.isTownLeader()) {
                 SoundUtil.playSound(player, NOT_ALLOWED);
-                player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.get());
+                player.sendMessage(getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.get());
             } else {
                 playerTown.removePlayer(player);
                 playerTown.getRank(playerStat.getTownRankID()).removePlayer(playerStat.getUuid());
 
-                player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_LEFT_THE_TOWN.get());
+                player.sendMessage(getTANString() + Lang.CHAT_PLAYER_LEFT_THE_TOWN.get());
                 playerStat.leaveTown();
                 playerTown.broadCastMessageWithSound(Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(playerStat.getName()),
                         BAD);
@@ -1342,14 +1342,14 @@ public class GuiManager2 {
         GuiItem _deleteTown = ItemBuilder.from(deleteTown).asGuiItem(event -> {
             event.setCancelled(true);
             if (!playerStat.isTownLeader()) {
-                player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.get());
+                player.sendMessage(getTANString() + Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.get());
                 return;
             }
             deleteTown(playerTown);
 
             player.closeInventory();
             SoundUtil.playSound(player,GOOD);
-            player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get());
+            player.sendMessage(getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get());
         });
 
         GuiItem _changeOwnershipTown = ItemBuilder.from(changeOwnershipTown).asGuiItem(event -> {
@@ -1359,13 +1359,13 @@ public class GuiManager2 {
             if(playerStat.isTownLeader())
                 OpenTownChangeOwnershipPlayerSelect(player, playerTown);
             else
-                player.sendMessage(ChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
+                player.sendMessage(getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
 
         });
 
         GuiItem _changeMessage = ItemBuilder.from(changeMessage).asGuiItem(event -> {
             player.closeInventory();
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.get());
+            player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.get());
             Map<MessageKey, String> data = new HashMap<>();
             data.put(MessageKey.TOWN_ID,playerTown.getID());
             PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CHANGE_DESCRIPTION,player,data);
@@ -1382,12 +1382,12 @@ public class GuiManager2 {
             event.setCancelled(true);
 
             if(playerTown.getBalance() < changeTownNameCost){
-                player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
+                player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
                 return;
             }
 
             if(playerStat.isTownLeader()){
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.get());
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.get());
                 Map<MessageKey, String> data = new HashMap<>();
                 data.put(MessageKey.TOWN_ID,playerTown.getID());
                 data.put(MessageKey.COST,Integer.toString(changeTownNameCost));
@@ -1395,21 +1395,21 @@ public class GuiManager2 {
                 player.closeInventory();
             }
             else
-                player.sendMessage(ChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
+                player.sendMessage(getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
         });
 
         GuiItem _changeChunkColor = ItemBuilder.from(changeChunkColor).asGuiItem(event -> {
             event.setCancelled(true);
 
             if(playerStat.isTownLeader()){
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT.get());
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT.get());
                 Map<MessageKey, String> data = new HashMap<>();
                 data.put(MessageKey.TOWN_ID,playerTown.getID());
                 PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CHANGE_CHUNK_COLOR,player,data);
                 player.closeInventory();
             }
             else
-                player.sendMessage(ChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
+                player.sendMessage(getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
         });
 
 
@@ -1447,7 +1447,7 @@ public class GuiManager2 {
                 event.setCancelled(true);
 
                 townData.setUuidLeader(townPlayer.getUniqueId().toString());
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(townPlayer.getName()));
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(townPlayer.getName()));
                 OpenTownMenuHaveTown(player);
             });
 
@@ -1586,7 +1586,7 @@ public class GuiManager2 {
         GuiItem _add = ItemBuilder.from(addTownButton).asGuiItem(event -> {
             event.setCancelled(true);
             if(!playerStat.hasPermission(TownRolePermission.MANAGE_TOWN_RELATION)){
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
             OpenTownRelationModification(player,Action.ADD,relation);
@@ -1594,7 +1594,7 @@ public class GuiManager2 {
         GuiItem _remove = ItemBuilder.from(removeTownButton).asGuiItem(event -> {
             event.setCancelled(true);
             if(!playerStat.hasPermission(TownRolePermission.MANAGE_TOWN_RELATION)){
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
             OpenTownRelationModification(player,Action.REMOVE,relation);
@@ -1655,7 +1655,7 @@ public class GuiManager2 {
                         OfflinePlayer otherTownLeader = Bukkit.getOfflinePlayer(UUID.fromString(otherTown.getUuidLeader()));
 
                         if (!otherTownLeader.isOnline()) {
-                            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ONLINE.get());
+                            player.sendMessage(getTANString() + Lang.PLAYER_NOT_ONLINE.get());
                             return;
                         }
                         Player otherTownLeaderOnline = otherTownLeader.getPlayer();assert otherTownLeaderOnline != null;
@@ -1665,7 +1665,7 @@ public class GuiManager2 {
                         otherTownLeaderOnline.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(playerTown.getName(),relation.getColor() + relation.getName()));
                         ChatUtils.sendClickableCommand(otherTownLeaderOnline,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + playerTown.getID());
 
-                        player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS.get(otherTownLeaderOnline.getName()));
+                        player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS.get(otherTownLeaderOnline.getName()));
 
                         player.closeInventory();
                     }
@@ -1696,7 +1696,7 @@ public class GuiManager2 {
                     event.setCancelled(true);
 
                     if(relation.getNeedsConfirmationToEnd()){ //Can only be better relations
-                        player.sendMessage(ChatUtils.getTANString() + "Sent to the leader of the other town");
+                        player.sendMessage(getTANString() + "Sent to the leader of the other town");
 
                         Player otherTownLeader = Bukkit.getPlayer(UUID.fromString(otherTown.getUuidLeader()));
 
@@ -1801,7 +1801,7 @@ public class GuiManager2 {
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);
             if (!playerStat.hasPermission(TownRolePermission.MANAGE_CLAIM_SETTINGS)) {
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
             action.accept(null);

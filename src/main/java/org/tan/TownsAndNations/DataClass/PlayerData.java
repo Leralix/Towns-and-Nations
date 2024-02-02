@@ -12,14 +12,14 @@ public class PlayerData {
 
     private final String UUID;
     private String PlayerName;
-    private Integer balance;
+    private Integer Balance;
     private String TownId;
     private String TownRank;
 
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
         this.PlayerName = player.getName();
-        this.balance = ConfigUtil.getCustomConfig("config.yml").getInt("StartingMoney");;
+        this.Balance = ConfigUtil.getCustomConfig("config.yml").getInt("StartingMoney");;
         this.TownId = null;
         this.TownRank = null;
     }
@@ -27,7 +27,7 @@ public class PlayerData {
     public PlayerData(String UUID, String playerName, int balance, String townId, String townRank) {
         this.UUID = UUID;
         this.PlayerName = playerName;
-        this.balance = balance;
+        this.Balance = balance;
         this.TownId = townId;
         this.TownRank = townRank;
     }
@@ -46,9 +46,9 @@ public class PlayerData {
     }
 
     public int getBalance() {
-        if(balance == null)
-            balance = 0;
-        return balance;
+        if(Balance == null)
+            Balance = 0;
+        return Balance;
     }
     public void setRank(String rankName){
         this.TownRank = rankName;
@@ -56,7 +56,7 @@ public class PlayerData {
             updatePlayerDataInDatabase(this);
     }
     public void setBalance(int balance) {
-        this.balance = balance;
+        this.Balance = balance;
         if(isSqlEnable())
             updatePlayerDataInDatabase(this);
     }
@@ -79,12 +79,12 @@ public class PlayerData {
         return TownDataStorage.get(this).getRank(this.TownRank);
     }
     public void addToBalance(int money) {
-        this.balance = this.balance + money;
+        this.Balance = this.Balance + money;
         if(isSqlEnable())
             updatePlayerDataInDatabase(this);
     }
     public void removeFromBalance(int money) {
-        this.balance = this.balance - money;
+        this.Balance = this.Balance - money;
         if(isSqlEnable())
             updatePlayerDataInDatabase(this);
     }
