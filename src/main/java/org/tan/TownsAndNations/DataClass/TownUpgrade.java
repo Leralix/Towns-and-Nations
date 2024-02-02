@@ -44,6 +44,9 @@ public class TownUpgrade {
         return cost.get(level);
     }
 
+    public Boolean isPrerequisitesNotEmpty() {
+        return !prerequisites.isEmpty();
+    }
     public HashMap<String, Integer> getPrerequisites() {
         return prerequisites;
     }

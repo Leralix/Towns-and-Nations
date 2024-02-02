@@ -3,6 +3,7 @@
 CITY_HALL: "Hôtel de ville"
 BARRACKS: "Barracks"
 ADMINISTRATION: "Administration"
+WATCHTOWER: "Watchtower"
 PORTAL: "Portal"
 #Prerequisites
 TOWN_LEVEL: "Town level"

@@ -44,6 +44,9 @@ public class TownLevel {
         if (upgradeName == null) {
             return 0; // Retourne 0 si upgradeName est null
         }
+        if(upgradeName.equals("TOWN_LEVEL")){
+            return this.townLevel;
+        }
         Integer level = levelMap.get(upgradeName);
         if (level == null) {
             levelMap.put(upgradeName, 0); // Initialise la valeur si elle n'existe pas

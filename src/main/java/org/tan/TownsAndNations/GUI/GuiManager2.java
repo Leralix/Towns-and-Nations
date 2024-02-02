@@ -1227,7 +1227,7 @@ public class GuiManager2 {
 
         for(int i = 2; i < 10; i++){
             if(townLevel.getTownLevel() > (i-2)){
-                ItemStack filler_green = HeadUtils.getCustomLoreItem(Material.LIME_STAINED_GLASS_PANE,"Level " + (i-2));
+                ItemStack filler_green = HeadUtils.getCustomLoreItem(Material.LIME_STAINED_GLASS_PANE,"Level " + (i-1));
 
                 _pannel = ItemBuilder.from(green_level).asGuiItem(event -> event.setCancelled(true));
                 _bottompannel = ItemBuilder.from(filler_green).asGuiItem(event -> event.setCancelled(true));

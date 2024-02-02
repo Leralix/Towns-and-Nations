@@ -10,17 +10,16 @@
 upgrades:
 
   CITY_HALL: #Base city stats, already unlocked when creating a city
-    col: 0
+    col: 0 #Only used for the already unlocked
     row: 2
     itemCode: 'BELL'
     maxLevel: 1
     cost: ['0']
     prerequisites:
-      TOWN_LEVEL: 1
+      TOWN_LEVEL: 0
     benefits:
       PLAYER_CAP: +3
       CHUNK_CAP: +100
-
 
   BARRACKS:
     col: 1
@@ -38,11 +37,22 @@ upgrades:
     row: 3
     itemCode: 'WRITABLE_BOOK'
     maxLevel: 10
-    cost: ['500', '590', '760', '1010', '1340', '1750', '2240', '2810', '3460', '4190', '5000']
+    cost: [ '500', '590', '760', '1010', '1340', '1750', '2240', '2810', '3460', '4190', '5000' ]
     prerequisites:
       TOWN_LEVEL: 1
     benefits:
-      CHUNK_CAP: +50
+      CHUNK_CAP: +25
+
+  WATCHTOWER:
+    col: 2
+    row: 3
+    itemCode: 'OAK_FENCE'
+    maxLevel: 5
+    cost: [ '700', '900', '1300', '1500', '2000']
+    prerequisites:
+      TOWN_LEVEL: 2
+    benefits:
+      CHUNK_CAP: +40
       PLAYER_CAP: -1
 
   PORTAL:
@@ -53,8 +63,7 @@ upgrades:
     cost: ['1500']
     prerequisites:
       TOWN_LEVEL: 3
+      BARRACKS: 1
+      ADMINISTRATION: 2
     benefits:
       UNLOCK_TOWN_SPAWN: +1
-
-
-
