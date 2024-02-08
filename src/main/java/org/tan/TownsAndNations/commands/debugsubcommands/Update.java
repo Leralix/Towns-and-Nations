@@ -4,6 +4,7 @@ package org.tan.TownsAndNations.commands.debugsubcommands;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.Tasks.DailyTasks;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
@@ -41,7 +42,7 @@ public class Update extends SubCommand {
     }
     @Override
     public void perform(Player player, String[] args) {
-        UpdateTownToNewUpgradeSystem();
+        DailyTasks.ClearOldTaxes();
         player.sendMessage(getTANDebugString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
 }

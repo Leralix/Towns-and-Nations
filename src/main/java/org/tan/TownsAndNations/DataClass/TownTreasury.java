@@ -2,9 +2,7 @@ package org.tan.TownsAndNations.DataClass;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 
@@ -13,10 +11,10 @@ public class TownTreasury {
     private int balance;
     private int flatTax;
     LinkedHashMap<String,ArrayList<TransactionHistory>> taxHistory;
-    ArrayList<TransactionHistory> donationHistory;
+    List<TransactionHistory> donationHistory;
     LinkedHashMap<String,ArrayList<TransactionHistory>> salaryHistory;
     LinkedHashMap<String, TransactionHistory> chunkHistory;
-    ArrayList<TransactionHistory> miscellaneousPurchaseHistory;
+    List<TransactionHistory> miscellaneousPurchaseHistory;
 
     public TownTreasury(){
         this.balance = 0;
@@ -43,7 +41,7 @@ public class TownTreasury {
         return taxHistory;
     }
 
-    public ArrayList<TransactionHistory> getDonationHistory(){
+    public List<TransactionHistory> getDonationHistory(){
         //Will fix later
         if(isSqlEnable())
             return null;
@@ -64,7 +62,7 @@ public class TownTreasury {
         return salaryHistory;
     }
 
-    public ArrayList<TransactionHistory> getMiscellaneousPurchaseHistory(){
+    public List<TransactionHistory> getMiscellaneousPurchaseHistory(){
         //Will fix later
         if(isSqlEnable())
             return null;
@@ -166,5 +164,47 @@ public class TownTreasury {
         return latestDonations;
     }
 
+
+
+    public void clearOldTaxHistory(int timeBeforeClearing) {
+        Iterator<Map.Entry<String, ArrayList<TransactionHistory>>> iterator = this.taxHistory.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, ArrayList<TransactionHistory>> entry = iterator.next();
+            LocalDate dateToCheck = LocalDate.parse(entry.getKey(), DateTimeFormatter.ofPattern("yyyy MM dd"));
+            if (dateToCheck.isBefore(LocalDate.now().minusDays(timeBeforeClearing))) {
+                iterator.remove();
+            }
+        }
+    }
+
+
+    public void clearOldChunkHistory(int timeBeforeClearing) {
+        Iterator<Map.Entry<String, TransactionHistory>> iterator = this.chunkHistory.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, TransactionHistory> entry = iterator.next();
+            LocalDate dateToCheck = LocalDate.parse(entry.getKey(), DateTimeFormatter.ofPattern("yyyy MM dd"));
+            if (dateToCheck.isBefore(LocalDate.now().minusDays(timeBeforeClearing))) {
+                iterator.remove();
+            }
+        }
+    }
+
+    public void clearOldMiscHistory(int numberOfMisc) {
+        int maxSize = this.miscellaneousPurchaseHistory.size();
+
+        if(maxSize <= numberOfMisc)
+            return;
+
+        int start = maxSize - numberOfMisc;
+        this.miscellaneousPurchaseHistory =  this.miscellaneousPurchaseHistory.subList(start,maxSize);
+    }
+
+    public void clearOldDonationHistory(int numberOfDonation) {
+        int maxSize = this.donationHistory.size();
+        if(maxSize <= numberOfDonation)
+            return;
+        int start = maxSize - numberOfDonation;
+        this.donationHistory =  this.donationHistory.subList(start,maxSize);
+    }
 
 }

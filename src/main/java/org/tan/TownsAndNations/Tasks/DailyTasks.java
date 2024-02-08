@@ -7,6 +7,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.TownRank;
+import org.tan.TownsAndNations.DataClass.TownTreasury;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
@@ -21,6 +22,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
 
+import static org.tan.TownsAndNations.utils.ArchiveUtil.archiveFiles;
+
 public class DailyTasks {
 
     public static void scheduleMidnightTask() {
@@ -32,8 +35,8 @@ public class DailyTasks {
                     TaxPayment();
                     ChunkPayment();
                     SalaryPayment();
-                    ArchiveUtil.archiveFiles();
-
+                    archiveFiles();
+                    ClearOldTaxes();
                 }
             }
         }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L); // Exécute toutes les 1200 ticks (1 minute en temps Minecraft)
@@ -103,6 +106,24 @@ public class DailyTasks {
                 }
             }
 
+        }
+    }
+
+    public static void ClearOldTaxes() {
+        int timeBeforeClearing = ConfigUtil.getCustomConfig("config.yml").getInt("TimeBeforeClearingTaxHistory",30);
+        int TimeBeforeClearingChunk = ConfigUtil.getCustomConfig("config.yml").getInt("TimeBeforeClearingChunkHistory",30);
+        int timeBeforeClearingDonation = ConfigUtil.getCustomConfig("config.yml").getInt("NumberOfDonationBeforeClearing",100);
+        int timeBeforeClearingMisc = ConfigUtil.getCustomConfig("config.yml").getInt("NumberOfMiscPurchaseBeforeClearing",100);
+
+
+        for (TownData town : TownDataStorage.getTownList().values()) {
+            TownTreasury treasury = town.getTreasury();
+
+            treasury.clearOldTaxHistory(timeBeforeClearing);
+            treasury.clearOldChunkHistory(TimeBeforeClearingChunk);
+
+            treasury.clearOldDonationHistory(timeBeforeClearingDonation);
+            treasury.clearOldMiscHistory(timeBeforeClearingMisc);
         }
     }
 

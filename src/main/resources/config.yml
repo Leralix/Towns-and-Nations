@@ -111,3 +111,13 @@ autoUpdateLangFiles: true
 
 #Remove all villager interactions except the one from the plugin
 removeAllVillagerInteractions: false
+
+##Clearing RAM memory
+#Time before tax history is cleared in days (can be set to 0 to disable the clearing)
+TimeBeforeClearingTaxHistory: 30
+#Time before chunk history is cleared in days (can be set to 0 to disable the clearing)
+TimeBeforeClearingChunkHistory: 30
+#Number of donation before it is cleared (can be set to 0 to disable the clearing)
+NumberOfDonationBeforeClearing: 100
+#Number of Miscellaneous purchase before it is cleared (can be set to 0 to disable the clearing)
+NumberOfMiscPurchaseBeforeClearing: 100
