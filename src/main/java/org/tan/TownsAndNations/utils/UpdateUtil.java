@@ -15,16 +15,25 @@ public class UpdateUtil {
         for(TownData town : TownDataStorage.getTownList().values()) {
 
             for (TownRank townRank : town.getTownRanks()) {
-
                 if (townRank.getRankEnum() == null) {
                     townRank.setRankEnum(town.getID(), TownRankEnum.FIVE);
                 }
             }
-
         }
     }
 
     public static void updateDatabase() {
         //TownDataStorage.UpdateTownDataWithColor();
+    }
+
+    public static void UpdateTownToNewUpgradeSystem() {
+
+        for(TownData town : TownDataStorage.getTownList().values()) {
+            int townLevel = town.getTownLevel().getTownLevel();
+            int townChunkCapLevel = town.getTownLevel().getChunkCapLevel();
+            int townPlayerCap = town.getTownLevel().getPlayerCapLevel();
+
+            town.addToBalance(townLevel * 1200 + townChunkCapLevel * 800 + townPlayerCap * 800);
+        }
     }
 }

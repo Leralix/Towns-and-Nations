@@ -97,11 +97,18 @@ language:
   PLAYER_NOT_ENOUGH_MONEY: "§cYou do not have enough money to perform this action"
   LEADER_NOT_ONLINE: "§cThe town leader is not online"
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cYou do not have enough money. You need {0} more"
-  PLAYER_NEED_1_OR_ABOVE: "§fYou need at least §61✦"
+  PLAYER_NEED_1_OR_ABOVE: "§fYou need at least §1✦"
   TOWN_NOT_ENOUGH_MONEY: "§cThe town do not have enough money to perform this action"
   TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cThe town do not have enough money to perform this action. It need {0}"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Write the name of the town if the chat."
   PLAYER_SEND_MONEY_TO_TOWN: "§fYou sent §6{0}✦§f to the town"
+  #Spawn command
+  SET_SPAWN_COMMAND_DESC: "Set the town spawn"
+  SPAWN_SET_SUCCESS: "Town spawn set"
+  SPAWN_COMMAND_DESC: "Teleport to the town spawn"
+  SPAWN_TELEPORTED: "Teleported to the town spawn"
+  SPAWN_NOT_SET: "§cThe town spawn is not set"
+  SPAWN_NOT_UNLOCKED: "§cThe town spawn is not unlocked"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Neutral"
@@ -286,7 +293,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC: "§f{0}"
   GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME: "§aRename the rank"
   GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION: "§aManage permissions"
-  GUI_TOWN_MEMBERS_ROLE_PAY_TAXES: "§aThis rank pay taxes"
+  GUI_TOWN_MEMBERS_ROLE_PAY_TAXES: "§aNon-aggression pact"
   GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES: "§aThis rank do not pay taxes"
   GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1: "§fLeft click to change"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_X: "Rank {0}"

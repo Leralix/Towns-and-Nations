@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.DataClass;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -46,6 +47,8 @@ public class TownData {
     private final TownLevel townLevel;
     private ClaimedChunkSettings chunkSettings;
     private final TownRelations relations;
+
+    private SpawnPosition spawnPosition;
 
     //First time creating a town
     public TownData(String townId, String townName, String uuidLeader){
@@ -520,4 +523,28 @@ public class TownData {
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);
     }
+
+    public void setSpawn(Location location){
+        this.spawnPosition = new SpawnPosition(location);
+    }
+
+    public boolean isSpawnSet(){
+        return this.spawnPosition != null;
+    }
+
+    public boolean teleportPlayerToSpawn(Player player){
+        if(!isSpawnUnlocked()){
+            player.sendMessage(getTANString() + "Vous ne pouvez pas vous téléporter au spawn de la ville, car la ville n'a pas encore été améliorée.");
+            return false;
+        }
+        if(this.spawnPosition == null)
+            return false;
+        this.spawnPosition.teleportPlayerToSpawn(player);
+        return true;
+    }
+
+    public boolean isSpawnUnlocked(){
+        return this.townLevel.getBenefitsLevel("UNLOCK_TOWN_SPAWN") > 0;
+    }
+
 }

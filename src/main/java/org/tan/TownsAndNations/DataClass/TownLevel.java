@@ -33,7 +33,7 @@ public class TownLevel {
         loadIntoMap(levelMap);
         levelMap.put("CITY_HALL",1);
     }
-    //for SQL, need to be update to the new system
+    //for SQL, need to be updated to the new system
     public TownLevel(int townLevel, int playerCapLevel, int chunkCapUpgrade, boolean townSpawnUnlocked){
         this.townLevel = townLevel;
         this.playerCapLevel = playerCapLevel;
@@ -140,6 +140,10 @@ public class TownLevel {
             }
         }
         return benefits;
+    }
+
+    public int getBenefitsLevel(String benefitName) {
+        return getTotalBenefits().get(benefitName);
     }
 
 }

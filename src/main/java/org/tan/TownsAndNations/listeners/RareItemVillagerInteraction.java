@@ -32,9 +32,11 @@ public class RareItemVillagerInteraction implements Listener {
                 customProfession = CustomVillagerProfession.getVillager(tag);
             }
 
-            if(customProfession == null)
+            if(customProfession == null){
+                if(ConfigUtil.getCustomConfig("config.yml").getBoolean("removeAllVillagerInteractions", false))
+                    event.setCancelled(true);
                 return;
-
+            }
             event.setCancelled(true);
 
 
@@ -82,8 +84,6 @@ public class RareItemVillagerInteraction implements Listener {
             player.sendMessage(ChatUtils.getTANString() + Lang.RARE_ITEM_WRONG_ITEM.get(
                     customProfession.getBuyingItem().getItemMeta().getDisplayName()
             ));
-
-
 
         }
 

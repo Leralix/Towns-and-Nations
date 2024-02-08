@@ -43,7 +43,8 @@ public final class TownsAndNations extends JavaPlugin {
 
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String GITHUB_API_URL = "https://api.github.com/repos/leralix/towns-and-nations/releases/latest";
-    private static final String CURRENT_VERSION = "v0.4.1";
+    private static String LOADED_VERSION;
+    private static final String CURRENT_VERSION = "v0.5.1";
     private static String LATEST_VERSION;
     private static tanAPI api;
     private static boolean allowColorCodes = false;
@@ -111,11 +112,9 @@ public final class TownsAndNations extends JavaPlugin {
         }
 
 
-        logger.info("[TaN] -Loading Scheduled commands");
+        logger.info("[TaN] -Loading commands");
         SaveStats.startSchedule();
         DailyTasks.scheduleMidnightTask();
-
-        logger.info("[TaN] -Loading API");
 
         EnableEventList();
         Objects.requireNonNull(getCommand("tan")).setExecutor(new CommandManager());
@@ -132,6 +131,14 @@ public final class TownsAndNations extends JavaPlugin {
 
 
         UpdateUtil.updateDatabase();
+
+        /*
+        if (!Objects.equals(LOADED_VERSION, CURRENT_VERSION)){
+            LOADED_VERSION = CURRENT_VERSION;
+            logger.info("[TaN] Plugin updated to version " + CURRENT_VERSION + ". If an error occurs, please report it on the discord server.");
+            UpdateUtil.UpdateToNewVersion();
+        }
+        */
 
         logger.info("[TaN] Plugin successfully loaded");
 
