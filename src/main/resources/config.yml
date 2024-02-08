@@ -87,15 +87,15 @@ rareCropsValue: 3
 
 #The stat of getting souls, used to get money. You can use any entity type
 rareSoul:
-  ZOMBIE: 90
+  ZOMBIE: 5
   CREEPER: 15
   SKELETON: 5
   SPIDER: 5
   ENDERMAN: 100
   WITCH: 10
-  PIGLIN: 0
+  PIGLIN: 5
   PIGLIN_BRUTE: 5
-  ZOMBIFIED_PIGLIN: 5
+  ZOMBIFIED_PIGLIN: 0
   HUSK: 15
   STRAY: 15
 
