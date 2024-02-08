@@ -84,6 +84,28 @@ rareCrops:
 
 rareCropsValue: 3
 
+
+#The stat of getting souls, used to get money. You can use any entity type
+rareSoul:
+  ZOMBIE: 90
+  CREEPER: 15
+  SKELETON: 5
+  SPIDER: 5
+  ENDERMAN: 100
+  WITCH: 10
+  PIGLIN: 0
+  PIGLIN_BRUTE: 5
+  ZOMBIFIED_PIGLIN: 5
+  HUSK: 15
+  STRAY: 15
+
+  CAVE_SPIDER: 5
+  DROWNED: 5
+  BLAZE: 5
+  GHAST: 75
+
+rareSoulValue: 2
+
 ##
 #Cost of renaming a town:
 ChangeTownNameCost: 100

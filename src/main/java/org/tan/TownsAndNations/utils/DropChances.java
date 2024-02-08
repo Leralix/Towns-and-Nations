@@ -3,6 +3,7 @@ package org.tan.TownsAndNations.utils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.TownsAndNations.DataClass.RareItem;
@@ -27,11 +28,16 @@ public class DropChances {
         loadDropChances("rareStone", config, getRareStone());
         loadDropChances("rareWood", config, getRareWood());
         loadDropChances("rareCrops", config, getRareCrops());
+        loadDropChances("rareSoul", config, getRareSoul());
     }
 
 
     public static RareItem getRareItem(Block block) {
         return dropChances.get(block.getType().name());
+    }
+
+    public static RareItem getRareItem(Entity entity) {
+        return dropChances.get(entity.getType().name());
     }
 
     public static Map<String, RareItem> getDropChances(){
@@ -57,26 +63,37 @@ public class DropChances {
         return rareStoneItem;
     }
     public static ItemStack getRareWood(){
-        ItemStack rareStoneItem = new ItemStack(Material.STICK);
-        ItemMeta rareStoneItemMeta = rareStoneItem.getItemMeta();
+        ItemStack rareWoodItem = new ItemStack(Material.STICK);
+        ItemMeta rareStoneItemMeta = rareWoodItem.getItemMeta();
         rareStoneItemMeta.setCustomModelData(101);
         rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_WOOD.get());
         ArrayList<String> lore = new ArrayList<>();
         lore.add(Lang.RARE_ITEM_DESC_1.get());
         rareStoneItemMeta.setLore(lore);
-        rareStoneItem.setItemMeta(rareStoneItemMeta);
-        return rareStoneItem;
+        rareWoodItem.setItemMeta(rareStoneItemMeta);
+        return rareWoodItem;
     }
     public static ItemStack getRareCrops(){
-        ItemStack rareStoneItem = new ItemStack(Material.WHEAT);
-        ItemMeta rareStoneItemMeta = rareStoneItem.getItemMeta();
+        ItemStack rareCropItem = new ItemStack(Material.WHEAT);
+        ItemMeta rareStoneItemMeta = rareCropItem.getItemMeta();
         rareStoneItemMeta.setCustomModelData(101);
         rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_CROP.get());
         ArrayList<String> lore = new ArrayList<>();
         lore.add(Lang.RARE_ITEM_DESC_1.get());
         rareStoneItemMeta.setLore(lore);
-        rareStoneItem.setItemMeta(rareStoneItemMeta);
-        return rareStoneItem;
+        rareCropItem.setItemMeta(rareStoneItemMeta);
+        return rareCropItem;
+    }
+    public static ItemStack getRareSoul(){
+        ItemStack rareSoulItem = new ItemStack(Material.FLINT);
+        ItemMeta rareStoneItemMeta = rareSoulItem.getItemMeta();
+        rareStoneItemMeta.setCustomModelData(101);
+        rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_SOUL.get());
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(Lang.RARE_ITEM_DESC_1.get());
+        rareStoneItemMeta.setLore(lore);
+        rareSoulItem.setItemMeta(rareStoneItemMeta);
+        return rareSoulItem;
     }
 
 }

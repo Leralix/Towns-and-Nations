@@ -50,6 +50,9 @@ public class RareItemVillagerInteraction implements Listener {
             if (customProfession == CustomVillagerProfession.COOK ) {
                 price = ConfigUtil.getCustomConfig("config.yml").getInt("rareCropsValue");
             }
+            if(customProfession == CustomVillagerProfession.WIZARD){
+                price = ConfigUtil.getCustomConfig("config.yml").getInt("rareSoulValue");
+            }
 
             ItemStack item = player.getInventory().getItemInMainHand();
             if (item.getItemMeta() == null){

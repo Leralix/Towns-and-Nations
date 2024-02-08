@@ -293,7 +293,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC: "§f{0}"
   GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME: "§aRename the rank"
   GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION: "§aManage permissions"
-  GUI_TOWN_MEMBERS_ROLE_PAY_TAXES: "§aNon-aggression pact"
+  GUI_TOWN_MEMBERS_ROLE_PAY_TAXES: "§aThis role pay taxes"
   GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES: "§aThis rank do not pay taxes"
   GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1: "§fLeft click to change"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_X: "Rank {0}"
@@ -394,11 +394,13 @@ language:
   ITEM_RARE_STONE: "§3Rare Stone"
   ITEM_RARE_WOOD: "§3Rare Wood"
   ITEM_RARE_CROP: "§3Rare Crop"
-  RARE_ITEM_DESC_1: "§fThis item can be traded for money at spawn"
+  ITEM_RARE_SOUL: "§3Creature Soul"
+  RARE_ITEM_DESC_1: "§fThis item can be traded for money"
   #Custom villager jobs
   VILLAGER_GOLDSMITH: "Goldsmith"
   VILLAGER_BOTANIST: "Botanist"
   VILLAGER_COOK: "Cook"
+  VILLAGER_WIZARD: "Wizard"
   #Villager Interaction Success
   RARE_ITEM_NO_ITEM_IN_HANDS: "Right click with §e{0}§f to sell it for §6{1}✦"
   RARE_ITEM_WRONG_ITEM: "This villager is only buying §e{0}"

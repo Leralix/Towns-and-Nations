@@ -9,7 +9,8 @@ public enum CustomVillagerProfession {
 
     GOLDSMITH(Lang.VILLAGER_GOLDSMITH.get(), Profession.TOOLSMITH, DropChances.getRareStone()),
     BOTANIST(Lang.VILLAGER_BOTANIST.get(), Profession.FARMER, DropChances.getRareWood()),
-    COOK(Lang.VILLAGER_COOK.get(), Profession.BUTCHER, DropChances.getRareCrops());
+    COOK(Lang.VILLAGER_COOK.get(), Profession.BUTCHER, DropChances.getRareCrops()),
+    WIZARD(Lang.VILLAGER_WIZARD.get(), Profession.CLERIC, DropChances.getRareSoul());
 
     private final String name;
     private final Profession profession;

@@ -6,10 +6,12 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.RareItem;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
@@ -56,8 +58,6 @@ public class RareItemDrops implements Listener {
         }
 
         RareItem rareItem = DropChances.getRareItem(event.getBlock());
-
-
         if(rareItem == null)
             return;
 
@@ -66,6 +66,25 @@ public class RareItemDrops implements Listener {
 
         if(int_random <= rareItem.getDropChance()){
             event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), rareItem.getRareItem());
+        }
+    }
+
+    @EventHandler
+    public void onKillingMobs(EntityDeathEvent event){
+
+        LivingEntity killer = event.getEntity().getKiller();
+
+        if(killer instanceof Player){
+            Player player = (Player) killer;
+
+            RareItem rareItem = DropChances.getRareItem(event.getEntity());
+            if(rareItem == null)
+                return;
+            Random rand = new Random();
+            int int_random = rand.nextInt(1, 100);
+            if(int_random <= rareItem.getDropChance()){
+                event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), rareItem.getRareItem());
+            }
         }
     }
 
