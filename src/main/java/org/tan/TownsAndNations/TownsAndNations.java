@@ -18,10 +18,7 @@ import org.tan.TownsAndNations.commands.AdminCommandManager;
 import org.tan.TownsAndNations.commands.CommandManager;
 import org.tan.TownsAndNations.commands.DebugCommandManager;
 import org.tan.TownsAndNations.listeners.*;
-import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
-import org.tan.TownsAndNations.storage.UpgradeStorage;
+import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.DropChances;
 import org.tan.TownsAndNations.utils.UpdateUtil;
@@ -87,7 +84,8 @@ public final class TownsAndNations extends JavaPlugin {
         ConfigUtil.loadCustomConfig("townUpgrades.yml");
 
         DropChances.load();
-        UpgradeStorage.initialize();
+        UpgradeStorage.init();
+        MobChunkSpawnStorage.init();
         autoUpdateLangFiles = ConfigUtil.getCustomConfig("config.yml").getBoolean("AutoUpdateLangFiles", true);
         allowColorCodes = ConfigUtil.getCustomConfig("config.yml").getBoolean("EnablePlayerColorCode", false);
 

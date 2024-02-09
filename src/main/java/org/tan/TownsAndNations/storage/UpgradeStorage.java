@@ -14,7 +14,7 @@ public class UpgradeStorage {
 
     private static final HashMap<String, TownUpgrade> UpgradeMap = new HashMap<>();
 
-    public static void initialize() {
+    public static void init() {
         FileConfiguration upgradeConfig = ConfigUtil.getCustomConfig("townUpgrades.yml");
         ConfigurationSection upgradesSection = upgradeConfig.getConfigurationSection("upgrades");
 

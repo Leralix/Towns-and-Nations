@@ -5,7 +5,7 @@
 # maxLevel: the maximum level of the upgrade
 # cost: the cost of each level upgrade. If less than the max level, biggest cost will always display
 # prerequisites: the prerequisites to unlock the upgrade (town_level_[level])
-# benefits: the benefits of the upgrade (PLAYER_CAP, CHUNK_CAP, UNLOCK_TOWN_SPAWN) If you need other upgrades ask on my discord
+# benefits: the benefits of the upgrade (PLAYER_CAP, CHUNK_CAP, UNLOCK_TOWN_SPAWN, REMOVE_SPAWN_<ENTITY_TYPE>) If you need other upgrades ask on my discord
 # You can create your own names, prerequisites and benefits in the lang files.
 upgrades:
 

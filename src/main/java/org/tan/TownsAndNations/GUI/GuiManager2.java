@@ -21,6 +21,7 @@ import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 import static org.tan.TownsAndNations.enums.MessageKey.*;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.enums.TownRolePermission.*;
+import static org.tan.TownsAndNations.storage.MobChunkSpawnStorage.getMobSpawnCost;
 import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.ChatCategory.RANK_CREATION;
 import static org.tan.TownsAndNations.storage.TownDataStorage.getTownList;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
@@ -273,7 +274,7 @@ public class GuiManager2 {
         });
         GuiItem _claimIcon = ItemBuilder.from(ClaimIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownChunkMenu(player);
+            OpenTownChunk(player);
         });
         GuiItem _otherTownIcon = ItemBuilder.from(otherTownIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1750,7 +1751,96 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-    public static void OpenTownChunkMenu(Player player){
+
+    public static void OpenTownChunk(Player player) {
+        Gui gui = createChestGui("Town",3);
+
+        PlayerData playerStat = PlayerDataStorage.get(player);
+        TownData playerTown = TownDataStorage.get(player);
+
+        ItemStack playerChunkIcon = HeadUtils.getCustomLoreItem(Material.PLAYER_HEAD,
+                Lang.GUI_TOWN_CHUNK_PLAYER.get(),
+                Lang.GUI_TOWN_CHUNK_PLAYER_DESC1.get()
+                );
+
+        ItemStack mobChunckIcon = HeadUtils.getCustomLoreItem(Material.PLAYER_HEAD,
+                Lang.GUI_TOWN_CHUNK_MOB.get(),
+                Lang.GUI_TOWN_CHUNK_MOB_DESC1.get()
+        );
+
+        GuiItem _playerChunkIcon = ItemBuilder.from(playerChunkIcon).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownChunkPlayerSettings(player);
+        });
+
+        GuiItem _mobChunckIcon = ItemBuilder.from(mobChunckIcon).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownChunkMobSettings(player);
+        });
+
+        gui.setItem(2,4, _playerChunkIcon);
+        gui.setItem(2,6, _mobChunckIcon);
+
+
+        gui.setItem(3,1, CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+
+        gui.open(player);
+    }
+
+
+        public static void OpenTownChunkMobSettings(Player player){
+        Gui gui = createChestGui("Town",4);
+
+        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
+        TownData townData = TownDataStorage.get(player);
+        ClaimedChunkSettings chunkSettings = townData.getChunkSettings();
+
+
+        int i = 0;
+        for (MobChunkSpawnEnum mobEnum : MobChunkSpawnStorage.getMobSpawnStorage().values()){
+            System.out.println(mobEnum.name());
+            ItemStack mobIcon = HeadUtils.makeSkull(mobEnum.name(),mobEnum.getTexture());
+
+            UpgradeStatus upgradeStatus = chunkSettings.getSpawnControl(mobEnum);
+
+            List<String> status = new ArrayList<>();
+
+            if(upgradeStatus.isUnlocked()){
+                if(upgradeStatus.isActivated()){
+                    status.add(Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_ACTIVATED.get());
+                }
+                else{
+                    status.add(Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_DEACTIVATED.get());
+                }
+            }
+            else{
+                int cost = getMobSpawnCost(mobEnum);
+                status.add(Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_LOCKED.get());
+                status.add(Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_LOCKED2.get(cost));
+            }
+
+            HeadUtils.setLore(mobIcon,status);
+
+            GuiItem mobItem = new GuiItem(mobIcon, event -> {
+                event.setCancelled(true);
+                /*
+                if(!playerStat.hasPermission(TownRolePermission.MANAGE_MOB_SPAWN)){
+                    player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                    return;
+                }
+                townData.toggleMobSpawn(mobEnum);
+                OpenTownChunkMobSettings(player);
+                 */
+            });
+            gui.setItem(i, mobItem);
+            i = i+1;
+        }
+
+        gui.setItem(27, CreateBackArrow(player,p -> OpenTownChunk(player)));
+        gui.open(player);
+    }
+
+    public static void OpenTownChunkPlayerSettings(Player player){
         Gui gui = createChestGui("Town",4);
 
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
@@ -1792,10 +1882,12 @@ public class GuiManager2 {
             gui.setItem(i, guiItem);
         }
 
-        gui.setItem(27, CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(27, CreateBackArrow(player,p -> OpenTownChunk(player)));
 
         gui.open(player);
     }
+
+
 
     private static GuiItem createGuiItem(ItemStack itemStack, PlayerData playerStat, Player player, Consumer<Void> action) {
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
@@ -1805,7 +1897,7 @@ public class GuiManager2 {
                 return;
             }
             action.accept(null);
-            OpenTownChunkMenu(player);
+            OpenTownChunkPlayerSettings(player);
         });
     }
     private static Gui createChestGui(String name, int nRow) {

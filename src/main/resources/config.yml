@@ -140,3 +140,13 @@ TimeBeforeClearingChunkHistory: 30
 NumberOfDonationBeforeClearing: 100
 #Number of Miscellaneous purchase before it is cleared (can be set to 0 to disable the clearing)
 NumberOfMiscPurchaseBeforeClearing: 100
+
+
+#Write the type of mobs you want a town to be able to cancel the spawn of.
+#If you want the removal option to be free, write 0, else write the cost of the removal
+#If you do not need a mob to be removed, do not write it
+CancelMobSpawnInTown:
+  GLOW_SQUID: 0
+  SQUID: 0
+  BAT: 50
+  SLIME: 50
