@@ -27,10 +27,6 @@ public class TeamUtils {
             return;
         }
 
-        if(!ConfigUtil.getCustomConfig("config.yml").getBoolean("EnablePlayerColorCode")){
-            return;
-        }
-
         Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
 
         for (TownRelation relation : TownRelation.values()) {

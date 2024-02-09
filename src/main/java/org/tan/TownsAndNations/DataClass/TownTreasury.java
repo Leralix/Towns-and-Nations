@@ -167,6 +167,10 @@ public class TownTreasury {
 
 
     public void clearOldTaxHistory(int timeBeforeClearing) {
+
+        if(timeBeforeClearing == 0)
+            return;
+
         Iterator<Map.Entry<String, ArrayList<TransactionHistory>>> iterator = this.taxHistory.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, ArrayList<TransactionHistory>> entry = iterator.next();
@@ -179,6 +183,10 @@ public class TownTreasury {
 
 
     public void clearOldChunkHistory(int timeBeforeClearing) {
+
+        if(timeBeforeClearing == 0)
+            return;
+
         Iterator<Map.Entry<String, TransactionHistory>> iterator = this.chunkHistory.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, TransactionHistory> entry = iterator.next();
@@ -190,6 +198,10 @@ public class TownTreasury {
     }
 
     public void clearOldMiscHistory(int numberOfMisc) {
+
+        if(numberOfMisc == 0)
+            return;
+
         int maxSize = this.miscellaneousPurchaseHistory.size();
 
         if(maxSize <= numberOfMisc)
@@ -200,6 +212,9 @@ public class TownTreasury {
     }
 
     public void clearOldDonationHistory(int numberOfDonation) {
+
+        if(numberOfDonation == 0)
+            return;
         int maxSize = this.donationHistory.size();
         if(maxSize <= numberOfDonation)
             return;

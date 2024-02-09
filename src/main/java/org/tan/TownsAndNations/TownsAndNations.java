@@ -89,7 +89,7 @@ public final class TownsAndNations extends JavaPlugin {
         DropChances.load();
         UpgradeStorage.initialize();
         autoUpdateLangFiles = ConfigUtil.getCustomConfig("config.yml").getBoolean("AutoUpdateLangFiles", true);
-        allowColorCodes = ConfigUtil.getCustomConfig("config.yml").getBoolean("AllowColorInUsername", false);
+        allowColorCodes = ConfigUtil.getCustomConfig("config.yml").getBoolean("EnablePlayerColorCode", false);
 
         sqlEnable = ConfigUtil.getCustomConfig("config.yml").getBoolean("EnableCrossServer", false);
         if(sqlEnable){
