@@ -11,6 +11,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.TownsAndNations.DataClass.*;
+import org.tan.TownsAndNations.Lang.DynamicLang;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.*;
 import org.tan.TownsAndNations.storage.*;
@@ -1781,7 +1782,13 @@ public class GuiManager2 {
 
         GuiItem _mobChunckIcon = ItemBuilder.from(mobChunckIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownChunkMobSettings(player);
+
+            if(playerTown.getTownLevel().getBenefitsLevel("UNLOCK_MOB_BAN") >= 1)
+                OpenTownChunkMobSettings(player);
+            else{
+                player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_LEVEL.get(DynamicLang.get("UNLOCK_MOB_BAN")));
+                SoundUtil.playSound(player, NOT_ALLOWED);
+            }
         });
 
         gui.setItem(2,4, _playerChunkIcon);

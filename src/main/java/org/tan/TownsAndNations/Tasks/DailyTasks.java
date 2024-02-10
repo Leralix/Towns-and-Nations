@@ -7,12 +7,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.TownRank;
-import org.tan.TownsAndNations.DataClass.TownTreasury;
+import org.tan.TownsAndNations.DataClass.TownTransactionHistory;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
-import org.tan.TownsAndNations.utils.ArchiveUtil;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.EconomyUtil;
@@ -117,7 +116,7 @@ public class DailyTasks {
 
 
         for (TownData town : TownDataStorage.getTownList().values()) {
-            TownTreasury treasury = town.getTreasury();
+            TownTransactionHistory treasury = town.getTreasury();
 
             treasury.clearOldTaxHistory(timeBeforeClearing);
             treasury.clearOldChunkHistory(TimeBeforeClearingChunk);

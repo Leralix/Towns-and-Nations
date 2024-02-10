@@ -8,6 +8,7 @@ language:
   PLAYER_NO_PERMISSION: "§cVous n'avez pas la permission d'exécuter la commande"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cVous n'avez pas la permission d'effectuer cette action sur un rang égal ou supérieur au vôtre"
   PLAYER_NOT_FOUND: "§cNom invalide, ou le joueur n'est pas actuellement connecté"
+  TOWN_NOT_ENOUGH_LEVEL: "§cVotre ville n'a pas le niveau pour effectuer cette action: §a{0}"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 {1}: §f{2}"

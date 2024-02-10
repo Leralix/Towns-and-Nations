@@ -43,7 +43,7 @@ public class TownData {
 
 
 
-    private final TownTreasury townTreasury;
+    private final TownTransactionHistory townTransactionHistory;
     private final TownLevel townLevel;
     private ClaimedChunkSettings chunkSettings;
     private final TownRelations relations;
@@ -79,7 +79,7 @@ public class TownData {
         this.chunkSettings = new ClaimedChunkSettings();
 
         this.townLevel = new TownLevel();
-        this.townTreasury = new TownTreasury();
+        this.townTransactionHistory = new TownTransactionHistory();
     }
 
     //used for sql, loading a town
@@ -104,7 +104,7 @@ public class TownData {
         this.relations = null;
         this.chunkSettings = null;
         this.townLevel = null;
-        this.townTreasury = null;
+        this.townTransactionHistory = null;
     }
 
     public String getID() {
@@ -230,6 +230,8 @@ public class TownData {
     }
 
     public ClaimedChunkSettings getChunkSettings() {
+        if(chunkSettings == null)
+            chunkSettings = new ClaimedChunkSettings();
         return chunkSettings;
     }
     public void setChunkSettings(ClaimedChunkSettings claimedChunkSettings) {
@@ -250,43 +252,24 @@ public class TownData {
             return townLevel;
     }
     public int getBalance(){
-        Integer _bal = this.balance;
-
-        //used to transition from 0.3.1 -> 0.4.0 when balance were stored in the treasury class
-        if(_bal == null){
-            this.balance = this.getTreasury().getBalance();
-            return this.balance;
-        }
-        return _bal;
+        return this.balance;
     }
 
     public void addToBalance(int balance){
-        Integer _bal = this.balance;
-
-        //used to transition from 0.3.1 -> 0.4.0 when balance were stored in the treasury class
-        if(_bal == null){
-            this.balance = this.getTreasury().getBalance();
-        }
         this.balance += balance;
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);
     }
 
     public void removeToBalance(int balance){
-        Integer _bal = this.balance;
-
-        //used to transition from 0.3.1 -> 0.4.0 when balance were stored in the treasury class
-        if(_bal == null){
-            this.balance = this.getTreasury().getBalance();
-        }
         this.balance -= balance;
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);
     }
 
 
-    public TownTreasury getTreasury(){
-        return this.townTreasury;
+    public TownTransactionHistory getTreasury(){
+        return this.townTransactionHistory;
     }
 
     public void broadCastMessage(String message){
@@ -445,23 +428,13 @@ public class TownData {
     }
 
     public int getFlatTax() {
-        Integer _tax = this.flatTax;
-        if(_tax == null){ //used to transition from 0.3.1 -> 0.4.0 when balance were stored in the treasury class
-            this.flatTax = this.getTreasury().getFlatTax();
-            return this.flatTax;
-        }
-        return _tax;
+        return this.flatTax;
     }
 
     public void addToFlatTax(int flatTax) {
-        Integer _currentTax = this.flatTax;
-        if(_currentTax == null) //used to transition from 0.3.1 -> 0.4.0 when balance were stored in the treasury class
-            this.flatTax = this.getTreasury().getFlatTax() + flatTax;
-        else{
-            this.flatTax += flatTax;
-            if(isSqlEnable())
-                TownDataStorage.updateTownData(this);
-        }
+        this.flatTax += flatTax;
+        if(isSqlEnable())
+            TownDataStorage.updateTownData(this);
     }
 
     public int getNumberOfClaimedChunk() {

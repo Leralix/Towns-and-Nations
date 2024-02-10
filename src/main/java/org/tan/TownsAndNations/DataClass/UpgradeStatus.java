@@ -18,6 +18,8 @@ public class UpgradeStatus {
     }
 
     public boolean isActivated() {
+        if(!unlocked)
+            return true;
         return activated;
     }
 

@@ -5,9 +5,11 @@ BARRACKS: "Casernes"
 ADMINISTRATION: "Administration"
 WATCHTOWER: "Tour de guet"
 PORTAL: "Téléporteur"
+GUARDS: "Gardes"
 #Prerequisites
 TOWN_LEVEL: "Niveau de ville"
 #Benefits
 PLAYER_CAP: "Nombre maximum de joueur"
 CHUNK_CAP: "Nombre maximum de chunks"
 UNLOCK_TOWN_SPAWN: "Spawn de ville"
+UNLOCK_MOB_BAN: "Débloque le bannissement des mobs"

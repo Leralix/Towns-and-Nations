@@ -150,3 +150,8 @@ CancelMobSpawnInTown:
   SQUID: 0
   BAT: 50
   SLIME: 50
+  CREEPER: 0
+  SKELETON: 0
+  SPIDER: 0
+  ZOMBIE: 0
+  ENDERMAN: 0

@@ -6,33 +6,20 @@ import java.util.*;
 
 import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 
-public class TownTreasury {
-
-    private int balance;
-    private int flatTax;
+public class TownTransactionHistory {
     LinkedHashMap<String,ArrayList<TransactionHistory>> taxHistory;
     List<TransactionHistory> donationHistory;
     LinkedHashMap<String,ArrayList<TransactionHistory>> salaryHistory;
     LinkedHashMap<String, TransactionHistory> chunkHistory;
     List<TransactionHistory> miscellaneousPurchaseHistory;
 
-    public TownTreasury(){
-        this.balance = 0;
-        this.flatTax = 1;
+    public TownTransactionHistory(){
         this.taxHistory = new LinkedHashMap<>();
         this.donationHistory = new ArrayList<>();
         this.salaryHistory = new LinkedHashMap<>();
         this.chunkHistory = new LinkedHashMap<>();
         this.miscellaneousPurchaseHistory = new ArrayList<>();
     }
-    //Old methods getBalance and getFlatTax only here to not break old saves. Will be deleted in the future
-    public int getBalance(){
-        return this.balance;
-    }
-    public int getFlatTax(){
-        return this.flatTax;
-    }
-
 
     public LinkedHashMap<String,ArrayList<TransactionHistory>> getTaxHistory(){
         //Will fix later
@@ -68,13 +55,6 @@ public class TownTreasury {
             return null;
         return miscellaneousPurchaseHistory;
     }
-
-
-    public void removeToBalance(int amount){
-        this.balance = this.balance - amount;
-    }
-
-
 
     public void addTaxHistory(LocalDate date, String playerName, String playerID, int amount){
 

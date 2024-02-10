@@ -5,7 +5,7 @@
 # maxLevel: the maximum level of the upgrade
 # cost: the cost of each level upgrade. If less than the max level, biggest cost will always display
 # prerequisites: the prerequisites to unlock the upgrade (town_level_[level])
-# benefits: the benefits of the upgrade (PLAYER_CAP, CHUNK_CAP, UNLOCK_TOWN_SPAWN, REMOVE_SPAWN_<ENTITY_TYPE>) If you need other upgrades ask on my discord
+# benefits: the benefits of the upgrade (PLAYER_CAP, CHUNK_CAP, UNLOCK_TOWN_SPAWN, UNLOCK_MOB_BAN) If you need other upgrades ask on my discord
 # You can create your own names, prerequisites and benefits in the lang files.
 upgrades:
 
@@ -68,3 +68,15 @@ upgrades:
       ADMINISTRATION: 2
     benefits:
       UNLOCK_TOWN_SPAWN: +1
+
+  GUARDS:
+    col: 4
+    row: 1
+    itemCode: 'COBBLESTONE_WALL'
+    maxLevel: 1
+    cost: [ '1000' ]
+    prerequisites:
+      TOWN_LEVEL: 4
+    benefits:
+      PLAYER_CAP: -2
+      UNLOCK_MOB_BAN: +1
