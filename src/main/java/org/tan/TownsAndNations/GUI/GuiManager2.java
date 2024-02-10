@@ -795,7 +795,7 @@ public class GuiManager2 {
         ItemStack modify_rank = HeadUtils.getCustomLoreItem(Material.STONE_PICKAXE, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MODIFY_RANK.get(),(townRank.hasPermission(townID,MANAGE_RANKS)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
         ItemStack manage_claim_settings = HeadUtils.getCustomLoreItem(Material.GRASS_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_CLAIM_SETTINGS.get(),(townRank.hasPermission(townID,MANAGE_CLAIM_SETTINGS)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
         ItemStack manage_town_relation = HeadUtils.getCustomLoreItem(Material.FLOWER_POT, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION.get(),(townRank.hasPermission(townID,MANAGE_TOWN_RELATION)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
-
+        ItemStack manage_mob_spawn = HeadUtils.getCustomLoreItem(Material.CREEPER_HEAD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_MOB_SPAWN.get(),(townRank.hasPermission(townID,MANAGE_MOB_SPAWN)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
 
         GuiItem _manage_taxes = ItemBuilder.from(manage_taxes).asGuiItem(event -> {
             townRank.switchPermission(town.getID(), MANAGE_TAXES);
@@ -864,6 +864,12 @@ public class GuiManager2 {
             OpenTownMenuRoleManagerPermissions(player, roleName);
             event.setCancelled(true);
         });
+        GuiItem _manage_mob_spawn = ItemBuilder.from(manage_mob_spawn).asGuiItem(event -> {
+            townRank.switchPermission(town.getID(),MANAGE_MOB_SPAWN);
+            OpenTownMenuRoleManagerPermissions(player, roleName);
+            event.setCancelled(true);
+        });
+
 
         gui.setItem(1, _manage_taxes);
         gui.setItem(2, _promote_rank_player);
@@ -878,6 +884,7 @@ public class GuiManager2 {
         gui.setItem(11, _modify_rank);
         gui.setItem(12, _manage_claim_settings);
         gui.setItem(13, _manage_town_relation);
+        gui.setItem(14, _manage_mob_spawn);
 
         gui.setItem(3,1, CreateBackArrow(player,p -> OpenTownMenuRoleManager(player,roleName)));
 
@@ -1751,7 +1758,6 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-
     public static void OpenTownChunk(Player player) {
         Gui gui = createChestGui("Town",3);
 
@@ -1763,7 +1769,7 @@ public class GuiManager2 {
                 Lang.GUI_TOWN_CHUNK_PLAYER_DESC1.get()
                 );
 
-        ItemStack mobChunckIcon = HeadUtils.getCustomLoreItem(Material.PLAYER_HEAD,
+        ItemStack mobChunckIcon = HeadUtils.getCustomLoreItem(Material.CREEPER_HEAD,
                 Lang.GUI_TOWN_CHUNK_MOB.get(),
                 Lang.GUI_TOWN_CHUNK_MOB_DESC1.get()
         );
@@ -1787,8 +1793,7 @@ public class GuiManager2 {
         gui.open(player);
     }
 
-
-        public static void OpenTownChunkMobSettings(Player player){
+    public static void OpenTownChunkMobSettings(Player player){
         Gui gui = createChestGui("Town",4);
 
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
@@ -1798,13 +1803,12 @@ public class GuiManager2 {
 
         int i = 0;
         for (MobChunkSpawnEnum mobEnum : MobChunkSpawnStorage.getMobSpawnStorage().values()){
-            System.out.println(mobEnum.name());
             ItemStack mobIcon = HeadUtils.makeSkull(mobEnum.name(),mobEnum.getTexture());
 
             UpgradeStatus upgradeStatus = chunkSettings.getSpawnControl(mobEnum);
 
             List<String> status = new ArrayList<>();
-
+            int cost = getMobSpawnCost(mobEnum);
             if(upgradeStatus.isUnlocked()){
                 if(upgradeStatus.isActivated()){
                     status.add(Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_ACTIVATED.get());
@@ -1814,7 +1818,7 @@ public class GuiManager2 {
                 }
             }
             else{
-                int cost = getMobSpawnCost(mobEnum);
+
                 status.add(Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_LOCKED.get());
                 status.add(Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_LOCKED2.get(cost));
             }
@@ -1823,14 +1827,29 @@ public class GuiManager2 {
 
             GuiItem mobItem = new GuiItem(mobIcon, event -> {
                 event.setCancelled(true);
-                /*
                 if(!playerStat.hasPermission(TownRolePermission.MANAGE_MOB_SPAWN)){
                     player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                     return;
                 }
-                townData.toggleMobSpawn(mobEnum);
+                if(upgradeStatus.isUnlocked()){
+                    if(upgradeStatus.isActivated())
+                        upgradeStatus.setActivated(false);
+                    else
+                        upgradeStatus.setActivated(true);
+                    SoundUtil.playSound(player, ADD);
+                }
+                else{
+                    if(townData.getBalance() < cost){
+                        player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
+                        return;
+                    }
+                    townData.removeToBalance(cost);
+                    SoundUtil.playSound(player,GOOD);
+                    upgradeStatus.setUnlocked(true);
+                }
+
                 OpenTownChunkMobSettings(player);
-                 */
+
             });
             gui.setItem(i, mobItem);
             i = i+1;
@@ -1862,7 +1881,7 @@ public class GuiManager2 {
                 {TownChunkPermissionType.DECORATIVE_BLOCK, Material.CAULDRON, Lang.GUI_TOWN_CLAIM_SETTINGS_DECORATIVE_BLOCK},
                 {TownChunkPermissionType.MUSIC_BLOCK, Material.JUKEBOX, Lang.GUI_TOWN_CLAIM_SETTINGS_MUSIC_BLOCK},
                 {TownChunkPermissionType.LEAD, Material.LEAD, Lang.GUI_TOWN_CLAIM_SETTINGS_LEAD},
-                {TownChunkPermissionType.SHEARS, Material.SHEARS, Lang.GUI_TOWN_CLAIM_SETTINGS_SHEARS}
+                {TownChunkPermissionType.SHEARS, Material.SHEARS, Lang.GUI_TOWN_CLAIM_SETTINGS_SHEARS},
         };
 
         for (int i = 0; i < itemData.length; i++) {

@@ -11,7 +11,6 @@ import java.util.Map;
 public class ClaimedChunkSettings {
     private int numberOfClaimedChunk;
     private final Map<TownChunkPermissionType, TownChunkPermission> permissions;
-
     private final Map<String, UpgradeStatus> mobSpawnStorage = new HashMap<>();
 
     public ClaimedChunkSettings(){
