@@ -14,6 +14,7 @@ import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.RegionUtil;
 import org.tan.TownsAndNations.utils.TownUtil;
 
 import java.util.*;
@@ -181,6 +182,12 @@ public class ChatListener implements Listener {
             int hexColorCode = hexColorToInt(newColorCode);
             town.setChunkColor(hexColorCode);
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS.get());
+        }
+        if(chatData.getCategory() == CREATE_REGION){
+            event.setCancelled(true);
+            removePlayer(player);
+            String regionName = event.getMessage();
+            RegionUtil.createNewRegion(player, regionName);
         }
     }
 }

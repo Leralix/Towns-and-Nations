@@ -63,7 +63,8 @@ public class GuiManager2 {
         });
         GuiItem Region = ItemBuilder.from(RegionHead).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage(getTANString() + Lang.GUI_WARNING_STILL_IN_DEV.get());
+            player.sendMessage("testetst");
+            OpenRegionMenu(player);
         });
         GuiItem Town = ItemBuilder.from(TownHead).asGuiItem(event -> {
             event.setCancelled(true);
@@ -117,27 +118,16 @@ public class GuiManager2 {
 
         int townPrice = ConfigUtil.getCustomConfig("config.yml").getInt("CostOfCreatingTown");
 
-        ItemStack createNewLand = HeadUtils.getCustomLoreItem(Material.GRASS_BLOCK,
+        ItemStack createTown = HeadUtils.getCustomLoreItem(Material.GRASS_BLOCK,
                 Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.get(),
-                Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.get(townPrice)
-        );
-        ItemStack joinLand = HeadUtils.getCustomLoreItem(Material.ANVIL, Lang.GUI_NO_TOWN_JOIN_A_TOWN.get(),Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(TownDataStorage.getNumberOfTown()));
+                Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.get(townPrice));
+        ItemStack joinLand = HeadUtils.getCustomLoreItem(Material.ANVIL,
+                Lang.GUI_NO_TOWN_JOIN_A_TOWN.get(),
+                Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(TownDataStorage.getNumberOfTown()));
 
-        GuiItem _create = ItemBuilder.from(createNewLand).asGuiItem(event -> {
+        GuiItem _create = ItemBuilder.from(createTown).asGuiItem(event -> {
             event.setCancelled(true);
-
-            int playerMoney = EconomyUtil.getBalance(player);
-            if (playerMoney < townPrice) {
-                player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(townPrice - playerMoney));
-            }
-            else {
-                player.sendMessage(getTANString() + Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get());
-                player.closeInventory();
-
-                Map<MessageKey,String> data = new HashMap<>();
-                data.put(TOWN_COST, String.valueOf(townPrice));
-                PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CREATE_CITY,player,data);
-            }
+            TownUtil.registerNewTown(player,townPrice);
         });
 
         GuiItem _join = ItemBuilder.from(joinLand).asGuiItem(event -> {
@@ -1664,7 +1654,7 @@ public class GuiManager2 {
                         OfflinePlayer otherTownLeader = Bukkit.getOfflinePlayer(UUID.fromString(otherTown.getUuidLeader()));
 
                         if (!otherTownLeader.isOnline()) {
-                            player.sendMessage(getTANString() + Lang.PLAYER_NOT_ONLINE.get());
+                            player.sendMessage(getTANString() + Lang.LEADER_NOT_ONLINE.get());
                             return;
                         }
                         Player otherTownLeaderOnline = otherTownLeader.getPlayer();assert otherTownLeaderOnline != null;
@@ -1912,6 +1902,44 @@ public class GuiManager2 {
 
         gui.open(player);
     }
+
+
+    public static void OpenRegionMenu(Player player){
+
+        Gui gui = createChestGui("Town",3);
+
+        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
+        TownData townData = TownDataStorage.get(player);
+        int regionCost = ConfigUtil.getCustomConfig("config.yml").getInt("regionCost");
+
+        ItemStack createRegion = HeadUtils.getCustomLoreItem(Material.STONE_BRICKS,
+                Lang.GUI_REGION_CREATE.get(),
+                Lang.GUI_REGION_CREATE_DESC1.get(regionCost),
+                Lang.GUI_REGION_CREATE_DESC2.get()
+        );
+
+        ItemStack browseRegion = HeadUtils.getCustomLoreItem(Material.BOOK,
+                Lang.GUI_REGION_BROWSE.get(),
+                Lang.GUI_REGION_BROWSE_DESC1.get(RegionDataStorage.getNumberOfRegion()),
+                Lang.GUI_REGION_BROWSE_DESC2.get()
+        );
+
+        GuiItem _createRegion = ItemBuilder.from(createRegion).asGuiItem(event -> {
+            event.setCancelled(true);
+            RegionUtil.registerNewRegion(player, regionCost);
+        });
+
+        GuiItem _browseRegion = ItemBuilder.from(browseRegion).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+
+        gui.setItem(2,4, _createRegion);
+        gui.setItem(2,6, _browseRegion);
+        gui.setItem(3,1, CreateBackArrow(player,p -> OpenMainMenu(player)));
+
+        gui.open(player);
+    }
+
 
 
 

@@ -43,7 +43,7 @@ public class TownData {
 
 
 
-    private final TownTransactionHistory townTransactionHistory;
+    private TownTransactionHistory townTransactionHistory;
     private final TownLevel townLevel;
     private ClaimedChunkSettings chunkSettings;
     private final TownRelations relations;
@@ -55,7 +55,7 @@ public class TownData {
         this.TownId = townId;
         this.UuidLeader = uuidLeader;
         this.TownName = townName;
-        this.Description = "Description par défaut";
+        this.Description = "default description";
         this.DateCreated = new Date().toString();
         this.townIconMaterialCode = null;
         this.PlayerJoinRequestSet= new HashSet<>();
@@ -252,6 +252,8 @@ public class TownData {
             return townLevel;
     }
     public int getBalance(){
+        if (this.balance == null)
+            this.balance = 0;
         return this.balance;
     }
 
@@ -269,6 +271,8 @@ public class TownData {
 
 
     public TownTransactionHistory getTreasury(){
+        if(this.townTransactionHistory == null)
+            this.townTransactionHistory = new TownTransactionHistory();
         return this.townTransactionHistory;
     }
 

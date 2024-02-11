@@ -10,15 +10,20 @@ import org.tan.TownsAndNations.DataClass.TownLevel;
 import org.tan.TownsAndNations.DataClass.TownUpgrade;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
+import org.tan.TownsAndNations.enums.MessageKey;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
+import static org.tan.TownsAndNations.enums.MessageKey.TOWN_COST;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.enums.TownRolePermission.KICK_PLAYER;
 import static org.tan.TownsAndNations.storage.ClaimedChunkStorage.unclaimAllChunkFromTown;
+import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.ChatCategory.CREATE_REGION;
 import static org.tan.TownsAndNations.storage.TownDataStorage.*;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
@@ -222,6 +227,18 @@ public class TownUtil {
     }
 
 
+    public static void registerNewTown(Player player, int townPrice) {
 
+        int playerMoney = EconomyUtil.getBalance(player);
+        if (playerMoney < townPrice) {
+            player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(townPrice - playerMoney));
+        }
+        else {
+            player.sendMessage(getTANString() + Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get());
+            player.closeInventory();
 
+            Map<MessageKey,String> data = new HashMap<>();
+            PlayerChatListenerStorage.addPlayer(CREATE_REGION,player,data);
+        }
+    }
 }

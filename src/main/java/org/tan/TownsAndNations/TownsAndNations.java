@@ -104,6 +104,7 @@ public final class TownsAndNations extends JavaPlugin {
         }
         else{
             logger.info("[TaN] -Loading Local data");
+            RegionDataStorage.loadStats();
             PlayerDataStorage.loadStats();
             TownDataStorage.loadStats();
             ClaimedChunkStorage.loadStats();
@@ -182,6 +183,7 @@ public final class TownsAndNations extends JavaPlugin {
         if(!isSqlEnable()){
             logger.info("[TaN] Savings Data");
 
+            RegionDataStorage.saveStats();
             TownDataStorage.saveStats();
             ClaimedChunkStorage.saveStats();
             PlayerDataStorage.saveStats();
@@ -233,7 +235,7 @@ public final class TownsAndNations extends JavaPlugin {
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
                 String inputLine;
-                StringBuffer response = new StringBuffer();
+                StringBuilder response = new StringBuilder();
 
                 while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine);
@@ -251,6 +253,7 @@ public final class TownsAndNations extends JavaPlugin {
                 getPluginLogger().info("[TaN] Error log : " + con.getInputStream());
             }
         } catch (Exception e) {
+            getPluginLogger().warning("[TaN] An error occurred while trying to check for updates.");
             e.printStackTrace();
         }
     }

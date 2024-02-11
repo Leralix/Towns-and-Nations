@@ -9,6 +9,8 @@ language:
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cYou do not have permission to perform this action on a rank higher or equal to you"
   PLAYER_NOT_FOUND: "§cInvalid name, or the player is not connected"
   TOWN_NOT_ENOUGH_LEVEL: "§cYour town does not have the required level with: §a{0}"
+  PLAYER_NOT_ONLINE: "§cThe player is not online"
+  PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION: "§cOnly the town leader can perform this action"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 {1}: §f{2}"
@@ -100,7 +102,7 @@ language:
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cYou dont have enough money. You need {0} more"
   PLAYER_NEED_1_OR_ABOVE: "§fYou need at least §1✦"
   TOWN_NOT_ENOUGH_MONEY: "§cThe town doesn't have enough money to perform this action"
-  TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cThe town doesn't have enough money to perform this action. It need {0}"
+  TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cThe town doesn't have enough money to perform this action. It need {0} more"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Write the name of the town in the chat."
   PLAYER_SEND_MONEY_TO_TOWN: "§fYou sent §6{0}✦§f to the town"
   #Spawn command
@@ -359,6 +361,16 @@ language:
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§fColor successfully changed"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cInvalid color format"
   GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY: "§fModify town color: §9{0}§f -> §9{1}"
+  #Region GUI
+  GUI_REGION_CREATE: "§aCreate a region"
+  GUI_REGION_CREATE_DESC1: "§fCost: §6{0}✦"
+  GUI_REGION_CREATE_DESC2: "§fLeft click to create a new region with your town as regional capital"
+  GUI_REGION_BROWSE: "§aBrowse region"
+  GUI_REGION_BROWSE_DESC1: "§fThere are {0} regions in total"
+  GUI_REGION_BROWSE_DESC2: "§fLeft click to open the region browser"
+  WRITE_IN_CHAT_NEW_REGION_NAME: "§fWrite in the chat the new region"
+  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the region: §9{1}"
+  ##Admin GUI
   ADMIN_GUI_TOWN_DESC: "§fClick to manage towns"
   ADMIN_GUI_PLAYER_DESC: "§fClick to manage players"
   ADMIN_GUI_LEFT_CLICK_TO_MANAGE_TOWN: "§fLeft click to manage the town"
