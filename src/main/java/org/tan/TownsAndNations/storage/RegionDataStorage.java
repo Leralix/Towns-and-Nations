@@ -32,7 +32,7 @@ public class RegionDataStorage {
         return newRegion;
     }
 
-    public static RegionData getRegion(String regionID){
+    public static RegionData get(String regionID){
         return regionStorage.get(regionID);
     }
 

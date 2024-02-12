@@ -104,4 +104,11 @@ public class PlayerData {
             updatePlayerDataInDatabase(this);
     }
 
+    public boolean haveRegion(){
+        return TownDataStorage.get(this).haveRegion();
+    }
+    public RegionData getRegion(){
+        return TownDataStorage.get(this).getRegion();
+    }
+
 }

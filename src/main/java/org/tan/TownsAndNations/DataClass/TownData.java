@@ -11,6 +11,7 @@ import org.tan.TownsAndNations.enums.TownChunkPermissionType;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.utils.SoundUtil;
 
@@ -25,23 +26,20 @@ public class TownData {
     private String TownId;
     private String TownName;
     private String UuidLeader;
-    private final HashMap<String,TownRank> roles;
     private String townDefaultRank;
     private String Description;
     public String DateCreated;
     private String townIconMaterialCode;
-    private final HashSet<String> townPlayerListId = new HashSet<>();
+    private String regionID;
     private boolean isRecruiting;
-    private HashSet<String> PlayerJoinRequestSet;
-
     private Integer balance;
     private Integer flatTax;
-
     private Integer numberOfClaimedChunk;
-
     private Integer chunkColor;
 
-
+    private final HashSet<String> townPlayerListId = new HashSet<>();
+    private final HashMap<String,TownRank> roles;
+    private HashSet<String> PlayerJoinRequestSet;
 
     private TownTransactionHistory townTransactionHistory;
     private final TownLevel townLevel;
@@ -522,6 +520,14 @@ public class TownData {
 
     public boolean isSpawnUnlocked(){
         return this.townLevel.getBenefitsLevel("UNLOCK_TOWN_SPAWN") > 0;
+    }
+
+    public boolean haveRegion(){
+        return this.regionID != null;
+    }
+
+    public RegionData getRegion(){
+        return RegionDataStorage.get(this.regionID);
     }
 
 }

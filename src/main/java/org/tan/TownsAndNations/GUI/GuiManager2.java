@@ -45,6 +45,7 @@ public class GuiManager2 {
         PlayerData playerStat = PlayerDataStorage.get(player);
         boolean playerHaveTown = playerStat.getTownId() != null;
 
+
         Gui gui = createChestGui("Main menu",3);
 
         ItemStack KingdomHead = HeadUtils.makeSkull(Lang.GUI_KINGDOM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=");
@@ -63,8 +64,10 @@ public class GuiManager2 {
         });
         GuiItem Region = ItemBuilder.from(RegionHead).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage("testetst");
-            OpenRegionMenu(player);
+            if(playerStat.haveRegion())
+                OpenRegionMenu(player);
+            else
+                OpenNoRegionMenu(player);
         });
         GuiItem Town = ItemBuilder.from(TownHead).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1904,12 +1907,11 @@ public class GuiManager2 {
     }
 
 
-    public static void OpenRegionMenu(Player player){
+    public static void OpenNoRegionMenu(Player player){
 
         Gui gui = createChestGui("Town",3);
 
-        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
-        TownData townData = TownDataStorage.get(player);
+
         int regionCost = ConfigUtil.getCustomConfig("config.yml").getInt("regionCost");
 
         ItemStack createRegion = HeadUtils.getCustomLoreItem(Material.STONE_BRICKS,
@@ -1938,6 +1940,15 @@ public class GuiManager2 {
         gui.setItem(3,1, CreateBackArrow(player,p -> OpenMainMenu(player)));
 
         gui.open(player);
+    }
+
+    private static void OpenRegionMenu(Player player) {
+
+        Gui gui = createChestGui("Town",3);
+
+        gui.setItem(3,1, CreateBackArrow(player,p -> OpenMainMenu(player)));
+        gui.open(player);
+
     }
 
 
