@@ -20,8 +20,8 @@ import org.tan.TownsAndNations.utils.TownUtil;
 import java.util.*;
 
 import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
+import static org.tan.TownsAndNations.enums.ChatCategory.*;
 import static org.tan.TownsAndNations.enums.MessageKey.*;
-import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.ChatCategory.*;
 import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.removePlayer;
 import static org.tan.TownsAndNations.utils.StringUtil.hexColorToInt;
 import static org.tan.TownsAndNations.utils.StringUtil.isValidColorCode;
@@ -42,7 +42,7 @@ public class ChatListener implements Listener {
 
 
         if(chatData.getCategory() == CREATE_CITY){
-            int townPrice = Integer.parseInt(chatData.getData().get(TOWN_COST));
+            int townPrice = Integer.parseInt(chatData.getData().get(COST));
             String townName = event.getMessage();
 
             TownUtil.CreateTown(player, townPrice, townName);

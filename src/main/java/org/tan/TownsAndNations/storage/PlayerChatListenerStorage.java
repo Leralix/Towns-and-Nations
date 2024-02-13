@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.storage;
 
 import org.bukkit.entity.Player;
+import org.tan.TownsAndNations.enums.ChatCategory;
 import org.tan.TownsAndNations.enums.MessageKey;
 
 import java.util.HashMap;
@@ -30,10 +31,6 @@ public class PlayerChatListenerStorage {
         }
     }
 
-    public enum ChatCategory {
-        CREATE_CITY, RANK_CREATION,RANK_RENAME, DONATION, CHANGE_TOWN_NAME, CHANGE_CHUNK_COLOR, CHANGE_DESCRIPTION,CREATE_REGION
-
-    }
 
     private static final Map<String, PlayerChatData> ChatStorage = new HashMap<>();
 

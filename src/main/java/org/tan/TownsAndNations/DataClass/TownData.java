@@ -530,4 +530,13 @@ public class TownData {
         return RegionDataStorage.get(this.regionID);
     }
 
+    public void setRegion(RegionData region){
+        setRegion(region.getID());
+    }
+    public void setRegion(String regionID){
+        this.regionID = regionID;
+        if(isSqlEnable())
+            TownDataStorage.updateTownData(this);
+    }
+
 }

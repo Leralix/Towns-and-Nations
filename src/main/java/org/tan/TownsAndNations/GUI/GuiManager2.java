@@ -19,11 +19,11 @@ import org.tan.TownsAndNations.utils.*;
 
 import static org.tan.TownsAndNations.TownsAndNations.isDynmapAddonLoaded;
 import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
+import static org.tan.TownsAndNations.enums.ChatCategory.*;
 import static org.tan.TownsAndNations.enums.MessageKey.*;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.enums.TownRolePermission.*;
 import static org.tan.TownsAndNations.storage.MobChunkSpawnStorage.getMobSpawnCost;
-import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.ChatCategory.RANK_CREATION;
 import static org.tan.TownsAndNations.storage.TownDataStorage.getTownList;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.RelationUtil.*;
@@ -638,7 +638,7 @@ public class GuiManager2 {
 
             HashMap<MessageKey, String> newMap = new HashMap<>();
             newMap.put(RANK_NAME,roleName);
-            PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.RANK_RENAME,player,newMap);
+            PlayerChatListenerStorage.addPlayer(RANK_RENAME,player,newMap);
             event.setCancelled(true);
         });
         GuiItem _changeRoleTaxRelation = ItemBuilder.from(changeRoleTaxRelation).asGuiItem(event -> {
@@ -988,7 +988,7 @@ public class GuiManager2 {
         });
         GuiItem _donation = ItemBuilder.from(donation).asGuiItem(event -> {
             player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_TOWN_DONATION.get());
-            PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.DONATION,player);
+            PlayerChatListenerStorage.addPlayer(DONATION,player);
             player.closeInventory();
             event.setCancelled(true);
         });
@@ -1370,7 +1370,7 @@ public class GuiManager2 {
             player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.get());
             Map<MessageKey, String> data = new HashMap<>();
             data.put(MessageKey.TOWN_ID,playerTown.getID());
-            PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CHANGE_DESCRIPTION,player,data);
+            PlayerChatListenerStorage.addPlayer(CHANGE_DESCRIPTION,player,data);
             event.setCancelled(true);
         });
 
@@ -1393,7 +1393,7 @@ public class GuiManager2 {
                 Map<MessageKey, String> data = new HashMap<>();
                 data.put(MessageKey.TOWN_ID,playerTown.getID());
                 data.put(MessageKey.COST,Integer.toString(changeTownNameCost));
-                PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CHANGE_TOWN_NAME,player,data);
+                PlayerChatListenerStorage.addPlayer(CHANGE_TOWN_NAME,player,data);
                 player.closeInventory();
             }
             else
@@ -1407,7 +1407,7 @@ public class GuiManager2 {
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT.get());
                 Map<MessageKey, String> data = new HashMap<>();
                 data.put(MessageKey.TOWN_ID,playerTown.getID());
-                PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CHANGE_CHUNK_COLOR,player,data);
+                PlayerChatListenerStorage.addPlayer(CHANGE_CHUNK_COLOR,player,data);
                 player.closeInventory();
             }
             else
@@ -1941,7 +1941,6 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-
     private static void OpenRegionMenu(Player player) {
 
         Gui gui = createChestGui("Town",3);

@@ -26,7 +26,7 @@ upgrades:
     row: 2
     itemCode: 'IRON_SWORD'
     maxLevel: 10
-    cost: ['500', '590', '760', '1010', '1340', '1750', '2240', '2810', '3460', '4190', '5000']
+    cost: [ '500', '590', '760', '1010', '1340', '1750', '2240', '2810', '3460', '4190', '5000' ]
     prerequisites:
       TOWN_LEVEL: 1
     benefits:
@@ -48,7 +48,7 @@ upgrades:
     row: 3
     itemCode: 'OAK_FENCE'
     maxLevel: 5
-    cost: [ '700', '1000', '1350', '1700', '2200']
+    cost: [ '700', '1000', '1350', '1700', '2200' ]
     prerequisites:
       TOWN_LEVEL: 2
       BARRACKS: 1

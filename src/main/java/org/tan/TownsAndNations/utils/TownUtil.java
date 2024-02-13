@@ -19,11 +19,11 @@ import java.util.Map;
 import java.util.Objects;
 
 import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
-import static org.tan.TownsAndNations.enums.MessageKey.TOWN_COST;
+import static org.tan.TownsAndNations.enums.ChatCategory.CREATE_CITY;
+import static org.tan.TownsAndNations.enums.MessageKey.COST;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.enums.TownRolePermission.KICK_PLAYER;
 import static org.tan.TownsAndNations.storage.ClaimedChunkStorage.unclaimAllChunkFromTown;
-import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.ChatCategory.CREATE_REGION;
 import static org.tan.TownsAndNations.storage.TownDataStorage.*;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
@@ -238,7 +238,8 @@ public class TownUtil {
             player.closeInventory();
 
             Map<MessageKey,String> data = new HashMap<>();
-            PlayerChatListenerStorage.addPlayer(CREATE_REGION,player,data);
+            data.put(COST,Integer.toString(townPrice));
+            PlayerChatListenerStorage.addPlayer(CREATE_CITY,player,data);
         }
     }
 }

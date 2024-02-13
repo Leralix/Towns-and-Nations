@@ -5,16 +5,13 @@ import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
-import org.tan.TownsAndNations.enums.MessageKey;
+import org.tan.TownsAndNations.enums.ChatCategory;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.storage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
-import java.util.HashMap;
-import java.util.Map;
 
-import static org.tan.TownsAndNations.enums.MessageKey.TOWN_COST;
-import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.ChatCategory.CREATE_REGION;
+import static org.tan.TownsAndNations.enums.ChatCategory.CREATE_REGION;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 public class RegionUtil {
@@ -47,6 +44,7 @@ public class RegionUtil {
         Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.REGION_CREATE_SUCCESS_BROADCAST.get(town.getName(),regionName));
         PlayerChatListenerStorage.removePlayer(player);
         RegionData newRegion = RegionDataStorage.newRegion(regionName,player);
+        town.setRegion(newRegion);
         town.removeToBalance(cost);
     }
 

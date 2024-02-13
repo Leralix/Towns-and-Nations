@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.tan.TownsAndNations.GUI.GuiManager2.OpenTownChangeOwnershipPlayerSelect;
+import static org.tan.TownsAndNations.enums.ChatCategory.*;
 import static org.tan.TownsAndNations.utils.TownUtil.deleteTown;
 
 public class AdminGUI {
@@ -153,7 +154,7 @@ public class AdminGUI {
             data.put(MessageKey.TOWN_ID,townData.getID());
             data.put(MessageKey.COST,Integer.toString(0));
 
-            PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CHANGE_TOWN_NAME,player,data);
+            PlayerChatListenerStorage.addPlayer(CHANGE_TOWN_NAME,player,data);
             player.closeInventory();
 
         });
@@ -162,7 +163,7 @@ public class AdminGUI {
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.get());
             Map<MessageKey, String> data = new HashMap<>();
             data.put(MessageKey.TOWN_ID,townData.getID());
-            PlayerChatListenerStorage.addPlayer(PlayerChatListenerStorage.ChatCategory.CHANGE_DESCRIPTION,player,data);
+            PlayerChatListenerStorage.addPlayer(CHANGE_DESCRIPTION,player,data);
             event.setCancelled(true);
         });
 
