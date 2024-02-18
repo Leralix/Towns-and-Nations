@@ -6,11 +6,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.RegionData;
-import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.TownsAndNations;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,12 +32,30 @@ public class RegionDataStorage {
         return newRegion;
     }
 
+
+    public static RegionData get(Player player){
+        return get(PlayerDataStorage.get(player).getTown().getRegionID());
+    }
     public static RegionData get(String regionID){
+        if(!regionStorage.containsKey(regionID))
+            return null;
         return regionStorage.get(regionID);
     }
 
     public static int getNumberOfRegion(){
         return regionStorage.size();
+    }
+
+    public static void removeRegion(String regionID){
+        regionStorage.remove(regionID);
+    }
+
+    public static LinkedHashMap<String, RegionData> getRegionStorage(){
+        return regionStorage;
+    }
+
+    public static Collection<RegionData> getAllRegions(){
+        return regionStorage.values();
     }
 
     public static void loadStats() {
@@ -54,7 +72,7 @@ public class RegionDataStorage {
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            Type type = new TypeToken<LinkedHashMap<String, TownData>>() {}.getType();
+            Type type = new TypeToken<LinkedHashMap<String, RegionData>>() {}.getType();
             regionStorage = gson.fromJson(reader, type);
 
             int ID = 0;

@@ -58,13 +58,13 @@ public class LocalChatStorage {
         ChatScope scope = getPlayerChatScope(player);
 
         if(scope == ChatScope.CITY){
-            TownData townData = TownDataStorage.get(playerData.getTownId());
+            TownData townData = playerData.getTown();
 
             townData.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.get(townData.getName(),player.getName(),message));
         }
 
         else if(scope == ChatScope.ALLIANCE){
-            TownData playerTown = TownDataStorage.get(playerData.getTownId());
+            TownData playerTown = playerData.getTown();
 
             playerTown.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.get(playerTown.getName(),player.getName(),message));
 

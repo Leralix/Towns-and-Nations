@@ -82,7 +82,9 @@ public class InvitePlayerCommand extends SubCommand {
                     player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN.get());
                     return;
                 }
-                player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN.get(invite.getName(),TownDataStorage.get(inviteStat.getTownId()).getName()));
+                player.sendMessage(getTANString() + Lang.INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN.get(
+                        invite.getName(),
+                        inviteStat.getTown().getName()));
                 return;
             }
 

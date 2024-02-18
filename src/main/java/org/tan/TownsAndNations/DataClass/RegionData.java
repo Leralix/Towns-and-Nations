@@ -1,5 +1,9 @@
 package org.tan.TownsAndNations.DataClass;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
@@ -10,9 +14,12 @@ public class RegionData {
 
     private String id;
     private String name;
-    private String ownerID;
+    private String capitalID;
     private String nationID;
+    private String regionIconType;
     private Integer taxRate;
+    private Integer balance;
+    private String description;
     private List<String> townsInRegion = new ArrayList<>();
 
 
@@ -22,9 +29,11 @@ public class RegionData {
 
         this.id = id;
         this.name = name;
-        this.ownerID = ownerID;
+        this.capitalID = ownerTown.getID();
         this.nationID = null;
+        this.regionIconType = "COBBLESTONE";
         this.taxRate = 1;
+        this.description = "default description";
         this.townsInRegion.add(ownerTown.getID());
     }
 
@@ -36,15 +45,15 @@ public class RegionData {
         return name;
     }
 
-    public String getOwnerID() {
-        return ownerID;
+    public String getCapitalID() {
+        return capitalID;
+    }
+    public TownData getCapital() {
+        return TownDataStorage.get(capitalID);
     }
 
-    public PlayerData getOwnerData() {
-        return PlayerDataStorage.get(ownerID);
-    }
-    public boolean isOwner(String playerID) {
-        return ownerID.equals(playerID);
+    public PlayerData getOwner() {
+        return TownDataStorage.get(capitalID).getLeader();
     }
 
     public boolean hasNation() {
@@ -78,13 +87,70 @@ public class RegionData {
         return towns;
     }
 
+    public int getNumberOfTownsIn() {
+        return townsInRegion.size();
+    }
+
     public void addTown(String townID) {
         townsInRegion.add(townID);
     }
 
+    public ItemStack getIconItemStack() {
+        return new ItemStack(Material.valueOf(this.regionIconType));
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 
+    public Object getTotalPlayerCount() {
+        int count = 0;
+        for (TownData town : getTownsInRegion()){
+            count += town.getPlayerList().size();
+        }
+        return count;
+    }
+    public boolean isCapital( TownData town) {
+        return isCapital(town.getID());
+    }
+    public boolean isCapital( String townID) {
+        return capitalID.equals(townID);
+    }
+    public void setCapital(TownData town) {
+        setCapital(town.getID());
+    }
+    public void setCapital(String townID) {
+        this.capitalID = townID;
+    }
+    public void setRegionIconType(Material itemMaterial) {
+        setRegionIconType(itemMaterial.name());
+    }
+    public void setRegionIconType(String regionIconType) {
+        this.regionIconType = regionIconType;
+    }
 
+    public Integer getBalance() {
+        return balance;
+    }
+    public Integer addBalance(Integer amount) {
+        return balance += amount;
+    }
+    public Integer removeBalance(Integer amount) {
+        return balance -= amount;
+    }
 
-
+    public int getIncomeTomorrow() {
+        int income = 0;
+        for (TownData town  : getTownsInRegion()) {
+            if(town.getBalance() > taxRate) {
+                income += taxRate;
+            }
+        }
+        return income;
+    }
 }

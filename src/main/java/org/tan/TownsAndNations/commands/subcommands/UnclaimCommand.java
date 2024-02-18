@@ -53,8 +53,8 @@ public class UnclaimCommand extends SubCommand {
             return;
         }
 
-        TownData townStat = TownDataStorage.get(playerStat.getTownId());
-        if(!townStat.getUuidLeader().equals(playerStat.getUuid())){
+        TownData townStat = playerStat.getTown();
+        if(!townStat.getLeaderID().equals(playerStat.getUuid())){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
         }
 

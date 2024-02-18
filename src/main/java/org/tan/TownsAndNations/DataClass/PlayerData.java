@@ -64,6 +64,9 @@ public class PlayerData {
     public String getTownId(){
         return this.TownId;
     }
+    public TownData getTown(){
+        return TownDataStorage.get(this);
+    }
     public boolean haveTown(){
         return this.TownId != null;
     }
@@ -89,7 +92,7 @@ public class PlayerData {
             updatePlayerDataInDatabase(this);
     }
     public boolean isTownLeader(){
-        return TownDataStorage.get(this).getUuidLeader().equals(this.UUID);
+        return TownDataStorage.get(this).getLeaderID().equals(this.UUID);
     }
     public boolean hasPermission(TownRolePermission rolePermission){
         if(isTownLeader())
@@ -105,6 +108,9 @@ public class PlayerData {
     }
 
     public boolean haveRegion(){
+        if(!this.haveTown()){
+            return false;
+        }
         return TownDataStorage.get(this).haveRegion();
     }
     public RegionData getRegion(){

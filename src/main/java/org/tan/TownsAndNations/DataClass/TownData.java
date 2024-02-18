@@ -49,15 +49,15 @@ public class TownData {
     private SpawnPosition spawnPosition;
 
     //First time creating a town
-    public TownData(String townId, String townName, String uuidLeader){
+    public TownData(String townId, String townName, String leaderID){
         this.TownId = townId;
-        this.UuidLeader = uuidLeader;
+        this.UuidLeader = leaderID;
         this.TownName = townName;
         this.Description = "default description";
         this.DateCreated = new Date().toString();
         this.townIconMaterialCode = null;
         this.PlayerJoinRequestSet= new HashSet<>();
-        this.townPlayerListId.add(uuidLeader);
+        this.townPlayerListId.add(leaderID);
         this.roles = new HashMap<>();
         this.isRecruiting = false;
         this.balance = 0;
@@ -68,9 +68,9 @@ public class TownData {
         this.chunkColor = 0xff0000;
 
         addRank(townDefaultRank);
-        getRank(townDefaultRank).addPlayer(uuidLeader);
+        getRank(townDefaultRank).addPlayer(leaderID);
 
-        PlayerDataStorage.get(uuidLeader).setRank(this.townDefaultRank);
+        PlayerDataStorage.get(leaderID).setRank(this.townDefaultRank);
 
 
         this.relations = new TownRelations();
@@ -81,17 +81,17 @@ public class TownData {
     }
 
     //used for sql, loading a town
-    public TownData(String townId, String townName, String uuidLeader, String description,String dateCreated,
+    public TownData(String townId, String townName, String leaderID, String description, String dateCreated,
                     String townIconMaterialCode, String townDefaultRankName, Boolean isRecruiting, int balance,
-                    int flatTax,int chunkColor){
+                    int flatTax, int chunkColor){
         this.TownId = townId;
         this.TownName = townName;
-        this.UuidLeader = uuidLeader;
+        this.UuidLeader = leaderID;
         this.Description = description;
         this.DateCreated = dateCreated;
         this.townIconMaterialCode = townIconMaterialCode;
         this.PlayerJoinRequestSet= new HashSet<>();
-        this.townPlayerListId.add(uuidLeader);
+        this.townPlayerListId.add(leaderID);
         this.roles = new HashMap<>();
         this.townDefaultRank = townDefaultRankName;
         this.isRecruiting = isRecruiting;
@@ -139,11 +139,14 @@ public class TownData {
             this.roles.remove(key);
     }
 
-    public String getUuidLeader() {
+    public String getLeaderID() {
         return this.UuidLeader;
     }
-    public void setUuidLeader(String uuidLeader) {
-        this.UuidLeader = uuidLeader;
+    public PlayerData getLeader() {
+        return PlayerDataStorage.get(this.UuidLeader);
+    }
+    public void setLeaderID(String leaderID) {
+        this.UuidLeader = leaderID;
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);
     }
@@ -529,6 +532,9 @@ public class TownData {
     public RegionData getRegion(){
         return RegionDataStorage.get(this.regionID);
     }
+    public String getRegionID(){
+        return this.regionID;
+    }
 
     public void setRegion(RegionData region){
         setRegion(region.getID());
@@ -538,5 +544,6 @@ public class TownData {
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);
     }
+
 
 }

@@ -79,13 +79,13 @@ public class AdminGUI {
         for (TownData townData : TownDataStorage.getTownList().values()) {
 
 
-            ItemStack townIcon = HeadUtils.getTownIcon(townData.getID());
+            ItemStack townIcon = HeadUtils.getTownIcon(townData);
 
 
 
             HeadUtils.setLore(townIcon,
                     Lang.GUI_TOWN_INFO_DESC0.get(townData.getDescription()),
-                    Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getUuidLeader())).getName()),
+                    Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getLeaderID())).getName()),
                     Lang.GUI_TOWN_INFO_DESC2.get(townData.getPlayerList().size()),
                     Lang.GUI_TOWN_INFO_DESC3.get(townData.getNumberOfClaimedChunk()),
                     "",
@@ -138,7 +138,7 @@ public class AdminGUI {
                 Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION_DESC1.get(townData.getDescription()));
         ItemStack changeTownLeader = HeadUtils.getCustomLoreItem(Material.PLAYER_HEAD,
                 Lang.ADMIN_GUI_CHANGE_TOWN_LEADER.get(),
-                Lang.ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getUuidLeader())).getName()));
+                Lang.ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getLeaderID())).getName()));
         ItemStack deleteTown = HeadUtils.getCustomLoreItem(Material.BARRIER,
                 Lang.ADMIN_GUI_DELETE_TOWN.get(),
                 Lang.ADMIN_GUI_DELETE_TOWN_DESC1.get(townData.getName()));

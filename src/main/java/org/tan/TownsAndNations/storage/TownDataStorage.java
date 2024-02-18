@@ -56,7 +56,7 @@ public class TownDataStorage {
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, newTown.getID());
             ps.setString(2, newTown.getName());
-            ps.setString(3, newTown.getUuidLeader());
+            ps.setString(3, newTown.getLeaderID());
             ps.setString(4, newTown.getTownDefaultRank());
             ps.setString(5, newTown.getDescription());
             ps.setString(6, newTown.getDateCreated());
@@ -195,7 +195,7 @@ public class TownDataStorage {
         return get(playerData.getTownId());
     }
     public static TownData get(Player player){
-        return get(PlayerDataStorage.get(player.getUniqueId().toString()).getTownId());
+        return get(PlayerDataStorage.get(player).getTownId());
     }
     public static TownData get(String townId) {
         if (isSqlEnable()) {
@@ -398,7 +398,7 @@ public class TownDataStorage {
 
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setString(1, townData.getName());
-                ps.setString(2, townData.getUuidLeader());
+                ps.setString(2, townData.getLeaderID());
                 ps.setString(3, townData.getTownDefaultRank());
                 ps.setString(4, townData.getDescription());
                 ps.setString(5, townData.getDateCreated());

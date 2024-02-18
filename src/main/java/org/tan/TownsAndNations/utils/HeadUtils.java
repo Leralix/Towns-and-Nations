@@ -9,10 +9,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import java.util.ArrayList;
@@ -64,7 +66,6 @@ public class HeadUtils {
         PlayerHead.setItemMeta(skullMeta);
         return PlayerHead;
     }
-
     public static ItemStack makeSkull(String name, String base64EncodedString) {
         UUID id = UUID.nameUUIDFromBytes(base64EncodedString.getBytes());
         int less = (int)id.getLeastSignificantBits();
@@ -78,34 +79,37 @@ public class HeadUtils {
         skull.setItemMeta(meta);
         return skull;
     }
+    public static ItemStack getTownIcon(TownData townData){
 
-    public static ItemStack getTownIcon(String TownId){
-
-        TownData town = TownDataStorage.get(TownId);
-        ItemStack itemStack = town.getTownIconItemStack();
+        ItemStack itemStack = townData.getTownIconItemStack();
         if(itemStack == null){
-            return HeadUtils.getPlayerHead(town.getName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
+            return HeadUtils.getPlayerHead(townData.getName(), Bukkit.getOfflinePlayer(UUID.fromString(townData.getLeaderID())));
         }
         else {
             ItemMeta meta = itemStack.getItemMeta();
-            meta.setDisplayName(ChatColor.GREEN + town.getName());
+            meta.setDisplayName(ChatColor.GREEN + townData.getName());
             itemStack.setItemMeta(meta);
             return itemStack;
         }
     }
-
+    public static ItemStack getTownIcon(String TownId){
+        return getTownIcon(TownDataStorage.get(TownId));
+    }
+    public static ItemStack getTownIconWithInformations(TownData townData){
+        return getTownIconWithInformations(townData.getID());
+    }
     public static ItemStack getTownIconWithInformations(String TownId){
 
         TownData town = TownDataStorage.get(TownId);
         ItemStack icon = HeadUtils.getTownIcon(town.getID());
         if (icon == null){
-            icon =  HeadUtils.getPlayerHead(town.getName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
+            icon =  HeadUtils.getPlayerHead(town.getName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getLeaderID())));
         }
         ItemMeta meta = icon.getItemMeta();
         List<String> lore = new ArrayList<>();
 
         lore.add(Lang.GUI_TOWN_INFO_DESC0.get(town.getDescription()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())).getName()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getOfflinePlayer(UUID.fromString(town.getLeaderID())).getName()));
         lore.add(Lang.GUI_TOWN_INFO_DESC2.get(town.getPlayerList().size()));
         lore.add(Lang.GUI_TOWN_INFO_DESC3.get(town.getNumberOfClaimedChunk()));
 
@@ -113,14 +117,13 @@ public class HeadUtils {
         icon.setItemMeta(meta);
         return icon;
     }
-
     public static ItemStack getTownIconWithInformations(String TownId,String ownTownID){
 
         TownData town = TownDataStorage.get(TownId);
         ItemStack icon = town.getTownIconItemStack();
 
         if (icon == null){
-            icon =  HeadUtils.getPlayerHead(town.getName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())));
+            icon =  HeadUtils.getPlayerHead(town.getName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getLeaderID())));
         }
         ItemMeta meta = icon.getItemMeta();
         List<String> lore = new ArrayList<>();
@@ -135,7 +138,7 @@ public class HeadUtils {
         }
 
         lore.add(Lang.GUI_TOWN_INFO_DESC0.get(town.getDescription()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getOfflinePlayer(UUID.fromString(town.getUuidLeader())).getName()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getOfflinePlayer(UUID.fromString(town.getLeaderID())).getName()));
         lore.add(Lang.GUI_TOWN_INFO_DESC2.get(town.getPlayerList().size()));
         lore.add(Lang.GUI_TOWN_INFO_DESC3.get(town.getNumberOfClaimedChunk()));
         lore.add(Lang.GUI_TOWN_INFO_TOWN_RELATION.get(relationName));
@@ -143,6 +146,30 @@ public class HeadUtils {
         meta.setLore(lore);
         icon.setItemMeta(meta);
         return icon;
+    }
+
+    public static ItemStack getRegionIcon(String regionID){
+        return getRegionIcon(RegionDataStorage.get(regionID));
+    }
+    public static ItemStack getRegionIcon(RegionData regionData){
+        ItemStack icon = regionData.getIconItemStack();
+
+        ItemMeta meta = icon.getItemMeta();
+        if(meta != null){
+            meta.setDisplayName(ChatColor.GREEN + regionData.getName());
+
+            List<String> lore = new ArrayList<>();
+            lore.add(Lang.GUI_REGION_INFO_DESC0.get(regionData.getDescription()));
+            lore.add(Lang.GUI_REGION_INFO_DESC1.get(regionData.getCapital().getName()));
+            lore.add(Lang.GUI_REGION_INFO_DESC2.get(regionData.getNumberOfTownsIn()));
+            lore.add(Lang.GUI_REGION_INFO_DESC3.get(regionData.getTotalPlayerCount()));
+
+            meta.setLore(lore);
+            icon.setItemMeta(meta);
+        }
+        return icon;
+
+
     }
 
     public static ItemStack getCustomLoreItem(Material itemMaterial, String itemName){
@@ -162,13 +189,11 @@ public class HeadUtils {
         item.setItemMeta(meta);
         return item;
     }
-
     public static void setLore(ItemStack itemStack, List<String> lore){
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
     }
-
     public static void setLore(ItemStack itemStack, String... loreLines) {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
@@ -177,7 +202,6 @@ public class HeadUtils {
 
         itemStack.setItemMeta(itemMeta);
     }
-
     public static void addLore(ItemStack itemStack, String... loreLines) {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
