@@ -20,17 +20,13 @@ import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.FurnaceInventory;
+import org.tan.TownsAndNations.DataClass.ClaimedChunk;
 import org.tan.TownsAndNations.DataClass.TownData;
-import org.tan.TownsAndNations.Lang.Lang;
-import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.TownChunkPermissionType;
-import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
-import org.tan.TownsAndNations.storage.WarTaggedPlayer;
 
-import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
+import static org.tan.TownsAndNations.enums.TownChunkPermissionType.*;
 
 public class ChunkListener implements Listener {
 
@@ -41,9 +37,8 @@ public class ChunkListener implements Listener {
 
         if(!ClaimedChunkStorage.isChunkClaimed(chunk))
             return;
-        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
 
-        if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getPermission(TownChunkPermissionType.BREAK))){
+        if(!CanPlayerDoAction(chunk, event.getPlayer(),BREAK)){
             event.setCancelled(true);
         };
     }
@@ -55,9 +50,8 @@ public class ChunkListener implements Listener {
         if(!ClaimedChunkStorage.isChunkClaimed(chunk))
             return;
 
-        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
 
-        if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getPermission(TownChunkPermissionType.BREAK))){
+        if(!CanPlayerDoAction(chunk, event.getPlayer(),BREAK)){
             event.setCancelled(true);
         };
 
@@ -69,9 +63,8 @@ public class ChunkListener implements Listener {
 
         if(!ClaimedChunkStorage.isChunkClaimed(chunk))
             return;
-        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
 
-        if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getPermission(TownChunkPermissionType.PLACE))){
+        if(!CanPlayerDoAction(chunk, event.getPlayer(),PLACE)){
             event.setCancelled(true);
         };
 
@@ -88,17 +81,15 @@ public class ChunkListener implements Listener {
             Material materialBlock = blockData.getMaterial();
 
             Chunk chunk = block.getLocation().getChunk();
-            //Player player = event.getPlayer();
 
             if(!ClaimedChunkStorage.isChunkClaimed(chunk))
                 return;
-            TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
 
             if(
                 Tag.BUTTONS.isTagged(materialType) ||
                 materialBlock == Material.LEVER
             ){
-                if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getPermission(TownChunkPermissionType.USE_BUTTONS))){
+                if(!CanPlayerDoAction(chunk, event.getPlayer(),USE_BUTTONS)){
                     event.setCancelled(true);
                 }
             }
@@ -113,7 +104,7 @@ public class ChunkListener implements Listener {
                 materialBlock == Material.DROPPER ||
                 materialBlock == Material.BREWING_STAND
             ){
-                if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getPermission(TownChunkPermissionType.CHEST))){
+                if(!CanPlayerDoAction(chunk, event.getPlayer(),CHEST)){
                     event.setCancelled(true);
                 }
             }
@@ -121,7 +112,7 @@ public class ChunkListener implements Listener {
                     Tag.DOORS.isTagged(materialType) ||
                     Tag.TRAPDOORS.isTagged(materialType) ||
                     Tag.FENCE_GATES.isTagged(materialType)){
-                if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getPermission(TownChunkPermissionType.DOOR))){
+                if(!CanPlayerDoAction(chunk, event.getPlayer(),DOOR)){
                     event.setCancelled(true);
                 };
             }
@@ -139,7 +130,7 @@ public class ChunkListener implements Listener {
                     materialBlock == Material.BEACON
 
             ) {
-                if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getPermission(TownChunkPermissionType.DECORATIVE_BLOCK))){
+                if(!CanPlayerDoAction(chunk, event.getPlayer(),DECORATIVE_BLOCK)){
                     event.setCancelled(true);
                 }
             }
@@ -147,7 +138,7 @@ public class ChunkListener implements Listener {
                     materialBlock == Material.JUKEBOX ||
                     materialBlock == Material.NOTE_BLOCK
             ) {
-                if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getPermission(TownChunkPermissionType.MUSIC_BLOCK))){
+                if(!CanPlayerDoAction(chunk, event.getPlayer(),MUSIC_BLOCK)){
                     event.setCancelled(true);
                 }
             }
@@ -156,17 +147,17 @@ public class ChunkListener implements Listener {
                     materialBlock == Material.REPEATER ||
                     materialBlock == Material.COMPARATOR ||
                     materialBlock == Material.DAYLIGHT_DETECTOR) {
-                if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getPermission(TownChunkPermissionType.USE_REDSTONE))){
+                if(!CanPlayerDoAction(chunk, event.getPlayer(),USE_REDSTONE)){
                     event.setCancelled(true);
                 }
             }
 
 
             else if (event.getAction() == Action.PHYSICAL &&
-                    (event.getClickedBlock().getType() == Material.FARMLAND ||
-                    event.getClickedBlock().getType() == Material.LEGACY_SOIL)) {
+                    (event.getClickedBlock().getType() == Material.FARMLAND )){
+                    //event.getClickedBlock().getType() == Material.LEGACY_SOIL)) { // LEGACY
 
-                if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getPermission(TownChunkPermissionType.BREAK))){
+                if(!CanPlayerDoAction(chunk, event.getPlayer(),BREAK)){
                     event.setCancelled(true);
                 };
             }
@@ -185,9 +176,8 @@ public class ChunkListener implements Listener {
 
         if(!ClaimedChunkStorage.isChunkClaimed(chunk))
             return;
-        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
 
-        if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getPermission(TownChunkPermissionType.PLACE))){
+        if(!CanPlayerDoAction(chunk, event.getPlayer(),PLACE)){
             event.setCancelled(true);
         };
 
@@ -243,9 +233,8 @@ public class ChunkListener implements Listener {
 
                 if(!ClaimedChunkStorage.isChunkClaimed(chunk))
                     return;
-                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
 
-                if(!CanPlayerDoAction(chunk, player,chunkTown.getPermission(TownChunkPermissionType.ATTACK_PASSIVE_MOB))){
+                if(!CanPlayerDoAction(chunk, player,ATTACK_PASSIVE_MOB)){
                     event.setCancelled(true);
                 };
             }
@@ -255,9 +244,8 @@ public class ChunkListener implements Listener {
 
                 if(!ClaimedChunkStorage.isChunkClaimed(chunk))
                     return;
-                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
 
-                if(!CanPlayerDoAction(chunk, player,chunkTown.getPermission(TownChunkPermissionType.INTERACT_ITEM_FRAME))){
+                if(!CanPlayerDoAction(chunk, player,INTERACT_ITEM_FRAME)){
                     event.setCancelled(true);
                 };
             }
@@ -267,9 +255,8 @@ public class ChunkListener implements Listener {
 
                 if(!ClaimedChunkStorage.isChunkClaimed(chunk))
                     return;
-                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
 
-                if(!CanPlayerDoAction(chunk, player,chunkTown.getPermission(TownChunkPermissionType.BREAK))){
+                if(!CanPlayerDoAction(chunk, player,TownChunkPermissionType.BREAK)){
                     event.setCancelled(true);
                 };
             }
@@ -279,8 +266,7 @@ public class ChunkListener implements Listener {
 
         if(event.getDamager() instanceof Projectile) {
 
-            if(((Projectile) event.getDamager()).getShooter() instanceof Player){
-                Player player = (Player) ((Projectile) event.getDamager()).getShooter();
+            if(((Projectile) event.getDamager()).getShooter() instanceof Player player){
                 Entity entity = event.getEntity();
 
                 if(
@@ -329,9 +315,7 @@ public class ChunkListener implements Listener {
                     if(!ClaimedChunkStorage.isChunkClaimed(chunk))
                         return;
 
-                    TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
-
-                    if(!CanPlayerDoAction(chunk, player,chunkTown.getPermission(TownChunkPermissionType.ATTACK_PASSIVE_MOB))){
+                    if(!CanPlayerDoAction(chunk, player,ATTACK_PASSIVE_MOB)){
                         event.setCancelled(true);
                     }
                 }
@@ -340,9 +324,8 @@ public class ChunkListener implements Listener {
 
                     if(!ClaimedChunkStorage.isChunkClaimed(chunk))
                         return;
-                    TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
 
-                    if(!CanPlayerDoAction(chunk, player,chunkTown.getPermission(TownChunkPermissionType.INTERACT_ITEM_FRAME))){
+                    if(!CanPlayerDoAction(chunk, player,INTERACT_ITEM_FRAME)){
                         event.setCancelled(true);
                     };
                 }
@@ -351,9 +334,8 @@ public class ChunkListener implements Listener {
 
                     if(!ClaimedChunkStorage.isChunkClaimed(chunk))
                         return;
-                    TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
 
-                    if(!CanPlayerDoAction(chunk, player,chunkTown.getPermission(TownChunkPermissionType.BREAK))){
+                    if(!CanPlayerDoAction(chunk, player,BREAK)){
                         event.setCancelled(true);
                     };
                 }
@@ -375,9 +357,8 @@ public class ChunkListener implements Listener {
 
                 if(!ClaimedChunkStorage.isChunkClaimed(chunk))
                     return;
-                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
 
-                if(!CanPlayerDoAction(chunk, player,chunkTown.getPermission(TownChunkPermissionType.USE_FURNACE))){
+                if(!CanPlayerDoAction(chunk, player,USE_FURNACE)){
                     event.setCancelled(true);
                 };
 
@@ -397,9 +378,8 @@ public class ChunkListener implements Listener {
 
             if(!ClaimedChunkStorage.isChunkClaimed(chunk))
                 return;
-            TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
 
-            if(!CanPlayerDoAction(chunk, player,chunkTown.getPermission(TownChunkPermissionType.INTERACT_ITEM_FRAME))){
+            if(!CanPlayerDoAction(chunk, player,INTERACT_ITEM_FRAME)){
                 event.setCancelled(true);
             }
         }
@@ -413,9 +393,7 @@ public class ChunkListener implements Listener {
             if(!ClaimedChunkStorage.isChunkClaimed(chunk))
                 return;
 
-            TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
-
-            if(!CanPlayerDoAction(chunk, player,chunkTown.getPermission(TownChunkPermissionType.LEAD))){
+            if(!CanPlayerDoAction(chunk, player,LEAD)){
                 event.setCancelled(true);
             };
 
@@ -433,9 +411,7 @@ public class ChunkListener implements Listener {
                 if (!ClaimedChunkStorage.isChunkClaimed(chunk))
                     return;
 
-                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
-
-                if(!CanPlayerDoAction(chunk, player,chunkTown.getPermission(TownChunkPermissionType.LEAD))){
+                if(!CanPlayerDoAction(chunk, player,LEAD)){
                     event.setCancelled(true);
                 };
             }
@@ -453,8 +429,7 @@ public class ChunkListener implements Listener {
             if(!ClaimedChunkStorage.isChunkClaimed(chunk))
                 return;
 
-            TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
-            if(!CanPlayerDoAction(chunk, player,chunkTown.getPermission(TownChunkPermissionType.INTERACT_ARMOR_STAND))){
+            if(!CanPlayerDoAction(chunk, player,INTERACT_ARMOR_STAND)){
                 event.setCancelled(true);
             };
         }
@@ -469,9 +444,7 @@ public class ChunkListener implements Listener {
         if (!ClaimedChunkStorage.isChunkClaimed(chunk))
             return;
 
-        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
-
-        if(!CanPlayerDoAction(chunk,player,chunkTown.getPermission(TownChunkPermissionType.LEAD))){
+        if(!CanPlayerDoAction(chunk,player,LEAD)){
             event.setCancelled(true);
         }
 
@@ -488,12 +461,12 @@ public class ChunkListener implements Listener {
                 return;
             TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
             if(entity instanceof LeashHitch) {
-                if (!CanPlayerDoAction(chunk, player, chunkTown.getPermission(TownChunkPermissionType.LEAD))) {
+                if (!CanPlayerDoAction(chunk, player,LEAD)) {
                     event.setCancelled(true);
                 }
             }
             else{
-                if (!CanPlayerDoAction(chunk, player, chunkTown.getPermission(TownChunkPermissionType.BREAK))) {
+                if (!CanPlayerDoAction(chunk, player,BREAK)) {
                     event.setCancelled(true);
                 }
             }
@@ -503,14 +476,13 @@ public class ChunkListener implements Listener {
                 Chunk chunk = entity.getLocation().getChunk();
                 if (!ClaimedChunkStorage.isChunkClaimed(chunk))
                     return;
-                TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
                 if(entity instanceof LeashHitch) {
-                    if (!CanPlayerDoAction(chunk, player, chunkTown.getPermission(TownChunkPermissionType.LEAD))) {
+                    if (!CanPlayerDoAction(chunk, player,LEAD)) {
                         event.setCancelled(true);
                     }
                 }
                 else{
-                    if (!CanPlayerDoAction(chunk, player, chunkTown.getPermission(TownChunkPermissionType.BREAK))) {
+                    if (!CanPlayerDoAction(chunk, player,BREAK)) {
                         event.setCancelled(true);
                     }
                 }
@@ -525,15 +497,14 @@ public class ChunkListener implements Listener {
 
         if(!ClaimedChunkStorage.isChunkClaimed(chunk))
             return;
-        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
 
         Entity entity = event.getEntity();
         if(entity instanceof LeashHitch){
-            if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getPermission(TownChunkPermissionType.LEAD))){
+            if(!CanPlayerDoAction(chunk, event.getPlayer(),LEAD)){
                 event.setCancelled(true);
             }
         } else {
-            if(!CanPlayerDoAction(chunk, event.getPlayer(),chunkTown.getPermission(TownChunkPermissionType.PLACE))){
+            if(!CanPlayerDoAction(chunk, event.getPlayer(),PLACE)){
                 event.setCancelled(true);
             }
         }
@@ -548,52 +519,20 @@ public class ChunkListener implements Listener {
         if (!ClaimedChunkStorage.isChunkClaimed(chunk))
             return;
 
-        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
-
-        if(!CanPlayerDoAction(chunk,player,chunkTown.getPermission(TownChunkPermissionType.SHEARS))){
+        if(!CanPlayerDoAction(chunk,player,SHEARS)){
             event.setCancelled(true);
         }
     }
 
 
-    private boolean CanPlayerDoAction(Chunk chunk, Player player, TownChunkPermission permission){
+    private boolean CanPlayerDoAction(Chunk chunk, Player player, TownChunkPermissionType permissionType){
 
+        //Chunk not claimed
         if(!ClaimedChunkStorage.isChunkClaimed(chunk))
             return true;
 
-        TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
-        TownData playerTown = TownDataStorage.get(player);
+        ClaimedChunk claimedChunk = ClaimedChunkStorage.get(chunk);
+        return claimedChunk.canPlayerDo(player, permissionType);
 
-        //Chunk is claimed yet player have no town
-        if(PlayerDataStorage.get(player).getTownId() == null){
-            playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
-            return false;
-        }
-
-
-        //Same town
-        if(ClaimedChunkStorage.getChunkOwnerID(chunk).equals(playerTown.getID()))
-            return true;
-        //Same alliance
-        if(permission == TownChunkPermission.ALLIANCE && chunkTown.getTownRelationWithCurrent(TownRelation.ALLIANCE,playerTown.getID()))
-            return true;
-        //permission is on foreign
-        if(chunkTown.getPermission(TownChunkPermissionType.BREAK) == TownChunkPermission.FOREIGN)
-            return true;
-        //war has been declared
-        if(WarTaggedPlayer.isPlayerInWarWithTown(player,chunkTown))
-            return true;
-
-        playerCantPerformAction(player, ClaimedChunkStorage.getChunkOwnerName(chunk));
-        return false;
     }
-
-
-
-    private void playerCantPerformAction(Player player, String ChunkOwner){
-        player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-        player.sendMessage(getTANString() + Lang.CHUNK_BELONGS_TO.get(ChunkOwner));
-    }
-
-
 }

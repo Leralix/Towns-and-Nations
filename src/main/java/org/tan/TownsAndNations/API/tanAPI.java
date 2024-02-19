@@ -8,7 +8,6 @@ import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class tanAPI {
@@ -34,7 +33,7 @@ public class tanAPI {
         return TownDataStorage.get(townID).getChunkColor();
     }
     public int getChunkColor(ClaimedChunk chunk){
-        return getChunkColor(chunk.getTownID());
+        return getChunkColor(chunk.getID());
     }
 
     public void setDynmapAddon(Boolean isLoaded){

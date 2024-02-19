@@ -80,7 +80,7 @@ public class MapCommand extends SubCommand {
                     if (claimedChunks.contains(chunk)) {
 
                         TownData playerTown = TownDataStorage.get(player);
-                        TownData otherTown = TownDataStorage.get(ClaimedChunkStorage.get(chunk).getTownID());
+                        TownData otherTown = TownDataStorage.get(ClaimedChunkStorage.get(chunk).getID());
 
                         TownRelation relation;
                         if(playerTown == null ){

@@ -33,6 +33,7 @@ public class RegionData {
         this.nationID = null;
         this.regionIconType = "COBBLESTONE";
         this.taxRate = 1;
+        this.balance = 0;
         this.description = "default description";
         this.townsInRegion.add(ownerTown.getID());
     }
@@ -152,5 +153,9 @@ public class RegionData {
             }
         }
         return income;
+    }
+
+    public void addToTax(int i) {
+        taxRate += i;
     }
 }

@@ -86,7 +86,7 @@ public class ClaimedChunkStorage {
             return getChunkOwnerIDFromDatabase(chunk);
         } else {
             ClaimedChunk claimedChunk = claimedChunksMap.get(getChunkKey(chunk));
-            return claimedChunk != null ? claimedChunk.getTownID() : null;
+            return claimedChunk != null ? claimedChunk.getID() : null;
         }
     }
 
@@ -169,7 +169,7 @@ public class ClaimedChunkStorage {
             return isOwnerInDatabase(chunk, townID);
         } else {
             ClaimedChunk cChunk = claimedChunksMap.get(ClaimedChunkStorage.getChunkKey(chunk));
-            return cChunk != null && cChunk.getTownID().equals(townID);
+            return cChunk != null && cChunk.getID().equals(townID);
         }
     }
 
@@ -261,7 +261,7 @@ public class ClaimedChunkStorage {
 
         for (String adjacentChunkKey : adjacentChunkKeys) {
             ClaimedChunk adjacentClaimedChunk = claimedChunksMap.get(adjacentChunkKey);
-            if (adjacentClaimedChunk != null && adjacentClaimedChunk.getTownID().equals(townID)) {
+            if (adjacentClaimedChunk != null && adjacentClaimedChunk.getID().equals(townID)) {
                 return true;
             }
         }
@@ -301,7 +301,7 @@ public class ClaimedChunkStorage {
 
     public static void unclaimAllChunkFrom(String townID) {
         for (ClaimedChunk chunk : claimedChunksMap.values()) {
-            if (chunk.getTownID().equals(townID))
+            if (chunk.getID().equals(townID))
                 unclaimChunk(Bukkit.getWorld(UUID.fromString(chunk.getWorldUUID())).getChunkAt(chunk.getX(), chunk.getZ()));
         }
     }

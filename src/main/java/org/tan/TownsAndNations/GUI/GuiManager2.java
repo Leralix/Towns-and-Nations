@@ -924,7 +924,7 @@ public class GuiManager2 {
         int nextTaxes = 0;
 
         for (String playerID : town.getPlayerList()){
-            PlayerData otherPlayerData = PlayerDataStorage.get(playerID);assert otherPlayerData != null;
+            PlayerData otherPlayerData = PlayerDataStorage.get(playerID);
             OfflinePlayer otherPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
             if(!otherPlayerData.getTownRank().isPayingTaxes()){
                 continue;
@@ -1064,10 +1064,9 @@ public class GuiManager2 {
         gui.setItem(1,4, _goldInfo);
         gui.setItem(1,6, _goldSpendingIcon);
 
-        gui.setItem(2,1, _lowerTax);
-        gui.setItem(2,2, _taxInfo);
-        gui.setItem(2,3, _moreTax);
-        gui.setItem(2,4, _taxHistory);
+        gui.setItem(2,2, _lowerTax);
+        gui.setItem(2,3, _taxInfo);
+        gui.setItem(2,4, _moreTax);
 
         gui.setItem(2,6, _salarySpending);
         gui.setItem(2,7, _chunkSpending);
@@ -1075,6 +1074,7 @@ public class GuiManager2 {
 
         gui.setItem(3,2, _donation);
         gui.setItem(3,3, _donationHistory);
+        gui.setItem(3,4, _taxHistory);
 
 
 
@@ -1678,7 +1678,7 @@ public class GuiManager2 {
                         TownRelationConfirmStorage.addInvitation(otherTown.getLeaderID(), playerTown.getID(), relation);
 
                         otherTownLeaderOnline.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(playerTown.getName(),relation.getColor() + relation.getName()));
-                        ChatUtils.sendClickableCommand(otherTownLeaderOnline,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + playerTown);
+                        ChatUtils.sendClickableCommand(otherTownLeaderOnline,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + playerTown.getID());
 
                         player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS.get(otherTownLeaderOnline.getName()));
 
@@ -1718,7 +1718,7 @@ public class GuiManager2 {
                         TownRelationConfirmStorage.addInvitation(otherTown.getLeaderID(), playerTown.getID(), null);
 
                         otherTownLeader.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(playerTown.getName(),"neutral"));
-                        ChatUtils.sendClickableCommand(otherTownLeader,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + playerTown);
+                        ChatUtils.sendClickableCommand(otherTownLeader,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + playerTown.getID());
                         player.closeInventory();
                     }
                     else{ //Can only be worst relations
@@ -2177,7 +2177,6 @@ public class GuiManager2 {
         ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.get());
 
         HeadUtils.setLore(goldIcon,
-                Lang.GUI_TREASURY_STORAGE.get(),
                 Lang.GUI_TREASURY_STORAGE_DESC1.get(treasury),
                 Lang.GUI_TREASURY_STORAGE_DESC2.get(taxTomorrow));
         HeadUtils.setLore(lowerTax,
@@ -2199,10 +2198,32 @@ public class GuiManager2 {
 
         GuiItem _lowerTax = ItemBuilder.from(lowerTax).asGuiItem(event -> {
             event.setCancelled(true);
+            int currentTax = playerRegion.getTaxRate();
+            int amountToRemove = event.isShiftClick() && currentTax >= 10 ? 10 : 1;
+
+            if(currentTax <= 1){
+                player.sendMessage(getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get());
+                return;
+            }
+            SoundUtil.playSound(player, REMOVE);
+
+            playerRegion.addToTax(-amountToRemove);
+            OpenTownEconomics(player);
         });
 
         GuiItem _increaseTax = ItemBuilder.from(increaseTax).asGuiItem(event -> {
             event.setCancelled(true);
+            int currentTax = playerRegion.getTaxRate();
+            int amountToRemove = event.isShiftClick() && currentTax >= 10 ? 10 : 1;
+
+            if(currentTax <= 1){
+                player.sendMessage(getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get());
+                return;
+            }
+            SoundUtil.playSound(player, ADD);
+
+            playerRegion.addToTax(amountToRemove);
+            OpenTownEconomics(player);
         });
 
         GuiItem _taxInfo = ItemBuilder.from(taxInfo).asGuiItem(event -> {
