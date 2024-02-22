@@ -97,7 +97,7 @@ public class TownUtil {
 
         playerTown.addToBalance(amountDonated);
         if(!isSqlEnable())
-            playerTown.getTreasury().addDonation(player.getName(),player.getUniqueId().toString(),amountDonated);
+            playerTown.getDonationHistory().add(player.getName(),player.getUniqueId().toString(),amountDonated);
 
         player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_TOWN.get(amountDonated));
         PlayerChatListenerStorage.removePlayer(player);
@@ -170,7 +170,7 @@ public class TownUtil {
         PlayerChatListenerStorage.removePlayer(player);
         player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_NAME_IN_CHAT_SUCCESS.get(town.getName(),newName));
         if(!isSqlEnable())
-            town.getTreasury().addMiscellaneousPurchase(Lang.GUI_TOWN_SETTINGS_NEW_TOWN_NAME_HISTORY.get(town.getName() ,newName),townCost);
+            town.getMiscellaneousHistory().add(Lang.GUI_TOWN_SETTINGS_NEW_TOWN_NAME_HISTORY.get(town.getName() ,newName),townCost);
         town.removeToBalance(townCost);
         town.setName(newName);
     }

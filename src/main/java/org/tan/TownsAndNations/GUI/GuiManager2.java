@@ -228,6 +228,7 @@ public class GuiManager2 {
                 Lang.GUI_TOWN_INFO_DESC2.get(playerTown.getPlayerList().size()),
                 Lang.GUI_TOWN_INFO_DESC3.get(playerTown.getNumberOfClaimedChunk()),
                 Lang.GUI_TOWN_INFO_DESC4.get(playerTown.getBalance()),
+                playerTown.haveRegion()? Lang.GUI_TOWN_INFO_DESC5_REGION.get(playerTown.getRegion().getName()): Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get(),
                 Lang.GUI_TOWN_INFO_CHANGE_ICON.get()
         );
 
@@ -975,7 +976,7 @@ public class GuiManager2 {
                 Lang.GUI_TREASURY_DONATION_DESC1.get());
 
         if(!isSqlEnable())
-            HeadUtils.setLore(donationHistory, town.getTreasury().getDonationLimitedHistory(5));
+            HeadUtils.setLore(donationHistory, town.getDonationHistory().get(5));
 
         GuiItem _goldInfo = ItemBuilder.from(goldIcon).asGuiItem(event -> event.setCancelled(true));
         GuiItem _goldSpendingIcon = ItemBuilder.from(goldSpendingIcon).asGuiItem(event -> event.setCancelled(true));
@@ -1096,7 +1097,7 @@ public class GuiManager2 {
             case DONATION -> {
 
                 int i = 0;
-                for(TransactionHistory donation : town.getTreasury().getDonationHistory()){
+                for(TransactionHistory donation : town.getDonationHistory().getReverse()){
 
                     ItemStack transactionIcon = HeadUtils.getCustomLoreItem(Material.PAPER,
                             ChatColor.DARK_AQUA + donation.getName(),
@@ -1115,7 +1116,7 @@ public class GuiManager2 {
             }
             case TAX -> {
 
-                LinkedHashMap<String, ArrayList<TransactionHistory>> taxHistory = town.getTreasury().getTaxHistory();
+                LinkedHashMap<String, ArrayList<TransactionHistory>> taxHistory = town.getTaxHistory().get();
 
                 int i = 0;
 
@@ -1157,7 +1158,7 @@ public class GuiManager2 {
 
                 float upkeepCost = ConfigUtil.getCustomConfig("config.yml").getInt("ChunkUpkeepCost");
 
-                for(TransactionHistory chunkTax : town.getTreasury().getChunkHistory().values()){
+                for(TransactionHistory chunkTax : town.getChunkHistory().get().values()){
 
 
                     ItemStack transactionIcon = HeadUtils.getCustomLoreItem(Material.PAPER,
@@ -1184,7 +1185,7 @@ public class GuiManager2 {
             case MISCELLANEOUS -> {
                 int i = 0;
 
-                for (TransactionHistory miscellaneous : town.getTreasury().getMiscellaneousPurchaseHistory()){
+                for (TransactionHistory miscellaneous : town.getMiscellaneousHistory().get()){
 
                     ItemStack transactionIcon = HeadUtils.getCustomLoreItem(Material.PAPER,
                             ChatColor.DARK_AQUA + miscellaneous.getDate(),
@@ -2208,7 +2209,7 @@ public class GuiManager2 {
             SoundUtil.playSound(player, REMOVE);
 
             playerRegion.addToTax(-amountToRemove);
-            OpenTownEconomics(player);
+            OpenRegionEconomy(player);
         });
 
         GuiItem _increaseTax = ItemBuilder.from(increaseTax).asGuiItem(event -> {
@@ -2216,14 +2217,10 @@ public class GuiManager2 {
             int currentTax = playerRegion.getTaxRate();
             int amountToRemove = event.isShiftClick() && currentTax >= 10 ? 10 : 1;
 
-            if(currentTax <= 1){
-                player.sendMessage(getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get());
-                return;
-            }
             SoundUtil.playSound(player, ADD);
 
             playerRegion.addToTax(amountToRemove);
-            OpenTownEconomics(player);
+            OpenRegionEconomy(player);
         });
 
         GuiItem _taxInfo = ItemBuilder.from(taxInfo).asGuiItem(event -> {
@@ -2241,6 +2238,16 @@ public class GuiManager2 {
         GuiItem _donationHistory = ItemBuilder.from(donationHistory).asGuiItem(event -> {
             event.setCancelled(true);
         });
+
+        GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
+        gui.setItem(1,1, _decorativeGlass);
+        gui.setItem(1,2, _decorativeGlass);
+        gui.setItem(1,3, _decorativeGlass);
+        gui.setItem(1,5, _decorativeGlass);
+        gui.setItem(1,7, _decorativeGlass);
+        gui.setItem(1,8, _decorativeGlass);
+        gui.setItem(1,9, _decorativeGlass);
+
 
         gui.setItem(1,4, _goldIcon);
         gui.setItem(1,6, _goldSpendingIcon);

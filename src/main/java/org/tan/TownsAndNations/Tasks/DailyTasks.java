@@ -7,7 +7,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.TownRank;
-import org.tan.TownsAndNations.DataClass.TownTransactionHistory;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
@@ -58,12 +57,12 @@ public class DailyTasks {
             if(EconomyUtil.getBalance(offlinePlayer) > tax){
                 EconomyUtil.removeFromBalance(offlinePlayer,tax);
                 playerTown.addToBalance(tax);
-                playerTown.getTreasury().addTaxHistory(playerStat.getName(), playerStat.getUuid(), tax);
+                playerTown.getTaxHistory().add(playerStat.getName(), playerStat.getUuid(), tax);
                 //TownsAndNations.getPluginLogger().info(playerStat.getName() + " has paid " + tax + "$ to the town " + playerTown.getName());
             }
             else{
                 //TownsAndNations.getPluginLogger().info(playerStat.getName() + " has not enough money to pay " + tax + "$ to the town " + playerTown.getName());
-                playerTown.getTreasury().addTaxHistory(playerStat.getName(), playerStat.getUuid(), -1);
+                playerTown.getTaxHistory().add(playerStat.getName(), playerStat.getUuid(), -1);
             }
         }
 
@@ -80,7 +79,7 @@ public class DailyTasks {
             int totalUpkeep = (int) ( numberClaimedChunk * upkeepCost/10);
 
             town.removeToBalance(totalUpkeep);
-            town.getTreasury().addChunkHistory(numberClaimedChunk,totalUpkeep);
+            town.getChunkHistory().add(numberClaimedChunk,totalUpkeep);
         }
     }
 
@@ -116,13 +115,13 @@ public class DailyTasks {
 
 
         for (TownData town : TownDataStorage.getTownList().values()) {
-            TownTransactionHistory treasury = town.getTreasury();
 
-            treasury.clearOldTaxHistory(timeBeforeClearing);
-            treasury.clearOldChunkHistory(TimeBeforeClearingChunk);
 
-            treasury.clearOldDonationHistory(timeBeforeClearingDonation);
-            treasury.clearOldMiscHistory(timeBeforeClearingMisc);
+            town.getTaxHistory().clearHistory(timeBeforeClearing);
+            town.getChunkHistory().clearHistory(TimeBeforeClearingChunk);
+
+            town.getDonationHistory().clearHistory(timeBeforeClearingDonation);
+            town.getMiscellaneousHistory().clearHistory(timeBeforeClearingMisc);
         }
     }
 

@@ -5,6 +5,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.tan.TownsAndNations.DataClass.History.*;
+
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.TownChunkPermissionType;
@@ -37,11 +39,16 @@ public class TownData {
     private Integer numberOfClaimedChunk;
     private Integer chunkColor;
 
+    private ChunkHistory chunkHistory;
+    private DonationHistory donationHistory;
+    private MiscellaneousHistory miscellaneousHistory;
+    private SalaryHistory salaryHistory;
+    private TaxHistory2 taxHistory;
+
     private final HashSet<String> townPlayerListId = new HashSet<>();
     private final HashMap<String,TownRank> roles;
     private HashSet<String> PlayerJoinRequestSet;
 
-    private TownTransactionHistory townTransactionHistory;
     private final TownLevel townLevel;
     private ClaimedChunkSettings chunkSettings;
     private final TownRelations relations;
@@ -67,6 +74,12 @@ public class TownData {
 
         this.chunkColor = 0xff0000;
 
+        this.chunkHistory = new ChunkHistory();
+        this.donationHistory = new DonationHistory();
+        this.miscellaneousHistory = new MiscellaneousHistory();
+        this.salaryHistory = new SalaryHistory();
+        this.taxHistory = new TaxHistory2();
+
         addRank(townDefaultRank);
         getRank(townDefaultRank).addPlayer(leaderID);
 
@@ -77,7 +90,6 @@ public class TownData {
         this.chunkSettings = new ClaimedChunkSettings();
 
         this.townLevel = new TownLevel();
-        this.townTransactionHistory = new TownTransactionHistory();
     }
 
     //used for sql, loading a town
@@ -102,7 +114,7 @@ public class TownData {
         this.relations = null;
         this.chunkSettings = null;
         this.townLevel = null;
-        this.townTransactionHistory = null;
+
     }
 
     public String getID() {
@@ -268,13 +280,6 @@ public class TownData {
         this.balance -= balance;
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);
-    }
-
-
-    public TownTransactionHistory getTreasury(){
-        if(this.townTransactionHistory == null)
-            this.townTransactionHistory = new TownTransactionHistory();
-        return this.townTransactionHistory;
     }
 
     public void broadCastMessage(String message){
@@ -546,4 +551,31 @@ public class TownData {
     }
 
 
+    public ChunkHistory getChunkHistory() {
+        return chunkHistory;
+    }
+
+    public DonationHistory getDonationHistory() {
+        if(donationHistory == null)
+            donationHistory = new DonationHistory();
+        return donationHistory;
+    }
+
+    public MiscellaneousHistory getMiscellaneousHistory() {
+        if(miscellaneousHistory == null)
+            miscellaneousHistory = new MiscellaneousHistory();
+        return miscellaneousHistory;
+    }
+
+    public SalaryHistory getSalaryHistory() {
+        if(salaryHistory == null)
+            salaryHistory = new SalaryHistory();
+        return salaryHistory;
+    }
+
+    public TaxHistory2 getTaxHistory() {
+        if(taxHistory == null)
+            taxHistory = new TaxHistory2();
+        return taxHistory;
+    }
 }

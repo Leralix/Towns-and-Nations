@@ -99,7 +99,7 @@ public class ClaimedChunk {
             return false;
         }
         else if(townUUID.startsWith("R")){
-
+            System.out.println("Region chunk");
         }
         return false;
     }
