@@ -17,11 +17,14 @@ public class SalaryHistory {
         this.salaryHistory = new LinkedHashMap<>();
     }
 
-    public LinkedHashMap<String, ArrayList<TransactionHistory>> getHistory(){
+    public LinkedHashMap<String, ArrayList<TransactionHistory>> get(){
         return salaryHistory;
     }
 
-    public void addSalary(LocalDate date, String playerID, int amount){
+    public void add(String playerID, int amount){
+        add(LocalDate.now(),playerID,amount);
+    }
+    public void add(LocalDate date, String playerID, int amount){
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
         String formattedDate = date.format(formatter);
@@ -29,7 +32,7 @@ public class SalaryHistory {
         if (!this.salaryHistory.containsKey(formattedDate)) {
             this.salaryHistory.put(formattedDate, new ArrayList<>());
         }
-        this.salaryHistory.get(formattedDate).add(new TransactionHistory(playerID, amount));
+        this.salaryHistory.get(formattedDate).add(new TransactionHistory(null,playerID, amount));
     }
 
     public void clearHistory(int daysBeforeCleaning) {

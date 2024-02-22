@@ -1,27 +1,23 @@
 package org.tan.TownsAndNations.commands.debugsubcommands;
 
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
-import org.tan.TownsAndNations.utils.ChatUtils;
 
 import java.util.List;
 
-import static org.tan.TownsAndNations.Tasks.DailyTasks.TaxPayment;
+import static org.tan.TownsAndNations.Tasks.DailyTasks.*;
+import static org.tan.TownsAndNations.utils.ArchiveUtil.archiveFiles;
 
-public class TaxPay extends SubCommand {
+public class SkipDay extends SubCommand {
 
     @Override
     public String getName() {
-        return "taxPay";
+        return "skipday";
     }
 
     @Override
     public String getDescription() {
-        return "Pay taxes for all players in town";
+        return "pay taxes, pay salaries, and collect chunk taxes for evey town";
     }
 
     @Override
@@ -31,7 +27,7 @@ public class TaxPay extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/tandebug taxpay";
+        return "/tandebug skipday";
     }
     public List<String> getTabCompleteSuggestions(Player player, String[] args){
         return null;
@@ -39,6 +35,11 @@ public class TaxPay extends SubCommand {
     @Override
     public void perform(Player player, String[] args) {
         TaxPayment();
+        ChunkPayment();
+        SalaryPayment();
+        archiveFiles();
+        ClearOldTaxes();
+
     }
 }
 

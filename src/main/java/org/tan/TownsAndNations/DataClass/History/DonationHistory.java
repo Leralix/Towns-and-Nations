@@ -15,8 +15,8 @@ public class DonationHistory {
         this.donationHistory = new ArrayList<>();
     }
 
-    public List<TransactionHistory> get(){
-        return donationHistory;
+    public void add(String playerName, String playerID, int amount){
+        this.donationHistory.add(new TransactionHistory(playerName,playerID, amount));
     }
     public List<TransactionHistory> getReverse(){
         List<TransactionHistory> reverse = new ArrayList<>(donationHistory);
@@ -24,10 +24,9 @@ public class DonationHistory {
         return reverse;
     }
 
-    public void add(String playerName, String playerID, int amount){
-        this.donationHistory.add(new TransactionHistory(playerName,playerID, amount));
+    public List<TransactionHistory> get(){
+        return donationHistory;
     }
-
     public List<String> get(int wantedNumberOfRows){
 
         if(this.donationHistory.size() < wantedNumberOfRows){

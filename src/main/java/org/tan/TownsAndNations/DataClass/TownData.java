@@ -43,7 +43,7 @@ public class TownData {
     private DonationHistory donationHistory;
     private MiscellaneousHistory miscellaneousHistory;
     private SalaryHistory salaryHistory;
-    private TaxHistory2 taxHistory;
+    private TaxHistory taxHistory;
 
     private final HashSet<String> townPlayerListId = new HashSet<>();
     private final HashMap<String,TownRank> roles;
@@ -78,7 +78,7 @@ public class TownData {
         this.donationHistory = new DonationHistory();
         this.miscellaneousHistory = new MiscellaneousHistory();
         this.salaryHistory = new SalaryHistory();
-        this.taxHistory = new TaxHistory2();
+        this.taxHistory = new TaxHistory();
 
         addRank(townDefaultRank);
         getRank(townDefaultRank).addPlayer(leaderID);
@@ -552,6 +552,8 @@ public class TownData {
 
 
     public ChunkHistory getChunkHistory() {
+        if(chunkHistory == null)
+            chunkHistory = new ChunkHistory();
         return chunkHistory;
     }
 
@@ -573,9 +575,9 @@ public class TownData {
         return salaryHistory;
     }
 
-    public TaxHistory2 getTaxHistory() {
+    public TaxHistory getTaxHistory() {
         if(taxHistory == null)
-            taxHistory = new TaxHistory2();
+            taxHistory = new TaxHistory();
         return taxHistory;
     }
 }

@@ -1,7 +1,9 @@
 package org.tan.TownsAndNations.DataClass;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.storage.PlayerDataStorage;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,7 +19,6 @@ public class TransactionHistory {
         this(null, amount);
     }
     public TransactionHistory(String transactionParty, int amount) {
-
         this(transactionParty,null, amount);
     }
     public TransactionHistory(String transactionParty, String UUID, int amount) {
@@ -63,6 +64,9 @@ public class TransactionHistory {
 
     public String getUUID(){
         return this.uuid;
+    }
+    public String getPlayerName(){
+        return PlayerDataStorage.get(this.uuid).getName();
     }
 
 }

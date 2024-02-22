@@ -101,6 +101,8 @@ public class DailyTasks {
                 for(String playerId : playerIdList){
                     PlayerData player = PlayerDataStorage.get(playerId);
                     player.addToBalance(rankSalary);
+                    town.getSalaryHistory().add(player.getUuid(), -costOfSalary);
+
                 }
             }
 

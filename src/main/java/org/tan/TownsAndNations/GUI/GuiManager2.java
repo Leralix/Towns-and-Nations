@@ -916,7 +916,7 @@ public class GuiManager2 {
         ItemStack taxHistory = HeadUtils.makeSkull(Lang.GUI_TREASURY_TAX_HISTORY.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmU1OWYyZDNiOWU3ZmI5NTBlOGVkNzkyYmU0OTIwZmI3YTdhOWI5MzQ1NjllNDQ1YjJiMzUwM2ZlM2FiOTAyIn19fQ==");
         ItemStack salarySpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_SALARY_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjlhNjAwYWIwYTgzMDk3MDY1Yjk1YWUyODRmODA1OTk2MTc3NDYwOWFkYjNkYmQzYTRjYTI2OWQ0NDQwOTU1MSJ9fX0=");
         ItemStack chunkSpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack workbenchSpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGMzNjA0NTIwOGY5YjVkZGNmOGM0NDMzZTQyNGIxY2ExN2I5NGY2Yjk2MjAyZmIxZTUyNzBlZThkNTM4ODFiMSJ9fX0=");
+        ItemStack miscSpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGMzNjA0NTIwOGY5YjVkZGNmOGM0NDMzZTQyNGIxY2ExN2I5NGY2Yjk2MjAyZmIxZTUyNzBlZThkNTM4ODFiMSJ9fX0=");
         ItemStack donation = HeadUtils.getCustomLoreItem(Material.DIAMOND,Lang.GUI_TREASURY_DONATION.get(),Lang.GUI_TREASURY_DONATION_DESC1.get());
         ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.get());
 
@@ -970,13 +970,16 @@ public class GuiManager2 {
                 Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.get(totalUpkeep),
                 Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(upkeepCost),
                 Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(numberClaimedChunk));
-        HeadUtils.setLore(workbenchSpending,
+        HeadUtils.setLore(miscSpending,
                 Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1.get());
         HeadUtils.setLore(donation,
                 Lang.GUI_TREASURY_DONATION_DESC1.get());
 
-        if(!isSqlEnable())
+        if(!isSqlEnable()){
             HeadUtils.setLore(donationHistory, town.getDonationHistory().get(5));
+            HeadUtils.setLore(miscSpending, town.getMiscellaneousHistory().get(5));
+
+        }
 
         GuiItem _goldInfo = ItemBuilder.from(goldIcon).asGuiItem(event -> event.setCancelled(true));
         GuiItem _goldSpendingIcon = ItemBuilder.from(goldSpendingIcon).asGuiItem(event -> event.setCancelled(true));
@@ -995,7 +998,7 @@ public class GuiManager2 {
                 OpenTownEconomicsHistory(player,HistoryEnum.CHUNK);
             event.setCancelled(true);
         });
-        GuiItem _workbenchSpending = ItemBuilder.from(workbenchSpending).asGuiItem(event -> {
+        GuiItem _miscSpending = ItemBuilder.from(miscSpending).asGuiItem(event -> {
             if(!isSqlEnable())
                 OpenTownEconomicsHistory(player,HistoryEnum.MISCELLANEOUS);
             event.setCancelled(true);
@@ -1071,7 +1074,7 @@ public class GuiManager2 {
 
         gui.setItem(2,6, _salarySpending);
         gui.setItem(2,7, _chunkSpending);
-        gui.setItem(2,8, _workbenchSpending);
+        gui.setItem(2,8, _miscSpending);
 
         gui.setItem(3,2, _donation);
         gui.setItem(3,3, _donationHistory);
@@ -1116,11 +1119,8 @@ public class GuiManager2 {
             }
             case TAX -> {
 
-                LinkedHashMap<String, ArrayList<TransactionHistory>> taxHistory = town.getTaxHistory().get();
-
                 int i = 0;
-
-                for(Map.Entry<String,ArrayList<TransactionHistory>> oneDay : taxHistory.entrySet()){
+                for(Map.Entry<String,ArrayList<TransactionHistory>> oneDay : town.getTaxHistory().get().entrySet()){
 
                     String date = oneDay.getKey();
                     ArrayList<TransactionHistory> taxes = oneDay.getValue();
@@ -1181,6 +1181,32 @@ public class GuiManager2 {
             }
             case SALARY -> {
 
+                int i = 0;
+                for(Map.Entry<String,ArrayList<TransactionHistory>> oneDay : town.getSalaryHistory().get().entrySet()){
+
+                    String date = oneDay.getKey();
+                    ArrayList<TransactionHistory> salaries = oneDay.getValue();
+
+                    List<String> lines = new ArrayList<>();
+
+                    for (TransactionHistory singleSalary : salaries){
+                        if(singleSalary.getAmount() < 0){
+                            lines.add(Lang.HISTORY_NEGATIVE_SINGLE_LINE.get(singleSalary.getPlayerName(), singleSalary.getAmount()));
+                        }
+                    }
+
+                    ItemStack transactionHistoryItem = HeadUtils.getCustomLoreItem(Material.PAPER,date);
+
+                    HeadUtils.setLore(transactionHistoryItem,lines);
+
+                    GuiItem _transactionHistoryItem = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> event.setCancelled(true));
+
+                    gui.setItem(i,_transactionHistoryItem);
+                    i = i+1;
+                    if (i > 44){
+                        break;
+                    }
+                }
             }
             case MISCELLANEOUS -> {
                 int i = 0;

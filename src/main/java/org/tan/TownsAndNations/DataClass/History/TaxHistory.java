@@ -9,12 +9,12 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class TaxHistory2 {
+public class TaxHistory {
 
     LinkedHashMap<String, ArrayList<TransactionHistory>> taxHistory;
 
 
-    public TaxHistory2(){
+    public TaxHistory(){
         this.taxHistory = new LinkedHashMap<>();
     }
 

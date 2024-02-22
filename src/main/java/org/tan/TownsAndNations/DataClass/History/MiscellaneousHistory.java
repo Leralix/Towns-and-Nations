@@ -18,6 +18,19 @@ public class MiscellaneousHistory {
     public List<TransactionHistory> get(){
         return miscellaneousPurchaseHistory;
     }
+
+    public List<String> get(int wantedNumberOfRows){
+
+        if(this.miscellaneousPurchaseHistory.size() < wantedNumberOfRows){
+            wantedNumberOfRows = this.miscellaneousPurchaseHistory.size();
+        }
+
+        ArrayList<String> latestDonations = new ArrayList<>();
+        for (int i = this.miscellaneousPurchaseHistory.size() - 1; i >= this.miscellaneousPurchaseHistory.size() - wantedNumberOfRows; i--) {
+            latestDonations.add(this.miscellaneousPurchaseHistory.get(i).getTransactionLine());
+        }
+        return latestDonations;
+    }
     public void add(String miscellaneous, int amount){
         this.miscellaneousPurchaseHistory.add(new TransactionHistory(miscellaneous, amount));
     }

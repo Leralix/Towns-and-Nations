@@ -1,9 +1,11 @@
 package org.tan.TownsAndNations.DataClass;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
+import org.tan.TownsAndNations.DataClass.History.ChunkHistory;
+import org.tan.TownsAndNations.DataClass.History.DonationHistory;
+import org.tan.TownsAndNations.DataClass.History.MiscellaneousHistory;
+import org.tan.TownsAndNations.DataClass.History.TaxHistory;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
@@ -21,6 +23,10 @@ public class RegionData {
     private Integer balance;
     private String description;
     private List<String> townsInRegion = new ArrayList<>();
+    private ChunkHistory chunkHistory;
+    private DonationHistory donationHistory;
+    private MiscellaneousHistory miscellaneousHistory;
+    private TaxHistory taxHistory;
 
 
     public RegionData(String id, String name, String ownerID) {
@@ -36,6 +42,11 @@ public class RegionData {
         this.balance = 0;
         this.description = "default description";
         this.townsInRegion.add(ownerTown.getID());
+
+        this.chunkHistory = new ChunkHistory();
+        this.donationHistory = new DonationHistory();
+        this.miscellaneousHistory = new MiscellaneousHistory();
+        this.taxHistory = new TaxHistory();
     }
 
     public String getID() {
@@ -157,5 +168,29 @@ public class RegionData {
 
     public void addToTax(int i) {
         taxRate += i;
+    }
+
+    public ChunkHistory getChunkHistory() {
+        if(chunkHistory == null)
+            chunkHistory = new ChunkHistory();
+        return chunkHistory;
+    }
+
+    public DonationHistory getDonationHistory() {
+        if(donationHistory == null)
+            donationHistory = new DonationHistory();
+        return donationHistory;
+    }
+
+    public MiscellaneousHistory getMiscellaneousHistory() {
+        if(miscellaneousHistory == null)
+            miscellaneousHistory = new MiscellaneousHistory();
+        return miscellaneousHistory;
+    }
+
+    public TaxHistory getTaxHistory() {
+        if(taxHistory == null)
+            taxHistory = new TaxHistory();
+        return taxHistory;
     }
 }

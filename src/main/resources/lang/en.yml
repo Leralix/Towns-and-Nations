@@ -412,6 +412,7 @@ language:
   DONATION_SINGLE_LINE_2: "§f{0}"
   TAX_SINGLE_LINE: "§3{0} : §6+{1}✦"
   TAX_SINGLE_LINE_NOT_ENOUGH: "§3{0} :§c not enough money"
+  HISTORY_NEGATIVE_SINGLE_LINE: "§3{0} : §c{1}✦"
   CHUNK_HISTORY_DESC1: "§fTotal cost:§c {0}✦"
   CHUNK_HISTORY_DESC2: "§2{0}♦§f × {1} = §c{2}✦"
   MISCELLANEOUS_HISTORY_DESC1: "§f{0}"
