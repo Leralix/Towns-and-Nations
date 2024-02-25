@@ -1,6 +1,6 @@
 package org.tan.TownsAndNations.enums;
 
-public enum TownChunkPermissionType {
+public enum ChunkPermissionType {
     CHEST,
     DOOR,
     BREAK,

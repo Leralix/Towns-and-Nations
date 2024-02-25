@@ -193,4 +193,12 @@ public class RegionData {
             taxHistory = new TaxHistory();
         return taxHistory;
     }
+
+    public boolean isTownInRegion(TownData townData) {
+        return townsInRegion.contains(townData.getID());
+    }
+
+    public boolean isPlayerLeader(PlayerData playerStat) {
+        return (playerStat.isTownLeader() && isCapital(playerStat.getTown()));
+    }
 }

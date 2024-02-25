@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.tan.TownsAndNations.DataClass.ClaimedChunk;
+import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.TownsAndNations;
 
@@ -189,11 +190,11 @@ public class ClaimedChunkStorage {
         return false;
     }
 
-    public static void claimChunk(Chunk chunk, String townID) {
+    public static void claimChunk(Chunk chunk, String ownerID) {
         if (isSqlEnable()) {
-            claimChunkInDatabase(chunk, townID);
+            claimChunkInDatabase(chunk, ownerID);
         } else {
-            claimedChunksMap.put(ClaimedChunkStorage.getChunkKey(chunk), new ClaimedChunk(chunk, townID));
+            claimedChunksMap.put(ClaimedChunkStorage.getChunkKey(chunk), new ClaimedChunk(chunk, ownerID));
             ClaimedChunkStorage.saveStats();
         }
     }
@@ -371,6 +372,18 @@ public class ClaimedChunkStorage {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean isChunkClaimedByTownRegion(TownData townData, Chunk chunkToClaim) {
+
+        ClaimedChunk claimedChunk = claimedChunksMap.get(getChunkKey(chunkToClaim));
+
+        if(claimedChunk.isRegion()){
+            RegionData regionData = RegionDataStorage.get(claimedChunk.getID());
+            return regionData.isTownInRegion(townData);
+        }
+        return false;
+
     }
 }
 

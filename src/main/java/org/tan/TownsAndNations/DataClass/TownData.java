@@ -9,7 +9,7 @@ import org.tan.TownsAndNations.DataClass.History.*;
 
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
-import org.tan.TownsAndNations.enums.TownChunkPermissionType;
+import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
@@ -467,13 +467,13 @@ public class TownData {
 
     }
 
-    public TownChunkPermission getPermission(TownChunkPermissionType type) {
+    public TownChunkPermission getPermission(ChunkPermissionType type) {
         if(isSqlEnable())
             return TownDataStorage.getPermission(this.getID(),type);
         return this.chunkSettings.getPermission(type);
     }
 
-    public void nextPermission(TownChunkPermissionType type) {
+    public void nextPermission(ChunkPermissionType type) {
         if(isSqlEnable()){
             TownChunkPermission perm = TownDataStorage.getPermission(this.getID(),type);
             perm = perm.getNext();

@@ -5,6 +5,8 @@ language:
   NEWSLETTER_STRING: "§f[TAN - Newsletter]§f "
   #Common errors
   PLAYER_NO_TOWN: "§cYou do not have a town"
+  TOWN_NO_REGION: "§cYour town does not have a region"
+  PLAYER_NOT_LEADER_OF_REGION: "§cYou need to be the leader of the region to execute this action"
   PLAYER_NO_PERMISSION: "§cYou do not have permission to execute this command"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cYou do not have permission to perform this action on a rank higher or equal to you"
   PLAYER_ACTION_NO_PERMISSION: "§cYou do not have permission to perform this action"

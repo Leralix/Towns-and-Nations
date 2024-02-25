@@ -1,17 +1,18 @@
 package org.tan.TownsAndNations.DataClass;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
-import org.tan.TownsAndNations.enums.TownChunkPermissionType;
+import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.enums.TownRelation;
-import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.storage.WarTaggedPlayer;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import static org.tan.TownsAndNations.enums.TownChunkPermission.ALLIANCE;
 import static org.tan.TownsAndNations.enums.TownChunkPermission.FOREIGN;
@@ -62,7 +63,7 @@ public class ClaimedChunk {
         return this.worldUUID;
     }
 
-    public boolean canPlayerDo(Player player, TownChunkPermissionType permissionType) {
+    public boolean canPlayerDo(Player player, ChunkPermissionType permissionType) {
 
         TownData playerTown = TownDataStorage.get(player);
         PlayerData playerData = PlayerDataStorage.get(player);
@@ -104,9 +105,17 @@ public class ClaimedChunk {
         return false;
     }
 
+    public boolean isRegion(){
+        return townUUID.startsWith("R");
+    }
+
+
     private void playerCantPerformAction(Player player){
         player.sendMessage(getTANString() + Lang.PLAYER_ACTION_NO_PERMISSION.get());
         player.sendMessage(getTANString() + Lang.CHUNK_BELONGS_TO.get(TownDataStorage.get(getID()).getName()));
     }
 
+    public Chunk getChunk() {
+        return Bukkit.getWorld(UUID.fromString(worldUUID)).getChunkAt(x,z);
+    }
 }

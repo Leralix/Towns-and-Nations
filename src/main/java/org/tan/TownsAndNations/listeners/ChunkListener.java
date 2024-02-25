@@ -22,11 +22,11 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.FurnaceInventory;
 import org.tan.TownsAndNations.DataClass.ClaimedChunk;
 import org.tan.TownsAndNations.DataClass.TownData;
-import org.tan.TownsAndNations.enums.TownChunkPermissionType;
+import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
-import static org.tan.TownsAndNations.enums.TownChunkPermissionType.*;
+import static org.tan.TownsAndNations.enums.ChunkPermissionType.*;
 
 public class ChunkListener implements Listener {
 
@@ -256,7 +256,7 @@ public class ChunkListener implements Listener {
                 if(!ClaimedChunkStorage.isChunkClaimed(chunk))
                     return;
 
-                if(!CanPlayerDoAction(chunk, player,TownChunkPermissionType.BREAK)){
+                if(!CanPlayerDoAction(chunk, player, ChunkPermissionType.BREAK)){
                     event.setCancelled(true);
                 };
             }
@@ -525,7 +525,7 @@ public class ChunkListener implements Listener {
     }
 
 
-    private boolean CanPlayerDoAction(Chunk chunk, Player player, TownChunkPermissionType permissionType){
+    private boolean CanPlayerDoAction(Chunk chunk, Player player, ChunkPermissionType permissionType){
 
         //Chunk not claimed
         if(!ClaimedChunkStorage.isChunkClaimed(chunk))

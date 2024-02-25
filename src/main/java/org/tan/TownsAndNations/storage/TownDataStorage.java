@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
-import org.tan.TownsAndNations.enums.TownChunkPermissionType;
+import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 
@@ -540,7 +540,7 @@ public class TownDataStorage {
         String sql = "INSERT INTO tan_chunk_permissions (TownId, PermissionType, PermissionValue) VALUES (?, ?, ?)";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            for (TownChunkPermissionType type : TownChunkPermissionType.values()) {
+            for (ChunkPermissionType type : ChunkPermissionType.values()) {
                 ps.setString(1, townId);
                 ps.setString(2, type.toString());
                 ps.setString(3, "TOWN");
@@ -551,7 +551,7 @@ public class TownDataStorage {
         }
     }
 
-    public static void updateChunkPermission(String townId, TownChunkPermissionType permissionType, TownChunkPermission newPermission) {
+    public static void updateChunkPermission(String townId, ChunkPermissionType permissionType, TownChunkPermission newPermission) {
         String sql = "UPDATE tan_chunk_permissions SET PermissionValue = ? WHERE TownId = ? AND PermissionType = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -575,7 +575,7 @@ public class TownDataStorage {
         }
     }
 
-    public static TownChunkPermission getPermission(String townId, TownChunkPermissionType permissionType) {
+    public static TownChunkPermission getPermission(String townId, ChunkPermissionType permissionType) {
         String sql = "SELECT PermissionValue FROM tan_chunk_permissions WHERE TownId = ? AND PermissionType = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
