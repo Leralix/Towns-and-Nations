@@ -4,9 +4,8 @@ import org.bukkit.Chunk;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.tan.TownsAndNations.DataClass.TownData;
-import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
 
 public class MobSpawnListener implements Listener {
 
@@ -14,14 +13,14 @@ public class MobSpawnListener implements Listener {
     @EventHandler
     public void PlayerMoveEvent(EntitySpawnEvent e){
         Chunk currentChunk = e.getEntity().getLocation().getChunk();
-        if(!ClaimedChunkStorage.isChunkClaimed(currentChunk)){
+        if(!NewClaimedChunkStorage.isChunkClaimed(currentChunk)){
             return;
         }
-
-        TownData town = ClaimedChunkStorage.getChunkOwnerTown(currentChunk);
+        TownData town = NewClaimedChunkStorage.getChunkOwnerTown(currentChunk);
+        if(town == null)
+            return;
         String entityType = e.getEntity().getType().toString();
         if(!town.getChunkSettings().getSpawnControl(entityType).isActivated())
             e.setCancelled(true);
-
     }
 }

@@ -29,57 +29,11 @@ public class ClaimedChunkStorage {
     }
 
     public static Map<String, ClaimedChunk> getClaimedChunksMap() {
-        if (isSqlEnable()) {
-            return getClaimedChunksFromDatabase();
-        } else {
-            return claimedChunksMap;
-        }
-    }
-
-    private static Map<String, ClaimedChunk> getClaimedChunksFromDatabase() {
-        Map<String, ClaimedChunk> map = new HashMap<>();
-        String sql = "SELECT * FROM claimed_chunks";
-        try (Statement statement = connection.createStatement();
-             ResultSet rs = statement.executeQuery(sql)) {
-            while (rs.next()) {
-                String chunkKey = rs.getString("chunk_key");
-                int x = rs.getInt("x");
-                int z = rs.getInt("z");
-                String worldId = rs.getString("world_id");
-                String townId = rs.getString("town_id");
-
-                ClaimedChunk claimedChunk = new ClaimedChunk(x, z, worldId, townId);
-
-                map.put(chunkKey, claimedChunk);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return map;
+        return claimedChunksMap;
     }
 
     public static boolean isChunkClaimed(Chunk chunk) {
-        if (isSqlEnable()) {
-            return isChunkClaimedInDatabase(chunk);
-        } else {
-            return claimedChunksMap.containsKey(getChunkKey(chunk));
-        }
-    }
-
-    private static boolean isChunkClaimedInDatabase(Chunk chunk) {
-        String chunkKey = getChunkKey(chunk);
-        String sql = "SELECT COUNT(*) FROM claimed_chunks WHERE chunk_key = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, chunkKey);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) > 0;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+        return claimedChunksMap.containsKey(getChunkKey(chunk));
     }
 
     public static String getChunkOwnerID(Chunk chunk) {
@@ -111,7 +65,7 @@ public class ClaimedChunkStorage {
         if (isSqlEnable()) {
             return getChunkOwnerTownFromDatabase(chunk);
         } else {
-            if (!ClaimedChunkStorage.isChunkClaimed(chunk)) {
+            if (!isChunkClaimed(chunk)) {
                 return null;
             }
             return TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
@@ -342,24 +296,6 @@ public class ClaimedChunkStorage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static int getNumberOfChunks(String townId) {
-        int count = 0;
-        String sql = "SELECT COUNT(*) FROM claimed_chunks WHERE town_id = ?";
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, townId);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    count = rs.getInt(1); // Le premier et unique résultat sera le nombre de chunks
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return count;
     }
 
     public static void initialize(String host, String username, String password) {

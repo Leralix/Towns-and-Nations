@@ -2,11 +2,13 @@ package org.tan.TownsAndNations.utils;
 
 import org.tan.TownsAndNations.DataClass.ClaimedChunk;
 import org.tan.TownsAndNations.DataClass.TownData;
-import org.tan.TownsAndNations.DataClass.TownRank;
-import org.tan.TownsAndNations.enums.TownRankEnum;
+import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
+
+import java.util.Iterator;
+import java.util.Map;
 
 public class UpdateUtil {
 
@@ -20,14 +22,18 @@ public class UpdateUtil {
 
     public static void updateNewChunkData() {
         if (ClaimedChunkStorage.getClaimedChunksMap().isEmpty()) {
-            System.out.println("No old chunk to convert to new chunk data");
             return;
         }
-        for (ClaimedChunk oldClaimedChunk : ClaimedChunkStorage.getClaimedChunksMap().values()) {
+        Iterator<Map.Entry<String, ClaimedChunk>> iterator = ClaimedChunkStorage.getClaimedChunksMap().entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, ClaimedChunk> entry = iterator.next();
+            ClaimedChunk oldClaimedChunk = entry.getValue();
             NewClaimedChunkStorage.claimTownChunk(oldClaimedChunk.getChunk(), oldClaimedChunk.getID());
+            iterator.remove();
         }
-        System.out.println("All old chunk has been converted");
+        TownsAndNations.getPlugin().getLogger().info("-Claimed chunks have been updated to the new system");
     }
+
 
     public static void UpdateTownToNewUpgradeSystem() {
 

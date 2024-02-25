@@ -35,7 +35,6 @@ public class SaveAll extends SubCommand {
     @Override
     public void perform(Player player, String[] args) {
         TownDataStorage.saveStats();
-        ClaimedChunkStorage.saveStats();
         PlayerDataStorage.saveStats();
         player.sendMessage(ChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }

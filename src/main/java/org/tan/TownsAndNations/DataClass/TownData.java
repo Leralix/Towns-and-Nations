@@ -11,7 +11,7 @@ import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.enums.TownRelation;
-import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
@@ -448,13 +448,9 @@ public class TownData {
     }
 
     public int getNumberOfClaimedChunk() {
-        if(isSqlEnable())
-            return ClaimedChunkStorage.getNumberOfChunks(this.TownId);
-        else{
-            if(this.numberOfClaimedChunk == null) //used to transition from 0.3.1 -> 0.4.0
-                this.numberOfClaimedChunk = this.getChunkSettings().getNumberOfClaimedChunk();
-            return this.numberOfClaimedChunk;
-        }
+        if(this.numberOfClaimedChunk == null) //used to transition from 0.3.1 -> 0.4.0
+            this.numberOfClaimedChunk = this.getChunkSettings().getNumberOfClaimedChunk();
+        return this.numberOfClaimedChunk;
     }
     public void addNumberOfClaimChunk(int number) {
         if(isSqlEnable())

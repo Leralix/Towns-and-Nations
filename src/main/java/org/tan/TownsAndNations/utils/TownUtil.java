@@ -23,7 +23,6 @@ import static org.tan.TownsAndNations.enums.ChatCategory.CREATE_CITY;
 import static org.tan.TownsAndNations.enums.MessageKey.COST;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.enums.TownRolePermission.KICK_PLAYER;
-import static org.tan.TownsAndNations.storage.ClaimedChunkStorage.unclaimAllChunkFromTown;
 import static org.tan.TownsAndNations.storage.TownDataStorage.*;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
@@ -106,7 +105,7 @@ public class TownUtil {
 
     public static void deleteTown(TownData townToDelete){
 
-        ClaimedChunkStorage.unclaimAllChunkFrom(townToDelete.getID()); //Unclaim all chunk from town
+        NewClaimedChunkStorage.unclaimAllChunkFromTown(townToDelete.getID()); //Unclaim all chunk from town
 
         townToDelete.cancelAllRelation();   //Cancel all Relation between the deleted town and other town
         removeAllPlayerFromTown(townToDelete); //Kick all Players from the deleted town
@@ -115,7 +114,7 @@ public class TownUtil {
             removeAllChunkPermissionsForTown(townToDelete.getID()); //Remove all chunk permission from the deleted town
             deleteAllRole(townToDelete.getID()); //Delete all role from the deleted town
             deleteRolePermissionFromTown(townToDelete.getID()); //Delete all role permission from the deleted town
-            unclaimAllChunkFromTown(townToDelete.getID());  //Unclaim all chunk from the deleted town NOT WORKING RN
+            NewClaimedChunkStorage.unclaimAllChunkFromTown(townToDelete.getID());  //Unclaim all chunk from the deleted town NOT WORKING RN
             removeTownUpgradeFromDB(townToDelete.getID()); //Delete all town upgrade from the deleted town
         }
 

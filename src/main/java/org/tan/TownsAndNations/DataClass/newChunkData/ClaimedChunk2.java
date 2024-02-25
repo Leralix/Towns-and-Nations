@@ -2,10 +2,8 @@ package org.tan.TownsAndNations.DataClass.newChunkData;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.ClaimedChunk;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
-import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import java.util.Objects;
@@ -66,4 +64,7 @@ public abstract class ClaimedChunk2 {
         player.sendMessage(getTANString() + Lang.CHUNK_BELONGS_TO.get(TownDataStorage.get(getID()).getName()));
     }
 
+    public abstract void unclaimChunk(Player player, Chunk chunk);
+
+    public abstract void playerEnterClaimedArea(Player player);
 }

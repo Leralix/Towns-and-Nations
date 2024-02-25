@@ -22,8 +22,9 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.FurnaceInventory;
 import org.tan.TownsAndNations.DataClass.ClaimedChunk;
 import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
-import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import static org.tan.TownsAndNations.enums.ChunkPermissionType.*;
@@ -35,7 +36,7 @@ public class ChunkListener implements Listener {
 
         Chunk chunk = event.getBlock().getLocation().getChunk();
 
-        if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+        if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
             return;
 
         if(!CanPlayerDoAction(chunk, event.getPlayer(),BREAK)){
@@ -47,7 +48,7 @@ public class ChunkListener implements Listener {
 
         Chunk chunk = event.getBlock().getLocation().getChunk();
 
-        if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+        if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
             return;
 
 
@@ -61,7 +62,7 @@ public class ChunkListener implements Listener {
 
         Chunk chunk = event.getBlock().getLocation().getChunk();
 
-        if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+        if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
             return;
 
         if(!CanPlayerDoAction(chunk, event.getPlayer(),PLACE)){
@@ -82,7 +83,7 @@ public class ChunkListener implements Listener {
 
             Chunk chunk = block.getLocation().getChunk();
 
-            if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+            if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
                 return;
 
             if(
@@ -174,7 +175,7 @@ public class ChunkListener implements Listener {
         Block block = event.getBlock();
         Chunk chunk = block.getLocation().getChunk();
 
-        if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+        if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
             return;
 
         if(!CanPlayerDoAction(chunk, event.getPlayer(),PLACE)){
@@ -231,7 +232,7 @@ public class ChunkListener implements Listener {
 
                 Chunk chunk = entity.getLocation().getChunk();
 
-                if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+                if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
                     return;
 
                 if(!CanPlayerDoAction(chunk, player,ATTACK_PASSIVE_MOB)){
@@ -242,7 +243,7 @@ public class ChunkListener implements Listener {
             if(entity instanceof ItemFrame) {
                 Chunk chunk = entity.getLocation().getChunk();
 
-                if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+                if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
                     return;
 
                 if(!CanPlayerDoAction(chunk, player,INTERACT_ITEM_FRAME)){
@@ -253,7 +254,7 @@ public class ChunkListener implements Listener {
             if(entity instanceof EnderCrystal){
                 Chunk chunk = entity.getLocation().getChunk();
 
-                if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+                if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
                     return;
 
                 if(!CanPlayerDoAction(chunk, player, ChunkPermissionType.BREAK)){
@@ -312,7 +313,7 @@ public class ChunkListener implements Listener {
 
                     Chunk chunk = entity.getLocation().getChunk();
 
-                    if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+                    if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
                         return;
 
                     if(!CanPlayerDoAction(chunk, player,ATTACK_PASSIVE_MOB)){
@@ -322,7 +323,7 @@ public class ChunkListener implements Listener {
                 if(entity instanceof ItemFrame) {
                     Chunk chunk = entity.getLocation().getChunk();
 
-                    if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+                    if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
                         return;
 
                     if(!CanPlayerDoAction(chunk, player,INTERACT_ITEM_FRAME)){
@@ -332,7 +333,7 @@ public class ChunkListener implements Listener {
                 if(entity instanceof EnderCrystal){
                     Chunk chunk = entity.getLocation().getChunk();
 
-                    if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+                    if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
                         return;
 
                     if(!CanPlayerDoAction(chunk, player,BREAK)){
@@ -355,7 +356,7 @@ public class ChunkListener implements Listener {
 
                 Chunk chunk = event.getInventory().getLocation().getChunk();
 
-                if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+                if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
                     return;
 
                 if(!CanPlayerDoAction(chunk, player,USE_FURNACE)){
@@ -376,7 +377,7 @@ public class ChunkListener implements Listener {
 
             Chunk chunk = itemFrame.getLocation().getChunk();
 
-            if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+            if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
                 return;
 
             if(!CanPlayerDoAction(chunk, player,INTERACT_ITEM_FRAME)){
@@ -390,7 +391,7 @@ public class ChunkListener implements Listener {
 
             Chunk chunk = leashHitch.getLocation().getChunk();
 
-            if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+            if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
                 return;
 
             if(!CanPlayerDoAction(chunk, player,LEAD)){
@@ -408,7 +409,7 @@ public class ChunkListener implements Listener {
                 Player player = event.getPlayer();
                 Chunk chunk = livingEntity.getLocation().getChunk();
 
-                if (!ClaimedChunkStorage.isChunkClaimed(chunk))
+                if (!NewClaimedChunkStorage.isChunkClaimed(chunk))
                     return;
 
                 if(!CanPlayerDoAction(chunk, player,LEAD)){
@@ -426,7 +427,7 @@ public class ChunkListener implements Listener {
 
             Chunk chunk = armorStand.getLocation().getChunk();
 
-            if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+            if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
                 return;
 
             if(!CanPlayerDoAction(chunk, player,INTERACT_ARMOR_STAND)){
@@ -441,7 +442,7 @@ public class ChunkListener implements Listener {
         Entity entity = event.getEntity();
         Chunk chunk = entity.getLocation().getChunk();
 
-        if (!ClaimedChunkStorage.isChunkClaimed(chunk))
+        if (!NewClaimedChunkStorage.isChunkClaimed(chunk))
             return;
 
         if(!CanPlayerDoAction(chunk,player,LEAD)){
@@ -457,9 +458,8 @@ public class ChunkListener implements Listener {
         if(remover instanceof Player player){
             Entity entity = event.getEntity();
             Chunk chunk = entity.getLocation().getChunk();
-            if (!ClaimedChunkStorage.isChunkClaimed(chunk))
+            if (!NewClaimedChunkStorage.isChunkClaimed(chunk))
                 return;
-            TownData chunkTown = TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
             if(entity instanceof LeashHitch) {
                 if (!CanPlayerDoAction(chunk, player,LEAD)) {
                     event.setCancelled(true);
@@ -474,7 +474,7 @@ public class ChunkListener implements Listener {
             if(projectile.getShooter() instanceof Player player){
                 Entity entity = event.getEntity();
                 Chunk chunk = entity.getLocation().getChunk();
-                if (!ClaimedChunkStorage.isChunkClaimed(chunk))
+                if (!NewClaimedChunkStorage.isChunkClaimed(chunk))
                     return;
                 if(entity instanceof LeashHitch) {
                     if (!CanPlayerDoAction(chunk, player,LEAD)) {
@@ -495,7 +495,7 @@ public class ChunkListener implements Listener {
         Block block = event.getBlock();
         Chunk chunk = block.getLocation().getChunk();
 
-        if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+        if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
             return;
 
         Entity entity = event.getEntity();
@@ -516,7 +516,7 @@ public class ChunkListener implements Listener {
         Entity entity = event.getEntity();
         Chunk chunk = entity.getLocation().getChunk();
 
-        if (!ClaimedChunkStorage.isChunkClaimed(chunk))
+        if (!NewClaimedChunkStorage.isChunkClaimed(chunk))
             return;
 
         if(!CanPlayerDoAction(chunk,player,SHEARS)){
@@ -528,10 +528,10 @@ public class ChunkListener implements Listener {
     private boolean CanPlayerDoAction(Chunk chunk, Player player, ChunkPermissionType permissionType){
 
         //Chunk not claimed
-        if(!ClaimedChunkStorage.isChunkClaimed(chunk))
+        if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
             return true;
 
-        ClaimedChunk claimedChunk = ClaimedChunkStorage.get(chunk);
+        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunk);
         return claimedChunk.canPlayerDo(player, permissionType);
 
     }

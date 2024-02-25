@@ -98,7 +98,6 @@ public final class TownsAndNations extends JavaPlugin {
             String password = ConfigUtil.getCustomConfig("config.yml").getString("SQL.password");
 
 
-            ClaimedChunkStorage.initialize(host,username,password);
             PlayerDataStorage.initialize(host,username,password);
             TownDataStorage.initialize(host,username,password);
         }
@@ -107,7 +106,7 @@ public final class TownsAndNations extends JavaPlugin {
             RegionDataStorage.loadStats();
             PlayerDataStorage.loadStats();
             TownDataStorage.loadStats();
-            ClaimedChunkStorage.loadStats();
+            ClaimedChunkStorage.loadStats(); // Used for v0.5.4 -> v0.6.0 update
             NewClaimedChunkStorage.loadStats();
         }
 
@@ -188,7 +187,6 @@ public final class TownsAndNations extends JavaPlugin {
 
             RegionDataStorage.saveStats();
             TownDataStorage.saveStats();
-            ClaimedChunkStorage.saveStats();
             PlayerDataStorage.saveStats();
             NewClaimedChunkStorage.saveStats();
             try {

@@ -14,6 +14,7 @@ language:
   TOWN_NOT_ENOUGH_LEVEL: "§cYour town does not have the required level with: §a{0}"
   PLAYER_NOT_ONLINE: "§cThe player is not online"
   PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION: "§cOnly the town leader can perform this action"
+  CHUNK_NOT_CLAIMED: "§cThis chunk is not claimed"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 {1}: §f{2}"
@@ -45,6 +46,7 @@ language:
   MAX_CHUNK_LIMIT_REACHED: "§cYou reached the maximum number of chunks claimed, upgrade your town to get more available chunks"
   CHUNK_NOT_ADJACENT: "§cThis chunk is not adjacent to your town"
   CHUNK_CLAIMED_SUCCESS: "Chunk claimed ! Current number of claimed chunks: §2{0}/{1}♦)"
+  REGION_CHUNK_CLAIMED_SUCCESS: "Region chunk claim"
   #CustomVillager
   CUSTOM_VILLAGER_CREATED_SUCCESS: "Villager created"
   #Invite player to town command
@@ -445,6 +447,7 @@ language:
   DAILY_TAXES_SUCCESS_LOG: "Town taxes have been collected"
   #Chunk interactions
   CHUNK_ENTER_WILDERNESS: "§fWilderness"
-  CHUNK_ENTER_TOWN: "§fYou enter: §9{0}"
-  CHUNK_ENTER_TOWN_AT_WAR: "§cYou are now at war with this town, players have been alerted"
+  CHUNK_ENTER_TOWN: "§fEntering the town: §9{0}"
+  CHUNK_ENTER_REGION: "§fEntering the region: §9{0}"
+  CHUNK_ENTER_TOWN_AT_WAR: "§cYou are at war with this town. Players have been alerted that you crossed the border"
   CHUNK_INTRUSION_ALERT: "§cAn ennemy from the town {0} has enter your borders: {1}"

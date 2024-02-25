@@ -10,7 +10,7 @@ import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.TownRolePermission;
-import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
@@ -89,9 +89,9 @@ public class ClaimCommand extends SubCommand {
             return;
         }
 
-
-
-
+        Chunk chunkToClaim = player.getLocation().getChunk();
+        NewClaimedChunkStorage.claimRegionChunk(chunkToClaim, regionData.getID());
+        player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.get());
 
     }
 
@@ -120,49 +120,45 @@ public class ClaimCommand extends SubCommand {
             return;
         }
         boolean isRegionClaimed = false;
-        //Chunk already claimed
+
+        //Chunk already claimed by the town
         Chunk chunkToClaim = player.getLocation().getChunk();
-        if(ClaimedChunkStorage.isChunkClaimed(chunkToClaim)){
+        if(NewClaimedChunkStorage.isChunkClaimed(chunkToClaim)){
             //If chunk belongs to the region in which the town is, then the town can get the chunk
-            if(ClaimedChunkStorage.isChunkClaimedByTownRegion(townData,chunkToClaim)){
+            if(NewClaimedChunkStorage.isChunkClaimedByTownRegion(townData,chunkToClaim)){
                 isRegionClaimed = true;
             }
             else{
-                player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(ClaimedChunkStorage.getChunkOwnerName(chunkToClaim)));
+                player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(NewClaimedChunkStorage.getChunkOwnerName(chunkToClaim)));
                 return;
             }
         }
 
         if(townData.getNumberOfClaimedChunk() == 0){
-            if(isRegionClaimed)
-                ClaimedChunkStorage.unclaimChunk(chunkToClaim); //Unclaim the chunk so it can be claimed by the town afterward
-            ClaimedChunkStorage.claimChunk(chunkToClaim,townData.getID());
-            townData.addNumberOfClaimChunk(1);
-
-            player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.get(
-                    townData.getNumberOfClaimedChunk(),
-                    townData.getTownLevel().getChunkCap())
-            );
+            TownClaim(isRegionClaimed, chunkToClaim, townData, player);
             return;
         }
 
-        if(!ClaimedChunkStorage.isAdjacentChunkClaimedBySameTown(chunkToClaim,townData.getID())){
+        if(!NewClaimedChunkStorage.isAdjacentChunkClaimedBySameTown(chunkToClaim,townData.getID())){
             player.sendMessage(getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
             return;
         }
 
-        if(isRegionClaimed)
-            ClaimedChunkStorage.unclaimChunk(chunkToClaim); //Unclaim the chunk so it can be claimed by the town afterward
-        ClaimedChunkStorage.claimChunk(chunkToClaim,townData.getID());
-        townData.addNumberOfClaimChunk(1);
+        TownClaim(isRegionClaimed, chunkToClaim, townData, player);
 
+
+    }
+
+    private void TownClaim(boolean isRegionClaimed, Chunk chunkToClaim, TownData townData, Player player){
+        if(isRegionClaimed)
+            NewClaimedChunkStorage.unclaimChunk(chunkToClaim); //Unclaim the chunk so it can be claimed by the town afterward
+        NewClaimedChunkStorage.claimTownChunk(chunkToClaim,townData.getID());
+        townData.addNumberOfClaimChunk(1);
 
         player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.get(
                 townData.getNumberOfClaimedChunk(),
                 townData.getTownLevel().getChunkCap())
         );
-
-
     }
 
 }

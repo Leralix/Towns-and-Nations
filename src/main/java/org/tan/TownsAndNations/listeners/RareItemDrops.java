@@ -14,7 +14,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.RareItem;
-import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.utils.DropChances;
 
@@ -40,7 +40,7 @@ public class RareItemDrops implements Listener {
         Block block = event.getBlock();
         Material type = block.getType();
 
-        if(ClaimedChunkStorage.isChunkClaimed(block.getChunk()) && !ClaimedChunkStorage.isOwner(block.getChunk(), TownDataStorage.get(player).getID())){
+        if(NewClaimedChunkStorage.isChunkClaimed(block.getChunk()) && !NewClaimedChunkStorage.isOwner(block.getChunk(), TownDataStorage.get(player).getID())){
             return; //chunk is claimed
         }
 

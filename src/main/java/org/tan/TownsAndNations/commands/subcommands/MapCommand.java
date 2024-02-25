@@ -7,7 +7,7 @@ import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.TownRelation;
-import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class MapCommand extends SubCommand {
 
             List<Chunk> claimedChunks = new ArrayList<>();
             for (Chunk chunk : nearbyChunks) {
-                if (ClaimedChunkStorage.isChunkClaimed(chunk)) {
+                if (NewClaimedChunkStorage.isChunkClaimed(chunk)) {
                     claimedChunks.add(chunk);
                 }
             }
@@ -80,7 +80,7 @@ public class MapCommand extends SubCommand {
                     if (claimedChunks.contains(chunk)) {
 
                         TownData playerTown = TownDataStorage.get(player);
-                        TownData otherTown = TownDataStorage.get(ClaimedChunkStorage.get(chunk).getID());
+                        TownData otherTown = TownDataStorage.get(NewClaimedChunkStorage.get(chunk).getID());
 
                         TownRelation relation;
                         if(playerTown == null ){

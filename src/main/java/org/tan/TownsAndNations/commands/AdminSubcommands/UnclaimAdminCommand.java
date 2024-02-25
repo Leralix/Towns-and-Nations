@@ -3,9 +3,12 @@ package org.tan.TownsAndNations.commands.AdminSubcommands;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
+import org.tan.TownsAndNations.DataClass.newChunkData.RegionClaimedChunk;
+import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
 
 import java.util.List;
 
@@ -39,22 +42,37 @@ public class UnclaimAdminCommand extends SubCommand {
             return;
         }
 
-
         Chunk chunk = player.getLocation().getChunk();
-        if(ClaimedChunkStorage.isChunkClaimed(chunk)){
+        if(NewClaimedChunkStorage.isChunkClaimed(chunk)){
 
-            TownData townData = ClaimedChunkStorage.getChunkOwnerTown(chunk);
+            ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunk);
 
-            ClaimedChunkStorage.unclaimChunk(chunk);
-            townData.addNumberOfClaimChunk(-1);
+            if(claimedChunk instanceof TownClaimedChunk){
+                UnclaimChunkTown(player, chunk, claimedChunk);
+            }
+            else if (claimedChunk instanceof RegionClaimedChunk){
+                UnclaimChunkRegion(player, chunk, claimedChunk);
+            }
 
-            player.sendMessage(getTANString() + Lang.DEBUG_UNCLAIMED_CHUNK_SUCCESS.get(townData.getName(),
-                    townData.getNumberOfClaimedChunk(),townData.getTownLevel().getChunkCap()));
 
-            return;
+
         }
         player.sendMessage(getTANString() + Lang.ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED.get());
 
+    }
+
+    private void UnclaimChunkTown(Player player, Chunk chunk, ClaimedChunk2 claimedChunk) {
+
+        TownData townData = ((TownClaimedChunk) claimedChunk).getTown();
+        NewClaimedChunkStorage.unclaimChunk(chunk);
+        townData.addNumberOfClaimChunk(-1);
+
+        player.sendMessage(getTANString() + Lang.DEBUG_UNCLAIMED_CHUNK_SUCCESS.get(townData.getName(),
+                townData.getNumberOfClaimedChunk(),townData.getTownLevel().getChunkCap()));
+    }
+
+    private void UnclaimChunkRegion(Player player, Chunk chunk, ClaimedChunk2 claimedChunk) {
+        NewClaimedChunkStorage.unclaimChunk(chunk);
     }
 }
 

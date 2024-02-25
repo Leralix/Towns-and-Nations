@@ -1,9 +1,9 @@
 package org.tan.TownsAndNations.API;
 
-import org.tan.TownsAndNations.DataClass.ClaimedChunk;
 import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import java.util.Collection;
@@ -14,25 +14,31 @@ public class tanAPI {
 
 
     public static String getAPIVersion(){
-        return "0.0.1";
+        return "0.1.0";
     }
 
     public HashMap<String, TownData> getTownList(){
         return TownDataStorage.getTownList();
     }
 
-    public Map<String, ClaimedChunk> getChunkMap(){
-        return ClaimedChunkStorage.getClaimedChunksMap();
+    public Map<String, ClaimedChunk2> getChunkMap(){
+        return NewClaimedChunkStorage.getClaimedChunksMap();
     }
 
-    public Collection<ClaimedChunk> getChunkList(){
-        return ClaimedChunkStorage.getClaimedChunksMap().values();
+    public Collection<ClaimedChunk2> getChunkList(){
+        return NewClaimedChunkStorage.getClaimedChunksMap().values();
     }
 
-    public int getChunkColor(String townID){
-        return TownDataStorage.get(townID).getChunkColor();
+    public int getChunkColor(String ID){
+        if(ID.startsWith("T")){
+            return TownDataStorage.get(ID).getChunkColor();
+        }
+        else if(ID.startsWith("R")){
+            return 0x00FF00;
+        }
+        return 0x000000;
     }
-    public int getChunkColor(ClaimedChunk chunk){
+    public int getChunkColor(ClaimedChunk2 chunk){
         return getChunkColor(chunk.getID());
     }
 

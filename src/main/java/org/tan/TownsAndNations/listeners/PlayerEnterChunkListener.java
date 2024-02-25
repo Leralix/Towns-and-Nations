@@ -6,9 +6,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
+import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.TownRelation;
-import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.SoundUtil;
@@ -31,42 +33,32 @@ public class PlayerEnterChunkListener implements Listener {
             return;
         }
 
-        if(!ClaimedChunkStorage.isChunkClaimed(currentChunk) && !ClaimedChunkStorage.isChunkClaimed(nextChunk)){
+        if(!NewClaimedChunkStorage.isChunkClaimed(currentChunk) &&
+                !NewClaimedChunkStorage.isChunkClaimed(nextChunk)){
             return;
         }
 
 
-        TownData townFrom = ClaimedChunkStorage.getChunkOwnerTown(currentChunk);
-        TownData townTo = ClaimedChunkStorage.getChunkOwnerTown(nextChunk);
+        ClaimedChunk2 CurrentClaimedChunk = NewClaimedChunkStorage.get(currentChunk);
+        ClaimedChunk2 NextClaimedChunk = NewClaimedChunkStorage.get(nextChunk);
 
-
-        if(equalsWithNulls(townFrom,townTo)){
+        //Both chunks have the same owner, no need to change
+        if(equalsWithNulls(CurrentClaimedChunk,NextClaimedChunk)){
             return;
         }
 
         Player player = e.getPlayer();
 
-        if(townFrom != null){
+
+        //Three case: Into wilderness, into town, into region
+        if(NextClaimedChunk == null){
             player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_ENTER_WILDERNESS.get());
             return;
         }
-
-        player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_ENTER_TOWN.get(townTo.getName()));
-
-        TownData playerTown = TownDataStorage.get(player);
-        if(playerTown == null){
+        else {
+            NextClaimedChunk.playerEnterClaimedArea(player);
             return;
         }
-        TownRelation relation = TownDataStorage.get(player).getRelationWith(townTo);
-
-        if(relation == TownRelation.WAR){
-            SoundUtil.playSound(player, BAD);
-            player.sendMessage(Lang.CHUNK_ENTER_TOWN_AT_WAR.get());
-
-            townTo.broadCastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.get(player).getName(),player.getName()),
-                    BAD);
-        }
-
 
 
 

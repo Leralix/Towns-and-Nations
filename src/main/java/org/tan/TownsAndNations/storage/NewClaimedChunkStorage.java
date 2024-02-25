@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
-import org.tan.TownsAndNations.DataClass.ClaimedChunk;
+import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.newChunkData.RegionClaimedChunk;
@@ -19,7 +19,7 @@ import java.util.*;
 
 public class NewClaimedChunkStorage {
 
-    private static Map<String, ClaimedChunk2> claimedChunksMap = new HashMap<>();
+    private static final Map<String, ClaimedChunk2> claimedChunksMap = new HashMap<>();
 
     private static String getChunkKey(Chunk chunk) {
         return chunk.getX() + "," + chunk.getZ() + "," + chunk.getWorld().getUID();
@@ -43,31 +43,43 @@ public class NewClaimedChunkStorage {
     }
 
     public static TownData getChunkOwnerTown(Chunk chunk) {
-        if (!ClaimedChunkStorage.isChunkClaimed(chunk))
+        if (!NewClaimedChunkStorage.isChunkClaimed(chunk))
             return null;
-        return TownDataStorage.get(ClaimedChunkStorage.getChunkOwnerID(chunk));
+        return TownDataStorage.get(NewClaimedChunkStorage.getChunkOwnerID(chunk));
     }
 
     public static String getChunkOwnerName(Chunk chunk) {
-        TownData townData = ClaimedChunkStorage.getChunkOwnerTown(chunk);
-        if (townData != null) {
-            return townData.getName();
+
+        ClaimedChunk2 claimedChunk = claimedChunksMap.get(getChunkKey(chunk));
+
+        if(claimedChunk instanceof TownClaimedChunk){
+            return TownDataStorage.get(claimedChunk.getID()).getName();
+        }
+        else if(claimedChunk instanceof RegionClaimedChunk){
+            return RegionDataStorage.get(claimedChunk.getID()).getName();
         }
         return null;
     }
 
     public static boolean isOwner(Chunk chunk, String townID) {
+
         ClaimedChunk2 cChunk = claimedChunksMap.get(getChunkKey(chunk));
-        return cChunk != null && cChunk.getID().equals(townID);
+        if(cChunk instanceof TownClaimedChunk){
+            return cChunk.getID().equals(townID);
+        }
+        else if(cChunk instanceof RegionClaimedChunk){
+            return ((RegionClaimedChunk) cChunk).getRegion().isTownInRegion(TownDataStorage.get(townID));
+        }
+        return false;
     }
 
     public static void claimTownChunk(Chunk chunk, String ownerID) {
         claimedChunksMap.put(getChunkKey(chunk), new TownClaimedChunk(chunk, ownerID));
-        ClaimedChunkStorage.saveStats();
+        saveStats();
     }
     public static void claimRegionChunk(Chunk chunk, String ownerID){
         claimedChunksMap.put(getChunkKey(chunk), new RegionClaimedChunk(chunk, ownerID));
-        ClaimedChunkStorage.saveStats();
+        saveStats();
     }
 
     public static boolean isAdjacentChunkClaimedBySameTown(Chunk chunk, String townID) {
@@ -105,6 +117,17 @@ public class NewClaimedChunkStorage {
         return claimedChunksMap.get(getChunkKey(chunk));
     }
 
+    public static boolean isChunkClaimedByTownRegion(TownData townData, Chunk chunkToClaim) {
+
+        ClaimedChunk2 claimedChunk = claimedChunksMap.get(getChunkKey(chunkToClaim));
+
+        if(claimedChunk instanceof RegionClaimedChunk){
+            RegionData regionData = ((RegionClaimedChunk) claimedChunk).getRegion();
+            return regionData.isTownInRegion(townData);
+        }
+        return false;
+
+    }
 
     public static void loadStats() {
         Gson gson = new Gson();

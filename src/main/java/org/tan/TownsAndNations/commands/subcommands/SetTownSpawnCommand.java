@@ -8,7 +8,6 @@ import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.TownRolePermission;
-import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
