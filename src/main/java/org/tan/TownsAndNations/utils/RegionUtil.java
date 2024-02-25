@@ -6,9 +6,7 @@ import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChatCategory;
-import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
-import org.tan.TownsAndNations.storage.RegionDataStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.*;
 
 
 import static org.tan.TownsAndNations.enums.ChatCategory.CREATE_REGION;
@@ -61,8 +59,6 @@ public class RegionUtil {
 
             PlayerChatListenerStorage.addPlayer(CREATE_REGION,player);
         }
-
-
-
     }
+
 }

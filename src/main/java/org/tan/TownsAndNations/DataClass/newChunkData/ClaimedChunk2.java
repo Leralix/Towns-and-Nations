@@ -67,4 +67,6 @@ public abstract class ClaimedChunk2 {
     public abstract void unclaimChunk(Player player, Chunk chunk);
 
     public abstract void playerEnterClaimedArea(Player player);
+
+    public abstract String getName();
 }

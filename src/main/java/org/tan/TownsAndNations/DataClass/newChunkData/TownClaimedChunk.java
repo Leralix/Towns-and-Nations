@@ -9,10 +9,7 @@ import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.enums.TownRolePermission;
-import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
-import org.tan.TownsAndNations.storage.WarTaggedPlayer;
+import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.SoundUtil;
 
@@ -30,6 +27,9 @@ public class TownClaimedChunk extends ClaimedChunk2{
         super(x,z,worldUUID,ownerID);
     }
 
+    public String getName(){
+        return TownDataStorage.get(getID()).getName();
+    }
     @Override
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType) {
         TownData playerTown = TownDataStorage.get(player);

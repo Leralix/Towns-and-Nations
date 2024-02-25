@@ -6,6 +6,7 @@ import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.storage.RegionDataStorage;
+import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
@@ -19,6 +20,9 @@ public class RegionClaimedChunk extends ClaimedChunk2{
         super(x,z,worldUUID,ownerID);
     }
 
+    public String getName(){
+        return RegionDataStorage.get(getID()).getName();
+    }
 
     @Override
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType) {
@@ -37,6 +41,5 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     public void playerEnterClaimedArea(Player player){
         RegionData region = getRegion();
         player.sendMessage( getTANString() + Lang.CHUNK_ENTER_REGION.get(region.getName()));
-
     }
 }

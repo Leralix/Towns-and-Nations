@@ -105,7 +105,7 @@ public class TownUtil {
 
     public static void deleteTown(TownData townToDelete){
 
-        NewClaimedChunkStorage.unclaimAllChunkFromTown(townToDelete.getID()); //Unclaim all chunk from town
+        NewClaimedChunkStorage.unclaimAllChunkFromTown(townToDelete); //Unclaim all chunk from town
 
         townToDelete.cancelAllRelation();   //Cancel all Relation between the deleted town and other town
         removeAllPlayerFromTown(townToDelete); //Kick all Players from the deleted town
@@ -114,7 +114,7 @@ public class TownUtil {
             removeAllChunkPermissionsForTown(townToDelete.getID()); //Remove all chunk permission from the deleted town
             deleteAllRole(townToDelete.getID()); //Delete all role from the deleted town
             deleteRolePermissionFromTown(townToDelete.getID()); //Delete all role permission from the deleted town
-            NewClaimedChunkStorage.unclaimAllChunkFromTown(townToDelete.getID());  //Unclaim all chunk from the deleted town NOT WORKING RN
+            NewClaimedChunkStorage.unclaimAllChunkFromTown(townToDelete);  //Unclaim all chunk from the deleted town NOT WORKING RN
             removeTownUpgradeFromDB(townToDelete.getID()); //Delete all town upgrade from the deleted town
         }
 

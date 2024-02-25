@@ -2146,15 +2146,15 @@ public class GuiManager2 {
             event.setCancelled(true);
             if(!playerStat.isTownLeader() && playerRegion.isCapital(playerTown)){
                 player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
-                return;
             }
+            RegionDataStorage.deleteRegion(playerRegion.getID());
+            player.sendMessage(getTANString() + Lang.CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED.get());
         });
 
         GuiItem _changeCapital = ItemBuilder.from(changeCapital).asGuiItem(event -> {
             event.setCancelled(true);
             if(!playerStat.isTownLeader() && playerRegion.isCapital(playerTown)){
                 player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
-                return;
             }
         });
 
@@ -2162,7 +2162,6 @@ public class GuiManager2 {
             event.setCancelled(true);
             if(!playerStat.isTownLeader() && playerRegion.isCapital(playerTown)){
                 player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
-                return;
             }
         });
 

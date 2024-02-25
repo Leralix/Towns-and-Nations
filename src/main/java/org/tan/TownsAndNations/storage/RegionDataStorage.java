@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.RegionData;
+import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.TownsAndNations;
 
 import java.io.*;
@@ -56,6 +57,22 @@ public class RegionDataStorage {
 
     public static Collection<RegionData> getAllRegions(){
         return regionStorage.values();
+    }
+
+    public static void deleteRegion(String regionID){
+        NewClaimedChunkStorage.unclaimAllChunkFromID(regionID);
+        removeTownFromRegion(regionID);
+        regionStorage.remove(regionID);
+        System.out.println("Region "+regionID+" has been deleted");
+    }
+
+    private static void removeTownFromRegion(String regionID) {
+        RegionData region = get(regionID);
+
+        for (String townID : region.getTownsID()){
+            TownData town = TownDataStorage.get(townID);
+            town.setRegion((String) null);
+        }
     }
 
     public static void loadStats() {

@@ -21,8 +21,9 @@ public class RegionData {
     private String regionIconType;
     private Integer taxRate;
     private Integer balance;
+    private Integer chunkColor;
     private String description;
-    private List<String> townsInRegion = new ArrayList<>();
+    private List<String> townsInRegion;
     private ChunkHistory chunkHistory;
     private DonationHistory donationHistory;
     private MiscellaneousHistory miscellaneousHistory;
@@ -41,7 +42,9 @@ public class RegionData {
         this.taxRate = 1;
         this.balance = 0;
         this.description = "default description";
+        this.townsInRegion = new ArrayList<>();
         this.townsInRegion.add(ownerTown.getID());
+        this.chunkColor = setBasicColor(ownerTown.getChunkColor());
 
         this.chunkHistory = new ChunkHistory();
         this.donationHistory = new DonationHistory();
@@ -87,7 +90,7 @@ public class RegionData {
         this.taxRate = taxRate;
     }
 
-    public List<String> getTownsIDInRegion() {
+    public List<String> getTownsID() {
         return townsInRegion;
     }
 
@@ -200,5 +203,24 @@ public class RegionData {
 
     public boolean isPlayerLeader(PlayerData playerStat) {
         return (playerStat.isTownLeader() && isCapital(playerStat.getTown()));
+    }
+
+    public int setBasicColor(int couleurHex) {
+        int red = (couleurHex >> 16) & 0xFF;
+        int green = (couleurHex >> 8) & 0xFF;
+        int blue = couleurHex & 0xFF;
+
+        red = Math.max(0, red - 25);
+        green = Math.max(0, green - 25);
+        blue = Math.max(0, blue - 25);
+
+        return (red << 16) | (green << 8) | blue;
+    }
+
+    public int getChunkColor() {
+        return this.chunkColor;
+    }
+    public void setChunkColor(int newColor) {
+        this.chunkColor = newColor;
     }
 }

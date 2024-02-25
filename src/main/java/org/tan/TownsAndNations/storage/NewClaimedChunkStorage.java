@@ -22,7 +22,10 @@ public class NewClaimedChunkStorage {
     private static final Map<String, ClaimedChunk2> claimedChunksMap = new HashMap<>();
 
     private static String getChunkKey(Chunk chunk) {
-        return chunk.getX() + "," + chunk.getZ() + "," + chunk.getWorld().getUID();
+        return getChunkKey(chunk.getX(),chunk.getZ(),chunk.getWorld().getUID().toString());
+    }
+    private static String getChunkKey(ClaimedChunk2 chunk) {
+        return getChunkKey(chunk.getX(),chunk.getZ(),chunk.getWorldUUID());
     }
     private static String getChunkKey(int x, int z, String chunkWorldUID){
         return x + "," + z + "," + chunkWorldUID;
@@ -97,21 +100,36 @@ public class NewClaimedChunkStorage {
                 return true;
             }
         }
-
         return false;
     }
 
+    public static void unclaimChunk(ClaimedChunk2 claimedChunk) {
+        claimedChunksMap.remove(getChunkKey(claimedChunk));
+        saveStats();
+    }
     public static void unclaimChunk(Chunk chunk) {
         claimedChunksMap.remove(getChunkKey(chunk));
         saveStats();
     }
+    public static void unclaimAllChunkFromRegion(RegionData regionData) {
+        unclaimAllChunkFromID(regionData.getID());
+    }
+    public static void unclaimAllChunkFromTown(TownData townData) {
+        unclaimAllChunkFromID(townData.getID());
+    }
 
-    public static void unclaimAllChunkFromTown(String townID) {
-        for (ClaimedChunk2 chunk : claimedChunksMap.values()) {
-            if (chunk.getID().equals(townID))
-                unclaimChunk(Bukkit.getWorld(UUID.fromString(chunk.getWorldUUID())).getChunkAt(chunk.getX(), chunk.getZ()));
+    public static void unclaimAllChunkFromID(String id) {
+        Iterator<Map.Entry<String, ClaimedChunk2>> iterator = claimedChunksMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, ClaimedChunk2> entry = iterator.next();
+            ClaimedChunk2 chunk = entry.getValue();
+            if (chunk.getID().equals(id)) {
+                iterator.remove();
+            }
         }
     }
+
+
 
     public static ClaimedChunk2 get(Chunk chunk) {
         return claimedChunksMap.get(getChunkKey(chunk));

@@ -4,6 +4,7 @@ import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 
 import java.util.Collection;
@@ -34,7 +35,7 @@ public class tanAPI {
             return TownDataStorage.get(ID).getChunkColor();
         }
         else if(ID.startsWith("R")){
-            return 0x00FF00;
+            return RegionDataStorage.get(ID).getChunkColor();
         }
         return 0x000000;
     }

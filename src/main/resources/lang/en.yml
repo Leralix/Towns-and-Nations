@@ -45,6 +45,7 @@ language:
   CHUNK_ALREADY_CLAIMED_WARNING: "§cThis chunk is already claimed by: §9{0}"
   MAX_CHUNK_LIMIT_REACHED: "§cYou reached the maximum number of chunks claimed, upgrade your town to get more available chunks"
   CHUNK_NOT_ADJACENT: "§cThis chunk is not adjacent to your town"
+  CHUNK_CLAIMED_SUCCESS_REGION: "Regional chunk claimed !"
   CHUNK_CLAIMED_SUCCESS: "Chunk claimed ! Current number of claimed chunks: §2{0}/{1}♦)"
   REGION_CHUNK_CLAIMED_SUCCESS: "Region chunk claim"
   #CustomVillager
@@ -427,6 +428,7 @@ language:
   CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§cYou can't delete a town if you are not the leader"
   CHAT_PLAYER_LEFT_THE_TOWN: "§fYou left the town"
   CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fTown successfully deleted"
+  CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED: "§fRegion successfully deleted, region cost refunded"
   WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cThe town §9{0}§c, with which you had a relation: §e{1}§c has been deleted"
   #Custom Item
   ITEM_RARE_STONE: "§3Rare Stone"
