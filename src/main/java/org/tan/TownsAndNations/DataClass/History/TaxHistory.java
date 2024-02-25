@@ -1,13 +1,11 @@
 package org.tan.TownsAndNations.DataClass.History;
 
 import org.tan.TownsAndNations.DataClass.TransactionHistory;
+import org.tan.TownsAndNations.Lang.Lang;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class TaxHistory {
 
@@ -21,6 +19,26 @@ public class TaxHistory {
     public LinkedHashMap<String, ArrayList<TransactionHistory>> get(){
         return taxHistory;
     }
+
+    public List<String> get(int wantedNumberOfRows) {
+        if (this.taxHistory.size() < wantedNumberOfRows) {
+            wantedNumberOfRows = this.taxHistory.size();
+        }
+
+        ArrayList<String> latestDonations = new ArrayList<>();
+
+        for(Map.Entry<String, ArrayList<TransactionHistory>> entry : taxHistory.entrySet()){
+            int balance = 0;
+            for (int i = entry.getValue().size() - 1; i >= entry.getValue().size() - wantedNumberOfRows; i--) {
+                balance += entry.getValue().get(i).getAmount();
+            }
+            latestDonations.add(Lang.TOTAL_TAX_LINE.get(entry.getKey(),balance));
+        }
+
+
+        return latestDonations;
+    }
+
 
     public void add(String playerName, String playerID, int amount){
         add(LocalDate.now(),playerName,playerID,amount);

@@ -917,7 +917,7 @@ public class GuiManager2 {
         ItemStack salarySpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_SALARY_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjlhNjAwYWIwYTgzMDk3MDY1Yjk1YWUyODRmODA1OTk2MTc3NDYwOWFkYjNkYmQzYTRjYTI2OWQ0NDQwOTU1MSJ9fX0=");
         ItemStack chunkSpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
         ItemStack miscSpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGMzNjA0NTIwOGY5YjVkZGNmOGM0NDMzZTQyNGIxY2ExN2I5NGY2Yjk2MjAyZmIxZTUyNzBlZThkNTM4ODFiMSJ9fX0=");
-        ItemStack donation = HeadUtils.getCustomLoreItem(Material.DIAMOND,Lang.GUI_TREASURY_DONATION.get(),Lang.GUI_TREASURY_DONATION_DESC1.get());
+        ItemStack donation = HeadUtils.getCustomLoreItem(Material.DIAMOND,Lang.GUI_TREASURY_DONATION.get(),Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get());
         ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.get());
 
         HeadUtils.setLore(taxHistory,Lang.GUI_TREASURY_TAX_HISTORY_DESC1.get());
@@ -972,8 +972,6 @@ public class GuiManager2 {
                 Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(numberClaimedChunk));
         HeadUtils.setLore(miscSpending,
                 Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1.get());
-        HeadUtils.setLore(donation,
-                Lang.GUI_TREASURY_DONATION_DESC1.get());
 
         if(!isSqlEnable()){
             HeadUtils.setLore(donationHistory, town.getDonationHistory().get(5));
@@ -1004,8 +1002,8 @@ public class GuiManager2 {
             event.setCancelled(true);
         });
         GuiItem _donation = ItemBuilder.from(donation).asGuiItem(event -> {
-            player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_TOWN_DONATION.get());
-            PlayerChatListenerStorage.addPlayer(DONATION,player);
+            player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get());
+            PlayerChatListenerStorage.addPlayer(TOWN_DONATION,player);
             player.closeInventory();
             event.setCancelled(true);
         });
@@ -2148,7 +2146,9 @@ public class GuiManager2 {
                 player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
             }
             RegionDataStorage.deleteRegion(playerRegion.getID());
+            SoundUtil.playSound(player, BAD);
             player.sendMessage(getTANString() + Lang.CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED.get());
+            OpenMainMenu(player);
         });
 
         GuiItem _changeCapital = ItemBuilder.from(changeCapital).asGuiItem(event -> {
@@ -2197,14 +2197,20 @@ public class GuiManager2 {
         ItemStack lowerTax = HeadUtils.makeSkull(Lang.GUI_TREASURY_LOWER_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=");
         ItemStack increaseTax = HeadUtils.makeSkull(Lang.GUI_TREASURY_INCREASE_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
         ItemStack taxInfo = HeadUtils.makeSkull(Lang.GUI_TREASURY_FLAT_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk4ZGY0MmY0NzdmMjEzZmY1ZTlkN2ZhNWE0Y2M0YTY5ZjIwZDljZWYyYjkwYzRhZTRmMjliZDE3Mjg3YjUifX19");
+        ItemStack taxHistory = HeadUtils.makeSkull(Lang.GUI_TREASURY_TAX_HISTORY.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmU1OWYyZDNiOWU3ZmI5NTBlOGVkNzkyYmU0OTIwZmI3YTdhOWI5MzQ1NjllNDQ1YjJiMzUwM2ZlM2FiOTAyIn19fQ==");
 
         ItemStack chunkSpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack donation = HeadUtils.getCustomLoreItem(Material.DIAMOND,Lang.GUI_TREASURY_DONATION.get(),Lang.GUI_TREASURY_DONATION_DESC1.get());
+        ItemStack donation = HeadUtils.getCustomLoreItem(Material.DIAMOND,
+                Lang.GUI_TREASURY_DONATION.get(),
+                Lang.GUI_REGION_TREASURY_DONATION_DESC1.get());
         ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.get());
 
         HeadUtils.setLore(goldIcon,
                 Lang.GUI_TREASURY_STORAGE_DESC1.get(treasury),
                 Lang.GUI_TREASURY_STORAGE_DESC2.get(taxTomorrow));
+        HeadUtils.setLore(goldSpendingIcon,
+                Lang.GUI_WARNING_STILL_IN_DEV.get());
+
         HeadUtils.setLore(lowerTax,
                 Lang.GUI_DECREASE_1_DESC.get(),
                 Lang.GUI_DECREASE_10_DESC.get());
@@ -2213,12 +2219,19 @@ public class GuiManager2 {
                 Lang.GUI_INCREASE_10_DESC.get());
         HeadUtils.setLore(taxInfo,
                 Lang.GUI_TREASURY_FLAT_TAX_DESC1.get(tax));
+        HeadUtils.setLore(donationHistory, playerRegion.getDonationHistory().get(5));
+        HeadUtils.setLore(taxHistory, playerRegion.getTaxHistory().get(5));
+
 
         GuiItem _goldIcon = ItemBuilder.from(goldIcon).asGuiItem(event -> {
             event.setCancelled(true);
         });
 
         GuiItem _goldSpendingIcon = ItemBuilder.from(goldSpendingIcon).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+
+        GuiItem _taxHistory = ItemBuilder.from(taxHistory).asGuiItem(event -> {
             event.setCancelled(true);
         });
 
@@ -2257,6 +2270,9 @@ public class GuiManager2 {
         });
 
         GuiItem _donation = ItemBuilder.from(donation).asGuiItem(event -> {
+            player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get());
+            PlayerChatListenerStorage.addPlayer(REGION_DONATION,player);
+            player.closeInventory();
             event.setCancelled(true);
         });
 
@@ -2280,8 +2296,9 @@ public class GuiManager2 {
         gui.setItem(2,3, _taxInfo);
         gui.setItem(2,4, _increaseTax);
 
-        gui.setItem(3,3, _donation);
-        gui.setItem(3,4, _donationHistory);
+        gui.setItem(3,2, _donation);
+        gui.setItem(3,3, _donationHistory);
+        gui.setItem(3,4, _taxHistory);
         gui.setItem(4,1, CreateBackArrow(player,p -> OpenRegionMenu(player)));
 
 

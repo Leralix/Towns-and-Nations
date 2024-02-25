@@ -50,7 +50,7 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
         }
 
-        if(chatData.getCategory() == DONATION){
+        if(chatData.getCategory() == TOWN_DONATION){
 
             String stringAmount = event.getMessage();
 
@@ -188,6 +188,20 @@ public class ChatListener implements Listener {
             removePlayer(player);
             String regionName = event.getMessage();
             RegionUtil.createNewRegion(player, regionName);
+        }
+        if(chatData.getCategory() == REGION_DONATION){
+            event.setCancelled(true);
+            removePlayer(player);
+            String stringAmount = event.getMessage();
+
+            int amount;
+            try {amount = Integer.parseInt(stringAmount);}
+            catch (NumberFormatException e) {
+                player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
+                throw new RuntimeException(e);
+            }
+
+            RegionUtil.donateToRegion(player, amount);
         }
     }
 }

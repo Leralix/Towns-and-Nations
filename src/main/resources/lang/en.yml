@@ -111,6 +111,7 @@ language:
   TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cThe town doesn't have enough money to perform this action. It need {0} more"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Write the name of the town in the chat."
   PLAYER_SEND_MONEY_TO_TOWN: "§fYou sent §6{0}✦§f to the town"
+  PLAYER_SEND_MONEY_TO_REGION: "§fYou sent §6{0}✦§f to the region"
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "Set the town spawn"
   SPAWN_SET_SUCCESS: "Town spawn set"
@@ -218,8 +219,9 @@ language:
   GUI_TREASURY_MISCELLANEOUS_SPENDING: "§aMiscellaneous spending"
   GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1: "§fLeft click to open Miscellaneous spending history"
   GUI_TREASURY_DONATION: "§aMake a donation"
-  GUI_TREASURY_DONATION_DESC1: "§fDonate money to the town"
-  WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_TOWN_DONATION: "§aWrite the amount of money to give"
+  GUI_TOWN_TREASURY_DONATION_DESC1: "§fDonate money to the town"
+  GUI_REGION_TREASURY_DONATION_DESC1: "§fDonate money to the region"
+  WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION: "§aWrite the amount of money to give"
   GUI_TREASURY_DONATION_HISTORY: "§aDonation history"
   GUI_TOWN_LEVEL_INFO: "{0}" #town's name
   GUI_TOWN_LEVEL_UP: "§aUpgrade town level"
@@ -422,6 +424,7 @@ language:
   CHUNK_HISTORY_DESC2: "§2{0}♦§f × {1} = §c{2}✦"
   MISCELLANEOUS_HISTORY_DESC1: "§f{0}"
   MISCELLANEOUS_HISTORY_DESC2: "§c-{0}♦"
+  TOTAL_TAX_LINE: "§f{0} : §6+{1}✦"
   #Chat Information
   CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cYou can't leave a town if you are the leader, you need to disband it or transfer ownership to someone else"
   NOT_TOWN_LEADER_ERROR: "§cYou need to be the leader of the town to execute this action"

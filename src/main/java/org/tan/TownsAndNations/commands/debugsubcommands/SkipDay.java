@@ -34,7 +34,8 @@ public class SkipDay extends SubCommand {
     }
     @Override
     public void perform(Player player, String[] args) {
-        TaxPayment();
+        TownTaxPayment();
+        RegionTaxPayment();
         ChunkPayment();
         SalaryPayment();
         archiveFiles();

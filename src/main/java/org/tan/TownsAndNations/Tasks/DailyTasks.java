@@ -5,11 +5,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.TownRank;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ConfigUtil;
@@ -30,7 +32,8 @@ public class DailyTasks {
             public void run() {
                 Calendar calendar = new GregorianCalendar();
                 if (calendar.get(Calendar.HOUR_OF_DAY) == 0 && calendar.get(Calendar.MINUTE) == 0) {
-                    TaxPayment();
+                    TownTaxPayment();
+                    RegionTaxPayment();
                     ChunkPayment();
                     SalaryPayment();
                     archiveFiles();
@@ -40,14 +43,32 @@ public class DailyTasks {
         }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L); // Exécute toutes les 1200 ticks (1 minute en temps Minecraft)
     }
 
+    public static void RegionTaxPayment() {
 
-    public static void TaxPayment() {
+        for(RegionData regionData: RegionDataStorage.getAllRegions()){
+
+            for(String townID : regionData.getTownsID()){
+                TownData town = TownDataStorage.get(townID);
+                if(town == null) continue;
+                if(town.getBalance() < regionData.getTaxRate()){
+                    regionData.getTaxHistory().add(town.getName(), townID, -1);
+                    continue;
+                }
+                town.removeToBalance(regionData.getTaxRate());
+                regionData.addBalance(regionData.getTaxRate());
+                regionData.getTaxHistory().add(town.getName(), townID, regionData.getTaxRate());
+
+            }
+        }
+
+    }
+
+
+    public static void TownTaxPayment() {
 
 
         for (PlayerData playerStat : PlayerDataStorage.getStats()){
             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerStat.getUuid()));
-
-
 
             if (!playerStat.haveTown()) continue;
             TownData playerTown = TownDataStorage.get(playerStat);

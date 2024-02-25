@@ -9,8 +9,12 @@ import org.tan.TownsAndNations.enums.ChatCategory;
 import org.tan.TownsAndNations.storage.*;
 
 
+import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 import static org.tan.TownsAndNations.enums.ChatCategory.CREATE_REGION;
+import static org.tan.TownsAndNations.enums.SoundEnum.MINOR_LEVEL_UP;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
+import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
+import static org.tan.TownsAndNations.utils.EconomyUtil.removeFromBalance;
 
 public class RegionUtil {
 
@@ -61,4 +65,28 @@ public class RegionUtil {
         }
     }
 
+    public static void donateToRegion(Player player, int amountDonated) {
+
+        int playerBalance = getBalance(player);
+        PlayerChatListenerStorage.removePlayer(player);
+
+        if(playerBalance < amountDonated ){
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.get());
+            return;
+        }
+        if(amountDonated <= 0 ){
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NEED_1_OR_ABOVE.get());
+            return;
+        }
+
+        RegionData playerRegion = RegionDataStorage.get(player);
+
+        removeFromBalance(player, amountDonated);
+        playerRegion.addBalance(amountDonated);
+
+        playerRegion.getDonationHistory().add(player.getName(),player.getUniqueId().toString(),amountDonated);
+
+        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_REGION.get(amountDonated));
+        SoundUtil.playSound(player, MINOR_LEVEL_UP);
+    }
 }
