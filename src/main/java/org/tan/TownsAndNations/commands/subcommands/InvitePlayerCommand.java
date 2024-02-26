@@ -8,9 +8,9 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.utils.ChatUtils;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
-import org.tan.TownsAndNations.storage.TownInviteDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.storage.Invitation.TownInviteDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,8 +5,7 @@ import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
-import org.tan.TownsAndNations.storage.RegionDataStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
@@ -31,7 +30,7 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     }
 
     public RegionData getRegion() {
-        return RegionDataStorage.get(ownerID);
+        return RegionDataStorage.get(getID());
     }
 
     public void unclaimChunk(Player player, Chunk chunk){

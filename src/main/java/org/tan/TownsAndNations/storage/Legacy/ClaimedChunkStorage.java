@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.storage;
+package org.tan.TownsAndNations.storage.Legacy;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,6 +8,8 @@ import org.tan.TownsAndNations.DataClass.ClaimedChunk;
 import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.TownsAndNations;
+import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.io.*;
 import java.lang.reflect.Type;

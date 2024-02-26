@@ -26,16 +26,20 @@ public class TaxHistory {
         }
 
         ArrayList<String> latestDonations = new ArrayList<>();
-
+        int count = 0;
         for(Map.Entry<String, ArrayList<TransactionHistory>> entry : taxHistory.entrySet()){
-            int balance = 0;
-            for (int i = entry.getValue().size() - 1; i >= entry.getValue().size() - wantedNumberOfRows; i--) {
-                balance += entry.getValue().get(i).getAmount();
+            if (count == wantedNumberOfRows) {
+                break;
             }
-            latestDonations.add(Lang.TOTAL_TAX_LINE.get(entry.getKey(),balance));
+            String date = entry.getKey();
+            int balance = 0;
+
+            for(TransactionHistory transaction : entry.getValue()){
+                balance += transaction.getAmount();
+            }
+            latestDonations.add(Lang.TOTAL_TAX_LINE.get(date,balance));
+            count++;
         }
-
-
         return latestDonations;
     }
 

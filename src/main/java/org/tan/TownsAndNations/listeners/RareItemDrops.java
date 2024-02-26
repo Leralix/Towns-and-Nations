@@ -14,8 +14,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.RareItem;
-import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.DropChances;
 
 import java.util.Random;

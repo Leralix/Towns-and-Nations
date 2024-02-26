@@ -3,9 +3,9 @@ package org.tan.TownsAndNations.utils;
 import org.tan.TownsAndNations.DataClass.ClaimedChunk;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.storage.ClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.Legacy.ClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -37,7 +37,7 @@ public class UpdateUtil {
 
     public static void UpdateTownToNewUpgradeSystem() {
 
-        for(TownData town : TownDataStorage.getTownList().values()) {
+        for(TownData town : TownDataStorage.getTownMap().values()) {
             int townLevel = town.getTownLevel().getTownLevel();
             int townChunkCapLevel = town.getTownLevel().getChunkCapLevel();
             int townPlayerCap = town.getTownLevel().getPlayerCapLevel();

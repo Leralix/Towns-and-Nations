@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.commands.AdminSubcommands.ChunkPay;
 import org.tan.TownsAndNations.commands.AdminSubcommands.SalaryPay;
 import org.tan.TownsAndNations.commands.debugsubcommands.*;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,19 +2,13 @@ package org.tan.TownsAndNations.commands.debugsubcommands;
 
 
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.Tasks.DailyTasks;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.storage.TownDataStorage;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANDebugString;
-import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
-import static org.tan.TownsAndNations.utils.UpdateUtil.UpdateTownToNewUpgradeSystem;
 
 public class Update extends SubCommand {
 

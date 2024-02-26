@@ -66,9 +66,12 @@ language:
   #Relation diplomatique
   TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§cYou already have a relation with this town"
   TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Invitation sent to §e{0}"
+  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§fYour town §9{0}§f has joined the region §9{1}"
   #Diplomatic relation confirmation
   TOWN_DIPLOMATIC_INVITATION_RECEIVED_1: "The town §9{0}§f wants to change their diplomatic status to: §3{1}"
   TOWN_DIPLOMATIC_INVITATION_RECEIVED_2: "§l§2To accept, click here"
+  REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "§9{0}§f invited your town §9{1}§f to join their region"
+  REGION_DIPLOMATIC_INVITATION_RECEIVED_2: "§l§2To accept, click here"
   #Accept a town relation
   TOWN_ACCEPT_RELATION_DESC: "Accept a pending town relation request"
   TOWN_RELATION_NO_INVITATION: "§aYou have no pending relations"
@@ -188,8 +191,10 @@ language:
   GUI_TOWN_MEMBERS_ICON_DESC1: "§fManage members, roles and applications"
   GUI_CLAIM_ICON: "§aLand"
   GUI_CLAIM_ICON_DESC1: "§fManage town territory authorizations"
-  GUI_OTHER_TOWN_ICON: "§aOther Town"
+  GUI_OTHER_TOWN_ICON: "§aBrowse Town"
   GUI_OTHER_TOWN_ICON_DESC1: "§fGet information on other towns"
+  GUI_OTHER_REGION_ICON: "§aBrowse region"
+  GUI_OTHER_REGION_ICON_DESC1: "§fGet information on other Regions"
   GUI_RELATION_ICON: "§aDiplomacy"
   GUI_RELATION_ICON_DESC1: "§fManage foreign diplomacy/policy"
   GUI_TOWN_LEVEL_ICON: "§aTown level"
@@ -349,10 +354,13 @@ language:
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1: "§fGive the town leadership to §e{0}"
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2: "§cYou will lose your status and get ranked as the default rank"
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS: "Successfully transfer town leadership to: §e{0}"
+  GUI_REGION_SETTINGS_REGION_CHANGE_OWNERSHIP_SUCCESS: "Successfully transfer region leadership to: §e{0}"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE: "§aChange town message "
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1: "§fCurrent message: §7§o\"{0}\""
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT: "Enter the new town message"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS: "Successfully changed the town message"
+  GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT: "Enter the new message"
+  GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT_SUCCESS: "Successfully changed the message"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aModify town application"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fTown §aaccepts §fapplication"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fTown §cdoes not accept §fapplication"
@@ -400,6 +408,8 @@ language:
   GUI_REGION_CHANGE_DESCRIPTION: "§aChange region description"
   GUI_REGION_CHANGE_DESCRIPTION_DESC1: "§fCurrent message: §7§o\"{0}\""
   GUI_REGION_CHANGE_DESCRIPTION_DESC2: "§fLeft click to change the description"
+  GUI_INVITE_TOWN_TO_REGION: "§aInvite a town to the region"
+  GUI_REGION_INVITE_TOWN_DESC1: "§fLeft click to invite this town to the region"
   ##Admin GUI
   ADMIN_GUI_TOWN_DESC: "§fClick to manage towns"
   ADMIN_GUI_PLAYER_DESC: "§fClick to manage players"
@@ -414,7 +424,7 @@ language:
   ADMIN_GUI_DELETE_TOWN: "§aDelete town"
   ADMIN_GUI_DELETE_TOWN_DESC1: "§cDelete the town: §9{0}"
   #Transaction history
-  TRANSACTION_HISTORY: "§f[{0}] - §3{1} : §6+{2}✦"
+  TRANSACTION_HISTORY: "§f[{0}] - §3{1} §f: {2}✦"
   DONATION_SINGLE_LINE_1: "§a+{0}✦"
   DONATION_SINGLE_LINE_2: "§f{0}"
   TAX_SINGLE_LINE: "§3{0} : §6+{1}✦"
@@ -424,7 +434,8 @@ language:
   CHUNK_HISTORY_DESC2: "§2{0}♦§f × {1} = §c{2}✦"
   MISCELLANEOUS_HISTORY_DESC1: "§f{0}"
   MISCELLANEOUS_HISTORY_DESC2: "§c-{0}♦"
-  TOTAL_TAX_LINE: "§f{0} : §6+{1}✦"
+  TOTAL_TAX_LINE: "§f[{0}] §6+{1}✦"
+
   #Chat Information
   CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cYou can't leave a town if you are the leader, you need to disband it or transfer ownership to someone else"
   NOT_TOWN_LEADER_ERROR: "§cYou need to be the leader of the town to execute this action"

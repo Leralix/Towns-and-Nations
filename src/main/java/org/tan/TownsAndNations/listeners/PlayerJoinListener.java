@@ -7,8 +7,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import static org.tan.TownsAndNations.enums.TownRolePermission.INVITE_PLAYER;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;

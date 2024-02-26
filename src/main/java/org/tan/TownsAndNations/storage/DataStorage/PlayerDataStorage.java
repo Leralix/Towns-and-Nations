@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.storage;
+package org.tan.TownsAndNations.storage.DataStorage;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

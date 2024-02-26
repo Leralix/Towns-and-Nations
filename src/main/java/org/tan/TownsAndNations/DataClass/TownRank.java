@@ -2,16 +2,15 @@ package org.tan.TownsAndNations.DataClass;
 
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.enums.TownRankEnum;
-import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.enums.TownRolePermission;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.util.*;
 
 import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 import static org.tan.TownsAndNations.enums.TownRankEnum.FIVE;
-import static org.tan.TownsAndNations.storage.TownDataStorage.getPlayerIdsByTownAndRank;
+import static org.tan.TownsAndNations.storage.DataStorage.TownDataStorage.getPlayerIdsByTownAndRank;
 
 public class TownRank {
 

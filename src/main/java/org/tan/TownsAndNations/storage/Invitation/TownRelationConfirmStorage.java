@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.storage;
+package org.tan.TownsAndNations.storage.Invitation;
 
 import org.tan.TownsAndNations.enums.TownRelation;
 

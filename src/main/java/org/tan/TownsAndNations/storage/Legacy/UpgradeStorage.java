@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.storage;
+package org.tan.TownsAndNations.storage.Legacy;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;

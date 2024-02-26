@@ -13,7 +13,7 @@ import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.MessageKey;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.HeadUtils;
 
@@ -76,7 +76,7 @@ public class AdminGUI {
                 .create();
 
         int i = 0;
-        for (TownData townData : TownDataStorage.getTownList().values()) {
+        for (TownData townData : TownDataStorage.getTownMap().values()) {
 
 
             ItemStack townIcon = HeadUtils.getTownIcon(townData);
@@ -148,7 +148,7 @@ public class AdminGUI {
 
         GuiItem _changeTownName = ItemBuilder.from(changeTownName).asGuiItem(event -> {
 
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.get());
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
             Map<MessageKey, String> data = new HashMap<>();
 
             data.put(MessageKey.TOWN_ID,townData.getID());
@@ -160,10 +160,10 @@ public class AdminGUI {
         });
         GuiItem _changeTownDescription = ItemBuilder.from(changeTownDescription).asGuiItem(event -> {
             player.closeInventory();
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.get());
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
             Map<MessageKey, String> data = new HashMap<>();
             data.put(MessageKey.TOWN_ID,townData.getID());
-            PlayerChatListenerStorage.addPlayer(CHANGE_DESCRIPTION,player,data);
+            PlayerChatListenerStorage.addPlayer(CHANGE_TOWN_DESCRIPTION,player,data);
             event.setCancelled(true);
         });
 

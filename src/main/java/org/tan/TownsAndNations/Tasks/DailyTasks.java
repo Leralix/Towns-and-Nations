@@ -10,9 +10,9 @@ import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.TownRank;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.RegionDataStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.EconomyUtil;
@@ -94,7 +94,7 @@ public class DailyTasks {
 
         float upkeepCost = ConfigUtil.getCustomConfig("config.yml").getInt("ChunkUpkeepCost");
 
-        for(TownData town : TownDataStorage.getTownList().values()){
+        for(TownData town : TownDataStorage.getTownMap().values()){
 
             int numberClaimedChunk = town.getNumberOfClaimedChunk();
             int totalUpkeep = (int) ( numberClaimedChunk * upkeepCost/10);
@@ -106,7 +106,7 @@ public class DailyTasks {
 
     public static void SalaryPayment(){
 
-        for (TownData town: TownDataStorage.getTownList().values()){
+        for (TownData town: TownDataStorage.getTownMap().values()){
             //Loop through each rank, only paying if everyone of the rank can be paid
             for (TownRank rank : town.getTownRanks()){
 
@@ -137,7 +137,7 @@ public class DailyTasks {
         int timeBeforeClearingMisc = ConfigUtil.getCustomConfig("config.yml").getInt("NumberOfMiscPurchaseBeforeClearing",100);
 
 
-        for (TownData town : TownDataStorage.getTownList().values()) {
+        for (TownData town : TownDataStorage.getTownMap().values()) {
 
 
             town.getTaxHistory().clearHistory(timeBeforeClearing);

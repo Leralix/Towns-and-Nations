@@ -13,6 +13,10 @@ import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.MessageKey;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.*;
+import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.storage.Invitation.TownInviteDataStorage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +27,7 @@ import static org.tan.TownsAndNations.enums.ChatCategory.CREATE_CITY;
 import static org.tan.TownsAndNations.enums.MessageKey.COST;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.enums.TownRolePermission.KICK_PLAYER;
-import static org.tan.TownsAndNations.storage.TownDataStorage.*;
+import static org.tan.TownsAndNations.storage.DataStorage.TownDataStorage.*;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
 import static org.tan.TownsAndNations.utils.EconomyUtil.removeFromBalance;
@@ -64,7 +68,7 @@ public class TownUtil {
         removeFromBalance(player,townCost); //1. Remove money from player
 
 
-        for (TownData otherTown : TownDataStorage.getTownList().values()) {
+        for (TownData otherTown : TownDataStorage.getTownMap().values()) {
             if(otherTown == TownDataStorage.get(townName)){
                 continue;
             }

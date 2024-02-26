@@ -6,7 +6,7 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.ChatScope;
 import org.tan.TownsAndNations.storage.LocalChatStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;

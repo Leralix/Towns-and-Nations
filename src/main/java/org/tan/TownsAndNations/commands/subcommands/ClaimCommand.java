@@ -1,6 +1,5 @@
 package org.tan.TownsAndNations.commands.subcommands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.ClaimedChunkSettings;
@@ -10,9 +9,9 @@ import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.TownRolePermission;
-import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +90,7 @@ public class ClaimCommand extends SubCommand {
 
         Chunk chunkToClaim = player.getLocation().getChunk();
         NewClaimedChunkStorage.claimRegionChunk(chunkToClaim, regionData.getID());
-        player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.get());
+        player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS_REGION.get());
 
     }
 

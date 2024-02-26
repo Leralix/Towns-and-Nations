@@ -6,7 +6,7 @@ import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;

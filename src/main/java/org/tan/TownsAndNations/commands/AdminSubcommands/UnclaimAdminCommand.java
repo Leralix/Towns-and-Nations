@@ -8,7 +8,7 @@ import org.tan.TownsAndNations.DataClass.newChunkData.RegionClaimedChunk;
 import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 
 import java.util.List;
 

@@ -2,8 +2,8 @@ package org.tan.TownsAndNations.Tasks;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 public class SaveStats {
 

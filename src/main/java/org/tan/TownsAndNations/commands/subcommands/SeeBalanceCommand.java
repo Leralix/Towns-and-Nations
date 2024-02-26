@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 
 import java.util.List;
 

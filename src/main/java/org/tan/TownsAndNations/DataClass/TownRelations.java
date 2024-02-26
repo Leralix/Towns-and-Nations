@@ -3,7 +3,7 @@ package org.tan.TownsAndNations.DataClass;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

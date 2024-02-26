@@ -15,6 +15,12 @@ import org.tan.TownsAndNations.Lang.DynamicLang;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.*;
 import org.tan.TownsAndNations.storage.*;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.storage.Invitation.RegionInviteDataStorage;
+import org.tan.TownsAndNations.storage.Invitation.TownRelationConfirmStorage;
+import org.tan.TownsAndNations.storage.Legacy.UpgradeStorage;
 import org.tan.TownsAndNations.utils.*;
 
 import static org.tan.TownsAndNations.TownsAndNations.isDynmapAddonLoaded;
@@ -24,7 +30,7 @@ import static org.tan.TownsAndNations.enums.MessageKey.*;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.enums.TownRolePermission.*;
 import static org.tan.TownsAndNations.storage.MobChunkSpawnStorage.getMobSpawnCost;
-import static org.tan.TownsAndNations.storage.TownDataStorage.getTownList;
+import static org.tan.TownsAndNations.storage.DataStorage.TownDataStorage.getTownMap;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.HeadUtils.*;
 import static org.tan.TownsAndNations.utils.RelationUtil.*;
@@ -161,7 +167,7 @@ public class GuiManager2 {
 
         Gui gui = createChestGui("Town",3);
 
-        HashMap<String, TownData> townDataStorage = getTownList();
+        HashMap<String, TownData> townDataStorage = getTownMap();
 
         int i = 0;
         for (TownData townData : townDataStorage.values()) {
@@ -320,7 +326,7 @@ public class GuiManager2 {
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
 
-        HashMap<String, TownData> townDataStorage = getTownList();
+        HashMap<String, TownData> townDataStorage = getTownMap();
 
         int i = 0;
         for (TownData otherTown: townDataStorage.values()) {
@@ -465,7 +471,7 @@ public class GuiManager2 {
 
                     town.removePlayerJoinRequest(playerIterateData.getUuid());
 
-                    for (TownData allTown : TownDataStorage.getTownList().values()){
+                    for (TownData allTown : TownDataStorage.getTownMap().values()){
                         allTown.removePlayerJoinRequest(playerIterateData.getUuid());
                     }
 
@@ -920,7 +926,6 @@ public class GuiManager2 {
         ItemStack donation = HeadUtils.getCustomLoreItem(Material.DIAMOND,Lang.GUI_TREASURY_DONATION.get(),Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get());
         ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.get());
 
-        HeadUtils.setLore(taxHistory,Lang.GUI_TREASURY_TAX_HISTORY_DESC1.get());
 
         int nextTaxes = 0;
 
@@ -976,8 +981,10 @@ public class GuiManager2 {
         if(!isSqlEnable()){
             HeadUtils.setLore(donationHistory, town.getDonationHistory().get(5));
             HeadUtils.setLore(miscSpending, town.getMiscellaneousHistory().get(5));
-
+            HeadUtils.setLore(taxHistory, town.getTaxHistory().get(5));
         }
+        HeadUtils.addLore(taxHistory,Lang.GUI_TREASURY_TAX_HISTORY_DESC1.get());
+
 
         GuiItem _goldInfo = ItemBuilder.from(goldIcon).asGuiItem(event -> event.setCancelled(true));
         GuiItem _goldSpendingIcon = ItemBuilder.from(goldSpendingIcon).asGuiItem(event -> event.setCancelled(true));
@@ -1405,10 +1412,10 @@ public class GuiManager2 {
 
         GuiItem _changeMessage = ItemBuilder.from(changeMessage).asGuiItem(event -> {
             player.closeInventory();
-            player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.get());
+            player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
             Map<MessageKey, String> data = new HashMap<>();
             data.put(MessageKey.TOWN_ID,playerTown.getID());
-            PlayerChatListenerStorage.addPlayer(CHANGE_DESCRIPTION,player,data);
+            PlayerChatListenerStorage.addPlayer(CHANGE_TOWN_DESCRIPTION,player,data);
             event.setCancelled(true);
         });
 
@@ -1427,7 +1434,7 @@ public class GuiManager2 {
             }
 
             if(playerStat.isTownLeader()){
-                player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT.get());
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
                 Map<MessageKey, String> data = new HashMap<>();
                 data.put(MessageKey.TOWN_ID,playerTown.getID());
                 data.put(MessageKey.COST,Integer.toString(changeTownNameCost));
@@ -1666,7 +1673,7 @@ public class GuiManager2 {
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
         TownData playerTown = TownDataStorage.get(playerStat);
 
-        LinkedHashMap<String, TownData> allTown = getTownList();
+        LinkedHashMap<String, TownData> allTown = getTownMap();
         ArrayList<String> TownListUUID = playerTown.getTownWithRelation(relation);
 
         GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.GREEN_STAINED_GLASS_PANE)).asGuiItem(event -> {
@@ -1698,7 +1705,7 @@ public class GuiManager2 {
                             player.sendMessage(getTANString() + Lang.LEADER_NOT_ONLINE.get());
                             return;
                         }
-                        Player otherTownLeaderOnline = otherTownLeader.getPlayer();assert otherTownLeaderOnline != null;
+                        Player otherTownLeaderOnline = otherTownLeader.getPlayer();
 
                         TownRelationConfirmStorage.addInvitation(otherTown.getLeaderID(), playerTown.getID(), relation);
 
@@ -1830,7 +1837,6 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-
     public static void OpenTownChunkMobSettings(Player player){
         Gui gui = createChestGui("Town",4);
 
@@ -1896,7 +1902,6 @@ public class GuiManager2 {
         gui.setItem(27, CreateBackArrow(player,p -> OpenTownChunk(player)));
         gui.open(player);
     }
-
     public static void OpenTownChunkPlayerSettings(Player player){
         Gui gui = createChestGui("Town",4);
 
@@ -1971,7 +1976,7 @@ public class GuiManager2 {
 
         GuiItem _browseRegion = ItemBuilder.from(browseRegion).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenRegionList(player);
+            OpenRegionList(player, false);
         });
 
         gui.setItem(2,4, _createRegion);
@@ -1997,8 +2002,8 @@ public class GuiManager2 {
         ItemStack townIcon = HeadUtils.makeSkull(Lang.GUI_REGION_TOWN_LIST.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
         HeadUtils.setLore(townIcon, Lang.GUI_REGION_TOWN_LIST_DESC1.get());
 
-        ItemStack otherRegionIcon = HeadUtils.makeSkull(Lang.GUI_OTHER_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=");
-        HeadUtils.setLore(otherRegionIcon, Lang.GUI_OTHER_TOWN_ICON_DESC1.get());
+        ItemStack otherRegionIcon = HeadUtils.makeSkull(Lang.GUI_OTHER_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=");
+        HeadUtils.setLore(otherRegionIcon, Lang.GUI_OTHER_REGION_ICON_DESC1.get());
 
         ItemStack RelationIcon = HeadUtils.makeSkull(Lang.GUI_RELATION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=");
         HeadUtils.setLore(RelationIcon, Lang.GUI_RELATION_ICON_DESC1.get());
@@ -2039,7 +2044,7 @@ public class GuiManager2 {
 
         GuiItem _otherRegionIcon = ItemBuilder.from(otherRegionIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenRegionList(player);
+            OpenRegionList(player,true);
         });
         GuiItem _relationIcon = ItemBuilder.from(RelationIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -2062,7 +2067,7 @@ public class GuiManager2 {
 
         gui.open(player);
     }
-    public static void OpenRegionList(Player player){
+    public static void OpenRegionList(Player player, boolean isTownMenu) {
 
         Gui gui = createChestGui("Region",4);
 
@@ -2081,31 +2086,80 @@ public class GuiManager2 {
         gui.setItem(27, CreateBackArrow(player,p -> OpenNoRegionMenu(player)));
         gui.open(player);
 
-        gui.setItem(3,1, CreateBackArrow(player,p -> OpenMainMenu(player)));
-
+        if(isTownMenu)
+            gui.setItem(3,1, CreateBackArrow(player,p -> OpenRegionMenu(player)));
+        else
+            gui.setItem(3,1, CreateBackArrow(player,p -> OpenNoRegionMenu(player)));
 
     }
-
     private static void OpenTownInRegion(Player player){
 
         Gui gui = createChestGui("Region",4);
-
+        PlayerData playerData = PlayerDataStorage.get(player);
         RegionData regionData = RegionDataStorage.get(player);
 
-        int i = 0;
         for (TownData townData : regionData.getTownsInRegion()){
             ItemStack townIcon = getTownIconWithInformations(townData);
 
             GuiItem _townIcon = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
             });
-            gui.setItem(i, _townIcon);
-            i = i+1;
+            gui.addItem(_townIcon);
         }
+
+        ItemStack increaseTax = HeadUtils.makeSkull(Lang.GUI_INVITE_TOWN_TO_REGION.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
+
+        GuiItem _increaseTax = ItemBuilder.from(increaseTax).asGuiItem(event -> {
+            event.setCancelled(true);
+
+            if(!playerData.isTownLeader() || !regionData.isCapital(playerData.getTown())){
+                player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
+                return;
+            }
+            OpenRegionInviteTown(player);
+        });
+
+        gui.setItem(4,1, CreateBackArrow(player,p -> OpenRegionMenu(player)));
+        gui.setItem(4,2, _increaseTax);
+        gui.open(player);
+    }
+
+    private static void OpenRegionInviteTown(Player player) {
+
+        Gui gui = createChestGui("Region", 4);
+
+        RegionData regionData = RegionDataStorage.get(player);
+        for(TownData townData : TownDataStorage.getTownMap().values()){
+            ItemStack townIcon = getTownIconWithInformations(townData);
+            HeadUtils.addLore(townIcon, Lang.GUI_REGION_INVITE_TOWN_DESC1.get());
+
+            GuiItem _townIcon = ItemBuilder.from(townIcon).asGuiItem(event -> {
+                event.setCancelled(true);
+                if(!townData.isLeaderOnline()){
+                    player.sendMessage(getTANString() + Lang.LEADER_NOT_ONLINE.get());
+                    return;
+                }
+                Player townLeader = Bukkit.getPlayer(UUID.fromString(townData.getLeaderID()));
+
+                RegionInviteDataStorage.addInvitation(townData.getLeaderID(),regionData.getID());
+
+                townLeader.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(regionData.getName(),townData.getName()));
+                ChatUtils.sendClickableCommand(townLeader,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan acceptregion "  + regionData.getID());
+
+                player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS.get(townLeader.getName(), regionData.getName()));
+
+                player.closeInventory();
+
+
+            });
+            gui.addItem(_townIcon);
+        }
+
 
         gui.setItem(4,1, CreateBackArrow(player,p -> OpenRegionMenu(player)));
         gui.open(player);
     }
+
     private static void OpenRegionSettings(Player player) {
 
         Gui gui = createChestGui("Region", 3);
@@ -2153,16 +2207,24 @@ public class GuiManager2 {
 
         GuiItem _changeCapital = ItemBuilder.from(changeCapital).asGuiItem(event -> {
             event.setCancelled(true);
-            if(!playerStat.isTownLeader() && playerRegion.isCapital(playerTown)){
-                player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
+            if(playerStat.isTownLeader() && playerRegion.isCapital(playerTown)){
+                OpenRegionalCapitalSwitch(player);
+                return;
             }
+            player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
         });
 
         GuiItem _changeDescription = ItemBuilder.from(changeDescription).asGuiItem(event -> {
             event.setCancelled(true);
-            if(!playerStat.isTownLeader() && playerRegion.isCapital(playerTown)){
-                player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
+            if(playerStat.isTownLeader() && playerRegion.isCapital(playerTown)){
+                player.closeInventory();
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+                Map<MessageKey, String> data = new HashMap<>();
+                data.put(MessageKey.REGION_ID,playerRegion.getID());
+                PlayerChatListenerStorage.addPlayer(CHANGE_REGION_DESCRIPTION,player,data);
+                return;
             }
+            player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
         });
 
 
@@ -2219,19 +2281,17 @@ public class GuiManager2 {
                 Lang.GUI_INCREASE_10_DESC.get());
         HeadUtils.setLore(taxInfo,
                 Lang.GUI_TREASURY_FLAT_TAX_DESC1.get(tax));
-        HeadUtils.setLore(donationHistory, playerRegion.getDonationHistory().get(5));
-        HeadUtils.setLore(taxHistory, playerRegion.getTaxHistory().get(5));
 
+        HeadUtils.setLore(donationHistory, playerRegion.getDonationHistory().get(5));
+        HeadUtils.addLore(donationHistory,Lang.GUI_TREASURY_TAX_HISTORY_DESC1.get());
+        HeadUtils.setLore(taxHistory, playerRegion.getTaxHistory().get(5));
+        HeadUtils.addLore(taxHistory,Lang.GUI_TREASURY_TAX_HISTORY_DESC1.get());
 
         GuiItem _goldIcon = ItemBuilder.from(goldIcon).asGuiItem(event -> {
             event.setCancelled(true);
         });
 
         GuiItem _goldSpendingIcon = ItemBuilder.from(goldSpendingIcon).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
-
-        GuiItem _taxHistory = ItemBuilder.from(taxHistory).asGuiItem(event -> {
             event.setCancelled(true);
         });
 
@@ -2278,6 +2338,12 @@ public class GuiManager2 {
 
         GuiItem _donationHistory = ItemBuilder.from(donationHistory).asGuiItem(event -> {
             event.setCancelled(true);
+            OpenRegionEconomyHistory(player, HistoryEnum.DONATION);
+        });
+
+        GuiItem _taxHistory = ItemBuilder.from(taxHistory).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenRegionEconomyHistory(player, HistoryEnum.TAX);
         });
 
         GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
@@ -2301,9 +2367,98 @@ public class GuiManager2 {
         gui.setItem(3,4, _taxHistory);
         gui.setItem(4,1, CreateBackArrow(player,p -> OpenRegionMenu(player)));
 
-
         gui.open(player);
+    }
+    public static void OpenRegionEconomyHistory(Player player, HistoryEnum historyType) {
 
+        Gui gui = createChestGui("Town", 6);
+
+        PlayerData playerStat = PlayerDataStorage.get(player);
+        RegionData region = playerStat.getRegion();
+
+
+        switch (historyType) {
+
+            case DONATION -> {
+
+                int i = 0;
+                for (TransactionHistory donation : region.getDonationHistory().getReverse()) {
+
+                    ItemStack transactionIcon = HeadUtils.getCustomLoreItem(Material.PAPER,
+                            ChatColor.DARK_AQUA + donation.getName(),
+                            Lang.DONATION_SINGLE_LINE_1.get(donation.getAmount()),
+                            Lang.DONATION_SINGLE_LINE_2.get(donation.getDate())
+                    );
+
+                    GuiItem _transactionIcon = ItemBuilder.from(transactionIcon).asGuiItem(event -> event.setCancelled(true));
+
+                    gui.setItem(i, _transactionIcon);
+                    i = i + 1;
+                    if (i > 44) {
+                        break;
+                    }
+                }
+            }
+            case TAX -> {
+
+                int i = 0;
+                for (Map.Entry<String, ArrayList<TransactionHistory>> oneDay : region.getTaxHistory().get().entrySet()) {
+
+                    String date = oneDay.getKey();
+                    ArrayList<TransactionHistory> taxes = oneDay.getValue();
+
+
+                    List<String> lines = new ArrayList<>();
+
+                    for (TransactionHistory singleTax : taxes) {
+
+                        if (singleTax.getAmount() == -1) {
+                            lines.add(Lang.TAX_SINGLE_LINE_NOT_ENOUGH.get(singleTax.getName()));
+                        } else {
+                            lines.add(Lang.TAX_SINGLE_LINE.get(singleTax.getName(), singleTax.getAmount()));
+                        }
+                    }
+
+                    ItemStack transactionHistoryItem = HeadUtils.getCustomLoreItem(Material.PAPER, date);
+                    HeadUtils.setLore(transactionHistoryItem, lines);
+                    GuiItem _transactionHistoryItem = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> event.setCancelled(true));
+
+                    gui.setItem(i, _transactionHistoryItem);
+                    i = i + 1;
+                    if (i > 44) {
+                        break;
+                    }
+                }
+            }
+        }
+        gui.setItem(6,1, CreateBackArrow(player,p -> OpenRegionEconomy(player)));
+        gui.open(player);
+    }
+    public static void OpenRegionalCapitalSwitch(Player player){
+
+            Gui gui = createChestGui("Region", 3);
+            PlayerData playerData = PlayerDataStorage.get(player);
+            RegionData regionData = playerData.getRegion();
+
+            for (TownData townData : regionData.getTownsInRegion() ){
+
+                if(townData.getID() == regionData.getCapital().getID())
+                    continue;
+                ItemStack regionIcon = getRegionIcon(regionData);
+
+                GuiItem _region = ItemBuilder.from(regionIcon).asGuiItem(event -> {
+                    event.setCancelled(true);
+                    regionData.setCapital(townData);
+                    SoundUtil.playSound(player, GOOD);
+                    player.sendMessage(getTANString() + Lang.GUI_REGION_SETTINGS_REGION_CHANGE_OWNERSHIP_SUCCESS.get());
+                    OpenRegionMenu(player);
+                });
+                gui.addItem(_region);
+            }
+
+
+            gui.setItem(3,1, CreateBackArrow(player,p -> OpenRegionSettings(player)));
+            gui.open(player);
     }
 
 

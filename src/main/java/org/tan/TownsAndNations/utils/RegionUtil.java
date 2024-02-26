@@ -5,11 +5,11 @@ import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
-import org.tan.TownsAndNations.enums.ChatCategory;
 import org.tan.TownsAndNations.storage.*;
+import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 
-import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 import static org.tan.TownsAndNations.enums.ChatCategory.CREATE_REGION;
 import static org.tan.TownsAndNations.enums.SoundEnum.MINOR_LEVEL_UP;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;

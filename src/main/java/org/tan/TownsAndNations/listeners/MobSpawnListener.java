@@ -5,7 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.tan.TownsAndNations.DataClass.TownData;
-import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 
 public class MobSpawnListener implements Listener {
 

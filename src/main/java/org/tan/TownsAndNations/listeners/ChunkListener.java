@@ -20,12 +20,9 @@ import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.FurnaceInventory;
-import org.tan.TownsAndNations.DataClass.ClaimedChunk;
-import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
-import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 
 import static org.tan.TownsAndNations.enums.ChunkPermissionType.*;
 

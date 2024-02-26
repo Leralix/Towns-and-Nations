@@ -1,9 +1,8 @@
 package org.tan.TownsAndNations.DataClass;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.Lang.Lang;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -40,14 +39,15 @@ public class TransactionHistory {
 
     public String getTransactionLine() {
         ChatColor color;
+        String strAmount;
         if(amount > 0)
-            color = ChatColor.GREEN;
+            strAmount = ChatColor.GREEN + "+" + amount;
         else if(amount < 0 )
-            color = ChatColor.RED;
+            strAmount = ChatColor.RED + "-" + amount;
         else
-            color = ChatColor.WHITE;
+            strAmount = ChatColor.WHITE + "+" + amount;
 
-        return Lang.TRANSACTION_HISTORY.get(date, transactionParty, color + String.valueOf(amount));
+        return Lang.TRANSACTION_HISTORY.get(date, transactionParty, strAmount);
     }
 
     public String getDate() {

@@ -3,12 +3,16 @@ package org.tan.TownsAndNations.commands.subcommands;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
+import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
+import org.tan.TownsAndNations.DataClass.newChunkData.RegionClaimedChunk;
+import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.TownRelation;
-import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,32 +83,46 @@ public class MapCommand extends SubCommand {
                     Chunk chunk = player.getWorld().getChunkAt(currentChunk.getX() + dx, currentChunk.getZ() + dz);
                     if (claimedChunks.contains(chunk)) {
 
-                        TownData playerTown = TownDataStorage.get(player);
-                        TownData otherTown = TownDataStorage.get(NewClaimedChunkStorage.get(chunk).getID());
+                        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunk);
 
-                        TownRelation relation;
-                        if(playerTown == null ){
-                            relation = TownRelation.NEUTRAL;                        }
-                        else{
-                            relation = playerTown.getRelationWith(otherTown);
-                        }
+                       if(claimedChunk instanceof TownClaimedChunk){
+                           TownData playerTown = TownDataStorage.get(player);
+                           TownData otherTown = TownDataStorage.get(NewClaimedChunkStorage.get(chunk).getID());
 
-                        ChatColor townColor;
-                        if(relation == null){
-                            townColor = ChatColor.WHITE;
-                        }
-                        else{
-                            townColor = relation.getColor();
-                        }
+                           TownRelation relation;
+                           if(playerTown == null ){
+                               relation = TownRelation.NEUTRAL;                        }
+                           else{
+                               relation = playerTown.getRelationWith(otherTown);
+                           }
 
+                           ChatColor townColor;
+                           if(relation == null){
+                               townColor = ChatColor.WHITE;
+                           }
+                           else{
+                               townColor = relation.getColor();
+                           }
+                           if (dx == 0 && dz == 0) {
+                               line.append(townColor + "★");
+                           }
+                           else{
+                               line.append(townColor + "■");
+                           }
+                       }
+                       else if (claimedChunk instanceof RegionClaimedChunk){
 
-                        if (dx == 0 && dz == 0) {
-                            line.append(townColor + "★");
-                        }
-                        else{
-                            line.append(townColor + "■");
-                        }
+                           RegionData region = ((RegionClaimedChunk) claimedChunk).getRegion();
+                           TownData town = region.getCapital();
 
+                           if (dx == 0 && dz == 0) {
+                               line.append(ChatColor.AQUA + "★");
+                           }
+                           else{
+                               line.append(ChatColor.AQUA + "■");
+                           }
+
+                       }
                     } else {
                         if (dx == 0 && dz == 0) {
                             line.append(ChatColor.WHITE + "★");

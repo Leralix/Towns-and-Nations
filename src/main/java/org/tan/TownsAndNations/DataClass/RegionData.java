@@ -6,8 +6,8 @@ import org.tan.TownsAndNations.DataClass.History.ChunkHistory;
 import org.tan.TownsAndNations.DataClass.History.DonationHistory;
 import org.tan.TownsAndNations.DataClass.History.MiscellaneousHistory;
 import org.tan.TownsAndNations.DataClass.History.TaxHistory;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;

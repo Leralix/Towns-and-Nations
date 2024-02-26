@@ -3,7 +3,7 @@ package org.tan.TownsAndNations.commands;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.commands.subcommands.*;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +26,7 @@ public class CommandManager implements CommandExecutor, TabExecutor, TabComplete
         subCommands.add(new OpenGuiCommand());
         subCommands.add(new AcceptRelationCommand());
         subCommands.add(new ChannelChatScopeCommand());
+        subCommands.add(new AcceptRegionRelationCommand());
 
         subCommands.add(new TownSpawnCommand());
         subCommands.add(new SetTownSpawnCommand());

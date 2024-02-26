@@ -8,7 +8,7 @@ import org.tan.TownsAndNations.commands.AdminSubcommands.SpawnVillager;
 import org.tan.TownsAndNations.commands.AdminSubcommands.UnclaimAdminCommand;
 import org.tan.TownsAndNations.commands.AdminSubcommands.getRareItem;
 import org.tan.TownsAndNations.commands.debugsubcommands.*;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;

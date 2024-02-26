@@ -4,13 +4,13 @@ import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.tan.TownsAndNations.storage.UpgradeStorage;
+import org.tan.TownsAndNations.storage.Legacy.UpgradeStorage;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.tan.TownsAndNations.storage.UpgradeStorage.loadIntoMap;
+import static org.tan.TownsAndNations.storage.Legacy.UpgradeStorage.loadIntoMap;
 
 public class TownLevel {
     private int townLevel;

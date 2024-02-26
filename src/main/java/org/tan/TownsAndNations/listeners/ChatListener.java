@@ -12,6 +12,9 @@ import org.tan.TownsAndNations.GUI.GuiManager2;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.*;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.RegionUtil;
@@ -125,7 +128,7 @@ public class ChatListener implements Listener {
 
         }
 
-        if(chatData.getCategory() == CHANGE_DESCRIPTION){
+        if(chatData.getCategory() == CHANGE_TOWN_DESCRIPTION){
 
             String newDesc = event.getMessage();
             String townId = chatData.getData().get(TOWN_ID);
@@ -139,7 +142,7 @@ public class ChatListener implements Listener {
 
 
             TownDataStorage.get(townId).setDescription(newDesc);
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS.get());
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT_SUCCESS.get());
             removePlayer(player);
             event.setCancelled(true);
 
@@ -202,6 +205,23 @@ public class ChatListener implements Listener {
             }
 
             RegionUtil.donateToRegion(player, amount);
+        }
+        if(chatData.getCategory() == CHANGE_REGION_DESCRIPTION){
+            String newDesc = event.getMessage();
+            String regionID = chatData.getData().get(REGION_ID);
+
+            FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
+            int maxSize = config.getInt("TownDescSize");
+            if(newDesc.length() > maxSize){
+                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
+                event.setCancelled(true);
+            }
+
+
+            RegionDataStorage.get(regionID).setDescription(newDesc);
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT_SUCCESS.get());
+            removePlayer(player);
+            event.setCancelled(true);
         }
     }
 }

@@ -11,10 +11,9 @@ import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.enums.TownRelation;
-import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.RegionDataStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.SoundUtil;
 
 import java.util.*;
@@ -575,5 +574,10 @@ public class TownData {
         if(taxHistory == null)
             taxHistory = new TaxHistory();
         return taxHistory;
+    }
+
+    public boolean isLeaderOnline() {
+        Player player = Bukkit.getServer().getPlayer(UUID.fromString(this.UuidLeader));
+        return player != null && player.isOnline();
     }
 }

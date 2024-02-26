@@ -3,9 +3,9 @@ package org.tan.TownsAndNations.API;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.storage.NewClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.RegionDataStorage;
-import org.tan.TownsAndNations.storage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ public class tanAPI {
     }
 
     public HashMap<String, TownData> getTownList(){
-        return TownDataStorage.getTownList();
+        return TownDataStorage.getTownMap();
     }
 
     public Map<String, ClaimedChunk2> getChunkMap(){

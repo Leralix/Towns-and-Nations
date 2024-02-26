@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.storage;
+package org.tan.TownsAndNations.storage.DataStorage;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -11,6 +11,7 @@ import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.enums.TownRolePermission;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -155,7 +156,7 @@ public class TownDataStorage {
             e.printStackTrace();
         }
     }
-    public static LinkedHashMap<String, TownData> getTownList() {
+    public static LinkedHashMap<String, TownData> getTownMap() {
         if (isSqlEnable()) {
             return getTownListFromDatabase();
         } else {
