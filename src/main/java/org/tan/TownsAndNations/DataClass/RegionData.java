@@ -223,4 +223,11 @@ public class RegionData {
     public void setChunkColor(int newColor) {
         this.chunkColor = newColor;
     }
+
+    public void removeTown(TownData townToDelete) {
+        removeTown(townToDelete.getID());
+    }
+    public void removeTown(String townID) {
+        townsInRegion.remove(townID);
+    }
 }

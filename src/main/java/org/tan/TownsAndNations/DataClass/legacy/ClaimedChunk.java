@@ -1,8 +1,10 @@
-package org.tan.TownsAndNations.DataClass;
+package org.tan.TownsAndNations.DataClass.legacy;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
+import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;

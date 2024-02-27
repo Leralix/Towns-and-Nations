@@ -1,6 +1,6 @@
 package org.tan.TownsAndNations.utils;
 
-import org.tan.TownsAndNations.DataClass.ClaimedChunk;
+import org.tan.TownsAndNations.DataClass.legacy.ClaimedChunk;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.Legacy.ClaimedChunkStorage;

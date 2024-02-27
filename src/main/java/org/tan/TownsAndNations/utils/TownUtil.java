@@ -4,10 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.PlayerData;
-import org.tan.TownsAndNations.DataClass.TownData;
-import org.tan.TownsAndNations.DataClass.TownLevel;
-import org.tan.TownsAndNations.DataClass.TownUpgrade;
+import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.MessageKey;
@@ -15,6 +12,7 @@ import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.storage.Invitation.TownInviteDataStorage;
 
@@ -110,6 +108,11 @@ public class TownUtil {
     public static void deleteTown(TownData townToDelete){
 
         NewClaimedChunkStorage.unclaimAllChunkFromTown(townToDelete); //Unclaim all chunk from town
+
+        if(townToDelete.haveRegion()){
+            RegionData region = RegionDataStorage.get(townToDelete.getRegionID());
+            region.removeTown(townToDelete);
+        }
 
         townToDelete.cancelAllRelation();   //Cancel all Relation between the deleted town and other town
         removeAllPlayerFromTown(townToDelete); //Kick all Players from the deleted town

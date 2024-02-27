@@ -9,10 +9,12 @@ StartingMoney: 100
 #The cost of creating a town
 CostOfCreatingTown: 1000
 
-#The cost of a chunk to claim
+#The cost of a town claim
 CostOfChunk: 0
+#The cost of a region claim
+CostOfRegionChunk: 5
 
-#The cost of upkeeping 10 chunks
+#The cost of a town upkeeping 10 chunks
 ChunkUpkeepCost: 0
 
 #Allow non-adjacent chunks to be claimed

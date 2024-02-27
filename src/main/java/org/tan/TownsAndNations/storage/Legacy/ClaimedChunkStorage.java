@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
-import org.tan.TownsAndNations.DataClass.ClaimedChunk;
+import org.tan.TownsAndNations.DataClass.legacy.ClaimedChunk;
 import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.TownsAndNations;

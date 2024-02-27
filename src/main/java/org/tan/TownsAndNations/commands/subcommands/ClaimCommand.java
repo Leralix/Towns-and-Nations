@@ -12,6 +12,7 @@ import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.utils.ConfigUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,8 +88,16 @@ public class ClaimCommand extends SubCommand {
             player.sendMessage(getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return;
         }
+        int cost = ConfigUtil.getCustomConfig("config.yml").getInt("CostOfRegionChunk",5);
+
+        if(regionData.getBalance() < cost){
+            player.sendMessage(getTANString() + Lang.REGION_NOT_ENOUGH_MONEY_EXTENDED.get(cost - regionData.getBalance()));
+            return;
+        }
+
 
         Chunk chunkToClaim = player.getLocation().getChunk();
+        regionData.removeBalance(cost);
         NewClaimedChunkStorage.claimRegionChunk(chunkToClaim, regionData.getID());
         player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS_REGION.get());
 
