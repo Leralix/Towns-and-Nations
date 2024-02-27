@@ -85,7 +85,7 @@ public class GuiUtil {
         return ItemBuilder.from(upgradeItemStack).asGuiItem(event -> {
             event.setCancelled(true);
             if(finalRequirementsMet){
-                upgradeTown(player,townUpgrade,townData);
+                upgradeTown(player,townUpgrade,townData,townUpgradeLevel);
             }
             else {
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.get());

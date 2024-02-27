@@ -277,6 +277,7 @@ public class TownData {
 
     public void removeToBalance(int balance){
         this.balance -= balance;
+        System.out.println("Removed " + balance + " from " + this.TownName + " balance");
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);
     }

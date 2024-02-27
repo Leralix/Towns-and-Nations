@@ -200,7 +200,7 @@ public class TownUtil {
         player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());
     }
 
-    public static void upgradeTown(Player player, TownUpgrade townUpgrade, TownData townData){
+    public static void upgradeTown(Player player, TownUpgrade townUpgrade, TownData townData, int townUpgradeLevel){
         PlayerData playerData = PlayerDataStorage.get(player);
 
         TownLevel townLevel = townData.getTownLevel();
@@ -221,7 +221,7 @@ public class TownUtil {
             return;
         }
 
-        townData.removeToBalance(townLevel.getMoneyRequiredTownLevel());
+        townData.removeToBalance(townUpgrade.getCost(townUpgradeLevel));
         townLevel.levelUp(townUpgrade);
         if(isSqlEnable())
             TownDataStorage.updateTownUpgradeFromDatabase(townData.getID(),townLevel);
