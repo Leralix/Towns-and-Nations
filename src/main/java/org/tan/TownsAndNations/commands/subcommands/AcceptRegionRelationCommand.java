@@ -64,7 +64,7 @@ public class AcceptRegionRelationCommand extends SubCommand {
 
                 town.setRegion(newRegionID);
                 region.addTown(town.getID());
-                town.broadCastMessage(Lang.TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION.get(region.getName()));
+                town.broadCastMessage(Lang.TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION.get(town.getName(), region.getName()));
                 SoundUtil.playSound(player,GOOD);
             }
             else{

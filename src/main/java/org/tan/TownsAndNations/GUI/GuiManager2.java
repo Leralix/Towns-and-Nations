@@ -1316,57 +1316,46 @@ public class GuiManager2 {
     }
     public static void OpenTownSettings(Player player) {
 
-        Gui gui = createChestGui("Town",3);
+        Gui gui = createChestGui("Town",4);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(player);
+        int changeTownNameCost = ConfigUtil.getCustomConfig("config.yml").getInt("ChangeTownNameCost");
+
 
         ItemStack TownIcon = HeadUtils.getTownIcon(playerStat.getTownId());
         ItemStack leaveTown = HeadUtils.getCustomLoreItem(Material.BARRIER,
                 Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN.get(),
                 Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1.get(playerTown.getName()),
-                Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2.get()
-        );
-
+                Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2.get());
         ItemStack deleteTown = HeadUtils.getCustomLoreItem(Material.BARRIER,
                 Lang.GUI_TOWN_SETTINGS_DELETE_TOWN.get(),
                 Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1.get(playerTown.getName()),
-                Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2.get()
-        );
-
+                Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2.get());
         ItemStack changeOwnershipTown = HeadUtils.getCustomLoreItem(Material.BEEHIVE,
                 Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.get(),
                 Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.get(),
-                Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.get()
-        );
-
+                Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.get());
         ItemStack changeMessage = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE.get(),
-                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1.get(playerTown.getDescription())
-        );
-
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1.get(playerTown.getDescription()));
         ItemStack toggleApplication = HeadUtils.getCustomLoreItem(Material.PAPER,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION.get(),
                 (playerTown.isRecruiting() ? Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT.get() : Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT.get()),
-                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH.get()
-        );
-
-        int changeTownNameCost = ConfigUtil.getCustomConfig("config.yml").getInt("ChangeTownNameCost");
-
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH.get());
         ItemStack changeTownName = HeadUtils.getCustomLoreItem(Material.NAME_TAG,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME.get(),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1.get(playerTown.getName()),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC2.get(),
-                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3.get(changeTownNameCost)
-        );
-
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3.get(changeTownNameCost));
+        ItemStack quitRegion = HeadUtils.getCustomLoreItem(Material.SPRUCE_DOOR,
+                Lang.GUI_TOWN_SETTINGS_QUIT_REGION.get(),
+                playerTown.haveRegion() ? Lang.GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION.get() : Lang.GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_NO_REGION.get());
         ItemStack changeChunkColor = HeadUtils.getCustomLoreItem(Material.PURPLE_WOOL,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR.get(),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(getHexColor(playerTown.getChunkColorInHex()) + playerTown.getChunkColorInHex()),
-                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3.get()
-        );
-
+                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3.get());
 
         GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> event.setCancelled(true));
 
@@ -1445,6 +1434,21 @@ public class GuiManager2 {
                 player.sendMessage(getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
         });
 
+        GuiItem _quitRegion = ItemBuilder.from(quitRegion).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(!playerTown.haveRegion())
+                player.sendMessage(getTANString() + Lang.TOWN_NO_REGION.get());
+
+            RegionData regionData = playerTown.getRegion();
+
+            if(playerTown.isRegionalCapital())
+                player.sendMessage(getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
+
+            regionData.removeTown(playerTown);
+            playerTown.removeRegion();
+            player.closeInventory();
+        });
+
         GuiItem _changeChunkColor = ItemBuilder.from(changeChunkColor).asGuiItem(event -> {
             event.setCancelled(true);
 
@@ -1463,16 +1467,18 @@ public class GuiManager2 {
 
 
         gui.setItem(4, _townIcon);
-        gui.setItem(10, _leaveTown);
-        gui.setItem(11, _deleteTown);
-        gui.setItem(12, _changeOwnershipTown);
-        gui.setItem(13, _changeMessage);
-        gui.setItem(14, _toggleApplication);
-        gui.setItem(15, _changeTownName);
-        if(isDynmapAddonLoaded())
-            gui.setItem(16, _changeChunkColor);
+        gui.setItem(2,2, _leaveTown);
+        gui.setItem(2,3, _deleteTown);
+        gui.setItem(2,4, _changeOwnershipTown);
+        gui.setItem(2,6, _changeMessage);
+        gui.setItem(2,7, _toggleApplication);
+        gui.setItem(2,8, _changeTownName);
 
-        gui.setItem(3,1, CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(3,2, _quitRegion);
+        if(isDynmapAddonLoaded())
+            gui.setItem(3,8, _changeChunkColor);
+
+        gui.setItem(4,1, CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
 
         gui.open(player);
     }
@@ -2077,7 +2083,6 @@ public class GuiManager2 {
 
             GuiItem _region = ItemBuilder.from(regionIcon).asGuiItem(event -> {
                 event.setCancelled(true);
-                OpenRegionMenu(player);
             });
             gui.setItem(i, _region);
             i = i+1;
@@ -2107,59 +2112,90 @@ public class GuiManager2 {
             gui.addItem(_townIcon);
         }
 
-        ItemStack increaseTax = HeadUtils.makeSkull(Lang.GUI_INVITE_TOWN_TO_REGION.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
+        ItemStack addTown = HeadUtils.makeSkull(Lang.GUI_INVITE_TOWN_TO_REGION.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
+        ItemStack removeTown = HeadUtils.makeSkull(Lang.GUI_KICK_TOWN_TO_REGION.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=");
 
-        GuiItem _increaseTax = ItemBuilder.from(increaseTax).asGuiItem(event -> {
+
+        GuiItem _addTown = ItemBuilder.from(addTown).asGuiItem(event -> {
             event.setCancelled(true);
-
             if(!playerData.isTownLeader() || !regionData.isCapital(playerData.getTown())){
                 player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
                 return;
             }
-            OpenRegionInviteTown(player);
+            OpenRegionTownInteraction(player, Action.ADD);
+        });
+        GuiItem _removeTown = ItemBuilder.from(removeTown).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(!playerData.isTownLeader() || !regionData.isCapital(playerData.getTown())){
+                player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
+                return;
+            }
+            OpenRegionTownInteraction(player, Action.REMOVE);
         });
 
+
         gui.setItem(4,1, CreateBackArrow(player,p -> OpenRegionMenu(player)));
-        gui.setItem(4,2, _increaseTax);
+        gui.setItem(4,2, _addTown);
+        gui.setItem(4,3, _removeTown);
         gui.open(player);
     }
-
-    private static void OpenRegionInviteTown(Player player) {
+    private static void OpenRegionTownInteraction(Player player, Action action) {
 
         Gui gui = createChestGui("Region", 4);
-
         RegionData regionData = RegionDataStorage.get(player);
-        for(TownData townData : TownDataStorage.getTownMap().values()){
-            ItemStack townIcon = getTownIconWithInformations(townData);
-            HeadUtils.addLore(townIcon, Lang.GUI_REGION_INVITE_TOWN_DESC1.get());
 
-            GuiItem _townIcon = ItemBuilder.from(townIcon).asGuiItem(event -> {
-                event.setCancelled(true);
-                if(!townData.isLeaderOnline()){
-                    player.sendMessage(getTANString() + Lang.LEADER_NOT_ONLINE.get());
-                    return;
-                }
-                Player townLeader = Bukkit.getPlayer(UUID.fromString(townData.getLeaderID()));
+        if(action == Action.ADD) {
+            for (TownData townData : TownDataStorage.getTownMap().values()) {
 
-                RegionInviteDataStorage.addInvitation(townData.getLeaderID(),regionData.getID());
+                if(townData.getID().equals(regionData.getID()))
+                    continue;
 
-                townLeader.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(regionData.getName(),townData.getName()));
-                ChatUtils.sendClickableCommand(townLeader,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan acceptregion "  + regionData.getID());
+                ItemStack townIcon = getTownIconWithInformations(townData);
+                HeadUtils.addLore(townIcon, Lang.GUI_REGION_INVITE_TOWN_DESC1.get());
 
-                player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS.get(townLeader.getName(), regionData.getName()));
+                GuiItem _townIcon = ItemBuilder.from(townIcon).asGuiItem(event -> {
+                    event.setCancelled(true);
+                    if (!townData.isLeaderOnline()) {
+                        player.sendMessage(getTANString() + Lang.LEADER_NOT_ONLINE.get());
+                        return;
+                    }
+                    Player townLeader = Bukkit.getPlayer(UUID.fromString(townData.getLeaderID()));
 
-                player.closeInventory();
+                    RegionInviteDataStorage.addInvitation(townData.getLeaderID(), regionData.getID());
 
+                    townLeader.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(regionData.getName(), townData.getName()));
+                    ChatUtils.sendClickableCommand(townLeader, getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(), "tan acceptregion " + regionData.getID());
 
-            });
-            gui.addItem(_townIcon);
+                    player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS.get(townLeader.getName(), regionData.getName()));
+                    player.closeInventory();
+                });
+                gui.addItem(_townIcon);
+            }
+        }
+        else if (action == Action.REMOVE){
+            for (TownData townData : regionData.getTownsInRegion()){
+                ItemStack townIcon = getTownIconWithInformations(townData);
+                HeadUtils.addLore(townIcon, Lang.GUI_REGION_INVITE_TOWN_DESC1.get());
+
+                GuiItem _townIcon = ItemBuilder.from(townIcon).asGuiItem(event -> {
+                    event.setCancelled(true);
+                    if (!townData.isLeaderOnline()) {
+                        player.sendMessage(getTANString() + Lang.LEADER_NOT_ONLINE.get());
+                        return;
+                    }
+                    townData.removeRegion();
+                    regionData.removeTown(townData);
+
+                    player.closeInventory();
+                });
+                gui.addItem(_townIcon);
+            }
         }
 
 
-        gui.setItem(4,1, CreateBackArrow(player,p -> OpenRegionMenu(player)));
+        gui.setItem(4,1, CreateBackArrow(player,p -> OpenTownInRegion(player)));
         gui.open(player);
     }
-
     private static void OpenRegionSettings(Player player) {
 
         Gui gui = createChestGui("Region", 3);

@@ -581,4 +581,12 @@ public class TownData {
         Player player = Bukkit.getServer().getPlayer(UUID.fromString(this.UuidLeader));
         return player != null && player.isOnline();
     }
+
+    public void removeRegion() {
+        this.regionID = null;
+    }
+
+    public boolean isRegionalCapital() {
+        return getRegion().getCapitalID().equals(getID());
+    }
 }

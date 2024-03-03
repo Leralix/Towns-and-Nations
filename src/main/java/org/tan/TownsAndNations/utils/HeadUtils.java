@@ -163,7 +163,8 @@ public class HeadUtils {
             lore.add(Lang.GUI_REGION_INFO_DESC1.get(regionData.getCapital().getName()));
             lore.add(Lang.GUI_REGION_INFO_DESC2.get(regionData.getNumberOfTownsIn()));
             lore.add(Lang.GUI_REGION_INFO_DESC3.get(regionData.getTotalPlayerCount()));
-
+            lore.add(Lang.GUI_REGION_INFO_DESC4.get(regionData.getBalance()));
+            lore.add(Lang.GUI_REGION_INFO_DESC5.get(regionData.getNumberOfClaimedChunk()));
             meta.setLore(lore);
             icon.setItemMeta(meta);
         }

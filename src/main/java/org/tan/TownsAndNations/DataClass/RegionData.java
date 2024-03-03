@@ -6,10 +6,14 @@ import org.tan.TownsAndNations.DataClass.History.ChunkHistory;
 import org.tan.TownsAndNations.DataClass.History.DonationHistory;
 import org.tan.TownsAndNations.DataClass.History.MiscellaneousHistory;
 import org.tan.TownsAndNations.DataClass.History.TaxHistory;
+import org.tan.TownsAndNations.DataClass.legacy.ClaimedChunk;
+import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
+import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class RegionData {
@@ -229,5 +233,12 @@ public class RegionData {
     }
     public void removeTown(String townID) {
         townsInRegion.remove(townID);
+    }
+
+    public int getNumberOfClaimedChunk() {
+        Collection<ClaimedChunk2> claims = NewClaimedChunkStorage.getClaimedChunksMap().values();
+        claims.removeIf(claimedChunk -> !claimedChunk.getID().equals(this.id));
+
+        return claims.size();
     }
 }
