@@ -132,10 +132,6 @@ SQL:
   #password of the database
   password: password
 
-#Auto Update lang files
-#Remove it if you want to modify translations, but keep in mind that it will not update automatically anymore
-autoUpdateLangFiles: true
-
 #Remove all villager interactions except the one from the plugin
 removeAllVillagerInteractions: false
 

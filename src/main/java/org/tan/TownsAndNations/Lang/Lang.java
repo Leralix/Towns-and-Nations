@@ -3,6 +3,7 @@ package org.tan.TownsAndNations.Lang;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.tan.TownsAndNations.TownsAndNations;
+import org.tan.TownsAndNations.utils.ConfigUtil;
 
 import java.io.File;
 import java.util.HashMap;
@@ -458,8 +459,10 @@ public enum Lang {
         }
 
         File file = new File(langFolder, filename);
+        boolean replace = ConfigUtil.getCustomConfig("lang.yml").getBoolean("autoUpdateLangFiles",true);
+        if(replace)
+            TownsAndNations.getPlugin().saveResource("lang/" + filename, true);
 
-        TownsAndNations.getPlugin().saveResource("lang/" + filename, true);
 
 
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);

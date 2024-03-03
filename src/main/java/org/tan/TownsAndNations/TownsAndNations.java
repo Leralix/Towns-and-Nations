@@ -50,7 +50,6 @@ public final class TownsAndNations extends JavaPlugin {
     private static boolean allowColorCodes = false;
     private static boolean sqlEnable = false;
     private static boolean dynmapAddonLoaded = true;
-    private static boolean autoUpdateLangFiles = true;
 
     @Override
     public void onEnable() {
@@ -66,7 +65,7 @@ public final class TownsAndNations extends JavaPlugin {
 
         logger.info("[TaN] -Loading Lang");
 
-        ConfigUtil.saveResource("lang.yml");
+        ConfigUtil.saveAndUpdateResource("lang.yml");
         ConfigUtil.loadCustomConfig("lang.yml");
         String lang = ConfigUtil.getCustomConfig("lang.yml").getString("language","en");
 
@@ -89,7 +88,6 @@ public final class TownsAndNations extends JavaPlugin {
         DropChances.load();
         UpgradeStorage.init();
         MobChunkSpawnStorage.init();
-        autoUpdateLangFiles = ConfigUtil.getCustomConfig("config.yml").getBoolean("AutoUpdateLangFiles", true);
         allowColorCodes = ConfigUtil.getCustomConfig("config.yml").getBoolean("EnablePlayerColorCode", false);
 
         sqlEnable = ConfigUtil.getCustomConfig("config.yml").getBoolean("EnableCrossServer", false);
