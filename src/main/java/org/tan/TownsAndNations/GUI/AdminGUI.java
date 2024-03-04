@@ -7,11 +7,14 @@ import dev.triumphteam.gui.guis.GuiItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.MessageKey;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
@@ -21,26 +24,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.tan.TownsAndNations.GUI.GuiManager2.OpenTownChangeOwnershipPlayerSelect;
+import static org.tan.TownsAndNations.GUI.GuiManager2.*;
 import static org.tan.TownsAndNations.enums.ChatCategory.*;
+import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.TownUtil.deleteTown;
 
-public class AdminGUI {
+public class AdminGUI implements IGUI{
     public static void OpenMainMenu(Player player){
 
+        Gui gui = IGUI.createChestGui("Main menu - Admin",3);
 
-        String name = "Main menu - Admin";
-        int nRow = 3;
-
-        Gui gui = Gui.gui()
-                .title(Component.text(name))
-                .type(GuiType.CHEST)
-                .rows(nRow)
-                .create();
 
         ItemStack TownHead = HeadUtils.makeSkull(Lang.GUI_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
-        ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
-        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, "Quit");
+        ItemStack playerHead = HeadUtils.getCustomLoreItem(Material.PLAYER_HEAD, Lang.GUI_TOWN_CHUNK_PLAYER.get());
 
         HeadUtils.setLore(TownHead, Lang.ADMIN_GUI_TOWN_DESC.get());
         HeadUtils.setLore(playerHead, Lang.ADMIN_GUI_PLAYER_DESC.get());
@@ -50,15 +46,14 @@ public class AdminGUI {
             OpenTownMenuDebug(player);
         });
 
-        GuiItem Player = ItemBuilder.from(playerHead).asGuiItem(event -> event.setCancelled(true));
-        GuiItem Back = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
+        GuiItem Player = ItemBuilder.from(playerHead).asGuiItem(event -> {
             event.setCancelled(true);
-            player.closeInventory();
+            OpenPlayerMenu(player);
         });
 
         gui.setItem(14,Town);
         gui.setItem(16,Player);
-        gui.setItem(18,Back);
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> player.closeInventory()));
 
         gui.open(player);
     }
@@ -66,14 +61,7 @@ public class AdminGUI {
     public static void OpenTownMenuDebug(Player player){
 
 
-        String name = "Main menu - Admin";
-        int nRow = 3;
-
-        Gui gui = Gui.gui()
-                .title(Component.text(name))
-                .type(GuiType.CHEST)
-                .rows(nRow)
-                .create();
+        Gui gui = IGUI.createChestGui("Town - Admin",3);
 
         int i = 0;
         for (TownData townData : TownDataStorage.getTownMap().values()) {
@@ -94,22 +82,16 @@ public class AdminGUI {
 
             GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
-
                 OpenSpecificTownMenu(player, townData);
-
             });
 
             gui.setItem(i, _townIteration);
             i++;
 
         }
-        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.get());
-        GuiItem _back = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
-            event.setCancelled(true);
-            OpenMainMenu(player);
-        });
 
-        gui.setItem(3,1, _back);
+
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
 
         gui.open(player);
 
@@ -117,22 +99,15 @@ public class AdminGUI {
 
     }
 
-    private static void OpenSpecificTownMenu(Player player, TownData townData) {
+    public static void OpenSpecificTownMenu(Player player, TownData townData) {
 
 
-        String name = "Main menu - Admin";
-        int nRow = 3;
+        Gui gui = IGUI.createChestGui("Town - Admin",3);
 
-        Gui gui = Gui.gui()
-                .title(Component.text(name))
-                .type(GuiType.CHEST)
-                .rows(nRow)
-                .create();
 
         ItemStack changeTownName = HeadUtils.getCustomLoreItem(Material.NAME_TAG,
                 Lang.ADMIN_GUI_CHANGE_TOWN_NAME.get(),
-                Lang.ADMIN_GUI_CHANGE_TOWN_NAME_DESC1.get(),
-                Lang.ADMIN_GUI_CHANGE_TOWN_NAME_DESC2.get(townData.getName()));
+                Lang.ADMIN_GUI_CHANGE_TOWN_NAME_DESC1.get(townData.getName()));
         ItemStack changeTownDescription = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK,
                 Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION.get(),
                 Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION_DESC1.get(townData.getDescription()));
@@ -142,9 +117,6 @@ public class AdminGUI {
         ItemStack deleteTown = HeadUtils.getCustomLoreItem(Material.BARRIER,
                 Lang.ADMIN_GUI_DELETE_TOWN.get(),
                 Lang.ADMIN_GUI_DELETE_TOWN_DESC1.get(townData.getName()));
-
-        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.get());
-
 
         GuiItem _changeTownName = ItemBuilder.from(changeTownName).asGuiItem(event -> {
 
@@ -169,7 +141,7 @@ public class AdminGUI {
 
         GuiItem _changeTownLeader = ItemBuilder.from(changeTownLeader).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownChangeOwnershipPlayerSelect(player, townData);
+            OpenTownDebugChangeOwnershipPlayerSelect(player, townData);
         });
         GuiItem _deleteTown = ItemBuilder.from(deleteTown).asGuiItem(event -> {
             event.setCancelled(true);
@@ -178,19 +150,80 @@ public class AdminGUI {
             player.closeInventory();
             player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get());
         });
-        GuiItem _back = ItemBuilder.from(getBackArrow).asGuiItem(event -> {
-            event.setCancelled(true);
-            OpenTownMenuDebug(player);
-        });
 
-        gui.setItem(3,1, _back);
         gui.setItem(2,2, _changeTownName);
         gui.setItem(2,4, _changeTownDescription);
         gui.setItem(2,6, _changeTownLeader);
         gui.setItem(2,8, _deleteTown);
 
-
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuDebug(player)));
 
         gui.open(player);
     }
+
+    private static void OpenTownDebugChangeOwnershipPlayerSelect(Player player, TownData townData) {
+
+        Gui gui = IGUI.createChestGui("Town",3);
+
+        int i = 0;
+        for (String playerUUID : townData.getPlayerList()){
+            OfflinePlayer townPlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerUUID));
+
+            ItemStack playerHead = HeadUtils.getPlayerHead(townPlayer);
+            HeadUtils.setLore(playerHead,
+                    Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1.get(player.getName()),
+                    Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2.get()
+            );
+
+            GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> {
+                event.setCancelled(true);
+
+                townData.setLeaderID(townPlayer.getUniqueId().toString());
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(townPlayer.getName()));
+                OpenSpecificTownMenu(player, townData);
+            });
+
+            gui.setItem(i, _playerHead);
+
+            i = i+1;
+        }
+
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenSpecificTownMenu(player, townData)));
+        gui.open(player);
+    }
+
+    public static void OpenPlayerMenu(Player player) {
+
+        Gui gui = IGUI.createChestGui("Player - Admin",3);
+
+
+        int i = 0;
+        for (PlayerData playerData : PlayerDataStorage.getStats()) {
+
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerData.getUuid()));
+            ItemStack playerHead = HeadUtils.getPlayerHeadInformation(offlinePlayer);
+
+            GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> {
+                event.setCancelled(true);
+                OpenSpecificPlayerMenu(player, playerData);
+            });
+
+            gui.setItem(i, _playerHead);
+            i++;
+        }
+
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
+        gui.open(player);
+    }
+
+    private static void OpenSpecificPlayerMenu(Player player, PlayerData offlinePlayerData) {
+
+        Gui gui = IGUI.createChestGui("Town - Admin",3);
+
+
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenPlayerMenu(player)));
+
+        gui.open(player);
+    }
+
 }

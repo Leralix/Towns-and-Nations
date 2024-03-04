@@ -69,7 +69,7 @@ public final class TownsAndNations extends JavaPlugin {
         ConfigUtil.loadCustomConfig("lang.yml");
         String lang = ConfigUtil.getCustomConfig("lang.yml").getString("language","en");
 
-        if(lang.contains(".yml")){ // Old lang config needed the .yml, not needed anymore
+        if(lang.contains(".yml")){ // Old lang config needed the .yml, not needed anymore. only for old version
             lang = lang.substring(0,2);
         }
 

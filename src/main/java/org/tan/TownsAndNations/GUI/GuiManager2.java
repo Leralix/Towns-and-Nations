@@ -44,7 +44,7 @@ import java.util.ArrayList;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class GuiManager2 {
+public class GuiManager2 implements IGUI {
 
     public static void OpenMainMenu(Player player){
 
@@ -59,7 +59,7 @@ public class GuiManager2 {
         }
 
 
-        Gui gui = createChestGui("Main menu",3);
+        Gui gui = IGUI.createChestGui("Main menu",3);
 
         ItemStack KingdomHead = HeadUtils.makeSkull(Lang.GUI_KINGDOM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=");
         ItemStack RegionHead = HeadUtils.makeSkull(Lang.GUI_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
@@ -103,13 +103,13 @@ public class GuiManager2 {
         gui.setItem(12,Region);
         gui.setItem(14,Town);
         gui.setItem(16,Player);
-        gui.setItem(18,CreateBackArrow(player, p -> player.closeInventory()));
+        gui.setItem(18,IGUI.CreateBackArrow(player, p -> player.closeInventory()));
 
         gui.open(player);
     }
     public static void OpenProfileMenu(Player player){
 
-        Gui gui = createChestGui("Profile",3);
+        Gui gui = IGUI.createChestGui("Profile",3);
 
 
         ItemStack PlayerHead = HeadUtils.getPlayerHead(Lang.GUI_YOUR_PROFILE.get(),player);
@@ -130,13 +130,13 @@ public class GuiManager2 {
         gui.setItem(12, Kill);
         gui.setItem(14, LD);
         gui.setItem(16, RPkill);
-        gui.setItem(18, CreateBackArrow(player,p -> OpenMainMenu(player)));
+        gui.setItem(18, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
 
         gui.open(player);
     }
     public static void OpenTownMenuNoTown(Player player){
 
-        Gui gui = createChestGui("Town",3);
+        Gui gui = IGUI.createChestGui("Town",3);
 
         int townPrice = ConfigUtil.getCustomConfig("config.yml").getInt("CostOfCreatingTown");
 
@@ -159,13 +159,13 @@ public class GuiManager2 {
 
         gui.setItem(11, _create);
         gui.setItem(15, _join);
-        gui.setItem(18, CreateBackArrow(player,p -> OpenMainMenu(player)));
+        gui.setItem(18, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
 
         gui.open(player);
     }
     public static void OpenSearchTownMenu(Player player) {
 
-        Gui gui = createChestGui("Town",3);
+        Gui gui = IGUI.createChestGui("Town",3);
 
         HashMap<String, TownData> townDataStorage = getTownMap();
 
@@ -216,12 +216,12 @@ public class GuiManager2 {
 
         }
 
-        gui.setItem(3,1, CreateBackArrow(player,p -> OpenTownMenuNoTown(player)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuNoTown(player)));
 
         gui.open(player);
     }
     public static void OpenTownMenuHaveTown(Player player) {
-        Gui gui = createChestGui("Town",3);
+        Gui gui = IGUI.createChestGui("Town",3);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
@@ -316,12 +316,12 @@ public class GuiManager2 {
         gui.setItem(14, _relationIcon);
         gui.setItem(15, _levelIcon);
         gui.setItem(16, _settingsIcon);
-        gui.setItem(18, CreateBackArrow(player,p -> OpenMainMenu(player)));
+        gui.setItem(18, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
 
         gui.open(player);
     }
     public static void OpenTownMenuOtherTown(Player player) {
-        Gui gui = createChestGui("Town",3);
+        Gui gui = IGUI.createChestGui("Town",3);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
@@ -357,13 +357,13 @@ public class GuiManager2 {
             i++;
 
         }
-        gui.setItem(3,1, CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
 
         gui.open(player);
     }
     public static void OpenTownMemberList(Player player) {
 
-        Gui gui = createChestGui("Town",3);
+        Gui gui = IGUI.createChestGui("Town",3);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData town = TownDataStorage.get(playerStat);
@@ -375,7 +375,7 @@ public class GuiManager2 {
             PlayerData otherPlayerStat = PlayerDataStorage.get(playerUUID);
             assert otherPlayerStat != null;
 
-            ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate.getName(),playerIterate);
+            ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate);
             HeadUtils.setLore(
                     playerHead,
                     Lang.GUI_TOWN_MEMBER_DESC1.get(town.getRank(otherPlayerStat.getTownRankID()).getColoredName()),
@@ -409,7 +409,7 @@ public class GuiManager2 {
             OpenTownApplications(player);
         });
 
-        gui.setItem(3,1, CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
         gui.setItem(3,2, _manageRanks);
         gui.setItem(3,3, _manageApplication);
 
@@ -419,7 +419,7 @@ public class GuiManager2 {
     }
     public static void OpenTownApplications(Player player) {
 
-        Gui gui = createChestGui("Town",3);
+        Gui gui = IGUI.createChestGui("Town",3);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData town = TownDataStorage.get(playerStat);
@@ -433,7 +433,7 @@ public class GuiManager2 {
             PlayerData playerIterateData = PlayerDataStorage.get(playerUUID);
             assert playerIterateData != null;
 
-            ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate.getName(),playerIterate);
+            ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate);
 
             HeadUtils.setLore(
                     playerHead,
@@ -494,7 +494,7 @@ public class GuiManager2 {
             i++;
         }
 
-        gui.setItem(3,1, CreateBackArrow(player,p -> OpenTownMemberList(player)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMemberList(player)));
 
 
         gui.open(player);
@@ -502,7 +502,7 @@ public class GuiManager2 {
     }
     public static void OpenTownMenuRoles(Player player) {
 
-        Gui gui = createChestGui("Town",3);
+        Gui gui = IGUI.createChestGui("Town",3);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData town = TownDataStorage.get(playerStat);
@@ -549,7 +549,7 @@ public class GuiManager2 {
         });
 
 
-        gui.setItem(3,1, CreateBackArrow(player,p -> OpenTownMemberList(player)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMemberList(player)));
         gui.setItem(3,3, _createNewRole);
 
         gui.open(player);
@@ -557,7 +557,7 @@ public class GuiManager2 {
     }
     public static void OpenTownMenuRoleManager(Player player, String roleName) {
 
-        Gui gui = createChestGui("Town",4);
+        Gui gui = IGUI.createChestGui("Town",4);
 
 
         TownData town = TownDataStorage.get(player);
@@ -733,14 +733,14 @@ public class GuiManager2 {
         gui.setItem(2,7, _salary);
         gui.setItem(2,8, _IncreaseSalary);
 
-        gui.setItem(4,1, CreateBackArrow(player,p -> OpenTownMemberList(player)));
+        gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> OpenTownMemberList(player)));
 
         gui.open(player);
 
     }
     public static void OpenTownMenuRoleManagerAddPlayer(Player player, String roleName) {
 
-        Gui gui = createChestGui("Town",3);
+        Gui gui = IGUI.createChestGui("Town",3);
 
 
         TownData town = TownDataStorage.get(player);
@@ -783,13 +783,13 @@ public class GuiManager2 {
             gui.setItem(i, _playerHead);
             i = i + 1;
         }
-        gui.setItem(3,1, CreateBackArrow(player,p -> OpenTownMenuRoleManager(player,roleName)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuRoleManager(player,roleName)));
 
         gui.open(player);
     }
     public static void OpenTownMenuRoleManagerPermissions(Player player, String roleName) {
 
-        Gui gui = createChestGui("Town",3);
+        Gui gui = IGUI.createChestGui("Town",3);
 
         TownData town = TownDataStorage.get(player);
         String townID = town.getID();
@@ -900,14 +900,14 @@ public class GuiManager2 {
         gui.setItem(13, _manage_town_relation);
         gui.setItem(14, _manage_mob_spawn);
 
-        gui.setItem(3,1, CreateBackArrow(player,p -> OpenTownMenuRoleManager(player,roleName)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuRoleManager(player,roleName)));
 
         gui.open(player);
 
     }
     public static void OpenTownEconomics(Player player) {
 
-        Gui gui = createChestGui("Town",4);
+        Gui gui = IGUI.createChestGui("Town",4);
 
 
         TownData town = TownDataStorage.get(player);
@@ -1087,14 +1087,14 @@ public class GuiManager2 {
 
 
 
-        gui.setItem(4,1, CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
 
         gui.open(player);
 
     }
     public static void OpenTownEconomicsHistory(Player player, HistoryEnum historyType) {
 
-        Gui gui = createChestGui("Town",6);
+        Gui gui = IGUI.createChestGui("Town",6);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData town = playerStat.getTown();
@@ -1237,12 +1237,12 @@ public class GuiManager2 {
 
         }
 
-        gui.setItem(6,1, CreateBackArrow(player,p -> OpenTownEconomics(player)));
+        gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenTownEconomics(player)));
         gui.open(player);
 
     }
     public static void OpenTownLevel(Player player){
-        Gui gui = createChestGui("Town",6);
+        Gui gui = IGUI.createChestGui("Town",6);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData townData = TownDataStorage.get(player);
@@ -1309,14 +1309,14 @@ public class GuiManager2 {
             gui.setItem(townUpgrade.getRow(),townUpgrade.getCol() + 1,_guiItem);
         }
 
-        gui.setItem(6,1, CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
 
         gui.open(player);
 
     }
     public static void OpenTownSettings(Player player) {
 
-        Gui gui = createChestGui("Town",4);
+        Gui gui = IGUI.createChestGui("Town",4);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(player);
@@ -1478,13 +1478,13 @@ public class GuiManager2 {
         if(isDynmapAddonLoaded())
             gui.setItem(3,8, _changeChunkColor);
 
-        gui.setItem(4,1, CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
 
         gui.open(player);
     }
     public static void OpenTownChangeOwnershipPlayerSelect(Player player, TownData townData) {
 
-        Gui gui = createChestGui("Town",3);
+        Gui gui = IGUI.createChestGui("Town",3);
 
         int i = 0;
         for (String playerUUID : townData.getPlayerList()){
@@ -1508,13 +1508,12 @@ public class GuiManager2 {
 
             i = i+1;
         }
-
-        gui.setItem(3,1, CreateBackArrow(player,p -> OpenTownSettings(player)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownSettings(player)));
         gui.open(player);
     }
     public static void OpenTownRelations(Player player) {
 
-        Gui gui = createChestGui("Town",3);
+        Gui gui = IGUI.createChestGui("Town",3);
 
 
         ItemStack warCategory = HeadUtils.getCustomLoreItem(Material.IRON_SWORD,
@@ -1566,7 +1565,7 @@ public class GuiManager2 {
         gui.setItem(14, _NAPCategory);
         gui.setItem(16, _AllianceCategory);
 
-        gui.setItem(3,1, CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
 
         gui.setItem(19, _decorativeGlass);
         gui.setItem(20, _decorativeGlass);
@@ -1580,7 +1579,7 @@ public class GuiManager2 {
         gui.open(player);
     }
     public static void OpenTownRelation(Player player, TownRelation relation) {
-        Gui gui = createChestGui("Town - Relation",4);
+        Gui gui = IGUI.createChestGui("Town - Relation",4);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
@@ -1658,7 +1657,7 @@ public class GuiManager2 {
             event.setCancelled(true);
         });
 
-        gui.setItem(4,1, CreateBackArrow(player,p -> OpenTownRelations(player)));
+        gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> OpenTownRelations(player)));
         gui.setItem(4,4,_add);
         gui.setItem(4,5,_remove);
 
@@ -1674,7 +1673,7 @@ public class GuiManager2 {
         gui.open(player);
     }
     public static void OpenTownRelationModification(Player player, Action action, TownRelation relation) {
-        Gui gui = createChestGui("Town - Relation",4);
+        Gui gui = IGUI.createChestGui("Town - Relation",4);
 
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
         TownData playerTown = TownDataStorage.get(playerStat);
@@ -1788,7 +1787,7 @@ public class GuiManager2 {
         GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> event.setCancelled(true));
         GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> event.setCancelled(true));
 
-        gui.setItem(4,1, CreateBackArrow(player,p -> OpenTownRelation(player,relation)));
+        gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> OpenTownRelation(player,relation)));
 
         gui.setItem(4,7,_next);
         gui.setItem(4,8,_previous);
@@ -1804,7 +1803,7 @@ public class GuiManager2 {
         gui.open(player);
     }
     public static void OpenTownChunk(Player player) {
-        Gui gui = createChestGui("Town",3);
+        Gui gui = IGUI.createChestGui("Town",3);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(player);
@@ -1839,12 +1838,12 @@ public class GuiManager2 {
         gui.setItem(2,6, _mobChunckIcon);
 
 
-        gui.setItem(3,1, CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
 
         gui.open(player);
     }
     public static void OpenTownChunkMobSettings(Player player){
-        Gui gui = createChestGui("Town",4);
+        Gui gui = IGUI.createChestGui("Town",4);
 
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
         TownData townData = TownDataStorage.get(player);
@@ -1905,11 +1904,11 @@ public class GuiManager2 {
             i = i+1;
         }
 
-        gui.setItem(27, CreateBackArrow(player,p -> OpenTownChunk(player)));
+        gui.setItem(27, IGUI.CreateBackArrow(player,p -> OpenTownChunk(player)));
         gui.open(player);
     }
     public static void OpenTownChunkPlayerSettings(Player player){
-        Gui gui = createChestGui("Town",4);
+        Gui gui = IGUI.createChestGui("Town",4);
 
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
         TownData townData = TownDataStorage.get(player);
@@ -1950,7 +1949,7 @@ public class GuiManager2 {
             gui.setItem(i, guiItem);
         }
 
-        gui.setItem(27, CreateBackArrow(player,p -> OpenTownChunk(player)));
+        gui.setItem(27, IGUI.CreateBackArrow(player,p -> OpenTownChunk(player)));
 
         gui.open(player);
     }
@@ -1958,7 +1957,7 @@ public class GuiManager2 {
 
     public static void OpenNoRegionMenu(Player player){
 
-        Gui gui = createChestGui("Region",3);
+        Gui gui = IGUI.createChestGui("Region",3);
 
 
         int regionCost = ConfigUtil.getCustomConfig("config.yml").getInt("regionCost");
@@ -1987,13 +1986,13 @@ public class GuiManager2 {
 
         gui.setItem(2,4, _createRegion);
         gui.setItem(2,6, _browseRegion);
-        gui.setItem(3,1, CreateBackArrow(player,p -> OpenMainMenu(player)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
 
         gui.open(player);
     }
     private static void OpenRegionMenu(Player player) {
 
-        Gui gui = createChestGui("Region",3);
+        Gui gui = IGUI.createChestGui("Region",3);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
@@ -2069,13 +2068,13 @@ public class GuiManager2 {
         gui.setItem(15, _relationIcon);
         gui.setItem(16, _settingsIcon);
 
-        gui.setItem(3,1, CreateBackArrow(player,p -> OpenMainMenu(player)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
 
         gui.open(player);
     }
     public static void OpenRegionList(Player player, boolean isTownMenu) {
 
-        Gui gui = createChestGui("Region",4);
+        Gui gui = IGUI.createChestGui("Region",4);
 
         int i = 0;
         for (RegionData regionData : RegionDataStorage.getAllRegions()){
@@ -2088,18 +2087,18 @@ public class GuiManager2 {
             i = i+1;
         }
 
-        gui.setItem(27, CreateBackArrow(player,p -> OpenNoRegionMenu(player)));
+        gui.setItem(27, IGUI.CreateBackArrow(player,p -> OpenNoRegionMenu(player)));
         gui.open(player);
 
         if(isTownMenu)
-            gui.setItem(3,1, CreateBackArrow(player,p -> OpenRegionMenu(player)));
+            gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenRegionMenu(player)));
         else
-            gui.setItem(3,1, CreateBackArrow(player,p -> OpenNoRegionMenu(player)));
+            gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenNoRegionMenu(player)));
 
     }
     private static void OpenTownInRegion(Player player){
 
-        Gui gui = createChestGui("Region",4);
+        Gui gui = IGUI.createChestGui("Region",4);
         PlayerData playerData = PlayerDataStorage.get(player);
         RegionData regionData = RegionDataStorage.get(player);
 
@@ -2134,14 +2133,14 @@ public class GuiManager2 {
         });
 
 
-        gui.setItem(4,1, CreateBackArrow(player,p -> OpenRegionMenu(player)));
+        gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> OpenRegionMenu(player)));
         gui.setItem(4,2, _addTown);
         gui.setItem(4,3, _removeTown);
         gui.open(player);
     }
     private static void OpenRegionTownInteraction(Player player, Action action) {
 
-        Gui gui = createChestGui("Region", 4);
+        Gui gui = IGUI.createChestGui("Region", 4);
         RegionData regionData = RegionDataStorage.get(player);
 
         if(action == Action.ADD) {
@@ -2193,12 +2192,12 @@ public class GuiManager2 {
         }
 
 
-        gui.setItem(4,1, CreateBackArrow(player,p -> OpenTownInRegion(player)));
+        gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> OpenTownInRegion(player)));
         gui.open(player);
     }
     private static void OpenRegionSettings(Player player) {
 
-        Gui gui = createChestGui("Region", 3);
+        Gui gui = IGUI.createChestGui("Region", 3);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
@@ -2273,12 +2272,12 @@ public class GuiManager2 {
 
 
 
-        gui.setItem(3,1, CreateBackArrow(player,p -> OpenRegionMenu(player)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenRegionMenu(player)));
 
         gui.open(player);
     }
     private static void OpenRegionEconomy(Player player) {
-        Gui gui = createChestGui("Region", 4);
+        Gui gui = IGUI.createChestGui("Region", 4);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = playerStat.getTown();
@@ -2401,13 +2400,13 @@ public class GuiManager2 {
         gui.setItem(3,2, _donation);
         gui.setItem(3,3, _donationHistory);
         gui.setItem(3,4, _taxHistory);
-        gui.setItem(4,1, CreateBackArrow(player,p -> OpenRegionMenu(player)));
+        gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> OpenRegionMenu(player)));
 
         gui.open(player);
     }
     public static void OpenRegionEconomyHistory(Player player, HistoryEnum historyType) {
 
-        Gui gui = createChestGui("Town", 6);
+        Gui gui = IGUI.createChestGui("Town", 6);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         RegionData region = playerStat.getRegion();
@@ -2467,12 +2466,12 @@ public class GuiManager2 {
                 }
             }
         }
-        gui.setItem(6,1, CreateBackArrow(player,p -> OpenRegionEconomy(player)));
+        gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenRegionEconomy(player)));
         gui.open(player);
     }
     public static void OpenRegionalCapitalSwitch(Player player){
 
-            Gui gui = createChestGui("Region", 3);
+            Gui gui = IGUI.createChestGui("Region", 3);
             PlayerData playerData = PlayerDataStorage.get(player);
             RegionData regionData = playerData.getRegion();
 
@@ -2493,12 +2492,10 @@ public class GuiManager2 {
             }
 
 
-            gui.setItem(3,1, CreateBackArrow(player,p -> OpenRegionSettings(player)));
+            gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenRegionSettings(player)));
             gui.open(player);
     }
-
-
-
+    
     private static GuiItem createGuiItem(ItemStack itemStack, PlayerData playerStat, Player player, Consumer<Void> action) {
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);
@@ -2508,20 +2505,6 @@ public class GuiManager2 {
             }
             action.accept(null);
             OpenTownChunkPlayerSettings(player);
-        });
-    }
-    private static Gui createChestGui(String name, int nRow) {
-        return Gui.gui()
-                .title(Component.text(name))
-                .type(GuiType.CHEST)
-                .rows(nRow)
-                .create();
-    }
-    private static GuiItem CreateBackArrow(Player player, Consumer<Player> openMenuAction) {
-        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.get());
-        return ItemBuilder.from(getBackArrow).asGuiItem(event -> {
-            event.setCancelled(true);
-            openMenuAction.accept(player);
         });
     }
 }

@@ -58,6 +58,41 @@ public class HeadUtils {
 
         return head;
     }
+
+    public static ItemStack getPlayerHeadInformation(OfflinePlayer p){
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
+
+        skullMeta.setOwningPlayer(p);
+        skullMeta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + p.getName());
+
+        head.setItemMeta(skullMeta);
+
+        PlayerData playerData = PlayerDataStorage.get(p);
+        TownData playerTown = TownDataStorage.get(playerData);
+
+
+        if(playerTown != null){
+            setLore(head,
+                    Lang.GUI_PLAYER_PROFILE_DESC1.get(getBalance(p)),
+                    Lang.GUI_PLAYER_PROFILE_DESC2.get(playerTown.getName()),
+                    Lang.GUI_PLAYER_PROFILE_DESC3.get(playerTown.getRank(playerData.getTownRankID()).getColoredName())
+            );
+
+        }
+        else {
+            setLore(head,
+                    Lang.GUI_PLAYER_PROFILE_DESC1.get(EconomyUtil.getBalance(p)),
+                    Lang.GUI_PLAYER_PROFILE_NO_TOWN.get()
+            );
+        }
+
+        return head;
+    }
+
+    public static ItemStack getPlayerHead(OfflinePlayer p){
+        return getPlayerHead(p.getName(),p);
+    }
     public static ItemStack getPlayerHead(String headName, OfflinePlayer p){
         ItemStack PlayerHead = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) PlayerHead.getItemMeta();
@@ -66,6 +101,9 @@ public class HeadUtils {
         PlayerHead.setItemMeta(skullMeta);
         return PlayerHead;
     }
+
+
+
     public static ItemStack makeSkull(String name, String base64EncodedString) {
         UUID id = UUID.nameUUIDFromBytes(base64EncodedString.getBytes());
         int less = (int)id.getLeastSignificantBits();
@@ -215,5 +253,4 @@ public class HeadUtils {
 
         itemStack.setItemMeta(itemMeta);
     }
-
 }
