@@ -8,6 +8,7 @@ import org.tan.TownsAndNations.DataClass.History.MiscellaneousHistory;
 import org.tan.TownsAndNations.DataClass.History.TaxHistory;
 import org.tan.TownsAndNations.DataClass.legacy.ClaimedChunk;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
+import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
@@ -240,5 +241,16 @@ public class RegionData {
         claims.removeIf(claimedChunk -> !claimedChunk.getID().equals(this.id));
 
         return claims.size();
+    }
+
+    public void broadcastMessageWithSound(String message, SoundEnum soundEnum) {
+        for (TownData town : getTownsInRegion()) {
+            town.broadCastMessageWithSound(message, soundEnum);
+        }
+    }
+
+    public void renameRegion(int regionCost, String newName) {
+        removeBalance(regionCost);
+        this.name = newName;
     }
 }

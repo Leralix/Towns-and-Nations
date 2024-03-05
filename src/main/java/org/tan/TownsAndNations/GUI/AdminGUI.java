@@ -11,10 +11,12 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.MessageKey;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
@@ -26,6 +28,7 @@ import java.util.UUID;
 
 import static org.tan.TownsAndNations.GUI.GuiManager2.*;
 import static org.tan.TownsAndNations.enums.ChatCategory.*;
+import static org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage.deleteRegion;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.TownUtil.deleteTown;
 
@@ -34,27 +37,112 @@ public class AdminGUI implements IGUI{
 
         Gui gui = IGUI.createChestGui("Main menu - Admin",3);
 
-
-        ItemStack TownHead = HeadUtils.makeSkull(Lang.GUI_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
+        ItemStack regionHead = HeadUtils.makeSkull(Lang.GUI_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
+        ItemStack townHead = HeadUtils.makeSkull(Lang.GUI_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
         ItemStack playerHead = HeadUtils.getCustomLoreItem(Material.PLAYER_HEAD, Lang.GUI_TOWN_CHUNK_PLAYER.get());
 
-        HeadUtils.setLore(TownHead, Lang.ADMIN_GUI_TOWN_DESC.get());
+        HeadUtils.setLore(townHead, Lang.ADMIN_GUI_TOWN_DESC.get());
         HeadUtils.setLore(playerHead, Lang.ADMIN_GUI_PLAYER_DESC.get());
 
-        GuiItem Town = ItemBuilder.from(TownHead).asGuiItem(event -> {
+        GuiItem _region = ItemBuilder.from(regionHead).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenRegionDebugMenu(player);
+        });
+
+        GuiItem _town = ItemBuilder.from(townHead).asGuiItem(event -> {
             event.setCancelled(true);
             OpenTownMenuDebug(player);
         });
 
-        GuiItem Player = ItemBuilder.from(playerHead).asGuiItem(event -> {
+        GuiItem _player = ItemBuilder.from(playerHead).asGuiItem(event -> {
             event.setCancelled(true);
             OpenPlayerMenu(player);
         });
-
-        gui.setItem(14,Town);
-        gui.setItem(16,Player);
+        gui.setItem(12,_region);
+        gui.setItem(14,_town);
+        gui.setItem(16,_player);
         gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> player.closeInventory()));
 
+        gui.open(player);
+    }
+
+    private static void OpenRegionDebugMenu(Player player) {
+
+        Gui gui = IGUI.createChestGui("Region - Admin",6);
+
+        int i = 0;
+        for (RegionData regionData : RegionDataStorage.getAllRegions()){
+
+            ItemStack regionIcon = HeadUtils.getRegionIcon(regionData);
+
+            HeadUtils.addLore(regionIcon, Lang.ADMIN_GUI_REGION_DESC.get());
+
+            GuiItem _region = ItemBuilder.from(regionIcon).asGuiItem(event -> {
+                event.setCancelled(true);
+                OpenSpecificRegionMenu(player, regionData);
+            });
+
+            gui.addItem(_region);
+            i++;
+
+            if(i > 47){
+                break;
+            }
+        }
+
+        gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
+
+        gui.open(player);
+    }
+
+    private static void OpenSpecificRegionMenu(Player player, RegionData regionData) {
+        Gui gui = IGUI.createChestGui("Town - Admin",3);
+
+
+        ItemStack changeRegionName = HeadUtils.getCustomLoreItem(Material.NAME_TAG,
+                Lang.ADMIN_GUI_CHANGE_TOWN_NAME.get(),
+                Lang.ADMIN_GUI_CHANGE_TOWN_NAME_DESC1.get(regionData.getName()));
+        ItemStack changeRegionDescription = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK,
+                Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION.get(),
+                Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION_DESC1.get(regionData.getDescription()));
+        ItemStack deleteRegion = HeadUtils.getCustomLoreItem(Material.BARRIER,
+                Lang.ADMIN_GUI_DELETE_TOWN.get(),
+                Lang.ADMIN_GUI_DELETE_TOWN_DESC1.get(regionData.getName()));
+
+        GuiItem _changeRegionName = ItemBuilder.from(changeRegionName).asGuiItem(event -> {
+
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+            Map<MessageKey, String> data = new HashMap<>();
+
+            data.put(MessageKey.REGION_ID,regionData.getID());
+            data.put(MessageKey.COST,Integer.toString(0));
+
+            PlayerChatListenerStorage.addPlayer(CHANGE_REGION_NAME,player,data);
+            player.closeInventory();
+
+        });
+        GuiItem _changeRegionDescription = ItemBuilder.from(changeRegionDescription).asGuiItem(event -> {
+            player.closeInventory();
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+            Map<MessageKey, String> data = new HashMap<>();
+            data.put(MessageKey.TOWN_ID,regionData.getID());
+            PlayerChatListenerStorage.addPlayer(CHANGE_TOWN_DESCRIPTION,player,data);
+            event.setCancelled(true);
+        });
+
+        GuiItem _deleteRegion = ItemBuilder.from(deleteRegion).asGuiItem(event -> {
+            event.setCancelled(true);
+            deleteRegion(regionData);
+
+            player.closeInventory();
+            player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get());
+        });
+
+        gui.setItem(2,2, _changeRegionName);
+        gui.setItem(2,4, _changeRegionDescription);
+        gui.setItem(2,8, _deleteRegion);
+
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenRegionDebugMenu(player)));
         gui.open(player);
     }
 
@@ -194,7 +282,7 @@ public class AdminGUI implements IGUI{
 
     public static void OpenPlayerMenu(Player player) {
 
-        Gui gui = IGUI.createChestGui("Player - Admin",3);
+        Gui gui = IGUI.createChestGui("Player - Admin",6);
 
 
         int i = 0;
@@ -210,15 +298,21 @@ public class AdminGUI implements IGUI{
 
             gui.setItem(i, _playerHead);
             i++;
+            if(i > 53){
+                break;
+            }
         }
 
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
+        gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
         gui.open(player);
     }
 
-    private static void OpenSpecificPlayerMenu(Player player, PlayerData offlinePlayerData) {
+    private static void OpenSpecificPlayerMenu(Player player, PlayerData playerData) {
 
-        Gui gui = IGUI.createChestGui("Town - Admin",3);
+        Gui gui = IGUI.createChestGui("Player - Admin",3);
+
+
+
 
 
         gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenPlayerMenu(player)));

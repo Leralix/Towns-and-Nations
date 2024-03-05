@@ -1,8 +1,8 @@
 language:
   WELCOME: "§fWelcome"
   LANGUAGE_SUCCESSFULLY_LOADED: "English language successfully loaded"
-  PLUGIN_STRING: "[TAN]"
-  NEWSLETTER_STRING: "§f[TAN - Newsletter]§f "
+  PLUGIN_STRING: "[T&N]"
+  NEWSLETTER_STRING: "§f[T&N - Newsletter]§f "
   #Common errors
   PLAYER_NO_TOWN: "§cYou do not have a town"
   TOWN_NO_REGION: "§cYour town does not have a region"
@@ -15,6 +15,7 @@ language:
   PLAYER_NOT_ONLINE: "§cThe player is not online"
   PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION: "§cOnly the town leader can perform this action"
   CHUNK_NOT_CLAIMED: "§cThis chunk is not claimed"
+  CANT_KICK_REGIONAL_CAPITAL: "§cYou can't remove the regional capital out of the region"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 {1}: §f{2}"
@@ -38,8 +39,11 @@ language:
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "You successfully asked to join the town: §9{0}§f. Right click on the city to cancel"
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "You cancelled your application"
   PLAYER_TOWN_NOT_RECRUITING: "§cThis town is not recruiting"
-  #Create town
+  #BROADCAST
   TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the city: §9{1}"
+  TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c has left the town !"
+  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the region: §9{1}"
+  GUI_REGION_KICK_TOWN_BROADCAST: "§fThe town §9{0}§f has been kicked from the region"
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "Claim a chunk"
   CHUNK_ALREADY_CLAIMED_WARNING: "§cThis chunk is already claimed by: §9{0}"
@@ -84,8 +88,6 @@ language:
   CHAT_SCOPE_NOT_FOUND: "§cUnfounded chat scope"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Added §6+{0}✦§f to §3{1}"
-  #Leave a town
-  TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c has left the town !"
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Open the town and nation GUI"
   #Pay command
@@ -362,7 +364,7 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT: "Enter the new town message"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS: "Successfully changed the town message"
   GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT: "Enter the new message"
-  GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT_SUCCESS: "Successfully changed the message"
+  CHANGE_MESSAGE_SUCCESS: "Successfully changed the message"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aModify town application"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fTown §aaccepts §fapplication"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fTown §cdoes not accept §fapplication"
@@ -393,7 +395,6 @@ language:
   GUI_REGION_BROWSE_DESC1: "§fThere are {0} regions in total"
   GUI_REGION_BROWSE_DESC2: "§fLeft click to open the region browser"
   WRITE_IN_CHAT_NEW_REGION_NAME: "§fWrite in the chat the new region"
-  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the region: §9{1}"
   GUI_REGION_INFO_DESC0: "§7§o\"{0}\"" #town's quote
   GUI_REGION_INFO_DESC1: "§fRegion capital: §3{0}"
   GUI_REGION_INFO_DESC2: "§fNumber of towns: §2{0}"
@@ -418,8 +419,9 @@ language:
   GUI_KICK_TOWN_TO_REGION: "§aKick a town from the region"
   GUI_REGION_INVITE_TOWN_DESC1: "§fLeft click to invite this town to the region"
   GUI_REGION_KICK_TOWN_DESC1: "§fLeft click to kick this town from the region"
-  GUI_REGION_KICK_TOWN_BROADCAST: "§aThe town §9{0}§a has been kicked from the region"
+
   ##Admin GUI
+  ADMIN_GUI_REGION_DESC: "§fClick to manage regions"
   ADMIN_GUI_TOWN_DESC: "§fClick to manage towns"
   ADMIN_GUI_PLAYER_DESC: "§fClick to manage players"
   ADMIN_GUI_LEFT_CLICK_TO_MANAGE_TOWN: "§fLeft click to manage the town"

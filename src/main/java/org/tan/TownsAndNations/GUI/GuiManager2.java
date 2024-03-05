@@ -2146,7 +2146,7 @@ public class GuiManager2 implements IGUI {
         if(action == Action.ADD) {
             for (TownData townData : TownDataStorage.getTownMap().values()) {
 
-                if(townData.getID().equals(regionData.getID()))
+                if(regionData.isTownInRegion(townData))
                     continue;
 
                 ItemStack townIcon = getTownIconWithInformations(townData);
@@ -2178,13 +2178,16 @@ public class GuiManager2 implements IGUI {
 
                 GuiItem _townIcon = ItemBuilder.from(townIcon).asGuiItem(event -> {
                     event.setCancelled(true);
-                    if (!townData.isLeaderOnline()) {
-                        player.sendMessage(getTANString() + Lang.LEADER_NOT_ONLINE.get());
+
+                    if(regionData.getCapitalID().equals(townData.getID())){
+                        player.sendMessage(getTANString() + Lang.CANT_KICK_REGIONAL_CAPITAL.get(townData.getName()));
                         return;
                     }
+                    regionData.broadcastMessageWithSound(
+                            Lang.GUI_REGION_KICK_TOWN_BROADCAST.get(townData.getName()),
+                            BAD);
                     townData.removeRegion();
                     regionData.removeTown(townData);
-
                     player.closeInventory();
                 });
                 gui.addItem(_townIcon);

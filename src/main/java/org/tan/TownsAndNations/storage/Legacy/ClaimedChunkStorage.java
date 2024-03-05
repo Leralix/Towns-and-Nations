@@ -151,7 +151,6 @@ public class ClaimedChunkStorage {
             claimChunkInDatabase(chunk, ownerID);
         } else {
             claimedChunksMap.put(ClaimedChunkStorage.getChunkKey(chunk), new ClaimedChunk(chunk, ownerID));
-            ClaimedChunkStorage.saveStats();
         }
     }
 
@@ -231,7 +230,6 @@ public class ClaimedChunkStorage {
             unclaimChunkInDatabase(chunk);
         } else {
             claimedChunksMap.remove(getChunkKey(chunk));
-            saveStats();
         }
     }
 

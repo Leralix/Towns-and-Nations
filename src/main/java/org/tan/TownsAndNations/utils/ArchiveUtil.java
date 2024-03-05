@@ -22,9 +22,10 @@ public class ArchiveUtil {
 
         String dateStr = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
 
-        File file1 = new File(DataFolder, "TAN - Chunks.json");
+        File file1 = new File(DataFolder, "TAN - TAN - Claimed Chunks.json");
         File file2 = new File(DataFolder, "TAN - Stats.json");
         File file3 = new File(DataFolder, "TAN - Towns.json");
+        File file4 = new File(DataFolder, "TAN - Regions.json");
 
         File zipFile;
         int counter = 0;
@@ -41,7 +42,7 @@ public class ArchiveUtil {
             addFileToZip(zipOutputStream, file1);
             addFileToZip(zipOutputStream, file2);
             addFileToZip(zipOutputStream, file3);
-
+            addFileToZip(zipOutputStream, file4);
         } catch (IOException e) {
             TownsAndNations.getPluginLogger().severe("Error while archiving files : " + e.getMessage());
         }

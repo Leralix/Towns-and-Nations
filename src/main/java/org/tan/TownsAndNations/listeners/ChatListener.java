@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.TownRank;
 import org.tan.TownsAndNations.GUI.GuiManager2;
@@ -142,7 +143,7 @@ public class ChatListener implements Listener {
 
 
             TownDataStorage.get(townId).setDescription(newDesc);
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT_SUCCESS.get());
+            player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
             removePlayer(player);
             event.setCancelled(true);
 
@@ -168,6 +169,29 @@ public class ChatListener implements Listener {
             }
 
             TownUtil.renameTown(player, townCost, newName, town);
+            removePlayer(player);
+        }
+
+        if(chatData.getCategory() == CHANGE_REGION_NAME){
+            event.setCancelled(true);
+            RegionData regionData = RegionDataStorage.get(chatData.getData().get(REGION_ID));
+            int regionCost = Integer.parseInt(chatData.getData().get(COST));
+
+            String newName = event.getMessage();
+
+            FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
+            int maxSize = config.getInt("RegionNameSize");
+
+            if(newName.length() > maxSize){
+                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
+            }
+
+            if(regionData.getBalance() <= regionCost){
+                player.sendMessage(ChatUtils.getTANString() + Lang.REGION_NOT_ENOUGH_MONEY.get());
+            }
+
+            regionData.renameRegion(regionCost, newName);
+            player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
             removePlayer(player);
         }
 
@@ -219,7 +243,7 @@ public class ChatListener implements Listener {
 
 
             RegionDataStorage.get(regionID).setDescription(newDesc);
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT_SUCCESS.get());
+            player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
             removePlayer(player);
             event.setCancelled(true);
         }

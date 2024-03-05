@@ -59,6 +59,9 @@ public class RegionDataStorage {
         return regionStorage.values();
     }
 
+    public static void deleteRegion(RegionData region){
+        deleteRegion(region.getID());
+    }
     public static void deleteRegion(String regionID){
         get(regionID).getCapital().addToBalance(7500);
         NewClaimedChunkStorage.unclaimAllChunkFromID(regionID);
