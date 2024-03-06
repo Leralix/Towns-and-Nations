@@ -45,6 +45,7 @@ public class ChatListener implements Listener {
             return;
 
 
+
         if(chatData.getCategory() == CREATE_CITY){
             int townPrice = Integer.parseInt(chatData.getData().get(COST));
             String townName = event.getMessage();
@@ -54,7 +55,7 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
         }
 
-        if(chatData.getCategory() == TOWN_DONATION){
+        else if(chatData.getCategory() == TOWN_DONATION){
 
             String stringAmount = event.getMessage();
 
@@ -70,7 +71,7 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
         }
 
-            if(chatData.getCategory() == RANK_CREATION){
+        else if(chatData.getCategory() == RANK_CREATION){
             removePlayer(player);
             String rankName = event.getMessage();
 
@@ -88,7 +89,7 @@ public class ChatListener implements Listener {
 
         }
 
-        if(chatData.getCategory() == RANK_RENAME){
+        else if(chatData.getCategory() == RANK_RENAME){
             PlayerChatListenerStorage.PlayerChatData ChatData = PlayerChatListenerStorage.getPlayerData(playerUUID);
 
             String newRankName = event.getMessage();
@@ -129,7 +130,7 @@ public class ChatListener implements Listener {
 
         }
 
-        if(chatData.getCategory() == CHANGE_TOWN_DESCRIPTION){
+        else if(chatData.getCategory() == CHANGE_TOWN_DESCRIPTION){
 
             String newDesc = event.getMessage();
             String townId = chatData.getData().get(TOWN_ID);
@@ -149,7 +150,7 @@ public class ChatListener implements Listener {
 
         }
 
-        if(chatData.getCategory() == CHANGE_TOWN_NAME){
+        else if(chatData.getCategory() == CHANGE_TOWN_NAME){
             event.setCancelled(true);
             TownData town = TownDataStorage.get(chatData.getData().get(TOWN_ID));
             int townCost = Integer.parseInt(chatData.getData().get(COST));
@@ -172,7 +173,7 @@ public class ChatListener implements Listener {
             removePlayer(player);
         }
 
-        if(chatData.getCategory() == CHANGE_REGION_NAME){
+        else if(chatData.getCategory() == CHANGE_REGION_NAME){
             event.setCancelled(true);
             RegionData regionData = RegionDataStorage.get(chatData.getData().get(REGION_ID));
             int regionCost = Integer.parseInt(chatData.getData().get(COST));
@@ -195,7 +196,7 @@ public class ChatListener implements Listener {
             removePlayer(player);
         }
 
-        if(chatData.getCategory() == CHANGE_CHUNK_COLOR){
+        else if(chatData.getCategory() == CHANGE_CHUNK_COLOR){
             event.setCancelled(true);
             removePlayer(player);
 
@@ -210,13 +211,13 @@ public class ChatListener implements Listener {
             town.setChunkColor(hexColorCode);
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS.get());
         }
-        if(chatData.getCategory() == CREATE_REGION){
+        else if(chatData.getCategory() == CREATE_REGION){
             event.setCancelled(true);
             removePlayer(player);
             String regionName = event.getMessage();
             RegionUtil.createNewRegion(player, regionName);
         }
-        if(chatData.getCategory() == REGION_DONATION){
+        else if(chatData.getCategory() == REGION_DONATION){
             event.setCancelled(true);
             removePlayer(player);
             String stringAmount = event.getMessage();
@@ -230,7 +231,7 @@ public class ChatListener implements Listener {
 
             RegionUtil.donateToRegion(player, amount);
         }
-        if(chatData.getCategory() == CHANGE_REGION_DESCRIPTION){
+        else if(chatData.getCategory() == CHANGE_REGION_DESCRIPTION){
             String newDesc = event.getMessage();
             String regionID = chatData.getData().get(REGION_ID);
 
@@ -247,5 +248,6 @@ public class ChatListener implements Listener {
             removePlayer(player);
             event.setCancelled(true);
         }
+
     }
 }

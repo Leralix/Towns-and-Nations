@@ -74,7 +74,7 @@ public class RegionDataStorage {
 
         for (String townID : region.getTownsID()){
             TownData town = TownDataStorage.get(townID);
-            town.setRegion((String) null);
+            town.removeRegion();
         }
     }
 

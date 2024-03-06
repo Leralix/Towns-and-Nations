@@ -387,6 +387,7 @@ language:
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§fColor successfully changed"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cInvalid color format"
   GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY: "§fModify town color: §9{0}§f -> §9{1}"
+
   #Region GUI
   GUI_REGION_CREATE: "§aCreate a region"
   GUI_REGION_CREATE_DESC1: "§fCost: §6{0}✦"
@@ -434,6 +435,11 @@ language:
   ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1: "§fCurrent leader: §3{0}"
   ADMIN_GUI_DELETE_TOWN: "§aDelete town"
   ADMIN_GUI_DELETE_TOWN_DESC1: "§cDelete the town: §9{0}"
+  ADMIN_GUI_TOWN_PLAYER_TOWN: "§fPlayer current town: §e{0}"
+  ADMIN_GUI_CANT_DELETE_REGIONAL_CAPITAL: "§cYou can't delete the regional capital"
+  ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1: "§fLeft click to kick the player from the town"
+  ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2: "§cYou can't kick the leader of the town"
+  ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS: "§3{0}§f has left his town §3{1}"
   #Transaction history
   TRANSACTION_HISTORY: "§f[{0}] - §3{1} §f: {2}✦"
   DONATION_SINGLE_LINE_1: "§a+{0}✦"

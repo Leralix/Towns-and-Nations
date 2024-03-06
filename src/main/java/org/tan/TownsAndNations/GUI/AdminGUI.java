@@ -125,8 +125,8 @@ public class AdminGUI implements IGUI{
             player.closeInventory();
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
             Map<MessageKey, String> data = new HashMap<>();
-            data.put(MessageKey.TOWN_ID,regionData.getID());
-            PlayerChatListenerStorage.addPlayer(CHANGE_TOWN_DESCRIPTION,player,data);
+            data.put(MessageKey.REGION_ID,regionData.getID());
+            PlayerChatListenerStorage.addPlayer(CHANGE_REGION_DESCRIPTION,player,data);
             event.setCancelled(true);
         });
 
@@ -149,7 +149,7 @@ public class AdminGUI implements IGUI{
     public static void OpenTownMenuDebug(Player player){
 
 
-        Gui gui = IGUI.createChestGui("Town - Admin",3);
+        Gui gui = IGUI.createChestGui("Town - Admin",6);
 
         int i = 0;
         for (TownData townData : TownDataStorage.getTownMap().values()) {
@@ -179,7 +179,7 @@ public class AdminGUI implements IGUI{
         }
 
 
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
+        gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
 
         gui.open(player);
 
@@ -233,6 +233,10 @@ public class AdminGUI implements IGUI{
         });
         GuiItem _deleteTown = ItemBuilder.from(deleteTown).asGuiItem(event -> {
             event.setCancelled(true);
+            if(townData.isRegionalCapital()){
+                player.sendMessage(getTANString() + Lang.ADMIN_GUI_CANT_DELETE_REGIONAL_CAPITAL.get());
+                return;
+            }
             deleteTown(townData);
 
             player.closeInventory();
@@ -311,8 +315,38 @@ public class AdminGUI implements IGUI{
 
         Gui gui = IGUI.createChestGui("Player - Admin",3);
 
+        ItemStack playerHead = HeadUtils.getPlayerHeadInformation(Bukkit.getOfflinePlayer(UUID.fromString(playerData.getUuid())));
+
+        if(playerData.haveTown()){
+            ItemStack removePlayerTown = HeadUtils.getCustomLoreItem(Material.SPRUCE_DOOR,
+                    Lang.ADMIN_GUI_TOWN_PLAYER_TOWN.get(),
+                    Lang.ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1.get(playerData.getTown().getName()),
+                    Lang.ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2.get());
 
 
+            GuiItem _removePlayerTown = ItemBuilder.from(removePlayerTown).asGuiItem(event -> {
+                event.setCancelled(true);
+                TownData townData = playerData.getTown();
+
+                if(townData.getLeaderID().equals(playerData.getUuid())){
+                    player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get());
+                    return;
+                }
+                townData.removePlayer(playerData.getUuid());
+                playerData.leaveTown();
+
+                player.sendMessage(getTANString() + Lang.ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS.get(playerData.getName(),townData.getName()));
+                OpenPlayerMenu(player);
+            });
+            gui.setItem(2,2, _removePlayerTown);
+        }
+
+
+        GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+
+        gui.setItem(1,5, _playerHead);
 
 
         gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenPlayerMenu(player)));
