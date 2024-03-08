@@ -4,10 +4,15 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
+import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
+import org.tan.TownsAndNations.utils.ChatUtils;
+import org.tan.TownsAndNations.utils.ConfigUtil;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -16,24 +21,47 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
+
 public class RegionDataStorage {
 
     private static int nextID = 1;
     private static LinkedHashMap<String, RegionData> regionStorage = new LinkedHashMap<>();
 
 
-    public static RegionData newRegion(String regionName, Player player){
+    public static void createNewRegion(Player player, String regionName){
+
+        TownData town = TownDataStorage.get(player);
+
+        if(!town.isLeader(player)){
+            player.sendMessage(getTANString() + Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get());
+            return;
+        }
+
+        int cost = ConfigUtil.getCustomConfig("config.yml").getInt("regionCost");
+        if(town.getBalance() < cost){
+            player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
+            return;
+        }
+
+        int maxSize = ConfigUtil.getCustomConfig("config.yml").getInt("RegionNameSize");
+        if(regionName.length() > maxSize){
+            player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
+            return;
+        }
+
+        Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.REGION_CREATE_SUCCESS_BROADCAST.get(town.getName(),regionName));
+        PlayerChatListenerStorage.removePlayer(player);
+
         String regionID = "R"+nextID;
         String playerID = player.getUniqueId().toString();
         nextID++;
 
         RegionData newRegion = new RegionData(regionID, regionName, playerID);
         regionStorage.put(regionID, newRegion);
-
-        return newRegion;
+        town.setRegion(newRegion);
+        town.removeToBalance(cost);
     }
-
-
     public static RegionData get(Player player){
         return get(PlayerDataStorage.get(player).getTown().getRegionID());
     }

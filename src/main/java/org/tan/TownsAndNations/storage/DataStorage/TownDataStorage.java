@@ -11,7 +11,6 @@ import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.enums.TownRolePermission;
-import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -58,7 +57,7 @@ public class TownDataStorage {
             ps.setString(1, newTown.getID());
             ps.setString(2, newTown.getName());
             ps.setString(3, newTown.getLeaderID());
-            ps.setString(4, newTown.getTownDefaultRank());
+            ps.setString(4, newTown.getTownDefaultRankName());
             ps.setString(5, newTown.getDescription());
             ps.setString(6, newTown.getDateCreated());
             ps.setString(7, newTown.getTownIconMaterialCode());
@@ -400,7 +399,7 @@ public class TownDataStorage {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setString(1, townData.getName());
                 ps.setString(2, townData.getLeaderID());
-                ps.setString(3, townData.getTownDefaultRank());
+                ps.setString(3, townData.getTownDefaultRankName());
                 ps.setString(4, townData.getDescription());
                 ps.setString(5, townData.getDateCreated());
                 ps.setString(6, townData.getTownIconMaterialCode());

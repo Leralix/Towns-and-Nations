@@ -8,12 +8,6 @@ import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 public class RelationUtil {
 
 
-    public static boolean HaveRelation(TownData town, TownData targetTown){
-        TownRelation currentRelation = town.getRelationWith(targetTown);
-        return currentRelation != null;
-    }
-
-
     public static void addTownRelation(TownData town, TownData targetTown, TownRelation newRelation) {
         town.addTownRelations(newRelation, targetTown);
         if(!isSqlEnable()) //No need for double relation in sql
@@ -22,20 +16,18 @@ public class RelationUtil {
         TeamUtils.updateAllScoreboardColor();
     }
 
-    public static void removeRelation(TownData town, TownData targetTown, TownRelation oldRelation){
+    public static void removeTownRelation(TownData town, TownData targetTown, TownRelation oldRelation){
         town.removeTownRelations(oldRelation, targetTown);
         targetTown.removeTownRelations(oldRelation, town);
 
         TeamUtils.updateAllScoreboardColor();
-
     }
 
-    public static void removeRelation(TownData town, TownData targetTown){
+    public static void removeTownRelation(TownData town, TownData targetTown){
         TownRelation oldRelation = town.getRelationWith(targetTown);
-        removeRelation(town,targetTown,oldRelation);
+        removeTownRelation(town,targetTown,oldRelation);
 
         TeamUtils.updateAllScoreboardColor();
-
     }
 
 

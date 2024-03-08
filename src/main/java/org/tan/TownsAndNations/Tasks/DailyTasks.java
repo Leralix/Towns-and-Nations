@@ -13,6 +13,7 @@ import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.utils.ArchiveUtil;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.EconomyUtil;
@@ -21,8 +22,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
-
-import static org.tan.TownsAndNations.utils.ArchiveUtil.archiveFiles;
 
 public class DailyTasks {
 
@@ -36,8 +35,8 @@ public class DailyTasks {
                     RegionTaxPayment();
                     ChunkPayment();
                     SalaryPayment();
-                    archiveFiles();
                     ClearOldTaxes();
+                    ArchiveUtil.archiveFiles();
                 }
             }
         }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L); // Exécute toutes les 1200 ticks (1 minute en temps Minecraft)

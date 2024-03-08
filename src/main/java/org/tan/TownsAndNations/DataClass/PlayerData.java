@@ -3,6 +3,7 @@ package org.tan.TownsAndNations.DataClass;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.storage.WarTaggedPlayer;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 
 import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
@@ -50,7 +51,7 @@ public class PlayerData {
             Balance = 0;
         return Balance;
     }
-    public void setRank(String rankName){
+    public void setTownRank(String rankName){
         this.TownRank = rankName;
         if(isSqlEnable())
             updatePlayerDataInDatabase(this);
@@ -105,6 +106,8 @@ public class PlayerData {
         this.TownRank = null;
         if(isSqlEnable())
             updatePlayerDataInDatabase(this);
+        WarTaggedPlayer.removePlayer(this.getUuid());
+
     }
 
     public boolean haveRegion(){

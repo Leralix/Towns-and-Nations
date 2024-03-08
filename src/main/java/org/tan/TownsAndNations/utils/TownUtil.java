@@ -61,7 +61,7 @@ public class TownUtil {
 
 
         TownData newTown = TownDataStorage.newTown(townName,player);
-        playerData.setRank(newTown.getTownDefaultRank()); //2. Set player rank to default rank
+        playerData.setTownRank(newTown.getTownDefaultRankName()); //2. Set player rank to default rank
         playerData.setTownId(newTown.getID()); //3. Set player town to the new town
         removeFromBalance(player,townCost); //1. Remove money from player
 
@@ -132,7 +132,8 @@ public class TownUtil {
     }
     public static void removeAllPlayerFromTown(TownData townToDelete){
         for(String playerID : townToDelete.getPlayerList()){
-            PlayerDataStorage.get(playerID).leaveTown();
+            //PlayerDataStorage.get(playerID).leaveTown(); Old code
+            townToDelete.removePlayer(PlayerDataStorage.get(playerID));
             if(isSqlEnable())
                 TownDataStorage.removePlayerFromTownDatabase(playerID); //Small link database that will be deleted later
         }
@@ -163,13 +164,13 @@ public class TownUtil {
             return;
         }
         TownData town = TownDataStorage.get(playerData);
-        town.getRank(kickedPlayerData.getTownRankID()).removePlayer(kickedPlayerData.getUuid());
-        town.removePlayer(kickedPlayerData.getUuid());
-        kickedPlayerData.leaveTown();
+        town.removePlayer(kickedPlayerData);
+
+
         town.broadCastMessageWithSound(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.get(kickedPlayer.getName()),
                 BAD);
         if(kickedPlayer.isOnline())
-            Objects.requireNonNull(kickedPlayer.getPlayer()).sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get());
+            kickedPlayer.getPlayer().sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get());
     }
 
     public static void renameTown(Player player, int townCost, String newName, TownData town) {

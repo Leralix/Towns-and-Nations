@@ -48,8 +48,6 @@ public class ArchiveUtil {
         }
     }
 
-
-
     private static void addFileToZip(ZipOutputStream zipOutputStream, File file) throws IOException {
         try (FileInputStream fis = new FileInputStream(file)) {
             ZipEntry zipEntry = new ZipEntry(file.getName());

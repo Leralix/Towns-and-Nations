@@ -16,17 +16,17 @@ import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
-import org.tan.TownsAndNations.utils.ChatUtils;
-import org.tan.TownsAndNations.utils.ConfigUtil;
-import org.tan.TownsAndNations.utils.RegionUtil;
-import org.tan.TownsAndNations.utils.TownUtil;
+import org.tan.TownsAndNations.utils.*;
 
 import java.util.*;
 
 import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 import static org.tan.TownsAndNations.enums.ChatCategory.*;
 import static org.tan.TownsAndNations.enums.MessageKey.*;
+import static org.tan.TownsAndNations.enums.SoundEnum.MINOR_LEVEL_UP;
 import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.removePlayer;
+import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
+import static org.tan.TownsAndNations.utils.EconomyUtil.removeFromBalance;
 import static org.tan.TownsAndNations.utils.StringUtil.hexColorToInt;
 import static org.tan.TownsAndNations.utils.StringUtil.isValidColorCode;
 import static org.tan.TownsAndNations.utils.TownUtil.DonateToTown;
@@ -107,18 +107,18 @@ public class ChatListener implements Listener {
 
             List<String> playerList = playerTownRank.getPlayers(playerTown.getID());
             for(String playerWithRoleUUID : playerList){
-                Objects.requireNonNull(PlayerDataStorage.get(playerWithRoleUUID)).setRank(newRankName);
+                Objects.requireNonNull(PlayerDataStorage.get(playerWithRoleUUID)).setTownRank(newRankName);
             }
 
 
-            if(Objects.equals(playerTownRank.getName(), playerTown.getTownDefaultRank())){
+            if(Objects.equals(playerTownRank.getName(), playerTown.getTownDefaultRankName())){
                 playerTown.setTownDefaultRank(newRankName);
             }
 
             playerTownRank.setName(playerTown.getID(),newRankName);
 
             if(!isSqlEnable()){ //Needed to update the Hashmap, not for the DB
-                playerTown.addRankForRename(newRankName,playerTownRank);
+                playerTown.addRank(newRankName,playerTownRank);
                 playerTown.removeRank(rankName);
             }
 
@@ -215,7 +215,7 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
             removePlayer(player);
             String regionName = event.getMessage();
-            RegionUtil.createNewRegion(player, regionName);
+            RegionDataStorage.createNewRegion(player, regionName);
         }
         else if(chatData.getCategory() == REGION_DONATION){
             event.setCancelled(true);
@@ -229,7 +229,27 @@ public class ChatListener implements Listener {
                 throw new RuntimeException(e);
             }
 
-            RegionUtil.donateToRegion(player, amount);
+            int playerBalance = getBalance(player);
+            PlayerChatListenerStorage.removePlayer(player);
+
+            if(playerBalance < amount ){
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.get());
+                return;
+            }
+            if(amount <= 0 ){
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NEED_1_OR_ABOVE.get());
+                return;
+            }
+
+            RegionData playerRegion = RegionDataStorage.get(player);
+
+            removeFromBalance(player, amount);
+            playerRegion.addBalance(amount);
+
+            playerRegion.getDonationHistory().add(player.getName(),player.getUniqueId().toString(),amount);
+
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_REGION.get(amount));
+            SoundUtil.playSound(player, MINOR_LEVEL_UP);
         }
         else if(chatData.getCategory() == CHANGE_REGION_DESCRIPTION){
             String newDesc = event.getMessage();

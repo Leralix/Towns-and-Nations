@@ -1,10 +1,8 @@
 package org.tan.TownsAndNations.GUI;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.components.GuiType;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -454,22 +452,17 @@ public class GuiManager2 implements IGUI {
                         return;
                     }
 
-                    town.addPlayer(playerIterateData.getUuid());
-                    town.getRank(town.getTownDefaultRank()).addPlayer(playerIterateData.getUuid());
-
-                    playerIterateData.setTownId(town.getID());
-                    playerIterateData.setRank(town.getTownDefaultRank());
+                    town.addPlayer(playerIterateData);
 
                     Player playerIterateOnline = playerIterate.getPlayer();
-                    if(playerIterateOnline != null){
+                    if(playerIterateOnline != null)
                         playerIterateOnline.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(town.getName()));
-                    }
-                    town.broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(player.getName()),
+
+                    town.broadCastMessageWithSound(
+                            Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(player.getName()),
                             MINOR_GOOD);
 
                     updateAllScoreboardColor();
-
-                    town.removePlayerJoinRequest(playerIterateData.getUuid());
 
                     for (TownData allTown : TownDataStorage.getTownMap().values()){
                         allTown.removePlayerJoinRequest(playerIterateData.getUuid());
@@ -563,7 +556,7 @@ public class GuiManager2 implements IGUI {
         TownData town = TownDataStorage.get(player);
         TownRank townRank = town.getRank(roleName);
 
-        boolean isDefaultRank = town.getTownDefaultRank().equals(townRank.getName());
+        boolean isDefaultRank = town.getTownDefaultRankName().equals(townRank.getName());
 
         Material roleMaterial = Material.getMaterial(townRank.getRankIconName());
 
@@ -773,9 +766,8 @@ public class GuiManager2 implements IGUI {
                 }
 
                 PlayerData playerStat = PlayerDataStorage.get(otherPlayerUUID);
-                town.getRank(playerStat.getTownRankID()).removePlayer(otherPlayerUUID);
-                playerStat.setRank(roleName);
-                townRank.addPlayer(otherPlayerUUID);
+
+                town.setPlayerRank(playerStat, roleName);
 
                 OpenTownMenuRoleManager(player, roleName);
             });
@@ -1365,11 +1357,9 @@ public class GuiManager2 implements IGUI {
                 SoundUtil.playSound(player, NOT_ALLOWED);
                 player.sendMessage(getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.get());
             } else {
-                playerTown.removePlayer(player);
-                playerTown.getRank(playerStat.getTownRankID()).removePlayer(playerStat.getUuid());
+                playerTown.removePlayer(playerStat);
 
                 player.sendMessage(getTANString() + Lang.CHAT_PLAYER_LEFT_THE_TOWN.get());
-                playerStat.leaveTown();
                 playerTown.broadCastMessageWithSound(Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(playerStat.getName()),
                         BAD);
                 player.closeInventory();
@@ -1697,7 +1687,7 @@ public class GuiManager2 implements IGUI {
                 GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                     event.setCancelled(true);
 
-                    if(HaveRelation(playerTown, otherTown)){
+                    if(playerTown.haveRelationWith(otherTown)){
                         player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION.get());
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
@@ -1763,7 +1753,7 @@ public class GuiManager2 implements IGUI {
                                 BAD);
                         otherTown.broadCastMessageWithSound(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(playerTown.getName(),"neutral"),
                                 BAD);
-                        removeRelation(playerTown,otherTown,relation);
+                        removeTownRelation(playerTown,otherTown,relation);
                         OpenTownRelation(player,relation);
                     }
                     OpenTownRelation(player,relation);
@@ -1976,7 +1966,16 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _createRegion = ItemBuilder.from(createRegion).asGuiItem(event -> {
             event.setCancelled(true);
-            RegionUtil.registerNewRegion(player, regionCost);
+            int townMoney = TownDataStorage.get(player).getBalance();
+            if (townMoney < regionCost) {
+                player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(regionCost - townMoney));
+            }
+            else {
+                player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get());
+                player.closeInventory();
+
+                PlayerChatListenerStorage.addPlayer(CREATE_REGION,player);
+            }
         });
 
         GuiItem _browseRegion = ItemBuilder.from(browseRegion).asGuiItem(event -> {

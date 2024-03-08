@@ -69,19 +69,14 @@ public class JoinTownCommand extends SubCommand {
                 if(town.equals(townID)){ //if the player is invited to the town
 
                     TownData townData = TownDataStorage.get(townID);
-                    PlayerData playerStat = PlayerDataStorage.get(player);
+                    PlayerData playerData = PlayerDataStorage.get(player);
 
                     if(!townData.canAddMorePlayer()){
                         player.sendMessage(getTANString() + Lang.INVITATION_TOWN_FULL.get());
                         return;
                     }
 
-
-                    townData.addPlayer(player.getUniqueId().toString());
-                    townData.getRank(townData.getTownDefaultRank()).addPlayer(player);
-
-                    playerStat.setTownId(townID);
-                    playerStat.setRank(townData.getTownDefaultRank());
+                    townData.addPlayer(playerData);
 
                     player.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(townData.getName()));
                     townData.broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(player.getName()),

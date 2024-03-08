@@ -14,7 +14,7 @@ import java.util.List;
 import static org.tan.TownsAndNations.enums.SoundEnum.GOOD;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.RelationUtil.addTownRelation;
-import static org.tan.TownsAndNations.utils.RelationUtil.removeRelation;
+import static org.tan.TownsAndNations.utils.RelationUtil.removeTownRelation;
 
 public class AcceptRelationCommand extends SubCommand {
     @Override
@@ -66,7 +66,7 @@ public class AcceptRelationCommand extends SubCommand {
                             GOOD);
                     otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(town.getName(),"neutral"),
                             GOOD);
-                    removeRelation(town,otherTown);
+                    removeTownRelation(town,otherTown);
                 }
                 else { // from neutral to positive
                     town.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getName(),newRelation.getColoredName()),

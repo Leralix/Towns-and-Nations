@@ -30,7 +30,6 @@ public class EconomyUtil {
         else
             Objects.requireNonNull(PlayerDataStorage.get(offlinePlayer.getUniqueId().toString())).removeFromBalance(amount);
     }
-
     public static void removeFromBalance(Player player, int amount){
         if(TownsAndNations.hasEconomy())
             TownsAndNations.getEconomy().withdrawPlayer(player,amount);
@@ -44,7 +43,6 @@ public class EconomyUtil {
         else
             Objects.requireNonNull(PlayerDataStorage.get(player)).addToBalance(amount);
     }
-
     public static void addFromBalance(OfflinePlayer offlinePlayer, int amount){
         if(TownsAndNations.hasEconomy())
             TownsAndNations.getEconomy().depositPlayer(offlinePlayer,amount);

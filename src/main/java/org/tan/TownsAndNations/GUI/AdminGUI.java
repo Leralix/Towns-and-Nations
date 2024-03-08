@@ -332,8 +332,7 @@ public class AdminGUI implements IGUI{
                     player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get());
                     return;
                 }
-                townData.removePlayer(playerData.getUuid());
-                playerData.leaveTown();
+                townData.removePlayer(playerData);
 
                 player.sendMessage(getTANString() + Lang.ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS.get(playerData.getName(),townData.getName()));
                 OpenPlayerMenu(player);

@@ -2,11 +2,11 @@ package org.tan.TownsAndNations.commands.debugsubcommands;
 
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.commands.SubCommand;
+import org.tan.TownsAndNations.utils.ArchiveUtil;
 
 import java.util.List;
 
 import static org.tan.TownsAndNations.Tasks.DailyTasks.*;
-import static org.tan.TownsAndNations.utils.ArchiveUtil.archiveFiles;
 
 public class SkipDay extends SubCommand {
 
@@ -38,9 +38,8 @@ public class SkipDay extends SubCommand {
         RegionTaxPayment();
         ChunkPayment();
         SalaryPayment();
-        archiveFiles();
         ClearOldTaxes();
-
+        ArchiveUtil.archiveFiles();
     }
 }
 

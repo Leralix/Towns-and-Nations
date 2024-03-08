@@ -1,7 +1,8 @@
 language:
   WELCOME: "§fWelcome"
   LANGUAGE_SUCCESSFULLY_LOADED: "English language successfully loaded"
-  PLUGIN_STRING: "[T&N]"
+  PLUGIN_STRING: "§6[T&N]§f"
+  PLUGIN_DEBUG_STRING: "§c[T&N - Debug]§f"
   NEWSLETTER_STRING: "§f[T&N - Newsletter]§f "
   #Common errors
   PLAYER_NO_TOWN: "§cYou do not have a town"

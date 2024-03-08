@@ -102,8 +102,6 @@ public class HeadUtils {
         return PlayerHead;
     }
 
-
-
     public static ItemStack makeSkull(String name, String base64EncodedString) {
         UUID id = UUID.nameUUIDFromBytes(base64EncodedString.getBytes());
         int less = (int)id.getLeastSignificantBits();

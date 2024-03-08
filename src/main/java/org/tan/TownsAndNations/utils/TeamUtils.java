@@ -14,18 +14,15 @@ import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 public class TeamUtils {
 
     public static void updateAllScoreboardColor(){
-        if(TownsAndNations.colorCodeIsNotEnabled()){
+        if(TownsAndNations.colorCodeIsNotEnabled())
             return;
-        }
-        for(Player player : Bukkit.getOnlinePlayers()){
+        for(Player player : Bukkit.getOnlinePlayers())
             setIndividualScoreBoard(player);
-        }
     }
 
     public static void setIndividualScoreBoard(Player player) {
-        if(TownsAndNations.colorCodeIsNotEnabled()){
+        if(TownsAndNations.colorCodeIsNotEnabled())
             return;
-        }
 
         Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
 

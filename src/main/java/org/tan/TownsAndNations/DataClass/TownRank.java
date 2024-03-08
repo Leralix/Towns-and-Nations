@@ -79,17 +79,23 @@ public class TownRank {
     }
     public void addPlayer(String playerUUID){
         if(isSqlEnable())
-            PlayerDataStorage.get(playerUUID).setRank(this.getName());
+            PlayerDataStorage.get(playerUUID).setTownRank(this.getName());
         else
             this.players.add(playerUUID);
     }
     public void addPlayer(Player player){
         addPlayer(player.getUniqueId().toString());
     }
+    public void addPlayer(PlayerData playerData){
+        addPlayer(playerData.getUuid());
+    }
     public void removePlayer(String playerUUID){
         if(isSqlEnable())
             return;
         this.players.remove(playerUUID);
+    }
+    public void removePlayer(PlayerData player){
+        removePlayer(player.getUuid());
     }
     public void removePlayer(Player player){
         removePlayer(player.getUniqueId().toString());

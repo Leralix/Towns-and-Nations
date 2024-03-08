@@ -3,6 +3,7 @@ package org.tan.TownsAndNations.storage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
@@ -54,6 +55,12 @@ public class WarTaggedPlayer {
         return isPlayerInWarWithTown(player.getUniqueId().toString(),town.getID());
     }
 
+    public static void removePlayer(PlayerData playerData){
+        removePlayer(playerData.getUuid());
+    }
+    public static void removePlayer(String playerID){
+        warTagged.remove(playerID);
+    }
 
 
 

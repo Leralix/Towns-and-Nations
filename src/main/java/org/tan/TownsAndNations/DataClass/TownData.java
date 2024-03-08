@@ -82,7 +82,7 @@ public class TownData {
         addRank(townDefaultRank);
         getRank(townDefaultRank).addPlayer(leaderID);
 
-        PlayerDataStorage.get(leaderID).setRank(this.townDefaultRank);
+        PlayerDataStorage.get(leaderID).setTownRank(this.townDefaultRank);
 
 
         this.relations = new TownRelations();
@@ -130,30 +130,21 @@ public class TownData {
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);
     }
-
     public void addRank(String rankName){
         TownRank newRank = new TownRank(rankName);
-        if(isSqlEnable())
-            TownDataStorage.createRole(getID(),newRank);
-        else
-            this.roles.put(rankName,newRank);
+        this.roles.put(rankName,newRank);
     }
-    public void addRankForRename(String rankName, TownRank townRank){
+
+    public void addRank(String rankName, TownRank townRank){
         this.roles.put(rankName,townRank);
     }
     public void removeRank(String key){
-        if(isSqlEnable()){
-            TownDataStorage.deleteRole(getID(),key);
-            TownDataStorage.deleteRolePermission(getID(),key);
-        }
-        else
-            this.roles.remove(key);
+        this.roles.remove(key);
     }
-
     public String getLeaderID() {
         return this.UuidLeader;
     }
-    public PlayerData getLeader() {
+    public PlayerData getLeaderData() {
         return PlayerDataStorage.get(this.UuidLeader);
     }
     public void setLeaderID(String leaderID) {
@@ -192,26 +183,24 @@ public class TownData {
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);
     }
-    public void addPlayer(String playerUUID){
-        if(isSqlEnable())
-            TownDataStorage.addPlayerToTownDatabase(TownId,playerUUID);
-        else {
-            townPlayerListId.add(playerUUID);
-            TownDataStorage.saveStats();
-        }
+    public void addPlayer(PlayerData playerData){
+        townPlayerListId.add(playerData.getUuid());
+        getTownDefaultRank().addPlayer(playerData.getUuid());
+        playerData.setTownId(getID());
+        playerData.setTownRank(getTownDefaultRankName());
+
+        TownDataStorage.saveStats();
     }
 
-    public void removePlayer(String playerUUID){
-        if(isSqlEnable())
-            TownDataStorage.removePlayerFromTownDatabase(playerUUID);
-        else {
-            townPlayerListId.remove(playerUUID);
-            TownDataStorage.saveStats();
-        }
+    public void removePlayer(PlayerData playerData){
+        townPlayerListId.remove(playerData.getUuid());
+
+        getRank(playerData).removePlayer(playerData);
+        playerData.leaveTown();
+
+        TownDataStorage.saveStats();
     }
-    public void removePlayer(Player player){
-        removePlayer(player.getUniqueId().toString());
-    }
+
 
     public HashSet<String> getPlayerList(){
         if(isSqlEnable())
@@ -323,8 +312,11 @@ public class TownData {
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);
     }
-    public String getTownDefaultRank(){
+    public String getTownDefaultRankName(){
         return this.townDefaultRank;
+    }
+    public TownRank getTownDefaultRank(){
+        return getRank(getTownDefaultRankName());
     }
 
     public int getNumberOfRank(){
@@ -589,5 +581,16 @@ public class TownData {
         if(this.regionID == null)
             return false;
         return getRegion().getCapitalID().equals(getID());
+    }
+
+    public boolean haveRelationWith(TownData otherTown){
+        return this.getRelationWith(otherTown) != null;
+    }
+
+    public void setPlayerRank(PlayerData playerStat, String roleName) {
+
+        getRank(playerStat).removePlayer(playerStat);
+        getRank(roleName).addPlayer(playerStat);
+        playerStat.setTownRank(roleName);
     }
 }

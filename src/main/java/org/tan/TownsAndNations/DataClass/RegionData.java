@@ -6,7 +6,6 @@ import org.tan.TownsAndNations.DataClass.History.ChunkHistory;
 import org.tan.TownsAndNations.DataClass.History.DonationHistory;
 import org.tan.TownsAndNations.DataClass.History.MiscellaneousHistory;
 import org.tan.TownsAndNations.DataClass.History.TaxHistory;
-import org.tan.TownsAndNations.DataClass.legacy.ClaimedChunk;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
@@ -73,7 +72,7 @@ public class RegionData {
     }
 
     public PlayerData getOwner() {
-        return TownDataStorage.get(capitalID).getLeader();
+        return TownDataStorage.get(capitalID).getLeaderData();
     }
 
     public boolean hasNation() {
