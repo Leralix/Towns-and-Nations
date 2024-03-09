@@ -209,6 +209,7 @@ public final class TownsAndNations extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerEnterChunkListener(), this);
         getServer().getPluginManager().registerEvents(new ChatScopeListener(), this);
         getServer().getPluginManager().registerEvents(new MobSpawnListener(), this);
+        getServer().getPluginManager().registerEvents(new SpawnListener(), this);
     }
 
     public static TownsAndNations getPlugin() {

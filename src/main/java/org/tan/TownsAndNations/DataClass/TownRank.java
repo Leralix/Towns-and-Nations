@@ -87,7 +87,7 @@ public class TownRank {
         addPlayer(player.getUniqueId().toString());
     }
     public void addPlayer(PlayerData playerData){
-        addPlayer(playerData.getUuid());
+        addPlayer(playerData.getID());
     }
     public void removePlayer(String playerUUID){
         if(isSqlEnable())
@@ -95,7 +95,7 @@ public class TownRank {
         this.players.remove(playerUUID);
     }
     public void removePlayer(PlayerData player){
-        removePlayer(player.getUuid());
+        removePlayer(player.getID());
     }
     public void removePlayer(Player player){
         removePlayer(player.getUniqueId().toString());

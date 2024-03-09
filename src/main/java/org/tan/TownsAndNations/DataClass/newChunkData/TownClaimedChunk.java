@@ -84,7 +84,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
         }
 
         TownData townStat = playerStat.getTown();
-        if(!townStat.getLeaderID().equals(playerStat.getUuid())){
+        if(!townStat.getLeaderID().equals(playerStat.getID())){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
         }
 

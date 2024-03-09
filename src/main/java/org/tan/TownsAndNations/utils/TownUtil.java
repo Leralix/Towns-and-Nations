@@ -18,7 +18,6 @@ import org.tan.TownsAndNations.storage.Invitation.TownInviteDataStorage;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 import static org.tan.TownsAndNations.enums.ChatCategory.CREATE_CITY;
@@ -132,7 +131,7 @@ public class TownUtil {
     }
     public static void removeAllPlayerFromTown(TownData townToDelete){
         for(String playerID : townToDelete.getPlayerList()){
-            //PlayerDataStorage.get(playerID).leaveTown(); Old code
+
             townToDelete.removePlayer(PlayerDataStorage.get(playerID));
             if(isSqlEnable())
                 TownDataStorage.removePlayerFromTownDatabase(playerID); //Small link database that will be deleted later
@@ -159,7 +158,7 @@ public class TownUtil {
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get());
             return;
         }
-        if(playerData.getUuid().equals(kickedPlayerData.getUuid())){
+        if(playerData.getID().equals(kickedPlayerData.getID())){
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_YOURSELF.get());
             return;
         }

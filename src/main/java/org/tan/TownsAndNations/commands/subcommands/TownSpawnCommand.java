@@ -8,6 +8,8 @@ import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.storage.SpawnRegister;
+import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.SoundUtil;
 
 import java.util.List;
@@ -66,10 +68,9 @@ public class TownSpawnCommand extends SubCommand {
             return;
         }
 
+        SpawnRegister.teleportPlayerToSpawn(playerStat, townData);
 
-        townData.teleportPlayerToSpawn(player);
-        SoundUtil.playSound(player, SoundEnum.MINOR_GOOD );
-        player.sendMessage(getTANString() +Lang.SPAWN_TELEPORTED.get());
+
     }
 
 }

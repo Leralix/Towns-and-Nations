@@ -465,7 +465,7 @@ public class GuiManager2 implements IGUI {
                     updateAllScoreboardColor();
 
                     for (TownData allTown : TownDataStorage.getTownMap().values()){
-                        allTown.removePlayerJoinRequest(playerIterateData.getUuid());
+                        allTown.removePlayerJoinRequest(playerIterateData.getID());
                     }
 
                     player.sendMessage(getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get());
@@ -477,7 +477,7 @@ public class GuiManager2 implements IGUI {
                         return;
                     }
 
-                    town.removePlayerJoinRequest(playerIterateData.getUuid());
+                    town.removePlayerJoinRequest(playerIterateData.getID());
                     player.sendMessage(getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get());
                 }
                 OpenTownMemberList(player);

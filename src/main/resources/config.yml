@@ -159,3 +159,11 @@ CancelMobSpawnInTown:
   SPIDER: 0
   ZOMBIE: 0
   ENDERMAN: 0
+
+##Teleportation
+#Time before a teleportation (in seconds). 0 or negative value will result in an instant teleportation
+timeBeforeTeleport: 5
+#Cancel teleportation if player move
+cancelTeleportOnMove: true
+#Cancel teleportation if player take damage
+cancelTeleportOnDamage: true

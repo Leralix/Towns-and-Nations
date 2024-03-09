@@ -1,10 +1,8 @@
 package org.tan.TownsAndNations.GUI;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.components.GuiType;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -26,7 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.tan.TownsAndNations.GUI.GuiManager2.*;
 import static org.tan.TownsAndNations.enums.ChatCategory.*;
 import static org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage.deleteRegion;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
@@ -292,7 +289,7 @@ public class AdminGUI implements IGUI{
         int i = 0;
         for (PlayerData playerData : PlayerDataStorage.getStats()) {
 
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerData.getUuid()));
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerData.getID()));
             ItemStack playerHead = HeadUtils.getPlayerHeadInformation(offlinePlayer);
 
             GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> {
@@ -315,7 +312,7 @@ public class AdminGUI implements IGUI{
 
         Gui gui = IGUI.createChestGui("Player - Admin",3);
 
-        ItemStack playerHead = HeadUtils.getPlayerHeadInformation(Bukkit.getOfflinePlayer(UUID.fromString(playerData.getUuid())));
+        ItemStack playerHead = HeadUtils.getPlayerHeadInformation(Bukkit.getOfflinePlayer(UUID.fromString(playerData.getID())));
 
         if(playerData.haveTown()){
             ItemStack removePlayerTown = HeadUtils.getCustomLoreItem(Material.SPRUCE_DOOR,
@@ -328,7 +325,7 @@ public class AdminGUI implements IGUI{
                 event.setCancelled(true);
                 TownData townData = playerData.getTown();
 
-                if(townData.getLeaderID().equals(playerData.getUuid())){
+                if(townData.getLeaderID().equals(playerData.getID())){
                     player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get());
                     return;
                 }

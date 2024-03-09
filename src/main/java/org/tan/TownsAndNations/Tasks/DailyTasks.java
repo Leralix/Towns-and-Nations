@@ -67,7 +67,7 @@ public class DailyTasks {
 
 
         for (PlayerData playerStat : PlayerDataStorage.getStats()){
-            OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerStat.getUuid()));
+            OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerStat.getID()));
 
             if (!playerStat.haveTown()) continue;
             TownData playerTown = TownDataStorage.get(playerStat);
@@ -77,12 +77,12 @@ public class DailyTasks {
             if(EconomyUtil.getBalance(offlinePlayer) > tax){
                 EconomyUtil.removeFromBalance(offlinePlayer,tax);
                 playerTown.addToBalance(tax);
-                playerTown.getTaxHistory().add(playerStat.getName(), playerStat.getUuid(), tax);
+                playerTown.getTaxHistory().add(playerStat.getName(), playerStat.getID(), tax);
                 //TownsAndNations.getPluginLogger().info(playerStat.getName() + " has paid " + tax + "$ to the town " + playerTown.getName());
             }
             else{
                 //TownsAndNations.getPluginLogger().info(playerStat.getName() + " has not enough money to pay " + tax + "$ to the town " + playerTown.getName());
-                playerTown.getTaxHistory().add(playerStat.getName(), playerStat.getUuid(), -1);
+                playerTown.getTaxHistory().add(playerStat.getName(), playerStat.getID(), -1);
             }
         }
 
@@ -121,7 +121,7 @@ public class DailyTasks {
                 for(String playerId : playerIdList){
                     PlayerData player = PlayerDataStorage.get(playerId);
                     player.addToBalance(rankSalary);
-                    town.getSalaryHistory().add(player.getUuid(), -costOfSalary);
+                    town.getSalaryHistory().add(player.getID(), -costOfSalary);
 
                 }
             }

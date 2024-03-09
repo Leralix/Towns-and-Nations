@@ -6,6 +6,8 @@ import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.storage.WarTaggedPlayer;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 
+import java.util.UUID;
+
 import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 import static org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage.updatePlayerDataInDatabase;
 
@@ -34,7 +36,7 @@ public class PlayerData {
     }
 
 
-    public String getUuid() {
+    public String getID() {
         return UUID;
     }
 
@@ -106,7 +108,7 @@ public class PlayerData {
         this.TownRank = null;
         if(isSqlEnable())
             updatePlayerDataInDatabase(this);
-        WarTaggedPlayer.removePlayer(this.getUuid());
+        WarTaggedPlayer.removePlayer(this.getID());
 
     }
 
@@ -120,4 +122,7 @@ public class PlayerData {
         return TownDataStorage.get(this).getRegion();
     }
 
+    public UUID getUUID() {
+        return java.util.UUID.fromString(this.UUID);
+    }
 }

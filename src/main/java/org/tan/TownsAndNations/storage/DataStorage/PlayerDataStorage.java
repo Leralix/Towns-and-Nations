@@ -37,7 +37,7 @@ public class PlayerDataStorage {
         String sql = "INSERT INTO tan_player_data (player_id, player_name, balance,town_id,town_rank) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, playerData.getUuid()); // Assurez-vous que ces méthodes existent dans PlayerData
+            ps.setString(1, playerData.getID()); // Assurez-vous que ces méthodes existent dans PlayerData
             ps.setString(2, playerData.getName());
             ps.setInt(3, playerData.getBalance());
             ps.setString(4, playerData.getTownId());
@@ -53,7 +53,7 @@ public class PlayerDataStorage {
             deleteDataFromDatabase(uuid);
         } else {
             for (PlayerData stat : stats) {
-                if (stat.getUuid().equalsIgnoreCase(uuid)) {
+                if (stat.getID().equalsIgnoreCase(uuid)) {
                     stats.remove(stat);
                     break;
                 }
@@ -87,7 +87,7 @@ public class PlayerDataStorage {
         }
         else {
             for (PlayerData stat : stats) {
-                if (stat.getUuid().equalsIgnoreCase(id)) {
+                if (stat.getID().equalsIgnoreCase(id)) {
                     return stat;
                 }
             }
@@ -230,7 +230,7 @@ public class PlayerDataStorage {
             ps.setInt(2, playerData.getBalance());
             ps.setString(3, playerData.getTownId());
             ps.setString(4, playerData.getTownRankID());
-            ps.setString(5, playerData.getUuid());
+            ps.setString(5, playerData.getID());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

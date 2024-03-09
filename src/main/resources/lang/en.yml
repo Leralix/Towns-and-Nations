@@ -25,6 +25,10 @@ language:
   NEW_VERSION_AVAILABLE_2: "§cDownload it on Spigot or Github"
   #Level up
   BASIC_LEVEL_UP: "§aLevel up !"
+  #Teleportation
+  TELEPORTATION_CANCELLED: "§cTeleportation cancelled"
+  TELEPORTATION_IN_X_SECONDS: "§fTeleportation in §a{0}§f seconds"
+  TELEPORTATION_IN_X_SECONDS_NOT_MOVE: "§fTeleportation in §a{0}§f seconds. Do not move"
   #ChunkListener
   CHUNK_BELONGS_TO: "§cThis chunk belongs to: §9{0}"
   #Commands

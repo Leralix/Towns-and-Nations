@@ -184,8 +184,8 @@ public class TownData {
             TownDataStorage.updateTownData(this);
     }
     public void addPlayer(PlayerData playerData){
-        townPlayerListId.add(playerData.getUuid());
-        getTownDefaultRank().addPlayer(playerData.getUuid());
+        townPlayerListId.add(playerData.getID());
+        getTownDefaultRank().addPlayer(playerData.getID());
         playerData.setTownId(getID());
         playerData.setTownRank(getTownDefaultRankName());
 
@@ -193,7 +193,7 @@ public class TownData {
     }
 
     public void removePlayer(PlayerData playerData){
-        townPlayerListId.remove(playerData.getUuid());
+        townPlayerListId.remove(playerData.getID());
 
         getRank(playerData).removePlayer(playerData);
         playerData.leaveTown();
@@ -500,6 +500,10 @@ public class TownData {
 
     public boolean isSpawnSet(){
         return this.spawnPosition != null;
+    }
+
+    public boolean teleportPlayerToSpawn(PlayerData playerData){
+        return teleportPlayerToSpawn(Bukkit.getPlayer(playerData.getUUID()));
     }
 
     public boolean teleportPlayerToSpawn(Player player){

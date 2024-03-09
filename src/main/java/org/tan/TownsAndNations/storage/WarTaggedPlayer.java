@@ -56,7 +56,7 @@ public class WarTaggedPlayer {
     }
 
     public static void removePlayer(PlayerData playerData){
-        removePlayer(playerData.getUuid());
+        removePlayer(playerData.getID());
     }
     public static void removePlayer(String playerID){
         warTagged.remove(playerID);
