@@ -25,6 +25,7 @@ import static org.tan.TownsAndNations.enums.MessageKey.COST;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.enums.TownRolePermission.KICK_PLAYER;
 import static org.tan.TownsAndNations.storage.DataStorage.TownDataStorage.*;
+import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.removePlayer;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
 import static org.tan.TownsAndNations.utils.EconomyUtil.removeFromBalance;
@@ -51,7 +52,7 @@ public class TownUtil {
             return;
         }
 
-
+        removePlayer(player);
         Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(),townName));
         TownData newTown = TownDataStorage.newTown(townName,player);
         playerData.setTownRank(newTown.getTownDefaultRankName()); //2. Set player rank to default rank

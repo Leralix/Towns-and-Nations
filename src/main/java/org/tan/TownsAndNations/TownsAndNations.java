@@ -6,12 +6,14 @@ import com.google.gson.JsonParser;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tan.TownsAndNations.API.tanAPI;
 import org.tan.TownsAndNations.Bstats.Metrics;
 import org.tan.TownsAndNations.Lang.DynamicLang;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.PlaceholderAPI.PlaceHolderAPI;
 import org.tan.TownsAndNations.Tasks.DailyTasks;
 import org.tan.TownsAndNations.Tasks.SaveStats;
 import org.tan.TownsAndNations.commands.AdminCommandManager;
@@ -129,6 +131,11 @@ public final class TownsAndNations extends JavaPlugin {
             setupChat();
         } else {
             logger.info("[TaN] -Vault API not found, using own economy system");
+        }
+
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) { //
+            logger.info("[TaN] -Loading PlaceholderAPI");
+            new PlaceHolderAPI().register(); //
         }
 
 
@@ -293,6 +300,9 @@ public final class TownsAndNations extends JavaPlugin {
 
     public static boolean isDynmapAddonLoaded() {
         return dynmapAddonLoaded;
+    }
+    public static String getCurrentVersion() {
+        return CURRENT_VERSION;
     }
 
 }

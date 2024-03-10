@@ -127,7 +127,7 @@ public class RegionData {
     }
 
 
-    public Object getTotalPlayerCount() {
+    public int getTotalPlayerCount() {
         int count = 0;
         for (TownData town : getTownsInRegion()){
             count += town.getPlayerList().size();

@@ -3,10 +3,7 @@ package org.tan.TownsAndNations.commands;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.tan.TownsAndNations.commands.AdminSubcommands.AddMoney;
-import org.tan.TownsAndNations.commands.AdminSubcommands.SpawnVillager;
-import org.tan.TownsAndNations.commands.AdminSubcommands.UnclaimAdminCommand;
-import org.tan.TownsAndNations.commands.AdminSubcommands.getRareItem;
+import org.tan.TownsAndNations.commands.AdminSubcommands.*;
 import org.tan.TownsAndNations.commands.debugsubcommands.*;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 

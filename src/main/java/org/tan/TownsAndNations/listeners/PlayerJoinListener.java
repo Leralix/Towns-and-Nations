@@ -1,5 +1,6 @@
 package org.tan.TownsAndNations.listeners;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,6 +21,13 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+
+
+
+        player.sendMessage(PlaceholderAPI.setPlaceholders(event.getPlayer(), "test1 %T&N_playerTownName%"));
+        player.sendMessage(PlaceholderAPI.setPlaceholders(event.getPlayer(), "test1 %T&N_playerTownRank%"));
+        player.sendMessage(PlaceholderAPI.setPlaceholders(event.getPlayer(), "test1 %T&N_playerTownRankColoredName%"));
+
 
         PlayerData playerStat = PlayerDataStorage.get(player);
 

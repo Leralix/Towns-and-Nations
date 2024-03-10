@@ -79,7 +79,9 @@ public class PlayerDataStorage {
     public static PlayerData get(Player player) {
         return get(player.getUniqueId().toString());
     }
-
+    public static PlayerData get(UUID player) {
+        return get(player.toString());
+    }
     public static PlayerData get(String id){
 
         if(isSqlEnable()){

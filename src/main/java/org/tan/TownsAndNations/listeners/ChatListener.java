@@ -45,7 +45,13 @@ public class ChatListener implements Listener {
 
         String message = event.getMessage();
         event.setCancelled(true);
-        removePlayer(player);
+
+
+        if (message.equalsIgnoreCase("cancel")) {
+            player.sendMessage(ChatUtils.getTANString() + Lang.CANCELLED_ACTION.get());
+            removePlayer(player);
+            return;
+        }
 
         switch (chatData.getCategory()) {
 
@@ -96,9 +102,9 @@ public class ChatListener implements Listener {
             return;
         }
 
+        removePlayer(player);
         TownDataStorage.get(player).addRank(message);
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, message));
-
     }
     private void ChangeRegionDescription(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newDesc) {
         String regionID = chatData.getData().get(REGION_ID);
@@ -110,17 +116,19 @@ public class ChatListener implements Listener {
             return;
         }
 
+        removePlayer(player);
         RegionDataStorage.get(regionID).setDescription(newDesc);
         player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
     }
     private void RegionDonation(Player player, String stringAmount) {
-        int amount;
-        try {amount = Integer.parseInt(stringAmount);}
-        catch (NumberFormatException e) {
+
+        Integer amount = parseStringToInt(stringAmount);
+        if(amount == null){
             player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
-            throw new RuntimeException(e);
+            return;
         }
 
+        removePlayer(player);
         int playerBalance = getBalance(player);
         PlayerChatListenerStorage.removePlayer(player);
 
@@ -150,6 +158,7 @@ public class ChatListener implements Listener {
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR.get());
             return;
         }
+        removePlayer(player);
         int hexColorCode = hexColorToInt(newColorCode);
         town.setChunkColor(hexColorCode);
         player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS.get());
@@ -170,6 +179,7 @@ public class ChatListener implements Listener {
             return;
         }
 
+        removePlayer(player);
         regionData.renameRegion(regionCost, newName);
         player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
     }
@@ -190,6 +200,7 @@ public class ChatListener implements Listener {
             return;
         }
 
+        removePlayer(player);
         TownUtil.renameTown(player, townCost, newName, town);
         removePlayer(player);
     }
@@ -202,16 +213,17 @@ public class ChatListener implements Listener {
             return;
         }
 
+        removePlayer(player);
         TownDataStorage.get(townId).setDescription(newDesc);
         player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
     }
     private void TownDonation(Player player, String message) {
-        int amount;
-        try {amount = Integer.parseInt(message);}
-        catch (NumberFormatException e) {
+        Integer amount = parseStringToInt(message);
+        if (amount == null) {
             player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
-            throw new RuntimeException(e);
+            return;
         }
+        removePlayer(player);
         DonateToTown(player, amount);
     }
     private void RenameRank(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newRankName) {
@@ -223,6 +235,7 @@ public class ChatListener implements Listener {
             return;
         }
 
+        removePlayer(player);
         TownData playerTown = TownDataStorage.get(player);
         String rankName = chatData.getData().get(RANK_NAME);
         TownRank playerTownRank = playerTown.getRank(rankName);
@@ -244,9 +257,18 @@ public class ChatListener implements Listener {
             playerTown.removeRank(rankName);
         }
 
-
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, newRankName));
-
         removePlayer(player);
     }
+
+    public static Integer parseStringToInt(String stringAmount) {
+        if (stringAmount != null && stringAmount.matches("-?\\d+")) {
+            return Integer.valueOf(stringAmount);
+        } else {
+            return null;
+        }
+    }
+
 }
+
+

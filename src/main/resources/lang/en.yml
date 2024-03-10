@@ -39,6 +39,7 @@ language:
   CORRECT_SYNTAX_INFO: "§cCorrect syntax: {0}"
   MESSAGE_TOO_LONG: "§cMessage is too long: {0} max"
   ECONOMY_EXISTS: "§cA plugin is handling the economy. Use it instead"
+  CANCELLED_ACTION: "§cAction cancelled"
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f asked to join the town. You can find the application in the members menu"
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "You successfully asked to join the town: §9{0}§f. Right click on the city to cancel"
@@ -489,3 +490,8 @@ language:
   CHUNK_ENTER_REGION: "§fEntering the region: §9{0}"
   CHUNK_ENTER_TOWN_AT_WAR: "§cYou are at war with this town. Players have been alerted that you crossed the border"
   CHUNK_INTRUSION_ALERT: "§cAn ennemy from the town {0} has enter your borders: {1}"
+  #PlaceHolderAPI
+  NO_TOWN: "No town"
+  NO_REGION: "No region"
+  NO_KINGDOM: "No kingdom"
+

@@ -3,7 +3,7 @@ version: '${version}'
 main: org.tan.TownsAndNations.TownsAndNations
 api-version: 1.19
 authors: [ Leralix ]
-softdepend: [Vault]
+softdepend: [Vault, PlaceholderAPI]
 description: A town plugin with rp tools
 commands:
   tan:
