@@ -1,8 +1,9 @@
 language:
   WELCOME: "§fBienvenue"
   LANGUAGE_SUCCESSFULLY_LOADED: "Langue Française chargée"
-  PLUGIN_STRING: "[TAN]"
-  NEWSLETTER_STRING: "§f[TAN - Newsletter]§f "
+  PLUGIN_STRING: "§6[T&N]§f"
+  PLUGIN_DEBUG_STRING: "§c[T&N - Debug]§f"
+  NEWSLETTER_STRING: "§f[T&N - Newsletter]§f "
   #Common errors
   PLAYER_NO_TOWN: "§cVous n'avez pas de villes"
   TOWN_NO_REGION: "§cVotre ville ne fait pas partie d'une région"
@@ -15,6 +16,7 @@ language:
   PLAYER_NOT_ONLINE: "§cLe joueur n'est pas en ligne"
   PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION: "§cLe leader de la ville est le seul à pouvoir réaliser cette action"
   CHUNK_NOT_CLAIMED: "§cCe chunk n'est pas revendiqué"
+  CANT_KICK_REGIONAL_CAPITAL: "§cVous ne pouvez pas retirer la capitale régionale de sa région"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 {1}: §f{2}"
@@ -23,6 +25,10 @@ language:
   NEW_VERSION_AVAILABLE_2: "§cTélechargez là sur Spigot ou Github"
   #Level up
   BASIC_LEVEL_UP: "§aNiveau supérieur !"
+  #Teleportation
+  TELEPORTATION_CANCELLED: "§cTéléportation annulée"
+  TELEPORTATION_IN_X_SECONDS: "§fTeleportation dans §a{0}§f secondes"
+  TELEPORTATION_IN_X_SECONDS_NOT_MOVE: "§fTéléportation dans §a{0}§f seconds. Ne bougez pas"
   #ChunkListener
   CHUNK_BELONGS_TO: "§cCe chunk appartient à: §9{0}"
   #Commands
@@ -38,8 +44,11 @@ language:
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Candidature envoyée à la ville: §9{0}§f. Clic droit pour annuler"
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Demande annulée"
   PLAYER_TOWN_NOT_RECRUITING: "§cCette ville ne recrute pas"
-  #Create town
+  #BROADCAST
   TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f à fondé la ville: §9{1}"
+  TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c a quitté la ville !"
+  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f à créé avec succès la région: §9{1}"
+  GUI_REGION_KICK_TOWN_BROADCAST: "§fLa ville §9{0}§f a été exclue de la région"
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "Claim un chunk"
   CHUNK_ALREADY_CLAIMED_WARNING: "§cCe chunk est déjà sous contrôle de: §9{0}"
@@ -84,8 +93,6 @@ language:
   CHAT_SCOPE_NOT_FOUND: "§cLe canal renseigné est inconnu"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Ajout de §6+{0}✦§f à §3{1}"
-  #Leave a town
-  TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c a quitté la ville !"
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Ouvrir le GUI de Towns & Nations"
   #Pay command
@@ -176,7 +183,7 @@ language:
   GUI_TOWN_INFO_DESC2: "§fMembres: §9{0}♣"
   GUI_TOWN_INFO_DESC3: "§fChunks: §2{0}♦"
   GUI_TOWN_INFO_DESC4: "§fTrésorerie: §6{0}✦"
-  GUI_TOWN_INFO_DESC5_REGION: "§fRegion: §6{0}✦"
+  GUI_TOWN_INFO_DESC5_REGION: "§fRégion: §6{0}"
   GUI_TOWN_INFO_DESC5_NO_REGION: "§fPas de région"
   GUI_TOWN_INFO_TOWN_RELATION: "§fRelation actuelle avec la ville: §e{0}"
   GUI_TOWN_INFO_IS_RECRUITING: "§fRecrutement: §aCandidatures acceptés"
@@ -362,7 +369,7 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT: "Entrez le nouveau message de ville"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS: "Message de ville changé avec succès"
   GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT: "Entrez le nouveau message"
-  GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT_SUCCESS: "Message modifié avec succès"
+  CHANGE_MESSAGE_SUCCESS: "Message modifié avec succès"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aModifier les candidatures de ville"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fLa ville §aaccepte §fles candidatures"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fLa ville §cn'accepte pas §fles candidatures"
@@ -373,6 +380,9 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3: "§fCoût: §6{0}✦"
   GUI_TOWN_SETTINGS_WRITE_NEW_NAME_IN_CHAT: "§fEcrivez le nouveau nom dans le chat"
   GUI_TOWN_SETTINGS_WRITE_NEW_NAME_IN_CHAT_SUCCESS: "§aNom changé avec succès"
+  GUI_TOWN_SETTINGS_QUIT_REGION: "§aQuitter la région"
+  GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION: "§cQuitter la région §9{0}"
+  GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_NOREGION: "§fNous n'appartenez pas à une région ou vous n'êtes pas la capitale régionale"
   GUI_TOWN_SETTINGS_NEW_TOWN_NAME_HISTORY: "§fModifier le nom de la ville: §9{0}§f -> §9{1}"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR: "§aModifier la couleurs des chunks"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1: "§fChange la couleur des chunks claims sur la carte dynamique"
@@ -390,12 +400,12 @@ language:
   GUI_REGION_BROWSE_DESC1: "§fIl y a un total de §6{0} §fregions"
   GUI_REGION_BROWSE_DESC2: "§fClic gauche pour consulter les régions"
   WRITE_IN_CHAT_NEW_REGION_NAME: "§fEcrivez dans le chat le nom de la nouvelle région"
-  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f à créé avec succès la région: §9{1}"
   GUI_REGION_INFO_DESC0: "§7§o\"{0}\"" #town's quote
   GUI_REGION_INFO_DESC1: "§fCapitale régionale: §3{0}"
   GUI_REGION_INFO_DESC2: "§fNombre de villes: §2{0}"
   GUI_REGION_INFO_DESC3: "§fJoueurs total: §9{0}♣"
   GUI_REGION_INFO_DESC4: "§fArgent : §6{0}✦"
+  GUI_REGION_INFO_DESC5: "§fNombre de chunk régional: §2{0}♦"
   GUI_REGION_TOWN_LIST: "§aListe des villes"
   GUI_REGION_TOWN_LIST_DESC1: "§fClic gauche pour consulter les villes"
   GUI_REGION_CHANGE_CAPITAL: "§aModifier la capitale régionale"
@@ -411,8 +421,11 @@ language:
   GUI_REGION_CHANGE_DESCRIPTION_DESC1: "§fMessage actuel: §7§o\"{0}\""
   GUI_REGION_CHANGE_DESCRIPTION_DESC2: "§fClic gauche pour changer la description"
   GUI_INVITE_TOWN_TO_REGION: "§aInvite une ville a la région"
+  GUI_KICK_TOWN_TO_REGION: "§aExclure une ville de la région"
   GUI_REGION_INVITE_TOWN_DESC1: "§fClic gauche pour inviter cette ville a la région"
+  GUI_REGION_KICK_TOWN_DESC1: "§fClic gauche pour retirer la ville de la région"
   ##Admin GUI
+  ADMIN_GUI_REGION_DESC: "§fClic pour gérer les régions"
   ADMIN_GUI_TOWN_DESC: "§fClic pour gérer les villes"
   ADMIN_GUI_PLAYER_DESC: "§fClic pour gérer les joueurs"
   ADMIN_GUI_LEFT_CLICK_TO_MANAGE_TOWN: "§fClic droit pour gérer la ville"
@@ -425,6 +438,11 @@ language:
   ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1: "§fDirigeant actuel: §3{0}"
   ADMIN_GUI_DELETE_TOWN: "§aSupprimer la ville"
   ADMIN_GUI_DELETE_TOWN_DESC1: "§cSupprimer la ville: §9{0}"
+  ADMIN_GUI_TOWN_PLAYER_TOWN: "§fVille actuelle du joueur: §e{0}"
+  ADMIN_GUI_CANT_DELETE_REGIONAL_CAPITAL: "§cVous ne pouvez pas supprimer la capitale régionale"
+  ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1: "§fClic gauche pour exclure le joueur de la ville"
+  ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2: "§cVous ne pouvez pas exclure le dirigeant de la ville"
+  ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS: "§3{0}§f a quitté la ville §3{1}"
   #Transaction history
   TRANSACTION_HISTORY: "§f[{0}] - §3{1} §f: {2}✦"
   DONATION_SINGLE_LINE_1: "§a+{0}✦"

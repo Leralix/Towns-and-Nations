@@ -21,7 +21,6 @@ import org.tan.TownsAndNations.utils.*;
 import java.util.*;
 
 import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
-import static org.tan.TownsAndNations.enums.ChatCategory.*;
 import static org.tan.TownsAndNations.enums.MessageKey.*;
 import static org.tan.TownsAndNations.enums.SoundEnum.MINOR_LEVEL_UP;
 import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.removePlayer;
@@ -44,230 +43,210 @@ public class ChatListener implements Listener {
         if(chatData == null)
             return;
 
+        String message = event.getMessage();
+        event.setCancelled(true);
+        removePlayer(player);
 
+        switch (chatData.getCategory()) {
 
-        if(chatData.getCategory() == CREATE_CITY){
-            int townPrice = Integer.parseInt(chatData.getData().get(COST));
-            String townName = event.getMessage();
+            case CREATE_CITY:
+                int townPrice = Integer.parseInt(chatData.getData().get(COST));
+                TownUtil.CreateTown(player, townPrice, message);
+                break;
 
-            TownUtil.CreateTown(player, townPrice, townName);
+            case TOWN_DONATION:
+                TownDonation(player, message);
+                break;
 
-            event.setCancelled(true);
+            case RANK_CREATION:
+                RankCreation(player, message);
+                break;
+            case RANK_RENAME:
+                RenameRank(player, chatData, message);
+                break;
+            case CHANGE_TOWN_DESCRIPTION:
+                ChangeTownDescription(player,chatData, message);
+                break;
+            case CHANGE_TOWN_NAME:
+                ChangeTownName(player, chatData, message);
+                break;
+            case CHANGE_REGION_NAME:
+                ChangeRegionName(player, chatData, message);
+                break;
+            case CHANGE_CHUNK_COLOR:
+                ChangeChunkColor(player, chatData, message);
+                break;
+            case CREATE_REGION:
+                RegionDataStorage.createNewRegion(player, message);
+                break;
+            case REGION_DONATION:
+                RegionDonation(player, message);
+                break;
+            case CHANGE_REGION_DESCRIPTION:
+                ChangeRegionDescription(player, chatData, message);
+                break;    
+        }
+    }
+
+    private void RankCreation(Player player, String message) {
+        int maxNameSize = ConfigUtil.getCustomConfig("config.yml").getInt("RankNameSize");
+
+        if(message.length() > maxNameSize){
+            player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxNameSize));
+            return;
         }
 
-        else if(chatData.getCategory() == TOWN_DONATION){
+        TownDataStorage.get(player).addRank(message);
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, message));
 
-            String stringAmount = event.getMessage();
+    }
+    private void ChangeRegionDescription(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newDesc) {
+        String regionID = chatData.getData().get(REGION_ID);
 
-            int amount;
-            try {amount = Integer.parseInt(stringAmount);}
-            catch (NumberFormatException e) {
-                player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
-                throw new RuntimeException(e);
-            }
-
-            DonateToTown(player, amount);
-
-            event.setCancelled(true);
+        FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
+        int maxSize = config.getInt("TownDescSize");
+        if(newDesc.length() > maxSize){
+            player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
+            return;
         }
 
-        else if(chatData.getCategory() == RANK_CREATION){
-            removePlayer(player);
-            String rankName = event.getMessage();
-
-            FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
-            int maxSize = config.getInt("RankNameSize");
-            if(rankName.length() > maxSize){
-                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
-                event.setCancelled(true);
-            }
-
-            TownData playerTown = TownDataStorage.get(player);
-            playerTown.addRank(rankName);
-            Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, rankName));
-            event.setCancelled(true);
-
+        RegionDataStorage.get(regionID).setDescription(newDesc);
+        player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
+    }
+    private void RegionDonation(Player player, String stringAmount) {
+        int amount;
+        try {amount = Integer.parseInt(stringAmount);}
+        catch (NumberFormatException e) {
+            player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
+            throw new RuntimeException(e);
         }
 
-        else if(chatData.getCategory() == RANK_RENAME){
-            PlayerChatListenerStorage.PlayerChatData ChatData = PlayerChatListenerStorage.getPlayerData(playerUUID);
+        int playerBalance = getBalance(player);
+        PlayerChatListenerStorage.removePlayer(player);
 
-            String newRankName = event.getMessage();
-
-            FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
-            int maxSize = config.getInt("RankNameSize");
-            if(newRankName.length() > maxSize){
-                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
-                event.setCancelled(true);
-            }
-
-            TownData playerTown = TownDataStorage.get(player);
-            String rankName = ChatData.getData().get(RANK_NAME);
-            TownRank playerTownRank = playerTown.getRank(rankName);
-
-            List<String> playerList = playerTownRank.getPlayers(playerTown.getID());
-            for(String playerWithRoleUUID : playerList){
-                Objects.requireNonNull(PlayerDataStorage.get(playerWithRoleUUID)).setTownRank(newRankName);
-            }
-
-
-            if(Objects.equals(playerTownRank.getName(), playerTown.getTownDefaultRankName())){
-                playerTown.setTownDefaultRank(newRankName);
-            }
-
-            playerTownRank.setName(playerTown.getID(),newRankName);
-
-            if(!isSqlEnable()){ //Needed to update the Hashmap, not for the DB
-                playerTown.addRank(newRankName,playerTownRank);
-                playerTown.removeRank(rankName);
-            }
-
-
-            Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, newRankName));
-
-            removePlayer(player);
-            event.setCancelled(true);
-
+        if(playerBalance < amount ){
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.get());
+            return;
+        }
+        if(amount <= 0 ){
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NEED_1_OR_ABOVE.get());
+            return;
         }
 
-        else if(chatData.getCategory() == CHANGE_TOWN_DESCRIPTION){
+        RegionData playerRegion = RegionDataStorage.get(player);
+        removeFromBalance(player, amount);
+        playerRegion.addBalance(amount);
+        playerRegion.getDonationHistory().add(player.getName(),player.getUniqueId().toString(),amount);
 
-            String newDesc = event.getMessage();
-            String townId = chatData.getData().get(TOWN_ID);
+        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_REGION.get(amount));
+        SoundUtil.playSound(player, MINOR_LEVEL_UP);
+    }
+    private void ChangeChunkColor(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newColorCode) {
+        removePlayer(player);
 
-            FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
-            int maxSize = config.getInt("TownDescSize");
-            if(newDesc.length() > maxSize){
-                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
-                event.setCancelled(true);
-            }
+        TownData town = TownDataStorage.get(chatData.getData().get(TOWN_ID));
 
+        if(!isValidColorCode(newColorCode)){
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR.get());
+            return;
+        }
+        int hexColorCode = hexColorToInt(newColorCode);
+        town.setChunkColor(hexColorCode);
+        player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS.get());
+    }
+    private void ChangeRegionName(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newName) {
+        RegionData regionData = RegionDataStorage.get(chatData.getData().get(REGION_ID));
+        int regionCost = Integer.parseInt(chatData.getData().get(COST));
 
-            TownDataStorage.get(townId).setDescription(newDesc);
-            player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
-            removePlayer(player);
-            event.setCancelled(true);
+        int maxSize = ConfigUtil.getCustomConfig("config.yml").getInt("RegionNameSize");
 
+        if(newName.length() > maxSize){
+            player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
+            return;
         }
 
-        else if(chatData.getCategory() == CHANGE_TOWN_NAME){
-            event.setCancelled(true);
-            TownData town = TownDataStorage.get(chatData.getData().get(TOWN_ID));
-            int townCost = Integer.parseInt(chatData.getData().get(COST));
-
-            String newName = event.getMessage();
-
-            FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
-            int maxSize = config.getInt("TownNameSize");
-
-            if(newName.length() > maxSize){
-                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
-
-            }
-
-            if(town.getBalance() <= townCost){
-                player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
-            }
-
-            TownUtil.renameTown(player, townCost, newName, town);
-            removePlayer(player);
+        if(regionData.getBalance() <= regionCost){
+            player.sendMessage(ChatUtils.getTANString() + Lang.REGION_NOT_ENOUGH_MONEY.get());
+            return;
         }
 
-        else if(chatData.getCategory() == CHANGE_REGION_NAME){
-            event.setCancelled(true);
-            RegionData regionData = RegionDataStorage.get(chatData.getData().get(REGION_ID));
-            int regionCost = Integer.parseInt(chatData.getData().get(COST));
+        regionData.renameRegion(regionCost, newName);
+        player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
+    }
+    private void ChangeTownName(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newName) {
 
-            String newName = event.getMessage();
+        TownData town = TownDataStorage.get(chatData.getData().get(TOWN_ID));
+        int townCost = Integer.parseInt(chatData.getData().get(COST));
 
-            FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
-            int maxSize = config.getInt("RegionNameSize");
+        int maxSize = ConfigUtil.getCustomConfig("config.yml").getInt("TownNameSize");
 
-            if(newName.length() > maxSize){
-                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
-            }
-
-            if(regionData.getBalance() <= regionCost){
-                player.sendMessage(ChatUtils.getTANString() + Lang.REGION_NOT_ENOUGH_MONEY.get());
-            }
-
-            regionData.renameRegion(regionCost, newName);
-            player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
-            removePlayer(player);
+        if(newName.length() > maxSize){
+            player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
+            return;
         }
 
-        else if(chatData.getCategory() == CHANGE_CHUNK_COLOR){
-            event.setCancelled(true);
-            removePlayer(player);
-
-            TownData town = TownDataStorage.get(chatData.getData().get(TOWN_ID));
-
-            String newColorCode = event.getMessage();
-            if(!isValidColorCode(newColorCode)){
-                player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR.get());
-                return;
-            }
-            int hexColorCode = hexColorToInt(newColorCode);
-            town.setChunkColor(hexColorCode);
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS.get());
-        }
-        else if(chatData.getCategory() == CREATE_REGION){
-            event.setCancelled(true);
-            removePlayer(player);
-            String regionName = event.getMessage();
-            RegionDataStorage.createNewRegion(player, regionName);
-        }
-        else if(chatData.getCategory() == REGION_DONATION){
-            event.setCancelled(true);
-            removePlayer(player);
-            String stringAmount = event.getMessage();
-
-            int amount;
-            try {amount = Integer.parseInt(stringAmount);}
-            catch (NumberFormatException e) {
-                player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
-                throw new RuntimeException(e);
-            }
-
-            int playerBalance = getBalance(player);
-            PlayerChatListenerStorage.removePlayer(player);
-
-            if(playerBalance < amount ){
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.get());
-                return;
-            }
-            if(amount <= 0 ){
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NEED_1_OR_ABOVE.get());
-                return;
-            }
-
-            RegionData playerRegion = RegionDataStorage.get(player);
-
-            removeFromBalance(player, amount);
-            playerRegion.addBalance(amount);
-
-            playerRegion.getDonationHistory().add(player.getName(),player.getUniqueId().toString(),amount);
-
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_REGION.get(amount));
-            SoundUtil.playSound(player, MINOR_LEVEL_UP);
-        }
-        else if(chatData.getCategory() == CHANGE_REGION_DESCRIPTION){
-            String newDesc = event.getMessage();
-            String regionID = chatData.getData().get(REGION_ID);
-
-            FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
-            int maxSize = config.getInt("TownDescSize");
-            if(newDesc.length() > maxSize){
-                player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
-                event.setCancelled(true);
-            }
-
-
-            RegionDataStorage.get(regionID).setDescription(newDesc);
-            player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
-            removePlayer(player);
-            event.setCancelled(true);
+        if(town.getBalance() <= townCost){
+            player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
+            return;
         }
 
+        TownUtil.renameTown(player, townCost, newName, town);
+        removePlayer(player);
+    }
+    private void ChangeTownDescription(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newDesc) {
+        String townId = chatData.getData().get(TOWN_ID);
+        int maxSize = ConfigUtil.getCustomConfig("config.yml").getInt("TownDescSize");
+
+        if(newDesc.length() > maxSize){
+            player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
+            return;
+        }
+
+        TownDataStorage.get(townId).setDescription(newDesc);
+        player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
+    }
+    private void TownDonation(Player player, String message) {
+        int amount;
+        try {amount = Integer.parseInt(message);}
+        catch (NumberFormatException e) {
+            player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
+            throw new RuntimeException(e);
+        }
+        DonateToTown(player, amount);
+    }
+    private void RenameRank(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newRankName) {
+
+        FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
+        int maxSize = config.getInt("RankNameSize");
+        if(newRankName.length() > maxSize){
+            player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
+            return;
+        }
+
+        TownData playerTown = TownDataStorage.get(player);
+        String rankName = chatData.getData().get(RANK_NAME);
+        TownRank playerTownRank = playerTown.getRank(rankName);
+
+        List<String> playerList = playerTownRank.getPlayers(playerTown.getID());
+        for(String playerWithRoleUUID : playerList){
+            PlayerDataStorage.get(playerWithRoleUUID).setTownRank(newRankName);
+        }
+
+
+        if(Objects.equals(playerTownRank.getName(), playerTown.getTownDefaultRankName())){
+            playerTown.setTownDefaultRank(newRankName);
+        }
+
+        playerTownRank.setName(playerTown.getID(),newRankName);
+
+        if(!isSqlEnable()){ //Needed to update the Hashmap, not for the DB
+            playerTown.addRank(newRankName,playerTownRank);
+            playerTown.removeRank(rankName);
+        }
+
+
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, newRankName));
+
+        removePlayer(player);
     }
 }

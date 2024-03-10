@@ -36,12 +36,10 @@ public class TownUtil {
     public static void CreateTown(Player player, int townCost, String townName){
 
         PlayerData playerData = PlayerDataStorage.get(player);
-
         int playerBalance = getBalance(player);
 
         if(playerBalance < townCost){
             player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(townCost - playerBalance));
-            PlayerChatListenerStorage.removePlayer(player);
             return;
         }
 
@@ -55,10 +53,6 @@ public class TownUtil {
 
 
         Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(),townName));
-
-        PlayerChatListenerStorage.removePlayer(player);
-
-
         TownData newTown = TownDataStorage.newTown(townName,player);
         playerData.setTownRank(newTown.getTownDefaultRankName()); //2. Set player rank to default rank
         playerData.setTownId(newTown.getID()); //3. Set player town to the new town
