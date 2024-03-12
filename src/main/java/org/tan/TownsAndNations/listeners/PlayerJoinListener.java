@@ -22,13 +22,6 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-
-
-        player.sendMessage(PlaceholderAPI.setPlaceholders(event.getPlayer(), "test1 %T&N_playerTownName%"));
-        player.sendMessage(PlaceholderAPI.setPlaceholders(event.getPlayer(), "test1 %T&N_playerTownRank%"));
-        player.sendMessage(PlaceholderAPI.setPlaceholders(event.getPlayer(), "test1 %T&N_playerTownRankColoredName%"));
-
-
         PlayerData playerStat = PlayerDataStorage.get(player);
 
         setIndividualScoreBoard(player);

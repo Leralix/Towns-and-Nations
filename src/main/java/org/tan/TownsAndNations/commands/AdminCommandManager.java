@@ -23,6 +23,7 @@ public class AdminCommandManager implements CommandExecutor, TabExecutor, TabCom
 
         subCommands.add(new UnclaimAdminCommand());
         subCommands.add(new OpenAdminGUI());
+        subCommands.add(new SudoPlayer());
     }
 
     @Override

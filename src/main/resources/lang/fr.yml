@@ -1,8 +1,8 @@
 language:
   WELCOME: "§fBienvenue"
   LANGUAGE_SUCCESSFULLY_LOADED: "Langue Française chargée"
-  PLUGIN_STRING: "§6[T&N]§f"
-  PLUGIN_DEBUG_STRING: "§c[T&N - Debug]§f"
+  PLUGIN_STRING: "§6[T&N]§f "
+  PLUGIN_DEBUG_STRING: "§c[T&N - Debug]§f "
   NEWSLETTER_STRING: "§f[T&N - Newsletter]§f "
   #Common errors
   PLAYER_NO_TOWN: "§cVous n'avez pas de villes"
@@ -39,6 +39,7 @@ language:
   CORRECT_SYNTAX_INFO: "§cSyntaxe correcte: {0}"
   MESSAGE_TOO_LONG: "§cLe message est trop long: {0} max"
   ECONOMY_EXISTS: "§cUn plugin d'économie existe déjà"
+  CANCELLED_ACTION: "§cAction annulée"
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f demande à rejoindre une ville. Vous pouvez retrouver la demande dans le menu des membres"
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Candidature envoyée à la ville: §9{0}§f. Clic droit pour annuler"
@@ -112,6 +113,9 @@ language:
   #Debug commands
   COMMAND_GENERIC_SUCCESS: "§aCommande exécutée avec succès"
   ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED: "§cCe chunk n'est pas claim"
+  #SUDO command
+  SUDO_PLAYER_ADDED: "§3{0}§f est dorénavant en mode sudo"
+  SUDO_PLAYER_REMOVED: "§3{0}§f n'est plus en mode sudo"
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cVous n'avez pas assez d'argent pour réaliser cette action"
   LEADER_NOT_ONLINE: "§cLe leader de la ville n'est pas en ligne"
@@ -486,3 +490,8 @@ language:
   CHUNK_ENTER_REGION: "§fVous entrez dans la région: §9{0}"
   CHUNK_ENTER_TOWN_AT_WAR: "§cVous êtes en guerre avec cette ville. Les joueurs de la ville ont été alerté de votre présence"
   CHUNK_INTRUSION_ALERT: "§cUn ennemi de la ville {0} est entré dans vos frontières: {1}"
+  #PlaceHolderAPI
+  NO_TOWN: "Pas de ville"
+  NO_REGION: "Pas de région"
+  NO_KINGDOM: "Pas de royaume"
+

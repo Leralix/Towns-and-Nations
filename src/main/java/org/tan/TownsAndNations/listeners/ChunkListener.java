@@ -23,6 +23,7 @@ import org.bukkit.inventory.FurnaceInventory;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.SudoPlayerStorage;
 
 import static org.tan.TownsAndNations.enums.ChunkPermissionType.*;
 
@@ -31,17 +32,24 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void OnBlockBreak(BlockBreakEvent event){
 
+        Player player = event.getPlayer();
+        if(SudoPlayerStorage.isSudoPlayer(player))
+            return;
+
         Chunk chunk = event.getBlock().getLocation().getChunk();
 
         if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
             return;
 
-        if(!CanPlayerDoAction(chunk, event.getPlayer(),BREAK)){
+        if(!CanPlayerDoAction(chunk, player,BREAK)){
             event.setCancelled(true);
         };
     }
     @EventHandler
     public void onBucketFillEvent(PlayerBucketFillEvent event){
+        Player player = event.getPlayer();
+        if(SudoPlayerStorage.isSudoPlayer(player))
+            return;
 
         Chunk chunk = event.getBlock().getLocation().getChunk();
 
@@ -49,26 +57,32 @@ public class ChunkListener implements Listener {
             return;
 
 
-        if(!CanPlayerDoAction(chunk, event.getPlayer(),BREAK)){
+        if(!CanPlayerDoAction(chunk, player,BREAK)){
             event.setCancelled(true);
         };
 
     }
     @EventHandler
     public void onBucketEmptyEvent(PlayerBucketEmptyEvent event){
+        Player player = event.getPlayer();
+        if(SudoPlayerStorage.isSudoPlayer(player))
+            return;
 
         Chunk chunk = event.getBlock().getLocation().getChunk();
 
         if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
             return;
 
-        if(!CanPlayerDoAction(chunk, event.getPlayer(),PLACE)){
+        if(!CanPlayerDoAction(chunk, player,PLACE)){
             event.setCancelled(true);
         };
 
     }
     @EventHandler
     public void OnPlayerInteractEvent(PlayerInteractEvent event){
+        Player player = event.getPlayer();
+        if(SudoPlayerStorage.isSudoPlayer(player))
+            return;
 
         Block block = event.getClickedBlock();
 
@@ -102,7 +116,7 @@ public class ChunkListener implements Listener {
                 materialBlock == Material.DROPPER ||
                 materialBlock == Material.BREWING_STAND
             ){
-                if(!CanPlayerDoAction(chunk, event.getPlayer(),CHEST)){
+                if(!CanPlayerDoAction(chunk, player,CHEST)){
                     event.setCancelled(true);
                 }
             }
@@ -110,7 +124,7 @@ public class ChunkListener implements Listener {
                     Tag.DOORS.isTagged(materialType) ||
                     Tag.TRAPDOORS.isTagged(materialType) ||
                     Tag.FENCE_GATES.isTagged(materialType)){
-                if(!CanPlayerDoAction(chunk, event.getPlayer(),DOOR)){
+                if(!CanPlayerDoAction(chunk, player,DOOR)){
                     event.setCancelled(true);
                 };
             }
@@ -128,7 +142,7 @@ public class ChunkListener implements Listener {
                     materialBlock == Material.BEACON
 
             ) {
-                if(!CanPlayerDoAction(chunk, event.getPlayer(),DECORATIVE_BLOCK)){
+                if(!CanPlayerDoAction(chunk, player,DECORATIVE_BLOCK)){
                     event.setCancelled(true);
                 }
             }
@@ -136,7 +150,7 @@ public class ChunkListener implements Listener {
                     materialBlock == Material.JUKEBOX ||
                     materialBlock == Material.NOTE_BLOCK
             ) {
-                if(!CanPlayerDoAction(chunk, event.getPlayer(),MUSIC_BLOCK)){
+                if(!CanPlayerDoAction(chunk, player,MUSIC_BLOCK)){
                     event.setCancelled(true);
                 }
             }
@@ -145,7 +159,7 @@ public class ChunkListener implements Listener {
                     materialBlock == Material.REPEATER ||
                     materialBlock == Material.COMPARATOR ||
                     materialBlock == Material.DAYLIGHT_DETECTOR) {
-                if(!CanPlayerDoAction(chunk, event.getPlayer(),USE_REDSTONE)){
+                if(!CanPlayerDoAction(chunk, player,USE_REDSTONE)){
                     event.setCancelled(true);
                 }
             }
@@ -155,7 +169,7 @@ public class ChunkListener implements Listener {
                     (event.getClickedBlock().getType() == Material.FARMLAND )){
                     //event.getClickedBlock().getType() == Material.LEGACY_SOIL)) { // LEGACY
 
-                if(!CanPlayerDoAction(chunk, event.getPlayer(),BREAK)){
+                if(!CanPlayerDoAction(chunk, player,BREAK)){
                     event.setCancelled(true);
                 };
             }
@@ -169,21 +183,29 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void OnBlocPlaced(BlockPlaceEvent event){
 
+        Player player = event.getPlayer();
+        if(SudoPlayerStorage.isSudoPlayer(player))
+            return;
+
         Block block = event.getBlock();
         Chunk chunk = block.getLocation().getChunk();
 
         if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
             return;
 
-        if(!CanPlayerDoAction(chunk, event.getPlayer(),PLACE)){
+        if(!CanPlayerDoAction(chunk, player,PLACE)){
             event.setCancelled(true);
         };
 
     }
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+
         if(event.getDamager() instanceof Player player) {
             Entity entity = event.getEntity();
+
+            if(SudoPlayerStorage.isSudoPlayer(player))
+                return;
 
 
             if( entity instanceof Allay ||
@@ -267,6 +289,9 @@ public class ChunkListener implements Listener {
             if(((Projectile) event.getDamager()).getShooter() instanceof Player player){
                 Entity entity = event.getEntity();
 
+                if(SudoPlayerStorage.isSudoPlayer(player))
+                    return;
+
                 if(
                     entity instanceof Allay ||
                     entity instanceof Axolotl ||
@@ -343,8 +368,10 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
-        if(event.getPlayer() instanceof Player) {
-            Player player = (Player) event.getPlayer();
+        if(event.getPlayer() instanceof Player player){
+
+            if(SudoPlayerStorage.isSudoPlayer(player))
+                return;
 
             if(event.getInventory() instanceof FurnaceInventory ||
                     event.getInventory() instanceof BlastFurnace ||
@@ -368,10 +395,12 @@ public class ChunkListener implements Listener {
     }
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-        if(event.getRightClicked() instanceof ItemFrame) {
-            Player player = event.getPlayer();
-            ItemFrame itemFrame = (ItemFrame) event.getRightClicked();
 
+        Player player = event.getPlayer();
+        if(SudoPlayerStorage.isSudoPlayer(player))
+            return;
+
+        if(event.getRightClicked() instanceof ItemFrame itemFrame) {
             Chunk chunk = itemFrame.getLocation().getChunk();
 
             if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
@@ -382,10 +411,7 @@ public class ChunkListener implements Listener {
             }
         }
 
-        if(event.getRightClicked() instanceof LeashHitch) {
-            Player player = event.getPlayer();
-            LeashHitch leashHitch = (LeashHitch) event.getRightClicked();
-
+        else if(event.getRightClicked() instanceof LeashHitch leashHitch) {
             Chunk chunk = leashHitch.getLocation().getChunk();
 
             if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
@@ -397,13 +423,9 @@ public class ChunkListener implements Listener {
 
         }
 
-        if(event.getRightClicked() instanceof LivingEntity) {
-
-            LivingEntity livingEntity = (LivingEntity) event.getRightClicked();
-
+        else if(event.getRightClicked() instanceof LivingEntity livingEntity) {
             if(livingEntity.isLeashed()) {
 
-                Player player = event.getPlayer();
                 Chunk chunk = livingEntity.getLocation().getChunk();
 
                 if (!NewClaimedChunkStorage.isChunkClaimed(chunk))
@@ -411,16 +433,17 @@ public class ChunkListener implements Listener {
 
                 if(!CanPlayerDoAction(chunk, player,LEAD)){
                     event.setCancelled(true);
-                };
+                }
             }
         }
     }
 
     @EventHandler
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
-        if(event.getRightClicked() instanceof ArmorStand) {
+        if(event.getRightClicked() instanceof ArmorStand armorStand) {
             Player player = event.getPlayer();
-            ArmorStand armorStand = (ArmorStand) event.getRightClicked();
+            if(SudoPlayerStorage.isSudoPlayer(player))
+                return;
 
             Chunk chunk = armorStand.getLocation().getChunk();
 
@@ -436,6 +459,9 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onPlayerLeashEntityEvent(PlayerLeashEntityEvent event) {
         Player player = event.getPlayer();
+        if(SudoPlayerStorage.isSudoPlayer(player))
+            return;
+
         Entity entity = event.getEntity();
         Chunk chunk = entity.getLocation().getChunk();
 
@@ -453,6 +479,8 @@ public class ChunkListener implements Listener {
     public void onHangingBreakByEntityEvent(HangingBreakByEntityEvent event){
         Entity remover = event.getRemover();
         if(remover instanceof Player player){
+            if(SudoPlayerStorage.isSudoPlayer(player))
+                return;
             Entity entity = event.getEntity();
             Chunk chunk = entity.getLocation().getChunk();
             if (!NewClaimedChunkStorage.isChunkClaimed(chunk))
@@ -469,6 +497,8 @@ public class ChunkListener implements Listener {
             }
         } else if (remover instanceof Projectile projectile) {
             if(projectile.getShooter() instanceof Player player){
+                if(SudoPlayerStorage.isSudoPlayer(player))
+                    return;
                 Entity entity = event.getEntity();
                 Chunk chunk = entity.getLocation().getChunk();
                 if (!NewClaimedChunkStorage.isChunkClaimed(chunk))
@@ -492,16 +522,22 @@ public class ChunkListener implements Listener {
         Block block = event.getBlock();
         Chunk chunk = block.getLocation().getChunk();
 
+        Player player = event.getPlayer();
+
+        if(player!= null)
+            if(SudoPlayerStorage.isSudoPlayer(player))
+                return;
+
         if(!NewClaimedChunkStorage.isChunkClaimed(chunk))
             return;
 
         Entity entity = event.getEntity();
         if(entity instanceof LeashHitch){
-            if(!CanPlayerDoAction(chunk, event.getPlayer(),LEAD)){
+            if(!CanPlayerDoAction(chunk, player,LEAD)){
                 event.setCancelled(true);
             }
         } else {
-            if(!CanPlayerDoAction(chunk, event.getPlayer(),PLACE)){
+            if(!CanPlayerDoAction(chunk, player,PLACE)){
                 event.setCancelled(true);
             }
         }
@@ -513,6 +549,8 @@ public class ChunkListener implements Listener {
         Entity entity = event.getEntity();
         Chunk chunk = entity.getLocation().getChunk();
 
+        if(SudoPlayerStorage.isSudoPlayer(player))
+            return;
         if (!NewClaimedChunkStorage.isChunkClaimed(chunk))
             return;
 

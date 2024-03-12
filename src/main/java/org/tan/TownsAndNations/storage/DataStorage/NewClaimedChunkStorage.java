@@ -189,7 +189,7 @@ public class NewClaimedChunkStorage {
             throw new RuntimeException(e);
         }
         try (FileWriter writer = new FileWriter(file, false);){
-            gson.toJson(claimedChunksMap, (Appendable)writer);
+            gson.toJson(claimedChunksMap, writer);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
