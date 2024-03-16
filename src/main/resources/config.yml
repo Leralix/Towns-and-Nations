@@ -171,3 +171,6 @@ timeBeforeTeleport: 5
 cancelTeleportOnMove: true
 #Cancel teleportation if player take damage
 cancelTeleportOnDamage: true
+
+#Archive major event into a txt file
+archiveHistory: true

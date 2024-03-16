@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.commands.debugsubcommands;
+package org.tan.TownsAndNations.commands.AdminSubcommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -7,6 +7,7 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.utils.FileUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,8 @@ public class SetMoney extends SubCommand {
 
             target.setBalance(amount);
             player.sendMessage("Set Balance of "+ target.getName() + " to " + amount);
+            FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_GIVE_MONEY.get(player.getName(),amount,target.getName()));
+
         } else {
             player.sendMessage("Too many arguments");
         }

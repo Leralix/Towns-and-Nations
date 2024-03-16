@@ -117,6 +117,7 @@ public class ChatListener implements Listener {
         }
 
         removePlayer(player);
+        FileUtil.addLineToHistory(Lang.HISTORY_REGION_MESSAGE_CHANGED.get(player.getName(),RegionDataStorage.get(regionID).getName(),newDesc));
         RegionDataStorage.get(regionID).setDescription(newDesc);
         player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
     }
@@ -180,6 +181,7 @@ public class ChatListener implements Listener {
         }
 
         removePlayer(player);
+        FileUtil.addLineToHistory(Lang.HISTORY_REGION_NAME_CHANGED.get(player.getName(),regionData.getName(),newName));
         regionData.renameRegion(regionCost, newName);
         player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
     }
@@ -214,6 +216,7 @@ public class ChatListener implements Listener {
         }
 
         removePlayer(player);
+        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_MESSAGE_CHANGED.get(player.getName(),TownDataStorage.get(townId).getName(),newDesc));
         TownDataStorage.get(townId).setDescription(newDesc);
         player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
     }

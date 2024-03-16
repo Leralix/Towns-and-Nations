@@ -5,6 +5,7 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.DropChances;
+import org.tan.TownsAndNations.utils.FileUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,7 @@ public class getRareItem extends SubCommand {
                 return;
             }
         }
+        FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_SUMMON_RARE_ITEM.get(player.getName(), 1, args[1]));
         player.sendMessage(ChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
 }

@@ -13,6 +13,7 @@ import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.FileUtil;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -61,6 +62,7 @@ public class RegionDataStorage {
         regionStorage.put(regionID, newRegion);
         town.setRegion(newRegion);
         town.removeToBalance(cost);
+        FileUtil.addLineToHistory(Lang.HISTORY_REGION_CREATED.get(player.getName(),regionName));
     }
     public static RegionData get(Player player){
         return get(PlayerDataStorage.get(player).getTown().getRegionID());
@@ -87,11 +89,10 @@ public class RegionDataStorage {
         return regionStorage.values();
     }
 
-    public static void deleteRegion(RegionData region){
-        deleteRegion(region.getID());
-    }
-    public static void deleteRegion(String regionID){
-        get(regionID).getCapital().addToBalance(7500);
+    public static void deleteRegion(Player player, RegionData region){
+        String regionID = region.getID();
+        FileUtil.addLineToHistory(Lang.HISTORY_REGION_DELETED.get(player.getName(),region.getName()));
+        region.getCapital().addToBalance(ConfigUtil.getCustomConfig("config.yml").getInt("regionCost",7500));
         NewClaimedChunkStorage.unclaimAllChunkFromID(regionID);
         removeTownFromRegion(regionID);
         regionStorage.remove(regionID);

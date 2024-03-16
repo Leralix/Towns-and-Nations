@@ -498,6 +498,23 @@ language:
   CHUNK_ENTER_REGION: "§fEntering the region: §9{0}"
   CHUNK_ENTER_TOWN_AT_WAR: "§cYou are at war with this town. Players have been alerted that you crossed the border"
   CHUNK_INTRUSION_ALERT: "§cAn ennemy from the town {0} has enter your borders: {1}"
+  #History
+  HISTORY_TOWN_CREATED: "{0} has created the town §9{1}"
+  HISTORY_TOWN_DELETED: "{0} has deleted the town §9{1}"
+  HISTORY_REGION_CREATED: "{0} has created the region §9{1}"
+  HISTORY_REGION_DELETED: "{0} has deleted the region §9{1}"
+  HISTORY_TOWN_LEADER_CHANGED: "{0} has changed the town leader from {1} to {2}"
+  HISTORY_REGION_CAPITAL_CHANGED: "{0} has changed the regional capital from {1} to {2}"
+  HISTORY_TOWN_NAME_CHANGED: "{0} has changed the town name from {1} to {2}"
+  HISTORY_REGION_NAME_CHANGED: "{0} has changed the region name from {1} to {2}"
+  HISTORY_TOWN_MESSAGE_CHANGED: "{0} has changed the town message of {1} to \"{2}\""
+  HISTORY_REGION_MESSAGE_CHANGED: "{0} has changed the region message of {1} to \"{2}\""
+  HISTORY_ADMIN_GIVE_MONEY: "[ADMIN] {0} has given {1}✦ to {2}"
+  HISTORY_ADMIN_SET_MONEY: "[ADMIN] {0} has set money from {1} to {2}✦"
+  HISTORY_ADMIN_SUMMON_RARE_ITEM: "[ADMIN] {0} has summon {1}x {2}"
+  HISTORY_SUDO_MODE: "{0} has been added to sudo mode by {1}"
+  HISTORY_SUDO_MODE_REMOVED: "{0} has been removed from sudo mode by {1}"
+
   #PlaceHolderAPI
   NO_TOWN: "No town"
   NO_REGION: "No region"

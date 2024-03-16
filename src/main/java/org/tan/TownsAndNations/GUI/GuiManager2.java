@@ -1371,7 +1371,7 @@ public class GuiManager2 implements IGUI {
                 player.sendMessage(getTANString() + Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.get());
                 return;
             }
-            deleteTown(playerTown);
+            deleteTown(player, playerTown);
 
             player.closeInventory();
             SoundUtil.playSound(player,GOOD);
@@ -2236,7 +2236,7 @@ public class GuiManager2 implements IGUI {
             if(!playerStat.isTownLeader() && playerRegion.isCapital(playerTown)){
                 player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
             }
-            RegionDataStorage.deleteRegion(playerRegion.getID());
+            RegionDataStorage.deleteRegion(player, playerRegion);
             SoundUtil.playSound(player, BAD);
             player.sendMessage(getTANString() + Lang.CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED.get());
             OpenMainMenu(player);
@@ -2485,6 +2485,7 @@ public class GuiManager2 implements IGUI {
 
                 GuiItem _region = ItemBuilder.from(regionIcon).asGuiItem(event -> {
                     event.setCancelled(true);
+                    FileUtil.addLineToHistory(Lang.HISTORY_REGION_CAPITAL_CHANGED.get(player.getName(), regionData.getCapital().getName(), townData.getName() ));
                     regionData.setCapital(townData);
                     SoundUtil.playSound(player, GOOD);
                     player.sendMessage(getTANString() + Lang.GUI_REGION_SETTINGS_REGION_CHANGE_OWNERSHIP_SUCCESS.get());

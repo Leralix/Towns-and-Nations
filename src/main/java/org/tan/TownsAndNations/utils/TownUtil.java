@@ -58,7 +58,7 @@ public class TownUtil {
         playerData.setTownRank(newTown.getTownDefaultRankName()); //2. Set player rank to default rank
         playerData.setTownId(newTown.getID()); //3. Set player town to the new town
         removeFromBalance(player,townCost); //1. Remove money from player
-
+        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_CREATED.get(player.getName(),townName));
 
         for (TownData otherTown : TownDataStorage.getTownMap().values()) {
             if(otherTown == TownDataStorage.get(townName)){
@@ -99,7 +99,7 @@ public class TownUtil {
         SoundUtil.playSound(player, MINOR_LEVEL_UP);
     }
 
-    public static void deleteTown(TownData townToDelete){
+    public static void deleteTown(Player player, TownData townToDelete){
 
         NewClaimedChunkStorage.unclaimAllChunkFromTown(townToDelete); //Unclaim all chunk from town
 
@@ -120,7 +120,7 @@ public class TownUtil {
         }
 
         TownDataStorage.removeTown(townToDelete.getID()); //Delete the main town class.
-
+        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_DELETED.get(player.getName(),townToDelete.getName()));
 
         updateAllScoreboardColor();
     }
@@ -173,6 +173,7 @@ public class TownUtil {
         if(!isSqlEnable())
             town.getMiscellaneousHistory().add(Lang.GUI_TOWN_SETTINGS_NEW_TOWN_NAME_HISTORY.get(town.getName() ,newName),townCost);
         town.removeToBalance(townCost);
+        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player.getName(),town.getName(),newName));
         town.setName(newName);
     }
 

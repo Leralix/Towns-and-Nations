@@ -8,6 +8,8 @@ import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.SudoPlayerStorage;
+import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.FileUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,10 +54,13 @@ public class SudoPlayer extends SubCommand {
             if(SudoPlayerStorage.isSudoPlayer(player)){
                 SudoPlayerStorage.removeSudoPlayer(player);
                 player.sendMessage(getTANString() + Lang.SUDO_PLAYER_REMOVED.get(player.getName()));
+                FileUtil.addLineToHistory(Lang.HISTORY_SUDO_MODE_REMOVED.get(player.getName(),player.getName()));
             }
             else{
                 SudoPlayerStorage.addSudoPlayer(player);
                 player.sendMessage(getTANString() + Lang.SUDO_PLAYER_ADDED.get(player.getName()));
+                FileUtil.addLineToHistory(Lang.HISTORY_SUDO_MODE.get(player.getName(),player.getName()));
+
             }
 
         }
@@ -68,15 +73,20 @@ public class SudoPlayer extends SubCommand {
             if(SudoPlayerStorage.isSudoPlayer(player)){
                 SudoPlayerStorage.removeSudoPlayer(player);
                 player.sendMessage(getTANString() + Lang.SUDO_PLAYER_REMOVED.get(target.getName()));
-                if(!player.equals(target))
+                FileUtil.addLineToHistory(Lang.HISTORY_SUDO_MODE_REMOVED.get(player.getName(),target.getName()));
+                if(!player.equals(target)) {
                     target.sendMessage(getTANString() + Lang.SUDO_PLAYER_REMOVED.get(target.getName()));
-
+                    FileUtil.addLineToHistory(Lang.HISTORY_SUDO_MODE_REMOVED.get(target.getName(),target.getName()));
+                }
             }
             else{
                 SudoPlayerStorage.addSudoPlayer(player);
                 player.sendMessage(getTANString() + Lang.SUDO_PLAYER_ADDED.get(target.getName()));
-                if(!player.equals(target))
+                FileUtil.addLineToHistory(Lang.HISTORY_SUDO_MODE.get(player.getName(),target.getName()));
+                if(!player.equals(target)) {
                     target.sendMessage(getTANString() + Lang.SUDO_PLAYER_ADDED.get(target.getName()));
+                    FileUtil.addLineToHistory(Lang.HISTORY_SUDO_MODE.get(target.getName(),target.getName()));
+                }
             }
         }
         else {

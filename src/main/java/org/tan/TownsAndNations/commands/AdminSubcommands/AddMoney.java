@@ -7,6 +7,7 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.utils.FileUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,7 @@ public class AddMoney extends SubCommand {
 
             target.addToBalance(amount);
             player.sendMessage(getTANString() + Lang.ADD_MONEY_COMMAND_SUCCESS.get(amount,target.getName()));
+            FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_GIVE_MONEY.get(player.getName(),amount,target.getName()));
         }
         else{
             player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());

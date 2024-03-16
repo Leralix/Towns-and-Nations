@@ -18,6 +18,7 @@ import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
+import org.tan.TownsAndNations.utils.FileUtil;
 import org.tan.TownsAndNations.utils.HeadUtils;
 
 import java.util.HashMap;
@@ -25,7 +26,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.tan.TownsAndNations.enums.ChatCategory.*;
-import static org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage.deleteRegion;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.TownUtil.deleteTown;
 
@@ -129,7 +129,7 @@ public class AdminGUI implements IGUI{
 
         GuiItem _deleteRegion = ItemBuilder.from(deleteRegion).asGuiItem(event -> {
             event.setCancelled(true);
-            deleteRegion(regionData);
+            RegionDataStorage.deleteRegion(player, regionData);
 
             player.closeInventory();
             player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get());
@@ -234,7 +234,7 @@ public class AdminGUI implements IGUI{
                 player.sendMessage(getTANString() + Lang.ADMIN_GUI_CANT_DELETE_REGIONAL_CAPITAL.get());
                 return;
             }
-            deleteTown(townData);
+            deleteTown(player, townData);
 
             player.closeInventory();
             player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get());
@@ -266,7 +266,7 @@ public class AdminGUI implements IGUI{
 
             GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
-
+                FileUtil.addLineToHistory(Lang.HISTORY_TOWN_LEADER_CHANGED.get(player.getName(),townData.getLeaderData(),townPlayer.getName()));
                 townData.setLeaderID(townPlayer.getUniqueId().toString());
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(townPlayer.getName()));
                 OpenSpecificTownMenu(player, townData);
