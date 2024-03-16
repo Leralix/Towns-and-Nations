@@ -115,6 +115,7 @@ language:
   UNCLAIMED_CHUNK_SUCCESS: "Chunk unclaimed ! Current number of chunks: §2{0}/{1}♦"
   DEBUG_UNCLAIMED_CHUNK_SUCCESS: "Chunk unclaimed ! Current number of chunks §9{0} §f: §2{1}/{2}♦"
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cThis chunk is claimed by another town: §e{0}"
+  UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§cThis chunk is claimed by another region: §e{0}"
   #Debug commands
   COMMAND_GENERIC_SUCCESS: "§aCommand successfully executed"
   ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED: "§cThis chunk is not claimed"

@@ -428,6 +428,10 @@ public class TownData {
         return this.townPlayerListId.contains(player.getUniqueId().toString());
     }
 
+    public boolean isPlayerInTown(PlayerData player){
+        return this.townPlayerListId.contains(player.getID());
+    }
+
     public int getFlatTax() {
         return this.flatTax;
     }

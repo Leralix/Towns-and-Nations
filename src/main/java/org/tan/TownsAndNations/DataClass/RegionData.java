@@ -252,4 +252,12 @@ public class RegionData {
         removeBalance(regionCost);
         this.name = newName;
     }
+
+    public boolean isPlayerInRegion(PlayerData playerData) {
+        for (TownData town : getTownsInRegion()){
+            if(town.isPlayerInTown(playerData))
+                return true;
+        }
+        return false;
+    }
 }

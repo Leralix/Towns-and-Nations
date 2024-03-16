@@ -38,6 +38,7 @@ public class getRareItem extends SubCommand {
             suggestions.add("rarestone");
             suggestions.add("rarewood");
             suggestions.add("rarecrop");
+            suggestions.add("raresoul");
         }
         return suggestions;
     }
@@ -52,6 +53,9 @@ public class getRareItem extends SubCommand {
             }
             case "rarecrop" -> {
                 player.getLocation().getWorld().dropItemNaturally(player.getLocation(), DropChances.getRareCrops());
+            }
+            case "raresoul" -> {
+                player.getLocation().getWorld().dropItemNaturally(player.getLocation(), DropChances.getRareSoul());
             }
             default -> {
                 player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR.get());
