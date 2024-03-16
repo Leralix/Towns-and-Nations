@@ -4,6 +4,7 @@ import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.commands.subcommands.*;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.utils.ConfigUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,10 @@ public class CommandManager implements CommandExecutor, TabExecutor, TabComplete
 
         subCommands.add(new TownSpawnCommand());
         subCommands.add(new SetTownSpawnCommand());
+
+        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("AllowSellRareRessourcesByCommand",true)){
+            subCommands.add(new SellRareItem());
+        }
     }
 
     @Override

@@ -35,15 +35,12 @@ public class DropChances {
     public static RareItem getRareItem(Block block) {
         return dropChances.get(block.getType().name());
     }
-
     public static RareItem getRareItem(Entity entity) {
         return dropChances.get(entity.getType().name());
     }
-
     public static Map<String, RareItem> getDropChances(){
         return dropChances;
     }
-
     private static void loadDropChances(String section, FileConfiguration config, ItemStack item) {
         for (String key : config.getConfigurationSection(section).getKeys(false)) {
             int dropChance = config.getInt(section + "." + key);
@@ -60,6 +57,9 @@ public class DropChances {
         lore.add(Lang.RARE_ITEM_DESC_1.get());
         rareStoneItemMeta.setLore(lore);
         rareStoneItem.setItemMeta(rareStoneItemMeta);
+
+        CustomNBT.addCustomStringTag(rareStoneItem, "tanRareItem", "rareStone");
+
         return rareStoneItem;
     }
     public static ItemStack getRareWood(){
@@ -71,6 +71,9 @@ public class DropChances {
         lore.add(Lang.RARE_ITEM_DESC_1.get());
         rareStoneItemMeta.setLore(lore);
         rareWoodItem.setItemMeta(rareStoneItemMeta);
+
+        CustomNBT.addCustomStringTag(rareWoodItem, "tanRareItem", "rareWood");
+
         return rareWoodItem;
     }
     public static ItemStack getRareCrops(){
@@ -82,6 +85,9 @@ public class DropChances {
         lore.add(Lang.RARE_ITEM_DESC_1.get());
         rareStoneItemMeta.setLore(lore);
         rareCropItem.setItemMeta(rareStoneItemMeta);
+
+        CustomNBT.addCustomStringTag(rareCropItem, "tanRareItem", "rareCrops");
+
         return rareCropItem;
     }
     public static ItemStack getRareSoul(){
@@ -93,6 +99,9 @@ public class DropChances {
         lore.add(Lang.RARE_ITEM_DESC_1.get());
         rareStoneItemMeta.setLore(lore);
         rareSoulItem.setItemMeta(rareStoneItemMeta);
+
+        CustomNBT.addCustomStringTag(rareSoulItem, "tanRareItem", "rareSoul");
+
         return rareSoulItem;
     }
 

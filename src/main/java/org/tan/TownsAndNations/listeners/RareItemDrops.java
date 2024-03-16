@@ -23,6 +23,9 @@ import java.util.Random;
 
 public class RareItemDrops implements Listener {
 
+
+
+
     @EventHandler
     public void onBreakBlock(BlockBreakEvent event){
         Player player = event.getPlayer();
@@ -46,46 +49,28 @@ public class RareItemDrops implements Listener {
 
         if(type == Material.WHEAT || type == Material.BEETROOTS || type == Material.POTATOES || type == Material.CARROTS) {
             BlockData data = block.getBlockData();
-            if(data instanceof Ageable) {
-                Ageable ageable = (Ageable) data;
-
+            if(data instanceof Ageable ageable) {
                 if(ageable.getAge() < ageable.getMaximumAge()) {
                     return;
-
                 }
-
             }
         }
 
         RareItem rareItem = DropChances.getRareItem(event.getBlock());
-        if(rareItem == null)
-            return;
 
-        Random rand = new Random();
-        int int_random = rand.nextInt(1, 100);
-
-        if(int_random <= rareItem.getDropChance()){
-            event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), rareItem.getRareItem());
-        }
+        if(rareItem != null)
+            rareItem.spawn(event.getBlock().getWorld(), event.getBlock().getLocation());
     }
-
     @EventHandler
     public void onKillingMobs(EntityDeathEvent event){
 
         LivingEntity killer = event.getEntity().getKiller();
 
-        if(killer instanceof Player){
-            Player player = (Player) killer;
+        if(killer != null){
 
             RareItem rareItem = DropChances.getRareItem(event.getEntity());
-            if(rareItem == null)
-                return;
-            Random rand = new Random();
-            int int_random = rand.nextInt(1, 100);
-            if(int_random <= rareItem.getDropChance()){
-                event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), rareItem.getRareItem());
-            }
+            if(rareItem != null)
+                rareItem.spawn(event.getEntity().getWorld(), event.getEntity().getLocation());
         }
     }
-
 }

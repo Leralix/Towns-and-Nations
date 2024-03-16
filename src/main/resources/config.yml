@@ -53,6 +53,10 @@ RegionDescSize: 50
 ##You can disable rare Item dropping with RAREITEMSPAWN: FALSE
 RARE_RESOURCES_SPAWN: true
 
+#Allow players to sell rare ressources directly through /tan sell
+#If set to false, players can still sell to villagers.
+AllowSellRareRessourcesByCommand: true
+
 #The stat of getting a rare Stone, used to get money
 # (20 = 20% drop chance when breaking this block without a silk touch pick)
 rareStone:
