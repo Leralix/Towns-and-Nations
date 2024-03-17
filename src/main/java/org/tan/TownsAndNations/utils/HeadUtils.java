@@ -144,6 +144,8 @@ public class HeadUtils {
         ItemMeta meta = icon.getItemMeta();
         List<String> lore = new ArrayList<>();
 
+        meta.setDisplayName(ChatColor.GREEN + town.getName());
+
         lore.add(Lang.GUI_TOWN_INFO_DESC0.get(town.getDescription()));
         lore.add(Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getOfflinePlayer(UUID.fromString(town.getLeaderID())).getName()));
         lore.add(Lang.GUI_TOWN_INFO_DESC2.get(town.getPlayerList().size()));
@@ -172,6 +174,8 @@ public class HeadUtils {
         else {
             relationName = relation.getColor() + relation.getName();
         }
+
+        meta.setDisplayName(ChatColor.GREEN + town.getName());
 
         lore.add(Lang.GUI_TOWN_INFO_DESC0.get(town.getDescription()));
         lore.add(Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getOfflinePlayer(UUID.fromString(town.getLeaderID())).getName()));
