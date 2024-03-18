@@ -459,7 +459,7 @@ public class GuiManager2 implements IGUI {
                         playerIterateOnline.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(town.getName()));
 
                     town.broadCastMessageWithSound(
-                            Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(player.getName()),
+                            Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerIterateData.getName()),
                             MINOR_GOOD);
 
                     updateAllScoreboardColor();

@@ -86,7 +86,7 @@ public class DailyTasks {
             }
         }
 
-        TownsAndNations.getPluginLogger().info(ChatUtils.getTANString() + Lang.DAILY_TAXES_SUCCESS_LOG.get());
+        TownsAndNations.getPluginLogger().info(Lang.DAILY_TAXES_SUCCESS_LOG.get());
 
     }
     public static void ChunkPayment(){
