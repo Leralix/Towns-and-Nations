@@ -2,9 +2,12 @@ package org.tan.TownsAndNations.commands.subcommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.commands.SubCommand;
+import org.tan.TownsAndNations.enums.TownRelation;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.utils.EconomyUtil;
 
 import java.util.ArrayList;
@@ -87,6 +90,20 @@ public class PayCommand extends SubCommand  {
                 player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(
                         amount - EconomyUtil.getBalance(player)));
                 return;
+            }
+
+            PlayerData playerData = PlayerDataStorage.get(player);
+            PlayerData receiverData = PlayerDataStorage.get(receiver);
+
+            if(playerData.haveTown()){
+                if(receiverData.haveTown()){
+                    if(playerData.getTown().getRelationWith(receiverData.getTown()) == TownRelation.EMBARGO ||
+                            playerData.getTown().getRelationWith(receiverData.getTown()) == TownRelation.WAR){
+                        player.sendMessage(getTANString() + Lang.PLAYER_PAY_AT_EMBARGO_ERROR.get(receiverData.getTown().getName()));
+                        return;
+                    }
+                }
+
             }
 
             EconomyUtil.removeFromBalance(player,amount);

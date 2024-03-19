@@ -1,0 +1,15 @@
+##Ugrades
+#Names
+CITY_HALL: "City hall"
+BARRACKS: "Barracks"
+ADMINISTRATION: "Administration"
+WATCHTOWER: "Watchtower"
+PORTAL: "Portal"
+GUARDS: "Guards"
+#Prerequisites
+TOWN_LEVEL: "Town level"
+#Benefits
+PLAYER_CAP: "Player cap"
+CHUNK_CAP: "Chunk cap"
+UNLOCK_TOWN_SPAWN: "Unlock town spawn"
+UNLOCK_MOB_BAN: "Unlock mob ban"

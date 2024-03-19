@@ -120,6 +120,7 @@ language:
   PLAYER_NOT_ENOUGH_MONEY: "§cVous n'avez pas assez d'argent pour réaliser cette action"
   LEADER_NOT_ONLINE: "§cLe leader de la ville n'est pas en ligne"
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cVous n'avez pas assez d'argent. Vous avez besoin de {0} supplémentaire"
+  PLAYER_PAY_AT_EMBARGO_ERROR: "§cVous ne pouvez pas payer une ville avec laquelle vous êtes en embargo"
   PLAYER_NEED_1_OR_ABOVE: "§fVous avez besoin d'au moins §1✦"
   TOWN_NOT_ENOUGH_MONEY: "§cLa ville n'a pas assez d'argent pour effectuer cette action"
   TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cLa ville n'a pas assez d'argent pour réaliser cette action. Il faudrait {0}✦ supplémentaire"

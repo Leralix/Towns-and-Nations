@@ -126,6 +126,7 @@ language:
   PLAYER_NOT_ENOUGH_MONEY: "§cYou do not have enough money to perform this action"
   LEADER_NOT_ONLINE: "§cThe town leader is not online"
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cYou dont have enough money. You need {0} more"
+  PLAYER_PAY_AT_EMBARGO_ERROR: "§cYou can't pay a player in a town under embargo or war from your town"
   PLAYER_NEED_1_OR_ABOVE: "§fYou need at least §1✦"
   TOWN_NOT_ENOUGH_MONEY: "§cThe town doesn't have enough money to perform this action"
   TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cThe town doesn't have enough money to perform this action. It need {0}✦ more"
