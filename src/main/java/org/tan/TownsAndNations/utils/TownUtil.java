@@ -55,7 +55,7 @@ public class TownUtil {
         removePlayer(player);
         Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(),townName));
         TownData newTown = TownDataStorage.newTown(townName,player);
-        playerData.setTownRank(newTown.getTownDefaultRankName()); //2. Set player rank to default rank
+        playerData.setTownRankID(newTown.getTownDefaultRankID()); //2. Set player rank to default rank
         playerData.setTownId(newTown.getID()); //3. Set player town to the new town
         removeFromBalance(player,townCost); //1. Remove money from player
         FileUtil.addLineToHistory(Lang.HISTORY_TOWN_CREATED.get(player.getName(),townName));

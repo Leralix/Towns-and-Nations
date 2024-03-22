@@ -17,6 +17,7 @@ public class PlayerData {
     private String PlayerName;
     private Integer Balance;
     private String TownId;
+    private Integer townRankID;
     private String TownRank;
 
     public PlayerData(Player player) {
@@ -53,11 +54,7 @@ public class PlayerData {
             Balance = 0;
         return Balance;
     }
-    public void setTownRank(String rankName){
-        this.TownRank = rankName;
-        if(isSqlEnable())
-            updatePlayerDataInDatabase(this);
-    }
+
     public void setBalance(int balance) {
         this.Balance = balance;
         if(isSqlEnable())
@@ -78,11 +75,9 @@ public class PlayerData {
         if(isSqlEnable())
             updatePlayerDataInDatabase(this);
     }
-    public String getTownRankID() {
-        return TownRank;
-    }
+
     public TownRank getTownRank() {
-        return TownDataStorage.get(this).getRank(this.TownRank);
+        return getTown().getRank(townRankID);
     }
     public void addToBalance(int money) {
         this.Balance = this.Balance + money;
@@ -101,7 +96,7 @@ public class PlayerData {
         if(isTownLeader())
             return true;
         TownData townData = TownDataStorage.get(this);
-        return townData.getRank(this.TownRank).hasPermission(townData.getID(),rolePermission) ;
+        return townData.getRank(this.townRankID).hasPermission(townData.getID(),rolePermission) ;
     }
     public void leaveTown(){
         this.TownId = null;
@@ -124,5 +119,16 @@ public class PlayerData {
 
     public UUID getUUID() {
         return java.util.UUID.fromString(this.UUID);
+    }
+
+    public void setTownRankID(int townRankID) {
+        this.townRankID = townRankID;
+    }
+    public int getTownRankId(){
+        return this.townRankID;
+    }
+
+    public String getOldRank(){
+        return this.TownRank;
     }
 }

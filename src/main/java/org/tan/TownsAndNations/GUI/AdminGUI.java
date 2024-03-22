@@ -287,7 +287,7 @@ public class AdminGUI implements IGUI{
 
 
         int i = 0;
-        for (PlayerData playerData : PlayerDataStorage.getStats()) {
+        for (PlayerData playerData : PlayerDataStorage.getLists()) {
 
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerData.getID()));
             ItemStack playerHead = HeadUtils.getPlayerHeadInformation(offlinePlayer);

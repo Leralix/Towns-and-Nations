@@ -376,7 +376,7 @@ public class GuiManager2 implements IGUI {
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate);
             HeadUtils.setLore(
                     playerHead,
-                    Lang.GUI_TOWN_MEMBER_DESC1.get(town.getRank(otherPlayerStat.getTownRankID()).getColoredName()),
+                    Lang.GUI_TOWN_MEMBER_DESC1.get(otherPlayerStat.getTownRank().getColoredName()),
                     Lang.GUI_TOWN_MEMBER_DESC2.get(EconomyUtil.getBalance(playerIterate)),
                     playerStat.hasPermission(KICK_PLAYER) ? Lang.GUI_TOWN_MEMBER_DESC3.get() : ""
             );
@@ -501,7 +501,7 @@ public class GuiManager2 implements IGUI {
         TownData town = TownDataStorage.get(playerStat);
 
         int i = 0;
-        for (TownRank townRank: town.getTownRanks()) {
+        for (TownRank townRank: town.getRanks()) {
 
             Material townMaterial = Material.getMaterial(townRank.getRankIconName());
             ItemStack townRankItemStack = HeadUtils.getCustomLoreItem(townMaterial, townRank.getColoredName());
@@ -515,7 +515,7 @@ public class GuiManager2 implements IGUI {
                     player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
                     return;
                 }
-                OpenTownMenuRoleManager(player,townRank.getName());
+                OpenTownMenuRoleManager(player,townRank.getID());
             });
             gui.setItem(i, _townRankItemStack);
             i = i+1;
@@ -548,13 +548,15 @@ public class GuiManager2 implements IGUI {
         gui.open(player);
 
     }
-    public static void OpenTownMenuRoleManager(Player player, String roleName) {
+    public static void OpenTownMenuRoleManager(Player player, int rankID) {
 
-        Gui gui = IGUI.createChestGui("Town",4);
 
 
         TownData town = TownDataStorage.get(player);
-        TownRank townRank = town.getRank(roleName);
+        TownRank townRank = town.getRank(rankID);
+
+        Gui gui = IGUI.createChestGui("Town - Rank " + townRank.getName(),4);
+
 
         boolean isDefaultRank = town.getTownDefaultRankName().equals(townRank.getName());
 
@@ -625,7 +627,7 @@ public class GuiManager2 implements IGUI {
             }
             else {
                 townRank.setRankIconName(town.getID(), itemMaterial.toString());
-                OpenTownMenuRoleManager(player, roleName);
+                OpenTownMenuRoleManager(player, rankID);
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get());
             }
             event.setCancelled(true);
@@ -633,15 +635,15 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _roleRankIcon = ItemBuilder.from(roleRankIcon).asGuiItem(event -> {
             townRank.incrementLevel(town.getID());
-            OpenTownMenuRoleManager(player, roleName);
+            OpenTownMenuRoleManager(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _managePermission = ItemBuilder.from(managePermission).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownMenuRoleManagerPermissions(player,roleName);
+            OpenTownMenuRoleManagerPermissions(player,rankID);
         });
         GuiItem _membersRank = ItemBuilder.from(membersRank).asGuiItem(event -> {
-            OpenTownMenuRoleManagerAddPlayer(player,roleName);
+            OpenTownMenuRoleManagerAddPlayer(player,rankID);
             event.setCancelled(true);
         });
         GuiItem _renameRank = ItemBuilder.from(renameRank).asGuiItem(event -> {
@@ -650,13 +652,13 @@ public class GuiManager2 implements IGUI {
             player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get());
 
             HashMap<MessageKey, String> newMap = new HashMap<>();
-            newMap.put(RANK_NAME,roleName);
+            newMap.put(RANK_NAME, String.valueOf(rankID));
             PlayerChatListenerStorage.addPlayer(RANK_RENAME,player,newMap);
             event.setCancelled(true);
         });
         GuiItem _changeRoleTaxRelation = ItemBuilder.from(changeRoleTaxRelation).asGuiItem(event -> {
             townRank.swapPayingTaxes(town.getID());
-            OpenTownMenuRoleManager(player,roleName);
+            OpenTownMenuRoleManager(player,rankID);
             event.setCancelled(true);
         });
         GuiItem _makeRankDefault = ItemBuilder.from(makeRankDefault).asGuiItem(event -> {
@@ -664,10 +666,10 @@ public class GuiManager2 implements IGUI {
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT.get());
             }
             else{
-                town.setTownDefaultRank(roleName);
+                town.setTownDefaultRankID(rankID);
             }
             event.setCancelled(true);
-            OpenTownMenuRoleManager(player,roleName);
+            OpenTownMenuRoleManager(player,rankID);
         });
 
         GuiItem _removeRank = ItemBuilder.from(removeRank).asGuiItem(event -> {
@@ -676,7 +678,7 @@ public class GuiManager2 implements IGUI {
                 event.setCancelled(true);
             }
             else{
-                town.removeRank(townRank.getName());
+                town.removeRank(townRank.getID());
                 OpenTownMenuRoles(player);
                 event.setCancelled(true);
             }
@@ -695,7 +697,7 @@ public class GuiManager2 implements IGUI {
 
             townRank.removeFromSalary(town.getID(), amountToRemove);
             SoundUtil.playSound(player, REMOVE);
-            OpenTownMenuRoleManager(player, roleName);
+            OpenTownMenuRoleManager(player, rankID);
         });
         GuiItem _IncreaseSalary = ItemBuilder.from(increaseSalary).asGuiItem(event -> {
 
@@ -705,7 +707,7 @@ public class GuiManager2 implements IGUI {
 
             townRank.addFromSalary(town.getID(), amountToAdd);
             SoundUtil.playSound(player, ADD);
-            OpenTownMenuRoleManager(player, roleName);
+            OpenTownMenuRoleManager(player, rankID);
         });
 
         GuiItem _salary = ItemBuilder.from(salary).asGuiItem(event -> {
@@ -731,13 +733,13 @@ public class GuiManager2 implements IGUI {
         gui.open(player);
 
     }
-    public static void OpenTownMenuRoleManagerAddPlayer(Player player, String roleName) {
+    public static void OpenTownMenuRoleManagerAddPlayer(Player player, int rankID) {
 
         Gui gui = IGUI.createChestGui("Town",3);
 
 
         TownData town = TownDataStorage.get(player);
-        TownRank townRank = town.getRank(roleName);
+        TownRank townRank = town.getRank(rankID);
         int i = 0;
 
         for (String otherPlayerUUID : town.getPlayerList()) {
@@ -767,25 +769,25 @@ public class GuiManager2 implements IGUI {
 
                 PlayerData playerStat = PlayerDataStorage.get(otherPlayerUUID);
 
-                town.setPlayerRank(playerStat, roleName);
+                town.setPlayerRank(playerStat, rankID);
 
-                OpenTownMenuRoleManager(player, roleName);
+                OpenTownMenuRoleManager(player, rankID);
             });
 
             gui.setItem(i, _playerHead);
             i = i + 1;
         }
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuRoleManager(player,roleName)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuRoleManager(player,rankID)));
 
         gui.open(player);
     }
-    public static void OpenTownMenuRoleManagerPermissions(Player player, String roleName) {
+    public static void OpenTownMenuRoleManagerPermissions(Player player, int rankID) {
 
         Gui gui = IGUI.createChestGui("Town",3);
 
         TownData town = TownDataStorage.get(player);
         String townID = town.getID();
-        TownRank townRank = town.getRank(roleName);
+        TownRank townRank = town.getRank(rankID);
 
 
         ItemStack manage_taxes = HeadUtils.getCustomLoreItem(Material.GOLD_INGOT, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TAXES.get(),(townRank.hasPermission(townID,MANAGE_TAXES)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
@@ -805,74 +807,74 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _manage_taxes = ItemBuilder.from(manage_taxes).asGuiItem(event -> {
             townRank.switchPermission(town.getID(), MANAGE_TAXES);
-            OpenTownMenuRoleManagerPermissions(player, roleName);
+            OpenTownMenuRoleManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _promote_rank_player = ItemBuilder.from(promote_rank_player).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),PROMOTE_RANK_PLAYER);
-            OpenTownMenuRoleManagerPermissions(player, roleName);
+            OpenTownMenuRoleManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _derank_player = ItemBuilder.from(derank_player).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),DERANK_RANK_PLAYER);
-            OpenTownMenuRoleManagerPermissions(player, roleName);
+            OpenTownMenuRoleManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _claim_chunk = ItemBuilder.from(claim_chunk).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),CLAIM_CHUNK);
-            OpenTownMenuRoleManagerPermissions(player, roleName);
+            OpenTownMenuRoleManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _unclaim_chunk = ItemBuilder.from(unclaim_chunk).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),UNCLAIM_CHUNK);
-            OpenTownMenuRoleManagerPermissions(player, roleName);
+            OpenTownMenuRoleManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _upgrade_town = ItemBuilder.from(upgrade_town).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),UPGRADE_TOWN);
-            OpenTownMenuRoleManagerPermissions(player, roleName);
+            OpenTownMenuRoleManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _invite_player = ItemBuilder.from(invite_player).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),INVITE_PLAYER);
-            OpenTownMenuRoleManagerPermissions(player, roleName);
+            OpenTownMenuRoleManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _kick_player = ItemBuilder.from(kick_player).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),KICK_PLAYER);
-            OpenTownMenuRoleManagerPermissions(player, roleName);
+            OpenTownMenuRoleManagerPermissions(player, rankID);
 
             event.setCancelled(true);
         });
         GuiItem _create_rank = ItemBuilder.from(create_rank).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),CREATE_RANK);
-            OpenTownMenuRoleManagerPermissions(player, roleName);
+            OpenTownMenuRoleManagerPermissions(player, rankID);
 
             event.setCancelled(true);
         });
         GuiItem _delete_rank = ItemBuilder.from(delete_rank).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),DELETE_RANK);
-            OpenTownMenuRoleManagerPermissions(player, roleName);
+            OpenTownMenuRoleManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _modify_rank = ItemBuilder.from(modify_rank).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),MANAGE_RANKS);
-            OpenTownMenuRoleManagerPermissions(player, roleName);
+            OpenTownMenuRoleManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _manage_claim_settings = ItemBuilder.from(manage_claim_settings).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),MANAGE_CLAIM_SETTINGS);
-            OpenTownMenuRoleManagerPermissions(player, roleName);
+            OpenTownMenuRoleManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _manage_town_relation = ItemBuilder.from(manage_town_relation).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),MANAGE_TOWN_RELATION);
-            OpenTownMenuRoleManagerPermissions(player, roleName);
+            OpenTownMenuRoleManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _manage_mob_spawn = ItemBuilder.from(manage_mob_spawn).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),MANAGE_MOB_SPAWN);
-            OpenTownMenuRoleManagerPermissions(player, roleName);
+            OpenTownMenuRoleManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
 
@@ -892,7 +894,7 @@ public class GuiManager2 implements IGUI {
         gui.setItem(13, _manage_town_relation);
         gui.setItem(14, _manage_mob_spawn);
 
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuRoleManager(player,roleName)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuRoleManager(player,rankID)));
 
         gui.open(player);
 
@@ -940,7 +942,7 @@ public class GuiManager2 implements IGUI {
         float totalUpkeep = numberClaimedChunk * upkeepCost/10;
         //total salary
         int totalSalary = 0;
-        for (TownRank rank : town.getTownRanks()) {
+        for (TownRank rank : town.getRanks()) {
 
             List<String> playerIdList = rank.getPlayers(town.getID());
             totalSalary += playerIdList.size() * rank.getSalary();

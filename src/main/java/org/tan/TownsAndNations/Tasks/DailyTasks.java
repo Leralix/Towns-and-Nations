@@ -14,7 +14,6 @@ import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ArchiveUtil;
-import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.EconomyUtil;
 
@@ -66,12 +65,12 @@ public class DailyTasks {
     public static void TownTaxPayment() {
 
 
-        for (PlayerData playerStat : PlayerDataStorage.getStats()){
+        for (PlayerData playerStat : PlayerDataStorage.getLists()){
             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerStat.getID()));
 
             if (!playerStat.haveTown()) continue;
             TownData playerTown = TownDataStorage.get(playerStat);
-            if (!playerTown.getRank(playerStat.getTownRankID()).isPayingTaxes()) continue;
+            if (!playerStat.getTownRank().isPayingTaxes()) continue;
             int tax = playerTown.getFlatTax();
 
             if(EconomyUtil.getBalance(offlinePlayer) > tax){
@@ -107,7 +106,7 @@ public class DailyTasks {
 
         for (TownData town: TownDataStorage.getTownMap().values()){
             //Loop through each rank, only paying if everyone of the rank can be paid
-            for (TownRank rank : town.getTownRanks()){
+            for (TownRank rank : town.getRanks()){
 
                 int rankSalary = rank.getSalary();
                 List<String> playerIdList = rank.getPlayers(town.getID());

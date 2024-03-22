@@ -28,6 +28,7 @@ public class TownData {
     private String TownName;
     private String UuidLeader;
     private String townDefaultRank;
+    private Integer townDefaultRankID;
     private String Description;
     public String DateCreated;
     private String townIconMaterialCode;
@@ -46,6 +47,8 @@ public class TownData {
 
     private final HashSet<String> townPlayerListId = new HashSet<>();
     private final HashMap<String,TownRank> roles;
+    private final HashMap<Integer,TownRank> newRanks;
+
     private HashSet<String> PlayerJoinRequestSet;
 
     private final TownLevel townLevel;
@@ -65,11 +68,13 @@ public class TownData {
         this.PlayerJoinRequestSet= new HashSet<>();
         this.townPlayerListId.add(leaderID);
         this.roles = new HashMap<>();
+        this.newRanks = new HashMap<>();
         this.isRecruiting = false;
         this.balance = 0;
         this.flatTax = 1;
         this.numberOfClaimedChunk = 0;
         this.townDefaultRank = "default";
+        this.townDefaultRankID = 0;
 
         this.chunkColor = 0xff0000;
 
@@ -79,10 +84,11 @@ public class TownData {
         this.salaryHistory = new SalaryHistory();
         this.taxHistory = new TaxHistory();
 
-        addRank(townDefaultRank);
-        getRank(townDefaultRank).addPlayer(leaderID);
+        TownRank defaultRank = addRank(townDefaultRank);
+        this.newRanks.put(defaultRank.getID(), defaultRank);
 
-        PlayerDataStorage.get(leaderID).setTownRank(this.townDefaultRank);
+
+        PlayerDataStorage.get(leaderID).setTownRankID(this.townDefaultRankID);
 
 
         this.relations = new TownRelations();
@@ -94,13 +100,14 @@ public class TownData {
     //used for sql, loading a town
     public TownData(String townId, String townName, String leaderID, String description, String dateCreated,
                     String townIconMaterialCode, String townDefaultRankName, Boolean isRecruiting, int balance,
-                    int flatTax, int chunkColor){
+                    int flatTax, int chunkColor, HashMap<Integer, TownRank> newRanks){
         this.TownId = townId;
         this.TownName = townName;
         this.UuidLeader = leaderID;
         this.Description = description;
         this.DateCreated = dateCreated;
         this.townIconMaterialCode = townIconMaterialCode;
+        this.newRanks = newRanks;
         this.PlayerJoinRequestSet= new HashSet<>();
         this.townPlayerListId.add(leaderID);
         this.roles = new HashMap<>();
@@ -130,16 +137,25 @@ public class TownData {
         if(isSqlEnable())
             TownDataStorage.updateTownData(this);
     }
-    public void addRank(String rankName){
-        TownRank newRank = new TownRank(rankName);
-        this.roles.put(rankName,newRank);
+    public TownRank addRank(String rankName){
+
+        int nextRankId = 0;
+        for(TownRank rank : this.getRanks()){
+            if(rank.getID() == null)
+                continue;
+            if(rank.getID() > nextRankId)
+                nextRankId = rank.getID() + 1;
+        }
+
+
+        TownRank newRank = new TownRank(nextRankId, rankName);
+        this.newRanks.put(nextRankId,newRank);
+        return newRank;
     }
 
-    public void addRank(String rankName, TownRank townRank){
-        this.roles.put(rankName,townRank);
-    }
-    public void removeRank(String key){
-        this.roles.remove(key);
+
+    public void removeRank(int key){
+        this.newRanks.remove(key);
     }
     public String getLeaderID() {
         return this.UuidLeader;
@@ -187,7 +203,7 @@ public class TownData {
         townPlayerListId.add(playerData.getID());
         getTownDefaultRank().addPlayer(playerData.getID());
         playerData.setTownId(getID());
-        playerData.setTownRank(getTownDefaultRankName());
+        playerData.setTownRankID(townDefaultRankID);
 
         TownDataStorage.saveStats();
     }
@@ -289,22 +305,26 @@ public class TownData {
         }
     }
 
-    public TownRank getRank(String rankName){
-        if(isSqlEnable())
-            return TownDataStorage.getRole(getID(), rankName);
-        return this.roles.get(rankName);
+
+    public TownRank getOldRank(String oldRankID){
+        return this.roles.get(oldRankID);
     }
+    public TownRank getRank(int rankID) {
+        return this.newRanks.get(rankID);
+    }
+
     public TownRank getRank(PlayerData playerData){
-        return getRank(playerData.getTownRankID());
+        return getRank(playerData.getTownRankId());
     }
 
     public TownRank getRank(Player player){
-        return getRank(PlayerDataStorage.get(player).getTownRankID());
+        return getRank(PlayerDataStorage.get(player));
     }
-    public List<TownRank> getTownRanks(){
+
+    public List<TownRank> getRanks(){
         if(isSqlEnable())
             return TownDataStorage.getRanksByTownId(getID());
-        return this.roles.values().stream().toList();
+        return this.newRanks.values().stream().toList();
     }
 
     public void setTownDefaultRank(String newRank){
@@ -316,11 +336,11 @@ public class TownData {
         return this.townDefaultRank;
     }
     public TownRank getTownDefaultRank(){
-        return getRank(getTownDefaultRankName());
+        return getOldRank(getTownDefaultRankName());
     }
 
     public int getNumberOfRank(){
-        return roles.size();
+        return newRanks.size();
     }
 
 
@@ -589,10 +609,26 @@ public class TownData {
         return this.getRelationWith(otherTown) != null;
     }
 
-    public void setPlayerRank(PlayerData playerStat, String roleName) {
+    public void setPlayerRank(PlayerData playerStat, int rankID) {
 
         getRank(playerStat).removePlayer(playerStat);
-        getRank(roleName).addPlayer(playerStat);
-        playerStat.setTownRank(roleName);
+        getRank(rankID).addPlayer(playerStat);
+        playerStat.setTownRankID(rankID);
+    }
+
+    public Integer getTownDefaultRankID() {
+        return townDefaultRankID;
+    }
+
+    public void setTownDefaultRankID(int rankID){
+        this.townDefaultRankID = rankID;
+    }
+
+    public Collection<TownRank> getOldRanks() {
+        return roles.values();
+    }
+    public void setNewRanks(HashMap<Integer, TownRank> newRanks){
+        this.newRanks.clear();
+        this.newRanks.putAll(newRanks);
     }
 }

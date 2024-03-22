@@ -12,15 +12,11 @@ import org.tan.TownsAndNations.DataClass.TownRank;
 import org.tan.TownsAndNations.GUI.GuiManager2;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.storage.*;
-import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.utils.*;
 
-import java.util.*;
-
-import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 import static org.tan.TownsAndNations.enums.MessageKey.*;
 import static org.tan.TownsAndNations.enums.SoundEnum.MINOR_LEVEL_UP;
 import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.removePlayer;
@@ -103,8 +99,8 @@ public class ChatListener implements Listener {
         }
 
         removePlayer(player);
-        TownDataStorage.get(player).addRank(message);
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, message));
+        TownRank newRank = TownDataStorage.get(player).addRank(message);
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, newRank.getID()));
     }
     private void ChangeRegionDescription(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newDesc) {
         String regionID = chatData.getData().get(REGION_ID);
@@ -240,27 +236,13 @@ public class ChatListener implements Listener {
 
         removePlayer(player);
         TownData playerTown = TownDataStorage.get(player);
-        String rankName = chatData.getData().get(RANK_NAME);
-        TownRank playerTownRank = playerTown.getRank(rankName);
 
-        List<String> playerList = playerTownRank.getPlayers(playerTown.getID());
-        for(String playerWithRoleUUID : playerList){
-            PlayerDataStorage.get(playerWithRoleUUID).setTownRank(newRankName);
-        }
+        String newName = chatData.getData().get(RANK_NAME);
+        int rankID = Integer.parseInt(chatData.getData().get(RANK_ID));
+        TownRank playerTownRank = playerTown.getRank(rankID);
+        playerTownRank.setName(newName);
 
-
-        if(Objects.equals(playerTownRank.getName(), playerTown.getTownDefaultRankName())){
-            playerTown.setTownDefaultRank(newRankName);
-        }
-
-        playerTownRank.setName(playerTown.getID(),newRankName);
-
-        if(!isSqlEnable()){ //Needed to update the Hashmap, not for the DB
-            playerTown.addRank(newRankName,playerTownRank);
-            playerTown.removeRank(rankName);
-        }
-
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, newRankName));
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, rankID));
         removePlayer(player);
     }
 

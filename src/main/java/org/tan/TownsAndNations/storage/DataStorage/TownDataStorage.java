@@ -156,41 +156,12 @@ public class TownDataStorage {
         }
     }
     public static LinkedHashMap<String, TownData> getTownMap() {
-        if (isSqlEnable()) {
-            return getTownListFromDatabase();
-        } else {
-            return townDataMap;
-        }
+
+        return townDataMap;
+
     }
 
-    private static LinkedHashMap<String, TownData> getTownListFromDatabase() {
-        LinkedHashMap<String, TownData> townList = new LinkedHashMap<>();
-        String sql = "SELECT * FROM tan_town_data";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                TownData townData = new TownData(
-                        rs.getString("town_key"),
-                        rs.getString("name"),
-                        rs.getString("uuid_leader"),
-                        rs.getString("Description"),
-                        rs.getString("DateCreated"),
-                        rs.getString("townIconMaterialCode"),
-                        rs.getString("townDefaultRank"),
-                        rs.getBoolean("isRecruiting"),
-                        rs.getInt("balance"),
-                        rs.getInt("taxRate"),
-                        rs.getInt("color")
-                );
-                townList.put(townData.getID(), townData);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return townList;
-    }
     public static TownData get(PlayerData playerData){
         return get(playerData.getTownId());
     }
@@ -198,41 +169,9 @@ public class TownDataStorage {
         return get(PlayerDataStorage.get(player).getTownId());
     }
     public static TownData get(String townId) {
-        if (isSqlEnable()) {
-            return getTownDataFromDatabase(townId);
-        } else {
-            return townDataMap.get(townId);
-        }
+        return townDataMap.get(townId);
     }
 
-    private static TownData getTownDataFromDatabase(String townId) {
-        String sql = "SELECT * FROM tan_town_data WHERE town_key = ?"; // Assurez-vous que le nom de la colonne et de la table est correct
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, townId);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return new TownData(
-                            rs.getString("town_key"),
-                            rs.getString("name"),
-                            rs.getString("uuid_leader"),
-                            rs.getString("Description"),
-                            rs.getString("DateCreated"),
-                            rs.getString("townIconMaterialCode"),
-                            rs.getString("townDefaultRank"),
-                            rs.getBoolean("isRecruiting"),
-                            rs.getInt("balance"),
-                            rs.getInt("taxRate"),
-                            rs.getInt("color")
-                    );
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null; // Retourner null si aucune ville correspondante n'est trouvée
-    }
 
     public static int getNumberOfTown() {
         if (isSqlEnable()) {
@@ -621,6 +560,7 @@ public class TownDataStorage {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return new TownRank(
+                        rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("level"),
                         rs.getString("rankIconName"),
@@ -748,6 +688,7 @@ public class TownDataStorage {
                 while (rs.next()) {
 
                     ranks.add(new TownRank(
+                            rs.getInt("int"),
                             rs.getString("name"),
                             rs.getString("level"),
                             rs.getString("rankIconName"),

@@ -14,6 +14,7 @@ import static org.tan.TownsAndNations.storage.DataStorage.TownDataStorage.getPla
 
 public class TownRank {
 
+    private Integer ID;
     private String name;
     private TownRankEnum rankEnum;
     private String rankIconName;
@@ -23,7 +24,8 @@ public class TownRank {
 
     private boolean isPayingTaxes;
 
-    public TownRank(String name){
+    public TownRank(int id, String name){
+        this.ID = id;
         this.name = name;
         this.rankEnum = FIVE;
         this.rankIconName = "DANDELION";
@@ -32,7 +34,8 @@ public class TownRank {
         this.salary = 0;
     }
 
-    public TownRank(String name,String rankEnum, String rankIconName, boolean isPayingTaxes,int salary){
+    public TownRank(Integer id , String name,String rankEnum, String rankIconName, boolean isPayingTaxes,int salary){
+        this.ID = id;
         this.name = name;
         this.rankEnum = TownRankEnum.valueOf(rankEnum);
         this.rankIconName = rankIconName;
@@ -52,13 +55,8 @@ public class TownRank {
     public String getColoredName(){
         return this.rankEnum.getColor() + this.name;
     }
-    public void setName(String townID, String newName){
-        String oldName = this.name;
+    public void setName(String newName){
         this.name = newName;
-        if(isSqlEnable()) {
-            TownDataStorage.updateRank(townID, oldName, this);
-            TownDataStorage.renameRankPermission(townID, oldName,this.name);
-        }
     }
     public TownRankEnum getRankEnum(){
         return this.rankEnum;
@@ -78,10 +76,7 @@ public class TownRank {
         return this.rankIconName;
     }
     public void addPlayer(String playerUUID){
-        if(isSqlEnable())
-            PlayerDataStorage.get(playerUUID).setTownRank(this.getName());
-        else
-            this.players.add(playerUUID);
+        this.players.add(playerUUID);
     }
     public void addPlayer(Player player){
         addPlayer(player.getUniqueId().toString());
@@ -176,5 +171,10 @@ public class TownRank {
     }
 
 
-
+    public Integer getID() {
+        return ID;
+    }
+    public void setID(int id) {
+        this.ID = id;
+    }
 }

@@ -45,7 +45,7 @@ public class HeadUtils {
             setLore(head,
                     Lang.GUI_PLAYER_PROFILE_DESC1.get(getBalance(p)),
                     Lang.GUI_PLAYER_PROFILE_DESC2.get(playerTown.getName()),
-                    Lang.GUI_PLAYER_PROFILE_DESC3.get(playerTown.getRank(playerData.getTownRankID()).getColoredName())
+                    Lang.GUI_PLAYER_PROFILE_DESC3.get(playerData.getTownRank().getColoredName())
             );
 
         }
@@ -76,7 +76,7 @@ public class HeadUtils {
             setLore(head,
                     Lang.GUI_PLAYER_PROFILE_DESC1.get(getBalance(p)),
                     Lang.GUI_PLAYER_PROFILE_DESC2.get(playerTown.getName()),
-                    Lang.GUI_PLAYER_PROFILE_DESC3.get(playerTown.getRank(playerData.getTownRankID()).getColoredName())
+                    Lang.GUI_PLAYER_PROFILE_DESC3.get(playerData.getTownRank().getColoredName())
             );
 
         }

@@ -41,7 +41,7 @@ public class PlayerDataStorage {
             ps.setString(2, playerData.getName());
             ps.setInt(3, playerData.getBalance());
             ps.setString(4, playerData.getTownId());
-            ps.setString(5, playerData.getTownRankID());
+            ps.setInt(5, playerData.getTownRankId());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -128,7 +128,7 @@ public class PlayerDataStorage {
 
 
 
-    public static List<PlayerData> getStats() {
+    public static List<PlayerData> getLists() {
         if (isSqlEnable()) {
             return getStatsFromDatabase();
         } else {
@@ -231,7 +231,7 @@ public class PlayerDataStorage {
             ps.setString(1, playerData.getName());
             ps.setInt(2, playerData.getBalance());
             ps.setString(3, playerData.getTownId());
-            ps.setString(4, playerData.getTownRankID());
+            ps.setInt(4, playerData.getTownRankId());
             ps.setString(5, playerData.getID());
             ps.executeUpdate();
         } catch (SQLException e) {
