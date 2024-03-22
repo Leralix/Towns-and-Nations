@@ -9,12 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ClaimedChunkSettings {
-    private int numberOfClaimedChunk;
     private final Map<ChunkPermissionType, TownChunkPermission> permissions;
     private final Map<String, UpgradeStatus> mobSpawnStorage = new HashMap<>();
 
     public ClaimedChunkSettings(){
-        this.numberOfClaimedChunk = 0;
         this.permissions = new EnumMap<>(ChunkPermissionType.class);
         for (ChunkPermissionType type : ChunkPermissionType.values()) {
             permissions.put(type, TownChunkPermission.TOWN);
@@ -28,10 +26,7 @@ public class ClaimedChunkSettings {
     public void nextPermission(ChunkPermissionType type) {
         this.permissions.put(type, this.permissions.get(type).getNext());
     }
-    //Old methods only here to not break old saves. Will be deleted in the future
-    public int getNumberOfClaimedChunk() {
-        return this.numberOfClaimedChunk;
-    }
+
 
 
     public UpgradeStatus getSpawnControl(MobChunkSpawnEnum mobType) {

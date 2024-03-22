@@ -291,7 +291,7 @@ public final class TownsAndNations extends JavaPlugin {
     }
 
     public static boolean isSqlEnable() {
-        return sqlEnable;
+        return false;
     }
 
     public static void setDynmapAddonLoaded(boolean dynmapAddonLoaded) {

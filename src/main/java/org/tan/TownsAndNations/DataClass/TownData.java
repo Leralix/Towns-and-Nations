@@ -443,17 +443,11 @@ public class TownData {
     }
 
     public int getNumberOfClaimedChunk() {
-        if(this.numberOfClaimedChunk == null) //used to transition from 0.3.1 -> 0.4.0
-            this.numberOfClaimedChunk = this.getChunkSettings().getNumberOfClaimedChunk();
         return this.numberOfClaimedChunk;
     }
     public void addNumberOfClaimChunk(int number) {
         if(isSqlEnable())
             return;
-
-        if(this.numberOfClaimedChunk == null){ //used to transition from 0.3.1 -> 0.4.0
-            this.numberOfClaimedChunk = this.getChunkSettings().getNumberOfClaimedChunk();
-        }
         this.numberOfClaimedChunk += number;
 
     }
