@@ -197,6 +197,7 @@ public final class TownsAndNations extends JavaPlugin {
             TownDataStorage.saveStats();
             PlayerDataStorage.saveStats();
             NewClaimedChunkStorage.saveStats();
+            ClaimedChunkStorage.saveStats(); //Delete later
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {

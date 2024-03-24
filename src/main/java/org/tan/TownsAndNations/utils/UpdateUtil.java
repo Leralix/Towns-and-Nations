@@ -27,7 +27,7 @@ public class UpdateUtil {
             return;
 
         if(TownDataStorage.getTownMap().values().iterator().next().getRanks().get(0).getID() != null){
-            System.out.println("Rank ID's are already updated, skipping update");
+            TownsAndNations.getPluginLogger().info("-Rank ID's are already updated, skipping update");
             return;
         }
 
@@ -62,7 +62,13 @@ public class UpdateUtil {
     }
 
     public static void updateNewChunkData() {
-        if (ClaimedChunkStorage.getClaimedChunksMap().isEmpty()) {
+        if(ClaimedChunkStorage.getClaimedChunksMap() == null)
+            return;
+
+        Map<String, ClaimedChunk> newMap = ClaimedChunkStorage.getClaimedChunksMap();
+
+        if (newMap.isEmpty()) {
+            TownsAndNations.getPluginLogger().info("-No claimed chunks to update");
             return;
         }
         Iterator<Map.Entry<String, ClaimedChunk>> iterator = ClaimedChunkStorage.getClaimedChunksMap().entrySet().iterator();
