@@ -47,7 +47,7 @@ public class TownData {
 
     private final HashSet<String> townPlayerListId = new HashSet<>();
     private final HashMap<String,TownRank> roles;
-    private final HashMap<Integer,TownRank> newRanks;
+    private HashMap<Integer,TownRank> newRanks;
 
     private HashSet<String> PlayerJoinRequestSet;
 
@@ -628,7 +628,8 @@ public class TownData {
         return roles.values();
     }
     public void setNewRanks(HashMap<Integer, TownRank> newRanks){
-        this.newRanks.clear();
+        if(this.newRanks == null)
+            this.newRanks = new HashMap<>();
         this.newRanks.putAll(newRanks);
     }
 }

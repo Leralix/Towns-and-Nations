@@ -26,14 +26,10 @@ public class UpdateUtil {
         if(TownDataStorage.getTownMap().isEmpty())
             return;
 
-
-        /*
-        if(TownDataStorage.getTownMap().values().iterator().next().getRanks().get(0) != null){
-            System.out.println("Rank ID's are already updated");
+        if(TownDataStorage.getTownMap().values().iterator().next().getRanks().get(0).getID() != null){
+            System.out.println("Rank ID's are already updated, skipping update");
             return;
         }
-        */
-
 
         for(TownData townData : TownDataStorage.getTownMap().values()){
             int i = 0;
@@ -51,9 +47,12 @@ public class UpdateUtil {
 
         for(PlayerData playerData : PlayerDataStorage.getLists()){
             TownData playerTownData = playerData.getTown();
+            if(playerTownData == null)
+                continue;
 
             TownRank townRank = playerTownData.getOldRank(playerData.getOldRank());
-            playerData.setTownRankID(townRank.getID());
+            if(townRank != null)
+                playerData.setTownRankID(townRank.getID());
         }
 
     }
