@@ -7,10 +7,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.History.*;
 
+import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.enums.TownRelation;
+import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
@@ -463,7 +465,13 @@ public class TownData {
     }
 
     public int getNumberOfClaimedChunk() {
-        return this.numberOfClaimedChunk;
+        int count = 0;
+        for (ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getClaimedChunksMap().values()) {
+            if (claimedChunk.getID().equals(this.TownId)) {
+                count++;
+            }
+        }
+        return count;
     }
     public void addNumberOfClaimChunk(int number) {
         if(isSqlEnable())

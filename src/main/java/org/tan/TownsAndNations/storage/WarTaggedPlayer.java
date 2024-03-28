@@ -24,13 +24,18 @@ public class WarTaggedPlayer {
         }
 
         for (String playerUUID : players) {
+
+            Player player = Bukkit.getPlayer(playerUUID);
+            if(player == null)
+                continue;
+
             warTagged.get(attackedTownID).add(playerUUID);
 
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     warTagged.get(attackedTownID).remove(playerUUID);
-                    Bukkit.getPlayer(UUID.fromString(playerUUID)).sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_ATTACK_FINISHED.get(TownDataStorage.get(attackedTownID).getName()));
+                    player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_ATTACK_FINISHED.get(TownDataStorage.get(attackedTownID).getName()));
                     }
             }.runTaskLater(TownsAndNations.getPlugin(), 20 * 60 * 60); // 20 ticks * 60 secondes * 60 minutes = 1 heure
         }

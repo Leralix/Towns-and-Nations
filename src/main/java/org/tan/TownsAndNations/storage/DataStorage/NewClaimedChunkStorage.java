@@ -77,11 +77,11 @@ public class NewClaimedChunkStorage {
 
     public static void claimTownChunk(Chunk chunk, String ownerID) {
         claimedChunksMap.put(getChunkKey(chunk), new TownClaimedChunk(chunk, ownerID));
-        saveStats();
+        save();
     }
     public static void claimRegionChunk(Chunk chunk, String ownerID){
         claimedChunksMap.put(getChunkKey(chunk), new RegionClaimedChunk(chunk, ownerID));
-        saveStats();
+        save();
     }
 
     public static boolean isAdjacentChunkClaimedBySameTown(Chunk chunk, String townID) {
@@ -104,11 +104,11 @@ public class NewClaimedChunkStorage {
 
     public static void unclaimChunk(ClaimedChunk2 claimedChunk) {
         claimedChunksMap.remove(getChunkKey(claimedChunk));
-        saveStats();
+        save();
     }
     public static void unclaimChunk(Chunk chunk) {
         claimedChunksMap.remove(getChunkKey(chunk));
-        saveStats();
+        save();
     }
     public static void unclaimAllChunkFromRegion(RegionData regionData) {
         unclaimAllChunkFromID(regionData.getID());
@@ -177,7 +177,7 @@ public class NewClaimedChunkStorage {
     }
 
 
-    public static void saveStats() {
+    public static void save() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Claimed Chunks.json");
         file.getParentFile().mkdirs();

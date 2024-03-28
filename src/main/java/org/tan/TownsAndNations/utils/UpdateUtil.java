@@ -81,17 +81,4 @@ public class UpdateUtil {
         TownsAndNations.getPlugin().getLogger().info("-Claimed chunks have been updated to the new system");
     }
 
-
-    public static void UpdateTownToNewUpgradeSystem() {
-
-        for(TownData town : TownDataStorage.getTownMap().values()) {
-            int townLevel = town.getTownLevel().getTownLevel();
-            int townChunkCapLevel = town.getTownLevel().getChunkCapLevel();
-            int townPlayerCap = town.getTownLevel().getPlayerCapLevel();
-
-            town.addToBalance(townLevel * 1200 + townChunkCapLevel * 800 + townPlayerCap * 800);
-        }
-    }
-
-
 }

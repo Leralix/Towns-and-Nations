@@ -236,11 +236,15 @@ public class RegionData {
     }
 
     public int getNumberOfClaimedChunk() {
-        Collection<ClaimedChunk2> claims = NewClaimedChunkStorage.getClaimedChunksMap().values();
-        claims.removeIf(claimedChunk -> !claimedChunk.getID().equals(this.id));
-
-        return claims.size();
+        int count = 0;
+        for (ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getClaimedChunksMap().values()) {
+            if (claimedChunk.getID().equals(this.id)) {
+                count++;
+            }
+        }
+        return count;
     }
+
 
     public void broadcastMessageWithSound(String message, SoundEnum soundEnum) {
         for (TownData town : getTownsInRegion()) {
