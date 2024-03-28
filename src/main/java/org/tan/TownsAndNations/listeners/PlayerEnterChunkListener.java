@@ -7,8 +7,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.enums.ChunkType;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.PlayerAutoClaimStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
+import org.tan.TownsAndNations.utils.ChunkUtil;
 
 public class PlayerEnterChunkListener implements Listener {
 
@@ -26,8 +29,26 @@ public class PlayerEnterChunkListener implements Listener {
             return;
         }
 
+        Player player = e.getPlayer();
+
+        //If both chunks are not claimed, no need to display anything
         if(!NewClaimedChunkStorage.isChunkClaimed(currentChunk) &&
                 !NewClaimedChunkStorage.isChunkClaimed(nextChunk)){
+
+            //If auto claim is on, claim the chunk
+            if(PlayerAutoClaimStorage.containsPlayer(e.getPlayer())){
+                ChunkType chunkType = PlayerAutoClaimStorage.getChunkType(e.getPlayer());
+
+                switch (chunkType){
+                    case TOWN:
+                        ChunkUtil.claimChunkForTown(player);
+                        break;
+                    case REGION:
+                        ChunkUtil.claimChunkForRegion(player);
+                        break;
+                }
+
+            }
             return;
         }
 
@@ -40,7 +61,6 @@ public class PlayerEnterChunkListener implements Listener {
             return;
         }
 
-        Player player = e.getPlayer();
 
 
         //Three case: Into wilderness, into town, into region

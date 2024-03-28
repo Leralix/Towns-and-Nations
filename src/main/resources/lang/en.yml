@@ -92,6 +92,10 @@ language:
   TOWN_RELATION_NO_INVITATION: "§aYou have no pending relations"
   TOWN_RELATION_ACCEPTED_MEMBER_SIDE: "§fYour town now has the relation {0} with §9{1}"
   TOWN_RELATION_ACCEPTED_TOWN_SIDE: "§e{0}§f has accepted the relation {1} with your town"
+  #Autoclaim command
+  TOWN_AUTO_CLAIM_DESC: "§fEnable auto claiming while moving between chunks"
+  AUTO_CLAIM_ON_FOR: "§fAuto claim is now on for chunk type: §9{0}"
+  AUTO_CLAIM_OFF: "§fAuto claim is now disabled"
   #Chance chat
   TOWN_CHAT_COMMAND_DESC: "Change chat range"
   CHAT_CHANGED: "§fChat is now set to: §e{0}"
