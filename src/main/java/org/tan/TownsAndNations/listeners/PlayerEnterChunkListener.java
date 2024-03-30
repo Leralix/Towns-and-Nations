@@ -35,7 +35,9 @@ public class PlayerEnterChunkListener implements Listener {
         if(!NewClaimedChunkStorage.isChunkClaimed(currentChunk) &&
                 !NewClaimedChunkStorage.isChunkClaimed(nextChunk)){
 
-
+            if(PlayerAutoClaimStorage.containsPlayer(e.getPlayer())){
+                autoClaimChunk(e, nextChunk, player);
+            }
             return;
         }
 
@@ -54,16 +56,7 @@ public class PlayerEnterChunkListener implements Listener {
         if(NextClaimedChunk == null){
             //If auto claim is on, claim the chunk
             if(PlayerAutoClaimStorage.containsPlayer(e.getPlayer())){
-                ChunkType chunkType = PlayerAutoClaimStorage.getChunkType(e.getPlayer());
-
-                switch (chunkType){
-                    case TOWN:
-                        ChunkUtil.claimChunkForTown(player, nextChunk);
-                        break;
-                    case REGION:
-                        ChunkUtil.claimChunkForRegion(player, nextChunk);
-                        break;
-                }
+                autoClaimChunk(e, nextChunk, player);
             }
             //Else send message player enter wilderness
             else
@@ -76,6 +69,19 @@ public class PlayerEnterChunkListener implements Listener {
 
 
 
+    }
+
+    private void autoClaimChunk(PlayerMoveEvent e, Chunk nextChunk, Player player) {
+        ChunkType chunkType = PlayerAutoClaimStorage.getChunkType(e.getPlayer());
+
+        switch (chunkType){
+            case TOWN:
+                ChunkUtil.claimChunkForTown(player, nextChunk);
+                break;
+            case REGION:
+                ChunkUtil.claimChunkForRegion(player, nextChunk);
+                break;
+        }
     }
 
     public static final boolean equalsWithNulls(ClaimedChunk2 a, ClaimedChunk2 b) {
