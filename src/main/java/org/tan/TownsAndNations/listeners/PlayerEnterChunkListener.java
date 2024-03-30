@@ -35,20 +35,7 @@ public class PlayerEnterChunkListener implements Listener {
         if(!NewClaimedChunkStorage.isChunkClaimed(currentChunk) &&
                 !NewClaimedChunkStorage.isChunkClaimed(nextChunk)){
 
-            //If auto claim is on, claim the chunk
-            if(PlayerAutoClaimStorage.containsPlayer(e.getPlayer())){
-                ChunkType chunkType = PlayerAutoClaimStorage.getChunkType(e.getPlayer());
 
-                switch (chunkType){
-                    case TOWN:
-                        ChunkUtil.claimChunkForTown(player);
-                        break;
-                    case REGION:
-                        ChunkUtil.claimChunkForRegion(player);
-                        break;
-                }
-
-            }
             return;
         }
 
@@ -65,12 +52,26 @@ public class PlayerEnterChunkListener implements Listener {
 
         //Three case: Into wilderness, into town, into region
         if(NextClaimedChunk == null){
-            player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_ENTER_WILDERNESS.get());
-            return;
+            //If auto claim is on, claim the chunk
+            if(PlayerAutoClaimStorage.containsPlayer(e.getPlayer())){
+                ChunkType chunkType = PlayerAutoClaimStorage.getChunkType(e.getPlayer());
+
+                switch (chunkType){
+                    case TOWN:
+                        ChunkUtil.claimChunkForTown(player, nextChunk);
+                        break;
+                    case REGION:
+                        ChunkUtil.claimChunkForRegion(player, nextChunk);
+                        break;
+                }
+            }
+            //Else send message player enter wilderness
+            else
+                player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_ENTER_WILDERNESS.get());
+
         }
         else {
             NextClaimedChunk.playerEnterClaimedArea(player);
-            return;
         }
 
 

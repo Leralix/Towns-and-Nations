@@ -58,6 +58,10 @@ language:
   CHUNK_CLAIMED_SUCCESS_REGION: "Rejon chunku został pomyślnie zajęty!"
   CHUNK_CLAIMED_SUCCESS: "Chunk zajęty ! Aktualna liczba zajętych chunków wynosi: §2{0}/{1}♦)"
   REGION_CHUNK_CLAIMED_SUCCESS: "Region chunka został zajęty"
+  #Sell rare item command
+  SELL_RARE_ITEM_COMMAND_DESC: "Sell rare item in the player hand"
+  NO_ITEM_IN_HAND: "§cYou need to have a rare item in your hand"
+  NOT_RARE_ITEM_IN_HAND: "§cThis item is not rare"
   #CustomVillager
   CUSTOM_VILLAGER_CREATED_SUCCESS: "Osadnik został stworzony!"
   #Invite player to town command
@@ -87,6 +91,10 @@ language:
   TOWN_RELATION_NO_INVITATION: "§aNie masz żadnych oczekujących relacji"
   TOWN_RELATION_ACCEPTED_MEMBER_SIDE: "§fTwoje miasto ma teraz powiązanie {0} z §9{1}"
   TOWN_RELATION_ACCEPTED_TOWN_SIDE: "§eGracz {0}§f zaakceptował tę relację {1} z twoim miastem"
+  #Autoclaim command
+  TOWN_AUTO_CLAIM_DESC: "§fEnable auto claiming while moving between chunks"
+  AUTO_CLAIM_ON_FOR: "§fAuto claim is now on for chunk type: §9{0}"
+  AUTO_CLAIM_OFF: "§fAuto claim is now disabled"
   #Chance chat
   TOWN_CHAT_COMMAND_DESC: "Zmień zakres czatu"
   CHAT_CHANGED: "§fChat został ustawiony na: §e{0}"
@@ -110,6 +118,7 @@ language:
   UNCLAIMED_CHUNK_SUCCESS: "Pomyślnie zrezygnowano z chunka ! Obecna liczba chunków wynosi: §2{0}/{1}♦"
   DEBUG_UNCLAIMED_CHUNK_SUCCESS: "Pomyślnie zrezygnowano z chunka! Obecna ilość chunków wynosi §9{0} §f: §2{1}/{2}♦"
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cTen chunk należy do innego miasta: §e{0}"
+  UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§cThis chunk is claimed by another region: §e{0}"
   #Debug commands
   COMMAND_GENERIC_SUCCESS: "§aKomenda została wykonana"
   ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED: "§cTen chunk nie jest zajęty"
@@ -491,6 +500,22 @@ language:
   CHUNK_ENTER_REGION: "§fWjazd do regionu: §9{0}"
   CHUNK_ENTER_TOWN_AT_WAR: "§cProwadzisz wojnę z tym miastem. Gracze zostali powiadomieni, że przekroczyłeś granicę"
   CHUNK_INTRUSION_ALERT: "§cWróg z miasta {0} wkroczył na twoje granice: {1}"
+  #History
+  HISTORY_TOWN_CREATED: "{0} has created the town §9{1}"
+  HISTORY_TOWN_DELETED: "{0} has deleted the town §9{1}"
+  HISTORY_REGION_CREATED: "{0} has created the region §9{1}"
+  HISTORY_REGION_DELETED: "{0} has deleted the region §9{1}"
+  HISTORY_TOWN_LEADER_CHANGED: "{0} has changed the town leader from {1} to {2}"
+  HISTORY_REGION_CAPITAL_CHANGED: "{0} has changed the regional capital from {1} to {2}"
+  HISTORY_TOWN_NAME_CHANGED: "{0} has changed the town name from {1} to {2}"
+  HISTORY_REGION_NAME_CHANGED: "{0} has changed the region name from {1} to {2}"
+  HISTORY_TOWN_MESSAGE_CHANGED: "{0} has changed the town message of {1} to \"{2}\""
+  HISTORY_REGION_MESSAGE_CHANGED: "{0} has changed the region message of {1} to \"{2}\""
+  HISTORY_ADMIN_GIVE_MONEY: "[ADMIN] {0} has given {1}✦ to {2}"
+  HISTORY_ADMIN_SET_MONEY: "[ADMIN] {0} has set money from {1} to {2}✦"
+  HISTORY_ADMIN_SUMMON_RARE_ITEM: "[ADMIN] {0} has summon {1}x {2}"
+  HISTORY_SUDO_MODE: "{0} has been added to sudo mode by {1}"
+  HISTORY_SUDO_MODE_REMOVED: "{0} has been removed from sudo mode by {1}"
   #PlaceHolderAPI
   NO_TOWN: "Brak Miasta"
   NO_REGION: "Brak Regionu"

@@ -29,6 +29,8 @@ public class CommandManager implements CommandExecutor, TabExecutor, TabComplete
         subCommands.add(new ChannelChatScopeCommand());
         subCommands.add(new AcceptRegionRelationCommand());
 
+        subCommands.add(new AutoClaimCommand());
+
         subCommands.add(new TownSpawnCommand());
         subCommands.add(new SetTownSpawnCommand());
 
