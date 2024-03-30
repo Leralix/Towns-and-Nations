@@ -1,0 +1,17 @@
+##Oppgraderinger
+#Navn
+CITY_HALL: "Rådhus"
+BARRACKS: "Brakker"
+ADMINISTRATION: "Administrasjon"
+WATCHTOWER: "Vakttårn"
+PORTAL: "Portal"
+GUARDS: "Vakter"
+COUNCIL_CHAMBER: "Rådssal"
+#Forutsetninger
+TOWN_LEVEL: "Bynivå"
+#Fordeler
+PLAYER_CAP: "Spillerkapasitet"
+CHUNK_CAP: "Chunk-kapasitet"
+UNLOCK_TOWN_SPAWN: "Lås opp byspawn"
+UNLOCK_MOB_BAN: "Lås opp mobforbud"
+UNLOCK_REGION_CREATION: "Lås opp regionsopprettelse" 

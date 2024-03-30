@@ -83,6 +83,13 @@ public class ChunkUtil {
         }
         boolean isRegionClaimed = false;
 
+        int cost = ConfigUtil.getCustomConfig("config.yml").getInt("CostOfChunk",0);
+        if(townData.getBalance() < cost){
+            player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(cost - townData.getBalance()));
+            return;
+        }
+
+
         //Chunk already claimed by the town
         if(NewClaimedChunkStorage.isChunkClaimed(chunkToClaim)){
             //If chunk belongs to the region in which the town is, then the town can get the chunk
