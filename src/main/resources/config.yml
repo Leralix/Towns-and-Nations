@@ -26,21 +26,13 @@ notifyEnemyTownEnter: true
 
 #Town Levels (town level cost are in the townLevelUpRequirement.yml file)
 TownMaxLevel: 10
-TownMaxMemberLevel: 10
-TownMaxChunkLevel: 10
 
-TownStartingMembersCap: 5
-UpgradeMembers: 3
-
-TownStartingChunksCap: 50
-TownUpgradeChunk: 25
 
 #The cost of creating a Region
 regionCost: 7500
 
 
 #The max size of names
-
 TownNameSize: 40
 RankNameSize: 25
 TownDescSize: 50
@@ -174,3 +166,10 @@ cancelTeleportOnDamage: true
 
 #Archive major event into a txt file
 archiveHistory: true
+
+#Show message when tax in the console
+showTaxInConsole: true
+
+#Time of the day when taxes are collected
+taxHourTime: 0 #0-23
+taxMinuteTime: 0 #0-59

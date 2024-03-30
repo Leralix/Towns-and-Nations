@@ -29,14 +29,26 @@ public class DailyTasks {
             @Override
             public void run() {
                 Calendar calendar = new GregorianCalendar();
-                if (calendar.get(Calendar.HOUR_OF_DAY) == 0 && calendar.get(Calendar.MINUTE) == 0) {
+
+                int minute = ConfigUtil.getCustomConfig("config.yml").getInt("taxHourTime",0);
+                int hour = ConfigUtil.getCustomConfig("config.yml").getInt("taxMinuteTime",0);
+
+
+
+                if (calendar.get(Calendar.HOUR_OF_DAY) == hour && calendar.get(Calendar.MINUTE) == minute) {
                     TownTaxPayment();
                     RegionTaxPayment();
                     ChunkPayment();
                     SalaryPayment();
+
                     ClearOldTaxes();
                     ArchiveUtil.archiveFiles();
                 }
+                if(ConfigUtil.getCustomConfig("config.yml").getBoolean("showTaxInConsole",true))
+                {
+                    TownsAndNations.getPluginLogger().info(Lang.DAILY_TAXES_SUCCESS_LOG.get());
+                }
+
             }
         }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L); // Exécute toutes les 1200 ticks (1 minute en temps Minecraft)
     }
@@ -77,16 +89,11 @@ public class DailyTasks {
                 EconomyUtil.removeFromBalance(offlinePlayer,tax);
                 playerTown.addToBalance(tax);
                 playerTown.getTaxHistory().add(playerStat.getName(), playerStat.getID(), tax);
-                //TownsAndNations.getPluginLogger().info(playerStat.getName() + " has paid " + tax + "$ to the town " + playerTown.getName());
             }
             else{
-                //TownsAndNations.getPluginLogger().info(playerStat.getName() + " has not enough money to pay " + tax + "$ to the town " + playerTown.getName());
                 playerTown.getTaxHistory().add(playerStat.getName(), playerStat.getID(), -1);
             }
         }
-
-        TownsAndNations.getPluginLogger().info(Lang.DAILY_TAXES_SUCCESS_LOG.get());
-
     }
     public static void ChunkPayment(){
 
