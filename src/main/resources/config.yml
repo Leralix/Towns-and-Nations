@@ -146,15 +146,78 @@ NumberOfMiscPurchaseBeforeClearing: 100
 #If you want the removal option to be free, write 0, else write the cost of the removal
 #If you do not need a mob to be removed, do not write it
 CancelMobSpawnInTown:
-  GLOW_SQUID: 0
-  SQUID: 0
+  AXOLOTL: 0
   BAT: 50
-  SLIME: 50
-  CREEPER: 0
-  SKELETON: 0
-  SPIDER: 0
-  ZOMBIE: 0
-  ENDERMAN: 0
+  BEE: 0
+  BLAZE: 0
+  CAMEL: 0
+  CAT: 0
+  CAVE_SPIDER: 500
+  CHICKEN: 0
+  COD: 0
+  COW: 0
+  CREEPER: 1000
+  DOLPHIN: 0
+  DONKEY: 0
+  DROWNED: 500
+  ENDERMAN: 1000
+  ENDERMITE: 0
+  EVOKER: 0
+  FOX: 0
+  FROG: 0
+  GHAST: 1000
+  GLOW_SQUID: 0
+  GOAT: 0
+  GUARDIAN: 0
+  HOGLIN: 0
+  HORSE: 0
+  HUSK: 500
+  IRON_GOLEM: 0
+  LLAMA: 0
+  MAGMA_CUBE: 0
+  MOOSHROOM: 0
+  MULE: 0
+  OCELOT: 0
+  PANDA: 0
+  PARROT: 0
+  PHANTOM: 0
+  PIG: 0
+  PIGLIN: 0
+  PIGLIN_BRUTE: 0
+  PILLAGER: 0
+  POLAR_BEAR: 0
+  PUFFERFISH: 0
+  RABBIT: 0
+  RAVAGER: 0
+  SALMON: 0
+  SHEEP: 0
+  SHULKER: 0
+  SILVERFISH: 0
+  SKELETON: 1000
+  SKELETON_HORSE: 0
+  SLIME: 0
+  SNOWMAN: 0
+  SPIDER: 500
+  SQUID: 0
+  STRAY: 500
+  STRIDER: 0
+  TRADER_LLAMA: 0
+  TROPICAL_FISH: 0
+  TURTLE: 0
+  VEX: 0
+  VILLAGER: 0
+  VINDICATOR: 0
+  WANDERING_TRADER: 0
+  WITCH: 0
+  WITHER: 0
+  WITHER_SKELETON: 0
+  WOLF: 0
+  ZOGLIN: 0
+  ZOMBIE: 1000
+  ZOMBIE_HORSE: 0
+  ZOMBIE_VILLAGER: 0
+
+
 
 ##Teleportation
 #Time before a teleportation (in seconds). 0 or negative value will result in an instant teleportation

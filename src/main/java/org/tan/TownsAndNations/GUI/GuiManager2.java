@@ -1829,7 +1829,7 @@ public class GuiManager2 implements IGUI {
         gui.open(player);
     }
     public static void OpenTownChunkMobSettings(Player player){
-        Gui gui = IGUI.createChestGui("Town",4);
+        Gui gui = IGUI.createChestGui("Town",6);
 
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
         TownData townData = TownDataStorage.get(player);
@@ -1887,7 +1887,7 @@ public class GuiManager2 implements IGUI {
             i = i+1;
         }
 
-        gui.setItem(27, IGUI.CreateBackArrow(player,p -> OpenTownChunk(player)));
+        gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenTownChunk(player)));
         gui.open(player);
     }
     public static void OpenTownChunkPlayerSettings(Player player){
