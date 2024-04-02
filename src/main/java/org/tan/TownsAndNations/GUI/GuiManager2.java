@@ -239,8 +239,8 @@ public class GuiManager2 implements IGUI {
         ItemStack GoldIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_TREASURY_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
         HeadUtils.setLore(GoldIcon, Lang.GUI_TOWN_TREASURY_ICON_DESC1.get());
 
-        ItemStack SkullIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Q0ZDQ5NmIxZGEwNzUzNmM5NGMxMzEyNGE1ODMzZWJlMGM1MzgyYzhhMzM2YWFkODQ2YzY4MWEyOGQ5MzU2MyJ9fX0=");
-        HeadUtils.setLore(SkullIcon, Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get());
+        ItemStack memberIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Q0ZDQ5NmIxZGEwNzUzNmM5NGMxMzEyNGE1ODMzZWJlMGM1MzgyYzhhMzM2YWFkODQ2YzY4MWEyOGQ5MzU2MyJ9fX0=");
+        HeadUtils.setLore(memberIcon, Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get());
 
         ItemStack ClaimIcon = HeadUtils.makeSkull(Lang.GUI_CLAIM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
         HeadUtils.setLore(ClaimIcon, Lang.GUI_CLAIM_ICON_DESC1.get());
@@ -280,7 +280,7 @@ public class GuiManager2 implements IGUI {
             event.setCancelled(true);
             OpenTownEconomics(player);
         });
-        GuiItem _membersIcon = ItemBuilder.from(SkullIcon).asGuiItem(event -> {
+        GuiItem _membersIcon = ItemBuilder.from(memberIcon).asGuiItem(event -> {
             event.setCancelled(true);
             OpenTownMemberList(player);
         });
@@ -361,13 +361,17 @@ public class GuiManager2 implements IGUI {
     }
     public static void OpenTownMemberList(Player player) {
 
-        Gui gui = IGUI.createChestGui("Town",3);
-
         PlayerData playerStat = PlayerDataStorage.get(player);
-        TownData town = TownDataStorage.get(playerStat);
+        TownData playerTown = TownDataStorage.get(playerStat);
+
+        int rowSize = playerTown.getPlayerList().size() / 9 + 2;
+
+        Gui gui = IGUI.createChestGui("Town",rowSize);
+
+
 
         int i = 0;
-        for (String playerUUID: town.getPlayerList()) {
+        for (String playerUUID: playerTown.getPlayerList()) {
 
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
             PlayerData otherPlayerStat = PlayerDataStorage.get(playerUUID);
@@ -395,7 +399,7 @@ public class GuiManager2 implements IGUI {
         ItemStack manageRanks = HeadUtils.getCustomLoreItem(Material.LADDER, Lang.GUI_TOWN_MEMBERS_MANAGE_ROLES.get());
         ItemStack manageApplication = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK,
                 Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION.get(),
-                Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(town.getPlayerJoinRequestSet().size())
+                Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(playerTown.getPlayerJoinRequestSet().size())
         );
 
         GuiItem _manageRanks = ItemBuilder.from(manageRanks).asGuiItem(event -> {
@@ -407,9 +411,9 @@ public class GuiManager2 implements IGUI {
             OpenTownApplications(player);
         });
 
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
-        gui.setItem(3,2, _manageRanks);
-        gui.setItem(3,3, _manageApplication);
+        gui.setItem(rowSize,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(rowSize,2, _manageRanks);
+        gui.setItem(rowSize,3, _manageApplication);
 
 
         gui.open(player);
@@ -417,10 +421,16 @@ public class GuiManager2 implements IGUI {
     }
     public static void OpenTownApplications(Player player) {
 
-        Gui gui = IGUI.createChestGui("Town",3);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData town = TownDataStorage.get(playerStat);
+
+        int rowSize = town.getPlayerJoinRequestSet().size() / 9 + 2;
+
+
+        Gui gui = IGUI.createChestGui("Town",rowSize);
+
+
 
         HashSet<String> players = town.getPlayerJoinRequestSet();
 
@@ -487,7 +497,7 @@ public class GuiManager2 implements IGUI {
             i++;
         }
 
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMemberList(player)));
+        gui.setItem(rowSize,1, IGUI.CreateBackArrow(player,p -> OpenTownMemberList(player)));
 
 
         gui.open(player);
@@ -495,7 +505,8 @@ public class GuiManager2 implements IGUI {
     }
     public static void OpenTownMenuRoles(Player player) {
 
-        Gui gui = IGUI.createChestGui("Town",3);
+        int row = 2;
+        Gui gui = IGUI.createChestGui("Town",row);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData town = TownDataStorage.get(playerStat);
@@ -542,15 +553,13 @@ public class GuiManager2 implements IGUI {
         });
 
 
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMemberList(player)));
-        gui.setItem(3,3, _createNewRole);
+        gui.setItem(row,1, IGUI.CreateBackArrow(player,p -> OpenTownMemberList(player)));
+        gui.setItem(row,3, _createNewRole);
 
         gui.open(player);
 
     }
     public static void OpenTownMenuRoleManager(Player player, int rankID) {
-
-
 
         TownData town = TownDataStorage.get(player);
         TownRank townRank = town.getRank(rankID);
@@ -1344,7 +1353,7 @@ public class GuiManager2 implements IGUI {
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3.get(changeTownNameCost));
         ItemStack quitRegion = HeadUtils.getCustomLoreItem(Material.SPRUCE_DOOR,
                 Lang.GUI_TOWN_SETTINGS_QUIT_REGION.get(),
-                playerTown.haveRegion() ? Lang.GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION.get() : Lang.GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_NO_REGION.get());
+                playerTown.haveRegion() ? Lang.GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION.get(playerTown.getRegion().getName()) : Lang.GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_NO_REGION.get());
         ItemStack changeChunkColor = HeadUtils.getCustomLoreItem(Material.PURPLE_WOOL,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR.get(),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(),
@@ -1813,7 +1822,7 @@ public class GuiManager2 implements IGUI {
             event.setCancelled(true);
 
             if(playerTown.getTownLevel().getBenefitsLevel("UNLOCK_MOB_BAN") >= 1)
-                OpenTownChunkMobSettings(player);
+                OpenTownChunkMobSettings(player,1);
             else{
                 player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_LEVEL.get(DynamicLang.get("UNLOCK_MOB_BAN")));
                 SoundUtil.playSound(player, NOT_ALLOWED);
@@ -1828,16 +1837,35 @@ public class GuiManager2 implements IGUI {
 
         gui.open(player);
     }
-    public static void OpenTownChunkMobSettings(Player player){
-        Gui gui = IGUI.createChestGui("Town",6);
+    public static void OpenTownChunkMobSettings(Player player, int page){
+        Gui gui = IGUI.createChestGui("Mob settings - Page " + page,6);
 
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
         TownData townData = TownDataStorage.get(player);
         ClaimedChunkSettings chunkSettings = townData.getChunkSettings();
 
+        int pageSize = 45; // Nombre maximum d'éléments affichés par page
+        int startIndex = (page -1) * pageSize;
+        boolean lastPage;
 
-        int i = 0;
-        for (MobChunkSpawnEnum mobEnum : MobChunkSpawnStorage.getMobSpawnStorage().values()){
+        int endIndex;
+        if(startIndex + pageSize > MobChunkSpawnStorage.getMobSpawnStorage().size()){
+            endIndex = MobChunkSpawnStorage.getMobSpawnStorage().size();
+            lastPage = true;
+        }
+        else {
+            lastPage = false;
+            endIndex = startIndex + pageSize;
+        }
+
+
+        int slot = 0;
+        for (int i = startIndex; i < endIndex; i++) {
+
+            MobChunkSpawnEnum mobEnum = (MobChunkSpawnEnum) MobChunkSpawnStorage.getMobSpawnStorage().values().toArray()[i];
+            if(slot >= 45)
+                break;
+
             ItemStack mobIcon = HeadUtils.makeSkull(mobEnum.name(),mobEnum.getTexture());
 
             UpgradeStatus upgradeStatus = chunkSettings.getSpawnControl(mobEnum);
@@ -1880,14 +1908,46 @@ public class GuiManager2 implements IGUI {
                     upgradeStatus.setUnlocked(true);
                 }
 
-                OpenTownChunkMobSettings(player);
+                OpenTownChunkMobSettings(player,page);
 
             });
-            gui.setItem(i, mobItem);
-            i = i+1;
+            gui.setItem(slot, mobItem);
+            slot = slot+1;
         }
 
+        ItemStack nextPageButton = HeadUtils.makeSkull(
+                Lang.GUI_NEXT_PAGE.get(),
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0="
+        );
+
+        ItemStack previousPageButton = HeadUtils.makeSkull(
+                Lang.GUI_PREVIOUS_PAGE.get(),
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19"
+        );
+
+        GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
+            if(lastPage) {
+                event.setCancelled(true);
+                return;
+            }
+            OpenTownChunkMobSettings(player,page+1);
+        });
+
+        GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
+            if(page == 1){
+                event.setCancelled(true);
+                return;
+            }
+            OpenTownChunkMobSettings(player,page-1);
+        });
+
+
         gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenTownChunk(player)));
+
+        gui.setItem(6,7, _previous);
+        gui.setItem(6,8, _next);
+
+
         gui.open(player);
     }
     public static void OpenTownChunkPlayerSettings(Player player){

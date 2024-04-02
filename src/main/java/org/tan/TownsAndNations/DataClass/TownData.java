@@ -324,8 +324,8 @@ public class TownData {
     }
 
     public List<TownRank> getRanks(){
-        if(isSqlEnable())
-            return TownDataStorage.getRanksByTownId(getID());
+        if(newRanks == null)
+            return null;
         return this.newRanks.values().stream().toList();
     }
 

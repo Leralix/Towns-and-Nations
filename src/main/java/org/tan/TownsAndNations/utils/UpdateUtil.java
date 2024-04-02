@@ -23,10 +23,13 @@ public class UpdateUtil {
 
     private static void updateRankID() {
 
-        if(TownDataStorage.getTownMap().isEmpty())
+        if(TownDataStorage.getTownMap().isEmpty()){
             return;
+        }
 
-        if(TownDataStorage.getTownMap().values().iterator().next().getRanks().get(0).getID() != null){
+        TownData testTownData = TownDataStorage.getTownMap().values().iterator().next();
+
+        if(testTownData.getRanks() != null){
             TownsAndNations.getPluginLogger().info("-Rank ID's are already updated, skipping update");
             return;
         }

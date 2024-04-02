@@ -17,10 +17,7 @@ import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.RareItem;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.DropChances;
-
-import java.util.Random;
 
 
 public class RareItemDrops implements Listener {
@@ -49,7 +46,7 @@ public class RareItemDrops implements Listener {
             if(!playerData.haveTown()){
                 return; //player have no town
             }
-            if(NewClaimedChunkStorage.isOwner(block.getChunk(), playerData.getID()))
+            if(NewClaimedChunkStorage.isOwner(block.getChunk(), playerData.getTownId()))
                 return; //chunk is claimed by player's town
         }
 
