@@ -152,7 +152,7 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _join = ItemBuilder.from(joinLand).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenSearchTownMenu(player);
+            OpenSearchTownMenu(player,0);
         });
 
         gui.setItem(11, _create);
@@ -161,14 +161,32 @@ public class GuiManager2 implements IGUI {
 
         gui.open(player);
     }
-    public static void OpenSearchTownMenu(Player player) {
+    public static void OpenSearchTownMenu(Player player, int page) {
 
-        Gui gui = IGUI.createChestGui("Town",3);
+        Gui gui = IGUI.createChestGui("Town list | page " + (page + 1),3);
 
-        HashMap<String, TownData> townDataStorage = getTownMap();
+        int pageSize = 45;
+        int startIndex = page  * pageSize;
+        boolean lastPage;
 
-        int i = 0;
-        for (TownData townData : townDataStorage.values()) {
+        int endIndex;
+        if(startIndex + pageSize > MobChunkSpawnStorage.getMobSpawnStorage().size()){
+            endIndex = MobChunkSpawnStorage.getMobSpawnStorage().size() - 1;
+            lastPage = true;
+        }
+        else {
+            lastPage = false;
+            endIndex = startIndex + pageSize;
+        }
+
+
+
+        Collection<TownData> townDataStorage = getTownMap().values();
+
+        int slot = 0;
+
+        for (int i = startIndex; i < endIndex; i++) {
+            TownData townData = (TownData) townDataStorage.toArray()[i];
 
             ItemStack townIcon = HeadUtils.getTownIcon(townData);
 
@@ -195,7 +213,7 @@ public class GuiManager2 implements IGUI {
                     }
                     townData.addPlayerJoinRequest(player);
                     player.sendMessage(getTANString() + Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(townData.getName()));
-                    OpenSearchTownMenu(player);
+                    OpenSearchTownMenu(player,page);
                 }
 
                 if(event.isRightClick()){
@@ -204,17 +222,53 @@ public class GuiManager2 implements IGUI {
                     }
                     townData.removePlayerJoinRequest(player);
                     player.sendMessage(getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get());
-                    OpenSearchTownMenu(player);
+                    OpenSearchTownMenu(player,page);
                 }
 
             });
 
-            gui.setItem(i, _townIteration);
-            i++;
+            gui.setItem(slot, _townIteration);
+            slot++;
 
         }
+        GuiItem panel = ItemBuilder.from(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
 
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuNoTown(player)));
+        ItemStack nextPageButton = HeadUtils.makeSkull(
+                Lang.GUI_NEXT_PAGE.get(),
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0="
+        );
+
+        ItemStack previousPageButton = HeadUtils.makeSkull(
+                Lang.GUI_PREVIOUS_PAGE.get(),
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19"
+        );
+
+        GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
+            if(page == 0){
+                event.setCancelled(true);
+                return;
+            }
+            OpenTownChunkMobSettings(player,page-1);
+        });
+
+        GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
+            if(lastPage) {
+                event.setCancelled(true);
+                return;
+            }
+            OpenTownChunkMobSettings(player,page+1);
+        });
+
+
+        gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuNoTown(player)));
+        gui.setItem(6,2, panel);
+        gui.setItem(6,3, panel);
+        gui.setItem(6,5, panel);
+        gui.setItem(6,6, panel);
+        gui.setItem(6,7, _previous);
+        gui.setItem(6,8, _next);
+        gui.setItem(6,9, panel);
+
 
         gui.open(player);
     }
@@ -290,7 +344,7 @@ public class GuiManager2 implements IGUI {
         });
         GuiItem _otherTownIcon = ItemBuilder.from(otherTownIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownMenuOtherTown(player);
+            OpenTownMenuOtherTown(player, 0);
         });
         GuiItem _relationIcon = ItemBuilder.from(RelationIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -318,16 +372,32 @@ public class GuiManager2 implements IGUI {
 
         gui.open(player);
     }
-    public static void OpenTownMenuOtherTown(Player player) {
-        Gui gui = IGUI.createChestGui("Town",3);
+    public static void OpenTownMenuOtherTown(Player player, int page) {
+        Gui gui = IGUI.createChestGui("Town list | page " + (page + 1),6);
+
+        int pageSize = 45;
+        int startIndex = page * pageSize;
+        boolean lastPage;
+
+        int endIndex;
+        if(startIndex + pageSize > TownDataStorage.getNumberOfTown()){
+            endIndex = TownDataStorage.getNumberOfTown();
+            lastPage = true;
+        }
+        else {
+            lastPage = false;
+            endIndex = startIndex + pageSize;
+        }
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
 
-        HashMap<String, TownData> townDataStorage = getTownMap();
+        Collection<TownData> townDataStorage = getTownMap().values();
 
-        int i = 0;
-        for (TownData otherTown: townDataStorage.values()) {
+        int slot = 0;
+
+        for (int i = startIndex; i < endIndex; i++) {
+            TownData otherTown = (TownData) townDataStorage.toArray()[i];
 
 
             ItemStack townIcon = HeadUtils.getTownIcon(otherTown.getID());
@@ -351,11 +421,50 @@ public class GuiManager2 implements IGUI {
 
             GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
 
-            gui.setItem(i, _townIteration);
-            i++;
-
+            gui.setItem(slot, _townIteration);
+            slot++;
         }
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+
+        ItemStack nextPageButton = HeadUtils.makeSkull(
+                Lang.GUI_NEXT_PAGE.get(),
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0="
+        );
+
+        ItemStack previousPageButton = HeadUtils.makeSkull(
+                Lang.GUI_PREVIOUS_PAGE.get(),
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19"
+        );
+
+        GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
+            if(page == 0){
+                event.setCancelled(true);
+                return;
+            }
+            OpenTownChunkMobSettings(player,page-1);
+        });
+
+        GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
+            if(lastPage) {
+                event.setCancelled(true);
+                return;
+            }
+            OpenTownChunkMobSettings(player,page+1);
+        });
+
+        GuiItem panel = ItemBuilder.from(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
+
+        gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(6,2, panel);
+        gui.setItem(6,3, panel);
+        gui.setItem(6,4, panel);
+        gui.setItem(6,5, panel);
+        gui.setItem(6,6, panel);
+        gui.setItem(6,7, _previous);
+        gui.setItem(6,8, _next);
+        gui.setItem(6,9, panel);
+
+
+
 
         gui.open(player);
     }
@@ -364,7 +473,7 @@ public class GuiManager2 implements IGUI {
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
 
-        int rowSize = playerTown.getPlayerList().size() / 9 + 2;
+        int rowSize = Math.min(playerTown.getPlayerList().size() / 9 + 2,6);
 
         Gui gui = IGUI.createChestGui("Town",rowSize);
 
@@ -425,12 +534,9 @@ public class GuiManager2 implements IGUI {
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData town = TownDataStorage.get(playerStat);
 
-        int rowSize = town.getPlayerJoinRequestSet().size() / 9 + 2;
-
+        int rowSize = Math.min(town.getPlayerJoinRequestSet().size() / 9 + 2,6);
 
         Gui gui = IGUI.createChestGui("Town",rowSize);
-
-
 
         HashSet<String> players = town.getPlayerJoinRequestSet();
 
@@ -1532,21 +1638,21 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _warCategory = ItemBuilder.from(warCategory).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownRelation(player,TownRelation.WAR);
+            OpenTownRelation(player,TownRelation.WAR,0);
         });
         GuiItem _EmbargoCategory = ItemBuilder.from(EmbargoCategory).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownRelation(player,TownRelation.EMBARGO);
+            OpenTownRelation(player,TownRelation.EMBARGO,0);
 
         });
         GuiItem _NAPCategory = ItemBuilder.from(NAPCategory).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownRelation(player,TownRelation.NON_AGGRESSION);
+            OpenTownRelation(player,TownRelation.NON_AGGRESSION,0);
 
         });
         GuiItem _AllianceCategory = ItemBuilder.from(AllianceCategory).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownRelation(player,TownRelation.ALLIANCE);
+            OpenTownRelation(player,TownRelation.ALLIANCE,0);
         });
 
         GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
@@ -1579,43 +1685,60 @@ public class GuiManager2 implements IGUI {
 
         gui.open(player);
     }
-    public static void OpenTownRelation(Player player, TownRelation relation) {
-        Gui gui = IGUI.createChestGui("Town - Relation",4);
-
+    public static void OpenTownRelation(Player player, TownRelation relation, int page) {
+        Gui gui = IGUI.createChestGui("Town relation | page " + (page + 1), 6);
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
 
-        ArrayList<String> TownListUUID = playerTown.getTownWithRelation(relation);
-        int i = 0;
-        for(String otherTownUUID : TownListUUID){
-            ItemStack townIcon = getTownIconWithInformations(otherTownUUID);
+        int pageSize = 45;
+        int startIndex = page * pageSize;
+        boolean lastPage;
 
-            if(relation == TownRelation.WAR) {
-                ItemMeta meta = townIcon.getItemMeta();
-                assert meta != null;
-                List<String> lore = meta.getLore();
-                assert lore != null;
-                lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC1.get());
-                lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC2.get());
-                meta.setLore(lore);
-                townIcon.setItemMeta(meta);
-            }
-
-            GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
-                event.setCancelled(true);
-
-                if(relation == TownRelation.WAR){
-                    player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.get(TownDataStorage.get(otherTownUUID).getName()));
-                    WarTaggedPlayer.addPlayersToTown(otherTownUUID,playerTown.getPlayerList());
-                    TownDataStorage.get(otherTownUUID).broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(playerTown.getName()),
-                            WAR);
-                }
-            });
-            gui.setItem(i, _town);
-
-            i = i+1;
+        int endIndex;
+        if (startIndex + pageSize > playerTown.getTownWithRelation(relation).size()) {
+            endIndex = playerTown.getTownWithRelation(relation).size();
+            lastPage = true;
+        } else {
+            lastPage = false;
+            endIndex = startIndex + pageSize;
         }
+        ArrayList<String> townListID = playerTown.getTownWithRelation(relation);
 
+
+        int slot = 0;
+        if (endIndex > 0){
+            for (int i = startIndex; i < endIndex; i++) {
+                String otherTownID = townListID.get(i);
+
+
+                ItemStack townIcon = getTownIconWithInformations(otherTownID);
+
+                if (relation == TownRelation.WAR) {
+                    ItemMeta meta = townIcon.getItemMeta();
+                    assert meta != null;
+                    List<String> lore = meta.getLore();
+                    assert lore != null;
+                    lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC1.get());
+                    lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC2.get());
+                    meta.setLore(lore);
+                    townIcon.setItemMeta(meta);
+                }
+
+                GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
+                    event.setCancelled(true);
+
+                    if (relation == TownRelation.WAR) {
+                        player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.get(TownDataStorage.get(otherTownID).getName()));
+                        WarTaggedPlayer.addPlayersToTown(otherTownID, playerTown.getPlayerList());
+                        TownDataStorage.get(otherTownID).broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(playerTown.getName()),
+                                WAR);
+                    }
+                });
+                gui.setItem(slot, _town);
+                slot = i + 1;
+
+            }
+        }
 
 
         ItemStack addTownButton = HeadUtils.makeSkull(
@@ -1652,22 +1775,40 @@ public class GuiManager2 implements IGUI {
             }
             OpenTownRelationModification(player,Action.REMOVE,relation);
         });
-        GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> event.setCancelled(true));
-        GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> event.setCancelled(true));
+
+
+        GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
+            if(page == 0){
+                event.setCancelled(true);
+                return;
+            }
+            OpenTownChunkMobSettings(player,page-1);
+        });
+
+        GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
+            if(lastPage) {
+                event.setCancelled(true);
+                return;
+            }
+            OpenTownChunkMobSettings(player,page+1);
+        });
+
+
+
         GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.WHITE_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
 
-        gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> OpenTownRelations(player)));
-        gui.setItem(4,4,_add);
-        gui.setItem(4,5,_remove);
+        gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenTownRelations(player)));
+        gui.setItem(6,4,_add);
+        gui.setItem(6,5,_remove);
 
-        gui.setItem(4,7,_previous);
-        gui.setItem(4,8,_next);
+        gui.setItem(6,7,_previous);
+        gui.setItem(6,8,_next);
 
 
-        gui.setItem(4,2, _decorativeGlass);
-        gui.setItem(4,3, _decorativeGlass);
-        gui.setItem(4,6, _decorativeGlass);
-        gui.setItem(4,9, _decorativeGlass);
+        gui.setItem(6,2, _decorativeGlass);
+        gui.setItem(6,3, _decorativeGlass);
+        gui.setItem(6,6, _decorativeGlass);
+        gui.setItem(6,9, _decorativeGlass);
 
         gui.open(player);
     }
@@ -1725,7 +1866,7 @@ public class GuiManager2 implements IGUI {
                         otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(playerTown.getName(),relation.getColoredName()),
                                 BAD);
                         addTownRelation(playerTown,otherTown,relation);
-                        OpenTownRelation(player,relation);
+                        OpenTownRelation(player,relation,0);
                     }
                 });
                 gui.setItem(i, _town);
@@ -1760,9 +1901,8 @@ public class GuiManager2 implements IGUI {
                         otherTown.broadCastMessageWithSound(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(playerTown.getName(),"neutral"),
                                 BAD);
                         removeTownRelation(playerTown,otherTown,relation);
-                        OpenTownRelation(player,relation);
                     }
-                    OpenTownRelation(player,relation);
+                    OpenTownRelation(player,relation,0);
                 });
                 gui.setItem(i, _town);
                 i = i+1;
@@ -1780,19 +1920,20 @@ public class GuiManager2 implements IGUI {
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19"
         );
 
-        GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> event.setCancelled(true));
         GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> event.setCancelled(true));
+        GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> event.setCancelled(true));
 
-        gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> OpenTownRelation(player,relation)));
+        gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> OpenTownRelation(player,relation,0)));
 
-        gui.setItem(4,7,_next);
-        gui.setItem(4,8,_previous);
+
 
         gui.setItem(4,2, _decorativeGlass);
         gui.setItem(4,3, _decorativeGlass);
         gui.setItem(4,4, _decorativeGlass);
         gui.setItem(4,5, _decorativeGlass);
         gui.setItem(4,6, _decorativeGlass);
+        gui.setItem(4,7,_previous);
+        gui.setItem(4,8,_next);
         gui.setItem(4,9, _decorativeGlass);
 
 
@@ -1844,7 +1985,7 @@ public class GuiManager2 implements IGUI {
         TownData townData = TownDataStorage.get(player);
         ClaimedChunkSettings chunkSettings = townData.getChunkSettings();
 
-        int pageSize = 45; // Nombre maximum d'éléments affichés par page
+        int pageSize = 45;
         int startIndex = (page -1) * pageSize;
         boolean lastPage;
 
@@ -1860,9 +2001,12 @@ public class GuiManager2 implements IGUI {
 
 
         int slot = 0;
+
+        Collection<MobChunkSpawnEnum> mobCollection = MobChunkSpawnStorage.getMobSpawnStorage().values();
+
         for (int i = startIndex; i < endIndex; i++) {
 
-            MobChunkSpawnEnum mobEnum = (MobChunkSpawnEnum) MobChunkSpawnStorage.getMobSpawnStorage().values().toArray()[i];
+            MobChunkSpawnEnum mobEnum = (MobChunkSpawnEnum) mobCollection.toArray()[i];
             if(slot >= 45)
                 break;
 
@@ -1915,6 +2059,8 @@ public class GuiManager2 implements IGUI {
             slot = slot+1;
         }
 
+        GuiItem panel = ItemBuilder.from(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
+
         ItemStack nextPageButton = HeadUtils.makeSkull(
                 Lang.GUI_NEXT_PAGE.get(),
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0="
@@ -1934,7 +2080,7 @@ public class GuiManager2 implements IGUI {
         });
 
         GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
-            if(page == 1){
+            if(page == 0){
                 event.setCancelled(true);
                 return;
             }
@@ -1943,9 +2089,14 @@ public class GuiManager2 implements IGUI {
 
 
         gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenTownChunk(player)));
-
-        gui.setItem(6,7, _previous);
-        gui.setItem(6,8, _next);
+        gui.setItem(6,2,panel);
+        gui.setItem(6,3,panel);
+        gui.setItem(6,4,panel);
+        gui.setItem(6,5,panel);
+        gui.setItem(6,6,panel);
+        gui.setItem(6,7,_previous);
+        gui.setItem(6,8,_next);
+        gui.setItem(6,9,panel);
 
 
         gui.open(player);
