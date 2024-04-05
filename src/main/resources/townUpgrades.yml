@@ -5,12 +5,17 @@
 # maxLevel: the maximum level of the upgrade
 # cost: the cost of each level upgrade. If less than the max level, biggest cost will always display
 # prerequisites: the prerequisites to unlock the upgrade (town_level_[level])
-# benefits: the benefits of the upgrade (PLAYER_CAP, CHUNK_CAP, UNLOCK_TOWN_SPAWN, UNLOCK_MOB_BAN) If you need other upgrades ask on my discord
+# benefits: the benefits of the upgrade
+# - PLAYER_CAP: maximum number of player per town
+# - CHUNK_CAP: maximum number of claimable chunk per town
+# - UNLOCK_TOWN_SPAWN: unlock /tan spawn
+# - UNLOCK_MOB_BAN: unlock the mob ban tab
+# - If you need other upgrades ask on my discord
 # You can create your own names, prerequisites and benefits in the lang files.
 upgrades:
 
-  CITY_HALL: #Base city stats, already unlocked when creating a city
-    col: 0 #Only used for the already unlocked
+  CITY_HALL: #"City hall" upgrade is already unlocked whqen creating a town.
+    col: 1
     row: 2
     itemCode: 'BELL'
     maxLevel: 1
@@ -23,7 +28,7 @@ upgrades:
 
   BARRACKS:
     col: 1
-    row: 2
+    row: 3
     itemCode: 'IRON_SWORD'
     maxLevel: 10
     cost: [ '500', '590', '760', '1010', '1340', '1750', '2240', '2810', '3460', '4190', '5000' ]

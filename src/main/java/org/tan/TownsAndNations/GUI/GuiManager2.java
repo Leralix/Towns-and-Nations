@@ -352,7 +352,7 @@ public class GuiManager2 implements IGUI {
         });
         GuiItem _levelIcon = ItemBuilder.from(LevelIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownLevel(player);
+            OpenTownLevel(player,0);
         });
         GuiItem _settingsIcon = ItemBuilder.from(SettingIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -473,7 +473,7 @@ public class GuiManager2 implements IGUI {
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
 
-        int rowSize = Math.min(playerTown.getPlayerList().size() / 9 + 2,6);
+        int rowSize = Math.min(playerTown.getPlayerList().size() / 9 + 3,6);
 
         Gui gui = IGUI.createChestGui("Town",rowSize);
 
@@ -513,16 +513,25 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _manageRanks = ItemBuilder.from(manageRanks).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownMenuRoles(player);
+            OpenTownRanks(player);
         });
         GuiItem _manageApplication = ItemBuilder.from(manageApplication).asGuiItem(event -> {
             event.setCancelled(true);
             OpenTownApplications(player);
         });
 
+        GuiItem _panel = ItemBuilder.from(Material.LIME_STAINED_GLASS_PANE).asGuiItem(event -> event.setCancelled(true));
+
         gui.setItem(rowSize,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
-        gui.setItem(rowSize,2, _manageRanks);
-        gui.setItem(rowSize,3, _manageApplication);
+        gui.setItem(rowSize,2,_panel);
+        gui.setItem(rowSize,3, _manageRanks);
+        gui.setItem(rowSize,4, _manageApplication);
+        gui.setItem(rowSize,5,_panel);
+        gui.setItem(rowSize,6,_panel);
+        gui.setItem(rowSize,7,_panel);
+        gui.setItem(rowSize,8,_panel);
+        gui.setItem(rowSize,9,_panel);
+
 
 
         gui.open(player);
@@ -534,7 +543,7 @@ public class GuiManager2 implements IGUI {
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData town = TownDataStorage.get(playerStat);
 
-        int rowSize = Math.min(town.getPlayerJoinRequestSet().size() / 9 + 2,6);
+        int rowSize = Math.min(town.getPlayerJoinRequestSet().size() / 9 + 3,6);
 
         Gui gui = IGUI.createChestGui("Town",rowSize);
 
@@ -602,16 +611,28 @@ public class GuiManager2 implements IGUI {
             gui.setItem(i, _playerIcon);
             i++;
         }
+        ItemStack itemStack = HeadUtils.getCustomLoreItem(Material.LIME_STAINED_GLASS_PANE,"");
+        GuiItem _panel = ItemBuilder.from(itemStack).asGuiItem(event -> event.setCancelled(true));
+
 
         gui.setItem(rowSize,1, IGUI.CreateBackArrow(player,p -> OpenTownMemberList(player)));
+        gui.setItem(rowSize,2,_panel);
+        gui.setItem(rowSize,3,_panel);
+        gui.setItem(rowSize,4,_panel);
+        gui.setItem(rowSize,5,_panel);
+        gui.setItem(rowSize,6,_panel);
+        gui.setItem(rowSize,7,_panel);
+        gui.setItem(rowSize,8,_panel);
+        gui.setItem(rowSize,9,_panel);
+
 
 
         gui.open(player);
 
     }
-    public static void OpenTownMenuRoles(Player player) {
+    public static void OpenTownRanks(Player player) {
 
-        int row = 2;
+        int row = 3;
         Gui gui = IGUI.createChestGui("Town",row);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
@@ -632,13 +653,13 @@ public class GuiManager2 implements IGUI {
                     player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
                     return;
                 }
-                OpenTownMenuRoleManager(player,townRank.getID());
+                OpenTownRankManager(player,townRank.getID());
             });
             gui.setItem(i, _townRankItemStack);
             i = i+1;
         }
 
-        ItemStack createNewRole = HeadUtils.getCustomLoreItem(Material.EGG, Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES.get());
+        ItemStack createNewRole = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTBjOTdlNGI2OGFhYWFlODQ3MmUzNDFiMWQ4NzJiOTNiMzZkNGViNmVhODllY2VjMjZhNjZlNmM0ZTE3OCJ9fX0=");
         GuiItem _createNewRole = ItemBuilder.from(createNewRole).asGuiItem(event -> {
             event.setCancelled(true);
 
@@ -665,7 +686,7 @@ public class GuiManager2 implements IGUI {
         gui.open(player);
 
     }
-    public static void OpenTownMenuRoleManager(Player player, int rankID) {
+    public static void OpenTownRankManager(Player player, int rankID) {
 
         TownData town = TownDataStorage.get(player);
         TownRank townRank = town.getRank(rankID);
@@ -745,7 +766,7 @@ public class GuiManager2 implements IGUI {
             }
             else {
                 townRank.setRankIconName(town.getID(), itemMaterial.toString());
-                OpenTownMenuRoleManager(player, rankID);
+                OpenTownRankManager(player, rankID);
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get());
             }
             event.setCancelled(true);
@@ -753,15 +774,15 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _roleRankIcon = ItemBuilder.from(roleRankIcon).asGuiItem(event -> {
             townRank.incrementLevel(town.getID());
-            OpenTownMenuRoleManager(player, rankID);
+            OpenTownRankManager(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _managePermission = ItemBuilder.from(managePermission).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownMenuRoleManagerPermissions(player,rankID);
+            OpenTownRankManagerPermissions(player,rankID);
         });
         GuiItem _membersRank = ItemBuilder.from(membersRank).asGuiItem(event -> {
-            OpenTownMenuRoleManagerAddPlayer(player,rankID);
+            OpenTownRankManagerAddPlayer(player,rankID);
             event.setCancelled(true);
         });
         GuiItem _renameRank = ItemBuilder.from(renameRank).asGuiItem(event -> {
@@ -776,7 +797,7 @@ public class GuiManager2 implements IGUI {
         });
         GuiItem _changeRoleTaxRelation = ItemBuilder.from(changeRoleTaxRelation).asGuiItem(event -> {
             townRank.swapPayingTaxes(town.getID());
-            OpenTownMenuRoleManager(player,rankID);
+            OpenTownRankManager(player,rankID);
             event.setCancelled(true);
         });
         GuiItem _makeRankDefault = ItemBuilder.from(makeRankDefault).asGuiItem(event -> {
@@ -787,7 +808,7 @@ public class GuiManager2 implements IGUI {
                 town.setTownDefaultRankID(rankID);
             }
             event.setCancelled(true);
-            OpenTownMenuRoleManager(player,rankID);
+            OpenTownRankManager(player,rankID);
         });
 
         GuiItem _removeRank = ItemBuilder.from(removeRank).asGuiItem(event -> {
@@ -797,7 +818,7 @@ public class GuiManager2 implements IGUI {
             }
             else{
                 town.removeRank(townRank.getID());
-                OpenTownMenuRoles(player);
+                OpenTownRanks(player);
                 event.setCancelled(true);
             }
         });
@@ -815,7 +836,7 @@ public class GuiManager2 implements IGUI {
 
             townRank.removeFromSalary(town.getID(), amountToRemove);
             SoundUtil.playSound(player, REMOVE);
-            OpenTownMenuRoleManager(player, rankID);
+            OpenTownRankManager(player, rankID);
         });
         GuiItem _IncreaseSalary = ItemBuilder.from(increaseSalary).asGuiItem(event -> {
 
@@ -825,7 +846,7 @@ public class GuiManager2 implements IGUI {
 
             townRank.addFromSalary(town.getID(), amountToAdd);
             SoundUtil.playSound(player, ADD);
-            OpenTownMenuRoleManager(player, rankID);
+            OpenTownRankManager(player, rankID);
         });
 
         GuiItem _salary = ItemBuilder.from(salary).asGuiItem(event -> event.setCancelled(true));
@@ -849,7 +870,7 @@ public class GuiManager2 implements IGUI {
         gui.open(player);
 
     }
-    public static void OpenTownMenuRoleManagerAddPlayer(Player player, int rankID) {
+    public static void OpenTownRankManagerAddPlayer(Player player, int rankID) {
 
         Gui gui = IGUI.createChestGui("Town",3);
 
@@ -887,17 +908,17 @@ public class GuiManager2 implements IGUI {
 
                 town.setPlayerRank(playerStat, rankID);
 
-                OpenTownMenuRoleManager(player, rankID);
+                OpenTownRankManager(player, rankID);
             });
 
             gui.setItem(i, _playerHead);
             i = i + 1;
         }
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuRoleManager(player,rankID)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownRankManager(player,rankID)));
 
         gui.open(player);
     }
-    public static void OpenTownMenuRoleManagerPermissions(Player player, int rankID) {
+    public static void OpenTownRankManagerPermissions(Player player, int rankID) {
 
         Gui gui = IGUI.createChestGui("Town",3);
 
@@ -923,74 +944,74 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _manage_taxes = ItemBuilder.from(manage_taxes).asGuiItem(event -> {
             townRank.switchPermission(town.getID(), MANAGE_TAXES);
-            OpenTownMenuRoleManagerPermissions(player, rankID);
+            OpenTownRankManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _promote_rank_player = ItemBuilder.from(promote_rank_player).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),PROMOTE_RANK_PLAYER);
-            OpenTownMenuRoleManagerPermissions(player, rankID);
+            OpenTownRankManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _derank_player = ItemBuilder.from(derank_player).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),DERANK_RANK_PLAYER);
-            OpenTownMenuRoleManagerPermissions(player, rankID);
+            OpenTownRankManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _claim_chunk = ItemBuilder.from(claim_chunk).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),CLAIM_CHUNK);
-            OpenTownMenuRoleManagerPermissions(player, rankID);
+            OpenTownRankManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _unclaim_chunk = ItemBuilder.from(unclaim_chunk).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),UNCLAIM_CHUNK);
-            OpenTownMenuRoleManagerPermissions(player, rankID);
+            OpenTownRankManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _upgrade_town = ItemBuilder.from(upgrade_town).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),UPGRADE_TOWN);
-            OpenTownMenuRoleManagerPermissions(player, rankID);
+            OpenTownRankManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _invite_player = ItemBuilder.from(invite_player).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),INVITE_PLAYER);
-            OpenTownMenuRoleManagerPermissions(player, rankID);
+            OpenTownRankManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _kick_player = ItemBuilder.from(kick_player).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),KICK_PLAYER);
-            OpenTownMenuRoleManagerPermissions(player, rankID);
+            OpenTownRankManagerPermissions(player, rankID);
 
             event.setCancelled(true);
         });
         GuiItem _create_rank = ItemBuilder.from(create_rank).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),CREATE_RANK);
-            OpenTownMenuRoleManagerPermissions(player, rankID);
+            OpenTownRankManagerPermissions(player, rankID);
 
             event.setCancelled(true);
         });
         GuiItem _delete_rank = ItemBuilder.from(delete_rank).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),DELETE_RANK);
-            OpenTownMenuRoleManagerPermissions(player, rankID);
+            OpenTownRankManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _modify_rank = ItemBuilder.from(modify_rank).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),MANAGE_RANKS);
-            OpenTownMenuRoleManagerPermissions(player, rankID);
+            OpenTownRankManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _manage_claim_settings = ItemBuilder.from(manage_claim_settings).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),MANAGE_CLAIM_SETTINGS);
-            OpenTownMenuRoleManagerPermissions(player, rankID);
+            OpenTownRankManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _manage_town_relation = ItemBuilder.from(manage_town_relation).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),MANAGE_TOWN_RELATION);
-            OpenTownMenuRoleManagerPermissions(player, rankID);
+            OpenTownRankManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
         GuiItem _manage_mob_spawn = ItemBuilder.from(manage_mob_spawn).asGuiItem(event -> {
             townRank.switchPermission(town.getID(),MANAGE_MOB_SPAWN);
-            OpenTownMenuRoleManagerPermissions(player, rankID);
+            OpenTownRankManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
 
@@ -1010,7 +1031,7 @@ public class GuiManager2 implements IGUI {
         gui.setItem(13, _manage_town_relation);
         gui.setItem(14, _manage_mob_spawn);
 
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuRoleManager(player,rankID)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownRankManager(player,rankID)));
 
         gui.open(player);
 
@@ -1351,8 +1372,8 @@ public class GuiManager2 implements IGUI {
         gui.open(player);
 
     }
-    public static void OpenTownLevel(Player player){
-        Gui gui = IGUI.createChestGui("Town",6);
+    public static void OpenTownLevel(Player player,int level){
+        Gui gui = IGUI.createChestGui("Town Upgrades | " + (level + 1),6);
 
         TownData townData = TownDataStorage.get(player);
         TownLevel townLevel = townData.getTownLevel();
@@ -1382,13 +1403,13 @@ public class GuiManager2 implements IGUI {
         GuiItem _bottompannel;
 
         for(int i = 2; i < 10; i++){
-            if(townLevel.getTownLevel() > (i-2)){
-                ItemStack filler_green = HeadUtils.getCustomLoreItem(Material.LIME_STAINED_GLASS_PANE,"Level " + (i-1));
+            if(townLevel.getTownLevel() > (i-2 + level)){
+                ItemStack filler_green = HeadUtils.getCustomLoreItem(Material.LIME_STAINED_GLASS_PANE,"Level " + (i-1 + level));
 
                 _pannel = ItemBuilder.from(green_level).asGuiItem(event -> event.setCancelled(true));
                 _bottompannel = ItemBuilder.from(filler_green).asGuiItem(event -> event.setCancelled(true));
             }
-            else if(townLevel.getTownLevel() == i-2){
+            else if(townLevel.getTownLevel() == (i - 2 + level)){
                 _pannel = _iron_bars;
                 ItemStack upgradeTownLevel = HeadUtils.getCustomLoreItem(Material.ORANGE_STAINED_GLASS_PANE, Lang.GUI_TOWN_LEVEL_UP.get());
                 HeadUtils.setLore(upgradeTownLevel,
@@ -1398,12 +1419,12 @@ public class GuiManager2 implements IGUI {
                 _bottompannel = ItemBuilder.from(upgradeTownLevel).asGuiItem(event -> {
                     event.setCancelled(true);
                     upgradeTown(player,townData);
-                    OpenTownLevel(player);
+                    OpenTownLevel(player,level);
                 });
             }
             else{
                 _pannel = _iron_bars;
-                ItemStack red_level = HeadUtils.getCustomLoreItem(Material.RED_STAINED_GLASS_PANE,"Town level " + (i-2) + " locked");
+                ItemStack red_level = HeadUtils.getCustomLoreItem(Material.RED_STAINED_GLASS_PANE,"Town level " + (i - (2 + level)) + " locked");
                 _bottompannel = ItemBuilder.from(red_level).asGuiItem(event -> event.setCancelled(true));
             }
             gui.setItem(1,i, _pannel);
@@ -1415,10 +1436,39 @@ public class GuiManager2 implements IGUI {
 
         for(TownUpgrade townUpgrade : UpgradeStorage.getUpgrades()){
             GuiItem _guiItem = GuiUtil.makeUpgradeGuiItem(player,townUpgrade,townData);
-            gui.setItem(townUpgrade.getRow(),townUpgrade.getCol() + 1,_guiItem);
+            if(level + 1 <= townUpgrade.getCol() && townUpgrade.getCol() <= level + 7)
+                gui.setItem(townUpgrade.getRow(),townUpgrade.getCol() + (1 - level),_guiItem);
         }
 
+        ItemStack nextPageButton = HeadUtils.makeSkull(
+                Lang.GUI_NEXT_PAGE.get(),
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0="
+        );
+
+        ItemStack previousPageButton = HeadUtils.makeSkull(
+                Lang.GUI_PREVIOUS_PAGE.get(),
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19"
+        );
+
+        GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(level > 0)
+                OpenTownLevel(player,level - 1);
+        });
+        GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
+            event.setCancelled(true);
+            int townMaxLevel = ConfigUtil.getCustomConfig("config.yml").getInt("TownMaxLevel",10);
+            if(level < (townMaxLevel - 7))
+                OpenTownLevel(player,level + 1);
+        });
+
+
+
         gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+
+
+        gui.setItem(6,7, _previous);
+        gui.setItem(6,8, _next);
 
         gui.open(player);
 
@@ -1813,7 +1863,8 @@ public class GuiManager2 implements IGUI {
         gui.open(player);
     }
     public static void OpenTownRelationModification(Player player, Action action, TownRelation relation) {
-        Gui gui = IGUI.createChestGui("Town - Relation",4);
+        int nRows = 6;
+        Gui gui = IGUI.createChestGui("Town - Relation",nRows);
 
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
         TownData playerTown = TownDataStorage.get(playerStat);
@@ -1821,7 +1872,7 @@ public class GuiManager2 implements IGUI {
         LinkedHashMap<String, TownData> allTown = getTownMap();
         ArrayList<String> TownListUUID = playerTown.getTownWithRelation(relation);
 
-        GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.GREEN_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
+        GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
 
         if(action == Action.ADD){
             List<String> townNoRelation = new ArrayList<>(allTown.keySet());
@@ -1870,7 +1921,7 @@ public class GuiManager2 implements IGUI {
                     }
                 });
                 gui.setItem(i, _town);
-                i = i+1;
+                i++;
                 _decorativeGlass = ItemBuilder.from(new ItemStack(Material.GREEN_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
             }
 
@@ -1923,18 +1974,17 @@ public class GuiManager2 implements IGUI {
         GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> event.setCancelled(true));
         GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> event.setCancelled(true));
 
-        gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> OpenTownRelation(player,relation,0)));
+        gui.setItem(nRows,1, IGUI.CreateBackArrow(player,p -> OpenTownRelation(player,relation,0)));
 
+        gui.setItem(nRows,2, _decorativeGlass);
+        gui.setItem(nRows,3, _decorativeGlass);
+        gui.setItem(nRows,4, _decorativeGlass);
+        gui.setItem(nRows,5, _decorativeGlass);
+        gui.setItem(nRows,6, _decorativeGlass);
 
-
-        gui.setItem(4,2, _decorativeGlass);
-        gui.setItem(4,3, _decorativeGlass);
-        gui.setItem(4,4, _decorativeGlass);
-        gui.setItem(4,5, _decorativeGlass);
-        gui.setItem(4,6, _decorativeGlass);
-        gui.setItem(4,7,_previous);
-        gui.setItem(4,8,_next);
-        gui.setItem(4,9, _decorativeGlass);
+        gui.setItem(nRows,7,_previous);
+        gui.setItem(nRows,8,_next);
+        gui.setItem(nRows,9, _decorativeGlass);
 
 
         gui.open(player);

@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.TownLevel;
 import org.tan.TownsAndNations.DataClass.TownUpgrade;
+import org.tan.TownsAndNations.GUI.GuiManager2;
 import org.tan.TownsAndNations.Lang.DynamicLang;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.SoundEnum;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.tan.TownsAndNations.GUI.GuiManager2.OpenTownLevel;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.TownUtil.upgradeTown;
 
@@ -91,7 +91,7 @@ public class GuiUtil {
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.get());
                 SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             }
-            OpenTownLevel(player);
+            GuiManager2.OpenTownLevel(player,0);
         });
     }
 

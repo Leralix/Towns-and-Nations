@@ -33,8 +33,6 @@ public class DailyTasks {
                 int minute = ConfigUtil.getCustomConfig("config.yml").getInt("taxHourTime",0);
                 int hour = ConfigUtil.getCustomConfig("config.yml").getInt("taxMinuteTime",0);
 
-
-
                 if (calendar.get(Calendar.HOUR_OF_DAY) == hour && calendar.get(Calendar.MINUTE) == minute) {
                     TownTaxPayment();
                     RegionTaxPayment();
@@ -43,16 +41,14 @@ public class DailyTasks {
 
                     ClearOldTaxes();
                     ArchiveUtil.archiveFiles();
+                    if(ConfigUtil.getCustomConfig("config.yml").getBoolean("showTaxInConsole",true))
+                    {
+                        TownsAndNations.getPluginLogger().info(Lang.DAILY_TAXES_SUCCESS_LOG.get());
+                    }
                 }
-                if(ConfigUtil.getCustomConfig("config.yml").getBoolean("showTaxInConsole",true))
-                {
-                    TownsAndNations.getPluginLogger().info(Lang.DAILY_TAXES_SUCCESS_LOG.get());
-                }
-
             }
         }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L); // Exécute toutes les 1200 ticks (1 minute en temps Minecraft)
     }
-
     public static void RegionTaxPayment() {
 
         for(RegionData regionData: RegionDataStorage.getAllRegions()){
@@ -108,7 +104,6 @@ public class DailyTasks {
             town.getChunkHistory().add(numberClaimedChunk,totalUpkeep);
         }
     }
-
     public static void SalaryPayment(){
 
         for (TownData town: TownDataStorage.getTownMap().values()){
@@ -152,6 +147,4 @@ public class DailyTasks {
             town.getMiscellaneousHistory().clearHistory(timeBeforeClearingMisc);
         }
     }
-
-
 }

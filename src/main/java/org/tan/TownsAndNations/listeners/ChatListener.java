@@ -100,7 +100,7 @@ public class ChatListener implements Listener {
 
         removePlayer(player);
         TownRank newRank = TownDataStorage.get(player).addRank(message);
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, newRank.getID()));
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownRankManager(player, newRank.getID()));
     }
     private void ChangeRegionDescription(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newDesc) {
         String regionID = chatData.getData().get(REGION_ID);
@@ -242,7 +242,7 @@ public class ChatListener implements Listener {
         TownRank playerTownRank = playerTown.getRank(rankID);
         playerTownRank.setName(newName);
 
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownMenuRoleManager(player, rankID));
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownRankManager(player, rankID));
         removePlayer(player);
     }
 
