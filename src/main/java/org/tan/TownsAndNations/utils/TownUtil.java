@@ -52,6 +52,11 @@ public class TownUtil {
             return;
         }
 
+        if(TownDataStorage.isNameUsed(townName)){
+            player.sendMessage(ChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
+            return;
+        }
+
         removePlayer(player);
         Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(),townName));
         TownData newTown = TownDataStorage.newTown(townName,player);

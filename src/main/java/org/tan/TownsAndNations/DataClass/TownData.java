@@ -338,7 +338,7 @@ public class TownData {
         return this.townDefaultRank;
     }
     public TownRank getTownDefaultRank(){
-        return getOldRank(getTownDefaultRankName());
+        return getRank(getTownDefaultRankID());
     }
 
     public int getNumberOfRank(){

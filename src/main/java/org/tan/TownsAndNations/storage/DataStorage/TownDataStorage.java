@@ -877,15 +877,12 @@ public class TownDataStorage {
         return count;
     }
 
-    public static void UpdateTownDataWithColor(){
-        String sql = "ALTER TABLE tan_town_data ADD COLUMN color VARCHAR(255)";
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+    public static boolean isNameUsed(String townName){
+        for (TownData town : townDataMap.values()){
+            if(townName.equals(town.getName()))
+                return true;
         }
-
+        return false;
     }
 
 }

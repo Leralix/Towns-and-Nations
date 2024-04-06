@@ -46,7 +46,7 @@ public class RareItemDrops implements Listener {
             if(!playerData.haveTown()){
                 return; //player have no town
             }
-            if(NewClaimedChunkStorage.isOwner(block.getChunk(), playerData.getTownId()))
+            if(!NewClaimedChunkStorage.isOwner(block.getChunk(), playerData.getTownId()))
                 return; //chunk is claimed by player's town
         }
 

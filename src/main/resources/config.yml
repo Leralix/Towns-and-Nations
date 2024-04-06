@@ -108,7 +108,7 @@ rareSoul:
   BLAZE: 5
   GHAST: 75
 
-rareSoulValue: 2
+rareSoulValue: 15
 
 ##
 #Cost of renaming a town:
@@ -236,3 +236,6 @@ showTaxInConsole: true
 #Time of the day when taxes are collected
 taxHourTime: 0 #0-23
 taxMinuteTime: 0 #0-59
+
+#
+tanCommand: "/tan"
