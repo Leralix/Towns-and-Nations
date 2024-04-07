@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
+import org.tan.TownsAndNations.enums.ChatCategory;
 import org.tan.TownsAndNations.enums.MessageKey;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.*;
@@ -20,7 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
-import static org.tan.TownsAndNations.enums.ChatCategory.CREATE_CITY;
 import static org.tan.TownsAndNations.enums.MessageKey.COST;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.enums.TownRolePermission.KICK_PLAYER;
@@ -57,21 +57,16 @@ public class TownUtil {
             return;
         }
 
-        removePlayer(player);
-        Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(),townName));
         TownData newTown = TownDataStorage.newTown(townName,player);
-        playerData.setTownRankID(newTown.getTownDefaultRankID()); //2. Set player rank to default rank
-        playerData.setTownId(newTown.getID()); //3. Set player town to the new town
-        removeFromBalance(player,townCost); //1. Remove money from player
-        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_CREATED.get(player.getName(),townName));
+        removeFromBalance(player,townCost);
+        playerData.joinTown(newTown);
 
-        for (TownData otherTown : TownDataStorage.getTownMap().values()) {
-            if(otherTown == TownDataStorage.get(townName)){
-                continue;
-            }
-            TownInviteDataStorage.removeInvitation(player,otherTown.getID());
-        }
+
+
+        Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(),townName));
         SoundUtil.playSound(player, LEVEL_UP);
+        removePlayer(player);
+        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_CREATED.get(player.getName(),townName));
 
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> setIndividualScoreBoard(player));
     }
@@ -241,12 +236,13 @@ public class TownUtil {
             player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(townPrice - playerMoney));
         }
         else {
-            player.sendMessage(getTANString() + Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get());
-            player.closeInventory();
-
             Map<MessageKey,String> data = new HashMap<>();
             data.put(COST,Integer.toString(townPrice));
-            PlayerChatListenerStorage.addPlayer(CREATE_CITY,player,data);
+            PlayerChatListenerStorage.addPlayer(ChatCategory.CREATE_CITY,player,data);
+
+            player.sendMessage(getTANString() + Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get());
+            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+            player.closeInventory();
         }
     }
 }

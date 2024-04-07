@@ -31,7 +31,7 @@ public class TownDataStorage {
         String playerID = player.getUniqueId().toString();
         newTownId++;
 
-        TownData newTown = new TownData( townId, townName, playerID);
+        TownData newTown = new TownData(townId, townName, playerID);
 
         if(isSqlEnable()){
             saveTownDataToDatabase(newTown);

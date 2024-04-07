@@ -198,7 +198,6 @@ public class ChatListener implements Listener {
             return;
         }
 
-        removePlayer(player);
         TownUtil.renameTown(player, townCost, newName, town);
         removePlayer(player);
     }

@@ -670,6 +670,7 @@ public class GuiManager2 implements IGUI {
                 }
 
                 player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get());
+                player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
                 player.closeInventory();
                 PlayerChatListenerStorage.addPlayer(RANK_CREATION,player);
             }
@@ -787,8 +788,9 @@ public class GuiManager2 implements IGUI {
         });
         GuiItem _renameRank = ItemBuilder.from(renameRank).asGuiItem(event -> {
 
-            player.closeInventory();
             player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get());
+            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+            player.closeInventory();
 
             HashMap<MessageKey, String> newMap = new HashMap<>();
             newMap.put(RANK_NAME, String.valueOf(rankID));
@@ -801,14 +803,15 @@ public class GuiManager2 implements IGUI {
             event.setCancelled(true);
         });
         GuiItem _makeRankDefault = ItemBuilder.from(makeRankDefault).asGuiItem(event -> {
+            event.setCancelled(true);
+
             if(isDefaultRank){
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT.get());
             }
             else{
                 town.setTownDefaultRankID(rankID);
+                OpenTownRankManager(player,rankID);
             }
-            event.setCancelled(true);
-            OpenTownRankManager(player,rankID);
         });
 
         GuiItem _removeRank = ItemBuilder.from(removeRank).asGuiItem(event -> {
@@ -1141,8 +1144,10 @@ public class GuiManager2 implements IGUI {
         });
         GuiItem _donation = ItemBuilder.from(donation).asGuiItem(event -> {
             player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get());
-            PlayerChatListenerStorage.addPlayer(TOWN_DONATION,player);
+            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
             player.closeInventory();
+
+            PlayerChatListenerStorage.addPlayer(TOWN_DONATION,player);
             event.setCancelled(true);
         });
         GuiItem _donationHistory = ItemBuilder.from(donationHistory).asGuiItem(event -> {
@@ -1557,8 +1562,10 @@ public class GuiManager2 implements IGUI {
         });
 
         GuiItem _changeMessage = ItemBuilder.from(changeMessage).asGuiItem(event -> {
-            player.closeInventory();
             player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+            player.closeInventory();
+
             Map<MessageKey, String> data = new HashMap<>();
             data.put(MessageKey.TOWN_ID,playerTown.getID());
             PlayerChatListenerStorage.addPlayer(CHANGE_TOWN_DESCRIPTION,player,data);
@@ -1581,11 +1588,13 @@ public class GuiManager2 implements IGUI {
 
             if(playerStat.isTownLeader()){
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+                player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+                player.closeInventory();
+
                 Map<MessageKey, String> data = new HashMap<>();
                 data.put(MessageKey.TOWN_ID,playerTown.getID());
                 data.put(MessageKey.COST,Integer.toString(changeTownNameCost));
                 PlayerChatListenerStorage.addPlayer(CHANGE_TOWN_NAME,player,data);
-                player.closeInventory();
             }
             else
                 player.sendMessage(getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
@@ -1611,10 +1620,12 @@ public class GuiManager2 implements IGUI {
 
             if(playerStat.isTownLeader()){
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT.get());
+                player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+                player.closeInventory();
+
                 Map<MessageKey, String> data = new HashMap<>();
                 data.put(MessageKey.TOWN_ID,playerTown.getID());
                 PlayerChatListenerStorage.addPlayer(CHANGE_CHUNK_COLOR,player,data);
-                player.closeInventory();
             }
             else
                 player.sendMessage(getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
@@ -2499,15 +2510,18 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _changeDescription = ItemBuilder.from(changeDescription).asGuiItem(event -> {
             event.setCancelled(true);
-            if(playerStat.isTownLeader() && playerRegion.isCapital(playerTown)){
-                player.closeInventory();
-                player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
-                Map<MessageKey, String> data = new HashMap<>();
-                data.put(MessageKey.REGION_ID,playerRegion.getID());
-                PlayerChatListenerStorage.addPlayer(CHANGE_REGION_DESCRIPTION,player,data);
+            if(!playerStat.isTownLeader() || !playerRegion.isCapital(playerTown)){
+                player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
                 return;
             }
-            player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
+
+            player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+            player.closeInventory();
+
+            Map<MessageKey, String> data = new HashMap<>();
+            data.put(MessageKey.REGION_ID,playerRegion.getID());
+            PlayerChatListenerStorage.addPlayer(CHANGE_REGION_DESCRIPTION,player,data);
         });
 
 
@@ -2606,8 +2620,10 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _donation = ItemBuilder.from(donation).asGuiItem(event -> {
             player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get());
-            PlayerChatListenerStorage.addPlayer(REGION_DONATION,player);
+            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
             player.closeInventory();
+
+            PlayerChatListenerStorage.addPlayer(REGION_DONATION,player);
             event.setCancelled(true);
         });
 

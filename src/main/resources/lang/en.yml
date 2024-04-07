@@ -40,6 +40,9 @@ language:
   MESSAGE_TOO_LONG: "§cMessage is too long: {0} max"
   ECONOMY_EXISTS: "§cA plugin is handling the economy. Use it instead"
   CANCELLED_ACTION: "§cAction cancelled"
+  #Cancel
+  CANCEL_WORD: "cancel" #The cancel word can be modified
+  WRITE_CANCEL_TO_CANCEL: "§fWrite §c{0}§f in the chat to cancel"
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f asked to join the town. You can find the application in the members menu"
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "You successfully asked to join the town: §9{0}§f. Right click on the city to cancel"

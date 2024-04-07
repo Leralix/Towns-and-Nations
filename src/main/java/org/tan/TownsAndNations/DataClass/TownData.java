@@ -86,17 +86,12 @@ public class TownData {
         this.salaryHistory = new SalaryHistory();
         this.taxHistory = new TaxHistory();
 
-        TownRank defaultRank = addRank(townDefaultRank);
-        this.newRanks.put(defaultRank.getID(), defaultRank);
-
-
-        PlayerDataStorage.get(leaderID).setTownRankID(this.townDefaultRankID);
-
-
         this.relations = new TownRelations();
         this.chunkSettings = new ClaimedChunkSettings();
-
         this.townLevel = new TownLevel();
+
+        addRank(townDefaultRank);
+
     }
 
     //used for sql, loading a town
@@ -140,15 +135,11 @@ public class TownData {
             TownDataStorage.updateTownData(this);
     }
     public TownRank addRank(String rankName){
-
         int nextRankId = 0;
         for(TownRank rank : this.getRanks()){
-            if(rank.getID() == null)
-                continue;
-            if(rank.getID() > nextRankId)
+            if(rank.getID() >= nextRankId)
                 nextRankId = rank.getID() + 1;
         }
-
 
         TownRank newRank = new TownRank(nextRankId, rankName);
         this.newRanks.put(nextRankId,newRank);
@@ -204,8 +195,7 @@ public class TownData {
     public void addPlayer(PlayerData playerData){
         townPlayerListId.add(playerData.getID());
         getTownDefaultRank().addPlayer(playerData.getID());
-        playerData.setTownId(getID());
-        playerData.setTownRankID(townDefaultRankID);
+        playerData.joinTown(this);
 
         TownDataStorage.saveStats();
     }
@@ -284,8 +274,6 @@ public class TownData {
 
     public void removeToBalance(int balance){
         this.balance -= balance;
-        if(isSqlEnable())
-            TownDataStorage.updateTownData(this);
     }
 
     public void broadCastMessage(String message){

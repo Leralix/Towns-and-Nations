@@ -3,13 +3,12 @@ package org.tan.TownsAndNations.DataClass;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.storage.Invitation.TownInviteDataStorage;
 import org.tan.TownsAndNations.storage.WarTaggedPlayer;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 
 import java.util.UUID;
 
-import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
-import static org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage.updatePlayerDataInDatabase;
 
 public class PlayerData {
 
@@ -57,8 +56,6 @@ public class PlayerData {
 
     public void setBalance(int balance) {
         this.Balance = balance;
-        if(isSqlEnable())
-            updatePlayerDataInDatabase(this);
     }
 
     public String getTownId(){
@@ -72,8 +69,6 @@ public class PlayerData {
     }
     public void setTownId(String newTownId){
         this.TownId = newTownId;
-        if(isSqlEnable())
-            updatePlayerDataInDatabase(this);
     }
 
     public TownRank getTownRank() {
@@ -81,40 +76,35 @@ public class PlayerData {
     }
     public void addToBalance(int money) {
         this.Balance = this.Balance + money;
-        if(isSqlEnable())
-            updatePlayerDataInDatabase(this);
     }
     public void removeFromBalance(int money) {
         this.Balance = this.Balance - money;
-        if(isSqlEnable())
-            updatePlayerDataInDatabase(this);
     }
     public boolean isTownLeader(){
         return TownDataStorage.get(this).getLeaderID().equals(this.UUID);
     }
+
     public boolean hasPermission(TownRolePermission rolePermission){
         if(isTownLeader())
             return true;
         TownData townData = TownDataStorage.get(this);
         return townData.getRank(this.townRankID).hasPermission(townData.getID(),rolePermission) ;
     }
+
     public void leaveTown(){
         this.TownId = null;
         this.TownRank = null;
-        if(isSqlEnable())
-            updatePlayerDataInDatabase(this);
         WarTaggedPlayer.removePlayer(this.getID());
-
     }
 
     public boolean haveRegion(){
         if(!this.haveTown()){
             return false;
         }
-        return TownDataStorage.get(this).haveRegion();
+        return getTown().haveRegion();
     }
     public RegionData getRegion(){
-        return TownDataStorage.get(this).getRegion();
+        return getTown().getRegion();
     }
 
     public UUID getUUID() {
@@ -127,8 +117,21 @@ public class PlayerData {
     public int getTownRankId(){
         return this.townRankID;
     }
-
     public String getOldRank(){
         return this.TownRank;
+    }
+
+    public void joinTown(TownData townData){
+        this.TownId = townData.getID();
+        this.townRankID = townData.getTownDefaultRankID();
+
+        //remove all invitation
+        for (TownData otherTown : TownDataStorage.getTownMap().values()) {
+            if(otherTown == TownDataStorage.get(townData.getID())){
+                continue;
+            }
+            TownInviteDataStorage.removeInvitation(UUID,otherTown.getID());
+        }
+
     }
 }

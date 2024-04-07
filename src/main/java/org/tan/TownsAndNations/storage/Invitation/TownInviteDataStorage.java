@@ -32,8 +32,8 @@ public class TownInviteDataStorage {
         removeInvitation(player.getUniqueId().toString(),townId);
     }
 
-    public static List<String> checkInvitation(String playerUUID){
-        return townInviteList.get(playerUUID);
+    public static boolean isInvited(String playerUUID,String townID){
+        return townInviteList.get(playerUUID).contains(townID);
     }
 
 }

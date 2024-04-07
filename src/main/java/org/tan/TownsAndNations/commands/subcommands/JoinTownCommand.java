@@ -57,40 +57,29 @@ public class JoinTownCommand extends SubCommand {
         } else if (args.length == 2){
 
             String townID = args[1];
-            List<String> townInvited = TownInviteDataStorage.checkInvitation(player.getUniqueId().toString());
 
-            if(townInvited == null){
+            if(!TownInviteDataStorage.isInvited(player.getUniqueId().toString(),townID)){
                 player.sendMessage(getTANString() + Lang.TOWN_INVITATION_NO_INVITATION.get());
                 return;
             }
 
-            for (String town : townInvited){
+            TownData townData = TownDataStorage.get(townID);
+            PlayerData playerData = PlayerDataStorage.get(player);
 
-                if(town.equals(townID)){ //if the player is invited to the town
-
-                    TownData townData = TownDataStorage.get(townID);
-                    PlayerData playerData = PlayerDataStorage.get(player);
-
-                    if(!townData.canAddMorePlayer()){
-                        player.sendMessage(getTANString() + Lang.INVITATION_TOWN_FULL.get());
-                        return;
-                    }
-
-                    townData.addPlayer(playerData);
-
-                    player.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(townData.getName()));
-                    townData.broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerData.getName()),
-                            GOOD);
-
-                    TownInviteDataStorage.removeInvitation(player,townData.getID());
-
-                    updateAllScoreboardColor();
-                    return;
-                }
-
+            if(!townData.canAddMorePlayer()){
+                player.sendMessage(getTANString() + Lang.INVITATION_TOWN_FULL.get());
+                return;
             }
-            player.sendMessage(getTANString() + Lang.TOWN_INVITATION_NO_INVITATION.get());
 
+            townData.addPlayer(playerData);
+
+            player.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(townData.getName()));
+            townData.broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerData.getName()),
+                    GOOD);
+
+            TownInviteDataStorage.removeInvitation(player,townData.getID());
+
+            updateAllScoreboardColor();
 
         }
         else{
