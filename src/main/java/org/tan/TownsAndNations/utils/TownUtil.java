@@ -145,7 +145,7 @@ public class TownUtil {
         }
         int playerLevel = townData.getRank(playerData).getLevel();
         int kickedPlayerLevel = townData.getRank(kickedPlayerData).getLevel();
-        if(playerLevel >= kickedPlayerLevel){
+        if(playerLevel >= kickedPlayerLevel && !playerData.isTownLeader()){
             player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
             return;
         }

@@ -53,69 +53,11 @@ public class ClaimedChunk {
         return this.townUUID;
     }
 
-    public int getX() {
-        return this.x;
-    }
-
-    public int getZ() {
-        return this.z;
-    }
-
-    public String getWorldUUID() {
-        return this.worldUUID;
-    }
-
-    public boolean canPlayerDo(Player player, ChunkPermissionType permissionType) {
-
-        TownData playerTown = TownDataStorage.get(player);
-        PlayerData playerData = PlayerDataStorage.get(player);
-
-        //Chunk is claimed yet player have no town
-        if(!playerData.haveTown()){
-            playerCantPerformAction(player);
-            return false;
-        }
-        //Chunk is claimed by a town
-        if(townUUID.startsWith("T")){
-
-            //Means it is a town chunk
-            TownData chunkTown = TownDataStorage.get(townUUID);
-            //Same town, can interact
-            if(townUUID.equals(playerData.getTown().getID()))
-                return true;
-
-            TownChunkPermission townPermission = chunkTown.getPermission(permissionType);
-
-            //Same alliance + alliance accepted permission
-            if(townPermission == ALLIANCE && chunkTown.getTownRelationWithCurrent(TownRelation.ALLIANCE,playerTown.getID()))
-                return true;
-
-            //permission is on foreign
-            if(townPermission == FOREIGN)
-                return true;
-
-            //war has been declared
-            if(WarTaggedPlayer.isPlayerInWarWithTown(player,chunkTown))
-                return true;
-
-            playerCantPerformAction(player);
-            return false;
-        }
-        else if(townUUID.startsWith("R")){
-            System.out.println("Region chunk");
-        }
-        return false;
-    }
 
     public boolean isRegion(){
         return townUUID.startsWith("R");
     }
 
-
-    private void playerCantPerformAction(Player player){
-        player.sendMessage(getTANString() + Lang.PLAYER_ACTION_NO_PERMISSION.get());
-        player.sendMessage(getTANString() + Lang.CHUNK_BELONGS_TO.get(TownDataStorage.get(getID()).getName()));
-    }
 
     public Chunk getChunk() {
         return Bukkit.getWorld(UUID.fromString(worldUUID)).getChunkAt(x,z);

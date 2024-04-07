@@ -227,19 +227,17 @@ public class ChatListener implements Listener {
     private void RenameRank(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newRankName) {
 
         FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
+        TownData playerTown = TownDataStorage.get(player);
         int maxSize = config.getInt("RankNameSize");
+
         if(newRankName.length() > maxSize){
             player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
             return;
         }
 
-        removePlayer(player);
-        TownData playerTown = TownDataStorage.get(player);
-
-        String newName = chatData.getData().get(RANK_NAME);
         int rankID = Integer.parseInt(chatData.getData().get(RANK_ID));
         TownRank playerTownRank = playerTown.getRank(rankID);
-        playerTownRank.setName(newName);
+        playerTownRank.setName(newRankName);
 
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager2.OpenTownRankManager(player, rankID));
         removePlayer(player);

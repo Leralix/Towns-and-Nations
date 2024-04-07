@@ -3,7 +3,7 @@ language:
   LANGUAGE_SUCCESSFULLY_LOADED: "English language successfully loaded"
   PLUGIN_STRING: "§6[T&N]§f "
   PLUGIN_DEBUG_STRING: "§c[T&N - Debug]§f "
-  NEWSLETTER_STRING: "§f[T&N - Newsletter]§f "
+  NEWSLETTER_STRING: "§6[T&N - Newsletter]§f "
   #Common errors
   PLAYER_NO_TOWN: "§cYou do not have a town"
   TOWN_NO_REGION: "§cYour town does not have a region"
@@ -45,11 +45,11 @@ language:
   WRITE_CANCEL_TO_CANCEL: "§fWrite §c{0}§f in the chat to cancel"
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f asked to join the town. You can find the application in the members menu"
-  PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "You successfully asked to join the town: §9{0}§f. Right click on the city to cancel"
+  PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "You successfully asked to join the town: §9{0}§f. Right click on the town to cancel"
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "You cancelled your application"
   PLAYER_TOWN_NOT_RECRUITING: "§cThis town is not recruiting"
   #BROADCAST
-  TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the city: §9{1}"
+  TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the town: §9{1}"
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c has left the town !"
   REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the region: §9{1}"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fThe town §9{0}§f has been kicked from the region"

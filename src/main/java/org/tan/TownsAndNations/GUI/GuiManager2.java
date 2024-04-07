@@ -163,15 +163,16 @@ public class GuiManager2 implements IGUI {
     }
     public static void OpenSearchTownMenu(Player player, int page) {
 
-        Gui gui = IGUI.createChestGui("Town list | page " + (page + 1),3);
+        Gui gui = IGUI.createChestGui("Town list | page " + (page + 1),6);
 
         int pageSize = 45;
-        int startIndex = page  * pageSize;
+        int startIndex = page * pageSize;
         boolean lastPage;
+        int numberOfTowns = TownDataStorage.getTownMap().size();
 
         int endIndex;
-        if(startIndex + pageSize > MobChunkSpawnStorage.getMobSpawnStorage().size()){
-            endIndex = MobChunkSpawnStorage.getMobSpawnStorage().size() - 1;
+        if(startIndex + pageSize > numberOfTowns){
+            endIndex = numberOfTowns;
             lastPage = true;
         }
         else {
@@ -793,7 +794,7 @@ public class GuiManager2 implements IGUI {
             player.closeInventory();
 
             HashMap<MessageKey, String> newMap = new HashMap<>();
-            newMap.put(RANK_NAME, String.valueOf(rankID));
+            newMap.put(RANK_ID, String.valueOf(rankID));
             PlayerChatListenerStorage.addPlayer(RANK_RENAME,player,newMap);
             event.setCancelled(true);
         });
@@ -1602,13 +1603,18 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _quitRegion = ItemBuilder.from(quitRegion).asGuiItem(event -> {
             event.setCancelled(true);
-            if(!playerTown.haveRegion())
+            if (!playerTown.haveRegion()) {
                 player.sendMessage(getTANString() + Lang.TOWN_NO_REGION.get());
+                return;
+            }
+
 
             RegionData regionData = playerTown.getRegion();
 
-            if(playerTown.isRegionalCapital())
+            if (playerTown.isRegionalCapital()){
                 player.sendMessage(getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
+                return;
+            }
 
             regionData.removeTown(playerTown);
             playerTown.removeRegion();
