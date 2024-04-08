@@ -97,11 +97,29 @@ public class GuiManager2 implements IGUI {
         });
         GuiItem Player = ItemBuilder.from(PlayerHead).asGuiItem(event -> event.setCancelled(true));
 
-        gui.setItem(10,Kingdom);
-        gui.setItem(12,Region);
-        gui.setItem(14,Town);
-        gui.setItem(16,Player);
-        gui.setItem(18,IGUI.CreateBackArrow(player, p -> player.closeInventory()));
+
+        int slotKingdom = 2;
+        int slotRegion = 4;
+        int slotTown = 6;
+        int slotPlayer = 8;
+
+        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("EnableKingdom",true) &&
+                ConfigUtil.getCustomConfig("config.yml").getBoolean("EnableRegion",true)) {
+            gui.setItem(2, slotKingdom, Kingdom);
+        }
+
+        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("EnableRegion",true)){
+            gui.setItem(2,slotRegion,Region);
+        }
+        else {
+            slotTown = 4;
+            slotPlayer = 6;
+        }
+
+        gui.setItem(2,slotTown,Town);
+        gui.setItem(2,slotPlayer,Player);
+        gui.setItem(2,slotPlayer,Player);
+        gui.setItem(3,1,IGUI.CreateBackArrow(player, p -> player.closeInventory()));
 
         gui.open(player);
     }
@@ -2353,14 +2371,12 @@ public class GuiManager2 implements IGUI {
             i = i+1;
         }
 
-        gui.setItem(27, IGUI.CreateBackArrow(player,p -> OpenNoRegionMenu(player)));
-        gui.open(player);
-
         if(isTownMenu)
             gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenRegionMenu(player)));
         else
             gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenNoRegionMenu(player)));
 
+        gui.open(player);
     }
     private static void OpenTownInRegion(Player player){
 

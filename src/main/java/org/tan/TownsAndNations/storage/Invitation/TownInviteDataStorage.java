@@ -33,6 +33,8 @@ public class TownInviteDataStorage {
     }
 
     public static boolean isInvited(String playerUUID,String townID){
+        if(townInviteList.get(playerUUID) == null)
+            return false;
         return townInviteList.get(playerUUID).contains(townID);
     }
 

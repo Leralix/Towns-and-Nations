@@ -8,4 +8,3 @@ language: en
 #Auto Update lang files
 #If false, the plugin will not update the lang files automatically at start. Watch out for new translations in the updates
 autoUpdateLangFiles: true
-

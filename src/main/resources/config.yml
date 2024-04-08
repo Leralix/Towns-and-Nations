@@ -1,7 +1,20 @@
+#  _____                            ___       _   _       _   _
+# |_   ______      ___ __  ___     ( _ )     | \ | | __ _| |_(_) ___  _ __  ___
+#   | |/ _ \ \ /\ / | '_ \/ __|    / _ \/\   |  \| |/ _` | __| |/ _ \| '_ \/ __|
+#   | | (_) \ V  V /| | | \__ \   | (_>  <   | |\  | (_| | |_| | (_) | | | \__ \
+#   |_|\___/ \_/\_/ |_| |_|___/    \___/\/   |_| \_|\__,_|\__|_|\___/|_| |_|___/
+#
+
 #IMPORTANT !! Enable the player color code.
 #Enabling the color code will create a separate scoreboard for each player, thus BREAKING THE VANILLA SCOREBOARD
 #Only enable this if you are not using any other scoreboard plugin
 EnablePlayerColorCode: false
+
+#Enable Kingdoms
+EnableKingdom: true
+
+#Enable Region (will disable Kingdoms)
+EnableRegion: true
 
 #The amount of money a player starts with (only if no economy plugin is linked to the server)
 StartingMoney: 100
@@ -237,5 +250,3 @@ showTaxInConsole: true
 taxHourTime: 0 #0-23
 taxMinuteTime: 0 #0-59
 
-#
-tanCommand: "/tan"
