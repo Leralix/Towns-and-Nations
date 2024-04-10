@@ -40,6 +40,8 @@ notifyEnemyTownEnter: true
 #Town Levels (town level cost are in the townLevelUpRequirement.yml file)
 TownMaxLevel: 10
 
+#The max number of rank a town can create
+townMaxRank: 9
 
 #The cost of creating a Region
 regionCost: 7500

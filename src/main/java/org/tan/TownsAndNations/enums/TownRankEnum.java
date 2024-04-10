@@ -3,6 +3,7 @@ package org.tan.TownsAndNations.enums;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.utils.HeadUtils;
 
 import static org.tan.TownsAndNations.utils.HeadUtils.makeSkull;
 
@@ -62,7 +63,19 @@ public enum TownRankEnum {
     }
 
     public ItemStack getRankGuiIcon(){
-        return makeSkull(this.getColor() + Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_X.get(getLevel()),getSkullTexture());
+
+
+
+        ItemStack roleRankIcon = makeSkull(
+                this.getColor() + Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_X.get(getLevel()),
+                getSkullTexture());
+        HeadUtils.addLore(
+                roleRankIcon,
+                Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1.get(),
+                Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2.get());
+
+        return roleRankIcon;
+
     }
 
 }

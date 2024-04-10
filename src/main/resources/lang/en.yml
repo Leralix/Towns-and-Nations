@@ -350,6 +350,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT: "§cThis rank is already the default rank"
   GUI_TOWN_MEMBERS_ROLE_DELETE: "Delete the rank"
   GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY: "You cannot delete a rank if there are players with this rank"
+  GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_DEFAULT: "You cannot delete the default rank"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TAXES: "§aManage taxes"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_PROMOTE_RANK_PLAYER: "§aPromote player"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DERANK_RANK_PLAYER: "§aUnrank player"

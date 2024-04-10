@@ -654,8 +654,8 @@ public class GuiManager2 implements IGUI {
         int row = 3;
         Gui gui = IGUI.createChestGui("Town",row);
 
-        PlayerData playerStat = PlayerDataStorage.get(player);
-        TownData town = TownDataStorage.get(playerStat);
+        PlayerData playerData = PlayerDataStorage.get(player);
+        TownData town = TownDataStorage.get(playerData);
 
         int i = 0;
         for (TownRank townRank: town.getRanks()) {
@@ -664,11 +664,11 @@ public class GuiManager2 implements IGUI {
             ItemStack townRankItemStack = HeadUtils.getCustomLoreItem(townMaterial, townRank.getColoredName());
             GuiItem _townRankItemStack = ItemBuilder.from(townRankItemStack).asGuiItem(event -> {
                 event.setCancelled(true);
-                if(!playerStat.hasPermission(TownRolePermission.MANAGE_RANKS)) {
+                if(!playerData.hasPermission(TownRolePermission.MANAGE_RANKS)) {
                     player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                     return;
                 }
-                if(town.getRank(playerStat).getLevel() >= townRank.getLevel() && !town.isLeader(player)){
+                if(town.getRank(playerData).getLevel() >= townRank.getLevel() && !town.isLeader(player)){
                     player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
                     return;
                 }
@@ -682,21 +682,18 @@ public class GuiManager2 implements IGUI {
         GuiItem _createNewRole = ItemBuilder.from(createNewRole).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if(playerStat.hasPermission(TownRolePermission.CREATE_RANK)){
-                if(town.getNumberOfRank() >= 8){
-                    player.sendMessage(getTANString() + Lang.TOWN_RANK_CAP_REACHED.get());
-                    return;
-                }
-
-                player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get());
-                player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
-                player.closeInventory();
-                PlayerChatListenerStorage.addPlayer(RANK_CREATION,player);
-            }
-            else
+            if(!playerData.hasPermission(TownRolePermission.CREATE_RANK)) {
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-
-
+                return;
+            }
+            if(town.getNumberOfRank() >= ConfigUtil.getCustomConfig("config.yml").getInt("townMaxRank",8)){
+                player.sendMessage(getTANString() + Lang.TOWN_RANK_CAP_REACHED.get());
+                return;
+            }
+            PlayerChatListenerStorage.addPlayer(RANK_CREATION,player);
+            player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get());
+            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+            player.closeInventory();
         });
 
 
@@ -716,46 +713,35 @@ public class GuiManager2 implements IGUI {
 
         boolean isDefaultRank = town.getTownDefaultRankName().equals(townRank.getName());
 
-        Material roleMaterial = Material.getMaterial(townRank.getRankIconName());
-
         ItemStack roleIcon = HeadUtils.getCustomLoreItem(
-                roleMaterial,
+                Material.getMaterial(townRank.getRankIconName()),
                 Lang.GUI_TOWN_MEMBERS_ROLE_NAME.get(townRank.getColoredName()),
                 Lang.GUI_TOWN_MEMBERS_ROLE_NAME_DESC1.get());
 
         ItemStack roleRankIcon = townRank.getRankEnum().getRankGuiIcon();
-        HeadUtils.addLore(roleRankIcon, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1.get(),
-                Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2.get());
-
         ItemStack membersRank = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==");
 
         ArrayList<String> playerNames = new ArrayList<>();
         playerNames.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1.get());
         for (String playerUUID : townRank.getPlayers(town.getID())) {
-            PlayerData playerData = PlayerDataStorage.get(playerUUID);
-            assert playerData != null;
-            String playerName = playerData.getName();
-            playerNames.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC.get(playerName));
+            String playerName = PlayerDataStorage.get(playerUUID).getName();
+            playerNames.add("-" + Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC.get(playerName));
         }
 
         HeadUtils.setLore(membersRank, playerNames);
 
         ItemStack managePermission = HeadUtils.getCustomLoreItem(Material.ANVIL,Lang.GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION.get());
-
         ItemStack renameRank = HeadUtils.getCustomLoreItem(Material.NAME_TAG,Lang.GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME.get());
-
         ItemStack changeRoleTaxRelation = HeadUtils.getCustomLoreItem(
                 Material.GOLD_NUGGET,
                 townRank.isPayingTaxes() ? Lang.GUI_TOWN_MEMBERS_ROLE_PAY_TAXES.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES.get(),
                 Lang.GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1.get()
         );
 
-
         ItemStack makeRankDefault = HeadUtils.getCustomLoreItem(Material.RED_BED,
                 isDefaultRank ? Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT.get() : Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT.get(),
                 Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1.get(),
                 isDefaultRank ? "" : Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2.get());
-
 
         ItemStack removeRank = HeadUtils.getCustomLoreItem(Material.BARRIER, Lang.GUI_TOWN_MEMBERS_ROLE_DELETE.get());
 
@@ -834,14 +820,17 @@ public class GuiManager2 implements IGUI {
         });
 
         GuiItem _removeRank = ItemBuilder.from(removeRank).asGuiItem(event -> {
+            event.setCancelled(true);
+
             if(townRank.getNumberOfPlayer(town.getID()) != 0){
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY.get());
-                event.setCancelled(true);
+            }
+            else if(town.getTownDefaultRankID() == rankID){
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_DEFAULT.get());
             }
             else{
                 town.removeRank(townRank.getID());
                 OpenTownRanks(player);
-                event.setCancelled(true);
             }
         });
 
