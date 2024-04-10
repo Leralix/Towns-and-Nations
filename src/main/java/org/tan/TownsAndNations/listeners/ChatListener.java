@@ -97,6 +97,11 @@ public class ChatListener implements Listener {
             player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxNameSize));
             return;
         }
+        TownData townData = TownDataStorage.get(player);
+        if(townData.isRankNameUsed(message)){
+            player.sendMessage(ChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
+            return;
+        }
 
         removePlayer(player);
         TownRank newRank = TownDataStorage.get(player).addRank(message);

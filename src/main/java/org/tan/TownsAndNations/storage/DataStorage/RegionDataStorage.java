@@ -51,6 +51,11 @@ public class RegionDataStorage {
             return;
         }
 
+        if(isNameUsed(regionName)){
+            player.sendMessage(ChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
+            return;
+        }
+
         Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.REGION_CREATE_SUCCESS_BROADCAST.get(town.getName(),regionName));
         PlayerChatListenerStorage.removePlayer(player);
 
@@ -77,9 +82,6 @@ public class RegionDataStorage {
         return regionStorage.size();
     }
 
-    public static void removeRegion(String regionID){
-        regionStorage.remove(regionID);
-    }
 
     public static LinkedHashMap<String, RegionData> getRegionStorage(){
         return regionStorage;
@@ -100,11 +102,23 @@ public class RegionDataStorage {
 
     private static void removeTownFromRegion(String regionID) {
         RegionData region = get(regionID);
-
+        if(region == null)
+            return;
         for (String townID : region.getTownsID()){
             TownData town = TownDataStorage.get(townID);
             town.removeRegion();
         }
+    }
+
+    public static boolean isNameUsed(String name){
+        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("AllowNameDuplication",true))
+            return false;
+
+        for (RegionData region : regionStorage.values()){
+            if(region.getName().equalsIgnoreCase(name))
+                return true;
+        }
+        return false;
     }
 
     public static void loadStats() {

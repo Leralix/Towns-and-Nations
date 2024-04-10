@@ -11,6 +11,7 @@ import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.enums.TownRolePermission;
+import org.tan.TownsAndNations.utils.ConfigUtil;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -878,6 +879,9 @@ public class TownDataStorage {
     }
 
     public static boolean isNameUsed(String townName){
+        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("AllowNameDuplication",true))
+            return false;
+        
         for (TownData town : townDataMap.values()){
             if(townName.equals(town.getName()))
                 return true;

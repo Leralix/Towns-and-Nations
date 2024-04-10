@@ -119,7 +119,6 @@ public class ChunkUtil {
         if(isRegionClaimed)
             NewClaimedChunkStorage.unclaimChunk(chunkToClaim); //Unclaim the chunk so it can be claimed by the town afterward
         NewClaimedChunkStorage.claimTownChunk(chunkToClaim,townData.getID());
-        townData.addNumberOfClaimChunk(1);
 
         player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.get(
                 townData.getNumberOfClaimedChunk(),

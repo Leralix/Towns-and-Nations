@@ -11,7 +11,6 @@ import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.SoundUtil;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
@@ -39,6 +38,8 @@ public class SpawnRegister {
         }
 
         Player player = Bukkit.getPlayer(playerData.getUUID());
+        if(player == null)
+            return;
         player.sendMessage(Lang.TELEPORTATION_IN_X_SECONDS_NOT_MOVE.get(secondBeforeTeleport));
         registerSpawn(playerData, townData);
         Bukkit.getScheduler().runTaskLater(TownsAndNations.getPlugin(),

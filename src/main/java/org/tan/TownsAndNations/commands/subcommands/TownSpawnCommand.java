@@ -5,12 +5,9 @@ import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.storage.SpawnRegister;
-import org.tan.TownsAndNations.utils.ChatUtils;
-import org.tan.TownsAndNations.utils.SoundUtil;
 
 import java.util.List;
 
@@ -57,7 +54,7 @@ public class TownSpawnCommand extends SubCommand {
         TownData townData = TownDataStorage.get(player);
 
         //Spawn Unlocked
-        if(!townData.isSpawnUnlocked()){
+        if(townData.isSpawnLocked()){
             player.sendMessage(getTANString() + Lang.SPAWN_NOT_UNLOCKED.get());
             return;
         }

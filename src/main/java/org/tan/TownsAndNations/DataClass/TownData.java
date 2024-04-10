@@ -16,6 +16,7 @@ import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.SoundUtil;
 
 import java.util.*;
@@ -38,7 +39,6 @@ public class TownData {
     private boolean isRecruiting;
     private Integer balance;
     private Integer flatTax;
-    private Integer numberOfClaimedChunk;
     private Integer chunkColor;
 
     private ChunkHistory chunkHistory;
@@ -74,7 +74,6 @@ public class TownData {
         this.isRecruiting = false;
         this.balance = 0;
         this.flatTax = 1;
-        this.numberOfClaimedChunk = 0;
         this.townDefaultRank = "default";
         this.townDefaultRankID = 0;
 
@@ -145,7 +144,17 @@ public class TownData {
         this.newRanks.put(nextRankId,newRank);
         return newRank;
     }
+    public boolean isRankNameUsed(String message) {
+        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("AllowNameDuplication",true))
+            return false;
 
+        for (TownRank rank : this.getRanks()) {
+            if (rank.getName().equals(message)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void removeRank(int key){
         this.newRanks.remove(key);
@@ -461,12 +470,6 @@ public class TownData {
         }
         return count;
     }
-    public void addNumberOfClaimChunk(int number) {
-        if(isSqlEnable())
-            return;
-        this.numberOfClaimedChunk += number;
-
-    }
 
     public TownChunkPermission getPermission(ChunkPermissionType type) {
         if(isSqlEnable())
@@ -516,12 +519,12 @@ public class TownData {
         return this.spawnPosition != null;
     }
 
-    public boolean teleportPlayerToSpawn(PlayerData playerData){
-        return teleportPlayerToSpawn(Bukkit.getPlayer(playerData.getUUID()));
+    public void teleportPlayerToSpawn(PlayerData playerData){
+        teleportPlayerToSpawn(Bukkit.getPlayer(playerData.getUUID()));
     }
 
     public boolean teleportPlayerToSpawn(Player player){
-        if(!isSpawnUnlocked()){
+        if(isSpawnLocked()){
             player.sendMessage(getTANString() + "Vous ne pouvez pas vous téléporter au spawn de la ville, car la ville n'a pas encore été améliorée.");
             return false;
         }
@@ -531,8 +534,8 @@ public class TownData {
         return true;
     }
 
-    public boolean isSpawnUnlocked(){
-        return this.townLevel.getBenefitsLevel("UNLOCK_TOWN_SPAWN") > 0;
+    public boolean isSpawnLocked(){
+        return this.townLevel.getBenefitsLevel("UNLOCK_TOWN_SPAWN") <= 0;
     }
 
     public boolean haveRegion(){
@@ -628,4 +631,6 @@ public class TownData {
             this.newRanks = new HashMap<>();
         this.newRanks.putAll(newRanks);
     }
+
+
 }

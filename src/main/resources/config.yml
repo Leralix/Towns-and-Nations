@@ -53,7 +53,8 @@ RankNameSize: 25
 TownDescSize: 50
 RegionNameSize: 40
 RegionDescSize: 50
-
+#Allow name duplication (for ranks, towns, regions and kingdoms)
+AllowNameDuplication: true
 
 
 #Rare items, used for the economy when no economy plugin is added to the server

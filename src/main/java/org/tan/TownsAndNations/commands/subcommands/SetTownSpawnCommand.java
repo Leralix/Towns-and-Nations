@@ -64,7 +64,7 @@ public class SetTownSpawnCommand extends SubCommand {
 
 
         //Spawn Unlocked
-        if(!townData.isSpawnUnlocked()){
+        if(townData.isSpawnLocked()){
             player.sendMessage(getTANString() + Lang.SPAWN_NOT_UNLOCKED.get());
             return;
         }
