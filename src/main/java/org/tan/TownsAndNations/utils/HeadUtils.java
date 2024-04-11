@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -22,7 +21,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
 
 public class HeadUtils {
     public static ItemStack getPlayerHeadInformation(OfflinePlayer p){
@@ -44,7 +42,7 @@ public class HeadUtils {
 
         if(playerTown != null){
             setLore(head,
-                    Lang.GUI_PLAYER_PROFILE_DESC1.get(getBalance(p)),
+                    Lang.GUI_PLAYER_PROFILE_DESC1.get(EconomyUtil.getBalance(p)),
                     Lang.GUI_PLAYER_PROFILE_DESC2.get(playerTown.getName()),
                     Lang.GUI_PLAYER_PROFILE_DESC3.get(playerData.getTownRank().getColoredName())
             );
@@ -77,15 +75,17 @@ public class HeadUtils {
 
     public static ItemStack makeSkull(String name, String base64EncodedString) {
         UUID id = UUID.nameUUIDFromBytes(base64EncodedString.getBytes());
-        int less = (int)id.getLeastSignificantBits();
-        int most = (int)id.getMostSignificantBits();
+        int less = (int) id.getLeastSignificantBits();
+        int most = (int) id.getMostSignificantBits();
         ItemStack skull = Bukkit.getUnsafe().modifyItemStack(new ItemStack(Material.PLAYER_HEAD),
-                "{SkullOwner:{Id:[I;" + less * most + "," + (less >> 23) + "," + most/less + "," +
+                "{SkullOwner:{Id:[I;" + less * most + "," + (less >> 23) + "," + most / less + "," +
                         most * 8731 + "],Properties:{textures:[{Value:\"" + base64EncodedString + "\"}]}}}");
 
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + name);
-        skull.setItemMeta(meta);
+        if (meta != null){
+            meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + name);
+            skull.setItemMeta(meta);
+        }
         return skull;
     }
     public static ItemStack getTownIcon(TownData townData){
@@ -96,8 +96,10 @@ public class HeadUtils {
         }
         else {
             ItemMeta meta = itemStack.getItemMeta();
-            meta.setDisplayName(ChatColor.GREEN + townData.getName());
-            itemStack.setItemMeta(meta);
+            if(meta != null){
+                meta.setDisplayName(ChatColor.GREEN + townData.getName());
+                itemStack.setItemMeta(meta);
+            }
             return itemStack;
         }
     }
@@ -111,21 +113,21 @@ public class HeadUtils {
 
         TownData town = TownDataStorage.get(TownId);
         ItemStack icon = HeadUtils.getTownIcon(town.getID());
-        if (icon == null){
-            icon =  HeadUtils.getPlayerHead(town.getName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getLeaderID())));
-        }
         ItemMeta meta = icon.getItemMeta();
-        List<String> lore = new ArrayList<>();
+        if(meta != null){
+            List<String> lore = new ArrayList<>();
 
-        meta.setDisplayName(ChatColor.GREEN + town.getName());
+            meta.setDisplayName(ChatColor.GREEN + town.getName());
 
-        lore.add(Lang.GUI_TOWN_INFO_DESC0.get(town.getDescription()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getOfflinePlayer(UUID.fromString(town.getLeaderID())).getName()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC2.get(town.getPlayerList().size()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC3.get(town.getNumberOfClaimedChunk()));
+            lore.add(Lang.GUI_TOWN_INFO_DESC0.get(town.getDescription()));
+            lore.add(Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getOfflinePlayer(UUID.fromString(town.getLeaderID())).getName()));
+            lore.add(Lang.GUI_TOWN_INFO_DESC2.get(town.getPlayerList().size()));
+            lore.add(Lang.GUI_TOWN_INFO_DESC3.get(town.getNumberOfClaimedChunk()));
 
-        meta.setLore(lore);
-        icon.setItemMeta(meta);
+            meta.setLore(lore);
+            icon.setItemMeta(meta);
+        }
+
         return icon;
     }
     public static ItemStack getTownIconWithInformations(String TownId,String ownTownID){
@@ -136,8 +138,7 @@ public class HeadUtils {
         if (icon == null){
             icon =  HeadUtils.getPlayerHead(town.getName(), Bukkit.getOfflinePlayer(UUID.fromString(town.getLeaderID())));
         }
-        ItemMeta meta = icon.getItemMeta();
-        List<String> lore = new ArrayList<>();
+
 
         TownRelation relation = town.getRelationWith(ownTownID);
         String relationName;
@@ -148,8 +149,10 @@ public class HeadUtils {
             relationName = relation.getColor() + relation.getName();
         }
 
+        ItemMeta meta = icon.getItemMeta();
         meta.setDisplayName(ChatColor.GREEN + town.getName());
 
+        List<String> lore = new ArrayList<>();
         lore.add(Lang.GUI_TOWN_INFO_DESC0.get(town.getDescription()));
         lore.add(Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getOfflinePlayer(UUID.fromString(town.getLeaderID())).getName()));
         lore.add(Lang.GUI_TOWN_INFO_DESC2.get(town.getPlayerList().size()));
@@ -161,9 +164,6 @@ public class HeadUtils {
         return icon;
     }
 
-    public static ItemStack getRegionIcon(String regionID){
-        return getRegionIcon(RegionDataStorage.get(regionID));
-    }
     public static ItemStack getRegionIcon(RegionData regionData){
         ItemStack icon = regionData.getIconItemStack();
 
@@ -209,12 +209,8 @@ public class HeadUtils {
         itemStack.setItemMeta(itemMeta);
     }
     public static void setLore(ItemStack itemStack, String... loreLines) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-
         List<String> lore = Arrays.asList(loreLines);
-        itemMeta.setLore(lore);
-
-        itemStack.setItemMeta(itemMeta);
+        setLore(itemStack,lore);
     }
     public static void addLore(ItemStack itemStack, String... loreLines) {
         ItemMeta itemMeta = itemStack.getItemMeta();
