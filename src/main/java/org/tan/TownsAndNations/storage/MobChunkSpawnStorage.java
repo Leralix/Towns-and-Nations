@@ -17,9 +17,10 @@ public class MobChunkSpawnStorage {
         //Only load the enum values if they have been written in the config file
         for (MobChunkSpawnEnum mob : MobChunkSpawnEnum.values()) {
 
-            if(ConfigUtil.getCustomConfig("config.yml").get("CancelMobSpawnInTown." + mob.name()) == null) {
+            if(ConfigUtil.getCustomConfig("config.yml").get("CancelMobSpawnInTown." + mob.name()) == null)
                 continue;
-            }
+            if(ConfigUtil.getCustomConfig("config.yml").getInt("CancelMobSpawnInTown." + mob.name()) <0)
+                continue;
             mobSpawnStorage.put(mob.name(), mob);
         }
     }

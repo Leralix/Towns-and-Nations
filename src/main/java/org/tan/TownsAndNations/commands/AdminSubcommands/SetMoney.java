@@ -2,6 +2,7 @@ package org.tan.TownsAndNations.commands.AdminSubcommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
@@ -28,7 +29,7 @@ public class SetMoney extends SubCommand {
 
     @Override
     public int getArguments() {
-        return 2; // expecting player name and amount
+        return 2;
     }
 
     @Override
@@ -36,17 +37,11 @@ public class SetMoney extends SubCommand {
         return "/tandebug setmoney <player> <amount>";
     }
     public List<String> getTabCompleteSuggestions(Player player, String[] args){
-        List<String> suggestions = new ArrayList<>();
-        if (args.length == 2) {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                suggestions.add(p.getName());
-            }
-        }
-        if (args.length == 3) {
-            suggestions.add("<amount>");
-        }
-        return suggestions;
+        return payPlayerSuggestion(args);
     }
+
+
+
     @Override
     public void perform(Player player, String[] args) {
 

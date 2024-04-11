@@ -32,7 +32,7 @@ public class PlayerChatListenerStorage {
     }
 
 
-    private static final Map<String, PlayerChatData> ChatStorage = new HashMap<>();
+    private static final Map<String, PlayerChatData> chatStorage = new HashMap<>();
 
     public static void addPlayer(ChatCategory category, Player p) {
         addPlayer(category, p, new HashMap<>());
@@ -42,26 +42,29 @@ public class PlayerChatListenerStorage {
     public static void addPlayer(ChatCategory category, Player p, Map<MessageKey, String> data) {
         String playerId = p.getUniqueId().toString();
 
-        if(ChatStorage.containsKey(playerId)){
+        if(chatStorage.containsKey(playerId)){
             removePlayer(playerId);
         }
         PlayerChatData playerData = new PlayerChatData(category, playerId, data);
-        ChatStorage.put(playerId, playerData);
+        chatStorage.put(playerId, playerData);
     }
 
     public static void removePlayer(Player p) {
         String playerId = p.getUniqueId().toString();
-        ChatStorage.remove(playerId);
+        chatStorage.remove(playerId);
     }
     public static void removePlayer(String playerUUID) {
-        ChatStorage.remove(playerUUID);
+        chatStorage.remove(playerUUID);
     }
 
     public static Map<String, PlayerChatData> getAllData() {
-        return ChatStorage;
+        return chatStorage;
     }
 
     public static PlayerChatData getPlayerData(String playerUUID) {
-        return ChatStorage.get(playerUUID);
+        return chatStorage.get(playerUUID);
+    }
+    public static boolean contains(String playerUUID){
+        return chatStorage.containsKey(playerUUID);
     }
 }

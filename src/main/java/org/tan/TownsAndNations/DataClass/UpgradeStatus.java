@@ -17,7 +17,7 @@ public class UpgradeStatus {
         this.unlocked = unlocked;
     }
 
-    public boolean isActivated() {
+    public boolean canSpawn() {
         if(!unlocked)
             return true;
         return activated;

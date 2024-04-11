@@ -13,13 +13,11 @@ public class ChatScopeListener implements Listener {
     @EventHandler
     public void OnPlayerChat(AsyncPlayerChatEvent event){
 
-
-
         Player player = event.getPlayer();
         String playerUUID = player.getUniqueId().toString();
 
         //If player has better commands to do
-        if(PlayerChatListenerStorage.getPlayerData(playerUUID) != null)
+        if(!PlayerChatListenerStorage.contains(playerUUID))
             return;
 
         if(!LocalChatStorage.isPlayerInChatScope(playerUUID))
@@ -27,15 +25,6 @@ public class ChatScopeListener implements Listener {
 
 
         LocalChatStorage.broadcastInScope(player, event.getMessage());
-
-
-
         event.setCancelled(true);
-
-
-
     }
-
-
-
 }

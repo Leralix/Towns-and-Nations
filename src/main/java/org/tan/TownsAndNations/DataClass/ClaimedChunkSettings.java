@@ -1,5 +1,6 @@
 package org.tan.TownsAndNations.DataClass;
 
+import org.bukkit.entity.EntityType;
 import org.tan.TownsAndNations.enums.MobChunkSpawnEnum;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
@@ -18,11 +19,9 @@ public class ClaimedChunkSettings {
             permissions.put(type, TownChunkPermission.TOWN);
         }
     }
-
     public TownChunkPermission getPermission(ChunkPermissionType type) {
         return this.permissions.get(type);
     }
-
     public void nextPermission(ChunkPermissionType type) {
         this.permissions.put(type, this.permissions.get(type).getNext());
     }

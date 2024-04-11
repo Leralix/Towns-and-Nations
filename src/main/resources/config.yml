@@ -160,7 +160,7 @@ NumberOfMiscPurchaseBeforeClearing: 100
 
 #Write the type of mobs you want a town to be able to cancel the spawn of.
 #If you want the removal option to be free, write 0, else write the cost of the removal
-#If you do not need a mob to be removed, do not write it
+#If you do not want some mobs to be removed, write -1 or any other negative number
 CancelMobSpawnInTown:
   AXOLOTL: 0
   BAT: 50

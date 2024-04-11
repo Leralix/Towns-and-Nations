@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.DataClass.newChunkData;
 
 import org.bukkit.Chunk;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.RegionData;
@@ -30,7 +31,6 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     public String getName(){
         return RegionDataStorage.get(getID()).getName();
     }
-
     @Override
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType) {
         PlayerData playerData = PlayerDataStorage.get(player);
@@ -78,4 +78,10 @@ public class RegionClaimedChunk extends ClaimedChunk2{
         RegionData region = getRegion();
         player.sendMessage( getTANString() + Lang.CHUNK_ENTER_REGION.get(region.getName()));
     }
+
+    @Override
+    public boolean canEntitySpawn(EntityType entityType) {
+        return true;
+    }
+
 }

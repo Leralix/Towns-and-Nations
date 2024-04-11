@@ -47,12 +47,6 @@ public class OpenAdminGUI extends SubCommand  {
 
     }
 
-    private void getOpeningGui(Player player) {
-        GuiManager2.OpenMainMenu(player);
-    }
-
-
-
 }
 
 

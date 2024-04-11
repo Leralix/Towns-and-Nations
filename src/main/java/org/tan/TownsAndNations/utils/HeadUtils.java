@@ -25,43 +25,13 @@ import java.util.UUID;
 import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
 
 public class HeadUtils {
-
-
-
-    public static ItemStack getPlayerHeadInformation(Player p){
-        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
-
-        skullMeta.setOwningPlayer(p);
-        skullMeta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + p.getName());
-
-        head.setItemMeta(skullMeta);
-
-        PlayerData playerData = PlayerDataStorage.get(p);
-        TownData playerTown = TownDataStorage.get(playerData);
-
-
-        if(playerTown != null){
-            setLore(head,
-                    Lang.GUI_PLAYER_PROFILE_DESC1.get(getBalance(p)),
-                    Lang.GUI_PLAYER_PROFILE_DESC2.get(playerTown.getName()),
-                    Lang.GUI_PLAYER_PROFILE_DESC3.get(playerData.getTownRank().getColoredName())
-            );
-
-        }
-        else {
-            setLore(head,
-                    Lang.GUI_PLAYER_PROFILE_DESC1.get(EconomyUtil.getBalance(p)),
-                    Lang.GUI_PLAYER_PROFILE_NO_TOWN.get()
-            );
-        }
-
-        return head;
-    }
-
     public static ItemStack getPlayerHeadInformation(OfflinePlayer p){
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
+
+        if(skullMeta == null){
+            return head;
+        }
 
         skullMeta.setOwningPlayer(p);
         skullMeta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + p.getName());
@@ -94,12 +64,15 @@ public class HeadUtils {
         return getPlayerHead(p.getName(),p);
     }
     public static ItemStack getPlayerHead(String headName, OfflinePlayer p){
-        ItemStack PlayerHead = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta skullMeta = (SkullMeta) PlayerHead.getItemMeta();
+        ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta skullMeta = (SkullMeta) playerHead.getItemMeta();
+        if(skullMeta == null){
+            return playerHead;
+        }
         skullMeta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + headName);
         skullMeta.setOwningPlayer(p);
-        PlayerHead.setItemMeta(skullMeta);
-        return PlayerHead;
+        playerHead.setItemMeta(skullMeta);
+        return playerHead;
     }
 
     public static ItemStack makeSkull(String name, String base64EncodedString) {

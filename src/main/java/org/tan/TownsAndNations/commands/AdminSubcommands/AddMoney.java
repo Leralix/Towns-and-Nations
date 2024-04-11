@@ -36,17 +36,7 @@ public class AddMoney extends SubCommand {
         return "/tandebug addmoney <player> <amount>";
     }
     public List<String> getTabCompleteSuggestions(Player player, String[] args){
-
-        List<String> suggestions = new ArrayList<>();
-        if (args.length == 2) {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                suggestions.add(p.getName());
-            }
-        }
-        if (args.length == 3) {
-            suggestions.add("<amount>");
-        }
-        return suggestions;
+        return payPlayerSuggestion(args);
     }
     @Override
     public void perform(Player player, String[] args) {

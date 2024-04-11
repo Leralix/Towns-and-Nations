@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.DataClass.newChunkData;
 
 import org.bukkit.Chunk;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
@@ -69,4 +70,6 @@ public abstract class ClaimedChunk2 {
     public abstract void playerEnterClaimedArea(Player player);
 
     public abstract String getName();
+
+    public abstract boolean canEntitySpawn(EntityType entityType);
 }

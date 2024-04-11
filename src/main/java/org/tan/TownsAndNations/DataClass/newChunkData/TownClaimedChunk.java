@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.DataClass.newChunkData;
 
 import org.bukkit.Chunk;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownData;
@@ -33,7 +34,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
     public String getName(){
         return TownDataStorage.get(getID()).getName();
     }
-    @Override
+        @Override
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType) {
         TownData playerTown = TownDataStorage.get(player);
         PlayerData playerData = PlayerDataStorage.get(player);
@@ -120,5 +121,10 @@ public class TownClaimedChunk extends ClaimedChunk2{
             player.sendMessage(getTANString() + Lang.CHUNK_ENTER_TOWN_AT_WAR.get());
             townTo.broadCastMessageWithSound(getTANString() + Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.get(player).getName(),player.getName()), BAD);
         }
+    }
+
+    @Override
+    public boolean canEntitySpawn(EntityType entityType) {
+       return getTown().getChunkSettings().getSpawnControl(entityType.toString()).canSpawn();
     }
 }

@@ -26,6 +26,7 @@ language:
   #Level up
   BASIC_LEVEL_UP: "§aLevel up !"
   #Teleportation
+  WAIT_BEFORE_ANOTHER_TELEPORTATION: "§cPlease wait before teleporting again"
   TELEPORTATION_CANCELLED: "§cTeleportation cancelled"
   TELEPORTATION_IN_X_SECONDS: "§fTeleportation in §a{0}§f seconds"
   TELEPORTATION_IN_X_SECONDS_NOT_MOVE: "§fTeleportation in §a{0}§f seconds. Do not move"

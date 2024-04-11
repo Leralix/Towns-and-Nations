@@ -502,13 +502,12 @@ public class GuiManager2 implements IGUI {
         for (String playerUUID: playerTown.getPlayerList()) {
 
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
-            PlayerData otherPlayerStat = PlayerDataStorage.get(playerUUID);
-            assert otherPlayerStat != null;
+            PlayerData playerIterateData = PlayerDataStorage.get(playerUUID);
 
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate);
             HeadUtils.setLore(
                     playerHead,
-                    Lang.GUI_TOWN_MEMBER_DESC1.get(otherPlayerStat.getTownRank().getColoredName()),
+                    Lang.GUI_TOWN_MEMBER_DESC1.get(playerIterateData.getTownRank().getColoredName()),
                     Lang.GUI_TOWN_MEMBER_DESC2.get(EconomyUtil.getBalance(playerIterate)),
                     playerStat.hasPermission(KICK_PLAYER) ? Lang.GUI_TOWN_MEMBER_DESC3.get() : ""
             );
@@ -2091,7 +2090,7 @@ public class GuiManager2 implements IGUI {
             List<String> status = new ArrayList<>();
             int cost = getMobSpawnCost(mobEnum);
             if(upgradeStatus.isUnlocked()){
-                if(upgradeStatus.isActivated()){
+                if(upgradeStatus.canSpawn()){
                     status.add(Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_ACTIVATED.get());
                 }
                 else{
@@ -2113,7 +2112,7 @@ public class GuiManager2 implements IGUI {
                     return;
                 }
                 if(upgradeStatus.isUnlocked()){
-                    upgradeStatus.setActivated(!upgradeStatus.isActivated());
+                    upgradeStatus.setActivated(!upgradeStatus.canSpawn());
                     SoundUtil.playSound(player, ADD);
                 }
                 else{

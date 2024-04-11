@@ -17,10 +17,10 @@ public class SpawnListener implements Listener {
     @EventHandler
     public void onPlayerHit(EntityDamageByEntityEvent event) {
         if(event.getEntity() instanceof Player player) {
-            PlayerData playerData = PlayerDataStorage.get(player.getUniqueId().toString());
-            if(SpawnRegister.isPlayerRegistered(playerData)) {
+            if(SpawnRegister.isPlayerRegistered(player.getUniqueId().toString())) {
                 if(ConfigUtil.getCustomConfig("config.yml").getBoolean("cancelTeleportOnDamage", true)) {
-                    SpawnRegister.removePlayer(playerData);
+                    PlayerData playerData = PlayerDataStorage.get(player.getUniqueId().toString());
+                    SpawnRegister.getTeleportationData(playerData).setCancelled(true);
                     player.sendMessage(ChatUtils.getTANString() + Lang.TELEPORTATION_CANCELLED.get());
                 }
             }
@@ -30,10 +30,10 @@ public class SpawnListener implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        PlayerData playerData = PlayerDataStorage.get(player.getUniqueId().toString());
-        if(SpawnRegister.isPlayerRegistered(playerData)) {
+        if(SpawnRegister.isPlayerRegistered(player.getUniqueId().toString())) {
             if(ConfigUtil.getCustomConfig("config.yml").getBoolean("cancelTeleportOnMove", true)) {
-                SpawnRegister.removePlayer(playerData);
+                PlayerData playerData = PlayerDataStorage.get(player.getUniqueId().toString());
+                SpawnRegister.getTeleportationData(playerData).setCancelled(true);
                 player.sendMessage(ChatUtils.getTANString() + Lang.TELEPORTATION_CANCELLED.get());
             }
         }
