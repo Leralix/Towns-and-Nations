@@ -1,9 +1,11 @@
 package org.tan.TownsAndNations.DataClass.newChunkData;
 
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.PropertyData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
@@ -32,12 +34,19 @@ public class TownClaimedChunk extends ClaimedChunk2{
     }
 
     public String getName(){
-        return TownDataStorage.get(getID()).getName();
+        return TownDataStorage.get(getOwnerID()).getName();
     }
         @Override
-    public boolean canPlayerDo(Player player, ChunkPermissionType permissionType) {
+    public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
         TownData playerTown = TownDataStorage.get(player);
         PlayerData playerData = PlayerDataStorage.get(player);
+
+        //Location is in a property and players owns or rent it
+        PropertyData property = playerTown.getProperty(location);
+        if(property != null){
+            if(property.getOwnerID().equals(playerData.getID()))
+                return true;
+        }
 
         //Chunk is claimed yet player have no town
         if(!playerData.haveTown()){

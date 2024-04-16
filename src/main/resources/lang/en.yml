@@ -17,6 +17,10 @@ language:
   PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION: "§cOnly the town leader can perform this action"
   CHUNK_NOT_CLAIMED: "§cThis chunk is not claimed"
   CANT_KICK_REGIONAL_CAPITAL: "§cYou can't remove the regional capital out of the region"
+  PLAYER_ALREADY_IN_SCOPE: "§cYou are already registered in the scope"
+  POSITION_NEED_TO_BE_IN_CLAIMED_CHUNK: "§cYou need to be in a claimed chunk to set up a property position"
+  POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cYou need to be in your town to set up a property position"
+  
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 {1}: §f{2}"
@@ -143,6 +147,7 @@ language:
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Write the name of the town in the chat."
   PLAYER_SEND_MONEY_TO_TOWN: "§fYou sent §6{0}✦§f to the town"
   PLAYER_SEND_MONEY_TO_REGION: "§fYou sent §6{0}✦§f to the region"
+  PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY: "Right clic 2 blocs to create your private property"
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "Set the town spawn"
   SPAWN_SET_SUCCESS: "Town spawn set"
@@ -179,6 +184,7 @@ language:
   GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fYour current town: §e{0}"
   GUI_PROFILE_ICON: "§aProfile"
   GUI_PROFILE_ICON_DESC1: "§fLook at your stats"
+  #Player
   GUI_PLAYER_PROFILE: "§a{0}" #//Player's name
   GUI_PLAYER_PROFILE_DESC1: "§fBalance : §6{0}✦"
   GUI_PLAYER_PROFILE_DESC2: "§fTown : §9{0}"
@@ -187,12 +193,9 @@ language:
   GUI_YOUR_PROFILE: "§aYour profile"
   GUI_YOUR_BALANCE: "§aYour Balance"
   GUI_YOUR_BALANCE_DESC1: "§fCurrent balance: §e{0}"
-  GUI_YOUR_PVE_KILLS: "§aMobs"
-  GUI_YOUR_PVE_KILLS_DESC1: "§fCurrent mobs killed: §e{0}"
-  GUI_YOUR_CURRENT_TIME_ALIVE: "§aTime alive"
-  GUI_YOUR_CURRENT_TIME_ALIVE_DESC1: "§fCurrent time alive: §e{0}"
-  GUI_YOUR_CURRENT_MURDER: "§aKills"
-  GUI_YOUR_CURRENT_MURDER_DESC1: "§fYou killed §e{0}§f player"
+  GUI_PLAYER_MANAGE_PROPERTIES: "Manage properties"
+  GUI_PLAYER_NEW_PROPERTY: "Create a new property"
+  #Towns
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCreate a new town"
   GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fCost: §6{0}✦"
   GUI_NO_TOWN_JOIN_A_TOWN: "§aJoin a town"
@@ -229,6 +232,8 @@ language:
   GUI_TOWN_LEVEL_ICON_DESC1: "§fUpgrade the town"
   GUI_TOWN_SETTINGS_ICON: "§aSettings"
   GUI_TOWN_SETTINGS_ICON_DESC1: "§fGeneral town settings"
+  GUI_TOWN_PROPERTIES_ICON: "§aTown properties"
+  GUI_TOWN_PROPERTIES_ICON_DESC1: "§aManage private properties"
   GUI_TREASURY_STORAGE: "§aTreasury"
   GUI_TREASURY_STORAGE_DESC1: "§fCurrent treasury: §6{0}✦"
   GUI_TREASURY_STORAGE_DESC2: "§fBalance evolution tomorrow: §a+{0}✦"
@@ -366,6 +371,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_CLAIM_SETTINGS: "§aManage claim settings"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION: "§aManage diplomacy"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_MOB_SPAWN: "§aManage mob spawn"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_PROPERTY: "§aCreate property"
   GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION: "§fThis rank§a have§f this permission"
   GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION: "§fThis rank §cdo not have§f this permission"
   GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER: "§cYou cannot set a salary lower than 0✦"
@@ -465,6 +471,15 @@ language:
   ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1: "§fLeft click to kick the player from the town"
   ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2: "§cYou can't kick the leader of the town"
   ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS: "§3{0}§f has left his town §3{1}"
+
+  #Other GUI
+  GUI_PROPERTY_DESCRIPTION: "§7§o\"{0}\""
+  GUI_PROPERTY_OWNER: "§fOwner: §3{0}"
+  GUI_PROPERTY_FOR_SALE: "§fThis property is for sale for §6{0}✦"
+  GUI_PROPERTY_RENTED_BY: "§fRented by: §3{0} for §6{1}✦"
+  GUI_PROPERTY_FOR_RENT: "§fThis property is for rent for §6{0}✦"
+  GUI_PROPERTY_NOT_FOR_SALE: "§fThis property is not for sale"
+
   #Transaction history
   TRANSACTION_HISTORY: "§f[{0}] - §3{1} §f: {2}✦"
   DONATION_SINGLE_LINE_1: "§a+{0}✦"

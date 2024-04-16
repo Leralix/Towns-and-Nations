@@ -87,7 +87,7 @@ public class PlayerEnterChunkListener implements Listener {
     public static final boolean equalsWithNulls(ClaimedChunk2 a, ClaimedChunk2 b) {
         if (a==b) return true;
         if ((a==null)||(b==null)) return false;
-        return a.getID().equals(b.getID());
+        return a.getOwnerID().equals(b.getOwnerID());
     }
 
 

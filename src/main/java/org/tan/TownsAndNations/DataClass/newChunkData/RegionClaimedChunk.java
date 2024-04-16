@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.DataClass.newChunkData;
 
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
@@ -8,13 +9,9 @@ import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
-import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
-import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
-
-import java.util.Objects;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
@@ -29,17 +26,17 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     }
 
     public String getName(){
-        return RegionDataStorage.get(getID()).getName();
+        return RegionDataStorage.get(getOwnerID()).getName();
     }
     @Override
-    public boolean canPlayerDo(Player player, ChunkPermissionType permissionType) {
+    public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
         PlayerData playerData = PlayerDataStorage.get(player);
         RegionData region = RegionDataStorage.get(ownerID);
         return region.isPlayerInRegion(playerData);
     }
 
     public RegionData getRegion() {
-        return RegionDataStorage.get(getID());
+        return RegionDataStorage.get(getOwnerID());
     }
 
     public void unclaimChunk(Player player, Chunk chunk){
@@ -59,8 +56,8 @@ public class RegionClaimedChunk extends ClaimedChunk2{
 
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunk);
 
-        if(!claimedChunk.getID().equals(regionData.getID())){
-            RegionData otherRegion = RegionDataStorage.get(claimedChunk.getID());
+        if(!claimedChunk.getOwnerID().equals(regionData.getID())){
+            RegionData otherRegion = RegionDataStorage.get(claimedChunk.getOwnerID());
             player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_REGION.get(otherRegion.getName()));
         }
 

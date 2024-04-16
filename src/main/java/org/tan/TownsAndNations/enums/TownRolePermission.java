@@ -15,7 +15,7 @@ public enum TownRolePermission {
     MANAGE_RANKS,
     MANAGE_CLAIM_SETTINGS,
     MANAGE_TOWN_RELATION,
-    MANAGE_MOB_SPAWN
-
+    MANAGE_MOB_SPAWN,
+    CREATE_PROPERTY,
 
 }

@@ -13,7 +13,6 @@ import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class RegionData {
@@ -238,7 +237,7 @@ public class RegionData {
     public int getNumberOfClaimedChunk() {
         int count = 0;
         for (ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getClaimedChunksMap().values()) {
-            if (claimedChunk.getID().equals(this.id)) {
+            if (claimedChunk.getOwnerID().equals(this.id)) {
                 count++;
             }
         }

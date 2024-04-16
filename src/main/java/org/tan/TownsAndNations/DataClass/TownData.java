@@ -3,11 +3,13 @@ package org.tan.TownsAndNations.DataClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.History.*;
 
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
+import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
@@ -52,6 +54,7 @@ public class TownData {
     private HashMap<Integer,TownRank> newRanks;
 
     private HashSet<String> PlayerJoinRequestSet;
+    private Map<String, PropertyData> propertyDataMap;
 
     private final TownLevel townLevel;
     private ClaimedChunkSettings chunkSettings;
@@ -464,7 +467,7 @@ public class TownData {
     public int getNumberOfClaimedChunk() {
         int count = 0;
         for (ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getClaimedChunksMap().values()) {
-            if (claimedChunk.getID().equals(this.TownId)) {
+            if (claimedChunk.getOwnerID().equals(this.TownId)) {
                 count++;
             }
         }
@@ -616,6 +619,8 @@ public class TownData {
     }
 
     public Integer getTownDefaultRankID() {
+        if(this.townDefaultRankID == null)
+            this.townDefaultRankID = getRanks().get(0).getID(); //Bad fix of a bug
         return townDefaultRankID;
     }
 
@@ -632,5 +637,51 @@ public class TownData {
         this.newRanks.putAll(newRanks);
     }
 
+    public Map<String, PropertyData> getPropertyDataMap(){
+        if(this.propertyDataMap == null)
+            this.propertyDataMap = new HashMap<>();
+        return this.propertyDataMap;
+    }
+    public Collection<PropertyData> getPropertyDataList(){
+        return getPropertyDataMap().values();
+    }
+    public String nextPropertyID(){
+        if(getPropertyDataMap().isEmpty())
+            return "P0";
+        int size = getPropertyDataMap().size();
+        return "P" + getPropertyDataMap().values().stream().toList().get(size - 1).getID() + 1;
+    }
 
+    public void registerNewProperty(Vector3D p1, Vector3D p2,PlayerData owner){
+        String propertyID = nextPropertyID();
+        String ID = this.getID() + "_" + propertyID;
+        PropertyData newProperty = new PropertyData(ID,p1,p2,owner);
+        this.propertyDataMap.put(propertyID, newProperty);
+        owner.addProperty(newProperty);
+    }
+    public PropertyData getProperty(String ID){
+        return getPropertyDataMap().get(ID);
+    }
+
+    public PropertyData getProperty(Location location) {
+
+        for(PropertyData propertyData : getPropertyDataList()){
+            if(propertyData.containsLocation(location)){
+                return propertyData;
+            }
+        }
+        return null;
+    }
+
+    public boolean canInteractWithProperty(Block block, String playerID) {
+
+        for(PropertyData propertyData : getPropertyDataList()){
+            if(propertyData.containsBloc(block)){
+                if(propertyData.getOwnerID().equals(playerID))
+                    return true;
+            }
+        }
+        return false;
+
+    }
 }

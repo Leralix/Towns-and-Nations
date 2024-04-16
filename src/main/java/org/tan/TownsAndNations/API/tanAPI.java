@@ -40,7 +40,7 @@ public class tanAPI {
         return 0x000000;
     }
     public int getChunkColor(ClaimedChunk2 chunk){
-        return getChunkColor(chunk.getID());
+        return getChunkColor(chunk.getOwnerID());
     }
 
     public void setDynmapAddon(Boolean isLoaded){

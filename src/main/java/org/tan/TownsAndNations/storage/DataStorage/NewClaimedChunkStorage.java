@@ -41,7 +41,7 @@ public class NewClaimedChunkStorage {
 
     public static String getChunkOwnerID(Chunk chunk) {
         ClaimedChunk2 claimedChunk = claimedChunksMap.get(getChunkKey(chunk));
-        return claimedChunk != null ? claimedChunk.getID() : null;
+        return claimedChunk != null ? claimedChunk.getOwnerID() : null;
     }
 
     public static TownData getChunkOwnerTown(Chunk chunk) {
@@ -55,10 +55,10 @@ public class NewClaimedChunkStorage {
         ClaimedChunk2 claimedChunk = claimedChunksMap.get(getChunkKey(chunk));
 
         if(claimedChunk instanceof TownClaimedChunk){
-            return TownDataStorage.get(claimedChunk.getID()).getName();
+            return TownDataStorage.get(claimedChunk.getOwnerID()).getName();
         }
         else if(claimedChunk instanceof RegionClaimedChunk){
-            return RegionDataStorage.get(claimedChunk.getID()).getName();
+            return RegionDataStorage.get(claimedChunk.getOwnerID()).getName();
         }
         return null;
     }
@@ -67,7 +67,7 @@ public class NewClaimedChunkStorage {
 
         ClaimedChunk2 cChunk = claimedChunksMap.get(getChunkKey(chunk));
         if(cChunk instanceof TownClaimedChunk){
-            return cChunk.getID().equals(townID);
+            return cChunk.getOwnerID().equals(townID);
         }
         else if(cChunk instanceof RegionClaimedChunk){
             return ((RegionClaimedChunk) cChunk).getRegion().isTownInRegion(TownDataStorage.get(townID));
@@ -95,7 +95,7 @@ public class NewClaimedChunkStorage {
 
         for (String adjacentChunkKey : adjacentChunkKeys) {
             ClaimedChunk2 adjacentClaimedChunk = claimedChunksMap.get(adjacentChunkKey);
-            if (adjacentClaimedChunk != null && adjacentClaimedChunk.getID().equals(townID)) {
+            if (adjacentClaimedChunk != null && adjacentClaimedChunk.getOwnerID().equals(townID)) {
                 return true;
             }
         }
@@ -122,7 +122,7 @@ public class NewClaimedChunkStorage {
         while (iterator.hasNext()) {
             Map.Entry<String, ClaimedChunk2> entry = iterator.next();
             ClaimedChunk2 chunk = entry.getValue();
-            if (chunk.getID().equals(id)) {
+            if (chunk.getOwnerID().equals(id)) {
                 iterator.remove();
             }
         }

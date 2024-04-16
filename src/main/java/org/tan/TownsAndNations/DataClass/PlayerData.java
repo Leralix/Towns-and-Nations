@@ -1,12 +1,15 @@
 package org.tan.TownsAndNations.DataClass;
 
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.units.qual.A;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.storage.Invitation.TownInviteDataStorage;
 import org.tan.TownsAndNations.storage.WarTaggedPlayer;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -18,23 +21,24 @@ public class PlayerData {
     private String TownId;
     private Integer townRankID;
     private String TownRank;
-
+    private List<String> propertiesListID;
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
         this.PlayerName = player.getName();
         this.Balance = ConfigUtil.getCustomConfig("config.yml").getInt("StartingMoney");;
         this.TownId = null;
         this.TownRank = null;
+        this.propertiesListID = new ArrayList<>();
     }
 
-    public PlayerData(String UUID, String playerName, int balance, String townId, String townRank) {
+    public PlayerData(String UUID, String playerName, int balance, String townId, String townRank, List<String> propertiesList) {
         this.UUID = UUID;
         this.PlayerName = playerName;
         this.Balance = balance;
         this.TownId = townId;
         this.TownRank = townRank;
+        this.propertiesListID = propertiesList;
     }
-
 
     public String getID() {
         return UUID;
@@ -94,6 +98,7 @@ public class PlayerData {
     public void leaveTown(){
         this.TownId = null;
         this.TownRank = null;
+        this.townRankID = null;
         WarTaggedPlayer.removePlayer(this.getID());
     }
 
@@ -132,6 +137,31 @@ public class PlayerData {
             }
             TownInviteDataStorage.removeInvitation(UUID,otherTown.getID());
         }
-
     }
+
+    public List<String> getPropertiesListID(){
+        if(this.propertiesListID == null)
+            this.propertiesListID = new ArrayList<>();
+        return propertiesListID;
+    }
+    public void addProperty(PropertyData propertyData){
+        getPropertiesListID().add(propertyData.getID());
+    }
+
+    public List<PropertyData> getProperties(){
+        List<PropertyData> propertyDataList = new ArrayList<>();
+
+        for(String propertyID : getPropertiesListID()){
+            String[] parts = propertyID.split("_");
+            String tID = parts[0];
+            String pID = parts[1];
+
+            PropertyData nextProperty = TownDataStorage.get(tID).getProperty(pID);
+
+            propertyDataList.add(nextProperty);
+        }
+
+        return propertyDataList;
+    }
+
 }

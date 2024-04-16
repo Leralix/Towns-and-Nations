@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.DataClass.newChunkData;
 
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -42,7 +43,7 @@ public abstract class ClaimedChunk2 {
         return Objects.hash(x, z, worldUUID);
     }
 
-    public String getID() {
+    public String getOwnerID() {
         return this.ownerID;
     }
 
@@ -58,11 +59,11 @@ public abstract class ClaimedChunk2 {
         return this.worldUUID;
     }
 
-    public abstract boolean canPlayerDo(Player player, ChunkPermissionType permissionType);
+    public abstract boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location);
 
     void playerCantPerformAction(Player player){
         player.sendMessage(getTANString() + Lang.PLAYER_ACTION_NO_PERMISSION.get());
-        player.sendMessage(getTANString() + Lang.CHUNK_BELONGS_TO.get(TownDataStorage.get(getID()).getName()));
+        player.sendMessage(getTANString() + Lang.CHUNK_BELONGS_TO.get(TownDataStorage.get(getOwnerID()).getName()));
     }
 
     public abstract void unclaimChunk(Player player, Chunk chunk);

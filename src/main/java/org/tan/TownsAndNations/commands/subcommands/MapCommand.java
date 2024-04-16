@@ -87,7 +87,7 @@ public class MapCommand extends SubCommand {
 
                        if(claimedChunk instanceof TownClaimedChunk){
                            TownData playerTown = TownDataStorage.get(player);
-                           TownData otherTown = TownDataStorage.get(NewClaimedChunkStorage.get(chunk).getID());
+                           TownData otherTown = TownDataStorage.get(NewClaimedChunkStorage.get(chunk).getOwnerID());
 
                            TownRelation relation;
                            if(playerTown == null ){

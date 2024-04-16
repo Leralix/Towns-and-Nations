@@ -34,4 +34,9 @@ public class Vector3D {
     public void setZ(int z) {
         this.z = z;
     }
+
+    @Override
+    public String toString(){
+        return "[" + this.x + ", " + this.y + ", " + this.z + "]";
+    }
 }

@@ -95,7 +95,10 @@ public class GuiManager2 implements IGUI {
                 OpenTownMenuNoTown(player);
             }
         });
-        GuiItem Player = ItemBuilder.from(PlayerHead).asGuiItem(event -> event.setCancelled(true));
+        GuiItem Player = ItemBuilder.from(PlayerHead).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenPlayerProfileMenu(player);
+        });
 
 
         int slotKingdom = 2;
@@ -123,33 +126,74 @@ public class GuiManager2 implements IGUI {
 
         gui.open(player);
     }
-    public static void OpenProfileMenu(Player player){
+    public static void OpenPlayerProfileMenu(Player player){
 
         Gui gui = IGUI.createChestGui("Profile",3);
 
 
-        ItemStack PlayerHead = HeadUtils.getPlayerHead(Lang.GUI_YOUR_PROFILE.get(),player);
-        ItemStack GoldPurse = HeadUtils.getCustomLoreItem(Material.GOLD_NUGGET, Lang.GUI_YOUR_BALANCE.get(),Lang.GUI_YOUR_BALANCE_DESC1.get(EconomyUtil.getBalance(player)));
-        ItemStack killList = HeadUtils.getCustomLoreItem(Material.IRON_SWORD, Lang.GUI_YOUR_PVE_KILLS.get(),Lang.GUI_YOUR_PVE_KILLS_DESC1.get(player.getStatistic(Statistic.MOB_KILLS)));
-        int time = player.getStatistic(Statistic.PLAY_ONE_MINUTE) /20 / 86400;
-        ItemStack lastDeath = HeadUtils.getCustomLoreItem(Material.SKELETON_SKULL, Lang.GUI_YOUR_CURRENT_TIME_ALIVE.get(),Lang.GUI_YOUR_CURRENT_TIME_ALIVE_DESC1.get(time));
-        ItemStack totalRpKills = HeadUtils.getCustomLoreItem(Material.SKELETON_SKULL, Lang.GUI_YOUR_CURRENT_MURDER.get(),Lang.GUI_YOUR_CURRENT_MURDER_DESC1.get("0"));
+        ItemStack playerHead = HeadUtils.getPlayerHead(Lang.GUI_YOUR_PROFILE.get(),player);
+        ItemStack goldPurse = HeadUtils.getCustomLoreItem(Material.GOLD_NUGGET, Lang.GUI_YOUR_BALANCE.get(),Lang.GUI_YOUR_BALANCE_DESC1.get(EconomyUtil.getBalance(player)));
+        ItemStack properties = HeadUtils.getCustomLoreItem(Material.OAK_HANGING_SIGN, Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(),Lang.GUI_YOUR_BALANCE_DESC1.get(EconomyUtil.getBalance(player)));
 
-        GuiItem Head = ItemBuilder.from(PlayerHead).asGuiItem(event -> event.setCancelled(true));
-        GuiItem Gold = ItemBuilder.from(GoldPurse).asGuiItem(event -> event.setCancelled(true));
-        GuiItem Kill = ItemBuilder.from(killList).asGuiItem(event -> event.setCancelled(true));
-        GuiItem LD = ItemBuilder.from(lastDeath).asGuiItem(event -> event.setCancelled(true));
-        GuiItem RPkill = ItemBuilder.from(totalRpKills).asGuiItem(event -> event.setCancelled(true));
 
-        gui.setItem(4, Head);
-        gui.setItem(10, Gold);
-        gui.setItem(12, Kill);
-        gui.setItem(14, LD);
-        gui.setItem(16, RPkill);
+        GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> event.setCancelled(true));
+        GuiItem _goldPurse = ItemBuilder.from(goldPurse).asGuiItem(event -> event.setCancelled(true));
+        GuiItem _properties = ItemBuilder.from(properties).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenPlayerPropertiesMenu(player);
+        });
+
+        gui.setItem(1,5, _playerHead);
+        gui.setItem(2,2, _goldPurse);
+        gui.setItem(2,4, _properties);
+
+
         gui.setItem(18, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
 
         gui.open(player);
     }
+    public static void OpenPlayerPropertiesMenu(Player player){
+        int nRows = 6;
+        Gui gui = IGUI.createChestGui("Properties of " + player.getName(),nRows);
+
+        PlayerData playerData = PlayerDataStorage.get(player);
+
+        int i = 0;
+        for (PropertyData propertyData : playerData.getProperties()){
+
+            ItemStack property = propertyData.getIcon();
+
+
+            GuiItem _property = ItemBuilder.from(property).asGuiItem(event -> {
+                event.setCancelled(true);
+            });
+            gui.setItem(i,_property);
+            i++;
+        }
+
+        ItemStack newProperty = HeadUtils.makeSkull(
+                Lang.GUI_PLAYER_NEW_PROPERTY.get(),
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19"
+        );
+
+        GuiItem _newProperty = ItemBuilder.from(newProperty).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(PlayerSelectPropertyPositionStorage.contains(playerData)){
+                player.sendMessage(getTANString() + Lang.PLAYER_ALREADY_IN_SCOPE.get());
+                return;
+            }
+            player.sendMessage(Lang.PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY.get());
+            PlayerSelectPropertyPositionStorage.addPlayer(playerData);
+            player.closeInventory();
+        });
+
+        gui.setItem(nRows,3, _newProperty);
+        gui.setItem(nRows,1, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
+
+        gui.open(player);
+    }
+
+
     public static void OpenTownMenuNoTown(Player player){
 
         Gui gui = IGUI.createChestGui("Town",3);
@@ -292,7 +336,8 @@ public class GuiManager2 implements IGUI {
         gui.open(player);
     }
     public static void OpenTownMenuHaveTown(Player player) {
-        Gui gui = IGUI.createChestGui("Town",3);
+        int nRows = 4;
+        Gui gui = IGUI.createChestGui("Town",nRows);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
@@ -329,6 +374,9 @@ public class GuiManager2 implements IGUI {
 
         ItemStack SettingIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_SETTINGS_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkMmNiMzg0NThkYTE3ZmI2Y2RhY2Y3ODcxNjE2MDJhMjQ5M2NiZjkzMjMzNjM2MjUzY2ZmMDdjZDg4YTljMCJ9fX0=");
         HeadUtils.setLore(SettingIcon, Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get());
+
+        ItemStack propertyIcon = HeadUtils.getCustomLoreItem(Material.OAK_HANGING_SIGN, Lang.GUI_TOWN_PROPERTIES_ICON.get());
+        HeadUtils.setLore(propertyIcon, Lang.GUI_TOWN_PROPERTIES_ICON_DESC1.get());
 
         GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -377,17 +425,22 @@ public class GuiManager2 implements IGUI {
             event.setCancelled(true);
             OpenTownSettings(player);
         });
+        GuiItem _propertyIcon = ItemBuilder.from(SettingIcon).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownPropertiesMenu(player);
+        });
 
 
         gui.setItem(4, _townIcon);
-        gui.setItem(10, _goldIcon);
-        gui.setItem(11, _membersIcon);
-        gui.setItem(12, _claimIcon);
-        gui.setItem(13, _otherTownIcon);
-        gui.setItem(14, _relationIcon);
-        gui.setItem(15, _levelIcon);
-        gui.setItem(16, _settingsIcon);
-        gui.setItem(18, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
+        gui.setItem(2,2, _goldIcon);
+        gui.setItem(2,3, _membersIcon);
+        gui.setItem(2,4, _claimIcon);
+        gui.setItem(2,5, _otherTownIcon);
+        gui.setItem(2,6, _relationIcon);
+        gui.setItem(2,7, _levelIcon);
+        gui.setItem(2,8, _settingsIcon);
+        gui.setItem(3,2,_propertyIcon);
+        gui.setItem(nRows,1, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
 
         gui.open(player);
     }
@@ -951,6 +1004,7 @@ public class GuiManager2 implements IGUI {
         ItemStack manage_claim_settings = HeadUtils.getCustomLoreItem(Material.GRASS_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_CLAIM_SETTINGS.get(),(townRank.hasPermission(townID,MANAGE_CLAIM_SETTINGS)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
         ItemStack manage_town_relation = HeadUtils.getCustomLoreItem(Material.FLOWER_POT, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION.get(),(townRank.hasPermission(townID,MANAGE_TOWN_RELATION)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
         ItemStack manage_mob_spawn = HeadUtils.getCustomLoreItem(Material.CREEPER_HEAD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_MOB_SPAWN.get(),(townRank.hasPermission(townID,MANAGE_MOB_SPAWN)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack create_property = HeadUtils.getCustomLoreItem(Material.OAK_HANGING_SIGN, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_PROPERTY.get(),(townRank.hasPermission(townID,CREATE_PROPERTY)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
 
         GuiItem _manage_taxes = ItemBuilder.from(manage_taxes).asGuiItem(event -> {
             townRank.switchPermission(town.getID(), MANAGE_TAXES);
@@ -1024,6 +1078,11 @@ public class GuiManager2 implements IGUI {
             OpenTownRankManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
+        GuiItem _create_property = ItemBuilder.from(create_property).asGuiItem(event -> {
+            townRank.switchPermission(town.getID(),CREATE_PROPERTY);
+            OpenTownRankManagerPermissions(player, rankID);
+            event.setCancelled(true);
+        });
 
 
         gui.setItem(1, _manage_taxes);
@@ -1040,6 +1099,8 @@ public class GuiManager2 implements IGUI {
         gui.setItem(12, _manage_claim_settings);
         gui.setItem(13, _manage_town_relation);
         gui.setItem(14, _manage_mob_spawn);
+        gui.setItem(15, _create_property);
+
 
         gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownRankManager(player,rankID)));
 
@@ -2170,6 +2231,29 @@ public class GuiManager2 implements IGUI {
         gui.setItem(6,7,_previous);
         gui.setItem(6,8,_next);
         gui.setItem(6,9,panel);
+
+
+        gui.open(player);
+    }
+    public static void OpenTownPropertiesMenu(Player player){
+        int nRows = 6;
+        PlayerData playerData = PlayerDataStorage.get(player);
+        TownData townData = TownDataStorage.get(playerData);
+        Gui gui = IGUI.createChestGui("Properties",6);
+
+        int i = 0;
+        for (PropertyData townProperty : townData.getPropertyDataList()){
+
+
+            ItemStack property = HeadUtils.makeSkull(townProperty.getID(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzhkYTZmY2M1Y2YzMWM2ZjcyYTAzNGI2MjBhODM3ZjlkMWM5ZWVkMzY3MTE4MmI2OTQ4OTY4N2FkYmNkOGZiIn19fQ==");
+
+            GuiItem _property = ItemBuilder.from(property).asGuiItem(event -> {
+                event.setCancelled(true);
+            });
+            gui.setItem(i,_property);
+            i++;
+        }
+        gui.setItem(nRows,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
 
 
         gui.open(player);
