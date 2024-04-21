@@ -243,6 +243,13 @@ public class GuiManager2 implements IGUI {
                 Lang.GUI_RIGHT_CLICK_TO_CHANGE_PRICE.get()
         );
 
+        ItemStack drawnBox = HeadUtils.makeSkull(Lang.GUI_PROPERTY_DRAWN_BOX.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzc3ZDRhMjA2ZDc3NTdmNDc5ZjMzMmVjMWEyYmJiZWU1N2NlZjk3NTY4ZGQ4OGRmODFmNDg2NGFlZTdkM2Q5OCJ9fX0=");
+
+        HeadUtils.setLore(drawnBox,
+                Lang.GUI_PROPERTY_DRAWN_BOX_DESC1.get()
+        );
+
+
         GuiItem _propertyIcon = ItemBuilder.from(propertyIcon).asGuiItem(event -> event.setCancelled(true));
 
         GuiItem _changeName = ItemBuilder.from(changeName).asGuiItem(event -> {
@@ -267,7 +274,9 @@ public class GuiManager2 implements IGUI {
             data.put(MessageKey.PROPERTY_ID,propertyData.getTotalID());
             PlayerChatListenerStorage.addPlayer(CHANGE_PROPERTY_DESCRIPTION,player,data);
         });
-        GuiItem _drawnBox = ItemBuilder.from(isForSale).asGuiItem(event -> {
+
+
+        GuiItem _drawnBox = ItemBuilder.from(drawnBox).asGuiItem(event -> {
             event.setCancelled(true);
             player.closeInventory();
             propertyData.showBox(player);
@@ -276,13 +285,36 @@ public class GuiManager2 implements IGUI {
         GuiItem _isForSale = ItemBuilder.from(isForSale).asGuiItem(event -> {
             event.setCancelled(true);
 
-            propertyData.swapIsForSale();
-            OpenPropertyManagerMenu(player,propertyData);
+            if(event.getClick() == ClickType.RIGHT){
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+                player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+                player.closeInventory();
+
+                Map<MessageKey, String> data = new HashMap<>();
+                data.put(MessageKey.PROPERTY_ID,propertyData.getTotalID());
+                PlayerChatListenerStorage.addPlayer(CHANGE_PROPERTY_SALE_PRICE,player,data);
+            }
+            else if (event.getClick() == ClickType.LEFT){
+                propertyData.swapIsForSale();
+                OpenPropertyManagerMenu(player,propertyData);
+            }
         });
         GuiItem _isForRent = ItemBuilder.from(isForRent).asGuiItem(event -> {
-            propertyData.swapIsRent();
             event.setCancelled(true);
-            OpenPropertyManagerMenu(player,propertyData);
+
+            if(event.getClick() == ClickType.RIGHT){
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+                player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+                player.closeInventory();
+
+                Map<MessageKey, String> data = new HashMap<>();
+                data.put(MessageKey.PROPERTY_ID,propertyData.getTotalID());
+                PlayerChatListenerStorage.addPlayer(CHANGE_PROPERTY_RENT_PRICE,player,data);
+            }
+            else if (event.getClick() == ClickType.LEFT){
+                propertyData.swapIsRent();
+                OpenPropertyManagerMenu(player,propertyData);
+            }
         });
 
         gui.setItem(1,5,_propertyIcon);

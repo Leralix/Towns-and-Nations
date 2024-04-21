@@ -94,6 +94,12 @@ public class ChatListener implements Listener {
             case CHANGE_PROPERTY_DESCRIPTION:
                 ChangePropertyDesc(player,chatData,message);
                 break;
+            case CHANGE_PROPERTY_SALE_PRICE:
+                changePropertySalePrice(player, chatData, message);
+                break;
+            case CHANGE_PROPERTY_RENT_PRICE:
+                changePropertyRentPrice(player, chatData, message);
+                break;
         }
     }
 
@@ -302,6 +308,27 @@ public class ChatListener implements Listener {
 
         propertyData.setDescription(message);
         player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
+
+    }
+
+    private void changePropertyRentPrice(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String message) {
+        String ID = chatData.getData().get(PROPERTY_ID);
+        String[] parts = ID.split("_");
+
+        PropertyData property = TownDataStorage.get(parts[0]).getProperty(parts[1]);
+
+        property.setRentPrice(Integer.parseInt(message));
+
+
+    }
+
+    private void changePropertySalePrice(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String message) {
+        String ID = chatData.getData().get(PROPERTY_ID);
+        String[] parts = ID.split("_");
+
+        PropertyData property = TownDataStorage.get(parts[0]).getProperty(parts[1]);
+
+        property.setSalePrice(Integer.parseInt(message));
 
     }
 

@@ -13,6 +13,9 @@ import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 public class RegionClaimedChunk extends ClaimedChunk2{

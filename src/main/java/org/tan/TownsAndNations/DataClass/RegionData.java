@@ -208,10 +208,10 @@ public class RegionData {
         return (playerStat.isTownLeader() && isCapital(playerStat.getTown()));
     }
 
-    public int setBasicColor(int couleurHex) {
-        int red = (couleurHex >> 16) & 0xFF;
-        int green = (couleurHex >> 8) & 0xFF;
-        int blue = couleurHex & 0xFF;
+    public int setBasicColor(int colorHex) {
+        int red = (colorHex >> 16) & 0xFF;
+        int green = (colorHex >> 8) & 0xFF;
+        int blue = colorHex & 0xFF;
 
         red = Math.max(0, red - 25);
         green = Math.max(0, green - 25);

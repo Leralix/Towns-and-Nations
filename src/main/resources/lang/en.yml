@@ -483,6 +483,7 @@ language:
   GUI_PROPERTY_NOT_FOR_SALE: "§fThis property§c is not§f for sale"
   CLICK_TO_OPEN_PROPERTY_MENU: "§fLeft click to manage property"
 
+
   GUI_PROPERTY_CHANGE_NAME: "§aChange property name"
   GUI_PROPERTY_CHANGE_NAME_DESC1: "§fCurrent name: §9{0}"
   GUI_PROPERTY_CHANGE_DESCRIPTION: "§aChange property description"
@@ -490,8 +491,11 @@ language:
 
   GUI_BUYING_PRICE: "§fBuying price is set to §6{0}✦"
   GUI_RENTING_PRICE: "§fRenting price is set to §6{0}✦/day"
-  GUI_LEFT_CLICK_TO_SWITCH_SALE: "§fClick to allow rent"
-  GUI_LEFT_CLICK_TO_SWITCH_RENT: "§fClick to allow sale"
+  GUI_LEFT_CLICK_TO_SWITCH_SALE: "§fLeft click to allow rent"
+  GUI_LEFT_CLICK_TO_SWITCH_RENT: "§fLeft click to allow sale"
+  GUI_PROPERTY_DRAWN_BOX: "§aShow property boundaries"
+  GUI_PROPERTY_DRAWN_BOX_DESC1: "§fLeft click to show the property boundaries"
+  GUI_RIGHT_CLICK_TO_CHANGE_PRICE: "§fRight click to change the price"
 
   SELL_PROPERTY: "§aSell property"
   RENT_PROPERTY: "§aRent property"

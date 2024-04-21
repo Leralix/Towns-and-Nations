@@ -11,6 +11,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.EconomyUtil;
@@ -77,12 +78,14 @@ public class PropertyData {
     }
     public void setName(String name) {
         this.name = name;
-        updateSign();
+
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), this::updateSign);
+
     }
 
     public void setDescription(String description) {
         this.description = description;
-        updateSign();
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), this::updateSign);
     }
     public String getOwnerID() {
         return owningPlayerID;
@@ -91,7 +94,6 @@ public class PropertyData {
         return PlayerDataStorage.get(owningPlayerID);
     }
     public void sellZone(Player buyer){
-        PlayerData buyerData = PlayerDataStorage.get(buyer.getUniqueId().toString());
         EconomyUtil.removeFromBalance(buyer, salePrice);
 
         OfflinePlayer seller = Bukkit.getOfflinePlayer(UUID.fromString(getOwnerID()));
@@ -256,4 +258,13 @@ public class PropertyData {
         return lines;
     }
 
+    public void setRentPrice(int i) {
+        this.rentPrice = i;
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), this::updateSign);
+    }
+
+    public void setSalePrice(int i) {
+        this.salePrice = i;
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), this::updateSign);
+    }
 }
