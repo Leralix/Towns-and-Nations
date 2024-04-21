@@ -46,10 +46,6 @@ public class LocalChatStorage {
         return playerChatScope.containsKey(uuid);
     }
 
-    public static boolean isPlayerInChatScope(Player player){
-        return isPlayerInChatScope(player.getUniqueId().toString());
-    }
-
     public static void broadcastInScope(Player player, String message){
         PlayerData playerData = PlayerDataStorage.get(player);
 

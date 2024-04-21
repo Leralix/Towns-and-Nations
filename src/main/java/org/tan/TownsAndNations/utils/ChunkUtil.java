@@ -18,7 +18,7 @@ public class ChunkUtil {
 
     public static void claimChunkForRegion(Player player) {
         Chunk chunkToClaim = player.getLocation().getChunk();
-        claimChunkForTown(player, chunkToClaim);
+        claimChunkForRegion(player, chunkToClaim);
     }
     public static void claimChunkForRegion(Player player, Chunk chunk) {
 

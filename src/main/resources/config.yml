@@ -48,11 +48,14 @@ regionCost: 7500
 
 
 #The max size of names
-TownNameSize: 40
+TownNameSize: 45
 RankNameSize: 25
-TownDescSize: 50
-RegionNameSize: 40
-RegionDescSize: 50
+TownDescSize: 55
+RegionNameSize: 45
+RegionDescSize: 55
+PropertyNameSize: 25
+PropertyDescSize: 40
+
 #Allow name duplication (for ranks, towns, regions and kingdoms)
 AllowNameDuplication: true
 

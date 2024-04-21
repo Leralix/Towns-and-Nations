@@ -1,7 +1,6 @@
 package org.tan.TownsAndNations.DataClass;
 
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.units.qual.A;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.storage.Invitation.TownInviteDataStorage;
@@ -145,7 +144,7 @@ public class PlayerData {
         return propertiesListID;
     }
     public void addProperty(PropertyData propertyData){
-        getPropertiesListID().add(propertyData.getID());
+        getPropertiesListID().add(propertyData.getTotalID());
     }
 
     public List<PropertyData> getProperties(){

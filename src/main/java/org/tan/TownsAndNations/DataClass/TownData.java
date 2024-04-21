@@ -9,7 +9,6 @@ import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.History.*;
 
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
-import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
@@ -455,6 +454,8 @@ public class TownData {
     }
 
     public int getFlatTax() {
+        if(this.flatTax == null)
+            this.flatTax = 1;
         return this.flatTax;
     }
 
@@ -649,15 +650,17 @@ public class TownData {
         if(getPropertyDataMap().isEmpty())
             return "P0";
         int size = getPropertyDataMap().size();
-        return "P" + getPropertyDataMap().values().stream().toList().get(size - 1).getID() + 1;
+        int lastID = Integer.parseInt(getPropertyDataMap().values().stream().toList().get(size - 1).getTotalID().split("P")[1]);
+        return "P" + (lastID + 1);
     }
 
-    public void registerNewProperty(Vector3D p1, Vector3D p2,PlayerData owner){
+    public PropertyData registerNewProperty(Vector3D p1, Vector3D p2,PlayerData owner){
         String propertyID = nextPropertyID();
         String ID = this.getID() + "_" + propertyID;
         PropertyData newProperty = new PropertyData(ID,p1,p2,owner);
         this.propertyDataMap.put(propertyID, newProperty);
         owner.addProperty(newProperty);
+        return newProperty;
     }
     public PropertyData getProperty(String ID){
         return getPropertyDataMap().get(ID);

@@ -32,8 +32,14 @@ public class SpawnRegister {
     public static boolean isPlayerRegistered(PlayerData player){
         return isPlayerRegistered(player.getID());
     }
+    public static TeleportationData getTeleportationData(String playerID){
+        return spawnRegister.get(playerID);
+    }
     public static TeleportationData getTeleportationData(PlayerData playerData){
-        return spawnRegister.get(playerData.getID());
+        return getTeleportationData(playerData.getID());
+    }
+    public static TeleportationData getTeleportationData(Player player){
+        return getTeleportationData(player.getUniqueId().toString());
     }
 
     public static void teleportPlayerToSpawn(PlayerData playerData, TownData townData){
@@ -59,19 +65,22 @@ public class SpawnRegister {
                 () -> confirmTeleportation(playerData, townData), secondBeforeTeleport * 20L);
     }
     public static void confirmTeleportation(PlayerData playerData, TownData townData){
-        if(!spawnRegister.containsKey(playerData.getID()))
-            return;
-        if(spawnRegister.get(playerData.getID()).isCancelled())
-            return;
 
-        townData.teleportPlayerToSpawn(playerData);
+        if(!spawnRegister.containsKey(playerData.getID())){
+            return;
+        }
+        if(spawnRegister.get(playerData.getID()).isCancelled()){
+            removePlayer(playerData);
+            return;
+        }
         removePlayer(playerData);
+        townData.teleportPlayerToSpawn(playerData);
 
         Player player = Bukkit.getPlayer(playerData.getUUID());
-        if(player == null)
-            return;
-        SoundUtil.playSound(player, SoundEnum.MINOR_GOOD );
-        player.sendMessage(getTANString() + Lang.SPAWN_TELEPORTED.get());
+        if(player != null){
+            SoundUtil.playSound(player, SoundEnum.MINOR_GOOD );
+            player.sendMessage(getTANString() + Lang.SPAWN_TELEPORTED.get());
+        }
 
     }
 

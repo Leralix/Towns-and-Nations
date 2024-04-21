@@ -97,6 +97,7 @@ public class GuiManager2 implements IGUI {
         });
         GuiItem Player = ItemBuilder.from(PlayerHead).asGuiItem(event -> {
             event.setCancelled(true);
+            player.sendMessage(getTANString() + Lang.GUI_WARNING_STILL_IN_DEV.get());
             OpenPlayerProfileMenu(player);
         });
 
@@ -165,6 +166,7 @@ public class GuiManager2 implements IGUI {
 
 
             GuiItem _property = ItemBuilder.from(property).asGuiItem(event -> {
+                OpenPropertyManagerMenu(player, propertyData);
                 event.setCancelled(true);
             });
             gui.setItem(i,_property);
@@ -182,7 +184,7 @@ public class GuiManager2 implements IGUI {
                 player.sendMessage(getTANString() + Lang.PLAYER_ALREADY_IN_SCOPE.get());
                 return;
             }
-            player.sendMessage(Lang.PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY.get());
+            player.sendMessage(getTANString() + Lang.PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY.get());
             PlayerSelectPropertyPositionStorage.addPlayer(playerData);
             player.closeInventory();
         });
@@ -192,7 +194,111 @@ public class GuiManager2 implements IGUI {
 
         gui.open(player);
     }
+    public static void OpenPropertyManagerMenu(Player player, PropertyData propertyData){
+        int nRows = 6;
 
+        Gui gui = IGUI.createChestGui("Property " + propertyData.getName(),nRows);
+
+
+        ItemStack propertyIcon = propertyData.getIcon();
+
+        ItemStack changeName = HeadUtils.getCustomLoreItem(
+                Material.NAME_TAG,
+                Lang.GUI_PROPERTY_CHANGE_NAME.get(),
+                Lang.GUI_PROPERTY_CHANGE_NAME_DESC1.get(propertyData.getName())
+        );
+
+        ItemStack changeDescription = HeadUtils.getCustomLoreItem(
+                Material.WRITABLE_BOOK,
+                Lang.GUI_PROPERTY_CHANGE_DESCRIPTION.get(),
+                Lang.GUI_PROPERTY_CHANGE_DESCRIPTION_DESC1.get(propertyData.getDescription())
+        );
+
+        ItemStack isForSale;
+        if(propertyData.isForSale()){
+            isForSale = HeadUtils.makeSkull(Lang.SELL_PROPERTY.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2UyYTUzMGY0MjcyNmZhN2EzMWVmYWI4ZTQzZGFkZWUxODg5MzdjZjgyNGFmODhlYThlNGM5M2E0OWM1NzI5NCJ9fX0=");
+        }
+        else{
+            isForSale = HeadUtils.makeSkull(Lang.SELL_PROPERTY.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWVmMDcwOGZjZTVmZmFhNjYwOGNiZWQzZTc4ZWQ5NTgwM2Q4YTg5Mzc3ZDFkOTM4Y2UwYmRjNjFiNmRjOWY0ZiJ9fX0=");
+        }
+        HeadUtils.setLore(isForSale,
+                propertyData.isForSale() ? Lang.GUI_PROPERTY_FOR_SALE.get(): Lang.GUI_PROPERTY_NOT_FOR_SALE.get(),
+                Lang.GUI_BUYING_PRICE.get(propertyData.getBuyingPrice()),
+                Lang.GUI_LEFT_CLICK_TO_SWITCH_SALE.get(),
+                Lang.GUI_RIGHT_CLICK_TO_CHANGE_PRICE.get()
+        );
+
+
+        ItemStack isForRent;
+        if(propertyData.isForRent()){
+            isForRent = HeadUtils.makeSkull(Lang.RENT_PROPERTY.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2UyYTUzMGY0MjcyNmZhN2EzMWVmYWI4ZTQzZGFkZWUxODg5MzdjZjgyNGFmODhlYThlNGM5M2E0OWM1NzI5NCJ9fX0=");
+        }
+        else{
+            isForRent = HeadUtils.makeSkull(Lang.RENT_PROPERTY.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWVmMDcwOGZjZTVmZmFhNjYwOGNiZWQzZTc4ZWQ5NTgwM2Q4YTg5Mzc3ZDFkOTM4Y2UwYmRjNjFiNmRjOWY0ZiJ9fX0=");
+        }
+        HeadUtils.setLore(isForRent,
+                propertyData.isForRent() ? Lang.GUI_PROPERTY_FOR_RENT.get(): Lang.GUI_PROPERTY_NOT_FOR_RENT.get(),
+                Lang.GUI_RENTING_PRICE.get(propertyData.getRentPrice()),
+                Lang.GUI_LEFT_CLICK_TO_SWITCH_SALE.get(),
+                Lang.GUI_RIGHT_CLICK_TO_CHANGE_PRICE.get()
+        );
+
+        GuiItem _propertyIcon = ItemBuilder.from(propertyIcon).asGuiItem(event -> event.setCancelled(true));
+
+        GuiItem _changeName = ItemBuilder.from(changeName).asGuiItem(event -> {
+            event.setCancelled(true);
+
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+            player.closeInventory();
+
+            Map<MessageKey, String> data = new HashMap<>();
+            data.put(MessageKey.PROPERTY_ID,propertyData.getTotalID());
+            PlayerChatListenerStorage.addPlayer(CHANGE_PROPERTY_NAME,player,data);
+        });
+        GuiItem _changeDescription = ItemBuilder.from(changeDescription).asGuiItem(event -> {
+            event.setCancelled(true);
+
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+            player.closeInventory();
+
+            Map<MessageKey, String> data = new HashMap<>();
+            data.put(MessageKey.PROPERTY_ID,propertyData.getTotalID());
+            PlayerChatListenerStorage.addPlayer(CHANGE_PROPERTY_DESCRIPTION,player,data);
+        });
+        GuiItem _drawnBox = ItemBuilder.from(isForSale).asGuiItem(event -> {
+            event.setCancelled(true);
+            player.closeInventory();
+            propertyData.showBox(player);
+        });
+
+        GuiItem _isForSale = ItemBuilder.from(isForSale).asGuiItem(event -> {
+            event.setCancelled(true);
+
+            propertyData.swapIsForSale();
+            OpenPropertyManagerMenu(player,propertyData);
+        });
+        GuiItem _isForRent = ItemBuilder.from(isForRent).asGuiItem(event -> {
+            propertyData.swapIsRent();
+            event.setCancelled(true);
+            OpenPropertyManagerMenu(player,propertyData);
+        });
+
+        gui.setItem(1,5,_propertyIcon);
+        gui.setItem(2,2,_changeName);
+        gui.setItem(2,3,_changeDescription);
+
+        gui.setItem(2,5,_drawnBox);
+
+        gui.setItem(2,7,_isForSale);
+        gui.setItem(2,8,_isForRent);
+
+
+        gui.setItem(nRows,1, IGUI.CreateBackArrow(player,p -> OpenPlayerPropertiesMenu(player)));
+
+        gui.open(player);
+    }
 
     public static void OpenTownMenuNoTown(Player player){
 
@@ -425,7 +531,7 @@ public class GuiManager2 implements IGUI {
             event.setCancelled(true);
             OpenTownSettings(player);
         });
-        GuiItem _propertyIcon = ItemBuilder.from(SettingIcon).asGuiItem(event -> {
+        GuiItem _propertyIcon = ItemBuilder.from(propertyIcon).asGuiItem(event -> {
             event.setCancelled(true);
             OpenTownPropertiesMenu(player);
         });
@@ -625,7 +731,6 @@ public class GuiManager2 implements IGUI {
 
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
             PlayerData playerIterateData = PlayerDataStorage.get(playerUUID);
-            assert playerIterateData != null;
 
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate);
 
@@ -814,10 +919,13 @@ public class GuiManager2 implements IGUI {
 
 
         GuiItem _roleIcon = ItemBuilder.from(roleIcon).asGuiItem(event -> {
+            event.setCancelled(true);
 
             if(event.getCursor() == null)
                 return;
 
+            if(event.getCursor().getData() != null)
+                return;
             Material itemMaterial = event.getCursor().getData().getItemType();
             if(itemMaterial == Material.AIR){
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.get());
@@ -827,7 +935,6 @@ public class GuiManager2 implements IGUI {
                 OpenTownRankManager(player, rankID);
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get());
             }
-            event.setCancelled(true);
         });
 
         GuiItem _roleRankIcon = ItemBuilder.from(roleRankIcon).asGuiItem(event -> {
@@ -1985,7 +2092,8 @@ public class GuiManager2 implements IGUI {
                             return;
                         }
                         Player otherTownLeaderOnline = otherTownLeader.getPlayer();
-
+                        if(otherTownLeaderOnline == null)
+                            return;
                         TownRelationConfirmStorage.addInvitation(otherTown.getLeaderID(), playerTown.getID(), relation);
 
                         otherTownLeaderOnline.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(playerTown.getName(),relation.getColor() + relation.getName()));
@@ -2020,17 +2128,26 @@ public class GuiManager2 implements IGUI {
                     event.setCancelled(true);
 
                     if(relation.getNeedsConfirmationToEnd()){ //Can only be better relations
-                        player.sendMessage(getTANString() + "Sent to the leader of the other town");
 
-                        Player otherTownLeader = Bukkit.getPlayer(UUID.fromString(otherTown.getLeaderID()));
+                        OfflinePlayer otherTownLeader = Bukkit.getOfflinePlayer(UUID.fromString(otherTown.getLeaderID()));
+
+                        if (!otherTownLeader.isOnline()) {
+                            player.sendMessage(getTANString() + Lang.LEADER_NOT_ONLINE.get());
+                            return;
+                        }
+                        Player otherTownLeaderOnline = otherTownLeader.getPlayer();
+                        if(otherTownLeaderOnline == null)
+                            return;
+
+                        player.sendMessage(getTANString() + "Sent to the leader of the other town");
 
                         TownRelationConfirmStorage.addInvitation(otherTown.getLeaderID(), playerTown.getID(), null);
 
-                        otherTownLeader.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(playerTown.getName(),"neutral"));
-                        ChatUtils.sendClickableCommand(otherTownLeader,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + playerTown.getID());
+                        otherTownLeaderOnline.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(playerTown.getName(),"neutral"));
+                        ChatUtils.sendClickableCommand(otherTownLeaderOnline,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + playerTown.getID());
                         player.closeInventory();
                     }
-                    else{ //Can only be the worst relations
+                    else{ //Can only be worst relations
                         playerTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getName(),"neutral"),
                                 BAD);
                         otherTown.broadCastMessageWithSound(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(playerTown.getName(),"neutral"),
@@ -2245,7 +2362,7 @@ public class GuiManager2 implements IGUI {
         for (PropertyData townProperty : townData.getPropertyDataList()){
 
 
-            ItemStack property = HeadUtils.makeSkull(townProperty.getID(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzhkYTZmY2M1Y2YzMWM2ZjcyYTAzNGI2MjBhODM3ZjlkMWM5ZWVkMzY3MTE4MmI2OTQ4OTY4N2FkYmNkOGZiIn19fQ==");
+            ItemStack property = HeadUtils.makeSkull(townProperty.getTotalID(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzhkYTZmY2M1Y2YzMWM2ZjcyYTAzNGI2MjBhODM3ZjlkMWM5ZWVkMzY3MTE4MmI2OTQ4OTY4N2FkYmNkOGZiIn19fQ==");
 
             GuiItem _property = ItemBuilder.from(property).asGuiItem(event -> {
                 event.setCancelled(true);
@@ -2511,6 +2628,9 @@ public class GuiManager2 implements IGUI {
                         return;
                     }
                     Player townLeader = Bukkit.getPlayer(UUID.fromString(townData.getLeaderID()));
+
+                    if(townLeader == null)
+                        return;
 
                     RegionInviteDataStorage.addInvitation(townData.getLeaderID(), regionData.getID());
 

@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.tan.TownsAndNations.DataClass.PropertyData;
 import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.TownRank;
@@ -86,7 +87,13 @@ public class ChatListener implements Listener {
                 break;
             case CHANGE_REGION_DESCRIPTION:
                 ChangeRegionDescription(player, chatData, message);
-                break;    
+                break;
+            case CHANGE_PROPERTY_NAME:
+                ChangePropertyName(player,chatData, message);
+                break;
+            case CHANGE_PROPERTY_DESCRIPTION:
+                ChangePropertyDesc(player,chatData,message);
+                break;
         }
     }
 
@@ -254,6 +261,48 @@ public class ChatListener implements Listener {
         } else {
             return null;
         }
+    }
+
+    private void ChangePropertyName(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String message) {
+
+        String id = chatData.getData().get(PROPERTY_ID);
+
+        String[] ids = id.split("_");
+        String townID = ids[0];
+        String propertyID = ids[1];
+        PropertyData propertyData = TownDataStorage.get(townID).getProperty(propertyID);
+
+
+        int maxSize = ConfigUtil.getCustomConfig("config.yml").getInt("PropertyNameSize");
+
+        if(message.length() > maxSize){
+            player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
+            return;
+        }
+
+        propertyData.setName(message);
+        player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
+
+    }
+
+    private void ChangePropertyDesc(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String message) {
+
+        String id = chatData.getData().get(PROPERTY_ID);
+        String[] ids = id.split("_");
+        String townID = ids[0];
+        String propertyID = ids[1];
+        PropertyData propertyData = TownDataStorage.get(townID).getProperty(propertyID);
+
+        int maxSize = ConfigUtil.getCustomConfig("config.yml").getInt("PropertyDescSize");
+
+        if(message.length() > maxSize){
+            player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
+            return;
+        }
+
+        propertyData.setDescription(message);
+        player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
+
     }
 
 }

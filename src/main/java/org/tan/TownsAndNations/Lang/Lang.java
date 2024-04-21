@@ -501,11 +501,25 @@ public enum Lang {
     POSITION_NEED_TO_BE_IN_PLAYER_TOWN,
     GUI_PLAYER_NEW_PROPERTY,
     GUI_PROPERTY_DESCRIPTION,
+    GUI_PROPERTY_STRUCTURE_OWNER,
     GUI_PROPERTY_OWNER,
     GUI_PROPERTY_FOR_SALE,
     GUI_PROPERTY_RENTED_BY,
     GUI_PROPERTY_FOR_RENT,
+    GUI_PROPERTY_NOT_FOR_RENT,
     GUI_PROPERTY_NOT_FOR_SALE,
+    CLICK_TO_OPEN_PROPERTY_MENU,
+    GUI_PROPERTY_CHANGE_NAME,
+    GUI_PROPERTY_CHANGE_NAME_DESC1,
+    GUI_PROPERTY_CHANGE_DESCRIPTION,
+    GUI_PROPERTY_CHANGE_DESCRIPTION_DESC1,
+    SELL_PROPERTY,
+    RENT_PROPERTY,
+    GUI_BUYING_PRICE,
+    GUI_RENTING_PRICE,
+    GUI_LEFT_CLICK_TO_SWITCH_SALE,
+    GUI_RIGHT_CLICK_TO_CHANGE_PRICE,
+
     ;
 
 
@@ -546,7 +560,7 @@ public enum Lang {
         if (translation != null) {
             return ChatColor.translateAlternateColorCodes('§', translation);
         }
-        return null;
+        return "Message not found for " + this.name() + " in this language file.";
     }
 
     public String get(Object... placeholders) {
@@ -558,7 +572,8 @@ public enum Lang {
 
                 translation = translation.replace("{" + i + "}",val);
             }
+            return translation;
         }
-        return translation;
+        return "Message not found for " + this.name() + " in this language file.";
     }
 }

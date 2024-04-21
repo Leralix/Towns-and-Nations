@@ -474,11 +474,27 @@ language:
 
   #Other GUI
   GUI_PROPERTY_DESCRIPTION: "§7§o\"{0}\""
+  GUI_PROPERTY_STRUCTURE_OWNER: "§fCity: §9{0}"
   GUI_PROPERTY_OWNER: "§fOwner: §3{0}"
   GUI_PROPERTY_FOR_SALE: "§fThis property is for sale for §6{0}✦"
   GUI_PROPERTY_RENTED_BY: "§fRented by: §3{0} for §6{1}✦"
   GUI_PROPERTY_FOR_RENT: "§fThis property is for rent for §6{0}✦"
-  GUI_PROPERTY_NOT_FOR_SALE: "§fThis property is not for sale"
+  GUI_PROPERTY_NOT_FOR_RENT: "§fThis property§c is not§f for rent"
+  GUI_PROPERTY_NOT_FOR_SALE: "§fThis property§c is not§f for sale"
+  CLICK_TO_OPEN_PROPERTY_MENU: "§fLeft click to manage property"
+
+  GUI_PROPERTY_CHANGE_NAME: "§aChange property name"
+  GUI_PROPERTY_CHANGE_NAME_DESC1: "§fCurrent name: §9{0}"
+  GUI_PROPERTY_CHANGE_DESCRIPTION: "§aChange property description"
+  GUI_PROPERTY_CHANGE_DESCRIPTION_DESC1: "§fCurrent description: §7§o\"{0}\""
+
+  GUI_BUYING_PRICE: "§fBuying price is set to §6{0}✦"
+  GUI_RENTING_PRICE: "§fRenting price is set to §6{0}✦/day"
+  GUI_LEFT_CLICK_TO_SWITCH_SALE: "§fClick to allow rent"
+  GUI_LEFT_CLICK_TO_SWITCH_RENT: "§fClick to allow sale"
+
+  SELL_PROPERTY: "§aSell property"
+  RENT_PROPERTY: "§aRent property"
 
   #Transaction history
   TRANSACTION_HISTORY: "§f[{0}] - §3{1} §f: {2}✦"
