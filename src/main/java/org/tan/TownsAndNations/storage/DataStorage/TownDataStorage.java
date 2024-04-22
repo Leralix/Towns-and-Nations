@@ -35,8 +35,6 @@ public class TownDataStorage {
         TownData newTown = new TownData(townId, townName, playerID);
 
         if(isSqlEnable()){
-            saveTownDataToDatabase(newTown);
-            addTownLevelToDatabase(townId, new TownLevel());
             createChunkPermissions(townId);
             addPlayerToTownDatabase(townId, playerID);
         }
@@ -45,31 +43,6 @@ public class TownDataStorage {
             saveStats();
         }
         return newTown;
-    }
-
-    private static void saveTownDataToDatabase(TownData newTown) {
-
-        String sql = "INSERT INTO tan_town_data (town_key, name, uuid_leader," +
-                " townDefaultRank, Description, DateCreated, townIconMaterialCode, isRecruiting," +
-                "balance,taxRate,color)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, newTown.getID());
-            ps.setString(2, newTown.getName());
-            ps.setString(3, newTown.getLeaderID());
-            ps.setString(4, newTown.getTownDefaultRankName());
-            ps.setString(5, newTown.getDescription());
-            ps.setString(6, newTown.getDateCreated());
-            ps.setString(7, newTown.getTownIconMaterialCode());
-            ps.setBoolean(8, newTown.isRecruiting());
-            ps.setInt(9, newTown.getBalance());
-            ps.setInt(10, newTown.getChunkColor());
-            ps.setInt(11, newTown.getFlatTax());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     public static void addPlayerToTownDatabase(String townId, String playerUUID) {
@@ -329,86 +302,11 @@ public class TownDataStorage {
         }
     }
 
-    public static void updateTownData(TownData townData) {
-        if (isSqlEnable() && townData != null) {
-            String sql = "UPDATE tan_town_data SET name = ?, uuid_leader = ?, townDefaultRank = ?, " +
-                    "Description = ?, DateCreated = ?, townIconMaterialCode = ?, isRecruiting = ?, " +
-                    "Balance = ?, taxRate = ?, color = ? " +
-                    "WHERE town_key = ?";
 
-            try (PreparedStatement ps = connection.prepareStatement(sql)) {
-                ps.setString(1, townData.getName());
-                ps.setString(2, townData.getLeaderID());
-                ps.setString(3, townData.getTownDefaultRankName());
-                ps.setString(4, townData.getDescription());
-                ps.setString(5, townData.getDateCreated());
-                ps.setString(6, townData.getTownIconMaterialCode());
-                ps.setBoolean(7, townData.isRecruiting());
-                ps.setInt(8, townData.getBalance());
-                ps.setInt(9, townData.getFlatTax());
-                ps.setInt(10, townData.getChunkColor());
-                ps.setString(11, townData.getID());
-                ps.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
-    public static void addTownLevelToDatabase(String townId, TownLevel townLevel) {
-        if (townLevel == null) return;
-        String sql = "INSERT INTO tan_town_upgrades (rank_key, level, chunk_level, player_cap_level) VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, townId);
-            ps.setInt(2, townLevel.getTownLevel());
-            ps.setInt(3, townLevel.getChunkCapLevel());
-            ps.setInt(4, townLevel.getPlayerCapLevel());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public static TownLevel getTownUpgradeFromDatabase(String town_id) {
-        TownLevel townUpgrade = null;
-        String sql = "SELECT * FROM tan_town_upgrades WHERE rank_key = ?";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, town_id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    townUpgrade = new TownLevel(
-                            rs.getInt("level"),
-                            rs.getInt("chunk_level"),
-                            rs.getInt("player_cap_level"),
-                            rs.getBoolean("town_spawn_bought")
-                    );
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return townUpgrade;
-    }
-
-    public static void updateTownUpgradeFromDatabase(String town_id, TownLevel townUpgrade) {
-        if (townUpgrade == null) return;
-
-        String sql = "UPDATE tan_town_upgrades SET level = ?, chunk_level = ?, " +
-                "player_cap_level = ? WHERE rank_key = ?";
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, townUpgrade.getTownLevel());
-            ps.setInt(2, townUpgrade.getChunkCapLevel());
-            ps.setInt(3, townUpgrade.getPlayerCapLevel());
-            ps.setString(5, town_id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void removeTownUpgradeFromDB(String townID) {
         String sql = "DELETE FROM tan_town_upgrades WHERE rank_key = ? ";

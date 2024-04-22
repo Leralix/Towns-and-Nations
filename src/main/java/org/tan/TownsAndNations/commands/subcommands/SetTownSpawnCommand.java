@@ -22,7 +22,7 @@ public class SetTownSpawnCommand extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.CLAIM_CHUNK_COMMAND_DESC.get();
+        return Lang.SET_SPAWN_COMMAND_DESC.get();
     }
     public int getArguments(){ return 1;}
 

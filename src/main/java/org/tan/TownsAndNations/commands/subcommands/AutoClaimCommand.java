@@ -37,7 +37,7 @@ public class AutoClaimCommand extends SubCommand {
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
             suggestions.add("town");
-            suggestions.add("regionx");
+            suggestions.add("region");
             suggestions.add("stop");
         }
         return suggestions;
@@ -53,26 +53,20 @@ public class AutoClaimCommand extends SubCommand {
 
         String message = args[1];
 
-        switch (message){
-
-            case "town":
+        switch (message) {
+            case "town" -> {
                 PlayerAutoClaimStorage.addPlayer(player, ChunkType.TOWN);
                 player.sendMessage(getTANString() + Lang.AUTO_CLAIM_ON_FOR.get(ChunkType.TOWN.getName()));
-                break;
-
-            case "region":
+            }
+            case "region" -> {
                 PlayerAutoClaimStorage.addPlayer(player, ChunkType.REGION);
                 player.sendMessage(getTANString() + Lang.AUTO_CLAIM_ON_FOR.get(ChunkType.REGION.getName()));
-                break;
-
-            case "stop":
+            }
+            case "stop" -> {
                 PlayerAutoClaimStorage.removePlayer(player);
                 player.sendMessage(getTANString() + Lang.AUTO_CLAIM_OFF.get());
-                break;
-
-            default:
-                player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
-                break;
+            }
+            default -> player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
     }
 }

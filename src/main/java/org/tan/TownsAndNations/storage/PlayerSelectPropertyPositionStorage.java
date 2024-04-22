@@ -14,9 +14,14 @@ import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.Vector3D;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.GUI.GuiManager2;
+import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
+import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.utils.ChatUtils;
+import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.SoundUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,32 +66,33 @@ public class PlayerSelectPropertyPositionStorage {
         if(vList.isEmpty()){
             Vector3D vector3D = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
             vList.add(vector3D);
-            player.sendMessage("First point set in " + vector3D);
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_FIRST_POINT_SET.get(vector3D));
         }
         else if(vList.size() == 1) {
             Vector3D vector3D = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
             vList.add(vector3D);
-            player.sendMessage("Second point set in " + vector3D);
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SECOND_POINT_SET.get(vector3D));
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_PLACE_SIGN.get());
         }
         else if(vList.size() == 2){
-
-            if(!isNearProperty(block.getLocation(),vList.get(0),vList.get(1), 5)){
-                player.sendMessage("Sign is too far from property");
+            int margin = ConfigUtil.getCustomConfig("config.yml").getInt("maxPropertyMargin",3);
+            if(!isNearProperty(block.getLocation(),vList.get(0),vList.get(1), margin)){
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_PROPERTY_SIGN_TOO_FAR.get(margin));
                 return;
             }
 
-            player.sendMessage("Property register");
+            SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_PROPERTY_CREATED.get());
             removePlayer(playerID);
 
             PropertyData property = playerTown.registerNewProperty(vList.get(0),vList.get(1),playerData);
             GuiManager2.OpenPropertyManagerMenu(player,property);
-            Location signLocation = createPropertyPanel(player, property, block);
-            property.setSignLocation(signLocation);
+            createPropertyPanel(player, property, block);
             property.updateSign();
         }
     }
 
-    public static Location createPropertyPanel(Player player, PropertyData propertyData, Block block) {
+    public static void createPropertyPanel(Player player, PropertyData propertyData, Block block) {
         Location signLocation = block.getLocation().add(0, 1, 0);
         if (signLocation.getBlock().getType() == Material.AIR) {
             signLocation.getBlock().setType(Material.OAK_SIGN);
@@ -101,8 +107,7 @@ public class PlayerSelectPropertyPositionStorage {
 
             signLocation.getBlock().setMetadata("propertySign", new FixedMetadataValue(TownsAndNations.getPlugin(), propertyData.getTotalID()));
         }
-        return signLocation;
-
+        propertyData.setSignLocation(signLocation);
     }
 
     private static BlockFace getDirection(Location blockLocation, Location playerLocation) {

@@ -64,7 +64,7 @@ public class SetMoney extends SubCommand {
 
             target.setBalance(amount);
             player.sendMessage("Set Balance of "+ target.getName() + " to " + amount);
-            FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_GIVE_MONEY.get(player.getName(),amount,target.getName()));
+            FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_SET_MONEY.get(player.getName(),amount,target.getName()));
 
         } else {
             player.sendMessage("Too many arguments");

@@ -29,7 +29,16 @@ public class PropertySignListener implements Listener {
                         String[] ids = customData.split("_");
                         PropertyData propertyData = TownDataStorage.get(ids[0]).getProperty(ids[1]);
                         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                            GuiManager2.OpenPropertyManagerMenu(player, propertyData);
+                            if(propertyData.getOwnerID().equals(player.getUniqueId().toString()) ||
+                                    propertyData.getRentingPlayerID().equals(player.getUniqueId().toString())){
+                                GuiManager2.OpenPropertyManagerMenu(player, propertyData);
+                            } else {
+                                if(propertyData.isForRent() || propertyData.isForSale()){
+                                    GuiManager2.OpenPropertyBuyMenu(player, propertyData);
+                                }
+                                else
+                                    player.sendMessage("This property is not for sale or rent");
+                            }
                         } else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                             propertyData.showBox(player);
                         }

@@ -180,6 +180,19 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _newProperty = ItemBuilder.from(newProperty).asGuiItem(event -> {
             event.setCancelled(true);
+
+            TownData playerTown = playerData.getTown();
+
+            if(!playerData.hasPermission(CREATE_PROPERTY)){
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                return;
+            }
+
+            if(playerTown.getPropertyDataMap().size() >= playerTown.getTownLevel().getPropertyCap()){
+                player.sendMessage(getTANString() + Lang.PLAYER_PROPERTY_CAP_REACHED.get());
+                return;
+            }
+
             if(PlayerSelectPropertyPositionStorage.contains(playerData)){
                 player.sendMessage(getTANString() + Lang.PLAYER_ALREADY_IN_SCOPE.get());
                 return;
@@ -195,7 +208,7 @@ public class GuiManager2 implements IGUI {
         gui.open(player);
     }
     public static void OpenPropertyManagerMenu(Player player, PropertyData propertyData){
-        int nRows = 6;
+        int nRows = 4;
 
         Gui gui = IGUI.createChestGui("Property " + propertyData.getName(),nRows);
 
@@ -229,6 +242,7 @@ public class GuiManager2 implements IGUI {
         );
 
 
+
         ItemStack isForRent;
         if(propertyData.isForRent()){
             isForRent = HeadUtils.makeSkull(Lang.RENT_PROPERTY.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2UyYTUzMGY0MjcyNmZhN2EzMWVmYWI4ZTQzZGFkZWUxODg5MzdjZjgyNGFmODhlYThlNGM5M2E0OWM1NzI5NCJ9fX0=");
@@ -248,6 +262,9 @@ public class GuiManager2 implements IGUI {
         HeadUtils.setLore(drawnBox,
                 Lang.GUI_PROPERTY_DRAWN_BOX_DESC1.get()
         );
+
+        ItemStack deleteProperty = HeadUtils.getCustomLoreItem(Material.BARRIER,Lang.GUI_PROPERTY_DELETE_PROPERTY.get());
+        HeadUtils.setLore(deleteProperty, Lang.GUI_PROPERTY_DELETE_PROPERTY_DESC1.get());
 
 
         GuiItem _propertyIcon = ItemBuilder.from(propertyIcon).asGuiItem(event -> event.setCancelled(true));
@@ -317,6 +334,13 @@ public class GuiManager2 implements IGUI {
             }
         });
 
+        GuiItem _deleteProperty = ItemBuilder.from(deleteProperty).asGuiItem(event -> {
+            event.setCancelled(true);
+            propertyData.delete();
+            OpenPlayerPropertiesMenu(player);
+        });
+
+
         gui.setItem(1,5,_propertyIcon);
         gui.setItem(2,2,_changeName);
         gui.setItem(2,3,_changeDescription);
@@ -325,13 +349,79 @@ public class GuiManager2 implements IGUI {
 
         gui.setItem(2,7,_isForSale);
         gui.setItem(2,8,_isForRent);
+        gui.setItem(3,8,_deleteProperty);
+
 
 
         gui.setItem(nRows,1, IGUI.CreateBackArrow(player,p -> OpenPlayerPropertiesMenu(player)));
 
         gui.open(player);
     }
+    public static void OpenPropertyBuyMenu(Player player, PropertyData propertyData) {
+        Gui gui = IGUI.createChestGui("Property " + propertyData.getName(),3);
 
+        ItemStack propertyIcon = propertyData.getIcon();
+
+
+        if(propertyData.isForRent()){
+            ItemStack confirmRent = HeadUtils.makeSkull(Lang.CONFIRM_RENT.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0=");
+            ItemStack cancelRent = HeadUtils.makeSkull(Lang.CANCEL_RENT.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0=");
+
+            HeadUtils.setLore(confirmRent,
+                    Lang.CONFIRM_RENT_DESC1.get(),
+                    Lang.CONFIRM_RENT_DESC2.get(propertyData.getRentPrice())
+            );
+
+            GuiItem _confirmRent = ItemBuilder.from(confirmRent).asGuiItem(event -> {
+                event.setCancelled(true);
+                propertyData.allocateRenter(player);
+            });
+            GuiItem _cancelRent = ItemBuilder.from(cancelRent).asGuiItem(event -> {
+                event.setCancelled(true);
+                player.closeInventory();
+            });
+
+            gui.setItem(2,3, _confirmRent);
+            gui.setItem(2,7, _cancelRent);
+
+        }
+        else if (propertyData.isForSale()){
+            ItemStack confirmRent = HeadUtils.makeSkull(Lang.CONFIRM_SALE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0=");
+            ItemStack cancelRent = HeadUtils.makeSkull(Lang.CANCEL_SALE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0=");
+
+            HeadUtils.setLore(confirmRent,
+                    Lang.CONFIRM_SALE_DESC1.get(),
+                    Lang.CONFIRM_SALE_DESC2.get(propertyData.getBuyingPrice())
+            );
+
+            GuiItem _confirmRent = ItemBuilder.from(confirmRent).asGuiItem(event -> {
+                event.setCancelled(true);
+                propertyData.bought(player);
+            }
+            );
+            GuiItem _cancelRent = ItemBuilder.from(cancelRent).asGuiItem(event -> {
+                event.setCancelled(true);
+                player.closeInventory();
+            });
+
+
+            gui.setItem(2,3, _confirmRent);
+            gui.setItem(2,7, _cancelRent);
+        }
+
+
+
+        GuiItem _propertyIcon = ItemBuilder.from(propertyIcon).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+
+        gui.setItem(1,5, _propertyIcon);
+
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> player.closeInventory()));
+
+        gui.open(player);
+
+    }
     public static void OpenTownMenuNoTown(Player player){
 
         Gui gui = IGUI.createChestGui("Town",3);
@@ -3010,4 +3100,6 @@ public class GuiManager2 implements IGUI {
             OpenTownChunkPlayerSettings(player);
         });
     }
+
+
 }

@@ -14,42 +14,32 @@ import static org.tan.TownsAndNations.storage.Legacy.UpgradeStorage.loadIntoMap;
 
 public class TownLevel {
     private int townLevel;
-    private int playerCapLevel;
-    private int chunkCapUpgrade;
-
 
     Map<String,Integer> levelMap;
 
     //for json
     public TownLevel(){
-        //Will soon be deleted
-        this.townLevel = 1;
-        this.playerCapLevel = 0;
-        this.chunkCapUpgrade = 0;
-        //Will soon be deleted
+
 
         levelMap = new HashMap<>();
         levelMap.put("townLevel",1);
         loadIntoMap(levelMap);
         levelMap.put("CITY_HALL",1);
     }
-    //for SQL, need to be updated to the new system
-    public TownLevel(int townLevel, int playerCapLevel, int chunkCapUpgrade, boolean townSpawnUnlocked){
-        this.townLevel = townLevel;
-        this.playerCapLevel = playerCapLevel;
-        this.chunkCapUpgrade = chunkCapUpgrade;
-    }
 
     public int getUpgradeLevel(String upgradeName){
+        /*
         if (upgradeName == null) {
             return 0; // Retourne 0 si upgradeName est null
         }
+        */
+
         if(upgradeName.equals("TOWN_LEVEL")){
             return this.townLevel;
         }
         Integer level = levelMap.get(upgradeName);
         if (level == null) {
-            levelMap.put(upgradeName, 0); // Initialise la valeur si elle n'existe pas
+            levelMap.put(upgradeName, 0);
             return 0;
         }
         return level; // Retourne la valeur existante
@@ -63,22 +53,20 @@ public class TownLevel {
         this.townLevel = this.townLevel + 1;
     }
 
-    //Will soon be deleted
-    public int getPlayerCapLevel() {
-        return this.playerCapLevel;
-    }
-    //Will soon be deleted
-    public int getChunkCapLevel() {
-        return this.chunkCapUpgrade;
-    }
-
     public int getPlayerCap() {
         return getTotalBenefits().get("PLAYER_CAP");
     }
-
     public int getChunkCap() {
         return getTotalBenefits().get("CHUNK_CAP");
     }
+    public int getPropertyCap() {
+        Integer propertyCap = getTotalBenefits().get("PROPERTY_CAP");
+        if (propertyCap == null) {
+            return 0;
+        }
+        return propertyCap;
+    }
+
 
     public boolean isTownSpawnUnlocked() {
         return getTotalBenefits().get("TOWN_SPAWN_UNLOCKED") > 1;

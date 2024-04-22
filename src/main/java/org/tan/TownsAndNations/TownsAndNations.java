@@ -24,6 +24,7 @@ import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.storage.DataStorage.*;
 import org.tan.TownsAndNations.storage.Legacy.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.Legacy.UpgradeStorage;
+import org.tan.TownsAndNations.utils.BlockUtil;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.DropChances;
 import org.tan.TownsAndNations.utils.UpdateUtil;
@@ -108,8 +109,12 @@ public final class TownsAndNations extends JavaPlugin {
             RegionDataStorage.loadStats();
             PlayerDataStorage.loadStats();
             TownDataStorage.loadStats();
-            ClaimedChunkStorage.loadStats(); // Used for v0.5.4 -> v0.6.0 update
+            ClaimedChunkStorage.loadStats(); // Used for v0.5.4 -> v0.6.0 update DELETE LATER
             NewClaimedChunkStorage.loadStats();
+
+            logger.info("[TaN] -Loading blocks data");
+            BlockUtil.setSignData();
+
         }
 
         UpdateUtil.update();

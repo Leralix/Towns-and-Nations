@@ -35,7 +35,7 @@ public class GuiUtil {
                 DynamicLang.get(townUpgrade.getName()));
 
         lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC1.get(townUpgradeLevel + "/" + townUpgrade.getMaxLevel()));
-        lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC2.get(townUpgradeLevel+1, townUpgrade.getCost(townUpgradeLevel)));
+        lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC2.get(townUpgradeLevel + 1 , townUpgrade.getCost(townUpgradeLevel)));
 
         //Pre-requisite
         if(townUpgrade.isPrerequisitesNotEmpty()){

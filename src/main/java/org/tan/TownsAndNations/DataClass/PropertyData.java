@@ -1,9 +1,7 @@
 package org.tan.TownsAndNations.DataClass;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
+import com.comphenix.protocol.wrappers.BlockPosition;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -12,11 +10,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
+import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
-import org.tan.TownsAndNations.utils.EconomyUtil;
-import org.tan.TownsAndNations.utils.HeadUtils;
-import org.tan.TownsAndNations.utils.ParticleUtils;
+import org.tan.TownsAndNations.utils.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +87,9 @@ public class PropertyData {
     public String getOwnerID() {
         return owningPlayerID;
     }
+    public String getRentingPlayerID() {
+        return rentingPlayerID;
+    }
     public PlayerData getOwner() {
         return PlayerDataStorage.get(owningPlayerID);
     }
@@ -104,6 +104,7 @@ public class PropertyData {
     public void allocateRenter(Player renter){
         rentingPlayerID = renter.getUniqueId().toString();
         payRent();
+        this.isForRent = false;
     }
     public boolean isRented(){
         return rentingPlayerID != null;
@@ -238,20 +239,20 @@ public class PropertyData {
 
         String[] lines = new String[4];
 
-        lines[0] = this.getName();
-        lines[1] = PlayerDataStorage.get(this.getOwnerID()).getName();
+        lines[0] = Lang.SIGN_NAME.get(this.getName());
+        lines[1] = Lang.SIGN_PLAYER.get(PlayerDataStorage.get(this.getOwnerID()).getName());
 
         if(this.isForSale) {
-            lines[2] = "En vente";
-            lines[3] = "Prix: " + this.getBuyingPrice();
+            lines[2] = Lang.SIGN_FOR_SALE.get();
+            lines[3] = Lang.SIGN_SALE_PRICE.get(this.getBuyingPrice());
         } else if(this.isForRent) {
-            lines[2] = "En location";
-            lines[3] = "Prix: " + this.getRentPrice();
+            lines[2] = Lang.SIGN_RENT.get();
+            lines[3] = Lang.SIGN_RENT_PRICE.get(this.getRentPrice());
         } else if(this.isRented()) {
-            lines[2] = "Loué par " + this.getRenter().getName().substring(0, Math.min(this.getRenter().getName().length(), 7));
-            lines[3] = "Prix: " + this.getRentPrice();
+            lines[2] = Lang.SIGN_RENTED_BY.get(this.getRenter().getName().substring(0, Math.min(this.getRenter().getName().length(), 7)));
+            lines[3] = Lang.SIGN_RENT_PRICE.get(this.getRentPrice());
         } else {
-            lines[2] = "Non à vendre";
+            lines[2] = Lang.SIGN_NOT_FOR_SALE.get();
             lines[3] = "";
         }
 
@@ -266,5 +267,36 @@ public class PropertyData {
     public void setSalePrice(int i) {
         this.salePrice = i;
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), this::updateSign);
+    }
+
+    public Block getSignLocation() {
+        return Bukkit.getWorld(signLocation.getWorldID()).getBlockAt(this.signLocation.getX(), this.signLocation.getY(), this.signLocation.getZ());
+    }
+
+    public void delete() {
+        PlayerData Owner = PlayerDataStorage.get(owningPlayerID);
+        TownData town = TownDataStorage.get(Owner.getTownId());
+        town.removeProperty(this);
+        Owner.removeProperty(this);
+        removeSign();
+
+        Player player = Bukkit.getPlayer(UUID.fromString(owningPlayerID));
+        if (player != null){
+            player.sendMessage(ChatUtils.getTANString() + Lang.PROPERTY_DELETED.get());
+            SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
+        }
+
+
+    }
+
+    private void removeSign() {
+        World world = Bukkit.getWorld(signLocation.getWorldID());
+        Block signBlock = world.getBlockAt(signLocation.getX(), signLocation.getY(), signLocation.getZ());
+        signBlock.setType(org.bukkit.Material.AIR);
+        world.spawnParticle(Particle.BUBBLE_POP, signBlock.getLocation(), 5);
+    }
+
+    public void bought(Player player) {
+
     }
 }

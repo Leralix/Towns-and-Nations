@@ -46,6 +46,8 @@ townMaxRank: 9
 #The cost of creating a Region
 regionCost: 7500
 
+#Define the maximum range at wich a player can be from a town spawn to be considered in the town
+maxPropertyMargin: 3
 
 #The max size of names
 TownNameSize: 45

@@ -163,4 +163,7 @@ public class PlayerData {
         return propertyDataList;
     }
 
+    public void removeProperty(PropertyData propertyData) {
+        this.propertiesListID.remove(propertyData.getTotalID());
+    }
 }

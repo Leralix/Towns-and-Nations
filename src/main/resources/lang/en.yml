@@ -17,7 +17,8 @@ language:
   PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION: "§cOnly the town leader can perform this action"
   CHUNK_NOT_CLAIMED: "§cThis chunk is not claimed"
   CANT_KICK_REGIONAL_CAPITAL: "§cYou can't remove the regional capital out of the region"
-  PLAYER_ALREADY_IN_SCOPE: "§cYou are already registered in the scope"
+  PLAYER_ALREADY_IN_SCOPE: "§cYou are already registered"
+  PLAYER_PROPERTY_CAP_REACHED: "§cYou reached the maximum number of properties for your town. Upgrade your town to get more"
   POSITION_NEED_TO_BE_IN_CLAIMED_CHUNK: "§cYou need to be in a claimed chunk to set up a property position"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cYou need to be in your town to set up a property position"
   
@@ -147,7 +148,14 @@ language:
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Write the name of the town in the chat."
   PLAYER_SEND_MONEY_TO_TOWN: "§fYou sent §6{0}✦§f to the town"
   PLAYER_SEND_MONEY_TO_REGION: "§fYou sent §6{0}✦§f to the region"
-  PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY: "Right clic 2 blocs to create your private property"
+  PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY: "Right click 2 blocs to create your private property"
+  PLAYER_FIRST_POINT_SET: "First point set in §9{0}"
+  PLAYER_SECOND_POINT_SET: "Second point set in §9{0}"
+  PLAYER_PLACE_SIGN: "Right click to place a sign on top of a block"
+  PLAYER_PROPERTY_SIGN_TOO_FAR: "§cThe sign is too far from the property. It needs to be at maximum {0} blocks away"
+  PLAYER_PROPERTY_CREATED: "Property created"
+  PROPERTY_DELETED: "Property successfully deleted"
+
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "Set the town spawn"
   SPAWN_SET_SUCCESS: "Town spawn set"
@@ -182,7 +190,6 @@ language:
   GUI_TOWN_ICON: "§aTown"
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§fJoin or create your own town"
   GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fYour current town: §e{0}"
-  GUI_PROFILE_ICON: "§aProfile"
   GUI_PROFILE_ICON_DESC1: "§fLook at your stats"
   #Player
   GUI_PLAYER_PROFILE: "§a{0}" #//Player's name
@@ -334,8 +341,6 @@ language:
   GUI_TOWN_MEMBERS_ROLE_NAME_DESC1: "§fDrag an item into this slot to change the rank icon"
   GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED: "§cYou need to have an item in your cursor in order to change the icon"
   GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS: "§aSuccessfully changed the icon"
-  GUI_TOWN_MEMBERS_CHANGE_ROLE_PRIORITY: "§aChange the rank priority"
-  GUI_TOWN_MEMBERS_CHANGE_ROLE_PRIORITY_DESC1: "§fLeft click to change priority"
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO: "§aList of players with this role:"
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1: "§fLeft click to add a player to this rank"
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC: "§f{0}"
@@ -404,8 +409,6 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1: "§fCurrent name: §9{0}"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC2: "§fLeft click to change the name"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3: "§fCost: §6{0}✦"
-  GUI_TOWN_SETTINGS_WRITE_NEW_NAME_IN_CHAT: "§fWrite the new name in the chat"
-  GUI_TOWN_SETTINGS_WRITE_NEW_NAME_IN_CHAT_SUCCESS: "§aName successfully changed"
   GUI_TOWN_SETTINGS_QUIT_REGION: "§aQuit the region"
   GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION: "§cQuit the region §9{0}"
   GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_NOREGION: "§fYou do not belong to a region or you are the regional capital"
@@ -438,7 +441,6 @@ language:
   GUI_REGION_CHANGE_CAPITAL: "§aChange regional capital"
   GUI_REGION_CHANGE_CAPITAL_DESC1: "§fCurrent capital: §3{0}"
   GUI_REGION_CHANGE_CAPITAL_DESC2: "§fLeft click to change the regional capital"
-  GUI_REGION_CHANGE_CAPITAL_NOT_CAPITAL: "§cYou are not the leader of the regional capital"
   GUI_REGION_DELETE: "§aDelete the region"
   GUI_REGION_DELETE_DESC1: "§cDelete the region §9{0}"
   GUI_REGION_DELETE_DESC2: "§fLeft click to delete the region"
@@ -476,12 +478,14 @@ language:
   GUI_PROPERTY_DESCRIPTION: "§7§o\"{0}\""
   GUI_PROPERTY_STRUCTURE_OWNER: "§fCity: §9{0}"
   GUI_PROPERTY_OWNER: "§fOwner: §3{0}"
-  GUI_PROPERTY_FOR_SALE: "§fThis property is for sale for §6{0}✦"
+  GUI_PROPERTY_FOR_SALE: "§fThis property is for sale"
   GUI_PROPERTY_RENTED_BY: "§fRented by: §3{0} for §6{1}✦"
-  GUI_PROPERTY_FOR_RENT: "§fThis property is for rent for §6{0}✦"
+  GUI_PROPERTY_FOR_RENT: "§fThis property is for rent"
   GUI_PROPERTY_NOT_FOR_RENT: "§fThis property§c is not§f for rent"
   GUI_PROPERTY_NOT_FOR_SALE: "§fThis property§c is not§f for sale"
   CLICK_TO_OPEN_PROPERTY_MENU: "§fLeft click to manage property"
+  GUI_PROPERTY_DELETE_PROPERTY: "§aDelete property"
+  GUI_PROPERTY_DELETE_PROPERTY_DESC1: "§f Click to delete the property"
 
 
   GUI_PROPERTY_CHANGE_NAME: "§aChange property name"
@@ -491,11 +495,23 @@ language:
 
   GUI_BUYING_PRICE: "§fBuying price is set to §6{0}✦"
   GUI_RENTING_PRICE: "§fRenting price is set to §6{0}✦/day"
-  GUI_LEFT_CLICK_TO_SWITCH_SALE: "§fLeft click to allow rent"
-  GUI_LEFT_CLICK_TO_SWITCH_RENT: "§fLeft click to allow sale"
+  GUI_LEFT_CLICK_TO_SWITCH_SALE: "§f- Left click to allow rent"
+  GUI_LEFT_CLICK_TO_SWITCH_RENT: "§f- Left click to allow sale"
   GUI_PROPERTY_DRAWN_BOX: "§aShow property boundaries"
   GUI_PROPERTY_DRAWN_BOX_DESC1: "§fLeft click to show the property boundaries"
-  GUI_RIGHT_CLICK_TO_CHANGE_PRICE: "§fRight click to change the price"
+  GUI_RIGHT_CLICK_TO_CHANGE_PRICE: "§f- Right click to change the price"
+
+  CONFIRM_RENT: "§aRent property"
+  CONFIRM_RENT_DESC1: "§fClick to rent the property"
+  CONFIRM_RENT_DESC2: "§fRenting price: §6{0}✦/day"
+  CANCEL_RENT: "§cCancel rent"
+
+  CONFIRM_SALE: "§aSell property"
+  CONFIRM_SALE_DESC1: "§fClick to rent the property"
+  CONFIRM_SALE_DESC2: "§fPrice: §6{0}✦"
+  CANCEL_SALE: "§cCancel sale"
+
+
 
   SELL_PROPERTY: "§aSell property"
   RENT_PROPERTY: "§aRent property"
@@ -560,6 +576,17 @@ language:
   HISTORY_ADMIN_SUMMON_RARE_ITEM: "[ADMIN] {0} has summon {1}x {2}"
   HISTORY_SUDO_MODE: "{0} has been added to sudo mode by {1}"
   HISTORY_SUDO_MODE_REMOVED: "{0} has been removed from sudo mode by {1}"
+
+  #Signs
+  SIGN_NAME: "{0}"
+  SIGN_PLAYER: "{0}"
+  SIGN_FOR_SALE: "For sale"
+  SIGN_SALE_PRICE: "Price: {0}✦"
+  SIGN_RENT: "For rent"
+  SIGN_RENT_PRICE: "Rent: {0}✦/day"
+  SIGN_RENTED_BY: "Rented by: {0}"
+  SIGN_NOT_FOR_SALE: "Not for sale"
+
 
   #PlaceHolderAPI
   NO_TOWN: "No town"

@@ -169,7 +169,7 @@ public class TownUtil {
 
     public static void renameTown(Player player, int townCost, String newName, TownData town) {
         PlayerChatListenerStorage.removePlayer(player);
-        player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_NAME_IN_CHAT_SUCCESS.get(town.getName(),newName));
+        player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get(town.getName(),newName));
         if(!isSqlEnable())
             town.getMiscellaneousHistory().add(Lang.GUI_TOWN_SETTINGS_NEW_TOWN_NAME_HISTORY.get(town.getName() ,newName),townCost);
         town.removeToBalance(townCost);
@@ -193,8 +193,6 @@ public class TownUtil {
 
         townData.removeToBalance(townLevel.getMoneyRequiredTownLevel());
         townLevel.TownLevelUp();
-        if(isSqlEnable())
-            TownDataStorage.updateTownUpgradeFromDatabase(townData.getID(),townLevel);
         SoundUtil.playSound(player,LEVEL_UP);
         player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());
     }
@@ -222,8 +220,6 @@ public class TownUtil {
 
         townData.removeToBalance(townUpgrade.getCost(townUpgradeLevel));
         townLevel.levelUp(townUpgrade);
-        if(isSqlEnable())
-            TownDataStorage.updateTownUpgradeFromDatabase(townData.getID(),townLevel);
         SoundUtil.playSound(player,LEVEL_UP);
         player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());
     }

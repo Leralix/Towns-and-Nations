@@ -8,6 +8,7 @@
 # benefits: the benefits of the upgrade
 # - PLAYER_CAP: maximum number of player per town
 # - CHUNK_CAP: maximum number of claimable chunk per town
+# - PROPERTY_CAP: maximum number of property per town
 # - UNLOCK_TOWN_SPAWN: unlock /tan spawn
 # - UNLOCK_MOB_BAN: unlock the mob ban tab
 # - If you need other upgrades ask on my discord
@@ -39,7 +40,7 @@ upgrades:
 
   ADMINISTRATION:
     col: 1
-    row: 3
+    row: 4
     itemCode: 'WRITABLE_BOOK'
     maxLevel: 10
     cost: [ '500', '590', '760', '1010', '1340', '1750', '2240', '2800', '3200', '3800', '4500' ]
@@ -73,6 +74,18 @@ upgrades:
       ADMINISTRATION: 2
     benefits:
       UNLOCK_TOWN_SPAWN: +1
+
+  NOTARY_HOUSE:
+    col: 3
+    row: 1
+    itemCode: 'PAPER'
+    maxLevel: 5
+    cost: [ '500', '800', '1200' ] // 3 last levels will all cost 1200
+    prerequisites:
+      TOWN_LEVEL: 2
+      ADMINISTRATION: 1
+    benefits:
+      PROPERTY_CAP: +3
 
   GUARDS:
     col: 4

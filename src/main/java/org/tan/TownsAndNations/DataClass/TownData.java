@@ -132,8 +132,6 @@ public class TownData {
     }
     public void setName(String townName) {
         this.TownName = townName;
-        if(isSqlEnable())
-            TownDataStorage.updateTownData(this);
     }
     public TownRank addRank(String rankName){
         int nextRankId = 0;
@@ -169,24 +167,18 @@ public class TownData {
     }
     public void setLeaderID(String leaderID) {
         this.UuidLeader = leaderID;
-        if(isSqlEnable())
-            TownDataStorage.updateTownData(this);
     }
     public String getDescription() {
         return this.Description;
     }
     public void setDescription(String description) {
         this.Description = description;
-        if(isSqlEnable())
-            TownDataStorage.updateTownData(this);
     }
     public String getDateCreated() {
         return this.DateCreated;
     }
     public void setDateCreated(String dateCreated) {
         this.DateCreated = dateCreated;
-        if(isSqlEnable())
-            TownDataStorage.updateTownData(this);
     }
     public ItemStack getTownIconItemStack() {
         if(this.townIconMaterialCode == null){
@@ -200,8 +192,6 @@ public class TownData {
     }
     public void setTownIconMaterialCode(Material material) {
         this.townIconMaterialCode = material.name();
-        if(isSqlEnable())
-            TownDataStorage.updateTownData(this);
     }
     public void addPlayer(PlayerData playerData){
         townPlayerListId.add(playerData.getID());
@@ -266,10 +256,7 @@ public class TownData {
         return false;
     }
     public TownLevel getTownLevel() {
-        if(isSqlEnable())
-            return TownDataStorage.getTownUpgradeFromDatabase(TownId);
-        else
-            return townLevel;
+        return townLevel;
     }
     public int getBalance(){
         if (this.balance == null)
@@ -279,8 +266,6 @@ public class TownData {
 
     public void addToBalance(int balance){
         this.balance += balance;
-        if(isSqlEnable())
-            TownDataStorage.updateTownData(this);
     }
 
     public void removeToBalance(int balance){
@@ -330,8 +315,6 @@ public class TownData {
 
     public void setTownDefaultRank(String newRank){
         this.townDefaultRank = newRank;
-        if(isSqlEnable())
-            TownDataStorage.updateTownData(this);
     }
     public String getTownDefaultRankName(){
         return this.townDefaultRank;
@@ -362,13 +345,9 @@ public class TownData {
     }
 
     public boolean canAddMorePlayer(){
-        if(isSqlEnable())
-            return TownDataStorage.getPlayersInTown(getID()).size() < TownDataStorage.getTownUpgradeFromDatabase(getID()).getPlayerCap();
         return this.townPlayerListId.size() < this.townLevel.getPlayerCap();
     }
     public boolean canClaimMoreChunk(){
-        if(isSqlEnable())
-            return this.getNumberOfClaimedChunk() < TownDataStorage.getTownUpgradeFromDatabase(getID()).getChunkCap();
         return this.getNumberOfClaimedChunk() < this.townLevel.getChunkCap();
     }
 
@@ -435,14 +414,10 @@ public class TownData {
 
     public void setRecruiting(boolean isRecruiting) {
         this.isRecruiting = isRecruiting;
-        if(isSqlEnable())
-            TownDataStorage.updateTownData(this);
     }
 
     public void swapRecruiting() {
         this.isRecruiting = !this.isRecruiting;
-        if(isSqlEnable())
-            TownDataStorage.updateTownData(this);
     }
 
     public boolean isPlayerInTown(Player player){
@@ -461,8 +436,6 @@ public class TownData {
 
     public void addToFlatTax(int flatTax) {
         this.flatTax += flatTax;
-        if(isSqlEnable())
-            TownDataStorage.updateTownData(this);
     }
 
     public int getNumberOfClaimedChunk() {
@@ -511,8 +484,6 @@ public class TownData {
 
     public void setChunkColor(int color) {
         this.chunkColor = color;
-        if(isSqlEnable())
-            TownDataStorage.updateTownData(this);
     }
 
     public void setSpawn(Location location){
@@ -558,8 +529,6 @@ public class TownData {
     }
     public void setRegion(String regionID){
         this.regionID = regionID;
-        if(isSqlEnable())
-            TownDataStorage.updateTownData(this);
     }
 
 
@@ -686,5 +655,9 @@ public class TownData {
         }
         return false;
 
+    }
+
+    public void removeProperty(PropertyData propertyData) {
+        this.propertyDataMap.remove(propertyData.getPropertyID());
     }
 }
