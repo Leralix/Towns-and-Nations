@@ -59,6 +59,13 @@ public class CommandManager implements CommandExecutor, TabExecutor, TabComplete
                 }
                 p.sendMessage("--------------------------------");
             }
+            if(args.length == 0){
+                p.sendMessage("--------------------------------");
+                for (int i = 0; i < getSubCommands().size(); i++){
+                    p.sendMessage(getSubCommands().get(i).getSyntax() + " - " + getSubCommands().get(i).getDescription());
+                }
+                p.sendMessage("--------------------------------");
+            }
 
         }
         return true;
