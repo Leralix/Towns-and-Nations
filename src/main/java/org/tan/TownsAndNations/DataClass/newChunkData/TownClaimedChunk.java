@@ -32,20 +32,29 @@ public class TownClaimedChunk extends ClaimedChunk2{
     public TownClaimedChunk(int x, int z, String worldUUID, String ownerID) {
         super(x,z,worldUUID,ownerID);
     }
-
     public String getName(){
         return TownDataStorage.get(getOwnerID()).getName();
     }
-        @Override
+    public TownData getTown(){
+        return TownDataStorage.get(ownerID);
+    }
+
+    @Override
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
         TownData playerTown = TownDataStorage.get(player);
         PlayerData playerData = PlayerDataStorage.get(player);
 
         //Location is in a property and players owns or rent it
-        PropertyData property = playerTown.getProperty(location);
+        TownData ownerTown = getTown();
+        PropertyData property = ownerTown.getProperty(location);
         if(property != null){
-            if(property.getOwnerID().equals(playerData.getID()))
+            if(property.isAllowed(playerData)){
                 return true;
+            }
+            else {
+                player.sendMessage(property.getDenyMessage());
+                return false;
+            }
         }
 
         //Chunk is claimed yet player have no town
@@ -77,9 +86,6 @@ public class TownClaimedChunk extends ClaimedChunk2{
         return false;
     }
 
-    public TownData getTown(){
-        return TownDataStorage.get(ownerID);
-    }
 
     public void unclaimChunk(Player player, Chunk chunk){
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());

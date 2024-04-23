@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.BlastFurnace;
 import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
 import org.bukkit.block.Smoker;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.*;
@@ -34,7 +35,17 @@ public class ChunkListener implements Listener {
     public void OnBlockBreak(BlockBreakEvent event){
 
         Player player = event.getPlayer();
-        Location loc = event.getBlock().getLocation();
+        Block breakedBlock = event.getBlock();
+        Location loc = breakedBlock.getLocation();
+
+        //Check if the block is a property sign
+        if (breakedBlock.getType() == Material.OAK_SIGN) {
+            Sign sign = (Sign) breakedBlock.getState();
+            if (sign.hasMetadata("propertySign")) {
+                event.setCancelled(true);
+                return;
+            }
+        }
 
         if(!CanPlayerDoAction(loc, player,BREAK))
             event.setCancelled(true);
@@ -73,7 +84,14 @@ public class ChunkListener implements Listener {
 
         Location loc = block.getLocation();
 
-
+        //Check if the block is a property sign
+        if (block.getType() == Material.OAK_SIGN) {
+            Sign sign = (Sign) block.getState();
+            if (sign.hasMetadata("propertySign")) {
+                event.setCancelled(true);
+                return;
+            }
+        }
 
         if(Tag.BUTTONS.isTagged(materialType) ||
                 materialBlock == Material.LEVER){

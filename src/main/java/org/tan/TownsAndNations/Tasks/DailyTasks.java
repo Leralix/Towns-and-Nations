@@ -4,10 +4,7 @@ package org.tan.TownsAndNations.Tasks;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.tan.TownsAndNations.DataClass.PlayerData;
-import org.tan.TownsAndNations.DataClass.RegionData;
-import org.tan.TownsAndNations.DataClass.TownData;
-import org.tan.TownsAndNations.DataClass.TownRank;
+import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
@@ -39,16 +36,29 @@ public class DailyTasks {
                     ChunkPayment();
                     SalaryPayment();
 
+                    PropertyRent();
+
                     ClearOldTaxes();
                     ArchiveUtil.archiveFiles();
+
                     if(ConfigUtil.getCustomConfig("config.yml").getBoolean("showTaxInConsole",true))
-                    {
                         TownsAndNations.getPluginLogger().info(Lang.DAILY_TAXES_SUCCESS_LOG.get());
-                    }
+
                 }
             }
         }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L); // Exécute toutes les 1200 ticks (1 minute en temps Minecraft)
     }
+
+    private static void PropertyRent() {
+        for (TownData town : TownDataStorage.getTownMap().values()) {
+            for (PropertyData property : town.getPropertyDataList()) {
+                if (property.isRented()) {
+                    property.payRent();
+                }
+            }
+        }
+    }
+
     public static void RegionTaxPayment() {
 
         for(RegionData regionData: RegionDataStorage.getAllRegions()){

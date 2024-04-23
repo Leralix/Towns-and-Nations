@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.MetadataValue;
 import org.tan.TownsAndNations.DataClass.PropertyData;
 import org.tan.TownsAndNations.GUI.GuiManager2;
+import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 public class PropertySignListener implements Listener {
@@ -29,15 +30,17 @@ public class PropertySignListener implements Listener {
                         String[] ids = customData.split("_");
                         PropertyData propertyData = TownDataStorage.get(ids[0]).getProperty(ids[1]);
                         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                            if(propertyData.getOwnerID().equals(player.getUniqueId().toString()) ||
-                                    propertyData.getRentingPlayerID().equals(player.getUniqueId().toString())){
+                            if(propertyData.getOwnerID().equals(player.getUniqueId().toString())){
                                 GuiManager2.OpenPropertyManagerMenu(player, propertyData);
-                            } else {
+                            }else if(propertyData.isRented() && propertyData.getRentingPlayerID().equals(player.getUniqueId().toString())){
+                                GuiManager2.OpenPropertyManagerRentMenu(player, propertyData);
+                            }
+                            else {
                                 if(propertyData.isForRent() || propertyData.isForSale()){
                                     GuiManager2.OpenPropertyBuyMenu(player, propertyData);
                                 }
                                 else
-                                    player.sendMessage("This property is not for sale or rent");
+                                    player.sendMessage(Lang.PROPERTY_NOT_FOR_SALE_OR_RENT.get());
                             }
                         } else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                             propertyData.showBox(player);

@@ -207,6 +207,44 @@ public class GuiManager2 implements IGUI {
 
         gui.open(player);
     }
+    public static void OpenPropertyManagerRentMenu(Player player, PropertyData propertyData) {
+        int nRows = 4;
+
+        Gui gui = IGUI.createChestGui("Property " + propertyData.getName(), nRows);
+
+        ItemStack propertyIcon = propertyData.getIcon();
+
+        ItemStack stopRentingProperty = HeadUtils.getCustomLoreItem(Material.BARRIER, Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY.get());
+        HeadUtils.setLore(stopRentingProperty, Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY_DESC1.get());
+
+
+        GuiItem _propertyIcon = ItemBuilder.from(propertyIcon).asGuiItem(event -> event.setCancelled(true));
+
+        GuiItem _stopRentingProperty = ItemBuilder.from(stopRentingProperty).asGuiItem(event -> {
+            event.setCancelled(true);
+            propertyData.expelRenter();
+
+            player.sendMessage(getTANString() + Lang.PROPERTY_RENTER_LEAVE_RENTER_SIDE.get(propertyData.getName()));
+            SoundUtil.playSound(player,MINOR_GOOD);
+
+            Player owner = propertyData.getOwnerPlayer();
+            if(owner != null){
+                owner.sendMessage(getTANString() + Lang.PROPERTY_RENTER_LEAVE_OWNER_SIDE.get(player.getName(), propertyData.getName()));
+                SoundUtil.playSound(owner,MINOR_BAD);
+            }
+
+            player.closeInventory();
+        });
+
+        gui.setItem(1,5,_propertyIcon);
+
+        gui.setItem(2,7,_stopRentingProperty);
+
+        gui.setItem(nRows,1, IGUI.CreateBackArrow(player,p -> player.closeInventory()));
+
+
+        gui.open(player);
+    }
     public static void OpenPropertyManagerMenu(Player player, PropertyData propertyData){
         int nRows = 4;
 
@@ -312,6 +350,10 @@ public class GuiManager2 implements IGUI {
                 PlayerChatListenerStorage.addPlayer(CHANGE_PROPERTY_SALE_PRICE,player,data);
             }
             else if (event.getClick() == ClickType.LEFT){
+                if(propertyData.isRented()){
+                    player.sendMessage(getTANString() + Lang.PROPERTY_ALREADY_RENTED.get());
+                    return;
+                }
                 propertyData.swapIsForSale();
                 OpenPropertyManagerMenu(player,propertyData);
             }
@@ -329,6 +371,10 @@ public class GuiManager2 implements IGUI {
                 PlayerChatListenerStorage.addPlayer(CHANGE_PROPERTY_RENT_PRICE,player,data);
             }
             else if (event.getClick() == ClickType.LEFT){
+                if(propertyData.isRented()){
+                    player.sendMessage(getTANString() + Lang.PROPERTY_ALREADY_RENTED.get());
+                    return;
+                }
                 propertyData.swapIsRent();
                 OpenPropertyManagerMenu(player,propertyData);
             }
@@ -339,6 +385,28 @@ public class GuiManager2 implements IGUI {
             propertyData.delete();
             OpenPlayerPropertiesMenu(player);
         });
+
+        if(propertyData.isRented()){
+            ItemStack renterIcon = HeadUtils.getPlayerHead(Lang.GUI_PROPERTY_RENTED_BY.get(propertyData.getRenter().getName()),propertyData.getOfflineRenter());
+            HeadUtils.setLore(renterIcon,Lang.GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER.get());
+            GuiItem _renter = ItemBuilder.from(renterIcon).asGuiItem(event -> {
+                event.setCancelled(true);
+
+                Player renter = propertyData.getRenterPlayer();
+                propertyData.expelRenter();
+
+                player.sendMessage(getTANString() + Lang.PROPERTY_RENTER_EXPELLED_OWNER_SIDE.get());
+                SoundUtil.playSound(player,MINOR_GOOD);
+
+                if(renter != null){
+                    renter.sendMessage(getTANString() + Lang.PROPERTY_RENTER_EXPELLED_RENTER_SIDE.get(propertyData.getName()));
+                    SoundUtil.playSound(renter,MINOR_BAD);
+                }
+
+                OpenPropertyManagerMenu(player,propertyData);
+            });
+            gui.setItem(3,7,_renter);
+        }
 
 
         gui.setItem(1,5,_propertyIcon);
@@ -375,6 +443,7 @@ public class GuiManager2 implements IGUI {
             GuiItem _confirmRent = ItemBuilder.from(confirmRent).asGuiItem(event -> {
                 event.setCancelled(true);
                 propertyData.allocateRenter(player);
+                OpenPropertyManagerRentMenu(player, propertyData);
             });
             GuiItem _cancelRent = ItemBuilder.from(cancelRent).asGuiItem(event -> {
                 event.setCancelled(true);
@@ -396,7 +465,7 @@ public class GuiManager2 implements IGUI {
 
             GuiItem _confirmRent = ItemBuilder.from(confirmRent).asGuiItem(event -> {
                 event.setCancelled(true);
-                propertyData.bought(player);
+                propertyData.buyProperty(player);
             }
             );
             GuiItem _cancelRent = ItemBuilder.from(cancelRent).asGuiItem(event -> {
