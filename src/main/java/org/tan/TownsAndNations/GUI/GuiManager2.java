@@ -97,7 +97,6 @@ public class GuiManager2 implements IGUI {
         });
         GuiItem Player = ItemBuilder.from(PlayerHead).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage(getTANString() + Lang.GUI_WARNING_STILL_IN_DEV.get());
             OpenPlayerProfileMenu(player);
         });
 
@@ -134,7 +133,7 @@ public class GuiManager2 implements IGUI {
 
         ItemStack playerHead = HeadUtils.getPlayerHead(Lang.GUI_YOUR_PROFILE.get(),player);
         ItemStack goldPurse = HeadUtils.getCustomLoreItem(Material.GOLD_NUGGET, Lang.GUI_YOUR_BALANCE.get(),Lang.GUI_YOUR_BALANCE_DESC1.get(EconomyUtil.getBalance(player)));
-        ItemStack properties = HeadUtils.getCustomLoreItem(Material.OAK_HANGING_SIGN, Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(),Lang.GUI_YOUR_BALANCE_DESC1.get(EconomyUtil.getBalance(player)));
+        ItemStack properties = HeadUtils.getCustomLoreItem(Material.OAK_HANGING_SIGN, Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(),Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get());
 
 
         GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> event.setCancelled(true));
@@ -185,6 +184,7 @@ public class GuiManager2 implements IGUI {
 
             if(!playerData.hasPermission(CREATE_PROPERTY)){
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                SoundUtil.playSound(player, NOT_ALLOWED);
                 return;
             }
 
@@ -222,7 +222,7 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _stopRentingProperty = ItemBuilder.from(stopRentingProperty).asGuiItem(event -> {
             event.setCancelled(true);
-            propertyData.expelRenter();
+            propertyData.expelRenter(true);
 
             player.sendMessage(getTANString() + Lang.PROPERTY_RENTER_LEAVE_RENTER_SIDE.get(propertyData.getName()));
             SoundUtil.playSound(player,MINOR_GOOD);
@@ -393,7 +393,7 @@ public class GuiManager2 implements IGUI {
                 event.setCancelled(true);
 
                 Player renter = propertyData.getRenterPlayer();
-                propertyData.expelRenter();
+                propertyData.expelRenter(false);
 
                 player.sendMessage(getTANString() + Lang.PROPERTY_RENTER_EXPELLED_OWNER_SIDE.get());
                 SoundUtil.playSound(player,MINOR_GOOD);
@@ -937,10 +937,12 @@ public class GuiManager2 implements IGUI {
 
                     if(!playerStat.hasPermission(TownRolePermission.INVITE_PLAYER)){
                         player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                        SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
                     if(!town.canAddMorePlayer()){
                         player.sendMessage(getTANString() + Lang.INVITATION_TOWN_FULL.get());
+                        SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
 
@@ -1303,6 +1305,7 @@ public class GuiManager2 implements IGUI {
         ItemStack manage_town_relation = HeadUtils.getCustomLoreItem(Material.FLOWER_POT, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION.get(),(townRank.hasPermission(townID,MANAGE_TOWN_RELATION)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
         ItemStack manage_mob_spawn = HeadUtils.getCustomLoreItem(Material.CREEPER_HEAD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_MOB_SPAWN.get(),(townRank.hasPermission(townID,MANAGE_MOB_SPAWN)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
         ItemStack create_property = HeadUtils.getCustomLoreItem(Material.OAK_HANGING_SIGN, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_PROPERTY.get(),(townRank.hasPermission(townID,CREATE_PROPERTY)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack manage_property = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_PROPERTY.get(),(townRank.hasPermission(townID,MANAGE_PROPERTY)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
 
         GuiItem _manage_taxes = ItemBuilder.from(manage_taxes).asGuiItem(event -> {
             townRank.switchPermission(town.getID(), MANAGE_TAXES);
@@ -1381,23 +1384,29 @@ public class GuiManager2 implements IGUI {
             OpenTownRankManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
+        GuiItem _manage_property = ItemBuilder.from(manage_property).asGuiItem(event -> {
+            townRank.switchPermission(town.getID(),MANAGE_PROPERTY);
+            OpenTownRankManagerPermissions(player, rankID);
+            event.setCancelled(true);
+        });
 
 
-        gui.setItem(1, _manage_taxes);
-        gui.setItem(2, _promote_rank_player);
-        gui.setItem(3, _derank_player);
-        gui.setItem(4, _claim_chunk);
-        gui.setItem(5, _unclaim_chunk);
-        gui.setItem(6, _upgrade_town);
-        gui.setItem(7, _invite_player);
-        gui.setItem(8, _kick_player);
-        gui.setItem(9, _create_rank);
-        gui.setItem(10, _delete_rank);
-        gui.setItem(11, _modify_rank);
-        gui.setItem(12, _manage_claim_settings);
-        gui.setItem(13, _manage_town_relation);
-        gui.setItem(14, _manage_mob_spawn);
-        gui.setItem(15, _create_property);
+        gui.addItem(_manage_taxes);
+        gui.addItem(_promote_rank_player);
+        gui.addItem(_derank_player);
+        gui.addItem(_claim_chunk);
+        gui.addItem( _unclaim_chunk);
+        gui.addItem(_upgrade_town);
+        gui.addItem(_invite_player);
+        gui.addItem(_kick_player);
+        gui.addItem(_create_rank);
+        gui.addItem(_delete_rank);
+        gui.addItem(_modify_rank);
+        gui.addItem(_manage_claim_settings);
+        gui.addItem(_manage_town_relation);
+        gui.addItem(_manage_mob_spawn);
+        gui.addItem(_create_property);
+        gui.addItem(_manage_property);
 
 
         gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownRankManager(player,rankID)));
@@ -2553,10 +2562,21 @@ public class GuiManager2 implements IGUI {
         for (PropertyData townProperty : townData.getPropertyDataList()){
 
 
-            ItemStack property = HeadUtils.makeSkull(townProperty.getTotalID(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzhkYTZmY2M1Y2YzMWM2ZjcyYTAzNGI2MjBhODM3ZjlkMWM5ZWVkMzY3MTE4MmI2OTQ4OTY4N2FkYmNkOGZiIn19fQ==");
+            ItemStack property = townProperty.getIcon();
 
             GuiItem _property = ItemBuilder.from(property).asGuiItem(event -> {
                 event.setCancelled(true);
+                if(!playerData.haveTown()){
+                    player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
+                    SoundUtil.playSound(player, NOT_ALLOWED);
+                    return;
+                }
+                if(!playerData.hasPermission(TownRolePermission.MANAGE_PROPERTY)){
+                    player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                    SoundUtil.playSound(player, NOT_ALLOWED);
+                    return;
+                }
+                OpenPropertyManagerMenu(player,townProperty);
             });
             gui.setItem(i,_property);
             i++;

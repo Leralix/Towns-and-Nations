@@ -20,6 +20,7 @@ import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.SoundUtil;
 
 import static org.tan.TownsAndNations.enums.SoundEnum.BAD;
+import static org.tan.TownsAndNations.enums.SoundEnum.NOT_ALLOWED;
 import static org.tan.TownsAndNations.enums.TownChunkPermission.ALLIANCE;
 import static org.tan.TownsAndNations.enums.TownChunkPermission.FOREIGN;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
@@ -96,6 +97,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
 
         if(!playerStat.hasPermission(TownRolePermission.UNCLAIM_CHUNK)){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+            SoundUtil.playSound(player, NOT_ALLOWED);
             return;
         }
 

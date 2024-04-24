@@ -658,6 +658,10 @@ public class TownData {
     }
 
     public void removeProperty(PropertyData propertyData) {
+        System.out.println("Removing property " + propertyData.getTotalID() + " from town " + this.getID());
+        for (String key : propertyDataMap.keySet()){
+            System.out.println("Property: " + key);
+        }
         this.propertyDataMap.remove(propertyData.getPropertyID());
     }
 }

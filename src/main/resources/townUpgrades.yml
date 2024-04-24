@@ -80,7 +80,7 @@ upgrades:
     row: 1
     itemCode: 'PAPER'
     maxLevel: 5
-    cost: [ '500', '800', '1200' ] // 3 last levels will all cost 1200
+    cost: [ '500', '800', '1200' ] # 3 last levels will all cost 1200
     prerequisites:
       TOWN_LEVEL: 2
       ADMINISTRATION: 1

@@ -277,10 +277,12 @@ public class PropertyData {
 
     public void delete() {
         PlayerData Owner = PlayerDataStorage.get(owningPlayerID);
-        TownData town = TownDataStorage.get(Owner.getTownId());
-        town.removeProperty(this);
-        Owner.removeProperty(this);
+        TownData town = TownDataStorage.get(getOwningStructureID());
+        expelRenter(false);
         removeSign();
+
+        Owner.removeProperty(this);
+        town.removeProperty(this);
 
         Player player = Bukkit.getPlayer(UUID.fromString(owningPlayerID));
         if (player != null){
@@ -320,9 +322,15 @@ public class PropertyData {
         EconomyUtil.removeFromBalance(player, salePrice);
         EconomyUtil.addFromBalance(exOwnerOffline, salePrice);
 
+        PlayerData exOwnerData = PlayerDataStorage.get(owningPlayerID);
+        PlayerData newOwnerData = PlayerDataStorage.get(player.getUniqueId().toString());
+
+        exOwnerData.removeProperty(this);
+        newOwnerData.addProperty(this);
 
 
         this.owningPlayerID = player.getUniqueId().toString();
+
         this.isForSale = false;
         updateSign();
     }
@@ -341,10 +349,14 @@ public class PropertyData {
 
     }
 
-    public void expelRenter() {
+    public void expelRenter(boolean rentBack) {
+        if(!isRented())
+            return;
         PlayerData renter = PlayerDataStorage.get(rentingPlayerID);
         renter.removeProperty(this);
         this.rentingPlayerID = null;
+        if(rentBack)
+            isForRent = true;
         updateSign();
     }
 

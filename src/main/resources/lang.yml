@@ -1,9 +1,9 @@
 #The language of the plugin
 ##Language available:
-## 100 % : en, fr, pl, no
+## 100 % : eng, fra, pl, nor
 ##
 ##Help us translate the plugin in your language! Reach us on our discord !
-language: en
+language: eng
 
 #Auto Update lang files
 #If false, the plugin will not update the lang files automatically at start. Watch out for new translations in the updates

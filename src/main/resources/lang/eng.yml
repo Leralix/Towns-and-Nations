@@ -21,7 +21,6 @@ language:
   PLAYER_PROPERTY_CAP_REACHED: "§cYou reached the maximum number of properties for your town. Upgrade your town to get more"
   POSITION_NEED_TO_BE_IN_CLAIMED_CHUNK: "§cYou need to be in a claimed chunk to set up a property position"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cYou need to be in your town to set up a property position"
-  
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 {1}: §f{2}"
@@ -155,7 +154,6 @@ language:
   PLAYER_PROPERTY_SIGN_TOO_FAR: "§cThe sign is too far from the property. It needs to be at maximum {0} blocks away"
   PLAYER_PROPERTY_CREATED: "Property created"
   PROPERTY_DELETED: "Property successfully deleted"
-
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "Set the town spawn"
   SPAWN_SET_SUCCESS: "Town spawn set"
@@ -201,6 +199,7 @@ language:
   GUI_YOUR_BALANCE: "§aYour Balance"
   GUI_YOUR_BALANCE_DESC1: "§fCurrent balance: §e{0}"
   GUI_PLAYER_MANAGE_PROPERTIES: "Manage properties"
+  GUI_PLAYER_MANAGE_PROPERTIES_DESC1: "§fCreate, delete or manage your properties"
   GUI_PLAYER_NEW_PROPERTY: "Create a new property"
   #Towns
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCreate a new town"
@@ -240,7 +239,7 @@ language:
   GUI_TOWN_SETTINGS_ICON: "§aSettings"
   GUI_TOWN_SETTINGS_ICON_DESC1: "§fGeneral town settings"
   GUI_TOWN_PROPERTIES_ICON: "§aTown properties"
-  GUI_TOWN_PROPERTIES_ICON_DESC1: "§aManage private properties"
+  GUI_TOWN_PROPERTIES_ICON_DESC1: "§fManage private properties"
   GUI_TREASURY_STORAGE: "§aTreasury"
   GUI_TREASURY_STORAGE_DESC1: "§fCurrent treasury: §6{0}✦"
   GUI_TREASURY_STORAGE_DESC2: "§fBalance evolution tomorrow: §a+{0}✦"
@@ -377,6 +376,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION: "§aManage diplomacy"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_MOB_SPAWN: "§aManage mob spawn"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_PROPERTY: "§aCreate property"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_PROPERTY: "§aManage properties"
   GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION: "§fThis rank§a have§f this permission"
   GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION: "§fThis rank §cdo not have§f this permission"
   GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER: "§cYou cannot set a salary lower than 0✦"
@@ -421,7 +421,6 @@ language:
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§fColor successfully changed"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cInvalid color format"
   GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY: "§fModify town color: §9{0}§f -> §9{1}"
-
   #Region GUI
   GUI_REGION_CREATE: "§aCreate a region"
   GUI_REGION_CREATE_DESC1: "§fCost: §6{0}✦"
@@ -453,7 +452,6 @@ language:
   GUI_KICK_TOWN_TO_REGION: "§aKick a town from the region"
   GUI_REGION_INVITE_TOWN_DESC1: "§fLeft click to invite this town to the region"
   GUI_REGION_KICK_TOWN_DESC1: "§fLeft click to kick this town from the region"
-
   ##Admin GUI
   ADMIN_GUI_REGION_DESC: "§fClick to manage regions"
   ADMIN_GUI_TOWN_DESC: "§fClick to manage towns"
@@ -473,7 +471,6 @@ language:
   ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1: "§fLeft click to kick the player from the town"
   ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2: "§cYou can't kick the leader of the town"
   ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS: "§3{0}§f has left his town §3{1}"
-
   #Other GUI
   GUI_PROPERTY_DESCRIPTION: "§7§o\"{0}\""
   GUI_PROPERTY_STRUCTURE_OWNER: "§fCity: §9{0}"
@@ -499,12 +496,10 @@ language:
   PROPERTY_RENTER_LEAVE_OWNER_SIDE: "§cThe renter {0} has left the property: §9{1}"
   PROPERTY_SOLD_EX_OWNER: "§fThe property §3{0}§f has been sold to §3{1}§f for §6{2}✦"
   PROPERTY_SOLD_NEW_OWNER: "§fYou have bought the property §3{0}§f for §6{1}✦"
-
   GUI_PROPERTY_CHANGE_NAME: "§aChange property name"
   GUI_PROPERTY_CHANGE_NAME_DESC1: "§fCurrent name: §9{0}"
   GUI_PROPERTY_CHANGE_DESCRIPTION: "§aChange property description"
   GUI_PROPERTY_CHANGE_DESCRIPTION_DESC1: "§fCurrent description: §7§o\"{0}\""
-
   GUI_BUYING_PRICE: "§fBuying price is set to §6{0}✦"
   GUI_RENTING_PRICE: "§fRenting price is set to §6{0}✦/day"
   GUI_LEFT_CLICK_TO_SWITCH_SALE: "§f- Left click to allow rent"
@@ -512,22 +507,16 @@ language:
   GUI_PROPERTY_DRAWN_BOX: "§aShow property boundaries"
   GUI_PROPERTY_DRAWN_BOX_DESC1: "§fLeft click to show the property boundaries"
   GUI_RIGHT_CLICK_TO_CHANGE_PRICE: "§f- Right click to change the price"
-
   CONFIRM_RENT: "§aRent property"
   CONFIRM_RENT_DESC1: "§fClick to rent the property"
   CONFIRM_RENT_DESC2: "§fRenting price: §6{0}✦/day"
   CANCEL_RENT: "§cCancel rent"
-
   CONFIRM_SALE: "§aSell property"
   CONFIRM_SALE_DESC1: "§fClick to rent the property"
   CONFIRM_SALE_DESC2: "§fPrice: §6{0}✦"
   CANCEL_SALE: "§cCancel sale"
-
-
-
   SELL_PROPERTY: "§aSell property"
   RENT_PROPERTY: "§aRent property"
-
   #Transaction history
   TRANSACTION_HISTORY: "§f[{0}] - §3{1} §f: {2}✦"
   DONATION_SINGLE_LINE_1: "§a+{0}✦"
@@ -540,7 +529,6 @@ language:
   MISCELLANEOUS_HISTORY_DESC1: "§f{0}"
   MISCELLANEOUS_HISTORY_DESC2: "§c-{0}♦"
   TOTAL_TAX_LINE: "§f[{0}] §6+{1}✦"
-
   #Chat Information
   CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cYou can't leave a town if you are the leader, you need to disband it or transfer ownership to someone else"
   NOT_TOWN_LEADER_ERROR: "§cYou need to be the leader of the town to execute this action"
@@ -588,7 +576,6 @@ language:
   HISTORY_ADMIN_SUMMON_RARE_ITEM: "[ADMIN] {0} has summon {1}x {2}"
   HISTORY_SUDO_MODE: "{0} has been added to sudo mode by {1}"
   HISTORY_SUDO_MODE_REMOVED: "{0} has been removed from sudo mode by {1}"
-
   #Signs
   SIGN_NAME: "{0}"
   SIGN_PLAYER: "{0}"
@@ -598,8 +585,6 @@ language:
   SIGN_RENT_PRICE: "Rent: {0}✦/day"
   SIGN_RENTED_BY: "Rented by:"
   SIGN_NOT_FOR_SALE: "Not for sale"
-
-
   #PlaceHolderAPI
   NO_TOWN: "No town"
   NO_REGION: "No region"

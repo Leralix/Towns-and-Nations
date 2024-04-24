@@ -17,5 +17,6 @@ public enum TownRolePermission {
     MANAGE_TOWN_RELATION,
     MANAGE_MOB_SPAWN,
     CREATE_PROPERTY,
+    MANAGE_PROPERTY,
 
 }
