@@ -24,7 +24,7 @@ public class SetMoney extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "Set a player's money balance.";
+        return Lang.ADMIN_SET_PLAYER_MONEY_BALANCE.get();
     }
 
     @Override

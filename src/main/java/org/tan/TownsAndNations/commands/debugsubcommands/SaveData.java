@@ -9,7 +9,7 @@ import org.tan.TownsAndNations.utils.ChatUtils;
 
 import java.util.List;
 
-public class SaveAll extends SubCommand {
+public class SaveData extends SubCommand {
 
     @Override
     public String getName() {
@@ -18,7 +18,7 @@ public class SaveAll extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "Saves all the stats";
+        return Lang.DEBUG_SAVE_ALL_DATA.get();
     }
 
     @Override

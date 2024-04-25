@@ -18,7 +18,7 @@ public class CreateBackup extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "Create a backup of the plugin data.";
+        return Lang.DEBUG_CREATE_BACKUP.get();
     }
 
     @Override

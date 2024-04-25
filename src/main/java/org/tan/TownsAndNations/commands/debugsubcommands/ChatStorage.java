@@ -2,6 +2,7 @@ package org.tan.TownsAndNations.commands.debugsubcommands;
 
 
 import org.bukkit.entity.Player;
+import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 
@@ -16,7 +17,7 @@ public class ChatStorage extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "Displays the contents of PlayerChatListenerStorage.";
+        return Lang.DEBUG_CHAT_STORAGE.get();
     }
 
     @Override

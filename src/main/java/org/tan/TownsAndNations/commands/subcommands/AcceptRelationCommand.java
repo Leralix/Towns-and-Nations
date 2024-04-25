@@ -31,7 +31,7 @@ public class AcceptRelationCommand extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/tan accept <town name>";
+        return  "/tan accept <town name>";
     }
     @Override
     public List<String> getTabCompleteSuggestions(Player player, String[] args){

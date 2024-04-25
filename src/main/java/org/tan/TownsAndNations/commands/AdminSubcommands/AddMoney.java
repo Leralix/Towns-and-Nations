@@ -23,7 +23,7 @@ public class AddMoney extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "Add money to a player.";
+        return Lang.ADMIN_ADD_MONEY_TO_PLAYER.get();
     }
 
     @Override

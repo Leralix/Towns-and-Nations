@@ -127,9 +127,26 @@ language:
   DEBUG_UNCLAIMED_CHUNK_SUCCESS: "Chunk unclaimed ! Current number of chunks §9{0} §f: §2{1}/{2}♦"
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cThis chunk is claimed by another town: §e{0}"
   UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§cThis chunk is claimed by another region: §e{0}"
+  #Map command
+  MAP_COMMAND_DESC: "Open the map of chunks around the player"
   #Debug commands
   COMMAND_GENERIC_SUCCESS: "§aCommand successfully executed"
   ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED: "§cThis chunk is not claimed"
+  ##Admin commands
+  ADMIN_ADD_MONEY_TO_PLAYER: "Add money to a player"
+  ADMIN_SET_PLAYER_MONEY_BALANCE: "Set player balance"
+  ADMIN_SPAWN_CUSTOM_VILLAGER: "Spawn a custom villager"
+  ADMIN_SPAWN_RARE_ITEM: "Spawn a rare item"
+  ADMIN_UNCLAIM_DESC: "Unclaim any chunk"
+  ADMIN_OPEN_GUI: "Open admin GUI"
+  ADMIN_SUDO_COMMAND: "Grant the player the ability to bypass chunk protection"
+  ##Debug commands
+  DEBUG_CHAT_STORAGE: "Displays the contents of PlayerChatListenerStorage"
+  DEBUG_SAVE_ALL_DATA: "Saves all the stats"
+  DEBUG_CREATE_BACKUP: "Create a backup of the plugin data."
+  DEBUG_GET_COLOR_CODE: "Get a sample of the plugin color code"
+  DEBUG_SKIP_DAY: "Collect every taxes and salary for a day"
+  DEBUG_PLAY_SOUND: "Play a sound used in the plugin"
   #SUDO command
   SUDO_PLAYER_ADDED: "§3{0}§f is now on sudo mode"
   SUDO_PLAYER_REMOVED: "§3{0}§f has been removed from sudo mode"
@@ -268,6 +285,7 @@ language:
   WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION: "§aWrite the amount of money to give"
   GUI_TREASURY_DONATION_HISTORY: "§aDonation history"
   GUI_TOWN_LEVEL_INFO: "{0}" #town's name
+  LEVEL_LOCKED: "§cLevel locked"
   GUI_TOWN_LEVEL_UP: "§aUpgrade town level"
   GUI_TOWN_LEVEL_UP_DESC1: "§fCurrent level is: §e{0}"
   GUI_TOWN_LEVEL_UP_DESC2: "§fLevel §a{0}§f upgrade cost: §e{1}✦"
@@ -589,4 +607,3 @@ language:
   NO_TOWN: "No town"
   NO_REGION: "No region"
   NO_KINGDOM: "No kingdom"
-

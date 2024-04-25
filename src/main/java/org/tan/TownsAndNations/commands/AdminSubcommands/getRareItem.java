@@ -19,7 +19,7 @@ public class getRareItem extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "get rare item that can be traded for money";
+        return Lang.ADMIN_SPAWN_RARE_ITEM.get();
     }
 
     @Override

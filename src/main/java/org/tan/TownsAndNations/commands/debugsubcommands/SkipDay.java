@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.commands.debugsubcommands;
 
 import org.bukkit.entity.Player;
+import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.utils.ArchiveUtil;
 
@@ -17,7 +18,7 @@ public class SkipDay extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "pay taxes, pay salaries, and collect chunk taxes for evey town";
+        return Lang.DEBUG_SKIP_DAY.get();
     }
 
     @Override

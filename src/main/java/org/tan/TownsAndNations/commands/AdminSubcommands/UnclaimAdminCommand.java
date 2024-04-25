@@ -23,7 +23,7 @@ public class UnclaimAdminCommand extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "unclaim any chunk";
+        return Lang.ADMIN_UNCLAIM_DESC.get();
     }
     public int getArguments(){ return 1;}
 

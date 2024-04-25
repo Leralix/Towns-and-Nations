@@ -25,21 +25,16 @@ public class MapCommand extends SubCommand {
     public String getName() {
         return "map";
     }
-
-
     @Override
     public String getDescription() {
-        return "";
+        return Lang.MAP_COMMAND_DESC.get();
     }
-
     public int getArguments() {
         return 1;
     }
-
-
     @Override
     public String getSyntax() {
-        return "/tan map ";
+        return "/tan map";
     }
 
     @Override

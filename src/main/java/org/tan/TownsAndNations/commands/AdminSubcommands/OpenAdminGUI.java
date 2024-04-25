@@ -21,7 +21,7 @@ public class OpenAdminGUI extends SubCommand  {
 
     @Override
     public String getDescription() {
-        return "Admin console";
+        return Lang.ADMIN_OPEN_GUI.get();
     }
     public int getArguments(){ return 2;}
 

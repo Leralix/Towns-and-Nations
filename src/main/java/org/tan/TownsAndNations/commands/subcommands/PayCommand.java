@@ -24,7 +24,7 @@ public class PayCommand extends SubCommand  {
 
     @Override
     public String getDescription() {
-        return "give money to another player";
+        return Lang.PAY_COMMAND_DESC.get();
     }
 
     @Override

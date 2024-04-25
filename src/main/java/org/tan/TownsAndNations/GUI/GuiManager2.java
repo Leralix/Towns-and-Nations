@@ -1759,7 +1759,7 @@ public class GuiManager2 implements IGUI {
         TownLevel townLevel = townData.getTownLevel();
 
         ItemStack whitePanel = HeadUtils.getCustomLoreItem(Material.WHITE_STAINED_GLASS_PANE,"");
-        ItemStack iron_bars = HeadUtils.getCustomLoreItem(Material.IRON_BARS,"Level locked");
+        ItemStack iron_bars = HeadUtils.getCustomLoreItem(Material.IRON_BARS,Lang.LEVEL_LOCKED.get());
 
         GuiItem _TownIcon = GuiUtil.townUpgradeResume(townData);
 

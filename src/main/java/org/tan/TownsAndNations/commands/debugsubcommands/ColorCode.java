@@ -2,6 +2,7 @@ package org.tan.TownsAndNations.commands.debugsubcommands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 
@@ -16,7 +17,7 @@ public class ColorCode extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "get the Tan variable color code";
+        return Lang.DEBUG_GET_COLOR_CODE.get();
     }
 
     @Override
@@ -36,6 +37,8 @@ public class ColorCode extends SubCommand {
         player.sendMessage(ChatColor.translateAlternateColorCodes('§', "Player:§3 test"));
         player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Money:§6 50✦"));
         player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Town:§9 my town"));
+        player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Region:§1 my region"));
+        player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Kingdom:§5 my kingdom"));
         player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Chunks:§2 47/50♦"));
         player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Number of Player:§9 6♣"));
         player.sendMessage(ChatColor.translateAlternateColorCodes('§',"other:§e status"));

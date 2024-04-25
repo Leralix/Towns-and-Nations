@@ -25,7 +25,7 @@ public class SudoPlayer extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "Grant the player the ability to bypass chunk protection.";
+        return Lang.ADMIN_SUDO_COMMAND.get();
     }
 
     @Override

@@ -23,7 +23,7 @@ public class SpawnVillager extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "Spawns a custom villager named Goldsmith.";
+        return Lang.ADMIN_SPAWN_CUSTOM_VILLAGER.get();
     }
 
     @Override

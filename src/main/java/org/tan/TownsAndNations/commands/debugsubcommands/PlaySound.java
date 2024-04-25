@@ -18,7 +18,7 @@ public class PlaySound extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "Play sounds used in the plugin.";
+        return "Play sounds used in the plugin";
     }
 
     @Override

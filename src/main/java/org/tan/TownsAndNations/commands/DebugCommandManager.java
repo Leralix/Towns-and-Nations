@@ -3,8 +3,6 @@ package org.tan.TownsAndNations.commands;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.tan.TownsAndNations.commands.AdminSubcommands.ChunkPay;
-import org.tan.TownsAndNations.commands.AdminSubcommands.SalaryPay;
 import org.tan.TownsAndNations.commands.debugsubcommands.*;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 
@@ -18,17 +16,12 @@ public class DebugCommandManager implements CommandExecutor, TabExecutor, TabCom
     public DebugCommandManager(){
 
         subCommands.add(new ChatStorage());
-        subCommands.add(new SaveAll());
+        subCommands.add(new SaveData());
         subCommands.add(new CreateBackup());
 
-        subCommands.add(new TownStat());
         subCommands.add(new ColorCode());
-        subCommands.add(new DropChance());
-        subCommands.add(new Update());
 
         subCommands.add(new SkipDay());
-        subCommands.add(new ChunkPay());
-        subCommands.add(new SalaryPay());
         subCommands.add(new PlaySound());
     }
 
