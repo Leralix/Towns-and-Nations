@@ -276,12 +276,12 @@ public class PropertyData {
     }
 
     public void delete() {
-        PlayerData Owner = PlayerDataStorage.get(owningPlayerID);
+        PlayerData owner = PlayerDataStorage.get(owningPlayerID);
         TownData town = TownDataStorage.get(getOwningStructureID());
         expelRenter(false);
         removeSign();
 
-        Owner.removeProperty(this);
+        owner.removeProperty(this);
         town.removeProperty(this);
 
         Player player = Bukkit.getPlayer(UUID.fromString(owningPlayerID));

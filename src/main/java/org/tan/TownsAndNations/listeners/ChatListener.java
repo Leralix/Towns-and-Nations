@@ -21,6 +21,7 @@ import org.tan.TownsAndNations.utils.*;
 import static org.tan.TownsAndNations.enums.MessageKey.*;
 import static org.tan.TownsAndNations.enums.SoundEnum.MINOR_LEVEL_UP;
 import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.removePlayer;
+import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
 import static org.tan.TownsAndNations.utils.EconomyUtil.removeFromBalance;
 import static org.tan.TownsAndNations.utils.StringUtil.hexColorToInt;
@@ -44,7 +45,7 @@ public class ChatListener implements Listener {
         event.setCancelled(true);
 
 
-        if (message.equalsIgnoreCase("cancel")) {
+        if (message.equalsIgnoreCase(Lang.CANCEL_WORD.get())) {
             player.sendMessage(ChatUtils.getTANString() + Lang.CANCELLED_ACTION.get());
             removePlayer(player);
             return;
@@ -99,6 +100,9 @@ public class ChatListener implements Listener {
                 break;
             case CHANGE_PROPERTY_RENT_PRICE:
                 changePropertyRentPrice(player, chatData, message);
+                break;
+            case CHANGE_TOWN_TAG:
+                changeTownTag(player, chatData, message);
                 break;
         }
     }
@@ -312,23 +316,51 @@ public class ChatListener implements Listener {
     }
 
     private void changePropertyRentPrice(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String message) {
+        removePlayer(player);
+
         String ID = chatData.getData().get(PROPERTY_ID);
         String[] parts = ID.split("_");
 
         PropertyData property = TownDataStorage.get(parts[0]).getProperty(parts[1]);
 
-        property.setRentPrice(Integer.parseInt(message));
+        int amount;
+        try{
+            amount = Integer.parseInt(message);
+
+        } catch (NumberFormatException e) {
+            player.sendMessage(getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
+            return;
+        }
+
+        property.setRentPrice(amount);
 
 
     }
 
     private void changePropertySalePrice(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String message) {
+        removePlayer(player);
+
         String ID = chatData.getData().get(PROPERTY_ID);
         String[] parts = ID.split("_");
 
         PropertyData property = TownDataStorage.get(parts[0]).getProperty(parts[1]);
-
         property.setSalePrice(Integer.parseInt(message));
+    }
+
+    private void changeTownTag(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String message) {
+        removePlayer(player);
+
+        TownData town = TownDataStorage.get(chatData.getData().get(TOWN_ID));
+        int size = ConfigUtil.getCustomConfig("config.yml").getInt("prefixSize");
+
+        if(message.length() != size){
+            player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_NOT_RIGHT_SIZE.get(size));
+            return;
+        }
+
+        town.setTownTag(message);
+        player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
+
 
     }
 

@@ -64,7 +64,7 @@ public final class TownsAndNations extends JavaPlugin {
 
         logger.info("[TaN] Loading Plugin");
 
-        checkForUpdate();
+        //checkForUpdate(); Removed after 0.7.0
 
         logger.info("[TaN] -Loading Lang");
 
@@ -142,9 +142,6 @@ public final class TownsAndNations extends JavaPlugin {
             new PlaceHolderAPI().register(); //
         }
 
-
-        UpdateUtil.updateDatabase();
-
         /*
         if (!Objects.equals(LOADED_VERSION, CURRENT_VERSION)){
             LOADED_VERSION = CURRENT_VERSION;
@@ -157,7 +154,7 @@ public final class TownsAndNations extends JavaPlugin {
 
         api = new tanAPI();
 
-        int pluginId = 20527; // <-- Replace with the id of your plugin!
+        int pluginId = 20527;
         Metrics metrics = new Metrics(this, pluginId);
         getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
     }

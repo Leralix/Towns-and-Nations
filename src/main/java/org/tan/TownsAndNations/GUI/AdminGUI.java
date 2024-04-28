@@ -154,12 +154,7 @@ public class AdminGUI implements IGUI{
 
         int i = 0;
         for (TownData townData : TownDataStorage.getTownMap().values()) {
-
-
             ItemStack townIcon = HeadUtils.getTownIcon(townData);
-
-
-
             HeadUtils.setLore(townIcon,
                     Lang.GUI_TOWN_INFO_DESC0.get(townData.getDescription()),
                     Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getLeaderID())).getName()),
@@ -326,8 +321,8 @@ public class AdminGUI implements IGUI{
 
         if(playerData.haveTown()){
             ItemStack removePlayerTown = HeadUtils.getCustomLoreItem(Material.SPRUCE_DOOR,
-                    Lang.ADMIN_GUI_TOWN_PLAYER_TOWN.get(),
-                    Lang.ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1.get(playerData.getTown().getName()),
+                    Lang.ADMIN_GUI_TOWN_PLAYER_TOWN.get(playerData.getTown().getName()),
+                    Lang.ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1.get(),
                     Lang.ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2.get());
 
 
@@ -346,6 +341,15 @@ public class AdminGUI implements IGUI{
             });
             gui.setItem(2,2, _removePlayerTown);
         }
+        else{
+            ItemStack addPlayerTown = HeadUtils.getCustomLoreItem(Material.SPRUCE_DOOR, "Add player to town", "Add player to town");
+
+            GuiItem _addPlayerTown = ItemBuilder.from(addPlayerTown).asGuiItem(event -> {
+                event.setCancelled(true);
+                SetPlayerTown(player);
+            });
+            gui.setItem(2,2, _addPlayerTown);
+        }
 
 
         GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> {
@@ -358,6 +362,40 @@ public class AdminGUI implements IGUI{
         gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenPlayerMenu(player)));
 
         gui.open(player);
+    }
+
+    private static void SetPlayerTown(Player player) {
+
+        Gui gui = IGUI.createChestGui("Town - Admin",6);
+
+        PlayerData playerData = PlayerDataStorage.get(player);
+        int i = 0;
+        for (TownData townData : TownDataStorage.getTownMap().values()) {
+            ItemStack townIcon = HeadUtils.getTownIcon(townData);
+            HeadUtils.setLore(townIcon,
+                    Lang.GUI_TOWN_INFO_DESC0.get(townData.getDescription()),
+                    Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getLeaderID())).getName()),
+                    Lang.GUI_TOWN_INFO_DESC2.get(townData.getPlayerList().size()),
+                    Lang.GUI_TOWN_INFO_DESC3.get(townData.getNumberOfClaimedChunk()),
+                    "",
+                    Lang.ADMIN_GUI_LEFT_CLICK_TO_MANAGE_TOWN.get()
+            );
+
+            GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> {
+                event.setCancelled(true);
+                townData.addPlayer(playerData);
+                OpenSpecificPlayerMenu(player, playerData);
+            });
+
+            gui.setItem(i, _townIteration);
+            i++;
+
+        }
+
+
+        gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
+        gui.open(player);
+
     }
 
 }

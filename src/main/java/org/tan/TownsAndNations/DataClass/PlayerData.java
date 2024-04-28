@@ -19,24 +19,14 @@ public class PlayerData {
     private Integer Balance;
     private String TownId;
     private Integer townRankID;
-    private String TownRank;
     private List<String> propertiesListID;
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
         this.PlayerName = player.getName();
         this.Balance = ConfigUtil.getCustomConfig("config.yml").getInt("StartingMoney");;
         this.TownId = null;
-        this.TownRank = null;
+        this.townRankID = null;
         this.propertiesListID = new ArrayList<>();
-    }
-
-    public PlayerData(String UUID, String playerName, int balance, String townId, String townRank, List<String> propertiesList) {
-        this.UUID = UUID;
-        this.PlayerName = playerName;
-        this.Balance = balance;
-        this.TownId = townId;
-        this.TownRank = townRank;
-        this.propertiesListID = propertiesList;
     }
 
     public String getID() {
@@ -52,8 +42,6 @@ public class PlayerData {
     }
 
     public int getBalance() {
-        if(Balance == null)
-            Balance = 0;
         return Balance;
     }
 
@@ -96,7 +84,6 @@ public class PlayerData {
 
     public void leaveTown(){
         this.TownId = null;
-        this.TownRank = null;
         this.townRankID = null;
         WarTaggedPlayer.removePlayer(this.getID());
     }
@@ -120,9 +107,6 @@ public class PlayerData {
     }
     public int getTownRankId(){
         return this.townRankID;
-    }
-    public String getOldRank(){
-        return this.TownRank;
     }
 
     public void joinTown(TownData townData){

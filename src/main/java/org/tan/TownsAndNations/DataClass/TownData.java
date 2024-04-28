@@ -41,6 +41,7 @@ public class TownData {
     private Integer balance;
     private Integer flatTax;
     private Integer chunkColor;
+    private String townTag;
 
     private ChunkHistory chunkHistory;
     private DonationHistory donationHistory;
@@ -49,10 +50,10 @@ public class TownData {
     private TaxHistory taxHistory;
 
     private final HashSet<String> townPlayerListId = new HashSet<>();
-    private final HashMap<String,TownRank> roles;
-    private HashMap<Integer,TownRank> newRanks;
+    private final HashMap<String,TownRank> roles = new HashMap<>();
+    private HashMap<Integer,TownRank> newRanks = new HashMap<>();
 
-    private HashSet<String> PlayerJoinRequestSet;
+    private HashSet<String> PlayerJoinRequestSet = new HashSet<>();
     private Map<String, PropertyData> propertyDataMap;
 
     private final TownLevel townLevel;
@@ -69,16 +70,12 @@ public class TownData {
         this.Description = "default description";
         this.DateCreated = new Date().toString();
         this.townIconMaterialCode = null;
-        this.PlayerJoinRequestSet= new HashSet<>();
-        this.townPlayerListId.add(leaderID);
-        this.roles = new HashMap<>();
-        this.newRanks = new HashMap<>();
         this.isRecruiting = false;
         this.balance = 0;
         this.flatTax = 1;
         this.townDefaultRank = "default";
         this.townDefaultRankID = 0;
-
+        this.townTag = townName.substring(0,3).toUpperCase();
         this.chunkColor = 0xff0000;
 
         this.chunkHistory = new ChunkHistory();
@@ -91,8 +88,9 @@ public class TownData {
         this.chunkSettings = new ClaimedChunkSettings();
         this.townLevel = new TownLevel();
 
-        addRank(townDefaultRank);
 
+        addRank(townDefaultRank);
+        addPlayer(leaderID);
     }
 
     //used for sql, loading a town
@@ -108,7 +106,6 @@ public class TownData {
         this.newRanks = newRanks;
         this.PlayerJoinRequestSet= new HashSet<>();
         this.townPlayerListId.add(leaderID);
-        this.roles = new HashMap<>();
         this.townDefaultRank = townDefaultRankName;
         this.isRecruiting = isRecruiting;
         this.balance = balance;
@@ -193,18 +190,21 @@ public class TownData {
     public void setTownIconMaterialCode(Material material) {
         this.townIconMaterialCode = material.name();
     }
+    public void addPlayer(String playerDataID){
+        PlayerData playerData = PlayerDataStorage.get(playerDataID);
+        addPlayer(playerData);
+    }
     public void addPlayer(PlayerData playerData){
         townPlayerListId.add(playerData.getID());
         getTownDefaultRank().addPlayer(playerData.getID());
         playerData.joinTown(this);
-
         TownDataStorage.saveStats();
     }
 
     public void removePlayer(PlayerData playerData){
-        townPlayerListId.remove(playerData.getID());
 
         getRank(playerData).removePlayer(playerData);
+        townPlayerListId.remove(playerData.getID());
         playerData.leaveTown();
 
         TownDataStorage.saveStats();
@@ -658,10 +658,18 @@ public class TownData {
     }
 
     public void removeProperty(PropertyData propertyData) {
-        System.out.println("Removing property " + propertyData.getTotalID() + " from town " + this.getID());
-        for (String key : propertyDataMap.keySet()){
-            System.out.println("Property: " + key);
-        }
         this.propertyDataMap.remove(propertyData.getPropertyID());
+    }
+    public String getTownTag() {
+        if(this.townTag == null)
+            setTownTag(this.TownName.substring(0,3).toUpperCase());
+        return this.townTag;
+    }
+    public void setTownTag(String townTag) {
+        this.townTag = townTag;
+    }
+
+    public String getTag() {
+        return "[" + getTownTag() + "]";
     }
 }

@@ -1896,6 +1896,11 @@ public class GuiManager2 implements IGUI {
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(getHexColor(playerTown.getChunkColorInHex()) + playerTown.getChunkColorInHex()),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3.get());
 
+        ItemStack changeTag = HeadUtils.getCustomLoreItem(Material.FLOWER_BANNER_PATTERN,
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TAG.get(),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1.get(playerTown.getTag()),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TAG_DESC2.get());
+
         GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> event.setCancelled(true));
 
         GuiItem _leaveTown = ItemBuilder.from(leaveTown).asGuiItem(event -> {
@@ -2011,6 +2016,21 @@ public class GuiManager2 implements IGUI {
                 player.sendMessage(getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
         });
 
+        GuiItem _changeTag = ItemBuilder.from(changeTag).asGuiItem(event -> {
+            event.setCancelled(true);
+
+            if(playerStat.isTownLeader()){
+                player.closeInventory();
+                player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+
+                Map<MessageKey, String> data = new HashMap<>();
+                data.put(MessageKey.TOWN_ID,playerTown.getID());
+                PlayerChatListenerStorage.addPlayer(CHANGE_TOWN_TAG,player,data);
+            }
+
+        });
+
+
 
 
 
@@ -2023,6 +2043,8 @@ public class GuiManager2 implements IGUI {
         gui.setItem(2,8, _changeTownName);
 
         gui.setItem(3,2, _quitRegion);
+
+        gui.setItem(3,7, _changeTag);
         if(isDynmapAddonLoaded())
             gui.setItem(3,8, _changeChunkColor);
 

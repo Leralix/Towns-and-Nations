@@ -21,6 +21,7 @@ language:
   PLAYER_PROPERTY_CAP_REACHED: "§cYou reached the maximum number of properties for your town. Upgrade your town to get more"
   POSITION_NEED_TO_BE_IN_CLAIMED_CHUNK: "§cYou need to be in a claimed chunk to set up a property position"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cYou need to be in your town to set up a property position"
+  MESSAGE_NOT_RIGHT_SIZE: "§cMessage should be exactly {0} long"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 {1}: §f{2}"
@@ -435,6 +436,9 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1: "§fChange the color of claimed chunks on the map"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2: "§fCurrent color: §9{0}"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3: "§fLeft click to choose a new color"
+  GUI_TOWN_SETTINGS_CHANGE_TAG: "§aChange town tag"
+  GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1: "§fCurrent tag: §9{0}"
+  GUI_TOWN_SETTINGS_CHANGE_TAG_DESC2: "§fLeft click to change the tag"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT: "§fWrite the new color in the chat in the format :0xRRGGBB (ex: 0x00FF00)"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§fColor successfully changed"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cInvalid color format"

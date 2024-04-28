@@ -10,6 +10,7 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.utils.TagUtil;
 
 import static org.tan.TownsAndNations.enums.TownRolePermission.INVITE_PLAYER;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
@@ -27,12 +28,13 @@ public class PlayerJoinListener implements Listener {
         setIndividualScoreBoard(player);
 
         if(playerStat.haveTown()){
-            if(!TownDataStorage.get(playerStat).getPlayerJoinRequestSet().isEmpty()  && playerStat.hasPermission(INVITE_PLAYER)){
+            if(!TownDataStorage.get(playerStat).getPlayerJoinRequestSet().isEmpty() && playerStat.hasPermission(INVITE_PLAYER)){
                 player.sendMessage(
                         Lang.NEWSLETTER_STRING.get() +
                         Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(TownDataStorage.get(playerStat).getPlayerJoinRequestSet().size())
                 );
             }
+            TagUtil.addPrefix(player);
         }
 
 

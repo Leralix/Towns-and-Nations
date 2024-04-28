@@ -18,51 +18,10 @@ public class UpdateUtil {
 
     public static void update(){
         updateNewChunkData();
-        updateRankID();
     }
 
-    private static void updateRankID() {
 
-        if(TownDataStorage.getTownMap().isEmpty()){
-            return;
-        }
 
-        TownData testTownData = TownDataStorage.getTownMap().values().iterator().next();
-
-        if(testTownData.getRanks() != null){
-            TownsAndNations.getPluginLogger().info("-Rank ID's are already updated, skipping update");
-            return;
-        }
-
-        for(TownData townData : TownDataStorage.getTownMap().values()){
-            int i = 0;
-            for (TownRank townRank : townData.getOldRanks()) {
-                townRank.setID(i);
-                i++;
-            }
-            HashMap<Integer,TownRank> newMap = new HashMap<>();
-            for(TownRank townRank : townData.getOldRanks()){
-                newMap.put(townRank.getID(), townRank);
-            }
-            townData.setNewRanks(newMap);
-
-        }
-
-        for(PlayerData playerData : PlayerDataStorage.getLists()){
-            TownData playerTownData = playerData.getTown();
-            if(playerTownData == null)
-                continue;
-
-            TownRank townRank = playerTownData.getOldRank(playerData.getOldRank());
-            if(townRank != null)
-                playerData.setTownRankID(townRank.getID());
-        }
-
-    }
-
-    public static void updateDatabase() {
-        //TownDataStorage.UpdateTownDataWithColor();
-    }
 
     public static void updateNewChunkData() {
         if(ClaimedChunkStorage.getClaimedChunksMap() == null)

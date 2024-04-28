@@ -10,6 +10,13 @@
 #Only enable this if you are not using any other scoreboard plugin
 EnablePlayerColorCode: false
 
+#Enable prefix for town
+EnableTownPrefix: true
+
+#If prefix enabled:
+##Prefix Size (recommended 3)
+prefixSize: 3
+
 #Enable Kingdoms
 EnableKingdom: true
 
