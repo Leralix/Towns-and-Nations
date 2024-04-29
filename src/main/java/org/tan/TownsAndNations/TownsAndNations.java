@@ -90,9 +90,11 @@ public final class TownsAndNations extends JavaPlugin {
         DropChances.load();
         UpgradeStorage.init();
         MobChunkSpawnStorage.init();
-        allowColorCodes = ConfigUtil.getCustomConfig("config.yml").getBoolean("EnablePlayerColorCode", false);
+        SoundStorage.init();
 
+        allowColorCodes = ConfigUtil.getCustomConfig("config.yml").getBoolean("EnablePlayerColorCode", false);
         sqlEnable = ConfigUtil.getCustomConfig("config.yml").getBoolean("EnableCrossServer", false);
+
         if(sqlEnable){
             logger.info("[TaN] -Loading SQL connections");
 
