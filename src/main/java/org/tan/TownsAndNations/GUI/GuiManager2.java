@@ -1794,7 +1794,7 @@ public class GuiManager2 implements IGUI {
                 ItemStack upgradeTownLevel = HeadUtils.getCustomLoreItem(Material.ORANGE_STAINED_GLASS_PANE, Lang.GUI_TOWN_LEVEL_UP.get());
                 HeadUtils.setLore(upgradeTownLevel,
                         Lang.GUI_TOWN_LEVEL_UP_DESC1.get(townLevel.getTownLevel()),
-                        Lang.GUI_TOWN_LEVEL_UP_DESC2.get(townLevel.getTownLevel()+1, townLevel.getMoneyRequiredTownLevel())
+                        Lang.GUI_TOWN_LEVEL_UP_DESC2.get(townLevel.getTownLevel() + 1, townLevel.getMoneyRequiredTownLevel())
                 );
                 _bottompannel = ItemBuilder.from(upgradeTownLevel).asGuiItem(event -> {
                     event.setCancelled(true);
@@ -1804,7 +1804,7 @@ public class GuiManager2 implements IGUI {
             }
             else{
                 _pannel = _iron_bars;
-                ItemStack red_level = HeadUtils.getCustomLoreItem(Material.RED_STAINED_GLASS_PANE,"Town level " + (i - (2 + level)) + " locked");
+                ItemStack red_level = HeadUtils.getCustomLoreItem(Material.RED_STAINED_GLASS_PANE,"Town level " + (i + level - 2) + " locked");
                 _bottompannel = ItemBuilder.from(red_level).asGuiItem(event -> event.setCancelled(true));
             }
             gui.setItem(1,i, _pannel);
@@ -1898,7 +1898,7 @@ public class GuiManager2 implements IGUI {
 
         ItemStack changeTag = HeadUtils.getCustomLoreItem(Material.FLOWER_BANNER_PATTERN,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TAG.get(),
-                Lang.GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1.get(playerTown.getTag()),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1.get(playerTown.getColoredTag()),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TAG_DESC2.get());
 
         GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> event.setCancelled(true));
@@ -2044,12 +2044,12 @@ public class GuiManager2 implements IGUI {
 
         gui.setItem(3,2, _quitRegion);
 
-        gui.setItem(3,7, _changeTag);
+        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("EnablePlayerPrefix",false))
+            gui.setItem(3,7, _changeTag);
         if(isDynmapAddonLoaded())
             gui.setItem(3,8, _changeChunkColor);
 
         gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
-
         gui.open(player);
     }
     public static void OpenTownChangeOwnershipPlayerSelect(Player player, TownData townData) {

@@ -13,7 +13,7 @@ public class TagUtil {
         PlayerData playerData = PlayerDataStorage.get(player);
 
         if (playerData.getTown() != null){
-            String prefix = playerData.getTown().getTag() + " ";
+            String prefix = playerData.getTown().getColoredTag() + " ";
 
             player.setPlayerListName(prefix + player.getName());
             player.setDisplayName(prefix + player.getName());

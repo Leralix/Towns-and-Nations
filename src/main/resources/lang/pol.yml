@@ -16,11 +16,12 @@ language:
   PLAYER_NOT_ONLINE: "§cGracz jest online"
   PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION: "§cWyłącznie właściciel regionu może wykonać tę czynność!"
   CHUNK_NOT_CLAIMED: "§cTen chunk nie jest zajęty"
-  CANT_KICK_REGIONAL_CAPITAL: "§cNie możesz usunąć stolicy regionu!"
+  CANT_KICK_REGIONAL_CAPITAL: "§cYou cannot remove the regional capital out of the region"
   PLAYER_ALREADY_IN_SCOPE: "§cYou are already registered"
   PLAYER_PROPERTY_CAP_REACHED: "§cYou reached the maximum number of properties for your town. Upgrade your town to get more"
   POSITION_NEED_TO_BE_IN_CLAIMED_CHUNK: "§cYou need to be in a claimed chunk to set up a property position"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cYou need to be in your town to set up a property position"
+  MESSAGE_NOT_RIGHT_SIZE: "§cMessage must be exactly {0} long"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Sojusz - {0}]§3 {1}: §f{2}"
@@ -127,9 +128,26 @@ language:
   DEBUG_UNCLAIMED_CHUNK_SUCCESS: "Pomyślnie zrezygnowano z chunka! Obecna ilość chunków wynosi §9{0} §f: §2{1}/{2}♦"
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cTen chunk należy do innego miasta: §e{0}"
   UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§cThis chunk is claimed by another region: §e{0}"
+  #Map command
+  MAP_COMMAND_DESC: "Open the map of chunks around the player"
   #Debug commands
   COMMAND_GENERIC_SUCCESS: "§aKomenda została wykonana"
   ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED: "§cTen chunk nie jest zajęty"
+  ##Admin commands
+  ADMIN_ADD_MONEY_TO_PLAYER: "Add money to a player"
+  ADMIN_SET_PLAYER_MONEY_BALANCE: "Set player balance"
+  ADMIN_SPAWN_CUSTOM_VILLAGER: "Spawn a custom villager"
+  ADMIN_SPAWN_RARE_ITEM: "Spawn a rare item"
+  ADMIN_UNCLAIM_DESC: "Unclaim any chunk"
+  ADMIN_OPEN_GUI: "Open admin GUI"
+  ADMIN_SUDO_COMMAND: "Grant the player the ability to bypass chunk protection"
+  ##Debug commands
+  DEBUG_CHAT_STORAGE: "Displays the contents of PlayerChatListenerStorage"
+  DEBUG_SAVE_ALL_DATA: "Saves all the stats"
+  DEBUG_CREATE_BACKUP: "Create a backup of the plugin data."
+  DEBUG_GET_COLOR_CODE: "Get a sample of the plugin color code"
+  DEBUG_SKIP_DAY: "Collect every taxes and salary for a day"
+  DEBUG_PLAY_SOUND: "Play a sound used in the plugin"
   #SUDO command
   SUDO_PLAYER_ADDED: "§3Gracz {0}§f jest teraz w trybie sudo"
   SUDO_PLAYER_REMOVED: "§3Gracz {0}§f został usunięty z trybu sudo"
@@ -268,6 +286,7 @@ language:
   WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION: "§aNapisz jaką kwotę chcesz przekazać"
   GUI_TREASURY_DONATION_HISTORY: "§aHistoria darowizn"
   GUI_TOWN_LEVEL_INFO: "{0}" #town's name
+  LEVEL_LOCKED: "§cLevel locked"
   GUI_TOWN_LEVEL_UP: "§aUlepsz poziom miasta"
   GUI_TOWN_LEVEL_UP_DESC1: "§fObecny poziom to: §e{0}"
   GUI_TOWN_LEVEL_UP_DESC2: "§fPoziom §a{0}§f kosztuje: §e{1}✦"
@@ -417,6 +436,9 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1: "§fZmień kolor zajętych fragmentów na mapie"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2: "§fObecny kolor: §9{0}"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3: "§fKliknij lewym przyciskiem myszy, aby wybrać nowy kolor"
+  GUI_TOWN_SETTINGS_CHANGE_TAG: "§aChange town tag"
+  GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1: "§fCurrent tag: §9{0}"
+  GUI_TOWN_SETTINGS_CHANGE_TAG_DESC2: "§fLeft click to change the tag"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT: "§fNowy kolor wpisz na czacie w formacie :0xRRGGBB (ex: 0x00FF00)"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§fKolor został zmieniony"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cNieprawidłowy format koloru"
@@ -589,4 +611,3 @@ language:
   NO_TOWN: "Brak Miasta"
   NO_REGION: "Brak Regionu"
   NO_KINGDOM: "Brak Królestwa"
-

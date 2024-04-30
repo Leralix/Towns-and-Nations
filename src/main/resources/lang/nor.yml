@@ -16,11 +16,12 @@ language:
   PLAYER_NOT_ONLINE: "§cSpilleren er ikke på nett"
   PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION: "§cBare bylederen kan utføre denne handlingen"
   CHUNK_NOT_CLAIMED: "§cDenne chunk er ikke hevdet"
-  CANT_KICK_REGIONAL_CAPITAL: "§cDu kan ikke fjerne den regionale hovedstaden fra regionen"
+  CANT_KICK_REGIONAL_CAPITAL: "§cYou cannot remove the regional capital out of the region"
   PLAYER_ALREADY_IN_SCOPE: "§cYou are already registered"
   PLAYER_PROPERTY_CAP_REACHED: "§cYou reached the maximum number of properties for your town. Upgrade your town to get more"
   POSITION_NEED_TO_BE_IN_CLAIMED_CHUNK: "§cYou need to be in a claimed chunk to set up a property position"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cYou need to be in your town to set up a property position"
+  MESSAGE_NOT_RIGHT_SIZE: "§cMessage must be exactly {0} long"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Allianse - {0}]§3 {1}: §f{2}"
@@ -127,9 +128,26 @@ language:
   DEBUG_UNCLAIMED_CHUNK_SUCCESS: "Chunk frigjort! Nåværende antall chunks §9{0} §f: §2{1}/{2}♦"
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cDenne chunken er hevdet av en annen by: §e{0}"
   UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§cDenne chunken er hevdet av en annen region: §e{0}"
+  #Map command
+  MAP_COMMAND_DESC: "Open the map of chunks around the player"
   #Debug commands
   COMMAND_GENERIC_SUCCESS: "§aKommando utført vellykket"
   ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED: "§cDenne chunken er ikke hevdet"
+  ##Admin commands
+  ADMIN_ADD_MONEY_TO_PLAYER: "Add money to a player"
+  ADMIN_SET_PLAYER_MONEY_BALANCE: "Set player balance"
+  ADMIN_SPAWN_CUSTOM_VILLAGER: "Spawn a custom villager"
+  ADMIN_SPAWN_RARE_ITEM: "Spawn a rare item"
+  ADMIN_UNCLAIM_DESC: "Unclaim any chunk"
+  ADMIN_OPEN_GUI: "Open admin GUI"
+  ADMIN_SUDO_COMMAND: "Grant the player the ability to bypass chunk protection"
+  ##Debug commands
+  DEBUG_CHAT_STORAGE: "Displays the contents of PlayerChatListenerStorage"
+  DEBUG_SAVE_ALL_DATA: "Saves all the stats"
+  DEBUG_CREATE_BACKUP: "Create a backup of the plugin data."
+  DEBUG_GET_COLOR_CODE: "Get a sample of the plugin color code"
+  DEBUG_SKIP_DAY: "Collect every taxes and salary for a day"
+  DEBUG_PLAY_SOUND: "Play a sound used in the plugin"
   #SUDO command
   SUDO_PLAYER_ADDED: "§3{0}§f er nå i sudo modus"
   SUDO_PLAYER_REMOVED: "§3{0}§f har blitt fjernet fra sudo modus"
@@ -268,6 +286,7 @@ language:
   WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION: "§aSkriv inn beløpet du vil gi"
   GUI_TREASURY_DONATION_HISTORY: "§aDonasjonshistorikk"
   GUI_TOWN_LEVEL_INFO: "{0}" #town's name
+  LEVEL_LOCKED: "§cLevel locked"
   GUI_TOWN_LEVEL_UP: "§aOppgrader bynivå"
   GUI_TOWN_LEVEL_UP_DESC1: "§fNåværende nivå er: §e{0}"
   GUI_TOWN_LEVEL_UP_DESC2: "§fOppgradering til nivå §a{0}§f koster: §e{1}✦"
@@ -417,6 +436,9 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1: "§fEndre fargen på hevdede chunks på kartet"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2: "§fNåværende farge: §9{0}"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3: "§fVenstreklikk for å velge en ny farge"
+  GUI_TOWN_SETTINGS_CHANGE_TAG: "§aChange town tag"
+  GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1: "§fCurrent tag: §9{0}"
+  GUI_TOWN_SETTINGS_CHANGE_TAG_DESC2: "§fLeft click to change the tag"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT: "§fSkriv den nye fargen i chatten i formatet: 0xRRGGBB (eks: 0x00FF00)"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§fFarge vellykket endret"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cUgyldig fargeformat"
@@ -589,4 +611,3 @@ language:
   NO_TOWN: "Ingen by"
   NO_REGION: "Ingen region"
   NO_KINGDOM: "Ingen kongerike"
-

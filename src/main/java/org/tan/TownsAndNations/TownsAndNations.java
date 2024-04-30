@@ -64,7 +64,7 @@ public final class TownsAndNations extends JavaPlugin {
 
         logger.info("[TaN] Loading Plugin");
 
-        //checkForUpdate(); Removed after 0.7.0
+        checkForUpdate();
 
         logger.info("[TaN] -Loading Lang");
 

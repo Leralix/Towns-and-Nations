@@ -669,7 +669,7 @@ public class TownData {
         this.townTag = townTag;
     }
 
-    public String getTag() {
-        return "[" + getTownTag() + "]";
+    public String getColoredTag() {
+        return getChunkColor() + "[" + getTownTag() + "]";
     }
 }

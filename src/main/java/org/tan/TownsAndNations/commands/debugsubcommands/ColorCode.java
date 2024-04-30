@@ -37,7 +37,7 @@ public class ColorCode extends SubCommand {
         player.sendMessage(ChatColor.translateAlternateColorCodes('§', "Player:§3 test"));
         player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Money:§6 50✦"));
         player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Town:§9 my town"));
-        player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Region:§1 my region"));
+        player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Region:§b my region"));
         player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Kingdom:§5 my kingdom"));
         player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Chunks:§2 47/50♦"));
         player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Number of Player:§9 6♣"));

@@ -62,8 +62,6 @@ public class TeamUtils {
                     playerTeam = scoreboard.getTeam(relation.getName().toLowerCase());
                 }
                 playerTeam.addEntry(toAdd.getName());
-
-
             }
         }
     }

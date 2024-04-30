@@ -76,7 +76,7 @@ public class RegionClaimedChunk extends ClaimedChunk2{
 
     public void playerEnterClaimedArea(Player player){
         RegionData region = getRegion();
-        player.sendMessage( getTANString() + Lang.CHUNK_ENTER_REGION.get(region.getName()));
+        player.sendMessage(getTANString() + Lang.CHUNK_ENTER_REGION.get(region.getName()));
     }
 
     @Override

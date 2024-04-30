@@ -16,12 +16,12 @@ language:
   PLAYER_NOT_ONLINE: "§cThe player is not online"
   PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION: "§cOnly the town leader can perform this action"
   CHUNK_NOT_CLAIMED: "§cThis chunk is not claimed"
-  CANT_KICK_REGIONAL_CAPITAL: "§cYou can't remove the regional capital out of the region"
+  CANT_KICK_REGIONAL_CAPITAL: "§cYou cannot remove the regional capital out of the region"
   PLAYER_ALREADY_IN_SCOPE: "§cYou are already registered"
   PLAYER_PROPERTY_CAP_REACHED: "§cYou reached the maximum number of properties for your town. Upgrade your town to get more"
   POSITION_NEED_TO_BE_IN_CLAIMED_CHUNK: "§cYou need to be in a claimed chunk to set up a property position"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cYou need to be in your town to set up a property position"
-  MESSAGE_NOT_RIGHT_SIZE: "§cMessage should be exactly {0} long"
+  MESSAGE_NOT_RIGHT_SIZE: "§cMessage must be exactly {0} long"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 {1}: §f{2}"
@@ -57,7 +57,7 @@ language:
   #BROADCAST
   TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the town: §9{1}"
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c has left the town !"
-  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the region: §9{1}"
+  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the region: §b{1}"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fThe town §9{0}§f has been kicked from the region"
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "Claim a chunk"
@@ -127,7 +127,7 @@ language:
   UNCLAIMED_CHUNK_SUCCESS: "Chunk unclaimed ! Current number of chunks: §2{0}/{1}♦"
   DEBUG_UNCLAIMED_CHUNK_SUCCESS: "Chunk unclaimed ! Current number of chunks §9{0} §f: §2{1}/{2}♦"
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cThis chunk is claimed by another town: §e{0}"
-  UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§cThis chunk is claimed by another region: §e{0}"
+  UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§cThis chunk is claimed by another region: §b{0}"
   #Map command
   MAP_COMMAND_DESC: "Open the map of chunks around the player"
   #Debug commands
@@ -201,7 +201,7 @@ language:
   GUI_KINGDOM_ICON: "§aKingdom"
   GUI_KINGDOM_ICON_DESC1: "§fIn development"
   GUI_REGION_ICON: "§aRegion"
-  GUI_REGION_ICON_DESC1_REGION: "§fYour current region: §9{0}"
+  GUI_REGION_ICON_DESC1_REGION: "§fYour current region: §b{0}"
   GUI_REGION_ICON_DESC1_NO_REGION: "§fCreate or look at regions"
   GUI_TOWN_ICON: "§aTown"
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§fJoin or create your own town"
@@ -229,7 +229,7 @@ language:
   GUI_TOWN_INFO_DESC2: "§fMembers: §9{0}♣"
   GUI_TOWN_INFO_DESC3: "§fChunks: §2{0}♦"
   GUI_TOWN_INFO_DESC4: "§fTreasury: §6{0}✦"
-  GUI_TOWN_INFO_DESC5_REGION: "§fRegion: §6{0}"
+  GUI_TOWN_INFO_DESC5_REGION: "§fRegion: §b{0}"
   GUI_TOWN_INFO_DESC5_NO_REGION: "§fNo region"
   GUI_TOWN_INFO_TOWN_RELATION: "§fCurrent relation with the town: §e{0}"
   GUI_TOWN_INFO_IS_RECRUITING: "§fRecruiting: §aOpen"
@@ -429,7 +429,7 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC2: "§fLeft click to change the name"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3: "§fCost: §6{0}✦"
   GUI_TOWN_SETTINGS_QUIT_REGION: "§aQuit the region"
-  GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION: "§cQuit the region §9{0}"
+  GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION: "§cQuit the region §b{0}"
   GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_NOREGION: "§fYou do not belong to a region or you are the regional capital"
   GUI_TOWN_SETTINGS_NEW_TOWN_NAME_HISTORY: "§fModify town name: §9{0}§f -> §9{1}"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR: "§aChange chunk color"
@@ -579,7 +579,7 @@ language:
   #Chunk interactions
   CHUNK_ENTER_WILDERNESS: "§fWilderness"
   CHUNK_ENTER_TOWN: "§fEntering the town: §9{0}"
-  CHUNK_ENTER_REGION: "§fEntering the region: §9{0}"
+  CHUNK_ENTER_REGION: "§fEntering the region: §b{0}"
   CHUNK_ENTER_TOWN_AT_WAR: "§cYou are at war with this town. Players have been alerted that you crossed the border"
   CHUNK_INTRUSION_ALERT: "§cAn ennemy from the town {0} has enter your borders: {1}"
   #History
