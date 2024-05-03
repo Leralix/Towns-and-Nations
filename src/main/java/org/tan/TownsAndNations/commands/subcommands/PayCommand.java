@@ -64,6 +64,17 @@ public class PayCommand extends SubCommand  {
                 return;
             }
 
+            PlayerData receiverData = PlayerDataStorage.get(receiver);
+            PlayerData senderData = PlayerDataStorage.get(player);
+            if(receiverData.haveTown() && senderData.haveTown()){
+                if(receiverData.getTown().getRelationWith(senderData.getTown()) == TownRelation.EMBARGO ||
+                        receiverData.getTown().getRelationWith(senderData.getTown()) == TownRelation.WAR){
+                    player.sendMessage(getTANString() + Lang.PLAYER_PAY_AT_EMBARGO_ERROR.get());
+                    return;
+                }
+            }
+
+
             int amount;
 
             try{
@@ -81,20 +92,6 @@ public class PayCommand extends SubCommand  {
                 player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(
                         amount - EconomyUtil.getBalance(player)));
                 return;
-            }
-
-            PlayerData playerData = PlayerDataStorage.get(player);
-            PlayerData receiverData = PlayerDataStorage.get(receiver);
-
-            if(playerData.haveTown()){
-                if(receiverData.haveTown()){
-                    if(playerData.getTown().getRelationWith(receiverData.getTown()) == TownRelation.EMBARGO ||
-                            playerData.getTown().getRelationWith(receiverData.getTown()) == TownRelation.WAR){
-                        player.sendMessage(getTANString() + Lang.PLAYER_PAY_AT_EMBARGO_ERROR.get(receiverData.getTown().getName()));
-                        return;
-                    }
-                }
-
             }
 
             EconomyUtil.removeFromBalance(player,amount);
