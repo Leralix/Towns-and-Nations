@@ -1,5 +1,7 @@
 package org.tan.TownsAndNations.listeners;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -60,14 +62,12 @@ public class PlayerEnterChunkListener implements Listener {
             }
             //Else send message player enter wilderness
             else
-                player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_ENTER_WILDERNESS.get());
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.CHUNK_ENTER_WILDERNESS.get()));
 
         }
         else {
             NextClaimedChunk.playerEnterClaimedArea(player);
         }
-
-
 
     }
 

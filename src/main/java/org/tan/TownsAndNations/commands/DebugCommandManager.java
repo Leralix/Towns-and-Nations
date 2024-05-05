@@ -23,6 +23,8 @@ public class DebugCommandManager implements CommandExecutor, TabExecutor, TabCom
 
         subCommands.add(new SkipDay());
         subCommands.add(new PlaySound());
+        subCommands.add(new ActionBarCommand());
+        subCommands.add(new GetDropChances());
     }
 
     @Override

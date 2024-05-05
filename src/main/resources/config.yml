@@ -84,7 +84,8 @@ RARE_RESOURCES_SPAWN: true
 #If set to false, players can still sell to villagers.
 AllowSellRareRessourcesByCommand: true
 
-#The stat of getting a rare Stone, used to get money
+
+#The probability of obtaining a rare Stone. (trigger by breaking a block)
 # (20 = 20% drop chance when breaking this block without a silk touch pick)
 rareStone:
   GOLD_ORE: 35
@@ -101,7 +102,7 @@ rareStone:
 rareStoneValue: 5
 
 
-#The stat of getting rare Wood, used to get money
+#The probability of obtaining rare Wood. (trigger when breaking a block)
 rareWood:
   ACACIA_LOG: 3
   BIRCH_LOG: 3
@@ -112,7 +113,7 @@ rareWood:
 
 rareWoodValue: 3
 
-#The stat of getting rare Crops, used to get money
+#The probability of obtaining rare Crops. (trigger when breaking a crop only)
 rareCrops:
   WHEAT: 4
   CARROTS: 3
@@ -124,7 +125,7 @@ rareCrops:
 rareCropsValue: 3
 
 
-#The stat of getting souls, used to get money. You can use any entity type
+#The probability of obtaining souls. (trigger when killing a mob)
 rareSoul:
   ZOMBIE: 5
   CREEPER: 15
@@ -144,6 +145,16 @@ rareSoul:
   GHAST: 75
 
 rareSoulValue: 15
+
+#The probability of obtaining rare fishes. (trigger when fishing. hook must be in water)
+
+rareFish:
+  SALMON: 107
+  COD: 107
+  PUFFERFISH: 115
+  TROPICAL_FISH: 120
+
+rareFishValue: 25
 
 ##
 #Cost of renaming a town:

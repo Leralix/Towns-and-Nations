@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.TownsAndNations.DataClass.RareItem;
@@ -22,25 +23,32 @@ public class DropChances {
 
         FileConfiguration config = ConfigUtil.getCustomConfig("config.yml");
 
-        if(!config.getBoolean("RARE_RESOURCES_SPAWN")){
+        if(!config.getBoolean("RARE_RESOURCES_SPAWN", true)){
             return;
         }
         loadDropChances("rareStone", config, getRareStone());
         loadDropChances("rareWood", config, getRareWood());
         loadDropChances("rareCrops", config, getRareCrops());
         loadDropChances("rareSoul", config, getRareSoul());
+        loadDropChances("rareFish", config, getRareFish());
     }
-
 
     public static RareItem getRareItem(Block block) {
         return dropChances.get(block.getType().name());
     }
     public static RareItem getRareItem(Entity entity) {
-        return dropChances.get(entity.getType().name());
+        return getRareItem(entity.getType());
     }
-    public static Map<String, RareItem> getDropChances(){
+    public static RareItem getRareItem(EntityType entityType) {
+        return dropChances.get(entityType.name());
+    }
+    public static RareItem getRareItem(String name) {
+        return dropChances.get(name);
+    }
+    public static Map<String, RareItem> getDropChances() {
         return dropChances;
     }
+
     private static void loadDropChances(String section, FileConfiguration config, ItemStack item) {
         for (String key : config.getConfigurationSection(section).getKeys(false)) {
             int dropChance = config.getInt(section + "." + key);
@@ -101,6 +109,21 @@ public class DropChances {
         rareSoulItem.setItemMeta(rareStoneItemMeta);
 
         CustomNBT.addCustomStringTag(rareSoulItem, "tanRareItem", "rareSoul");
+
+        return rareSoulItem;
+    }
+
+    private static ItemStack getRareFish() {
+        ItemStack rareSoulItem = new ItemStack(Material.TROPICAL_FISH);
+        ItemMeta rareStoneItemMeta = rareSoulItem.getItemMeta();
+        rareStoneItemMeta.setCustomModelData(101);
+        rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_FISH.get());
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(Lang.RARE_ITEM_DESC_1.get());
+        rareStoneItemMeta.setLore(lore);
+        rareSoulItem.setItemMeta(rareStoneItemMeta);
+
+        CustomNBT.addCustomStringTag(rareSoulItem, "tanRareItem", "rareFish");
 
         return rareSoulItem;
     }

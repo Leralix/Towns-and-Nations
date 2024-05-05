@@ -2,6 +2,7 @@ package org.tan.TownsAndNations.DataClass;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.utils.ConfigUtil;
@@ -27,12 +28,13 @@ public class RareItem {
         return item;
     }
 
-    public void spawn(World world, Location location) {
+    public Item spawn(World world, Location location) {
         Random rand = new Random();
         int int_random = rand.nextInt(1, 100);
 
         if(int_random <= dropChance){
-            world.dropItemNaturally(location, item);
+            return world.dropItemNaturally(location, item);
         }
+        return null;
     }
 }

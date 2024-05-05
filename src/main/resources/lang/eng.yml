@@ -206,7 +206,7 @@ language:
   GUI_REGION_ICON_DESC1_NO_REGION: "§fCreate or look at regions"
   GUI_TOWN_ICON: "§aTown"
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§fJoin or create your own town"
-  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fYour current town: §e{0}"
+  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fYour current town: §9{0}"
   GUI_PROFILE_ICON_DESC1: "§fLook at your stats"
   #Player
   GUI_PLAYER_PROFILE: "§a{0}" #//Player's name
@@ -565,6 +565,7 @@ language:
   ITEM_RARE_WOOD: "§3Rare Wood"
   ITEM_RARE_CROP: "§3Rare Crop"
   ITEM_RARE_SOUL: "§3Creature Soul"
+  ITEM_RARE_FISH: "§3Rare Fish"
   RARE_ITEM_DESC_1: "§fThis item can be traded for money"
   #Custom villager jobs
   VILLAGER_GOLDSMITH: "Goldsmith"

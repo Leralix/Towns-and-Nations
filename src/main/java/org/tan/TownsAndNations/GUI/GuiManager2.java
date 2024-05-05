@@ -1804,7 +1804,7 @@ public class GuiManager2 implements IGUI {
             }
             else{
                 _pannel = _iron_bars;
-                ItemStack red_level = HeadUtils.getCustomLoreItem(Material.RED_STAINED_GLASS_PANE,"Town level " + (i + level - 2) + " locked");
+                ItemStack red_level = HeadUtils.getCustomLoreItem(Material.RED_STAINED_GLASS_PANE,"Town level " + (i + level - 1) + " locked");
                 _bottompannel = ItemBuilder.from(red_level).asGuiItem(event -> event.setCancelled(true));
             }
             gui.setItem(1,i, _pannel);

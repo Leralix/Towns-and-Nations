@@ -1,5 +1,7 @@
 package org.tan.TownsAndNations.DataClass.newChunkData;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -12,11 +14,10 @@ import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.enums.TownRolePermission;
-import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
-import org.tan.TownsAndNations.utils.ChatUtils;
+import org.tan.TownsAndNations.storage.WarTaggedPlayer;
 import org.tan.TownsAndNations.utils.SoundUtil;
 
 import static org.tan.TownsAndNations.enums.SoundEnum.BAD;
@@ -125,7 +126,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
 
     public void playerEnterClaimedArea(Player player){
         TownData townTo = getTown();
-        player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_ENTER_TOWN.get(townTo.getName()));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.CHUNK_ENTER_TOWN.get(townTo.getName())));
 
         TownData playerTown = TownDataStorage.get(player);
         if(playerTown == null){

@@ -1,5 +1,7 @@
 package org.tan.TownsAndNations.DataClass.newChunkData;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -76,7 +78,7 @@ public class RegionClaimedChunk extends ClaimedChunk2{
 
     public void playerEnterClaimedArea(Player player){
         RegionData region = getRegion();
-        player.sendMessage(getTANString() + Lang.CHUNK_ENTER_REGION.get(region.getName()));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.CHUNK_ENTER_REGION.get(region.getName())));
     }
 
     @Override
