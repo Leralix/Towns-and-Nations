@@ -268,6 +268,8 @@ public class RegionData {
     }
 
     public String getDateCreated() {
+        if(dateCreated == null)
+            dateCreated = new Date().toString();
         return dateCreated;
     }
 }
