@@ -13,6 +13,7 @@ import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class RegionData {
@@ -21,6 +22,7 @@ public class RegionData {
     private String name;
     private String capitalID;
     private String nationID;
+    private String dateCreated;
     private String regionIconType;
     private Integer taxRate;
     private Integer balance;
@@ -40,6 +42,7 @@ public class RegionData {
         this.id = id;
         this.name = name;
         this.capitalID = ownerTown.getID();
+        this.dateCreated = new Date().toString();
         this.nationID = null;
         this.regionIconType = "COBBLESTONE";
         this.taxRate = 1;
@@ -262,5 +265,9 @@ public class RegionData {
                 return true;
         }
         return false;
+    }
+
+    public String getDateCreated() {
+        return dateCreated;
     }
 }
