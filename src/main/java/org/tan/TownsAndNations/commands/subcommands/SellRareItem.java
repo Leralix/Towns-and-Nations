@@ -58,7 +58,6 @@ public class SellRareItem extends SubCommand {
             return;
         }
 
-        player.sendMessage("tag: " + rareItemTag);
         int price = RareItemUtil.getPrice(rareItemTag);
         int quantity = itemStack.getAmount();
 

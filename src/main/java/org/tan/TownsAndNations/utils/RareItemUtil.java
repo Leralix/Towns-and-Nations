@@ -16,6 +16,7 @@ public class RareItemUtil {
             case "rareWood" -> ConfigUtil.getCustomConfig("config.yml").getInt("rareWoodValue");
             case "rareCrops" -> ConfigUtil.getCustomConfig("config.yml").getInt("rareCropsValue");
             case "rareSoul" -> ConfigUtil.getCustomConfig("config.yml").getInt("rareSoulValue");
+            case "rareFish" -> ConfigUtil.getCustomConfig("config.yml").getInt("rareFishValue");
             default -> 0;
         };
 

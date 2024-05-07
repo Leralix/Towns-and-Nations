@@ -149,12 +149,12 @@ rareSoulValue: 15
 #The probability of obtaining rare fishes. (trigger when fishing. hook must be in water)
 
 rareFish:
-  SALMON: 107
-  COD: 107
-  PUFFERFISH: 115
-  TROPICAL_FISH: 120
+  SALMON: 4
+  COD: 4
+  PUFFERFISH: 8
+  TROPICAL_FISH: 12
 
-rareFishValue: 25
+rareFishValue: 20
 
 ##
 #Cost of renaming a town:

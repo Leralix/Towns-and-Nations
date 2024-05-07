@@ -113,7 +113,7 @@ public class DropChances {
         return rareSoulItem;
     }
 
-    private static ItemStack getRareFish() {
+    public static ItemStack getRareFish() {
         ItemStack rareSoulItem = new ItemStack(Material.TROPICAL_FISH);
         ItemMeta rareStoneItemMeta = rareSoulItem.getItemMeta();
         rareStoneItemMeta.setCustomModelData(101);

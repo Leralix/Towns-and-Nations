@@ -57,6 +57,9 @@ public class getRareItem extends SubCommand {
             case "raresoul" -> {
                 player.getLocation().getWorld().dropItemNaturally(player.getLocation(), DropChances.getRareSoul());
             }
+            case "rarefish" -> {
+                player.getLocation().getWorld().dropItemNaturally(player.getLocation(), DropChances.getRareSoul());
+            }
             default -> {
                 player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR.get());
                 return;

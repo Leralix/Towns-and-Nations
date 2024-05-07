@@ -572,6 +572,7 @@ language:
   VILLAGER_BOTANIST: "Botanist"
   VILLAGER_COOK: "Cook"
   VILLAGER_WIZARD: "Wizard"
+  VILLAGER_FISHERMAN: "Fisherman"
   #Villager Interaction Success
   RARE_ITEM_NO_ITEM_IN_HANDS: "Right click with §e{0}§f to sell it for §6{1}✦"
   RARE_ITEM_WRONG_ITEM: "This villager is only buying §e{0}"

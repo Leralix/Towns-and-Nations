@@ -42,6 +42,7 @@ public class SpawnVillager extends SubCommand {
             suggestions.add("cook");
             suggestions.add("botanist");
             suggestions.add("wizard");
+            suggestions.add("fisherman");
         }
         return suggestions;
     }
@@ -67,6 +68,10 @@ public class SpawnVillager extends SubCommand {
             }
             case "wizard" -> {
                 VillagerUtil.createCustomVillager(player, CustomVillagerProfession.WIZARD);
+                return;
+            }
+            case "fisherman" -> {
+                VillagerUtil.createCustomVillager(player, CustomVillagerProfession.FISHERMAN);
                 return;
             }
         }
