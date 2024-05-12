@@ -71,8 +71,8 @@ public class RegionClaimedChunk extends ClaimedChunk2{
             return;
         }
 
-        player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS.get(regionData.getNumberOfClaimedChunk(),townStat.getTownLevel().getChunkCap()));
         NewClaimedChunkStorage.unclaimChunk(chunk);
+        player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_REGION.get(regionData.getNumberOfClaimedChunk(),townStat.getTownLevel().getChunkCap()));
 
     }
 

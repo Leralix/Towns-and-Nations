@@ -53,6 +53,7 @@ public final class TownsAndNations extends JavaPlugin {
     private static boolean allowColorCodes = false;
     private static boolean sqlEnable = false;
     private static boolean dynmapAddonLoaded = true;
+    private static final long dateOfStart = System.currentTimeMillis();
 
     @Override
     public void onEnable() {
@@ -75,7 +76,12 @@ public final class TownsAndNations extends JavaPlugin {
             lang = lang.substring(0,2);
         }
 
-        Lang.loadTranslations(lang + ".yml");
+        boolean langLoaded = Lang.loadTranslations(lang + ".yml");
+        if(!langLoaded){
+            lang = "eng";
+            this.getLogger().warning("[TaN] -Language file not found, loading default language file");
+            Lang.loadTranslations(lang + ".yml");
+        }
         DynamicLang.loadTranslations(lang + "-upgrades.yml");
 
 
@@ -194,6 +200,14 @@ public final class TownsAndNations extends JavaPlugin {
     @Override
     public void onDisable() {
         if(!isSqlEnable()){
+
+            if(System.currentTimeMillis() - dateOfStart  < 30000){
+                logger.info("[TaN] Not saving data because plugin was closed less than 30s after launch");
+                logger.info("[TaN] Plugin disabled");
+                return;
+            }
+
+
             logger.info("[TaN] Savings Data");
 
             RegionDataStorage.saveStats();

@@ -66,7 +66,7 @@ public class JoinTownCommand extends SubCommand {
             TownData townData = TownDataStorage.get(townID);
             PlayerData playerData = PlayerDataStorage.get(player);
 
-            if(!townData.canAddMorePlayer()){
+            if(townData.isFull()){
                 player.sendMessage(getTANString() + Lang.INVITATION_TOWN_FULL.get());
                 return;
             }

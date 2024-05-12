@@ -940,7 +940,7 @@ public class GuiManager2 implements IGUI {
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
-                    if(!town.canAddMorePlayer()){
+                    if(town.isFull()){
                         player.sendMessage(getTANString() + Lang.INVITATION_TOWN_FULL.get());
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;

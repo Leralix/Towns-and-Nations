@@ -7,28 +7,30 @@ import org.tan.TownsAndNations.DataClass.History.DonationHistory;
 import org.tan.TownsAndNations.DataClass.History.MiscellaneousHistory;
 import org.tan.TownsAndNations.DataClass.History.TaxHistory;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
+import org.tan.TownsAndNations.DataClass.newChunkData.RegionClaimedChunk;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 public class RegionData {
 
-    private String id;
+    private final String id;
     private String name;
     private String capitalID;
     private String nationID;
-    private String dateCreated;
+    private Long dateTimeCreated;
     private String regionIconType;
     private Integer taxRate;
     private Integer balance;
     private Integer chunkColor;
     private String description;
-    private List<String> townsInRegion;
+    private final List<String> townsInRegion;
     private ChunkHistory chunkHistory;
     private DonationHistory donationHistory;
     private MiscellaneousHistory miscellaneousHistory;
@@ -42,7 +44,7 @@ public class RegionData {
         this.id = id;
         this.name = name;
         this.capitalID = ownerTown.getID();
-        this.dateCreated = new Date().toString();
+        this.dateTimeCreated = new Date().getTime();
         this.nationID = null;
         this.regionIconType = "COBBLESTONE";
         this.taxRate = 1;
@@ -181,7 +183,7 @@ public class RegionData {
 
     public ChunkHistory getChunkHistory() {
         if(chunkHistory == null)
-            chunkHistory = new ChunkHistory();
+            this.chunkHistory = new ChunkHistory();
         return chunkHistory;
     }
 
@@ -267,9 +269,22 @@ public class RegionData {
         return false;
     }
 
-    public String getDateCreated() {
-        if(dateCreated == null)
-            dateCreated = new Date().toString();
-        return dateCreated;
+    public Long getDateTimeCreated() {
+        if(dateTimeCreated == null)
+            dateTimeCreated = new Date().getTime();
+        return dateTimeCreated;
+    }
+
+    public Collection<RegionClaimedChunk> getClaims() {
+        Collection<RegionClaimedChunk> res = new ArrayList<>();
+        for(ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getClaimedChunksMap().values()){
+            if(claimedChunk instanceof RegionClaimedChunk regionClaimedChunk){
+                if(regionClaimedChunk.getOwnerID().equals(getID())){
+                    res.add(regionClaimedChunk);
+                }
+            }
+        }
+        return res;
+
     }
 }

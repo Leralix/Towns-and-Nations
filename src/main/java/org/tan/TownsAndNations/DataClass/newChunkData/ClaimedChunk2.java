@@ -1,7 +1,9 @@
 package org.tan.TownsAndNations.DataClass.newChunkData;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -9,6 +11,7 @@ import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
@@ -73,4 +76,9 @@ public abstract class ClaimedChunk2 {
     public abstract String getName();
 
     public abstract boolean canEntitySpawn(EntityType entityType);
+
+    public World getWorld() {
+        return Bukkit.getWorld(UUID.fromString(this.worldUUID));
+    }
+
 }

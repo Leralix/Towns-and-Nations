@@ -103,8 +103,11 @@ public enum Lang {
     BAL_COMMAND_DESC,
     BAL_AMOUNT,
     UNCLAIM_CHUNK_COMMAND_DESC,
-    UNCLAIMED_CHUNK_SUCCESS,
-    DEBUG_UNCLAIMED_CHUNK_SUCCESS,
+    UNCLAIMED_CHUNK_SUCCESS_TOWN,
+    UNCLAIMED_CHUNK_SUCCESS_REGION,
+
+    DEBUG_UNCLAIMED_CHUNK_SUCCESS_TOWN,
+    DEBUG_UNCLAIMED_CHUNK_SUCCESS_REGION,
     UNCLAIMED_CHUNK_NOT_RIGHT_TOWN,
     UNCLAIMED_CHUNK_NOT_RIGHT_REGION,
     MAP_COMMAND_DESC,
@@ -576,34 +579,33 @@ public enum Lang {
 
     private static final Map<Lang, String> translations = new HashMap<>();
 
-    public static void loadTranslations(String filename) {
+    public static boolean loadTranslations(final String filename) {
 
+        String fileToSearch = filename;
         File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
 
         if (!langFolder.exists()) {
             langFolder.mkdir();
         }
 
-        File file = new File(langFolder, filename);
+        File file = new File(langFolder, fileToSearch);
+
+        if(!file.exists())
+            return false;
+
         boolean replace = ConfigUtil.getCustomConfig("lang.yml").getBoolean("autoUpdateLangFiles",true);
         if(replace)
             TownsAndNations.getPlugin().saveResource("lang/" + filename, true);
 
-
-
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-
-
         for (Lang key : Lang.values()) {
-
             String message = config.getString("language." + key.name());
             if (message != null) {
                 translations.put(key, message);
             }
         }
         TownsAndNations.getPluginLogger().info(LANGUAGE_SUCCESSFULLY_LOADED.get());
-
-
+        return true;
     }
 
     public String get() {

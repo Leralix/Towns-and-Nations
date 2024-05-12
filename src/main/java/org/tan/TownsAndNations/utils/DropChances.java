@@ -2,6 +2,7 @@ package org.tan.TownsAndNations.utils;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -50,7 +51,10 @@ public class DropChances {
     }
 
     private static void loadDropChances(String section, FileConfiguration config, ItemStack item) {
-        for (String key : config.getConfigurationSection(section).getKeys(false)) {
+        ConfigurationSection confSec = config.getConfigurationSection(section);
+        if(confSec == null)
+            return;
+        for (String key : confSec.getKeys(false)) {
             int dropChance = config.getInt(section + "." + key);
             dropChances.put(key, new RareItem(dropChance, item));
         }

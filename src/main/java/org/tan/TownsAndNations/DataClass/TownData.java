@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.History.*;
 
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
+import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
@@ -35,6 +36,7 @@ public class TownData {
     private Integer townDefaultRankID;
     private String Description;
     public String DateCreated;
+    private Long dateTimeCreated;
     private String townIconMaterialCode;
     private String regionID;
     private boolean isRecruiting;
@@ -68,7 +70,7 @@ public class TownData {
         this.UuidLeader = leaderID;
         this.TownName = townName;
         this.Description = "default description";
-        this.DateCreated = new Date().toString();
+        this.dateTimeCreated = new Date().getTime();
         this.townIconMaterialCode = null;
         this.isRecruiting = false;
         this.balance = 0;
@@ -95,14 +97,14 @@ public class TownData {
 
     //used for sql, loading a town
     public TownData(String townId, String townName, String leaderID, String description, String dateCreated,
-                    String townIconMaterialCode, String townDefaultRankName, Boolean isRecruiting, int balance,
+                    String townIconMaterialCode, String townDefaultRankName, long dateTimeCreated, Boolean isRecruiting, int balance,
                     int flatTax, int chunkColor, HashMap<Integer, TownRank> newRanks){
         this.TownId = townId;
         this.TownName = townName;
         this.UuidLeader = leaderID;
         this.Description = description;
-        this.DateCreated = dateCreated;
         this.townIconMaterialCode = townIconMaterialCode;
+        this.dateTimeCreated = dateTimeCreated;
         this.newRanks = newRanks;
         this.PlayerJoinRequestSet= new HashSet<>();
         this.townPlayerListId.add(leaderID);
@@ -142,7 +144,7 @@ public class TownData {
         return newRank;
     }
     public boolean isRankNameUsed(String message) {
-        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("AllowNameDuplication",true))
+        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("AllowNameDuplication",false))
             return false;
 
         for (TownRank rank : this.getRanks()) {
@@ -171,18 +173,20 @@ public class TownData {
     public void setDescription(String description) {
         this.Description = description;
     }
-    public String getDateCreated() {
-        return this.DateCreated;
-    }
-    public void setDateCreated(String dateCreated) {
-        this.DateCreated = dateCreated;
+    public long getDateTimeCreated() {
+        if(this.dateTimeCreated == null)
+            this.dateTimeCreated = new Date().getTime();
+        return this.dateTimeCreated;
     }
     public ItemStack getTownIconItemStack() {
         if(this.townIconMaterialCode == null){
             return null;
         }
+        Material material = Material.getMaterial(getTownIconMaterialCode());
+        if(material == null)
+            return null;
         else
-            return new ItemStack(Material.getMaterial(this.townIconMaterialCode));
+            return new ItemStack(material);
     }
     public String getTownIconMaterialCode() {
         return townIconMaterialCode;
@@ -344,8 +348,8 @@ public class TownData {
             return this.relations.getRelationWith(otherTownID);
     }
 
-    public boolean canAddMorePlayer(){
-        return this.townPlayerListId.size() < this.townLevel.getPlayerCap();
+    public boolean isFull(){
+        return this.townPlayerListId.size() >= this.townLevel.getPlayerCap();
     }
     public boolean canClaimMoreChunk(){
         return this.getNumberOfClaimedChunk() < this.townLevel.getChunkCap();
@@ -636,25 +640,12 @@ public class TownData {
     }
 
     public PropertyData getProperty(Location location) {
-
         for(PropertyData propertyData : getPropertyDataList()){
             if(propertyData.containsLocation(location)){
                 return propertyData;
             }
         }
         return null;
-    }
-
-    public boolean canInteractWithProperty(Block block, String playerID) {
-
-        for(PropertyData propertyData : getPropertyDataList()){
-            if(propertyData.containsBloc(block)){
-                if(propertyData.getOwnerID().equals(playerID))
-                    return true;
-            }
-        }
-        return false;
-
     }
 
     public void removeProperty(PropertyData propertyData) {
@@ -672,4 +663,17 @@ public class TownData {
     public String getColoredTag() {
         return getChunkColor() + "[" + getTownTag() + "]";
     }
+
+    public Collection<TownClaimedChunk> getClaims(){
+        Collection<TownClaimedChunk> res = new ArrayList<>();
+        for(ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getClaimedChunksMap().values()){
+            if(claimedChunk instanceof TownClaimedChunk townClaimedChunk){
+                if(townClaimedChunk.getOwnerID().equals(getID())){
+                    res.add(townClaimedChunk);
+                }
+            }
+        }
+        return res;
+    }
+
 }

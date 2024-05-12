@@ -110,12 +110,9 @@ public class TownClaimedChunk extends ClaimedChunk2{
 
 
         if(NewClaimedChunkStorage.isChunkClaimed(chunk)){
-
             if(NewClaimedChunkStorage.isOwner(chunk, townStat.getID())) {
                 NewClaimedChunkStorage.unclaimChunk(player.getLocation().getChunk());
-
-                player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS.get(townStat.getNumberOfClaimedChunk(),townStat.getTownLevel().getChunkCap()));
-
+                player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_TOWN.get(townStat.getNumberOfClaimedChunk(),townStat.getTownLevel().getChunkCap()));
                 return;
             }
             TownData otherTown = TownDataStorage.get(NewClaimedChunkStorage.getChunkOwnerID(chunk));
