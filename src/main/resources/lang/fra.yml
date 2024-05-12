@@ -22,6 +22,7 @@ language:
   POSITION_NEED_TO_BE_IN_CLAIMED_CHUNK: "§cVous devez être dans un chunk revendiqué par votre ville pour définir les limites d'une propriété"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cVous devez être dans votre ville pour définir les limites d'une propriété"
   MESSAGE_NOT_RIGHT_SIZE: "§cVotre message doit faire exactement {0} caractères"
+  NO_TRADE_ALLOWED_EMBARGO: "§cVous ne pouvez pas commercer avec une ville sous embargo"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 <{1}> §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 <{1}> §f{2}"
@@ -48,7 +49,7 @@ language:
   CANCELLED_ACTION: "§cAction annulée"
   #Cancel
   CANCEL_WORD: "annuler" #The cancel word can be modified
-  WRITE_CANCEL_TO_CANCEL: "§fTapez \" §c{0}§f \" dans le tchat pour annuler"
+  WRITE_CANCEL_TO_CANCEL: "§Tapez \" §c{0}§f \" dans le tchat pour annuler"
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f demande à rejoindre votre ville. Vous pouvez retrouver la demande dans le menu des membres"
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Vous avez demandé à rejoindre §9{0}§f. Faites un clic droit sur cette ville pour annuler votre demande"
@@ -57,7 +58,7 @@ language:
   #BROADCAST
   TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f a fondé §9{1}§f !"
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c a quitté la ville !"
-  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f a créé la région : §b{1}§f !"
+  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f a créé la région : §9{1}§f !"
   GUI_REGION_KICK_TOWN_BROADCAST: "§9{0}§f a été exclue de la région"
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "Revendique un chunk"
@@ -89,7 +90,7 @@ language:
   #Relation diplomatique
   TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§cVous avez déjà une relation diplomatique avec cette ville"
   TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Invitation envoyée à §e{0}"
-  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§fVotre ville (§9{0}§f) a rejoint la région §b{1}"
+  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§fVotre ville (§9{0}§f) a rejoint la région §9{1}"
   #Diplomatic relation confirmation
   TOWN_DIPLOMATIC_INVITATION_RECEIVED_1: "§9{0}§f veut changer la relation avec votre ville en : §3{1}"
   TOWN_DIPLOMATIC_INVITATION_RECEIVED_2: "§l§2[Cliquez ici pour accepter]"
@@ -201,7 +202,7 @@ language:
   GUI_KINGDOM_ICON: "§aRoyaume"
   GUI_KINGDOM_ICON_DESC1: "§fEn développement"
   GUI_REGION_ICON: "§aRégion"
-  GUI_REGION_ICON_DESC1_REGION: "§fVotre région : §b{0}"
+  GUI_REGION_ICON_DESC1_REGION: "§fVotre région : §9{0}"
   GUI_REGION_ICON_DESC1_NO_REGION: "§fCréer une région ou consulter les régions existantes"
   GUI_TOWN_ICON: "§aVille"
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§fCréer une ville ou consulter les villes existantes"
@@ -229,7 +230,7 @@ language:
   GUI_TOWN_INFO_DESC2: "§fMembres : §9{0}♣"
   GUI_TOWN_INFO_DESC3: "§fChunks : §2{0}♦"
   GUI_TOWN_INFO_DESC4: "§fTrésorerie : §6{0}✦"
-  GUI_TOWN_INFO_DESC5_REGION: "§fRégion : §b{0}"
+  GUI_TOWN_INFO_DESC5_REGION: "§fRégion : §6{0}"
   GUI_TOWN_INFO_DESC5_NO_REGION: "§fPas de région"
   GUI_TOWN_INFO_TOWN_RELATION: "§fRelation diplomatique actuelle avec la ville : §e{0}"
   GUI_TOWN_INFO_IS_RECRUITING: "§fRecrutement : §aCandidatures acceptés"
@@ -413,7 +414,7 @@ language:
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1: "§fDonner la propiété de la ville à §e{0}"
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2: "§cVous perdrez votre statut et obtiendrez le rang par défaut"
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS: "Ville transférée avec succès à §e{0}"
-  GUI_REGION_SETTINGS_REGION_CHANGE_OWNERSHIP_SUCCESS: "La capitale régionale est dorénavant : §b{0}"
+  GUI_REGION_SETTINGS_REGION_CHANGE_OWNERSHIP_SUCCESS: "La capitale régionale est dorénavant : §e{0}"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE: "§aChanger la description de la ville"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1: "§fDescription actuelle : §7§o\"{0}\""
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT: "Entrez la nouvelle description de la ville dans le tchat"
@@ -564,6 +565,7 @@ language:
   ITEM_RARE_WOOD: "§3Bois précieux"
   ITEM_RARE_CROP: "§3Plante précieuse"
   ITEM_RARE_SOUL: "§3Âme de créature"
+  ITEM_RARE_FISH: "§3Poisson rare"
   RARE_ITEM_DESC_1: "§fCet objet peut être échangé contre de l'argent"
   #Custom villager jobs
   VILLAGER_GOLDSMITH: "Orfèvre"
@@ -579,14 +581,14 @@ language:
   #Chunk interactions
   CHUNK_ENTER_WILDERNESS: "§fTerres sauvages"
   CHUNK_ENTER_TOWN: "§fVous entrez dans §9{0}"
-  CHUNK_ENTER_REGION: "§fVous entrez dans §9{0}"
+  CHUNK_ENTER_REGION: "§fVous entrez dans §b{0}"
   CHUNK_ENTER_TOWN_AT_WAR: "§cVous êtes en guerre avec cette ville. Les joueurs de la ville ont été alerté de votre présence"
   CHUNK_INTRUSION_ALERT: "§cUn ennemi de la ville {0} est entré dans vos frontières: {1}"
   #History
   HISTORY_TOWN_CREATED: "{0} a fondé la ville : §9{1}"
   HISTORY_TOWN_DELETED: "{0} a supprimé la ville : §9{1}"
-  HISTORY_REGION_CREATED: "{0} a créé la région : §b{1}"
-  HISTORY_REGION_DELETED: "{0} a supprimé la région : §b{1}"
+  HISTORY_REGION_CREATED: "{0} a créé la région : §9{1}"
+  HISTORY_REGION_DELETED: "{0} a supprimé la région : §9{1}"
   HISTORY_TOWN_LEADER_CHANGED: "{0} a changé de chef : {1} -> {2}"
   HISTORY_REGION_CAPITAL_CHANGED: "{0} a défini {2} comme capitale de la région {1}"
   HISTORY_TOWN_NAME_CHANGED: "{0} a changé le nom de la ville : {1} -> {2}"

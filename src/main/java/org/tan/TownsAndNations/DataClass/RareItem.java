@@ -33,7 +33,7 @@ public class RareItem {
         int int_random = rand.nextInt(1, 100);
 
         if(int_random <= dropChance){
-            return world.dropItemNaturally(location, item);
+            return world.dropItem(location, item);
         }
         return null;
     }

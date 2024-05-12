@@ -94,11 +94,11 @@ public class RareItemDrops implements Listener {
         if(!event.getState().equals(PlayerFishEvent.State.CAUGHT_FISH))
             return;
 
-        Entity entity = event.getCaught();
-        if(entity == null)
+        Entity caughtEntity = event.getCaught();
+        if(caughtEntity == null)
             return;
 
-        if(entity instanceof LivingEntity)
+        if(caughtEntity instanceof LivingEntity)
             return;
 
         Item fish = (Item)event.getCaught();
@@ -106,11 +106,18 @@ public class RareItemDrops implements Listener {
         RareItem rareItem = DropChances.getRareItem(fishStack.getType().name());
 
         if(rareItem != null){
-            Entity spawnedEntity = rareItem.spawn(event.getCaught().getWorld(), event.getCaught().getLocation());
+            Item spawnedEntity = rareItem.spawn(event.getCaught().getWorld(), event.getCaught().getLocation());
+
             if (spawnedEntity != null) {
-                Vector velocity = event.getHook().getVelocity();
+                Vector playerPos = player.getLocation().toVector();
+                Vector caughtItemPos = caughtEntity.getLocation().toVector();
+
+                Vector velocity = playerPos.subtract(caughtItemPos).multiply(0.1);
+                velocity.add(new Vector(0, 0.15, 0));
+
                 spawnedEntity.setVelocity(velocity);
             }
+
         }
 
 
