@@ -159,6 +159,7 @@ public enum Lang {
     RELATION_NON_AGGRESSION_NAME,
     RELATION_EMBARGO_NAME,
     RELATION_WAR_NAME,
+    GUI_GENERIC_CLICK_TO_OPEN,
     GUI_WARNING_STILL_IN_DEV,
     GUI_BACK_ARROW,
     GUI_QUIT_ARROW,
@@ -230,7 +231,7 @@ public enum Lang {
     GUI_TREASURY_FLAT_TAX,
     GUI_TREASURY_FLAT_TAX_DESC1,
     GUI_TREASURY_TAX_HISTORY,
-    GUI_TREASURY_TAX_HISTORY_DESC1,
+
     GUI_TREASURY_SALARY_HISTORY,
     GUI_TREASURY_SALARY_HISTORY_DESC1,
     GUI_TREASURY_CHUNK_SPENDING_HISTORY,
@@ -252,6 +253,7 @@ public enum Lang {
     GUI_TOWN_LEVEL_UP_UNI,
     GUI_TOWN_LEVEL_UP_UNI_DESC1,
     GUI_TOWN_LEVEL_UP_UNI_DESC2,
+    GUI_TOWN_LEVEL_UP_UNI_DESC2_MAX_LEVEL,
     GUI_TOWN_LEVEL_UP_UNI_DESC3,
     GUI_TOWN_LEVEL_UP_UNI_DESC3_1,
     GUI_TOWN_LEVEL_UP_UNI_DESC3_2,
@@ -579,24 +581,29 @@ public enum Lang {
 
     private static final Map<Lang, String> translations = new HashMap<>();
 
-    public static boolean loadTranslations(final String filename) {
+    public static boolean loadTranslations(String filename) {
 
-        String fileToSearch = filename;
         File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
 
         if (!langFolder.exists()) {
             langFolder.mkdir();
         }
 
-        File file = new File(langFolder, fileToSearch);
+
+        if(!TownsAndNations.getLangList().contains(filename)){
+            filename = "eng.yml";
+            TownsAndNations.getPlugin().getLogger().warning("[TaN] -Language file not found, loading default language file");
+        }
+        File file = new File(langFolder, filename);
 
         if(!file.exists())
-            return false;
-
-        boolean replace = ConfigUtil.getCustomConfig("lang.yml").getBoolean("autoUpdateLangFiles",true);
-        if(replace)
             TownsAndNations.getPlugin().saveResource("lang/" + filename, true);
 
+        boolean replace = ConfigUtil.getCustomConfig("lang.yml").getBoolean("autoUpdateLangFiles",true);
+        if(replace) {
+            TownsAndNations.getPlugin().saveResource("lang/" + filename, true);
+
+        }
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         for (Lang key : Lang.values()) {
             String message = config.getString("language." + key.name());

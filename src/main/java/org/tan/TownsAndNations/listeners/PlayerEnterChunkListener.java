@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.checkerframework.checker.units.qual.N;
+import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChunkType;
@@ -18,8 +20,7 @@ import org.tan.TownsAndNations.utils.ChunkUtil;
 public class PlayerEnterChunkListener implements Listener {
 
     @EventHandler
-    public void PlayerMoveEvent(PlayerMoveEvent e){
-
+    public void PlayerMoveEvent(final @NotNull PlayerMoveEvent e){
 
         Chunk currentChunk = e.getFrom().getChunk();
         if(e.getTo() == null){
@@ -52,8 +53,6 @@ public class PlayerEnterChunkListener implements Listener {
             return;
         }
 
-
-
         //Three case: Into wilderness, into town, into region
         if(NextClaimedChunk == null){
             //If auto claim is on, claim the chunk
@@ -71,7 +70,7 @@ public class PlayerEnterChunkListener implements Listener {
 
     }
 
-    private void autoClaimChunk(PlayerMoveEvent e, Chunk nextChunk, Player player) {
+    private void autoClaimChunk(final @NotNull PlayerMoveEvent e, final @NotNull Chunk nextChunk, final @NotNull Player player) {
         ChunkType chunkType = PlayerAutoClaimStorage.getChunkType(e.getPlayer());
 
         switch (chunkType){
@@ -84,7 +83,7 @@ public class PlayerEnterChunkListener implements Listener {
         }
     }
 
-    public static final boolean equalsWithNulls(ClaimedChunk2 a, ClaimedChunk2 b) {
+    public static boolean equalsWithNulls(final ClaimedChunk2 a,final ClaimedChunk2 b) {
         if (a==b) return true;
         if ((a==null)||(b==null)) return false;
         return a.getOwnerID().equals(b.getOwnerID());

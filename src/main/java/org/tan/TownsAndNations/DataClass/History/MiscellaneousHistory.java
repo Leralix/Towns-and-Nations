@@ -5,7 +5,7 @@ import org.tan.TownsAndNations.DataClass.TransactionHistory;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
+import static org.tan.TownsAndNations.TownsAndNations.isSQLEnabled;
 
 public class MiscellaneousHistory {
 
@@ -37,7 +37,7 @@ public class MiscellaneousHistory {
 
     public List<String> getMiscellaneousLimitedHistory(int wantedNumberOfRows){
         //Will fix later
-        if(isSqlEnable())
+        if(isSQLEnabled())
             return null;
 
         int miscSize = this.miscellaneousPurchaseHistory.size();

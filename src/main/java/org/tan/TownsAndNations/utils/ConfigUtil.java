@@ -2,27 +2,47 @@ package org.tan.TownsAndNations.utils;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.TownsAndNations;
 
 import java.io.*;
 import java.util.*;
 
+/**
+ * This class is used for config related utilities.
+ */
 public class ConfigUtil {
-
+    /**
+     * This map is used to store the custom configs.
+     */
     private static final Map<String, FileConfiguration> configs = new HashMap<>();
 
-    public static FileConfiguration getCustomConfig(String fileName) {
+    /**
+     * Get a custom config by its name.
+     * @param fileName  The name of the config file.
+     * @return          The {@link FileConfiguration } object.
+     */
+    public static FileConfiguration getCustomConfig(final @NotNull String fileName) {
         return configs.get(fileName);
     }
 
-    public static void saveResource(String fileName) {
+    /**
+     * Save a resource file.
+     * @param fileName the name of the ressource file.
+     */
+    public static void saveResource(final @NotNull String fileName) {
         File file = new File(TownsAndNations.getPlugin().getDataFolder(),fileName);
         if (!file.exists()) {
             TownsAndNations.getPlugin().saveResource(fileName, false);
         }
     }
 
-    public static void saveAndUpdateResource(String fileName) {
+    /**
+     * Save and update a resource file. If some lines are missing in the current file, they will be added at the end
+     * @param fileName  The name of the resource file.
+     */
+    public static void saveAndUpdateResource(final @NotNull String fileName) {
+
 
         File currentFile = new File(TownsAndNations.getPlugin().getDataFolder(),fileName);
         if (!currentFile.exists()) {
@@ -55,12 +75,16 @@ public class ConfigUtil {
         }
 
         updateCurrentFileWithBaseFile(currentFile, baseFileLines, currentFileLines);
-
     }
 
 
-
-    public static void updateCurrentFileWithBaseFile(File file, List<String> baseFileLines, List<String> currentFileLines) {
+    /**
+     * Update the current file with the base file. If some lines are missing in the current file, they will be added at the end
+     * @param file              The file to update
+     * @param baseFileLines     The lines of the base file
+     * @param currentFileLines  The lines of the current file
+     */
+    public static void updateCurrentFileWithBaseFile(final @NotNull File file, final @NotNull  List<String> baseFileLines, final @NotNull List<String> currentFileLines) {
         Map<String, String> currentFileMap = new HashMap<>();
         for (String line : currentFileLines) {
             String key = line.contains(":") ? line.split(":")[0].trim() : line;
@@ -70,7 +94,7 @@ public class ConfigUtil {
         for (String baseLine : baseFileLines) {
             String baseKey = baseLine.contains(":") ? baseLine.split(":")[0].trim() : baseLine;
             if (!currentFileMap.containsKey(baseKey)) {
-                // Si la clé n'est pas présente dans le fichier actuel, ajouter la ligne
+                // Add line if not already present
                 TownsAndNations.getPluginLogger().warning("Adding config line : " + baseLine + " in config file");
                 currentFileLines.add(baseLine);
             }
@@ -78,6 +102,11 @@ public class ConfigUtil {
         writeToFile(currentFileLines, file);
     }
 
+    /**
+     * Write a list of lines to complete an updated config file
+     * @param lines         The list of new lines to add to the config file
+     * @param fileToWrite   The file to write
+     */
     public static void writeToFile(List<String> lines, File fileToWrite) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileToWrite, false))) { // false pour écraser le contenu existant
             for (String line : lines) {
@@ -89,6 +118,10 @@ public class ConfigUtil {
         }
     }
 
+    /**
+     * Load a custom config file into the memory
+     * @param fileName  The name of the file to load
+     */
     public static void loadCustomConfig(String fileName) {
 
         File configFile = new File(TownsAndNations.getPlugin().getDataFolder(), fileName);

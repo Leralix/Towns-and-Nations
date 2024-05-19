@@ -28,12 +28,6 @@ public class TownLevel {
     }
 
     public int getUpgradeLevel(String upgradeName){
-        /*
-        if (upgradeName == null) {
-            return 0; // Retourne 0 si upgradeName est null
-        }
-        */
-
         if(upgradeName.equals("TOWN_LEVEL")){
             return this.townLevel;
         }

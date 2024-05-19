@@ -2,6 +2,7 @@ package org.tan.TownsAndNations.utils;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
@@ -13,14 +14,15 @@ import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
+/**
+ *
+ */
 public class ChunkUtil {
-
-
-    public static void claimChunkForRegion(Player player) {
+    public static void claimChunkForRegion(final @NotNull Player player) {
         Chunk chunkToClaim = player.getLocation().getChunk();
         claimChunkForRegion(player, chunkToClaim);
     }
-    public static void claimChunkForRegion(Player player, Chunk chunk) {
+    public static void claimChunkForRegion(final @NotNull Player player,final @NotNull Chunk chunk) {
 
         //No town
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());

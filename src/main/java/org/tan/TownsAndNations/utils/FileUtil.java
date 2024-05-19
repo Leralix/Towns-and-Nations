@@ -1,5 +1,6 @@
 package org.tan.TownsAndNations.utils;
 
+import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.TownsAndNations;
 
 import java.io.BufferedWriter;
@@ -8,8 +9,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 
+/**
+ * This static class manage the archive txt for admins.
+ */
 public class FileUtil {
-    public static void addLineToHistory(String lineToAdd) {
+    public static void addLineToHistory(final @NotNull String lineToAdd) {
 
         if(!ConfigUtil.getCustomConfig("config.yml").getBoolean("archiveHistory",true)) {
             return;

@@ -34,7 +34,7 @@ public class PlayerJoinListener implements Listener {
                         Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(TownDataStorage.get(playerStat).getPlayerJoinRequestSet().size())
                 );
             }
-            if(ConfigUtil.getCustomConfig("config.yml").getBoolean("EnablePlayerPrefix",false))
+            if(TownsAndNations.townTagIsEnabled())
                 TagUtil.addPrefix(player);
         }
 

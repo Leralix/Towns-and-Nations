@@ -39,12 +39,9 @@ public class ChunkListener implements Listener {
         Location loc = breakedBlock.getLocation();
 
         //Check if the block is a property sign
-        if (breakedBlock.getType() == Material.OAK_SIGN) {
-            Sign sign = (Sign) breakedBlock.getState();
-            if (sign.hasMetadata("propertySign")) {
-                event.setCancelled(true);
-                return;
-            }
+        if (breakedBlock.hasMetadata("propertySign")) {
+            event.setCancelled(true);
+            return;
         }
 
         if(!CanPlayerDoAction(loc, player,BREAK))

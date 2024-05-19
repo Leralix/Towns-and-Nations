@@ -22,7 +22,7 @@ import org.tan.TownsAndNations.storage.Legacy.UpgradeStorage;
 import org.tan.TownsAndNations.utils.*;
 
 import static org.tan.TownsAndNations.TownsAndNations.isDynmapAddonLoaded;
-import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
+import static org.tan.TownsAndNations.TownsAndNations.isSQLEnabled;
 import static org.tan.TownsAndNations.enums.ChatCategory.*;
 import static org.tan.TownsAndNations.enums.MessageKey.*;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
@@ -59,19 +59,13 @@ public class GuiManager2 implements IGUI {
 
         Gui gui = IGUI.createChestGui("Main menu",3);
 
-        ItemStack KingdomHead = HeadUtils.makeSkull(Lang.GUI_KINGDOM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=");
-        ItemStack RegionHead = HeadUtils.makeSkull(Lang.GUI_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
-        ItemStack TownHead = HeadUtils.makeSkull(Lang.GUI_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
+        ItemStack KingdomHead = HeadUtils.makeSkull(Lang.GUI_KINGDOM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=",
+                Lang.GUI_KINGDOM_ICON_DESC1.get());
+        ItemStack RegionHead = HeadUtils.makeSkull(Lang.GUI_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=",
+                playerHaveRegion? Lang.GUI_REGION_ICON_DESC1_REGION.get(region.getName()):Lang.GUI_REGION_ICON_DESC1_NO_REGION.get());
+        ItemStack TownHead = HeadUtils.makeSkull(Lang.GUI_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
+                playerHaveTown? Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(town.getName()):Lang.GUI_TOWN_ICON_DESC1_NO_TOWN.get());
         ItemStack PlayerHead = HeadUtils.getPlayerHeadInformation(player);
-
-        HeadUtils.setLore(KingdomHead, Lang.GUI_KINGDOM_ICON_DESC1.get());
-
-        HeadUtils.setLore(RegionHead, playerHaveRegion?
-                Lang.GUI_REGION_ICON_DESC1_REGION.get(region.getName()):Lang.GUI_REGION_ICON_DESC1_NO_REGION.get());
-
-        HeadUtils.setLore(TownHead, playerHaveTown?
-                Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(town.getName()):Lang.GUI_TOWN_ICON_DESC1_NO_TOWN.get());
-
 
         GuiItem Kingdom = ItemBuilder.from(KingdomHead).asGuiItem(event -> {
             event.setCancelled(true);
@@ -214,8 +208,9 @@ public class GuiManager2 implements IGUI {
 
         ItemStack propertyIcon = propertyData.getIcon();
 
-        ItemStack stopRentingProperty = HeadUtils.getCustomLoreItem(Material.BARRIER, Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY.get());
-        HeadUtils.setLore(stopRentingProperty, Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY_DESC1.get());
+        ItemStack stopRentingProperty = HeadUtils.getCustomLoreItem(Material.BARRIER,
+                Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY.get(),
+                Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY_DESC1.get());
 
 
         GuiItem _propertyIcon = ItemBuilder.from(propertyIcon).asGuiItem(event -> event.setCancelled(true));
@@ -295,15 +290,11 @@ public class GuiManager2 implements IGUI {
                 Lang.GUI_RIGHT_CLICK_TO_CHANGE_PRICE.get()
         );
 
-        ItemStack drawnBox = HeadUtils.makeSkull(Lang.GUI_PROPERTY_DRAWN_BOX.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzc3ZDRhMjA2ZDc3NTdmNDc5ZjMzMmVjMWEyYmJiZWU1N2NlZjk3NTY4ZGQ4OGRmODFmNDg2NGFlZTdkM2Q5OCJ9fX0=");
+        ItemStack drawnBox = HeadUtils.makeSkull(Lang.GUI_PROPERTY_DRAWN_BOX.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzc3ZDRhMjA2ZDc3NTdmNDc5ZjMzMmVjMWEyYmJiZWU1N2NlZjk3NTY4ZGQ4OGRmODFmNDg2NGFlZTdkM2Q5OCJ9fX0=",
+                Lang.GUI_PROPERTY_DRAWN_BOX_DESC1.get());
 
-        HeadUtils.setLore(drawnBox,
-                Lang.GUI_PROPERTY_DRAWN_BOX_DESC1.get()
-        );
-
-        ItemStack deleteProperty = HeadUtils.getCustomLoreItem(Material.BARRIER,Lang.GUI_PROPERTY_DELETE_PROPERTY.get());
-        HeadUtils.setLore(deleteProperty, Lang.GUI_PROPERTY_DELETE_PROPERTY_DESC1.get());
-
+        ItemStack deleteProperty = HeadUtils.getCustomLoreItem(Material.BARRIER,Lang.GUI_PROPERTY_DELETE_PROPERTY.get(),
+                Lang.GUI_PROPERTY_DELETE_PROPERTY_DESC1.get());
 
         GuiItem _propertyIcon = ItemBuilder.from(propertyIcon).asGuiItem(event -> event.setCancelled(true));
 
@@ -387,8 +378,10 @@ public class GuiManager2 implements IGUI {
         });
 
         if(propertyData.isRented()){
-            ItemStack renterIcon = HeadUtils.getPlayerHead(Lang.GUI_PROPERTY_RENTED_BY.get(propertyData.getRenter().getName()),propertyData.getOfflineRenter());
-            HeadUtils.setLore(renterIcon,Lang.GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER.get());
+            ItemStack renterIcon = HeadUtils.getPlayerHead(
+                    Lang.GUI_PROPERTY_RENTED_BY.get(propertyData.getRenter().getName()),
+                    propertyData.getOfflineRenter(),
+                    Lang.GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER.get());
             GuiItem _renter = ItemBuilder.from(renterIcon).asGuiItem(event -> {
                 event.setCancelled(true);
 
@@ -432,13 +425,11 @@ public class GuiManager2 implements IGUI {
 
 
         if(propertyData.isForRent()){
-            ItemStack confirmRent = HeadUtils.makeSkull(Lang.CONFIRM_RENT.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0=");
+            ItemStack confirmRent = HeadUtils.makeSkull(Lang.CONFIRM_RENT.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0=",
+                    Lang.CONFIRM_RENT_DESC1.get(),
+                    Lang.CONFIRM_RENT_DESC2.get(propertyData.getRentPrice()));
             ItemStack cancelRent = HeadUtils.makeSkull(Lang.CANCEL_RENT.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0=");
 
-            HeadUtils.setLore(confirmRent,
-                    Lang.CONFIRM_RENT_DESC1.get(),
-                    Lang.CONFIRM_RENT_DESC2.get(propertyData.getRentPrice())
-            );
 
             GuiItem _confirmRent = ItemBuilder.from(confirmRent).asGuiItem(event -> {
                 event.setCancelled(true);
@@ -455,13 +446,10 @@ public class GuiManager2 implements IGUI {
 
         }
         else if (propertyData.isForSale()){
-            ItemStack confirmRent = HeadUtils.makeSkull(Lang.CONFIRM_SALE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0=");
-            ItemStack cancelRent = HeadUtils.makeSkull(Lang.CANCEL_SALE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0=");
-
-            HeadUtils.setLore(confirmRent,
+            ItemStack confirmRent = HeadUtils.makeSkull(Lang.CONFIRM_SALE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0=",
                     Lang.CONFIRM_SALE_DESC1.get(),
-                    Lang.CONFIRM_SALE_DESC2.get(propertyData.getBuyingPrice())
-            );
+                    Lang.CONFIRM_SALE_DESC2.get(propertyData.getBuyingPrice()));
+            ItemStack cancelRent = HeadUtils.makeSkull(Lang.CANCEL_SALE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0=");
 
             GuiItem _confirmRent = ItemBuilder.from(confirmRent).asGuiItem(event -> {
                 event.setCancelled(true);
@@ -480,9 +468,7 @@ public class GuiManager2 implements IGUI {
 
 
 
-        GuiItem _propertyIcon = ItemBuilder.from(propertyIcon).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
+        GuiItem _propertyIcon = ItemBuilder.from(propertyIcon).asGuiItem(event -> event.setCancelled(true));
 
         gui.setItem(1,5, _propertyIcon);
 
@@ -548,13 +534,9 @@ public class GuiManager2 implements IGUI {
         for (int i = startIndex; i < endIndex; i++) {
             TownData townData = (TownData) townDataStorage.toArray()[i];
 
-            ItemStack townIcon = HeadUtils.getTownIcon(townData);
+            ItemStack townIcon = HeadUtils.getTownIconWithInformations(townData);
 
-            HeadUtils.setLore(townIcon,
-                    Lang.GUI_TOWN_INFO_DESC0.get(townData.getDescription()),
-                    Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getLeaderID())).getName()),
-                    Lang.GUI_TOWN_INFO_DESC2.get(townData.getPlayerList().size()),
-                    Lang.GUI_TOWN_INFO_DESC3.get(townData.getNumberOfClaimedChunk()),
+            HeadUtils.addLore(townIcon,
                     "",
                     (townData.isRecruiting()) ? Lang.GUI_TOWN_INFO_IS_RECRUITING.get() : Lang.GUI_TOWN_INFO_IS_NOT_RECRUITING.get(),
                     (townData.isPlayerAlreadyRequested(player)) ? Lang.GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL.get() : Lang.GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN.get()
@@ -593,14 +575,13 @@ public class GuiManager2 implements IGUI {
         }
         GuiItem panel = ItemBuilder.from(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
 
-        ItemStack nextPageButton = HeadUtils.makeSkull(
-                Lang.GUI_NEXT_PAGE.get(),
-                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0="
-        );
-
         ItemStack previousPageButton = HeadUtils.makeSkull(
                 Lang.GUI_PREVIOUS_PAGE.get(),
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19"
+        );
+        ItemStack nextPageButton = HeadUtils.makeSkull(
+                Lang.GUI_NEXT_PAGE.get(),
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0="
         );
 
         GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
@@ -639,41 +620,33 @@ public class GuiManager2 implements IGUI {
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
 
-        ItemStack TownIcon = HeadUtils.getTownIcon(playerTown);
-        HeadUtils.setLore(TownIcon,
-                Lang.GUI_TOWN_INFO_DESC0.get(playerTown.getDescription()),
-                "",
-                Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerTown.getLeaderID())).getName()),
-                Lang.GUI_TOWN_INFO_DESC2.get(playerTown.getPlayerList().size()),
-                Lang.GUI_TOWN_INFO_DESC3.get(playerTown.getNumberOfClaimedChunk()),
-                Lang.GUI_TOWN_INFO_DESC4.get(playerTown.getBalance()),
-                playerTown.haveRegion()? Lang.GUI_TOWN_INFO_DESC5_REGION.get(playerTown.getRegion().getName()): Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get(),
+        ItemStack TownIcon = HeadUtils.getTownIconWithInformations(playerTown);
+        HeadUtils.addLore(TownIcon,
                 Lang.GUI_TOWN_INFO_CHANGE_ICON.get()
         );
 
-        ItemStack GoldIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_TREASURY_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        HeadUtils.setLore(GoldIcon, Lang.GUI_TOWN_TREASURY_ICON_DESC1.get());
+        ItemStack GoldIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_TREASURY_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
+                Lang.GUI_TOWN_TREASURY_ICON_DESC1.get());
 
-        ItemStack memberIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Q0ZDQ5NmIxZGEwNzUzNmM5NGMxMzEyNGE1ODMzZWJlMGM1MzgyYzhhMzM2YWFkODQ2YzY4MWEyOGQ5MzU2MyJ9fX0=");
-        HeadUtils.setLore(memberIcon, Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get());
+        ItemStack memberIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Q0ZDQ5NmIxZGEwNzUzNmM5NGMxMzEyNGE1ODMzZWJlMGM1MzgyYzhhMzM2YWFkODQ2YzY4MWEyOGQ5MzU2MyJ9fX0=",
+                Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get());
 
-        ItemStack ClaimIcon = HeadUtils.makeSkull(Lang.GUI_CLAIM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
-        HeadUtils.setLore(ClaimIcon, Lang.GUI_CLAIM_ICON_DESC1.get());
+        ItemStack ClaimIcon = HeadUtils.makeSkull(Lang.GUI_CLAIM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=",
+                Lang.GUI_CLAIM_ICON_DESC1.get());
 
-        ItemStack otherTownIcon = HeadUtils.makeSkull(Lang.GUI_OTHER_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=");
-        HeadUtils.setLore(otherTownIcon, Lang.GUI_OTHER_TOWN_ICON_DESC1.get());
+        ItemStack otherTownIcon = HeadUtils.makeSkull(Lang.GUI_OTHER_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=",
+                Lang.GUI_OTHER_TOWN_ICON_DESC1.get());
 
-        ItemStack RelationIcon = HeadUtils.makeSkull(Lang.GUI_RELATION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=");
-        HeadUtils.setLore(RelationIcon, Lang.GUI_RELATION_ICON_DESC1.get());
+        ItemStack RelationIcon = HeadUtils.makeSkull(Lang.GUI_RELATION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=",
+                Lang.GUI_RELATION_ICON_DESC1.get());
 
-        ItemStack LevelIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmJlNTI5YWI2YjJlYTdjNTBkOTE5MmQ4OWY4OThmZDdkYThhOWU3NTBkMzc4Mjk1ZGY3MzIwNWU3YTdlZWFlMCJ9fX0=");
-        HeadUtils.setLore(LevelIcon, Lang.GUI_TOWN_LEVEL_ICON_DESC1.get());
+        ItemStack LevelIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmJlNTI5YWI2YjJlYTdjNTBkOTE5MmQ4OWY4OThmZDdkYThhOWU3NTBkMzc4Mjk1ZGY3MzIwNWU3YTdlZWFlMCJ9fX0=",
+                Lang.GUI_TOWN_LEVEL_ICON_DESC1.get());
 
-        ItemStack SettingIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_SETTINGS_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkMmNiMzg0NThkYTE3ZmI2Y2RhY2Y3ODcxNjE2MDJhMjQ5M2NiZjkzMjMzNjM2MjUzY2ZmMDdjZDg4YTljMCJ9fX0=");
-        HeadUtils.setLore(SettingIcon, Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get());
+        ItemStack SettingIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_SETTINGS_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkMmNiMzg0NThkYTE3ZmI2Y2RhY2Y3ODcxNjE2MDJhMjQ5M2NiZjkzMjMzNjM2MjUzY2ZmMDdjZDg4YTljMCJ9fX0=",
+                Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get());
 
-        ItemStack propertyIcon = HeadUtils.getCustomLoreItem(Material.OAK_HANGING_SIGN, Lang.GUI_TOWN_PROPERTIES_ICON.get());
-        HeadUtils.setLore(propertyIcon, Lang.GUI_TOWN_PROPERTIES_ICON_DESC1.get());
+        ItemStack propertyIcon = HeadUtils.getCustomLoreItem(Material.OAK_HANGING_SIGN, Lang.GUI_TOWN_PROPERTIES_ICON.get(),Lang.GUI_TOWN_PROPERTIES_ICON_DESC1.get());
 
         GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -768,26 +741,7 @@ public class GuiManager2 implements IGUI {
         for (int i = startIndex; i < endIndex; i++) {
             TownData otherTown = (TownData) townDataStorage.toArray()[i];
 
-
-            ItemStack townIcon = HeadUtils.getTownIcon(otherTown.getID());
-            TownRelation relation = playerTown.getRelationWith(otherTown);
-
-            String relationName;
-            if(relation == null){
-                relationName = Lang.GUI_TOWN_RELATION_NEUTRAL.get();
-            }
-            else {
-                relationName = relation.getColor() + relation.getName();
-            }
-
-            HeadUtils.setLore(townIcon,
-                    Lang.GUI_TOWN_INFO_DESC0.get(otherTown.getDescription()),
-                    Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(otherTown.getLeaderID())).getName()),
-                    Lang.GUI_TOWN_INFO_DESC2.get(otherTown.getPlayerList().size()),
-                    Lang.GUI_TOWN_INFO_DESC3.get(otherTown.getNumberOfClaimedChunk()),
-                    Lang.GUI_TOWN_INFO_TOWN_RELATION.get(relationName)
-            );
-
+            ItemStack townIcon = HeadUtils.getTownIconWithInformations(otherTown.getID(), playerTown.getID());
             GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
 
             gui.setItem(slot, _townIteration);
@@ -854,13 +808,11 @@ public class GuiManager2 implements IGUI {
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
             PlayerData playerIterateData = PlayerDataStorage.get(playerUUID);
 
-            ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate);
-            HeadUtils.setLore(
-                    playerHead,
+            ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
                     Lang.GUI_TOWN_MEMBER_DESC1.get(playerIterateData.getTownRank().getColoredName()),
                     Lang.GUI_TOWN_MEMBER_DESC2.get(EconomyUtil.getBalance(playerIterate)),
-                    playerStat.hasPermission(KICK_PLAYER) ? Lang.GUI_TOWN_MEMBER_DESC3.get() : ""
-            );
+                    playerStat.hasPermission(KICK_PLAYER) ? Lang.GUI_TOWN_MEMBER_DESC3.get() : "");
+
             GuiItem _playerIcon = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(event.getClick() == ClickType.RIGHT){
@@ -923,13 +875,9 @@ public class GuiManager2 implements IGUI {
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
             PlayerData playerIterateData = PlayerDataStorage.get(playerUUID);
 
-            ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate);
-
-            HeadUtils.setLore(
-                    playerHead,
+            ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
                     Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC2.get(),
-                    Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC3.get()
-            );
+                    Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC3.get());
 
             GuiItem _playerIcon = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
@@ -1069,7 +1017,6 @@ public class GuiManager2 implements IGUI {
                 Lang.GUI_TOWN_MEMBERS_ROLE_NAME_DESC1.get());
 
         ItemStack roleRankIcon = townRank.getRankEnum().getRankGuiIcon();
-        ItemStack membersRank = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==");
 
         ArrayList<String> playerNames = new ArrayList<>();
         playerNames.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1.get());
@@ -1077,8 +1024,8 @@ public class GuiManager2 implements IGUI {
             String playerName = PlayerDataStorage.get(playerUUID).getName();
             playerNames.add("-" + Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC.get(playerName));
         }
-
-        HeadUtils.setLore(membersRank, playerNames);
+        ItemStack membersRank = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==",
+                playerNames);
 
         ItemStack managePermission = HeadUtils.getCustomLoreItem(Material.ANVIL,Lang.GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION.get());
         ItemStack renameRank = HeadUtils.getCustomLoreItem(Material.NAME_TAG,Lang.GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME.get());
@@ -1099,17 +1046,12 @@ public class GuiManager2 implements IGUI {
                 Lang.GUI_TOWN_MEMBERS_ROLE_SALARY.get(),
                 Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_DESC1.get(townRank.getSalary()));
 
-        ItemStack lowerSalary = HeadUtils.makeSkull(Lang.GUI_TREASURY_LOWER_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=");
-        ItemStack increaseSalary = HeadUtils.makeSkull(Lang.GUI_TREASURY_INCREASE_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
-        HeadUtils.setLore(lowerSalary,
+        ItemStack lowerSalary = HeadUtils.makeSkull(Lang.GUI_TREASURY_LOWER_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=",
                 Lang.GUI_DECREASE_1_DESC.get(),
-                Lang.GUI_DECREASE_10_DESC.get()
-        );
-        HeadUtils.setLore(increaseSalary,
+                Lang.GUI_DECREASE_10_DESC.get());
+        ItemStack increaseSalary = HeadUtils.makeSkull(Lang.GUI_TREASURY_INCREASE_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19",
                 Lang.GUI_INCREASE_1_DESC.get(),
-                Lang.GUI_INCREASE_10_DESC.get()
-        );
-
+                Lang.GUI_INCREASE_10_DESC.get());
 
         GuiItem _roleIcon = ItemBuilder.from(roleIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1422,98 +1364,68 @@ public class GuiManager2 implements IGUI {
         TownData town = TownDataStorage.get(player);
         PlayerData playerStat = PlayerDataStorage.get(player);
 
-
-        ItemStack goldIcon = HeadUtils.makeSkull(Lang.GUI_TREASURY_STORAGE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack goldSpendingIcon = HeadUtils.makeSkull(Lang.GUI_TREASURY_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack lowerTax = HeadUtils.makeSkull(Lang.GUI_TREASURY_LOWER_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=");
-        ItemStack increaseTax = HeadUtils.makeSkull(Lang.GUI_TREASURY_INCREASE_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
-        ItemStack taxInfo = HeadUtils.makeSkull(Lang.GUI_TREASURY_FLAT_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk4ZGY0MmY0NzdmMjEzZmY1ZTlkN2ZhNWE0Y2M0YTY5ZjIwZDljZWYyYjkwYzRhZTRmMjliZDE3Mjg3YjUifX19");
-        ItemStack taxHistory = HeadUtils.makeSkull(Lang.GUI_TREASURY_TAX_HISTORY.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmU1OWYyZDNiOWU3ZmI5NTBlOGVkNzkyYmU0OTIwZmI3YTdhOWI5MzQ1NjllNDQ1YjJiMzUwM2ZlM2FiOTAyIn19fQ==");
-        ItemStack salarySpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_SALARY_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjlhNjAwYWIwYTgzMDk3MDY1Yjk1YWUyODRmODA1OTk2MTc3NDYwOWFkYjNkYmQzYTRjYTI2OWQ0NDQwOTU1MSJ9fX0=");
-        ItemStack chunkSpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack miscSpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGMzNjA0NTIwOGY5YjVkZGNmOGM0NDMzZTQyNGIxY2ExN2I5NGY2Yjk2MjAyZmIxZTUyNzBlZThkNTM4ODFiMSJ9fX0=");
-        ItemStack donation = HeadUtils.getCustomLoreItem(Material.DIAMOND,Lang.GUI_TREASURY_DONATION.get(),Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get());
-        ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.get());
-
-
-        int nextTaxes = 0;
-
-        for (String playerID : town.getPlayerList()){
-            PlayerData otherPlayerData = PlayerDataStorage.get(playerID);
-            OfflinePlayer otherPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
-            if(!otherPlayerData.getTownRank().isPayingTaxes()){
-                continue;
-            }
-            if(EconomyUtil.getBalance(otherPlayer) < town.getFlatTax()){
-                continue;
-            }
-            nextTaxes = nextTaxes + town.getFlatTax();
-
-        }
-
         // Chunk upkeep
         int numberClaimedChunk = town.getNumberOfClaimedChunk();
         float upkeepCost = ConfigUtil.getCustomConfig("config.yml").getInt("ChunkUpkeepCost");
         float totalUpkeep = numberClaimedChunk * upkeepCost/10;
-        //total salary
-        int totalSalary = 0;
-        for (TownRank rank : town.getRanks()) {
+        int totalSalary = town.getTotalSalaryCost();
 
-            List<String> playerIdList = rank.getPlayers(town.getID());
-            totalSalary += playerIdList.size() * rank.getSalary();
-        }
 
-        HeadUtils.setLore(goldIcon,
+        ItemStack goldIcon = HeadUtils.makeSkull(Lang.GUI_TREASURY_STORAGE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
                 Lang.GUI_TREASURY_STORAGE_DESC1.get(town.getBalance()),
-                Lang.GUI_TREASURY_STORAGE_DESC2.get(nextTaxes));
-        HeadUtils.setLore(goldSpendingIcon,
+                Lang.GUI_TREASURY_STORAGE_DESC2.get(town.computeNextTax()));
+
+        ItemStack goldSpendingIcon = HeadUtils.makeSkull(Lang.GUI_TREASURY_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
                 Lang.GUI_TREASURY_SPENDING_DESC1.get(totalSalary + totalUpkeep),
                 Lang.GUI_TREASURY_SPENDING_DESC2.get(totalSalary),
                 Lang.GUI_TREASURY_SPENDING_DESC3.get(totalUpkeep));
-        HeadUtils.setLore(lowerTax,
+        ItemStack lowerTax = HeadUtils.makeSkull(Lang.GUI_TREASURY_LOWER_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=",
                 Lang.GUI_DECREASE_1_DESC.get(),
                 Lang.GUI_DECREASE_10_DESC.get());
-        HeadUtils.setLore(taxInfo,
-                Lang.GUI_TREASURY_FLAT_TAX_DESC1.get(town.getFlatTax()));
-        HeadUtils.setLore(increaseTax,
+        ItemStack increaseTax = HeadUtils.makeSkull(Lang.GUI_TREASURY_INCREASE_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19",
                 Lang.GUI_INCREASE_1_DESC.get(),
                 Lang.GUI_INCREASE_10_DESC.get());
-        HeadUtils.setLore(salarySpending,
+        ItemStack taxInfo = HeadUtils.makeSkull(Lang.GUI_TREASURY_FLAT_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk4ZGY0MmY0NzdmMjEzZmY1ZTlkN2ZhNWE0Y2M0YTY5ZjIwZDljZWYyYjkwYzRhZTRmMjliZDE3Mjg3YjUifX19",
+                Lang.GUI_TREASURY_FLAT_TAX_DESC1.get(town.getFlatTax()));
+        ItemStack taxHistory = HeadUtils.makeSkull(Lang.GUI_TREASURY_TAX_HISTORY.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmU1OWYyZDNiOWU3ZmI5NTBlOGVkNzkyYmU0OTIwZmI3YTdhOWI5MzQ1NjllNDQ1YjJiMzUwM2ZlM2FiOTAyIn19fQ==");
+        ItemStack salarySpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_SALARY_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjlhNjAwYWIwYTgzMDk3MDY1Yjk1YWUyODRmODA1OTk2MTc3NDYwOWFkYjNkYmQzYTRjYTI2OWQ0NDQwOTU1MSJ9fX0=",
                 Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.get(totalSalary));
-        HeadUtils.setLore(chunkSpending,
+        ItemStack chunkSpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
                 Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.get(totalUpkeep),
                 Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(upkeepCost),
                 Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(numberClaimedChunk));
-        HeadUtils.setLore(miscSpending,
+        ItemStack miscSpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGMzNjA0NTIwOGY5YjVkZGNmOGM0NDMzZTQyNGIxY2ExN2I5NGY2Yjk2MjAyZmIxZTUyNzBlZThkNTM4ODFiMSJ9fX0=",
                 Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1.get());
+        ItemStack donation = HeadUtils.getCustomLoreItem(Material.DIAMOND,Lang.GUI_TREASURY_DONATION.get(),Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get());
+        ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.get());
 
-        if(!isSqlEnable()){
-            HeadUtils.setLore(donationHistory, town.getDonationHistory().get(5));
-            HeadUtils.setLore(miscSpending, town.getMiscellaneousHistory().get(5));
-            HeadUtils.setLore(taxHistory, town.getTaxHistory().get(5));
+
+        if(!isSQLEnabled()){
+            HeadUtils.setLore(donationHistory, town.getDonationHistory().get(5),Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
+            HeadUtils.setLore(miscSpending, town.getMiscellaneousHistory().get(5), Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
+            HeadUtils.setLore(taxHistory, town.getTaxHistory().get(5), Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
         }
-        HeadUtils.addLore(taxHistory,Lang.GUI_TREASURY_TAX_HISTORY_DESC1.get());
 
 
         GuiItem _goldInfo = ItemBuilder.from(goldIcon).asGuiItem(event -> event.setCancelled(true));
         GuiItem _goldSpendingIcon = ItemBuilder.from(goldSpendingIcon).asGuiItem(event -> event.setCancelled(true));
         GuiItem _taxHistory = ItemBuilder.from(taxHistory).asGuiItem(event -> {
-            if(!isSqlEnable())
+            if(!isSQLEnabled())
                 OpenTownEconomicsHistory(player,HistoryEnum.TAX);
             event.setCancelled(true);
         });
         GuiItem _salarySpending = ItemBuilder.from(salarySpending).asGuiItem(event -> {
-            if(!isSqlEnable())
+            if(!isSQLEnabled())
                 OpenTownEconomicsHistory(player,HistoryEnum.SALARY);
             event.setCancelled(true);
         });
         GuiItem _chunkSpending = ItemBuilder.from(chunkSpending).asGuiItem(event -> {
-            if(!isSqlEnable())
+            if(!isSQLEnabled())
                 OpenTownEconomicsHistory(player,HistoryEnum.CHUNK);
             event.setCancelled(true);
         });
         GuiItem _miscSpending = ItemBuilder.from(miscSpending).asGuiItem(event -> {
-            if(!isSqlEnable())
+            if(!isSQLEnabled())
                 OpenTownEconomicsHistory(player,HistoryEnum.MISCELLANEOUS);
             event.setCancelled(true);
         });
@@ -1526,7 +1438,7 @@ public class GuiManager2 implements IGUI {
             event.setCancelled(true);
         });
         GuiItem _donationHistory = ItemBuilder.from(donationHistory).asGuiItem(event -> {
-            if(!isSqlEnable())
+            if(!isSQLEnabled())
                 OpenTownEconomicsHistory(player,HistoryEnum.DONATION);
             event.setCancelled(true);
         });
@@ -1654,9 +1566,7 @@ public class GuiManager2 implements IGUI {
                         }
                     }
 
-                    ItemStack transactionHistoryItem = HeadUtils.getCustomLoreItem(Material.PAPER,date);
-
-                    HeadUtils.setLore(transactionHistoryItem,lines);
+                    ItemStack transactionHistoryItem = HeadUtils.getCustomLoreItem(Material.PAPER,date,lines);
 
                     GuiItem _transactionHistoryItem = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> event.setCancelled(true));
 
@@ -1711,9 +1621,7 @@ public class GuiManager2 implements IGUI {
                         }
                     }
 
-                    ItemStack transactionHistoryItem = HeadUtils.getCustomLoreItem(Material.PAPER,date);
-
-                    HeadUtils.setLore(transactionHistoryItem,lines);
+                    ItemStack transactionHistoryItem = HeadUtils.getCustomLoreItem(Material.PAPER,date,lines);
 
                     GuiItem _transactionHistoryItem = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> event.setCancelled(true));
 
@@ -1791,11 +1699,11 @@ public class GuiManager2 implements IGUI {
             }
             else if(townLevel.getTownLevel() == (i - 2 + level)){
                 _pannel = _iron_bars;
-                ItemStack upgradeTownLevel = HeadUtils.getCustomLoreItem(Material.ORANGE_STAINED_GLASS_PANE, Lang.GUI_TOWN_LEVEL_UP.get());
-                HeadUtils.setLore(upgradeTownLevel,
+                ItemStack upgradeTownLevel = HeadUtils.getCustomLoreItem(Material.ORANGE_STAINED_GLASS_PANE,
+                        Lang.GUI_TOWN_LEVEL_UP.get(),
                         Lang.GUI_TOWN_LEVEL_UP_DESC1.get(townLevel.getTownLevel()),
-                        Lang.GUI_TOWN_LEVEL_UP_DESC2.get(townLevel.getTownLevel() + 1, townLevel.getMoneyRequiredTownLevel())
-                );
+                        Lang.GUI_TOWN_LEVEL_UP_DESC2.get(townLevel.getTownLevel() + 1, townLevel.getMoneyRequiredTownLevel()));
+
                 _bottompannel = ItemBuilder.from(upgradeTownLevel).asGuiItem(event -> {
                     event.setCancelled(true);
                     upgradeTown(player,townData);
@@ -2060,11 +1968,10 @@ public class GuiManager2 implements IGUI {
         for (String playerUUID : townData.getPlayerList()){
             OfflinePlayer townPlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerUUID));
 
-            ItemStack playerHead = HeadUtils.getPlayerHead(townPlayer.getName(),townPlayer);
-            HeadUtils.setLore(playerHead,
+            ItemStack playerHead = HeadUtils.getPlayerHead(townPlayer.getName(),townPlayer,
                     Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1.get(player.getName()),
-                    Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2.get()
-            );
+                    Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2.get());
+
 
             GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
@@ -2483,7 +2390,6 @@ public class GuiManager2 implements IGUI {
             if(slot >= 45)
                 break;
 
-            ItemStack mobIcon = HeadUtils.makeSkull(mobEnum.name(),mobEnum.getTexture());
 
             UpgradeStatus upgradeStatus = chunkSettings.getSpawnControl(mobEnum);
 
@@ -2498,12 +2404,10 @@ public class GuiManager2 implements IGUI {
                 }
             }
             else{
-
                 status.add(Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_LOCKED.get());
                 status.add(Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_LOCKED2.get(cost));
             }
-
-            HeadUtils.setLore(mobIcon,status);
+            ItemStack mobIcon = HeadUtils.makeSkull(mobEnum.name(),mobEnum.getTexture(),status);
 
             GuiItem mobItem = new GuiItem(mobIcon, event -> {
                 event.setCancelled(true);
@@ -2711,23 +2615,23 @@ public class GuiManager2 implements IGUI {
 
         ItemStack regionIcon = getRegionIcon(playerRegion);
 
-        ItemStack GoldIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_TREASURY_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        HeadUtils.setLore(GoldIcon, Lang.GUI_TOWN_TREASURY_ICON_DESC1.get());
+        ItemStack GoldIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_TREASURY_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
+                Lang.GUI_TOWN_TREASURY_ICON_DESC1.get());
 
-        ItemStack townIcon = HeadUtils.makeSkull(Lang.GUI_REGION_TOWN_LIST.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
-        HeadUtils.setLore(townIcon, Lang.GUI_REGION_TOWN_LIST_DESC1.get());
+        ItemStack townIcon = HeadUtils.makeSkull(Lang.GUI_REGION_TOWN_LIST.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
+                Lang.GUI_REGION_TOWN_LIST_DESC1.get());
 
-        ItemStack otherRegionIcon = HeadUtils.makeSkull(Lang.GUI_OTHER_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=");
-        HeadUtils.setLore(otherRegionIcon, Lang.GUI_OTHER_REGION_ICON_DESC1.get());
+        ItemStack otherRegionIcon = HeadUtils.makeSkull(Lang.GUI_OTHER_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=",
+                Lang.GUI_OTHER_REGION_ICON_DESC1.get());
 
-        ItemStack RelationIcon = HeadUtils.makeSkull(Lang.GUI_RELATION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=");
-        HeadUtils.setLore(RelationIcon, Lang.GUI_RELATION_ICON_DESC1.get());
+        ItemStack RelationIcon = HeadUtils.makeSkull(Lang.GUI_RELATION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=",
+                Lang.GUI_RELATION_ICON_DESC1.get());
 
-        ItemStack LevelIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmJlNTI5YWI2YjJlYTdjNTBkOTE5MmQ4OWY4OThmZDdkYThhOWU3NTBkMzc4Mjk1ZGY3MzIwNWU3YTdlZWFlMCJ9fX0=");
-        HeadUtils.setLore(LevelIcon, Lang.GUI_TOWN_LEVEL_ICON_DESC1.get());
+        ItemStack LevelIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmJlNTI5YWI2YjJlYTdjNTBkOTE5MmQ4OWY4OThmZDdkYThhOWU3NTBkMzc4Mjk1ZGY3MzIwNWU3YTdlZWFlMCJ9fX0=",
+                Lang.GUI_TOWN_LEVEL_ICON_DESC1.get());
 
-        ItemStack SettingIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_SETTINGS_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkMmNiMzg0NThkYTE3ZmI2Y2RhY2Y3ODcxNjE2MDJhMjQ5M2NiZjkzMjMzNjM2MjUzY2ZmMDdjZDg4YTljMCJ9fX0=");
-        HeadUtils.setLore(SettingIcon, Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get());
+        ItemStack SettingIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_SETTINGS_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkMmNiMzg0NThkYTE3ZmI2Y2RhY2Y3ODcxNjE2MDJhMjQ5M2NiZjkzMjMzNjM2MjUzY2ZmMDdjZDg4YTljMCJ9fX0=",
+                Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get());
 
         GuiItem _regionIcon = ItemBuilder.from(regionIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -2997,44 +2901,36 @@ public class GuiManager2 implements IGUI {
         int taxTomorrow = playerRegion.getIncomeTomorrow();
 
 
-        ItemStack goldIcon = HeadUtils.makeSkull(Lang.GUI_TREASURY_STORAGE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack goldSpendingIcon = HeadUtils.makeSkull(Lang.GUI_TREASURY_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
+        ItemStack goldIcon = HeadUtils.makeSkull(Lang.GUI_TREASURY_STORAGE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
+                Lang.GUI_TREASURY_STORAGE_DESC1.get(treasury),
+                Lang.GUI_TREASURY_STORAGE_DESC2.get(taxTomorrow));
+        ItemStack goldSpendingIcon = HeadUtils.makeSkull(Lang.GUI_TREASURY_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
+                Lang.GUI_WARNING_STILL_IN_DEV.get());
 
-        ItemStack lowerTax = HeadUtils.makeSkull(Lang.GUI_TREASURY_LOWER_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=");
-        ItemStack increaseTax = HeadUtils.makeSkull(Lang.GUI_TREASURY_INCREASE_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
-        ItemStack taxInfo = HeadUtils.makeSkull(Lang.GUI_TREASURY_FLAT_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk4ZGY0MmY0NzdmMjEzZmY1ZTlkN2ZhNWE0Y2M0YTY5ZjIwZDljZWYyYjkwYzRhZTRmMjliZDE3Mjg3YjUifX19");
-        ItemStack taxHistory = HeadUtils.makeSkull(Lang.GUI_TREASURY_TAX_HISTORY.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmU1OWYyZDNiOWU3ZmI5NTBlOGVkNzkyYmU0OTIwZmI3YTdhOWI5MzQ1NjllNDQ1YjJiMzUwM2ZlM2FiOTAyIn19fQ==");
-
+        ItemStack lowerTax = HeadUtils.makeSkull(Lang.GUI_TREASURY_LOWER_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=",
+                Lang.GUI_DECREASE_1_DESC.get(),
+                Lang.GUI_DECREASE_10_DESC.get());
+        ItemStack increaseTax = HeadUtils.makeSkull(Lang.GUI_TREASURY_INCREASE_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19",
+                Lang.GUI_INCREASE_1_DESC.get(),
+                Lang.GUI_INCREASE_10_DESC.get());
+        ItemStack taxInfo = HeadUtils.makeSkull(Lang.GUI_TREASURY_FLAT_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk4ZGY0MmY0NzdmMjEzZmY1ZTlkN2ZhNWE0Y2M0YTY5ZjIwZDljZWYyYjkwYzRhZTRmMjliZDE3Mjg3YjUifX19",
+                Lang.GUI_TREASURY_FLAT_TAX_DESC1.get(tax));
+        ItemStack taxHistory = HeadUtils.makeSkull(Lang.GUI_TREASURY_TAX_HISTORY.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmU1OWYyZDNiOWU3ZmI5NTBlOGVkNzkyYmU0OTIwZmI3YTdhOWI5MzQ1NjllNDQ1YjJiMzUwM2ZlM2FiOTAyIn19fQ==",
+                playerRegion.getTaxHistory().get(5),
+                Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
         ItemStack chunkSpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
         ItemStack donation = HeadUtils.getCustomLoreItem(Material.DIAMOND,
                 Lang.GUI_TREASURY_DONATION.get(),
                 Lang.GUI_REGION_TREASURY_DONATION_DESC1.get());
-        ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.get());
+        ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,
+                Lang.GUI_TREASURY_DONATION_HISTORY.get(),
+                playerRegion.getDonationHistory().get(5),
+                Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
 
-        HeadUtils.setLore(goldIcon,
-                Lang.GUI_TREASURY_STORAGE_DESC1.get(treasury),
-                Lang.GUI_TREASURY_STORAGE_DESC2.get(taxTomorrow));
-        HeadUtils.setLore(goldSpendingIcon,
-                Lang.GUI_WARNING_STILL_IN_DEV.get());
 
-        HeadUtils.setLore(lowerTax,
-                Lang.GUI_DECREASE_1_DESC.get(),
-                Lang.GUI_DECREASE_10_DESC.get());
-        HeadUtils.setLore(increaseTax,
-                Lang.GUI_INCREASE_1_DESC.get(),
-                Lang.GUI_INCREASE_10_DESC.get());
-        HeadUtils.setLore(taxInfo,
-                Lang.GUI_TREASURY_FLAT_TAX_DESC1.get(tax));
-
-        HeadUtils.setLore(donationHistory, playerRegion.getDonationHistory().get(5));
-        HeadUtils.addLore(donationHistory,Lang.GUI_TREASURY_TAX_HISTORY_DESC1.get());
-        HeadUtils.setLore(taxHistory, playerRegion.getTaxHistory().get(5));
-        HeadUtils.addLore(taxHistory,Lang.GUI_TREASURY_TAX_HISTORY_DESC1.get());
 
         GuiItem _goldIcon = ItemBuilder.from(goldIcon).asGuiItem(event -> event.setCancelled(true));
-
         GuiItem _goldSpendingIcon = ItemBuilder.from(goldSpendingIcon).asGuiItem(event -> event.setCancelled(true));
-
         GuiItem _lowerTax = ItemBuilder.from(lowerTax).asGuiItem(event -> {
             event.setCancelled(true);
             int currentTax = playerRegion.getTaxRate();
@@ -3157,8 +3053,7 @@ public class GuiManager2 implements IGUI {
                         }
                     }
 
-                    ItemStack transactionHistoryItem = HeadUtils.getCustomLoreItem(Material.PAPER, date);
-                    HeadUtils.setLore(transactionHistoryItem, lines);
+                    ItemStack transactionHistoryItem = HeadUtils.getCustomLoreItem(Material.PAPER, date, lines);
                     GuiItem _transactionHistoryItem = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> event.setCancelled(true));
 
                     gui.setItem(i, _transactionHistoryItem);

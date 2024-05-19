@@ -46,6 +46,10 @@ public class TownClaimedChunk extends ClaimedChunk2{
         TownData playerTown = TownDataStorage.get(player);
         PlayerData playerData = PlayerDataStorage.get(player);
 
+        //player is at war with the town. He can interact with everything
+        if(WarTaggedPlayer.isPlayerInWarWithTown(player, this.getTown()))
+            return true;
+
         //Location is in a property and players owns or rent it
         TownData ownerTown = getTown();
         PropertyData property = ownerTown.getProperty(location);
@@ -78,10 +82,6 @@ public class TownClaimedChunk extends ClaimedChunk2{
 
         //permission is on foreign
         if(townPermission == FOREIGN)
-            return true;
-
-        //war has been declared
-        if(WarTaggedPlayer.isPlayerInWarWithTown(player,chunkTown))
             return true;
 
         playerCantPerformAction(player);

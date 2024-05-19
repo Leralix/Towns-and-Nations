@@ -19,7 +19,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.Date;
 
-import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
+import static org.tan.TownsAndNations.TownsAndNations.isSQLEnabled;
 
 public class TownDataStorage {
 
@@ -34,7 +34,7 @@ public class TownDataStorage {
 
         TownData newTown = new TownData(townId, townName, playerID);
 
-        if(isSqlEnable()){
+        if(isSQLEnabled()){
             createChunkPermissions(townId);
             addPlayerToTownDatabase(townId, playerID);
         }
@@ -91,7 +91,7 @@ public class TownDataStorage {
 
 
     public static void removeTown(String TownId) {
-        if (isSqlEnable()) {
+        if (isSQLEnabled()) {
             removeTownFromDatabase(TownId);
         } else {
             removeTownFromDB(TownId);
@@ -148,7 +148,7 @@ public class TownDataStorage {
 
 
     public static int getNumberOfTown() {
-        if (isSqlEnable()) {
+        if (isSQLEnabled()) {
             return getNumberOfTownFromDatabase();
         } else {
             return townDataMap.size();

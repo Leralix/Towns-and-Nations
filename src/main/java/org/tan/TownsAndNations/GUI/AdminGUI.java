@@ -36,11 +36,11 @@ public class AdminGUI implements IGUI{
         Gui gui = IGUI.createChestGui("Main menu - Admin",3);
 
         ItemStack regionHead = HeadUtils.makeSkull(Lang.GUI_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
-        ItemStack townHead = HeadUtils.makeSkull(Lang.GUI_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
-        ItemStack playerHead = HeadUtils.getCustomLoreItem(Material.PLAYER_HEAD, Lang.GUI_TOWN_CHUNK_PLAYER.get());
-
-        HeadUtils.setLore(townHead, Lang.ADMIN_GUI_TOWN_DESC.get());
-        HeadUtils.setLore(playerHead, Lang.ADMIN_GUI_PLAYER_DESC.get());
+        ItemStack townHead = HeadUtils.makeSkull(Lang.GUI_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
+                Lang.ADMIN_GUI_TOWN_DESC.get());
+        ItemStack playerHead = HeadUtils.getCustomLoreItem(Material.PLAYER_HEAD,
+                Lang.GUI_TOWN_CHUNK_PLAYER.get(),
+                Lang.ADMIN_GUI_PLAYER_DESC.get());
 
         GuiItem _region = ItemBuilder.from(regionHead).asGuiItem(event -> {
             event.setCancelled(true);
@@ -154,12 +154,8 @@ public class AdminGUI implements IGUI{
 
         int i = 0;
         for (TownData townData : TownDataStorage.getTownMap().values()) {
-            ItemStack townIcon = HeadUtils.getTownIcon(townData);
-            HeadUtils.setLore(townIcon,
-                    Lang.GUI_TOWN_INFO_DESC0.get(townData.getDescription()),
-                    Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getLeaderID())).getName()),
-                    Lang.GUI_TOWN_INFO_DESC2.get(townData.getPlayerList().size()),
-                    Lang.GUI_TOWN_INFO_DESC3.get(townData.getNumberOfClaimedChunk()),
+            ItemStack townIcon = HeadUtils.getTownIconWithInformations(townData);
+            HeadUtils.addLore(townIcon,
                     "",
                     Lang.ADMIN_GUI_LEFT_CLICK_TO_MANAGE_TOWN.get()
             );
@@ -263,11 +259,9 @@ public class AdminGUI implements IGUI{
         for (String playerUUID : townData.getPlayerList()){
             OfflinePlayer townPlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerUUID));
 
-            ItemStack playerHead = HeadUtils.getPlayerHead(townPlayer);
-            HeadUtils.setLore(playerHead,
+            ItemStack playerHead = HeadUtils.getPlayerHead(townPlayer,
                     Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1.get(player.getName()),
-                    Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2.get()
-            );
+                    Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2.get());
 
             GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
@@ -371,12 +365,8 @@ public class AdminGUI implements IGUI{
         PlayerData playerData = PlayerDataStorage.get(player);
         int i = 0;
         for (TownData townData : TownDataStorage.getTownMap().values()) {
-            ItemStack townIcon = HeadUtils.getTownIcon(townData);
-            HeadUtils.setLore(townIcon,
-                    Lang.GUI_TOWN_INFO_DESC0.get(townData.getDescription()),
-                    Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getLeaderID())).getName()),
-                    Lang.GUI_TOWN_INFO_DESC2.get(townData.getPlayerList().size()),
-                    Lang.GUI_TOWN_INFO_DESC3.get(townData.getNumberOfClaimedChunk()),
+            ItemStack townIcon = HeadUtils.getTownIconWithInformations(townData);
+            HeadUtils.addLore(townIcon,
                     "",
                     Lang.ADMIN_GUI_LEFT_CLICK_TO_MANAGE_TOWN.get()
             );

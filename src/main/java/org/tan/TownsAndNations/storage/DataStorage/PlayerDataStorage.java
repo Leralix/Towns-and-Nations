@@ -11,8 +11,6 @@ import java.io.*;
 import java.sql.*;
 import java.util.*;
 
-import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
-
 public class PlayerDataStorage {
 
     private static ArrayList<PlayerData> stats = new ArrayList<>();

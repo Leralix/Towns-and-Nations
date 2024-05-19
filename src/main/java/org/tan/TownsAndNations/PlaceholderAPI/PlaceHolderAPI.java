@@ -27,7 +27,7 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
     @Override
     @NotNull
     public String getVersion() {
-        return TownsAndNations.getCurrentVersion();
+        return TownsAndNations.getCurrentVersion().toString();
     }
 
     @Override

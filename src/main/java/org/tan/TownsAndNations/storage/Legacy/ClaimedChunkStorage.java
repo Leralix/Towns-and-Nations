@@ -2,21 +2,13 @@ package org.tan.TownsAndNations.storage.Legacy;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.tan.TownsAndNations.DataClass.legacy.ClaimedChunk;
-import org.tan.TownsAndNations.DataClass.RegionData;
-import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
-import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.sql.*;
 import java.util.*;
-
-import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
 
 
 public class ClaimedChunkStorage {

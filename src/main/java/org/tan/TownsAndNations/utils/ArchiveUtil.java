@@ -1,5 +1,6 @@
 package org.tan.TownsAndNations.utils;
 
+import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.TownsAndNations;
 
 import java.io.File;
@@ -11,8 +12,17 @@ import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * This class is used to archive local data every date to avoid data loss.
+ * Archived files are stored in the archive folder.
+ */
 public class ArchiveUtil {
 
+    /**
+     * Main method to archive files.
+     * Every data file will be copied and stored in a zip
+     * file with the current date as the name.
+     */
     public static void archiveFiles() {
         File DataFolder = TownsAndNations.getPlugin().getDataFolder();
         File archiveFolder = new File(DataFolder, "archive");
@@ -20,7 +30,7 @@ public class ArchiveUtil {
             archiveFolder.mkdirs();
         }
 
-        String dateStr = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        String dateStr = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
         File file1 = new File(DataFolder, "TAN - Claimed Chunks.json");
         File file2 = new File(DataFolder, "TAN - Stats.json");
@@ -48,7 +58,13 @@ public class ArchiveUtil {
         }
     }
 
-    private static void addFileToZip(ZipOutputStream zipOutputStream, File file) throws IOException {
+    /**
+     * Add a single file to the daily Zip File.
+     * @param zipOutputStream   the zip file to add the file to
+     * @param file              the file to add
+     * @throws IOException      if an error occurs while reading the file
+     */
+    private static void addFileToZip(final @NotNull ZipOutputStream zipOutputStream, final @NotNull File file) throws IOException {
         try (FileInputStream fis = new FileInputStream(file)) {
             ZipEntry zipEntry = new ZipEntry(file.getName());
             zipOutputStream.putNextEntry(zipEntry);

@@ -3,14 +3,14 @@ package org.tan.TownsAndNations.utils;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.enums.TownRelation;
 
-import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
+import static org.tan.TownsAndNations.TownsAndNations.isSQLEnabled;
 
 public class RelationUtil {
 
 
     public static void addTownRelation(TownData town, TownData targetTown, TownRelation newRelation) {
         town.addTownRelations(newRelation, targetTown);
-        if(!isSqlEnable()) //No need for double relation in sql
+        if(!isSQLEnabled()) //No need for double relation in sql
             targetTown.addTownRelations(newRelation, town);
 
         TeamUtils.updateAllScoreboardColor();

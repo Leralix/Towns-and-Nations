@@ -15,12 +15,11 @@ import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
-import org.tan.TownsAndNations.storage.Invitation.TownInviteDataStorage;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
+import static org.tan.TownsAndNations.TownsAndNations.isSQLEnabled;
 import static org.tan.TownsAndNations.enums.MessageKey.COST;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.enums.TownRolePermission.KICK_PLAYER;
@@ -91,7 +90,7 @@ public class TownUtil {
         removeFromBalance(player, amountDonated);
 
         playerTown.addToBalance(amountDonated);
-        if(!isSqlEnable())
+        if(!isSQLEnabled())
             playerTown.getDonationHistory().add(player.getName(),player.getUniqueId().toString(),amountDonated);
 
         player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_TOWN.get(amountDonated));
@@ -111,7 +110,7 @@ public class TownUtil {
         townToDelete.cancelAllRelation();   //Cancel all Relation between the deleted town and other town
         removeAllPlayerFromTown(townToDelete); //Kick all Players from the deleted town
 
-        if(isSqlEnable()) { //if SQL is enabled, some data need to be removed manually
+        if(isSQLEnabled()) { //if SQL is enabled, some data need to be removed manually
             removeAllChunkPermissionsForTown(townToDelete.getID()); //Remove all chunk permission from the deleted town
             deleteAllRole(townToDelete.getID()); //Delete all role from the deleted town
             deleteRolePermissionFromTown(townToDelete.getID()); //Delete all role permission from the deleted town
@@ -128,7 +127,7 @@ public class TownUtil {
         for(String playerID : townToDelete.getPlayerList()){
 
             townToDelete.removePlayer(PlayerDataStorage.get(playerID));
-            if(isSqlEnable())
+            if(isSQLEnabled())
                 TownDataStorage.removePlayerFromTownDatabase(playerID); //Small link database that will be deleted later
         }
     }
@@ -170,7 +169,7 @@ public class TownUtil {
     public static void renameTown(Player player, int townCost, String newName, TownData town) {
         PlayerChatListenerStorage.removePlayer(player);
         player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get(town.getName(),newName));
-        if(!isSqlEnable())
+        if(!isSQLEnabled())
             town.getMiscellaneousHistory().add(Lang.GUI_TOWN_SETTINGS_NEW_TOWN_NAME_HISTORY.get(town.getName() ,newName),townCost);
         town.removeToBalance(townCost);
         FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player.getName(),town.getName(),newName));

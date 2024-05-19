@@ -13,6 +13,7 @@ EnablePlayerColorCode: false
 #If the player color code is NOT ENABLE, you can add a 3 character prefix to the player name from their town
 EnablePlayerPrefix: false
 
+#
 
 #Enable prefix for town
 EnableTownPrefix: true

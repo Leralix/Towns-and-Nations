@@ -15,10 +15,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class manage drop chances of rare items
+ */
 public class DropChances {
 
+    /**
+     * Storing every different rareItem in a map
+     */
     private static final Map<String, RareItem> dropChances = new HashMap<>();
 
+    /**
+     * Load the class and fill up the drop chances.
+     */
     public static void load(){
 
 
@@ -27,30 +36,61 @@ public class DropChances {
         if(!config.getBoolean("RARE_RESOURCES_SPAWN", true)){
             return;
         }
-        loadDropChances("rareStone", config, getRareStone());
-        loadDropChances("rareWood", config, getRareWood());
-        loadDropChances("rareCrops", config, getRareCrops());
-        loadDropChances("rareSoul", config, getRareSoul());
-        loadDropChances("rareFish", config, getRareFish());
+        loadDropChances(config,"rareStone",  getRareStone());
+        loadDropChances(config,"rareWood", getRareWood());
+        loadDropChances(config,"rareCrops", getRareCrops());
+        loadDropChances(config,"rareSoul", getRareSoul());
+        loadDropChances(config,"rareFish", getRareFish());
     }
 
+    /**
+     * Get the {@link RareItem} from a {@link Block}
+     * @param block     The block
+     * @return          The {@link RareItem} dropped from the block or null if the {@link Block} is not giving {@link RareItem}
+     */
     public static RareItem getRareItem(Block block) {
         return dropChances.get(block.getType().name());
     }
+    /**
+     * Get the {@link RareItem} from a {@link Entity}
+     * @param entity     The {@link Entity}
+     * @return          The {@link RareItem} dropped from the block or null if the {@link Entity} not giving {@link RareItem}
+     */
     public static RareItem getRareItem(Entity entity) {
         return getRareItem(entity.getType());
     }
+    /**
+     * Get the {@link RareItem} from a {@link EntityType}
+     * @param entityType     The {@link EntityType}
+     * @return          The {@link RareItem} dropped from the block or null if the {@link EntityType} is not giving {@link RareItem}
+     */
     public static RareItem getRareItem(EntityType entityType) {
         return dropChances.get(entityType.name());
     }
+    /**
+     * Get the {@link RareItem} from a {@link EntityType}
+     * @param name      The name of the rare item
+     * @return          The {@link RareItem} dropped from the block or null if the name is not giving {@link RareItem}
+     */
     public static RareItem getRareItem(String name) {
         return dropChances.get(name);
     }
+
+    /**
+     * get the map storing every rare items
+     * @return the map storing all {@link RareItem}
+     */
     public static Map<String, RareItem> getDropChances() {
         return dropChances;
     }
 
-    private static void loadDropChances(String section, FileConfiguration config, ItemStack item) {
+    /**
+     * Load every drop chance for a single item.
+     * @param config    The {@link FileConfiguration} where the section is.
+     * @param section   The name of the section in the configuration file.
+     * @param item      The custom {@link ItemStack} dropped by this entry.
+     */
+    private static void loadDropChances(FileConfiguration config, String section, ItemStack item) {
         ConfigurationSection confSec = config.getConfigurationSection(section);
         if(confSec == null)
             return;
@@ -60,76 +100,35 @@ public class DropChances {
         }
     }
 
+    private static ItemStack createRareItem(Material material, Lang name, String tagValue){
+        ItemStack rareItem = new ItemStack(material);
+        ItemMeta rareStoneItemMeta = rareItem.getItemMeta();
+        if(rareStoneItemMeta != null){
+            rareStoneItemMeta.setCustomModelData(101);
+            rareStoneItemMeta.setDisplayName(name.get());
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add(Lang.RARE_ITEM_DESC_1.get());
+            rareStoneItemMeta.setLore(lore);
+            rareItem.setItemMeta(rareStoneItemMeta);
+        }
+        CustomNBT.addCustomStringTag(rareItem, "tanRareItem", tagValue);
+        return rareItem;
+    }
+
     public static ItemStack getRareStone(){
-        ItemStack rareStoneItem = new ItemStack(Material.EMERALD);
-        ItemMeta rareStoneItemMeta = rareStoneItem.getItemMeta();
-        rareStoneItemMeta.setCustomModelData(101);
-        rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_STONE.get());
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(Lang.RARE_ITEM_DESC_1.get());
-        rareStoneItemMeta.setLore(lore);
-        rareStoneItem.setItemMeta(rareStoneItemMeta);
-
-        CustomNBT.addCustomStringTag(rareStoneItem, "tanRareItem", "rareStone");
-
-        return rareStoneItem;
+        return createRareItem(Material.EMERALD, Lang.ITEM_RARE_STONE, "rareStone");
     }
     public static ItemStack getRareWood(){
-        ItemStack rareWoodItem = new ItemStack(Material.STICK);
-        ItemMeta rareStoneItemMeta = rareWoodItem.getItemMeta();
-        rareStoneItemMeta.setCustomModelData(101);
-        rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_WOOD.get());
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(Lang.RARE_ITEM_DESC_1.get());
-        rareStoneItemMeta.setLore(lore);
-        rareWoodItem.setItemMeta(rareStoneItemMeta);
-
-        CustomNBT.addCustomStringTag(rareWoodItem, "tanRareItem", "rareWood");
-
-        return rareWoodItem;
+        return createRareItem(Material.STICK, Lang.ITEM_RARE_WOOD, "rareWood");
     }
     public static ItemStack getRareCrops(){
-        ItemStack rareCropItem = new ItemStack(Material.WHEAT);
-        ItemMeta rareStoneItemMeta = rareCropItem.getItemMeta();
-        rareStoneItemMeta.setCustomModelData(101);
-        rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_CROP.get());
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(Lang.RARE_ITEM_DESC_1.get());
-        rareStoneItemMeta.setLore(lore);
-        rareCropItem.setItemMeta(rareStoneItemMeta);
-
-        CustomNBT.addCustomStringTag(rareCropItem, "tanRareItem", "rareCrops");
-
-        return rareCropItem;
+        return createRareItem(Material.WHEAT, Lang.ITEM_RARE_CROP, "rareCrops");
     }
     public static ItemStack getRareSoul(){
-        ItemStack rareSoulItem = new ItemStack(Material.FLINT);
-        ItemMeta rareStoneItemMeta = rareSoulItem.getItemMeta();
-        rareStoneItemMeta.setCustomModelData(101);
-        rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_SOUL.get());
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(Lang.RARE_ITEM_DESC_1.get());
-        rareStoneItemMeta.setLore(lore);
-        rareSoulItem.setItemMeta(rareStoneItemMeta);
-
-        CustomNBT.addCustomStringTag(rareSoulItem, "tanRareItem", "rareSoul");
-
-        return rareSoulItem;
+        return createRareItem(Material.FLINT, Lang.ITEM_RARE_SOUL, "rareSoul");
     }
-
     public static ItemStack getRareFish() {
-        ItemStack rareSoulItem = new ItemStack(Material.TROPICAL_FISH);
-        ItemMeta rareStoneItemMeta = rareSoulItem.getItemMeta();
-        rareStoneItemMeta.setCustomModelData(101);
-        rareStoneItemMeta.setDisplayName(Lang.ITEM_RARE_FISH.get());
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(Lang.RARE_ITEM_DESC_1.get());
-        rareStoneItemMeta.setLore(lore);
-        rareSoulItem.setItemMeta(rareStoneItemMeta);
-
-        CustomNBT.addCustomStringTag(rareSoulItem, "tanRareItem", "rareFish");
-
-        return rareSoulItem;
+        return createRareItem(Material.TROPICAL_FISH, Lang.ITEM_RARE_FISH, "rareFish");
     }
 
 }

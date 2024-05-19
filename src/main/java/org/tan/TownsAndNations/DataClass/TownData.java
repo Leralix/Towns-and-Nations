@@ -3,7 +3,7 @@ package org.tan.TownsAndNations.DataClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.History.*;
@@ -19,12 +19,13 @@ import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.EconomyUtil;
 import org.tan.TownsAndNations.utils.SoundUtil;
 
 import java.util.*;
 import java.util.Date;
 
-import static org.tan.TownsAndNations.TownsAndNations.isSqlEnable;
+import static org.tan.TownsAndNations.TownsAndNations.isSQLEnabled;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 public class TownData {
@@ -216,7 +217,7 @@ public class TownData {
 
 
     public HashSet<String> getPlayerList(){
-        if(isSqlEnable())
+        if(isSQLEnabled())
             return TownDataStorage.getPlayersInTown(TownId);
         else
             return townPlayerListId;
@@ -228,7 +229,7 @@ public class TownData {
         addTownRelations(relation,townData.getID());
     }
     public void addTownRelations(TownRelation relation, String otherTownID){
-        if(isSqlEnable())
+        if(isSQLEnabled())
             TownDataStorage.addTownRelation(this.getID(),otherTownID,relation);
         else
             this.relations.addRelation(relation,otherTownID);
@@ -237,7 +238,7 @@ public class TownData {
         removeTownRelations(relation,townData.getID());
     }
     public void removeTownRelations(TownRelation relation, String townId) {
-        if(isSqlEnable())
+        if(isSQLEnabled())
             TownDataStorage.removeTownRelation(this.getID(),townId,relation);
         else
             this.relations.removeRelation(relation,townId);
@@ -342,7 +343,7 @@ public class TownData {
         if(townID.equals(otherTownID))
             return TownRelation.CITY;
 
-        if(isSqlEnable())
+        if(isSQLEnabled())
             return TownDataStorage.getRelationBetweenTowns(townID, otherTownID);
         else
             return this.relations.getRelationWith(otherTownID);
@@ -360,7 +361,7 @@ public class TownData {
     }
 
     public void cancelAllRelation() {
-        if(isSqlEnable())
+        if(isSQLEnabled())
             TownDataStorage.removeAllTownRelationWith(getID());
         else
             this.relations.cleanAll(getID());
@@ -368,7 +369,7 @@ public class TownData {
 
 
     public void addPlayerJoinRequest(String playerUUID) {
-        if(isSqlEnable()){
+        if(isSQLEnabled()){
             TownDataStorage.addPlayerJoinRequestToDB(playerUUID,this.getID());
         }
         else{
@@ -379,7 +380,7 @@ public class TownData {
         addPlayerJoinRequest(player.getUniqueId().toString());
     }
     public void removePlayerJoinRequest(String playerUUID) {
-        if(isSqlEnable()){
+        if(isSQLEnabled()){
             TownDataStorage.removePlayerJoinRequestFromDB(playerUUID,this.getID());
         }
         else{
@@ -391,7 +392,7 @@ public class TownData {
         removePlayerJoinRequest(player.getUniqueId().toString());
     }
     public boolean isPlayerAlreadyRequested(String playerUUID) {
-        if(isSqlEnable())
+        if(isSQLEnabled())
             return TownDataStorage.isPlayerAlreadyAppliedFromDB(playerUUID,this.getID());
         else
             return PlayerJoinRequestSet.contains(playerUUID);
@@ -400,7 +401,7 @@ public class TownData {
         return isPlayerAlreadyRequested(player.getUniqueId().toString());
     }
     public HashSet<String> getPlayerJoinRequestSet(){
-        if(isSqlEnable())
+        if(isSQLEnabled())
             return TownDataStorage.getAllPlayerApplicationFrom(this.getID());
         else
             return this.PlayerJoinRequestSet;
@@ -453,13 +454,13 @@ public class TownData {
     }
 
     public TownChunkPermission getPermission(ChunkPermissionType type) {
-        if(isSqlEnable())
+        if(isSQLEnabled())
             return TownDataStorage.getPermission(this.getID(),type);
         return this.chunkSettings.getPermission(type);
     }
 
     public void nextPermission(ChunkPermissionType type) {
-        if(isSqlEnable()){
+        if(isSQLEnabled()){
             TownChunkPermission perm = TownDataStorage.getPermission(this.getID(),type);
             perm = perm.getNext();
             TownDataStorage.updateChunkPermission(this.getID(),type,perm);
@@ -469,7 +470,7 @@ public class TownData {
     }
 
     public ArrayList<String> getTownWithRelation(TownRelation relation){
-        if(isSqlEnable())
+        if(isSQLEnabled())
             return TownDataStorage.getTownsRelatedTo(getID(),relation);
         else
             return this.relations.getOne(relation);
@@ -676,4 +677,30 @@ public class TownData {
         return res;
     }
 
+    public int computeNextTax() {
+
+        int nextTaxes = 0;
+        for (String playerID : getPlayerList()){
+            PlayerData otherPlayerData = PlayerDataStorage.get(playerID);
+            OfflinePlayer otherPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
+            if(!otherPlayerData.getTownRank().isPayingTaxes()){
+                continue;
+            }
+            if(EconomyUtil.getBalance(otherPlayer) < getFlatTax()){
+                continue;
+            }
+            nextTaxes = nextTaxes + getFlatTax();
+        }
+        return nextTaxes;
+    }
+
+    public int getTotalSalaryCost() {
+        int totalSalary = 0;
+        for (TownRank rank : getRanks()) {
+
+            List<String> playerIdList = rank.getPlayers(getID());
+            totalSalary += playerIdList.size() * rank.getSalary();
+        }
+        return totalSalary;
+    }
 }

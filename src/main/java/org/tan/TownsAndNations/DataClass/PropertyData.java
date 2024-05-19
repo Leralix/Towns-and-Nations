@@ -271,7 +271,7 @@ public class PropertyData {
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), this::updateSign);
     }
 
-    public Block getSignLocation() {
+    public Block getSign() {
         return Bukkit.getWorld(signLocation.getWorldID()).getBlockAt(this.signLocation.getX(), this.signLocation.getY(), this.signLocation.getZ());
     }
 
