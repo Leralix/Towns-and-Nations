@@ -10,23 +10,24 @@ import org.tan.TownsAndNations.DataClass.History.*;
 
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;
-import org.tan.TownsAndNations.enums.SoundEnum;
-import org.tan.TownsAndNations.enums.TownChunkPermission;
-import org.tan.TownsAndNations.enums.ChunkPermissionType;
-import org.tan.TownsAndNations.enums.TownRelation;
+import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.enums.*;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
-import org.tan.TownsAndNations.utils.ConfigUtil;
-import org.tan.TownsAndNations.utils.EconomyUtil;
-import org.tan.TownsAndNations.utils.SoundUtil;
+import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
+import org.tan.TownsAndNations.utils.*;
 
 import java.util.*;
 import java.util.Date;
 
 import static org.tan.TownsAndNations.TownsAndNations.isSQLEnabled;
+import static org.tan.TownsAndNations.enums.SoundEnum.*;
+import static org.tan.TownsAndNations.enums.TownRolePermission.KICK_PLAYER;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
+import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
+import static org.tan.TownsAndNations.utils.EconomyUtil.removeFromBalance;
 
 public class TownData {
 
@@ -63,7 +64,7 @@ public class TownData {
     private ClaimedChunkSettings chunkSettings;
     private final TownRelations relations;
 
-    private SpawnPosition spawnPosition;
+    private TeleportationPosition teleportationPosition;
 
     //First time creating a town
     public TownData(String townId, String townName, String leaderID){
@@ -492,25 +493,27 @@ public class TownData {
     }
 
     public void setSpawn(Location location){
-        this.spawnPosition = new SpawnPosition(location);
+        this.teleportationPosition = new TeleportationPosition(location);
     }
 
     public boolean isSpawnSet(){
-        return this.spawnPosition != null;
+        return this.teleportationPosition != null;
+    }
+    public TeleportationPosition getSpawn(){
+        return this.teleportationPosition;
     }
 
-    public void teleportPlayerToSpawn(PlayerData playerData){
-        teleportPlayerToSpawn(Bukkit.getPlayer(playerData.getUUID()));
+    public boolean teleportPlayerToSpawn(PlayerData playerData){
+        return teleportPlayerToSpawn(Bukkit.getPlayer(playerData.getUUID()));
     }
 
     public boolean teleportPlayerToSpawn(Player player){
         if(isSpawnLocked()){
-            player.sendMessage(getTANString() + "Vous ne pouvez pas vous téléporter au spawn de la ville, car la ville n'a pas encore été améliorée.");
             return false;
         }
-        if(this.spawnPosition == null)
+        if(this.teleportationPosition == null)
             return false;
-        this.spawnPosition.teleportPlayerToSpawn(player);
+        this.teleportationPosition.teleport(player);
         return true;
     }
 
@@ -702,5 +705,123 @@ public class TownData {
             totalSalary += playerIdList.size() * rank.getSalary();
         }
         return totalSalary;
+    }
+
+    public void addDonation(Player player, int amountDonated){
+        int playerBalance = EconomyUtil.getBalance(player);
+
+        if(playerBalance < amountDonated ){
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.get());
+            PlayerChatListenerStorage.removePlayer(player);
+            return;
+        }
+        if(amountDonated <= 0 ){
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NEED_1_OR_ABOVE.get());
+            PlayerChatListenerStorage.removePlayer(player);
+            return;
+        }
+
+        TownData playerTown = TownDataStorage.get(player);
+
+        removeFromBalance(player, amountDonated);
+
+        playerTown.addToBalance(amountDonated);
+        if(!isSQLEnabled())
+            playerTown.getDonationHistory().add(player.getName(),player.getUniqueId().toString(),amountDonated);
+
+        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_TOWN.get(amountDonated));
+        PlayerChatListenerStorage.removePlayer(player);
+        SoundUtil.playSound(player, MINOR_LEVEL_UP);
+    }
+
+    public void kickPlayer(Player player, OfflinePlayer kickedPlayer) {
+        PlayerData playerData = PlayerDataStorage.get(player);
+        PlayerData kickedPlayerData = PlayerDataStorage.get(kickedPlayer);
+        TownData townData = TownDataStorage.get(playerData);
+
+
+        if(!playerData.hasPermission(KICK_PLAYER)){
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+            return;
+        }
+        int playerLevel = townData.getRank(playerData).getLevel();
+        int kickedPlayerLevel = townData.getRank(kickedPlayerData).getLevel();
+        if(playerLevel >= kickedPlayerLevel && !playerData.isTownLeader()){
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
+            return;
+        }
+        if(kickedPlayerData.isTownLeader()){
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get());
+            return;
+        }
+        if(playerData.getID().equals(kickedPlayerData.getID())){
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_YOURSELF.get());
+            return;
+        }
+        TownData town = TownDataStorage.get(playerData);
+        town.removePlayer(kickedPlayerData);
+
+
+        town.broadCastMessageWithSound(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.get(kickedPlayer.getName()),
+                BAD);
+        if(kickedPlayer.isOnline())
+            kickedPlayer.getPlayer().sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get());
+
+    }
+
+    public void renameTown(Player player, int townCost, String newName) {
+        PlayerChatListenerStorage.removePlayer(player);
+        player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get(this.getName(),newName));
+        if(!isSQLEnabled())
+            this.getMiscellaneousHistory().add(Lang.GUI_TOWN_SETTINGS_NEW_TOWN_NAME_HISTORY.get(this.getName() ,newName),townCost);
+        this.removeToBalance(townCost);
+        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player.getName(),this.getName(),newName));
+        this.setName(newName);
+    }
+
+    public void upgradeTown(Player player) {
+        PlayerData playerData = PlayerDataStorage.get(player);
+        TownLevel townLevel = this.getTownLevel();
+        if(!playerData.hasPermission(TownRolePermission.UPGRADE_TOWN)){
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+            SoundUtil.playSound(player,NOT_ALLOWED);
+            return;
+        }
+        if(this.getBalance() < townLevel.getMoneyRequiredTownLevel()) {
+            player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
+            SoundUtil.playSound(player,NOT_ALLOWED);
+            return;
+        }
+
+        this.removeToBalance(townLevel.getMoneyRequiredTownLevel());
+        townLevel.TownLevelUp();
+        SoundUtil.playSound(player,LEVEL_UP);
+        player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());
+    }
+    public void upgradeTown(Player player, TownUpgrade townUpgrade, int townUpgradeLevel){
+        PlayerData playerData = PlayerDataStorage.get(player);
+
+        TownLevel townLevel = this.getTownLevel();
+        if(!playerData.hasPermission(TownRolePermission.UPGRADE_TOWN)){
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+            SoundUtil.playSound(player,NOT_ALLOWED);
+            return;
+        }
+        int cost = townUpgrade.getCost(townLevel.getUpgradeLevel(townUpgrade.getName()));
+        if(this.getBalance() < cost ) {
+            player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(cost - this.getBalance()));
+            SoundUtil.playSound(player,NOT_ALLOWED);
+            return;
+        }
+        if(townLevel.getUpgradeLevel(townUpgrade.getName()) >= townUpgrade.getMaxLevel()){
+            player.sendMessage(getTANString() + Lang.TOWN_UPGRADE_MAX_LEVEL.get());
+            SoundUtil.playSound(player,NOT_ALLOWED);
+            return;
+        }
+
+        this.removeToBalance(townUpgrade.getCost(townUpgradeLevel));
+        townLevel.levelUp(townUpgrade);
+        SoundUtil.playSound(player,LEVEL_UP);
+        player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());
     }
 }

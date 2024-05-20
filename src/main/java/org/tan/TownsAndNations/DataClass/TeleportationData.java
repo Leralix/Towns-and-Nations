@@ -2,16 +2,16 @@ package org.tan.TownsAndNations.DataClass;
 
 public class TeleportationData {
 
-    private final TownData townData;
+    private final TeleportationPosition teleportationPosition;
     private Boolean isCancelled;
 
-    public TeleportationData(TownData townData){
-        this.townData = townData;
+    public TeleportationData(TeleportationPosition teleportationPosition){
+        this.teleportationPosition = teleportationPosition;
         this.isCancelled = false;
     }
 
-    public TownData getTownData() {
-        return townData;
+    public TeleportationPosition getTeleportationPosition() {
+        return teleportationPosition;
     }
 
     public Boolean isCancelled() {

@@ -18,7 +18,6 @@ import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
-import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.FileUtil;
 import org.tan.TownsAndNations.utils.HeadUtils;
 
@@ -38,7 +37,7 @@ public class AdminGUI implements IGUI{
         ItemStack regionHead = HeadUtils.makeSkull(Lang.GUI_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
         ItemStack townHead = HeadUtils.makeSkull(Lang.GUI_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
                 Lang.ADMIN_GUI_TOWN_DESC.get());
-        ItemStack playerHead = HeadUtils.getCustomLoreItem(Material.PLAYER_HEAD,
+        ItemStack playerHead = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,
                 Lang.GUI_TOWN_CHUNK_PLAYER.get(),
                 Lang.ADMIN_GUI_PLAYER_DESC.get());
 
@@ -97,13 +96,13 @@ public class AdminGUI implements IGUI{
         Gui gui = IGUI.createChestGui("Town - Admin",3);
 
 
-        ItemStack changeRegionName = HeadUtils.getCustomLoreItem(Material.NAME_TAG,
+        ItemStack changeRegionName = HeadUtils.createCustomItemStack(Material.NAME_TAG,
                 Lang.ADMIN_GUI_CHANGE_TOWN_NAME.get(),
                 Lang.ADMIN_GUI_CHANGE_TOWN_NAME_DESC1.get(regionData.getName()));
-        ItemStack changeRegionDescription = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK,
+        ItemStack changeRegionDescription = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK,
                 Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION.get(),
                 Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION_DESC1.get(regionData.getDescription()));
-        ItemStack deleteRegion = HeadUtils.getCustomLoreItem(Material.BARRIER,
+        ItemStack deleteRegion = HeadUtils.createCustomItemStack(Material.BARRIER,
                 Lang.ADMIN_GUI_DELETE_TOWN.get(),
                 Lang.ADMIN_GUI_DELETE_TOWN_DESC1.get(regionData.getName()));
 
@@ -185,16 +184,16 @@ public class AdminGUI implements IGUI{
         Gui gui = IGUI.createChestGui("Town - Admin",3);
 
 
-        ItemStack changeTownName = HeadUtils.getCustomLoreItem(Material.NAME_TAG,
+        ItemStack changeTownName = HeadUtils.createCustomItemStack(Material.NAME_TAG,
                 Lang.ADMIN_GUI_CHANGE_TOWN_NAME.get(),
                 Lang.ADMIN_GUI_CHANGE_TOWN_NAME_DESC1.get(townData.getName()));
-        ItemStack changeTownDescription = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK,
+        ItemStack changeTownDescription = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK,
                 Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION.get(),
                 Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION_DESC1.get(townData.getDescription()));
-        ItemStack changeTownLeader = HeadUtils.getCustomLoreItem(Material.PLAYER_HEAD,
+        ItemStack changeTownLeader = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,
                 Lang.ADMIN_GUI_CHANGE_TOWN_LEADER.get(),
                 Lang.ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getLeaderID())).getName()));
-        ItemStack deleteTown = HeadUtils.getCustomLoreItem(Material.BARRIER,
+        ItemStack deleteTown = HeadUtils.createCustomItemStack(Material.BARRIER,
                 Lang.ADMIN_GUI_DELETE_TOWN.get(),
                 Lang.ADMIN_GUI_DELETE_TOWN_DESC1.get(townData.getName()));
 
@@ -314,7 +313,7 @@ public class AdminGUI implements IGUI{
         ItemStack playerHead = HeadUtils.getPlayerHeadInformation(Bukkit.getOfflinePlayer(UUID.fromString(playerData.getID())));
 
         if(playerData.haveTown()){
-            ItemStack removePlayerTown = HeadUtils.getCustomLoreItem(Material.SPRUCE_DOOR,
+            ItemStack removePlayerTown = HeadUtils.createCustomItemStack(Material.SPRUCE_DOOR,
                     Lang.ADMIN_GUI_TOWN_PLAYER_TOWN.get(playerData.getTown().getName()),
                     Lang.ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1.get(),
                     Lang.ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2.get());
@@ -336,7 +335,7 @@ public class AdminGUI implements IGUI{
             gui.setItem(2,2, _removePlayerTown);
         }
         else{
-            ItemStack addPlayerTown = HeadUtils.getCustomLoreItem(Material.SPRUCE_DOOR, "Add player to town", "Add player to town");
+            ItemStack addPlayerTown = HeadUtils.createCustomItemStack(Material.SPRUCE_DOOR, "Add player to town", "Add player to town");
 
             GuiItem _addPlayerTown = ItemBuilder.from(addPlayerTown).asGuiItem(event -> {
                 event.setCancelled(true);

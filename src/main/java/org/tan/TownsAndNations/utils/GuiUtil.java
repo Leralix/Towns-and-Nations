@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
-import static org.tan.TownsAndNations.utils.TownUtil.upgradeTown;
 
 public class GuiUtil {
 
@@ -37,7 +36,7 @@ public class GuiUtil {
 
         List<String> lore = townUpgrade.getItemLore(townLevelClass, townUpgradeLevel);
 
-        ItemStack upgradeItemStack = HeadUtils.getCustomLoreItem(
+        ItemStack upgradeItemStack = HeadUtils.createCustomItemStack(
                 Material.getMaterial(townUpgrade.getMaterialCode()),
                 DynamicLang.get(townUpgrade.getName()),
                 lore);
@@ -45,7 +44,7 @@ public class GuiUtil {
         return ItemBuilder.from(upgradeItemStack).asGuiItem(event -> {
             event.setCancelled(true);
             if(townUpgrade.isPrerequisiteMet(townLevelClass)){
-                upgradeTown(player,townUpgrade,townData,townUpgradeLevel);
+                townData.upgradeTown(player,townUpgrade,townUpgradeLevel);
             }
             else {
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.get());

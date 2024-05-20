@@ -31,8 +31,6 @@ import static org.tan.TownsAndNations.storage.MobChunkSpawnStorage.getMobSpawnCo
 import static org.tan.TownsAndNations.storage.DataStorage.TownDataStorage.getTownMap;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.HeadUtils.*;
-import static org.tan.TownsAndNations.utils.RelationUtil.*;
-import static org.tan.TownsAndNations.utils.StringUtil.getHexColor;
 import static org.tan.TownsAndNations.utils.TeamUtils.updateAllScoreboardColor;
 import static org.tan.TownsAndNations.utils.TownUtil.*;
 
@@ -126,8 +124,8 @@ public class GuiManager2 implements IGUI {
 
 
         ItemStack playerHead = HeadUtils.getPlayerHead(Lang.GUI_YOUR_PROFILE.get(),player);
-        ItemStack goldPurse = HeadUtils.getCustomLoreItem(Material.GOLD_NUGGET, Lang.GUI_YOUR_BALANCE.get(),Lang.GUI_YOUR_BALANCE_DESC1.get(EconomyUtil.getBalance(player)));
-        ItemStack properties = HeadUtils.getCustomLoreItem(Material.OAK_HANGING_SIGN, Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(),Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get());
+        ItemStack goldPurse = HeadUtils.createCustomItemStack(Material.GOLD_NUGGET, Lang.GUI_YOUR_BALANCE.get(),Lang.GUI_YOUR_BALANCE_DESC1.get(EconomyUtil.getBalance(player)));
+        ItemStack properties = HeadUtils.createCustomItemStack(Material.OAK_HANGING_SIGN, Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(),Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get());
 
 
         GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> event.setCancelled(true));
@@ -208,7 +206,7 @@ public class GuiManager2 implements IGUI {
 
         ItemStack propertyIcon = propertyData.getIcon();
 
-        ItemStack stopRentingProperty = HeadUtils.getCustomLoreItem(Material.BARRIER,
+        ItemStack stopRentingProperty = HeadUtils.createCustomItemStack(Material.BARRIER,
                 Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY.get(),
                 Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY_DESC1.get());
 
@@ -248,13 +246,13 @@ public class GuiManager2 implements IGUI {
 
         ItemStack propertyIcon = propertyData.getIcon();
 
-        ItemStack changeName = HeadUtils.getCustomLoreItem(
+        ItemStack changeName = HeadUtils.createCustomItemStack(
                 Material.NAME_TAG,
                 Lang.GUI_PROPERTY_CHANGE_NAME.get(),
                 Lang.GUI_PROPERTY_CHANGE_NAME_DESC1.get(propertyData.getName())
         );
 
-        ItemStack changeDescription = HeadUtils.getCustomLoreItem(
+        ItemStack changeDescription = HeadUtils.createCustomItemStack(
                 Material.WRITABLE_BOOK,
                 Lang.GUI_PROPERTY_CHANGE_DESCRIPTION.get(),
                 Lang.GUI_PROPERTY_CHANGE_DESCRIPTION_DESC1.get(propertyData.getDescription())
@@ -293,7 +291,7 @@ public class GuiManager2 implements IGUI {
         ItemStack drawnBox = HeadUtils.makeSkull(Lang.GUI_PROPERTY_DRAWN_BOX.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzc3ZDRhMjA2ZDc3NTdmNDc5ZjMzMmVjMWEyYmJiZWU1N2NlZjk3NTY4ZGQ4OGRmODFmNDg2NGFlZTdkM2Q5OCJ9fX0=",
                 Lang.GUI_PROPERTY_DRAWN_BOX_DESC1.get());
 
-        ItemStack deleteProperty = HeadUtils.getCustomLoreItem(Material.BARRIER,Lang.GUI_PROPERTY_DELETE_PROPERTY.get(),
+        ItemStack deleteProperty = HeadUtils.createCustomItemStack(Material.BARRIER,Lang.GUI_PROPERTY_DELETE_PROPERTY.get(),
                 Lang.GUI_PROPERTY_DELETE_PROPERTY_DESC1.get());
 
         GuiItem _propertyIcon = ItemBuilder.from(propertyIcon).asGuiItem(event -> event.setCancelled(true));
@@ -483,10 +481,10 @@ public class GuiManager2 implements IGUI {
 
         int townPrice = ConfigUtil.getCustomConfig("config.yml").getInt("CostOfCreatingTown");
 
-        ItemStack createTown = HeadUtils.getCustomLoreItem(Material.GRASS_BLOCK,
+        ItemStack createTown = HeadUtils.createCustomItemStack(Material.GRASS_BLOCK,
                 Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.get(),
                 Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.get(townPrice));
-        ItemStack joinLand = HeadUtils.getCustomLoreItem(Material.ANVIL,
+        ItemStack joinLand = HeadUtils.createCustomItemStack(Material.ANVIL,
                 Lang.GUI_NO_TOWN_JOIN_A_TOWN.get(),
                 Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(TownDataStorage.getNumberOfTown()));
 
@@ -646,7 +644,7 @@ public class GuiManager2 implements IGUI {
         ItemStack SettingIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_SETTINGS_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkMmNiMzg0NThkYTE3ZmI2Y2RhY2Y3ODcxNjE2MDJhMjQ5M2NiZjkzMjMzNjM2MjUzY2ZmMDdjZDg4YTljMCJ9fX0=",
                 Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get());
 
-        ItemStack propertyIcon = HeadUtils.getCustomLoreItem(Material.OAK_HANGING_SIGN, Lang.GUI_TOWN_PROPERTIES_ICON.get(),Lang.GUI_TOWN_PROPERTIES_ICON_DESC1.get());
+        ItemStack propertyIcon = HeadUtils.createCustomItemStack(Material.OAK_HANGING_SIGN, Lang.GUI_TOWN_PROPERTIES_ICON.get(),Lang.GUI_TOWN_PROPERTIES_ICON_DESC1.get());
 
         GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -816,7 +814,7 @@ public class GuiManager2 implements IGUI {
             GuiItem _playerIcon = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(event.getClick() == ClickType.RIGHT){
-                    TownUtil.kickPlayer(player,playerIterate);
+                    playerTown.kickPlayer(player,playerIterate);
                 }
                 OpenTownMemberList(player);
             });
@@ -825,8 +823,8 @@ public class GuiManager2 implements IGUI {
             i++;
         }
 
-        ItemStack manageRanks = HeadUtils.getCustomLoreItem(Material.LADDER, Lang.GUI_TOWN_MEMBERS_MANAGE_ROLES.get());
-        ItemStack manageApplication = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK,
+        ItemStack manageRanks = HeadUtils.createCustomItemStack(Material.LADDER, Lang.GUI_TOWN_MEMBERS_MANAGE_ROLES.get());
+        ItemStack manageApplication = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK,
                 Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION.get(),
                 Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(playerTown.getPlayerJoinRequestSet().size())
         );
@@ -928,7 +926,7 @@ public class GuiManager2 implements IGUI {
             gui.setItem(i, _playerIcon);
             i++;
         }
-        ItemStack itemStack = HeadUtils.getCustomLoreItem(Material.LIME_STAINED_GLASS_PANE,"");
+        ItemStack itemStack = HeadUtils.createCustomItemStack(Material.LIME_STAINED_GLASS_PANE,"");
         GuiItem _panel = ItemBuilder.from(itemStack).asGuiItem(event -> event.setCancelled(true));
 
 
@@ -959,7 +957,7 @@ public class GuiManager2 implements IGUI {
         for (TownRank townRank: town.getRanks()) {
 
             Material townMaterial = Material.getMaterial(townRank.getRankIconName());
-            ItemStack townRankItemStack = HeadUtils.getCustomLoreItem(townMaterial, townRank.getColoredName());
+            ItemStack townRankItemStack = HeadUtils.createCustomItemStack(townMaterial, townRank.getColoredName());
             GuiItem _townRankItemStack = ItemBuilder.from(townRankItemStack).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(!playerData.hasPermission(TownRolePermission.MANAGE_RANKS)) {
@@ -1011,7 +1009,7 @@ public class GuiManager2 implements IGUI {
 
         boolean isDefaultRank = town.getTownDefaultRankName().equals(townRank.getName());
 
-        ItemStack roleIcon = HeadUtils.getCustomLoreItem(
+        ItemStack roleIcon = HeadUtils.createCustomItemStack(
                 Material.getMaterial(townRank.getRankIconName()),
                 Lang.GUI_TOWN_MEMBERS_ROLE_NAME.get(townRank.getColoredName()),
                 Lang.GUI_TOWN_MEMBERS_ROLE_NAME_DESC1.get());
@@ -1027,22 +1025,22 @@ public class GuiManager2 implements IGUI {
         ItemStack membersRank = HeadUtils.makeSkull(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0M2IyMzE4OWRjZjEzMjZkYTQyNTNkMWQ3NTgyZWY1YWQyOWY2YzI3YjE3MWZlYjE3ZTMxZDA4NGUzYTdkIn19fQ==",
                 playerNames);
 
-        ItemStack managePermission = HeadUtils.getCustomLoreItem(Material.ANVIL,Lang.GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION.get());
-        ItemStack renameRank = HeadUtils.getCustomLoreItem(Material.NAME_TAG,Lang.GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME.get());
-        ItemStack changeRoleTaxRelation = HeadUtils.getCustomLoreItem(
+        ItemStack managePermission = HeadUtils.createCustomItemStack(Material.ANVIL,Lang.GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION.get());
+        ItemStack renameRank = HeadUtils.createCustomItemStack(Material.NAME_TAG,Lang.GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME.get());
+        ItemStack changeRoleTaxRelation = HeadUtils.createCustomItemStack(
                 Material.GOLD_NUGGET,
                 townRank.isPayingTaxes() ? Lang.GUI_TOWN_MEMBERS_ROLE_PAY_TAXES.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES.get(),
                 Lang.GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1.get()
         );
 
-        ItemStack makeRankDefault = HeadUtils.getCustomLoreItem(Material.RED_BED,
+        ItemStack makeRankDefault = HeadUtils.createCustomItemStack(Material.RED_BED,
                 isDefaultRank ? Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT.get() : Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT.get(),
                 Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1.get(),
                 isDefaultRank ? "" : Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2.get());
 
-        ItemStack removeRank = HeadUtils.getCustomLoreItem(Material.BARRIER, Lang.GUI_TOWN_MEMBERS_ROLE_DELETE.get());
+        ItemStack removeRank = HeadUtils.createCustomItemStack(Material.BARRIER, Lang.GUI_TOWN_MEMBERS_ROLE_DELETE.get());
 
-        ItemStack salary = HeadUtils.getCustomLoreItem(Material.GOLD_INGOT,
+        ItemStack salary = HeadUtils.createCustomItemStack(Material.GOLD_INGOT,
                 Lang.GUI_TOWN_MEMBERS_ROLE_SALARY.get(),
                 Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_DESC1.get(townRank.getSalary()));
 
@@ -1232,22 +1230,22 @@ public class GuiManager2 implements IGUI {
         TownRank townRank = town.getRank(rankID);
 
 
-        ItemStack manage_taxes = HeadUtils.getCustomLoreItem(Material.GOLD_INGOT, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TAXES.get(),(townRank.hasPermission(townID,MANAGE_TAXES)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
-        ItemStack promote_rank_player = HeadUtils.getCustomLoreItem(Material.EMERALD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_PROMOTE_RANK_PLAYER.get(),(townRank.hasPermission(townID,PROMOTE_RANK_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
-        ItemStack derank_player = HeadUtils.getCustomLoreItem(Material.REDSTONE, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DERANK_RANK_PLAYER.get(),(townRank.hasPermission(townID,DERANK_RANK_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
-        ItemStack claim_chunk = HeadUtils.getCustomLoreItem(Material.EMERALD_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CLAIM_CHUNK.get(),(townRank.hasPermission(townID,CLAIM_CHUNK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
-        ItemStack unclaim_chunk = HeadUtils.getCustomLoreItem(Material.REDSTONE_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_UNCLAIM_CHUNK.get(),(townRank.hasPermission(townID,UNCLAIM_CHUNK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
-        ItemStack upgrade_town = HeadUtils.getCustomLoreItem(Material.SPECTRAL_ARROW, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_UPGRADE_TOWN.get(),(townRank.hasPermission(townID,UPGRADE_TOWN)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
-        ItemStack invite_player = HeadUtils.getCustomLoreItem(Material.SKELETON_SKULL, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_INVITE_PLAYER.get(),(townRank.hasPermission(townID,INVITE_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
-        ItemStack kick_player = HeadUtils.getCustomLoreItem(Material.CREEPER_HEAD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_KICK_PLAYER.get(),(townRank.hasPermission(townID,KICK_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
-        ItemStack create_rank = HeadUtils.getCustomLoreItem(Material.LADDER, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_RANK.get(),(townRank.hasPermission(townID,CREATE_RANK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
-        ItemStack delete_rank = HeadUtils.getCustomLoreItem(Material.CHAIN, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DELETE_RANK.get(),(townRank.hasPermission(townID,DELETE_RANK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
-        ItemStack modify_rank = HeadUtils.getCustomLoreItem(Material.STONE_PICKAXE, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MODIFY_RANK.get(),(townRank.hasPermission(townID,MANAGE_RANKS)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
-        ItemStack manage_claim_settings = HeadUtils.getCustomLoreItem(Material.GRASS_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_CLAIM_SETTINGS.get(),(townRank.hasPermission(townID,MANAGE_CLAIM_SETTINGS)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
-        ItemStack manage_town_relation = HeadUtils.getCustomLoreItem(Material.FLOWER_POT, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION.get(),(townRank.hasPermission(townID,MANAGE_TOWN_RELATION)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
-        ItemStack manage_mob_spawn = HeadUtils.getCustomLoreItem(Material.CREEPER_HEAD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_MOB_SPAWN.get(),(townRank.hasPermission(townID,MANAGE_MOB_SPAWN)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
-        ItemStack create_property = HeadUtils.getCustomLoreItem(Material.OAK_HANGING_SIGN, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_PROPERTY.get(),(townRank.hasPermission(townID,CREATE_PROPERTY)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
-        ItemStack manage_property = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_PROPERTY.get(),(townRank.hasPermission(townID,MANAGE_PROPERTY)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack manage_taxes = HeadUtils.createCustomItemStack(Material.GOLD_INGOT, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TAXES.get(),(townRank.hasPermission(townID,MANAGE_TAXES)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack promote_rank_player = HeadUtils.createCustomItemStack(Material.EMERALD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_PROMOTE_RANK_PLAYER.get(),(townRank.hasPermission(townID,PROMOTE_RANK_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack derank_player = HeadUtils.createCustomItemStack(Material.REDSTONE, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DERANK_RANK_PLAYER.get(),(townRank.hasPermission(townID,DERANK_RANK_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack claim_chunk = HeadUtils.createCustomItemStack(Material.EMERALD_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CLAIM_CHUNK.get(),(townRank.hasPermission(townID,CLAIM_CHUNK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack unclaim_chunk = HeadUtils.createCustomItemStack(Material.REDSTONE_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_UNCLAIM_CHUNK.get(),(townRank.hasPermission(townID,UNCLAIM_CHUNK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack upgrade_town = HeadUtils.createCustomItemStack(Material.SPECTRAL_ARROW, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_UPGRADE_TOWN.get(),(townRank.hasPermission(townID,UPGRADE_TOWN)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack invite_player = HeadUtils.createCustomItemStack(Material.SKELETON_SKULL, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_INVITE_PLAYER.get(),(townRank.hasPermission(townID,INVITE_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack kick_player = HeadUtils.createCustomItemStack(Material.CREEPER_HEAD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_KICK_PLAYER.get(),(townRank.hasPermission(townID,KICK_PLAYER)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack create_rank = HeadUtils.createCustomItemStack(Material.LADDER, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_RANK.get(),(townRank.hasPermission(townID,CREATE_RANK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack delete_rank = HeadUtils.createCustomItemStack(Material.CHAIN, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DELETE_RANK.get(),(townRank.hasPermission(townID,DELETE_RANK)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack modify_rank = HeadUtils.createCustomItemStack(Material.STONE_PICKAXE, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MODIFY_RANK.get(),(townRank.hasPermission(townID,MANAGE_RANKS)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack manage_claim_settings = HeadUtils.createCustomItemStack(Material.GRASS_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_CLAIM_SETTINGS.get(),(townRank.hasPermission(townID,MANAGE_CLAIM_SETTINGS)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack manage_town_relation = HeadUtils.createCustomItemStack(Material.FLOWER_POT, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION.get(),(townRank.hasPermission(townID,MANAGE_TOWN_RELATION)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack manage_mob_spawn = HeadUtils.createCustomItemStack(Material.CREEPER_HEAD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_MOB_SPAWN.get(),(townRank.hasPermission(townID,MANAGE_MOB_SPAWN)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack create_property = HeadUtils.createCustomItemStack(Material.OAK_HANGING_SIGN, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_PROPERTY.get(),(townRank.hasPermission(townID,CREATE_PROPERTY)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack manage_property = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_PROPERTY.get(),(townRank.hasPermission(townID,MANAGE_PROPERTY)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
 
         GuiItem _manage_taxes = ItemBuilder.from(manage_taxes).asGuiItem(event -> {
             townRank.switchPermission(town.getID(), MANAGE_TAXES);
@@ -1396,8 +1394,8 @@ public class GuiManager2 implements IGUI {
                 Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(numberClaimedChunk));
         ItemStack miscSpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGMzNjA0NTIwOGY5YjVkZGNmOGM0NDMzZTQyNGIxY2ExN2I5NGY2Yjk2MjAyZmIxZTUyNzBlZThkNTM4ODFiMSJ9fX0=",
                 Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1.get());
-        ItemStack donation = HeadUtils.getCustomLoreItem(Material.DIAMOND,Lang.GUI_TREASURY_DONATION.get(),Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get());
-        ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.get());
+        ItemStack donation = HeadUtils.createCustomItemStack(Material.DIAMOND,Lang.GUI_TREASURY_DONATION.get(),Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get());
+        ItemStack donationHistory = HeadUtils.createCustomItemStack(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.get());
 
 
         if(!isSQLEnabled()){
@@ -1530,7 +1528,7 @@ public class GuiManager2 implements IGUI {
                 int i = 0;
                 for(TransactionHistory donation : town.getDonationHistory().getReverse()){
 
-                    ItemStack transactionIcon = HeadUtils.getCustomLoreItem(Material.PAPER,
+                    ItemStack transactionIcon = HeadUtils.createCustomItemStack(Material.PAPER,
                             ChatColor.DARK_AQUA + donation.getName(),
                             Lang.DONATION_SINGLE_LINE_1.get(donation.getAmount()),
                             Lang.DONATION_SINGLE_LINE_2.get(donation.getDate())
@@ -1566,7 +1564,7 @@ public class GuiManager2 implements IGUI {
                         }
                     }
 
-                    ItemStack transactionHistoryItem = HeadUtils.getCustomLoreItem(Material.PAPER,date,lines);
+                    ItemStack transactionHistoryItem = HeadUtils.createCustomItemStack(Material.PAPER,date,lines);
 
                     GuiItem _transactionHistoryItem = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> event.setCancelled(true));
 
@@ -1587,7 +1585,7 @@ public class GuiManager2 implements IGUI {
                 for(TransactionHistory chunkTax : town.getChunkHistory().get().values()){
 
 
-                    ItemStack transactionIcon = HeadUtils.getCustomLoreItem(Material.PAPER,
+                    ItemStack transactionIcon = HeadUtils.createCustomItemStack(Material.PAPER,
                             ChatColor.DARK_AQUA + chunkTax.getDate(),
                             Lang.CHUNK_HISTORY_DESC1.get(chunkTax.getAmount()),
                             Lang.CHUNK_HISTORY_DESC2.get(chunkTax.getName(), String.format("%.2f", upkeepCost/10),chunkTax.getAmount())
@@ -1621,7 +1619,7 @@ public class GuiManager2 implements IGUI {
                         }
                     }
 
-                    ItemStack transactionHistoryItem = HeadUtils.getCustomLoreItem(Material.PAPER,date,lines);
+                    ItemStack transactionHistoryItem = HeadUtils.createCustomItemStack(Material.PAPER,date,lines);
 
                     GuiItem _transactionHistoryItem = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> event.setCancelled(true));
 
@@ -1637,7 +1635,7 @@ public class GuiManager2 implements IGUI {
 
                 for (TransactionHistory miscellaneous : town.getMiscellaneousHistory().get()){
 
-                    ItemStack transactionIcon = HeadUtils.getCustomLoreItem(Material.PAPER,
+                    ItemStack transactionIcon = HeadUtils.createCustomItemStack(Material.PAPER,
                             ChatColor.DARK_AQUA + miscellaneous.getDate(),
                             Lang.MISCELLANEOUS_HISTORY_DESC1.get(miscellaneous.getName()),
                             Lang.MISCELLANEOUS_HISTORY_DESC2.get(miscellaneous.getAmount())
@@ -1666,14 +1664,14 @@ public class GuiManager2 implements IGUI {
         TownData townData = TownDataStorage.get(player);
         TownLevel townLevel = townData.getTownLevel();
 
-        ItemStack whitePanel = HeadUtils.getCustomLoreItem(Material.WHITE_STAINED_GLASS_PANE,"");
-        ItemStack iron_bars = HeadUtils.getCustomLoreItem(Material.IRON_BARS,Lang.LEVEL_LOCKED.get());
+        ItemStack whitePanel = HeadUtils.createCustomItemStack(Material.WHITE_STAINED_GLASS_PANE,"");
+        ItemStack iron_bars = HeadUtils.createCustomItemStack(Material.IRON_BARS,Lang.LEVEL_LOCKED.get());
 
         GuiItem _TownIcon = GuiUtil.townUpgradeResume(townData);
 
         GuiItem _whitePanel = ItemBuilder.from(whitePanel).asGuiItem(event -> event.setCancelled(true));
         GuiItem _iron_bars = ItemBuilder.from(iron_bars).asGuiItem(event -> event.setCancelled(true));
-        ItemStack green_level = HeadUtils.getCustomLoreItem(Material.GREEN_STAINED_GLASS_PANE,"");
+        ItemStack green_level = HeadUtils.createCustomItemStack(Material.GREEN_STAINED_GLASS_PANE,"");
 
         gui.setItem(1,1,_TownIcon);
         gui.setItem(2,1,_whitePanel);
@@ -1692,27 +1690,27 @@ public class GuiManager2 implements IGUI {
 
         for(int i = 2; i < 10; i++){
             if(townLevel.getTownLevel() > (i-2 + level)){
-                ItemStack filler_green = HeadUtils.getCustomLoreItem(Material.LIME_STAINED_GLASS_PANE,"Level " + (i-1 + level));
+                ItemStack filler_green = HeadUtils.createCustomItemStack(Material.LIME_STAINED_GLASS_PANE,"Level " + (i-1 + level));
 
                 _pannel = ItemBuilder.from(green_level).asGuiItem(event -> event.setCancelled(true));
                 _bottompannel = ItemBuilder.from(filler_green).asGuiItem(event -> event.setCancelled(true));
             }
             else if(townLevel.getTownLevel() == (i - 2 + level)){
                 _pannel = _iron_bars;
-                ItemStack upgradeTownLevel = HeadUtils.getCustomLoreItem(Material.ORANGE_STAINED_GLASS_PANE,
+                ItemStack upgradeTownLevel = HeadUtils.createCustomItemStack(Material.ORANGE_STAINED_GLASS_PANE,
                         Lang.GUI_TOWN_LEVEL_UP.get(),
                         Lang.GUI_TOWN_LEVEL_UP_DESC1.get(townLevel.getTownLevel()),
                         Lang.GUI_TOWN_LEVEL_UP_DESC2.get(townLevel.getTownLevel() + 1, townLevel.getMoneyRequiredTownLevel()));
 
                 _bottompannel = ItemBuilder.from(upgradeTownLevel).asGuiItem(event -> {
                     event.setCancelled(true);
-                    upgradeTown(player,townData);
+                    townData.upgradeTown(player);
                     OpenTownLevel(player,level);
                 });
             }
             else{
                 _pannel = _iron_bars;
-                ItemStack red_level = HeadUtils.getCustomLoreItem(Material.RED_STAINED_GLASS_PANE,"Town level " + (i + level - 1) + " locked");
+                ItemStack red_level = HeadUtils.createCustomItemStack(Material.RED_STAINED_GLASS_PANE,"Town level " + (i + level - 1) + " locked");
                 _bottompannel = ItemBuilder.from(red_level).asGuiItem(event -> event.setCancelled(true));
             }
             gui.setItem(1,i, _pannel);
@@ -1771,40 +1769,40 @@ public class GuiManager2 implements IGUI {
 
 
         ItemStack TownIcon = HeadUtils.getTownIcon(playerStat.getTownId());
-        ItemStack leaveTown = HeadUtils.getCustomLoreItem(Material.BARRIER,
+        ItemStack leaveTown = HeadUtils.createCustomItemStack(Material.BARRIER,
                 Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN.get(),
                 Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1.get(playerTown.getName()),
                 Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2.get());
-        ItemStack deleteTown = HeadUtils.getCustomLoreItem(Material.BARRIER,
+        ItemStack deleteTown = HeadUtils.createCustomItemStack(Material.BARRIER,
                 Lang.GUI_TOWN_SETTINGS_DELETE_TOWN.get(),
                 Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1.get(playerTown.getName()),
                 Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2.get());
-        ItemStack changeOwnershipTown = HeadUtils.getCustomLoreItem(Material.BEEHIVE,
+        ItemStack changeOwnershipTown = HeadUtils.createCustomItemStack(Material.BEEHIVE,
                 Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.get(),
                 Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.get(),
                 Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.get());
-        ItemStack changeMessage = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK,
+        ItemStack changeMessage = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE.get(),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1.get(playerTown.getDescription()));
-        ItemStack toggleApplication = HeadUtils.getCustomLoreItem(Material.PAPER,
+        ItemStack toggleApplication = HeadUtils.createCustomItemStack(Material.PAPER,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION.get(),
                 (playerTown.isRecruiting() ? Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT.get() : Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT.get()),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH.get());
-        ItemStack changeTownName = HeadUtils.getCustomLoreItem(Material.NAME_TAG,
+        ItemStack changeTownName = HeadUtils.createCustomItemStack(Material.NAME_TAG,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME.get(),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1.get(playerTown.getName()),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC2.get(),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3.get(changeTownNameCost));
-        ItemStack quitRegion = HeadUtils.getCustomLoreItem(Material.SPRUCE_DOOR,
+        ItemStack quitRegion = HeadUtils.createCustomItemStack(Material.SPRUCE_DOOR,
                 Lang.GUI_TOWN_SETTINGS_QUIT_REGION.get(),
                 playerTown.haveRegion() ? Lang.GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION.get(playerTown.getRegion().getName()) : Lang.GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_NO_REGION.get());
-        ItemStack changeChunkColor = HeadUtils.getCustomLoreItem(Material.PURPLE_WOOL,
+        ItemStack changeChunkColor = HeadUtils.createCustomItemStack(Material.PURPLE_WOOL,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR.get(),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(),
-                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(getHexColor(playerTown.getChunkColorInHex()) + playerTown.getChunkColorInHex()),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(StringUtil.getHexColor(playerTown.getChunkColorInHex()) + playerTown.getChunkColorInHex()),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3.get());
 
-        ItemStack changeTag = HeadUtils.getCustomLoreItem(Material.FLOWER_BANNER_PATTERN,
+        ItemStack changeTag = HeadUtils.createCustomItemStack(Material.FLOWER_BANNER_PATTERN,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TAG.get(),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1.get(playerTown.getColoredTag()),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TAG_DESC2.get());
@@ -1993,16 +1991,16 @@ public class GuiManager2 implements IGUI {
         Gui gui = IGUI.createChestGui("Town",3);
 
 
-        ItemStack warCategory = HeadUtils.getCustomLoreItem(Material.IRON_SWORD,
+        ItemStack warCategory = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
                 Lang.GUI_TOWN_RELATION_WAR.get(),
                 Lang.GUI_TOWN_RELATION_WAR_DESC1.get());
-        ItemStack EmbargoCategory = HeadUtils.getCustomLoreItem(Material.BARRIER,
+        ItemStack EmbargoCategory = HeadUtils.createCustomItemStack(Material.BARRIER,
                 Lang.GUI_TOWN_RELATION_EMBARGO.get(),
                 Lang.GUI_TOWN_RELATION_EMBARGO_DESC1.get());
-        ItemStack NAPCategory = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK,
+        ItemStack NAPCategory = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK,
                 Lang.GUI_TOWN_RELATION_NAP.get(),
                 Lang.GUI_TOWN_RELATION_NAP_DESC1.get());
-        ItemStack AllianceCategory = HeadUtils.getCustomLoreItem(Material.CAMPFIRE,
+        ItemStack AllianceCategory = HeadUtils.createCustomItemStack(Material.CAMPFIRE,
                 Lang.GUI_TOWN_RELATION_ALLIANCE.get(),
                 Lang.GUI_TOWN_RELATION_ALLIANCE_DESC1.get());
 
@@ -2237,7 +2235,7 @@ public class GuiManager2 implements IGUI {
                                 BAD);
                         otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(playerTown.getName(),relation.getColoredName()),
                                 BAD);
-                        addTownRelation(playerTown,otherTown,relation);
+                        RelationUtil.addTownRelation(playerTown,otherTown,relation);
                         OpenTownRelation(player,relation,0);
                     }
                 });
@@ -2281,7 +2279,7 @@ public class GuiManager2 implements IGUI {
                                 BAD);
                         otherTown.broadCastMessageWithSound(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(playerTown.getName(),"neutral"),
                                 BAD);
-                        removeTownRelation(playerTown,otherTown,relation);
+                        RelationUtil.removeTownRelation(playerTown,otherTown, relation);
                     }
                     OpenTownRelation(player,relation,0);
                 });
@@ -2324,12 +2322,12 @@ public class GuiManager2 implements IGUI {
 
         TownData playerTown = TownDataStorage.get(player);
 
-        ItemStack playerChunkIcon = HeadUtils.getCustomLoreItem(Material.PLAYER_HEAD,
+        ItemStack playerChunkIcon = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,
                 Lang.GUI_TOWN_CHUNK_PLAYER.get(),
                 Lang.GUI_TOWN_CHUNK_PLAYER_DESC1.get()
                 );
 
-        ItemStack mobChunckIcon = HeadUtils.getCustomLoreItem(Material.CREEPER_HEAD,
+        ItemStack mobChunckIcon = HeadUtils.createCustomItemStack(Material.CREEPER_HEAD,
                 Lang.GUI_TOWN_CHUNK_MOB.get(),
                 Lang.GUI_TOWN_CHUNK_MOB_DESC1.get()
         );
@@ -2543,7 +2541,7 @@ public class GuiManager2 implements IGUI {
             Lang label = (Lang) itemData[i][2];
 
             TownChunkPermission permission = townData.getPermission(type);
-            ItemStack itemStack = HeadUtils.getCustomLoreItem(
+            ItemStack itemStack = HeadUtils.createCustomItemStack(
                     material,
                     label.get(),
                     Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.get(permission.getColoredName()),
@@ -2567,13 +2565,13 @@ public class GuiManager2 implements IGUI {
 
         int regionCost = ConfigUtil.getCustomConfig("config.yml").getInt("regionCost");
 
-        ItemStack createRegion = HeadUtils.getCustomLoreItem(Material.STONE_BRICKS,
+        ItemStack createRegion = HeadUtils.createCustomItemStack(Material.STONE_BRICKS,
                 Lang.GUI_REGION_CREATE.get(),
                 Lang.GUI_REGION_CREATE_DESC1.get(regionCost),
                 Lang.GUI_REGION_CREATE_DESC2.get()
         );
 
-        ItemStack browseRegion = HeadUtils.getCustomLoreItem(Material.BOOK,
+        ItemStack browseRegion = HeadUtils.createCustomItemStack(Material.BOOK,
                 Lang.GUI_REGION_BROWSE.get(),
                 Lang.GUI_REGION_BROWSE_DESC1.get(RegionDataStorage.getNumberOfRegion()),
                 Lang.GUI_REGION_BROWSE_DESC2.get()
@@ -2818,20 +2816,20 @@ public class GuiManager2 implements IGUI {
 
         ItemStack regionIcon = getRegionIcon(playerRegion);
 
-        ItemStack deleteRegion = HeadUtils.getCustomLoreItem(Material.BARRIER,
+        ItemStack deleteRegion = HeadUtils.createCustomItemStack(Material.BARRIER,
                 Lang.GUI_REGION_DELETE.get(),
                 Lang.GUI_REGION_DELETE_DESC1.get(playerRegion.getName()),
                 Lang.GUI_REGION_DELETE_DESC2.get(),
                 Lang.GUI_REGION_DELETE_DESC3.get()
         );
 
-        ItemStack changeCapital = HeadUtils.getCustomLoreItem(Material.GOLDEN_HELMET,
+        ItemStack changeCapital = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
                 Lang.GUI_REGION_CHANGE_CAPITAL.get(),
                 Lang.GUI_REGION_CHANGE_CAPITAL_DESC1.get(playerRegion.getCapital().getName()),
                 Lang.GUI_REGION_CHANGE_CAPITAL_DESC2.get()
         );
 
-        ItemStack changeDescription = HeadUtils.getCustomLoreItem(Material.WRITABLE_BOOK,
+        ItemStack changeDescription = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK,
                 Lang.GUI_REGION_CHANGE_DESCRIPTION.get(),
                 Lang.GUI_REGION_CHANGE_DESCRIPTION_DESC1.get(playerRegion.getDescription()),
                 Lang.GUI_REGION_CHANGE_DESCRIPTION_DESC2.get()
@@ -2919,10 +2917,10 @@ public class GuiManager2 implements IGUI {
                 playerRegion.getTaxHistory().get(5),
                 Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
         ItemStack chunkSpending = HeadUtils.makeSkull(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack donation = HeadUtils.getCustomLoreItem(Material.DIAMOND,
+        ItemStack donation = HeadUtils.createCustomItemStack(Material.DIAMOND,
                 Lang.GUI_TREASURY_DONATION.get(),
                 Lang.GUI_REGION_TREASURY_DONATION_DESC1.get());
-        ItemStack donationHistory = HeadUtils.getCustomLoreItem(Material.PAPER,
+        ItemStack donationHistory = HeadUtils.createCustomItemStack(Material.PAPER,
                 Lang.GUI_TREASURY_DONATION_HISTORY.get(),
                 playerRegion.getDonationHistory().get(5),
                 Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
@@ -3018,7 +3016,7 @@ public class GuiManager2 implements IGUI {
                 int i = 0;
                 for (TransactionHistory donation : region.getDonationHistory().getReverse()) {
 
-                    ItemStack transactionIcon = HeadUtils.getCustomLoreItem(Material.PAPER,
+                    ItemStack transactionIcon = HeadUtils.createCustomItemStack(Material.PAPER,
                             ChatColor.DARK_AQUA + donation.getName(),
                             Lang.DONATION_SINGLE_LINE_1.get(donation.getAmount()),
                             Lang.DONATION_SINGLE_LINE_2.get(donation.getDate())
@@ -3053,7 +3051,7 @@ public class GuiManager2 implements IGUI {
                         }
                     }
 
-                    ItemStack transactionHistoryItem = HeadUtils.getCustomLoreItem(Material.PAPER, date, lines);
+                    ItemStack transactionHistoryItem = HeadUtils.createCustomItemStack(Material.PAPER, date, lines);
                     GuiItem _transactionHistoryItem = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> event.setCancelled(true));
 
                     gui.setItem(i, _transactionHistoryItem);

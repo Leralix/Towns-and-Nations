@@ -10,15 +10,24 @@ import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
-
+/**
+ * Utility class for handling teams for scoreboard color coding
+ */
 public class TeamUtils {
-
+    /**
+     * Update the color of all the scoreboards
+     */
     public static void updateAllScoreboardColor(){
         if(TownsAndNations.colorCodeIsNotEnabled())
             return;
         for(Player player : Bukkit.getOnlinePlayers())
             setIndividualScoreBoard(player);
     }
+
+    /**
+     * Set the color of the scoreboard of a player
+     * @param player    The player to set the scoreboard color of
+     */
 
     public static void setIndividualScoreBoard(Player player) {
         if(TownsAndNations.colorCodeIsNotEnabled())
@@ -40,18 +49,21 @@ public class TeamUtils {
 
         for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
             if(PlayerDataStorage.get(otherPlayer).getTownId() != null){
-                addPlayerToCorrectTeam(otherPlayer.getScoreboard(), otherPlayer, player);
-                addPlayerToCorrectTeam(player.getScoreboard(), player, otherPlayer);
+                addPlayerToCorrectTeam(otherPlayer, player);
+                addPlayerToCorrectTeam(player, otherPlayer);
             }
         }
     }
 
-    public static void addPlayerToCorrectTeam(Scoreboard scoreboard, Player player, Player toAdd) {
+    /**
+     * Add a player to the correct team
+     * @param player        The player's scoreboard
+     * @param toAdd         The player to add to the team scoreboard
+     */
+    public static void addPlayerToCorrectTeam(Player player, Player toAdd) {
 
-        if(PlayerDataStorage.get(toAdd).getTownId() == null)
-            return;
-
-        if(!PlayerDataStorage.get(player).haveTown())
+        Scoreboard scoreboard = player.getScoreboard();
+        if(!PlayerDataStorage.get(toAdd).haveTown() || !PlayerDataStorage.get(player).haveTown())
             return;
 
         for (TownRelation relation : TownRelation.values()) {
@@ -66,14 +78,17 @@ public class TeamUtils {
         }
     }
 
+    /**
+     * Check if two players have a specific relation
+     * @param player            The player to check the relation of. Player must have a town
+     * @param otherPlayer       The other player to check the relation with. Player must have a town
+     * @param TargetedRelation  The relation to check
+     * @return                  True if the players have the specific relation, false otherwise
+     */
     private static boolean haveRelation(Player player, Player otherPlayer, TownRelation TargetedRelation){
 
         TownData playerTown = TownDataStorage.get(player);
         TownData otherPlayerTown = TownDataStorage.get(otherPlayer);
-
-        if(otherPlayerTown == null){
-            return false;
-        }
 
         TownRelation CurrentRelation = playerTown.getRelationWith(otherPlayerTown);
 

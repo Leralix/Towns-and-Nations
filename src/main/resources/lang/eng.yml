@@ -445,7 +445,7 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_TAG: "§aChange town tag"
   GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1: "§fCurrent tag: §9{0}"
   GUI_TOWN_SETTINGS_CHANGE_TAG_DESC2: "§fLeft click to change the tag"
-  GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT: "§fWrite the new color in the chat in the format :0xRRGGBB (ex: 0x00FF00)"
+  GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT: "§fWrite the new color in the chat in hexadecimal format 'RRGGBB' (ex: 00FF00 for green)"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§fColor successfully changed"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cInvalid color format"
   GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY: "§fModify town color: §9{0}§f -> §9{1}"

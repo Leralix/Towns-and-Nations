@@ -6,12 +6,15 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.*;
+import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.FileUtil;
+import org.tan.TownsAndNations.utils.TownUtil;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -20,6 +23,7 @@ import java.util.*;
 import java.util.Date;
 
 import static org.tan.TownsAndNations.TownsAndNations.isSQLEnabled;
+import static org.tan.TownsAndNations.utils.TeamUtils.updateAllScoreboardColor;
 
 public class TownDataStorage {
 
@@ -91,48 +95,35 @@ public class TownDataStorage {
 
 
     public static void removeTown(String TownId) {
-        if (isSQLEnabled()) {
-            removeTownFromDatabase(TownId);
-        } else {
-            removeTownFromDB(TownId);
-        }
-    }
+        TownData townToDelete = get(TownId);
 
-    private static void removeTownFromDB(String TownId) {
-        TownData townData = townDataMap.get(TownId);
-        if (townData != null) {
-            HashSet<String> array = townData.getPlayerList();
-            for (String playerUUID : array) {
-                PlayerDataStorage.get(playerUUID).setTownId(null);
-            }
+        NewClaimedChunkStorage.unclaimAllChunkFromTown(townToDelete); //Unclaim all chunk from town
+
+        RegionData region = RegionDataStorage.get(townToDelete.getRegionID());
+        if(region != null)
+            region.removeTown(townToDelete);
+
+
+        townToDelete.cancelAllRelation();   //Cancel all Relation between the deleted town and other town
+        for(String playerID : townToDelete.getPlayerList()){ //Kick all Players from the deleted town
+            townToDelete.removePlayer(PlayerDataStorage.get(playerID));
         }
+
+        if(isSQLEnabled()) { //if SQL is enabled, some data need to be removed manually
+            removeAllChunkPermissionsForTown(townToDelete.getID()); //Remove all chunk permission from the deleted town
+            deleteAllRole(townToDelete.getID()); //Delete all role from the deleted town
+            deleteRolePermissionFromTown(townToDelete.getID()); //Delete all role permission from the deleted town
+            NewClaimedChunkStorage.unclaimAllChunkFromTown(townToDelete);  //Unclaim all chunk from the deleted town NOT WORKING RN
+            removeTownUpgradeFromDB(townToDelete.getID()); //Delete all town upgrade from the deleted town
+        }
+
+        updateAllScoreboardColor();
         townDataMap.remove(TownId);
         saveStats();
     }
 
-    private static void removeTownFromDatabase(String TownId) {
-        // Supprimer les données de la ville de la table tan_town_data
-        String sqlDeleteTown = "DELETE FROM tan_town_data WHERE town_key = ?";
-        try (PreparedStatement psDeleteTown = connection.prepareStatement(sqlDeleteTown)) {
-            psDeleteTown.setString(1, TownId);
-            psDeleteTown.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        // Mettre à jour les données des joueurs liés à cette ville dans la base de données
-        String sqlUpdatePlayers = "UPDATE tan_player_current_town SET town_key = NULL WHERE town_key = ?";
-        try (PreparedStatement psUpdatePlayers = connection.prepareStatement(sqlUpdatePlayers)) {
-            psUpdatePlayers.setString(1, TownId);
-            psUpdatePlayers.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
     public static LinkedHashMap<String, TownData> getTownMap() {
-
         return townDataMap;
-
     }
 
 

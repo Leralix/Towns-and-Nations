@@ -16,7 +16,7 @@ import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 public class LocalChatStorage {
 
 
-    private static HashMap<String, ChatScope> playerChatScope = new HashMap<>();
+    private static final HashMap<String, ChatScope> playerChatScope = new HashMap<>();
 
 
     public void setPlayerChatScope(String uuid, ChatScope scope){

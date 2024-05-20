@@ -1,6 +1,5 @@
 package org.tan.TownsAndNations.listeners;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,8 +9,7 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
-import org.tan.TownsAndNations.utils.ConfigUtil;
-import org.tan.TownsAndNations.utils.TagUtil;
+import org.tan.TownsAndNations.utils.prefixUtil;
 
 import static org.tan.TownsAndNations.enums.TownRolePermission.INVITE_PLAYER;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
@@ -35,7 +33,7 @@ public class PlayerJoinListener implements Listener {
                 );
             }
             if(TownsAndNations.townTagIsEnabled())
-                TagUtil.addPrefix(player);
+                prefixUtil.addPrefix(player);
         }
 
         setIndividualScoreBoard(player);

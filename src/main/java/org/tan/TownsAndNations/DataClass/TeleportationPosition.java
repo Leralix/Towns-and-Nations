@@ -6,13 +6,16 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class SpawnPosition {
+public class TeleportationPosition {
 
-    private int x,y,z;
-    private String world;
-    private float pitch, yaw;
+    private final int x;
+    private final int y;
+    private final int z;
+    private final String world;
+    private final float pitch;
+    private final float yaw;
 
-    public SpawnPosition(Location location){
+    public TeleportationPosition(Location location){
         this.x = location.getBlockX();
         this.y = location.getBlockY();
         this.z = location.getBlockZ();
@@ -21,7 +24,7 @@ public class SpawnPosition {
         this.yaw = location.getYaw();
     }
 
-    public SpawnPosition(int x, int y, int z, String world, float pitch, float yaw){
+    public TeleportationPosition(int x, int y, int z, String world, float pitch, float yaw){
         this.x = x;
         this.y = y;
         this.z = z;
@@ -30,7 +33,7 @@ public class SpawnPosition {
         this.yaw = yaw;
     }
 
-    public void teleportPlayerToSpawn(Player player){
+    public void teleport(Player player){
         player.teleport(new Location(Bukkit.getWorld(UUID.fromString(world)), x, y, z, yaw, pitch));
     }
 

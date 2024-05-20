@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.DataClass;
 
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 public class SoundData {
 
@@ -24,5 +25,8 @@ public class SoundData {
 
     public float getPitch() {
         return pitch;
+    }
+    public void playSound(Player player){
+        player.playSound(player.getLocation(), soundName, volume, pitch);
     }
 }

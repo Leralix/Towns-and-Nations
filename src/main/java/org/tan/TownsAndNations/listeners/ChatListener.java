@@ -25,9 +25,6 @@ import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
 import static org.tan.TownsAndNations.utils.EconomyUtil.removeFromBalance;
 import static org.tan.TownsAndNations.utils.StringUtil.hexColorToInt;
-import static org.tan.TownsAndNations.utils.StringUtil.isValidColorCode;
-import static org.tan.TownsAndNations.utils.TownUtil.DonateToTown;
-
 
 public class ChatListener implements Listener {
 
@@ -173,13 +170,12 @@ public class ChatListener implements Listener {
 
         TownData town = TownDataStorage.get(chatData.getData().get(TOWN_ID));
 
-        if(!isValidColorCode(newColorCode)){
+        if(!StringUtil.isValidColorCode(newColorCode)){
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR.get());
             return;
         }
         removePlayer(player);
-        int hexColorCode = hexColorToInt(newColorCode);
-        town.setChunkColor(hexColorCode);
+        town.setChunkColor(hexColorToInt(newColorCode));
         player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS.get());
     }
     private void ChangeRegionName(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newName) {
@@ -220,7 +216,7 @@ public class ChatListener implements Listener {
             return;
         }
 
-        TownUtil.renameTown(player, townCost, newName, town);
+        town.renameTown(player, townCost, newName);
         removePlayer(player);
     }
     private void ChangeTownDescription(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newDesc) {
@@ -244,7 +240,7 @@ public class ChatListener implements Listener {
             return;
         }
         removePlayer(player);
-        DonateToTown(player, amount);
+        TownDataStorage.get(player).addDonation(player, amount);
     }
     private void RenameRank(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newRankName) {
 

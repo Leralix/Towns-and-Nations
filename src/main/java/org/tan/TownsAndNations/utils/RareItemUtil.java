@@ -1,14 +1,11 @@
 package org.tan.TownsAndNations.utils;
 
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.tan.TownsAndNations.DataClass.RareItem;
-
-import java.util.HashMap;
-import java.util.Map;
-
 public class RareItemUtil {
-
+    /**
+     * Get the price of a rare item
+     * @param rareItemTag   The tag of the rare item
+     * @return              The price of the rare item
+     */
     public static int getPrice(String rareItemTag) {
 
         return switch (rareItemTag) {

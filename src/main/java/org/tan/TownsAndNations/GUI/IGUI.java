@@ -24,7 +24,7 @@ public interface IGUI {
                 .create();
     }
     static GuiItem CreateBackArrow(Player player, Consumer<Player> openMenuAction) {
-        ItemStack getBackArrow = HeadUtils.getCustomLoreItem(Material.ARROW, Lang.GUI_BACK_ARROW.get());
+        ItemStack getBackArrow = HeadUtils.createCustomItemStack(Material.ARROW, Lang.GUI_BACK_ARROW.get());
         return ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
             openMenuAction.accept(player);

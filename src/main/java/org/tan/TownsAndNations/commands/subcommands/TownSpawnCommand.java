@@ -7,7 +7,7 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
-import org.tan.TownsAndNations.storage.SpawnRegister;
+import org.tan.TownsAndNations.storage.TeleportationRegister;
 
 import java.util.List;
 
@@ -50,9 +50,7 @@ public class TownSpawnCommand extends SubCommand {
             return;
         }
 
-        //No permission
         TownData townData = TownDataStorage.get(player);
-
         //Spawn Unlocked
         if(townData.isSpawnLocked()){
             player.sendMessage(getTANString() + Lang.SPAWN_NOT_UNLOCKED.get());
@@ -65,7 +63,7 @@ public class TownSpawnCommand extends SubCommand {
             return;
         }
 
-        SpawnRegister.teleportPlayerToSpawn(playerStat, townData);
+        TeleportationRegister.teleportToTownSpawn(playerStat, townData);
 
 
     }

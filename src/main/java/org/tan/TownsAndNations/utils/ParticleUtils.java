@@ -7,20 +7,33 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.Vector3D;
 import org.tan.TownsAndNations.TownsAndNations;
 
+/**
+ * This class is used to manage particles in the plugin.
+ */
 public class ParticleUtils {
 
-    public static void showBox(Player player, Vector3D point1, Vector3D point2, int seconds){
+    /**
+     * Draw a rectangular box between 2 points for a certain amount of time.
+     * @param player    The player to show the box to
+     * @param point1    The first point of the box
+     * @param point2    The second point of the box
+     * @param seconds   The amount of time to show the box for
+     */
+            public static void showBox(Player player, Vector3D point1, Vector3D point2, int seconds){
         ParticleTask particleTask = new ParticleTask(player, point1, point2, seconds);
 
         particleTask.runTaskTimer(TownsAndNations.getPlugin(), 0, 20);
 
     }
+
+    /**
+     * This class is used to draw a box from particles between 2 points for a certain amount of time.
+     */
     private static class ParticleTask extends BukkitRunnable {
         private final Player player;
         private final Vector3D p1;
         private final Vector3D p2;
         private int secondsLeft;
-
 
         public ParticleTask(Player player, Vector3D p1, Vector3D p2, int duration) {
             this.player = player;
@@ -42,19 +55,20 @@ public class ParticleUtils {
         }
     }
 
+    /**
+     * Draw a box between 2 points.
+     * @param player    The player to show the box to
+     * @param point1    The first point of the box
+     * @param point2    The second point of the box
+     */
     public static void drawBox(Player player, Vector3D point1, Vector3D point2) {
         double minX = Math.min(point1.getX(), point2.getX());
         double minY = Math.min(point1.getY(), point2.getY());
         double minZ = Math.min(point1.getZ(), point2.getZ());
-        double maxX = Math.max(point1.getX(), point2.getX());
-        double maxY = Math.max(point1.getY(), point2.getY());
-        double maxZ = Math.max(point1.getZ(), point2.getZ());
+        double maxX = Math.max(point1.getX(), point2.getX()) + 1;
+        double maxY = Math.max(point1.getY(), point2.getY()) + 1;
+        double maxZ = Math.max(point1.getZ(), point2.getZ()) + 1;
 
-        // Loop through all the edges of the box
-        drawEdges(player, minX, minY, minZ, maxX + 1, maxY + 1, maxZ + 1);
-    }
-
-    private static void drawEdges(Player player, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
         // Draw bottom edges
         drawLine(player, minX, minY, minZ, maxX, minY, minZ);
         drawLine(player, maxX, minY, minZ, maxX, minY, maxZ);
@@ -74,9 +88,19 @@ public class ParticleUtils {
         drawLine(player, minX, minY, maxZ, minX, maxY, maxZ);
     }
 
+    /**
+     * Draw a line between 2 points.
+     * @param player    The player to show the line to
+     * @param x1        The x coordinate of the first point
+     * @param y1        The y coordinate of the first point
+     * @param z1        The z coordinate of the first point
+     * @param x2        The x coordinate of the second point
+     * @param y2        The y coordinate of the second point
+     * @param z2        The z coordinate of the second point
+     */
     private static void drawLine(Player player, double x1, double y1, double z1, double x2, double y2, double z2) {
         double length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
-        double amount = length * 2; // Adjust the density of particles based on the length of the line
+        double amount = length * 2;
 
         double dx = (x2 - x1) / amount;
         double dy = (y2 - y1) / amount;

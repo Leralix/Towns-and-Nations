@@ -21,7 +21,6 @@ import org.tan.TownsAndNations.commands.DebugCommandManager;
 import org.tan.TownsAndNations.listeners.*;
 import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.storage.DataStorage.*;
-import org.tan.TownsAndNations.storage.Legacy.ClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.Legacy.UpgradeStorage;
 import org.tan.TownsAndNations.utils.*;
 
@@ -240,7 +239,6 @@ public final class TownsAndNations extends JavaPlugin {
             TownDataStorage.saveStats();
             PlayerDataStorage.saveStats();
             NewClaimedChunkStorage.save();
-            ClaimedChunkStorage.saveStats(); //Delete later
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
