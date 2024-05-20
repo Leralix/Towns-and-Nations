@@ -53,7 +53,7 @@ public class DropChances {
     }
     /**
      * Get the {@link RareItem} from a {@link Entity}
-     * @param entity     The {@link Entity}
+     * @param entity    The {@link Entity}
      * @return          The {@link RareItem} dropped from the block or null if the {@link Entity} not giving {@link RareItem}
      */
     public static RareItem getRareItem(Entity entity) {
@@ -61,8 +61,8 @@ public class DropChances {
     }
     /**
      * Get the {@link RareItem} from a {@link EntityType}
-     * @param entityType     The {@link EntityType}
-     * @return          The {@link RareItem} dropped from the block or null if the {@link EntityType} is not giving {@link RareItem}
+     * @param entityType    The {@link EntityType}
+     * @return              The {@link RareItem} dropped from the block or null if the {@link EntityType} is not giving {@link RareItem}
      */
     public static RareItem getRareItem(EntityType entityType) {
         return dropChances.get(entityType.name());

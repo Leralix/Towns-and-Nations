@@ -304,6 +304,7 @@ public final class TownsAndNations extends JavaPlugin {
     private void checkForUpdate() {
         if(!ConfigUtil.getCustomConfig("config.yml").getBoolean("CheckForUpdate",true)){
             getLogger().info("[TaN] Update check is disabled");
+            LATEST_VERSION = CURRENT_VERSION;
             return;
         }
         try {
