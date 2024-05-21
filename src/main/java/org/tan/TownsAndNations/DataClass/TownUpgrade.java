@@ -100,7 +100,7 @@ public class TownUpgrade {
         }
 
         //Benefits
-        if(isMaxLevel){
+        if(!isMaxLevel){
             lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4.get());
             for(Map.Entry<String,Integer> entry : this.getBenefits().entrySet()){
                 String name = entry.getKey();

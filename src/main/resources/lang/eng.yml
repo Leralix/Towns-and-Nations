@@ -1,6 +1,6 @@
 language:
   WELCOME: "§fWelcome"
-  LANGUAGE_SUCCESSFULLY_LOADED: "English language successfully loaded"
+  LANGUAGE_SUCCESSFULLY_LOADED: "[T&N] English language successfully loaded"
   PLUGIN_STRING: "§6[T&N]§f "
   PLUGIN_DEBUG_STRING: "§c[T&N - Debug]§f "
   NEWSLETTER_STRING: "§6[T&N - Newsletter]§f "
@@ -28,7 +28,7 @@ language:
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 {1}: §f{2}"
   #Update needed
   NEW_VERSION_AVAILABLE: "§cA new version is available: §f{0}"
-  NEW_VERSION_AVAILABLE_2: "§cDownload it on Spigot or Github"
+  NEW_VERSION_AVAILABLE_2: "§cDownload it on Spigot or GitHub"
   #Level up
   BASIC_LEVEL_UP: "§aLevel up !"
   #Teleportation
@@ -300,8 +300,8 @@ language:
   GUI_TOWN_LEVEL_UP_UNI_DESC2: "§fLevel §a{0}§f upgrade cost: §6{1}✦"
   GUI_TOWN_LEVEL_UP_UNI_DESC2_MAX_LEVEL: "§6Max level reached"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nPrerequisites:"
-  GUI_TOWN_LEVEL_UP_UNI_DESC3_1: "§f- {0}: §a{1} / {2}"
-  GUI_TOWN_LEVEL_UP_UNI_DESC3_2: "§f- {0}: §c{1} / {2}"
+  GUI_TOWN_LEVEL_UP_UNI_DESC3_1: "§f- {0}: §a{1}/{2}"
+  GUI_TOWN_LEVEL_UP_UNI_DESC3_2: "§f- {0}: §c{1}/{2}"
   GUI_TOWN_LEVEL_UP_UNI_DESC4: "§f§nUpgrade rewards:"
   GUI_TOWN_LEVEL_UP_UNI_DESC4_1: "§f- {0}: §a+{1}"
   GUI_TOWN_LEVEL_UP_UNI_DESC4_2: "§f- {0}: §c{1}"
