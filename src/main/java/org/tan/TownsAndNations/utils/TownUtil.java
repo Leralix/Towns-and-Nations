@@ -86,4 +86,29 @@ public class TownUtil {
             player.closeInventory();
         }
     }
+
+    public static void CreateAdminTown(Player player, String townName) {
+
+        FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
+        int maxSize = config.getInt("TownNameSize");
+
+        if(townName.length() > maxSize){
+            player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
+            return;
+        }
+
+        if(TownDataStorage.isNameUsed(townName)){
+            player.sendMessage(ChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
+            return;
+        }
+
+        TownData newTown = TownDataStorage.newTown(townName);
+
+
+        Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(),townName));
+        SoundUtil.playSound(player, LEVEL_UP);
+        removePlayer(player);
+        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_CREATED.get(player.getName(),townName));
+
+    }
 }

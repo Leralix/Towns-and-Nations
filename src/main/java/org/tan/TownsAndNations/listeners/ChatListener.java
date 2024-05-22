@@ -101,6 +101,9 @@ public class ChatListener implements Listener {
             case CHANGE_TOWN_TAG:
                 changeTownTag(player, chatData, message);
                 break;
+            case CREATE_ADMIN_TOWN:
+                TownUtil.CreateAdminTown(player, message);
+                break;
         }
     }
 

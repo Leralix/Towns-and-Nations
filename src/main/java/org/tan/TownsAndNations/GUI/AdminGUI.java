@@ -12,6 +12,7 @@ import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.enums.ChatCategory;
 import org.tan.TownsAndNations.enums.MessageKey;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
@@ -166,8 +167,22 @@ public class AdminGUI implements IGUI{
 
             gui.setItem(i, _townIteration);
             i++;
-
         }
+
+        ItemStack createTown = HeadUtils.makeSkull(Lang.ADMIN_GUI_CREATE_TOWN.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19",
+                Lang.ADMIN_GUI_CREATE_TOWN_DESC1.get());
+
+        GuiItem _createTown = ItemBuilder.from(createTown).asGuiItem(event -> {
+            event.setCancelled(true);
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+            player.closeInventory();
+
+            PlayerChatListenerStorage.addPlayer(ChatCategory.CREATE_ADMIN_TOWN,player);
+        });
+
+
+        gui.setItem(6,9, _createTown);
 
 
         gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));

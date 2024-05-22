@@ -100,17 +100,15 @@ public class TownUpgrade {
         }
 
         //Benefits
-        if(!isMaxLevel){
+        if(!isMaxLevel){    //If max level do not show this part
             lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4.get());
             for(Map.Entry<String,Integer> entry : this.getBenefits().entrySet()){
                 String name = entry.getKey();
                 Integer value = entry.getValue();
-                if(value > 0){
+                if(value > 0)
                     lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(DynamicLang.get(name), value));
-                }
-                else {
+                else
                     lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(DynamicLang.get(name), value));
-                }
             }
         }
         //Total Benefits

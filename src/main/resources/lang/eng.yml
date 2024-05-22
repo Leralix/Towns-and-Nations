@@ -492,6 +492,8 @@ language:
   ADMIN_GUI_CHANGE_TOWN_DESCRIPTION_DESC1: "§fCurrent message: §7§o\"{0}\""
   ADMIN_GUI_CHANGE_TOWN_LEADER: "§aChange town leader"
   ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1: "§fCurrent leader: §3{0}"
+  ADMIN_GUI_CREATE_TOWN: "§aCreate a town"
+  ADMIN_GUI_CREATE_TOWN_DESC1: "§fLeft click to create an empty town"
   ADMIN_GUI_DELETE_TOWN: "§aDelete town"
   ADMIN_GUI_DELETE_TOWN_DESC1: "§cDelete the town: §9{0}"
   ADMIN_GUI_TOWN_PLAYER_TOWN: "§fPlayer current town: §e{0}"

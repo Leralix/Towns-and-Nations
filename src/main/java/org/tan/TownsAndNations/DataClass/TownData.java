@@ -94,7 +94,8 @@ public class TownData {
 
 
         addRank(townDefaultRank);
-        addPlayer(leaderID);
+        if(leaderID != null)
+            addPlayer(leaderID);
     }
 
     //used for sql, loading a town

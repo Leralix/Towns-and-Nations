@@ -49,6 +49,17 @@ public class TownDataStorage {
         return newTown;
     }
 
+    public static TownData newTown(String townName){
+        String townId = "T"+newTownId;
+        newTownId++;
+
+        TownData newTown = new TownData(townId, townName, null);
+
+        townDataMap.put(townId,newTown);
+        saveStats();
+        return newTown;
+    }
+
     public static void addPlayerToTownDatabase(String townId, String playerUUID) {
         String sql = "INSERT INTO tan_player_current_town (town_key, player_id) VALUES (?, ?)";
 
