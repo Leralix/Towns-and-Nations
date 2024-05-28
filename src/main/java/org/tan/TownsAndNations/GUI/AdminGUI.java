@@ -207,7 +207,7 @@ public class AdminGUI implements IGUI{
                 Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION_DESC1.get(townData.getDescription()));
         ItemStack changeTownLeader = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,
                 Lang.ADMIN_GUI_CHANGE_TOWN_LEADER.get(),
-                Lang.ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1.get(Bukkit.getServer().getOfflinePlayer(UUID.fromString(townData.getLeaderID())).getName()));
+                Lang.ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1.get(townData.getLeaderName()));
         ItemStack deleteTown = HeadUtils.createCustomItemStack(Material.BARRIER,
                 Lang.ADMIN_GUI_DELETE_TOWN.get(),
                 Lang.ADMIN_GUI_DELETE_TOWN_DESC1.get(townData.getName()));
@@ -338,7 +338,7 @@ public class AdminGUI implements IGUI{
                 event.setCancelled(true);
                 TownData townData = playerData.getTown();
 
-                if(townData.getLeaderID().equals(playerData.getID())){
+                if(playerData.isTownLeader()){
                     player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get());
                     return;
                 }

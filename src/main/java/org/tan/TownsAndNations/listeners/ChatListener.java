@@ -273,6 +273,7 @@ public class ChatListener implements Listener {
     }
 
     private void ChangePropertyName(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String message) {
+        removePlayer(player);
 
         String id = chatData.getData().get(PROPERTY_ID);
 
@@ -295,6 +296,7 @@ public class ChatListener implements Listener {
     }
 
     private void ChangePropertyDesc(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String message) {
+        removePlayer(player);
 
         String id = chatData.getData().get(PROPERTY_ID);
         String[] ids = id.split("_");

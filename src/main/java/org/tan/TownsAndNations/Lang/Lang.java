@@ -577,8 +577,9 @@ public enum Lang {
     SIGN_RENT_PRICE,
     SIGN_RENTED_BY,
     SIGN_NOT_FOR_SALE,
-
-    ;
+    NO_LEADER,
+    TOWN_HAVE_NO_LEADER,
+    TOWN_DIPLOMATIC_INVITATION_NO_LEADER;
 
 
     private static final Map<Lang, String> translations = new HashMap<>();
@@ -604,7 +605,6 @@ public enum Lang {
         boolean replace = ConfigUtil.getCustomConfig("lang.yml").getBoolean("autoUpdateLangFiles",true);
         if(replace) {
             TownsAndNations.getPlugin().saveResource("lang/" + filename, true);
-
         }
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         for (Lang key : Lang.values()) {

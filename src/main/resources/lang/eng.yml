@@ -23,6 +23,9 @@ language:
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cYou need to be in your town to set up a property position"
   MESSAGE_NOT_RIGHT_SIZE: "§cMessage must be exactly {0} long"
   NO_TRADE_ALLOWED_EMBARGO: "§cYou cannot trade with a town under embargo"
+  NO_LEADER: "§cNo Leader"
+  TOWN_HAVE_NO_LEADER: "§cThe town has no leader"
+  TOWN_DIPLOMATIC_INVITATION_NO_LEADER: "§cThe town has no leader to interact with diplomatic relations"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 {1}: §f{2}"
@@ -129,7 +132,6 @@ language:
   UNCLAIMED_CHUNK_SUCCESS_REGION: "Chunk unclaimed ! Current number of chunks: §2{0}♦"
   DEBUG_UNCLAIMED_CHUNK_SUCCESS_TOWN: "Chunk unclaimed ! Current number of chunks §9{0} §f: §2{1}/{2}♦"
   DEBUG_UNCLAIMED_CHUNK_SUCCESS_REGION: "Chunk unclaimed ! Current number of chunks §9{0} §f: §2{1}♦"
-
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cThis chunk is claimed by another town: §e{0}"
   UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§cThis chunk is claimed by another region: §b{0}"
   #Map command

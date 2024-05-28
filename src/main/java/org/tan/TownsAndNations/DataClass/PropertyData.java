@@ -313,7 +313,7 @@ public class PropertyData {
         OfflinePlayer exOwnerOffline = Bukkit.getOfflinePlayer(UUID.fromString(owningPlayerID));
 
         if(exOwner != null){
-            exOwner.sendMessage(ChatUtils.getTANString() + Lang.PROPERTY_SOLD_EX_OWNER.get(player.getName(),getName(), getBuyingPrice()));
+            exOwner.sendMessage(ChatUtils.getTANString() + Lang.PROPERTY_SOLD_EX_OWNER.get(getName(),player.getName(), getBuyingPrice()));
             SoundUtil.playSound(exOwner, SoundEnum.GOOD);
         }
         player.sendMessage(ChatUtils.getTANString() + Lang.PROPERTY_SOLD_NEW_OWNER.get(getName(), getBuyingPrice()));

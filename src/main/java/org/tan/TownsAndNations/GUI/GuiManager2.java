@@ -2200,6 +2200,12 @@ public class GuiManager2 implements IGUI {
             int i = 0;
             for(String otherTownUUID : townNoRelation){
                 TownData otherTown = TownDataStorage.get(otherTownUUID);
+
+                if(otherTown.haveNoLeader()){
+                    player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_NO_LEADER.get());
+                    return;
+                }
+
                 ItemStack townIcon = getTownIconWithInformations(otherTownUUID, playerTown.getID());
 
                 GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
@@ -2212,6 +2218,7 @@ public class GuiManager2 implements IGUI {
                     }
                     if(relation.getNeedsConfirmationToStart()){
                         // Can only be good relations
+
                         OfflinePlayer otherTownLeader = Bukkit.getOfflinePlayer(UUID.fromString(otherTown.getLeaderID()));
 
                         if (!otherTownLeader.isOnline()) {

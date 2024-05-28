@@ -72,7 +72,7 @@ public class PlayerData {
         this.Balance = this.Balance - money;
     }
     public boolean isTownLeader(){
-        return TownDataStorage.get(this).getLeaderID().equals(this.UUID);
+        return this.UUID.equals(TownDataStorage.get(this).getLeaderID());
     }
 
     public boolean hasPermission(TownRolePermission rolePermission){

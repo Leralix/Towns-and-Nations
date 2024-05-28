@@ -1,6 +1,6 @@
 language:
   WELCOME: "§fVelkommen"
-  LANGUAGE_SUCCESSFULLY_LOADED: "Norsk språk lastet inn vellykket"
+  LANGUAGE_SUCCESSFULLY_LOADED: "[T&N] English language successfully loaded"
   PLUGIN_STRING: "§6[T&N]§f "
   PLUGIN_DEBUG_STRING: "§c[T&N - Debug]§f "
   NEWSLETTER_STRING: "§6[T&N - Newsletter]§f "
@@ -22,12 +22,16 @@ language:
   POSITION_NEED_TO_BE_IN_CLAIMED_CHUNK: "§cYou need to be in a claimed chunk to set up a property position"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cYou need to be in your town to set up a property position"
   MESSAGE_NOT_RIGHT_SIZE: "§cMessage must be exactly {0} long"
+  NO_TRADE_ALLOWED_EMBARGO: "§cYou cannot trade with a town under embargo"
+  NO_LEADER: "§cNo Leader"
+  TOWN_HAVE_NO_LEADER: "§cThe town has no leader"
+  TOWN_DIPLOMATIC_INVITATION_NO_LEADER: "§cThe town has no leader to interact with diplomatic relations"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Allianse - {0}]§3 {1}: §f{2}"
   #Update needed
   NEW_VERSION_AVAILABLE: "§cEn ny versjon er tilgjengelig: §f{0}"
-  NEW_VERSION_AVAILABLE_2: "§cLast ned den på Spigot eller Github"
+  NEW_VERSION_AVAILABLE_2: "§cDownload it on Spigot or GitHub"
   #Level up
   BASIC_LEVEL_UP: "§aNivå opp !"
   #Teleportation
@@ -57,7 +61,7 @@ language:
   #BROADCAST
   TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the town: §9{1}"
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c har forlatt byen !"
-  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f har vellykket opprettet regionen: §9{1}"
+  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the region: §b{1}"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fByen §9{0}§f har blitt sparket ut av regionen"
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "Hevd en chunk"
@@ -124,10 +128,12 @@ language:
   BAL_AMOUNT: "Din saldo: §6{0}✦"
   #Uncliam command
   UNCLAIM_CHUNK_COMMAND_DESC: "Frigjør en chunk"
-  UNCLAIMED_CHUNK_SUCCESS: "Chunk frigjort! Nåværende antall chunks: §2{0}/{1}♦"
-  DEBUG_UNCLAIMED_CHUNK_SUCCESS: "Chunk frigjort! Nåværende antall chunks §9{0} §f: §2{1}/{2}♦"
+  UNCLAIMED_CHUNK_SUCCESS_TOWN: "Chunk unclaimed ! Current number of chunks: §2{0}/{1}♦"
+  UNCLAIMED_CHUNK_SUCCESS_REGION: "Chunk unclaimed ! Current number of chunks: §2{0}♦"
+  DEBUG_UNCLAIMED_CHUNK_SUCCESS_TOWN: "Chunk unclaimed ! Current number of chunks §9{0} §f: §2{1}/{2}♦"
+  DEBUG_UNCLAIMED_CHUNK_SUCCESS_REGION: "Chunk unclaimed ! Current number of chunks §9{0} §f: §2{1}♦"
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cDenne chunken er hevdet av en annen by: §e{0}"
-  UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§cDenne chunken er hevdet av en annen region: §e{0}"
+  UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§cThis chunk is claimed by another region: §b{0}"
   #Map command
   MAP_COMMAND_DESC: "Open the map of chunks around the player"
   #Debug commands
@@ -155,7 +161,7 @@ language:
   PLAYER_NOT_ENOUGH_MONEY: "§cDu har ikke nok penger til å utføre denne handlingen"
   LEADER_NOT_ONLINE: "§cBylederen er ikke på nett"
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cDu har ikke nok penger. Du trenger {0} mer"
-  PLAYER_PAY_AT_EMBARGO_ERROR: "§cDu kan ikke betale en spiller i en by under embargo eller krig fra din by"
+  PLAYER_PAY_AT_EMBARGO_ERROR: "§cYou cannot pay a player in a town under embargo or at war with your town"
   PLAYER_NEED_1_OR_ABOVE: "§fDu trenger minst §1✦"
   TOWN_NOT_ENOUGH_MONEY: "§cByen har ikke nok penger til å utføre denne handlingen"
   TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cByen har ikke nok penger til å utføre denne handlingen. Den trenger {0}✦ mer"
@@ -187,6 +193,8 @@ language:
   RELATION_NON_AGGRESSION_NAME: "Ikke-aggresjon"
   RELATION_EMBARGO_NAME: "Embargo"
   RELATION_WAR_NAME: "Krig"
+  #GUI generic
+  GUI_GENERIC_CLICK_TO_OPEN: "§fClick to open"
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§eFortsatt under utvikling"
   GUI_BACK_ARROW: "Returner"
@@ -201,11 +209,11 @@ language:
   GUI_KINGDOM_ICON: "§aKongerike"
   GUI_KINGDOM_ICON_DESC1: "§fUnder utvikling"
   GUI_REGION_ICON: "§aRegion"
-  GUI_REGION_ICON_DESC1_REGION: "§fDin nåværende region: §9{0}"
+  GUI_REGION_ICON_DESC1_REGION: "§fYour current region: §b{0}"
   GUI_REGION_ICON_DESC1_NO_REGION: "§fOpprett eller se på regioner"
   GUI_TOWN_ICON: "§aBy"
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§fBli med eller opprett din egen by"
-  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fDin nåværende by: §e{0}"
+  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fYour current town: §9{0}"
   GUI_PROFILE_ICON_DESC1: "§fSe på dine statistikker"
   #Player
   GUI_PLAYER_PROFILE: "§a{0}" #//Player's name
@@ -229,7 +237,7 @@ language:
   GUI_TOWN_INFO_DESC2: "§fMedlemmer: §9{0}♣"
   GUI_TOWN_INFO_DESC3: "§fChunks: §2{0}♦"
   GUI_TOWN_INFO_DESC4: "§fSkattkammer: §6{0}✦"
-  GUI_TOWN_INFO_DESC5_REGION: "§fRegion: §6{0}"
+  GUI_TOWN_INFO_DESC5_REGION: "§fRegion: §b{0}"
   GUI_TOWN_INFO_DESC5_NO_REGION: "§fIngen region"
   GUI_TOWN_INFO_TOWN_RELATION: "§fNåværende forhold med byen: §e{0}"
   GUI_TOWN_INFO_IS_RECRUITING: "§fRekrutterer: §aÅpen"
@@ -271,7 +279,6 @@ language:
   GUI_TREASURY_FLAT_TAX: "§aFast skatt"
   GUI_TREASURY_FLAT_TAX_DESC1: "§fByens daglige skatt: §6{0}✦§f"
   GUI_TREASURY_TAX_HISTORY: "§aSkattehistorikk"
-  GUI_TREASURY_TAX_HISTORY_DESC1: "§fKlikk for å åpne"
   GUI_TREASURY_SALARY_HISTORY: "§aLønnshistorikk"
   GUI_TREASURY_SALARY_HISTORY_DESC1: "§fLønnsutgifter er oppe i: §c-{0}✦"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY: "§aChunk-utgiftshistorikk"
@@ -293,9 +300,10 @@ language:
   GUI_TOWN_LEVEL_UP_UNI: "§a{}"
   GUI_TOWN_LEVEL_UP_UNI_DESC1: "§fNåværende nivå: §e{0}"
   GUI_TOWN_LEVEL_UP_UNI_DESC2: "§fOppgradering til nivå §a{0}§f koster: §6{1}✦"
+  GUI_TOWN_LEVEL_UP_UNI_DESC2_MAX_LEVEL: "§6Max level reached"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nForutsetninger:"
-  GUI_TOWN_LEVEL_UP_UNI_DESC3_1: "§f- §a{0}: {1}"
-  GUI_TOWN_LEVEL_UP_UNI_DESC3_2: "§f- §c{0}: {1}"
+  GUI_TOWN_LEVEL_UP_UNI_DESC3_1: "§f- {0}: §a{1}/{2}"
+  GUI_TOWN_LEVEL_UP_UNI_DESC3_2: "§f- {0}: §c{1}/{2}"
   GUI_TOWN_LEVEL_UP_UNI_DESC4: "§f§nOppgraderingsbelønninger:"
   GUI_TOWN_LEVEL_UP_UNI_DESC4_1: "§f- {0}: §a+{1}"
   GUI_TOWN_LEVEL_UP_UNI_DESC4_2: "§f- {0}: §c{1}"
@@ -429,7 +437,7 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC2: "§fVenstreklikk for å endre navnet"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3: "§fKostnad: §6{0}✦"
   GUI_TOWN_SETTINGS_QUIT_REGION: "§aForlat regionen"
-  GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION: "§cForlat regionen §9{0}"
+  GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION: "§cQuit the region §b{0}"
   GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_NOREGION: "§fDu tilhører ikke en region eller du er den regionale hovedstaden"
   GUI_TOWN_SETTINGS_NEW_TOWN_NAME_HISTORY: "§fEndre bynavn: §9{0}§f -> §9{1}"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR: "§aEndre chunkfarge"
@@ -439,7 +447,7 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_TAG: "§aChange town tag"
   GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1: "§fCurrent tag: §9{0}"
   GUI_TOWN_SETTINGS_CHANGE_TAG_DESC2: "§fLeft click to change the tag"
-  GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT: "§fSkriv den nye fargen i chatten i formatet: 0xRRGGBB (eks: 0x00FF00)"
+  GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT: "§fWrite the new color in the chat in hexadecimal format 'RRGGBB' (ex: 00FF00 for green)"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§fFarge vellykket endret"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cUgyldig fargeformat"
   GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY: "§fEndre byfarge: §9{0}§f -> §9{1}"
@@ -486,6 +494,8 @@ language:
   ADMIN_GUI_CHANGE_TOWN_DESCRIPTION_DESC1: "§fNåværende melding: §7§o\"{0}\""
   ADMIN_GUI_CHANGE_TOWN_LEADER: "§aEndre byleder"
   ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1: "§fNåværende leder: §3{0}"
+  ADMIN_GUI_CREATE_TOWN: "§aCreate a town"
+  ADMIN_GUI_CREATE_TOWN_DESC1: "§fLeft click to create an empty town"
   ADMIN_GUI_DELETE_TOWN: "§aSlett by"
   ADMIN_GUI_DELETE_TOWN_DESC1: "§cSlett byen: §9{0}"
   ADMIN_GUI_TOWN_PLAYER_TOWN: "§fSpillerens nåværende by: §e{0}"
@@ -564,12 +574,14 @@ language:
   ITEM_RARE_WOOD: "§3Sjeldent Tre"
   ITEM_RARE_CROP: "§3Sjelden Avling"
   ITEM_RARE_SOUL: "§3Kreatursjel"
+  ITEM_RARE_FISH: "§3Rare Fish"
   RARE_ITEM_DESC_1: "§fDenne gjenstanden kan byttes mot penger"
   #Custom villager jobs
   VILLAGER_GOLDSMITH: "Gullsmed"
   VILLAGER_BOTANIST: "Botaniker"
   VILLAGER_COOK: "Kokk"
   VILLAGER_WIZARD: "Trollmann"
+  VILLAGER_FISHERMAN: "Fisherman"
   #Villager Interaction Success
   RARE_ITEM_NO_ITEM_IN_HANDS: "Høyreklikk med §e{0}§f for å selge den for §6{1}✦"
   RARE_ITEM_WRONG_ITEM: "Denne landsbyboeren kjøper bare §e{0}"
@@ -579,7 +591,7 @@ language:
   #Chunk interactions
   CHUNK_ENTER_WILDERNESS: "§fØdemark"
   CHUNK_ENTER_TOWN: "§fDu går inn i byen: §9{0}"
-  CHUNK_ENTER_REGION: "§fDu går inn i regionen: §9{0}"
+  CHUNK_ENTER_REGION: "§fEntering the region: §b{0}"
   CHUNK_ENTER_TOWN_AT_WAR: "§cDu er i krig med denne byen. Spillere har blitt varslet om at du krysset grensen"
   CHUNK_INTRUSION_ALERT: "§cEn fiende fra byen {0} har krysset dine grenser: {1}"
   #History

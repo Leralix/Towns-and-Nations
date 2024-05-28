@@ -7,7 +7,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.History.*;
-
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -20,14 +19,13 @@ import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.utils.*;
 
 import java.util.*;
-import java.util.Date;
 
 import static org.tan.TownsAndNations.TownsAndNations.isSQLEnabled;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.enums.TownRolePermission.KICK_PLAYER;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
-import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
 import static org.tan.TownsAndNations.utils.EconomyUtil.removeFromBalance;
+import static org.tan.TownsAndNations.utils.HeadUtils.getPlayerHead;
 
 public class TownData {
 
@@ -123,6 +121,12 @@ public class TownData {
 
     }
 
+    public String getLeaderName() {
+        if(this.UuidLeader == null)
+            return Lang.NO_LEADER.get();
+        return Bukkit.getOfflinePlayer(UUID.fromString(this.UuidLeader)).getName();
+    }
+
     public String getID() {
         return this.TownId;
     }
@@ -182,8 +186,11 @@ public class TownData {
         return this.dateTimeCreated;
     }
     public ItemStack getTownIconItemStack() {
+        if(haveNoLeader()){
+            return new ItemStack(Material.SKELETON_SKULL);
+        }
         if(this.townIconMaterialCode == null){
-            return null;
+            return getPlayerHead(getName(), Bukkit.getOfflinePlayer(UUID.fromString(getLeaderID())));
         }
         Material material = Material.getMaterial(getTownIconMaterialCode());
         if(material == null)
@@ -359,6 +366,8 @@ public class TownData {
     }
 
     public boolean isLeader(Player player){
+        if(this.UuidLeader == null)
+            return false;
         return this.UuidLeader.equals(player.getUniqueId().toString());
     }
 
@@ -824,5 +833,9 @@ public class TownData {
         townLevel.levelUp(townUpgrade);
         SoundUtil.playSound(player,LEVEL_UP);
         player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());
+    }
+
+    public boolean haveNoLeader() {
+        return this.UuidLeader == null;
     }
 }

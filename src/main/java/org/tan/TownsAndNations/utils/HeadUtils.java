@@ -201,17 +201,14 @@ public class HeadUtils {
      */
     public static @NotNull ItemStack getTownIcon(final @NotNull TownData townData){
         ItemStack itemStack = townData.getTownIconItemStack();
-        if(itemStack == null){
-            return getPlayerHead(townData.getName(), Bukkit.getOfflinePlayer(UUID.fromString(townData.getLeaderID())));
+
+        ItemMeta meta = itemStack.getItemMeta();
+        if(meta != null){
+            meta.setDisplayName(ChatColor.GREEN + townData.getName());
+            itemStack.setItemMeta(meta);
         }
-        else {
-            ItemMeta meta = itemStack.getItemMeta();
-            if(meta != null){
-                meta.setDisplayName(ChatColor.GREEN + townData.getName());
-                itemStack.setItemMeta(meta);
-            }
-            return itemStack;
-        }
+        return itemStack;
+
     }
     /**
      * Return the head displaying the town icon
@@ -239,7 +236,7 @@ public class HeadUtils {
             List<String> lore = new ArrayList<>();
             lore.add(Lang.GUI_TOWN_INFO_DESC0.get(town.getDescription()));
             lore.add("");
-            lore.add(Lang.GUI_TOWN_INFO_DESC1.get(Bukkit.getOfflinePlayer(UUID.fromString(town.getLeaderID())).getName()));
+            lore.add(Lang.GUI_TOWN_INFO_DESC1.get(town.getLeaderName()));
             lore.add(Lang.GUI_TOWN_INFO_DESC2.get(town.getPlayerList().size()));
             lore.add(Lang.GUI_TOWN_INFO_DESC3.get(town.getNumberOfClaimedChunk()));
             lore.add(town.haveRegion()? Lang.GUI_TOWN_INFO_DESC5_REGION.get(town.getRegion().getName()): Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get());
