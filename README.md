@@ -7,6 +7,8 @@ Towns and Nations is now on release. Only the town feature has been created for 
 For updates, discussions, or to join our growing community, please visit our Discord server.
 https://discord.gg/Q8gZSFUuzb
 
-Spigot page: https://www.spigotmc.org/resources/towns-nations.114019/
+Spigot page : https://www.spigotmc.org/resources/towns-nations.114019/
+
+Towns and Nations - Dynmap : https://github.com/Leralix/Towns-and-Nations-Dynmap
 
 Arcadia server discord (French server) can message me from this server.
