@@ -52,16 +52,13 @@ public class SetTownSpawnCommand extends SubCommand {
         }
 
         //No permission
-        TownData townData = TownDataStorage.get(player);
-        ClaimedChunkSettings townChunkInfo = townData.getChunkSettings();
-        if(!playerStat.hasPermission(TownRolePermission.UPGRADE_TOWN)){
-            if(!playerStat.isTownLeader()){
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-                return;
-            }
+
+        if(!playerStat.hasPermission(TownRolePermission.TOWN_ADMINISTRATOR)){
+            player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+            return;
         }
 
-
+        TownData townData = TownDataStorage.get(player);
 
         //Spawn Unlocked
         if(townData.isSpawnLocked()){
@@ -69,9 +66,7 @@ public class SetTownSpawnCommand extends SubCommand {
             return;
         }
 
-
         townData.setSpawn(player.getLocation());
-
         player.sendMessage(getTANString() + Lang.SPAWN_SET_SUCCESS.get());
     }
 

@@ -41,7 +41,7 @@ public class ChunkUtil {
         RegionData regionData = townData.getRegion();
 
         //Not leader of the region
-        if(!regionData.isPlayerLeader(playerStat)){
+        if(!playerStat.isRegionLeader()){
             player.sendMessage(getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return;
         }

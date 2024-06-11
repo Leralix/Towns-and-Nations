@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -70,7 +71,10 @@ public class RegionDataStorage {
         FileUtil.addLineToHistory(Lang.HISTORY_REGION_CREATED.get(player.getName(),regionName));
     }
     public static RegionData get(Player player){
-        return get(PlayerDataStorage.get(player).getTown().getRegionID());
+        return get(PlayerDataStorage.get(player));
+    }
+    public static RegionData get(PlayerData playerData){
+        return get(playerData.getTown().getRegionID());
     }
     public static RegionData get(String regionID){
         if(!regionStorage.containsKey(regionID))

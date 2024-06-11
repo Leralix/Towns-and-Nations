@@ -66,7 +66,7 @@ public class RegionClaimedChunk extends ClaimedChunk2{
             player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_REGION.get(otherRegion.getName()));
         }
 
-        if(!regionData.isPlayerLeader(playerStat)){
+        if(!playerStat.isRegionLeader()){
             player.sendMessage(getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return;
         }

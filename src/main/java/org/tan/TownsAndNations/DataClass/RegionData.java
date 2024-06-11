@@ -209,10 +209,6 @@ public class RegionData {
         return townsInRegion.contains(townData.getID());
     }
 
-    public boolean isPlayerLeader(PlayerData playerStat) {
-        return (playerStat.isTownLeader() && isCapital(playerStat.getTown()));
-    }
-
     public int setBasicColor(int colorHex) {
         int red = (colorHex >> 16) & 0xFF;
         int green = (colorHex >> 8) & 0xFF;

@@ -649,7 +649,7 @@ public class GuiManager2 implements IGUI {
         GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if(!playerStat.isTownLeader())
+            if(!playerStat.hasPermission(TOWN_ADMINISTRATOR))
                 return;
             if(event.getCursor() == null)
                 return;
@@ -1246,6 +1246,7 @@ public class GuiManager2 implements IGUI {
         ItemStack manage_mob_spawn = HeadUtils.createCustomItemStack(Material.CREEPER_HEAD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_MOB_SPAWN.get(),(townRank.hasPermission(townID,MANAGE_MOB_SPAWN)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
         ItemStack create_property = HeadUtils.createCustomItemStack(Material.OAK_HANGING_SIGN, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_PROPERTY.get(),(townRank.hasPermission(townID,CREATE_PROPERTY)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
         ItemStack manage_property = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_PROPERTY.get(),(townRank.hasPermission(townID,MANAGE_PROPERTY)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+        ItemStack town_administrator = HeadUtils.createCustomItemStack(Material.DIAMOND, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_PROPERTY.get(),(townRank.hasPermission(townID,TOWN_ADMINISTRATOR)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
 
         GuiItem _manage_taxes = ItemBuilder.from(manage_taxes).asGuiItem(event -> {
             townRank.switchPermission(town.getID(), MANAGE_TAXES);
@@ -1329,6 +1330,11 @@ public class GuiManager2 implements IGUI {
             OpenTownRankManagerPermissions(player, rankID);
             event.setCancelled(true);
         });
+        GuiItem _town_administrator = ItemBuilder.from(town_administrator).asGuiItem(event -> {
+            townRank.switchPermission(town.getID(),TOWN_ADMINISTRATOR);
+            OpenTownRankManagerPermissions(player, rankID);
+            event.setCancelled(true);
+        });
 
 
         gui.addItem(_manage_taxes);
@@ -1347,6 +1353,7 @@ public class GuiManager2 implements IGUI {
         gui.addItem(_manage_mob_spawn);
         gui.addItem(_create_property);
         gui.addItem(_manage_property);
+        gui.addItem(_town_administrator);
 
 
         gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownRankManager(player,rankID)));
@@ -1811,7 +1818,7 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _leaveTown = ItemBuilder.from(leaveTown).asGuiItem(event -> {
             event.setCancelled(true);
-            if (playerStat.isTownLeader()) {
+            if (playerStat.isTownLeader()){
                 SoundUtil.playSound(player, NOT_ALLOWED);
                 player.sendMessage(getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.get());
             } else {
@@ -1825,7 +1832,7 @@ public class GuiManager2 implements IGUI {
         });
         GuiItem _deleteTown = ItemBuilder.from(deleteTown).asGuiItem(event -> {
             event.setCancelled(true);
-            if (!playerStat.isTownLeader()) {
+            if (!playerStat.isTownLeader()){
                 player.sendMessage(getTANString() + Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.get());
                 return;
             }
@@ -1872,7 +1879,7 @@ public class GuiManager2 implements IGUI {
                 return;
             }
 
-            if(playerStat.isTownLeader()){
+            if(playerStat.hasPermission(TOWN_ADMINISTRATOR)){
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
                 player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
                 player.closeInventory();
@@ -1909,7 +1916,7 @@ public class GuiManager2 implements IGUI {
         GuiItem _changeChunkColor = ItemBuilder.from(changeChunkColor).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if(playerStat.isTownLeader()){
+            if(playerStat.hasPermission(TOWN_ADMINISTRATOR)){
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT.get());
                 player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
                 player.closeInventory();
@@ -1925,7 +1932,7 @@ public class GuiManager2 implements IGUI {
         GuiItem _changeTag = ItemBuilder.from(changeTag).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if(playerStat.isTownLeader()){
+            if(playerStat.hasPermission(TOWN_ADMINISTRATOR)){
                 player.closeInventory();
                 player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
 
@@ -2641,7 +2648,7 @@ public class GuiManager2 implements IGUI {
         GuiItem _regionIcon = ItemBuilder.from(regionIcon).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if(!playerStat.isTownLeader() && playerRegion.isCapital(playerTown))
+            if(!playerStat.isRegionLeader())
                 return;
             if(event.getCursor() == null)
                 return;
@@ -2728,7 +2735,7 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _addTown = ItemBuilder.from(addTown).asGuiItem(event -> {
             event.setCancelled(true);
-            if(!playerData.isTownLeader() || !regionData.isCapital(playerData.getTown())){
+            if(!playerData.isRegionLeader()){
                 player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
                 return;
             }
@@ -2736,7 +2743,7 @@ public class GuiManager2 implements IGUI {
         });
         GuiItem _removeTown = ItemBuilder.from(removeTown).asGuiItem(event -> {
             event.setCancelled(true);
-            if(!playerData.isTownLeader() || !regionData.isCapital(playerData.getTown())){
+            if(!playerData.isRegionLeader()){
                 player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
                 return;
             }
@@ -2846,7 +2853,7 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _deleteRegion = ItemBuilder.from(deleteRegion).asGuiItem(event -> {
             event.setCancelled(true);
-            if(!playerStat.isTownLeader() && playerRegion.isCapital(playerTown)){
+            if(!playerStat.isRegionLeader()){
                 player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
             }
             RegionDataStorage.deleteRegion(player, playerRegion);
@@ -2857,7 +2864,7 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _changeCapital = ItemBuilder.from(changeCapital).asGuiItem(event -> {
             event.setCancelled(true);
-            if(playerStat.isTownLeader() && playerRegion.isCapital(playerTown)){
+            if(playerStat.isRegionLeader()){
                 OpenRegionalCapitalSwitch(player);
                 return;
             }
@@ -2866,7 +2873,7 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _changeDescription = ItemBuilder.from(changeDescription).asGuiItem(event -> {
             event.setCancelled(true);
-            if(!playerStat.isTownLeader() || !playerRegion.isCapital(playerTown)){
+            if(!playerStat.isRegionLeader()){
                 player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
                 return;
             }

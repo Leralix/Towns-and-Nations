@@ -2,6 +2,7 @@ package org.tan.TownsAndNations.DataClass;
 
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.enums.TownRolePermission;
+import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.storage.Invitation.TownInviteDataStorage;
 import org.tan.TownsAndNations.storage.WarTaggedPlayer;
@@ -73,6 +74,13 @@ public class PlayerData {
     }
     public boolean isTownLeader(){
         return this.UUID.equals(TownDataStorage.get(this).getLeaderID());
+    }
+    public boolean isRegionLeader(){
+        if(!haveTown())
+            return false;
+        if(!getTown().haveRegion())
+            return false;
+        return isTownLeader() && getTown().isRegionalCapital();
     }
 
     public boolean hasPermission(TownRolePermission rolePermission){
