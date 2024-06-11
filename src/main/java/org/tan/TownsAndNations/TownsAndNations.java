@@ -156,13 +156,12 @@ public final class TownsAndNations extends JavaPlugin {
             String password = ConfigUtil.getCustomConfig("config.yml").getString("SQL.password");
 
 
-            PlayerDataStorage.initialize(host,username,password);
             TownDataStorage.initialize(host,username,password);
         }
         else{
             logger.info("[TaN] -Loading Local data");
             RegionDataStorage.loadStats();
-            PlayerDataStorage.loadStats();
+            PlayerDataStorage.loadOldStats();
             TownDataStorage.loadStats();
             NewClaimedChunkStorage.loadStats();
         }
@@ -237,7 +236,7 @@ public final class TownsAndNations extends JavaPlugin {
 
             RegionDataStorage.saveStats();
             TownDataStorage.saveStats();
-            PlayerDataStorage.saveStats();
+            PlayerDataStorage.saveOldStats();
             NewClaimedChunkStorage.save();
             try {
                 Thread.sleep(50);

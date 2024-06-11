@@ -35,7 +35,7 @@ public class AdminCommandManager implements CommandExecutor, TabExecutor, TabCom
                     if (args[0].equalsIgnoreCase(getSubcommands().get(i).getName())){
                         getSubcommands().get(i).perform(p, args);
 
-                        PlayerDataStorage.saveStats();
+                        PlayerDataStorage.saveOldStats();
                         return true;
                     }
                 }

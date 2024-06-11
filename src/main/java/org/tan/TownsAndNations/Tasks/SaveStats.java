@@ -17,7 +17,7 @@ public class SaveStats {
 
                 RegionDataStorage.saveStats();
                 TownDataStorage.saveStats();
-                PlayerDataStorage.saveStats();
+                PlayerDataStorage.saveOldStats();
                 NewClaimedChunkStorage.save();
             }
         }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L);

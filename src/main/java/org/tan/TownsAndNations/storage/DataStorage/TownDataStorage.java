@@ -179,7 +179,7 @@ public class TownDataStorage {
 
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Towns.json");
         if (file.exists()){
-            Reader reader = null;
+            Reader reader;
             try {
                 reader = new FileReader(file);
             } catch (FileNotFoundException e) {
