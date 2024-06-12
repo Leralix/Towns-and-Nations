@@ -26,6 +26,7 @@ language:
   NO_LEADER: "§cNo Leader"
   TOWN_HAVE_NO_LEADER: "§cThe town has no leader"
   TOWN_DIPLOMATIC_INVITATION_NO_LEADER: "§cThe town has no leader to interact with diplomatic relations"
+  PLAYER_PROPERTY_TOO_BIG: "§cThe property is too big. The maximum size is {0} blocks"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 {1}: §f{2}"

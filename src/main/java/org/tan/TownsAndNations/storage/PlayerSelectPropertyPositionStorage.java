@@ -69,6 +69,14 @@ public class PlayerSelectPropertyPositionStorage {
             player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_FIRST_POINT_SET.get(vector3D));
         }
         else if(vList.size() == 1) {
+
+            int maxPropertySize = ConfigUtil.getCustomConfig("config.yml").getInt("maxPropertySize", 50000);
+            if(Math.abs(vList.get(0).getX() - block.getX()) * Math.abs(vList.get(0).getY() - block.getY()) * Math.abs(vList.get(0).getZ() - block.getZ()) > maxPropertySize){
+                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_PROPERTY_TOO_BIG.get(maxPropertySize));
+                return;
+            }
+
+
             Vector3D vector3D = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
             vList.add(vector3D);
             player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SECOND_POINT_SET.get(vector3D));

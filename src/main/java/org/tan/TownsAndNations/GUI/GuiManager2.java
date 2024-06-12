@@ -583,16 +583,16 @@ public class GuiManager2 implements IGUI {
         );
 
         GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
+            event.setCancelled(true);
             if(page == 0){
-                event.setCancelled(true);
                 return;
             }
             OpenTownChunkMobSettings(player,page-1);
         });
 
         GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
+            event.setCancelled(true);
             if(lastPage) {
-                event.setCancelled(true);
                 return;
             }
             OpenTownChunkMobSettings(player,page+1);

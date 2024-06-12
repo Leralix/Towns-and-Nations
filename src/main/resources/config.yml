@@ -77,6 +77,8 @@ PropertyDescSize: 40
 #Allow name duplication (for ranks, towns, regions and kingdoms)
 AllowNameDuplication: true
 
+#Max size of a property (length x width x height)
+MaxPropertySize: 50000
 
 #Rare items, used for the economy when no economy plugin is added to the server
 ##You can disable rare Item dropping with RAREITEMSPAWN: FALSE
