@@ -36,8 +36,6 @@ public class DebugCommandManager implements CommandExecutor, TabExecutor, TabCom
                 for (int i = 0; i < getSubcommands().size(); i++){
                     if (args[0].equalsIgnoreCase(getSubcommands().get(i).getName())){
                         getSubcommands().get(i).perform(p, args);
-
-                        PlayerDataStorage.saveOldStats();
                         return true;
                     }
                 }

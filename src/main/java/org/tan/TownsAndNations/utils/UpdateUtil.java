@@ -10,6 +10,8 @@ import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 public class UpdateUtil {
 
     public static void update(){
+        if(!PlayerDataStorage.getLists().isEmpty())
+            return;
         for(PlayerData playerData : PlayerDataStorage.getOldLists()){
             PlayerDataStorage.createPlayerDataClass(playerData);
         }

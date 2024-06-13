@@ -48,6 +48,10 @@ public class PlayerSelectPropertyPositionStorage {
     public static void addPlayer(PlayerData playerData){
         addPlayer(playerData.getID());
     }
+
+    public static void removePlayer(Player player){
+        playerList.remove(player.getUniqueId().toString());
+    }
     public static void removePlayer(String playerID){
         playerList.remove(playerID);
     }
@@ -59,7 +63,7 @@ public class PlayerSelectPropertyPositionStorage {
 
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(block.getChunk());
         if(claimedChunk == null){
-            player.sendMessage("Not in town claimed chunks");
+            player.sendMessage(Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get());
         }
 
         List<Vector3D> vList = playerList.get(playerID);
@@ -102,19 +106,20 @@ public class PlayerSelectPropertyPositionStorage {
 
     public static void createPropertyPanel(Player player, PropertyData propertyData, Block block) {
         Location signLocation = block.getLocation().add(0, 1, 0);
-        if (signLocation.getBlock().getType() == Material.AIR) {
-            signLocation.getBlock().setType(Material.OAK_SIGN);
+        //if (signLocation.getBlock().getType() == Material.AIR) {
+        signLocation.getBlock().setType(Material.OAK_SIGN);
 
-            BlockState blockState = signLocation.getBlock().getState();
-            Sign sign = (Sign) blockState;
-            org.bukkit.block.data.type.Sign signData = (org.bukkit.block.data.type.Sign) sign.getBlockData();
-            BlockFace direction = getDirection(block.getLocation(), player.getLocation());
-            signData.setRotation(direction);
-            sign.setBlockData(signData);
-            sign.update();
+        BlockState blockState = signLocation.getBlock().getState();
+        Sign sign = (Sign) blockState;
+        org.bukkit.block.data.type.Sign signData = (org.bukkit.block.data.type.Sign) sign.getBlockData();
+        BlockFace direction = getDirection(block.getLocation(), player.getLocation());
+        signData.setRotation(direction);
+        sign.setBlockData(signData);
+        sign.update();
 
-            signLocation.getBlock().setMetadata("propertySign", new FixedMetadataValue(TownsAndNations.getPlugin(), propertyData.getTotalID()));
-        }
+        block.setMetadata("propertySign", new FixedMetadataValue(TownsAndNations.getPlugin(), propertyData.getTotalID()));
+        signLocation.getBlock().setMetadata("propertySign", new FixedMetadataValue(TownsAndNations.getPlugin(), propertyData.getTotalID()));
+        //}
         propertyData.setSignLocation(signLocation);
     }
 

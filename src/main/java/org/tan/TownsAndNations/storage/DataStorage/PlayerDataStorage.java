@@ -24,7 +24,7 @@ public class PlayerDataStorage {
     public static PlayerData createPlayerDataClass(Player p) {
         PlayerData playerData = new PlayerData(p);
         playerStorage.put(p.getUniqueId().toString(), playerData);
-        saveOldStats();
+        saveStats();
         return playerData;
     }
     public static PlayerData createPlayerDataClass(PlayerData p) {
@@ -33,10 +33,8 @@ public class PlayerDataStorage {
     }
 
     public static void deleteData(String playerID) {
-
         playerStorage.remove(playerID);
-        saveOldStats();
-
+        saveStats();
     }
 
     public static PlayerData get(OfflinePlayer player) {
@@ -132,7 +130,7 @@ public class PlayerDataStorage {
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            Type type = new TypeToken<HashMap<String, TownData>>() {}.getType();
+            Type type = new TypeToken<HashMap<String, PlayerData>>() {}.getType();
             playerStorage = gson.fromJson(reader, type);
 
         }

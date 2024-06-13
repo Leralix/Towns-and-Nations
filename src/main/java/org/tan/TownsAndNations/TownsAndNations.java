@@ -162,6 +162,7 @@ public final class TownsAndNations extends JavaPlugin {
             logger.info("[TaN] -Loading Local data");
             RegionDataStorage.loadStats();
             PlayerDataStorage.loadOldStats();
+            PlayerDataStorage.loadStats();
             TownDataStorage.loadStats();
             NewClaimedChunkStorage.loadStats();
         }
@@ -237,6 +238,7 @@ public final class TownsAndNations extends JavaPlugin {
             RegionDataStorage.saveStats();
             TownDataStorage.saveStats();
             PlayerDataStorage.saveOldStats();
+            PlayerDataStorage.saveStats();
             NewClaimedChunkStorage.save();
             try {
                 Thread.sleep(50);

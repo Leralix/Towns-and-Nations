@@ -42,7 +42,7 @@ public class CreatePropertyListener implements Listener {
 
         PlayerData playerData = PlayerDataStorage.get(player);
         if (!playerData.haveTown()){
-            PlayerSelectPropertyPositionStorage.removePlayer(player.getUniqueId().toString());
+            PlayerSelectPropertyPositionStorage.removePlayer(player);
             return;
         }
 
