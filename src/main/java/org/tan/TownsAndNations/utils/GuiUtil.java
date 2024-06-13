@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.utils;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -10,14 +11,19 @@ import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.TownLevel;
 import org.tan.TownsAndNations.DataClass.TownUpgrade;
 import org.tan.TownsAndNations.GUI.GuiManager2;
+import org.tan.TownsAndNations.GUI.IGUI;
 import org.tan.TownsAndNations.Lang.DynamicLang;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.SoundEnum;
+import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
+import static org.tan.TownsAndNations.storage.DataStorage.TownDataStorage.getTownMap;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 public class GuiUtil {
@@ -87,4 +93,73 @@ public class GuiUtil {
     }
 
 
+    public static void createIterator(Gui gui, ArrayList<GuiItem> guItems, int page,
+                                      Player player, Consumer<Player> backArrowAction) {
+
+        int pageSize = (gui.getRows() - 1) * 9;
+        int startIndex = page * pageSize;
+        boolean lastPage;
+        int totalSize = guItems.size();
+
+        int endIndex;
+        if(startIndex + pageSize > totalSize){
+            endIndex = totalSize;
+            lastPage = true;
+        }
+        else {
+            lastPage = false;
+            endIndex = startIndex + pageSize;
+        }
+
+
+        int slot = 0;
+
+        for (int i = startIndex; i < endIndex; i++) {
+            gui.setItem(slot, guItems.get(i));
+            slot++;
+        }
+        GuiItem panel = ItemBuilder.from(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
+
+        ItemStack previousPageButton = HeadUtils.makeSkull(
+                Lang.GUI_PREVIOUS_PAGE.get(),
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19"
+        );
+        ItemStack nextPageButton = HeadUtils.makeSkull(
+                Lang.GUI_NEXT_PAGE.get(),
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0="
+        );
+
+        GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(page == 0){
+                return;
+            }
+            GuiManager2.OpenSearchTownMenu(player,page-1);
+        });
+
+        GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(lastPage) {
+                return;
+            }
+            GuiManager2.OpenTownChunkMobSettings(player,page+1);
+        });
+
+        int lastRow = gui.getRows();
+
+        gui.setItem(lastRow,1, IGUI.CreateBackArrow(player, backArrowAction));
+        gui.setItem(lastRow,2, panel);
+        gui.setItem(lastRow,3, panel);
+        gui.setItem(lastRow,4, panel);
+        gui.setItem(lastRow,5, panel);
+        gui.setItem(lastRow,6, panel);
+        gui.setItem(lastRow,7, _previous);
+        gui.setItem(lastRow,8, _next);
+        gui.setItem(lastRow,9, panel);
+
+
+
+
+
+    }
 }
