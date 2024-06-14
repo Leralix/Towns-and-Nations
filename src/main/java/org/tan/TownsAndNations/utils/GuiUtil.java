@@ -92,9 +92,15 @@ public class GuiUtil {
         return ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
     }
 
-
     public static void createIterator(Gui gui, ArrayList<GuiItem> guItems, int page,
                                       Player player, Consumer<Player> backArrowAction) {
+
+        createIterator(gui, guItems, page, player, backArrowAction, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
+    }
+
+    public static void createIterator(Gui gui, ArrayList<GuiItem> guItems, int page,
+                                      Player player, Consumer<Player> backArrowAction,
+                                      ItemStack decorativeGlassPane) {
 
         int pageSize = (gui.getRows() - 1) * 9;
         int startIndex = page * pageSize;
@@ -118,7 +124,7 @@ public class GuiUtil {
             gui.setItem(slot, guItems.get(i));
             slot++;
         }
-        GuiItem panel = ItemBuilder.from(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
+        GuiItem panel = ItemBuilder.from(decorativeGlassPane).asGuiItem(event -> event.setCancelled(true));
 
         ItemStack previousPageButton = HeadUtils.makeSkull(
                 Lang.GUI_PREVIOUS_PAGE.get(),
