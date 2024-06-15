@@ -93,13 +93,15 @@ public class GuiUtil {
     }
 
     public static void createIterator(Gui gui, ArrayList<GuiItem> guItems, int page,
-                                      Player player, Consumer<Player> backArrowAction) {
+                                      Player player, Consumer<Player> backArrowAction,
+                                      Consumer<Player> nextPageAction, Consumer<Player> previousPageAction) {
 
-        createIterator(gui, guItems, page, player, backArrowAction, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
+        createIterator(gui, guItems, page, player, backArrowAction, nextPageAction, previousPageAction, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
     }
 
     public static void createIterator(Gui gui, ArrayList<GuiItem> guItems, int page,
                                       Player player, Consumer<Player> backArrowAction,
+                                      Consumer<Player> nextPageAction, Consumer<Player> previousPageAction,
                                       ItemStack decorativeGlassPane) {
 
         int pageSize = (gui.getRows() - 1) * 9;
@@ -140,7 +142,7 @@ public class GuiUtil {
             if(page == 0){
                 return;
             }
-            GuiManager2.OpenSearchTownMenu(player,page-1);
+            previousPageAction.accept(player);
         });
 
         GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
@@ -148,7 +150,7 @@ public class GuiUtil {
             if(lastPage) {
                 return;
             }
-            GuiManager2.OpenTownChunkMobSettings(player,page+1);
+            nextPageAction.accept(player);
         });
 
         int lastRow = gui.getRows();

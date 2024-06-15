@@ -23,6 +23,8 @@ public class PropertyData {
     private String owningPlayerID;
     private String rentingPlayerID;
 
+    private List<String> allowedPlayers;
+
     private String name;
     private String description;
     private boolean isForSale;
@@ -47,6 +49,8 @@ public class PropertyData {
         this.isForRent = false;
         this.rentingPlayerID = null;
         this.rentPrice = 0;
+
+        this.allowedPlayers = new ArrayList<>();
     }
     public void setSignLocation(Location loc){
         this.signLocation = new Vector3D(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), loc.getBlock().getWorld().getUID().toString());
@@ -75,7 +79,6 @@ public class PropertyData {
         this.name = name;
 
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), this::updateSign);
-
     }
 
     public void setDescription(String description) {
@@ -233,7 +236,6 @@ public class PropertyData {
             sign.setLine(2, lines[2]);
             sign.setLine(3, lines[3]);
 
-            // Mettre à jour la pancarte
             sign.update();
         }
 
@@ -334,8 +336,15 @@ public class PropertyData {
         this.isForSale = false;
         updateSign();
     }
+    public List<String> getAllowedPlayersID(){
+        if(allowedPlayers == null)
+            allowedPlayers = new ArrayList<>();
+        return allowedPlayers;
+    }
 
     public boolean isAllowed(PlayerData playerData) {
+        if(getAllowedPlayersID().contains(playerData.getID()))
+            return true;
         if(isRented())
             return playerData.getID().equals(rentingPlayerID);
         return isOwner(playerData.getID());

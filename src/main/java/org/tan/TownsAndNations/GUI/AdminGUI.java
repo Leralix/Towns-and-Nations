@@ -8,7 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.units.qual.A;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
@@ -17,8 +16,8 @@ import org.tan.TownsAndNations.enums.ChatCategory;
 import org.tan.TownsAndNations.enums.MessageKey;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
-import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.FileUtil;
 import org.tan.TownsAndNations.utils.GuiUtil;
@@ -47,17 +46,17 @@ public class AdminGUI implements IGUI{
 
         GuiItem _region = ItemBuilder.from(regionHead).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenRegionDebugMenu(player);
+            OpenRegionDebugMenu(player, 0);
         });
 
         GuiItem _town = ItemBuilder.from(townHead).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownMenuDebug(player);
+            OpenTownMenuDebug(player, 0);
         });
 
         GuiItem _player = ItemBuilder.from(playerHead).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenPlayerMenu(player);
+            OpenPlayerMenu(player, 0);
         });
         gui.setItem(12,_region);
         gui.setItem(14,_town);
@@ -67,7 +66,7 @@ public class AdminGUI implements IGUI{
         gui.open(player);
     }
 
-    private static void OpenRegionDebugMenu(Player player) {
+    private static void OpenRegionDebugMenu(Player player, int page) {
 
         Gui gui = IGUI.createChestGui("Region - Admin",6);
 
@@ -84,7 +83,9 @@ public class AdminGUI implements IGUI{
             guiItems.add(_region);
         }
 
-        GuiUtil.createIterator(gui, guiItems, 0, player, p -> OpenMainMenu(player));
+        GuiUtil.createIterator(gui, guiItems, page, player, p -> OpenMainMenu(player),
+                p -> OpenRegionDebugMenu(player, page + 1),
+                p -> OpenRegionDebugMenu(player, page - 1));
         gui.open(player);
     }
 
@@ -138,11 +139,11 @@ public class AdminGUI implements IGUI{
         gui.setItem(2,4, _changeRegionDescription);
         gui.setItem(2,8, _deleteRegion);
 
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenRegionDebugMenu(player)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenRegionDebugMenu(player, 0)));
         gui.open(player);
     }
 
-    public static void OpenTownMenuDebug(Player player){
+    public static void OpenTownMenuDebug(Player player, int page){
 
 
         Gui gui = IGUI.createChestGui("Town - Admin",6);
@@ -161,7 +162,10 @@ public class AdminGUI implements IGUI{
             guiItems.add(_townIteration);
         }
 
-        GuiUtil.createIterator(gui, guiItems, 0, player, p -> OpenMainMenu(player));
+        GuiUtil.createIterator(gui, guiItems, 0, player, p -> OpenMainMenu(player),
+                p -> OpenTownMenuDebug(player, page + 1),
+                p -> OpenTownMenuDebug(player, page - 1));
+
 
         ItemStack createTown = HeadUtils.makeSkull(Lang.ADMIN_GUI_CREATE_TOWN.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19",
                 Lang.ADMIN_GUI_CREATE_TOWN_DESC1.get());
@@ -177,7 +181,7 @@ public class AdminGUI implements IGUI{
         });
 
 
-        gui.setItem(6,9, _createTown);
+        gui.setItem(6,5 , _createTown);
         gui.open(player);
 
 
@@ -251,7 +255,7 @@ public class AdminGUI implements IGUI{
         gui.setItem(2,6, _changeTownLeader);
         gui.setItem(2,8, _deleteTown);
 
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuDebug(player)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuDebug(player, 0)));
 
         gui.open(player);
     }
@@ -285,7 +289,7 @@ public class AdminGUI implements IGUI{
         gui.open(player);
     }
 
-    public static void OpenPlayerMenu(Player player) {
+    public static void OpenPlayerMenu(Player player, int page) {
 
         Gui gui = IGUI.createChestGui("Player - Admin",6);
 
@@ -301,7 +305,9 @@ public class AdminGUI implements IGUI{
             });
             guiItems.add(_playerHead);
         }
-        GuiUtil.createIterator(gui, guiItems, 0, player, p -> OpenMainMenu(player));
+        GuiUtil.createIterator(gui, guiItems, page, player, p -> OpenMainMenu(player),
+                p -> OpenPlayerMenu(player, page + 1),
+                p -> OpenPlayerMenu(player, page - 1));
         gui.open(player);
     }
 
@@ -329,7 +335,7 @@ public class AdminGUI implements IGUI{
                 townData.removePlayer(playerData);
 
                 player.sendMessage(getTANString() + Lang.ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS.get(playerData.getName(),townData.getName()));
-                OpenPlayerMenu(player);
+                OpenSpecificPlayerMenu(player, playerData);
             });
             gui.setItem(2,2, _removePlayerTown);
         }
@@ -338,7 +344,7 @@ public class AdminGUI implements IGUI{
 
             GuiItem _addPlayerTown = ItemBuilder.from(addPlayerTown).asGuiItem(event -> {
                 event.setCancelled(true);
-                SetPlayerTown(player);
+                SetPlayerTown(player, playerData, 0);
             });
             gui.setItem(2,2, _addPlayerTown);
         }
@@ -349,39 +355,38 @@ public class AdminGUI implements IGUI{
         });
 
         gui.setItem(1,5, _playerHead);
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenPlayerMenu(player)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenPlayerMenu(player,0)));
 
         gui.open(player);
     }
 
-    private static void SetPlayerTown(Player player) {
+    private static void SetPlayerTown(Player player, PlayerData playerData, int page) {
 
-        Gui gui = IGUI.createChestGui("Town - Admin",6);
+        Gui gui = IGUI.createChestGui("Town - Admin", 6);
 
-        PlayerData playerData = PlayerDataStorage.get(player);
-        int i = 0;
+        ArrayList<GuiItem> guiItems = new ArrayList<>();
+
+
         for (TownData townData : TownDataStorage.getTownMap().values()) {
             ItemStack townIcon = HeadUtils.getTownIconWithInformations(townData);
             HeadUtils.addLore(townIcon,
                     "",
                     Lang.ADMIN_GUI_LEFT_CLICK_TO_MANAGE_TOWN.get()
             );
-
             GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
                 townData.addPlayer(playerData);
                 OpenSpecificPlayerMenu(player, playerData);
             });
-
-            gui.setItem(i, _townIteration);
-            i++;
-
+            guiItems.add(_townIteration);
         }
 
-
-        gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
+        GuiUtil.createIterator(gui, guiItems, page, player,
+                p -> OpenSpecificPlayerMenu(player, playerData),
+                p -> SetPlayerTown(player, playerData, page + 1),
+                p -> SetPlayerTown(player, playerData, page - 1)
+        );
         gui.open(player);
 
     }
-
 }

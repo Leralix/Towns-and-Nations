@@ -548,7 +548,9 @@ public class GuiManager2 implements IGUI {
             townItemStacks.add(_townIteration);
         }
 
-        createIterator(gui, townItemStacks, page, player, GuiManager2::OpenTownMenuNoTown);
+        createIterator(gui, townItemStacks, page, player, p -> OpenTownMenuNoTown(player),
+                p -> OpenSearchTownMenu(player, page + 1),
+                p -> OpenSearchTownMenu(player, page - 1));
 
 
         gui.open(player);
@@ -637,7 +639,7 @@ public class GuiManager2 implements IGUI {
         });
         GuiItem _propertyIcon = ItemBuilder.from(propertyIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownPropertiesMenu(player);
+            OpenTownPropertiesMenu(player,0);
         });
 
 
@@ -666,7 +668,9 @@ public class GuiManager2 implements IGUI {
             townGuiItems.add(_townIteration);
         }
 
-        createIterator(gui, townGuiItems, page, player, GuiManager2::OpenTownMenuHaveTown);
+        createIterator(gui, townGuiItems, page, player, p -> OpenTownMenuHaveTown(player),
+                p -> OpenTownMenuOtherTown(player, page + 1),
+                p -> OpenTownMenuOtherTown(player, page - 1));
         gui.open(player);
     }
     public static void OpenTownMemberList(Player player) {
@@ -1990,7 +1994,7 @@ public class GuiManager2 implements IGUI {
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
-            OpenTownRelationModification(player,Action.ADD,relation);
+            OpenTownRelationModification(player,Action.ADD,relation, 0);
         });
         GuiItem _remove = ItemBuilder.from(removeTownButton).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1998,10 +2002,12 @@ public class GuiManager2 implements IGUI {
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
-            OpenTownRelationModification(player,Action.REMOVE,relation);
+            OpenTownRelationModification(player,Action.REMOVE,relation, 0);
         });
 
-        createIterator(gui, guiItems, page, player, p -> OpenTownRelations(player));
+        createIterator(gui, guiItems, page, player, p -> OpenTownRelations(player),
+                p -> OpenTownRelation(player, relation, page - 1),
+                p -> OpenTownRelation(player,relation,page - 1));
 
         gui.setItem(6,4, _add);
         gui.setItem(6,5, _remove);
@@ -2009,7 +2015,7 @@ public class GuiManager2 implements IGUI {
 
         gui.open(player);
     }
-    public static void OpenTownRelationModification(Player player, Action action, TownRelation relation) {
+    public static void OpenTownRelationModification(Player player, Action action, TownRelation relation, int page) {
         int nRows = 6;
         Gui gui = IGUI.createChestGui("Town - Relation",nRows);
 
@@ -2120,7 +2126,10 @@ public class GuiManager2 implements IGUI {
         }
 
 
-        createIterator(gui, guiItems, 0, player, p -> OpenTownRelation(player,relation,1), decorativeGlass);
+        createIterator(gui, guiItems, 0, player, p -> OpenTownRelation(player,relation,1),
+                p -> OpenTownRelation(player,relation,page - 1),
+                p -> OpenTownRelation(player,relation,page + 1),
+                decorativeGlass);
 
 
         gui.open(player);
@@ -2220,12 +2229,14 @@ public class GuiManager2 implements IGUI {
             guiLists.add(mobItem);
         }
 
-        createIterator(gui, guiLists, 0, player, p -> OpenTownChunk(player));
+        createIterator(gui, guiLists, page, player, p -> OpenTownChunk(player),
+                p -> OpenTownChunkMobSettings(player, page + 1),
+                p -> OpenTownChunkMobSettings(player, page - 1));
 
 
         gui.open(player);
     }
-    public static void OpenTownPropertiesMenu(Player player){
+    public static void OpenTownPropertiesMenu(Player player, int page){
         int nRows = 6;
 
         Gui gui = IGUI.createChestGui("Properties",nRows);
@@ -2254,7 +2265,9 @@ public class GuiManager2 implements IGUI {
             guiItems.add(_property);
         }
 
-        GuiUtil.createIterator(gui, guiItems, 0, player, p -> OpenTownMenuHaveTown(player));
+        GuiUtil.createIterator(gui, guiItems, page, player, p -> OpenTownMenuHaveTown(player),
+                p -> OpenTownPropertiesMenu(player,page + 1),
+                p -> OpenTownPropertiesMenu(player,page - 1));
         gui.open(player);
     }
     public static void OpenTownChunkPlayerSettings(Player player){
