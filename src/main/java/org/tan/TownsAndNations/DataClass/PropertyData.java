@@ -15,6 +15,7 @@ import org.tan.TownsAndNations.utils.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class PropertyData {
@@ -110,6 +111,9 @@ public class PropertyData {
     }
     public PlayerData getRenter(){
         return PlayerDataStorage.get(rentingPlayerID);
+    }
+    public String getRenterID(){
+        return rentingPlayerID;
     }
     public Player getRenterPlayer(){
         return Bukkit.getPlayer(UUID.fromString(rentingPlayerID));
@@ -369,5 +373,18 @@ public class PropertyData {
         updateSign();
     }
 
+    public void addAuthorizedPlayer(String playerID){
+        getAllowedPlayersID().add(playerID);
+    }
 
+    public void removeAuthorizedPlayer(String playerID){
+        getAllowedPlayersID().remove(playerID);
+    }
+
+
+    public boolean canPlayerManageInvites(String id) {
+        if(isOwner(id))
+            return true;
+        return isRented() && Objects.equals(getRenterID(), id);
+    }
 }

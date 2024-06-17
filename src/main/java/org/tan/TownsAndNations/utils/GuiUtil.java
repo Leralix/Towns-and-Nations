@@ -15,15 +15,12 @@ import org.tan.TownsAndNations.GUI.IGUI;
 import org.tan.TownsAndNations.Lang.DynamicLang;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.SoundEnum;
-import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static org.tan.TownsAndNations.storage.DataStorage.TownDataStorage.getTownMap;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 public class GuiUtil {
@@ -164,10 +161,5 @@ public class GuiUtil {
         gui.setItem(lastRow,7, _previous);
         gui.setItem(lastRow,8, _next);
         gui.setItem(lastRow,9, panel);
-
-
-
-
-
     }
 }

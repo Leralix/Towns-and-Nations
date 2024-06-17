@@ -296,6 +296,9 @@ public class GuiManager2 implements IGUI {
         ItemStack deleteProperty = HeadUtils.createCustomItemStack(Material.BARRIER,Lang.GUI_PROPERTY_DELETE_PROPERTY.get(),
                 Lang.GUI_PROPERTY_DELETE_PROPERTY_DESC1.get());
 
+        ItemStack playerList = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,Lang.GUI_PROPERTY_PLAYER_LIST.get(),
+                Lang.GUI_PROPERTY_PLAYER_LIST_DESC1.get());
+
         GuiItem _propertyIcon = ItemBuilder.from(propertyIcon).asGuiItem(event -> event.setCancelled(true));
 
         GuiItem _changeName = ItemBuilder.from(changeName).asGuiItem(event -> {
@@ -377,6 +380,11 @@ public class GuiManager2 implements IGUI {
             OpenPlayerPropertiesMenu(player);
         });
 
+        GuiItem _playerList = ItemBuilder.from(playerList).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenPlayerPropertyPlayerList(player, propertyData, 0);
+        });
+
         if(propertyData.isRented()){
             ItemStack renterIcon = HeadUtils.getPlayerHead(
                     Lang.GUI_PROPERTY_RENTED_BY.get(propertyData.getRenter().getName()),
@@ -410,6 +418,8 @@ public class GuiManager2 implements IGUI {
 
         gui.setItem(2,7,_isForSale);
         gui.setItem(2,8,_isForRent);
+
+        gui.setItem(3, 2, _playerList);
         gui.setItem(3,8,_deleteProperty);
 
 
@@ -418,6 +428,40 @@ public class GuiManager2 implements IGUI {
 
         gui.open(player);
     }
+
+    private static void OpenPlayerPropertyPlayerList(Player player, PropertyData propertyData, int page) {
+
+        int nRows = 4;
+        Gui gui = IGUI.createChestGui("Property " + propertyData.getName(),nRows);
+
+        PlayerData playerData = PlayerDataStorage.get(player);
+        boolean canKick = propertyData.canPlayerManageInvites(playerData.getID());
+        ArrayList<GuiItem> guiItems = new ArrayList<>();
+        for(String playerID : propertyData.getAllowedPlayersID()){
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
+
+            ItemStack playerHead = HeadUtils.getPlayerHead(offlinePlayer,
+                    canKick ? Lang.GUI_TOWN_MEMBER_DESC3.get() : "");
+
+            GuiItem headGui = ItemBuilder.from(playerHead).asGuiItem(event -> {
+                if(!canKick || event.getClick() != ClickType.RIGHT ){
+                    event.setCancelled(true);
+                    return;
+                }
+                propertyData.removeAuthorizedPlayer(playerID);
+            });
+            guiItems.add(headGui);
+        }
+        GuiUtil.createIterator(gui, guiItems, page, player,
+                p -> OpenPropertyManagerMenu(player, propertyData),
+                p -> OpenPlayerPropertyPlayerList(player, propertyData, page + 1),
+                p -> OpenPlayerPropertyPlayerList(player, propertyData, page - 1)
+                );
+
+        gui.open(player);
+
+    }
+
     public static void OpenPropertyBuyMenu(Player player, @NotNull PropertyData propertyData) {
         Gui gui = IGUI.createChestGui("Property " + propertyData.getName(),3);
 
