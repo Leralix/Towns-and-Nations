@@ -102,6 +102,7 @@ public class PropertyData {
         if(ConfigUtil.getCustomConfig("config.yml").getBoolean("payRentAtStart", false))
             payRent();
         this.updateSign();
+        getAllowedPlayersID().clear();
     }
     public boolean isRented(){
         return rentingPlayerID != null;
@@ -124,11 +125,9 @@ public class PropertyData {
     public Player getOwnerPlayer() {
         return Bukkit.getPlayer(UUID.fromString(owningPlayerID));
     }
-
     public String getDescription(){
         return description;
     }
-
     public void payRent(){
         OfflinePlayer renter = Bukkit.getOfflinePlayer(UUID.fromString(rentingPlayerID));
         EconomyUtil.removeFromBalance(renter, rentPrice);
@@ -339,6 +338,8 @@ public class PropertyData {
 
         this.isForSale = false;
         updateSign();
+        getAllowedPlayersID().clear();
+
     }
     public List<String> getAllowedPlayersID(){
         if(allowedPlayers == null)
@@ -371,8 +372,12 @@ public class PropertyData {
         if(rentBack)
             isForRent = true;
         updateSign();
+        getAllowedPlayersID().clear();
     }
 
+    public void addAuthorizedPlayer(Player player){
+        addAuthorizedPlayer(player.getUniqueId().toString());
+    }
     public void addAuthorizedPlayer(String playerID){
         getAllowedPlayersID().add(playerID);
     }
@@ -383,8 +388,16 @@ public class PropertyData {
 
 
     public boolean canPlayerManageInvites(String id) {
-        if(isOwner(id))
+        if(!isRented() && isOwner(id))
             return true;
         return isRented() && Objects.equals(getRenterID(), id);
+    }
+
+    public boolean isPlayerAuthorized(Player playerIter) {
+        return isPlayerAuthorized(playerIter.getUniqueId().toString());
+    }
+
+    public boolean isPlayerAuthorized(String playerID) {
+        return getAllowedPlayersID().contains(playerID);
     }
 }

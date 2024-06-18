@@ -13,6 +13,7 @@ import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.Lang.DynamicLang;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.*;
+import org.tan.TownsAndNations.listeners.ChatListener;
 import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
@@ -36,6 +37,7 @@ import static org.tan.TownsAndNations.utils.HeadUtils.*;
 import static org.tan.TownsAndNations.utils.TeamUtils.updateAllScoreboardColor;
 import static org.tan.TownsAndNations.utils.TownUtil.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -444,11 +446,15 @@ public class GuiManager2 implements IGUI {
                     canKick ? Lang.GUI_TOWN_MEMBER_DESC3.get() : "");
 
             GuiItem headGui = ItemBuilder.from(playerHead).asGuiItem(event -> {
+                event.setCancelled(true);
                 if(!canKick || event.getClick() != ClickType.RIGHT ){
-                    event.setCancelled(true);
                     return;
                 }
                 propertyData.removeAuthorizedPlayer(playerID);
+                OpenPlayerPropertyPlayerList(player, propertyData, page);
+
+                SoundUtil.playSound(player,MINOR_GOOD);
+                player.sendMessage(Lang.PLAYER_REMOVED_FROM_PROPERTY.get(offlinePlayer.getName()));
             });
             guiItems.add(headGui);
         }
@@ -458,8 +464,52 @@ public class GuiManager2 implements IGUI {
                 p -> OpenPlayerPropertyPlayerList(player, propertyData, page - 1)
                 );
 
+        ItemStack addPlayer = HeadUtils.makeSkull(Lang.GUI_PROPERTY_AUTHORIZE_PLAYER.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
+        GuiItem _addPlayer = ItemBuilder.from(addPlayer).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(!propertyData.canPlayerManageInvites(playerData.getID())){
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                return;
+            }
+            OpenPlayerPropertyAddPlayerMenu(player, propertyData);
+        });
+        gui.setItem(nRows,4,_addPlayer);
+
         gui.open(player);
 
+    }
+
+    private static void OpenPlayerPropertyAddPlayerMenu(Player player, PropertyData propertyData) {
+        Gui gui = IGUI.createChestGui("Property " + propertyData.getName(),3);
+
+        ArrayList<GuiItem> guiItems = new ArrayList<>();
+        for(Player playerIter : Bukkit.getOnlinePlayers()){
+            if(playerIter.getUniqueId().equals(player.getUniqueId())){
+                continue;
+            }
+            if(propertyData.isPlayerAuthorized(playerIter)){
+                continue;
+            }
+
+            ItemStack playerHead = HeadUtils.getPlayerHead(playerIter);
+            GuiItem headGui = ItemBuilder.from(playerHead).asGuiItem(event -> {
+                event.setCancelled(true);
+                propertyData.addAuthorizedPlayer(playerIter);
+                OpenPlayerPropertyAddPlayerMenu(player, propertyData);
+                SoundUtil.playSound(player,MINOR_GOOD);
+                player.sendMessage(Lang.PLAYER_REMOVED_FROM_PROPERTY.get(playerIter.getName()));
+            });
+            guiItems.add(headGui);
+
+        }
+
+        GuiUtil.createIterator(gui, guiItems, 0, player,
+                p -> OpenPlayerPropertyPlayerList(player, propertyData, 0),
+                p -> OpenPlayerPropertyAddPlayerMenu(player, propertyData),
+                p -> OpenPlayerPropertyAddPlayerMenu(player, propertyData)
+        );
+
+        gui.open(player);
     }
 
     public static void OpenPropertyBuyMenu(Player player, @NotNull PropertyData propertyData) {
