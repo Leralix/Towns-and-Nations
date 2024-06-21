@@ -1,9 +1,8 @@
 package org.tan.TownsAndNations.DataClass;
 
-import org.bukkit.entity.EntityType;
+import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.enums.MobChunkSpawnEnum;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
-import org.tan.TownsAndNations.enums.ChunkPermissionType;
 
 import java.util.EnumMap;
 import java.util.HashMap;

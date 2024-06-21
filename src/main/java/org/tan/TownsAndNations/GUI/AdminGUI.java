@@ -8,12 +8,12 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.tan.TownsAndNations.DataClass.PlayerData;
-import org.tan.TownsAndNations.DataClass.RegionData;
-import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.commands.AdminSubcommands.OpenAdminGUI;
 import org.tan.TownsAndNations.enums.ChatCategory;
 import org.tan.TownsAndNations.enums.MessageKey;
+import org.tan.TownsAndNations.storage.DataStorage.LandmarkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
@@ -43,6 +43,8 @@ public class AdminGUI implements IGUI{
         ItemStack playerHead = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,
                 Lang.GUI_TOWN_CHUNK_PLAYER.get(),
                 Lang.ADMIN_GUI_PLAYER_DESC.get());
+        ItemStack landmark = HeadUtils.makeSkull(Lang.ADMIN_GUI_LANDMARK_ICON.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmQ3NjFjYzE2NTYyYzg4ZDJmYmU0MGFkMzg1MDJiYzNiNGE4Nzg1OTg4N2RiYzM1ZjI3MmUzMGQ4MDcwZWVlYyJ9fX0=",
+                Lang.ADMIN_GUI_LANDMARK_DESC1.get());
 
         GuiItem _region = ItemBuilder.from(regionHead).asGuiItem(event -> {
             event.setCancelled(true);
@@ -58,11 +60,48 @@ public class AdminGUI implements IGUI{
             event.setCancelled(true);
             OpenPlayerMenu(player, 0);
         });
+
+        GuiItem _landmark = ItemBuilder.from(landmark).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenLandmarks(player, 0);
+        });
+
+
         gui.setItem(12,_region);
         gui.setItem(14,_town);
         gui.setItem(16,_player);
+        gui.setItem(17,_landmark);
         gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> player.closeInventory()));
 
+        gui.open(player);
+    }
+
+    private static void OpenLandmarks(Player player, int page) {
+
+        Gui gui = IGUI.createChestGui("Landmarks - Admin", 6);
+
+        ArrayList<GuiItem> guiItems = new ArrayList<>();
+
+        for(Landmark landmark : LandmarkStorage.getList()){
+            ItemStack icon = landmark.getIcon();
+            GuiItem item = ItemBuilder.from(icon).asGuiItem(event -> {
+                event.setCancelled(true);
+            });
+            guiItems.add(item);
+
+        }
+        GuiUtil.createIterator(gui, guiItems, page, player, p -> OpenMainMenu(player),
+                p -> OpenLandmarks(player, page + 1),
+                p -> OpenLandmarks(player, page - 1));
+
+        ItemStack createLandmark = HeadUtils.makeSkull(Lang.ADMIN_GUI_CREATE_LANDMARK.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
+
+        GuiItem _createLandmark = ItemBuilder.from(createLandmark).asGuiItem(event -> {
+            LandmarkStorage.addLandmark(new Vector3D(player.getLocation()));
+            event.setCancelled(true);
+            OpenLandmarks(player,page);
+        });
+        gui.setItem(6, 4, _createLandmark);
         gui.open(player);
     }
 

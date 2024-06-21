@@ -7,6 +7,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
+import org.tan.TownsAndNations.storage.DataStorage.LandmarkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
@@ -31,22 +32,27 @@ public class DailyTasks {
                 int hour = ConfigUtil.getCustomConfig("config.yml").getInt("taxMinuteTime",0);
 
                 if (calendar.get(Calendar.HOUR_OF_DAY) == hour && calendar.get(Calendar.MINUTE) == minute) {
-                    TownTaxPayment();
-                    RegionTaxPayment();
-                    ChunkPayment();
-                    SalaryPayment();
-
-                    PropertyRent();
-
-                    ClearOldTaxes();
-                    ArchiveUtil.archiveFiles();
-
-                    if(ConfigUtil.getCustomConfig("config.yml").getBoolean("showTaxInConsole",true))
-                        TownsAndNations.getPluginLogger().info(Lang.DAILY_TAXES_SUCCESS_LOG.get());
+                    executeMidnightTasks();
 
                 }
             }
         }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L); // Exécute toutes les 1200 ticks (1 minute en temps Minecraft)
+    }
+
+    public static void executeMidnightTasks() {
+        TownTaxPayment();
+        RegionTaxPayment();
+        ChunkPayment();
+        SalaryPayment();
+
+        PropertyRent();
+
+        ClearOldTaxes();
+        LandmarkStorage.generateAllRessources();
+        ArchiveUtil.archiveFiles();
+
+        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("showTaxInConsole",true))
+            TownsAndNations.getPluginLogger().info(Lang.DAILY_TAXES_SUCCESS_LOG.get());
     }
 
     private static void PropertyRent() {

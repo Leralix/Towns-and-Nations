@@ -1,5 +1,9 @@
 package org.tan.TownsAndNations.DataClass;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+
 import java.util.UUID;
 
 public class Vector3D {
@@ -19,6 +23,14 @@ public class Vector3D {
         this.y = y;
         this.z = z;
         this.worldID = worldID;
+    }
+
+    public Vector3D(Location location) {
+        this.x = location.getBlockX();
+        this.y = location.getBlockY();
+        this.z = location.getBlockZ();
+        if(location.getWorld() != null)
+            this.worldID = location.getWorld().getUID().toString();
     }
 
     public int getX() {
@@ -46,6 +58,12 @@ public class Vector3D {
     }
     public UUID getWorldID(){
         return UUID.fromString(worldID);
+    }
+    public World getWorld(){
+        return Bukkit.getWorld(getWorldID());
+    }
+    public Location getLocation(){
+        return new Location(getWorld(), getX(), getY(), getZ());
     }
     @Override
     public String toString(){
