@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.utils.CustomNBT;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,6 @@ public class Landmark {
     private final Vector3D position;
     private String materialName;
     private int amount;
-
     private String ownerID;
 
     public Landmark(String ID, Vector3D position){
@@ -40,6 +40,10 @@ public class Landmark {
         this.ownerID = newOwnerID;
     }
 
+    public String getOwnerID() {
+        return ownerID;
+    }
+
     public void ModifyReward(ItemStack newReward){
         this.materialName = newReward.getType().name();
         this.amount = newReward.getAmount();
@@ -52,10 +56,11 @@ public class Landmark {
     public void spawnChest(){
         Block newBlock = position.getWorld().getBlockAt(position.getLocation());
         newBlock.setType(Material.CHEST);
+        CustomNBT.setBockMetaData(newBlock, "LandmarkChest", getID());
     }
 
-    public Chest getChest(){
-        return (Chest) position.getWorld().getBlockAt(position.getLocation());
+    public Block getChest(){
+        return position.getWorld().getBlockAt(position.getLocation());
     }
 
     public Material getRessourceMaterial(){
@@ -71,10 +76,11 @@ public class Landmark {
         if(!hasOwner()){
             return;
         }
-        getChest().getBlockInventory().addItem(getRessources());
+        Chest chest = (Chest) getChest();
+        chest.getBlockInventory().addItem(getRessources());
     }
 
-    private boolean hasOwner() {
+    public boolean hasOwner() {
         return ownerID != null;
     }
 

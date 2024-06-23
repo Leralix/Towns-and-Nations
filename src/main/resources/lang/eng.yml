@@ -513,6 +513,9 @@ language:
   ADMIN_GUI_SPECIFIC_LANDMARK_ICON_DESC2_OWNER: "§fControlled by : {0}"
   ADMIN_GUI_CREATE_LANDMARK: "Create new landmark"
   LANDMARK_ALREADY_IN_POSITION: "A landmark is already on this position"
+  GUI_LANDMARK_LEFT_CLICK_TO_CLAIM: "§fLeft click to claim this landmark"
+  GUI_LANDMARK_TOWN_FULL: "§cThe town cannot claim more landmarks"
+  GUI_LANDMARK_CLAIMED: "§aA new landmark has been claimed by your town"
   #Other GUI
   GUI_PROPERTY_DESCRIPTION: "§7§o\"{0}\""
   GUI_PROPERTY_STRUCTURE_OWNER: "§fCity: §9{0}"

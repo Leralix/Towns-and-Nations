@@ -20,14 +20,11 @@ public class LandmarkStorage {
     private static int newLandmarkID = 1;
 
 
-    public Landmark get(String landmarkID){
+    public static Landmark get(String landmarkID){
         return landMarkMap.get(landmarkID);
     }
 
     public static void addLandmark(Vector3D vector3D){
-
-
-
         String landmarkID = "L" + newLandmarkID;
         Landmark landmark = new Landmark(landmarkID,vector3D);
         landMarkMap.put(landmarkID, landmark);

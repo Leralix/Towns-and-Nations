@@ -54,6 +54,7 @@ public class TownData {
     private final HashSet<String> townPlayerListId = new HashSet<>();
     private final HashMap<String,TownRank> roles = new HashMap<>();
     private HashMap<Integer,TownRank> newRanks = new HashMap<>();
+    private Collection<String> ownedLandmarks = new ArrayList<>();
 
     private HashSet<String> PlayerJoinRequestSet = new HashSet<>();
     private Map<String, PropertyData> propertyDataMap;
@@ -837,5 +838,37 @@ public class TownData {
 
     public boolean haveNoLeader() {
         return this.UuidLeader == null;
+    }
+
+    public Collection<String> getOwnedLandmarks() {
+        if(ownedLandmarks == null)
+            ownedLandmarks = new ArrayList<>();
+        return ownedLandmarks;
+    }
+
+    public int getNumberOfOwnedLandmarks() {
+        return getOwnedLandmarks().size();
+    }
+
+    public void addLandmark(String landmarkID){
+        getOwnedLandmarks().add(landmarkID);
+    }
+    public void addLandmark(Landmark landmark){
+        addLandmark(landmark.getID());
+        landmark.setOwnerID(this);
+    }
+    public void removeLandmark(String landmarkID){
+        getOwnedLandmarks().remove(landmarkID);
+    }
+    public void removeLandmark(Landmark landmark){
+        removeLandmark(landmark.getID());
+    }
+
+    public boolean ownLandmark(Landmark landmark) {
+        return getOwnedLandmarks().contains(landmark.getID());
+    }
+
+    public boolean canClaimMoreLandmarks() {
+        return getTownLevel().getTotalBenefits().get("MAX_LANDMARKS") > getNumberOfOwnedLandmarks();
     }
 }

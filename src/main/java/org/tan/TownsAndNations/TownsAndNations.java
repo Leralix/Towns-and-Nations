@@ -169,7 +169,7 @@ public final class TownsAndNations extends JavaPlugin {
         }
 
         logger.info("[TaN] -Loading blocks data");
-        CustomNBT.setSignData();
+        CustomNBT.setBlocsData();
 
         UpdateUtil.update();
 
@@ -265,6 +265,8 @@ public final class TownsAndNations extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SpawnListener(), this);
         getServer().getPluginManager().registerEvents(new CreatePropertyListener(),this);
         getServer().getPluginManager().registerEvents(new PropertySignListener(),this);
+        getServer().getPluginManager().registerEvents(new LandmarkChestListener(),this);
+
     }
 
     /**

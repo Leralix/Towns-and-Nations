@@ -98,3 +98,27 @@ upgrades:
     benefits:
       PLAYER_CAP: -2
       UNLOCK_MOB_BAN: +1
+
+  EXTRACTION_TEAM:
+    col: 4
+    row: 4
+    itemCode: 'CAULDRON'
+    maxLevel: 10
+    cost: [ '500', '1000', '1500', '1750', '2000', '2250', '2500', '2750', '3000', '3250' ]
+    prerequisites:
+      TOWN_LEVEL: 4
+      ADMINISTRATION: 1
+    benefits:
+      CHUNK_CAP: +5
+      MAX_LANDMARKS: +1
+
+  BETTER_TOOLS:
+    col: 5
+    row: 1
+    itemCode: 'COBBLESTONE_WALL'
+    maxLevel: 5
+    cost: [ '2000' ]
+    prerequisites:
+      TOWN_LEVEL: 5
+    benefits:
+      LANDMARK_BONUS: +10

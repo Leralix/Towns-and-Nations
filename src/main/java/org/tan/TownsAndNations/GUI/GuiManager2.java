@@ -13,7 +13,6 @@ import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.Lang.DynamicLang;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.*;
-import org.tan.TownsAndNations.listeners.ChatListener;
 import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
@@ -37,7 +36,6 @@ import static org.tan.TownsAndNations.utils.HeadUtils.*;
 import static org.tan.TownsAndNations.utils.TeamUtils.updateAllScoreboardColor;
 import static org.tan.TownsAndNations.utils.TownUtil.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -2432,6 +2430,12 @@ public class GuiManager2 implements IGUI {
         );
 
         GuiItem _createRegion = ItemBuilder.from(createRegion).asGuiItem(event -> {
+            PlayerData playerData = PlayerDataStorage.get(player);
+            if(!playerData.haveTown()){
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
+                return;
+            }
+
             event.setCancelled(true);
             int townMoney = TownDataStorage.get(player).getBalance();
             if (townMoney < regionCost) {
@@ -2946,7 +2950,80 @@ public class GuiManager2 implements IGUI {
             gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenRegionSettings(player)));
             gui.open(player);
     }
-    
+
+
+    public static void dispatchLandmarkGui(Player player, Landmark landmark){
+
+        TownData townData = TownDataStorage.get(player);
+
+        if(!landmark.hasOwner())
+            OpenLandMarkNoOwner(player,landmark);
+
+        if(townData.ownLandmark(landmark)){
+            OpenPlayerOwnLandmark(player,landmark);
+        }
+        else {
+            OpenPlayerForeignLandmark(player,landmark);
+        }
+
+    }
+
+    private static void OpenLandMarkNoOwner(Player player, Landmark landmark) {
+        Gui gui = IGUI.createChestGui("Landmark - unclaimed", 3);
+
+        GuiItem landmarkIcon = ItemBuilder.from(landmark.getIcon()).asGuiItem(event -> event.setCancelled(true));
+        gui.setItem(1,5,landmarkIcon);
+
+        TownData playerTown = TownDataStorage.get(player);
+
+        ItemStack claimLandmark = HeadUtils.makeSkull(
+                Lang.GUI_TOWN_RELATION_ADD_TOWN.get(),
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19",
+                playerTown.canClaimMoreLandmarks() ? Lang.GUI_LANDMARK_LEFT_CLICK_TO_CLAIM.get() : Lang.GUI_LANDMARK_TOWN_FULL.get()
+        );
+
+        GuiItem _claimLandmark = ItemBuilder.from(claimLandmark).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(!playerTown.canClaimMoreLandmarks()) {
+                player.sendMessage(getTANString() + Lang.GUI_LANDMARK_TOWN_FULL.get());
+                SoundUtil.playSound(player, MINOR_BAD);
+                return;
+            }
+
+            playerTown.addLandmark(landmark);
+            playerTown.broadCastMessageWithSound(Lang.GUI_LANDMARK_CLAIMED.get(),GOOD);
+            dispatchLandmarkGui(player, landmark);
+        });
+
+
+        gui.setItem(2,5, _claimLandmark);
+
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,Player::closeInventory));
+        gui.open(player);
+    }
+
+    private static void OpenPlayerOwnLandmark(Player player, Landmark landmark) {
+        TownData townData = TownDataStorage.get(landmark.getOwnerID());
+        Gui gui = IGUI.createChestGui("Landmark - " + townData.getName(), 3);
+
+        GuiItem landmarkIcon = ItemBuilder.from(landmark.getIcon()).asGuiItem(event -> event.setCancelled(true));
+        gui.setItem(1,5,landmarkIcon);
+
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,Player::closeInventory));
+        gui.open(player);
+    }
+
+    private static void OpenPlayerForeignLandmark(Player player, Landmark landmark) {
+        TownData townData = TownDataStorage.get(landmark.getOwnerID());
+        Gui gui = IGUI.createChestGui("Landmark - " + townData.getName(), 3);
+
+        GuiItem landmarkIcon = ItemBuilder.from(landmark.getIcon()).asGuiItem(event -> event.setCancelled(true));
+        gui.setItem(1,5,landmarkIcon);
+
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,Player::closeInventory));
+        gui.open(player);
+    }
+
     private static GuiItem createGuiItem(ItemStack itemStack, PlayerData playerStat, Player player, Consumer<Void> action) {
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);

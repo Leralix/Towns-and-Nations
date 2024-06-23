@@ -9,9 +9,11 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.tan.TownsAndNations.DataClass.Landmark;
 import org.tan.TownsAndNations.DataClass.PropertyData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.TownsAndNations;
+import org.tan.TownsAndNations.storage.DataStorage.LandmarkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 
@@ -63,6 +65,11 @@ public class CustomNBT {
         return block.getMetadata(metaData).get(0).asString();
     }
 
+    public static void setBlocsData(){
+        setSignData();
+        setLandmarksData();
+    }
+
     /**
      * Sets metadata for property sign blocks and the blocks directly beneath them for all properties in all towns.
      */
@@ -76,6 +83,13 @@ public class CustomNBT {
                 setBockMetaData(block, "propertySign", propertyData.getTotalID());
                 setBockMetaData(blockBeneath, "propertySign", propertyData.getTotalID());
             }
+        }
+    }
+
+    public static void setLandmarksData(){
+        for(Landmark landmark : LandmarkStorage.getList()){
+            Block block = landmark.getChest();
+            setBockMetaData(block, "LandmarkChest", landmark.getID());
         }
     }
 
