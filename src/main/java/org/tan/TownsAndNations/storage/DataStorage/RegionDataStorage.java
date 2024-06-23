@@ -150,6 +150,7 @@ public class RegionDataStorage {
                     ID = newID;
             }
             nextID = ID+1;
+
         }
 
     }
@@ -166,12 +167,25 @@ public class RegionDataStorage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        try (Writer writer = new FileWriter(file, false)) {
-            gson.toJson(regionStorage, writer);
+
+        Writer writer = null;
+        try {
+            writer = new FileWriter(file, false);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        gson.toJson(regionStorage, writer);
 
+        try {
+            writer.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class Vector3D {
@@ -68,5 +69,18 @@ public class Vector3D {
     @Override
     public String toString(){
         return "[" + this.x + ", " + this.y + ", " + this.z + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vector3D vector3D = (Vector3D) o;
+        return x == vector3D.x && y == vector3D.y && z == vector3D.z && Objects.equals(worldID, vector3D.worldID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, z, worldID);
     }
 }

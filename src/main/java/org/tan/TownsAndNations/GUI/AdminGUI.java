@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.Lang.Lang;
-import org.tan.TownsAndNations.commands.AdminSubcommands.OpenAdminGUI;
 import org.tan.TownsAndNations.enums.ChatCategory;
 import org.tan.TownsAndNations.enums.MessageKey;
 import org.tan.TownsAndNations.storage.DataStorage.LandmarkStorage;
@@ -97,8 +96,15 @@ public class AdminGUI implements IGUI{
         ItemStack createLandmark = HeadUtils.makeSkull(Lang.ADMIN_GUI_CREATE_LANDMARK.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
 
         GuiItem _createLandmark = ItemBuilder.from(createLandmark).asGuiItem(event -> {
-            LandmarkStorage.addLandmark(new Vector3D(player.getLocation()));
             event.setCancelled(true);
+
+            Vector3D position = new Vector3D(player.getLocation());
+
+            if(LandmarkStorage.vectorAlreadyFilled(position)){
+                player.sendMessage(getTANString() + Lang.LANDMARK_ALREADY_IN_POSITION.get());
+                return;
+            }
+            LandmarkStorage.addLandmark(position);
             OpenLandmarks(player,page);
         });
         gui.setItem(6, 4, _createLandmark);

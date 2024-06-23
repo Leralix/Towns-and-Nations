@@ -4,6 +4,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.tan.TownsAndNations.DataClass.Landmark;
+import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.Vector3D;
 import org.tan.TownsAndNations.TownsAndNations;
 
@@ -24,9 +25,21 @@ public class LandmarkStorage {
     }
 
     public static void addLandmark(Vector3D vector3D){
+
+
+
         String landmarkID = "L" + newLandmarkID;
         Landmark landmark = new Landmark(landmarkID,vector3D);
         landMarkMap.put(landmarkID, landmark);
+        newLandmarkID++;
+    }
+
+    public static boolean vectorAlreadyFilled(Vector3D vector3D){
+        for(Landmark landmark : getList()){
+            if(landmark.getPosition().equals(vector3D))
+                return true;
+        }
+        return false;
     }
 
     public static Collection<Landmark> getList(){
@@ -42,7 +55,7 @@ public class LandmarkStorage {
     public static void load(){
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Players.json");
+        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Landmarks.json");
         if (file.exists()){
             Reader reader;
             try {
@@ -52,6 +65,14 @@ public class LandmarkStorage {
             }
             Type type = new TypeToken<HashMap<String, Landmark>>() {}.getType();
             landMarkMap = gson.fromJson(reader, type);
+
+            int ID = 0;
+            for (String ids: landMarkMap.keySet()) {
+                int newID =  Integer.parseInt(ids.substring(1));
+                if(newID > ID)
+                    ID = newID;
+            }
+            newLandmarkID = ID+1;
 
         }
 
