@@ -8,6 +8,7 @@ import org.bukkit.Chunk;
 import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
+import org.tan.TownsAndNations.DataClass.newChunkData.LandmarkClaimedChunk;
 import org.tan.TownsAndNations.DataClass.newChunkData.RegionClaimedChunk;
 import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;
 import org.tan.TownsAndNations.TownsAndNations;
@@ -81,6 +82,10 @@ public class NewClaimedChunkStorage {
     }
     public static void claimRegionChunk(Chunk chunk, String ownerID){
         claimedChunksMap.put(getChunkKey(chunk), new RegionClaimedChunk(chunk, ownerID));
+        save();
+    }
+    public static void claimLandmarkChunk(Chunk chunk, String ownerID){
+        claimedChunksMap.put(getChunkKey(chunk), new LandmarkClaimedChunk(chunk, ownerID));
         save();
     }
 

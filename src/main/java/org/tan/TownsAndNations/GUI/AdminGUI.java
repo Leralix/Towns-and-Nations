@@ -9,13 +9,12 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.*;
+import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
+import org.tan.TownsAndNations.DataClass.newChunkData.LandmarkClaimedChunk;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChatCategory;
 import org.tan.TownsAndNations.enums.MessageKey;
-import org.tan.TownsAndNations.storage.DataStorage.LandmarkStorage;
-import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
-import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.*;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.FileUtil;
@@ -83,6 +82,10 @@ public class AdminGUI implements IGUI{
 
         for(Landmark landmark : LandmarkStorage.getList()){
             ItemStack icon = landmark.getIcon();
+            HeadUtils.addLore(icon,
+                    "",
+                    Lang.GUI_GENERIC_CLICK_TO_OPEN.get()
+            );
             GuiItem item = ItemBuilder.from(icon).asGuiItem(event -> {
                 event.setCancelled(true);
             });
@@ -98,13 +101,16 @@ public class AdminGUI implements IGUI{
         GuiItem _createLandmark = ItemBuilder.from(createLandmark).asGuiItem(event -> {
             event.setCancelled(true);
 
-            Vector3D position = new Vector3D(player.getLocation());
 
-            if(LandmarkStorage.vectorAlreadyFilled(position)){
-                player.sendMessage(getTANString() + Lang.LANDMARK_ALREADY_IN_POSITION.get());
-                return;
+            ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(player.getLocation().getBlock().getChunk());
+
+            if(claimedChunk != null) {
+                if (claimedChunk instanceof LandmarkClaimedChunk) {
+                    player.sendMessage(getTANString() + Lang.ADMIN_CHUNK_ALREADY_LANDMARK.get());
+                    return;
+                }
             }
-            LandmarkStorage.addLandmark(position);
+            LandmarkStorage.addLandmark(player.getLocation());
             OpenLandmarks(player,page);
         });
         gui.setItem(6, 4, _createLandmark);

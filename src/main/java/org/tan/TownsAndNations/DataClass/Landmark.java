@@ -39,7 +39,9 @@ public class Landmark {
     public void setOwnerID(String newOwnerID){
         this.ownerID = newOwnerID;
     }
-
+    public void clearOwner() {
+        this.ownerID = null;
+    }
     public String getOwnerID() {
         return ownerID;
     }
@@ -97,10 +99,11 @@ public class Landmark {
             meta.setDisplayName(Lang.ADMIN_GUI_SPECIFIC_LANDMARK_ICON.get(getID()));
             List<String> description = new ArrayList<>();
             description.add(Lang.ADMIN_GUI_SPECIFIC_LANDMARK_ICON_DESC1.get(amount, material.name().toLowerCase()));
-            description.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
             meta.setLore(description);
         }
         icon.setItemMeta(meta);
         return icon;
     }
+
+
 }

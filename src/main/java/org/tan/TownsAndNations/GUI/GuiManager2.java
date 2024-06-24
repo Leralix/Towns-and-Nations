@@ -14,6 +14,7 @@ import org.tan.TownsAndNations.Lang.DynamicLang;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.*;
 import org.tan.TownsAndNations.storage.*;
+import org.tan.TownsAndNations.storage.DataStorage.LandmarkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
@@ -82,12 +83,7 @@ public class GuiManager2 implements IGUI {
         });
         GuiItem Town = ItemBuilder.from(TownHead).asGuiItem(event -> {
             event.setCancelled(true);
-            if(PlayerDataStorage.get(player).haveTown()){
-                OpenTownMenuHaveTown(player);
-            }
-            else{
-                OpenTownMenuNoTown(player);
-            }
+            dispatchPlayerTown(player);
         });
         GuiItem Player = ItemBuilder.from(PlayerHead).asGuiItem(event -> {
             event.setCancelled(true);
@@ -120,6 +116,16 @@ public class GuiManager2 implements IGUI {
 
         gui.open(player);
     }
+
+    public static void dispatchPlayerTown(Player player){
+        if(PlayerDataStorage.get(player).haveTown()){
+            OpenTownMenuHaveTown(player);
+        }
+        else{
+            OpenTownMenuNoTown(player);
+        }
+    }
+
     public static void OpenPlayerProfileMenu(Player player){
 
         Gui gui = IGUI.createChestGui("Profile",3);
@@ -682,6 +688,9 @@ public class GuiManager2 implements IGUI {
 
         ItemStack propertyIcon = HeadUtils.createCustomItemStack(Material.OAK_HANGING_SIGN, Lang.GUI_TOWN_PROPERTIES_ICON.get(),Lang.GUI_TOWN_PROPERTIES_ICON_DESC1.get());
 
+        ItemStack landmark = HeadUtils.makeSkull(Lang.ADMIN_GUI_LANDMARK_ICON.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmQ3NjFjYzE2NTYyYzg4ZDJmYmU0MGFkMzg1MDJiYzNiNGE4Nzg1OTg4N2RiYzM1ZjI3MmUzMGQ4MDcwZWVlYyJ9fX0=",
+                Lang.ADMIN_GUI_LANDMARK_DESC1.get());
+
         GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {
             event.setCancelled(true);
 
@@ -733,6 +742,10 @@ public class GuiManager2 implements IGUI {
             event.setCancelled(true);
             OpenTownPropertiesMenu(player,0);
         });
+        GuiItem _landmark = ItemBuilder.from(landmark).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenTownOwnedLandmark(player, playerTown,0);
+        });
 
 
         gui.setItem(4, _townIcon);
@@ -744,10 +757,36 @@ public class GuiManager2 implements IGUI {
         gui.setItem(2,7, _levelIcon);
         gui.setItem(2,8, _settingsIcon);
         gui.setItem(3,2,_propertyIcon);
+        gui.setItem(3,3,_landmark);
+
         gui.setItem(nRows,1, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
 
         gui.open(player);
     }
+
+    private static void OpenTownOwnedLandmark(Player player, TownData townData, int page) {
+        Gui gui = IGUI.createChestGui("Town owned landmark | page " + (page + 1),6);
+
+        ArrayList<GuiItem> landmarkGui = new ArrayList<>();
+
+        for(String landmarkID : townData.getOwnedLandmarks()){
+            Landmark landmarkData = LandmarkStorage.get(landmarkID);
+
+            GuiItem _landmarkIcon = ItemBuilder.from(landmarkData.getIcon()).asGuiItem(event -> {
+                event.setCancelled(true);
+            });
+            landmarkGui.add(_landmarkIcon);
+        }
+        GuiUtil.createIterator(gui, landmarkGui, page, player,
+                p -> OpenTownMenuHaveTown(player),
+                p -> OpenTownOwnedLandmark(player, townData, page + 1),
+                p -> OpenTownOwnedLandmark(player, townData, page - 1)
+        );
+
+        gui.open(player);
+
+    }
+
     public static void OpenTownMenuOtherTown(Player player, int page) {
         Gui gui = IGUI.createChestGui("Town list | page " + (page + 1),6);
 
@@ -760,7 +799,7 @@ public class GuiManager2 implements IGUI {
             townGuiItems.add(_townIteration);
         }
 
-        createIterator(gui, townGuiItems, page, player, p -> OpenTownMenuHaveTown(player),
+        createIterator(gui, townGuiItems, page, player, p -> dispatchPlayerTown(player),
                 p -> OpenTownMenuOtherTown(player, page + 1),
                 p -> OpenTownMenuOtherTown(player, page - 1));
         gui.open(player);
@@ -816,7 +855,7 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _panel = ItemBuilder.from(Material.LIME_STAINED_GLASS_PANE).asGuiItem(event -> event.setCancelled(true));
 
-        gui.setItem(rowSize,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(rowSize,1, IGUI.CreateBackArrow(player,p -> dispatchPlayerTown(player)));
         gui.setItem(rowSize,2,_panel);
         gui.setItem(rowSize,3, _manageRanks);
         gui.setItem(rowSize,4, _manageApplication);
@@ -1491,7 +1530,7 @@ public class GuiManager2 implements IGUI {
 
 
 
-        gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> dispatchPlayerTown(player)));
 
         gui.open(player);
 
@@ -1733,7 +1772,7 @@ public class GuiManager2 implements IGUI {
 
 
 
-        gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> dispatchPlayerTown(player)));
 
 
         gui.setItem(6,7, _previous);
@@ -1938,7 +1977,7 @@ public class GuiManager2 implements IGUI {
         if(isDynmapAddonLoaded())
             gui.setItem(3,8, _changeChunkColor);
 
-        gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> dispatchPlayerTown(player)));
         gui.open(player);
     }
     public static void OpenTownChangeOwnershipPlayerSelect(Player player, TownData townData) {
@@ -1959,7 +1998,7 @@ public class GuiManager2 implements IGUI {
 
                 townData.setLeaderID(townPlayer.getUniqueId().toString());
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(townPlayer.getName()));
-                OpenTownMenuHaveTown(player);
+                dispatchPlayerTown(player);
             });
 
             gui.setItem(i, _playerHead);
@@ -2023,7 +2062,7 @@ public class GuiManager2 implements IGUI {
         gui.setItem(14, _NAPCategory);
         gui.setItem(16, _AllianceCategory);
 
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> dispatchPlayerTown(player)));
 
         gui.setItem(19, _decorativeGlass);
         gui.setItem(20, _decorativeGlass);
@@ -2261,7 +2300,7 @@ public class GuiManager2 implements IGUI {
         gui.setItem(2,6, _mobChunckIcon);
 
 
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownMenuHaveTown(player)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> dispatchPlayerTown(player)));
 
         gui.open(player);
     }
@@ -2357,7 +2396,7 @@ public class GuiManager2 implements IGUI {
             guiItems.add(_property);
         }
 
-        GuiUtil.createIterator(gui, guiItems, page, player, p -> OpenTownMenuHaveTown(player),
+        GuiUtil.createIterator(gui, guiItems, page, player, p -> dispatchPlayerTown(player),
                 p -> OpenTownPropertiesMenu(player,page + 1),
                 p -> OpenTownPropertiesMenu(player,page - 1));
         gui.open(player);
@@ -2956,9 +2995,10 @@ public class GuiManager2 implements IGUI {
 
         TownData townData = TownDataStorage.get(player);
 
-        if(!landmark.hasOwner())
+        if(!landmark.hasOwner()){
             OpenLandMarkNoOwner(player,landmark);
-
+            return;
+        }
         if(townData.ownLandmark(landmark)){
             OpenPlayerOwnLandmark(player,landmark);
         }
@@ -2972,7 +3012,6 @@ public class GuiManager2 implements IGUI {
         Gui gui = IGUI.createChestGui("Landmark - unclaimed", 3);
 
         GuiItem landmarkIcon = ItemBuilder.from(landmark.getIcon()).asGuiItem(event -> event.setCancelled(true));
-        gui.setItem(1,5,landmarkIcon);
 
         TownData playerTown = TownDataStorage.get(player);
 
@@ -2995,10 +3034,22 @@ public class GuiManager2 implements IGUI {
             dispatchLandmarkGui(player, landmark);
         });
 
+        ItemStack panel = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        GuiItem _landmarkPanel = ItemBuilder.from(panel).asGuiItem(event -> event.setCancelled(true));
 
+        gui.setItem(1,5,landmarkIcon);
         gui.setItem(2,5, _claimLandmark);
 
         gui.setItem(3,1, IGUI.CreateBackArrow(player,Player::closeInventory));
+        gui.setItem(3,2,_landmarkPanel);
+        gui.setItem(3,3,_landmarkPanel);
+        gui.setItem(3,4,_landmarkPanel);
+        gui.setItem(3,5,_landmarkPanel);
+        gui.setItem(3,6,_landmarkPanel);
+        gui.setItem(3,7,_landmarkPanel);
+        gui.setItem(3,8,_landmarkPanel);
+        gui.setItem(3,9,_landmarkPanel);
+
         gui.open(player);
     }
 
@@ -3006,10 +3057,48 @@ public class GuiManager2 implements IGUI {
         TownData townData = TownDataStorage.get(landmark.getOwnerID());
         Gui gui = IGUI.createChestGui("Landmark - " + townData.getName(), 3);
 
+        ItemStack removeTownButton = HeadUtils.makeSkull(
+                Lang.GUI_TOWN_RELATION_REMOVE_TOWN.get(),
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0="
+        );
+        GuiItem _removeTownButton = ItemBuilder.from(removeTownButton).asGuiItem(event -> {
+            event.setCancelled(true);
+            townData.removeLandmark(landmark);
+            TownData playerTown = TownDataStorage.get(player);
+            playerTown.broadCastMessageWithSound(Lang.GUI_LANDMARK_REMOVED.get(),BAD);
+            dispatchLandmarkGui(player,landmark);
+        });
+
+        ItemStack panel = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        GuiItem _landmarkPanel = ItemBuilder.from(panel).asGuiItem(event -> event.setCancelled(true));
+
+
         GuiItem landmarkIcon = ItemBuilder.from(landmark.getIcon()).asGuiItem(event -> event.setCancelled(true));
+        gui.setItem(1,1,_landmarkPanel);
+        gui.setItem(1,2,_landmarkPanel);
+        gui.setItem(1,3,_landmarkPanel);
+        gui.setItem(1,4,_landmarkPanel);
         gui.setItem(1,5,landmarkIcon);
+        gui.setItem(1,6,_landmarkPanel);
+        gui.setItem(1,7,_landmarkPanel);
+        gui.setItem(1,8,_landmarkPanel);
+        gui.setItem(1,9,_landmarkPanel);
+
+        gui.setItem(2,1,_landmarkPanel);
+        gui.setItem(2,9,_landmarkPanel);
 
         gui.setItem(3,1, IGUI.CreateBackArrow(player,Player::closeInventory));
+        gui.setItem(3,2,_landmarkPanel);
+        gui.setItem(3,3,_landmarkPanel);
+        gui.setItem(3,4,_landmarkPanel);
+        gui.setItem(3,5,_landmarkPanel);
+        gui.setItem(3,6,_landmarkPanel);
+        gui.setItem(3,7,_landmarkPanel);
+        gui.setItem(3,8, _removeTownButton);
+        gui.setItem(3,9,_landmarkPanel);
+
+
+
         gui.open(player);
     }
 

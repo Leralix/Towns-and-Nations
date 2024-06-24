@@ -114,8 +114,8 @@ upgrades:
 
   BETTER_TOOLS:
     col: 5
-    row: 1
-    itemCode: 'COBBLESTONE_WALL'
+    row: 2
+    itemCode: 'SMITHING_TABLE'
     maxLevel: 5
     cost: [ '2000' ]
     prerequisites:

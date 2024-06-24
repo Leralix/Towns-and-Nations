@@ -33,7 +33,7 @@ public class ArchiveUtil {
         String dateStr = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
         File file1 = new File(DataFolder, "TAN - Claimed Chunks.json");
-        File file2 = new File(DataFolder, "TAN - Stats.json");
+        File file2 = new File(DataFolder, "TAN - Players.json");
         File file3 = new File(DataFolder, "TAN - Towns.json");
         File file4 = new File(DataFolder, "TAN - Regions.json");
 

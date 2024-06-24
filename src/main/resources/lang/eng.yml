@@ -516,6 +516,10 @@ language:
   GUI_LANDMARK_LEFT_CLICK_TO_CLAIM: "§fLeft click to claim this landmark"
   GUI_LANDMARK_TOWN_FULL: "§cThe town cannot claim more landmarks"
   GUI_LANDMARK_CLAIMED: "§aA new landmark has been claimed by your town"
+  GUI_LANDMARK_REMOVED: "§cA landmark has been unclaimed by your town"
+  CANNOT_DO_IN_LANDMARK: "§cYou cannot do this action in a landmark"
+  CANNOT_UNCLAIM_LANDMARK_CHUNK: "§cYou cannot unclaim a landmark chunk"
+  ADMIN_CHUNK_ALREADY_LANDMARK: "§cThis chunk is already a landmark"
   #Other GUI
   GUI_PROPERTY_DESCRIPTION: "§7§o\"{0}\""
   GUI_PROPERTY_STRUCTURE_OWNER: "§fCity: §9{0}"

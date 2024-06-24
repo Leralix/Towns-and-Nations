@@ -23,12 +23,11 @@ public class PlayerDataStorage {
 
     public static PlayerData createPlayerDataClass(Player p) {
         PlayerData playerData = new PlayerData(p);
-        playerStorage.put(p.getUniqueId().toString(), playerData);
-        saveStats();
-        return playerData;
+        return createPlayerDataClass(playerData);
     }
     public static PlayerData createPlayerDataClass(PlayerData p) {
         playerStorage.put(p.getID(), p);
+        saveStats();
         return p;
     }
 
@@ -88,7 +87,6 @@ public class PlayerDataStorage {
         }
 
     }
-
     public static void saveOldStats() {
 
         Gson gson = new Gson();
@@ -136,7 +134,6 @@ public class PlayerDataStorage {
         }
 
     }
-
     public static void saveStats() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

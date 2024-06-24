@@ -862,6 +862,7 @@ public class TownData {
     }
     public void removeLandmark(Landmark landmark){
         removeLandmark(landmark.getID());
+        landmark.clearOwner();
     }
 
     public boolean ownLandmark(Landmark landmark) {

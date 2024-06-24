@@ -3,6 +3,7 @@ package org.tan.TownsAndNations.storage.DataStorage;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.bukkit.Location;
 import org.tan.TownsAndNations.DataClass.Landmark;
 import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.Vector3D;
@@ -24,11 +25,14 @@ public class LandmarkStorage {
         return landMarkMap.get(landmarkID);
     }
 
-    public static void addLandmark(Vector3D vector3D){
+    public static void addLandmark(Location position){
+        Vector3D vector3D = new Vector3D(position);
         String landmarkID = "L" + newLandmarkID;
         Landmark landmark = new Landmark(landmarkID,vector3D);
         landMarkMap.put(landmarkID, landmark);
         newLandmarkID++;
+
+        NewClaimedChunkStorage.claimLandmarkChunk(position.getChunk(), landmarkID);
     }
 
     public static boolean vectorAlreadyFilled(Vector3D vector3D){
