@@ -6,24 +6,10 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.PlayerData;
-import org.tan.TownsAndNations.DataClass.PropertyData;
-import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
-import org.tan.TownsAndNations.enums.TownChunkPermission;
-import org.tan.TownsAndNations.enums.TownRelation;
-import org.tan.TownsAndNations.enums.TownRolePermission;
-import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
-import org.tan.TownsAndNations.storage.WarTaggedPlayer;
-import org.tan.TownsAndNations.utils.SoundUtil;
 
-import static org.tan.TownsAndNations.enums.SoundEnum.BAD;
-import static org.tan.TownsAndNations.enums.SoundEnum.NOT_ALLOWED;
-import static org.tan.TownsAndNations.enums.TownChunkPermission.ALLIANCE;
-import static org.tan.TownsAndNations.enums.TownChunkPermission.FOREIGN;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 public class LandmarkClaimedChunk extends ClaimedChunk2{
@@ -37,12 +23,26 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
     public String getName(){
         return TownDataStorage.get(getOwnerID()).getName();
     }
-    public TownData getTown(){
-        return TownDataStorage.get(ownerID);
-    }
 
     @Override
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
+
+        if(permissionType == ChunkPermissionType.CHEST ||
+                permissionType == ChunkPermissionType.OPEN_DOOR ||
+                permissionType == ChunkPermissionType.ATTACK_PASSIVE_MOB ||
+                permissionType == ChunkPermissionType.USE_BUTTONS ||
+                permissionType == ChunkPermissionType.USE_REDSTONE ||
+                permissionType == ChunkPermissionType.USE_FURNACE ||
+                permissionType == ChunkPermissionType.INTERACT_ITEM_FRAME ||
+                permissionType == ChunkPermissionType.INTERACT_ARMOR_STAND ||
+                permissionType == ChunkPermissionType.DECORATIVE_BLOCK ||
+                permissionType == ChunkPermissionType.MUSIC_BLOCK ||
+                permissionType == ChunkPermissionType.LEAD ||
+                permissionType == ChunkPermissionType.SHEARS){
+            return true;
+        }
+
+
         player.sendMessage(getTANString() + Lang.CANNOT_DO_IN_LANDMARK.get());
         return false;
     }
@@ -50,24 +50,10 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
 
     public void unclaimChunk(Player player, Chunk chunk){
         player.sendMessage(getTANString() + Lang.CANNOT_UNCLAIM_LANDMARK_CHUNK.get());
-        return;
     }
 
     public void playerEnterClaimedArea(Player player){
-        TownData townTo = getTown();
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.CHUNK_ENTER_TOWN.get(townTo.getName())));
-
-        TownData playerTown = TownDataStorage.get(player);
-        if(playerTown == null){
-            return;
-        }
-        TownRelation relation = TownDataStorage.get(player).getRelationWith(townTo);
-
-        if(relation == TownRelation.WAR){
-            SoundUtil.playSound(player, BAD);
-            player.sendMessage(getTANString() + Lang.CHUNK_ENTER_TOWN_AT_WAR.get());
-            townTo.broadCastMessageWithSound(getTANString() + Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.get(player).getName(),player.getName()), BAD);
-        }
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.PLAYER_ENTER_LANDMARK_CHUNK.get()));
     }
 
     @Override

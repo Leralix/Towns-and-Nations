@@ -612,8 +612,9 @@ language:
   DAILY_TAXES_SUCCESS_LOG: "Town taxes have been collected"
   #Chunk interactions
   CHUNK_ENTER_WILDERNESS: "§fWilderness"
-  CHUNK_ENTER_TOWN: "§fEntering the town: §9{0}"
-  CHUNK_ENTER_REGION: "§fEntering the region: §b{0}"
+  PLAYER_ENTER_TOWN_CHUNK: "§fEntering : §9{0}"
+  PLAYER_ENTER_REGION_CHUNK: "§fEntering : §b{0}"
+  PLAYER_ENTER_LANDMARK_CHUNK: "§fEntering : §6Landmark"
   CHUNK_ENTER_TOWN_AT_WAR: "§cYou are at war with this town. Players have been alerted that you crossed the border"
   CHUNK_INTRUSION_ALERT: "§cAn ennemy from the town {0} has enter your borders: {1}"
   #History

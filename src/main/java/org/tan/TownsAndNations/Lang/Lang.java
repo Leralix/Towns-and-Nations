@@ -475,8 +475,9 @@ public enum Lang {
     RARE_ITEM_SELLING_SUCCESS,
     DAILY_TAXES_SUCCESS_LOG,
     CHUNK_ENTER_WILDERNESS,
-    CHUNK_ENTER_TOWN,
-    CHUNK_ENTER_REGION,
+    PLAYER_ENTER_TOWN_CHUNK,
+    PLAYER_ENTER_REGION_CHUNK,
+    PLAYER_ENTER_LANDMARK_CHUNK,
     CHUNK_ENTER_TOWN_AT_WAR,
     CHUNK_INTRUSION_ALERT,
     HISTORY_TOWN_CREATED,
@@ -654,7 +655,6 @@ public enum Lang {
             translation = ChatColor.translateAlternateColorCodes('§', translation);
             for (int i = 0; i < placeholders.length; i++) {
                 String val = placeholders[i] == null ? "null" : placeholders[i].toString();
-
                 translation = translation.replace("{" + i + "}",val);
             }
             return translation;

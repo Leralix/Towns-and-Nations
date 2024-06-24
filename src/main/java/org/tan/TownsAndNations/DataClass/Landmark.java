@@ -75,11 +75,15 @@ public class Landmark {
     }
 
     public void generateRessources(){
-        if(!hasOwner()){
-            return;
-        }
-        Chest chest = (Chest) getChest();
-        chest.getBlockInventory().addItem(getRessources());
+        return;
+        /*
+            if(!hasOwner()){
+                return;
+            }
+            Chest chest = (Chest) getChest();
+            chest.getBlockInventory().addItem(getRessources());
+         */
+
     }
 
     public boolean hasOwner() {

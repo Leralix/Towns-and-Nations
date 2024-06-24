@@ -2,9 +2,9 @@ package org.tan.TownsAndNations.enums;
 
 public enum ChunkPermissionType {
     CHEST,
-    DOOR,
-    BREAK,
-    PLACE,
+    OPEN_DOOR,
+    BREAK_BLOCK,
+    PLACE_BLOCK,
     ATTACK_PASSIVE_MOB,
     USE_BUTTONS,
     USE_REDSTONE,

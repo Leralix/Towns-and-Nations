@@ -2410,10 +2410,10 @@ public class GuiManager2 implements IGUI {
 
 
         Object[][] itemData = {
-                {ChunkPermissionType.DOOR, Material.OAK_DOOR, Lang.GUI_TOWN_CLAIM_SETTINGS_DOOR},
+                {ChunkPermissionType.OPEN_DOOR, Material.OAK_DOOR, Lang.GUI_TOWN_CLAIM_SETTINGS_DOOR},
                 {ChunkPermissionType.CHEST, Material.CHEST, Lang.GUI_TOWN_CLAIM_SETTINGS_CHEST},
-                {ChunkPermissionType.PLACE, Material.BRICKS, Lang.GUI_TOWN_CLAIM_SETTINGS_BUILD},
-                {ChunkPermissionType.BREAK, Material.IRON_PICKAXE, Lang.GUI_TOWN_CLAIM_SETTINGS_BREAK},
+                {ChunkPermissionType.PLACE_BLOCK, Material.BRICKS, Lang.GUI_TOWN_CLAIM_SETTINGS_BUILD},
+                {ChunkPermissionType.BREAK_BLOCK, Material.IRON_PICKAXE, Lang.GUI_TOWN_CLAIM_SETTINGS_BREAK},
                 {ChunkPermissionType.ATTACK_PASSIVE_MOB, Material.BEEF, Lang.GUI_TOWN_CLAIM_SETTINGS_ATTACK_PASSIVE_MOBS},
                 {ChunkPermissionType.USE_BUTTONS, Material.STONE_BUTTON, Lang.GUI_TOWN_CLAIM_SETTINGS_BUTTON},
                 {ChunkPermissionType.USE_REDSTONE, Material.REDSTONE, Lang.GUI_TOWN_CLAIM_SETTINGS_REDSTONE},

@@ -170,9 +170,14 @@ public class NewClaimedChunkStorage {
                     if (ownerID.startsWith("T")) {
                         TownClaimedChunk townChunk = new TownClaimedChunk(x, z, worldUUID, ownerID);
                         claimedChunksMap.put(entry.getKey(), townChunk);
-                    } else if (ownerID.startsWith("R")) {
+                    }
+                    else if (ownerID.startsWith("R")) {
                         RegionClaimedChunk regionChunk = new RegionClaimedChunk(x, z, worldUUID, ownerID);
                         claimedChunksMap.put(entry.getKey(), regionChunk);
+                    }
+                    else if (ownerID.startsWith("L")) {
+                        LandmarkClaimedChunk landmarkClaimedChunk = new LandmarkClaimedChunk(x, z, worldUUID, ownerID);
+                        claimedChunksMap.put(entry.getKey(), landmarkClaimedChunk);
                     }
                 }
             } catch (IOException e) {

@@ -123,7 +123,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
 
     public void playerEnterClaimedArea(Player player){
         TownData townTo = getTown();
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.CHUNK_ENTER_TOWN.get(townTo.getName())));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.PLAYER_ENTER_TOWN_CHUNK.get(townTo.getName())));
 
         TownData playerTown = TownDataStorage.get(player);
         if(playerTown == null){

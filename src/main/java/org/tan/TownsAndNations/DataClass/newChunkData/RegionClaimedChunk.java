@@ -15,9 +15,6 @@ import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 public class RegionClaimedChunk extends ClaimedChunk2{
@@ -78,7 +75,7 @@ public class RegionClaimedChunk extends ClaimedChunk2{
 
     public void playerEnterClaimedArea(Player player){
         RegionData region = getRegion();
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.CHUNK_ENTER_REGION.get(region.getName())));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.PLAYER_ENTER_REGION_CHUNK.get(region.getName())));
     }
 
     @Override

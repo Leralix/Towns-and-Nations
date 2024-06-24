@@ -163,9 +163,9 @@ public final class TownsAndNations extends JavaPlugin {
             RegionDataStorage.loadStats();
             PlayerDataStorage.loadOldStats();
             PlayerDataStorage.loadStats();
-            TownDataStorage.loadStats();
             NewClaimedChunkStorage.loadStats();
             LandmarkStorage.load();
+            TownDataStorage.loadStats();
         }
 
         logger.info("[TaN] -Loading blocks data");

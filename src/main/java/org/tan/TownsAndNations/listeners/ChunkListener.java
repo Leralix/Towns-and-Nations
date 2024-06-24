@@ -1,6 +1,5 @@
 package org.tan.TownsAndNations.listeners;
 
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Tag;
@@ -44,7 +43,7 @@ public class ChunkListener implements Listener {
             return;
         }
 
-        if(!CanPlayerDoAction(loc, player,BREAK))
+        if(!CanPlayerDoAction(loc, player, BREAK_BLOCK))
             event.setCancelled(true);
     }
     @EventHandler
@@ -52,7 +51,7 @@ public class ChunkListener implements Listener {
         Player player = event.getPlayer();
         Location loc = event.getBlock().getLocation();
 
-        if(!CanPlayerDoAction(loc, player,BREAK)){
+        if(!CanPlayerDoAction(loc, player, BREAK_BLOCK)){
             event.setCancelled(true);
         };
 
@@ -62,7 +61,7 @@ public class ChunkListener implements Listener {
         Player player = event.getPlayer();
         Location loc = event.getBlock().getLocation();
 
-        if(!CanPlayerDoAction(loc, player,PLACE)){
+        if(!CanPlayerDoAction(loc, player, PLACE_BLOCK)){
             event.setCancelled(true);
         };
 
@@ -114,7 +113,7 @@ public class ChunkListener implements Listener {
                 Tag.DOORS.isTagged(materialType) ||
                 Tag.TRAPDOORS.isTagged(materialType) ||
                 Tag.FENCE_GATES.isTagged(materialType)){
-            if(!CanPlayerDoAction(loc, player,DOOR)){
+            if(!CanPlayerDoAction(loc, player, OPEN_DOOR)){
                 event.setCancelled(true);
             };
         }
@@ -156,7 +155,7 @@ public class ChunkListener implements Listener {
         else if (event.getAction() == Action.PHYSICAL &&
                 (event.getClickedBlock().getType() == Material.FARMLAND )){
 
-            if(!CanPlayerDoAction(loc, player,BREAK)){
+            if(!CanPlayerDoAction(loc, player, BREAK_BLOCK)){
                 event.setCancelled(true);
             }
         }
@@ -173,7 +172,7 @@ public class ChunkListener implements Listener {
         Location loc = event.getBlock().getLocation();
 
 
-        if(!CanPlayerDoAction(loc, player,PLACE)){
+        if(!CanPlayerDoAction(loc, player, PLACE_BLOCK)){
             event.setCancelled(true);
         };
 
@@ -234,7 +233,7 @@ public class ChunkListener implements Listener {
             }
 
             else if(entity instanceof EnderCrystal){
-                if(!CanPlayerDoAction(loc, player, ChunkPermissionType.BREAK)){
+                if(!CanPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)){
                     event.setCancelled(true);
                 };
             }
@@ -292,7 +291,7 @@ public class ChunkListener implements Listener {
                     }
                 }
                 else if(entity instanceof EnderCrystal){
-                    if(!CanPlayerDoAction(loc, player,BREAK)){
+                    if(!CanPlayerDoAction(loc, player, BREAK_BLOCK)){
                         event.setCancelled(true);
                     }
                 }
@@ -387,7 +386,7 @@ public class ChunkListener implements Listener {
                 }
             }
             else{
-                if (!CanPlayerDoAction(loc, player,BREAK)) {
+                if (!CanPlayerDoAction(loc, player, BREAK_BLOCK)) {
                     event.setCancelled(true);
                 }
             }
@@ -402,7 +401,7 @@ public class ChunkListener implements Listener {
                     }
                 }
                 else{
-                    if (!CanPlayerDoAction(loc, player,BREAK)) {
+                    if (!CanPlayerDoAction(loc, player, BREAK_BLOCK)) {
                         event.setCancelled(true);
                     }
                 }
@@ -422,7 +421,7 @@ public class ChunkListener implements Listener {
                 event.setCancelled(true);
             }
         } else {
-            if(!CanPlayerDoAction(loc, player,PLACE)){
+            if(!CanPlayerDoAction(loc, player, PLACE_BLOCK)){
                 event.setCancelled(true);
             }
         }

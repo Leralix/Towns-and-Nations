@@ -197,7 +197,6 @@ public class TownDataStorage {
             }
             newTownId = ID+1;
         }
-
     }
 
     public static void saveStats() {
