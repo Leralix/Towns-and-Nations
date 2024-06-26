@@ -3,9 +3,14 @@ package org.tan.TownsAndNations.DataClass;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.tan.TownsAndNations.DataClass.newChunkData.LandmarkClaimedChunk;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.TownsAndNations;
+import org.tan.TownsAndNations.storage.DataStorage.LandmarkStorage;
+import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.CustomNBT;
 
@@ -19,6 +24,7 @@ public class Landmark {
     private String materialName;
     private int amount;
     private String ownerID;
+    private final int storedDays = 0;
 
     public Landmark(String ID, Vector3D position){
         this.ID = ID;
@@ -61,6 +67,12 @@ public class Landmark {
         CustomNBT.setBockMetaData(newBlock, "LandmarkChest", getID());
     }
 
+    public void dispawnChest(){
+        Block newBlock = position.getWorld().getBlockAt(position.getLocation());
+        newBlock.removeMetadata("LandmarkChest", TownsAndNations.getPlugin());
+        newBlock.setType(Material.AIR);
+    }
+
     public Block getChest(){
         return position.getWorld().getBlockAt(position.getLocation());
     }
@@ -75,14 +87,10 @@ public class Landmark {
     }
 
     public void generateRessources(){
-        return;
-        /*
-            if(!hasOwner()){
-                return;
-            }
-            Chest chest = (Chest) getChest();
-            chest.getBlockInventory().addItem(getRessources());
-         */
+
+        if(!hasOwner()){
+            return;
+        }
 
     }
 
@@ -107,6 +115,15 @@ public class Landmark {
         }
         icon.setItemMeta(meta);
         return icon;
+    }
+
+    public void deleteLandmark(){
+        dispawnChest();
+        if(hasOwner())
+            getOwner().removeLandmark(getID());
+        NewClaimedChunkStorage.unclaimChunk(position.getLocation().getChunk());
+        LandmarkStorage.getLandMarkMap().remove(getID());
+
     }
 
 

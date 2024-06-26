@@ -88,6 +88,11 @@ public class AdminGUI implements IGUI{
             );
             GuiItem item = ItemBuilder.from(icon).asGuiItem(event -> {
                 event.setCancelled(true);
+                if(event.isRightClick()){
+                    landmark.deleteLandmark();
+                    OpenLandmarks(player, page);
+                    return;
+                }
             });
             guiItems.add(item);
 

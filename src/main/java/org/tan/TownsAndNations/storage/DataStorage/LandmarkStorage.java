@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class LandmarkStorage {
 
-    public static Map<String, Landmark> landMarkMap = new HashMap<>();
+    private static Map<String, Landmark> landMarkMap = new HashMap<>();
     private static int newLandmarkID = 1;
 
 
@@ -110,5 +110,8 @@ public class LandmarkStorage {
 
     }
 
+    public static Map<String, Landmark> getLandMarkMap() {
+        return landMarkMap;
+    }
 
 }
