@@ -84,7 +84,7 @@ public class AdminGUI implements IGUI{
             ItemStack icon = landmark.getIcon();
             HeadUtils.addLore(icon,
                     "",
-                    Lang.GUI_GENERIC_CLICK_TO_OPEN.get()
+                    Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get()
             );
             GuiItem item = ItemBuilder.from(icon).asGuiItem(event -> {
                 event.setCancelled(true);

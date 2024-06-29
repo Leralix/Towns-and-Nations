@@ -2,11 +2,9 @@ package org.tan.TownsAndNations.DataClass;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.tan.TownsAndNations.DataClass.newChunkData.LandmarkClaimedChunk;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.DataStorage.LandmarkStorage;
@@ -24,14 +22,14 @@ public class Landmark {
     private String materialName;
     private int amount;
     private String ownerID;
-    private final int storedDays = 0;
+    private int storedDays;
 
     public Landmark(String ID, Vector3D position){
         this.ID = ID;
         this.position = position;
         this.materialName = "DIAMOND";
         this.amount = 2;
-
+        this.storedDays = 0;
         spawnChest();
     }
 
@@ -80,6 +78,7 @@ public class Landmark {
     public Material getRessourceMaterial(){
         return Material.valueOf(materialName);
     }
+    @SuppressWarnings("unused")
     public ItemStack getRessources(){
         ItemStack ressourcesItemStack = new ItemStack(getRessourceMaterial());
         ressourcesItemStack.setAmount(amount);
@@ -87,10 +86,11 @@ public class Landmark {
     }
 
     public void generateRessources(){
-
-        if(!hasOwner()){
+        if(!hasOwner())
             return;
-        }
+        if(storedDays > 7)
+            return;
+        storedDays++;
 
     }
 
@@ -108,9 +108,15 @@ public class Landmark {
         ItemStack icon = new ItemStack(material, amount);
         ItemMeta meta =  icon.getItemMeta();
         if(meta != null) {
-            meta.setDisplayName(Lang.ADMIN_GUI_SPECIFIC_LANDMARK_ICON.get(getID()));
+            meta.setDisplayName(Lang.SPECIFIC_LANDMARK_ICON.get(getID()));
             List<String> description = new ArrayList<>();
-            description.add(Lang.ADMIN_GUI_SPECIFIC_LANDMARK_ICON_DESC1.get(amount, material.name().toLowerCase()));
+            description.add(Lang.DISPLAY_COORDINATES.get(position.getX(), position.getY(), position.getZ()));
+            description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(amount, material.name().toLowerCase()));
+            if(hasOwner())
+                description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_OWNER.get(getOwner().getName()));
+            else
+                description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER.get());
+
             meta.setLore(description);
         }
         icon.setItemMeta(meta);
@@ -125,6 +131,21 @@ public class Landmark {
         LandmarkStorage.getLandMarkMap().remove(getID());
 
     }
+
+    public int computeStoredReward(TownData townData){
+        long bonus = (townData.getTownLevel().getTotalBenefits().get("LANDMARK_BONUS") + 100 ) /100;
+        return (int) (this.amount * storedDays * bonus);
+    }
+
+    public void giveToPlayer(Player player, int number){
+        if(storedDays == 0)
+            return;
+
+        player.getInventory().addItem(new ItemStack(Material.valueOf(materialName), number));
+        storedDays = 0;
+    }
+
+
 
 
 }

@@ -12,6 +12,8 @@
 # - UNLOCK_TOWN_SPAWN: unlock /tan spawn
 # - UNLOCK_MOB_BAN: unlock the mob ban tab
 # - If you need other upgrades ask on my discord
+# - MAX_LANDMARKS: maximum number of owned landmarks per town
+# - LANDMARK_BONUS: percentage of bonus on landmarks (ex 50 = 50%)
 # You can create your own names, prerequisites and benefits in the lang files.
 upgrades:
 

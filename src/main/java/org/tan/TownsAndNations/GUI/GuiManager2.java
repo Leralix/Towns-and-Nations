@@ -3001,10 +3001,11 @@ public class GuiManager2 implements IGUI {
         }
         if(townData.ownLandmark(landmark)){
             OpenPlayerOwnLandmark(player,landmark);
+            return;
         }
-        else {
-            OpenPlayerForeignLandmark(player,landmark);
-        }
+        TownData owner = TownDataStorage.get(landmark.getOwnerID());
+        player.sendMessage(getTANString() + Lang.LANDMARK_ALREADY_CLAIMED.get(owner.getName()));
+        SoundUtil.playSound(player, MINOR_BAD);
 
     }
 
@@ -3057,10 +3058,29 @@ public class GuiManager2 implements IGUI {
         TownData townData = TownDataStorage.get(landmark.getOwnerID());
         Gui gui = IGUI.createChestGui("Landmark - " + townData.getName(), 3);
 
+        int quantity = landmark.computeStoredReward(townData);
+
         ItemStack removeTownButton = HeadUtils.makeSkull(
-                Lang.GUI_TOWN_RELATION_REMOVE_TOWN.get(),
+                Lang.GUI_REMOVE_LANDMARK.get(),
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0="
         );
+
+        String bagTexture   ;
+        if(quantity == 0)
+            bagTexture = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjRjMTY0YmFjMjE4NGE3NmExZWU5NjkxMzI0MmUzMzVmMWQ0MTFjYWZmNTEyMDVlYTM5YjIwNWU2ZjhmMDU4YSJ9fX0=";
+        else
+            bagTexture = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTliOTA2YjIxNTVmMTkzNzg3MDQyMzM4ZDA1Zjg0MDM5MWMwNWE2ZDNlODE2MjM5MDFiMjk2YmVlM2ZmZGQyIn19fQ==";
+
+        ItemStack collectRessources = HeadUtils.makeSkull(
+                Lang.GUI_COLLECT_LANDMARK.get(),
+                bagTexture,
+                Lang.GUI_COLLECT_LANDMARK_DESC1.get(),
+                Lang.GUI_COLLECT_LANDMARK_DESC2.get(quantity)
+        );
+
+
+
+
         GuiItem _removeTownButton = ItemBuilder.from(removeTownButton).asGuiItem(event -> {
             event.setCancelled(true);
             townData.removeLandmark(landmark);
@@ -3068,6 +3088,15 @@ public class GuiManager2 implements IGUI {
             playerTown.broadCastMessageWithSound(Lang.GUI_LANDMARK_REMOVED.get(),BAD);
             dispatchLandmarkGui(player,landmark);
         });
+
+        GuiItem _collectRessources = ItemBuilder.from(collectRessources).asGuiItem(event -> {
+            event.setCancelled(true);
+            landmark.giveToPlayer(player,quantity);
+            player.sendMessage(getTANString() + Lang.GUI_LANDMARK_REWARD_COLLECTED.get(quantity));
+            SoundUtil.playSound(player, GOOD);
+            dispatchLandmarkGui(player,landmark);
+        });
+
 
         ItemStack panel = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         GuiItem _landmarkPanel = ItemBuilder.from(panel).asGuiItem(event -> event.setCancelled(true));
@@ -3085,6 +3114,10 @@ public class GuiManager2 implements IGUI {
         gui.setItem(1,9,_landmarkPanel);
 
         gui.setItem(2,1,_landmarkPanel);
+
+        gui.setItem(2,6,_collectRessources);
+        gui.setItem(2,8,_removeTownButton);
+
         gui.setItem(2,9,_landmarkPanel);
 
         gui.setItem(3,1, IGUI.CreateBackArrow(player,Player::closeInventory));
@@ -3094,7 +3127,7 @@ public class GuiManager2 implements IGUI {
         gui.setItem(3,5,_landmarkPanel);
         gui.setItem(3,6,_landmarkPanel);
         gui.setItem(3,7,_landmarkPanel);
-        gui.setItem(3,8, _removeTownButton);
+        gui.setItem(3,8, _landmarkPanel);
         gui.setItem(3,9,_landmarkPanel);
 
 

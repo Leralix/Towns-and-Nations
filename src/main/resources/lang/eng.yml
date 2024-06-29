@@ -28,6 +28,10 @@ language:
   TOWN_DIPLOMATIC_INVITATION_NO_LEADER: "§cThe town has no leader to interact with diplomatic relations"
   PLAYER_PROPERTY_TOO_BIG: "§cThe property is too big. The maximum size is {0} blocks"
   POSITION_NOT_IN_CLAIMED_CHUNK: "§cThe position needs to be in a claimed chunk"
+  LANDMARK_ALREADY_CLAIMED: "§cThis landmark is already claimed by §9{0}"
+  #Common uses
+  DISPLAY_COORDINATES: "§fCoordinates: §d[{0}, {1}, {2}]"
+
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 {1}: §f{2}"
@@ -197,6 +201,7 @@ language:
   RELATION_WAR_NAME: "War"
   #GUI generic
   GUI_GENERIC_CLICK_TO_OPEN: "§fClick to open"
+  GUI_GENERIC_RIGHT_CLICK_TO_DELETE: "§cRight click to delete"
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§eStill in development"
   GUI_BACK_ARROW: "Return"
@@ -484,6 +489,18 @@ language:
   GUI_KICK_TOWN_TO_REGION: "§aKick a town from the region"
   GUI_REGION_INVITE_TOWN_DESC1: "§fLeft click to invite this town to the region"
   GUI_REGION_KICK_TOWN_DESC1: "§fLeft click to kick this town from the region"
+  #Landmarks
+  GUI_COLLECT_LANDMARK: "§aCollect resources"
+  GUI_COLLECT_LANDMARK_DESC1: "§fLeft click to collect resources"
+  GUI_COLLECT_LANDMARK_DESC2: "§fEarnings: §6{0}"
+  GUI_LANDMARK_REWARD_COLLECTED: "§aResources collected"
+  GUI_REMOVE_LANDMARK: "§cUnclaim landmark"
+
+  SPECIFIC_LANDMARK_ICON: "§aLandmark n°{0}"
+  SPECIFIC_LANDMARK_ICON_DESC1: "§fProducing : §6{0}x §e{1}"
+  SPECIFIC_LANDMARK_ICON_DESC2_OWNER: "§fControlled by : §9{0}"
+  SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER: "§fNot claimed"
+
   ##Admin GUI
   ADMIN_GUI_REGION_DESC: "§fClick to manage regions"
   ADMIN_GUI_TOWN_DESC: "§fClick to manage towns"
@@ -507,10 +524,6 @@ language:
   ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS: "§3{0}§f has left his town §3{1}"
   ADMIN_GUI_LANDMARK_ICON: "§aLandmarks"
   ADMIN_GUI_LANDMARK_DESC1: "§fLeft click to manage landmarks"
-  ADMIN_GUI_SPECIFIC_LANDMARK_ICON: "§aLandmark n°{0}"
-  ADMIN_GUI_SPECIFIC_LANDMARK_ICON_DESC1: "§fProducing {0}x {1}"
-  ADMIN_GUI_SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER: "§fNot claimed"
-  ADMIN_GUI_SPECIFIC_LANDMARK_ICON_DESC2_OWNER: "§fControlled by : {0}"
   ADMIN_GUI_CREATE_LANDMARK: "Create new landmark"
   LANDMARK_ALREADY_IN_POSITION: "A landmark is already on this position"
   GUI_LANDMARK_LEFT_CLICK_TO_CLAIM: "§fLeft click to claim this landmark"
