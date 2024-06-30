@@ -31,8 +31,8 @@ public class LandmarkStorage {
         Landmark landmark = new Landmark(landmarkID,vector3D);
         landMarkMap.put(landmarkID, landmark);
         newLandmarkID++;
-
         NewClaimedChunkStorage.claimLandmarkChunk(position.getChunk(), landmarkID);
+        save();
     }
 
     public static boolean vectorAlreadyFilled(Vector3D vector3D){
