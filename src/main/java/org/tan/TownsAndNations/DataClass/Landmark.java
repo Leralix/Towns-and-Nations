@@ -146,6 +146,9 @@ public class Landmark {
     }
 
 
-
-
+    public void setReward(ItemStack itemOnCursor) {
+        this.amount = itemOnCursor.getAmount();
+        this.materialName = itemOnCursor.getType().name();
+        LandmarkStorage.save();
+    }
 }

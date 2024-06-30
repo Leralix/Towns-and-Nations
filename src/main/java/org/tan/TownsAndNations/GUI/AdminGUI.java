@@ -14,12 +14,10 @@ import org.tan.TownsAndNations.DataClass.newChunkData.LandmarkClaimedChunk;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChatCategory;
 import org.tan.TownsAndNations.enums.MessageKey;
+import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.storage.DataStorage.*;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
-import org.tan.TownsAndNations.utils.ChatUtils;
-import org.tan.TownsAndNations.utils.FileUtil;
-import org.tan.TownsAndNations.utils.GuiUtil;
-import org.tan.TownsAndNations.utils.HeadUtils;
+import org.tan.TownsAndNations.utils.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,11 +82,22 @@ public class AdminGUI implements IGUI{
             ItemStack icon = landmark.getIcon();
             HeadUtils.addLore(icon,
                     "",
+                    Lang.SPECIFIC_LANDMARK_ICON_SWITCH_REWARD.get(),
                     Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get()
             );
             GuiItem item = ItemBuilder.from(icon).asGuiItem(event -> {
                 event.setCancelled(true);
-                if(event.isRightClick()){
+                if(event.isLeftClick()){
+                    ItemStack itemOnCursor = player.getItemOnCursor();
+                    if(itemOnCursor.getType() != Material.AIR){
+                        player.sendMessage(getTANString() + Lang.ADMIN_GUI_LANDMARK_REWARD_SET.get(itemOnCursor.getAmount(), itemOnCursor.getType().name()));
+                        landmark.setReward(itemOnCursor);
+                        OpenLandmarks(player, page);
+                        SoundUtil.playSound(player, SoundEnum.GOOD);
+                        return;
+                    }
+                }
+                else if(event.isRightClick()){
                     landmark.deleteLandmark();
                     OpenLandmarks(player, page);
                     return;

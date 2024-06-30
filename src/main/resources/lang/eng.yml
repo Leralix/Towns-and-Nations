@@ -500,7 +500,8 @@ language:
   SPECIFIC_LANDMARK_ICON_DESC1: "§fProducing : §6{0}x §e{1}"
   SPECIFIC_LANDMARK_ICON_DESC2_OWNER: "§fControlled by : §9{0}"
   SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER: "§fNot claimed"
-
+  SPECIFIC_LANDMARK_ICON_SWITCH_REWARD: "§fDrag and drop an item to change the reward"
+  ADMIN_GUI_LANDMARK_REWARD_SET: "§aReward has been set to §6{0}x §e{1}"
   ##Admin GUI
   ADMIN_GUI_REGION_DESC: "§fClick to manage regions"
   ADMIN_GUI_TOWN_DESC: "§fClick to manage towns"
