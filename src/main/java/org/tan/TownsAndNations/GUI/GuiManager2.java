@@ -74,12 +74,7 @@ public class GuiManager2 implements IGUI {
         });
         GuiItem Region = ItemBuilder.from(RegionHead).asGuiItem(event -> {
             event.setCancelled(true);
-            if(playerStat.haveRegion()) {
-                OpenRegionMenu(player);
-            }
-            else {
-                OpenNoRegionMenu(player);
-            }
+            dispatchPlayerRegion(player);
         });
         GuiItem Town = ItemBuilder.from(TownHead).asGuiItem(event -> {
             event.setCancelled(true);
@@ -115,6 +110,15 @@ public class GuiManager2 implements IGUI {
         gui.setItem(3,1,IGUI.CreateBackArrow(player, p -> player.closeInventory()));
 
         gui.open(player);
+    }
+
+    private static void dispatchPlayerRegion(Player player) {
+        if(PlayerDataStorage.get(player).haveRegion()) {
+            OpenRegionMenu(player);
+        }
+        else {
+            OpenNoRegionMenu(player);
+        }
     }
 
     public static void dispatchPlayerTown(Player player){
@@ -2512,25 +2516,17 @@ public class GuiManager2 implements IGUI {
 
         ItemStack GoldIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_TREASURY_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
                 Lang.GUI_TOWN_TREASURY_ICON_DESC1.get());
-
         ItemStack townIcon = HeadUtils.makeSkull(Lang.GUI_REGION_TOWN_LIST.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
                 Lang.GUI_REGION_TOWN_LIST_DESC1.get());
-
         ItemStack otherRegionIcon = HeadUtils.makeSkull(Lang.GUI_OTHER_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=",
                 Lang.GUI_OTHER_REGION_ICON_DESC1.get());
-
         ItemStack RelationIcon = HeadUtils.makeSkull(Lang.GUI_RELATION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=",
                 Lang.GUI_RELATION_ICON_DESC1.get());
-
-        ItemStack LevelIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_LEVEL_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmJlNTI5YWI2YjJlYTdjNTBkOTE5MmQ4OWY4OThmZDdkYThhOWU3NTBkMzc4Mjk1ZGY3MzIwNWU3YTdlZWFlMCJ9fX0=",
-                Lang.GUI_TOWN_LEVEL_ICON_DESC1.get());
-
         ItemStack SettingIcon = HeadUtils.makeSkull(Lang.GUI_TOWN_SETTINGS_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkMmNiMzg0NThkYTE3ZmI2Y2RhY2Y3ODcxNjE2MDJhMjQ5M2NiZjkzMjMzNjM2MjUzY2ZmMDdjZDg4YTljMCJ9fX0=",
                 Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get());
 
         GuiItem _regionIcon = ItemBuilder.from(regionIcon).asGuiItem(event -> {
             event.setCancelled(true);
-
             if(!playerStat.isRegionLeader())
                 return;
             if(event.getCursor() == null)
@@ -2540,7 +2536,6 @@ public class GuiManager2 implements IGUI {
             if(itemMaterial == Material.AIR){
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.get());
             }
-
             else {
                 playerRegion.setRegionIconType(itemMaterial);
                 OpenRegionMenu(player);
@@ -2710,7 +2705,6 @@ public class GuiManager2 implements IGUI {
         TownData playerTown = TownDataStorage.get(playerStat);
         RegionData playerRegion = playerTown.getRegion();
 
-
         ItemStack regionIcon = getRegionIcon(playerRegion);
 
         ItemStack deleteRegion = HeadUtils.createCustomItemStack(Material.BARRIER,
@@ -2730,6 +2724,12 @@ public class GuiManager2 implements IGUI {
                 Lang.GUI_REGION_CHANGE_DESCRIPTION.get(),
                 Lang.GUI_REGION_CHANGE_DESCRIPTION_DESC1.get(playerRegion.getDescription()),
                 Lang.GUI_REGION_CHANGE_DESCRIPTION_DESC2.get()
+        );
+
+        ItemStack changeName = HeadUtils.createCustomItemStack(
+                Material.NAME_TAG,
+                Lang.GUI_PROPERTY_CHANGE_NAME.get(),
+                Lang.GUI_PROPERTY_CHANGE_NAME_DESC1.get(playerRegion.getName())
         );
 
         GuiItem _regionIcon = ItemBuilder.from(regionIcon).asGuiItem(event -> event.setCancelled(true));
@@ -2752,6 +2752,22 @@ public class GuiManager2 implements IGUI {
                 return;
             }
             player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
+        });
+
+        GuiItem _changeName = ItemBuilder.from(changeName).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(!playerStat.isRegionLeader()){
+                player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
+                return;
+            }
+
+            player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+            player.closeInventory();
+
+            Map<MessageKey, String> data = new HashMap<>();
+            data.put(MessageKey.REGION_ID,playerRegion.getID());
+            PlayerChatListenerStorage.addPlayer(CHANGE_REGION_NAME,player,data);
         });
 
         GuiItem _changeDescription = ItemBuilder.from(changeDescription).asGuiItem(event -> {
@@ -2777,7 +2793,9 @@ public class GuiManager2 implements IGUI {
         gui.setItem(2,4, _deleteRegion);
         gui.setItem(2,5, _changeCapital);
         gui.setItem(2,6, _changeDescription);
-
+        gui.setItem(2,7, _changeName);
+        if(isDynmapAddonLoaded())
+            gui.setItem(2,8,_changeName);
 
 
         gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenRegionMenu(player)));
@@ -3132,17 +3150,6 @@ public class GuiManager2 implements IGUI {
 
 
 
-        gui.open(player);
-    }
-
-    private static void OpenPlayerForeignLandmark(Player player, Landmark landmark) {
-        TownData townData = TownDataStorage.get(landmark.getOwnerID());
-        Gui gui = IGUI.createChestGui("Landmark - " + townData.getName(), 3);
-
-        GuiItem landmarkIcon = ItemBuilder.from(landmark.getIcon()).asGuiItem(event -> event.setCancelled(true));
-        gui.setItem(1,5,landmarkIcon);
-
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,Player::closeInventory));
         gui.open(player);
     }
 
