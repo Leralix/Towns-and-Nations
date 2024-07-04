@@ -2732,6 +2732,14 @@ public class GuiManager2 implements IGUI {
                 Lang.GUI_PROPERTY_CHANGE_NAME_DESC1.get(playerRegion.getName())
         );
 
+        ItemStack changeColor = HeadUtils.createCustomItemStack(
+                Material.PURPLE_WOOL,
+                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR.get(),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(StringUtil.getHexColor(playerTown.getChunkColorInHex()) + playerTown.getChunkColorInHex()),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3.get()
+        );
+
         GuiItem _regionIcon = ItemBuilder.from(regionIcon).asGuiItem(event -> event.setCancelled(true));
 
         GuiItem _deleteRegion = ItemBuilder.from(deleteRegion).asGuiItem(event -> {
@@ -2754,22 +2762,6 @@ public class GuiManager2 implements IGUI {
             player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
         });
 
-        GuiItem _changeName = ItemBuilder.from(changeName).asGuiItem(event -> {
-            event.setCancelled(true);
-            if(!playerStat.isRegionLeader()){
-                player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
-                return;
-            }
-
-            player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
-            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
-            player.closeInventory();
-
-            Map<MessageKey, String> data = new HashMap<>();
-            data.put(MessageKey.REGION_ID,playerRegion.getID());
-            PlayerChatListenerStorage.addPlayer(CHANGE_REGION_NAME,player,data);
-        });
-
         GuiItem _changeDescription = ItemBuilder.from(changeDescription).asGuiItem(event -> {
             event.setCancelled(true);
             if(!playerStat.isRegionLeader()){
@@ -2786,16 +2778,44 @@ public class GuiManager2 implements IGUI {
             PlayerChatListenerStorage.addPlayer(CHANGE_REGION_DESCRIPTION,player,data);
         });
 
+        GuiItem _changeName = ItemBuilder.from(changeName).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(!playerStat.isRegionLeader()){
+                player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
+                return;
+            }
+
+            player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+            player.closeInventory();
+
+            Map<MessageKey, String> data = new HashMap<>();
+            data.put(REGION_ID,playerRegion.getID());
+            data.put(COST, String.valueOf(0));
+            PlayerChatListenerStorage.addPlayer(CHANGE_REGION_NAME,player,data);
+        });
+
+        GuiItem _changeChunkColor = ItemBuilder.from(changeColor).asGuiItem(event -> {
+            event.setCancelled(true);
+
+            player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT.get());
+            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+            player.closeInventory();
+
+            Map<MessageKey, String> data = new HashMap<>();
+            data.put(REGION_ID,playerRegion.getID());
+            PlayerChatListenerStorage.addPlayer(CHANGE_REGION_CHUNK_COLOR,player,data);
+        });
 
 
         gui.setItem(1,5, _regionIcon);
 
-        gui.setItem(2,4, _deleteRegion);
-        gui.setItem(2,5, _changeCapital);
+        gui.setItem(2,2, _deleteRegion);
+        gui.setItem(2,3, _changeCapital);
         gui.setItem(2,6, _changeDescription);
         gui.setItem(2,7, _changeName);
         if(isDynmapAddonLoaded())
-            gui.setItem(2,8,_changeName);
+            gui.setItem(2,8,_changeChunkColor);
 
 
         gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenRegionMenu(player)));

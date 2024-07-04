@@ -77,6 +77,9 @@ public class ChatListener implements Listener {
             case CHANGE_CHUNK_COLOR:
                 ChangeChunkColor(player, chatData, message);
                 break;
+            case CHANGE_REGION_CHUNK_COLOR:
+                ChangeChunkRegionColor(player, chatData, message);
+                break;
             case CREATE_REGION:
                 RegionDataStorage.createNewRegion(player, message);
                 break;
@@ -179,6 +182,21 @@ public class ChatListener implements Listener {
         }
         removePlayer(player);
         town.setChunkColor(hexColorToInt(newColorCode));
+        player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS.get());
+    }
+    private void ChangeChunkRegionColor(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newColorCode) {
+        removePlayer(player);
+
+        RegionData regionData = RegionDataStorage.get(chatData.getData().get(REGION_ID));
+        if(regionData == null)
+            return;
+
+        if(!StringUtil.isValidColorCode(newColorCode)){
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR.get());
+            return;
+        }
+        removePlayer(player);
+        regionData.setChunkColor(hexColorToInt(newColorCode));
         player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS.get());
     }
     private void ChangeRegionName(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newName) {
