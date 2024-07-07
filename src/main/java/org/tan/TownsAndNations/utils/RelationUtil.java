@@ -1,6 +1,6 @@
 package org.tan.TownsAndNations.utils;
 
-import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.enums.TownRelation;
 
 import static org.tan.TownsAndNations.TownsAndNations.isSQLEnabled;
@@ -17,9 +17,9 @@ public class RelationUtil {
      * @param newRelation   The relation to add
      */
     public static void addTownRelation(TownData town, TownData targetTown, TownRelation newRelation) {
-        town.addTownRelations(newRelation, targetTown);
+        town.addTownRelation(newRelation, targetTown);
         if(!isSQLEnabled())
-            targetTown.addTownRelations(newRelation, town);
+            targetTown.addTownRelation(newRelation, town);
 
         TeamUtils.updateAllScoreboardColor();
     }
@@ -31,8 +31,8 @@ public class RelationUtil {
      * @param oldRelation   The relation to remove
      */
     public static void removeTownRelation(TownData town, TownData targetTown, TownRelation oldRelation){
-        town.removeTownRelations(oldRelation, targetTown);
-        targetTown.removeTownRelations(oldRelation, town);
+        town.removeTownRelation(oldRelation, targetTown);
+        targetTown.removeTownRelation(oldRelation, town);
 
         TeamUtils.updateAllScoreboardColor();
     }

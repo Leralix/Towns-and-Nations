@@ -5,6 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.*;
+import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
+import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.DataStorage.LandmarkStorage;
@@ -75,7 +77,7 @@ public class DailyTasks {
                     regionData.getTaxHistory().add(town.getName(), townID, -1);
                     continue;
                 }
-                town.removeToBalance(regionData.getTaxRate());
+                town.removeFromBalance(regionData.getTaxRate());
                 regionData.addBalance(regionData.getTaxRate());
                 regionData.getTaxHistory().add(town.getName(), townID, regionData.getTaxRate());
 
@@ -115,7 +117,7 @@ public class DailyTasks {
             int numberClaimedChunk = town.getNumberOfClaimedChunk();
             int totalUpkeep = (int) ( numberClaimedChunk * upkeepCost/10);
 
-            town.removeToBalance(totalUpkeep);
+            town.removeFromBalance(totalUpkeep);
             town.getChunkHistory().add(numberClaimedChunk,totalUpkeep);
         }
     }
@@ -133,7 +135,7 @@ public class DailyTasks {
                     continue;
                 }
 
-                town.removeToBalance(costOfSalary);
+                town.removeFromBalance(costOfSalary);
                 for(String playerId : playerIdList){
                     PlayerData player = PlayerDataStorage.get(playerId);
                     player.addToBalance(rankSalary);

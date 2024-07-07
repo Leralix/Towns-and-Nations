@@ -10,10 +10,12 @@ import java.util.Map;
 
 public class ClaimedChunkSettings {
     private final Map<ChunkPermissionType, TownChunkPermission> permissions;
-    private final Map<String, UpgradeStatus> mobSpawnStorage = new HashMap<>();
+    private final Map<String, UpgradeStatus> mobSpawnStorage;
 
     public ClaimedChunkSettings(){
         this.permissions = new EnumMap<>(ChunkPermissionType.class);
+        this.mobSpawnStorage = new HashMap<>();
+
         for (ChunkPermissionType type : ChunkPermissionType.values()) {
             permissions.put(type, TownChunkPermission.TOWN);
         }
@@ -22,7 +24,7 @@ public class ClaimedChunkSettings {
         return this.permissions.get(type);
     }
     public void nextPermission(ChunkPermissionType type) {
-        this.permissions.put(type, this.permissions.get(type).getNext());
+        this.permissions.put(type, permissions.get(type).getNext());
     }
 
 

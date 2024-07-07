@@ -1,9 +1,8 @@
 package org.tan.TownsAndNations.commands.subcommands;
 
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.ClaimedChunkSettings;
 import org.tan.TownsAndNations.DataClass.PlayerData;
-import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.TownRolePermission;

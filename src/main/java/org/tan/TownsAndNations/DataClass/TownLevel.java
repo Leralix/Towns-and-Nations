@@ -19,8 +19,6 @@ public class TownLevel {
 
     //for json
     public TownLevel(){
-
-
         levelMap = new HashMap<>();
         levelMap.put("townLevel",1);
         loadIntoMap(levelMap);

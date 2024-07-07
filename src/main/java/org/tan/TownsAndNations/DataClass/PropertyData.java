@@ -6,6 +6,7 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.SoundEnum;
@@ -20,19 +21,15 @@ import java.util.UUID;
 
 public class PropertyData {
     private final String ID;
-
     private String owningPlayerID;
     private String rentingPlayerID;
-
     private List<String> allowedPlayers;
-
     private String name;
     private String description;
     private boolean isForSale;
     private int salePrice;
     private boolean isForRent;
     private int rentPrice;
-
     private final Vector3D p1;
     private final Vector3D p2;
     private Vector3D signLocation;

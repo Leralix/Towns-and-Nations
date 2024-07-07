@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.tan.TownsAndNations.DataClass.Landmark;
 import org.tan.TownsAndNations.DataClass.PropertyData;
-import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.DataStorage.LandmarkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;

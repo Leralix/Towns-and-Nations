@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.Location;
 import org.tan.TownsAndNations.DataClass.Landmark;
-import org.tan.TownsAndNations.DataClass.RegionData;
 import org.tan.TownsAndNations.DataClass.Vector3D;
 import org.tan.TownsAndNations.TownsAndNations;
 

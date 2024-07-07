@@ -11,6 +11,8 @@ import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.newChunkData.LandmarkClaimedChunk;
+import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
+import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChatCategory;
 import org.tan.TownsAndNations.enums.MessageKey;

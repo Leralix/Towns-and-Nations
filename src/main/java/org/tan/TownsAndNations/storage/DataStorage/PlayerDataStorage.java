@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 

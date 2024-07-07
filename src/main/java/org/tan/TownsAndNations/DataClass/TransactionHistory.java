@@ -38,7 +38,6 @@ public class TransactionHistory {
     }
 
     public String getTransactionLine() {
-        ChatColor color;
         String strAmount;
         if(amount > 0)
             strAmount = ChatColor.GREEN + "+" + amount;

@@ -7,8 +7,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.tan.TownsAndNations.DataClass.PropertyData;
-import org.tan.TownsAndNations.DataClass.RegionData;
-import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
+import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.DataClass.TownRank;
 import org.tan.TownsAndNations.GUI.GuiManager2;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -217,8 +217,7 @@ public class ChatListener implements Listener {
 
         removePlayer(player);
         FileUtil.addLineToHistory(Lang.HISTORY_REGION_NAME_CHANGED.get(player.getName(),regionData.getName(),newName));
-        regionData.renameRegion(regionCost, newName);
-        player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
+        regionData.rename(player, regionCost, newName);
     }
     private void ChangeTownName(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newName) {
 
@@ -232,12 +231,7 @@ public class ChatListener implements Listener {
             return;
         }
 
-        if(town.getBalance() <= townCost){
-            player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
-            return;
-        }
-
-        town.renameTown(player, townCost, newName);
+        town.rename(player, townCost, newName);
         removePlayer(player);
     }
     private void ChangeTownDescription(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newDesc) {

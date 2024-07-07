@@ -2,8 +2,8 @@ package org.tan.TownsAndNations.commands.AdminSubcommands;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.RegionData;
-import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
+import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.newChunkData.RegionClaimedChunk;
 import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;

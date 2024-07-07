@@ -7,8 +7,8 @@ import com.google.gson.internal.bind.DateTypeAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
-import org.tan.TownsAndNations.DataClass.RegionData;
-import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
+import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
@@ -67,7 +67,7 @@ public class RegionDataStorage {
         RegionData newRegion = new RegionData(regionID, regionName, playerID);
         regionStorage.put(regionID, newRegion);
         town.setRegion(newRegion);
-        town.removeToBalance(cost);
+        town.removeFromBalance(cost);
         FileUtil.addLineToHistory(Lang.HISTORY_REGION_CREATED.get(player.getName(),regionName));
     }
     public static RegionData get(Player player){

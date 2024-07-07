@@ -10,8 +10,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.tan.TownsAndNations.DataClass.PlayerData;
-import org.tan.TownsAndNations.DataClass.RegionData;
-import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
+import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
@@ -200,7 +200,7 @@ public class HeadUtils {
      *
      */
     public static @NotNull ItemStack getTownIcon(final @NotNull TownData townData){
-        ItemStack itemStack = townData.getTownIconItemStack();
+        ItemStack itemStack = townData.getIconItem();
 
         ItemMeta meta = itemStack.getItemMeta();
         if(meta != null){
@@ -280,11 +280,11 @@ public class HeadUtils {
      * @return              The ItemStack displaying the town
      */
     public static ItemStack getRegionIcon(RegionData regionData){
-        ItemStack icon = regionData.getIconItemStack();
+        ItemStack icon = regionData.getIconItem();
 
         ItemMeta meta = icon.getItemMeta();
         if(meta != null){
-            meta.setDisplayName(ChatColor.GREEN + regionData.getName());
+            meta.setDisplayName(ChatColor.AQUA + regionData.getName());
 
             List<String> lore = new ArrayList<>();
             lore.add(Lang.GUI_REGION_INFO_DESC0.get(regionData.getDescription()));

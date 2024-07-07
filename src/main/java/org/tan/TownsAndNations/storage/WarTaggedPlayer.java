@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.PlayerData;
-import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
@@ -27,7 +27,7 @@ public class WarTaggedPlayer {
      * @param attackedTownID    The town ID of the town that is being attacked.
      * @param players           The set of player UUIDs that are in war with the town.
      */
-    public static void addPlayersToTown(String attackedTownID, HashSet<String> players){
+    public static void addPlayersToTown(String attackedTownID, Collection<String> players){
         if(!warTagged.containsKey(attackedTownID)){
             warTagged.put(attackedTownID,new ArrayList<>());
         }

@@ -1,13 +1,9 @@
 package org.tan.TownsAndNations.commands.subcommands;
 
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.ChunkType;
-import org.tan.TownsAndNations.enums.TownRelation;
-import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
-import org.tan.TownsAndNations.storage.Invitation.TownRelationConfirmStorage;
 import org.tan.TownsAndNations.storage.PlayerAutoClaimStorage;
 
 import java.util.ArrayList;

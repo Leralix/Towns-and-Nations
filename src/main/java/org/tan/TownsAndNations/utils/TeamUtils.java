@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;

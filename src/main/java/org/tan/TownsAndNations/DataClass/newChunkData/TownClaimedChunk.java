@@ -8,7 +8,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.PropertyData;
-import org.tan.TownsAndNations.DataClass.TownData;
+import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
@@ -77,7 +77,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
         TownChunkPermission townPermission = chunkTown.getPermission(permissionType);
 
         //Same alliance + alliance accepted permission
-        if(townPermission == ALLIANCE && chunkTown.getTownRelationWithCurrent(TownRelation.ALLIANCE,playerTown.getID()))
+        if(townPermission == ALLIANCE &&  chunkTown.getRelationWith(playerTown) == TownRelation.ALLIANCE)
             return true;
 
         //permission is on foreign
