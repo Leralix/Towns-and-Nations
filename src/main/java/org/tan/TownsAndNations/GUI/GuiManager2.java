@@ -2751,6 +2751,7 @@ public class GuiManager2 implements IGUI {
             event.setCancelled(true);
             if(!playerStat.isRegionLeader()){
                 player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
+                return;
             }
             RegionDataStorage.deleteRegion(player, playerRegion);
             SoundUtil.playSound(player, BAD);
