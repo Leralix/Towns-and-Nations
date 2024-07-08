@@ -7,6 +7,7 @@ public enum TownRelation {
 
     NEUTRAL(Lang.RELATION_NEUTRAL_NAME.get(), ChatColor.WHITE, Boolean.FALSE, Boolean.FALSE),
     CITY(Lang.RELATION_CITY_NAME.get(), ChatColor.GREEN, Boolean.FALSE, Boolean.FALSE),
+    REGION(Lang.RELATION_REGION_NAME.get(), ChatColor.AQUA, Boolean.FALSE , Boolean.FALSE),
     ALLIANCE(Lang.RELATION_ALLIANCE_NAME.get(), ChatColor.BLUE, Boolean.TRUE, Boolean.FALSE),
     NON_AGGRESSION(Lang.RELATION_NON_AGGRESSION_NAME.get(), ChatColor.DARK_AQUA, Boolean.TRUE, Boolean.FALSE),
     EMBARGO(Lang.RELATION_EMBARGO_NAME.get(), ChatColor.GOLD, Boolean.FALSE, Boolean.TRUE),

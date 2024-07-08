@@ -48,9 +48,11 @@ public class TeamUtils {
         player.setScoreboard(board);
 
         for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
+
             if(PlayerDataStorage.get(otherPlayer).getTownId() != null){
                 addPlayerToCorrectTeam(otherPlayer, player);
-                addPlayerToCorrectTeam(player, otherPlayer);
+                if(!otherPlayer.getUniqueId().equals(player.getUniqueId())) //If player is not himself, no need to do it twice
+                    addPlayerToCorrectTeam(player, otherPlayer);
             }
         }
     }
@@ -66,37 +68,44 @@ public class TeamUtils {
         if(!PlayerDataStorage.get(toAdd).haveTown() || !PlayerDataStorage.get(player).haveTown())
             return;
 
-        for (TownRelation relation : TownRelation.values()) {
-            if (haveRelation(player, toAdd, relation)) {
-                Team playerTeam = scoreboard.getTeam(relation.getName().toLowerCase());
-                if(playerTeam == null){ //Player did not have a town when he logged in. No team was created for him.
-                    TeamUtils.setIndividualScoreBoard(player);
-                    playerTeam = scoreboard.getTeam(relation.getName().toLowerCase());
-                }
-                playerTeam.addEntry(toAdd.getName());
-            }
+
+        TownRelation relation = getRelation(player, toAdd);
+        if(relation == null)
+            return;
+
+        Team playerTeam = scoreboard.getTeam(relation.getName().toLowerCase());
+        if(playerTeam == null){ //Player did not have a town when he logged in. No team was created for him.
+            TeamUtils.setIndividualScoreBoard(player);
+            playerTeam = scoreboard.getTeam(relation.getName().toLowerCase());
         }
+        playerTeam.addEntry(toAdd.getName());
+
+        System.out.println("Final relation for " + player.getName() + " - " + toAdd.getName() + " : " + relation);
+
     }
 
     /**
      * Check if two players have a specific relation
      * @param player            The player to check the relation of. Player must have a town
      * @param otherPlayer       The other player to check the relation with. Player must have a town
-     * @param TargetedRelation  The relation to check
      * @return                  True if the players have the specific relation, false otherwise
      */
-    private static boolean haveRelation(Player player, Player otherPlayer, TownRelation TargetedRelation){
+    private static TownRelation getRelation(Player player, Player otherPlayer){
 
         TownData playerTown = TownDataStorage.get(player);
         TownData otherPlayerTown = TownDataStorage.get(otherPlayer);
 
-        TownRelation CurrentRelation = playerTown.getRelationWith(otherPlayerTown);
 
-        if(CurrentRelation == null){
-            return false;
+
+        TownRelation currentRelation = playerTown.getRelationWith(otherPlayerTown);
+
+
+        //If no relation, check if maybe they are from the same region
+        if(currentRelation == null && playerTown.haveRegion() && otherPlayerTown.haveRegion()){
+            currentRelation = playerTown.getRegion().getRelationWith(otherPlayerTown.getRegion());
         }
 
-        return CurrentRelation == TargetedRelation;
+        return currentRelation;
     }
 
 }

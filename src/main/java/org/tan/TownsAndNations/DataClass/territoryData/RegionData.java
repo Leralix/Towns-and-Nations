@@ -10,10 +10,12 @@ import org.tan.TownsAndNations.DataClass.History.DonationHistory;
 import org.tan.TownsAndNations.DataClass.History.MiscellaneousHistory;
 import org.tan.TownsAndNations.DataClass.History.TaxHistory;
 import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.TownRelations;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.newChunkData.RegionClaimedChunk;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.SoundEnum;
+import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
@@ -25,7 +27,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-public class RegionData implements ITerritoryData {
+public class RegionData implements ITerritoryData, IRelation {
 
     private final String id;
     private String name;
@@ -43,6 +45,7 @@ public class RegionData implements ITerritoryData {
     private DonationHistory donationHistory;
     private MiscellaneousHistory miscellaneousHistory;
     private TaxHistory taxHistory;
+    private TownRelations relations;
 
 
     public RegionData(String id, String name, String ownerID) {
@@ -362,4 +365,44 @@ public class RegionData implements ITerritoryData {
     }
 
 
+    @Override
+    public TownRelations getRelations() {
+        if(relations == null)
+            relations = new TownRelations();
+        return relations;
+    }
+
+    @Override
+    public void addTownRelation(TownRelation relation, ITerritoryData territoryData) {
+        addTownRelation(relation, territoryData.getID());
+    }
+
+    @Override
+    public void addTownRelation(TownRelation relation, String territoryID) {
+        relations.addRelation(relation, territoryID);
+    }
+
+    @Override
+    public void removeTownRelation(TownRelation relation, ITerritoryData territoryData) {
+        removeTownRelation(relation, territoryData.getID());
+    }
+
+    @Override
+    public void removeTownRelation(TownRelation relation, String territoryID) {
+        relations.removeRelation(relation, territoryID);
+    }
+
+    @Override
+    public TownRelation getRelationWith(IRelation relation) {
+        return getRelationWith(relation.getID());
+    }
+
+    @Override
+    public TownRelation getRelationWith(String otherTownID) {
+
+        if(getID().equals(otherTownID))
+            return TownRelation.REGION;
+
+        return null;
+    }
 }

@@ -3026,7 +3026,7 @@ public class GuiManager2 implements IGUI {
 
                     regionData.broadcastMessageWithSound(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST.get(iteratePlayerData.getName()),GOOD);
 
-                    if(!regionData.getCapital().getID().equals(playerData.getTown().getID())){
+                    if(!regionData.getCapital().getID().equals(iteratePlayerData.getTown().getID())){
                         regionData.broadcastMessage(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST.get(iteratePlayerData.getTown().getName()));
                         regionData.setCapital(iteratePlayerData.getTownId());
                     }

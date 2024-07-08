@@ -317,9 +317,10 @@ public class TownData implements ITerritoryData, IRelation, IClaims, IMoney, IBr
     }
 
     @Override
-    public TownRelation getRelationWith(TownData otherPlayerTown) {
+    public TownRelation getRelationWith(IRelation otherPlayerTown) {
         return getRelationWith(otherPlayerTown.getID());
     }
+
     @Override
     public TownRelation getRelationWith(String otherTownID) {
         String townID = getID();

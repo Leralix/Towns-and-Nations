@@ -11,10 +11,8 @@ import java.util.Collection;
 public interface ITerritoryData {
 
     String getID();
-
     String getName();
     void rename(Player player, int cost, String name);
-
     String getLeaderID();
     PlayerData getLeaderData();
     void setLeaderID(String leaderID);
