@@ -1,8 +1,7 @@
 package org.tan.TownsAndNations.storage.DataStorage;
 
 import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import com.google.gson.internal.bind.DateTypeAdapter;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.*;
@@ -37,14 +36,9 @@ public class TownDataStorage {
 
         TownData newTown = new TownData(townId, townName, playerID);
 
-        if(isSQLEnabled()){
-            createChunkPermissions(townId);
-            addPlayerToTownDatabase(townId, playerID);
-        }
-        else{
-            townDataMap.put(townId,newTown);
-            saveStats();
-        }
+
+        townDataMap.put(townId,newTown);
+        saveStats();
         return newTown;
     }
 
@@ -58,50 +52,6 @@ public class TownDataStorage {
         saveStats();
         return newTown;
     }
-
-    public static void addPlayerToTownDatabase(String townId, String playerUUID) {
-        String sql = "INSERT INTO tan_player_current_town (town_key, player_id) VALUES (?, ?)";
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, townId);
-            ps.setString(2, playerUUID);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static HashSet<String> getPlayersInTown(String townId) {
-        HashSet<String> playerIds = new HashSet<>();
-        String sql = "SELECT player_id FROM tan_player_current_town WHERE town_key = ?";
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, townId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    String playerId = rs.getString("player_id");
-                    playerIds.add(playerId);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return playerIds;
-    }
-
-    public static void removePlayerFromTownDatabase(String playerUUID) {
-        String sql = "DELETE FROM tan_player_current_town WHERE  player_id = ?";
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, playerUUID);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
 
 
     public static void removeTown(String TownId) {
@@ -149,53 +99,43 @@ public class TownDataStorage {
 
 
     public static int getNumberOfTown() {
-        if (isSQLEnabled()) {
-            return getNumberOfTownFromDatabase();
-        } else {
-            return townDataMap.size();
-        }
+        return townDataMap.size();
     }
 
-    private static int getNumberOfTownFromDatabase() {
-        String sql = "SELECT COUNT(*) FROM tan_town_data";
-
-        try (PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return 0;
-    }
     public static void loadStats() {
+
+        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Towns.json");
+        if (!file.exists())
+            return;
+
+        Reader reader;
+        try {
+            reader = new FileReader(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
+                .registerTypeAdapter(Map.class, (JsonDeserializer<Map<String, Object>>) (json1, typeOfT, context) -> new Gson().fromJson(json1, typeOfT))
                 .create();
 
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Towns.json");
-        if (file.exists()){
-            Reader reader;
-            try {
-                reader = new FileReader(file);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            Type type = new TypeToken<LinkedHashMap<String, TownData>>() {}.getType();
-            townDataMap = gson.fromJson(reader, type);
+        Type type = new TypeToken<LinkedHashMap<String, TownData>>() {}.getType();
 
-            int ID = 0;
-            for (Map.Entry<String, TownData> entry : townDataMap.entrySet()) {
-                String cle = entry.getKey();
-                int newID =  Integer.parseInt(cle.substring(1));
-                if(newID > ID)
-                    ID = newID;
-            }
-            newTownId = ID+1;
+        townDataMap = gson.fromJson(reader, type);
+
+
+
+
+        int ID = 0;
+        for (Map.Entry<String, TownData> entry : townDataMap.entrySet()) {
+            String cle = entry.getKey();
+            int newID =  Integer.parseInt(cle.substring(1));
+            if(newID > ID)
+                ID = newID;
         }
+        newTownId = ID+1;
+
     }
 
     public static void saveStats() {

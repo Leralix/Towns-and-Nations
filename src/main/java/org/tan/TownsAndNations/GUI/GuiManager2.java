@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.DataClass.*;
+import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.Lang.DynamicLang;
@@ -734,7 +735,7 @@ public class GuiManager2 implements IGUI {
         });
         GuiItem _relationIcon = ItemBuilder.from(RelationIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownRelations(player);
+            OpenRelations(player, playerTown, p -> dispatchPlayerTown(player));
         });
         GuiItem _levelIcon = ItemBuilder.from(LevelIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -2016,7 +2017,7 @@ public class GuiManager2 implements IGUI {
         gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenTownSettings(player)));
         gui.open(player);
     }
-    public static void OpenTownRelations(Player player) {
+    public static void OpenRelations(Player player, ITerritoryData territory, Consumer<Player> exitMenu) {
 
         Gui gui = IGUI.createChestGui("Town",3);
 
@@ -2036,21 +2037,21 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _warCategory = ItemBuilder.from(warCategory).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownRelation(player,TownRelation.WAR,0);
+            openSingleRelation(player,territory, TownRelation.WAR,0, exitMenu);
         });
         GuiItem _EmbargoCategory = ItemBuilder.from(EmbargoCategory).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownRelation(player,TownRelation.EMBARGO,0);
+            openSingleRelation(player,territory, TownRelation.EMBARGO,0, exitMenu);
 
         });
         GuiItem _NAPCategory = ItemBuilder.from(NAPCategory).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownRelation(player,TownRelation.NON_AGGRESSION,0);
+            openSingleRelation(player,territory, TownRelation.NON_AGGRESSION,0, exitMenu);
 
         });
         GuiItem _AllianceCategory = ItemBuilder.from(AllianceCategory).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownRelation(player,TownRelation.ALLIANCE,0);
+            openSingleRelation(player,territory, TownRelation.ALLIANCE,0, exitMenu);
         });
 
         GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
@@ -2070,7 +2071,7 @@ public class GuiManager2 implements IGUI {
         gui.setItem(14, _NAPCategory);
         gui.setItem(16, _AllianceCategory);
 
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> dispatchPlayerTown(player)));
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,exitMenu));
 
         gui.setItem(19, _decorativeGlass);
         gui.setItem(20, _decorativeGlass);
@@ -2083,14 +2084,13 @@ public class GuiManager2 implements IGUI {
 
         gui.open(player);
     }
-    public static void OpenTownRelation(Player player, TownRelation relation, int page) {
-        Gui gui = IGUI.createChestGui("Town relation | page " + (page + 1), 6);
+    public static void openSingleRelation(Player player, ITerritoryData territoryRelation, TownRelation relation, int page, Consumer<Player> doubleExit) {
+        Gui gui = IGUI.createChestGui("Relation | page " + (page + 1), 6);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
-        TownData playerTown = TownDataStorage.get(playerStat);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for(String otherTownID : playerTown.getTownWithRelation(relation)){
+        for(String otherTownID : territoryRelation.getRelations().getOne(relation)){
 
             ItemStack townIcon = getTownIconWithInformations(otherTownID);
 
@@ -2110,8 +2110,8 @@ public class GuiManager2 implements IGUI {
 
                 if (relation == TownRelation.WAR) {
                     player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.get(TownDataStorage.get(otherTownID).getName()));
-                    WarTaggedPlayer.addPlayersToTown(otherTownID, playerTown.getPlayerList());
-                    TownDataStorage.get(otherTownID).broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(playerTown.getName()),
+                    WarTaggedPlayer.addPlayersToTown(otherTownID, territoryRelation.getPlayerList());
+                    TownDataStorage.get(otherTownID).broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(territoryRelation.getName()),
                             WAR);
                 }
             });
@@ -2133,7 +2133,7 @@ public class GuiManager2 implements IGUI {
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
-            OpenTownRelationModification(player,Action.ADD,relation, 0);
+            OpenTownRelationModification(player,territoryRelation,Action.ADD,relation, 0, doubleExit);
         });
         GuiItem _remove = ItemBuilder.from(removeTownButton).asGuiItem(event -> {
             event.setCancelled(true);
@@ -2141,12 +2141,12 @@ public class GuiManager2 implements IGUI {
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
-            OpenTownRelationModification(player,Action.REMOVE,relation, 0);
+            OpenTownRelationModification(player,territoryRelation, Action.REMOVE,relation, 0, doubleExit);
         });
 
-        createIterator(gui, guiItems, page, player, p -> OpenTownRelations(player),
-                p -> OpenTownRelation(player, relation, page - 1),
-                p -> OpenTownRelation(player,relation,page - 1));
+        createIterator(gui, guiItems, page, player, p -> OpenRelations(player, territoryRelation, doubleExit),
+                p -> openSingleRelation(player, territoryRelation, relation, page - 1, doubleExit),
+                p -> openSingleRelation(player, territoryRelation, relation,page - 1, doubleExit));
 
         gui.setItem(6,4, _add);
         gui.setItem(6,5, _remove);
@@ -2154,15 +2154,12 @@ public class GuiManager2 implements IGUI {
 
         gui.open(player);
     }
-    public static void OpenTownRelationModification(Player player, Action action, TownRelation relation, int page) {
+    public static void OpenTownRelationModification(Player player,ITerritoryData territory, Action action, TownRelation relation, int page, Consumer<Player> exit) {
         int nRows = 6;
         Gui gui = IGUI.createChestGui("Town - Relation",nRows);
 
-        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
-        TownData playerTown = TownDataStorage.get(playerStat);
-
         LinkedHashMap<String, TownData> allTown = getTownMap();
-        ArrayList<String> TownListUUID = playerTown.getTownWithRelation(relation);
+        ArrayList<String> relationListID = territory.getRelations().getOne(relation);
 
 
         ItemStack decorativeGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
@@ -2171,12 +2168,12 @@ public class GuiManager2 implements IGUI {
 
         if(action == Action.ADD){
             List<String> townNoRelation = new ArrayList<>(allTown.keySet());
-            townNoRelation.removeAll(TownListUUID);
-            townNoRelation.remove(playerTown.getID());
+            townNoRelation.removeAll(relationListID);
+            townNoRelation.remove(territory.getID());
 
             for(String otherTownUUID : townNoRelation){
-                TownData otherTown = TownDataStorage.get(otherTownUUID);
-                ItemStack townIcon = getTownIconWithInformations(otherTownUUID, playerTown.getID());
+                ITerritoryData otherTown = TownDataStorage.get(otherTownUUID);
+                ItemStack townIcon = getTownIconWithInformations(otherTownUUID, territory.getID());
 
                 GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                     event.setCancelled(true);
@@ -2186,7 +2183,7 @@ public class GuiManager2 implements IGUI {
                         return;
                     }
 
-                    if(playerTown.getRelationWith(otherTown) != null){
+                    if(territory.getRelations().getRelationWith(otherTown) != null){
                         player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION.get());
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
@@ -2202,22 +2199,22 @@ public class GuiManager2 implements IGUI {
                         Player otherTownLeaderOnline = otherTownLeader.getPlayer();
                         if(otherTownLeaderOnline == null)
                             return;
-                        TownRelationConfirmStorage.addInvitation(otherTown.getLeaderID(), playerTown.getID(), relation);
+                        TownRelationConfirmStorage.addInvitation(otherTown.getLeaderID(), territory.getID(), relation);
 
-                        otherTownLeaderOnline.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(playerTown.getName(),relation.getColor() + relation.getName()));
-                        ChatUtils.sendClickableCommand(otherTownLeaderOnline,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + playerTown.getID());
+                        otherTownLeaderOnline.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(territory.getName(),relation.getColor() + relation.getName()));
+                        ChatUtils.sendClickableCommand(otherTownLeaderOnline,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + territory.getID());
 
                         player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS.get(otherTownLeaderOnline.getName()));
 
                         player.closeInventory();
                     }
                     else{ //Can only be bad relations
-                        playerTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getName(),relation.getColoredName()),
+                        territory.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getName(),relation.getColoredName()),
                                 BAD);
-                        otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(playerTown.getName(),relation.getColoredName()),
+                        otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(territory.getName(),relation.getColoredName()),
                                 BAD);
-                        RelationUtil.addTownRelation(playerTown,otherTown,relation);
-                        OpenTownRelation(player,relation,0);
+                        RelationUtil.addTownRelation(territory,otherTown,relation);
+                        openSingleRelation(player,territory, relation,0,exit);
                     }
                 });
                 guiItems.add(_town);
@@ -2225,7 +2222,7 @@ public class GuiManager2 implements IGUI {
             decorativeGlass = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
         }
         else if(action == Action.REMOVE){
-            for(String otherTownUUID : TownListUUID){
+            for(String otherTownUUID : relationListID){
                 TownData otherTown = TownDataStorage.get(otherTownUUID);
                 ItemStack townIcon = getTownIconWithInformations(otherTownUUID);
                 GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
@@ -2244,20 +2241,20 @@ public class GuiManager2 implements IGUI {
 
                         player.sendMessage(getTANString() + "Sent to the leader of the other town");
 
-                        TownRelationConfirmStorage.addInvitation(otherTown.getLeaderID(), playerTown.getID(), null);
+                        TownRelationConfirmStorage.addInvitation(otherTown.getLeaderID(), territory.getID(), null);
 
-                        otherTownLeaderOnline.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(playerTown.getName(),"neutral"));
-                        ChatUtils.sendClickableCommand(otherTownLeaderOnline,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + playerTown.getID());
+                        otherTownLeaderOnline.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(territory.getName(),"neutral"));
+                        ChatUtils.sendClickableCommand(otherTownLeaderOnline,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + territory.getID());
                         player.closeInventory();
                     }
                     else{
-                        playerTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getName(),"neutral"),
+                        territory.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getName(),"neutral"),
                                 BAD);
-                        otherTown.broadCastMessageWithSound(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(playerTown.getName(),"neutral"),
+                        otherTown.broadCastMessageWithSound(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(territory.getName(),"neutral"),
                                 BAD);
-                        RelationUtil.removeTownRelation(playerTown,otherTown, relation);
+                        RelationUtil.removeTownRelation(territory,otherTown, relation);
                     }
-                    OpenTownRelation(player,relation,0);
+                    openSingleRelation(player,territory,relation,0, exit);
                 });
                 guiItems.add(_town);
             }
@@ -2265,9 +2262,9 @@ public class GuiManager2 implements IGUI {
         }
 
 
-        createIterator(gui, guiItems, 0, player, p -> OpenTownRelation(player,relation,1),
-                p -> OpenTownRelation(player,relation,page - 1),
-                p -> OpenTownRelation(player,relation,page + 1),
+        createIterator(gui, guiItems, 0, player, p -> openSingleRelation(player, territory, relation,0, exit),
+                p -> openSingleRelation(player, territory, relation,page - 1, exit),
+                p -> openSingleRelation(player, territory, relation,page + 1, exit),
                 decorativeGlass);
 
 
@@ -2560,7 +2557,11 @@ public class GuiManager2 implements IGUI {
             event.setCancelled(true);
             OpenRegionList(player,true);
         });
-        GuiItem _relationIcon = ItemBuilder.from(RelationIcon).asGuiItem(event -> event.setCancelled(true));
+        GuiItem _relationIcon = ItemBuilder.from(RelationIcon).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenRelations(player, playerRegion, p -> OpenRegionMenu(player));
+
+        });
 
         GuiItem _settingsIcon = ItemBuilder.from(SettingIcon).asGuiItem(event -> {
             event.setCancelled(true);

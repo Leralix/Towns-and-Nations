@@ -28,7 +28,7 @@ import static org.tan.TownsAndNations.enums.TownRolePermission.KICK_PLAYER;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.HeadUtils.getPlayerHead;
 
-public class TownData implements ITerritoryData, IRelation, IClaims, IMoney, IBroadcast, IChunkColor {
+public class TownData implements ITerritoryData, IClaims, IMoney, IBroadcast, IChunkColor {
 
     private final String TownId;
     private String TownName;
@@ -290,22 +290,22 @@ public class TownData implements ITerritoryData, IRelation, IClaims, IMoney, IBr
     }
 
     @Override
-    public void addTownRelation(TownRelation relation, ITerritoryData territoryData){
-        addTownRelation(relation,territoryData.getID());
+    public void addRelation(TownRelation relation, ITerritoryData territoryData){
+        addRelation(relation,territoryData.getID());
     }
 
     @Override
-    public void addTownRelation(TownRelation relation, String territoryID){
+    public void addRelation(TownRelation relation, String territoryID){
         this.relations.addRelation(relation,territoryID);
     }
 
     @Override
-    public void removeTownRelation(TownRelation relation, ITerritoryData townData) {
-        removeTownRelation(relation,townData.getID());
+    public void removeRelation(TownRelation relation, ITerritoryData townData) {
+        removeRelation(relation,townData.getID());
     }
 
     @Override
-    public void removeTownRelation(TownRelation relation, String townId) {
+    public void removeRelation(TownRelation relation, String townId) {
         this.relations.removeRelation(relation,townId);
     }
 
@@ -317,7 +317,7 @@ public class TownData implements ITerritoryData, IRelation, IClaims, IMoney, IBr
     }
 
     @Override
-    public TownRelation getRelationWith(IRelation otherPlayerTown) {
+    public TownRelation getRelationWith(ITerritoryData otherPlayerTown) {
         return getRelationWith(otherPlayerTown.getID());
     }
 

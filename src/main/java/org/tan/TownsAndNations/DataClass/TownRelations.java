@@ -1,5 +1,6 @@
 package org.tan.TownsAndNations.DataClass;
 
+import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
@@ -41,6 +42,9 @@ public class TownRelations {
             }
         }
         return null;
+    }
+    public TownRelation getRelationWith(ITerritoryData relation) {
+        return getRelationWith(relation.getID());
     }
     public void removeAllRelationWith(String townID){
         for(TownRelation relation : TownRelation.values()){

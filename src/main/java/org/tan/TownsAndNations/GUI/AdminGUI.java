@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.newChunkData.LandmarkClaimedChunk;
@@ -27,6 +28,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.tan.TownsAndNations.enums.ChatCategory.*;
+import static org.tan.TownsAndNations.enums.SoundEnum.GOOD;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.TownUtil.deleteTown;
 
@@ -157,7 +159,7 @@ public class AdminGUI implements IGUI{
     }
 
     private static void OpenSpecificRegionMenu(Player player, RegionData regionData) {
-        Gui gui = IGUI.createChestGui("Town - Admin",3);
+        Gui gui = IGUI.createChestGui("Region - Admin",3);
 
 
         ItemStack changeRegionName = HeadUtils.createCustomItemStack(Material.NAME_TAG,
@@ -166,6 +168,9 @@ public class AdminGUI implements IGUI{
         ItemStack changeRegionDescription = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK,
                 Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION.get(),
                 Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION_DESC1.get(regionData.getDescription()));
+        ItemStack changeTownLeader = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,
+                Lang.ADMIN_GUI_CHANGE_REGION_LEADER.get(),
+                Lang.ADMIN_GUI_CHANGE_REGION_LEADER_DESC1.get(regionData.getLeaderData().getName(),regionData.getCapital().getName()));
         ItemStack deleteRegion = HeadUtils.createCustomItemStack(Material.BARRIER,
                 Lang.ADMIN_GUI_DELETE_TOWN.get(),
                 Lang.ADMIN_GUI_DELETE_TOWN_DESC1.get(regionData.getName()));
@@ -194,6 +199,13 @@ public class AdminGUI implements IGUI{
             event.setCancelled(true);
         });
 
+        GuiItem _changeTownLeader = ItemBuilder.from(changeTownLeader).asGuiItem(event -> {
+
+            event.setCancelled(true);
+            OpenRegionDebugChangeOwnershipPlayerSelect(player, regionData,0);
+
+        });
+
         GuiItem _deleteRegion = ItemBuilder.from(deleteRegion).asGuiItem(event -> {
             event.setCancelled(true);
             RegionDataStorage.deleteRegion(player, regionData);
@@ -204,10 +216,48 @@ public class AdminGUI implements IGUI{
 
         gui.setItem(2,2, _changeRegionName);
         gui.setItem(2,4, _changeRegionDescription);
+        gui.setItem(2,6, _changeTownLeader);
         gui.setItem(2,8, _deleteRegion);
 
         gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenRegionDebugMenu(player, 0)));
         gui.open(player);
+    }
+
+    private static void OpenRegionDebugChangeOwnershipPlayerSelect(Player player, RegionData regionData, int page) {
+        Gui gui = IGUI.createChestGui("Region", 6);
+        PlayerData playerData = PlayerDataStorage.get(player);
+
+        ArrayList<GuiItem> guiItems = new ArrayList<>();
+        for(String playerID : regionData.getPlayerList()){
+
+            PlayerData iteratePlayerData = PlayerDataStorage.get(playerID);
+            ItemStack switchPlayerIcon = HeadUtils.getPlayerHead(Bukkit.getOfflinePlayer(UUID.fromString(playerID)));
+
+            GuiItem _switchPlayer = ItemBuilder.from(switchPlayerIcon).asGuiItem(event -> {
+                event.setCancelled(true);
+                FileUtil.addLineToHistory(Lang.HISTORY_REGION_CAPITAL_CHANGED.get(player.getName(), regionData.getCapital().getName(), playerData.getTown().getName() ));
+                regionData.setLeaderID(iteratePlayerData.getID());
+
+                regionData.broadcastMessageWithSound(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST.get(iteratePlayerData.getName()),GOOD);
+
+                if(!regionData.getCapital().getID().equals(iteratePlayerData.getTown().getID())){
+                    regionData.broadcastMessage(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST.get(iteratePlayerData.getTown().getName()));
+                    regionData.setCapital(iteratePlayerData.getTownId());
+                }
+                OpenSpecificRegionMenu(player, regionData);
+            });
+            guiItems.add(_switchPlayer);
+
+        }
+
+        GuiUtil.createIterator(gui,guiItems,page, player,
+                p -> OpenSpecificRegionMenu(player, regionData),
+                p -> OpenRegionDebugChangeOwnershipPlayerSelect(player, regionData,page + 1),
+                p -> OpenRegionDebugChangeOwnershipPlayerSelect(player, regionData,page - 1));
+
+
+        gui.open(player);
+
     }
 
     public static void OpenTownMenuDebug(Player player, int page){
@@ -255,7 +305,7 @@ public class AdminGUI implements IGUI{
 
     }
 
-    public static void OpenSpecificTownMenu(Player player, TownData townData) {
+    public static void OpenSpecificTownMenu(Player player, @NotNull TownData townData) {
 
 
         Gui gui = IGUI.createChestGui("Town - Admin",3);

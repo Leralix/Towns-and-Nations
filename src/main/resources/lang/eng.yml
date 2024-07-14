@@ -516,6 +516,8 @@ language:
   ADMIN_GUI_CHANGE_TOWN_NAME_DESC2: "§fLeft click to change the name"
   ADMIN_GUI_CHANGE_TOWN_DESCRIPTION: "§aChange town description"
   ADMIN_GUI_CHANGE_TOWN_DESCRIPTION_DESC1: "§fCurrent message: §7§o\"{0}\""
+  ADMIN_GUI_CHANGE_REGION_LEADER: "§aChange region leader"
+  ADMIN_GUI_CHANGE_REGION_LEADER_DESC1: "§fCurrent leader: §3{0}§f from §9{1}"
   ADMIN_GUI_CHANGE_TOWN_LEADER: "§aChange town leader"
   ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1: "§fCurrent leader: §3{0}"
   ADMIN_GUI_CREATE_TOWN: "§aCreate a town"

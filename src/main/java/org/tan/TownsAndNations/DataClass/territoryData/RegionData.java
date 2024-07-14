@@ -3,7 +3,6 @@ package org.tan.TownsAndNations.DataClass.territoryData;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.units.qual.A;
 import org.tan.TownsAndNations.DataClass.ClaimedChunkSettings;
 import org.tan.TownsAndNations.DataClass.History.ChunkHistory;
 import org.tan.TownsAndNations.DataClass.History.DonationHistory;
@@ -27,7 +26,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-public class RegionData implements ITerritoryData, IRelation {
+public class RegionData implements ITerritoryData {
 
     private final String id;
     private String name;
@@ -237,11 +236,11 @@ public class RegionData implements ITerritoryData, IRelation {
     public Integer getBalance() {
         return balance;
     }
-    public Integer addBalance(Integer amount) {
-        return balance += amount;
+    public void addBalance(Integer amount) {
+        balance += amount;
     }
-    public Integer removeBalance(Integer amount) {
-        return balance -= amount;
+    public void removeBalance(Integer amount) {
+        balance -= amount;
     }
 
     public int getIncomeTomorrow() {
@@ -373,27 +372,27 @@ public class RegionData implements ITerritoryData, IRelation {
     }
 
     @Override
-    public void addTownRelation(TownRelation relation, ITerritoryData territoryData) {
-        addTownRelation(relation, territoryData.getID());
+    public void addRelation(TownRelation relation, ITerritoryData territoryData) {
+        addRelation(relation, territoryData.getID());
     }
 
     @Override
-    public void addTownRelation(TownRelation relation, String territoryID) {
-        relations.addRelation(relation, territoryID);
+    public void addRelation(TownRelation relation, String territoryID) {
+        getRelations().addRelation(relation, territoryID);
     }
 
     @Override
-    public void removeTownRelation(TownRelation relation, ITerritoryData territoryData) {
-        removeTownRelation(relation, territoryData.getID());
+    public void removeRelation(TownRelation relation, ITerritoryData territoryData) {
+        removeRelation(relation, territoryData.getID());
     }
 
     @Override
-    public void removeTownRelation(TownRelation relation, String territoryID) {
-        relations.removeRelation(relation, territoryID);
+    public void removeRelation(TownRelation relation, String territoryID) {
+        getRelations().removeRelation(relation, territoryID);
     }
 
     @Override
-    public TownRelation getRelationWith(IRelation relation) {
+    public TownRelation getRelationWith(ITerritoryData relation) {
         return getRelationWith(relation.getID());
     }
 
@@ -404,5 +403,16 @@ public class RegionData implements ITerritoryData, IRelation {
             return TownRelation.REGION;
 
         return null;
+    }
+
+    @Override
+    public void broadCastMessageWithSound(String message, SoundEnum soundEnum) {
+        for(TownData townData : getTownsInRegion())
+            townData.broadCastMessageWithSound(message, soundEnum);
+    }
+
+    @Override
+    public boolean haveNoLeader() {
+        return false;
     }
 }
