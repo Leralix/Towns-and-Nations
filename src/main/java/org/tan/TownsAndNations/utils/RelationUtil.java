@@ -17,6 +17,8 @@ public class RelationUtil {
      */
     public static void addTownRelation(ITerritoryData town, ITerritoryData targetTown, TownRelation newRelation) {
         town.addRelation(newRelation, targetTown);
+        targetTown.addRelation(newRelation, town);
+
         TeamUtils.updateAllScoreboardColor();
     }
 

@@ -277,7 +277,7 @@ public class HeadUtils {
     }
     /**
      * Create a player head displaying a town with his information
-     * @param regionData    The data of the region to display
+     * @param regionID      The ID of the region to display
      * @return              The ItemStack displaying the town
      */
     public static ItemStack getRegionIcon(String regionID){
@@ -307,6 +307,42 @@ public class HeadUtils {
         }
         return icon;
     }
+
+    public static @NotNull ItemStack getRegionIconWithInformations(final @NotNull String regionID, final @Nullable String ownTerritoryID) {
+        return getRegionIconWithInformations(RegionDataStorage.get(regionID), ownTerritoryID);
+    }
+    public static @NotNull ItemStack getRegionIconWithInformations(final @NotNull RegionData regionData, final @Nullable String ownTerritoryID){
+
+        ItemStack icon = getRegionIcon(regionData);
+
+        ItemMeta meta = icon.getItemMeta();
+        if(meta != null){
+            meta.setDisplayName(ChatColor.GREEN + regionData.getName());
+
+            List<String> lore = meta.getLore();
+            if(lore == null){
+                lore = new ArrayList<>();
+            }
+
+            if(ownTerritoryID != null){
+                TownRelation relation = regionData.getRelationWith(ownTerritoryID);
+                String relationName;
+                if(relation == null){
+                    relationName = Lang.GUI_TOWN_RELATION_NEUTRAL.get();
+                }
+                else {
+                    relationName = relation.getColor() + relation.getName();
+                }
+                lore.add(Lang.GUI_TOWN_INFO_TOWN_RELATION.get(relationName));
+            }
+
+            meta.setLore(lore);
+            icon.setItemMeta(meta);
+        }
+        return icon;
+    }
+
+
     /**
      * Create an {@link ItemStack} with custom Lore
      * @param itemMaterial  The data of the region to display

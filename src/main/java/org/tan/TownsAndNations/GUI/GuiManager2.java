@@ -2171,7 +2171,6 @@ public class GuiManager2 implements IGUI {
         int nRows = 6;
         Gui gui = IGUI.createChestGui("Town - Relation",nRows);
 
-        LinkedHashMap<String, TownData> allTown = getTownMap();
         ArrayList<String> relationListID = territory.getRelations().getRelation(relation);
 
 
@@ -2180,30 +2179,50 @@ public class GuiManager2 implements IGUI {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
         if(action == Action.ADD){
-            List<String> townNoRelation = new ArrayList<>(allTown.keySet());
+            List<String> townNoRelation = new ArrayList<>(getTownMap().keySet());
+            townNoRelation.addAll(RegionDataStorage.getRegionStorage().keySet());
+
+
             townNoRelation.removeAll(relationListID);
             townNoRelation.remove(territory.getID());
 
             for(String otherTownUUID : townNoRelation){
-                ITerritoryData otherTown = TownDataStorage.get(otherTownUUID);
-                ItemStack townIcon = getTownIconWithInformations(otherTownUUID, territory.getID());
+
+
+                ITerritoryData otherTerritory;
+                ItemStack townIcon;
+
+                if(otherTownUUID.contains("T")) {
+                    otherTerritory = TownDataStorage.get(otherTownUUID);
+                    townIcon = getTownIconWithInformations(otherTownUUID, territory.getID());
+                }
+                else if(otherTownUUID.contains("R")) {
+                    otherTerritory = RegionDataStorage.get(otherTownUUID);
+                    townIcon = getRegionIconWithInformations(otherTownUUID, territory.getID());
+                }
+                else {
+                    otherTerritory = null;
+                    townIcon = null;
+                }
+
+
 
                 GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                     event.setCancelled(true);
 
-                    if(otherTown.haveNoLeader()){
+                    if(otherTerritory.haveNoLeader()){
                         player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_NO_LEADER.get());
                         return;
                     }
 
-                    if(territory.getRelations().getRelationWith(otherTown) != null){
+                    if(territory.getRelations().getRelationWith(otherTerritory) != null){
                         player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION.get());
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
                     if(relation.getNeedsConfirmationToStart()){
                         // Can only be good relations
-                        OfflinePlayer otherTownLeader = Bukkit.getOfflinePlayer(UUID.fromString(otherTown.getLeaderID()));
+                        OfflinePlayer otherTownLeader = Bukkit.getOfflinePlayer(UUID.fromString(otherTerritory.getLeaderID()));
 
                         if (!otherTownLeader.isOnline()) {
                             player.sendMessage(getTANString() + Lang.LEADER_NOT_ONLINE.get());
@@ -2212,7 +2231,7 @@ public class GuiManager2 implements IGUI {
                         Player otherTownLeaderOnline = otherTownLeader.getPlayer();
                         if(otherTownLeaderOnline == null)
                             return;
-                        TownRelationConfirmStorage.addInvitation(otherTown.getLeaderID(), territory.getID(), relation);
+                        TownRelationConfirmStorage.addInvitation(otherTerritory.getLeaderID(), territory.getID(), relation);
 
                         otherTownLeaderOnline.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(territory.getName(),relation.getColor() + relation.getName()));
                         ChatUtils.sendClickableCommand(otherTownLeaderOnline,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + territory.getID());
@@ -2222,11 +2241,9 @@ public class GuiManager2 implements IGUI {
                         player.closeInventory();
                     }
                     else{ //Can only be bad relations
-                        territory.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getName(),relation.getColoredName()),
-                                BAD);
-                        otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(territory.getName(),relation.getColoredName()),
-                                BAD);
-                        RelationUtil.addTownRelation(territory,otherTown,relation);
+                        territory.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTerritory.getName(),relation.getColoredName()), BAD);
+                        otherTerritory.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(territory.getName(),relation.getColoredName()), BAD);
+                        RelationUtil.addTownRelation(territory,otherTerritory,relation);
                         openSingleRelation(player,territory, relation,0,exit);
                     }
                 });
@@ -2236,13 +2253,28 @@ public class GuiManager2 implements IGUI {
         }
         else if(action == Action.REMOVE){
             for(String otherTownUUID : relationListID){
-                TownData otherTown = TownDataStorage.get(otherTownUUID);
-                ItemStack townIcon = getTownIconWithInformations(otherTownUUID);
+                ITerritoryData otherTerritory;
+                ItemStack townIcon;
+
+
+                if(otherTownUUID.contains("T")) {
+                    otherTerritory = TownDataStorage.get(otherTownUUID);
+                    townIcon = getTownIconWithInformations(otherTownUUID, territory.getID());
+                }
+                else if(otherTownUUID.contains("R")) {
+                    otherTerritory = RegionDataStorage.get(otherTownUUID);
+                    townIcon = getRegionIconWithInformations(otherTownUUID, territory.getID());
+                }
+                else {
+                    otherTerritory = null;
+                    townIcon = null;
+                }
+
                 GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                     event.setCancelled(true);
                     if(relation.getNeedsConfirmationToEnd()){ //Can only be better relations
 
-                        OfflinePlayer otherTownLeader = Bukkit.getOfflinePlayer(UUID.fromString(otherTown.getLeaderID()));
+                        OfflinePlayer otherTownLeader = Bukkit.getOfflinePlayer(UUID.fromString(otherTerritory.getLeaderID()));
 
                         if (!otherTownLeader.isOnline()) {
                             player.sendMessage(getTANString() + Lang.LEADER_NOT_ONLINE.get());
@@ -2254,18 +2286,16 @@ public class GuiManager2 implements IGUI {
 
                         player.sendMessage(getTANString() + "Sent to the leader of the other town");
 
-                        TownRelationConfirmStorage.addInvitation(otherTown.getLeaderID(), territory.getID(), null);
+                        TownRelationConfirmStorage.addInvitation(otherTerritory.getLeaderID(), territory.getID(), null);
 
                         otherTownLeaderOnline.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(territory.getName(),"neutral"));
                         ChatUtils.sendClickableCommand(otherTownLeaderOnline,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + territory.getID());
                         player.closeInventory();
                     }
                     else{
-                        territory.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getName(),"neutral"),
-                                BAD);
-                        otherTown.broadCastMessageWithSound(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(territory.getName(),"neutral"),
-                                BAD);
-                        RelationUtil.removeTownRelation(territory,otherTown, relation);
+                        territory.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTerritory.getName(),"neutral"), BAD);
+                        otherTerritory.broadCastMessageWithSound(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(territory.getName(),"neutral"), BAD);
+                        RelationUtil.removeTownRelation(territory,otherTerritory, relation);
                     }
                     openSingleRelation(player,territory,relation,0, exit);
                 });
