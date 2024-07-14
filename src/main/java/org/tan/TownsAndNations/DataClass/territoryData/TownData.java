@@ -481,10 +481,6 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IBroadcast, IC
         this.chunkSettings.nextPermission(type);
     }
 
-    public ArrayList<String> getTownWithRelation(TownRelation relation){
-        return this.relations.getOne(relation);
-    }
-
     //////////////////////////////////////
     //           IChunkColor            //
     //////////////////////////////////////

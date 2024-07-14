@@ -2090,9 +2090,22 @@ public class GuiManager2 implements IGUI {
         PlayerData playerStat = PlayerDataStorage.get(player);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for(String otherTownID : territoryRelation.getRelations().getOne(relation)){
+        for(String territoryID : territoryRelation.getRelations().getRelation(relation)){
 
-            ItemStack townIcon = getTownIconWithInformations(otherTownID);
+            ITerritoryData territoryData = null;
+            ItemStack townIcon = null;
+
+            if(territoryID.contains("T")){
+                territoryData = TownDataStorage.get(territoryID);
+                townIcon = getTownIconWithInformations(territoryID);
+            }
+            if(territoryID.contains("R")){
+                territoryData = RegionDataStorage.get(territoryID);
+                townIcon = getRegionIcon(territoryID);
+            }
+
+
+
 
             if (relation == TownRelation.WAR) {
                 ItemMeta meta = townIcon.getItemMeta();
@@ -2105,14 +2118,14 @@ public class GuiManager2 implements IGUI {
                 townIcon.setItemMeta(meta);
             }
 
+            ITerritoryData finalTerritoryData = territoryData;
             GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
 
                 if (relation == TownRelation.WAR) {
-                    player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.get(TownDataStorage.get(otherTownID).getName()));
-                    WarTaggedPlayer.addPlayersToTown(otherTownID, territoryRelation.getPlayerList());
-                    TownDataStorage.get(otherTownID).broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(territoryRelation.getName()),
-                            WAR);
+                    player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.get(TownDataStorage.get(territoryID).getName()));
+                    WarTaggedPlayer.addPlayersToTown(territoryID, territoryRelation.getPlayerList());
+                    finalTerritoryData.broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(territoryRelation.getName()), WAR);
                 }
             });
             guiItems.add(_town);
@@ -2159,7 +2172,7 @@ public class GuiManager2 implements IGUI {
         Gui gui = IGUI.createChestGui("Town - Relation",nRows);
 
         LinkedHashMap<String, TownData> allTown = getTownMap();
-        ArrayList<String> relationListID = territory.getRelations().getOne(relation);
+        ArrayList<String> relationListID = territory.getRelations().getRelation(relation);
 
 
         ItemStack decorativeGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);

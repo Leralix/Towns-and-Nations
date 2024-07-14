@@ -15,6 +15,7 @@ import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.util.ArrayList;
@@ -279,6 +280,14 @@ public class HeadUtils {
      * @param regionData    The data of the region to display
      * @return              The ItemStack displaying the town
      */
+    public static ItemStack getRegionIcon(String regionID){
+        return getRegionIcon(RegionDataStorage.get(regionID));
+    }
+    /**
+     * Create a player head displaying a town with his information
+     * @param regionData    The data of the region to display
+     * @return              The ItemStack displaying the town
+     */
     public static ItemStack getRegionIcon(RegionData regionData){
         ItemStack icon = regionData.getIconItem();
 
@@ -297,8 +306,6 @@ public class HeadUtils {
             icon.setItemMeta(meta);
         }
         return icon;
-
-
     }
     /**
      * Create an {@link ItemStack} with custom Lore

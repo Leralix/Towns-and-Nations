@@ -27,7 +27,7 @@ public class TownRelations {
     public void removeRelation(TownRelation relation, String townID){
         townRelations.get(relation).remove(townID);
     }
-    public ArrayList<String> getOne(TownRelation relation){
+    public ArrayList<String> getRelation(TownRelation relation){
         return this.townRelations.get(relation);
     }
     public TownRelation getRelationWith(String TownID) {
