@@ -8,6 +8,8 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
@@ -15,6 +17,7 @@ import org.tan.TownsAndNations.DataClass.newChunkData.LandmarkClaimedChunk;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.ChatCategory;
 import org.tan.TownsAndNations.enums.MessageKey;
 import org.tan.TownsAndNations.enums.SoundEnum;
@@ -87,11 +90,12 @@ public class AdminGUI implements IGUI{
             HeadUtils.addLore(icon,
                     "",
                     Lang.SPECIFIC_LANDMARK_ICON_SWITCH_REWARD.get(),
-                    Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get()
-            );
+                    Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(),
+                    Lang.GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT.get());
+
             GuiItem item = ItemBuilder.from(icon).asGuiItem(event -> {
                 event.setCancelled(true);
-                if(event.isLeftClick()){
+                if(event.isLeftClick() && !event.isShiftClick()){
                     ItemStack itemOnCursor = player.getItemOnCursor();
                     if(itemOnCursor.getType() != Material.AIR){
                         player.sendMessage(getTANString() + Lang.ADMIN_GUI_LANDMARK_REWARD_SET.get(itemOnCursor.getAmount(), itemOnCursor.getType().name()));
@@ -104,6 +108,19 @@ public class AdminGUI implements IGUI{
                 else if(event.isRightClick()){
                     landmark.deleteLandmark();
                     OpenLandmarks(player, page);
+                    return;
+                }
+                else if(event.isShiftClick()){
+                    new BukkitRunnable(){
+                        @Override
+                        public void run() {
+                            player.closeInventory();
+                            player.teleport(landmark.getLocation());
+                        }
+                    }.runTaskLater(TownsAndNations.getPlugin(), 1L);
+
+
+                    SoundUtil.playSound(player, SoundEnum.GOOD);
                     return;
                 }
             });

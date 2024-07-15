@@ -1,5 +1,6 @@
 package org.tan.TownsAndNations.DataClass;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -151,5 +152,9 @@ public class Landmark {
         this.amount = itemOnCursor.getAmount();
         this.materialName = itemOnCursor.getType().name();
         LandmarkStorage.save();
+    }
+
+    public Location getLocation() {
+        return new Location(position.getWorld(), position.getX(), position.getY(), position.getZ());
     }
 }

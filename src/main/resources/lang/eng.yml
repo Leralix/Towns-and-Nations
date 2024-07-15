@@ -201,8 +201,9 @@ language:
   RELATION_EMBARGO_NAME: "Embargo"
   RELATION_WAR_NAME: "War"
   #GUI generic
-  GUI_GENERIC_CLICK_TO_OPEN: "§fClick to open"
-  GUI_GENERIC_RIGHT_CLICK_TO_DELETE: "§cRight click to delete"
+  GUI_GENERIC_CLICK_TO_OPEN: "§fLeft click to open"
+  GUI_GENERIC_RIGHT_CLICK_TO_DELETE: "§fRight click to delete"
+  GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT: "§fShift + click to teleport"
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§eStill in development"
   GUI_BACK_ARROW: "Return"
