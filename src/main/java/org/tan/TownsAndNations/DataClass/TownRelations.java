@@ -5,6 +5,7 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.utils.TerritoryUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -27,9 +28,16 @@ public class TownRelations {
     public void removeRelation(TownRelation relation, String townID){
         townRelations.get(relation).remove(townID);
     }
-    public ArrayList<String> getRelation(TownRelation relation){
-        return this.townRelations.get(relation);
+    public ArrayList<String> getTerritoryIDWithRelation(TownRelation relation){
+        return townRelations.get(relation);
     }
+    public ArrayList<ITerritoryData> getTerritoryWithRelation(TownRelation relation){
+        ArrayList<ITerritoryData> territoryData = new ArrayList<>();
+        for(String townID : townRelations.get(relation))
+            territoryData.add(TerritoryUtil.getTerritory(townID));
+        return territoryData;
+    }
+
     public TownRelation getRelationWith(String TownID) {
         for (Map.Entry<TownRelation, ArrayList<String>> entry : townRelations.entrySet()) {
             TownRelation relation = entry.getKey();

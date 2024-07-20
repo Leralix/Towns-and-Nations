@@ -65,7 +65,7 @@ public class GuiUtil {
      */
     public static GuiItem townUpgradeResume(TownData townData){
 
-        ItemStack townIcon = HeadUtils.getTownIcon(townData.getID());
+        ItemStack townIcon = townData.getIcon();
         List<String> lore = new ArrayList<>();
         lore.add(Lang.TOWN_LEVEL_BONUS_RECAP.get());
 

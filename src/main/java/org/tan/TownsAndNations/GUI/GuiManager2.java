@@ -619,7 +619,7 @@ public class GuiManager2 implements IGUI {
         ArrayList<GuiItem> townItemStacks = new ArrayList<>();
 
         for(TownData townData : getTownMap().values()){
-            ItemStack townIcon = HeadUtils.getTownIconWithInformations(townData);
+            ItemStack townIcon = townData.getIconWithInformations();
             HeadUtils.addLore(townIcon,
                     "",
                     (townData.isRecruiting()) ? Lang.GUI_TOWN_INFO_IS_RECRUITING.get() : Lang.GUI_TOWN_INFO_IS_NOT_RECRUITING.get(),
@@ -667,7 +667,7 @@ public class GuiManager2 implements IGUI {
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
 
-        ItemStack TownIcon = HeadUtils.getTownIconWithInformations(playerTown);
+        ItemStack TownIcon = playerTown.getIconWithInformations();
         HeadUtils.addLore(TownIcon,
                 Lang.GUI_TOWN_INFO_CHANGE_ICON.get()
         );
@@ -696,6 +696,9 @@ public class GuiManager2 implements IGUI {
         ItemStack propertyIcon = HeadUtils.createCustomItemStack(Material.OAK_HANGING_SIGN, Lang.GUI_TOWN_PROPERTIES_ICON.get(),Lang.GUI_TOWN_PROPERTIES_ICON_DESC1.get());
 
         ItemStack landmark = HeadUtils.makeSkull(Lang.ADMIN_GUI_LANDMARK_ICON.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmQ3NjFjYzE2NTYyYzg4ZDJmYmU0MGFkMzg1MDJiYzNiNGE4Nzg1OTg4N2RiYzM1ZjI3MmUzMGQ4MDcwZWVlYyJ9fX0=",
+                Lang.ADMIN_GUI_LANDMARK_DESC1.get());
+
+        ItemStack war = HeadUtils.makeSkull(Lang.ADMIN_GUI_LANDMARK_ICON.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjVkZTRmZjhiZTcwZWVlNGQxMDNiMWVlZGY0NTRmMGFiYjlmMDU2OGY1ZjMyNmVjYmE3Y2FiNmE0N2Y5YWRlNCJ9fX0=",
                 Lang.ADMIN_GUI_LANDMARK_DESC1.get());
 
         GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {
@@ -731,7 +734,7 @@ public class GuiManager2 implements IGUI {
         });
         GuiItem _otherTownIcon = ItemBuilder.from(otherTownIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownMenuOtherTown(player, 0);
+            OpenTerritoryListWithRelation(player, playerTown,p -> OpenTownMenuHaveTown(player), 0);
         });
         GuiItem _relationIcon = ItemBuilder.from(RelationIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -753,7 +756,10 @@ public class GuiManager2 implements IGUI {
             event.setCancelled(true);
             OpenTownOwnedLandmark(player, playerTown,0);
         });
-
+        GuiItem _war = ItemBuilder.from(war).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenWarMenu(player, playerTown, p -> dispatchPlayerTown(player), 0);
+        });
 
         gui.setItem(4, _townIcon);
         gui.setItem(2,2, _goldIcon);
@@ -765,10 +771,96 @@ public class GuiManager2 implements IGUI {
         gui.setItem(2,8, _settingsIcon);
         gui.setItem(3,2,_propertyIcon);
         gui.setItem(3,3,_landmark);
+        gui.setItem(3,4,_war);
 
         gui.setItem(nRows,1, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
 
         gui.open(player);
+    }
+
+    private static void OpenWarMenu(Player player, ITerritoryData territory, Consumer<Player> exit, int page) {
+        Gui gui = IGUI.createChestGui("Wars | page " + (page + 1),6);
+        ArrayList<GuiItem> guiItems = new ArrayList<>();
+
+        for(ITerritoryData enemyTerritory : territory.getRelations().getTerritoryWithRelation(TownRelation.WAR)){
+            ItemStack territoryIcon = enemyTerritory.getIconWithInformations();
+
+            GuiItem territoryAtWar = ItemBuilder.from(territoryIcon).asGuiItem(event -> {
+                event.setCancelled(true);
+                OpenStartWarSettings(player, territory, enemyTerritory, exit, new CreateAttackData());
+
+            });
+            guiItems.add(territoryAtWar);
+        }
+
+        createIterator(gui, guiItems, page, player, exit,
+                p -> OpenWarMenu(player, territory, exit,page + 1),
+                p -> OpenWarMenu(player, territory, exit,page - 1));
+
+        gui.open(player);
+    }
+
+    private static void OpenStartWarSettings(Player player, ITerritoryData attackingTerritory, ITerritoryData enemyTerritory,  Consumer<Player> exit, CreateAttackData createAttackData) {
+        Gui gui = IGUI.createChestGui("War on " + enemyTerritory.getName(),3);
+
+
+        ItemStack addTime = HeadUtils.makeSkull(Lang.GUI_WAR_ADD_TIME.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjMyZmZmMTYzZTIzNTYzMmY0MDQ3ZjQ4NDE1OTJkNDZmODVjYmJmZGU4OWZjM2RmNjg3NzFiZmY2OWE2NjIifX19",
+                Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(),
+                Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get());
+        ItemStack removeTIme = HeadUtils.makeSkull(Lang.GUI_WAR_REMOVE_TIME.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGE1NmRhYjUzZDRlYTFhNzlhOGU1ZWQ2MzIyYzJkNTZjYjcxNGRkMzVlZGY0Nzg3NjNhZDFhODRhODMxMCJ9fX0=",
+                Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(),
+                Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get());
+        ItemStack time = HeadUtils.makeSkull(Lang.GUI_WAR_SET_TO_START_IN.get(createAttackData.getStringDeltaDateTime()),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWU5OThmM2ExNjFhNmM5ODlhNWQwYTFkYzk2OTMxYTM5OTI0OWMwODBiNjYzNjQ1ODFhYjk0NzBkZWE1ZTcyMCJ9fX0=",
+                Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(),
+                Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get());
+        ItemStack confirm = HeadUtils.makeSkull(Lang.GUI_CONFIRM_ATTACK.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDMxMmNhNDYzMmRlZjVmZmFmMmViMGQ5ZDdjYzdiNTVhNTBjNGUzOTIwZDkwMzcyYWFiMTQwNzgxZjVkZmJjNCJ9fX0=",
+                Lang.GUI_CONFIRM_ATTACK_DESC1.get(enemyTerritory.getColoredName()));
+
+
+        GuiItem _addTime = ItemBuilder.from(addTime).asGuiItem(event -> {
+            event.setCancelled(true);
+            SoundUtil.playSound(player, ADD);
+            if(event.isLeftClick()){
+                createAttackData.addDeltaDateTime(60000);
+            }
+            if(event.isShiftClick()){
+                createAttackData.addDeltaDateTime(3600000);
+            }
+            OpenStartWarSettings(player, attackingTerritory, enemyTerritory, exit, createAttackData);
+        });
+
+        GuiItem _removeTime = ItemBuilder.from(removeTIme).asGuiItem(event -> {
+            event.setCancelled(true);
+            SoundUtil.playSound(player, REMOVE);
+            if(event.isLeftClick()){
+                createAttackData.addDeltaDateTime(-60000);
+            }
+            if(event.isShiftClick()){
+                createAttackData.addDeltaDateTime(-3600000);
+            }
+            OpenStartWarSettings(player, attackingTerritory, enemyTerritory, exit, createAttackData);
+        });
+
+        GuiItem _time = ItemBuilder.from(time).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+
+        GuiItem _confirm = ItemBuilder.from(confirm).asGuiItem(event -> {
+            event.setCancelled(true);
+            AttackDataStorage.newWar("test", enemyTerritory, attackingTerritory, createAttackData);
+            OpenWarMenu(player, attackingTerritory, exit, 0);
+        });
+
+
+        gui.setItem(2,2,_removeTime);
+        gui.setItem(2,3,_time);
+        gui.setItem(2,4,_addTime);
+
+        gui.setItem(2,7,_confirm);
+        gui.setItem(3,1,IGUI.CreateBackArrow(player, e -> openSingleRelation(player, attackingTerritory, TownRelation.WAR,0, exit)));
+
+        gui.open(player);
+
     }
 
     private static void OpenTownOwnedLandmark(Player player, TownData townData, int page) {
@@ -779,9 +871,7 @@ public class GuiManager2 implements IGUI {
         for(String landmarkID : townData.getOwnedLandmarks()){
             Landmark landmarkData = LandmarkStorage.get(landmarkID);
 
-            GuiItem _landmarkIcon = ItemBuilder.from(landmarkData.getIcon()).asGuiItem(event -> {
-                event.setCancelled(true);
-            });
+            GuiItem _landmarkIcon = ItemBuilder.from(landmarkData.getIcon()).asGuiItem(event -> event.setCancelled(true));
             landmarkGui.add(_landmarkIcon);
         }
         GuiUtil.createIterator(gui, landmarkGui, page, player,
@@ -794,21 +884,29 @@ public class GuiManager2 implements IGUI {
 
     }
 
-    public static void OpenTownMenuOtherTown(Player player, int page) {
+    public static void OpenTerritoryListWithRelation(Player player, ITerritoryData territoryData, Consumer<Player> exitMenu, int page) {
         Gui gui = IGUI.createChestGui("Town list | page " + (page + 1),6);
 
         ArrayList<GuiItem> townGuiItems = new ArrayList<>();
 
-        for(TownData townData : getTownMap().values()){
-            ItemStack townIcon = HeadUtils.getTownIconWithInformations(townData.getID(), townData.getID());
-            GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
 
-            townGuiItems.add(_townIteration);
+        List<ITerritoryData> territoryList = new ArrayList<>();
+        territoryList.addAll(getTownMap().values());
+        territoryList.addAll(RegionDataStorage.getAllRegions());
+
+        //territoryList.removeIf(t -> t.getID().equals(territoryData.getID())); //Remove self
+
+        for(ITerritoryData townData : territoryList){
+            ItemStack territoryIcon = townData.getIconWithInformationAndRelation(territoryData);
+            GuiItem territoryGUI = ItemBuilder.from(territoryIcon).asGuiItem(event -> event.setCancelled(true));
+
+            townGuiItems.add(territoryGUI);
         }
 
-        createIterator(gui, townGuiItems, page, player, p -> dispatchPlayerTown(player),
-                p -> OpenTownMenuOtherTown(player, page + 1),
-                p -> OpenTownMenuOtherTown(player, page - 1));
+        createIterator(gui, townGuiItems, page, player, exitMenu,
+                p -> OpenTerritoryListWithRelation(player, territoryData, exitMenu, page + 1),
+                p -> OpenTerritoryListWithRelation(player, territoryData, exitMenu, page - 1));
+
         gui.open(player);
     }
     public static void OpenTownMemberList(Player player) {
@@ -1799,7 +1897,7 @@ public class GuiManager2 implements IGUI {
         int changeTownNameCost = ConfigUtil.getCustomConfig("config.yml").getInt("ChangeTownNameCost");
 
 
-        ItemStack TownIcon = HeadUtils.getTownIcon(playerStat.getTownId());
+        ItemStack TownIcon = playerTown.getIconWithInformations();
         ItemStack leaveTown = HeadUtils.createCustomItemStack(Material.BARRIER,
                 Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN.get(),
                 Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1.get(playerTown.getName()),
@@ -2084,48 +2182,38 @@ public class GuiManager2 implements IGUI {
 
         gui.open(player);
     }
-    public static void openSingleRelation(Player player, ITerritoryData territoryRelation, TownRelation relation, int page, Consumer<Player> doubleExit) {
+    public static void openSingleRelation(Player player, ITerritoryData mainTerritory, TownRelation relation, int page, Consumer<Player> doubleExit) {
         Gui gui = IGUI.createChestGui("Relation | page " + (page + 1), 6);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for(String territoryID : territoryRelation.getRelations().getRelation(relation)){
+        for(String territoryID : mainTerritory.getRelations().getTerritoryIDWithRelation(relation)){
 
-            ITerritoryData territoryData = null;
-            ItemStack townIcon = null;
-
-            if(territoryID.contains("T")){
-                territoryData = TownDataStorage.get(territoryID);
-                townIcon = getTownIconWithInformations(territoryID);
-            }
-            if(territoryID.contains("R")){
-                territoryData = RegionDataStorage.get(territoryID);
-                townIcon = getRegionIcon(territoryID);
-            }
-
-
-
+            ITerritoryData territoryData = TerritoryUtil.getTerritory(territoryID);
+            ItemStack icon = territoryData.getIconWithInformationAndRelation(mainTerritory);
 
             if (relation == TownRelation.WAR) {
-                ItemMeta meta = townIcon.getItemMeta();
+                ItemMeta meta = icon.getItemMeta();
                 assert meta != null;
                 List<String> lore = meta.getLore();
                 assert lore != null;
                 lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC1.get());
                 lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC2.get());
                 meta.setLore(lore);
-                townIcon.setItemMeta(meta);
+                icon.setItemMeta(meta);
             }
 
-            ITerritoryData finalTerritoryData = territoryData;
-            GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
+            GuiItem _town = ItemBuilder.from(icon).asGuiItem(event -> {
                 event.setCancelled(true);
 
                 if (relation == TownRelation.WAR) {
+                    //WarTaggedPlayer.addPlayersToTown(territoryID, territoryRelation.getPlayerList());
+
                     player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.get(TownDataStorage.get(territoryID).getName()));
-                    WarTaggedPlayer.addPlayersToTown(territoryID, territoryRelation.getPlayerList());
-                    finalTerritoryData.broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(territoryRelation.getName()), WAR);
+                    territoryData.broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(mainTerritory.getName()), WAR);
+
+                    OpenStartWarSettings(player, mainTerritory, territoryData, doubleExit, new CreateAttackData());
                 }
             });
             guiItems.add(_town);
@@ -2146,7 +2234,7 @@ public class GuiManager2 implements IGUI {
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
-            OpenTownRelationModification(player,territoryRelation,Action.ADD,relation, 0, doubleExit);
+            OpenTownRelationModification(player,mainTerritory,Action.ADD,relation, 0, doubleExit);
         });
         GuiItem _remove = ItemBuilder.from(removeTownButton).asGuiItem(event -> {
             event.setCancelled(true);
@@ -2154,12 +2242,12 @@ public class GuiManager2 implements IGUI {
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
-            OpenTownRelationModification(player,territoryRelation, Action.REMOVE,relation, 0, doubleExit);
+            OpenTownRelationModification(player,mainTerritory, Action.REMOVE,relation, 0, doubleExit);
         });
 
-        createIterator(gui, guiItems, page, player, p -> OpenRelations(player, territoryRelation, doubleExit),
-                p -> openSingleRelation(player, territoryRelation, relation, page - 1, doubleExit),
-                p -> openSingleRelation(player, territoryRelation, relation,page - 1, doubleExit));
+        createIterator(gui, guiItems, page, player, p -> OpenRelations(player, mainTerritory, doubleExit),
+                p -> openSingleRelation(player, mainTerritory, relation, page - 1, doubleExit),
+                p -> openSingleRelation(player, mainTerritory, relation,page - 1, doubleExit));
 
         gui.setItem(6,4, _add);
         gui.setItem(6,5, _remove);
@@ -2171,43 +2259,27 @@ public class GuiManager2 implements IGUI {
         int nRows = 6;
         Gui gui = IGUI.createChestGui("Town - Relation",nRows);
 
-        ArrayList<String> relationListID = territory.getRelations().getRelation(relation);
-
-
-        ItemStack decorativeGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-
+        ArrayList<String> relationListID = territory.getRelations().getTerritoryIDWithRelation(relation);
+        ItemStack decorativeGlass = getDecorativeGlass(action);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
+
         if(action == Action.ADD){
-            List<String> townNoRelation = new ArrayList<>(getTownMap().keySet());
-            townNoRelation.addAll(RegionDataStorage.getRegionStorage().keySet());
+            List<String> territories = new ArrayList<>();
+            territories.addAll(TownDataStorage.getTownMap().keySet());
+            territories.addAll(RegionDataStorage.getRegionStorage().keySet());
+
+            territories.removeAll(relationListID); //Territory already have this relation
+            territories.remove(territory.getID()); //Remove itself
+
+            for(String otherTownUUID : territories){
 
 
-            townNoRelation.removeAll(relationListID);
-            townNoRelation.remove(territory.getID());
-
-            for(String otherTownUUID : townNoRelation){
+                ITerritoryData otherTerritory = TerritoryUtil.getTerritory(otherTownUUID);
+                ItemStack icon = otherTerritory.getIconWithInformationAndRelation(territory);
 
 
-                ITerritoryData otherTerritory;
-                ItemStack townIcon;
-
-                if(otherTownUUID.contains("T")) {
-                    otherTerritory = TownDataStorage.get(otherTownUUID);
-                    townIcon = getTownIconWithInformations(otherTownUUID, territory.getID());
-                }
-                else if(otherTownUUID.contains("R")) {
-                    otherTerritory = RegionDataStorage.get(otherTownUUID);
-                    townIcon = getRegionIconWithInformations(otherTownUUID, territory.getID());
-                }
-                else {
-                    otherTerritory = null;
-                    townIcon = null;
-                }
-
-
-
-                GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
+                GuiItem _town = ItemBuilder.from(icon).asGuiItem(event -> {
                     event.setCancelled(true);
 
                     if(otherTerritory.haveNoLeader()){
@@ -2249,26 +2321,11 @@ public class GuiManager2 implements IGUI {
                 });
                 guiItems.add(_town);
             }
-            decorativeGlass = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
         }
         else if(action == Action.REMOVE){
             for(String otherTownUUID : relationListID){
-                ITerritoryData otherTerritory;
-                ItemStack townIcon;
-
-
-                if(otherTownUUID.contains("T")) {
-                    otherTerritory = TownDataStorage.get(otherTownUUID);
-                    townIcon = getTownIconWithInformations(otherTownUUID, territory.getID());
-                }
-                else if(otherTownUUID.contains("R")) {
-                    otherTerritory = RegionDataStorage.get(otherTownUUID);
-                    townIcon = getRegionIconWithInformations(otherTownUUID, territory.getID());
-                }
-                else {
-                    otherTerritory = null;
-                    townIcon = null;
-                }
+                ITerritoryData otherTerritory = TerritoryUtil.getTerritory(otherTownUUID);
+                ItemStack townIcon = otherTerritory.getIconWithInformationAndRelation(territory);
 
                 GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
                     event.setCancelled(true);
@@ -2301,7 +2358,6 @@ public class GuiManager2 implements IGUI {
                 });
                 guiItems.add(_town);
             }
-            decorativeGlass = new ItemStack(Material.RED_STAINED_GLASS_PANE);
         }
 
 
@@ -2313,6 +2369,14 @@ public class GuiManager2 implements IGUI {
 
         gui.open(player);
     }
+
+    private static ItemStack getDecorativeGlass(Action action) {
+        if (action == Action.ADD)
+            return new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
+        else
+            return new ItemStack(Material.RED_STAINED_GLASS_PANE);
+    }
+
     public static void OpenTownChunk(Player player) {
         Gui gui = IGUI.createChestGui("Town",3);
 
@@ -2539,7 +2603,7 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _browseRegion = ItemBuilder.from(browseRegion).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenRegionList(player, false);
+            OpenTerritoryListWithRelation(player, null,p -> OpenNoRegionMenu(player), 0);
         });
 
         gui.setItem(2,4, _createRegion);
@@ -2598,7 +2662,7 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _otherRegionIcon = ItemBuilder.from(otherRegionIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenRegionList(player,true);
+            OpenTerritoryListWithRelation(player, playerTown,p -> OpenRegionMenu(player), 0);
         });
         GuiItem _relationIcon = ItemBuilder.from(RelationIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -2623,26 +2687,6 @@ public class GuiManager2 implements IGUI {
 
         gui.open(player);
     }
-    public static void OpenRegionList(Player player, boolean isTownMenu) {
-
-        Gui gui = IGUI.createChestGui("Region",4);
-
-        int i = 0;
-        for (RegionData regionData : RegionDataStorage.getAllRegions()){
-            ItemStack regionIcon = getRegionIcon(regionData);
-
-            GuiItem _region = ItemBuilder.from(regionIcon).asGuiItem(event -> event.setCancelled(true));
-            gui.setItem(i, _region);
-            i = i+1;
-        }
-
-        if(isTownMenu)
-            gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenRegionMenu(player)));
-        else
-            gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenNoRegionMenu(player)));
-
-        gui.open(player);
-    }
     private static void OpenTownInRegion(Player player){
 
         Gui gui = IGUI.createChestGui("Region",4);
@@ -2650,7 +2694,7 @@ public class GuiManager2 implements IGUI {
         RegionData regionData = RegionDataStorage.get(player);
 
         for (TownData townData : regionData.getTownsInRegion()){
-            ItemStack townIcon = getTownIconWithInformations(townData);
+            ItemStack townIcon = townData.getIconWithInformations();
 
             GuiItem _townIcon = ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
             gui.addItem(_townIcon);
@@ -2694,7 +2738,7 @@ public class GuiManager2 implements IGUI {
                 if(regionData.isTownInRegion(townData))
                     continue;
 
-                ItemStack townIcon = getTownIconWithInformations(townData);
+                ItemStack townIcon = townData.getIconWithInformationAndRelation(regionData);
                 HeadUtils.addLore(townIcon, Lang.GUI_REGION_INVITE_TOWN_DESC1.get());
 
                 GuiItem _townIcon = ItemBuilder.from(townIcon).asGuiItem(event -> {
@@ -2721,7 +2765,7 @@ public class GuiManager2 implements IGUI {
         }
         else if (action == Action.REMOVE){
             for (TownData townData : regionData.getTownsInRegion()){
-                ItemStack townIcon = getTownIconWithInformations(townData);
+                ItemStack townIcon = townData.getIconWithInformationAndRelation(regionData);
                 HeadUtils.addLore(townIcon, Lang.GUI_REGION_INVITE_TOWN_DESC1.get());
 
                 GuiItem _townIcon = ItemBuilder.from(townIcon).asGuiItem(event -> {
@@ -2731,9 +2775,7 @@ public class GuiManager2 implements IGUI {
                         player.sendMessage(getTANString() + Lang.CANT_KICK_REGIONAL_CAPITAL.get(townData.getName()));
                         return;
                     }
-                    regionData.broadcastMessageWithSound(
-                            Lang.GUI_REGION_KICK_TOWN_BROADCAST.get(townData.getName()),
-                            BAD);
+                    regionData.broadcastMessageWithSound(Lang.GUI_REGION_KICK_TOWN_BROADCAST.get(townData.getName()), BAD);
                     townData.removeRegion();
                     regionData.removeTown(townData);
                     player.closeInventory();

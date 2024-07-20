@@ -283,7 +283,7 @@ public class AdminGUI implements IGUI{
         Gui gui = IGUI.createChestGui("Town - Admin",6);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for (TownData townData : TownDataStorage.getTownMap().values()) {
-            ItemStack townIcon = HeadUtils.getTownIconWithInformations(townData);
+            ItemStack townIcon = townData.getIconWithInformations();
             HeadUtils.addLore(townIcon,
                     "",
                     Lang.ADMIN_GUI_LEFT_CLICK_TO_MANAGE_TOWN.get()
@@ -502,7 +502,7 @@ public class AdminGUI implements IGUI{
 
 
         for (TownData townData : TownDataStorage.getTownMap().values()) {
-            ItemStack townIcon = HeadUtils.getTownIconWithInformations(townData);
+            ItemStack townIcon = townData.getIconWithInformations();
             HeadUtils.addLore(townIcon,
                     "",
                     Lang.ADMIN_GUI_LEFT_CLICK_TO_MANAGE_TOWN.get()

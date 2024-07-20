@@ -66,7 +66,7 @@ public class LocalChatStorage {
 
             playerTown.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.get(playerTown.getName(),player.getName(),message));
 
-            playerTown.getRelations().getRelation(TownRelation.ALLIANCE).forEach(townID -> {
+            playerTown.getRelations().getTerritoryIDWithRelation(TownRelation.ALLIANCE).forEach(townID -> {
                 TownDataStorage.get(townID).broadCastMessage(getTANString() + Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.get(playerTown.getName(),player.getName(),message));
             }
             );

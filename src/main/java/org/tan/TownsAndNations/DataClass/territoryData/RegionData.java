@@ -1,8 +1,11 @@
 package org.tan.TownsAndNations.DataClass.territoryData;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.TownsAndNations.DataClass.ClaimedChunkSettings;
 import org.tan.TownsAndNations.DataClass.History.ChunkHistory;
 import org.tan.TownsAndNations.DataClass.History.DonationHistory;
@@ -85,6 +88,10 @@ public class RegionData implements ITerritoryData {
     }
 
     @Override
+    public String getColoredName() {
+        return "§b" + getName();
+    }
+    @Override
     public void rename(Player player, int regionCost, String newName) {
         removeBalance(regionCost);
         player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
@@ -160,6 +167,65 @@ public class RegionData implements ITerritoryData {
     @Override
     public boolean havePlayer(PlayerData playerData) {
         return havePlayer(playerData.getID());
+    }
+
+    @Override
+    public ItemStack getIcon() {
+        ItemStack icon = getIconItem();
+
+        ItemMeta meta = icon.getItemMeta();
+        if(meta != null){
+            meta.setDisplayName(ChatColor.AQUA + getName());
+            icon.setItemMeta(meta);
+        }
+        return icon;
+    }
+
+    @Override
+    public ItemStack getIconWithInformations() {
+        ItemStack icon = getIconItem();
+
+        ItemMeta meta = icon.getItemMeta();
+        if(meta != null){
+            meta.setDisplayName(ChatColor.AQUA + getName());
+
+            List<String> lore = new ArrayList<>();
+            lore.add(Lang.GUI_REGION_INFO_DESC0.get(getDescription()));
+            lore.add(Lang.GUI_REGION_INFO_DESC1.get(getCapital().getName()));
+            lore.add(Lang.GUI_REGION_INFO_DESC2.get(getNumberOfTownsIn()));
+            lore.add(Lang.GUI_REGION_INFO_DESC3.get(getTotalPlayerCount()));
+            lore.add(Lang.GUI_REGION_INFO_DESC4.get(getBalance()));
+            lore.add(Lang.GUI_REGION_INFO_DESC5.get(getNumberOfClaimedChunk()));
+            meta.setLore(lore);
+            icon.setItemMeta(meta);
+        }
+        return icon;
+    }
+
+    @Override
+    public ItemStack getIconWithInformationAndRelation(ITerritoryData territoryData){
+        ItemStack icon = getIconWithInformations();
+
+        ItemMeta meta = icon.getItemMeta();
+        if(meta != null){
+            List<String> lore = meta.getLore();
+
+            if(territoryData != null){
+                TownRelation relation = getRelationWith(territoryData);
+                String relationName;
+                if(relation == null){
+                    relationName = Lang.GUI_TOWN_RELATION_NEUTRAL.get();
+                }
+                else {
+                    relationName = relation.getColor() + relation.getName();
+                }
+                lore.add(Lang.GUI_TOWN_INFO_TOWN_RELATION.get(relationName));
+            }
+
+            meta.setLore(lore);
+            icon.setItemMeta(meta);
+        }
+        return icon;
     }
 
     public int getTotalPlayerCount() {
@@ -403,6 +469,12 @@ public class RegionData implements ITerritoryData {
             return TownRelation.REGION;
 
         return null;
+    }
+
+    @Override
+    public void broadCastMessage(String message) {
+        for(TownData townData : getTownsInRegion())
+            townData.broadCastMessage(message);
     }
 
     @Override

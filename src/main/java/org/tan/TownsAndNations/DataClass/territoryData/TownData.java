@@ -1,11 +1,9 @@
 package org.tan.TownsAndNations.DataClass.territoryData;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.DataClass.History.*;
@@ -28,7 +26,7 @@ import static org.tan.TownsAndNations.enums.TownRolePermission.KICK_PLAYER;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.HeadUtils.getPlayerHead;
 
-public class TownData implements ITerritoryData, IClaims, IMoney, IBroadcast, IChunkColor {
+public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
 
     private final String TownId;
     private String TownName;
@@ -62,6 +60,8 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IBroadcast, IC
     private final TownRelations relations;
 
     private TeleportationPosition teleportationPosition;
+
+    private Collection<String> warsInvolved = new ArrayList<>();
 
     //First time creating a town
     public TownData(String townId, String townName, String leaderID){
@@ -174,7 +174,65 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IBroadcast, IC
         return townPlayerListId;
     }
 
+    @Override
+    public ItemStack getIcon(){
+        ItemStack itemStack = getIconItem();
 
+        ItemMeta meta = itemStack.getItemMeta();
+        if(meta != null){
+            meta.setDisplayName(ChatColor.GREEN + getName());
+            itemStack.setItemMeta(meta);
+        }
+        return itemStack;
+    }
+
+    @Override
+    public ItemStack getIconWithInformations(){
+        ItemStack icon = getIcon();
+
+        ItemMeta meta = icon.getItemMeta();
+        if(meta != null){
+            meta.setDisplayName(ChatColor.GREEN + getName());
+
+            List<String> lore = new ArrayList<>();
+            lore.add(Lang.GUI_TOWN_INFO_DESC0.get(getDescription()));
+            lore.add("");
+            lore.add(Lang.GUI_TOWN_INFO_DESC1.get(getLeaderName()));
+            lore.add(Lang.GUI_TOWN_INFO_DESC2.get(getPlayerList().size()));
+            lore.add(Lang.GUI_TOWN_INFO_DESC3.get(getNumberOfClaimedChunk()));
+            lore.add(haveRegion()? Lang.GUI_TOWN_INFO_DESC5_REGION.get(getRegion().getName()): Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get());
+
+            meta.setLore(lore);
+            icon.setItemMeta(meta);
+        }
+        return icon;
+    }
+
+    @Override
+    public ItemStack getIconWithInformationAndRelation(ITerritoryData ownTerritory){
+        ItemStack icon = getIconWithInformations();
+
+        ItemMeta meta = icon.getItemMeta();
+        if(meta != null){
+            List<String> lore = meta.getLore();
+
+            if(ownTerritory != null){
+                TownRelation relation = getRelationWith(ownTerritory);
+                String relationName;
+                if(relation == null){
+                    relationName = Lang.GUI_TOWN_RELATION_NEUTRAL.get();
+                }
+                else {
+                    relationName = relation.getColor() + relation.getName();
+                }
+                lore.add(Lang.GUI_TOWN_INFO_TOWN_RELATION.get(relationName));
+            }
+
+            meta.setLore(lore);
+            icon.setItemMeta(meta);
+        }
+        return icon;
+    }
     //////////////////////////////////////
     //          ITerritoryData          //
     //////////////////////////////////////
@@ -187,6 +245,11 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IBroadcast, IC
     @Override
     public String getName(){
         return this.TownName;
+    }
+
+    @Override
+    public String getColoredName() {
+        return "§9" + getName();
     }
 
     @Override

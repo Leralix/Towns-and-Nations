@@ -15,6 +15,7 @@ public interface ITerritoryData {
 
     String getID();
     String getName();
+    String getColoredName();
     void rename(Player player, int cost, String name);
     String getLeaderID();
     PlayerData getLeaderData();
@@ -28,7 +29,6 @@ public interface ITerritoryData {
     ClaimedChunkSettings getChunkSettings();
     boolean havePlayer(PlayerData playerData);
     boolean havePlayer(String playerID);
-
     TownRelations getRelations();
     void addRelation(TownRelation relation, ITerritoryData territoryData);
     void addRelation(TownRelation relation, String territoryID);
@@ -37,6 +37,13 @@ public interface ITerritoryData {
     TownRelation getRelationWith(ITerritoryData iRelation);
     TownRelation getRelationWith(String territoryID);
 
+    void broadCastMessage(String message);
     void broadCastMessageWithSound(String message, SoundEnum soundEnum);
     boolean haveNoLeader();
+
+    ItemStack getIcon();
+    ItemStack getIconWithInformations();
+    ItemStack getIconWithInformationAndRelation(ITerritoryData territoryData);
+
+
 }

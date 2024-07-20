@@ -79,9 +79,6 @@ public class TeamUtils {
             playerTeam = scoreboard.getTeam(relation.getName().toLowerCase());
         }
         playerTeam.addEntry(toAdd.getName());
-
-        System.out.println("Final relation for " + player.getName() + " - " + toAdd.getName() + " : " + relation);
-
     }
 
     /**

@@ -164,8 +164,16 @@ rareFishValue: 20
 #Cost of renaming a town:
 ChangeTownNameCost: 100
 
-#Duration of a war in minutes
+##Wars
+#Enable war
+EnableWar: true
+#Duration of an attack in minutes
 WarDurationTime: 60
+#Minimum time before starting an attack (in minutes)
+MinimumTimeBeforeAttack: 3600
+#Maximum time before starting an attack (in minutes)
+MaximumTimeBeforeAttack: 18000
+
 
 ##Cross server config
 #Enable cross server (will require a MySQL database)
