@@ -57,11 +57,11 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
 
     private final TownLevel townLevel;
     private ClaimedChunkSettings chunkSettings;
-    private final TownRelations relations;
+    private TownRelations relations;
 
     private TeleportationPosition teleportationPosition;
 
-    private Collection<String> warsInvolved = new ArrayList<>();
+    private Collection<String> warsInvolved;
 
     //First time creating a town
     public TownData(String townId, String townName, String leaderID){
@@ -87,7 +87,7 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
         this.relations = new TownRelations();
         this.chunkSettings = new ClaimedChunkSettings();
         this.townLevel = new TownLevel();
-
+        this.warsInvolved = new ArrayList<>();
 
         addRank("default");
         if(leaderID != null)
@@ -349,6 +349,8 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
     //////////////////////////////////////
     @Override
     public TownRelations getRelations(){
+        if(this.relations == null)
+            this.relations = new TownRelations();
         return relations;
     }
 
@@ -479,7 +481,7 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
 
 
     public void cancelAllRelation() {
-        this.relations.cleanAll(getID());
+        getRelations().cleanAll(getID());
     }
 
     public void addPlayerJoinRequest(Player player) {
@@ -928,4 +930,25 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
             return 0;
         return getRegion().getTaxRate();
     }
+
+    public Collection<String> getWarInvolved() {
+        if(warsInvolved == null)
+            this.warsInvolved = new ArrayList<>();
+        return warsInvolved;
+    }
+
+    public Collection<String> getAttacksInvolved(){
+        if(warsInvolved == null)
+            this.warsInvolved = new ArrayList<>();
+        return warsInvolved;
+    }
+    public void addWar(AttackData war){
+        getAttacksInvolved().add(war.getID());
+    }
+    public void removeWar(AttackData war){
+        getAttacksInvolved().remove(war.getID());
+    }
+
+
 }
+

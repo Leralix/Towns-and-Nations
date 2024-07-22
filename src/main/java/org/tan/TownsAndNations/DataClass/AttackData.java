@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
+import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.utils.ConfigUtil;
@@ -31,10 +32,17 @@ public class AttackData {
         this.name = name;
         this.mainAttackerID = mainAttacker.getID();
         this.mainDefenderID = mainDefender.getID();
-        this.defendersID = new ArrayList<>();
+
         this.attackersID = new ArrayList<>();
-        this.startTime = startTime;
+        this.attackersID.add(mainAttackerID);
+        this.defendersID = new ArrayList<>();
+        this.defendersID.add(mainDefenderID);
+
+        this.startTime = new Date().getTime() + startTime;
         this.endTime = this.startTime + ConfigUtil.getCustomConfig("config.yml").getLong("WarDurationTime") * 60000;
+
+        mainDefender.addWar(this);
+        mainAttacker.addWar(this);
 
         setUpStartOfAttack();
     }
@@ -65,8 +73,8 @@ public class AttackData {
 
     public Collection<ITerritoryData> getAttackers() {
         Collection<ITerritoryData> attackers = new ArrayList<>();
-        for(String defenderID : defendersID){
-            attackers.add(TerritoryUtil.getTerritory(defenderID));
+        for(String attackerID : attackersID){
+            attackers.add(TerritoryUtil.getTerritory(attackerID));
         }
         return attackers;
     }
@@ -102,7 +110,8 @@ public class AttackData {
 
         BukkitRunnable warningStartOfWar = new BukkitRunnable() {
             @Override
-            public void run() {broadCastMessageWithSound("War begin in 1 minute", SoundEnum.WAR);
+            public void run() {
+                broadCastMessageWithSound("War begin in 1 minute", SoundEnum.WAR);
             }
         };
         warningStartOfWar.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeWarning);
@@ -123,11 +132,27 @@ public class AttackData {
         ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
         ItemMeta itemMeta = itemStack.getItemMeta();
         if(itemMeta != null){
-            itemMeta.setDisplayName(name);
+            itemMeta.setDisplayName( name);
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add(Lang.ATTACK_ICON_DESC_1.get(getMainAttacker().getName()));
+            lore.add(Lang.ATTACK_ICON_DESC_2.get(getMainDefender().getName()));
+            int timeLeft = (int) ((getStartTime() - new Date().getTime()) / 60000);
+            lore.add(Lang.ATTACK_ICON_DESC_3.get( timeLeft));
+            int timeLeftEnd = (int) ((getEndTime() - new Date().getTime()) / 60000);
+            lore.add(Lang.ATTACK_ICON_DESC_4.get(timeLeftEnd));
+            itemMeta.setLore(lore);
         }
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
 
 
+    public void remove() {
+        for(ITerritoryData territory : getAttackers()){
+            territory.removeWar(this);
+        }
+        for(ITerritoryData territory : getDefenders()){
+            territory.removeWar(this);
+        }
+    }
 }

@@ -13,7 +13,7 @@ import org.tan.TownsAndNations.DataClass.PropertyData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.DataClass.Vector3D;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
-import org.tan.TownsAndNations.GUI.GuiManager2;
+import org.tan.TownsAndNations.GUI.GuiManager;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.SoundEnum;
@@ -98,7 +98,7 @@ public class PlayerSelectPropertyPositionStorage {
             removePlayer(playerID);
 
             PropertyData property = playerTown.registerNewProperty(vList.get(0),vList.get(1),playerData);
-            GuiManager2.OpenPropertyManagerMenu(player,property);
+            GuiManager.OpenPropertyManagerMenu(player,property);
             createPropertyPanel(player, property, block);
             property.updateSign();
         }

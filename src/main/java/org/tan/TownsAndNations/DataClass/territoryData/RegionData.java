@@ -1,11 +1,11 @@
 package org.tan.TownsAndNations.DataClass.territoryData;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.tan.TownsAndNations.DataClass.AttackData;
 import org.tan.TownsAndNations.DataClass.ClaimedChunkSettings;
 import org.tan.TownsAndNations.DataClass.History.ChunkHistory;
 import org.tan.TownsAndNations.DataClass.History.DonationHistory;
@@ -48,6 +48,7 @@ public class RegionData implements ITerritoryData {
     private MiscellaneousHistory miscellaneousHistory;
     private TaxHistory taxHistory;
     private TownRelations relations;
+    private Collection<String> warsInvolved;
 
 
     public RegionData(String id, String name, String ownerID) {
@@ -71,6 +72,7 @@ public class RegionData implements ITerritoryData {
         this.donationHistory = new DonationHistory();
         this.miscellaneousHistory = new MiscellaneousHistory();
         this.taxHistory = new TaxHistory();
+        this.warsInvolved = new ArrayList<>();
     }
 
     //////////////////////////////////////
@@ -487,4 +489,20 @@ public class RegionData implements ITerritoryData {
     public boolean haveNoLeader() {
         return false;
     }
+
+    @Override
+    public Collection<String> getAttacksInvolved(){
+        if(warsInvolved == null)
+            this.warsInvolved = new ArrayList<>();
+        return warsInvolved;
+    }
+    @Override
+    public void addWar(AttackData war){
+        getAttacksInvolved().add(war.getID());
+    }
+    @Override
+    public void removeWar(AttackData war){
+        getAttacksInvolved().remove(war.getID());
+    }
+
 }

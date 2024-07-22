@@ -629,7 +629,12 @@ public enum Lang {
     SIGN_RENT,
     SIGN_RENT_PRICE,
     SIGN_RENTED_BY,
-    SIGN_NOT_FOR_SALE;
+    SIGN_NOT_FOR_SALE,
+    BASIC_ATTACK_NAME,
+    ATTACK_ICON_DESC_1,
+    ATTACK_ICON_DESC_2,
+    ATTACK_ICON_DESC_3,
+    ATTACK_ICON_DESC_4;
 
 
     private static final Map<Lang, String> translations = new HashMap<>();

@@ -1,7 +1,7 @@
 package org.tan.TownsAndNations.commands.subcommands;
 
 
-import org.tan.TownsAndNations.GUI.GuiManager2;
+import org.tan.TownsAndNations.GUI.GuiManager;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 
@@ -49,7 +49,7 @@ public class OpenGuiCommand extends SubCommand  {
     }
 
     private void getOpeningGui(Player player) {
-        GuiManager2.OpenMainMenu(player);
+        GuiManager.OpenMainMenu(player);
     }
 
 

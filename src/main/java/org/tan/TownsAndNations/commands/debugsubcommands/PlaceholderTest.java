@@ -1,7 +1,7 @@
 package org.tan.TownsAndNations.commands.debugsubcommands;
 
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.GUI.GuiManager2;
+import org.tan.TownsAndNations.GUI.GuiManager;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 
@@ -46,7 +46,7 @@ public class PlaceholderTest extends SubCommand {
     }
 
     private void getOpeningGui(Player player) {
-        GuiManager2.OpenMainMenu(player);
+        GuiManager.OpenMainMenu(player);
     }
 
 

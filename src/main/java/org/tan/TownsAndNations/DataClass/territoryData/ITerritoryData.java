@@ -3,6 +3,7 @@ package org.tan.TownsAndNations.DataClass.territoryData;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.tan.TownsAndNations.DataClass.AttackData;
 import org.tan.TownsAndNations.DataClass.ClaimedChunkSettings;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownRelations;
@@ -45,5 +46,8 @@ public interface ITerritoryData {
     ItemStack getIconWithInformations();
     ItemStack getIconWithInformationAndRelation(ITerritoryData territoryData);
 
+    Collection<String> getAttacksInvolved();
+    void addWar(AttackData war);
+    void removeWar(AttackData war);
 
 }

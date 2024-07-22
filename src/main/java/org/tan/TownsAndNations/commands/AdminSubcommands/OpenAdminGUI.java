@@ -2,7 +2,6 @@ package org.tan.TownsAndNations.commands.AdminSubcommands;
 
 
 import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.GUI.GuiManager2;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 

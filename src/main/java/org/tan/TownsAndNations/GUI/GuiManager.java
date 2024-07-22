@@ -46,7 +46,7 @@ import java.util.ArrayList;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class GuiManager2 implements IGUI {
+public class GuiManager implements IGUI {
 
     public static void OpenMainMenu(Player player){
 
@@ -782,15 +782,17 @@ public class GuiManager2 implements IGUI {
         Gui gui = IGUI.createChestGui("Wars | page " + (page + 1),6);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
-        for(ITerritoryData enemyTerritory : territory.getRelations().getTerritoryWithRelation(TownRelation.WAR)){
-            ItemStack territoryIcon = enemyTerritory.getIconWithInformations();
+        for(String attackID : territory.getAttacksInvolved()){
+            AttackData attackData = AttackDataStorage.getAttackFromID(attackID);
 
-            GuiItem territoryAtWar = ItemBuilder.from(territoryIcon).asGuiItem(event -> {
+            ItemStack attackIcon = attackData.getIcon();
+
+            GuiItem _attack = ItemBuilder.from(attackIcon).asGuiItem(event -> {
+
                 event.setCancelled(true);
-                OpenStartWarSettings(player, territory, enemyTerritory, exit, new CreateAttackData());
 
             });
-            guiItems.add(territoryAtWar);
+            guiItems.add(_attack);
         }
 
         createIterator(gui, guiItems, page, player, exit,
@@ -820,11 +822,11 @@ public class GuiManager2 implements IGUI {
         GuiItem _addTime = ItemBuilder.from(addTime).asGuiItem(event -> {
             event.setCancelled(true);
             SoundUtil.playSound(player, ADD);
-            if(event.isLeftClick()){
-                createAttackData.addDeltaDateTime(60000);
-            }
             if(event.isShiftClick()){
                 createAttackData.addDeltaDateTime(3600000);
+            }
+            else if(event.isLeftClick()){
+                createAttackData.addDeltaDateTime(60000);
             }
             OpenStartWarSettings(player, attackingTerritory, enemyTerritory, exit, createAttackData);
         });
@@ -832,11 +834,12 @@ public class GuiManager2 implements IGUI {
         GuiItem _removeTime = ItemBuilder.from(removeTIme).asGuiItem(event -> {
             event.setCancelled(true);
             SoundUtil.playSound(player, REMOVE);
-            if(event.isLeftClick()){
-                createAttackData.addDeltaDateTime(-60000);
-            }
+
             if(event.isShiftClick()){
                 createAttackData.addDeltaDateTime(-3600000);
+            }
+            else if(event.isLeftClick()){
+                createAttackData.addDeltaDateTime(-60000);
             }
             OpenStartWarSettings(player, attackingTerritory, enemyTerritory, exit, createAttackData);
         });
@@ -847,8 +850,13 @@ public class GuiManager2 implements IGUI {
 
         GuiItem _confirm = ItemBuilder.from(confirm).asGuiItem(event -> {
             event.setCancelled(true);
-            AttackDataStorage.newWar("test", enemyTerritory, attackingTerritory, createAttackData);
+            AttackDataStorage.newWar(Lang.BASIC_ATTACK_NAME.get(attackingTerritory.getName(), enemyTerritory.getName()), enemyTerritory, attackingTerritory, createAttackData);
             OpenWarMenu(player, attackingTerritory, exit, 0);
+
+            player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.get(enemyTerritory.getName()));
+            attackingTerritory.broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(attackingTerritory.getName(), enemyTerritory.getName()), WAR);
+            enemyTerritory.broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(attackingTerritory.getName(), enemyTerritory.getName()), WAR);
+
         });
 
 
@@ -2209,9 +2217,6 @@ public class GuiManager2 implements IGUI {
 
                 if (relation == TownRelation.WAR) {
                     //WarTaggedPlayer.addPlayersToTown(territoryID, territoryRelation.getPlayerList());
-
-                    player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.get(TownDataStorage.get(territoryID).getName()));
-                    territoryData.broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(mainTerritory.getName()), WAR);
 
                     OpenStartWarSettings(player, mainTerritory, territoryData, doubleExit, new CreateAttackData());
                 }

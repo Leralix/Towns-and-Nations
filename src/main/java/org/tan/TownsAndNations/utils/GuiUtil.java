@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.DataClass.TownLevel;
 import org.tan.TownsAndNations.DataClass.TownUpgrade;
-import org.tan.TownsAndNations.GUI.GuiManager2;
+import org.tan.TownsAndNations.GUI.GuiManager;
 import org.tan.TownsAndNations.GUI.IGUI;
 import org.tan.TownsAndNations.Lang.DynamicLang;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -53,7 +53,7 @@ public class GuiUtil {
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.get());
                 SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             }
-            GuiManager2.OpenTownLevel(player,0);
+            GuiManager.OpenTownLevel(player,0);
         });
     }
 
