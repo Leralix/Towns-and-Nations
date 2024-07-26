@@ -268,7 +268,7 @@ public final class TownsAndNations extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CreatePropertyListener(),this);
         getServer().getPluginManager().registerEvents(new PropertySignListener(),this);
         getServer().getPluginManager().registerEvents(new LandmarkChestListener(),this);
-
+        getServer().getPluginManager().registerEvents(new AttackListener(),this);
     }
 
     /**

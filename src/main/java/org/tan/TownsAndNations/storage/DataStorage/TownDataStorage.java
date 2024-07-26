@@ -65,7 +65,7 @@ public class TownDataStorage {
 
 
         townToDelete.cancelAllRelation();   //Cancel all Relation between the deleted town and other town
-        for(String playerID : townToDelete.getPlayerList()){ //Kick all Players from the deleted town
+        for(String playerID : townToDelete.getPlayerIDList()){ //Kick all Players from the deleted town
             townToDelete.removePlayer(PlayerDataStorage.get(playerID));
         }
 

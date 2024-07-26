@@ -44,7 +44,7 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
                 return Lang.NO_TOWN.get();
 
             TownData town = playerData.getTown();
-            return Integer.toString(town.getPlayerList().size());
+            return Integer.toString(town.getPlayerIDList().size());
         }
         else if (params.equalsIgnoreCase("player_town_chunk_quantity")) {
             PlayerData playerData = PlayerDataStorage.get(player.getUniqueId());

@@ -9,7 +9,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
@@ -245,7 +244,7 @@ public class AdminGUI implements IGUI{
         PlayerData playerData = PlayerDataStorage.get(player);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for(String playerID : regionData.getPlayerList()){
+        for(String playerID : regionData.getPlayerIDList()){
 
             PlayerData iteratePlayerData = PlayerDataStorage.get(playerID);
             ItemStack switchPlayerIcon = HeadUtils.getPlayerHead(Bukkit.getOfflinePlayer(UUID.fromString(playerID)));
@@ -399,7 +398,7 @@ public class AdminGUI implements IGUI{
         Gui gui = IGUI.createChestGui("Town",3);
 
         int i = 0;
-        for (String playerUUID : townData.getPlayerList()){
+        for (String playerUUID : townData.getPlayerIDList()){
             OfflinePlayer townPlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerUUID));
 
             ItemStack playerHead = HeadUtils.getPlayerHead(townPlayer,

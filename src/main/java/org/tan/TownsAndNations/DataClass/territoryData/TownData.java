@@ -170,8 +170,17 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
         TownDataStorage.saveStats();
     }
 
-    public Collection<String> getPlayerList(){
+    public Collection<String> getPlayerIDList(){
         return townPlayerListId;
+    }
+
+    @Override
+    public Collection<PlayerData> getPlayerDataList(){
+        ArrayList<PlayerData> playerDataList = new ArrayList<>();
+        for (String playerID : getPlayerIDList()){
+            playerDataList.add(PlayerDataStorage.get(playerID));
+        }
+        return playerDataList;
     }
 
     @Override
@@ -198,7 +207,7 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
             lore.add(Lang.GUI_TOWN_INFO_DESC0.get(getDescription()));
             lore.add("");
             lore.add(Lang.GUI_TOWN_INFO_DESC1.get(getLeaderName()));
-            lore.add(Lang.GUI_TOWN_INFO_DESC2.get(getPlayerList().size()));
+            lore.add(Lang.GUI_TOWN_INFO_DESC2.get(getPlayerIDList().size()));
             lore.add(Lang.GUI_TOWN_INFO_DESC3.get(getNumberOfClaimedChunk()));
             lore.add(haveRegion()? Lang.GUI_TOWN_INFO_DESC5_REGION.get(getRegion().getName()): Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get());
 
@@ -581,7 +590,7 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
     }
 
     public boolean teleportPlayerToSpawn(PlayerData playerData){
-        return teleportPlayerToSpawn(Bukkit.getPlayer(playerData.getUUID()));
+        return teleportPlayerToSpawn(playerData.getPlayer());
     }
 
     public boolean teleportPlayerToSpawn(Player player){
@@ -754,7 +763,7 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
     public int computeNextRevenue() {
 
         int nextTaxes = 0;
-        for (String playerID : getPlayerList()){
+        for (String playerID : getPlayerIDList()){
             PlayerData otherPlayerData = PlayerDataStorage.get(playerID);
             OfflinePlayer otherPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
             if(!otherPlayerData.getTownRank().isPayingTaxes()){
