@@ -187,6 +187,9 @@ public class PlayerData {
     }
 
     public void addWar(AttackStatus attackStatus){
+        if(getWarIDTaggedList().contains(attackStatus.getID())){
+            return;
+        }
         getWarIDTaggedList().add(attackStatus.getID());
     }
 

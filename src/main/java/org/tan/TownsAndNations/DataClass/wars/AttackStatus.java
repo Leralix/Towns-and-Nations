@@ -4,8 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.AttackData;
 import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.AttackStatusStorage;
 
 import java.util.Collection;
@@ -24,7 +26,7 @@ public class AttackStatus {
         this.attackersID = attackers;
         this.defendersID = defenders;
 
-        bossBar = Bukkit.createBossBar("war", BarColor.RED, BarStyle.SEGMENTED_10);
+        bossBar = Bukkit.createBossBar("war", BarColor.RED, BarStyle.SOLID);
         updateBossBar();
 
         for(PlayerData playerData : attackersID) {
@@ -48,6 +50,7 @@ public class AttackStatus {
     }
 
     private void updateBossBar() {
+        System.out.println("BossbarScore : " + (double) (score / maxScore));
         bossBar.setProgress((double) score / maxScore);
     }
 
@@ -61,21 +64,29 @@ public class AttackStatus {
     }
 
     public void defensivePlayerKilled(){
-        addScore(-100);
+        int nbDefenders = defendersID.size();
+        int score = 1/nbDefenders * 500;
+
+        addScore(score);
     }
     public void attackPlayerKilled(){
-        addScore(100);
+        int nbAttackers = attackersID.size();
+        int score = 1/nbAttackers * 500;
+
+        addScore(-score);
     }
 
     private void addScore(int score) {
         this.score += score;
-        updateBossBar();
         if (this.score >= maxScore) {
+            this.score = maxScore;
             attackerWin();
         }
         if(this.score <= 0){
+            this.score = 0;
             defenderWin();
         }
+        updateBossBar();
     }
 
     private void attackerWin() {
@@ -87,7 +98,8 @@ public class AttackStatus {
         for (PlayerData playerData : defenders) {
             playerData.getPlayer().sendMessage("You have lost the war!");
         }
-
+        bossBar.setTitle("Attackers win !");
+        endWar();
     }
 
     private void defenderWin(){
@@ -99,7 +111,26 @@ public class AttackStatus {
         for (PlayerData playerData : defenders) {
             playerData.getPlayer().sendMessage("You have won the war!");
         }
+        bossBar.setTitle("Defenders win !");
+
+        endWar();
     }
 
+    private void endWar() {
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for(PlayerData playerData : attackersID) {
+                    playerData.removeWar(AttackStatus.this);
+                }
+                for(PlayerData playerData : defendersID) {
+                    playerData.removeWar(AttackStatus.this);
+                }
+                bossBar.removeAll();
+                AttackStatusStorage.remove(AttackStatus.this);
+            }
+        }.runTaskLater(TownsAndNations.getPlugin(),30 * 20); //30 seconds
+    }
 
 }

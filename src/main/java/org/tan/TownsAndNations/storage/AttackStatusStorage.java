@@ -25,6 +25,9 @@ public class AttackStatusStorage {
     public static void add(AttackStatus attackStatus){
         attackStatusMap.put(attackStatus.getID(), attackStatus);
     }
+    public static void remove(AttackStatus attackStatus){
+        attackStatusMap.remove(attackStatus.getID());
+    }
 
     private static String getNextID(){
         int ID = 0;
