@@ -26,7 +26,8 @@ public interface ITerritoryData {
     void setDescription(String newDescription);
     ItemStack getIconItem();
     void setIconMaterial(Material material);
-    Collection<String> getPlayerList();
+    Collection<String> getPlayerIDList();
+    Collection<PlayerData> getPlayerDataList();
     ClaimedChunkSettings getChunkSettings();
     boolean havePlayer(PlayerData playerData);
     boolean havePlayer(String playerID);

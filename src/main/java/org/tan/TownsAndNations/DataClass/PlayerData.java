@@ -1,15 +1,19 @@
 package org.tan.TownsAndNations.DataClass;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
+import org.tan.TownsAndNations.DataClass.wars.AttackStatus;
 import org.tan.TownsAndNations.enums.TownRolePermission;
+import org.tan.TownsAndNations.storage.AttackStatusStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.storage.Invitation.TownInviteDataStorage;
 import org.tan.TownsAndNations.storage.WarTaggedPlayer;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,6 +26,8 @@ public class PlayerData {
     private String TownId;
     private Integer townRankID;
     private List<String> propertiesListID;
+    private List<String> warIDTaggedList;
+
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
         this.PlayerName = player.getName();
@@ -29,6 +35,7 @@ public class PlayerData {
         this.TownId = null;
         this.townRankID = null;
         this.propertiesListID = new ArrayList<>();
+        this.warIDTaggedList = new ArrayList<>();
     }
 
     public String getID() {
@@ -158,5 +165,35 @@ public class PlayerData {
 
     public void removeProperty(PropertyData propertyData) {
         this.propertiesListID.remove(propertyData.getTotalID());
+    }
+
+    public Player getPlayer() {
+        return Bukkit.getPlayer(getUUID());
+    }
+
+    public Collection<String> getWarIDTaggedList(){
+        if(warIDTaggedList == null)
+            warIDTaggedList = new ArrayList<>();
+        return warIDTaggedList;
+    }
+
+    public void notifyDeathToAttacks(){
+        for(String attackID : getWarIDTaggedList()){
+            AttackStatus attackStatus = AttackStatusStorage.get(attackID);
+            if(attackStatus != null){
+                attackStatus.playerKilled(this);
+            }
+        }
+    }
+
+    public void addWar(AttackStatus attackStatus){
+        if(getWarIDTaggedList().contains(attackStatus.getID())){
+            return;
+        }
+        getWarIDTaggedList().add(attackStatus.getID());
+    }
+
+    public void removeWar(AttackStatus attackStatus){
+        getWarIDTaggedList().remove(attackStatus.getID());
     }
 }

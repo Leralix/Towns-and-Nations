@@ -149,12 +149,21 @@ public class RegionData implements ITerritoryData {
     }
 
     @Override
-    public Collection<String> getPlayerList(){
+    public Collection<String> getPlayerIDList(){
         ArrayList<String> playerList = new ArrayList<>();
         for (TownData townData : getTownsInRegion()){
-            playerList.addAll(townData.getPlayerList());
+            playerList.addAll(townData.getPlayerIDList());
         }
         return playerList;
+    }
+
+    @Override
+    public Collection<PlayerData> getPlayerDataList(){
+        ArrayList<PlayerData> playerDataList = new ArrayList<>();
+        for (String playerID : getPlayerIDList()){
+            playerDataList.add(PlayerDataStorage.get(playerID));
+        }
+        return playerDataList;
     }
 
     @Override
@@ -164,7 +173,7 @@ public class RegionData implements ITerritoryData {
 
     @Override
     public boolean havePlayer(String playerID) {
-        return getPlayerList().contains(playerID);
+        return getPlayerIDList().contains(playerID);
     }
     @Override
     public boolean havePlayer(PlayerData playerData) {
@@ -233,7 +242,7 @@ public class RegionData implements ITerritoryData {
     public int getTotalPlayerCount() {
         int count = 0;
         for (TownData town : getTownsInRegion()){
-            count += town.getPlayerList().size();
+            count += town.getPlayerIDList().size();
         }
         return count;
     }

@@ -23,8 +23,8 @@ public class AttackData {
     private String name;
     private final String mainDefenderID;
     private final String mainAttackerID;
-    private Collection<String> defendersID;
-    private Collection<String> attackersID;
+    private final Collection<String> defendersID;
+    private final Collection<String> attackersID;
 
     private final long startTime;
     private final long endTime;
@@ -65,7 +65,23 @@ public class AttackData {
         return TerritoryUtil.getTerritory(mainAttackerID);
     }
 
-    public Collection<ITerritoryData> getDefenders() {
+    public Collection<PlayerData> getDefendingPlayers() {
+        Collection<PlayerData> defenders = new ArrayList<>();
+        for(ITerritoryData defendingTerritory : getDefendingTerritory()){
+            defenders.addAll(defendingTerritory.getPlayerDataList());
+        }
+        return defenders;
+    }
+
+    public Collection<PlayerData> getAttackersPlayers() {
+        Collection<PlayerData> defenders = new ArrayList<>();
+        for(ITerritoryData attackingTerritory : getDefendingTerritory()){
+            defenders.addAll(attackingTerritory.getPlayerDataList());
+        }
+        return defenders;
+    }
+
+    public Collection<ITerritoryData> getDefendingTerritory() {
         Collection<ITerritoryData> defenders = new ArrayList<>();
         for(String defenderID : defendersID){
             defenders.add(TerritoryUtil.getTerritory(defenderID));
@@ -73,7 +89,7 @@ public class AttackData {
         return defenders;
     }
 
-    public Collection<ITerritoryData> getAttackers() {
+    public Collection<ITerritoryData> getAttackingTerritory() {
         Collection<ITerritoryData> attackers = new ArrayList<>();
         for(String attackerID : attackersID){
             attackers.add(TerritoryUtil.getTerritory(attackerID));
@@ -90,8 +106,8 @@ public class AttackData {
     }
 
     public void broadCastMessageWithSound(String message, SoundEnum soundEnum){
-        Collection<ITerritoryData> territoryData = getAttackers();
-        territoryData.addAll(getDefenders());
+        Collection<ITerritoryData> territoryData = getAttackingTerritory();
+        territoryData.addAll(getDefendingTerritory());
         for(ITerritoryData territory : territoryData){
             territory.broadCastMessageWithSound(message, soundEnum);
         }
@@ -157,10 +173,10 @@ public class AttackData {
 
 
     public void remove() {
-        for(ITerritoryData territory : getAttackers()){
+        for(ITerritoryData territory : getAttackingTerritory()){
             territory.removeWar(this);
         }
-        for(ITerritoryData territory : getDefenders()){
+        for(ITerritoryData territory : getDefendingTerritory()){
             territory.removeWar(this);
         }
     }

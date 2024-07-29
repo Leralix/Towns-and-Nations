@@ -929,14 +929,14 @@ public class GuiManager implements IGUI {
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
 
-        int rowSize = Math.min(playerTown.getPlayerList().size() / 9 + 3,6);
+        int rowSize = Math.min(playerTown.getPlayerIDList().size() / 9 + 3,6);
 
         Gui gui = IGUI.createChestGui("Town",rowSize);
 
 
 
         int i = 0;
-        for (String playerUUID: playerTown.getPlayerList()) {
+        for (String playerUUID: playerTown.getPlayerIDList()) {
 
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
             PlayerData playerIterateData = PlayerDataStorage.get(playerUUID);
@@ -1317,7 +1317,7 @@ public class GuiManager implements IGUI {
         TownRank townRank = town.getRank(rankID);
         int i = 0;
 
-        for (String otherPlayerUUID : town.getPlayerList()) {
+        for (String otherPlayerUUID : town.getPlayerIDList()) {
             PlayerData otherPlayerData = PlayerDataStorage.get(otherPlayerUUID);
             boolean skip = false;
 
@@ -2107,7 +2107,7 @@ public class GuiManager implements IGUI {
         Gui gui = IGUI.createChestGui("Town",3);
 
         int i = 0;
-        for (String playerUUID : townData.getPlayerList()){
+        for (String playerUUID : townData.getPlayerIDList()){
             OfflinePlayer townPlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerUUID));
 
             ItemStack playerHead = HeadUtils.getPlayerHead(townPlayer.getName(),townPlayer,
@@ -3117,7 +3117,7 @@ public class GuiManager implements IGUI {
             RegionData regionData = playerData.getRegion();
 
             ArrayList<GuiItem> guiItems = new ArrayList<>();
-            for(String playerID : regionData.getPlayerList()){
+            for(String playerID : regionData.getPlayerIDList()){
 
                 PlayerData iteratePlayerData = PlayerDataStorage.get(playerID);
                 ItemStack switchPlayerIcon = HeadUtils.getPlayerHead(Bukkit.getOfflinePlayer(UUID.fromString(playerID)));
