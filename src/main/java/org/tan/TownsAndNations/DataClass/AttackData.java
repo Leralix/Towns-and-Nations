@@ -9,6 +9,8 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.DateUtil;
+import org.tan.TownsAndNations.utils.SoundUtil;
 import org.tan.TownsAndNations.utils.TerritoryUtil;
 
 import java.util.ArrayList;
@@ -38,8 +40,8 @@ public class AttackData {
         this.defendersID = new ArrayList<>();
         this.defendersID.add(mainDefenderID);
 
-        this.startTime = new Date().getTime() + startTime;
-        this.endTime = this.startTime + ConfigUtil.getCustomConfig("config.yml").getLong("WarDurationTime") * 60000;
+        this.startTime = (long) (new Date().getTime() * 0.02 + startTime);
+        this.endTime = this.startTime + ConfigUtil.getCustomConfig("config.yml").getLong("WarDurationTime") * 1200;
 
         mainDefender.addWar(this);
         mainAttacker.addWar(this);
@@ -96,10 +98,10 @@ public class AttackData {
     }
 
     public void setUpStartOfAttack(){
-        long currentTime = new Date().getTime();
-        long timeLeftBeforeStart = startTime - currentTime;
-        long timeLeftBeforeWarning = startTime - currentTime + 60000; //Warning 1 minute before
-
+        long timeLeftBeforeStart = (long) (startTime - new Date().getTime() * 0.02);
+        long timeLeftBeforeWarning = timeLeftBeforeStart - 1200; //Warning 1 minute before
+        System.out.println("War warning in " + timeLeftBeforeWarning + "ticks");
+        System.out.println("War start in " + timeLeftBeforeStart + "ticks");
         BukkitRunnable startOfWar = new BukkitRunnable() {
             @Override
             public void run() {
@@ -108,6 +110,7 @@ public class AttackData {
         };
         startOfWar.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeStart);
 
+
         BukkitRunnable warningStartOfWar = new BukkitRunnable() {
             @Override
             public void run() {
@@ -115,6 +118,14 @@ public class AttackData {
             }
         };
         warningStartOfWar.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeWarning);
+
+        BukkitRunnable warningStartOfWar2 = new BukkitRunnable() {
+            @Override
+            public void run() {
+                broadCastMessageWithSound("War begin in x minute", SoundEnum.WAR);
+            }
+        };
+        warningStartOfWar2.runTaskLater(TownsAndNations.getPlugin(), startTime / 10);
     }
 
     private void startWar() {
@@ -136,10 +147,8 @@ public class AttackData {
             ArrayList<String> lore = new ArrayList<>();
             lore.add(Lang.ATTACK_ICON_DESC_1.get(getMainAttacker().getName()));
             lore.add(Lang.ATTACK_ICON_DESC_2.get(getMainDefender().getName()));
-            int timeLeft = (int) ((getStartTime() - new Date().getTime()) / 60000);
-            lore.add(Lang.ATTACK_ICON_DESC_3.get( timeLeft));
-            int timeLeftEnd = (int) ((getEndTime() - new Date().getTime()) / 60000);
-            lore.add(Lang.ATTACK_ICON_DESC_4.get(timeLeftEnd));
+            lore.add(Lang.ATTACK_ICON_DESC_3.get(DateUtil.getStringDeltaDateTime((long) (getStartTime() - new Date().getTime() * 0.02))));
+            lore.add(Lang.ATTACK_ICON_DESC_4.get(DateUtil.getStringDeltaDateTime((long) ((getEndTime() - getStartTime())))));
             itemMeta.setLore(lore);
         }
         itemStack.setItemMeta(itemMeta);
@@ -154,5 +163,9 @@ public class AttackData {
         for(ITerritoryData territory : getDefenders()){
             territory.removeWar(this);
         }
+    }
+
+    public boolean isMainAttacker(ITerritoryData territory) {
+        return territory.getID().equals(mainAttackerID);
     }
 }

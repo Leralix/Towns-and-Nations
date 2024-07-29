@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.storage;
+package org.tan.TownsAndNations.storage.DataStorage;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -39,6 +39,12 @@ public class AttackDataStorage {
         warDataMapWithWarKey.remove(attackData.getID());
     }
 
+    private static void setupAllAttacks(){
+        for(AttackData attackData : warDataMapWithTerritoryKey.values()){
+            attackData.setUpStartOfAttack();
+        }
+    }
+
     private static String getNewID(){
         int ID = 0;
         while(warDataMapWithTerritoryKey.containsKey("W"+ID)){
@@ -54,7 +60,7 @@ public class AttackDataStorage {
     public static AttackData getAttackFromID(String warID) {
         return warDataMapWithWarKey.get(warID);
     }
-    public static AttackData getWarFromTerritory(String defendingTerritoryID) {
+    public static AttackData getAttackFromTerritoryID(String defendingTerritoryID) {
         return warDataMapWithTerritoryKey.get(defendingTerritoryID);
     }
 
@@ -75,7 +81,7 @@ public class AttackDataStorage {
                 warDataMapWithWarKey.put(attackData.getID(), attackData);
             }
         }
-
+        setupAllAttacks();
     }
 
     public static void save() {

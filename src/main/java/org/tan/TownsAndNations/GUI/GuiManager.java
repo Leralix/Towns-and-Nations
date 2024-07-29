@@ -17,10 +17,7 @@ import org.tan.TownsAndNations.Lang.DynamicLang;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.*;
 import org.tan.TownsAndNations.storage.*;
-import org.tan.TownsAndNations.storage.DataStorage.LandmarkStorage;
-import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
-import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.*;
 import org.tan.TownsAndNations.storage.Invitation.RegionInviteDataStorage;
 import org.tan.TownsAndNations.storage.Invitation.TownRelationConfirmStorage;
 import org.tan.TownsAndNations.storage.Legacy.UpgradeStorage;
@@ -698,8 +695,8 @@ public class GuiManager implements IGUI {
         ItemStack landmark = HeadUtils.makeSkull(Lang.ADMIN_GUI_LANDMARK_ICON.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmQ3NjFjYzE2NTYyYzg4ZDJmYmU0MGFkMzg1MDJiYzNiNGE4Nzg1OTg4N2RiYzM1ZjI3MmUzMGQ4MDcwZWVlYyJ9fX0=",
                 Lang.ADMIN_GUI_LANDMARK_DESC1.get());
 
-        ItemStack war = HeadUtils.makeSkull(Lang.ADMIN_GUI_LANDMARK_ICON.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjVkZTRmZjhiZTcwZWVlNGQxMDNiMWVlZGY0NTRmMGFiYjlmMDU2OGY1ZjMyNmVjYmE3Y2FiNmE0N2Y5YWRlNCJ9fX0=",
-                Lang.ADMIN_GUI_LANDMARK_DESC1.get());
+        ItemStack war = HeadUtils.makeSkull(Lang.GUI_WAR_ICON.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjVkZTRmZjhiZTcwZWVlNGQxMDNiMWVlZGY0NTRmMGFiYjlmMDU2OGY1ZjMyNmVjYmE3Y2FiNmE0N2Y5YWRlNCJ9fX0=",
+                Lang.GUI_WAR_ICON_DESC1.get());
 
         GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -786,11 +783,21 @@ public class GuiManager implements IGUI {
             AttackData attackData = AttackDataStorage.getAttackFromID(attackID);
 
             ItemStack attackIcon = attackData.getIcon();
+            HeadUtils.addLore(attackIcon, "", Lang.GUI_LEFT_CLICK_TO_INTERACT.get(), Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get());
 
             GuiItem _attack = ItemBuilder.from(attackIcon).asGuiItem(event -> {
-
                 event.setCancelled(true);
-
+                if(event.isRightClick()){
+                    if(!attackData.isMainAttacker(territory)){
+                        player.sendMessage(getTANString() + Lang.GUI_WAR_NOT_MAIN_ATTACKER.get());
+                        SoundUtil.playSound(player, NOT_ALLOWED);
+                        return;
+                    }
+                    player.sendMessage(getTANString() + Lang.ATTACK_SUCCESSFULLY_CANCELLED.get());
+                    AttackDataStorage.remove(attackData);
+                    OpenWarMenu(player, territory, exit, page);
+                    return;
+                }
             });
             guiItems.add(_attack);
         }
@@ -812,7 +819,7 @@ public class GuiManager implements IGUI {
         ItemStack removeTIme = HeadUtils.makeSkull(Lang.GUI_WAR_REMOVE_TIME.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGE1NmRhYjUzZDRlYTFhNzlhOGU1ZWQ2MzIyYzJkNTZjYjcxNGRkMzVlZGY0Nzg3NjNhZDFhODRhODMxMCJ9fX0=",
                 Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(),
                 Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get());
-        ItemStack time = HeadUtils.makeSkull(Lang.GUI_WAR_SET_TO_START_IN.get(createAttackData.getStringDeltaDateTime()),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWU5OThmM2ExNjFhNmM5ODlhNWQwYTFkYzk2OTMxYTM5OTI0OWMwODBiNjYzNjQ1ODFhYjk0NzBkZWE1ZTcyMCJ9fX0=",
+        ItemStack time = HeadUtils.makeSkull(Lang.GUI_WAR_SET_TO_START_IN.get(DateUtil.getStringDeltaDateTime(createAttackData.getDeltaDateTime())),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWU5OThmM2ExNjFhNmM5ODlhNWQwYTFkYzk2OTMxYTM5OTI0OWMwODBiNjYzNjQ1ODFhYjk0NzBkZWE1ZTcyMCJ9fX0=",
                 Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(),
                 Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get());
         ItemStack confirm = HeadUtils.makeSkull(Lang.GUI_CONFIRM_ATTACK.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDMxMmNhNDYzMmRlZjVmZmFmMmViMGQ5ZDdjYzdiNTVhNTBjNGUzOTIwZDkwMzcyYWFiMTQwNzgxZjVkZmJjNCJ9fX0=",
@@ -823,10 +830,10 @@ public class GuiManager implements IGUI {
             event.setCancelled(true);
             SoundUtil.playSound(player, ADD);
             if(event.isShiftClick()){
-                createAttackData.addDeltaDateTime(3600000);
+                createAttackData.addDeltaDateTime(60 * 1200);
             }
             else if(event.isLeftClick()){
-                createAttackData.addDeltaDateTime(60000);
+                createAttackData.addDeltaDateTime(1200);
             }
             OpenStartWarSettings(player, attackingTerritory, enemyTerritory, exit, createAttackData);
         });
@@ -836,10 +843,10 @@ public class GuiManager implements IGUI {
             SoundUtil.playSound(player, REMOVE);
 
             if(event.isShiftClick()){
-                createAttackData.addDeltaDateTime(-3600000);
+                createAttackData.addDeltaDateTime(-60 * 1200);
             }
             else if(event.isLeftClick()){
-                createAttackData.addDeltaDateTime(-60000);
+                createAttackData.addDeltaDateTime(-1200);
             }
             OpenStartWarSettings(player, attackingTerritory, enemyTerritory, exit, createAttackData);
         });
@@ -2218,6 +2225,11 @@ public class GuiManager implements IGUI {
                 if (relation == TownRelation.WAR) {
                     //WarTaggedPlayer.addPlayersToTown(territoryID, territoryRelation.getPlayerList());
 
+                    if(AttackDataStorage.getAttackFromTerritoryID(territoryID) != null){
+                        player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_ALREADY_ATTACKING.get());
+                        SoundUtil.playSound(player, NOT_ALLOWED);
+                        return;
+                    }
                     OpenStartWarSettings(player, mainTerritory, territoryData, doubleExit, new CreateAttackData());
                 }
             });

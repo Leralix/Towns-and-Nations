@@ -170,9 +170,9 @@ EnableWar: true
 #Duration of an attack in minutes
 WarDurationTime: 60
 #Minimum time before starting an attack (in minutes)
-MinimumTimeBeforeAttack: 3600
+MinimumTimeBeforeAttack: 1440 #24 hours
 #Maximum time before starting an attack (in minutes)
-MaximumTimeBeforeAttack: 18000
+MaximumTimeBeforeAttack: 4320 #72 hours
 
 
 ##Cross server config

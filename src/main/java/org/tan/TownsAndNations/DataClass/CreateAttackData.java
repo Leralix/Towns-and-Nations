@@ -7,7 +7,7 @@ public class CreateAttackData {
     long deltaDateTime;
 
     public CreateAttackData(){
-        deltaDateTime = ConfigUtil.getCustomConfig("config.yml").getLong("MinimumTimeBeforeAttack") * 60000;
+        deltaDateTime = ConfigUtil.getCustomConfig("config.yml").getLong("MinimumTimeBeforeAttack") * 60 * 20;
     }
 
     public void addDeltaDateTime(long deltaDateTime){
@@ -17,11 +17,7 @@ public class CreateAttackData {
     public long getDeltaDateTime(){
         return deltaDateTime;
     }
-    public String getStringDeltaDateTime(){
-        int nbHours = (int) (deltaDateTime / 3600000);
-        int nbMinutes = (int) ((deltaDateTime % 3600000) / 60000);
-        return nbHours + "h" + nbMinutes + "m";
-    }
+
 
 
 }
