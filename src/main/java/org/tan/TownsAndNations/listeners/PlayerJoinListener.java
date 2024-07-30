@@ -33,6 +33,7 @@ public class PlayerJoinListener implements Listener {
                         Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(TownDataStorage.get(playerStat).getPlayerJoinRequestSet().size())
                 );
             }
+            playerStat.updateCurrentAttack();
             if(TownsAndNations.townTagIsEnabled())
                 prefixUtil.addPrefix(player);
         }

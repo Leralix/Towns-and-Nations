@@ -25,7 +25,6 @@ public class DebugCommandManager implements CommandExecutor, TabExecutor, TabCom
         subCommands.add(new PlaySound());
         subCommands.add(new ActionBarCommand());
         subCommands.add(new GetDropChances());
-        subCommands.add(new startTestWar());
 
     }
 

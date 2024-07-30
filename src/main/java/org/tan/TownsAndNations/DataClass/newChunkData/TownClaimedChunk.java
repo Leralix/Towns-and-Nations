@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.PropertyData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
+import org.tan.TownsAndNations.DataClass.wars.CurrentAttacks;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.enums.TownChunkPermission;
@@ -17,7 +18,6 @@ import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
-import org.tan.TownsAndNations.storage.WarTaggedPlayer;
 import org.tan.TownsAndNations.utils.SoundUtil;
 
 import static org.tan.TownsAndNations.enums.SoundEnum.BAD;
@@ -46,9 +46,11 @@ public class TownClaimedChunk extends ClaimedChunk2{
         TownData playerTown = TownDataStorage.get(player);
         PlayerData playerData = PlayerDataStorage.get(player);
 
-        //player is at war with the town. He can interact with everything
-        if(WarTaggedPlayer.isPlayerInWarWithTown(player, this.getTown()))
-            return true;
+
+        for(CurrentAttacks currentAttacks : playerTown.getCurrentAttacks())
+            if(currentAttacks.containsPlayer(playerData)) //player is a part of a war with this town.
+                return true;
+
 
         //Location is in a property and players owns or rent it
         TownData ownerTown = getTown();

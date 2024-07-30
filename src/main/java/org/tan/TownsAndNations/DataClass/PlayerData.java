@@ -4,12 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
-import org.tan.TownsAndNations.DataClass.wars.AttackStatus;
+import org.tan.TownsAndNations.DataClass.wars.CurrentAttacks;
 import org.tan.TownsAndNations.enums.TownRolePermission;
-import org.tan.TownsAndNations.storage.AttackStatusStorage;
+import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.storage.Invitation.TownInviteDataStorage;
-import org.tan.TownsAndNations.storage.WarTaggedPlayer;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class PlayerData {
     private String TownId;
     private Integer townRankID;
     private List<String> propertiesListID;
-    private List<String> warIDTaggedList;
+    private List<String> attackInvolvedIn;
 
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
@@ -35,7 +34,7 @@ public class PlayerData {
         this.TownId = null;
         this.townRankID = null;
         this.propertiesListID = new ArrayList<>();
-        this.warIDTaggedList = new ArrayList<>();
+        this.attackInvolvedIn = new ArrayList<>();
     }
 
     public String getID() {
@@ -66,9 +65,6 @@ public class PlayerData {
     }
     public boolean haveTown(){
         return this.TownId != null;
-    }
-    public void setTownId(String newTownId){
-        this.TownId = newTownId;
     }
 
     public TownRank getTownRank() {
@@ -101,7 +97,6 @@ public class PlayerData {
     public void leaveTown(){
         this.TownId = null;
         this.townRankID = null;
-        WarTaggedPlayer.removePlayer(this.getID());
     }
 
     public boolean haveRegion(){
@@ -171,29 +166,44 @@ public class PlayerData {
         return Bukkit.getPlayer(getUUID());
     }
 
-    public Collection<String> getWarIDTaggedList(){
-        if(warIDTaggedList == null)
-            warIDTaggedList = new ArrayList<>();
-        return warIDTaggedList;
+    public Collection<String> getAttackInvolvedIn(){
+        if(attackInvolvedIn == null)
+            attackInvolvedIn = new ArrayList<>();
+        return attackInvolvedIn;
     }
 
     public void notifyDeathToAttacks(){
-        for(String attackID : getWarIDTaggedList()){
-            AttackStatus attackStatus = AttackStatusStorage.get(attackID);
-            if(attackStatus != null){
-                attackStatus.playerKilled(this);
+        for(String attackID : getAttackInvolvedIn()){
+            CurrentAttacks currentAttacks = CurrentAttacksStorage.get(attackID);
+            if(currentAttacks != null){
+                currentAttacks.playerKilled(this);
+            }
+            else {
+                getAttackInvolvedIn().remove(attackID);
             }
         }
     }
 
-    public void addWar(AttackStatus attackStatus){
-        if(getWarIDTaggedList().contains(attackStatus.getID())){
+    public void addWar(CurrentAttacks currentAttacks){
+        if(getAttackInvolvedIn().contains(currentAttacks.getID())){
             return;
         }
-        getWarIDTaggedList().add(attackStatus.getID());
+        getAttackInvolvedIn().add(currentAttacks.getID());
     }
 
-    public void removeWar(AttackStatus attackStatus){
-        getWarIDTaggedList().remove(attackStatus.getID());
+    public void updateCurrentAttack(){
+        for(String attackID : getAttackInvolvedIn()){
+            CurrentAttacks currentAttacks = CurrentAttacksStorage.get(attackID);
+            if(currentAttacks != null && currentAttacks.containsPlayer(this)){
+                currentAttacks.addPlayer(this);
+            }
+            else {
+                getAttackInvolvedIn().remove(attackID); //It means the player still have a reference to a war that is already finished.
+            }
+        }
+    }
+
+    public void removeWar(CurrentAttacks currentAttacks){
+        getAttackInvolvedIn().remove(currentAttacks.getID());
     }
 }

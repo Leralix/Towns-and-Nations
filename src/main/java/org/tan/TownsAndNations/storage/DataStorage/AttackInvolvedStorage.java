@@ -3,10 +3,8 @@ package org.tan.TownsAndNations.storage.DataStorage;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.bukkit.entity.Player;
-import org.tan.TownsAndNations.DataClass.AttackData;
+import org.tan.TownsAndNations.DataClass.wars.AttackInvolved;
 import org.tan.TownsAndNations.DataClass.CreateAttackData;
-import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.TownsAndNations;
 
@@ -16,59 +14,52 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AttackDataStorage {
-    private static Map<String, AttackData> warDataMapWithTerritoryKey = new HashMap<>();
-    private static Map<String, AttackData> warDataMapWithWarKey = new HashMap<>();
+public class AttackInvolvedStorage {
+    private static Map<String, AttackInvolved> warDataMapWithWarKey = new HashMap<>();
 
     public static void newWar(String warName, ITerritoryData defendingTerritory, ITerritoryData attackingTerritory, CreateAttackData createAttackData){
 
         String newID = getNewID();
         long deltaDateTime = createAttackData.getDeltaDateTime();
-        AttackData attackData = new AttackData(newID,warName, defendingTerritory, attackingTerritory, deltaDateTime);
-        add(attackData);
+        AttackInvolved attackInvolved = new AttackInvolved(newID,warName, defendingTerritory, attackingTerritory, deltaDateTime);
+        add(attackInvolved);
         save();
     }
 
-    private static void add(AttackData attackData) {
-        warDataMapWithTerritoryKey.put(attackData.getMainDefender().getID(), attackData);
-        warDataMapWithWarKey.put(attackData.getID(), attackData);
+    private static void add(AttackInvolved attackInvolved) {
+        warDataMapWithWarKey.put(attackInvolved.getID(), attackInvolved);
     }
 
-    public static void remove(AttackData attackData) {
-        attackData.remove();
-        warDataMapWithTerritoryKey.remove(attackData.getMainDefender().getID());
-        warDataMapWithWarKey.remove(attackData.getID());
+    public static void remove(AttackInvolved attackInvolved) {
+        warDataMapWithWarKey.remove(attackInvolved.getID());
     }
 
     private static void setupAllAttacks(){
-        for(AttackData attackData : warDataMapWithTerritoryKey.values()){
-            attackData.setUpStartOfAttack();
+        for(AttackInvolved attackInvolved : warDataMapWithWarKey.values()){
+            attackInvolved.setUpStartOfAttack();
         }
     }
 
     private static String getNewID(){
         int ID = 0;
-        while(warDataMapWithTerritoryKey.containsKey("W"+ID)){
+        while(warDataMapWithWarKey.containsKey("W"+ID)){
             ID++;
         }
         return "W"+ID;
     }
 
-    public static Collection<AttackData> getWars() {
-        return warDataMapWithTerritoryKey.values();
+    public static Collection<AttackInvolved> getWars() {
+        return warDataMapWithWarKey.values();
     }
 
-    public static AttackData getAttackFromID(String warID) {
+    public static AttackInvolved get(String warID) {
         return warDataMapWithWarKey.get(warID);
-    }
-    public static AttackData getAttackFromTerritoryID(String defendingTerritoryID) {
-        return warDataMapWithTerritoryKey.get(defendingTerritoryID);
     }
 
     public static void load(){
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Wars.json");
+        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Planned_wars.json");
         if (file.exists()){
             Reader reader;
             try {
@@ -76,10 +67,10 @@ public class AttackDataStorage {
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            Type type = new TypeToken<HashMap<String, AttackData>>() {}.getType();
-            warDataMapWithTerritoryKey = gson.fromJson(reader, type);
-            for(AttackData attackData : warDataMapWithTerritoryKey.values()){
-                warDataMapWithWarKey.put(attackData.getID(), attackData);
+            Type type = new TypeToken<HashMap<String, AttackInvolved>>() {}.getType();
+            warDataMapWithWarKey = gson.fromJson(reader, type);
+            for(AttackInvolved attackInvolved : warDataMapWithWarKey.values()){
+                warDataMapWithWarKey.put(attackInvolved.getID(), attackInvolved);
             }
         }
         setupAllAttacks();
@@ -88,7 +79,7 @@ public class AttackDataStorage {
     public static void save() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Wars.json");
+        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Planned_wars.json");
         file.getParentFile().mkdir();
 
         try {
@@ -102,7 +93,7 @@ public class AttackDataStorage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        gson.toJson(warDataMapWithTerritoryKey, writer);
+        gson.toJson(warDataMapWithWarKey, writer);
         try {
             writer.flush();
         } catch (IOException e) {

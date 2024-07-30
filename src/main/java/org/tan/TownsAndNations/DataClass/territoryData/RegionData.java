@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.tan.TownsAndNations.DataClass.AttackData;
+import org.tan.TownsAndNations.DataClass.wars.AttackInvolved;
 import org.tan.TownsAndNations.DataClass.ClaimedChunkSettings;
 import org.tan.TownsAndNations.DataClass.History.ChunkHistory;
 import org.tan.TownsAndNations.DataClass.History.DonationHistory;
@@ -15,9 +15,12 @@ import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownRelations;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.newChunkData.RegionClaimedChunk;
+import org.tan.TownsAndNations.DataClass.wars.CurrentAttacks;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
+import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
+import org.tan.TownsAndNations.storage.DataStorage.AttackInvolvedStorage;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
@@ -48,7 +51,8 @@ public class RegionData implements ITerritoryData {
     private MiscellaneousHistory miscellaneousHistory;
     private TaxHistory taxHistory;
     private TownRelations relations;
-    private Collection<String> warsInvolved;
+    private Collection<String> attackIncomingList = new ArrayList<>();
+    private Collection<String> currentAttackList = new ArrayList<>();
 
 
     public RegionData(String id, String name, String ownerID) {
@@ -72,7 +76,6 @@ public class RegionData implements ITerritoryData {
         this.donationHistory = new DonationHistory();
         this.miscellaneousHistory = new MiscellaneousHistory();
         this.taxHistory = new TaxHistory();
-        this.warsInvolved = new ArrayList<>();
     }
 
     //////////////////////////////////////
@@ -500,18 +503,66 @@ public class RegionData implements ITerritoryData {
     }
 
     @Override
-    public Collection<String> getAttacksInvolved(){
-        if(warsInvolved == null)
-            this.warsInvolved = new ArrayList<>();
-        return warsInvolved;
+    public Collection<String> getAttacksInvolvedID(){
+        if(attackIncomingList == null)
+            this.attackIncomingList = new ArrayList<>();
+        return attackIncomingList;
+    }
+
+    @Override
+    public Collection<AttackInvolved> getAttacksInvolved() {
+        Collection<AttackInvolved> res = new ArrayList<>();
+        for(String attackID : getAttacksInvolvedID()){
+            AttackInvolved attackInvolved = AttackInvolvedStorage.get(attackID);
+            res.add(attackInvolved);
+        }
+        return res;
+    }
+
+    @Override
+    public void addPlannedAttack(AttackInvolved war){
+        getAttacksInvolvedID().add(war.getID());
     }
     @Override
-    public void addWar(AttackData war){
-        getAttacksInvolved().add(war.getID());
+    public void removePlannedAttack(AttackInvolved war){
+        getAttacksInvolvedID().remove(war.getID());
     }
+
     @Override
-    public void removeWar(AttackData war){
-        getAttacksInvolved().remove(war.getID());
+    public Collection<String> getCurrentAttacksID() {
+        if(currentAttackList == null)
+            this.currentAttackList = new ArrayList<>();
+        return currentAttackList;
+    }
+
+    @Override
+    public Collection<CurrentAttacks> getCurrentAttacks() {
+        Collection<CurrentAttacks> res = new ArrayList<>();
+        for(String attackID : getAttacksInvolvedID()){
+            CurrentAttacks attackInvolved = CurrentAttacksStorage.get(attackID);
+            res.add(attackInvolved);
+        }
+        return res;
+    }
+
+    @Override
+    public void addCurrentAttack(CurrentAttacks currentAttacks) {
+        getAttacksInvolvedID().add(currentAttacks.getID());
+    }
+
+
+    @Override
+    public void removeCurrentAttack(CurrentAttacks currentAttacks) {
+        getAttacksInvolvedID().remove(currentAttacks.getID());
+    }
+
+    @Override
+    public boolean atWarWith(String territoryID) {
+        for(AttackInvolved attackInvolved : getAttacksInvolved()) {
+            if(attackInvolved.getMainDefender().getID().equals(territoryID))
+                return true;
+        }
+        return false;
     }
 
 }

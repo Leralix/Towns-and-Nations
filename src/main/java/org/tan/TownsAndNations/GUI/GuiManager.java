@@ -13,6 +13,7 @@ import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
+import org.tan.TownsAndNations.DataClass.wars.AttackInvolved;
 import org.tan.TownsAndNations.Lang.DynamicLang;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.*;
@@ -779,24 +780,23 @@ public class GuiManager implements IGUI {
         Gui gui = IGUI.createChestGui("Wars | page " + (page + 1),6);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
-        for(String attackID : territory.getAttacksInvolved()){
-            AttackData attackData = AttackDataStorage.getAttackFromID(attackID);
+        for(String attackID : territory.getAttacksInvolvedID()){
+            AttackInvolved attackInvolved = AttackInvolvedStorage.get(attackID);
 
-            ItemStack attackIcon = attackData.getIcon();
+            ItemStack attackIcon = attackInvolved.getIcon();
             HeadUtils.addLore(attackIcon, "", Lang.GUI_LEFT_CLICK_TO_INTERACT.get(), Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get());
 
             GuiItem _attack = ItemBuilder.from(attackIcon).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(event.isRightClick()){
-                    if(!attackData.isMainAttacker(territory)){
+                    if(!attackInvolved.isMainAttacker(territory)){
                         player.sendMessage(getTANString() + Lang.GUI_WAR_NOT_MAIN_ATTACKER.get());
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
                     player.sendMessage(getTANString() + Lang.ATTACK_SUCCESSFULLY_CANCELLED.get());
-                    AttackDataStorage.remove(attackData);
+                    AttackInvolvedStorage.remove(attackInvolved);
                     OpenWarMenu(player, territory, exit, page);
-                    return;
                 }
             });
             guiItems.add(_attack);
@@ -857,7 +857,7 @@ public class GuiManager implements IGUI {
 
         GuiItem _confirm = ItemBuilder.from(confirm).asGuiItem(event -> {
             event.setCancelled(true);
-            AttackDataStorage.newWar(Lang.BASIC_ATTACK_NAME.get(attackingTerritory.getName(), enemyTerritory.getName()), enemyTerritory, attackingTerritory, createAttackData);
+            AttackInvolvedStorage.newWar(Lang.BASIC_ATTACK_NAME.get(attackingTerritory.getName(), enemyTerritory.getName()), enemyTerritory, attackingTerritory, createAttackData);
             OpenWarMenu(player, attackingTerritory, exit, 0);
 
             player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.get(enemyTerritory.getName()));
@@ -2225,7 +2225,7 @@ public class GuiManager implements IGUI {
                 if (relation == TownRelation.WAR) {
                     //WarTaggedPlayer.addPlayersToTown(territoryID, territoryRelation.getPlayerList());
 
-                    if(AttackDataStorage.getAttackFromTerritoryID(territoryID) != null){
+                    if(mainTerritory.atWarWith(territoryID)){
                         player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_ALREADY_ATTACKING.get());
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;

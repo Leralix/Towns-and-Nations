@@ -639,7 +639,12 @@ public enum Lang {
     ATTACK_ICON_DESC_2,
     ATTACK_ICON_DESC_3,
     ATTACK_ICON_DESC_4,
-    GUI_TOWN_ATTACK_ALREADY_ATTACKING;
+    GUI_TOWN_ATTACK_ALREADY_ATTACKING,
+    TITLE_WAR,
+    PLAYER_WON_WAR,
+    PLAYER_LOST_WAR,
+    WAR_ATTACKER_WON_ANNOUNCEMENT,
+    WAR_DEFENDER_WON_ANNOUNCEMENT;
 
 
     private static final Map<Lang, String> translations = new HashMap<>();

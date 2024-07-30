@@ -3,10 +3,11 @@ package org.tan.TownsAndNations.DataClass.territoryData;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.tan.TownsAndNations.DataClass.AttackData;
+import org.tan.TownsAndNations.DataClass.wars.AttackInvolved;
 import org.tan.TownsAndNations.DataClass.ClaimedChunkSettings;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownRelations;
+import org.tan.TownsAndNations.DataClass.wars.CurrentAttacks;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
 
@@ -47,8 +48,17 @@ public interface ITerritoryData {
     ItemStack getIconWithInformations();
     ItemStack getIconWithInformationAndRelation(ITerritoryData territoryData);
 
-    Collection<String> getAttacksInvolved();
-    void addWar(AttackData war);
-    void removeWar(AttackData war);
+    Collection<String> getAttacksInvolvedID();
+    Collection<AttackInvolved> getAttacksInvolved();
+    void addPlannedAttack(AttackInvolved war);
+    void removePlannedAttack(AttackInvolved war);
 
+
+    Collection<String> getCurrentAttacksID();
+    Collection<CurrentAttacks> getCurrentAttacks();
+
+    void addCurrentAttack(CurrentAttacks currentAttacks);
+    void removeCurrentAttack(CurrentAttacks currentAttacks);
+
+    boolean atWarWith(String territoryID);
 }

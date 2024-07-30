@@ -53,7 +53,7 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
             return playerData.haveTown() ? playerData.getTown().getName() : Lang.NO_TOWN.get();
         }
         else if (params.equalsIgnoreCase("player_town_resident_quantity")) {
-            return playerData.haveTown() ? Integer.toString(playerData.getTown().getPlayerList().size()) : Lang.NO_TOWN.get();
+            return playerData.haveTown() ? Integer.toString(playerData.getTown().getPlayerIDList().size()) : Lang.NO_TOWN.get();
         }
         else if (params.equalsIgnoreCase("player_town_chunk_quantity")) {
             return playerData.haveTown() ? Integer.toString(playerData.getTown().getNumberOfClaimedChunk()) : Lang.NO_TOWN.get();

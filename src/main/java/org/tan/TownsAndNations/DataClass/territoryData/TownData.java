@@ -9,12 +9,12 @@ import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.DataClass.History.*;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;
+import org.tan.TownsAndNations.DataClass.wars.AttackInvolved;
+import org.tan.TownsAndNations.DataClass.wars.CurrentAttacks;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.*;
-import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
-import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
+import org.tan.TownsAndNations.storage.DataStorage.*;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.utils.*;
 
@@ -55,13 +55,15 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
     private HashSet<String> PlayerJoinRequestSet = new HashSet<>();
     private Map<String, PropertyData> propertyDataMap;
 
-    private final TownLevel townLevel;
-    private ClaimedChunkSettings chunkSettings;
-    private TownRelations relations;
+    private TownLevel townLevel = new TownLevel();;
+    private ClaimedChunkSettings chunkSettings = new ClaimedChunkSettings();;
+    private TownRelations relations = new TownRelations();;
 
     private TeleportationPosition teleportationPosition;
 
-    private Collection<String> warsInvolved;
+    private Collection<String> attackIncomingList = new ArrayList<>();
+    private Collection<String> currentAttackList = new ArrayList<>();
+
 
     //First time creating a town
     public TownData(String townId, String townName, String leaderID){
@@ -83,11 +85,6 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
         this.miscellaneousHistory = new MiscellaneousHistory();
         this.salaryHistory = new SalaryHistory();
         this.taxHistory = new TaxHistory();
-
-        this.relations = new TownRelations();
-        this.chunkSettings = new ClaimedChunkSettings();
-        this.townLevel = new TownLevel();
-        this.warsInvolved = new ArrayList<>();
 
         addRank("default");
         if(leaderID != null)
@@ -940,22 +937,59 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
         return getRegion().getTaxRate();
     }
 
-    public Collection<String> getWarInvolved() {
-        if(warsInvolved == null)
-            this.warsInvolved = new ArrayList<>();
-        return warsInvolved;
+    public Collection<String> getAttacksInvolvedID(){
+        if(attackIncomingList == null)
+            this.attackIncomingList = new ArrayList<>();
+        return attackIncomingList;
     }
 
-    public Collection<String> getAttacksInvolved(){
-        if(warsInvolved == null)
-            this.warsInvolved = new ArrayList<>();
-        return warsInvolved;
+    @Override
+    public Collection<AttackInvolved> getAttacksInvolved() {
+        Collection<AttackInvolved> res = new ArrayList<>();
+        for(String attackID : getAttacksInvolvedID()){
+            AttackInvolved attackInvolved = AttackInvolvedStorage.get(attackID);
+            res.add(attackInvolved);
+        }
+        return res;
     }
-    public void addWar(AttackData war){
-        getAttacksInvolved().add(war.getID());
+
+    public void addPlannedAttack(AttackInvolved war){
+        this.getAttacksInvolvedID().add(war.getID());
     }
-    public void removeWar(AttackData war){
-        getAttacksInvolved().remove(war.getID());
+    public void removePlannedAttack(AttackInvolved war){
+        this.getAttacksInvolvedID().remove(war.getID());
+    }
+
+    public Collection<String> getCurrentAttacksID(){
+        if(currentAttackList == null)
+            this.currentAttackList = new ArrayList<>();
+        return currentAttackList;
+    }
+
+    @Override
+    public Collection<CurrentAttacks> getCurrentAttacks() {
+        Collection<CurrentAttacks> res = new ArrayList<>();
+        for(String attackID : getAttacksInvolvedID()){
+            CurrentAttacks attackInvolved = CurrentAttacksStorage.get(attackID);
+            res.add(attackInvolved);
+        }
+        return res;
+    }
+
+    public void addCurrentAttack(CurrentAttacks currentAttacks){
+        this.getAttacksInvolvedID().add(currentAttacks.getID());
+    }
+    public void removeCurrentAttack(CurrentAttacks currentAttacks){
+        this.getAttacksInvolvedID().remove(currentAttacks.getID());
+    }
+
+    @Override
+    public boolean atWarWith(String territoryID) {
+        for(AttackInvolved attackInvolved : getAttacksInvolved()) {
+            if(attackInvolved.getMainDefender().getID().equals(territoryID))
+                return true;
+        }
+        return false;
     }
 
 

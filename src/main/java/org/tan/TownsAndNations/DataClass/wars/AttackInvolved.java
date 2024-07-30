@@ -1,23 +1,25 @@
-package org.tan.TownsAndNations.DataClass;
+package org.tan.TownsAndNations.DataClass.wars;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.SoundEnum;
+import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
+import org.tan.TownsAndNations.storage.DataStorage.AttackInvolvedStorage;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.DateUtil;
-import org.tan.TownsAndNations.utils.SoundUtil;
 import org.tan.TownsAndNations.utils.TerritoryUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-public class AttackData {
+public class AttackInvolved {
 
     private final String ID;
     private String name;
@@ -29,7 +31,7 @@ public class AttackData {
     private final long startTime;
     private final long endTime;
 
-    public AttackData(String ID, String name, ITerritoryData mainDefender, ITerritoryData mainAttacker, long startTime){
+    public AttackInvolved(String ID, String name, ITerritoryData mainDefender, ITerritoryData mainAttacker, long startTime){
         this.ID = ID;
         this.name = name;
         this.mainAttackerID = mainAttacker.getID();
@@ -43,8 +45,8 @@ public class AttackData {
         this.startTime = (long) (new Date().getTime() * 0.02 + startTime);
         this.endTime = this.startTime + ConfigUtil.getCustomConfig("config.yml").getLong("WarDurationTime") * 1200;
 
-        mainDefender.addWar(this);
-        mainAttacker.addWar(this);
+        mainDefender.addPlannedAttack(this);
+        mainAttacker.addPlannedAttack(this);
 
         setUpStartOfAttack();
     }
@@ -75,7 +77,7 @@ public class AttackData {
 
     public Collection<PlayerData> getAttackersPlayers() {
         Collection<PlayerData> defenders = new ArrayList<>();
-        for(ITerritoryData attackingTerritory : getDefendingTerritory()){
+        for(ITerritoryData attackingTerritory : getAttackingTerritory()){
             defenders.addAll(attackingTerritory.getPlayerDataList());
         }
         return defenders;
@@ -116,8 +118,6 @@ public class AttackData {
     public void setUpStartOfAttack(){
         long timeLeftBeforeStart = (long) (startTime - new Date().getTime() * 0.02);
         long timeLeftBeforeWarning = timeLeftBeforeStart - 1200; //Warning 1 minute before
-        System.out.println("War warning in " + timeLeftBeforeWarning + "ticks");
-        System.out.println("War start in " + timeLeftBeforeStart + "ticks");
         BukkitRunnable startOfWar = new BukkitRunnable() {
             @Override
             public void run() {
@@ -134,18 +134,12 @@ public class AttackData {
             }
         };
         warningStartOfWar.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeWarning);
-
-        BukkitRunnable warningStartOfWar2 = new BukkitRunnable() {
-            @Override
-            public void run() {
-                broadCastMessageWithSound("War begin in x minute", SoundEnum.WAR);
-            }
-        };
-        warningStartOfWar2.runTaskLater(TownsAndNations.getPlugin(), startTime / 10);
     }
 
     private void startWar() {
         broadCastMessageWithSound("War start", SoundEnum.WAR);
+        CurrentAttacksStorage.startAttack(this);
+        remove();
     }
 
     public void AddDefender(ITerritoryData territory){
@@ -174,11 +168,12 @@ public class AttackData {
 
     public void remove() {
         for(ITerritoryData territory : getAttackingTerritory()){
-            territory.removeWar(this);
+            territory.removePlannedAttack(this);
         }
         for(ITerritoryData territory : getDefendingTerritory()){
-            territory.removeWar(this);
+            territory.removePlannedAttack(this);
         }
+        AttackInvolvedStorage.remove(this);
     }
 
     public boolean isMainAttacker(ITerritoryData territory) {
