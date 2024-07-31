@@ -43,7 +43,6 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String params) {
         PlayerData playerData = PlayerDataStorage.get(player.getUniqueId());
-        TownsAndNations.getPluginLogger().info("onRequest: " + params);
 
         if (playerData == null) {
             return "Data not found"; // Gérer le cas où les données du joueur ne sont pas trouvées

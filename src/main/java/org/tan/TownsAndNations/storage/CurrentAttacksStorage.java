@@ -27,7 +27,6 @@ public class CurrentAttacksStorage {
     }
 
     public static CurrentAttacks get(String ID) {
-        System.out.println(attackStatusMap.get(ID));
         return attackStatusMap.get(ID);
     }
 }

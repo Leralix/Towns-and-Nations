@@ -22,7 +22,6 @@ public class ClaimCommand extends SubCommand {
     }
     public int getArguments(){ return 1;}
 
-
     @Override
     public String getSyntax() {
         return "/tan claim <town/region>";

@@ -1939,7 +1939,7 @@ public class GuiManager implements IGUI {
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3.get(changeTownNameCost));
         ItemStack quitRegion = HeadUtils.createCustomItemStack(Material.SPRUCE_DOOR,
                 Lang.GUI_TOWN_SETTINGS_QUIT_REGION.get(),
-                playerTown.haveRegion() ? Lang.GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION.get(playerTown.getRegion().getName()) : Lang.GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_NO_REGION.get());
+                playerTown.haveRegion() ? Lang.GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION.get(playerTown.getRegion().getName()) : Lang.TOWN_NO_REGION.get());
         ItemStack changeChunkColor = HeadUtils.createCustomItemStack(Material.PURPLE_WOOL,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR.get(),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(),
