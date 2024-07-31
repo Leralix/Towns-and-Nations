@@ -696,8 +696,8 @@ public class GuiManager implements IGUI {
         ItemStack landmark = HeadUtils.makeSkull(Lang.ADMIN_GUI_LANDMARK_ICON.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmQ3NjFjYzE2NTYyYzg4ZDJmYmU0MGFkMzg1MDJiYzNiNGE4Nzg1OTg4N2RiYzM1ZjI3MmUzMGQ4MDcwZWVlYyJ9fX0=",
                 Lang.ADMIN_GUI_LANDMARK_DESC1.get());
 
-        ItemStack war = HeadUtils.makeSkull(Lang.GUI_WAR_ICON.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjVkZTRmZjhiZTcwZWVlNGQxMDNiMWVlZGY0NTRmMGFiYjlmMDU2OGY1ZjMyNmVjYmE3Y2FiNmE0N2Y5YWRlNCJ9fX0=",
-                Lang.GUI_WAR_ICON_DESC1.get());
+        ItemStack war = HeadUtils.makeSkull(Lang.GUI_ATTACK_ICON.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjVkZTRmZjhiZTcwZWVlNGQxMDNiMWVlZGY0NTRmMGFiYjlmMDU2OGY1ZjMyNmVjYmE3Y2FiNmE0N2Y5YWRlNCJ9fX0=",
+                Lang.GUI_ATTACK_ICON_DESC1.get());
 
         GuiItem _townIcon = ItemBuilder.from(TownIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -790,7 +790,7 @@ public class GuiManager implements IGUI {
                 event.setCancelled(true);
                 if(event.isRightClick()){
                     if(!attackInvolved.isMainAttacker(territory)){
-                        player.sendMessage(getTANString() + Lang.GUI_WAR_NOT_MAIN_ATTACKER.get());
+                        player.sendMessage(getTANString() + Lang.GUI_ATTACK_NOT_MAIN_ATTACKER.get());
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
@@ -813,13 +813,13 @@ public class GuiManager implements IGUI {
         Gui gui = IGUI.createChestGui("War on " + enemyTerritory.getName(),3);
 
 
-        ItemStack addTime = HeadUtils.makeSkull(Lang.GUI_WAR_ADD_TIME.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjMyZmZmMTYzZTIzNTYzMmY0MDQ3ZjQ4NDE1OTJkNDZmODVjYmJmZGU4OWZjM2RmNjg3NzFiZmY2OWE2NjIifX19",
+        ItemStack addTime = HeadUtils.makeSkull(Lang.GUI_ATTACK_ADD_TIME.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjMyZmZmMTYzZTIzNTYzMmY0MDQ3ZjQ4NDE1OTJkNDZmODVjYmJmZGU4OWZjM2RmNjg3NzFiZmY2OWE2NjIifX19",
                 Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(),
                 Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get());
-        ItemStack removeTIme = HeadUtils.makeSkull(Lang.GUI_WAR_REMOVE_TIME.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGE1NmRhYjUzZDRlYTFhNzlhOGU1ZWQ2MzIyYzJkNTZjYjcxNGRkMzVlZGY0Nzg3NjNhZDFhODRhODMxMCJ9fX0=",
+        ItemStack removeTIme = HeadUtils.makeSkull(Lang.GUI_ATTACK_REMOVE_TIME.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGE1NmRhYjUzZDRlYTFhNzlhOGU1ZWQ2MzIyYzJkNTZjYjcxNGRkMzVlZGY0Nzg3NjNhZDFhODRhODMxMCJ9fX0=",
                 Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(),
                 Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get());
-        ItemStack time = HeadUtils.makeSkull(Lang.GUI_WAR_SET_TO_START_IN.get(DateUtil.getStringDeltaDateTime(createAttackData.getDeltaDateTime())),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWU5OThmM2ExNjFhNmM5ODlhNWQwYTFkYzk2OTMxYTM5OTI0OWMwODBiNjYzNjQ1ODFhYjk0NzBkZWE1ZTcyMCJ9fX0=",
+        ItemStack time = HeadUtils.makeSkull(Lang.GUI_ATTACK_SET_TO_START_IN.get(DateUtil.getStringDeltaDateTime(createAttackData.getDeltaDateTime())),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWU5OThmM2ExNjFhNmM5ODlhNWQwYTFkYzk2OTMxYTM5OTI0OWMwODBiNjYzNjQ1ODFhYjk0NzBkZWE1ZTcyMCJ9fX0=",
                 Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(),
                 Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get());
         ItemStack confirm = HeadUtils.makeSkull(Lang.GUI_CONFIRM_ATTACK.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDMxMmNhNDYzMmRlZjVmZmFmMmViMGQ5ZDdjYzdiNTVhNTBjNGUzOTIwZDkwMzcyYWFiMTQwNzgxZjVkZmJjNCJ9fX0=",
@@ -2136,8 +2136,8 @@ public class GuiManager implements IGUI {
 
 
         ItemStack warCategory = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
-                Lang.GUI_TOWN_RELATION_WAR.get(),
-                Lang.GUI_TOWN_RELATION_WAR_DESC1.get());
+                Lang.GUI_TOWN_RELATION_HOSTILE.get(),
+                Lang.GUI_TOWN_RELATION_HOSTILE_DESC1.get());
         ItemStack EmbargoCategory = HeadUtils.createCustomItemStack(Material.BARRIER,
                 Lang.GUI_TOWN_RELATION_EMBARGO.get(),
                 Lang.GUI_TOWN_RELATION_EMBARGO_DESC1.get());

@@ -102,9 +102,6 @@ public class ChunkUtil {
                 return;
             }
         }
-        System.out.println(townData.getNumberOfClaimedChunk());
-        System.out.println(!NewClaimedChunkStorage.isAdjacentChunkClaimedBySameTown(chunkToClaim,townData.getID()));
-        System.out.println(ConfigUtil.getCustomConfig("config.yml").getBoolean("AllowNonAdjacentChunks",false));
 
         if(townData.getNumberOfClaimedChunk() != 0 &&
                 !NewClaimedChunkStorage.isAdjacentChunkClaimedBySameTown(chunkToClaim,townData.getID()) &&

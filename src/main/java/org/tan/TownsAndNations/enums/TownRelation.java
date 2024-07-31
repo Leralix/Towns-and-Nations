@@ -11,7 +11,7 @@ public enum TownRelation {
     ALLIANCE(Lang.RELATION_ALLIANCE_NAME.get(), ChatColor.BLUE, Boolean.TRUE, Boolean.FALSE),
     NON_AGGRESSION(Lang.RELATION_NON_AGGRESSION_NAME.get(), ChatColor.DARK_AQUA, Boolean.TRUE, Boolean.FALSE),
     EMBARGO(Lang.RELATION_EMBARGO_NAME.get(), ChatColor.GOLD, Boolean.FALSE, Boolean.TRUE),
-    WAR(Lang.RELATION_WAR_NAME.get(), ChatColor.RED, Boolean.FALSE, Boolean.TRUE);
+    WAR(Lang.RELATION_HOSTILE_NAME.get(), ChatColor.RED, Boolean.FALSE, Boolean.TRUE);
 
     private final String name;
     private final ChatColor color;

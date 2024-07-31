@@ -69,7 +69,7 @@ public class CurrentAttacks {
         long seconds = (remainingTime % 1200) / 20;
         String timeString = String.format("%02d:%02d:%02d", hours, minutes, seconds);
 
-        bossBar.setTitle(Lang.TITLE_WAR.get(originalTitle, timeString));
+        bossBar.setTitle(Lang.TITLE_ATTACK.get(originalTitle, timeString));
         bossBar.setProgress((double) score / maxScore);
     }
 
@@ -123,7 +123,7 @@ public class CurrentAttacks {
             for(PlayerData playerData : territoryData.getPlayerDataList()) {
                 Player player = playerData.getPlayer();
                 if(player != null){
-                    player.sendMessage(Lang.PLAYER_WON_WAR.get());
+                    player.sendMessage(Lang.PLAYER_WON_ATTACK.get());
                 }
             }
         }
@@ -131,12 +131,12 @@ public class CurrentAttacks {
             for(PlayerData playerData : territoryData.getPlayerDataList()) {
                 Player player = playerData.getPlayer();
                 if(player != null){
-                    player.sendMessage(Lang.PLAYER_LOST_WAR.get());
+                    player.sendMessage(Lang.PLAYER_LOST_ATTACK.get());
                 }
             }
         }
 
-        bossBar.setTitle(Lang.WAR_ATTACKER_WON_ANNOUNCEMENT.get());
+        bossBar.setTitle(Lang.ATTACKER_WON_ANNOUNCEMENT.get());
         endWar();
     }
 
@@ -159,7 +159,7 @@ public class CurrentAttacks {
             }
         }
 
-        bossBar.setTitle(Lang.WAR_DEFENDER_WON_ANNOUNCEMENT.get());
+        bossBar.setTitle(Lang.DEFENDER_WON_ANNOUNCEMENT.get());
         endWar();
     }
 
