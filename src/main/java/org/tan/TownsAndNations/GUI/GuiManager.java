@@ -1958,14 +1958,16 @@ public class GuiManager implements IGUI {
             if (playerStat.isTownLeader()){
                 SoundUtil.playSound(player, NOT_ALLOWED);
                 player.sendMessage(getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.get());
-            } else {
-                playerTown.removePlayer(playerStat);
-
-                player.sendMessage(getTANString() + Lang.CHAT_PLAYER_LEFT_THE_TOWN.get());
-                playerTown.broadCastMessageWithSound(Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(playerStat.getName()),
-                        BAD);
-                player.closeInventory();
+                return;
             }
+
+            OpenConfirmMenu(player, leaveTown, confirm -> {
+
+                player.closeInventory();
+                playerTown.removePlayer(playerStat);
+                player.sendMessage(getTANString() + Lang.CHAT_PLAYER_LEFT_THE_TOWN.get());
+                playerTown.broadCastMessageWithSound(Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(playerStat.getName()), BAD);
+            }, remove -> OpenTownSettings(player));
         });
         GuiItem _deleteTown = ItemBuilder.from(deleteTown).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1973,11 +1975,16 @@ public class GuiManager implements IGUI {
                 player.sendMessage(getTANString() + Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.get());
                 return;
             }
-            deleteTown(player, playerTown);
 
-            player.closeInventory();
-            SoundUtil.playSound(player,GOOD);
-            player.sendMessage(getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get());
+            OpenConfirmMenu(player, deleteTown, confirm -> {
+                deleteTown(player, playerTown);
+
+                player.closeInventory();
+                SoundUtil.playSound(player,GOOD);
+                player.sendMessage(getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get());
+            }, remove -> OpenTownSettings(player));
+
+
         });
 
         GuiItem _changeOwnershipTown = ItemBuilder.from(changeOwnershipTown).asGuiItem(event -> {
@@ -2102,6 +2109,7 @@ public class GuiManager implements IGUI {
         gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> dispatchPlayerTown(player)));
         gui.open(player);
     }
+
     public static void OpenTownChangeOwnershipPlayerSelect(Player player, TownData townData) {
 
         Gui gui = IGUI.createChestGui("Town",3);
@@ -3303,6 +3311,40 @@ public class GuiManager implements IGUI {
             action.accept(null);
             OpenTownChunkPlayerSettings(player);
         });
+    }
+
+    private static void OpenConfirmMenu(Player player, ItemStack itemFromAction, Consumer<Void> confirmAction, Consumer<Void> returnAction) {
+
+        Gui gui = IGUI.createChestGui("Confirm action", 3);
+
+        ItemMeta itemMeta = itemFromAction.getItemMeta();
+        String itemName = "Unknown";
+        String itemLore = "Unknown";
+        if(itemMeta != null) {
+            itemName = itemFromAction.getItemMeta().getDisplayName();
+            itemLore = itemFromAction.getItemMeta().getLore().get(0);
+        }
+
+        ItemStack confirm = HeadUtils.makeSkull("Confirm " + itemName,"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDMxMmNhNDYzMmRlZjVmZmFmMmViMGQ5ZDdjYzdiNTVhNTBjNGUzOTIwZDkwMzcyYWFiMTQwNzgxZjVkZmJjNCJ9fX0=",
+                itemLore);
+
+        ItemStack cancel = HeadUtils.makeSkull("Cancel Action","eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmViNTg4YjIxYTZmOThhZDFmZjRlMDg1YzU1MmRjYjA1MGVmYzljYWI0MjdmNDYwNDhmMThmYzgwMzQ3NWY3In19fQ==",
+                "return to previous menu");
+
+        GuiItem _confirm = ItemBuilder.from(confirm).asGuiItem(event -> {
+            event.setCancelled(true);
+            confirmAction.accept(null);
+        });
+
+        GuiItem _cancel = ItemBuilder.from(cancel).asGuiItem(event -> {
+            event.setCancelled(true);
+            returnAction.accept(null);
+        });
+
+        gui.setItem(2,4,_confirm);
+        gui.setItem(2,6,_cancel);
+
+        gui.open(player);
     }
 
 

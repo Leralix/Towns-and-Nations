@@ -64,7 +64,6 @@ public class LocalChatStorage {
 
         else if(scope == ChatScope.REGION){
             RegionData regionData = playerData.getRegion();
-            System.out.println("region name : " + regionData.getName());
             if(regionData != null)
                 regionData.broadCastMessage(Lang.CHAT_SCOPE_REGION_MESSAGE.get(regionData.getName(),player.getName(),message));
         }
