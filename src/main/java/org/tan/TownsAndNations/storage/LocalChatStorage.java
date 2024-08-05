@@ -64,6 +64,7 @@ public class LocalChatStorage {
 
         else if(scope == ChatScope.REGION){
             RegionData regionData = playerData.getRegion();
+            System.out.println("region name : " + regionData.getName());
             if(regionData != null)
                 regionData.broadCastMessage(Lang.CHAT_SCOPE_REGION_MESSAGE.get(regionData.getName(),player.getName(),message));
         }
@@ -74,9 +75,8 @@ public class LocalChatStorage {
             playerTown.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.get(playerTown.getName(),player.getName(),message));
 
             playerTown.getRelations().getTerritoryIDWithRelation(TownRelation.ALLIANCE).forEach(townID -> {
-                TownDataStorage.get(townID).broadCastMessage(getTANString() + Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.get(playerTown.getName(),player.getName(),message));
-            }
-            );
+                TownDataStorage.get(townID).broadCastMessage(Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.get(playerTown.getName(),player.getName(),message));
+            });
 
         }
 

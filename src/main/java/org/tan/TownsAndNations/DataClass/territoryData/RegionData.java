@@ -487,8 +487,15 @@ public class RegionData implements ITerritoryData {
 
     @Override
     public void broadCastMessage(String message) {
+        System.out.println("broadcastMessage");
         for(TownData townData : getTownsInRegion())
             townData.broadCastMessage(message);
+    }
+
+    @Override
+    public void broadCastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix) {
+        for(TownData townData : getTownsInRegion())
+            townData.broadCastMessageWithSound(message, soundEnum, addPrefix);
     }
 
     @Override

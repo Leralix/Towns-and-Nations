@@ -720,7 +720,7 @@ public class GuiManager implements IGUI {
         });
         GuiItem _goldIcon = ItemBuilder.from(GoldIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownEconomics(player);
+            OpenTownEconomy(player);
         });
         GuiItem _membersIcon = ItemBuilder.from(memberIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1496,7 +1496,7 @@ public class GuiManager implements IGUI {
         gui.open(player);
 
     }
-    public static void OpenTownEconomics(Player player) {
+    public static void OpenTownEconomy(Player player) {
 
         Gui gui = IGUI.createChestGui("Town",4);
 
@@ -1593,20 +1593,20 @@ public class GuiManager implements IGUI {
             }
 
             int currentTax = town.getFlatTax();
-            int amountToRemove = event.isShiftClick() && currentTax >= 10 ? 10 : 1;
+            int amountToRemove = event.isShiftClick() && currentTax > 10 ? 10 : 1;
 
-            if(currentTax <= 1){
+            if(currentTax <= 0){
                 player.sendMessage(getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get());
                 return;
             }
             SoundUtil.playSound(player, REMOVE);
 
             town.addToFlatTax(-amountToRemove);
-            OpenTownEconomics(player);
+            OpenTownEconomy(player);
         });
         GuiItem _taxInfo = ItemBuilder.from(taxInfo).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTownEconomics(player);
+            OpenTownEconomy(player);
         });
         GuiItem _moreTax = ItemBuilder.from(increaseTax).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1620,7 +1620,7 @@ public class GuiManager implements IGUI {
 
             town.addToFlatTax(amountToAdd);
             SoundUtil.playSound(player, ADD);
-            OpenTownEconomics(player);
+            OpenTownEconomy(player);
         });
 
         GuiItem _decorativeGlass = ItemBuilder.from(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
@@ -1798,7 +1798,7 @@ public class GuiManager implements IGUI {
 
         }
 
-        gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenTownEconomics(player)));
+        gui.setItem(6,1, IGUI.CreateBackArrow(player,p -> OpenTownEconomy(player)));
         gui.open(player);
 
     }
@@ -2977,9 +2977,9 @@ public class GuiManager implements IGUI {
         GuiItem _lowerTax = ItemBuilder.from(lowerTax).asGuiItem(event -> {
             event.setCancelled(true);
             int currentTax = playerRegion.getTaxRate();
-            int amountToRemove = event.isShiftClick() && currentTax >= 10 ? 10 : 1;
+            int amountToRemove = event.isShiftClick() && currentTax > 10 ? 10 : 1;
 
-            if(currentTax <= 1){
+            if(currentTax < 1){
                 player.sendMessage(getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get());
                 return;
             }
@@ -3130,7 +3130,7 @@ public class GuiManager implements IGUI {
                     regionData.broadcastMessageWithSound(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST.get(iteratePlayerData.getName()),GOOD);
 
                     if(!regionData.getCapital().getID().equals(iteratePlayerData.getTown().getID())){
-                        regionData.broadcastMessage(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST.get(iteratePlayerData.getTown().getName()));
+                        regionData.broadcastMessage(getTANString() + Lang.GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST.get(iteratePlayerData.getTown().getName()));
                         regionData.setCapital(iteratePlayerData.getTownId());
                     }
                     OpenRegionSettings(player);

@@ -136,7 +136,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
         if(relation == TownRelation.WAR){
             SoundUtil.playSound(player, BAD);
             player.sendMessage(getTANString() + Lang.CHUNK_ENTER_TOWN_AT_WAR.get());
-            townTo.broadCastMessageWithSound(getTANString() + Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.get(player).getName(),player.getName()), BAD);
+            townTo.broadCastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.get(player).getName(),player.getName()), BAD);
         }
     }
 

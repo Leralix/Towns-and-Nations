@@ -106,7 +106,7 @@ public class PlayerData {
         return getTown().haveRegion();
     }
     public RegionData getRegion(){
-        if(haveRegion())
+        if(!haveRegion())
             return null;
         return getTown().getRegion();
     }
@@ -196,11 +196,14 @@ public class PlayerData {
     public void updateCurrentAttack(){
         for(String attackID : getAttackInvolvedIn()){
             CurrentAttacks currentAttacks = CurrentAttacksStorage.get(attackID);
-            if(currentAttacks != null && currentAttacks.containsPlayer(this)){
-                currentAttacks.addPlayer(this);
+            if(currentAttacks == null){
+                getAttackInvolvedIn().remove(attackID);
             }
-            else {
-                getAttackInvolvedIn().remove(attackID); //It means the player still have a reference to a war that is already finished.
+            else if(!currentAttacks.containsPlayer(this)){
+                getAttackInvolvedIn().remove(attackID);
+            }
+            else{
+                currentAttacks.addPlayer(this);
             }
         }
     }

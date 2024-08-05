@@ -41,6 +41,9 @@ public interface ITerritoryData {
     TownRelation getRelationWith(String territoryID);
 
     void broadCastMessage(String message);
+
+    void broadCastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix);
+
     void broadCastMessageWithSound(String message, SoundEnum soundEnum);
     boolean haveNoLeader();
 

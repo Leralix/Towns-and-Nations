@@ -430,20 +430,29 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
         for (String playerId : townPlayerListId){
             Player player = Bukkit.getServer().getPlayer(UUID.fromString(playerId));
             if (player != null && player.isOnline()) {
-                player.sendMessage(getTANString() +  message);
+                player.sendMessage(message);
             }
         }
     }
     @Override
-    public void broadCastMessageWithSound(String message, SoundEnum soundEnum){
+    public void broadCastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix){
         for (String playerId : townPlayerListId){
             Player player = Bukkit.getServer().getPlayer(UUID.fromString(playerId));
             if (player != null && player.isOnline()) {
                 SoundUtil.playSound(player, soundEnum);
-                player.sendMessage(getTANString() + message);
+                if(addPrefix)
+                    player.sendMessage(getTANString() + message);
+                else
+                    player.sendMessage(message);
             }
         }
     }
+
+    @Override
+    public void broadCastMessageWithSound(String message, SoundEnum soundEnum){
+        broadCastMessageWithSound(message, soundEnum, true);
+    }
+
 
 
 

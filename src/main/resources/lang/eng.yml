@@ -33,8 +33,8 @@ language:
   DISPLAY_COORDINATES: "§fCoordinates: §d[{0}, {1}, {2}]"
 
   #Chat scope
-  CHAT_SCOPE_TOWN_MESSAGE: "§9[{0}]§3 {1}: §f{2}"
-  CHAT_SCOPE_REGION_MESSAGE: "§b[{0}]§3 {1}: §f{2}"
+  CHAT_SCOPE_TOWN_MESSAGE: "§9[{0}]§f <{1}> {2}"
+  CHAT_SCOPE_REGION_MESSAGE: "§b[{0}]§f <{1}> {2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 {1}: §f{2}"
   #Update needed
   NEW_VERSION_AVAILABLE: "§cA new version is available: §f{0}"
@@ -289,7 +289,7 @@ language:
   GUI_TREASURY_SPENDING_DESC3: "§f- From Chunks: §c-{0}✦"
   GUI_TREASURY_SPENDING_DESC4: "§f- From Regional taxes: §c-{0}✦"
   GUI_TREASURY_LOWER_TAX: "§aLower the tax"
-  GUI_TREASURY_CANT_TAX_LESS: "§cYou can't tax less that 1§6✦"
+  GUI_TREASURY_CANT_TAX_LESS: "§cYou cannot tax less that 0§6✦"
   GUI_TREASURY_INCREASE_TAX: "§aIncrease the tax"
   GUI_TREASURY_FLAT_TAX: "§aFlat tax"
   GUI_TREASURY_FLAT_TAX_DESC1: "§fTown daily tax: §6{0}✦§f"

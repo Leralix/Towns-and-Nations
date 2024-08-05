@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
+
 public class TownRelations {
 
     private final LinkedHashMap<TownRelation, ArrayList<String>> townRelations = new LinkedHashMap<>();
@@ -67,7 +69,7 @@ public class TownRelations {
             for (String townID : townRelations.get(relation)) {
                 TownDataStorage.get(townID).getRelations().removeAllRelationWith(ownTownID);
                 TownDataStorage.get(townID).broadCastMessageWithSound(
-                        Lang.WARNING_OTHER_TOWN_HAS_BEEN_DELETED.get(TownDataStorage.get(townID).getName(),relation.getColoredName()),
+                        getTANString() + Lang.WARNING_OTHER_TOWN_HAS_BEEN_DELETED.get(TownDataStorage.get(townID).getName(),relation.getColoredName()),
                         SoundEnum.MINOR_BAD
                 );
             }
