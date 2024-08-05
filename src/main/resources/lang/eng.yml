@@ -33,7 +33,8 @@ language:
   DISPLAY_COORDINATES: "§fCoordinates: §d[{0}, {1}, {2}]"
 
   #Chat scope
-  CHAT_SCOPE_TOWN_MESSAGE: "§a[{0}]§3 {1}: §f{2}"
+  CHAT_SCOPE_TOWN_MESSAGE: "§9[{0}]§3 {1}: §f{2}"
+  CHAT_SCOPE_REGION_MESSAGE: "§b[{0}]§3 {1}: §f{2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Alliance - {0}]§3 {1}: §f{2}"
   #Update needed
   NEW_VERSION_AVAILABLE: "§cA new version is available: §f{0}"

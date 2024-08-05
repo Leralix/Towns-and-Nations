@@ -2,6 +2,7 @@ package org.tan.TownsAndNations.storage;
 
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChatScope;
@@ -57,8 +58,14 @@ public class LocalChatStorage {
 
         if(scope == ChatScope.CITY){
             TownData townData = playerData.getTown();
+            if(townData != null)
+                townData.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.get(townData.getName(),player.getName(),message));
+        }
 
-            townData.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.get(townData.getName(),player.getName(),message));
+        else if(scope == ChatScope.REGION){
+            RegionData regionData = playerData.getRegion();
+            if(regionData != null)
+                regionData.broadCastMessage(Lang.CHAT_SCOPE_REGION_MESSAGE.get(regionData.getName(),player.getName(),message));
         }
 
         else if(scope == ChatScope.ALLIANCE){

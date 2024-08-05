@@ -106,6 +106,8 @@ public class PlayerData {
         return getTown().haveRegion();
     }
     public RegionData getRegion(){
+        if(haveRegion())
+            return null;
         return getTown().getRegion();
     }
 

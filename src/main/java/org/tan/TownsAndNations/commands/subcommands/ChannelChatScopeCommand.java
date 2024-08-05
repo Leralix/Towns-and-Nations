@@ -35,6 +35,7 @@ public class ChannelChatScopeCommand extends SubCommand{
         if (args.length == 2) {
             suggestions.add("town");
             suggestions.add("alliance");
+            suggestions.add("region");
             suggestions.add("global");
         }
         return suggestions;
@@ -77,6 +78,17 @@ public class ChannelChatScopeCommand extends SubCommand{
                 }
 
                 LocalChatStorage.setPlayerChatScope(player, ChatScope.ALLIANCE);
+                player.sendMessage(getTANString() + Lang.CHAT_CHANGED.get(channelName));
+                return;
+            }
+            if(channelName.equalsIgnoreCase("region")){
+
+                if(LocalChatStorage.getPlayerChatScope(player) == ChatScope.REGION){
+                    player.sendMessage(getTANString() + Lang.TOWN_CHAT_ALREADY_IN_CHAT.get(ChatScope.REGION));
+                    return;
+                }
+
+                LocalChatStorage.setPlayerChatScope(player, ChatScope.REGION);
                 player.sendMessage(getTANString() + Lang.CHAT_CHANGED.get(channelName));
                 return;
             }
