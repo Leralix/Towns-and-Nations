@@ -586,8 +586,6 @@ language:
   RARE_ITEM_NO_ITEM_IN_HANDS: "Høyreklikk med §e{0}§f for å selge den for §6{1}✦"
   RARE_ITEM_WRONG_ITEM: "Denne landsbyboeren kjøper bare §e{0}"
   RARE_ITEM_SELLING_SUCCESS: "Vellykket solgt §e{0}x {1}§f for §6+{2}✦"
-  #Taxes
-  DAILY_TAXES_SUCCESS_LOG: "Byens skatter har blitt samlet inn"
   #Chunk interactions
   CHUNK_ENTER_WILDERNESS: "§fØdemark"
   CHUNK_ENTER_TOWN: "§fDu går inn i byen: §9{0}"

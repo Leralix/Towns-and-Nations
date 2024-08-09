@@ -5,89 +5,164 @@
 #   |_|\___/ \_/\_/ |_| |_|___/    \___/\/   |_| \_|\__,_|\__|_|\___/|_| |_|___/
 #
 
+
+########################
+##      General       ##
+########################
+
+#Allow name duplication (for ranks, towns, regions and kingdoms)
+AllowNameDuplication: true
+
+#Remove all villager interactions except the one from the plugin (usefull to prevent duplication of items)
+removeAllVillagerInteractions: false
+
+#Time of the day when taxes are collected (default is midnight)
+taxHourTime: 0 #0-23
+taxMinuteTime: 0 #0-59
+
+########################
+##      Players       ##
+########################
+
 #IMPORTANT !! Enable the player color code.
 #Enabling the color code will create a separate scoreboard for each player, thus BREAKING THE VANILLA SCOREBOARD
 #Only enable this if you are not using any other scoreboard plugin
 EnablePlayerColorCode: false
 
-#If the player color code is NOT ENABLE, you can add a 3 character prefix to the player name from their town
+#If the player color code is enable, you can add a 3 character prefix to the player name from their town
 EnablePlayerPrefix: false
-
-#Enable the version check
-CheckForUpdate: true
 
 #Enable prefix for town
 EnableTownPrefix: true
+
+#Enable the version check
+CheckForUpdate: true
 
 #If prefix enabled:
 ##Prefix Size (recommended 3)
 prefixSize: 3
 
+########################
+##      Kingdoms      ##
+########################
+
 #Enable Kingdoms
 EnableKingdom: true
-
-#Enable Region (will disable Kingdoms)
-EnableRegion: true
 
 #The amount of money a player starts with (only if no economy plugin is linked to the server)
 StartingMoney: 100
 
-#The cost of creating a town
-CostOfCreatingTown: 1000
+########################
+##      Kingdoms      ##
+########################
 
-#The cost of a town claim
-CostOfChunk: 0
-#The cost of a region claim
-CostOfRegionChunk: 5
-
-#The cost of a town upkeeping 10 chunks
-ChunkUpkeepCost: 0
-
-#Allow non-adjacent chunks to be claimed
-AllowNonAdjacentChunks: false
-
-#Notify if a player from an enemy town enters his town
-notifyEnemyTownEnter: true
-
-
-#Town Levels (town level cost are in the townLevelUpRequirement.yml file)
-TownMaxLevel: 10
-
-#The max number of rank a town can create
-townMaxRank: 9
+#Enable Region (will automatically disable Kingdoms)
+EnableRegion: true
 
 #The cost of creating a Region
 regionCost: 7500
 
-#Property
-#Define the maximum range at wich a player can be from a town spawn to be considered in the town
+#The max size of names
+TownNameSize: 45
+TownDescSize: 55
+
+#Cost of renaming a region:
+ChangeRegionNameCost: 100
+
+#The cost of a region claim
+CostOfRegionChunk: 5
+
+#The cost 10 region chunks upkeep
+RegionChunkUpkeepCost: 0
+
+#Allow non-adjacent chunks to be claimed
+RegionAllowNonAdjacentChunks: false
+
+#Notify if a player from an enemy territory enters
+notifyEnemyEnterRegion: true
+
+########################
+##       Towns        ##
+########################
+
+#The cost of creating a town
+townCost: 1000
+
+#The max size of names
+RegionNameSize: 45
+RegionDescSize: 55
+
+#Cost of renaming a town:
+ChangeTownNameCost: 100
+
+#The cost of a town claim
+CostOfTownChunk: 0
+
+#The cost 10 town chunks upkeep
+TownChunkUpkeepCost: 0
+
+#Allow non-adjacent chunks to be claimed
+TownAllowNonAdjacentChunks: false
+
+#Notify if a player from an enemy town enters
+notifyEnemyEnterTown: true
+
+#Town Levels (town level cost are in the townLevelUpRequirement.yml file)
+TownMaxLevel: 10
+
+
+########################
+##     Properties     ##
+########################
+
+#Define the maximum range at which a player can be from a town spawn to be considered in the town
 maxPropertyMargin: 3
 #When a player rent a property, make the player pay the rent one extra time at start
 payRentAtStart: true
 
 #The max size of names
-TownNameSize: 45
-RankNameSize: 25
-TownDescSize: 55
-RegionNameSize: 45
-RegionDescSize: 55
 PropertyNameSize: 16
 PropertyDescSize: 40
-
-#Allow name duplication (for ranks, towns, regions and kingdoms)
-AllowNameDuplication: true
 
 #Max size of a property (length x width x height)
 MaxPropertySize: 50000
 
-#Rare items, used for the economy when no economy plugin is added to the server
-##You can disable rare Item dropping with RAREITEMSPAWN: FALSE
+
+########################
+##       Ranks        ##
+########################
+
+#The max number of rank a town can create
+townMaxRank: 9
+
+RankNameSize: 25
+
+########################
+##        Wars        ##
+########################
+
+#Enable war
+EnableWar: true
+
+#Duration of an attack in minutes
+WarDurationTime: 60
+
+#Minimum time before starting an attack (in minutes)
+MinimumTimeBeforeAttack: 1440 #24 hours
+
+#Maximum time before starting an attack (in minutes)
+MaximumTimeBeforeAttack: 4320 #72 hours
+
+
+########################
+##  RARES RESSOURCES  ##
+########################
+
+#ENABLE RARE RESSOURCES SPAWN
 RARE_RESOURCES_SPAWN: true
 
 #Allow players to sell rare ressources directly through /tan sell
-#If set to false, players can still sell to villagers.
 AllowSellRareRessourcesByCommand: true
-
 
 #The probability of obtaining a rare Stone. (trigger by breaking a block)
 # (20 = 20% drop chance when breaking this block without a silk touch pick)
@@ -117,7 +192,7 @@ rareWood:
 
 rareWoodValue: 3
 
-#The probability of obtaining rare Crops. (trigger when breaking a crop only)
+#The probability of obtaining rare Crops. (trigger when breaking a FULLY GROWN crop only)
 rareCrops:
   WHEAT: 4
   CARROTS: 3
@@ -160,22 +235,50 @@ rareFish:
 
 rareFishValue: 20
 
-##
-#Cost of renaming a town:
-ChangeTownNameCost: 100
+########################
+##    TELEPORTATION   ##
+########################
 
-##Wars
-#Enable war
-EnableWar: true
-#Duration of an attack in minutes
-WarDurationTime: 60
-#Minimum time before starting an attack (in minutes)
-MinimumTimeBeforeAttack: 1440 #24 hours
-#Maximum time before starting an attack (in minutes)
-MaximumTimeBeforeAttack: 4320 #72 hours
+##Teleportation
+#Time before a teleportation (in seconds). 0 or negative value will result in an instant teleportation
+timeBeforeTeleport: 5
+
+#Cancel teleportation if player move head
+cancelTeleportOnHeadMove: false
+
+#Cancel teleportation if player move position
+cancelTeleportOnMove: true
+
+#Cancel teleportation if player take damage
+cancelTeleportOnDamage: true
 
 
-##Cross server config
+########################
+##       Sounds       ##
+########################
+enableSounds: true
+#1 - Sound name
+#2 - Volume
+#3 - Pitch
+sounds:
+  LEVEL_UP: [ "ENTITY_PLAYER_LEVELUP", "1", "1" ]
+  MINOR_LEVEL_UP: [ "ENTITY_PLAYER_LEVELUP", "1", "6" ]
+  ADD: [ "BLOCK_NOTE_BLOCK_HAT", "1", "8" ]
+  REMOVE: [ "BLOCK_NOTE_BLOCK_HAT", "1", "6" ]
+  NOT_ALLOWED: [ "BLOCK_NOTE_BLOCK_HAT", "1", "2" ]
+  WAR: [ "ITEM_GOAT_HORN_SOUND_0", "1", "1" ]
+  GOOD: [ "ENTITY_EXPERIENCE_ORB_PICKUP", "1", "1.7" ]
+  MINOR_GOOD: [ "BLOCK_AMETHYST_BLOCK_BREAK", "1", "1" ]
+  BAD: [ "BLOCK_BELL_USE", "1", "1.5" ]
+  MINOR_BAD: [ "ENTITY_SLIME_ATTACK", "1", "6" ]
+
+
+
+
+
+
+
+##Cross server config (DISABLED SINCE 0.3.0)
 #Enable cross server (will require a MySQL database)
 EnableCrossServer: false
 SQL:
@@ -186,10 +289,15 @@ SQL:
   #password of the database
   password: password
 
-#Remove all villager interactions except the one from the plugin
-removeAllVillagerInteractions: false
 
-##Clearing RAM memory
+########################
+##       Storage      ##
+########################
+
+#Archive major event into a txt file
+archiveHistory: true
+
+
 #Time before tax history is cleared in days (can be set to 0 to disable the clearing)
 TimeBeforeClearingTaxHistory: 30
 #Time before chunk history is cleared in days (can be set to 0 to disable the clearing)
@@ -277,37 +385,7 @@ CancelMobSpawnInTown:
 
 
 
-##Teleportation
-#Time before a teleportation (in seconds). 0 or negative value will result in an instant teleportation
-timeBeforeTeleport: 5
-#Cancel teleportation if player move
-cancelTeleportOnMove: true
-#Cancel teleportation if player take damage
-cancelTeleportOnDamage: true
 
-#Archive major event into a txt file
-archiveHistory: true
 
-#Show message when tax in the console
-showTaxInConsole: true
 
-#Time of the day when taxes are collected
-taxHourTime: 0 #0-23
-taxMinuteTime: 0 #0-59
 
-#Manage plugin sounds
-enableSounds: true
-#1 - Sound
-#2 - Volume
-#3 - Pitch
-sounds:
-  LEVEL_UP: [ "ENTITY_PLAYER_LEVELUP", "1", "1" ]
-  MINOR_LEVEL_UP: [ "ENTITY_PLAYER_LEVELUP", "1", "6" ]
-  ADD: [ "BLOCK_NOTE_BLOCK_HAT", "1", "8" ]
-  REMOVE: [ "BLOCK_NOTE_BLOCK_HAT", "1", "6" ]
-  NOT_ALLOWED: [ "BLOCK_NOTE_BLOCK_HAT", "1", "2" ]
-  WAR: [ "ITEM_GOAT_HORN_SOUND_0", "1", "1" ]
-  GOOD: [ "ENTITY_EXPERIENCE_ORB_PICKUP", "1", "1.7" ]
-  MINOR_GOOD: [ "BLOCK_AMETHYST_BLOCK_BREAK", "1", "1" ]
-  BAD: [ "BLOCK_BELL_USE", "1", "1.5" ]
-  MINOR_BAD: [ "ENTITY_SLIME_ATTACK", "1", "6" ]

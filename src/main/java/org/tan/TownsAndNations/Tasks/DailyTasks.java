@@ -52,8 +52,6 @@ public class DailyTasks {
         LandmarkStorage.generateAllRessources();
         ArchiveUtil.archiveFiles();
 
-        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("showTaxInConsole",true))
-            TownsAndNations.getPluginLogger().info(Lang.DAILY_TAXES_SUCCESS_LOG.get());
     }
 
     private static void PropertyRent() {
@@ -110,7 +108,7 @@ public class DailyTasks {
     }
     public static void ChunkPayment(){
 
-        float upkeepCost = ConfigUtil.getCustomConfig("config.yml").getInt("ChunkUpkeepCost");
+        float upkeepCost = ConfigUtil.getCustomConfig("config.yml").getInt("TownChunkUpkeepCost");
 
         for(TownData town : TownDataStorage.getTownMap().values()){
 

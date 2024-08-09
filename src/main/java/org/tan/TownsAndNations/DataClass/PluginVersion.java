@@ -25,7 +25,6 @@ public class PluginVersion {
         this.PATCH = PATCH;
     }
     public PluginVersion(String version){
-        System.out.println(version);
         if(version.startsWith("v"))
             version = version.substring(1);
 

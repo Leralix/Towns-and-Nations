@@ -84,7 +84,7 @@ public class ChunkUtil {
         }
         boolean isRegionClaimed = false;
 
-        int cost = ConfigUtil.getCustomConfig("config.yml").getInt("CostOfChunk",0);
+        int cost = ConfigUtil.getCustomConfig("config.yml").getInt("CostOfTownChunk",0);
         if(townData.getBalance() < cost){
             player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(cost - townData.getBalance()));
             return;
@@ -105,7 +105,7 @@ public class ChunkUtil {
 
         if(townData.getNumberOfClaimedChunk() != 0 &&
                 !NewClaimedChunkStorage.isAdjacentChunkClaimedBySameTown(chunkToClaim,townData.getID()) &&
-                !ConfigUtil.getCustomConfig("config.yml").getBoolean("AllowNonAdjacentChunks",false))
+                !ConfigUtil.getCustomConfig("config.yml").getBoolean("TownAllowNonAdjacentChunks",false))
         {
             player.sendMessage(getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
             return;

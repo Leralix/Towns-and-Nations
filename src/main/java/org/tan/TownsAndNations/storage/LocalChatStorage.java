@@ -12,8 +12,6 @@ import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import java.util.HashMap;
 
-import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
-
 public class LocalChatStorage {
 
 
@@ -73,7 +71,7 @@ public class LocalChatStorage {
 
             playerTown.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.get(playerTown.getName(),player.getName(),message));
 
-            playerTown.getRelations().getTerritoryIDWithRelation(TownRelation.ALLIANCE).forEach(townID -> {
+            playerTown.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE).forEach(townID -> {
                 TownDataStorage.get(townID).broadCastMessage(Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.get(playerTown.getName(),player.getName(),message));
             });
 

@@ -54,8 +54,8 @@ public class TownDataStorage {
     }
 
 
-    public static void removeTown(String TownId) {
-        TownData townToDelete = get(TownId);
+    public static void removeTown(String townID) {
+        TownData townToDelete = get(townID);
 
         NewClaimedChunkStorage.unclaimAllChunkFromTown(townToDelete); //Unclaim all chunk from town
 
@@ -64,7 +64,7 @@ public class TownDataStorage {
             region.removeTown(townToDelete);
 
 
-        townToDelete.cancelAllRelation();   //Cancel all Relation between the deleted town and other town
+        townToDelete.getRelations().cleanAll(townID);   //Cancel all Relation between the deleted town and other town
         for(String playerID : townToDelete.getPlayerIDList()){ //Kick all Players from the deleted town
             townToDelete.removePlayer(PlayerDataStorage.get(playerID));
         }
@@ -78,7 +78,7 @@ public class TownDataStorage {
         }
 
         updateAllScoreboardColor();
-        townDataMap.remove(TownId);
+        townDataMap.remove(townID);
         saveStats();
     }
 

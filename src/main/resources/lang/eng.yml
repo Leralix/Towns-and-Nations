@@ -641,8 +641,6 @@ language:
   RARE_ITEM_NO_ITEM_IN_HANDS: "Right click with §e{0}§f to sell it for §6{1}✦"
   RARE_ITEM_WRONG_ITEM: "This villager is only buying §e{0}"
   RARE_ITEM_SELLING_SUCCESS: "Successfully sold §e{0}x {1}§f for §6+{2}✦"
-  #Taxes
-  DAILY_TAXES_SUCCESS_LOG: "Town taxes have been collected"
   #Chunk interactions
   CHUNK_ENTER_WILDERNESS: "§fWilderness"
   PLAYER_ENTER_TOWN_CHUNK: "§fEntering : §9{0}"
@@ -692,3 +690,14 @@ language:
   PLAYER_LOST_ATTACK: "§cThe attack has been lost !"
   WAR_ATTACKER_WON_ANNOUNCEMENT: "§a Attackers have won !"
   WAR_DEFENDER_WON_ANNOUNCEMENT: "§a Defenders have won !"
+  #Confirmation GUI
+  GENERIC_CONFIRM_ACTION: "§aConfirm action"
+  GENERIC_CANCEL_ACTION: "§cCancel action"
+  GUI_CONFIRM_PLAYER_LEAVE_TOWN: "§3{0}§f leaves the town"
+  GUI_CONFIRM_PLAYER_DELETE_TOWN: "§fThe town §9{0}§f will be deleted"
+  TOWN_BROADCAST_TOWN_LEFT_REGION: "§9{0}§f has left the region §b{1}"
+  GUI_CONFIRM_TOWN_LEAVE_REGION: "§9{0}§f leaves the region"
+  GUI_CONFIRM_CHANGE_TOWN_LEADER: "§3{0}§f will be the new leader of the town"
+  CONFIRM_PLAYER_KICKED: "§3{0}§f will be kicked from the town"
+  GUI_CONFIRM_DELETE_REGION: "§fThe region §b{0}§f will be deleted"
+  GUI_CONFIRM_CHANGE_LEADER: "§3{0}§f will be the new leader of the region"

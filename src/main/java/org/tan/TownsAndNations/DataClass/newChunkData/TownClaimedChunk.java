@@ -18,6 +18,7 @@ import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.SoundUtil;
 
 import static org.tan.TownsAndNations.enums.SoundEnum.BAD;
@@ -43,14 +44,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
 
     @Override
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
-        TownData playerTown = TownDataStorage.get(player);
         PlayerData playerData = PlayerDataStorage.get(player);
-
-
-        for(CurrentAttacks currentAttacks : playerTown.getCurrentAttacks())
-            if(currentAttacks.containsPlayer(playerData)) //player is a part of a war with this town.
-                return true;
-
 
         //Location is in a property and players owns or rent it
         TownData ownerTown = getTown();
@@ -70,6 +64,15 @@ public class TownClaimedChunk extends ClaimedChunk2{
             playerCantPerformAction(player);
             return false;
         }
+
+        TownData playerTown = TownDataStorage.get(player);
+
+        //player is a part of a war with this town.
+        for(CurrentAttacks currentAttacks : playerTown.getCurrentAttacks())
+            if(currentAttacks.containsPlayer(playerData))
+                return true;
+
+
         TownData chunkTown = TownDataStorage.get(ownerID);
 
         //Same town, can interact
@@ -133,7 +136,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
         }
         TownRelation relation = TownDataStorage.get(player).getRelationWith(townTo);
 
-        if(relation == TownRelation.WAR){
+        if(relation == TownRelation.WAR && ConfigUtil.getCustomConfig("config.yml").getBoolean("notifyEnemyEnterTown",true)){
             SoundUtil.playSound(player, BAD);
             player.sendMessage(getTANString() + Lang.CHUNK_ENTER_TOWN_AT_WAR.get());
             townTo.broadCastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.get(player).getName(),player.getName()), BAD);

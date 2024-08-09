@@ -487,7 +487,6 @@ public class RegionData implements ITerritoryData {
 
     @Override
     public void broadCastMessage(String message) {
-        System.out.println("broadcastMessage");
         for(TownData townData : getTownsInRegion())
             townData.broadCastMessage(message);
     }

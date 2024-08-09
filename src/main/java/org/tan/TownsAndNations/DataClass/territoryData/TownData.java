@@ -820,36 +820,12 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
         SoundUtil.playSound(player, MINOR_LEVEL_UP);
     }
 
-    public void kickPlayer(Player player, OfflinePlayer kickedPlayer) {
-        PlayerData playerData = PlayerDataStorage.get(player);
+    public void kickPlayer(OfflinePlayer kickedPlayer) {
         PlayerData kickedPlayerData = PlayerDataStorage.get(kickedPlayer);
-        TownData townData = TownDataStorage.get(playerData);
 
+        removePlayer(kickedPlayerData);
+        broadCastMessageWithSound(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.get(kickedPlayer.getName()), BAD);
 
-        if(!playerData.hasPermission(KICK_PLAYER)){
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-            return;
-        }
-        int playerLevel = townData.getRank(playerData).getLevel();
-        int kickedPlayerLevel = townData.getRank(kickedPlayerData).getLevel();
-        if(playerLevel >= kickedPlayerLevel && !playerData.isTownLeader()){
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
-            return;
-        }
-        if(kickedPlayerData.isTownLeader()){
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get());
-            return;
-        }
-        if(playerData.getID().equals(kickedPlayerData.getID())){
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_YOURSELF.get());
-            return;
-        }
-        TownData town = TownDataStorage.get(playerData);
-        town.removePlayer(kickedPlayerData);
-
-
-        town.broadCastMessageWithSound(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.get(kickedPlayer.getName()),
-                BAD);
         if(kickedPlayer.isOnline())
             kickedPlayer.getPlayer().sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get());
 

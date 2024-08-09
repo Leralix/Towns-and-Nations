@@ -586,8 +586,6 @@ language:
   RARE_ITEM_NO_ITEM_IN_HANDS: "Kliknij prawym przyciskiem myszy §e{0}§f, aby sprzedać to za §6{1}✦"
   RARE_ITEM_WRONG_ITEM: "Ten osadnik kupuje tylko §e{0}"
   RARE_ITEM_SELLING_SUCCESS: "Pomyślnie sprzedano §e{0}x {1}§f za §6+{2}✦"
-  #Taxes
-  DAILY_TAXES_SUCCESS_LOG: "Zebrano podatki"
   #Chunk interactions
   CHUNK_ENTER_WILDERNESS: "§fPustynia"
   CHUNK_ENTER_TOWN: "§fWjazd do miasta: §9{0}"

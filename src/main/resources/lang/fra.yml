@@ -639,8 +639,6 @@ language:
   RARE_ITEM_NO_ITEM_IN_HANDS: "Clic droit en tenant §e{0}§f afin de le vendre contre §6{1}✦"
   RARE_ITEM_WRONG_ITEM: "Ce villageois n'achète que des §e{0}"
   RARE_ITEM_SELLING_SUCCESS: "§e{0}x {1}§f vendu avec succès contre §6+{2}✦"
-  #Taxes
-  DAILY_TAXES_SUCCESS_LOG: "Les taxes de la ville ont été collectées"
   #Chunk interactions
   CHUNK_ENTER_WILDERNESS: "§fTerres sauvages"
   PLAYER_ENTER_TOWN_CHUNK: "§9{0}"
