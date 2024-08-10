@@ -176,6 +176,8 @@ language:
   REGION_NOT_ENOUGH_MONEY_EXTENDED: "§cThe region doesn't have enough money to perform this action. It need {0}✦ more"
   NAME_ALREADY_USED: "§cThis name is already used"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Write the name of the town in the chat."
+  PLAYER_WRITE_QUANTITY_IN_CHAT: "Write the quantity in the chat"
+  TOWN_RETRIEVE_MONEY_SUCCESS: "§aYou successfully retrieved §6{0}✦§a from the town"
   PLAYER_SEND_MONEY_TO_TOWN: "§fYou sent §6{0}✦§f to the town"
   PLAYER_SEND_MONEY_TO_REGION: "§fYou sent §6{0}✦§f to the region"
   PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY: "Right click 2 blocs to create your private property"
@@ -307,6 +309,8 @@ language:
   GUI_REGION_TREASURY_DONATION_DESC1: "§fDonate money to the region"
   WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION: "§aWrite the amount of money to give"
   GUI_TREASURY_DONATION_HISTORY: "§aDonation history"
+  GUI_TREASURY_RETRIEVE_GOLD: "§aRetrieve gold"
+  GUI_TREASURY_RETRIEVE_GOLD_DESC1: "§fRetrieve gold from the treasury"
   GUI_TOWN_LEVEL_INFO: "{0}" #town's name
   LEVEL_LOCKED: "§cLevel locked"
   GUI_TOWN_LEVEL_UP: "§aUpgrade town level"

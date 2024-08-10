@@ -104,6 +104,12 @@ public class ChatListener implements Listener {
             case CHANGE_TOWN_TAG:
                 changeTownTag(player, chatData, message);
                 break;
+            case RETRIEVE_TOWN_MONEY:
+                retrieveTownMoney(player, chatData, message);
+                break;
+            case RETRIEVE_REGION_MONEY:
+                retrieveRegionMoney(player, chatData, message);
+                break;
             case CREATE_ADMIN_TOWN:
                 TownUtil.CreateAdminTown(player, message);
                 break;
@@ -143,14 +149,14 @@ public class ChatListener implements Listener {
         player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
     }
     private void RegionDonation(Player player, String stringAmount) {
-
+        removePlayer(player);
         Integer amount = parseStringToInt(stringAmount);
         if(amount == null){
             player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
             return;
         }
 
-        removePlayer(player);
+
         int playerBalance = getBalance(player);
         PlayerChatListenerStorage.removePlayer(player);
 
@@ -171,6 +177,53 @@ public class ChatListener implements Listener {
         player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_REGION.get(amount));
         SoundUtil.playSound(player, MINOR_LEVEL_UP);
     }
+
+    private void retrieveTownMoney(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String message) {
+        removePlayer(player);
+
+        Integer amount = parseStringToInt(message);
+        if(amount == null){
+            player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
+            return;
+        }
+
+        TownData town = TownDataStorage.get(chatData.getData().get(TOWN_ID));
+        int townBalance = town.getBalance();
+
+        if(amount > townBalance){
+            player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
+            return;
+        }
+        town.removeFromBalance(amount);
+        EconomyUtil.addFromBalance(player, amount);
+
+        player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_RETRIEVE_MONEY_SUCCESS.get(amount));
+        SoundUtil.playSound(player, MINOR_LEVEL_UP);
+    }
+
+    private void retrieveRegionMoney(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String message) {
+        removePlayer(player);
+
+        Integer amount = parseStringToInt(message);
+        if(amount == null){
+            player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
+            return;
+        }
+
+        TownData town = TownDataStorage.get(chatData.getData().get(REGION_ID));
+        int townBalance = town.getBalance();
+
+        if(amount > townBalance){
+            player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
+            return;
+        }
+        town.removeFromBalance(amount);
+        EconomyUtil.addFromBalance(player, amount);
+
+        player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_RETRIEVE_MONEY_SUCCESS.get(amount));
+        SoundUtil.playSound(player, MINOR_LEVEL_UP);
+    }
+
     private void ChangeChunkColor(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newColorCode) {
         removePlayer(player);
 

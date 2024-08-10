@@ -106,6 +106,7 @@ public class AdminGUI implements IGUI{
                 }
                 else if(event.isRightClick()){
                     landmark.deleteLandmark();
+                    SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
                     OpenLandmarks(player, page);
                     return;
                 }

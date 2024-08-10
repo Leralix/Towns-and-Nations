@@ -155,8 +155,6 @@ public final class TownsAndNations extends JavaPlugin {
             String username = ConfigUtil.getCustomConfig("config.yml").getString("SQL.username");
             String password = ConfigUtil.getCustomConfig("config.yml").getString("SQL.password");
 
-
-            TownDataStorage.initialize(host,username,password);
         }
         else{
             logger.info("[TaN] -Loading Local data");

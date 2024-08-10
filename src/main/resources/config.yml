@@ -244,10 +244,10 @@ rareFishValue: 20
 timeBeforeTeleport: 5
 
 #Cancel teleportation if player move head
-cancelTeleportOnHeadMove: false
+cancelTeleportOnMoveHead: false
 
 #Cancel teleportation if player move position
-cancelTeleportOnMove: true
+cancelTeleportOnMovePosition: true
 
 #Cancel teleportation if player take damage
 cancelTeleportOnDamage: true

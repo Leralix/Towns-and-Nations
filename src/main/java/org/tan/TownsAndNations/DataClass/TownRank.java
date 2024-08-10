@@ -9,7 +9,6 @@ import java.util.*;
 
 import static org.tan.TownsAndNations.TownsAndNations.isSQLEnabled;
 import static org.tan.TownsAndNations.enums.TownRankEnum.FIVE;
-import static org.tan.TownsAndNations.storage.DataStorage.TownDataStorage.getPlayerIdsByTownAndRank;
 
 public class TownRank {
 
@@ -45,8 +44,6 @@ public class TownRank {
 
     public void swapPayingTaxes(String townID) {
         this.isPayingTaxes = !this.isPayingTaxes;
-        if(isSQLEnabled())
-            TownDataStorage.updateRank(townID,this);
     }
     public String getName(){
         return this.name;
@@ -62,14 +59,10 @@ public class TownRank {
     }
     public void setRankEnum(String townID, TownRankEnum rankEnum){
         this.rankEnum = rankEnum;
-        if(isSQLEnabled())
-            TownDataStorage.updateRank(townID,this);
     }
     public int getLevel(){return this.rankEnum.getLevel();}
     public void incrementLevel(String townID){
         this.rankEnum = rankEnum.nextRank();
-        if(isSQLEnabled())
-            TownDataStorage.updateRank(townID,this);
     }
     public String getRankIconName(){
         return this.rankIconName;
@@ -96,8 +89,6 @@ public class TownRank {
     }
 
     public List<String> getPlayers(String townID){
-        if(isSQLEnabled())
-            return getPlayerIdsByTownAndRank(townID,getName());
         return this.players;
     }
 
@@ -107,28 +98,19 @@ public class TownRank {
 
     public void setPayingTaxes(String townID, boolean payingTaxes) {
         this.isPayingTaxes = payingTaxes;
-        if(isSQLEnabled())
-            TownDataStorage.updateRank(townID,this);
     }
     public void setRankIconName(String townID, String rankIconName) {
         this.rankIconName = rankIconName;
-        if(isSQLEnabled())
-            TownDataStorage.updateRank(townID,this);
     }
 
     public int getNumberOfPlayer(String townID){
-        if(isSQLEnabled())
-            return TownDataStorage.getNumberOfPlayerByRank(townID,this.getName());
-        else
-            return players.size();
+        return players.size();
     }
 
     public void addPermission(TownRolePermission permission) {
         permissions.add(permission);
     }
     public boolean hasPermission(String townID,TownRolePermission permission) {
-        if(isSQLEnabled())
-            return TownDataStorage.getRankPermission(townID,getName(),permission);
         return permissions.contains(permission);
     }
     public void removePermission(TownRolePermission permission) {
@@ -136,10 +118,6 @@ public class TownRank {
     }
 
     public void switchPermission(String townID, TownRolePermission permission) {
-        if(isSQLEnabled()){
-            TownDataStorage.swapRankPermission(townID,this.getName(),permission);
-            return;
-        }
         if(hasPermission(townID,permission))
             removePermission(permission);
         else
@@ -156,13 +134,9 @@ public class TownRank {
     }
     public void addFromSalary(String townID, int amount) {
         this.salary += amount;
-        if(isSQLEnabled())
-            TownDataStorage.updateRank(townID,this);
     }
     public void removeFromSalary(String townID, int amount) {
         this.salary -= amount;
-        if(isSQLEnabled())
-            TownDataStorage.updateRank(townID,this);
     }
 
     public int getSalary() {

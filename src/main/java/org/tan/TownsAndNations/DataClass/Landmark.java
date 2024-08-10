@@ -13,6 +13,7 @@ import org.tan.TownsAndNations.storage.DataStorage.LandmarkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.CustomNBT;
+import org.tan.TownsAndNations.utils.TerritoryUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +98,13 @@ public class Landmark {
     }
 
     public boolean hasOwner() {
-        return ownerID != null;
+        if(ownerID == null)
+            return false;
+        if(TerritoryUtil.getTerritory(ownerID) == null){
+            clearOwner();
+            return false;
+        }
+        return true;
     }
 
     private TownData getOwner(){

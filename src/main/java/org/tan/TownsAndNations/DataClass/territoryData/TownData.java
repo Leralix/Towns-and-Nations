@@ -978,5 +978,11 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
     }
 
 
+    public void removeALlLandmark() {
+        for(String landmarkID : getOwnedLandmarks()){
+            Landmark landmark = LandmarkStorage.get(landmarkID);
+            landmark.clearOwner();
+        }
+    }
 }
 

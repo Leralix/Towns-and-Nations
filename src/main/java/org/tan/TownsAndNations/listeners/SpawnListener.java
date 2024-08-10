@@ -1,5 +1,6 @@
 package org.tan.TownsAndNations.listeners;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -34,14 +35,32 @@ public class SpawnListener implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if(TeleportationRegister.isPlayerRegistered(player.getUniqueId().toString())&&
+        if(TeleportationRegister.isPlayerRegistered(player.getUniqueId().toString()) &&
                     !TeleportationRegister.getTeleportationData(player).isCancelled()) {
 
-            if(ConfigUtil.getCustomConfig("config.yml").getBoolean("cancelTeleportOnMove", true)) {
-                PlayerData playerData = PlayerDataStorage.get(player.getUniqueId().toString());
-                TeleportationRegister.getTeleportationData(playerData).setCancelled(true);
-                player.sendMessage(ChatUtils.getTANString() + Lang.TELEPORTATION_CANCELLED.get());
+            Location locationFrom = event.getFrom();
+            Location locationTo = event.getTo();
+
+            //If player moves only his head
+            if(locationFrom.getBlockX() == locationTo.getBlockX() && locationFrom.getBlockZ() == locationTo.getBlockZ()) {
+                if(ConfigUtil.getCustomConfig("config.yml").getBoolean("cancelTeleportOnMoveHead", false)) {
+                    cancelTeleportation(player);
+                }
             }
+            else{
+                //If player moves to a different position
+                if(ConfigUtil.getCustomConfig("config.yml").getBoolean("cancelTeleportOnMovePosition", true)) {
+                    cancelTeleportation(player);
+                }
+            }
+
         }
+    }
+
+
+    public void cancelTeleportation(Player player) {
+        PlayerData playerData = PlayerDataStorage.get(player.getUniqueId().toString());
+        TeleportationRegister.getTeleportationData(playerData).setCancelled(true);
+        player.sendMessage(ChatUtils.getTANString() + Lang.TELEPORTATION_CANCELLED.get());
     }
 }
