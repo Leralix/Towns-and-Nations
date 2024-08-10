@@ -254,6 +254,14 @@ cancelTeleportOnDamage: true
 
 
 ########################
+##      Landmarks     ##
+########################
+
+#Max size of a landmark name
+landmarkNameMaxSize: 25
+
+
+########################
 ##       Sounds       ##
 ########################
 enableSounds: true

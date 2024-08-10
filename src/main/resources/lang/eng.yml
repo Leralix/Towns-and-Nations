@@ -31,7 +31,7 @@ language:
   LANDMARK_ALREADY_CLAIMED: "§cThis landmark is already claimed by §9{0}"
   #Common uses
   DISPLAY_COORDINATES: "§fCoordinates: §d[{0}, {1}, {2}]"
-
+  GUI_BASIC_NAME: "§a{0}"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§9[{0}]§f <{1}> {2}"
   CHAT_SCOPE_REGION_MESSAGE: "§b[{0}]§f <{1}> {2}"
@@ -228,7 +228,6 @@ language:
   GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fYour current town: §9{0}"
   GUI_PROFILE_ICON_DESC1: "§fLook at your stats"
   #Player
-  GUI_PLAYER_PROFILE: "§a{0}" #//Player's name
   GUI_PLAYER_PROFILE_DESC1: "§fBalance : §6{0}✦"
   GUI_PLAYER_PROFILE_DESC2: "§fTown : §9{0}"
   GUI_PLAYER_PROFILE_DESC3: "§fTown rank : §e{0}"
@@ -510,7 +509,7 @@ language:
   GUI_LANDMARK_REWARD_COLLECTED: "§aResources collected"
   GUI_REMOVE_LANDMARK: "§cUnclaim landmark"
 
-  SPECIFIC_LANDMARK_ICON: "§aLandmark n°{0}"
+  SPECIFIC_LANDMARK_ICON_DEFAULT_NAME: "§aLandmark n°{0}"
   SPECIFIC_LANDMARK_ICON_DESC1: "§fProducing : §6{0}x §e{1}"
   SPECIFIC_LANDMARK_ICON_DESC2_OWNER: "§fControlled by : §9{0}"
   SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER: "§fNot claimed"
@@ -550,6 +549,12 @@ language:
   CANNOT_DO_IN_LANDMARK: "§cYou cannot do this action in a landmark"
   CANNOT_UNCLAIM_LANDMARK_CHUNK: "§cYou cannot unclaim a landmark chunk"
   ADMIN_CHUNK_ALREADY_LANDMARK: "§cThis chunk is already a landmark"
+  ADMIN_GUI_CHANGE_LANDMARK_NAME: "§aChange landmark name"
+  ADMIN_GUI_CHANGE_LANDMARK_NAME_DESC1: "§fLeft click to change the name"
+  ADMIN_GUI_CHANGE_LANDMARK_NAME_DESC2: "§fCurrent name: §9{0}"
+  ADMIN_GUI_DELETE_LANDMARK: "§cDelete landmark"
+  ADMIN_GUI_DELETE_LANDMARK_DESC1: "§fLeft click to delete the landmark"
+  CLICK_TO_OPEN_LANDMARK_MENU: "§fLeft click to manage the landmark"
   #Other GUI
   GUI_PROPERTY_DESCRIPTION: "§7§o\"{0}\""
   GUI_PROPERTY_STRUCTURE_OWNER: "§fCity: §9{0}"

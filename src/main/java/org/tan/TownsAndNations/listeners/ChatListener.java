@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.tan.TownsAndNations.DataClass.Landmark;
 import org.tan.TownsAndNations.DataClass.PropertyData;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
@@ -13,6 +14,7 @@ import org.tan.TownsAndNations.DataClass.TownRank;
 import org.tan.TownsAndNations.GUI.GuiManager;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
+import org.tan.TownsAndNations.storage.DataStorage.LandmarkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
@@ -109,6 +111,9 @@ public class ChatListener implements Listener {
                 break;
             case RETRIEVE_REGION_MONEY:
                 retrieveRegionMoney(player, chatData, message);
+                break;
+            case CHANGE_LANDMARK_NAME:
+                changeLandmarkName(player, chatData, message);
                 break;
             case CREATE_ADMIN_TOWN:
                 TownUtil.CreateAdminTown(player, message);
@@ -210,18 +215,35 @@ public class ChatListener implements Listener {
             return;
         }
 
-        TownData town = TownDataStorage.get(chatData.getData().get(REGION_ID));
-        int townBalance = town.getBalance();
+        RegionData regionData = RegionDataStorage.get(chatData.getData().get(REGION_ID));
+        int regionBalance = regionData.getBalance();
 
-        if(amount > townBalance){
+        if(amount > regionBalance){
             player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
             return;
         }
-        town.removeFromBalance(amount);
+        regionData.removeFromBalance(amount);
         EconomyUtil.addFromBalance(player, amount);
 
         player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_RETRIEVE_MONEY_SUCCESS.get(amount));
         SoundUtil.playSound(player, MINOR_LEVEL_UP);
+    }
+
+    private void changeLandmarkName(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String message) {
+        removePlayer(player);
+
+        Landmark landmark = LandmarkStorage.get(chatData.getData().get(LANDMARK_ID));
+
+        int nameMaxSize = ConfigUtil.getCustomConfig("config.yml").getInt("landmarkNameMaxSize",25);
+        if(message.length() >= nameMaxSize){
+            player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(nameMaxSize));
+            return;
+        }
+        landmark.setName(message);
+        player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
+        SoundUtil.playSound(player, MINOR_LEVEL_UP);
+
+
     }
 
     private void ChangeChunkColor(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newColorCode) {

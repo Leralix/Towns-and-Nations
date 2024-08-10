@@ -52,7 +52,7 @@ public class ChunkUtil {
             return;
         }
 
-        regionData.removeBalance(cost);
+        regionData.removeFromBalance(cost);
         NewClaimedChunkStorage.claimRegionChunk(chunk, regionData.getID());
         player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS_REGION.get());
 

@@ -304,6 +304,10 @@ public class HeadUtils {
      */
     public static ItemStack createCustomItemStack(Material itemMaterial, String itemName, List<String> lore){
         ItemStack item = new ItemStack(itemMaterial);
+        return createCustomItemStack(item, itemName, lore);
+    }
+
+    public static ItemStack createCustomItemStack(ItemStack item, String itemName, List<String> lore){
         ItemMeta meta = item.getItemMeta();
         if(meta != null) {
             meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + itemName);
@@ -311,6 +315,17 @@ public class HeadUtils {
             item.setItemMeta(meta);
         }
         return item;
+    }
+
+    /**
+     * Create an {@link ItemStack} with custom Lore.
+     * @param item          The Itemstack to use.
+     * @param itemName      The display name of the item.
+     * @param lore          The lore of the item.
+     * @return              The ItemStack displaying the town.
+     */
+    public static ItemStack createCustomItemStack(ItemStack item, String itemName, String... lore){
+        return createCustomItemStack(item, itemName, Arrays.asList(lore));
     }
     /**
      * Set the lore of an {@link ItemStack}

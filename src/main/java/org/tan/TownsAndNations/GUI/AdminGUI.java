@@ -88,29 +88,15 @@ public class AdminGUI implements IGUI{
             ItemStack icon = landmark.getIcon();
             HeadUtils.addLore(icon,
                     "",
-                    Lang.SPECIFIC_LANDMARK_ICON_SWITCH_REWARD.get(),
-                    Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(),
+                    Lang.CLICK_TO_OPEN_LANDMARK_MENU.get(),
                     Lang.GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT.get());
 
             GuiItem item = ItemBuilder.from(icon).asGuiItem(event -> {
                 event.setCancelled(true);
-                if(event.isLeftClick() && !event.isShiftClick()){
-                    ItemStack itemOnCursor = player.getItemOnCursor();
-                    if(itemOnCursor.getType() != Material.AIR){
-                        player.sendMessage(getTANString() + Lang.ADMIN_GUI_LANDMARK_REWARD_SET.get(itemOnCursor.getAmount(), itemOnCursor.getType().name()));
-                        landmark.setReward(itemOnCursor);
-                        OpenLandmarks(player, page);
-                        SoundUtil.playSound(player, SoundEnum.GOOD);
-                        return;
-                    }
+                if(!event.isShiftClick()){
+                    OpenSpecificLandmarkMenu(player, landmark);
                 }
-                else if(event.isRightClick()){
-                    landmark.deleteLandmark();
-                    SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
-                    OpenLandmarks(player, page);
-                    return;
-                }
-                else if(event.isShiftClick()){
+                else{
                     new BukkitRunnable(){
                         @Override
                         public void run() {
@@ -150,6 +136,64 @@ public class AdminGUI implements IGUI{
         });
         gui.setItem(6, 4, _createLandmark);
         gui.open(player);
+    }
+
+    private static void OpenSpecificLandmarkMenu(Player player, Landmark landmark) {
+
+        Gui gui = IGUI.createChestGui("Landmark - " + landmark.getName(),3);
+
+        ItemStack changeLandmarkName = HeadUtils.createCustomItemStack(Material.NAME_TAG,
+                Lang.ADMIN_GUI_CHANGE_LANDMARK_NAME.get(),
+                Lang.ADMIN_GUI_CHANGE_LANDMARK_NAME_DESC1.get(landmark.getName()));
+
+        ItemStack deleteLandmark = HeadUtils.createCustomItemStack(Material.BARRIER,
+                Lang.ADMIN_GUI_DELETE_LANDMARK.get(),
+                Lang.ADMIN_GUI_DELETE_LANDMARK_DESC1.get(landmark.getName()));
+
+        ItemStack setReward = HeadUtils.createCustomItemStack(landmark.getRessources(),
+                Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(),
+                Lang.SPECIFIC_LANDMARK_ICON_SWITCH_REWARD.get());
+
+        GuiItem _changeLandmarkName = ItemBuilder.from(changeLandmarkName).asGuiItem(event -> {
+            event.setCancelled(true);
+            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+            player.closeInventory();
+
+            Map<MessageKey, String> data = new HashMap<>();
+            data.put(MessageKey.LANDMARK_ID,landmark.getID());
+            PlayerChatListenerStorage.addPlayer(CHANGE_LANDMARK_NAME,player,data);
+        });
+
+        GuiItem _deleteLandmark = ItemBuilder.from(deleteLandmark).asGuiItem(event -> {
+            event.setCancelled(true);
+            landmark.deleteLandmark();
+            SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
+            OpenLandmarks(player, 0);
+        });
+
+        GuiItem _setReward = ItemBuilder.from(setReward).asGuiItem(event -> {
+            event.setCancelled(true);
+            ItemStack itemOnCursor = player.getItemOnCursor();
+            if(itemOnCursor.getType() != Material.AIR){
+                player.sendMessage(getTANString() + Lang.ADMIN_GUI_LANDMARK_REWARD_SET.get(itemOnCursor.getAmount(), itemOnCursor.getType().name()));
+                landmark.setReward(itemOnCursor);
+                OpenSpecificLandmarkMenu(player, landmark);
+                SoundUtil.playSound(player, SoundEnum.GOOD);
+                return;
+            }
+        });
+
+
+
+
+        gui.setItem(2,2, _changeLandmarkName);
+        gui.setItem(2,4, _deleteLandmark);
+        gui.setItem(2,6, _setReward);
+
+
+        gui.open(player);
+
     }
 
     private static void OpenRegionDebugMenu(Player player, int page) {

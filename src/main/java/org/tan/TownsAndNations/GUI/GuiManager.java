@@ -1174,7 +1174,7 @@ public class GuiManager implements IGUI {
 
         ItemStack roleIcon = HeadUtils.createCustomItemStack(
                 Material.getMaterial(townRank.getRankIconName()),
-                Lang.GUI_TOWN_MEMBERS_ROLE_NAME.get(townRank.getColoredName()),
+                Lang.GUI_BASIC_NAME.get(townRank.getColoredName()),
                 Lang.GUI_TOWN_MEMBERS_ROLE_NAME_DESC1.get());
 
         ItemStack roleRankIcon = townRank.getRankEnum().getRankGuiIcon();

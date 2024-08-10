@@ -98,7 +98,7 @@ public class RegionData implements ITerritoryData {
     }
     @Override
     public void rename(Player player, int regionCost, String newName) {
-        removeBalance(regionCost);
+        removeFromBalance(regionCost);
         player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
         SoundUtil.playSound(player, SoundEnum.GOOD);
         this.name = newName;
@@ -319,7 +319,7 @@ public class RegionData implements ITerritoryData {
     public void addBalance(Integer amount) {
         balance += amount;
     }
-    public void removeBalance(Integer amount) {
+    public void removeFromBalance(Integer amount) {
         balance -= amount;
     }
 
