@@ -52,7 +52,7 @@ public class CreatePropertyListener implements Listener {
             return;
         }
 
-        PlayerSelectPropertyPositionStorage.addPoint(player, block);
+        PlayerSelectPropertyPositionStorage.addPoint(player, block, event.getBlockFace());
 
     }
 }

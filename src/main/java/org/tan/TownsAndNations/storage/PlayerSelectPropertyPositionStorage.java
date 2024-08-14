@@ -6,6 +6,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.tan.TownsAndNations.DataClass.PlayerData;
@@ -56,7 +57,7 @@ public class PlayerSelectPropertyPositionStorage {
         playerList.remove(playerID);
     }
 
-    public static void addPoint(Player player, Block block){
+    public static void addPoint(Player player, Block block, BlockFace blockFace){
         String playerID = player.getUniqueId().toString();
         PlayerData playerData = PlayerDataStorage.get(playerID);
         TownData playerTown = playerData.getTown();
@@ -93,37 +94,65 @@ public class PlayerSelectPropertyPositionStorage {
                 return;
             }
 
+
+
             SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
             player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_PROPERTY_CREATED.get());
             removePlayer(playerID);
 
             PropertyData property = playerTown.registerNewProperty(vList.get(0),vList.get(1),playerData);
             GuiManager.OpenPropertyManagerMenu(player,property);
-            createPropertyPanel(player, property, block);
+
+            createPropertyPanel(player, property, block, blockFace);
             property.updateSign();
         }
     }
 
-    public static void createPropertyPanel(Player player, PropertyData propertyData, Block block) {
-        Location signLocation = block.getLocation().add(0, 1, 0);
-        //if (signLocation.getBlock().getType() == Material.AIR) {
-        signLocation.getBlock().setType(Material.OAK_SIGN);
+    public static void createPropertyPanel(Player player, PropertyData propertyData, Block block, BlockFace blockFace) {
+
+        // Calcul de la position de la pancarte
+        Location signLocation = block.getRelative(blockFace).getLocation();
+        signLocation.getBlock().setType(blockFace == BlockFace.UP ? Material.OAK_SIGN : Material.OAK_WALL_SIGN);
 
         BlockState blockState = signLocation.getBlock().getState();
         Sign sign = (Sign) blockState;
-        org.bukkit.block.data.type.Sign signData = (org.bukkit.block.data.type.Sign) sign.getBlockData();
-        BlockFace direction = getDirection(block.getLocation(), player.getLocation());
-        signData.setRotation(direction);
-        sign.setBlockData(signData);
+
+        // Gestion de l'orientation pour les pancartes murales
+        if (blockFace != BlockFace.UP) {
+            BlockFace direction = getTopDirection(block.getLocation(), player.getLocation());
+            Directional directional = (Directional) sign.getBlockData();
+            directional.setFacing(direction);
+            sign.setBlockData(directional);
+        } else {
+            org.bukkit.block.data.type.Sign signData = (org.bukkit.block.data.type.Sign) sign.getBlockData();
+            BlockFace direction = getTopDirection(block.getLocation(), player.getLocation());
+            signData.setRotation(direction);
+            System.out.println("Direction: " + direction);
+            sign.setBlockData(signData);
+        }
+
         sign.update();
 
+        // Ajout des métadonnées aux blocs
         block.setMetadata("propertySign", new FixedMetadataValue(TownsAndNations.getPlugin(), propertyData.getTotalID()));
-        signLocation.getBlock().setMetadata("propertySign", new FixedMetadataValue(TownsAndNations.getPlugin(), propertyData.getTotalID()));
-        //}
+        sign.getBlock().setMetadata("propertySign", new FixedMetadataValue(TownsAndNations.getPlugin(), propertyData.getTotalID()));
+
         propertyData.setSignLocation(signLocation);
     }
 
-    private static BlockFace getDirection(Location blockLocation, Location playerLocation) {
+    public static BlockFace getDirection(Location blockLocation, Location playerLocation) {
+
+        double dx = playerLocation.getX() - blockLocation.getX();
+        double dz = playerLocation.getZ() - blockLocation.getZ();
+
+        if (Math.abs(dx) > Math.abs(dz)) {
+            return (dx > 0) ? BlockFace.WEST : BlockFace.EAST;
+        } else {
+            return (dz > 0) ? BlockFace.NORTH : BlockFace.SOUTH;
+        }
+    }
+
+    private static BlockFace getTopDirection(Location blockLocation, Location playerLocation) {
         double dx = playerLocation.getX() - blockLocation.getX();
         double dz = playerLocation.getZ() - blockLocation.getZ();
         double angle = Math.toDegrees(Math.atan2(dz, dx)) + 180;

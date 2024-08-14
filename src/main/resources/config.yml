@@ -235,6 +235,17 @@ rareFish:
 
 rareFishValue: 20
 
+#If needed, you can add custom rare ressources for now they could only work with the /tan sell command
+# example:
+# - item: "DIAMOND" <- The item name
+#   customTextureID: 1 <- Only if you need to specify a custom texture ID
+#   value: 1 <- The value of the item
+customRareItems:
+  - item: "DIAMOND"
+    value: 1
+
+
+
 ########################
 ##    TELEPORTATION   ##
 ########################

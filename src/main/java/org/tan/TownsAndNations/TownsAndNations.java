@@ -58,7 +58,7 @@ public final class TownsAndNations extends JavaPlugin {
      * Used to check if the plugin is up-to-date to the latest version. Also
      * used to check if the plugin has just been updated and config file needs an update
      */
-    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,9,1);
+    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,9,3);
     /**
      * Latest version of the plugin from GitHub.
      * Used to check if the plugin is up-to-date to the latest version.
@@ -143,6 +143,7 @@ public final class TownsAndNations extends JavaPlugin {
         UpgradeStorage.init();
         MobChunkSpawnStorage.init();
         SoundStorage.init();
+        CustomItemManager.loadCustomItems();
 
         allowColorCodes = ConfigUtil.getCustomConfig("config.yml").getBoolean("EnablePlayerColorCode", false);
         allowTownTag = ConfigUtil.getCustomConfig("config.yml").getBoolean("EnablePlayerPrefix",false);

@@ -10,11 +10,9 @@ import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.listeners.RareItemDrops;
+import org.tan.TownsAndNations.storage.CustomItemManager;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
-import org.tan.TownsAndNations.utils.CustomNBT;
-import org.tan.TownsAndNations.utils.DropChances;
-import org.tan.TownsAndNations.utils.EconomyUtil;
-import org.tan.TownsAndNations.utils.RareItemUtil;
+import org.tan.TownsAndNations.utils.*;
 
 import java.util.List;
 
@@ -51,18 +49,28 @@ public class SellRareItem extends SubCommand {
             return;
         }
 
-        String rareItemTag = CustomNBT.getCustomStringTag(itemStack, "tanRareItem");
 
-        if(rareItemTag == null){
-            player.sendMessage(getTANString() + Lang.NOT_RARE_ITEM_IN_HAND.get());
-            return;
+
+        //Custom rare item check
+        Integer value = CustomItemManager.getItemValue(itemStack);
+        if(value == null){
+            //Basic rare item check
+            String rareItemTag = CustomNBT.getCustomStringTag(itemStack, "tanRareItem");
+            if(rareItemTag == null){
+                player.sendMessage(getTANString() + Lang.NOT_RARE_ITEM_IN_HAND.get());
+                return;
+            }
+            value = RareItemUtil.getPrice(rareItemTag);
         }
 
-        int price = RareItemUtil.getPrice(rareItemTag);
-        int quantity = itemStack.getAmount();
 
-        player.sendMessage(Lang.RARE_ITEM_SELLING_SUCCESS.get(quantity,itemStack.getItemMeta().getDisplayName(), price * quantity));
-        EconomyUtil.addFromBalance(player, price * itemStack.getAmount());
+
+        int quantity = itemStack.getAmount();
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        player.sendMessage(Lang.RARE_ITEM_SELLING_SUCCESS.get(quantity,
+                itemMeta.hasDisplayName() ? itemMeta.getDisplayName() : itemStack.getType().name(),
+                value * quantity));
+        EconomyUtil.addFromBalance(player, value * itemStack.getAmount());
         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
     }
 }

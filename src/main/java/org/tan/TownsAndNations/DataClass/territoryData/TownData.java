@@ -78,7 +78,7 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
         this.flatTax = 1;
         this.townDefaultRankID = 0;
         this.townTag = townName.substring(0,3).toUpperCase();
-        this.chunkColor = 0xff0000;
+        this.chunkColor = StringUtil.randomColor();
 
         this.chunkHistory = new ChunkHistory();
         this.donationHistory = new DonationHistory();

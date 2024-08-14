@@ -2,6 +2,8 @@ package org.tan.TownsAndNations.utils;
 
 import net.md_5.bungee.api.ChatColor;
 
+import java.util.Random;
+
 /**
  * Utility class for handling strings
  *
@@ -32,6 +34,15 @@ public class StringUtil {
      */
     public static ChatColor getHexColor(String hexaColor){
         return net.md_5.bungee.api.ChatColor.of(hexaColor);
+    }
+
+    public static int randomColor() {
+        Random random = new Random();
+        int red = random.nextInt(256);
+        int green = random.nextInt(256);
+        int blue = random.nextInt(256);
+
+        return  (red << 16) | (green << 8) | blue;
     }
 
 }

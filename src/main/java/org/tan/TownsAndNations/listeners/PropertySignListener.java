@@ -27,7 +27,7 @@ public class PropertySignListener implements Listener {
         Block clickedBlock = event.getClickedBlock();
 
         if (clickedBlock != null && (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK)) {
-            if (clickedBlock.getType() == Material.OAK_SIGN) {
+            if (clickedBlock.getType() == Material.OAK_SIGN || clickedBlock.getType() == Material.OAK_WALL_SIGN) {
                 Sign sign = (Sign) clickedBlock.getState();
                 if (sign.hasMetadata("propertySign")) {
                     event.setCancelled(true);
