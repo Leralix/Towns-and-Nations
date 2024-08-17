@@ -14,5 +14,10 @@ public enum ChunkPermissionType {
     DECORATIVE_BLOCK,
     MUSIC_BLOCK,
     LEAD,
-    SHEARS
+    SHEARS,
+    PLACE_BOAT,
+    PLACE_MINECART,
+    USE_BONEMEAL,
+    GATHER_BERRIES
+
 }

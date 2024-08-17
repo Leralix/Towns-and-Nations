@@ -2620,6 +2620,11 @@ public class GuiManager implements IGUI {
                 {ChunkPermissionType.MUSIC_BLOCK, Material.JUKEBOX, Lang.GUI_TOWN_CLAIM_SETTINGS_MUSIC_BLOCK},
                 {ChunkPermissionType.LEAD, Material.LEAD, Lang.GUI_TOWN_CLAIM_SETTINGS_LEAD},
                 {ChunkPermissionType.SHEARS, Material.SHEARS, Lang.GUI_TOWN_CLAIM_SETTINGS_SHEARS},
+                {ChunkPermissionType.PLACE_BOAT, Material.OAK_BOAT, Lang.GUI_TOWN_CLAIM_SETTINGS_PLACE_BOAT},
+                {ChunkPermissionType.PLACE_MINECART, Material.MINECART, Lang.GUI_TOWN_CLAIM_SETTINGS_PLACE_VEHICLE},
+                {ChunkPermissionType.GATHER_BERRIES, Material.SWEET_BERRIES, Lang.GUI_TOWN_CLAIM_SETTINGS_GATHER_BERRIES},
+                {ChunkPermissionType.USE_BONEMEAL, Material.BONE_MEAL, Lang.GUI_TOWN_CLAIM_SETTINGS_USE_BONE_MEAL},
+
         };
 
         for (int i = 0; i < itemData.length; i++) {
