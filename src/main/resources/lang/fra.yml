@@ -276,7 +276,7 @@ language:
   GUI_ATTACK_ICON: "§aAttaques"
   GUI_ATTACK_ICON_DESC1: "§fGérer les attaques futures"
   GUI_ATTACK_NOT_MAIN_ATTACKER: "§cCe territoire n'est pas l'attaquant principal"
-  ATTACK_SUCCESSFULLY_CANCELLED: "§cL'attaque est annulée"
+  ATTACK_SUCCESSFULLY_CANCELLED: "§cL'attaque sur la ville §9{0}§f est annulée"
   GUI_TOWN_PROPERTIES_ICON: "§aPropriétés de la ville"
   GUI_TOWN_PROPERTIES_ICON_DESC1: "§fGérer les propriétés"
   GUI_TREASURY_STORAGE: "§aTrésorerie"

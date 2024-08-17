@@ -4,7 +4,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.tan.TownsAndNations.DataClass.wars.AttackInvolved;
-import org.tan.TownsAndNations.DataClass.CreateAttackData;
+import org.tan.TownsAndNations.DataClass.wars.CreateAttackData;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.TownsAndNations;
 

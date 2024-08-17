@@ -14,6 +14,9 @@ import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.DataClass.wars.AttackInvolved;
+import org.tan.TownsAndNations.DataClass.wars.CreateAttackData;
+import org.tan.TownsAndNations.DataClass.wars.wargoals.ConquerWarGoal;
+import org.tan.TownsAndNations.DataClass.wars.wargoals.SubjugateWarGoal;
 import org.tan.TownsAndNations.Lang.DynamicLang;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.*;
@@ -61,23 +64,23 @@ public class GuiManager implements IGUI {
 
         Gui gui = IGUI.createChestGui("Main menu",3);
 
-        ItemStack KingdomHead = HeadUtils.makeSkull(Lang.GUI_KINGDOM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=",
+        ItemStack kingdomHead = HeadUtils.makeSkull(Lang.GUI_KINGDOM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=",
                 Lang.GUI_KINGDOM_ICON_DESC1.get());
-        ItemStack RegionHead = HeadUtils.makeSkull(Lang.GUI_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=",
+        ItemStack regionHead = HeadUtils.makeSkull(Lang.GUI_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=",
                 playerHaveRegion? Lang.GUI_REGION_ICON_DESC1_REGION.get(region.getName()):Lang.GUI_REGION_ICON_DESC1_NO_REGION.get());
-        ItemStack TownHead = HeadUtils.makeSkull(Lang.GUI_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
+        ItemStack townHead = HeadUtils.makeSkull(Lang.GUI_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
                 playerHaveTown? Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(town.getName()):Lang.GUI_TOWN_ICON_DESC1_NO_TOWN.get());
         ItemStack PlayerHead = HeadUtils.getPlayerHeadInformation(player);
 
-        GuiItem Kingdom = ItemBuilder.from(KingdomHead).asGuiItem(event -> {
+        GuiItem Kingdom = ItemBuilder.from(kingdomHead).asGuiItem(event -> {
             event.setCancelled(true);
             player.sendMessage(getTANString() + Lang.GUI_WARNING_STILL_IN_DEV.get());
         });
-        GuiItem Region = ItemBuilder.from(RegionHead).asGuiItem(event -> {
+        GuiItem Region = ItemBuilder.from(regionHead).asGuiItem(event -> {
             event.setCancelled(true);
             dispatchPlayerRegion(player);
         });
-        GuiItem Town = ItemBuilder.from(TownHead).asGuiItem(event -> {
+        GuiItem Town = ItemBuilder.from(townHead).asGuiItem(event -> {
             event.setCancelled(true);
             dispatchPlayerTown(player);
         });
@@ -794,8 +797,8 @@ public class GuiManager implements IGUI {
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
-                    player.sendMessage(getTANString() + Lang.ATTACK_SUCCESSFULLY_CANCELLED.get());
-                    AttackInvolvedStorage.remove(attackInvolved);
+                    attackInvolved.remove();
+                    territory.broadCastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(attackInvolved.getMainDefender().getName()),MINOR_GOOD);
                     OpenWarMenu(player, territory, exit, page);
                 }
             });
@@ -824,6 +827,8 @@ public class GuiManager implements IGUI {
                 Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get());
         ItemStack confirm = HeadUtils.makeSkull(Lang.GUI_CONFIRM_ATTACK.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDMxMmNhNDYzMmRlZjVmZmFmMmViMGQ5ZDdjYzdiNTVhNTBjNGUzOTIwZDkwMzcyYWFiMTQwNzgxZjVkZmJjNCJ9fX0=",
                 Lang.GUI_CONFIRM_ATTACK_DESC1.get(enemyTerritory.getColoredName()));
+
+        ItemStack wargoal = createAttackData.getWargoal().getIcon();
 
 
         GuiItem _addTime = ItemBuilder.from(addTime).asGuiItem(event -> {
@@ -863,7 +868,11 @@ public class GuiManager implements IGUI {
             player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.get(enemyTerritory.getName()));
             attackingTerritory.broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(attackingTerritory.getName(), enemyTerritory.getName()), WAR);
             enemyTerritory.broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(attackingTerritory.getName(), enemyTerritory.getName()), WAR);
+        });
 
+        GuiItem _wargoal = ItemBuilder.from(wargoal).asGuiItem(event -> {
+            OpenSelectWarGoalMenu(player, attackingTerritory, enemyTerritory, exit,  createAttackData);
+            event.setCancelled(true);
         });
 
 
@@ -871,11 +880,40 @@ public class GuiManager implements IGUI {
         gui.setItem(2,3,_time);
         gui.setItem(2,4,_addTime);
 
-        gui.setItem(2,7,_confirm);
+        gui.setItem(2,6,_wargoal);
+
+        gui.setItem(2,8,_confirm);
         gui.setItem(3,1,IGUI.CreateBackArrow(player, e -> openSingleRelation(player, attackingTerritory, TownRelation.WAR,0, exit)));
 
         gui.open(player);
 
+    }
+
+    private static void OpenSelectWarGoalMenu(Player player, ITerritoryData attackingTerritory, ITerritoryData enemyTerritory,Consumer<Player> exit, CreateAttackData createAttackData) {
+        Gui gui = IGUI.createChestGui("Select wargoals",3);
+
+        ItemStack conquer = new ConquerWarGoal().getIcon();
+        ItemStack subjugate = new SubjugateWarGoal().getIcon();
+
+
+        GuiItem _conquer = ItemBuilder.from(conquer).asGuiItem(event -> {
+            event.setCancelled(true);
+            createAttackData.setWargoal(new ConquerWarGoal());
+            OpenStartWarSettings(player, attackingTerritory, enemyTerritory, exit, createAttackData);
+        });
+
+        GuiItem _subjugate = ItemBuilder.from(subjugate).asGuiItem(event -> {
+            event.setCancelled(true);
+            createAttackData.setWargoal(new SubjugateWarGoal());
+            OpenStartWarSettings(player, attackingTerritory, enemyTerritory, exit, createAttackData);
+        });
+
+        gui.setItem(2,3,_conquer);
+        gui.setItem(2,5,_subjugate);
+
+        gui.setItem(3,1,IGUI.CreateBackArrow(player, e -> OpenStartWarSettings(player, attackingTerritory, enemyTerritory, exit, createAttackData)));
+
+        gui.open(player);
     }
 
     private static void OpenTownOwnedLandmark(Player player, TownData townData, int page) {
@@ -2280,7 +2318,6 @@ public class GuiManager implements IGUI {
                 List<String> lore = meta.getLore();
                 assert lore != null;
                 lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC1.get());
-                lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC2.get());
                 meta.setLore(lore);
                 icon.setItemMeta(meta);
             }

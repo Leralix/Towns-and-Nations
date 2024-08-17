@@ -179,4 +179,5 @@ public class AttackInvolved {
     public boolean isMainAttacker(ITerritoryData territory) {
         return territory.getID().equals(mainAttackerID);
     }
+
 }

@@ -127,7 +127,6 @@ public class PlayerSelectPropertyPositionStorage {
             org.bukkit.block.data.type.Sign signData = (org.bukkit.block.data.type.Sign) sign.getBlockData();
             BlockFace direction = getTopDirection(block.getLocation(), player.getLocation());
             signData.setRotation(direction);
-            System.out.println("Direction: " + direction);
             sign.setBlockData(signData);
         }
 
@@ -138,18 +137,6 @@ public class PlayerSelectPropertyPositionStorage {
         sign.getBlock().setMetadata("propertySign", new FixedMetadataValue(TownsAndNations.getPlugin(), propertyData.getTotalID()));
 
         propertyData.setSignLocation(signLocation);
-    }
-
-    public static BlockFace getDirection(Location blockLocation, Location playerLocation) {
-
-        double dx = playerLocation.getX() - blockLocation.getX();
-        double dz = playerLocation.getZ() - blockLocation.getZ();
-
-        if (Math.abs(dx) > Math.abs(dz)) {
-            return (dx > 0) ? BlockFace.WEST : BlockFace.EAST;
-        } else {
-            return (dz > 0) ? BlockFace.NORTH : BlockFace.SOUTH;
-        }
     }
 
     private static BlockFace getTopDirection(Location blockLocation, Location playerLocation) {
@@ -172,22 +159,6 @@ public class PlayerSelectPropertyPositionStorage {
         }
     }
 
-
-    private static String getCardinalDirection(double dx, double dz) {
-        double angle = Math.toDegrees(Math.atan2(dz, dx));
-        if (angle < 0) {
-            angle += 360;
-        }
-        if (angle >= 315 || angle < 45) {
-            return "South";
-        } else if (angle < 135) {
-            return "West";
-        } else if (angle < 225) {
-            return "North";
-        } else {
-            return "East";
-        }
-    }
 
     static boolean isNearProperty(Location blockLocation,Vector3D p1, Vector3D p2,  int margin) {
         double minX = Math.min(p1.getX(), p2.getX()) - margin;

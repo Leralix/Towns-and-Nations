@@ -182,16 +182,6 @@ public class ChunkListener implements Listener {
     }
 
     @EventHandler
-    public void onBoatPlace(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (player.getItemInHand().getType() == Material.OAK_BOAT) {
-                event.setCancelled(true);
-            }
-        }
-    }
-
-    @EventHandler
     public void OnBlocPlaced(BlockPlaceEvent event){
 
         Player player = event.getPlayer();
@@ -333,7 +323,8 @@ public class ChunkListener implements Listener {
                     event.getInventory() instanceof Smoker) {
 
                 Location loc = event.getInventory().getLocation();
-
+                if(loc == null)
+                    return;
                 if(!canPlayerDoAction(loc, player,USE_FURNACE)){
                     event.setCancelled(true);
                 }
