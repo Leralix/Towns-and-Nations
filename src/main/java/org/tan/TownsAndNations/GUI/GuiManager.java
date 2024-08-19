@@ -16,6 +16,7 @@ import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.DataClass.wars.AttackInvolved;
 import org.tan.TownsAndNations.DataClass.wars.CreateAttackData;
 import org.tan.TownsAndNations.DataClass.wars.wargoals.ConquerWarGoal;
+import org.tan.TownsAndNations.DataClass.wars.wargoals.LiberateWarGoal;
 import org.tan.TownsAndNations.DataClass.wars.wargoals.SubjugateWarGoal;
 import org.tan.TownsAndNations.Lang.DynamicLang;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -812,9 +813,12 @@ public class GuiManager implements IGUI {
         gui.open(player);
     }
 
-    private static void OpenStartWarSettings(Player player, ITerritoryData attackingTerritory, ITerritoryData enemyTerritory,  Consumer<Player> exit, CreateAttackData createAttackData) {
-        Gui gui = IGUI.createChestGui("War on " + enemyTerritory.getName(),3);
+    public static void OpenStartWarSettings(Player player, Consumer<Player> exit, CreateAttackData createAttackData) {
+        Gui gui = IGUI.createChestGui("War on " + createAttackData.getMainDefender().getName(),3);
 
+
+        ITerritoryData mainAttacker = createAttackData.getMainAttacker();
+        ITerritoryData mainDefender = createAttackData.getMainDefender();
 
         ItemStack addTime = HeadUtils.makeSkull(Lang.GUI_ATTACK_ADD_TIME.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjMyZmZmMTYzZTIzNTYzMmY0MDQ3ZjQ4NDE1OTJkNDZmODVjYmJmZGU4OWZjM2RmNjg3NzFiZmY2OWE2NjIifX19",
                 Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(),
@@ -826,7 +830,7 @@ public class GuiManager implements IGUI {
                 Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(),
                 Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get());
         ItemStack confirm = HeadUtils.makeSkull(Lang.GUI_CONFIRM_ATTACK.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDMxMmNhNDYzMmRlZjVmZmFmMmViMGQ5ZDdjYzdiNTVhNTBjNGUzOTIwZDkwMzcyYWFiMTQwNzgxZjVkZmJjNCJ9fX0=",
-                Lang.GUI_CONFIRM_ATTACK_DESC1.get(enemyTerritory.getColoredName()));
+                Lang.GUI_CONFIRM_ATTACK_DESC1.get(mainDefender.getColoredName()));
 
         ItemStack wargoal = createAttackData.getWargoal().getIcon();
 
@@ -840,7 +844,7 @@ public class GuiManager implements IGUI {
             else if(event.isLeftClick()){
                 createAttackData.addDeltaDateTime(1200);
             }
-            OpenStartWarSettings(player, attackingTerritory, enemyTerritory, exit, createAttackData);
+            OpenStartWarSettings(player, exit, createAttackData);
         });
 
         GuiItem _removeTime = ItemBuilder.from(removeTIme).asGuiItem(event -> {
@@ -853,26 +857,26 @@ public class GuiManager implements IGUI {
             else if(event.isLeftClick()){
                 createAttackData.addDeltaDateTime(-1200);
             }
-            OpenStartWarSettings(player, attackingTerritory, enemyTerritory, exit, createAttackData);
+            OpenStartWarSettings(player, exit, createAttackData);
         });
 
         GuiItem _time = ItemBuilder.from(time).asGuiItem(event -> {
             event.setCancelled(true);
         });
 
-        GuiItem _confirm = ItemBuilder.from(confirm).asGuiItem(event -> {
+        GuiItem _wargoal = ItemBuilder.from(wargoal).asGuiItem(event -> {
+            OpenSelectWarGoalMenu(player, exit,  createAttackData);
             event.setCancelled(true);
-            AttackInvolvedStorage.newWar(Lang.BASIC_ATTACK_NAME.get(attackingTerritory.getName(), enemyTerritory.getName()), enemyTerritory, attackingTerritory, createAttackData);
-            OpenWarMenu(player, attackingTerritory, exit, 0);
-
-            player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.get(enemyTerritory.getName()));
-            attackingTerritory.broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(attackingTerritory.getName(), enemyTerritory.getName()), WAR);
-            enemyTerritory.broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(attackingTerritory.getName(), enemyTerritory.getName()), WAR);
         });
 
-        GuiItem _wargoal = ItemBuilder.from(wargoal).asGuiItem(event -> {
-            OpenSelectWarGoalMenu(player, attackingTerritory, enemyTerritory, exit,  createAttackData);
+        GuiItem _confirm = ItemBuilder.from(confirm).asGuiItem(event -> {
             event.setCancelled(true);
+            AttackInvolvedStorage.newWar(createAttackData);
+            OpenWarMenu(player, mainAttacker, exit, 0);
+
+            player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.get(mainDefender.getName()));
+            mainAttacker.broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(mainAttacker.getName(), mainDefender.getName()), WAR);
+            mainDefender.broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(mainAttacker.getName(), mainDefender.getName()), WAR);
         });
 
 
@@ -883,35 +887,54 @@ public class GuiManager implements IGUI {
         gui.setItem(2,6,_wargoal);
 
         gui.setItem(2,8,_confirm);
-        gui.setItem(3,1,IGUI.CreateBackArrow(player, e -> openSingleRelation(player, attackingTerritory, TownRelation.WAR,0, exit)));
+        gui.setItem(3,1,IGUI.CreateBackArrow(player, e -> openSingleRelation(player, mainAttacker, TownRelation.WAR,0, exit)));
+
+        createAttackData.getWargoal().addExtraOptions(gui, player, createAttackData,exit);
 
         gui.open(player);
 
     }
 
-    private static void OpenSelectWarGoalMenu(Player player, ITerritoryData attackingTerritory, ITerritoryData enemyTerritory,Consumer<Player> exit, CreateAttackData createAttackData) {
-        Gui gui = IGUI.createChestGui("Select wargoals",3);
+    private static void OpenSelectWarGoalMenu(Player player, Consumer<Player> exit, CreateAttackData createAttackData) {
+        Gui gui = IGUI.createChestGui("Select wargoals", 3);
 
-        ItemStack conquer = new ConquerWarGoal().getIcon();
-        ItemStack subjugate = new SubjugateWarGoal().getIcon();
+        ItemStack conquer = HeadUtils.createCustomItemStack(Material.IRON_SWORD, Lang.CONQUER_WAR_GOAL.get(), Lang.CONQUER_WAR_GOAL_DESC.get());
+        ItemStack subjugate = HeadUtils.createCustomItemStack(Material.CHAIN, Lang.SUBJUGATE_WAR_GOAL.get());
+        ItemStack liberate = HeadUtils.createCustomItemStack(Material.LANTERN, Lang.LIBERATE_SUBJECT_WAR_GOAL.get(), Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC.get());
+
+        if (createAttackData.canBeSubjugated())
+            HeadUtils.addLore(subjugate, Lang.GUI_WARGOAL_SUBJUGATE_WAR_GOAL_RESULT.get(createAttackData.getMainDefender().getName(), createAttackData.getMainAttacker().getName()));
+        else
+            HeadUtils.addLore(subjugate, Lang.GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED.get());
 
 
         GuiItem _conquer = ItemBuilder.from(conquer).asGuiItem(event -> {
             event.setCancelled(true);
             createAttackData.setWargoal(new ConquerWarGoal());
-            OpenStartWarSettings(player, attackingTerritory, enemyTerritory, exit, createAttackData);
+            OpenStartWarSettings(player, exit, createAttackData);
         });
 
         GuiItem _subjugate = ItemBuilder.from(subjugate).asGuiItem(event -> {
             event.setCancelled(true);
+            if(!createAttackData.canBeSubjugated()){
+                player.sendMessage(getTANString() + Lang.GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED.get());
+                return;
+            }
             createAttackData.setWargoal(new SubjugateWarGoal());
-            OpenStartWarSettings(player, attackingTerritory, enemyTerritory, exit, createAttackData);
+            OpenStartWarSettings(player, exit, createAttackData);
+        });
+
+        GuiItem _liberate = ItemBuilder.from(liberate).asGuiItem(event -> {
+            event.setCancelled(true);
+            createAttackData.setWargoal(new LiberateWarGoal());
+            OpenStartWarSettings(player, exit, createAttackData);
         });
 
         gui.setItem(2,3,_conquer);
         gui.setItem(2,5,_subjugate);
+        gui.setItem(2,7,_liberate);
 
-        gui.setItem(3,1,IGUI.CreateBackArrow(player, e -> OpenStartWarSettings(player, attackingTerritory, enemyTerritory, exit, createAttackData)));
+        gui.setItem(3,1,IGUI.CreateBackArrow(player, e -> OpenStartWarSettings(player, exit, createAttackData)));
 
         gui.open(player);
     }
@@ -2326,14 +2349,12 @@ public class GuiManager implements IGUI {
                 event.setCancelled(true);
 
                 if (relation == TownRelation.WAR) {
-                    //WarTaggedPlayer.addPlayersToTown(territoryID, territoryRelation.getPlayerList());
-
                     if(mainTerritory.atWarWith(territoryID)){
                         player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_ALREADY_ATTACKING.get());
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
-                    OpenStartWarSettings(player, mainTerritory, territoryData, doubleExit, new CreateAttackData());
+                    OpenStartWarSettings(player, doubleExit, new CreateAttackData(mainTerritory, territoryData));
                 }
             });
             guiItems.add(_town);

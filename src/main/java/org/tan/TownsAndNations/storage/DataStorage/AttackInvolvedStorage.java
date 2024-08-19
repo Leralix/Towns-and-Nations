@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import org.tan.TownsAndNations.DataClass.wars.AttackInvolved;
 import org.tan.TownsAndNations.DataClass.wars.CreateAttackData;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
+import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 
 import java.io.*;
@@ -17,11 +18,15 @@ import java.util.Map;
 public class AttackInvolvedStorage {
     private static Map<String, AttackInvolved> warDataMapWithWarKey = new HashMap<>();
 
-    public static void newWar(String warName, ITerritoryData defendingTerritory, ITerritoryData attackingTerritory, CreateAttackData createAttackData){
+    public static void newWar(CreateAttackData createAttackData){
+        newWar(Lang.BASIC_ATTACK_NAME.get(createAttackData.getMainAttacker().getName(), createAttackData.getMainDefender().getName()), createAttackData);
+    }
+
+    public static void newWar(String warName, CreateAttackData createAttackData){
 
         String newID = getNewID();
         long deltaDateTime = createAttackData.getDeltaDateTime();
-        AttackInvolved attackInvolved = new AttackInvolved(newID,warName, defendingTerritory, attackingTerritory, deltaDateTime);
+        AttackInvolved attackInvolved = new AttackInvolved(newID,warName, createAttackData, deltaDateTime);
         add(attackInvolved);
         save();
     }

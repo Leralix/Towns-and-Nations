@@ -254,6 +254,11 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
     }
 
     @Override
+    public int getRank() {
+        return 0;
+    }
+
+    @Override
     public String getColoredName() {
         return "§9" + getName();
     }

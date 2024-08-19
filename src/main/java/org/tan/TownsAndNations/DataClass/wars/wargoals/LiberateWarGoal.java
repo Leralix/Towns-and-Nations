@@ -9,16 +9,16 @@ import org.tan.TownsAndNations.Lang.Lang;
 
 import java.util.function.Consumer;
 
-public class SubjugateWarGoal extends WarGoal {
+public class LiberateWarGoal extends WarGoal {
 
     @Override
     public ItemStack getIcon() {
-        return buildIcon(Material.CHAIN, Lang.SUBJUGATE_WAR_GOAL_DESC.get());
+        return buildIcon(Material.LANTERN, Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC.get());
     }
 
     @Override
     public String getDisplayName() {
-        return Lang.SUBJUGATE_WAR_GOAL.get();
+        return Lang.LIBERATE_SUBJECT_WAR_GOAL.get();
     }
 
     @Override

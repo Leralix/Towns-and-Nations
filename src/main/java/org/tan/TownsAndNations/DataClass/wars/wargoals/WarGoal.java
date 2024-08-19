@@ -1,12 +1,16 @@
 package org.tan.TownsAndNations.DataClass.wars.wargoals;
 
+import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.tan.TownsAndNations.DataClass.wars.CreateAttackData;
 import org.tan.TownsAndNations.Lang.Lang;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public abstract class WarGoal {
 
@@ -14,6 +18,8 @@ public abstract class WarGoal {
     public abstract ItemStack getIcon();
 
     public abstract String getDisplayName();
+
+    public abstract void addExtraOptions(Gui gui, Player player, CreateAttackData createAttackData, Consumer<Player> exit);
 
     public abstract void applyWarGoal();
 

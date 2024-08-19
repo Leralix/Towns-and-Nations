@@ -17,6 +17,7 @@ public interface ITerritoryData {
 
     String getID();
     String getName();
+    int getRank();
     String getColoredName();
     void rename(Player player, int cost, String name);
     String getLeaderID();
@@ -64,4 +65,6 @@ public interface ITerritoryData {
     void removeCurrentAttack(CurrentAttacks currentAttacks);
 
     boolean atWarWith(String territoryID);
+
+
 }

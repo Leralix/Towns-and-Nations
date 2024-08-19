@@ -92,6 +92,10 @@ public class RegionData implements ITerritoryData {
         return name;
     }
 
+    public int getRank() {
+        return 1;
+    }
+
     @Override
     public String getColoredName() {
         return "§b" + getName();

@@ -31,11 +31,11 @@ public class AttackInvolved {
     private final long startTime;
     private final long endTime;
 
-    public AttackInvolved(String ID, String name, ITerritoryData mainDefender, ITerritoryData mainAttacker, long startTime){
+    public AttackInvolved(String ID, String name, CreateAttackData createAttackData, long startTime){
         this.ID = ID;
         this.name = name;
-        this.mainAttackerID = mainAttacker.getID();
-        this.mainDefenderID = mainDefender.getID();
+        this.mainAttackerID = createAttackData.getMainAttacker().getID();
+        this.mainDefenderID = createAttackData.getMainDefender().getID();
 
         this.attackersID = new ArrayList<>();
         this.attackersID.add(mainAttackerID);
@@ -45,8 +45,8 @@ public class AttackInvolved {
         this.startTime = (long) (new Date().getTime() * 0.02 + startTime);
         this.endTime = this.startTime + ConfigUtil.getCustomConfig("config.yml").getLong("WarDurationTime") * 1200;
 
-        mainDefender.addPlannedAttack(this);
-        mainAttacker.addPlannedAttack(this);
+        createAttackData.getMainDefender().addPlannedAttack(this);
+        createAttackData.getMainAttacker().addPlannedAttack(this);
 
         setUpStartOfAttack();
     }
