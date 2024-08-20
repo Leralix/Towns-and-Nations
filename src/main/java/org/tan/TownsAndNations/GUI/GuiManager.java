@@ -59,7 +59,7 @@ public class GuiManager implements IGUI {
         TownData town = TownDataStorage.get(playerStat);
         RegionData region = null;
         if(playerHaveRegion){
-            region = town.getRegion();
+            region = town.getOverlord();
         }
 
 
@@ -895,17 +895,53 @@ public class GuiManager implements IGUI {
 
     }
 
+    public static void openSelecteTerritoryToLiberate(Player player, CreateAttackData createAttackData, LiberateWarGoal liberateWarGoal, Consumer<Player> exit) {
+
+        Gui gui = IGUI.createChestGui("War on " + createAttackData.getMainDefender().getName(),6);
+
+        ITerritoryData territoryToAttack = createAttackData.getMainDefender();
+        for(ITerritoryData territoryData : territoryToAttack.getSubjects()){
+            if(territoryData.isCapital()){
+                continue;
+            }
+            ItemStack territoryIcon = territoryData.getIconWithInformations();
+            HeadUtils.addLore(territoryIcon, "", Lang.LEFT_CLICK_TO_SELECT.get());
+
+            GuiItem _territory = ItemBuilder.from(territoryIcon).asGuiItem(event -> {
+                event.setCancelled(true);
+                liberateWarGoal.setTerritoryToLiberate(territoryData);
+                //createAttackData.setWargoal(liberateWarGoal); OOP test
+                OpenStartWarSettings(player, exit, createAttackData);
+            });
+
+            gui.addItem(_territory);
+        }
+
+        gui.addItem(IGUI.CreateBackArrow(player, e -> OpenStartWarSettings(player, exit, createAttackData)));
+        gui.open(player);
+
+    }
+
     private static void OpenSelectWarGoalMenu(Player player, Consumer<Player> exit, CreateAttackData createAttackData) {
         Gui gui = IGUI.createChestGui("Select wargoals", 3);
 
+        boolean canBeSubjugated = createAttackData.canBeSubjugated();
+        boolean canBeLiberated = !(createAttackData.getMainDefender() instanceof TownData);
+
         ItemStack conquer = HeadUtils.createCustomItemStack(Material.IRON_SWORD, Lang.CONQUER_WAR_GOAL.get(), Lang.CONQUER_WAR_GOAL_DESC.get());
         ItemStack subjugate = HeadUtils.createCustomItemStack(Material.CHAIN, Lang.SUBJUGATE_WAR_GOAL.get());
-        ItemStack liberate = HeadUtils.createCustomItemStack(Material.LANTERN, Lang.LIBERATE_SUBJECT_WAR_GOAL.get(), Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC.get());
 
-        if (createAttackData.canBeSubjugated())
+        if(canBeSubjugated)
             HeadUtils.addLore(subjugate, Lang.GUI_WARGOAL_SUBJUGATE_WAR_GOAL_RESULT.get(createAttackData.getMainDefender().getName(), createAttackData.getMainAttacker().getName()));
         else
             HeadUtils.addLore(subjugate, Lang.GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED.get());
+
+        ItemStack liberate = HeadUtils.createCustomItemStack(Material.LANTERN, Lang.LIBERATE_SUBJECT_WAR_GOAL.get());
+
+        if(canBeLiberated)
+            HeadUtils.addLore(liberate, Lang.GUI_WARGOAL_LIBERATE_CANNOT_BE_USED.get());
+        else
+            HeadUtils.addLore(liberate, Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC.get());
 
 
         GuiItem _conquer = ItemBuilder.from(conquer).asGuiItem(event -> {
@@ -916,7 +952,7 @@ public class GuiManager implements IGUI {
 
         GuiItem _subjugate = ItemBuilder.from(subjugate).asGuiItem(event -> {
             event.setCancelled(true);
-            if(!createAttackData.canBeSubjugated()){
+            if(!canBeSubjugated){
                 player.sendMessage(getTANString() + Lang.GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED.get());
                 return;
             }
@@ -926,6 +962,11 @@ public class GuiManager implements IGUI {
 
         GuiItem _liberate = ItemBuilder.from(liberate).asGuiItem(event -> {
             event.setCancelled(true);
+
+            if(!canBeLiberated){
+                player.sendMessage(getTANString() + Lang.GUI_WARGOAL_LIBERATE_CANNOT_BE_USED.get());
+                return;
+            }
             createAttackData.setWargoal(new LiberateWarGoal());
             OpenStartWarSettings(player, exit, createAttackData);
         });
@@ -2046,7 +2087,7 @@ public class GuiManager implements IGUI {
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3.get(changeTownNameCost));
         ItemStack quitRegion = HeadUtils.createCustomItemStack(Material.SPRUCE_DOOR,
                 Lang.GUI_TOWN_SETTINGS_QUIT_REGION.get(),
-                playerTown.haveRegion() ? Lang.GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION.get(playerTown.getRegion().getName()) : Lang.TOWN_NO_REGION.get());
+                playerTown.haveRegion() ? Lang.GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION.get(playerTown.getOverlord().getName()) : Lang.TOWN_NO_REGION.get());
         ItemStack changeChunkColor = HeadUtils.createCustomItemStack(Material.PURPLE_WOOL,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR.get(),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(),
@@ -2152,7 +2193,7 @@ public class GuiManager implements IGUI {
             }
 
 
-            RegionData regionData = playerTown.getRegion();
+            RegionData regionData = playerTown.getOverlord();
 
             if (playerTown.isRegionalCapital()){
                 player.sendMessage(getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
@@ -2161,8 +2202,8 @@ public class GuiManager implements IGUI {
 
             OpenConfirmMenu(player, Lang.GUI_CONFIRM_TOWN_LEAVE_REGION.get(playerTown.getName()), confirm -> {
 
-                regionData.removeTown(playerTown);
-                playerTown.removeRegion();
+                regionData.removeSubject(playerTown);
+                playerTown.removeOverlord();
                 playerTown.broadCastMessageWithSound(Lang.TOWN_BROADCAST_TOWN_LEFT_REGION.get(playerTown.getName(), regionData.getName()), BAD);
                 regionData.broadCastMessage(Lang.REGION_BROADCAST_TOWN_LEFT_REGION.get(playerTown.getName()));
 
@@ -2764,7 +2805,7 @@ public class GuiManager implements IGUI {
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
-        RegionData playerRegion = playerTown.getRegion();
+        RegionData playerRegion = playerTown.getOverlord();
 
 
         ItemStack regionIcon = getRegionIcon(playerRegion);
@@ -2839,7 +2880,7 @@ public class GuiManager implements IGUI {
         PlayerData playerData = PlayerDataStorage.get(player);
         RegionData regionData = RegionDataStorage.get(player);
 
-        for (TownData townData : regionData.getTownsInRegion()){
+        for (ITerritoryData townData : regionData.getSubjects()){
             ItemStack townIcon = townData.getIconWithInformations();
 
             GuiItem _townIcon = ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
@@ -2910,7 +2951,7 @@ public class GuiManager implements IGUI {
             }
         }
         else if (action == Action.REMOVE){
-            for (TownData townData : regionData.getTownsInRegion()){
+            for (ITerritoryData townData : regionData.getSubjects()){
                 ItemStack townIcon = townData.getIconWithInformationAndRelation(regionData);
                 HeadUtils.addLore(townIcon, Lang.GUI_REGION_INVITE_TOWN_DESC1.get());
 
@@ -2922,8 +2963,8 @@ public class GuiManager implements IGUI {
                         return;
                     }
                     regionData.broadcastMessageWithSound(Lang.GUI_REGION_KICK_TOWN_BROADCAST.get(townData.getName()), BAD);
-                    townData.removeRegion();
-                    regionData.removeTown(townData);
+                    townData.removeOverlord();
+                    regionData.removeSubject(townData);
                     player.closeInventory();
                 });
                 gui.addItem(_townIcon);
@@ -2940,7 +2981,7 @@ public class GuiManager implements IGUI {
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
-        RegionData playerRegion = playerTown.getRegion();
+        RegionData playerRegion = playerTown.getOverlord();
 
         ItemStack regionIcon = getRegionIcon(playerRegion);
 
@@ -3069,7 +3110,7 @@ public class GuiManager implements IGUI {
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = playerStat.getTown();
-        RegionData playerRegion = playerTown.getRegion();
+        RegionData playerRegion = playerTown.getOverlord();
 
         int tax = playerRegion.getTaxRate();
         int treasury = playerRegion.getBalance();

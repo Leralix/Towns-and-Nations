@@ -206,7 +206,7 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
             lore.add(Lang.GUI_TOWN_INFO_DESC1.get(getLeaderName()));
             lore.add(Lang.GUI_TOWN_INFO_DESC2.get(getPlayerIDList().size()));
             lore.add(Lang.GUI_TOWN_INFO_DESC3.get(getNumberOfClaimedChunk()));
-            lore.add(haveRegion()? Lang.GUI_TOWN_INFO_DESC5_REGION.get(getRegion().getName()): Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get());
+            lore.add(haveRegion()? Lang.GUI_TOWN_INFO_DESC5_REGION.get(getOverlord().getName()): Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get());
 
             meta.setLore(lore);
             icon.setItemMeta(meta);
@@ -417,6 +417,9 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
             this.balance = 0;
         return this.balance;
     }
+
+
+
     @Override
     public void addToBalance(int balance){
         this.balance += balance;
@@ -622,9 +625,10 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
         return this.regionID != null;
     }
 
-    public RegionData getRegion(){
+    public RegionData getOverlord(){
         return RegionDataStorage.get(this.regionID);
     }
+
     public String getRegionID(){
         return this.regionID;
     }
@@ -672,14 +676,46 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
         return player != null && player.isOnline();
     }
 
-    public void removeRegion() {
+    public void removeOverlord() {
         this.regionID = null;
+    }
+
+    @Override
+    public void removeSubject(ITerritoryData townToDelete) {
+        //Town have no subjects
+    }
+
+    @Override
+    public void removeSubject(String townID) {
+        //Region have no subjects
+    }
+
+    @Override
+    public List<String> getSubjectsID() {
+        return null;
+    }
+
+    @Override
+    public List<ITerritoryData> getSubjects() {
+        return null;
+    }
+
+    @Override
+    public boolean isCapital() {
+        if(!haveRegion())
+            return false;
+        return getOverlord().getCapital().getID().equals(getID());
+    }
+
+    @Override
+    public ITerritoryData getCapital() {
+        return null;
     }
 
     public boolean isRegionalCapital() {
         if(!haveRegion())
             return false;
-        return getRegion().getCapitalID().equals(getID());
+        return getOverlord().getCapitalID().equals(getID());
     }
 
     public boolean haveRelationWith(TownData otherTown){
@@ -924,7 +960,7 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
     public int getRegionTaxRate() {
         if(!haveRegion())
             return 0;
-        return getRegion().getTaxRate();
+        return getOverlord().getTaxRate();
     }
 
     public Collection<String> getAttacksInvolvedID(){

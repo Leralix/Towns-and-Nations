@@ -12,6 +12,7 @@ import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface ITerritoryData {
 
@@ -67,4 +68,17 @@ public interface ITerritoryData {
     boolean atWarWith(String territoryID);
 
 
+    int getBalance();
+
+    ITerritoryData getOverlord();
+    void removeOverlord();
+
+    void removeSubject(ITerritoryData territoryToRemove);
+    void removeSubject(String townID);
+    List<String> getSubjectsID();
+    List<ITerritoryData> getSubjects();
+
+    boolean isCapital();
+
+    ITerritoryData getCapital();
 }

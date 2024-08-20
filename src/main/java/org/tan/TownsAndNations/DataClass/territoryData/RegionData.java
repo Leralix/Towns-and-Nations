@@ -26,6 +26,7 @@ import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.SoundUtil;
+import org.tan.TownsAndNations.utils.TerritoryUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -158,7 +159,7 @@ public class RegionData implements ITerritoryData {
     @Override
     public Collection<String> getPlayerIDList(){
         ArrayList<String> playerList = new ArrayList<>();
-        for (TownData townData : getTownsInRegion()){
+        for (ITerritoryData townData : getSubjects()){
             playerList.addAll(townData.getPlayerIDList());
         }
         return playerList;
@@ -248,7 +249,7 @@ public class RegionData implements ITerritoryData {
 
     public int getTotalPlayerCount() {
         int count = 0;
-        for (TownData town : getTownsInRegion()){
+        for (ITerritoryData town : getSubjects()){
             count += town.getPlayerIDList().size();
         }
         return count;
@@ -266,6 +267,10 @@ public class RegionData implements ITerritoryData {
     public boolean hasNation() {
         return nationID != null;
     }
+
+    public ITerritoryData getOverlord() {
+        return null;
+    }
     public String getNationID() {
         return nationID;
     }
@@ -282,16 +287,23 @@ public class RegionData implements ITerritoryData {
         this.taxRate = taxRate;
     }
 
-    public List<String> getTownsID() {
+    public List<String> getSubjectsID() {
         return townsInRegion;
     }
 
-    public List<TownData> getTownsInRegion() {
-        List<TownData> towns = new ArrayList<>();
+    public List<ITerritoryData> getSubjects() {
+        List<ITerritoryData> towns = new ArrayList<>();
         for (String townID : townsInRegion) {
-            towns.add(TownDataStorage.get(townID));
+            towns.add(TerritoryUtil.getTerritory(townID));
         }
         return towns;
+    }
+
+    @Override
+    public boolean isCapital() {
+        if(!hasNation())
+            return false;
+        return getOverlord().isCapital();
     }
 
     public int getNumberOfTownsIn() {
@@ -317,9 +329,15 @@ public class RegionData implements ITerritoryData {
     }
 
 
-    public Integer getBalance() {
+    public int getBalance() {
         return balance;
     }
+
+    @Override
+    public void removeOverlord() {
+        // Kingdoms are not implemented yet
+    }
+
     public void addBalance(Integer amount) {
         balance += amount;
     }
@@ -329,7 +347,7 @@ public class RegionData implements ITerritoryData {
 
     public int getIncomeTomorrow() {
         int income = 0;
-        for (TownData town  : getTownsInRegion()) {
+        for (ITerritoryData town  : getSubjects()) {
             if(town.getBalance() > taxRate) {
                 income += taxRate;
             }
@@ -388,10 +406,10 @@ public class RegionData implements ITerritoryData {
         this.chunkColor = newColor;
     }
 
-    public void removeTown(TownData townToDelete) {
-        removeTown(townToDelete.getID());
+    public void removeSubject(ITerritoryData townToDelete) {
+        removeSubject(townToDelete.getID());
     }
-    public void removeTown(String townID) {
+    public void removeSubject(String townID) {
         townsInRegion.remove(townID);
     }
 
@@ -407,13 +425,13 @@ public class RegionData implements ITerritoryData {
 
 
     public void broadcastMessageWithSound(String message, SoundEnum soundEnum) {
-        for (TownData town : getTownsInRegion()) {
+        for (ITerritoryData town : getSubjects()) {
             town.broadCastMessageWithSound(message, soundEnum);
         }
     }
 
     public void broadcastMessage(String message) {
-        for (TownData town : getTownsInRegion()) {
+        for (ITerritoryData town : getSubjects()) {
             town.broadCastMessage(message);
         }
     }
@@ -421,7 +439,7 @@ public class RegionData implements ITerritoryData {
 
 
     public boolean isPlayerInRegion(PlayerData playerData) {
-        for (TownData town : getTownsInRegion()){
+        for (ITerritoryData town : getSubjects()){
             if(town.havePlayer(playerData))
                 return true;
         }
@@ -491,19 +509,19 @@ public class RegionData implements ITerritoryData {
 
     @Override
     public void broadCastMessage(String message) {
-        for(TownData townData : getTownsInRegion())
+        for(ITerritoryData townData : getSubjects())
             townData.broadCastMessage(message);
     }
 
     @Override
     public void broadCastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix) {
-        for(TownData townData : getTownsInRegion())
+        for(ITerritoryData townData : getSubjects())
             townData.broadCastMessageWithSound(message, soundEnum, addPrefix);
     }
 
     @Override
     public void broadCastMessageWithSound(String message, SoundEnum soundEnum) {
-        for(TownData townData : getTownsInRegion())
+        for(ITerritoryData townData : getSubjects())
             townData.broadCastMessageWithSound(message, soundEnum);
     }
 

@@ -61,7 +61,7 @@ public class TownDataStorage {
 
         RegionData region = RegionDataStorage.get(townToDelete.getRegionID());
         if(region != null)
-            region.removeTown(townToDelete);
+            region.removeSubject(townToDelete);
 
 
         townToDelete.getRelations().cleanAll(townID);   //Cancel all Relation between the deleted town and other town

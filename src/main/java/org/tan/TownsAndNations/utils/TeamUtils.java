@@ -99,7 +99,7 @@ public class TeamUtils {
 
         //If no relation, check if maybe they are from the same region
         if(currentRelation == null && playerTown.haveRegion() && otherPlayerTown.haveRegion()){
-            currentRelation = playerTown.getRegion().getRelationWith(otherPlayerTown.getRegion());
+            currentRelation = playerTown.getOverlord().getRelationWith(otherPlayerTown.getOverlord());
         }
 
         return currentRelation;

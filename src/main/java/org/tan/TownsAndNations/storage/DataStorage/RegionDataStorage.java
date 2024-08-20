@@ -108,9 +108,9 @@ public class RegionDataStorage {
         RegionData region = get(regionID);
         if(region == null)
             return;
-        for (String townID : region.getTownsID()){
+        for (String townID : region.getSubjectsID()){
             TownData town = TownDataStorage.get(townID);
-            town.removeRegion();
+            town.removeOverlord();
         }
     }
 

@@ -28,12 +28,15 @@ public class ConquerWarGoal extends WarGoal {
 
     @Override
     public void addExtraOptions(Gui gui, Player player, CreateAttackData createAttackData, Consumer<Player> exit) {
-        ItemStack addChunk = HeadUtils.makeSkull(Lang.GUI_CONQUER_ADD_CHUNK.get(), "texture_url_for_add_chunk",
-                Lang.GUI_INCREASE_1_DESC.get(),
-                Lang.GUI_INCREASE_10_DESC.get());
-        ItemStack removeChunk = HeadUtils.makeSkull(Lang.GUI_CONQUER_REMOVE_CHUNK.get(), "texture_url_for_remove_chunk",
+
+        ItemStack removeChunk = HeadUtils.makeSkull(Lang.GUI_CONQUER_REMOVE_CHUNK.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=",
                 Lang.GUI_DECREASE_1_DESC.get(),
                 Lang.GUI_DECREASE_10_DESC.get());
+        ItemStack addChunk = HeadUtils.makeSkull(Lang.GUI_CONQUER_ADD_CHUNK.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19",
+                Lang.GUI_INCREASE_1_DESC.get(),
+                Lang.GUI_INCREASE_10_DESC.get());
+
+        ItemStack chunkInfo = HeadUtils.makeSkull(Lang.GUI_CONQUER_CHUNK_INFO.get(numberOfChunks), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=");
 
         GuiItem _addChunk = ItemBuilder.from(addChunk).asGuiItem(event -> {
             event.setCancelled(true);
@@ -46,6 +49,10 @@ public class ConquerWarGoal extends WarGoal {
             OpenStartWarSettings(player, exit, createAttackData);
         });
 
+        GuiItem _chunkInfo = ItemBuilder.from(chunkInfo).asGuiItem(event -> {
+            event.setCancelled(true);
+        });
+
         GuiItem _removeChunk = ItemBuilder.from(removeChunk).asGuiItem(event -> {
             event.setCancelled(true);
             SoundUtil.playSound(player, REMOVE);
@@ -54,11 +61,16 @@ public class ConquerWarGoal extends WarGoal {
             } else if(event.isLeftClick()){
                 numberOfChunks -= 1;
             }
+            if(numberOfChunks < 1){
+                numberOfChunks = 1;
+            }
             OpenStartWarSettings(player, exit, createAttackData);
         });
 
-        gui.setItem(2, 5, _addChunk);
-        gui.setItem(2, 6, _removeChunk);
+        gui.setItem(3, 5, _removeChunk);
+        gui.setItem(3, 6, _chunkInfo);
+        gui.setItem(3, 7, _addChunk);
+
     }
 
     @Override

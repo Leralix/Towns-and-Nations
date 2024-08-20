@@ -38,7 +38,7 @@ public class ChunkUtil {
             return;
         }
 
-        RegionData regionData = townData.getRegion();
+        RegionData regionData = townData.getOverlord();
 
         //Not leader of the region
         if(!playerStat.isRegionLeader()){

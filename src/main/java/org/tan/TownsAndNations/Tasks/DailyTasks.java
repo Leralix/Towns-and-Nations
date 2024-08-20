@@ -7,7 +7,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
-import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.DataStorage.LandmarkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
@@ -68,7 +67,7 @@ public class DailyTasks {
 
         for(RegionData regionData: RegionDataStorage.getAllRegions()){
 
-            for(String townID : regionData.getTownsID()){
+            for(String townID : regionData.getSubjectsID()){
                 TownData town = TownDataStorage.get(townID);
                 if(town == null) continue;
                 if(town.getBalance() < regionData.getTaxRate()){
