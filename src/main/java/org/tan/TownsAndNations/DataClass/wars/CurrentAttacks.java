@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
+import org.tan.TownsAndNations.DataClass.wars.wargoals.WarGoal;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
@@ -24,6 +25,7 @@ public class CurrentAttacks {
     Collection<ITerritoryData> defenders;
     BossBar bossBar;
     String originalTitle;
+    WarGoal warGoal;
 
     public CurrentAttacks(String ID, Collection<ITerritoryData> attackers, Collection<ITerritoryData> defenders) {
         this.ID = ID;
@@ -138,6 +140,7 @@ public class CurrentAttacks {
 
         bossBar.setTitle(Lang.ATTACKER_WON_ANNOUNCEMENT.get());
         endWar();
+        warGoal.applyWarGoal();
     }
 
     private void defenderWin(){

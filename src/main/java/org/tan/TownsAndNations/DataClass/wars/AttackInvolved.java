@@ -6,6 +6,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
+import org.tan.TownsAndNations.DataClass.wars.wargoals.WarGoal;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.SoundEnum;
@@ -30,6 +31,7 @@ public class AttackInvolved {
 
     private final long startTime;
     private final long endTime;
+    WarGoal warGoal;
 
     public AttackInvolved(String ID, String name, CreateAttackData createAttackData, long startTime){
         this.ID = ID;
@@ -47,6 +49,8 @@ public class AttackInvolved {
 
         createAttackData.getMainDefender().addPlannedAttack(this);
         createAttackData.getMainAttacker().addPlannedAttack(this);
+
+        this.warGoal = createAttackData.getWargoal();
 
         setUpStartOfAttack();
     }
@@ -157,8 +161,9 @@ public class AttackInvolved {
             ArrayList<String> lore = new ArrayList<>();
             lore.add(Lang.ATTACK_ICON_DESC_1.get(getMainAttacker().getName()));
             lore.add(Lang.ATTACK_ICON_DESC_2.get(getMainDefender().getName()));
-            lore.add(Lang.ATTACK_ICON_DESC_3.get(DateUtil.getStringDeltaDateTime((long) (getStartTime() - new Date().getTime() * 0.02))));
-            lore.add(Lang.ATTACK_ICON_DESC_4.get(DateUtil.getStringDeltaDateTime((long) ((getEndTime() - getStartTime())))));
+            lore.add(Lang.ATTACK_ICON_DESC_3.get(warGoal.getCurrentDesc()));
+            lore.add(Lang.ATTACK_ICON_DESC_4.get(DateUtil.getStringDeltaDateTime((long) (getStartTime() - new Date().getTime() * 0.02))));
+            lore.add(Lang.ATTACK_ICON_DESC_5.get(DateUtil.getStringDeltaDateTime((long) ((getEndTime() - getStartTime())))));
             itemMeta.setLore(lore);
         }
         itemStack.setItemMeta(itemMeta);

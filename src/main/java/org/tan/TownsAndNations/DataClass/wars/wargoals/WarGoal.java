@@ -14,6 +14,11 @@ import java.util.function.Consumer;
 
 public abstract class WarGoal {
 
+    String type;
+
+    public WarGoal(){
+        this.type = this.getClass().getSimpleName();
+    }
 
     public abstract ItemStack getIcon();
 
@@ -22,6 +27,8 @@ public abstract class WarGoal {
     public abstract void addExtraOptions(Gui gui, Player player, CreateAttackData createAttackData, Consumer<Player> exit);
 
     public abstract void applyWarGoal();
+
+    public abstract boolean isCompleted();
 
     protected ItemStack buildIcon(Material material, String description){
         ItemStack itemStack = new ItemStack(material);
@@ -38,4 +45,5 @@ public abstract class WarGoal {
         return itemStack;
     }
 
+    public abstract String getCurrentDesc();
 }

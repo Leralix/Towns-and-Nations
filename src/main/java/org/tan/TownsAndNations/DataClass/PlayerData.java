@@ -82,7 +82,7 @@ public class PlayerData {
     public boolean isRegionLeader(){
         if(!haveTown())
             return false;
-        if(!getTown().haveRegion())
+        if(!getTown().haveOverlord())
             return false;
         return getRegion().isLeader(getID());
     }
@@ -103,7 +103,7 @@ public class PlayerData {
         if(!this.haveTown()){
             return false;
         }
-        return getTown().haveRegion();
+        return getTown().haveOverlord();
     }
     public RegionData getRegion(){
         if(!haveRegion())

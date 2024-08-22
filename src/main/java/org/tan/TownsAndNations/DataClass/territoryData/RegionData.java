@@ -33,7 +33,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-public class RegionData implements ITerritoryData {
+public class RegionData extends ITerritoryData {
 
     private final String id;
     private String name;
@@ -264,6 +264,11 @@ public class RegionData implements ITerritoryData {
         return TownDataStorage.get(capitalID);
     }
 
+    @Override
+    public boolean haveOverlord() {
+        return nationID != null;
+    }
+
     public boolean hasNation() {
         return nationID != null;
     }
@@ -402,6 +407,12 @@ public class RegionData implements ITerritoryData {
     public int getChunkColor() {
         return this.chunkColor;
     }
+
+    @Override
+    public String getChunkColorInHex() {
+        return null;
+    }
+
     public void setChunkColor(int newColor) {
         this.chunkColor = newColor;
     }
@@ -505,6 +516,16 @@ public class RegionData implements ITerritoryData {
             return TownRelation.REGION;
 
         return null;
+    }
+
+    @Override
+    public void addToBalance(int balance) {
+        this.balance += balance;
+    }
+
+    @Override
+    public void removeFromBalance(int balance) {
+        this.balance -= balance;
     }
 
     @Override

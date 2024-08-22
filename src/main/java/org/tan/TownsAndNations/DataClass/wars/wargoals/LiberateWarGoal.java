@@ -58,7 +58,22 @@ public class LiberateWarGoal extends WarGoal {
 
     @Override
     public void applyWarGoal() {
+        if(!territoryToLiberate.haveOverlord())
+            return;
+        territoryToLiberate.getOverlord().removeSubject(territoryToLiberate);
+        territoryToLiberate.removeOverlord();
+    }
 
+    @Override
+    public boolean isCompleted() {
+        return territoryToLiberate != null;
+    }
+
+    @Override
+    public String getCurrentDesc() {
+        if(territoryToLiberate == null)
+            return null;
+        return Lang.GUI_WARGOAL_LIBERATE_WAR_GOAL_RESULT.get();
     }
 
     public ITerritoryData getTerritoryToLiberate() {

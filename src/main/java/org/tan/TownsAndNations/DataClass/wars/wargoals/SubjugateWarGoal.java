@@ -30,4 +30,14 @@ public class SubjugateWarGoal extends WarGoal {
     public void applyWarGoal() {
 
     }
+
+    @Override
+    public boolean isCompleted() {
+        return true;
+    }
+
+    @Override
+    public String getCurrentDesc() {
+        return Lang.GUI_WARGOAL_SUBJUGATE_WAR_GOAL_RESULT.get();
+    }
 }

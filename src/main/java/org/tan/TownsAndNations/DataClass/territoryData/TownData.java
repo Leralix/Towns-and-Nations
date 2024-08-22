@@ -22,11 +22,10 @@ import java.util.*;
 
 import static org.tan.TownsAndNations.TownsAndNations.isSQLEnabled;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
-import static org.tan.TownsAndNations.enums.TownRolePermission.KICK_PLAYER;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.HeadUtils.getPlayerHead;
 
-public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
+public class TownData extends ITerritoryData {
 
     private final String TownId;
     private String TownName;
@@ -206,7 +205,7 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
             lore.add(Lang.GUI_TOWN_INFO_DESC1.get(getLeaderName()));
             lore.add(Lang.GUI_TOWN_INFO_DESC2.get(getPlayerIDList().size()));
             lore.add(Lang.GUI_TOWN_INFO_DESC3.get(getNumberOfClaimedChunk()));
-            lore.add(haveRegion()? Lang.GUI_TOWN_INFO_DESC5_REGION.get(getOverlord().getName()): Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get());
+            lore.add(haveOverlord()? Lang.GUI_TOWN_INFO_DESC5_REGION.get(getOverlord().getName()): Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get());
 
             meta.setLore(lore);
             icon.setItemMeta(meta);
@@ -621,7 +620,7 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
         return this.townLevel.getBenefitsLevel("UNLOCK_TOWN_SPAWN") <= 0;
     }
 
-    public boolean haveRegion(){
+    public boolean haveOverlord(){
         return this.regionID != null;
     }
 
@@ -702,7 +701,7 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
 
     @Override
     public boolean isCapital() {
-        if(!haveRegion())
+        if(!haveOverlord())
             return false;
         return getOverlord().getCapital().getID().equals(getID());
     }
@@ -713,7 +712,7 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
     }
 
     public boolean isRegionalCapital() {
-        if(!haveRegion())
+        if(!haveOverlord())
             return false;
         return getOverlord().getCapitalID().equals(getID());
     }
@@ -958,7 +957,7 @@ public class TownData implements ITerritoryData, IClaims, IMoney, IChunkColor {
     }
 
     public int getRegionTaxRate() {
-        if(!haveRegion())
+        if(!haveOverlord())
             return 0;
         return getOverlord().getTaxRate();
     }

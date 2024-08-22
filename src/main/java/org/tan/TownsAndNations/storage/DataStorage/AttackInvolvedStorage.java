@@ -6,8 +6,10 @@ import com.google.gson.GsonBuilder;
 import org.tan.TownsAndNations.DataClass.wars.AttackInvolved;
 import org.tan.TownsAndNations.DataClass.wars.CreateAttackData;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
+import org.tan.TownsAndNations.DataClass.wars.wargoals.WarGoal;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
+import org.tan.TownsAndNations.storage.TypeAdapter.WargoalTypeAdapter;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -63,7 +65,10 @@ public class AttackInvolvedStorage {
 
     public static void load(){
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(WarGoal.class, new WargoalTypeAdapter())
+                .setPrettyPrinting().
+                create();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Planned_wars.json");
         if (file.exists()){
             Reader reader;
@@ -83,7 +88,10 @@ public class AttackInvolvedStorage {
 
     public static void save() {
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(WarGoal.class, new WargoalTypeAdapter())
+                .setPrettyPrinting()
+                .create();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Planned_wars.json");
         file.getParentFile().mkdir();
 

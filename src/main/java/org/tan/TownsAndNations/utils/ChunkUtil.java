@@ -33,7 +33,7 @@ public class ChunkUtil {
 
         //No region
         TownData townData = TownDataStorage.get(player);
-        if(!townData.haveRegion()){
+        if(!townData.haveOverlord()){
             player.sendMessage(getTANString() + Lang.TOWN_NO_REGION.get());
             return;
         }

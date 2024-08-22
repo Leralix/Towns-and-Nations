@@ -85,6 +85,18 @@ public class ConquerWarGoal extends WarGoal {
 
     @Override
     public void applyWarGoal() {
-
+        System.out.println("Conquer war goal applied, number of chunks : " + numberOfChunks);
     }
+
+    @Override
+    public boolean isCompleted() {
+        return true;
+    }
+
+    @Override
+    public String getCurrentDesc() {
+        return Lang.GUI_CONQUER_CHUNK_CURRENT_DESC.get(numberOfChunks);
+    }
+
+
 }

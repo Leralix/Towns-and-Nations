@@ -11,74 +11,100 @@ import org.tan.TownsAndNations.DataClass.wars.CurrentAttacks;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public interface ITerritoryData {
+public abstract class ITerritoryData {
 
-    String getID();
-    String getName();
-    int getRank();
-    String getColoredName();
-    void rename(Player player, int cost, String name);
-    String getLeaderID();
-    PlayerData getLeaderData();
-    void setLeaderID(String leaderID);
-    boolean isLeader(String playerID);
-    String getDescription();
-    void setDescription(String newDescription);
-    ItemStack getIconItem();
-    void setIconMaterial(Material material);
-    Collection<String> getPlayerIDList();
-    Collection<PlayerData> getPlayerDataList();
-    ClaimedChunkSettings getChunkSettings();
-    boolean havePlayer(PlayerData playerData);
-    boolean havePlayer(String playerID);
-    TownRelations getRelations();
-    void addRelation(TownRelation relation, ITerritoryData territoryData);
-    void addRelation(TownRelation relation, String territoryID);
-    void removeRelation(TownRelation relation, ITerritoryData territoryData);
-    void removeRelation(TownRelation relation, String territoryID);
-    TownRelation getRelationWith(ITerritoryData iRelation);
-    TownRelation getRelationWith(String territoryID);
-
-    void broadCastMessage(String message);
-
-    void broadCastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix);
-
-    void broadCastMessageWithSound(String message, SoundEnum soundEnum);
-    boolean haveNoLeader();
-
-    ItemStack getIcon();
-    ItemStack getIconWithInformations();
-    ItemStack getIconWithInformationAndRelation(ITerritoryData territoryData);
-
-    Collection<String> getAttacksInvolvedID();
-    Collection<AttackInvolved> getAttacksInvolved();
-    void addPlannedAttack(AttackInvolved war);
-    void removePlannedAttack(AttackInvolved war);
+//    private String ID;
+//    private String name;
+//    private String description;
+//    private String leaderID;
+//    private String overlordID;
+//    private Long dateTimeCreated;
+//    private String iconMaterial;
+//    private int balance;
+//    private TownRelations relations;
+//    private final Collection<String> attackIncomingList = new ArrayList<>();
+//    private final Collection<String> currentAttackList = new ArrayList<>();
 
 
-    Collection<String> getCurrentAttacksID();
-    Collection<CurrentAttacks> getCurrentAttacks();
+    public abstract String getID();
+    public abstract String getName();
+    public abstract int getRank();
+    public abstract String getColoredName();
+    public abstract void rename(Player player, int cost, String name);
+    public abstract String getLeaderID();
+    public abstract PlayerData getLeaderData();
+    public abstract void setLeaderID(String leaderID);
+    public abstract boolean isLeader(String playerID);
+    public abstract String getDescription();
+    public abstract void setDescription(String newDescription);
+    public abstract ItemStack getIconItem();
+    public abstract void setIconMaterial(Material material);
+    public abstract Collection<String> getPlayerIDList();
+    public abstract Collection<PlayerData> getPlayerDataList();
+    public abstract ClaimedChunkSettings getChunkSettings();
+    public abstract boolean havePlayer(PlayerData playerData);
+    public abstract boolean havePlayer(String playerID);
+    public abstract TownRelations getRelations();
+    public abstract void addRelation(TownRelation relation, ITerritoryData territoryData);
+    public abstract void addRelation(TownRelation relation, String territoryID);
+    public  abstract void removeRelation(TownRelation relation, ITerritoryData territoryData);
+    public abstract void removeRelation(TownRelation relation, String territoryID);
+    public abstract TownRelation getRelationWith(ITerritoryData iRelation);
+    public abstract TownRelation getRelationWith(String territoryID);
 
-    void addCurrentAttack(CurrentAttacks currentAttacks);
-    void removeCurrentAttack(CurrentAttacks currentAttacks);
+    public abstract void addToBalance(int balance);
 
-    boolean atWarWith(String territoryID);
+    public abstract void removeFromBalance(int balance);
+
+    public abstract void broadCastMessage(String message);
+
+    public abstract void broadCastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix);
+
+    public abstract void broadCastMessageWithSound(String message, SoundEnum soundEnum);
+    public abstract boolean haveNoLeader();
+
+    public abstract ItemStack getIcon();
+    public abstract ItemStack getIconWithInformations();
+    public abstract ItemStack getIconWithInformationAndRelation(ITerritoryData territoryData);
+
+    public abstract Collection<String> getAttacksInvolvedID();
+    public abstract Collection<AttackInvolved> getAttacksInvolved();
+    public abstract void addPlannedAttack(AttackInvolved war);
+    public abstract void removePlannedAttack(AttackInvolved war);
 
 
-    int getBalance();
+    public abstract Collection<String> getCurrentAttacksID();
+    public abstract Collection<CurrentAttacks> getCurrentAttacks();
 
-    ITerritoryData getOverlord();
-    void removeOverlord();
+    public abstract void addCurrentAttack(CurrentAttacks currentAttacks);
+    public abstract void removeCurrentAttack(CurrentAttacks currentAttacks);
 
-    void removeSubject(ITerritoryData territoryToRemove);
-    void removeSubject(String townID);
-    List<String> getSubjectsID();
-    List<ITerritoryData> getSubjects();
+    public abstract boolean atWarWith(String territoryID);
 
-    boolean isCapital();
 
-    ITerritoryData getCapital();
+    public abstract int getBalance();
+
+    public abstract ITerritoryData getOverlord();
+    public abstract void removeOverlord();
+
+    public abstract void removeSubject(ITerritoryData territoryToRemove);
+    public abstract void removeSubject(String townID);
+    public abstract List<String> getSubjectsID();
+    public abstract List<ITerritoryData> getSubjects();
+
+    public abstract boolean isCapital();
+
+    public abstract ITerritoryData getCapital();
+
+    public abstract int getChunkColor();
+
+    public abstract String getChunkColorInHex();
+
+    public abstract void setChunkColor(int color);
+
+    public abstract boolean haveOverlord();
 }

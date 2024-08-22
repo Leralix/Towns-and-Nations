@@ -28,6 +28,16 @@ public class NoWarGoal extends WarGoal {
 
     @Override
     public void applyWarGoal() {
+        return;
+    }
 
+    @Override
+    public boolean isCompleted() {
+        return false;
+    }
+
+    @Override
+    public String getCurrentDesc() {
+        return Lang.NO_WAR_GOAL_SELECTED_DESC.get();
     }
 }

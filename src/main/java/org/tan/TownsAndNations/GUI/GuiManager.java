@@ -832,6 +832,10 @@ public class GuiManager implements IGUI {
         ItemStack confirm = HeadUtils.makeSkull(Lang.GUI_CONFIRM_ATTACK.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDMxMmNhNDYzMmRlZjVmZmFmMmViMGQ5ZDdjYzdiNTVhNTBjNGUzOTIwZDkwMzcyYWFiMTQwNzgxZjVkZmJjNCJ9fX0=",
                 Lang.GUI_CONFIRM_ATTACK_DESC1.get(mainDefender.getColoredName()));
 
+        if(!createAttackData.getWargoal().isCompleted()){
+            HeadUtils.addLore(confirm, Lang.GUI_WARGOAL_NOT_COMPLETED.get());
+        }
+
         ItemStack wargoal = createAttackData.getWargoal().getIcon();
 
 
@@ -871,6 +875,12 @@ public class GuiManager implements IGUI {
 
         GuiItem _confirm = ItemBuilder.from(confirm).asGuiItem(event -> {
             event.setCancelled(true);
+
+            if(!createAttackData.getWargoal().isCompleted()){
+                player.sendMessage(getTANString() + Lang.GUI_WARGOAL_NOT_COMPLETED.get());
+                return;
+            }
+
             AttackInvolvedStorage.newWar(createAttackData);
             OpenWarMenu(player, mainAttacker, exit, 0);
 
@@ -917,7 +927,7 @@ public class GuiManager implements IGUI {
             gui.addItem(_territory);
         }
 
-        gui.addItem(IGUI.CreateBackArrow(player, e -> OpenStartWarSettings(player, exit, createAttackData)));
+        gui.setItem(6,1,IGUI.CreateBackArrow(player, e -> OpenStartWarSettings(player, exit, createAttackData)));
         gui.open(player);
 
     }
@@ -928,20 +938,24 @@ public class GuiManager implements IGUI {
         boolean canBeSubjugated = createAttackData.canBeSubjugated();
         boolean canBeLiberated = !(createAttackData.getMainDefender() instanceof TownData);
 
-        ItemStack conquer = HeadUtils.createCustomItemStack(Material.IRON_SWORD, Lang.CONQUER_WAR_GOAL.get(), Lang.CONQUER_WAR_GOAL_DESC.get());
-        ItemStack subjugate = HeadUtils.createCustomItemStack(Material.CHAIN, Lang.SUBJUGATE_WAR_GOAL.get());
+        ItemStack conquer = HeadUtils.createCustomItemStack(Material.IRON_SWORD, Lang.CONQUER_WAR_GOAL.get(),
+                Lang.CONQUER_WAR_GOAL_DESC.get(),
+                Lang.LEFT_CLICK_TO_SELECT.get());
+        ItemStack subjugate = HeadUtils.createCustomItemStack(Material.CHAIN, Lang.SUBJUGATE_WAR_GOAL.get(),
+                Lang.GUI_WARGOAL_SUBJUGATE_WAR_GOAL_RESULT.get(createAttackData.getMainDefender().getName(), createAttackData.getMainAttacker().getName()));
 
-        if(canBeSubjugated)
-            HeadUtils.addLore(subjugate, Lang.GUI_WARGOAL_SUBJUGATE_WAR_GOAL_RESULT.get(createAttackData.getMainDefender().getName(), createAttackData.getMainAttacker().getName()));
-        else
+        if(!canBeSubjugated)
             HeadUtils.addLore(subjugate, Lang.GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED.get());
+        else
+            HeadUtils.addLore(subjugate, Lang.LEFT_CLICK_TO_SELECT.get());
 
-        ItemStack liberate = HeadUtils.createCustomItemStack(Material.LANTERN, Lang.LIBERATE_SUBJECT_WAR_GOAL.get());
+        ItemStack liberate = HeadUtils.createCustomItemStack(Material.LANTERN, Lang.LIBERATE_SUBJECT_WAR_GOAL.get(),
+                Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC.get());
 
-        if(canBeLiberated)
+        if(!canBeLiberated)
             HeadUtils.addLore(liberate, Lang.GUI_WARGOAL_LIBERATE_CANNOT_BE_USED.get());
         else
-            HeadUtils.addLore(liberate, Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC.get());
+            HeadUtils.addLore(liberate, Lang.LEFT_CLICK_TO_SELECT.get());
 
 
         GuiItem _conquer = ItemBuilder.from(conquer).asGuiItem(event -> {
@@ -2087,7 +2101,7 @@ public class GuiManager implements IGUI {
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3.get(changeTownNameCost));
         ItemStack quitRegion = HeadUtils.createCustomItemStack(Material.SPRUCE_DOOR,
                 Lang.GUI_TOWN_SETTINGS_QUIT_REGION.get(),
-                playerTown.haveRegion() ? Lang.GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION.get(playerTown.getOverlord().getName()) : Lang.TOWN_NO_REGION.get());
+                playerTown.haveOverlord() ? Lang.GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION.get(playerTown.getOverlord().getName()) : Lang.TOWN_NO_REGION.get());
         ItemStack changeChunkColor = HeadUtils.createCustomItemStack(Material.PURPLE_WOOL,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR.get(),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(),
@@ -2187,7 +2201,7 @@ public class GuiManager implements IGUI {
 
         GuiItem _quitRegion = ItemBuilder.from(quitRegion).asGuiItem(event -> {
             event.setCancelled(true);
-            if (!playerTown.haveRegion()) {
+            if (!playerTown.haveOverlord()) {
                 player.sendMessage(getTANString() + Lang.TOWN_NO_REGION.get());
                 return;
             }
