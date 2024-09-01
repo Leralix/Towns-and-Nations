@@ -27,12 +27,13 @@ public class CurrentAttacks {
     String originalTitle;
     WarGoal warGoal;
 
-    public CurrentAttacks(String ID, Collection<ITerritoryData> attackers, Collection<ITerritoryData> defenders) {
+    public CurrentAttacks(String ID, Collection<ITerritoryData> attackers, Collection<ITerritoryData> defenders, WarGoal warGoal) {
         this.ID = ID;
         this.attackers = attackers;
         this.defenders = defenders;
         this.originalTitle = "War";
-        this.remainingTime = 120; // 6 minutes
+        this.remainingTime = 30 * 60 * 20; // 30 minutes
+        this.warGoal = warGoal;
 
         bossBar = Bukkit.createBossBar(this.originalTitle, BarColor.RED, BarStyle.SOLID);
         for(ITerritoryData territoryData : this.attackers) {
@@ -58,7 +59,7 @@ public class CurrentAttacks {
 
 
     public CurrentAttacks(String newID, AttackInvolved attackInvolved) {
-        this(newID, attackInvolved.getAttackingTerritory(), attackInvolved.getDefendingTerritory());
+        this(newID, attackInvolved.getAttackingTerritory(), attackInvolved.getDefendingTerritory(), attackInvolved.getWarGoal());
     }
 
     public String getID() {
@@ -108,6 +109,7 @@ public class CurrentAttacks {
 
     private void addScore(int score) {
         this.score += score;
+        /*
         if (this.score >= maxScore) {
             this.score = maxScore;
             attackerWin();
@@ -116,6 +118,7 @@ public class CurrentAttacks {
             this.score = 0;
             defenderWin();
         }
+         */
         updateBossBar();
     }
 
@@ -137,10 +140,9 @@ public class CurrentAttacks {
                 }
             }
         }
-
-        bossBar.setTitle(Lang.ATTACKER_WON_ANNOUNCEMENT.get());
-        endWar();
         warGoal.applyWarGoal();
+        bossBar.setTitle(Lang.WAR_ATTACKER_WON_ANNOUNCEMENT.get());
+        endWar();
     }
 
     private void defenderWin(){
@@ -149,7 +151,7 @@ public class CurrentAttacks {
             for(PlayerData playerData : territoryData.getPlayerDataList()) {
                 Player player = playerData.getPlayer();
                 if(player != null){
-                    player.sendMessage("You have lost the war!");
+                    player.sendMessage(Lang.PLAYER_LOST_ATTACK.get());
                 }
             }
         }
@@ -157,12 +159,12 @@ public class CurrentAttacks {
             for(PlayerData playerData : territoryData.getPlayerDataList()) {
                 Player player = playerData.getPlayer();
                 if(player != null) {
-                    playerData.getPlayer().sendMessage("You have won the war!");
+                    playerData.getPlayer().sendMessage(Lang.PLAYER_WON_ATTACK.get());
                 }
             }
         }
 
-        bossBar.setTitle(Lang.DEFENDER_WON_ANNOUNCEMENT.get());
+        bossBar.setTitle(Lang.WAR_DEFENDER_WON_ANNOUNCEMENT.get());
         endWar();
     }
 
@@ -181,8 +183,11 @@ public class CurrentAttacks {
                     remainingTime--;
                     updateBossBar();
                 } else {
+                    if(score >= maxScore)
+                        attackerWin();
+                    else
+                        defenderWin();
                     this.cancel();
-                    defenderWin();
                 }
             }
         };

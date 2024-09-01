@@ -333,7 +333,7 @@ language:
   GUI_TOWN_RELATION_HOSTILE: "§aHostile"
   GUI_TOWN_RELATION_HOSTILE_DESC1: "§fManage hostile relations"
   GUI_TOWN_RELATION_EMBARGO: "§aEmbargo"
-  GUI_TERRITORY_RELATION_EMBARGO_DESC1: "§fManage territories you have embargoed"
+  GUI_TOWN_RELATION_EMBARGO_DESC1: "§fManage territories you have embargoed"
   GUI_TOWN_RELATION_NAP: "§aNon-aggression pact"
   GUI_TOWN_RELATION_NAP_DESC1: "§fManage territories you have a non-aggression pact with"
   GUI_TOWN_RELATION_ALLIANCE: "§aAlliance"

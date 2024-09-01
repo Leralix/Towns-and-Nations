@@ -185,4 +185,7 @@ public class AttackInvolved {
         return territory.getID().equals(mainAttackerID);
     }
 
+    public WarGoal getWarGoal() {
+        return warGoal;
+    }
 }

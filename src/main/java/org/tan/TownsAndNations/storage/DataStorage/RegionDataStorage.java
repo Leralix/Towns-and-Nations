@@ -96,10 +96,15 @@ public class RegionDataStorage {
     }
 
     public static void deleteRegion(Player player, RegionData region){
-        String regionID = region.getID();
         FileUtil.addLineToHistory(Lang.HISTORY_REGION_DELETED.get(player.getName(),region.getName()));
-        region.getCapital().addToBalance(ConfigUtil.getCustomConfig("config.yml").getInt("regionCost",7500));
+
+        String regionID = region.getID();
+
         NewClaimedChunkStorage.unclaimAllChunkFromID(regionID);
+
+        region.getRelations().cleanAll(regionID);   //Cancel all Relation between the deleted town and other town
+
+        region.getCapital().addToBalance(ConfigUtil.getCustomConfig("config.yml").getInt("regionCost",7500));
         removeTownFromRegion(regionID);
         regionStorage.remove(regionID);
     }
