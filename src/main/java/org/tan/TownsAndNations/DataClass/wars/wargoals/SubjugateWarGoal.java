@@ -4,12 +4,24 @@ import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.DataClass.wars.CreateAttackData;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.utils.TerritoryUtil;
 
 import java.util.function.Consumer;
 
 public class SubjugateWarGoal extends WarGoal {
+
+
+    final String territoryToSubjugate;
+    final String newOverlordID;
+
+    public SubjugateWarGoal(CreateAttackData createAttackData){
+        super();
+        this.territoryToSubjugate = createAttackData.getMainDefender().getID();
+        this.newOverlordID = createAttackData.getMainAttacker().getID();
+    }
 
     @Override
     public ItemStack getIcon() {
@@ -28,6 +40,17 @@ public class SubjugateWarGoal extends WarGoal {
 
     @Override
     public void applyWarGoal() {
+        ITerritoryData territoryData = TerritoryUtil.getTerritory(territoryToSubjugate);
+        ITerritoryData newOverlord = TerritoryUtil.getTerritory(newOverlordID);
+        if(territoryData == null || newOverlord == null)
+            return;
+
+        if(territoryData.haveOverlord()){
+            territoryData.getOverlord().removeSubject(territoryData);
+            territoryData.removeOverlord();
+        }
+        territoryData.setOverlord(newOverlord);
+        newOverlord.addSubject(territoryData);
 
     }
 

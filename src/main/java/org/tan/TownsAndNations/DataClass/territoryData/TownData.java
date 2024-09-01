@@ -632,13 +632,12 @@ public class TownData extends ITerritoryData {
         return this.regionID;
     }
 
-    public void setRegion(RegionData region){
-        setRegion(region.getID());
+    public void setOverlord(ITerritoryData region){
+        setOverlord(region.getID());
     }
-    public void setRegion(String regionID){
+    public void setOverlord(String regionID){
         this.regionID = regionID;
     }
-
 
     public ChunkHistory getChunkHistory() {
         if(chunkHistory == null)
@@ -677,6 +676,10 @@ public class TownData extends ITerritoryData {
 
     public void removeOverlord() {
         this.regionID = null;
+    }
+    @Override
+    public void addSubject(ITerritoryData territoryToAdd) {
+        //town have no subjects
     }
 
     @Override

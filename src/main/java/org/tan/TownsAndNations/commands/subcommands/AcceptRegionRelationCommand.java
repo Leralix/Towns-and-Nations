@@ -62,8 +62,8 @@ public class AcceptRegionRelationCommand extends SubCommand {
 
                 RegionInviteDataStorage.removeInvitation(playerID, newRegionID);
 
-                town.setRegion(newRegionID);
-                region.addTown(town.getID());
+                town.setOverlord(newRegionID);
+                region.addSubject(town.getID());
                 town.broadCastMessage(getTANString() + Lang.TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION.get(town.getName(), region.getName()));
                 SoundUtil.playSound(player,GOOD);
             }

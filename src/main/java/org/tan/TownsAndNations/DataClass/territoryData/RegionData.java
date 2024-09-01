@@ -315,7 +315,13 @@ public class RegionData extends ITerritoryData {
         return townsInRegion.size();
     }
 
-    public void addTown(String townID) {
+
+    @Override
+    public void addSubject(ITerritoryData territoryToAdd) {
+        addSubject(territoryToAdd.getID());
+    }
+
+    public void addSubject(String townID) {
         townsInRegion.add(townID);
     }
 
@@ -342,6 +348,13 @@ public class RegionData extends ITerritoryData {
     public void removeOverlord() {
         // Kingdoms are not implemented yet
     }
+
+    @Override
+    public void setOverlord(ITerritoryData overlord) {
+        // Kingdoms are not implemented yet
+    }
+
+
 
     public void addBalance(Integer amount) {
         balance += amount;

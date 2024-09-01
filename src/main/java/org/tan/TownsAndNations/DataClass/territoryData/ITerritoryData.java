@@ -90,7 +90,9 @@ public abstract class ITerritoryData {
 
     public abstract ITerritoryData getOverlord();
     public abstract void removeOverlord();
+    public abstract void setOverlord(ITerritoryData overlord);
 
+    public abstract void addSubject(ITerritoryData territoryToAdd);
     public abstract void removeSubject(ITerritoryData territoryToRemove);
     public abstract void removeSubject(String townID);
     public abstract List<String> getSubjectsID();

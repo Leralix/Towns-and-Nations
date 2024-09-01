@@ -970,7 +970,7 @@ public class GuiManager implements IGUI {
                 player.sendMessage(getTANString() + Lang.GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED.get());
                 return;
             }
-            createAttackData.setWargoal(new SubjugateWarGoal());
+            createAttackData.setWargoal(new SubjugateWarGoal(createAttackData));
             OpenStartWarSettings(player, exit, createAttackData);
         });
 
@@ -3051,7 +3051,7 @@ public class GuiManager implements IGUI {
 
         GuiItem _changeCapital = ItemBuilder.from(changeLeader).asGuiItem(event -> {
             event.setCancelled(true);
-            if(playerStat.isRegionLeader()){
+            if(!playerStat.isRegionLeader()){
                 player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
                 return;
             }
