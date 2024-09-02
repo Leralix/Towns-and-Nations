@@ -109,16 +109,12 @@ public class CurrentAttacks {
 
     private void addScore(int score) {
         this.score += score;
-        /*
         if (this.score >= maxScore) {
             this.score = maxScore;
-            attackerWin();
         }
         if(this.score <= 0){
             this.score = 0;
-            defenderWin();
         }
-         */
         updateBossBar();
     }
 

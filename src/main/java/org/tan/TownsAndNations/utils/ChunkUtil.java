@@ -18,10 +18,7 @@ import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
  *
  */
 public class ChunkUtil {
-    public static void claimChunkForRegion(final @NotNull Player player) {
-        Chunk chunkToClaim = player.getLocation().getChunk();
-        claimChunkForRegion(player, chunkToClaim);
-    }
+
     public static void claimChunkForRegion(final @NotNull Player player,final @NotNull Chunk chunk) {
 
         //No town
@@ -58,10 +55,7 @@ public class ChunkUtil {
 
     }
 
-    public static void claimChunkForTown(Player player) {
-        Chunk chunkToClaim = player.getLocation().getChunk();
-        claimChunkForTown(player, chunkToClaim);
-    }
+
     public static void claimChunkForTown(Player player, Chunk chunkToClaim) {
 
         //No town
@@ -75,6 +69,7 @@ public class ChunkUtil {
         TownData townData = TownDataStorage.get(player);
         if(!playerStat.hasPermission(TownRolePermission.CLAIM_CHUNK)){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+            return;
         }
 
         //Chunk limit reached

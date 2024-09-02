@@ -74,7 +74,10 @@ public class RegionDataStorage {
         return get(PlayerDataStorage.get(player));
     }
     public static RegionData get(PlayerData playerData){
-        return get(playerData.getTown().getRegionID());
+        TownData town = TownDataStorage.get(playerData);
+        if(town == null)
+            return null;
+        return get(town.getRegionID());
     }
     public static RegionData get(String regionID){
         if(!regionStorage.containsKey(regionID))

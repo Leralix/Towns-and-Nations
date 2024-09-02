@@ -624,6 +624,66 @@ public class TownData extends ITerritoryData {
         return this.regionID != null;
     }
 
+    @Override
+    public void claimChunk(Player player) {
+
+        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
+        Chunk chunkToClaim = player.getLocation().getChunk();
+
+        if(!playerStat.hasPermission(TownRolePermission.CLAIM_CHUNK)){
+            player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+            return;
+        }
+
+        if(!canClaimMoreChunk()){
+            player.sendMessage(getTANString() + Lang.MAX_CHUNK_LIMIT_REACHED.get());
+            return;
+        }
+
+
+        int cost = ConfigUtil.getCustomConfig("config.yml").getInt("CostOfTownChunk",0);
+        if(getBalance() < cost){
+            player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(cost - getBalance()));
+            return;
+        }
+        boolean needToUnclaimBeforeClaiming = false;
+
+        //Chunk already claimed by the town
+        ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.get(chunkToClaim);
+        if(currentClaimedChunk != null){
+            //If chunk belongs to the region in which the town is, then the town can claim the chunk
+            if(NewClaimedChunkStorage.isChunkClaimedByTownRegion(this,chunkToClaim)){
+                needToUnclaimBeforeClaiming = true;
+            }
+            //If the chunk is claimed by another territory that the player town have claims on, then the town can claim the chunk
+            else if(getAvailableEnemyClaims().containsKey(currentClaimedChunk.getOwnerID())){
+                needToUnclaimBeforeClaiming = true;
+                consumeEnemyClaim(currentClaimedChunk.getOwnerID());
+            }
+
+            else{
+                player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(NewClaimedChunkStorage.getChunkOwnerName(chunkToClaim)));
+                return;
+            }
+        }
+
+        if(getNumberOfClaimedChunk() != 0 &&
+                !NewClaimedChunkStorage.isAdjacentChunkClaimedBySameTown(chunkToClaim,getID()) &&
+                !ConfigUtil.getCustomConfig("config.yml").getBoolean("TownAllowNonAdjacentChunks",false)) {
+            player.sendMessage(getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
+            return;
+        }
+
+        if(needToUnclaimBeforeClaiming)
+            NewClaimedChunkStorage.unclaimChunk(chunkToClaim);
+        NewClaimedChunkStorage.claimTownChunk(chunkToClaim,getID());
+
+        player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.get(
+                getNumberOfClaimedChunk(),
+                getTownLevel().getChunkCap())
+        );
+    }
+
     public RegionData getOverlord(){
         return RegionDataStorage.get(this.regionID);
     }

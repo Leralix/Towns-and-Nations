@@ -11,8 +11,8 @@ import org.tan.TownsAndNations.DataClass.wars.CurrentAttacks;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class ITerritoryData {
@@ -28,7 +28,11 @@ public abstract class ITerritoryData {
 //    private TownRelations relations;
 //    private final Collection<String> attackIncomingList = new ArrayList<>();
 //    private final Collection<String> currentAttackList = new ArrayList<>();
+    private HashMap<String, Integer> availableClaims;
 
+    public ITerritoryData(){
+        availableClaims = new HashMap<>();
+    }
 
     public abstract String getID();
     public abstract String getName();
@@ -109,4 +113,22 @@ public abstract class ITerritoryData {
     public abstract void setChunkColor(int color);
 
     public abstract boolean haveOverlord();
+
+
+    public HashMap<String, Integer> getAvailableEnemyClaims() {
+        if(availableClaims == null)
+            return new HashMap<>();
+        return availableClaims;
+    }
+
+    public void addAvailableClaims(String territoryID, int amount){
+        getAvailableEnemyClaims().merge(territoryID, amount, Integer::sum);
+    }
+    public void consumeEnemyClaim(String territoryID){
+        getAvailableEnemyClaims().merge(territoryID, -1, Integer::sum);
+        if(getAvailableEnemyClaims().get(territoryID) <= 0)
+            getAvailableEnemyClaims().remove(territoryID);
+    }
+
+    public abstract void claimChunk(Player player);
 }

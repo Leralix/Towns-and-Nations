@@ -6,10 +6,12 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.DataClass.wars.CreateAttackData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.utils.HeadUtils;
 import org.tan.TownsAndNations.utils.SoundUtil;
+import org.tan.TownsAndNations.utils.TerritoryUtil;
 
 import java.util.function.Consumer;
 
@@ -19,10 +21,15 @@ import static org.tan.TownsAndNations.enums.SoundEnum.REMOVE;
 
 public class ConquerWarGoal extends WarGoal {
 
+    final String attackingTerritoryID;
+    final String defendingTerritoryID;
+
     int numberOfChunks;
 
-    public ConquerWarGoal(){
+    public ConquerWarGoal(String attackingTerritoryID, String defendingTerritoryID){
         numberOfChunks = 1;
+        this.attackingTerritoryID = attackingTerritoryID;
+        this.defendingTerritoryID = defendingTerritoryID;
     }
 
 
@@ -85,7 +92,11 @@ public class ConquerWarGoal extends WarGoal {
 
     @Override
     public void applyWarGoal() {
-        System.out.println("Conquer war goal applied, number of chunks : " + numberOfChunks);
+        System.out.println("Applying conquer war goal with " + numberOfChunks + " chunks");
+        ITerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
+        if (attackingTerritory == null)
+            return;
+        attackingTerritory.addAvailableClaims(defendingTerritoryID, numberOfChunks);
     }
 
     @Override

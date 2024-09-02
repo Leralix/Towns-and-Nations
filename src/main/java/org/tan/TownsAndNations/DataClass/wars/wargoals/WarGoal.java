@@ -41,7 +41,6 @@ public abstract class WarGoal {
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
         }
-
         return itemStack;
     }
 

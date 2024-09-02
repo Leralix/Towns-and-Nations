@@ -960,7 +960,7 @@ public class GuiManager implements IGUI {
 
         GuiItem _conquer = ItemBuilder.from(conquer).asGuiItem(event -> {
             event.setCancelled(true);
-            createAttackData.setWargoal(new ConquerWarGoal());
+            createAttackData.setWargoal(new ConquerWarGoal(createAttackData.getMainAttacker().getID(), createAttackData.getMainDefender().getID()));
             OpenStartWarSettings(player, exit, createAttackData);
         });
 
@@ -3503,7 +3503,7 @@ public class GuiManager implements IGUI {
                 confirmLore);
 
         ItemStack cancel = HeadUtils.makeSkull(Lang.GENERIC_CANCEL_ACTION.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmViNTg4YjIxYTZmOThhZDFmZjRlMDg1YzU1MmRjYjA1MGVmYzljYWI0MjdmNDYwNDhmMThmYzgwMzQ3NWY3In19fQ==",
-                "return to previous menu");
+                Lang.GENERIC_CANCEL_ACTION_DESC1.get());
 
         GuiItem _confirm = ItemBuilder.from(confirm).asGuiItem(event -> {
             event.setCancelled(true);

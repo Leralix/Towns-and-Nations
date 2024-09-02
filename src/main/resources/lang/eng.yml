@@ -706,6 +706,7 @@ language:
   #Confirmation GUI
   GENERIC_CONFIRM_ACTION: "§aConfirm action"
   GENERIC_CANCEL_ACTION: "§cCancel action"
+  GENERIC_CANCEL_ACTION_DESC1: "§fClick to return"
   GUI_CONFIRM_PLAYER_LEAVE_TOWN: "§3{0}§f leaves the town"
   GUI_CONFIRM_PLAYER_DELETE_TOWN: "§fThe town §9{0}§f will be deleted"
   TOWN_BROADCAST_TOWN_LEFT_REGION: "§9{0}§f has left the region §b{1}"

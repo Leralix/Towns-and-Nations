@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.DataClass.territoryData;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -25,6 +26,7 @@ import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
+import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.SoundUtil;
 import org.tan.TownsAndNations.utils.TerritoryUtil;
 
@@ -32,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+
+import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 public class RegionData extends ITerritoryData {
 
@@ -267,6 +271,43 @@ public class RegionData extends ITerritoryData {
     @Override
     public boolean haveOverlord() {
         return nationID != null;
+    }
+
+    @Override
+    public void claimChunk(Player player) {
+        Chunk chunk = player.getLocation().getChunk();
+        PlayerData playerData = PlayerDataStorage.get(player);
+        TownData townData = TownDataStorage.get(player);
+        RegionData regionData = townData.getOverlord();
+
+        //Not leader of the region
+        if(!playerData.isRegionLeader()){
+            player.sendMessage(getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
+            return;
+        }
+        int cost = ConfigUtil.getCustomConfig("config.yml").getInt("CostOfRegionChunk",5);
+
+        if(regionData.getBalance() < cost){
+            player.sendMessage(getTANString() + Lang.REGION_NOT_ENOUGH_MONEY_EXTENDED.get(cost - regionData.getBalance()));
+            return;
+        }
+
+        ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.get(chunk);
+        if(currentClaimedChunk != null){
+            if(!getAvailableEnemyClaims().containsKey(currentClaimedChunk.getOwnerID())){
+                player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(NewClaimedChunkStorage.getChunkOwnerName(chunk)));
+                return;
+
+            }
+            else {
+                consumeEnemyClaim(currentClaimedChunk.getOwnerID());
+                NewClaimedChunkStorage.unclaimChunk(currentClaimedChunk);
+            }
+        }
+
+        regionData.removeFromBalance(cost);
+        NewClaimedChunkStorage.claimRegionChunk(chunk, regionData.getID());
+        player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS_REGION.get());
     }
 
     public boolean hasNation() {
