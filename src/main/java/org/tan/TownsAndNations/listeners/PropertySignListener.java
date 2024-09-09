@@ -13,7 +13,7 @@ import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.PropertyData;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;
-import org.tan.TownsAndNations.GUI.GuiManager;
+import org.tan.TownsAndNations.GUI.playerGUI;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
@@ -48,13 +48,13 @@ public class PropertySignListener implements Listener {
 
 
                             if(propertyData.getOwnerID().equals(player.getUniqueId().toString())){
-                                GuiManager.OpenPropertyManagerMenu(player, propertyData);
+                                playerGUI.OpenPropertyManagerMenu(player, propertyData);
                             }else if(propertyData.isRented() && propertyData.getRentingPlayerID().equals(player.getUniqueId().toString())){
-                                GuiManager.OpenPropertyManagerRentMenu(player, propertyData);
+                                playerGUI.OpenPropertyManagerRentMenu(player, propertyData);
                             }
                             else {
                                 if(propertyData.isForRent() || propertyData.isForSale()){
-                                    GuiManager.OpenPropertyBuyMenu(player, propertyData);
+                                    playerGUI.OpenPropertyBuyMenu(player, propertyData);
                                 }
                                 else
                                     player.sendMessage(Lang.PROPERTY_NOT_FOR_SALE_OR_RENT.get());

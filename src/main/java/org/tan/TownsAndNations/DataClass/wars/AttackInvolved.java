@@ -14,6 +14,7 @@ import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
 import org.tan.TownsAndNations.storage.DataStorage.AttackInvolvedStorage;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.DateUtil;
+import org.tan.TownsAndNations.utils.HeadUtils;
 import org.tan.TownsAndNations.utils.TerritoryUtil;
 
 import java.util.ArrayList;
@@ -157,13 +158,14 @@ public class AttackInvolved {
         ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
         ItemMeta itemMeta = itemStack.getItemMeta();
         if(itemMeta != null){
-            itemMeta.setDisplayName( name);
+            itemMeta.setDisplayName(name);
             ArrayList<String> lore = new ArrayList<>();
             lore.add(Lang.ATTACK_ICON_DESC_1.get(getMainAttacker().getName()));
             lore.add(Lang.ATTACK_ICON_DESC_2.get(getMainDefender().getName()));
             lore.add(Lang.ATTACK_ICON_DESC_3.get(warGoal.getCurrentDesc()));
             lore.add(Lang.ATTACK_ICON_DESC_4.get(DateUtil.getStringDeltaDateTime((long) (getStartTime() - new Date().getTime() * 0.02))));
             lore.add(Lang.ATTACK_ICON_DESC_5.get(DateUtil.getStringDeltaDateTime((long) ((getEndTime() - getStartTime())))));
+            lore.add(Lang.GUI_LEFT_CLICK_TO_INTERACT.get());
             itemMeta.setLore(lore);
         }
         itemStack.setItemMeta(itemMeta);
@@ -183,6 +185,18 @@ public class AttackInvolved {
 
     public boolean isMainAttacker(ITerritoryData territory) {
         return territory.getID().equals(mainAttackerID);
+    }
+
+    public boolean isMainDefender(ITerritoryData territory) {
+        return territory.getID().equals(mainDefenderID);
+    }
+
+    private boolean isSecondaryAttacker(ITerritoryData territoryConcerned) {
+        return attackersID.contains(territoryConcerned.getID());
+    }
+
+    private boolean isSecondaryDefender(ITerritoryData territoryConcerned) {
+        return defendersID.contains(territoryConcerned.getID());
     }
 
     public WarGoal getWarGoal() {

@@ -12,7 +12,7 @@ import org.tan.TownsAndNations.DataClass.Landmark;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;
-import org.tan.TownsAndNations.GUI.GuiManager;
+import org.tan.TownsAndNations.GUI.playerGUI;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.DataStorage.LandmarkStorage;
@@ -39,7 +39,7 @@ public class LandmarkChestListener implements Listener {
                             player.sendMessage(Lang.PLAYER_NO_TOWN.get());
                             return;
                         }
-                        GuiManager.dispatchLandmarkGui(player, landmark);
+                        playerGUI.dispatchLandmarkGui(player, landmark);
                     }
                 }
             }

@@ -7,6 +7,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.TownsAndNations.DataClass.wars.CreateAttackData;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.enums.SoundEnum;
+import org.tan.TownsAndNations.utils.SoundUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,4 +47,26 @@ public abstract class WarGoal {
     }
 
     public abstract String getCurrentDesc();
+
+    public void sendWinMessageForWinner(Player player) {
+        player.sendMessage(Lang.PLAYER_WON_ATTACK.get());
+        SoundUtil.playSound(player, SoundEnum.GOOD);
+    }
+
+    public void sendWinMessageForLooser(Player player) {
+        player.sendMessage(Lang.PLAYER_LOST_ATTACK.get());
+        SoundUtil.playSound(player, SoundEnum.BAD);
+    }
+
+    public void sendFailMessageForWinner(Player player) {
+        player.sendMessage(Lang.PLAYER_WON_ATTACK.get());
+        SoundUtil.playSound(player, SoundEnum.GOOD);
+    }
+
+    public void sendFailMessageForLooser(Player player) {
+        player.sendMessage(Lang.PLAYER_LOST_ATTACK.get());
+        SoundUtil.playSound(player, SoundEnum.BAD);
+    }
+
+
 }

@@ -124,7 +124,7 @@ public class CurrentAttacks {
             for(PlayerData playerData : territoryData.getPlayerDataList()) {
                 Player player = playerData.getPlayer();
                 if(player != null){
-                    player.sendMessage(Lang.PLAYER_WON_ATTACK.get());
+                    warGoal.sendWinMessageForWinner(player);
                 }
             }
         }
@@ -132,7 +132,7 @@ public class CurrentAttacks {
             for(PlayerData playerData : territoryData.getPlayerDataList()) {
                 Player player = playerData.getPlayer();
                 if(player != null){
-                    player.sendMessage(Lang.PLAYER_LOST_ATTACK.get());
+                    warGoal.sendWinMessageForLooser(player);
                 }
             }
         }
@@ -147,7 +147,7 @@ public class CurrentAttacks {
             for(PlayerData playerData : territoryData.getPlayerDataList()) {
                 Player player = playerData.getPlayer();
                 if(player != null){
-                    player.sendMessage(Lang.PLAYER_LOST_ATTACK.get());
+                    warGoal.sendFailMessageForLooser(player);
                 }
             }
         }
@@ -155,7 +155,7 @@ public class CurrentAttacks {
             for(PlayerData playerData : territoryData.getPlayerDataList()) {
                 Player player = playerData.getPlayer();
                 if(player != null) {
-                    playerData.getPlayer().sendMessage(Lang.PLAYER_WON_ATTACK.get());
+                    warGoal.sendFailMessageForWinner(player);
                 }
             }
         }
@@ -222,7 +222,7 @@ public class CurrentAttacks {
                 }
 
             }
-        }.runTaskLater(TownsAndNations.getPlugin(),20 * 20); //30 seconds
+        }.runTaskLater(TownsAndNations.getPlugin(),20 * 20); //Still showing the boss bar for 30s
     }
 
     public boolean containsPlayer(PlayerData playerData) {

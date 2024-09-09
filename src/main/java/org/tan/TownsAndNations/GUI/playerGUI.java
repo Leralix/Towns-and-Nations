@@ -48,7 +48,7 @@ import java.util.ArrayList;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class GuiManager implements IGUI {
+public class playerGUI implements IGUI {
 
     public static void OpenMainMenu(Player player){
 
@@ -788,19 +788,16 @@ public class GuiManager implements IGUI {
             AttackInvolved attackInvolved = AttackInvolvedStorage.get(attackID);
 
             ItemStack attackIcon = attackInvolved.getIcon();
-            HeadUtils.addLore(attackIcon, "", Lang.GUI_LEFT_CLICK_TO_INTERACT.get(), Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get());
+            // USE RIGHT_CLICK_TO_DELETE HeadUtils.addLore(attackIcon, "", Lang.GUI_LEFT_CLICK_TO_INTERACT.get(), Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get());
 
             GuiItem _attack = ItemBuilder.from(attackIcon).asGuiItem(event -> {
                 event.setCancelled(true);
+                if(event.isLeftClick()){
+                    OpenSpecificWarMenu(player, territory, attackInvolved, exit, page);
+                }
+
                 if(event.isRightClick()){
-                    if(!attackInvolved.isMainAttacker(territory)){
-                        player.sendMessage(getTANString() + Lang.GUI_ATTACK_NOT_MAIN_ATTACKER.get());
-                        SoundUtil.playSound(player, NOT_ALLOWED);
-                        return;
-                    }
-                    attackInvolved.remove();
-                    territory.broadCastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(attackInvolved.getMainDefender().getName()),MINOR_GOOD);
-                    OpenWarMenu(player, territory, exit, page);
+
                 }
             });
             guiItems.add(_attack);
@@ -811,6 +808,34 @@ public class GuiManager implements IGUI {
                 p -> OpenWarMenu(player, territory, exit,page - 1));
 
         gui.open(player);
+    }
+
+    private static void OpenSpecificWarMenu(Player player, ITerritoryData territory, AttackInvolved attackInvolved, Consumer<Player> exit, int page) {
+        Gui gui = IGUI.createChestGui(attackInvolved.getName(), 3);
+
+        ItemStack attackIcon = attackInvolved.getIcon();
+
+        ItemStack cancelAttack = HeadUtils.createCustomItemStack(Material.BARRIER, Lang.GUI_CANCEL_ATTACK.get(), Lang.GUI_GENERIC_CLICK_TO_DELETE.get());
+
+        GuiItem _attackIcon = ItemBuilder.from(attackIcon).asGuiItem(event -> event.setCancelled(true));
+
+        GuiItem _cancelAttack = ItemBuilder.from(cancelAttack).asGuiItem(event -> {
+            if(!attackInvolved.isMainAttacker(territory)){
+                player.sendMessage(getTANString() + Lang.GUI_ATTACK_NOT_MAIN_ATTACKER.get());
+                SoundUtil.playSound(player, NOT_ALLOWED);
+                return;
+            }
+            attackInvolved.remove();
+            territory.broadCastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(attackInvolved.getMainDefender().getName()),MINOR_GOOD);
+            OpenWarMenu(player, territory, exit, page);
+        });
+
+        gui.setItem(1,5, _attackIcon);
+        gui.setItem(2,7, _cancelAttack);
+
+        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenWarMenu(player, territory, exit, page)));
+        gui.open(player);
+
     }
 
     public static void OpenStartWarSettings(Player player, Consumer<Player> exit, CreateAttackData createAttackData) {

@@ -11,7 +11,7 @@ import org.tan.TownsAndNations.DataClass.PropertyData;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.DataClass.TownRank;
-import org.tan.TownsAndNations.GUI.GuiManager;
+import org.tan.TownsAndNations.GUI.playerGUI;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.DataStorage.LandmarkStorage;
@@ -136,7 +136,7 @@ public class ChatListener implements Listener {
 
         removePlayer(player);
         TownRank newRank = TownDataStorage.get(player).addRank(message);
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager.OpenTownRankManager(player, newRank.getID()));
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> playerGUI.OpenTownRankManager(player, newRank.getID()));
     }
     private void ChangeRegionDescription(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newDesc) {
         String regionID = chatData.getData().get(REGION_ID);
@@ -347,7 +347,7 @@ public class ChatListener implements Listener {
         TownRank playerTownRank = playerTown.getRank(rankID);
         playerTownRank.setName(newRankName);
 
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> GuiManager.OpenTownRankManager(player, rankID));
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> playerGUI.OpenTownRankManager(player, rankID));
         removePlayer(player);
     }
 

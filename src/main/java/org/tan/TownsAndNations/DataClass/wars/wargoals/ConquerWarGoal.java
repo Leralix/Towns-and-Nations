@@ -15,7 +15,7 @@ import org.tan.TownsAndNations.utils.TerritoryUtil;
 
 import java.util.function.Consumer;
 
-import static org.tan.TownsAndNations.GUI.GuiManager.OpenStartWarSettings;
+import static org.tan.TownsAndNations.GUI.playerGUI.OpenStartWarSettings;
 import static org.tan.TownsAndNations.enums.SoundEnum.ADD;
 import static org.tan.TownsAndNations.enums.SoundEnum.REMOVE;
 
@@ -109,5 +109,25 @@ public class ConquerWarGoal extends WarGoal {
         return Lang.GUI_CONQUER_CHUNK_CURRENT_DESC.get(numberOfChunks);
     }
 
+    @Override
+    public void sendWinMessageForWinner(Player player) {
+        super.sendWinMessageForWinner(player);
+        ITerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
+        ITerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
+        if (attackingTerritory == null || defendingTerritory == null)
+            return;
+
+        player.sendMessage(Lang.WARGOAL_CONQUER_SUCCESS_WINNING_SIDE.get(numberOfChunks, defendingTerritory.getColoredName()));
+    }
+
+    @Override
+    public void sendWinMessageForLooser(Player player) {
+        super.sendWinMessageForLooser(player);
+        ITerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
+        ITerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
+        if (attackingTerritory == null || defendingTerritory == null)
+            return;
+        player.sendMessage(Lang.WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE.get(attackingTerritory.getColoredName(), numberOfChunks, defendingTerritory.getColoredName()));
+    }
 
 }

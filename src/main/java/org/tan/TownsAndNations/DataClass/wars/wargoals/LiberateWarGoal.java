@@ -8,9 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.DataClass.wars.CreateAttackData;
-import org.tan.TownsAndNations.GUI.GuiManager;
+import org.tan.TownsAndNations.GUI.playerGUI;
 import org.tan.TownsAndNations.Lang.Lang;
-import org.tan.TownsAndNations.utils.GuiUtil;
 import org.tan.TownsAndNations.utils.HeadUtils;
 
 import java.util.function.Consumer;
@@ -37,7 +36,7 @@ public class LiberateWarGoal extends WarGoal {
                     Lang.LEFT_CLICK_TO_SELECT.get());
 
             _selectedTerritory = ItemBuilder.from(selectTerritory).asGuiItem(event -> {
-                GuiManager.openSelecteTerritoryToLiberate(player, createAttackData,this, exit);
+                playerGUI.openSelecteTerritoryToLiberate(player, createAttackData,this, exit);
                 event.setCancelled(true);
             });
         }
@@ -46,7 +45,7 @@ public class LiberateWarGoal extends WarGoal {
                     Lang.GUI_SELECTED_TERRITORY_TO_LIBERATE.get(territoryToLiberate.getName()),
                     Lang.LEFT_CLICK_TO_SELECT.get());
             _selectedTerritory = ItemBuilder.from(selectedTerritory).asGuiItem(event -> {
-                GuiManager.openSelecteTerritoryToLiberate(player, createAttackData,this, exit);
+                playerGUI.openSelecteTerritoryToLiberate(player, createAttackData,this, exit);
                 event.setCancelled(true);
             });
         }
@@ -82,5 +81,19 @@ public class LiberateWarGoal extends WarGoal {
 
     public void setTerritoryToLiberate(ITerritoryData territoryToLiberate) {
         this.territoryToLiberate = territoryToLiberate;
+    }
+
+    @Override
+    public void sendWinMessageForWinner(Player player) {
+        super.sendWinMessageForWinner(player);
+        ITerritoryData loosingTerritory = territoryToLiberate.getOverlord();
+        if(loosingTerritory == null)
+            return;
+        player.sendMessage(Lang.WARGOAL_LIBERATE_SUCCESS.get(territoryToLiberate.getColoredName(), loosingTerritory.getColoredName()));
+    }
+
+    @Override
+    public void sendWinMessageForLooser(Player player) {
+        sendWinMessageForWinner(player);
     }
 }

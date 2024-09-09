@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
+import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.DataClass.wars.CreateAttackData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.utils.TerritoryUtil;
@@ -63,4 +64,21 @@ public class SubjugateWarGoal extends WarGoal {
     public String getCurrentDesc() {
         return Lang.GUI_WARGOAL_SUBJUGATE_WAR_GOAL_RESULT.get();
     }
+
+    @Override
+    public void sendWinMessageForWinner(Player player) {
+        super.sendWinMessageForWinner(player);
+
+        ITerritoryData loosingTerritory = TerritoryUtil.getTerritory(territoryToSubjugate);
+        ITerritoryData winningTerritory = TerritoryUtil.getTerritory(newOverlordID);
+        if(loosingTerritory == null || winningTerritory == null)
+            return;
+        player.sendMessage(Lang.WARGOAL_SUBJUGATE_SUCCESS.get(loosingTerritory.getColoredName(), winningTerritory.getColoredName()));
+    }
+
+    @Override
+    public void sendWinMessageForLooser(Player player) {
+        sendWinMessageForWinner(player);
+    }
+
 }
