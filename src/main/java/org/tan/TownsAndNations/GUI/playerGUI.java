@@ -15,6 +15,7 @@ import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.DataClass.wars.AttackInvolved;
 import org.tan.TownsAndNations.DataClass.wars.CreateAttackData;
+import org.tan.TownsAndNations.DataClass.wars.WarRole;
 import org.tan.TownsAndNations.DataClass.wars.wargoals.ConquerWarGoal;
 import org.tan.TownsAndNations.DataClass.wars.wargoals.LiberateWarGoal;
 import org.tan.TownsAndNations.DataClass.wars.wargoals.SubjugateWarGoal;
@@ -815,23 +816,79 @@ public class playerGUI implements IGUI {
 
         ItemStack attackIcon = attackInvolved.getIcon();
 
-        ItemStack cancelAttack = HeadUtils.createCustomItemStack(Material.BARRIER, Lang.GUI_CANCEL_ATTACK.get(), Lang.GUI_GENERIC_CLICK_TO_DELETE.get());
+        WarRole territoryRole = attackInvolved.getTerritoryRole(territory);
+
+        if(territoryRole == WarRole.MAIN_ATTACKER){
+            ItemStack cancelAttack = HeadUtils.createCustomItemStack(Material.BARRIER, Lang.GUI_CANCEL_ATTACK.get(), Lang.GUI_GENERIC_CLICK_TO_DELETE.get());
+            GuiItem _cancelAttack = ItemBuilder.from(cancelAttack).asGuiItem(event -> {
+                if(!attackInvolved.isMainAttacker(territory)){
+                    player.sendMessage(getTANString() + Lang.GUI_ATTACK_NOT_MAIN_ATTACKER.get());
+                    SoundUtil.playSound(player, NOT_ALLOWED);
+                    return;
+                }
+                attackInvolved.remove();
+                territory.broadCastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(attackInvolved.getMainDefender().getName()),MINOR_GOOD);
+                OpenWarMenu(player, territory, exit, page);
+            });
+            gui.setItem(2,7, _cancelAttack);
+        }
+
+        else if(territoryRole == WarRole.MAIN_DEFENDER){
+            ItemStack submitToRequests = HeadUtils.createCustomItemStack(Material.SOUL_LANTERN,
+                    Lang.SUBMIT_TO_REQUESTS.get(),
+                    Lang.SUBMIT_TO_REQUEST_DESC1.get(),
+                    Lang.SUBMIT_TO_REQUEST_DESC2.get(attackInvolved.getWarGoal().getCurrentDesc()));
+
+            GuiItem _submitToRequests = ItemBuilder.from(submitToRequests).asGuiItem(event -> {
+                attackInvolved.defenderSurrendered();
+                OpenWarMenu(player, territory, exit, page);
+            });
+            gui.setItem(1,7,_submitToRequests);
+
+        }
+
+        else if(territoryRole == WarRole.OTHER_ATTACKER || territoryRole == WarRole.OTHER_DEFENDER){
+            ItemStack quitWar = HeadUtils.createCustomItemStack(Material.DARK_OAK_DOOR,Lang.GUI_QUIT_WAR.get(), Lang.GUI_QUIT_WAR_DESC1.get());
+
+            GuiItem _quitWar = ItemBuilder.from(quitWar).asGuiItem(event -> {
+                attackInvolved.removeBelligerent(territory);
+                territory.broadCastMessageWithSound(Lang.TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE.get(attackInvolved.getMainDefender().getName()),MINOR_GOOD);
+                OpenWarMenu(player, territory, exit, page);
+            });
+            gui.setItem(2,7, _quitWar);
+        }
+
+        else if(territoryRole == WarRole.NEUTRAL){
+            ItemStack joinAttacker = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
+                    Lang.GUI_JOIN_ATTACKING_SIDE.get(),
+                    Lang.GUI_JOIN_ATTACKING_SIDE_DESC1.get(territory.getColoredName()),
+                    Lang.GUI_JOIN_ATTACKING_SIDE_DESC1.get(attackInvolved.getWarGoal().getDisplayName()));
+            ItemStack joinDefender = HeadUtils.createCustomItemStack(Material.SHIELD,
+                    Lang.GUI_JOIN_DEFENDING_SIDE.get(),
+                    Lang.GUI_JOIN_DEFENDING_SIDE_DESC1.get(territory.getColoredName()));
+
+            GuiItem _joinAttacker = ItemBuilder.from(joinAttacker).asGuiItem(event -> {
+                attackInvolved.addAttacker(territory);
+                OpenSpecificWarMenu(player, territory, attackInvolved, exit, page);
+            });
+
+            GuiItem _joinDefender = ItemBuilder.from(joinDefender).asGuiItem(event -> {
+                attackInvolved.addAttacker(territory);
+                OpenSpecificWarMenu(player, territory, attackInvolved, exit, page);
+            });
+            gui.setItem(1,3, _joinAttacker);
+            gui.setItem(1,5, _joinDefender);
+
+        }
+
+
+
 
         GuiItem _attackIcon = ItemBuilder.from(attackIcon).asGuiItem(event -> event.setCancelled(true));
 
-        GuiItem _cancelAttack = ItemBuilder.from(cancelAttack).asGuiItem(event -> {
-            if(!attackInvolved.isMainAttacker(territory)){
-                player.sendMessage(getTANString() + Lang.GUI_ATTACK_NOT_MAIN_ATTACKER.get());
-                SoundUtil.playSound(player, NOT_ALLOWED);
-                return;
-            }
-            attackInvolved.remove();
-            territory.broadCastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(attackInvolved.getMainDefender().getName()),MINOR_GOOD);
-            OpenWarMenu(player, territory, exit, page);
-        });
 
-        gui.setItem(1,5, _attackIcon);
-        gui.setItem(2,7, _cancelAttack);
+
+        gui.setItem(1,4, _attackIcon);
 
         gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenWarMenu(player, territory, exit, page)));
         gui.open(player);

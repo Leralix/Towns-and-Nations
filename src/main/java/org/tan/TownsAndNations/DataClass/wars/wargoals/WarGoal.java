@@ -67,6 +67,4 @@ public abstract class WarGoal {
         player.sendMessage(Lang.PLAYER_LOST_ATTACK.get());
         SoundUtil.playSound(player, SoundEnum.BAD);
     }
-
-
 }

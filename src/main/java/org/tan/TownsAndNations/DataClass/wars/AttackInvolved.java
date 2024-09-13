@@ -14,7 +14,6 @@ import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
 import org.tan.TownsAndNations.storage.DataStorage.AttackInvolvedStorage;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.DateUtil;
-import org.tan.TownsAndNations.utils.HeadUtils;
 import org.tan.TownsAndNations.utils.TerritoryUtil;
 
 import java.util.ArrayList;
@@ -147,10 +146,10 @@ public class AttackInvolved {
         remove();
     }
 
-    public void AddDefender(ITerritoryData territory){
+    public void addDefender(ITerritoryData territory){
         defendersID.add(territory.getID());
     }
-    public void AddAttacker(ITerritoryData territoryData){
+    public void addAttacker(ITerritoryData territoryData){
         attackersID.add(territoryData.getID());
     }
 
@@ -201,5 +200,30 @@ public class AttackInvolved {
 
     public WarGoal getWarGoal() {
         return warGoal;
+    }
+
+    public WarRole getTerritoryRole(ITerritoryData territory) {
+        if(isMainAttacker(territory))
+            return WarRole.MAIN_ATTACKER;
+        if(isMainDefender(territory))
+            return WarRole.MAIN_DEFENDER;
+        if(isSecondaryAttacker(territory))
+            return WarRole.OTHER_ATTACKER;
+        if(isSecondaryDefender(territory))
+            return WarRole.OTHER_DEFENDER;
+        return WarRole.NEUTRAL;
+    }
+
+    public void removeBelligerent(ITerritoryData territory) {
+        String territoryID = territory.getID();
+        //no need to check, it only removes if it is a part of it
+        attackersID.remove(territoryID);
+        defendersID.remove(territoryID);
+    }
+
+    public void defenderSurrendered() {
+        broadCastMessageWithSound(Lang.DEFENSIVE_SIDE_HAS_SURRENDER.get(), SoundEnum.WAR);
+        getWarGoal().applyWarGoal();
+        remove();
     }
 }

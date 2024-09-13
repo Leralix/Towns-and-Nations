@@ -92,7 +92,6 @@ public class ConquerWarGoal extends WarGoal {
 
     @Override
     public void applyWarGoal() {
-        System.out.println("Applying conquer war goal with " + numberOfChunks + " chunks");
         ITerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
         if (attackingTerritory == null)
             return;
