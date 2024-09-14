@@ -222,7 +222,7 @@ public class AttackInvolved {
     }
 
     public void defenderSurrendered() {
-        broadCastMessageWithSound(Lang.DEFENSIVE_SIDE_HAS_SURRENDER.get(), SoundEnum.WAR);
+        broadCastMessageWithSound(Lang.DEFENSIVE_SIDE_HAS_SURRENDER.get(getMainDefender().getColoredName(), getMainAttacker().getColoredName()), SoundEnum.WAR);
         getWarGoal().applyWarGoal();
         remove();
     }

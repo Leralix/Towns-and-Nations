@@ -843,7 +843,7 @@ public class playerGUI implements IGUI {
                 attackInvolved.defenderSurrendered();
                 OpenWarMenu(player, territory, exit, page);
             });
-            gui.setItem(1,7,_submitToRequests);
+            gui.setItem(2,7,_submitToRequests);
 
         }
 
