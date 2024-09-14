@@ -209,6 +209,7 @@ language:
   GUI_GENERIC_CLICK_TO_DELETE: "§fClick to delete"
   GUI_GENERIC_RIGHT_CLICK_TO_DELETE: "§fRight click to delete"
   GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT: "§fShift + click to teleport"
+  GUI_GENERIC_CLICK_TO_SWITCH_SCOPE: "§fClick to switch scope"
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§eStill in development"
   GUI_BACK_ARROW: "Return"
@@ -748,6 +749,14 @@ language:
   SUBMIT_TO_REQUEST_DESC1: "§fSurrender and submit to the enemy demands :"
   SUBMIT_TO_REQUEST_DESC2: "{0}"
   DEFENSIVE_SIDE_HAS_SURRENDER: "{0}§f has surrendered to {1}§f demands. The attack has been cancelled"
-  GUI_JOIN_ATTACKING_SIDE: "Join the attacking side"
+  GUI_JOIN_ATTACKING_SIDE: "§aJoin the attacking side"
   GUI_JOIN_ATTACKING_SIDE_DESC1: "{0}§f joins the attacking side and fight for :"
   GUI_JOIN_ATTACKING_SIDE_DESC2: "{0}"
+  GUI_JOIN_DEFENDING_SIDE: "§aJoin the defending side"
+  GUI_JOIN_DEFENDING_SIDE_DESC1: "{0}§f joins the defending side against :"
+  GUI_JOIN_DEFENDING_SIDE_DESC3: "{0}"
+  BROWSE_ALL_NAME: "§fScope : §aAll"
+  BROWSE_TOWNS_NAME: "§fScope : §9Towns"
+  BROWSE_REGIONS_NAME: "§fScope : §bRegions"
+
+

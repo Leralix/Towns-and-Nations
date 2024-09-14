@@ -36,7 +36,6 @@ import static org.tan.TownsAndNations.enums.MessageKey.*;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.enums.TownRolePermission.*;
 import static org.tan.TownsAndNations.storage.MobChunkSpawnStorage.getMobSpawnCost;
-import static org.tan.TownsAndNations.storage.DataStorage.TownDataStorage.getTownMap;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.GuiUtil.createIterator;
 import static org.tan.TownsAndNations.utils.HeadUtils.*;
@@ -132,7 +131,7 @@ public class playerGUI implements IGUI {
             OpenTownMenuHaveTown(player);
         }
         else{
-            OpenTownMenuNoTown(player);
+            OpenNoTownMenu(player);
         }
     }
 
@@ -585,7 +584,7 @@ public class playerGUI implements IGUI {
         gui.open(player);
 
     }
-    public static void OpenTownMenuNoTown(Player player){
+    public static void OpenNoTownMenu(Player player){
 
         Gui gui = IGUI.createChestGui("Town",3);
 
@@ -594,7 +593,7 @@ public class playerGUI implements IGUI {
         ItemStack createTown = HeadUtils.createCustomItemStack(Material.GRASS_BLOCK,
                 Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.get(),
                 Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.get(townPrice));
-        ItemStack joinLand = HeadUtils.createCustomItemStack(Material.ANVIL,
+        ItemStack browseTown = HeadUtils.createCustomItemStack(Material.ANVIL,
                 Lang.GUI_NO_TOWN_JOIN_A_TOWN.get(),
                 Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(TownDataStorage.getNumberOfTown()));
 
@@ -603,17 +602,18 @@ public class playerGUI implements IGUI {
             TownUtil.registerNewTown(player,townPrice);
         });
 
-        GuiItem _join = ItemBuilder.from(joinLand).asGuiItem(event -> {
+        GuiItem _browseTown = ItemBuilder.from(browseTown).asGuiItem(event -> {
             event.setCancelled(true);
             OpenSearchTownMenu(player,0);
         });
 
         gui.setItem(11, _create);
-        gui.setItem(15, _join);
+        gui.setItem(15, _browseTown);
         gui.setItem(18, IGUI.CreateBackArrow(player,p -> OpenMainMenu(player)));
 
         gui.open(player);
     }
+    //Search town menu is separate from other : only sort towns and player can join them
     public static void OpenSearchTownMenu(Player player, int page) {
 
         Gui gui = IGUI.createChestGui("Town list | page " + (page + 1),6);
@@ -621,7 +621,7 @@ public class playerGUI implements IGUI {
 
         ArrayList<GuiItem> townItemStacks = new ArrayList<>();
 
-        for(TownData townData : getTownMap().values()){
+        for(TownData townData : TownDataStorage.getTownMap().values()){
             ItemStack townIcon = townData.getIconWithInformations();
             HeadUtils.addLore(townIcon,
                     "",
@@ -656,7 +656,7 @@ public class playerGUI implements IGUI {
             townItemStacks.add(_townIteration);
         }
 
-        createIterator(gui, townItemStacks, page, player, p -> OpenTownMenuNoTown(player),
+        createIterator(gui, townItemStacks, page, player, p -> OpenNoTownMenu(player),
                 p -> OpenSearchTownMenu(player, page + 1),
                 p -> OpenSearchTownMenu(player, page - 1));
 
@@ -737,7 +737,7 @@ public class playerGUI implements IGUI {
         });
         GuiItem _otherTownIcon = ItemBuilder.from(otherTownIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTerritoryListWithRelation(player, playerTown,p -> OpenTownMenuHaveTown(player), 0);
+            browseTerritory(player, playerTown, BrowseScope.TOWNS, p -> OpenTownMenuHaveTown(player), 0);
         });
         GuiItem _relationIcon = ItemBuilder.from(RelationIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -815,6 +815,8 @@ public class playerGUI implements IGUI {
         Gui gui = IGUI.createChestGui(attackInvolved.getName(), 3);
 
         ItemStack attackIcon = attackInvolved.getIcon();
+        GuiItem _attackIcon = ItemBuilder.from(attackIcon).asGuiItem(event -> event.setCancelled(true));
+        gui.setItem(1,5, _attackIcon);
 
         WarRole territoryRole = attackInvolved.getTerritoryRole(territory);
 
@@ -830,7 +832,7 @@ public class playerGUI implements IGUI {
                 territory.broadCastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(attackInvolved.getMainDefender().getName()),MINOR_GOOD);
                 OpenWarMenu(player, territory, exit, page);
             });
-            gui.setItem(2,7, _cancelAttack);
+            gui.setItem(2,8, _cancelAttack);
         }
 
         else if(territoryRole == WarRole.MAIN_DEFENDER){
@@ -843,7 +845,7 @@ public class playerGUI implements IGUI {
                 attackInvolved.defenderSurrendered();
                 OpenWarMenu(player, territory, exit, page);
             });
-            gui.setItem(2,7,_submitToRequests);
+            gui.setItem(2,8,_submitToRequests);
 
         }
 
@@ -855,7 +857,7 @@ public class playerGUI implements IGUI {
                 territory.broadCastMessageWithSound(Lang.TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE.get(attackInvolved.getMainDefender().getName()),MINOR_GOOD);
                 OpenWarMenu(player, territory, exit, page);
             });
-            gui.setItem(2,7, _quitWar);
+            gui.setItem(2,8, _quitWar);
         }
 
         else if(territoryRole == WarRole.NEUTRAL){
@@ -876,19 +878,9 @@ public class playerGUI implements IGUI {
                 attackInvolved.addAttacker(territory);
                 OpenSpecificWarMenu(player, territory, attackInvolved, exit, page);
             });
-            gui.setItem(1,3, _joinAttacker);
-            gui.setItem(1,5, _joinDefender);
-
+            gui.setItem(1,4, _joinAttacker);
+            gui.setItem(1,6, _joinDefender);
         }
-
-
-
-
-        GuiItem _attackIcon = ItemBuilder.from(attackIcon).asGuiItem(event -> event.setCancelled(true));
-
-
-
-        gui.setItem(1,4, _attackIcon);
 
         gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenWarMenu(player, territory, exit, page)));
         gui.open(player);
@@ -1097,31 +1089,41 @@ public class playerGUI implements IGUI {
 
     }
 
-    public static void OpenTerritoryListWithRelation(Player player, ITerritoryData territoryData, Consumer<Player> exitMenu, int page) {
-        Gui gui = IGUI.createChestGui("Town list | page " + (page + 1),6);
-
-        ArrayList<GuiItem> townGuiItems = new ArrayList<>();
+    public static void browseTerritory(Player player, ITerritoryData territoryData,BrowseScope scope, Consumer<Player> exitMenu, int page) {
+        Gui gui = IGUI.createChestGui("Territory list | page " + (page + 1),6);
 
 
         List<ITerritoryData> territoryList = new ArrayList<>();
-        territoryList.addAll(getTownMap().values());
-        territoryList.addAll(RegionDataStorage.getAllRegions());
 
-        //territoryList.removeIf(t -> t.getID().equals(territoryData.getID())); //Remove self
+        if(scope == BrowseScope.ALL || scope == BrowseScope.TOWNS)
+            territoryList.addAll(TownDataStorage.getTownMap().values());
+        if(scope == BrowseScope.ALL || scope == BrowseScope.REGIONS)
+            territoryList.addAll(RegionDataStorage.getAllRegions());
 
-        for(ITerritoryData townData : territoryList){
-            ItemStack territoryIcon = townData.getIconWithInformationAndRelation(territoryData);
+        ArrayList<GuiItem> townGuiItems = new ArrayList<>();
+
+        for(ITerritoryData specificTerritoryData : territoryList){
+            ItemStack territoryIcon = specificTerritoryData.getIconWithInformationAndRelation(territoryData);
             GuiItem territoryGUI = ItemBuilder.from(territoryIcon).asGuiItem(event -> event.setCancelled(true));
 
             townGuiItems.add(territoryGUI);
         }
 
         createIterator(gui, townGuiItems, page, player, exitMenu,
-                p -> OpenTerritoryListWithRelation(player, territoryData, exitMenu, page + 1),
-                p -> OpenTerritoryListWithRelation(player, territoryData, exitMenu, page - 1));
+                p -> browseTerritory(player, territoryData, scope ,exitMenu, page + 1),
+                p -> browseTerritory(player, territoryData, scope ,exitMenu, page - 1));
 
+
+        ItemStack checkScope = HeadUtils.makeSkull(scope.getName(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0=",
+                Lang.GUI_GENERIC_CLICK_TO_SWITCH_SCOPE.get());
+        GuiItem _checkScope = new GuiItem(checkScope, event -> browseTerritory(player, territoryData, scope.getNextScope(), exitMenu, 0));
+
+        gui.setItem(6,5,_checkScope);
         gui.open(player);
     }
+
+
+
     public static void OpenTownMemberList(Player player) {
 
         PlayerData playerStat = PlayerDataStorage.get(player);
@@ -2886,7 +2888,7 @@ public class playerGUI implements IGUI {
 
         GuiItem _browseRegion = ItemBuilder.from(browseRegion).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTerritoryListWithRelation(player, null,p -> OpenNoRegionMenu(player), 0);
+            browseTerritory(player, null, BrowseScope.REGIONS,p -> OpenNoRegionMenu(player), 0);
         });
 
         gui.setItem(2,4, _createRegion);
@@ -2910,7 +2912,7 @@ public class playerGUI implements IGUI {
                 Lang.GUI_TOWN_TREASURY_ICON_DESC1.get());
         ItemStack townIcon = HeadUtils.makeSkull(Lang.GUI_REGION_TOWN_LIST.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
                 Lang.GUI_REGION_TOWN_LIST_DESC1.get());
-        ItemStack otherRegionIcon = HeadUtils.makeSkull(Lang.GUI_OTHER_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=",
+        ItemStack browseTerritory = HeadUtils.makeSkull(Lang.GUI_OTHER_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=",
                 Lang.GUI_OTHER_REGION_ICON_DESC1.get());
         ItemStack RelationIcon = HeadUtils.makeSkull(Lang.GUI_RELATION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=",
                 Lang.GUI_RELATION_ICON_DESC1.get());
@@ -2943,9 +2945,9 @@ public class playerGUI implements IGUI {
             OpenTownInRegion(player);
         });
 
-        GuiItem _otherRegionIcon = ItemBuilder.from(otherRegionIcon).asGuiItem(event -> {
+        GuiItem _browseTerritory = ItemBuilder.from(browseTerritory).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenTerritoryListWithRelation(player, playerTown,p -> OpenRegionMenu(player), 0);
+            browseTerritory(player, playerTown, BrowseScope.ALL,p -> OpenRegionMenu(player), 0);
         });
         GuiItem _relationIcon = ItemBuilder.from(RelationIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -2962,7 +2964,7 @@ public class playerGUI implements IGUI {
         gui.setItem(4, _regionIcon);
         gui.setItem(10, _goldIcon);
         gui.setItem(11, _townIcon);
-        gui.setItem(13, _otherRegionIcon);
+        gui.setItem(13, _browseTerritory);
         gui.setItem(15, _relationIcon);
         gui.setItem(16, _settingsIcon);
 
