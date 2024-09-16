@@ -32,7 +32,6 @@ import java.util.UUID;
 import static org.tan.TownsAndNations.enums.ChatCategory.*;
 import static org.tan.TownsAndNations.enums.SoundEnum.GOOD;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
-import static org.tan.TownsAndNations.utils.TownUtil.deleteTown;
 
 public class AdminGUI implements IGUI{
     public static void OpenMainMenu(Player player){
@@ -269,7 +268,9 @@ public class AdminGUI implements IGUI{
 
         GuiItem _deleteRegion = ItemBuilder.from(deleteRegion).asGuiItem(event -> {
             event.setCancelled(true);
-            RegionDataStorage.deleteRegion(player, regionData);
+
+            FileUtil.addLineToHistory(Lang.HISTORY_REGION_DELETED.get(player.getName(),regionData.getName()));
+            regionData.delete();
 
             player.closeInventory();
             player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get());
@@ -422,7 +423,8 @@ public class AdminGUI implements IGUI{
                 player.sendMessage(getTANString() + Lang.ADMIN_GUI_CANT_DELETE_REGIONAL_CAPITAL.get());
                 return;
             }
-            deleteTown(player, townData);
+            FileUtil.addLineToHistory(Lang.HISTORY_TOWN_DELETED.get(player.getName(),townData.getName()));
+            townData.delete();
 
             player.closeInventory();
             player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get());

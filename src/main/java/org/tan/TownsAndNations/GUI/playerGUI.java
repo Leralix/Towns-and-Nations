@@ -799,7 +799,6 @@ public class playerGUI implements IGUI {
         createIterator(gui, guiItems, page, player, exit,
                 p -> OpenWarMenu(player, territory, exit,page + 1),
                 p -> OpenWarMenu(player, territory, exit,page - 1));
-
         gui.open(player);
     }
 
@@ -871,7 +870,7 @@ public class playerGUI implements IGUI {
                 OpenSpecificWarMenu(player, territory, plannedAttack, exit, page);
             });
             gui.setItem(2,4, _joinAttacker);
-            gui.setItem(4,6, _joinDefender);
+            gui.setItem(2,6, _joinDefender);
         }
 
         gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenWarMenu(player, territory, exit, page)));
@@ -2215,8 +2214,8 @@ public class playerGUI implements IGUI {
             }
 
             OpenConfirmMenu(player, Lang.GUI_CONFIRM_PLAYER_DELETE_TOWN.get(playerTown.getName()), confirm -> {
-                deleteTown(player, playerTown);
-
+                FileUtil.addLineToHistory(Lang.HISTORY_TOWN_DELETED.get(player.getName(),playerTown.getName()));
+                playerTown.delete();
                 player.closeInventory();
                 SoundUtil.playSound(player,GOOD);
                 player.sendMessage(getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get());
@@ -3118,8 +3117,9 @@ public class playerGUI implements IGUI {
             }
 
             OpenConfirmMenu(player, Lang.GUI_CONFIRM_DELETE_REGION.get(playerRegion.getName()), confirm -> {
-                RegionDataStorage.deleteRegion(player, playerRegion);
-                SoundUtil.playSound(player, BAD);
+                FileUtil.addLineToHistory(Lang.HISTORY_REGION_DELETED.get(player.getName(),playerRegion.getName()));
+                playerRegion.delete();
+                SoundUtil.playSound(player, GOOD);
                 player.sendMessage(getTANString() + Lang.CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED.get());
                 OpenMainMenu(player);
             }, remove -> OpenTownSettings(player));

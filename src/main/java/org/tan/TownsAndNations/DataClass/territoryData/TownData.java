@@ -24,6 +24,7 @@ import static org.tan.TownsAndNations.TownsAndNations.isSQLEnabled;
 import static org.tan.TownsAndNations.enums.SoundEnum.*;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.HeadUtils.getPlayerHead;
+import static org.tan.TownsAndNations.utils.TeamUtils.updateAllScoreboardColor;
 
 public class TownData extends ITerritoryData {
 
@@ -1081,11 +1082,23 @@ public class TownData extends ITerritoryData {
     }
 
 
-    public void removeALlLandmark() {
+    public void removeAllLandmark() {
         for(String landmarkID : getOwnedLandmarks()){
             Landmark landmark = LandmarkStorage.get(landmarkID);
             landmark.clearOwner();
         }
+    }
+
+    @Override
+    public void delete(){
+        super.delete();
+
+        removeAllLandmark(); //Remove all Landmark from the deleted town
+        for(String playerID : getPlayerIDList()){ //Kick all Players from the deleted town
+            removePlayer(PlayerDataStorage.get(playerID));
+        }
+        updateAllScoreboardColor();
+        TownDataStorage.deleteTown(this);
     }
 }
 

@@ -64,11 +64,6 @@ public class TownUtil {
 
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> setIndividualScoreBoard(player));
     }
-    public static void deleteTown(final @NotNull Player player, final @NotNull TownData townToDelete){
-        TownDataStorage.removeTown(townToDelete.getID());
-        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_DELETED.get(player.getName(),townToDelete.getName()));
-        updateAllScoreboardColor();
-    }
 
     public static void registerNewTown(Player player, int townPrice) {
 

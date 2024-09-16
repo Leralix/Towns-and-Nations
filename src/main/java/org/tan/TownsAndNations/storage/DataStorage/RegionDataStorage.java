@@ -98,28 +98,9 @@ public class RegionDataStorage {
         return regionStorage.values();
     }
 
-    public static void deleteRegion(Player player, RegionData region){
-        FileUtil.addLineToHistory(Lang.HISTORY_REGION_DELETED.get(player.getName(),region.getName()));
-
-        String regionID = region.getID();
-
-        NewClaimedChunkStorage.unclaimAllChunkFromID(regionID);
-
-        region.getRelations().cleanAll(regionID);   //Cancel all Relation between the deleted town and other town
-
-        region.getCapital().addToBalance(ConfigUtil.getCustomConfig("config.yml").getInt("regionCost",7500));
-        removeTownFromRegion(regionID);
-        regionStorage.remove(regionID);
-    }
-
-    private static void removeTownFromRegion(String regionID) {
-        RegionData region = get(regionID);
-        if(region == null)
-            return;
-        for (String townID : region.getSubjectsID()){
-            TownData town = TownDataStorage.get(townID);
-            town.removeOverlord();
-        }
+    public static void deleteRegion(RegionData region){
+        regionStorage.remove(region.getID());
+        saveStats();
     }
 
     public static boolean isNameUsed(String name){

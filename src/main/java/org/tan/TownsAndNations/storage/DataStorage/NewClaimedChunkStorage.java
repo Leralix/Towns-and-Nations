@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import org.bukkit.Chunk;
+import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
@@ -115,11 +116,9 @@ public class NewClaimedChunkStorage {
         claimedChunksMap.remove(getChunkKey(chunk));
         save();
     }
-    public static void unclaimAllChunkFromRegion(RegionData regionData) {
-        unclaimAllChunkFromID(regionData.getID());
-    }
-    public static void unclaimAllChunkFromTown(TownData townData) {
-        unclaimAllChunkFromID(townData.getID());
+
+    public static void unclaimAllChunksFromTerritory(ITerritoryData territoryData){
+        unclaimAllChunkFromID(territoryData.getID());
     }
 
     public static void unclaimAllChunkFromID(String id) {

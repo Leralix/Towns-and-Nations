@@ -21,10 +21,7 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
-import org.tan.TownsAndNations.storage.DataStorage.AttackInvolvedStorage;
-import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.*;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.SoundUtil;
@@ -36,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
+import static org.tan.TownsAndNations.utils.TeamUtils.updateAllScoreboardColor;
 
 public class RegionData extends ITerritoryData {
 
@@ -668,4 +666,10 @@ public class RegionData extends ITerritoryData {
         return false;
     }
 
+    @Override
+    public void delete(){
+        super.delete();
+        updateAllScoreboardColor();
+        RegionDataStorage.deleteRegion(this);
+    }
 }

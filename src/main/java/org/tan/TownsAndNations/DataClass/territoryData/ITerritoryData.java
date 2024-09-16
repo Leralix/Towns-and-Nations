@@ -10,6 +10,8 @@ import org.tan.TownsAndNations.DataClass.TownRelations;
 import org.tan.TownsAndNations.DataClass.wars.CurrentAttacks;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
+import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -131,4 +133,19 @@ public abstract class ITerritoryData {
     }
 
     public abstract void claimChunk(Player player);
+
+    public void delete(){
+        NewClaimedChunkStorage.unclaimAllChunksFromTerritory(this); //Unclaim all chunk from town
+
+        if(haveOverlord())
+            getOverlord().removeSubject(this);
+
+        for(ITerritoryData territory : getSubjects()){
+            territory.removeOverlord();
+        }
+
+        getRelations().cleanAll(getID());   //Cancel all Relation between the deleted territory and other territories
+
+
+    }
 }

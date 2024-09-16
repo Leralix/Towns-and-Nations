@@ -5,29 +5,19 @@ import com.google.gson.*;
 import com.google.gson.internal.bind.DateTypeAdapter;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.*;
-import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.enums.TownChunkPermission;
-import org.tan.TownsAndNations.enums.ChunkPermissionType;
-import org.tan.TownsAndNations.enums.TownRelation;
-import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.sql.*;
 import java.util.*;
 import java.util.Date;
-
-import static org.tan.TownsAndNations.TownsAndNations.isSQLEnabled;
-import static org.tan.TownsAndNations.utils.TeamUtils.updateAllScoreboardColor;
 
 public class TownDataStorage {
 
     private static LinkedHashMap<String, TownData> townDataMap = new LinkedHashMap<>();
     private static int newTownId = 1;
-    private static Connection connection;
 
     public static TownData newTown(String townName, Player player){
         String townId = "T"+newTownId;
@@ -54,28 +44,8 @@ public class TownDataStorage {
     }
 
 
-    public static void removeTown(String townID) {
-        TownData townToDelete = get(townID);
-
-        NewClaimedChunkStorage.unclaimAllChunkFromTown(townToDelete); //Unclaim all chunk from town
-
-        RegionData region = RegionDataStorage.get(townToDelete.getRegionID());
-        if(region != null)
-            region.removeSubject(townToDelete);
-
-
-        townToDelete.getRelations().cleanAll(townID);   //Cancel all Relation between the deleted town and other town
-        townToDelete.removeALlLandmark(); //Remove all Landmark from the deleted town
-        for(String playerID : townToDelete.getPlayerIDList()){ //Kick all Players from the deleted town
-            townToDelete.removePlayer(PlayerDataStorage.get(playerID));
-        }
-
-        if(isSQLEnabled()) { //if SQL is enabled, some data need to be removed manually
-            NewClaimedChunkStorage.unclaimAllChunkFromTown(townToDelete);  //Unclaim all chunk from the deleted town NOT WORKING RN
-        }
-
-        updateAllScoreboardColor();
-        townDataMap.remove(townID);
+    public static void deleteTown(TownData townData) {
+        townDataMap.remove(townData.getID());
         saveStats();
     }
 
