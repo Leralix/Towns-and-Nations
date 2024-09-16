@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-public class AttackInvolved {
+public class PlannedAttack {
 
     private final String ID;
     private String name;
@@ -33,7 +33,7 @@ public class AttackInvolved {
     private final long endTime;
     WarGoal warGoal;
 
-    public AttackInvolved(String ID, String name, CreateAttackData createAttackData, long startTime){
+    public PlannedAttack(String ID, String name, CreateAttackData createAttackData, long startTime){
         this.ID = ID;
         this.name = name;
         this.mainAttackerID = createAttackData.getMainAttacker().getID();
@@ -153,7 +153,7 @@ public class AttackInvolved {
         attackersID.add(territoryData.getID());
     }
 
-    public ItemStack getIcon(){
+    public ItemStack getIcon(ITerritoryData territoryConcerned){
         ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
         ItemMeta itemMeta = itemStack.getItemMeta();
         if(itemMeta != null){
@@ -161,14 +161,26 @@ public class AttackInvolved {
             ArrayList<String> lore = new ArrayList<>();
             lore.add(Lang.ATTACK_ICON_DESC_1.get(getMainAttacker().getName()));
             lore.add(Lang.ATTACK_ICON_DESC_2.get(getMainDefender().getName()));
-            lore.add(Lang.ATTACK_ICON_DESC_3.get(warGoal.getCurrentDesc()));
-            lore.add(Lang.ATTACK_ICON_DESC_4.get(DateUtil.getStringDeltaDateTime((long) (getStartTime() - new Date().getTime() * 0.02))));
-            lore.add(Lang.ATTACK_ICON_DESC_5.get(DateUtil.getStringDeltaDateTime((long) ((getEndTime() - getStartTime())))));
+            lore.add(Lang.ATTACK_ICON_DESC_3.get(getNumberOfAttackers()));
+            lore.add(Lang.ATTACK_ICON_DESC_4.get(getNumberOfDefenders()));
+            lore.add(Lang.ATTACK_ICON_DESC_5.get(warGoal.getCurrentDesc()));
+            lore.add(Lang.ATTACK_ICON_DESC_6.get(DateUtil.getStringDeltaDateTime((long) (getStartTime() - new Date().getTime() * 0.02))));
+            lore.add(Lang.ATTACK_ICON_DESC_7.get(DateUtil.getStringDeltaDateTime((long) ((getEndTime() - getStartTime())))));
+            lore.add(Lang.ATTACK_ICON_DESC_8.get(getTerritoryRole(territoryConcerned).getName()));
+
             lore.add(Lang.GUI_LEFT_CLICK_TO_INTERACT.get());
             itemMeta.setLore(lore);
         }
         itemStack.setItemMeta(itemMeta);
         return itemStack;
+    }
+
+    private int getNumberOfAttackers() {
+        return attackersID.size();
+    }
+
+    private int getNumberOfDefenders() {
+        return defendersID.size();
     }
 
 

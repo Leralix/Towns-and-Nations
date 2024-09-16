@@ -58,8 +58,8 @@ public class CurrentAttacks {
     }
 
 
-    public CurrentAttacks(String newID, AttackInvolved attackInvolved) {
-        this(newID, attackInvolved.getAttackingTerritory(), attackInvolved.getDefendingTerritory(), attackInvolved.getWarGoal());
+    public CurrentAttacks(String newID, PlannedAttack plannedAttack) {
+        this(newID, plannedAttack.getAttackingTerritory(), plannedAttack.getDefendingTerritory(), plannedAttack.getWarGoal());
     }
 
     public String getID() {

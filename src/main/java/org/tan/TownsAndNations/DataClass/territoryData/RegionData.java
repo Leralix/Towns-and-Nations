@@ -6,7 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.tan.TownsAndNations.DataClass.wars.AttackInvolved;
+import org.tan.TownsAndNations.DataClass.wars.PlannedAttack;
 import org.tan.TownsAndNations.DataClass.ClaimedChunkSettings;
 import org.tan.TownsAndNations.DataClass.History.ChunkHistory;
 import org.tan.TownsAndNations.DataClass.History.DonationHistory;
@@ -613,21 +613,21 @@ public class RegionData extends ITerritoryData {
     }
 
     @Override
-    public Collection<AttackInvolved> getAttacksInvolved() {
-        Collection<AttackInvolved> res = new ArrayList<>();
+    public Collection<PlannedAttack> getAttacksInvolved() {
+        Collection<PlannedAttack> res = new ArrayList<>();
         for(String attackID : getAttacksInvolvedID()){
-            AttackInvolved attackInvolved = AttackInvolvedStorage.get(attackID);
-            res.add(attackInvolved);
+            PlannedAttack plannedAttack = AttackInvolvedStorage.get(attackID);
+            res.add(plannedAttack);
         }
         return res;
     }
 
     @Override
-    public void addPlannedAttack(AttackInvolved war){
+    public void addPlannedAttack(PlannedAttack war){
         getAttacksInvolvedID().add(war.getID());
     }
     @Override
-    public void removePlannedAttack(AttackInvolved war){
+    public void removePlannedAttack(PlannedAttack war){
         getAttacksInvolvedID().remove(war.getID());
     }
 
@@ -661,8 +661,8 @@ public class RegionData extends ITerritoryData {
 
     @Override
     public boolean atWarWith(String territoryID) {
-        for(AttackInvolved attackInvolved : getAttacksInvolved()) {
-            if(attackInvolved.getMainDefender().getID().equals(territoryID))
+        for(PlannedAttack plannedAttack : getAttacksInvolved()) {
+            if(plannedAttack.getMainDefender().getID().equals(territoryID))
                 return true;
         }
         return false;

@@ -9,7 +9,7 @@ import org.tan.TownsAndNations.DataClass.*;
 import org.tan.TownsAndNations.DataClass.History.*;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;
-import org.tan.TownsAndNations.DataClass.wars.AttackInvolved;
+import org.tan.TownsAndNations.DataClass.wars.PlannedAttack;
 import org.tan.TownsAndNations.DataClass.wars.CurrentAttacks;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.*;
@@ -1032,19 +1032,19 @@ public class TownData extends ITerritoryData {
     }
 
     @Override
-    public Collection<AttackInvolved> getAttacksInvolved() {
-        Collection<AttackInvolved> res = new ArrayList<>();
+    public Collection<PlannedAttack> getAttacksInvolved() {
+        Collection<PlannedAttack> res = new ArrayList<>();
         for(String attackID : getAttacksInvolvedID()){
-            AttackInvolved attackInvolved = AttackInvolvedStorage.get(attackID);
-            res.add(attackInvolved);
+            PlannedAttack plannedAttack = AttackInvolvedStorage.get(attackID);
+            res.add(plannedAttack);
         }
         return res;
     }
 
-    public void addPlannedAttack(AttackInvolved war){
+    public void addPlannedAttack(PlannedAttack war){
         this.getAttacksInvolvedID().add(war.getID());
     }
-    public void removePlannedAttack(AttackInvolved war){
+    public void removePlannedAttack(PlannedAttack war){
         this.getAttacksInvolvedID().remove(war.getID());
     }
 
@@ -1073,8 +1073,8 @@ public class TownData extends ITerritoryData {
 
     @Override
     public boolean atWarWith(String territoryID) {
-        for(AttackInvolved attackInvolved : getAttacksInvolved()) {
-            if(attackInvolved.getMainDefender().getID().equals(territoryID))
+        for(PlannedAttack plannedAttack : getAttacksInvolved()) {
+            if(plannedAttack.getMainDefender().getID().equals(territoryID))
                 return true;
         }
         return false;

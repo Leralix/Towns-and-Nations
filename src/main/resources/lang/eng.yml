@@ -693,11 +693,15 @@ language:
   NO_KINGDOM: "No kingdom"
   #Wars
   BASIC_ATTACK_NAME: "§aWar of {0} against {1}"
-  ATTACK_ICON_DESC_1: "§fMain attacker : §c{0}"
-  ATTACK_ICON_DESC_2: "§fMain defender : §9{0}"
-  ATTACK_ICON_DESC_3: "§fWar goal : §a{0}"
-  ATTACK_ICON_DESC_4: "§fWar will start in : §6{0}"
-  ATTACK_ICON_DESC_5: "§fWar will last : §6{0}"
+  ATTACK_ICON_DESC_1: "§fMain attacker : {0}"
+  ATTACK_ICON_DESC_2: "§fMain defender : {0}"
+  ATTACK_ICON_DESC_3: "§fNumber of attackers : §9{0}"
+  ATTACK_ICON_DESC_4: "§fNumber of defenders : §9{0}"
+  ATTACK_ICON_DESC_5: "§fWar goal : §a{0}"
+  ATTACK_ICON_DESC_6: "§fWar will start in : §6{0}"
+  ATTACK_ICON_DESC_7: "§fWar will last : §6{0}"
+  ATTACK_ICON_DESC_8: "§fTerritory position : §a{0}"
+
   GUI_TOWN_ATTACK_ALREADY_ATTACKING: "§cYou are already attacking this town"
   TITLE_ATTACK: "{0} - {1}"
   TITLE_ATTACK_INFO: "{0} - {1} - {2}"
@@ -758,5 +762,11 @@ language:
   BROWSE_ALL_NAME: "§fScope : §aAll"
   BROWSE_TOWNS_NAME: "§fScope : §9Towns"
   BROWSE_REGIONS_NAME: "§fScope : §bRegions"
+
+  MAIN_ATTACKER_NAME: "Main attacker"
+  MAIN_DEFENDER_NAME: "Main defender"
+  OTHER_ATTACKER_NAME: "Other attackers"
+  OTHER_DEFENDER_NAME: "Other defenders"
+  NEUTRAL_NAME: "Neutral"
 
 
