@@ -3,6 +3,7 @@ package org.tan.TownsAndNations.storage.DataStorage;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.DataClass.wars.PlannedAttack;
 import org.tan.TownsAndNations.DataClass.wars.CreateAttackData;
 import org.tan.TownsAndNations.DataClass.wars.wargoals.WarGoal;
@@ -16,7 +17,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AttackInvolvedStorage {
+public class PlannedAttackStorage {
     private static Map<String, PlannedAttack> warDataMapWithWarKey = new HashMap<>();
 
     public static void newWar(CreateAttackData createAttackData){
@@ -117,5 +118,12 @@ public class AttackInvolvedStorage {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public static void territoryDeleted(ITerritoryData territoryData) {
+        for(PlannedAttack plannedAttack : getWars()){
+            if(plannedAttack.isMainAttacker(territoryData) || plannedAttack.isMainDefender(territoryData))
+                plannedAttack.remove();
+        }
     }
 }

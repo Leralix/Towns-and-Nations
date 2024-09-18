@@ -21,14 +21,13 @@ public class ClaimedChunkSettings {
         }
     }
     public TownChunkPermission getPermission(ChunkPermissionType type) {
-        return this.permissions.get(type);
+        if(!permissions.containsKey(type))
+            permissions.put(type, TownChunkPermission.TOWN);
+        return permissions.get(type);
     }
     public void nextPermission(ChunkPermissionType type) {
         this.permissions.put(type, permissions.get(type).getNext());
     }
-
-
-
     public UpgradeStatus getSpawnControl(MobChunkSpawnEnum mobType) {
         return getSpawnControl(mobType.name());
     }

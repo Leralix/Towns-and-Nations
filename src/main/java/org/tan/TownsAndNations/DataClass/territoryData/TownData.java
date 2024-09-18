@@ -1026,51 +1026,6 @@ public class TownData extends ITerritoryData {
         return getOverlord().getTaxRate();
     }
 
-    public Collection<String> getAttacksInvolvedID(){
-        if(attackIncomingList == null)
-            this.attackIncomingList = new ArrayList<>();
-        return attackIncomingList;
-    }
-
-    @Override
-    public Collection<PlannedAttack> getAttacksInvolved() {
-        Collection<PlannedAttack> res = new ArrayList<>();
-        for(String attackID : getAttacksInvolvedID()){
-            PlannedAttack plannedAttack = AttackInvolvedStorage.get(attackID);
-            res.add(plannedAttack);
-        }
-        return res;
-    }
-
-    public void addPlannedAttack(PlannedAttack war){
-        this.getAttacksInvolvedID().add(war.getID());
-    }
-    public void removePlannedAttack(PlannedAttack war){
-        this.getAttacksInvolvedID().remove(war.getID());
-    }
-
-    public Collection<String> getCurrentAttacksID(){
-        if(currentAttackList == null)
-            this.currentAttackList = new ArrayList<>();
-        return currentAttackList;
-    }
-
-    @Override
-    public Collection<CurrentAttacks> getCurrentAttacks() {
-        Collection<CurrentAttacks> res = new ArrayList<>();
-        for(String attackID : getAttacksInvolvedID()){
-            CurrentAttacks attackInvolved = CurrentAttacksStorage.get(attackID);
-            res.add(attackInvolved);
-        }
-        return res;
-    }
-
-    public void addCurrentAttack(CurrentAttacks currentAttacks){
-        this.getAttacksInvolvedID().add(currentAttacks.getID());
-    }
-    public void removeCurrentAttack(CurrentAttacks currentAttacks){
-        this.getAttacksInvolvedID().remove(currentAttacks.getID());
-    }
 
     @Override
     public boolean atWarWith(String territoryID) {

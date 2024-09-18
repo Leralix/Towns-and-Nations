@@ -769,4 +769,8 @@ language:
   OTHER_DEFENDER_NAME: "Other defenders"
   NEUTRAL_NAME: "Neutral"
 
-
+  GUI_ATTACKING_SIDE_ICON: "§aAttackers"
+  GUI_ATTACKING_SIDE_ICON_DESC1: "§fList of every attackers :"
+  GUI_DEFENDING_SIDE_ICON: "§aAttackers"
+  GUI_DEFENDING_SIDE_ICON_DESC1: "§fList of every attackers :"
+  GUI_ICON_LIST: "§f- {0}"

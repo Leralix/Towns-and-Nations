@@ -50,4 +50,8 @@ public class CreateAttackData {
     public void setWargoal(WarGoal subjugateWarGoal) {
         this.warGoal = subjugateWarGoal;
     }
+
+    public void setDeltaDateTime(int value) {
+        deltaDateTime = value;
+    }
 }

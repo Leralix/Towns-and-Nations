@@ -10,9 +10,11 @@ import org.tan.TownsAndNations.DataClass.TownRelations;
 import org.tan.TownsAndNations.DataClass.wars.CurrentAttacks;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
+import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
-import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlannedAttackStorage;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -28,8 +30,8 @@ public abstract class ITerritoryData {
 //    private String iconMaterial;
 //    private int balance;
 //    private TownRelations relations;
-//    private final Collection<String> attackIncomingList = new ArrayList<>();
-//    private final Collection<String> currentAttackList = new ArrayList<>();
+    private Collection<String> attackIncomingList = new ArrayList<>();
+    private Collection<String> currentAttackList = new ArrayList<>();
     private HashMap<String, Integer> availableClaims;
 
     public ITerritoryData(){
@@ -77,17 +79,50 @@ public abstract class ITerritoryData {
     public abstract ItemStack getIconWithInformations();
     public abstract ItemStack getIconWithInformationAndRelation(ITerritoryData territoryData);
 
-    public abstract Collection<String> getAttacksInvolvedID();
-    public abstract Collection<PlannedAttack> getAttacksInvolved();
-    public abstract void addPlannedAttack(PlannedAttack war);
-    public abstract void removePlannedAttack(PlannedAttack war);
+    public Collection<String> getAttacksInvolvedID(){
+        if(attackIncomingList == null)
+            this.attackIncomingList = new ArrayList<>();
+        return attackIncomingList;
+    }
+    public Collection<PlannedAttack> getAttacksInvolved(){
+        Collection<PlannedAttack> res = new ArrayList<>();
+        for(String attackID : getAttacksInvolvedID()){
+            PlannedAttack plannedAttack = PlannedAttackStorage.get(attackID);
+            res.add(plannedAttack);
+        }
+        return res;
+    }
+    public void addPlannedAttack(PlannedAttack war){
+        getAttacksInvolvedID().add(war.getID());
+
+    }
+    public void removePlannedAttack(PlannedAttack war){
+        getAttacksInvolvedID().remove(war.getID());
+
+    }
 
 
-    public abstract Collection<String> getCurrentAttacksID();
-    public abstract Collection<CurrentAttacks> getCurrentAttacks();
+    public Collection<String> getCurrentAttacksID(){
+        if(currentAttackList == null)
+            this.currentAttackList = new ArrayList<>();
+        return currentAttackList;
+    }
+    public Collection<CurrentAttacks> getCurrentAttacks(){
+        Collection<CurrentAttacks> res = new ArrayList<>();
+        for(String attackID : getCurrentAttacksID()){
+            CurrentAttacks attackInvolved = CurrentAttacksStorage.get(attackID);
+            res.add(attackInvolved);
+        }
+        return res;
+    }
 
-    public abstract void addCurrentAttack(CurrentAttacks currentAttacks);
-    public abstract void removeCurrentAttack(CurrentAttacks currentAttacks);
+    public void addCurrentAttack(CurrentAttacks currentAttacks){
+        getAttacksInvolvedID().add(currentAttacks.getID());
+
+    }
+    public void removeCurrentAttack(CurrentAttacks currentAttacks){
+        getAttacksInvolvedID().remove(currentAttacks.getID());
+    }
 
     public abstract boolean atWarWith(String territoryID);
 
@@ -145,6 +180,7 @@ public abstract class ITerritoryData {
         }
 
         getRelations().cleanAll(getID());   //Cancel all Relation between the deleted territory and other territories
+        PlannedAttackStorage.territoryDeleted(this);
 
 
     }

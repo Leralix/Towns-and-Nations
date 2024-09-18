@@ -2,7 +2,7 @@ package org.tan.TownsAndNations.Tasks;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.storage.DataStorage.AttackInvolvedStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlannedAttackStorage;
 import org.tan.TownsAndNations.storage.DataStorage.*;
 
 public class SaveStats {
@@ -16,7 +16,7 @@ public class SaveStats {
                 PlayerDataStorage.saveStats();
                 NewClaimedChunkStorage.save();
                 LandmarkStorage.save();
-                AttackInvolvedStorage.save();
+                PlannedAttackStorage.save();
             }
         }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L);
     }

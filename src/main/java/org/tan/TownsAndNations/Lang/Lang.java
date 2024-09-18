@@ -719,7 +719,12 @@ public enum Lang {
     MAIN_DEFENDER_NAME,
     OTHER_ATTACKER_NAME,
     OTHER_DEFENDER_NAME,
-    NEUTRAL_NAME;
+    NEUTRAL_NAME,
+    GUI_ATTACKING_SIDE_ICON,
+    GUI_ATTACKING_SIDE_ICON_DESC1,
+    GUI_DEFENDING_SIDE_ICON,
+    GUI_DEFENDING_SIDE_ICON_DESC1,
+    GUI_ICON_LIST;
 
 
     private static final Map<Lang, String> translations = new HashMap<>();

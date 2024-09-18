@@ -600,34 +600,9 @@ public class RegionData extends ITerritoryData {
 
     @Override
     public boolean haveNoLeader() {
-        return false;
+        return false; //Region always have a leader
     }
 
-    @Override
-    public Collection<String> getAttacksInvolvedID(){
-        if(attackIncomingList == null)
-            this.attackIncomingList = new ArrayList<>();
-        return attackIncomingList;
-    }
-
-    @Override
-    public Collection<PlannedAttack> getAttacksInvolved() {
-        Collection<PlannedAttack> res = new ArrayList<>();
-        for(String attackID : getAttacksInvolvedID()){
-            PlannedAttack plannedAttack = AttackInvolvedStorage.get(attackID);
-            res.add(plannedAttack);
-        }
-        return res;
-    }
-
-    @Override
-    public void addPlannedAttack(PlannedAttack war){
-        getAttacksInvolvedID().add(war.getID());
-    }
-    @Override
-    public void removePlannedAttack(PlannedAttack war){
-        getAttacksInvolvedID().remove(war.getID());
-    }
 
     @Override
     public Collection<String> getCurrentAttacksID() {

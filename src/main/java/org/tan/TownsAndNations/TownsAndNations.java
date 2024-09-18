@@ -164,7 +164,7 @@ public final class TownsAndNations extends JavaPlugin {
             NewClaimedChunkStorage.loadStats();
             TownDataStorage.loadStats();
             LandmarkStorage.load();
-            AttackInvolvedStorage.load();
+            PlannedAttackStorage.load();
         }
 
         logger.info("[TaN] -Loading blocks data");
@@ -241,7 +241,7 @@ public final class TownsAndNations extends JavaPlugin {
             PlayerDataStorage.saveStats();
             NewClaimedChunkStorage.save();
             LandmarkStorage.save();
-            AttackInvolvedStorage.save();
+            PlannedAttackStorage.save();
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {

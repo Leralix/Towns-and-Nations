@@ -40,7 +40,6 @@ import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.GuiUtil.createIterator;
 import static org.tan.TownsAndNations.utils.HeadUtils.*;
 import static org.tan.TownsAndNations.utils.TeamUtils.updateAllScoreboardColor;
-import static org.tan.TownsAndNations.utils.TownUtil.*;
 
 import java.util.ArrayList;
 
@@ -785,12 +784,12 @@ public class playerGUI implements IGUI {
         Gui gui = IGUI.createChestGui("Wars | page " + (page + 1),6);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
-        for(PlannedAttack plannedAttack : AttackInvolvedStorage.getWars()){
+        for(PlannedAttack plannedAttack : PlannedAttackStorage.getWars()){
             ItemStack attackIcon = plannedAttack.getIcon(territory);
             GuiItem _attack = ItemBuilder.from(attackIcon).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(event.isLeftClick()){
-                    OpenSpecificWarMenu(player, territory, plannedAttack, exit, page);
+                    OpenSpecificPlannedAtttackMenu(player, territory, plannedAttack, exit, page);
                 }
             });
             guiItems.add(_attack);
@@ -802,12 +801,22 @@ public class playerGUI implements IGUI {
         gui.open(player);
     }
 
-    private static void OpenSpecificWarMenu(Player player, ITerritoryData territory, PlannedAttack plannedAttack, Consumer<Player> exit, int page) {
+    private static void OpenSpecificPlannedAtttackMenu(Player player, ITerritoryData territory, PlannedAttack plannedAttack, Consumer<Player> exit, int page) {
         Gui gui = IGUI.createChestGui(plannedAttack.getName(), 3);
 
         ItemStack attackIcon = plannedAttack.getIcon(territory);
         GuiItem _attackIcon = ItemBuilder.from(attackIcon).asGuiItem(event -> event.setCancelled(true));
         gui.setItem(1,5, _attackIcon);
+
+        ItemStack attackingSideInfo = plannedAttack.getAttackingIcon();
+        GuiItem _attackingSideInfo = ItemBuilder.from(attackingSideInfo).asGuiItem(event -> event.setCancelled(true));
+        gui.setItem(2,5, _attackingSideInfo);
+
+        ItemStack defendingSideInfo = plannedAttack.getDefendingIcon();
+        GuiItem _defendingSideInfo = ItemBuilder.from(defendingSideInfo).asGuiItem(event -> event.setCancelled(true));
+        gui.setItem(2,5, _defendingSideInfo);
+
+
 
         WarRole territoryRole = plannedAttack.getTerritoryRole(territory);
 
@@ -823,7 +832,7 @@ public class playerGUI implements IGUI {
                 territory.broadCastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(plannedAttack.getMainDefender().getName()),MINOR_GOOD);
                 OpenWarMenu(player, territory, exit, page);
             });
-            gui.setItem(2,8, _cancelAttack);
+            gui.setItem(2,7, _cancelAttack);
         }
 
         else if(territoryRole == WarRole.MAIN_DEFENDER){
@@ -836,7 +845,7 @@ public class playerGUI implements IGUI {
                 plannedAttack.defenderSurrendered();
                 OpenWarMenu(player, territory, exit, page);
             });
-            gui.setItem(2,8,_submitToRequests);
+            gui.setItem(2,7,_submitToRequests);
 
         }
 
@@ -848,7 +857,7 @@ public class playerGUI implements IGUI {
                 territory.broadCastMessageWithSound(Lang.TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE.get(plannedAttack.getMainDefender().getName()),MINOR_GOOD);
                 OpenWarMenu(player, territory, exit, page);
             });
-            gui.setItem(2,8, _quitWar);
+            gui.setItem(2,7, _quitWar);
         }
 
         else if(territoryRole == WarRole.NEUTRAL){
@@ -862,15 +871,15 @@ public class playerGUI implements IGUI {
 
             GuiItem _joinAttacker = ItemBuilder.from(joinAttacker).asGuiItem(event -> {
                 plannedAttack.addAttacker(territory);
-                OpenSpecificWarMenu(player, territory, plannedAttack, exit, page);
+                OpenSpecificPlannedAtttackMenu(player, territory, plannedAttack, exit, page);
             });
 
             GuiItem _joinDefender = ItemBuilder.from(joinDefender).asGuiItem(event -> {
                 plannedAttack.addAttacker(territory);
-                OpenSpecificWarMenu(player, territory, plannedAttack, exit, page);
+                OpenSpecificPlannedAtttackMenu(player, territory, plannedAttack, exit, page);
             });
-            gui.setItem(2,4, _joinAttacker);
-            gui.setItem(2,6, _joinDefender);
+            gui.setItem(2,6, _joinAttacker);
+            gui.setItem(2,8, _joinDefender);
         }
 
         gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> OpenWarMenu(player, territory, exit, page)));
@@ -926,12 +935,13 @@ public class playerGUI implements IGUI {
             else if(event.isLeftClick()){
                 createAttackData.addDeltaDateTime(-1200);
             }
+
+            if(createAttackData.getDeltaDateTime() < 0)
+                createAttackData.setDeltaDateTime(0);
             OpenStartWarSettings(player, exit, createAttackData);
         });
 
-        GuiItem _time = ItemBuilder.from(time).asGuiItem(event -> {
-            event.setCancelled(true);
-        });
+        GuiItem _time = ItemBuilder.from(time).asGuiItem(event -> event.setCancelled(true));
 
         GuiItem _wargoal = ItemBuilder.from(wargoal).asGuiItem(event -> {
             OpenSelectWarGoalMenu(player, exit,  createAttackData);
@@ -946,7 +956,7 @@ public class playerGUI implements IGUI {
                 return;
             }
 
-            AttackInvolvedStorage.newWar(createAttackData);
+            PlannedAttackStorage.newWar(createAttackData);
             OpenWarMenu(player, mainAttacker, exit, 0);
 
             player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.get(mainDefender.getName()));

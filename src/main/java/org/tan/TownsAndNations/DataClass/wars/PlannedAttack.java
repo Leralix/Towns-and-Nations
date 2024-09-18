@@ -11,7 +11,7 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
-import org.tan.TownsAndNations.storage.DataStorage.AttackInvolvedStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlannedAttackStorage;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.DateUtil;
 import org.tan.TownsAndNations.utils.TerritoryUtil;
@@ -19,6 +19,7 @@ import org.tan.TownsAndNations.utils.TerritoryUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 public class PlannedAttack {
 
@@ -191,7 +192,7 @@ public class PlannedAttack {
         for(ITerritoryData territory : getDefendingTerritory()){
             territory.removePlannedAttack(this);
         }
-        AttackInvolvedStorage.remove(this);
+        PlannedAttackStorage.remove(this);
     }
 
     public boolean isMainAttacker(ITerritoryData territory) {
@@ -237,5 +238,33 @@ public class PlannedAttack {
         broadCastMessageWithSound(Lang.DEFENSIVE_SIDE_HAS_SURRENDER.get(getMainDefender().getColoredName(), getMainAttacker().getColoredName()), SoundEnum.WAR);
         getWarGoal().applyWarGoal();
         remove();
+    }
+
+    public ItemStack getAttackingIcon() {
+        ItemStack itemStack = new ItemStack(Material.IRON_HELMET);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        List<String> lore = new ArrayList<>();
+        itemMeta.setDisplayName(Lang.GUI_ATTACKING_SIDE_ICON.get());
+        lore.add(Lang.GUI_ATTACKING_SIDE_ICON_DESC1.get());
+        for(ITerritoryData territoryData : getAttackingTerritory()){
+            lore.add(Lang.GUI_ICON_LIST.get(territoryData.getColoredName()));
+        }
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
+    public ItemStack getDefendingIcon() {
+        ItemStack itemStack = new ItemStack(Material.DIAMOND_HELMET);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        List<String> lore = new ArrayList<>();
+        itemMeta.setDisplayName(Lang.GUI_DEFENDING_SIDE_ICON.get());
+        lore.add(Lang.GUI_DEFENDING_SIDE_ICON_DESC1.get());
+        for(ITerritoryData territoryData : getAttackingTerritory()){
+            lore.add(Lang.GUI_ICON_LIST.get(territoryData.getColoredName()));
+        }
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 }
