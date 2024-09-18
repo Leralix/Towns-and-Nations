@@ -54,9 +54,6 @@ public class RegionData extends ITerritoryData {
     private MiscellaneousHistory miscellaneousHistory;
     private TaxHistory taxHistory;
     private TownRelations relations;
-    private Collection<String> attackIncomingList = new ArrayList<>();
-    private Collection<String> currentAttackList = new ArrayList<>();
-
 
     public RegionData(String id, String name, String ownerID) {
         PlayerData owner = PlayerDataStorage.get(ownerID);
@@ -603,34 +600,6 @@ public class RegionData extends ITerritoryData {
         return false; //Region always have a leader
     }
 
-
-    @Override
-    public Collection<String> getCurrentAttacksID() {
-        if(currentAttackList == null)
-            this.currentAttackList = new ArrayList<>();
-        return currentAttackList;
-    }
-
-    @Override
-    public Collection<CurrentAttacks> getCurrentAttacks() {
-        Collection<CurrentAttacks> res = new ArrayList<>();
-        for(String attackID : getAttacksInvolvedID()){
-            CurrentAttacks attackInvolved = CurrentAttacksStorage.get(attackID);
-            res.add(attackInvolved);
-        }
-        return res;
-    }
-
-    @Override
-    public void addCurrentAttack(CurrentAttacks currentAttacks) {
-        getAttacksInvolvedID().add(currentAttacks.getID());
-    }
-
-
-    @Override
-    public void removeCurrentAttack(CurrentAttacks currentAttacks) {
-        getAttacksInvolvedID().remove(currentAttacks.getID());
-    }
 
     @Override
     public boolean atWarWith(String territoryID) {

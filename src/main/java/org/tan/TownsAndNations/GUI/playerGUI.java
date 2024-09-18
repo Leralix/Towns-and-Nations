@@ -810,11 +810,11 @@ public class playerGUI implements IGUI {
 
         ItemStack attackingSideInfo = plannedAttack.getAttackingIcon();
         GuiItem _attackingSideInfo = ItemBuilder.from(attackingSideInfo).asGuiItem(event -> event.setCancelled(true));
-        gui.setItem(2,5, _attackingSideInfo);
+        gui.setItem(2,2, _attackingSideInfo);
 
         ItemStack defendingSideInfo = plannedAttack.getDefendingIcon();
         GuiItem _defendingSideInfo = ItemBuilder.from(defendingSideInfo).asGuiItem(event -> event.setCancelled(true));
-        gui.setItem(2,5, _defendingSideInfo);
+        gui.setItem(2,4, _defendingSideInfo);
 
 
 
@@ -864,7 +864,7 @@ public class playerGUI implements IGUI {
             ItemStack joinAttacker = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
                     Lang.GUI_JOIN_ATTACKING_SIDE.get(),
                     Lang.GUI_JOIN_ATTACKING_SIDE_DESC1.get(territory.getColoredName()),
-                    Lang.GUI_JOIN_ATTACKING_SIDE_DESC1.get(plannedAttack.getWarGoal().getDisplayName()));
+                    Lang.GUI_WAR_GOAL_INFO.get(plannedAttack.getWarGoal().getDisplayName()));
             ItemStack joinDefender = HeadUtils.createCustomItemStack(Material.SHIELD,
                     Lang.GUI_JOIN_DEFENDING_SIDE.get(),
                     Lang.GUI_JOIN_DEFENDING_SIDE_DESC1.get(territory.getColoredName()));

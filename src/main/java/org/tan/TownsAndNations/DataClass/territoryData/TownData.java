@@ -61,9 +61,6 @@ public class TownData extends ITerritoryData {
 
     private TeleportationPosition teleportationPosition;
 
-    private Collection<String> attackIncomingList = new ArrayList<>();
-    private Collection<String> currentAttackList = new ArrayList<>();
-
 
     //First time creating a town
     public TownData(String townId, String townName, String leaderID){

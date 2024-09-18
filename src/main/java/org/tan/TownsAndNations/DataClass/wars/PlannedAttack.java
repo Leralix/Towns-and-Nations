@@ -74,7 +74,7 @@ public class PlannedAttack {
 
     public Collection<PlayerData> getDefendingPlayers() {
         Collection<PlayerData> defenders = new ArrayList<>();
-        for(ITerritoryData defendingTerritory : getDefendingTerritory()){
+        for(ITerritoryData defendingTerritory : getDefendingTerritories()){
             defenders.addAll(defendingTerritory.getPlayerDataList());
         }
         return defenders;
@@ -82,13 +82,13 @@ public class PlannedAttack {
 
     public Collection<PlayerData> getAttackersPlayers() {
         Collection<PlayerData> defenders = new ArrayList<>();
-        for(ITerritoryData attackingTerritory : getAttackingTerritory()){
+        for(ITerritoryData attackingTerritory : getAttackingTerritories()){
             defenders.addAll(attackingTerritory.getPlayerDataList());
         }
         return defenders;
     }
 
-    public Collection<ITerritoryData> getDefendingTerritory() {
+    public Collection<ITerritoryData> getDefendingTerritories() {
         Collection<ITerritoryData> defenders = new ArrayList<>();
         for(String defenderID : defendersID){
             defenders.add(TerritoryUtil.getTerritory(defenderID));
@@ -96,7 +96,7 @@ public class PlannedAttack {
         return defenders;
     }
 
-    public Collection<ITerritoryData> getAttackingTerritory() {
+    public Collection<ITerritoryData> getAttackingTerritories() {
         Collection<ITerritoryData> attackers = new ArrayList<>();
         for(String attackerID : attackersID){
             attackers.add(TerritoryUtil.getTerritory(attackerID));
@@ -113,8 +113,8 @@ public class PlannedAttack {
     }
 
     public void broadCastMessageWithSound(String message, SoundEnum soundEnum){
-        Collection<ITerritoryData> territoryData = getAttackingTerritory();
-        territoryData.addAll(getDefendingTerritory());
+        Collection<ITerritoryData> territoryData = getAttackingTerritories();
+        territoryData.addAll(getDefendingTerritories());
         for(ITerritoryData territory : territoryData){
             territory.broadCastMessageWithSound(message, soundEnum);
         }
@@ -186,10 +186,10 @@ public class PlannedAttack {
 
 
     public void remove() {
-        for(ITerritoryData territory : getAttackingTerritory()){
+        for(ITerritoryData territory : getAttackingTerritories()){
             territory.removePlannedAttack(this);
         }
-        for(ITerritoryData territory : getDefendingTerritory()){
+        for(ITerritoryData territory : getDefendingTerritories()){
             territory.removePlannedAttack(this);
         }
         PlannedAttackStorage.remove(this);
@@ -246,7 +246,7 @@ public class PlannedAttack {
         List<String> lore = new ArrayList<>();
         itemMeta.setDisplayName(Lang.GUI_ATTACKING_SIDE_ICON.get());
         lore.add(Lang.GUI_ATTACKING_SIDE_ICON_DESC1.get());
-        for(ITerritoryData territoryData : getAttackingTerritory()){
+        for(ITerritoryData territoryData : getAttackingTerritories()){
             lore.add(Lang.GUI_ICON_LIST.get(territoryData.getColoredName()));
         }
         itemMeta.setLore(lore);
@@ -260,7 +260,7 @@ public class PlannedAttack {
         List<String> lore = new ArrayList<>();
         itemMeta.setDisplayName(Lang.GUI_DEFENDING_SIDE_ICON.get());
         lore.add(Lang.GUI_DEFENDING_SIDE_ICON_DESC1.get());
-        for(ITerritoryData territoryData : getAttackingTerritory()){
+        for(ITerritoryData territoryData : getDefendingTerritories()){
             lore.add(Lang.GUI_ICON_LIST.get(territoryData.getColoredName()));
         }
         itemMeta.setLore(lore);
