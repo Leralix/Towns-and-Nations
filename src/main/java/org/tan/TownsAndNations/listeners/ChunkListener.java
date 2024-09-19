@@ -15,16 +15,17 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.FurnaceInventory;
+import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.SudoPlayerStorage;
 
 import static org.tan.TownsAndNations.enums.ChunkPermissionType.*;
@@ -54,7 +55,7 @@ public class ChunkListener implements Listener {
 
         if(!canPlayerDoAction(loc, player, BREAK_BLOCK)){
             event.setCancelled(true);
-        };
+        }
 
     }
     @EventHandler
@@ -64,7 +65,7 @@ public class ChunkListener implements Listener {
 
         if(!canPlayerDoAction(loc, player, PLACE_BLOCK)){
             event.setCancelled(true);
-        };
+        }
 
     }
     @EventHandler
@@ -116,7 +117,7 @@ public class ChunkListener implements Listener {
                 Tag.FENCE_GATES.isTagged(materialType)){
             if(!canPlayerDoAction(loc, player, OPEN_DOOR)){
                 event.setCancelled(true);
-            };
+            }
         }
         else if (
                 Tag.CANDLES.isTagged(materialType) ||
@@ -190,7 +191,7 @@ public class ChunkListener implements Listener {
 
         if(!canPlayerDoAction(loc, player, PLACE_BLOCK)){
             event.setCancelled(true);
-        };
+        }
 
     }
     @EventHandler
@@ -465,6 +466,12 @@ public class ChunkListener implements Listener {
             return true;
 
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(location.getChunk());
+        PlayerData playerData = PlayerDataStorage.get(player);
+
+        if(playerData.isAtWarWith(claimedChunk.getOwner()))
+            return true;
+
+
         return claimedChunk.canPlayerDo(player, permissionType,location);
 
     }

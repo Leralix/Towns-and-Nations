@@ -6,9 +6,11 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.utils.TerritoryUtil;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -81,4 +83,7 @@ public abstract class ClaimedChunk2 {
         return Bukkit.getWorld(UUID.fromString(this.worldUUID));
     }
 
+    public ITerritoryData getOwner() {
+        return TerritoryUtil.getTerritory(this.ownerID);
+    }
 }

@@ -761,13 +761,11 @@ language:
   BROWSE_ALL_NAME: "§fScope : §aAll"
   BROWSE_TOWNS_NAME: "§fScope : §9Towns"
   BROWSE_REGIONS_NAME: "§fScope : §bRegions"
-
   MAIN_ATTACKER_NAME: "Main attacker"
   MAIN_DEFENDER_NAME: "Main defender"
   OTHER_ATTACKER_NAME: "Other attackers"
   OTHER_DEFENDER_NAME: "Other defenders"
   NEUTRAL_NAME: "Neutral"
-
   GUI_ATTACKING_SIDE_ICON: "§aAttackers"
   GUI_ATTACKING_SIDE_ICON_DESC1: "§fList of every attackers :"
   GUI_DEFENDING_SIDE_ICON: "§aAttackers"

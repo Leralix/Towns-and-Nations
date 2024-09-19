@@ -21,8 +21,8 @@ public class CurrentAttacks {
     private int score = 500;
     private final int maxScore = 1000;
     private long remainingTime;
-    Collection<ITerritoryData> attackers;
-    Collection<ITerritoryData> defenders;
+    final Collection<ITerritoryData> attackers;
+    final Collection<ITerritoryData> defenders;
     BossBar bossBar;
     String originalTitle;
     WarGoal warGoal;
@@ -237,5 +237,9 @@ public class CurrentAttacks {
             }
         }
         return false;
+    }
+
+    public Collection<ITerritoryData> getDefenders() {
+        return defenders;
     }
 }

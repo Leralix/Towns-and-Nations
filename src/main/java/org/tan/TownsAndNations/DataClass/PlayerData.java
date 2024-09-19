@@ -2,6 +2,7 @@ package org.tan.TownsAndNations.DataClass;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.DataClass.wars.CurrentAttacks;
@@ -195,17 +196,30 @@ public class PlayerData {
 
     public void updateCurrentAttack(){
         for(String attackID : getAttackInvolvedIn()){
-            CurrentAttacks currentAttacks = CurrentAttacksStorage.get(attackID);
-            if(currentAttacks == null){
+            CurrentAttacks currentAttack = CurrentAttacksStorage.get(attackID);
+            if(currentAttack == null){
                 getAttackInvolvedIn().remove(attackID);
             }
-            else if(!currentAttacks.containsPlayer(this)){
+            else if(!currentAttack.containsPlayer(this)){
                 getAttackInvolvedIn().remove(attackID);
             }
             else{
-                currentAttacks.addPlayer(this);
+                currentAttack.addPlayer(this);
             }
         }
+    }
+
+    public boolean isAtWarWith(ITerritoryData territoryData){
+        for(String attackID : getAttackInvolvedIn()){
+            CurrentAttacks currentAttack = CurrentAttacksStorage.get(attackID);
+            if(currentAttack == null){
+                getAttackInvolvedIn().remove(attackID);
+            }
+            if(currentAttack.getDefenders().contains(territoryData)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void removeWar(CurrentAttacks currentAttacks){
