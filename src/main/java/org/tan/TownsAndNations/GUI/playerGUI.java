@@ -1035,7 +1035,7 @@ public class playerGUI implements IGUI {
 
         GuiItem _conquer = ItemBuilder.from(conquer).asGuiItem(event -> {
             event.setCancelled(true);
-            createAttackData.setWargoal(new ConquerWarGoal(createAttackData.getMainAttacker().getID(), createAttackData.getMainDefender().getID()));
+            createAttackData.setWarGoal(new ConquerWarGoal(createAttackData.getMainAttacker().getID(), createAttackData.getMainDefender().getID()));
             OpenStartWarSettings(player, exit, createAttackData);
         });
 
@@ -1045,7 +1045,7 @@ public class playerGUI implements IGUI {
                 player.sendMessage(getTANString() + Lang.GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED.get());
                 return;
             }
-            createAttackData.setWargoal(new SubjugateWarGoal(createAttackData));
+            createAttackData.setWarGoal(new SubjugateWarGoal(createAttackData));
             OpenStartWarSettings(player, exit, createAttackData);
         });
 
@@ -1056,7 +1056,7 @@ public class playerGUI implements IGUI {
                 player.sendMessage(getTANString() + Lang.GUI_WARGOAL_LIBERATE_CANNOT_BE_USED.get());
                 return;
             }
-            createAttackData.setWargoal(new LiberateWarGoal());
+            createAttackData.setWarGoal(new LiberateWarGoal());
             OpenStartWarSettings(player, exit, createAttackData);
         });
 

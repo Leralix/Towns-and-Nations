@@ -1,22 +1,27 @@
 package org.tan.TownsAndNations.DataClass.wars;
 
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
-import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
-import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.DataClass.wars.wargoals.NoWarGoal;
-import org.tan.TownsAndNations.DataClass.wars.wargoals.SubjugateWarGoal;
 import org.tan.TownsAndNations.DataClass.wars.wargoals.WarGoal;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 
 public class CreateAttackData {
 
+    long minTime;
+    long maxTime;
     long deltaDateTime;
     WarGoal warGoal;
     ITerritoryData mainAttacker;
     ITerritoryData mainDefender;
 
     public CreateAttackData(ITerritoryData mainAttacker, ITerritoryData mainDefender){
-        deltaDateTime = ConfigUtil.getCustomConfig("config.yml").getLong("MinimumTimeBeforeAttack") * 60 * 20;
+
+        minTime = ConfigUtil.getCustomConfig("config.yml").getInt("MinimumTimeBeforeAttack",120);
+        maxTime = ConfigUtil.getCustomConfig("config.yml").getInt("MaximumTimeBeforeAttack",4320);
+        minTime = minTime * 60 * 20;
+        maxTime = maxTime * 60 * 20;
+
+        deltaDateTime = (minTime + maxTime) / 2;
         warGoal = new NoWarGoal();
         this.mainAttacker = mainAttacker;
         this.mainDefender = mainDefender;
@@ -36,6 +41,15 @@ public class CreateAttackData {
 
     public void addDeltaDateTime(long deltaDateTime){
         this.deltaDateTime += deltaDateTime;
+        if(this.deltaDateTime < minTime){
+            this.deltaDateTime = minTime;
+        }
+        if(this.deltaDateTime > maxTime){
+            this.deltaDateTime = maxTime;
+        }
+
+
+
     }
 
     public long getDeltaDateTime(){
@@ -47,7 +61,7 @@ public class CreateAttackData {
     }
 
 
-    public void setWargoal(WarGoal subjugateWarGoal) {
+    public void setWarGoal(WarGoal subjugateWarGoal) {
         this.warGoal = subjugateWarGoal;
     }
 

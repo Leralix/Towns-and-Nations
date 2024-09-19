@@ -12,6 +12,7 @@ import org.tan.TownsAndNations.DataClass.wars.wargoals.WarGoal;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
+import org.tan.TownsAndNations.utils.ConfigUtil;
 
 import java.util.Collection;
 
@@ -32,7 +33,8 @@ public class CurrentAttacks {
         this.attackers = attackers;
         this.defenders = defenders;
         this.originalTitle = "War";
-        this.remainingTime = 30 * 60 * 20; // 30 minutes
+        long warDuration = ConfigUtil.getCustomConfig("config.yml").getInt("WarDuration");
+        this.remainingTime = warDuration * 60 * 20;
         this.warGoal = warGoal;
 
         bossBar = Bukkit.createBossBar(this.originalTitle, BarColor.RED, BarStyle.SOLID);

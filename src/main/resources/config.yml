@@ -144,14 +144,22 @@ RankNameSize: 25
 #Enable war
 EnableWar: true
 
-#Duration of an attack in minutes
-WarDurationTime: 60
+########################
+##        WARS        ##
+########################
 
-#Minimum time before starting an attack (in minutes)
-MinimumTimeBeforeAttack: 1440 #24 hours
+#The duration of a war in minutes
+WarDuration: 30
 
-#Maximum time before starting an attack (in minutes)
+#The minimum time before starting a war in minutes
+MinimumTimeBeforeAttack: 120 #2 hours
+#The maximum time before starting a war in minutes
 MaximumTimeBeforeAttack: 4320 #72 hours
+
+#War works on a scale between 0 and 100 and start at 50.
+#When a player is killed, it shifts the balance toward the killer team.
+#This score determines the percentage of progress needed to win, based on the number of connected players on the enemy team.
+totalScore : 0.70
 
 
 ########################
@@ -290,7 +298,6 @@ sounds:
   MINOR_GOOD: [ "BLOCK_AMETHYST_BLOCK_BREAK", "1", "1" ]
   BAD: [ "BLOCK_BELL_USE", "1", "1.5" ]
   MINOR_BAD: [ "ENTITY_SLIME_ATTACK", "1", "6" ]
-
 
 
 

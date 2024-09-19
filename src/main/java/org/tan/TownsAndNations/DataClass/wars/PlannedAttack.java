@@ -46,7 +46,7 @@ public class PlannedAttack {
         this.defendersID.add(mainDefenderID);
 
         this.startTime = (long) (new Date().getTime() * 0.02 + startTime);
-        this.endTime = this.startTime + ConfigUtil.getCustomConfig("config.yml").getLong("WarDurationTime") * 1200;
+        this.endTime = this.startTime + ConfigUtil.getCustomConfig("config.yml").getLong("WarDuration") * 1200;
 
         createAttackData.getMainDefender().addPlannedAttack(this);
         createAttackData.getMainAttacker().addPlannedAttack(this);
@@ -267,4 +267,5 @@ public class PlannedAttack {
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
+
 }

@@ -740,7 +740,7 @@ language:
   GUI_WARGOAL_LIBERATE_WAR_GOAL_RESULT: "§f{0} will be liberated from {1}"
   GUI_SELECT_TERRITORY_TO_LIBERATE: "§aSelect the territory to liberate"
   GUI_SELECTED_TERRITORY_TO_LIBERATE: "§fSelected territory: §9{0}"
-  GUI_WARGOAL_NOT_COMPLETED: "§cYou need to complete the war goal"
+  GUI_WARGOAL_NOT_COMPLETED: "§cYou need to add a war goal"
   WARGOAL_SUBJUGATE_SUCCESS: "{0}§f has been subjugated to {1}"
   WARGOAL_LIBERATE_SUCCESS: "{0}§f has been liberated from {1}"
   WARGOAL_CONQUER_SUCCESS_WINNING_SIDE: "§fYou can now claim {0}§f chunks from {1}"
