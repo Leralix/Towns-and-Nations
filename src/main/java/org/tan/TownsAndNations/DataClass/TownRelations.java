@@ -52,7 +52,7 @@ public class TownRelations {
         return getRelationWith(territory.getID());
     }
 
-    public void cleanAll(String ownTownID){
+    public void cleanAll(ITerritoryData territoryData){
 
         for(TownRelation relation : TownRelation.values()){
 
@@ -67,9 +67,9 @@ public class TownRelations {
                 if(otherTerritoryData == null)
                     continue;
 
-                otherTerritoryData.getRelations().removeAllRelationWith(ownTownID);
+                otherTerritoryData.getRelations().removeAllRelationWith(territoryData.getID());
                 otherTerritoryData.broadCastMessageWithSound(
-                        getTANString() + Lang.WARNING_OTHER_TOWN_HAS_BEEN_DELETED.get(TownDataStorage.get(otherTerritory).getName(),relation.getColoredName()),
+                        getTANString() + Lang.WARNING_OTHER_TOWN_HAS_BEEN_DELETED.get(territoryData.getColoredName(),relation.getColoredName()),
                         SoundEnum.MINOR_BAD
                 );
             }

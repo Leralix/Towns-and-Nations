@@ -1,9 +1,12 @@
 package org.tan.TownsAndNations.utils;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Skull;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -18,6 +21,7 @@ import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -135,21 +139,25 @@ public class HeadUtils {
      * @return                      The {@link ItemStack} with custom texture.
      */
     public static @NotNull ItemStack makeSkull(final @NotNull String name, final @NotNull String base64EncodedString, List<String> lore) {
-        UUID id = UUID.nameUUIDFromBytes(base64EncodedString.getBytes());
-        int less = (int) id.getLeastSignificantBits();
-        int most = (int) id.getMostSignificantBits();
-        ItemStack skull = Bukkit.getUnsafe().modifyItemStack(new ItemStack(Material.PLAYER_HEAD),
-                "{SkullOwner:{Id:[I;" + less * most + "," + (less >> 23) + "," + most / less + "," +
-                        most * 8731 + "],Properties:{textures:[{Value:\"" + base64EncodedString + "\"}]}}}");
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
 
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        if (meta != null){
-            meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + name);
-            if(lore != null)
-                meta.setLore(lore);
-
-            skull.setItemMeta(meta);
+        GameProfile profile = new GameProfile(UUID.randomUUID(), "");
+        profile.getProperties().put("textures", new Property("textures", base64EncodedString));
+        Field profileField;
+        try {
+            profileField = meta.getClass().getDeclaredField("profile");
+            profileField.setAccessible(true);
+            profileField.set(meta, profile);
+        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+            Bukkit.getLogger().warning("Failed to set base64 skull value!");
         }
+
+        meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + name);
+        if(lore != null)
+            meta.setLore(lore);
+
+        skull.setItemMeta(meta);
         return skull;
     }
     /**

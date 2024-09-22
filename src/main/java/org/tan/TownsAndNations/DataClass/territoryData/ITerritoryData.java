@@ -179,7 +179,7 @@ public abstract class ITerritoryData {
             territory.removeOverlord();
         }
 
-        getRelations().cleanAll(getID());   //Cancel all Relation between the deleted territory and other territories
+        getRelations().cleanAll(this);   //Cancel all Relation between the deleted territory and other territories
         PlannedAttackStorage.territoryDeleted(this);
 
 

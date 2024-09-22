@@ -499,11 +499,6 @@ public class TownData extends ITerritoryData {
     }
 
 
-
-    public void cancelAllRelation() {
-        getRelations().cleanAll(getID());
-    }
-
     public void addPlayerJoinRequest(Player player) {
         addPlayerJoinRequest(player.getUniqueId().toString());
     }
