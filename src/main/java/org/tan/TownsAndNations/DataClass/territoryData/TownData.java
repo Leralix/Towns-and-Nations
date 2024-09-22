@@ -757,7 +757,7 @@ public class TownData extends ITerritoryData {
 
     @Override
     public List<ITerritoryData> getSubjects() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override

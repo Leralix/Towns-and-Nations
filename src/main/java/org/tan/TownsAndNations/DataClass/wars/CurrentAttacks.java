@@ -15,6 +15,7 @@ import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
 import org.tan.TownsAndNations.utils.ConfigUtil;
 
 import java.util.Collection;
+import java.util.UUID;
 
 public class CurrentAttacks {
 
@@ -83,20 +84,44 @@ public class CurrentAttacks {
 
         for (ITerritoryData territoryData : attackers) {
             if (territoryData.havePlayer(playerData)) {
-                int nbAttackers = attackers.size();
-                int score = 200 / nbAttackers;
+                int nbAttackers = getNumberOfOnlineAttackers();
+                double multiplier = ConfigUtil.getCustomConfig("config.yml").getDouble("warScoreMultiplier");
+                int score = (int) (multiplier / nbAttackers * 500);
                 addScore(-score);
                 setTemporaryBossBarTitle("Attacking player killed!");
             }
         }
         for (ITerritoryData territoryData : defenders) {
             if (territoryData.havePlayer(playerData)) {
-                int nbDefenders = defenders.size();
-                int score = 200 / nbDefenders;
+                int nbDefenders = getNumberOfOnlineDefenders();
+                double multiplier = ConfigUtil.getCustomConfig("config.yml").getDouble("warScoreMultiplier");
+                int score = (int) (multiplier / nbDefenders * 500);
                 addScore(score);
                 setTemporaryBossBarTitle("Defensive player killed!");
             }
         }
+    }
+
+    private int getNumberOfOnlineDefenders() {
+        int sum = 0;
+        for(ITerritoryData territoryData : this.defenders) {
+            for(String playerID : territoryData.getPlayerIDList()) {
+                if(Bukkit.getPlayer(UUID.fromString(playerID)) != null)
+                    sum++;
+            }
+        }
+        return sum;
+    }
+
+    private int getNumberOfOnlineAttackers() {
+        int sum = 0;
+        for(ITerritoryData territoryData : this.attackers) {
+            for(String playerID : territoryData.getPlayerIDList()) {
+                if(Bukkit.getPlayer(UUID.fromString(playerID)) != null)
+                    sum++;
+            }
+        }
+        return sum;
     }
 
     private void setTemporaryBossBarTitle(String title) {

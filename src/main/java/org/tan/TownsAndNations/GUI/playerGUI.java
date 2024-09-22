@@ -875,7 +875,7 @@ public class playerGUI implements IGUI {
             });
 
             GuiItem _joinDefender = ItemBuilder.from(joinDefender).asGuiItem(event -> {
-                plannedAttack.addAttacker(territory);
+                plannedAttack.addDefender(territory);
                 OpenSpecificPlannedAtttackMenu(player, territory, plannedAttack, exit, page);
             });
             gui.setItem(2,6, _joinAttacker);

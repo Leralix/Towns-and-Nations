@@ -159,7 +159,9 @@ MaximumTimeBeforeAttack: 4320 #72 hours
 #War works on a scale between 0 and 100 and start at 50.
 #When a player is killed, it shifts the balance toward the killer team.
 #This score determines the percentage of progress needed to win, based on the number of connected players on the enemy team.
-totalScore : 0.70
+#If the multiplier is 0.5, a player killed will give 0.5 * (50 / enemyTeamSize) points to the killer team.
+#The lower the multiplier, the longer the war will last.
+warScoreMultiplier : 0.70
 
 
 ########################

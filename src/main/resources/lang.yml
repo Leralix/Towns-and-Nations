@@ -1,8 +1,8 @@
 #The language of the plugin
+##Help us translate the plugin in your language! Reach us on our discord !
 ##Language available:
 ## 100 % : eng, fra
-## not up to date : pol, nor, kor
-##Help us translate the plugin in your language! Reach us on our discord !
+## >100% : pol, nor, kor
 language: eng
 
 #Auto Update lang files
