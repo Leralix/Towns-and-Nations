@@ -1,10 +1,9 @@
-package org.tan.TownsAndNations.commands.debugsubcommands;
+package org.tan.TownsAndNations.commands.debugSubcommands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 
 import java.util.List;
 

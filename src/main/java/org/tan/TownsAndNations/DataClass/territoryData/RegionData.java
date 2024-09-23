@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import static org.tan.TownsAndNations.enums.SoundEnum.BAD;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.TeamUtils.updateAllScoreboardColor;
 
@@ -613,6 +614,7 @@ public class RegionData extends ITerritoryData {
     @Override
     public void delete(){
         super.delete();
+        broadCastMessageWithSound(Lang.BROADCAST_PLAYER_REGION_DELETED.get(getColoredName()), BAD);
         updateAllScoreboardColor();
         RegionDataStorage.deleteRegion(this);
     }

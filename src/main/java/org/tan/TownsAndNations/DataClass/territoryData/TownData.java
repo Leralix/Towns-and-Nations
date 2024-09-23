@@ -55,9 +55,9 @@ public class TownData extends ITerritoryData {
     private HashSet<String> PlayerJoinRequestSet = new HashSet<>();
     private Map<String, PropertyData> propertyDataMap;
 
-    private TownLevel townLevel = new TownLevel();;
-    private ClaimedChunkSettings chunkSettings = new ClaimedChunkSettings();;
-    private TownRelations relations = new TownRelations();;
+    private TownLevel townLevel = new TownLevel();
+    private ClaimedChunkSettings chunkSettings = new ClaimedChunkSettings();
+    private TownRelations relations = new TownRelations();
 
     private TeleportationPosition teleportationPosition;
 
@@ -1039,7 +1039,7 @@ public class TownData extends ITerritoryData {
     @Override
     public void delete(){
         super.delete();
-
+        broadCastMessageWithSound(Lang.BROADCAST_PLAYER_TOWN_DELETED.get(getColoredName()), BAD);
         removeAllLandmark(); //Remove all Landmark from the deleted town
         for(String playerID : getPlayerIDList()){ //Kick all Players from the deleted town
             removePlayer(PlayerDataStorage.get(playerID));

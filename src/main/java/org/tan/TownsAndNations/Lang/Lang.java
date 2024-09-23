@@ -725,7 +725,9 @@ public enum Lang {
     GUI_ATTACKING_SIDE_ICON_DESC1,
     GUI_DEFENDING_SIDE_ICON,
     GUI_DEFENDING_SIDE_ICON_DESC1,
-    GUI_ICON_LIST;
+    GUI_ICON_LIST,
+    BROADCAST_PLAYER_TOWN_DELETED,
+    BROADCAST_PLAYER_REGION_DELETED;
 
 
     private static final Map<Lang, String> translations = new HashMap<>();

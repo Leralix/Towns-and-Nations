@@ -31,7 +31,7 @@ public class PlayerData {
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
         this.PlayerName = player.getName();
-        this.Balance = ConfigUtil.getCustomConfig("config.yml").getInt("StartingMoney");;
+        this.Balance = ConfigUtil.getCustomConfig("config.yml").getInt("StartingMoney");
         this.TownId = null;
         this.townRankID = null;
         this.propertiesListID = new ArrayList<>();

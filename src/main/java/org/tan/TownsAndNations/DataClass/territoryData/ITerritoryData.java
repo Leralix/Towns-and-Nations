@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.DataClass.territoryData;
 
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.DataClass.wars.PlannedAttack;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
 public abstract class ITerritoryData {
 
@@ -169,8 +171,18 @@ public abstract class ITerritoryData {
 
     public abstract void claimChunk(Player player);
 
+    public void castActionToAllPlayers(Consumer<Player> action){
+        for(PlayerData playerData : getPlayerDataList()){
+            Player player = playerData.getPlayer();
+            if(player != null)
+                action.accept(player);
+        }
+    }
+
     public void delete(){
         NewClaimedChunkStorage.unclaimAllChunksFromTerritory(this); //Unclaim all chunk from town
+
+        castActionToAllPlayers(HumanEntity::closeInventory);
 
         if(haveOverlord())
             getOverlord().removeSubject(this);
@@ -181,7 +193,6 @@ public abstract class ITerritoryData {
 
         getRelations().cleanAll(this);   //Cancel all Relation between the deleted territory and other territories
         PlannedAttackStorage.territoryDeleted(this);
-
-
     }
+
 }

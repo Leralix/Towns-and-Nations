@@ -1,24 +1,23 @@
-package org.tan.TownsAndNations.commands.debugsubcommands;
+package org.tan.TownsAndNations.commands.debugSubcommands;
+
 
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
-import org.tan.TownsAndNations.utils.ChatUtils;
+import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 
 import java.util.List;
 
-public class SaveData extends SubCommand {
+public class ChatStorage extends SubCommand {
 
     @Override
     public String getName() {
-        return "saveall";
+        return "chatstorage";
     }
 
     @Override
     public String getDescription() {
-        return Lang.DEBUG_SAVE_ALL_DATA.get();
+        return Lang.DEBUG_CHAT_STORAGE.get();
     }
 
     @Override
@@ -28,15 +27,13 @@ public class SaveData extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/tandebug saveall";
+        return "/tandebug chatstorage";
     }
     public List<String> getTabCompleteSuggestions(Player player, String[] args){
         return null;
     }
     @Override
     public void perform(Player player, String[] args) {
-        TownDataStorage.saveStats();
-        PlayerDataStorage.saveStats();
-        player.sendMessage(ChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
+        player.sendMessage(PlayerChatListenerStorage.getAllData().toString());
     }
 }

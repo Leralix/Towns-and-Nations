@@ -770,3 +770,6 @@ language:
   GUI_DEFENDING_SIDE_ICON: "§aAttackers"
   GUI_DEFENDING_SIDE_ICON_DESC1: "§fList of every defenders :"
   GUI_ICON_LIST: "§f- {0}"
+  #Broadcast
+  BROADCAST_PLAYER_TOWN_DELETED: "§3{0}§f has deleted the town {1}"
+  BROADCAST_PLAYER_REGION_DELETED: "§3{0}§f has deleted the region {1}"

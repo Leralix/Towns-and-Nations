@@ -1,14 +1,11 @@
-package org.tan.TownsAndNations.commands.debugsubcommands;
+package org.tan.TownsAndNations.commands.debugSubcommands;
 
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.Tasks.DailyTasks;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.utils.ArchiveUtil;
 
 import java.util.List;
-
-import static org.tan.TownsAndNations.Tasks.DailyTasks.*;
 
 public class SkipDay extends SubCommand {
 
