@@ -1,12 +1,16 @@
 package org.tan.TownsAndNations.DataClass.newChunkData;
 
 import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -81,6 +85,32 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     @Override
     public boolean canEntitySpawn(EntityType entityType) {
         return true;
+    }
+
+    @Override
+    public TextComponent getMapIcon(PlayerData playerData) {
+        TextComponent textComponent = new TextComponent(getRegion().getChunkColorClass() + "⬛");
+        textComponent.setBold(true);
+        textComponent.setHoverEvent(new HoverEvent(
+                HoverEvent.Action.SHOW_TEXT,
+                new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
+                        getRegion().getColoredName() + "\n" +
+                        Lang.LEFT_CLICK_TO_CLAIM.get())));        return textComponent;
+    }
+
+    @Override
+    public boolean canPlayerClaim(Player player, ITerritoryData territoryData) {
+
+        if(territoryData.canConquerChunk(this))
+            return true;
+
+        if(territoryData.haveOverlord()){
+            if(territoryData.getOverlord().getID().equals(getOwnerID())){
+                return true; // if the town is part of this specific region they can claim
+            }
+        }
+        player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName()));
+        return false;
     }
 
 }

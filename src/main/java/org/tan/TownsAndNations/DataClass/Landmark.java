@@ -1,5 +1,6 @@
 package org.tan.TownsAndNations.DataClass;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -30,7 +31,7 @@ public class Landmark {
 
     public Landmark(String ID, Vector3D position){
         this.ID = ID;
-        this.name = null;
+        this.name = Lang.SPECIFIC_LANDMARK_ICON_DEFAULT_NAME.get(getID());
         this.position = position;
         this.materialName = "DIAMOND";
         this.amount = 2;
@@ -43,9 +44,7 @@ public class Landmark {
     }
 
     public String getName(){
-        if(name == null)
-            return (Lang.SPECIFIC_LANDMARK_ICON_DEFAULT_NAME.get(getID()));
-        return Lang.GUI_BASIC_NAME.get(name);
+        return name;
     }
     public void setName(String newName){
         this.name = newName;
@@ -128,7 +127,7 @@ public class Landmark {
         ItemStack icon = new ItemStack(material, amount);
         ItemMeta meta =  icon.getItemMeta();
         if(meta != null) {
-            meta.setDisplayName(getName());
+            meta.setDisplayName(ChatColor.GREEN + getName());
             List<String> description = new ArrayList<>();
             description.add(Lang.DISPLAY_COORDINATES.get(position.getX(), position.getY(), position.getZ()));
             description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(amount, material.name().toLowerCase()));
@@ -175,4 +174,5 @@ public class Landmark {
     public Location getLocation() {
         return new Location(position.getWorld(), position.getX(), position.getY(), position.getZ());
     }
+
 }

@@ -10,10 +10,8 @@ import org.tan.TownsAndNations.DataClass.History.*;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;
 import org.tan.TownsAndNations.DataClass.wars.PlannedAttack;
-import org.tan.TownsAndNations.DataClass.wars.CurrentAttacks;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.*;
-import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
 import org.tan.TownsAndNations.storage.DataStorage.*;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.utils.*;
@@ -75,7 +73,7 @@ public class TownData extends ITerritoryData {
         this.flatTax = 1;
         this.townDefaultRankID = 0;
         this.townTag = townName.substring(0,3).toUpperCase();
-        this.chunkColor = StringUtil.randomColor();
+        super.color = StringUtil.randomColor();
 
         this.chunkHistory = new ChunkHistory();
         this.donationHistory = new DonationHistory();
@@ -89,7 +87,7 @@ public class TownData extends ITerritoryData {
     }
 
     //used for sql, loading a town
-    public TownData(String townId, String townName, String leaderID, String description, String dateCreated,
+    public TownData(String townId, String townName, String leaderID, String description,
                     String townIconMaterialCode, int townDefaultRankID, long dateTimeCreated, Boolean isRecruiting, int balance,
                     int flatTax, int chunkColor, HashMap<Integer, TownRank> newRanks){
         this.TownId = townId;
@@ -566,20 +564,10 @@ public class TownData extends ITerritoryData {
     //////////////////////////////////////
 
     @Override
-    public int getChunkColor() {
+    public int getChildColorCode() {
         if(this.chunkColor == null)
             this.chunkColor = 0xff0000;
         return chunkColor;
-    }
-
-    @Override
-    public String getChunkColorInHex() {
-        return String.format("#%06X", getChunkColor());
-    }
-
-    @Override
-    public void setChunkColor(int color) {
-        this.chunkColor = color;
     }
 
 
@@ -618,11 +606,9 @@ public class TownData extends ITerritoryData {
     }
 
     @Override
-    public void claimChunk(Player player) {
+    public void claimChunk(Player player, Chunk chunk) {
 
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
-        Chunk chunkToClaim = player.getLocation().getChunk();
-
         if(!playerStat.hasPermission(TownRolePermission.CLAIM_CHUNK)){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             return;
@@ -639,37 +625,21 @@ public class TownData extends ITerritoryData {
             player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(cost - getBalance()));
             return;
         }
-        boolean needToUnclaimBeforeClaiming = false;
 
-        //Chunk already claimed by the town
-        ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.get(chunkToClaim);
-        if(currentClaimedChunk != null){
-            //If chunk belongs to the region in which the town is, then the town can claim the chunk
-            if(NewClaimedChunkStorage.isChunkClaimedByTownRegion(this,chunkToClaim)){
-                needToUnclaimBeforeClaiming = true;
-            }
-            //If the chunk is claimed by another territory that the player town have claims on, then the town can claim the chunk
-            else if(getAvailableEnemyClaims().containsKey(currentClaimedChunk.getOwnerID())){
-                needToUnclaimBeforeClaiming = true;
-                consumeEnemyClaim(currentClaimedChunk.getOwnerID());
-            }
-
-            else{
-                player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(NewClaimedChunkStorage.getChunkOwnerName(chunkToClaim)));
-                return;
-            }
+        ClaimedChunk2 chunkData = NewClaimedChunkStorage.get(chunk);
+        if(!chunkData.canPlayerClaim(player,this)){
+            return;
         }
 
         if(getNumberOfClaimedChunk() != 0 &&
-                !NewClaimedChunkStorage.isAdjacentChunkClaimedBySameTown(chunkToClaim,getID()) &&
+                !NewClaimedChunkStorage.isAdjacentChunkClaimedBySameTown(chunk,getID()) &&
                 !ConfigUtil.getCustomConfig("config.yml").getBoolean("TownAllowNonAdjacentChunks",false)) {
             player.sendMessage(getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
             return;
         }
 
-        if(needToUnclaimBeforeClaiming)
-            NewClaimedChunkStorage.unclaimChunk(chunkToClaim);
-        NewClaimedChunkStorage.claimTownChunk(chunkToClaim,getID());
+        NewClaimedChunkStorage.unclaimChunk(chunk); //Un-claim in case it was already claimed and territory has the right to claim it
+        NewClaimedChunkStorage.claimTownChunk(chunk,getID());
 
         player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.get(
                 getNumberOfClaimedChunk(),
@@ -846,7 +816,7 @@ public class TownData extends ITerritoryData {
     }
 
     public String getColoredTag() {
-        return getChunkColor() + "[" + getTownTag() + "]";
+        return getChunkColorCode() + "[" + getTownTag() + "]";
     }
 
     @SuppressWarnings("unused") //API
@@ -1046,6 +1016,11 @@ public class TownData extends ITerritoryData {
         }
         updateAllScoreboardColor();
         TownDataStorage.deleteTown(this);
+    }
+
+    @Override
+    public boolean canConquerChunk(ClaimedChunk2 chunk) {
+        return false;
     }
 }
 

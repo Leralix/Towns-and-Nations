@@ -1,5 +1,10 @@
 package org.tan.TownsAndNations.commands.subcommands;
 
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
@@ -14,6 +19,7 @@ import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +45,7 @@ public class MapCommand extends SubCommand {
 
     @Override
     public List<String> getTabCompleteSuggestions(Player player, String[] args){
-        return new ArrayList<String>();
+        return new ArrayList<>();
     }
 
     @Override
@@ -47,95 +53,7 @@ public class MapCommand extends SubCommand {
 
 
         if(args.length == 1) {
-            Chunk currentChunk = player.getLocation().getChunk();
-
-            int radius = 4;
-            List<Chunk> nearbyChunks = new ArrayList<>();
-            for (int dx = -radius; dx <= radius; dx++) {
-                for (int dz = -radius; dz <= radius; dz++) {
-                    Chunk chunk = player.getWorld().getChunkAt(currentChunk.getX() + dx, currentChunk.getZ() + dz);
-                    nearbyChunks.add(chunk);
-                }
-            }
-
-            List<Chunk> claimedChunks = new ArrayList<>();
-            for (Chunk chunk : nearbyChunks) {
-                if (NewClaimedChunkStorage.isChunkClaimed(chunk)) {
-                    claimedChunks.add(chunk);
-                }
-            }
-
-            player.sendMessage("▬▬▬▬▬↑O↑▬▬▬▬▬");
-
-            for (int dx = -radius; dx <= radius; dx++) {
-                StringBuilder line = new StringBuilder();
-
-
-                line.append("   ");
-
-
-                for (int dz = -radius; dz <= radius; dz++) {
-                    Chunk chunk = player.getWorld().getChunkAt(currentChunk.getX() + dx, currentChunk.getZ() + dz);
-                    if (claimedChunks.contains(chunk)) {
-
-                        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunk);
-
-                       if(claimedChunk instanceof TownClaimedChunk){
-                           TownData playerTown = TownDataStorage.get(player);
-                           TownData otherTown = TownDataStorage.get(NewClaimedChunkStorage.get(chunk).getOwnerID());
-
-                           TownRelation relation;
-                           if(playerTown == null ){
-                               relation = TownRelation.NEUTRAL;                        }
-                           else{
-                               relation = playerTown.getRelationWith(otherTown);
-                           }
-
-                           ChatColor townColor;
-                           if(relation == null){
-                               townColor = ChatColor.WHITE;
-                           }
-                           else{
-                               townColor = relation.getColor();
-                           }
-                           if (dx == 0 && dz == 0) {
-                               line.append(townColor + "★");
-                           }
-                           else{
-                               line.append(townColor + "■");
-                           }
-                       }
-                       else if (claimedChunk instanceof RegionClaimedChunk){
-
-                           RegionData region = ((RegionClaimedChunk) claimedChunk).getRegion();
-                           TownData town = region.getCapital();
-
-                           if (dx == 0 && dz == 0) {
-                               line.append(ChatColor.AQUA + "★");
-                           }
-                           else{
-                               line.append(ChatColor.AQUA + "■");
-                           }
-
-                       }
-                    } else {
-                        if (dx == 0 && dz == 0) {
-                            line.append(ChatColor.WHITE + "★");
-                        }
-                        else{
-                            line.append(ChatColor.WHITE + "□");
-                        }
-                    }
-                }
-
-                line.append("   ");
-
-
-                player.sendMessage(line.toString());
-            }
-
-            player.sendMessage("▬▬▬▬▬↓E↓▬▬▬▬▬");
-
+            openMap(player);
         }
         else {
             player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
@@ -143,8 +61,38 @@ public class MapCommand extends SubCommand {
         }
     }
 
+    public static void openMap(Player player) {
+        Chunk currentChunk = player.getLocation().getChunk();
+
+        int radius = 4;
+        List<Chunk> nearbyChunks = new ArrayList<>();
+        for (int dx = -radius; dx <= radius; dx++) {
+            for (int dz = -radius; dz <= radius; dz++) {
+                Chunk chunk = player.getWorld().getChunkAt(currentChunk.getX() + dx, currentChunk.getZ() + dz);
+                nearbyChunks.add(chunk);
+            }
+        }
 
 
+        player.sendMessage("▬▬▬▬▬↑O↑▬▬▬▬▬");
+
+        for (int dx = -radius; dx <= radius; dx++) {
+            ComponentBuilder newLine = new ComponentBuilder();
+
+            newLine.append("   ");
+            for (int dz = -radius; dz <= radius; dz++) {
+                Chunk chunk = player.getWorld().getChunkAt(currentChunk.getX() + dx, currentChunk.getZ() + dz);
+
+                ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunk);
+                TextComponent icon = claimedChunk.getMapIcon(player);
+                icon.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tan claim town " + chunk.getX() + " " + chunk.getZ()));
+
+                newLine.append(icon);
+            }
+            player.spigot().sendMessage(newLine.create());
+        }
+        player.sendMessage("▬▬▬▬▬↓E↓▬▬▬▬▬");
+    }
 
 
 }

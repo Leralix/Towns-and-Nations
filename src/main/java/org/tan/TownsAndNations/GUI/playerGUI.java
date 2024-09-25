@@ -2190,7 +2190,7 @@ public class playerGUI implements IGUI {
         ItemStack changeChunkColor = HeadUtils.createCustomItemStack(Material.PURPLE_WOOL,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR.get(),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(),
-                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(StringUtil.getHexColor(playerTown.getChunkColorInHex()) + playerTown.getChunkColorInHex()),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(playerTown.getChunkColor() + playerTown.getChunkColorInHex()),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3.get());
 
         ItemStack changeTag = HeadUtils.createCustomItemStack(Material.FLOWER_BANNER_PATTERN,
@@ -3113,7 +3113,7 @@ public class playerGUI implements IGUI {
                 Material.PURPLE_WOOL,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR.get(),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(),
-                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(StringUtil.getHexColor(playerTown.getChunkColorInHex()) + playerTown.getChunkColorInHex()),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(playerRegion.getChunkColor() + playerTown.getChunkColorInHex()),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3.get()
         );
 

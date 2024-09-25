@@ -18,7 +18,6 @@ public class AttackListener implements Listener {
         if(killer == null) {
             return;
         }
-        killer.sendMessage(ChatColor.RED + "You killed " + killed.getName());
         PlayerDataStorage.get(killed).notifyDeathToAttacks();
     }
 }

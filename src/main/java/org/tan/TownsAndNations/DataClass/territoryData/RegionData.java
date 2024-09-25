@@ -16,16 +16,11 @@ import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownRelations;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.newChunkData.RegionClaimedChunk;
-import org.tan.TownsAndNations.DataClass.wars.CurrentAttacks;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
-import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
 import org.tan.TownsAndNations.storage.DataStorage.*;
-import org.tan.TownsAndNations.utils.ChatUtils;
-import org.tan.TownsAndNations.utils.ConfigUtil;
-import org.tan.TownsAndNations.utils.SoundUtil;
-import org.tan.TownsAndNations.utils.TerritoryUtil;
+import org.tan.TownsAndNations.utils.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,7 +66,7 @@ public class RegionData extends ITerritoryData {
         this.description = "default description";
         this.townsInRegion = new ArrayList<>();
         this.townsInRegion.add(ownerTown.getID());
-        this.chunkColor = setBasicColor(ownerTown.getChunkColor());
+        super.color = StringUtil.randomColor();
 
         this.chunkHistory = new ChunkHistory();
         this.donationHistory = new DonationHistory();
@@ -270,8 +265,7 @@ public class RegionData extends ITerritoryData {
     }
 
     @Override
-    public void claimChunk(Player player) {
-        Chunk chunk = player.getLocation().getChunk();
+    public void claimChunk(Player player, Chunk chunk) {
         PlayerData playerData = PlayerDataStorage.get(player);
         TownData townData = TownDataStorage.get(player);
         RegionData regionData = townData.getOverlord();
@@ -289,16 +283,8 @@ public class RegionData extends ITerritoryData {
         }
 
         ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.get(chunk);
-        if(currentClaimedChunk != null){
-            if(!getAvailableEnemyClaims().containsKey(currentClaimedChunk.getOwnerID())){
-                player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(NewClaimedChunkStorage.getChunkOwnerName(chunk)));
-                return;
-
-            }
-            else {
-                consumeEnemyClaim(currentClaimedChunk.getOwnerID());
-                NewClaimedChunkStorage.unclaimChunk(currentClaimedChunk);
-            }
+        if(!currentClaimedChunk.canPlayerClaim(player, regionData)){
+            return;
         }
 
         regionData.removeFromBalance(cost);
@@ -454,17 +440,8 @@ public class RegionData extends ITerritoryData {
         return (red << 16) | (green << 8) | blue;
     }
 
-    public int getChunkColor() {
+    public int getChildColorCode() {
         return this.chunkColor;
-    }
-
-    @Override
-    public String getChunkColorInHex() {
-        return null;
-    }
-
-    public void setChunkColor(int newColor) {
-        this.chunkColor = newColor;
     }
 
     public void removeSubject(ITerritoryData townToDelete) {

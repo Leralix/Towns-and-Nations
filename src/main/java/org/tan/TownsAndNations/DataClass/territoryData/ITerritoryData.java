@@ -1,9 +1,12 @@
 package org.tan.TownsAndNations.DataClass.territoryData;
 
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.wars.PlannedAttack;
 import org.tan.TownsAndNations.DataClass.ClaimedChunkSettings;
 import org.tan.TownsAndNations.DataClass.PlayerData;
@@ -32,6 +35,7 @@ public abstract class ITerritoryData {
 //    private String iconMaterial;
 //    private int balance;
 //    private TownRelations relations;
+    Integer color;
     private Collection<String> attackIncomingList = new ArrayList<>();
     private Collection<String> currentAttackList = new ArrayList<>();
     private HashMap<String, Integer> availableClaims;
@@ -145,18 +149,32 @@ public abstract class ITerritoryData {
 
     public abstract ITerritoryData getCapital();
 
-    public abstract int getChunkColor();
+    public abstract int getChildColorCode();
 
-    public abstract String getChunkColorInHex();
+    public int getChunkColorCode(){
+        if(color == null)
+            return getChildColorCode();
+        return color;
+    }
 
-    public abstract void setChunkColor(int color);
+    public String getChunkColorInHex() {
+        return String.format("#%06X", getChunkColorCode());
+    }
+
+    public ChatColor getChunkColor() {
+        return ChatColor.of(getChunkColorInHex());
+    }
+
+    public void setChunkColor(int color) {
+        this.color = color;
+    }
 
     public abstract boolean haveOverlord();
 
 
     public HashMap<String, Integer> getAvailableEnemyClaims() {
         if(availableClaims == null)
-            return new HashMap<>();
+            return availableClaims = new HashMap<>();
         return availableClaims;
     }
 
@@ -169,7 +187,13 @@ public abstract class ITerritoryData {
             getAvailableEnemyClaims().remove(territoryID);
     }
 
-    public abstract void claimChunk(Player player);
+    public void claimChunk(Player player){
+        Chunk chunk = player.getLocation().getChunk();
+        claimChunk(player, chunk);
+    }
+
+    public abstract void claimChunk(Player player,Chunk chunk);
+
 
     public void castActionToAllPlayers(Consumer<Player> action){
         for(PlayerData playerData : getPlayerDataList()){
@@ -195,4 +219,15 @@ public abstract class ITerritoryData {
         PlannedAttackStorage.territoryDeleted(this);
     }
 
+    public boolean canConquerChunk(ClaimedChunk2 chunk) {
+        if(getAvailableEnemyClaims().containsKey(chunk.getOwnerID())){
+            consumeEnemyClaim(chunk.getOwnerID());
+            return true;
+        }
+        return false;
+    }
+
+    public ChatColor getChunkColorClass() {
+        return ChatColor.of(getChunkColorInHex());
+    }
 }

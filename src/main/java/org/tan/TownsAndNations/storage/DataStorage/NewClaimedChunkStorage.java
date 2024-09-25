@@ -5,13 +5,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import org.bukkit.Chunk;
+import org.tan.TownsAndNations.DataClass.newChunkData.*;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
-import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
-import org.tan.TownsAndNations.DataClass.newChunkData.LandmarkClaimedChunk;
-import org.tan.TownsAndNations.DataClass.newChunkData.RegionClaimedChunk;
-import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;
 import org.tan.TownsAndNations.TownsAndNations;
 
 import java.io.*;
@@ -135,19 +132,23 @@ public class NewClaimedChunkStorage {
 
 
     public static ClaimedChunk2 get(Chunk chunk) {
-        return claimedChunksMap.get(getChunkKey(chunk));
+        ClaimedChunk2 claimedChunk = claimedChunksMap.get(getChunkKey(chunk));
+        if (claimedChunk == null) {
+            return new WildernessChunk(chunk);
+        }
+        return claimedChunk;
     }
 
     public static boolean isChunkClaimedByTownRegion(TownData townData, Chunk chunkToClaim) {
+        return isChunkClaimedByTownRegion(townData, get(chunkToClaim));
+    }
 
-        ClaimedChunk2 claimedChunk = claimedChunksMap.get(getChunkKey(chunkToClaim));
-
+    public static boolean isChunkClaimedByTownRegion(TownData townData, ClaimedChunk2 claimedChunk) {
         if(claimedChunk instanceof RegionClaimedChunk){
             RegionData regionData = ((RegionClaimedChunk) claimedChunk).getRegion();
             return regionData.isTownInRegion(townData);
         }
         return false;
-
     }
 
     public static void loadStats() {

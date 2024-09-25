@@ -143,11 +143,11 @@ public class AdminGUI implements IGUI{
 
         ItemStack changeLandmarkName = HeadUtils.createCustomItemStack(Material.NAME_TAG,
                 Lang.ADMIN_GUI_CHANGE_LANDMARK_NAME.get(),
-                Lang.ADMIN_GUI_CHANGE_LANDMARK_NAME_DESC1.get(landmark.getName()));
+                Lang.ADMIN_GUI_CHANGE_LANDMARK_NAME_DESC1.get());
 
         ItemStack deleteLandmark = HeadUtils.createCustomItemStack(Material.BARRIER,
                 Lang.ADMIN_GUI_DELETE_LANDMARK.get(),
-                Lang.ADMIN_GUI_DELETE_LANDMARK_DESC1.get(landmark.getName()));
+                Lang.ADMIN_GUI_DELETE_LANDMARK_DESC1.get());
 
         ItemStack setReward = HeadUtils.createCustomItemStack(landmark.getRessources(),
                 Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(),

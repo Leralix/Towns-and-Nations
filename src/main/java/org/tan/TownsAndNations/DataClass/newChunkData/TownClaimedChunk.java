@@ -1,13 +1,17 @@
 package org.tan.TownsAndNations.DataClass.newChunkData;
 
 import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.PropertyData;
+import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.DataClass.wars.CurrentAttacks;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -36,7 +40,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
         super(x,z,worldUUID,ownerID);
     }
     public String getName(){
-        return TownDataStorage.get(getOwnerID()).getName();
+        return getTown().getName();
     }
     public TownData getTown(){
         return TownDataStorage.get(ownerID);
@@ -146,5 +150,27 @@ public class TownClaimedChunk extends ClaimedChunk2{
     @Override
     public boolean canEntitySpawn(EntityType entityType) {
        return getTown().getChunkSettings().getSpawnControl(entityType.toString()).canSpawn();
+    }
+
+    @Override
+    public TextComponent getMapIcon(PlayerData playerData) {
+        TextComponent textComponent = new TextComponent(getTown().getChunkColorClass() + "⬛");
+        textComponent.setBold(true);
+        textComponent.setHoverEvent(new HoverEvent(
+                        HoverEvent.Action.SHOW_TEXT,
+                        new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
+                                getTown().getColoredName() + "\n" +
+                                Lang.LEFT_CLICK_TO_CLAIM.get())));
+        return textComponent;
+    }
+
+    @Override
+    public boolean canPlayerClaim(Player player,ITerritoryData territoryData) {
+
+        if(territoryData.canConquerChunk(this))
+            return true;
+
+        player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(this.getOwner().getColoredName()));
+        return false;
     }
 }

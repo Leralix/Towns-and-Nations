@@ -1,5 +1,7 @@
 package org.tan.TownsAndNations.commands.subcommands;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -41,7 +43,8 @@ public class ClaimCommand extends SubCommand {
     @Override
     public void perform(Player player, String[] args){
 
-        if (args.length != 2){
+
+        if (args.length < 2 || args.length == 3 || args.length > 4) {
             player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()) );
             return;
         }
@@ -68,10 +71,16 @@ public class ClaimCommand extends SubCommand {
             return;
         }
 
-
-
-        territoryData.claimChunk(player);
-
+        if (args.length == 4) {
+            int x = Integer.parseInt(args[2]);
+            int z = Integer.parseInt(args[3]);
+            Chunk chunk = Bukkit.getWorld(player.getWorld().getUID()).getChunkAt(x, z);
+            territoryData.claimChunk(player,chunk);
+            MapCommand.openMap(player);
+        }
+        else {
+            territoryData.claimChunk(player);
+        }
     }
 
 

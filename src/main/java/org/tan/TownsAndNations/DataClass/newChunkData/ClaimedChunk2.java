@@ -1,14 +1,17 @@
 package org.tan.TownsAndNations.DataClass.newChunkData;
 
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
+import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.TerritoryUtil;
 
@@ -86,4 +89,12 @@ public abstract class ClaimedChunk2 {
     public ITerritoryData getOwner() {
         return TerritoryUtil.getTerritory(this.ownerID);
     }
+
+    public TextComponent getMapIcon(Player player) {
+        return getMapIcon(PlayerDataStorage.get(player));
+    }
+
+    public abstract TextComponent getMapIcon(PlayerData playerData);
+
+    public abstract boolean canPlayerClaim(Player player, ITerritoryData territoryData);
 }

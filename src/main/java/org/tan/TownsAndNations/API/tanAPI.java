@@ -32,10 +32,10 @@ public class tanAPI {
 
     public int getChunkColor(String ID){
         if(ID.startsWith("T")){
-            return TownDataStorage.get(ID).getChunkColor();
+            return TownDataStorage.get(ID).getChunkColorCode();
         }
         else if(ID.startsWith("R")){
-            return RegionDataStorage.get(ID).getChunkColor();
+            return RegionDataStorage.get(ID).getChunkColorCode();
         }
         return 0x000000;
     }

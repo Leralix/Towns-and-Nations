@@ -1,13 +1,20 @@
 package org.tan.TownsAndNations.DataClass.newChunkData;
 
 import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.tan.TownsAndNations.DataClass.Landmark;
+import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
+import org.tan.TownsAndNations.storage.DataStorage.LandmarkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
@@ -48,6 +55,9 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
     }
 
 
+    public Landmark getLandMark(){
+        return LandmarkStorage.get(ownerID);
+    }
     public void unclaimChunk(Player player, Chunk chunk){
         player.sendMessage(getTANString() + Lang.CANNOT_UNCLAIM_LANDMARK_CHUNK.get());
     }
@@ -59,5 +69,23 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
     @Override
     public boolean canEntitySpawn(EntityType entityType) {
        return true;
+    }
+
+    @Override
+    public TextComponent getMapIcon(PlayerData playerData) {
+        TextComponent textComponent = new TextComponent(ChatColor.GOLD + "⬛");
+        textComponent.setBold(true);
+        textComponent.setHoverEvent(new HoverEvent(
+                HoverEvent.Action.SHOW_TEXT,
+                new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
+                        ChatColor.GOLD + getLandMark().getName() + "\n" +
+                        Lang.LEFT_CLICK_TO_CLAIM.get())));
+        return textComponent;
+    }
+
+    @Override
+    public boolean canPlayerClaim(Player player, ITerritoryData townData) {
+        player.sendMessage(getTANString() + Lang.CANNOT_CLAIM_LANDMARK.get());
+        return false;
     }
 }

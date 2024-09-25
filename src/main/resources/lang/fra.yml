@@ -558,7 +558,7 @@ language:
   ADMIN_GUI_CHANGE_LANDMARK_NAME_DESC1: "§fClic gauche pour changer le nom"
   ADMIN_GUI_CHANGE_LANDMARK_NAME_DESC2: "§fNom actuel : §9{0}"
   ADMIN_GUI_DELETE_LANDMARK: "§cSupprimer le point d'intérêt"
-  ADMIN_GUI_DELETE_LANDMARK_DESC1: "§fClic gauche pour revendiquer ce point d'intérêt"
+  ADMIN_GUI_DELETE_LANDMARK_DESC1: "§fClic gauche pour supprimer ce point d'intérêt"
   CLICK_TO_OPEN_LANDMARK_MENU: "§fClic gauche pour gérer les points d'intérêt"
   #Other GUI
   GUI_PROPERTY_DESCRIPTION: "§7§o\"{0}\""
@@ -656,7 +656,7 @@ language:
   RARE_ITEM_WRONG_ITEM: "Ce villageois n'achète que des §e{0}"
   RARE_ITEM_SELLING_SUCCESS: "§e{0}x {1}§f vendu avec succès contre §6+{2}✦"
   #Chunk interactions
-  CHUNK_ENTER_WILDERNESS: "§fTerres sauvages"
+  WILDERNESS: "§fTerres sauvages"
   PLAYER_ENTER_TOWN_CHUNK: "§9{0}"
   PLAYER_ENTER_REGION_CHUNK: "§b{0}"
   PLAYER_ENTER_LANDMARK_CHUNK: "§6Point d'intérêt"

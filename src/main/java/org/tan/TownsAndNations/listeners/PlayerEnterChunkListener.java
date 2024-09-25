@@ -7,14 +7,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.checkerframework.checker.units.qual.N;
 import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
+import org.tan.TownsAndNations.DataClass.newChunkData.WildernessChunk;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChunkType;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.PlayerAutoClaimStorage;
-import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.ChunkUtil;
 
 public class PlayerEnterChunkListener implements Listener {
@@ -54,14 +53,14 @@ public class PlayerEnterChunkListener implements Listener {
         }
 
         //Three case: Into wilderness, into town, into region
-        if(NextClaimedChunk == null){
+        if(NextClaimedChunk instanceof WildernessChunk){
             //If auto claim is on, claim the chunk
             if(PlayerAutoClaimStorage.containsPlayer(e.getPlayer())){
                 autoClaimChunk(e, nextChunk, player);
             }
             //Else send message player enter wilderness
             else
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.CHUNK_ENTER_WILDERNESS.get()));
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.WILDERNESS.get()));
 
         }
         else {
