@@ -33,6 +33,7 @@ language:
   DISPLAY_COORDINATES: "§fCoordinates: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
   LEFT_CLICK_TO_SELECT: "§fLeft click to select"
+  LEFT_CLICK_TO_MODIFY: "§fLeft click to modify"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§9[{0}]§f <{1}> {2}"
   CHAT_SCOPE_REGION_MESSAGE: "§b[{0}]§f <{1}> {2}"
@@ -74,6 +75,7 @@ language:
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "Hevd en chunk"
   CHUNK_ALREADY_CLAIMED_WARNING: "§cDenne chunk er allerede hevdet av: §9{0}"
+  CANNOT_CLAIM_LANDMARK: "§cYou cannot claim a landmark chunk"
   MAX_CHUNK_LIMIT_REACHED: "§cDu har nådd maksimalt antall chunks hevdet, oppgrader din by for å få flere tilgjengelige chunks"
   CHUNK_NOT_ADJACENT: "§cDenne chunk er ikke tilstøtende til din by"
   CHUNK_CLAIMED_SUCCESS_REGION: "Regional chunk hevdet !"
@@ -134,7 +136,7 @@ language:
   #Balance command
   BAL_COMMAND_DESC: "Se på din saldo"
   BAL_AMOUNT: "Din saldo: §6{0}✦"
-  #Uncliam command
+  #Unclaim command
   UNCLAIM_CHUNK_COMMAND_DESC: "Frigjør en chunk"
   UNCLAIMED_CHUNK_SUCCESS_TOWN: "Chunk unclaimed ! Current number of chunks: §2{0}/{1}♦"
   UNCLAIMED_CHUNK_SUCCESS_REGION: "Chunk unclaimed ! Current number of chunks: §2{0}♦"
@@ -217,6 +219,7 @@ language:
   GUI_NEXT_PAGE: "Neste"
   GUI_PREVIOUS_PAGE: "Forrige"
   GUI_LEFT_CLICK_TO_INTERACT: "§eVenstreklikk for å samhandle"
+  LEFT_CLICK_TO_CLAIM: "§fLeft click to claim"
   GUI_INCREASE_1_DESC: "§fKlikk: §a+1✦"
   GUI_INCREASE_10_DESC: "§fShift + klikk: §a+10✦"
   GUI_DECREASE_1_DESC: "§fKlikk: §c-1✦"
@@ -637,7 +640,7 @@ language:
   CHAT_PLAYER_LEFT_THE_TOWN: "§fDu forlot byen"
   CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fByen ble vellykket slettet"
   CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED: "§fRegionen ble vellykket slettet, regionkostnadene ble refundert"
-  WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cByen §9{0}§c, som du hadde en relasjon med: §e{1}§c har blitt slettet"
+  WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cThe town {0}§c, with which you had a relation: {1}§c has been deleted"
   #Custom Item
   ITEM_RARE_STONE: "§3Sjelden Stein"
   ITEM_RARE_WOOD: "§3Sjeldent Tre"
@@ -656,7 +659,7 @@ language:
   RARE_ITEM_WRONG_ITEM: "Denne landsbyboeren kjøper bare §e{0}"
   RARE_ITEM_SELLING_SUCCESS: "Vellykket solgt §e{0}x {1}§f for §6+{2}✦"
   #Chunk interactions
-  WILDERNESS: "§fØdemark"
+  WILDERNESS: "§fWilderness"
   PLAYER_ENTER_TOWN_CHUNK: "§fEntering : §9{0}"
   PLAYER_ENTER_REGION_CHUNK: "§fEntering : §b{0}"
   PLAYER_ENTER_LANDMARK_CHUNK: "§fEntering : §6Landmark"
@@ -770,3 +773,10 @@ language:
   GUI_DEFENDING_SIDE_ICON: "§aAttackers"
   GUI_DEFENDING_SIDE_ICON_DESC1: "§fList of every defenders :"
   GUI_ICON_LIST: "§f- {0}"
+  #Broadcast
+  BROADCAST_PLAYER_TOWN_DELETED: "§3{0}§f has deleted the town {1}"
+  BROADCAST_PLAYER_REGION_DELETED: "§3{0}§f has deleted the region {1}"
+  #Map
+  MAP_CLAIM_TYPE: "    Type of claims : "
+  MAP_TOWN: "    §9[Town]"
+  MAP_REGION: "    §b[Region]"

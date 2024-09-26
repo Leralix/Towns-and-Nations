@@ -33,6 +33,7 @@ language:
   DISPLAY_COORDINATES: "§fCoordinates: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
   LEFT_CLICK_TO_SELECT: "§fLeft click to select"
+  LEFT_CLICK_TO_MODIFY: "§fLeft click to modify"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§9[{0}]§f <{1}> {2}"
   CHAT_SCOPE_REGION_MESSAGE: "§b[{0}]§f <{1}> {2}"
@@ -775,3 +776,7 @@ language:
   #Broadcast
   BROADCAST_PLAYER_TOWN_DELETED: "§3{0}§f has deleted the town {1}"
   BROADCAST_PLAYER_REGION_DELETED: "§3{0}§f has deleted the region {1}"
+  #Map
+  MAP_CLAIM_TYPE: "    Type of claims : "
+  MAP_TOWN: "    §9[Town]"
+  MAP_REGION: "    §b[Region]"
