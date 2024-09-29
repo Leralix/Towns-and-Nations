@@ -33,6 +33,7 @@ language:
   DISPLAY_COORDINATES: "§fWspółrzędne: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
   LEFT_CLICK_TO_SELECT: "§fLeft click to select"
+  LEFT_CLICK_TO_MODIFY: "§fLeft click to modify"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§9[{0}]§f <{1}> {2}"
   CHAT_SCOPE_REGION_MESSAGE: "§b[{0}]§f <{1}> {2}"
@@ -74,6 +75,7 @@ language:
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "Zajmij chunk"
   CHUNK_ALREADY_CLAIMED_WARNING: "§cTen chunk należy do: §9{0}"
+  CANNOT_CLAIM_LANDMARK: "§cYou cannot claim a landmark chunk"
   MAX_CHUNK_LIMIT_REACHED: "§cOsiągnąłeś swój limit zajmowania kolejnych chunków, ulepsz swoje miasto, aby powiększyć ilość zajmowanych chunków"
   CHUNK_NOT_ADJACENT: "§Ten chunk nie sąsiaduje z twoim miastem"
   CHUNK_CLAIMED_SUCCESS_REGION: "Rejon chunku został pomyślnie zajęty!"
@@ -134,7 +136,7 @@ language:
   #Balance command
   BAL_COMMAND_DESC: "Zobacz na swój stan konta"
   BAL_AMOUNT: "Twój stan konta: §6{0}✦"
-  #Uncliam command
+  #Unclaim command
   UNCLAIM_CHUNK_COMMAND_DESC: "Zrezygnuj z chunka"
   UNCLAIMED_CHUNK_SUCCESS_TOWN: "Chunk odebrany! Aktualna ilość chunków: §2{0}/{1}♦"
   UNCLAIMED_CHUNK_SUCCESS_REGION: "Chunk odebrany! Aktualna ilość chunków: §2{0}♦"
@@ -217,6 +219,7 @@ language:
   GUI_NEXT_PAGE: "Następna"
   GUI_PREVIOUS_PAGE: "Poprzednia"
   GUI_LEFT_CLICK_TO_INTERACT: "§eKliknij LPM, aby wejść w interakcje"
+  LEFT_CLICK_TO_CLAIM: "§fLeft click to claim"
   GUI_INCREASE_1_DESC: "§fKliknij: §a+1✦"
   GUI_INCREASE_10_DESC: "§fShift + kliknięcie: §a+10✦"
   GUI_DECREASE_1_DESC: "§fKliknięcie: §c-1✦"
@@ -637,7 +640,7 @@ language:
   CHAT_PLAYER_LEFT_THE_TOWN: "§fOpuściłeś miasto"
   CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fMiasto zostało usunięte"
   CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED: "§fRegion pomyślnie usunięty, koszt regionu zwrócony"
-  WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cMiasto §9{0}§c, z którym miałeś stosunek: §e{1}§c zostało usunięte"
+  WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cThe town {0}§c, with which you had a relation: {1}§c has been deleted"
   #Custom Item
   ITEM_RARE_STONE: "§3Rzadki Kamień"
   ITEM_RARE_WOOD: "§3Rzadkie drewno"
@@ -656,7 +659,7 @@ language:
   RARE_ITEM_WRONG_ITEM: "Ten osadnik kupuje tylko §e{0}"
   RARE_ITEM_SELLING_SUCCESS: "Pomyślnie sprzedano §e{0}x {1}§f za §6+{2}✦"
   #Chunk interactions
-  WILDERNESS: "§fPustynia"
+  WILDERNESS: "§fWilderness"
   PLAYER_ENTER_TOWN_CHUNK: "§fEntering : §9{0}"
   PLAYER_ENTER_REGION_CHUNK: "§fEntering : §b{0}"
   PLAYER_ENTER_LANDMARK_CHUNK: "§fEntering : §6Landmark"
@@ -770,3 +773,10 @@ language:
   GUI_DEFENDING_SIDE_ICON: "§aAttackers"
   GUI_DEFENDING_SIDE_ICON_DESC1: "§fList of every defenders :"
   GUI_ICON_LIST: "§f- {0}"
+  #Broadcast
+  BROADCAST_PLAYER_TOWN_DELETED: "§3{0}§f has deleted the town {1}"
+  BROADCAST_PLAYER_REGION_DELETED: "§3{0}§f has deleted the region {1}"
+  #Map
+  MAP_CLAIM_TYPE: "    Type of claims : "
+  MAP_TOWN: "    §9[Town]"
+  MAP_REGION: "    §b[Region]"

@@ -90,7 +90,6 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     @Override
     public TextComponent getMapIcon(PlayerData playerData) {
         TextComponent textComponent = new TextComponent(getRegion().getChunkColorClass() + "⬛");
-        textComponent.setBold(true);
         textComponent.setHoverEvent(new HoverEvent(
                 HoverEvent.Action.SHOW_TEXT,
                 new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +

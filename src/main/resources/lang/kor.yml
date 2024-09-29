@@ -33,6 +33,7 @@ language:
   DISPLAY_COORDINATES: "§f좌표: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
   LEFT_CLICK_TO_SELECT: "§fLeft click to select"
+  LEFT_CLICK_TO_MODIFY: "§fLeft click to modify"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§9[{0}]§f <{1}> {2}"
   CHAT_SCOPE_REGION_MESSAGE: "§b[{0}]§f <{1}> {2}"
@@ -74,6 +75,7 @@ language:
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "청크를 소유합니다"
   CHUNK_ALREADY_CLAIMED_WARNING: "§c이 청크는 이미 §9{0}§c에 의해 소유되었습니다"
+  CANNOT_CLAIM_LANDMARK: "§cYou cannot claim a landmark chunk"
   MAX_CHUNK_LIMIT_REACHED: "§c소유 가능한 청크의 최대 한도에 도달했습니다. 마을을 업그레이드하여 더 많은 청크를 확보하세요"
   CHUNK_NOT_ADJACENT: "§c이 청크는 마을에 인접하지 않습니다"
   CHUNK_CLAIMED_SUCCESS_REGION: "지역 청크가 성공적으로 소유되었습니다!"
@@ -134,7 +136,7 @@ language:
   #Balance command
   BAL_COMMAND_DESC: "잔액을 확인합니다"
   BAL_AMOUNT: "당신의 잔액: §6{0}✦"
-  #Uncliam command
+  #Unclaim command
   UNCLAIM_CHUNK_COMMAND_DESC: "청크를 포기합니다"
   UNCLAIMED_CHUNK_SUCCESS_TOWN: "청크가 포기되었습니다! 현재 청크 수: §2{0}/{1}♦"
   UNCLAIMED_CHUNK_SUCCESS_REGION: "청크가 포기되었습니다! 현재 청크 수: §2{0}♦"
@@ -217,6 +219,7 @@ language:
   GUI_NEXT_PAGE: "다음"
   GUI_PREVIOUS_PAGE: "이전"
   GUI_LEFT_CLICK_TO_INTERACT: "§e좌클릭하여 상호작용합니다"
+  LEFT_CLICK_TO_CLAIM: "§fLeft click to claim"
   GUI_INCREASE_1_DESC: "§f클릭: §a+1✦"
   GUI_INCREASE_10_DESC: "§fShift + 클릭: §a+10✦"
   GUI_DECREASE_1_DESC: "§f클릭: §c-1✦"
@@ -514,7 +517,7 @@ language:
   GUI_COLLECT_LANDMARK_DESC2: "§f수익: §6{0}"
   GUI_LANDMARK_REWARD_COLLECTED: "§a자원이 수집되었습니다"
   GUI_REMOVE_LANDMARK: "§c랜드마크 포기"
-  SPECIFIC_LANDMARK_ICON_DEFAULT_NAME: "랜드마크 n°{0}"
+  SPECIFIC_LANDMARK_ICON_DEFAULT_NAME: "Landmark n°{0}"
   SPECIFIC_LANDMARK_ICON_DESC1: "§f생산 중: §6{0}x §e{1}"
   SPECIFIC_LANDMARK_ICON_DESC2_OWNER: "§f소유자: §9{0}"
   SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER: "§f소유되지 않음"
@@ -637,7 +640,7 @@ language:
   CHAT_PLAYER_LEFT_THE_TOWN: "§f마을을 떠났습니다"
   CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§f마을이 성공적으로 삭제되었습니다"
   CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED: "§f지역이 성공적으로 삭제되었으며, 지역 비용이 환불되었습니다"
-  WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§c당신과 관계가 있던 마을 §9{0}§c이(가) 삭제되었습니다: §e{1}"
+  WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cThe town {0}§c, with which you had a relation: {1}§c has been deleted"
   #Custom Item
   ITEM_RARE_STONE: "§3희귀 돌"
   ITEM_RARE_WOOD: "§3희귀 나무"
@@ -656,7 +659,7 @@ language:
   RARE_ITEM_WRONG_ITEM: "이 주민은 §e{0}§f만(을) 구매합니다"
   RARE_ITEM_SELLING_SUCCESS: "성공적으로 §e{0}x {1}§f을(를) §6+{2}✦에 판매했습니다"
   #Chunk interactions
-  WILDERNESS: "§f야생"
+  WILDERNESS: "§fWilderness"
   PLAYER_ENTER_TOWN_CHUNK: "§f입장: §9{0}"
   PLAYER_ENTER_REGION_CHUNK: "§f입장: §b{0}"
   PLAYER_ENTER_LANDMARK_CHUNK: "§f입장: §6랜드마크"
@@ -770,3 +773,10 @@ language:
   GUI_DEFENDING_SIDE_ICON: "§aAttackers"
   GUI_DEFENDING_SIDE_ICON_DESC1: "§fList of every defenders :"
   GUI_ICON_LIST: "§f- {0}"
+  #Broadcast
+  BROADCAST_PLAYER_TOWN_DELETED: "§3{0}§f has deleted the town {1}"
+  BROADCAST_PLAYER_REGION_DELETED: "§3{0}§f has deleted the region {1}"
+  #Map
+  MAP_CLAIM_TYPE: "    Type of claims : "
+  MAP_TOWN: "    §9[Town]"
+  MAP_REGION: "    §b[Region]"
