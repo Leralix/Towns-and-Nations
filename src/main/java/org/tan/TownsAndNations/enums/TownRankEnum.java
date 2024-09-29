@@ -3,8 +3,9 @@ package org.tan.TownsAndNations.enums;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.utils.HeadUtils;
 
-import static org.tan.TownsAndNations.utils.HeadUtils.makeSkull;
+import static org.tan.TownsAndNations.utils.HeadUtils.makeSkullB64;
 
 public enum TownRankEnum {
 
@@ -54,7 +55,7 @@ public enum TownRankEnum {
     }
 
     public ItemStack getRankGuiIcon(){
-        return makeSkull(
+        return HeadUtils.makeSkullB64(
                 this.getColor() + Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_X.get(getLevel()),
                 getSkullTexture(),
                 Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1.get(),

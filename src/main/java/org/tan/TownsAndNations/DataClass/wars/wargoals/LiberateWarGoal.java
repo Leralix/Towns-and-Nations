@@ -32,7 +32,7 @@ public class LiberateWarGoal extends WarGoal {
 
         GuiItem _selectedTerritory;
         if(territoryToLiberate == null){
-            ItemStack selectTerritory = HeadUtils.makeSkull(Lang.GUI_SELECT_TERRITORY_TO_LIBERATE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjMyZmZmMTYzZTIzNTYzMmY0MDQ3ZjQ4NDE1OTJkNDZmODVjYmJmZGU4OWZjM2RmNjg3NzFiZmY2OWE2NjIifX19",
+            ItemStack selectTerritory = HeadUtils.makeSkullB64(Lang.GUI_SELECT_TERRITORY_TO_LIBERATE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjMyZmZmMTYzZTIzNTYzMmY0MDQ3ZjQ4NDE1OTJkNDZmODVjYmJmZGU4OWZjM2RmNjg3NzFiZmY2OWE2NjIifX19",
                     Lang.LEFT_CLICK_TO_SELECT.get());
 
             _selectedTerritory = ItemBuilder.from(selectTerritory).asGuiItem(event -> {

@@ -43,6 +43,13 @@ CheckForUpdate: true
 prefixSize: 3
 
 ########################
+##      Economy       ##
+########################
+
+#Max distance between 2 players to be able to trade (/tan pay)
+maxPayDistance: 15
+
+########################
 ##      Kingdoms      ##
 ########################
 
@@ -53,7 +60,7 @@ EnableKingdom: true
 StartingMoney: 100
 
 ########################
-##      Kingdoms      ##
+##       Regions      ##
 ########################
 
 #Enable Region (will automatically disable Kingdoms)
@@ -143,10 +150,6 @@ RankNameSize: 25
 
 #Enable war
 EnableWar: true
-
-########################
-##        WARS        ##
-########################
 
 #The duration of a war in minutes
 WarDuration: 30

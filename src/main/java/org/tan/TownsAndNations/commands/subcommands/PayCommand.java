@@ -8,6 +8,7 @@ import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.EconomyUtil;
 
 import java.util.ArrayList;
@@ -72,6 +73,12 @@ public class PayCommand extends SubCommand  {
                     player.sendMessage(getTANString() + Lang.PLAYER_PAY_AT_EMBARGO_ERROR.get());
                     return;
                 }
+            }
+
+            double distance = player.getLocation().distance(receiver.getLocation());
+            if(distance > ConfigUtil.getCustomConfig("config.yml").getInt("maxPayDistance")){
+                player.sendMessage(getTANString() + Lang.INTERACTION_TOO_FAR_ERROR.get());
+                return;
             }
 
 

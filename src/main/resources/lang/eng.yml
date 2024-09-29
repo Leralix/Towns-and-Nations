@@ -29,6 +29,7 @@ language:
   PLAYER_PROPERTY_TOO_BIG: "§cThe property is too big. The maximum size is {0} blocks"
   POSITION_NOT_IN_CLAIMED_CHUNK: "§cThe position needs to be in a claimed chunk"
   LANDMARK_ALREADY_CLAIMED: "§cThis landmark is already claimed by §9{0}"
+  INTERACTION_TOO_FAR_ERROR: "§cYou are too far to do this action"
   #Common uses
   DISPLAY_COORDINATES: "§fCoordinates: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"

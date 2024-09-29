@@ -1,15 +1,18 @@
 package org.tan.TownsAndNations.utils;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Skull;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerProfile;
+import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.tan.TownsAndNations.DataClass.PlayerData;
@@ -21,11 +24,10 @@ import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.io.StringReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
 
 /**
  * The class used to manage every head related commands
@@ -138,20 +140,14 @@ public class HeadUtils {
      * @param lore                  The lore of the new created head.
      * @return                      The {@link ItemStack} with custom texture.
      */
-    public static @NotNull ItemStack makeSkull(final @NotNull String name, final @NotNull String base64EncodedString, List<String> lore) {
-        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+    public static @NotNull ItemStack makeSkullB64(final @NotNull String name, final @NotNull String base64EncodedString, List<String> lore) {
 
+        PlayerProfile profile = getProfile(getUrlFromBase64_2(base64EncodedString));
+        System.out.println(profile.getTextures().getSkin().toString());
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        GameProfile profile = new GameProfile(UUID.randomUUID(), "");
-        profile.getProperties().put("textures", new Property("textures", base64EncodedString));
-        Field profileField;
-        try {
-            profileField = meta.getClass().getDeclaredField("profile");
-            profileField.setAccessible(true);
-            profileField.set(meta, profile);
-        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-            Bukkit.getLogger().warning("Failed to set base64 skull value!");
-        }
+        meta.setOwnerProfile(profile);
+        skull.setItemMeta(meta);
 
         meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + name);
         if(lore != null)
@@ -160,17 +156,68 @@ public class HeadUtils {
         skull.setItemMeta(meta);
         return skull;
     }
-    /**
-     * Create a head from base64 encoded string
-     * This method is called when loading custom heads from the internet
-     * Check <a href="https://minecraft-heads.com/">minecraft-heads.com</a> for more heads.
-     * This method calls an unsafe bukkit methods but no other methods have been found
-     * @param name                  The name of the new created head.
-     * @param base64EncodedString   The base64 encoded String of the new head.
-     * @return                      The {@link ItemStack} with custom texture.
-     */
-    public static @NotNull ItemStack makeSkull(final @NotNull String name, final @NotNull String base64EncodedString) {
-        return makeSkull(name,base64EncodedString, (List<String>) null);
+
+    private static final UUID RANDOM_UUID = UUID.fromString("92864445-51c5-4c3b-9039-517c9927d1b4"); // We reuse the same "random" UUID all the time
+    private static PlayerProfile getProfile(String url) {
+        URL urlObject;
+        try {
+            urlObject = new URL(url); // The URL to the skin, for example: https://textures.minecraft.net/texture/18813764b2abc94ec3c3bc67b9147c21be850cdf996679703157f4555997ea63a
+        } catch (MalformedURLException exception) {
+            throw new RuntimeException("Invalid URL", exception);
+        }
+        return getProfile(urlObject);
+    }
+
+    private static PlayerProfile getProfile(URL url) {
+        PlayerProfile profile = Bukkit.createPlayerProfile(RANDOM_UUID); // Get a new player profile
+        PlayerTextures textures = profile.getTextures();
+        textures.setSkin(url); // Set the skin of the player profile to the URL
+        profile.setTextures(textures); // Set the textures back to the profile
+        return profile;
+    }
+
+    public static URL getUrlFromBase64(String base64){
+        String decoded = new String(Base64.getDecoder().decode(base64));
+        URL url;
+        try {
+            url = new URL(decoded.substring("{\"textures\":{\"SKIN\":{\"url\":\"".length(), decoded.length() - "\"}}}".length()));
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        return url;
+    }
+
+
+    public static URL getUrlFromBase64_2(String base64){
+        var decoded = new String(Base64.getDecoder().decode(base64));
+        var json = JsonParser.parseString(decoded).getAsJsonObject();
+        var url = json.getAsJsonObject("textures")
+                .getAsJsonObject("SKIN")
+                .get("url").getAsString();
+        URL urlObject;
+        try {
+            urlObject = new URL(url);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        return urlObject;
+
+    }
+
+
+
+
+        /**
+         * Create a head from base64 encoded string
+         * This method is called when loading custom heads from the internet
+         * Check <a href="https://minecraft-heads.com/">minecraft-heads.com</a> for more heads.
+         * This method calls an unsafe bukkit methods but no other methods have been found
+         * @param name                  The name of the new created head.
+         * @param base64EncodedString   The base64 encoded String of the new head.
+         * @return                      The {@link ItemStack} with custom texture.
+         */
+    public static @NotNull ItemStack makeSkullB64(final @NotNull String name, final @NotNull String base64EncodedString) {
+        return makeSkullB64(name,base64EncodedString, (List<String>) null);
     }
     /**
      * Create a head from base64 encoded string
@@ -182,9 +229,9 @@ public class HeadUtils {
      * @param loreLines             The lore of the new created head.
      * @return                      The {@link ItemStack} with custom texture.
      */
-    public static @NotNull ItemStack makeSkull(final @NotNull String name, final @NotNull String base64EncodedString, String... loreLines) {
+    public static @NotNull ItemStack makeSkullB64(final @NotNull String name, final @NotNull String base64EncodedString, String... loreLines) {
         List<String> lore = Arrays.asList(loreLines);
-        return makeSkull(name,base64EncodedString,lore);
+        return makeSkullB64(name,base64EncodedString,lore);
     }
     /**
      * Create a head from base64 encoded string
@@ -197,10 +244,10 @@ public class HeadUtils {
      * @param loreLines             Additional lore.
      * @return                      The {@link ItemStack} with custom texture.
      */
-    public static @NotNull ItemStack makeSkull(final @NotNull String name, final @NotNull String base64EncodedString, List<String> lore,  String... loreLines) {
+    public static @NotNull ItemStack makeSkullB64(final @NotNull String name, final @NotNull String base64EncodedString, List<String> lore, String... loreLines) {
         List<String> lore2 = Arrays.asList(loreLines);
         lore.addAll(lore2);
-        return makeSkull(name,base64EncodedString,lore);
+        return makeSkullB64(name,base64EncodedString,lore);
     }
     /**
      * Create a player head displaying a town with his information
