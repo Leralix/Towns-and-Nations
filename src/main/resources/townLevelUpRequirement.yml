@@ -1,8 +1,0 @@
-default:
-  expression: '(squareMultiplier * level ^ 2 + flatMultiplier * level + base) * 5'
-  TownExpression: '(squareMultiplier * level ^ 2 + flatMultiplier * level + base) * 10'
-  squareMultiplier: 8.0
-  flatMultiplier: 10.0
-  base: 100.0
-
-  costOfUnlockingSpawn: 1000.0

@@ -21,7 +21,8 @@ import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 import org.tan.TownsAndNations.utils.SoundUtil;
 
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class PlayerSelectPropertyPositionStorage {
         }
         else if(vList.size() == 1) {
 
-            int maxPropertySize = ConfigUtil.getCustomConfig("config.yml").getInt("maxPropertySize", 50000);
+            int maxPropertySize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("maxPropertySize", 50000);
             if(Math.abs(vList.get(0).getX() - block.getX()) * Math.abs(vList.get(0).getY() - block.getY()) * Math.abs(vList.get(0).getZ() - block.getZ()) > maxPropertySize){
                 player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_PROPERTY_TOO_BIG.get(maxPropertySize));
                 return;
@@ -88,7 +89,7 @@ public class PlayerSelectPropertyPositionStorage {
             player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_PLACE_SIGN.get());
         }
         else if(vList.size() == 2){
-            int margin = ConfigUtil.getCustomConfig("config.yml").getInt("maxPropertyMargin",3);
+            int margin = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("maxPropertyMargin",3);
             if(!isNearProperty(block.getLocation(),vList.get(0),vList.get(1), margin)){
                 player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_PROPERTY_SIGN_TOO_FAR.get(margin));
                 return;

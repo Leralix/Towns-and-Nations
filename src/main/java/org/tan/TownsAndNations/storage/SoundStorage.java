@@ -4,18 +4,18 @@ import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.tan.TownsAndNations.DataClass.SoundData;
 import org.tan.TownsAndNations.enums.SoundEnum;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 public class SoundStorage {
 
     public static final HashMap<SoundEnum, SoundData> soundMap = new HashMap<>();
 
     public static void init(){
-        ConfigurationSection soundsSection = ConfigUtil.getCustomConfig("config.yml").getConfigurationSection("sounds");
+        ConfigurationSection soundsSection = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getConfigurationSection("sounds");
         if (soundsSection != null) {
             for (String key : soundsSection.getKeys(false)) {
                 List<String> soundValues = soundsSection.getStringList(key);

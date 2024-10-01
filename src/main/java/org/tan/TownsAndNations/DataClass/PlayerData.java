@@ -2,6 +2,7 @@ package org.tan.TownsAndNations.DataClass;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
@@ -10,12 +11,10 @@ import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.storage.Invitation.TownInviteDataStorage;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 public class PlayerData {
@@ -31,7 +30,7 @@ public class PlayerData {
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
         this.PlayerName = player.getName();
-        this.Balance = ConfigUtil.getCustomConfig("config.yml").getInt("StartingMoney");
+        this.Balance = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("StartingMoney");
         this.TownId = null;
         this.townRankID = null;
         this.propertiesListID = new ArrayList<>();
@@ -175,14 +174,15 @@ public class PlayerData {
         return attackInvolvedIn;
     }
 
-    public void notifyDeathToAttacks(){
-        for(String attackID : getAttackInvolvedIn()){
+    public void notifyDeath(Player killer){
+        Iterator<String> iterator = getAttackInvolvedIn().iterator();
+        while (iterator.hasNext()) {
+            String attackID = iterator.next();
             CurrentAttacks currentAttacks = CurrentAttacksStorage.get(attackID);
-            if(currentAttacks != null){
-                currentAttacks.playerKilled(this);
-            }
-            else {
-                getAttackInvolvedIn().remove(attackID);
+            if (currentAttacks != null) {
+                currentAttacks.playerKilled(this, killer);
+            } else {
+                iterator.remove();
             }
         }
     }
@@ -210,10 +210,14 @@ public class PlayerData {
     }
 
     public boolean isAtWarWith(ITerritoryData territoryData){
+        if(territoryData == null){
+            return false;
+        }
         for(String attackID : getAttackInvolvedIn()){
             CurrentAttacks currentAttack = CurrentAttacksStorage.get(attackID);
             if(currentAttack == null){
                 getAttackInvolvedIn().remove(attackID);
+                continue;
             }
             if(currentAttack.getDefenders().contains(territoryData)){
                 return true;
@@ -222,7 +226,7 @@ public class PlayerData {
         return false;
     }
 
-    public void removeWar(CurrentAttacks currentAttacks){
+    public void removeWar(@NotNull CurrentAttacks currentAttacks){
         getAttackInvolvedIn().remove(currentAttacks.getID());
     }
 }

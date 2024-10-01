@@ -157,6 +157,7 @@ language:
   ADMIN_SPAWN_RARE_ITEM: "Spawn a rare item"
   ADMIN_UNCLAIM_DESC: "Unclaim any chunk"
   ADMIN_OPEN_GUI: "Open admin GUI"
+  ADMIN_RELOAD_COMMAND: "Reload the plugin"
   ADMIN_SUDO_COMMAND: "Grant the player the ability to bypass chunk protection"
   ##Debug commands
   DEBUG_CHAT_STORAGE: "Displays the contents of PlayerChatListenerStorage"
@@ -549,6 +550,8 @@ language:
   ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS: "§3{0}§f has left his town §3{1}"
   ADMIN_GUI_LANDMARK_ICON: "§aLandmarks"
   ADMIN_GUI_LANDMARK_DESC1: "§fLeft click to manage landmarks"
+  ADMIN_GUI_WAR_ICON: "§aWar"
+  ADMIN_GUI_WAR_DESC1: "§fLeft click to manage wars"
   ADMIN_GUI_CREATE_LANDMARK: "Create new landmark"
   LANDMARK_ALREADY_IN_POSITION: "A landmark is already on this position"
   GUI_LANDMARK_LEFT_CLICK_TO_CLAIM: "§fLeft click to claim this landmark"
@@ -781,3 +784,5 @@ language:
   MAP_CLAIM_TYPE: "    Type of claims : "
   MAP_TOWN: "    §9[Town]"
   MAP_REGION: "    §b[Region]"
+  #Reload
+  RELOAD_SUCCESS: "§aConfiguration reloaded"

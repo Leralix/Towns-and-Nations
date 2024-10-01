@@ -13,6 +13,8 @@ import org.tan.TownsAndNations.enums.MessageKey;
 import org.tan.TownsAndNations.storage.*;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +26,6 @@ import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
 import static org.tan.TownsAndNations.utils.EconomyUtil.removeFromBalance;
 import static org.tan.TownsAndNations.utils.TeamUtils.setIndividualScoreBoard;
-import static org.tan.TownsAndNations.utils.TeamUtils.updateAllScoreboardColor;
 
 public class TownUtil {
 
@@ -38,7 +39,7 @@ public class TownUtil {
             return;
         }
 
-        FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
+        FileConfiguration config =  ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         int maxSize = config.getInt("TownNameSize");
 
         if(townName.length() > maxSize){
@@ -84,7 +85,7 @@ public class TownUtil {
 
     public static void CreateAdminTown(Player player, String townName) {
 
-        FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
+        FileConfiguration config =  ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         int maxSize = config.getInt("TownNameSize");
 
         if(townName.length() > maxSize){

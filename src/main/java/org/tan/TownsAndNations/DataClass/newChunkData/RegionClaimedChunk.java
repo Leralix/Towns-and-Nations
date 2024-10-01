@@ -4,7 +4,6 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
-import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -38,7 +37,14 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
         PlayerData playerData = PlayerDataStorage.get(player);
         RegionData region = RegionDataStorage.get(ownerID);
-        return region.isPlayerInRegion(playerData);
+
+
+        if(!region.isPlayerInRegion(playerData)){
+            playerCantPerformAction(player);
+            return false;
+        }
+
+        return true;
     }
 
     public RegionData getRegion() {
@@ -89,12 +95,14 @@ public class RegionClaimedChunk extends ClaimedChunk2{
 
     @Override
     public TextComponent getMapIcon(PlayerData playerData) {
-        TextComponent textComponent = new TextComponent(getRegion().getChunkColorClass() + "⬛");
+        TextComponent textComponent = new TextComponent("⬛");
+        textComponent.setColor(getRegion().getChunkColor());
         textComponent.setHoverEvent(new HoverEvent(
-                HoverEvent.Action.SHOW_TEXT,
-                new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
-                        getRegion().getColoredName() + "\n" +
-                        Lang.LEFT_CLICK_TO_CLAIM.get())));        return textComponent;
+            HoverEvent.Action.SHOW_TEXT,
+            new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
+                    getRegion().getColoredName() + "\n" +
+                    Lang.LEFT_CLICK_TO_CLAIM.get())));
+        return textComponent;
     }
 
     @Override

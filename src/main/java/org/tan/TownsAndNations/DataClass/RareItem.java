@@ -3,10 +3,7 @@ package org.tan.TownsAndNations.DataClass;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.tan.TownsAndNations.utils.ConfigUtil;
-import org.tan.TownsAndNations.utils.EconomyUtil;
 
 import java.util.Random;
 

@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tan.TownsAndNations.API.tanAPI;
@@ -19,10 +20,17 @@ import org.tan.TownsAndNations.commands.AdminCommandManager;
 import org.tan.TownsAndNations.commands.CommandManager;
 import org.tan.TownsAndNations.commands.DebugCommandManager;
 import org.tan.TownsAndNations.listeners.*;
-import org.tan.TownsAndNations.storage.*;
+import org.tan.TownsAndNations.storage.CustomItemManager;
 import org.tan.TownsAndNations.storage.DataStorage.*;
 import org.tan.TownsAndNations.storage.Legacy.UpgradeStorage;
-import org.tan.TownsAndNations.utils.*;
+import org.tan.TownsAndNations.storage.MobChunkSpawnStorage;
+import org.tan.TownsAndNations.storage.SoundStorage;
+import org.tan.TownsAndNations.utils.CustomNBT;
+import org.tan.TownsAndNations.utils.DropChances;
+import org.tan.TownsAndNations.utils.EconomyUtil;
+import org.tan.TownsAndNations.utils.UpdateUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -30,7 +38,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
@@ -59,6 +66,11 @@ public final class TownsAndNations extends JavaPlugin {
      * used to check if the plugin has just been updated and config file needs an update
      */
     private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,10,1);
+    /**
+     * Minimum required version of the Towns and Nations dynmap plugin.
+     */
+    private static final PluginVersion MIN_REQUIRED_TAN_DYNMAP = new PluginVersion(0,5,0);
+
     /**
      * Latest version of the plugin from GitHub.
      * Used to check if the plugin is up-to-date to the latest version.
@@ -118,8 +130,8 @@ public final class TownsAndNations extends JavaPlugin {
         logger.info("[TaN] -Loading Lang");
 
         ConfigUtil.saveAndUpdateResource("lang.yml");
-        ConfigUtil.loadCustomConfig("lang.yml");
-        String lang = ConfigUtil.getCustomConfig("lang.yml").getString("language");
+        ConfigUtil.addCustomConfig("lang.yml", ConfigTag.LANG);
+        String lang = ConfigUtil.getCustomConfig(ConfigTag.LANG).getString("language");
 
         langList.add("eng.yml");
         langList.add("fra.yml");
@@ -133,11 +145,9 @@ public final class TownsAndNations extends JavaPlugin {
 
         logger.info("[TaN] -Loading Configs");
         ConfigUtil.saveAndUpdateResource("config.yml");
-        ConfigUtil.loadCustomConfig("config.yml");
-        ConfigUtil.saveAndUpdateResource("townLevelUpRequirement.yml");
-        ConfigUtil.loadCustomConfig("townLevelUpRequirement.yml");
+        ConfigUtil.addCustomConfig("config.yml", ConfigTag.MAIN);
         ConfigUtil.saveAndUpdateResource("townUpgrades.yml");
-        ConfigUtil.loadCustomConfig("townUpgrades.yml");
+        ConfigUtil.addCustomConfig("townUpgrades.yml", ConfigTag.UPGRADES);
 
         DropChances.load();
         UpgradeStorage.init();
@@ -145,17 +155,18 @@ public final class TownsAndNations extends JavaPlugin {
         SoundStorage.init();
         CustomItemManager.loadCustomItems();
 
-        allowColorCodes = ConfigUtil.getCustomConfig("config.yml").getBoolean("EnablePlayerColorCode", false);
-        allowTownTag = ConfigUtil.getCustomConfig("config.yml").getBoolean("EnablePlayerPrefix",false);
-        SQLEnabled = ConfigUtil.getCustomConfig("config.yml").getBoolean("EnableCrossServer", false);
+
+        FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
+        allowColorCodes = mainConfig.getBoolean("EnablePlayerColorCode", false);
+        allowTownTag = mainConfig.getBoolean("EnablePlayerPrefix",false);
+        SQLEnabled = mainConfig.getBoolean("EnableCrossServer", false);
 
         if(SQLEnabled){
             logger.info("[TaN] -Loading SQL connections");
 
-            String host = ConfigUtil.getCustomConfig("config.yml").getString("SQL.address");
-            String username = ConfigUtil.getCustomConfig("config.yml").getString("SQL.username");
-            String password = ConfigUtil.getCustomConfig("config.yml").getString("SQL.password");
-
+            String host = mainConfig.getString("SQL.address");
+            String username = mainConfig.getString("SQL.username");
+            String password = mainConfig.getString("SQL.password");
         }
         else{
             logger.info("[TaN] -Loading Local data");
@@ -169,7 +180,6 @@ public final class TownsAndNations extends JavaPlugin {
 
         logger.info("[TaN] -Loading blocks data");
         CustomNBT.setBlocsData();
-
         UpdateUtil.update();
 
 
@@ -178,9 +188,9 @@ public final class TownsAndNations extends JavaPlugin {
         DailyTasks.scheduleMidnightTask();
 
         EnableEventList();
-        Objects.requireNonNull(getCommand("tan")).setExecutor(new CommandManager());
-        Objects.requireNonNull(getCommand("tanadmin")).setExecutor(new AdminCommandManager());
-        Objects.requireNonNull(getCommand("tandebug")).setExecutor(new DebugCommandManager());
+        getCommand("tan").setExecutor(new CommandManager());
+        getCommand("tanadmin").setExecutor(new AdminCommandManager());
+        getCommand("tandebug").setExecutor(new DebugCommandManager());
 
         if (setupEconomy()) {
             logger.info("[TaN] -Vault API successfully loaded");

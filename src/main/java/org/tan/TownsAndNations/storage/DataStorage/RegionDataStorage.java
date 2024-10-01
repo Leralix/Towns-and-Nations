@@ -13,7 +13,8 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 import org.tan.TownsAndNations.utils.FileUtil;
 
 import java.io.*;
@@ -40,13 +41,13 @@ public class RegionDataStorage {
             return;
         }
 
-        int cost = ConfigUtil.getCustomConfig("config.yml").getInt("regionCost");
+        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
         if(town.getBalance() < cost){
             player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
             return;
         }
 
-        int maxSize = ConfigUtil.getCustomConfig("config.yml").getInt("RegionNameSize");
+        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RegionNameSize");
         if(regionName.length() > maxSize){
             player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
             return;
@@ -104,7 +105,7 @@ public class RegionDataStorage {
     }
 
     public static boolean isNameUsed(String name){
-        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("AllowNameDuplication",true))
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",true))
             return false;
 
         for (RegionData region : regionStorage.values()){

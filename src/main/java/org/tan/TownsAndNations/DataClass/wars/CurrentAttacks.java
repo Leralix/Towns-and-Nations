@@ -1,18 +1,22 @@
 package org.tan.TownsAndNations.DataClass.wars;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.DataClass.wars.wargoals.WarGoal;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -34,7 +38,7 @@ public class CurrentAttacks {
         this.attackers = attackers;
         this.defenders = defenders;
         this.originalTitle = "War";
-        long warDuration = ConfigUtil.getCustomConfig("config.yml").getInt("WarDuration");
+        long warDuration = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("WarDuration");
         this.remainingTime = warDuration * 60 * 20;
         this.warGoal = warGoal;
 
@@ -80,26 +84,47 @@ public class CurrentAttacks {
     }
 
 
-    public void playerKilled(PlayerData playerData) {
+    public void playerKilled(PlayerData playerData, Player killer) {
 
         for (ITerritoryData territoryData : attackers) {
             if (territoryData.havePlayer(playerData)) {
-                int nbAttackers = getNumberOfOnlineAttackers();
-                double multiplier = ConfigUtil.getCustomConfig("config.yml").getDouble("warScoreMultiplier");
-                int score = (int) (multiplier / nbAttackers * 500);
-                addScore(-score);
-                setTemporaryBossBarTitle("Attacking player killed!");
+                if(killer != null){
+                    attackingLoss();
+                }
+                else {
+                    Location playerLocation = playerData.getPlayer().getLocation();
+                    ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(playerLocation.getChunk());
+                    if (defenders.contains(claimedChunk.getOwner())) {
+                        attackingLoss();
+                    }
+
+                }
+
             }
         }
         for (ITerritoryData territoryData : defenders) {
             if (territoryData.havePlayer(playerData)) {
-                int nbDefenders = getNumberOfOnlineDefenders();
-                double multiplier = ConfigUtil.getCustomConfig("config.yml").getDouble("warScoreMultiplier");
-                int score = (int) (multiplier / nbDefenders * 500);
-                addScore(score);
-                setTemporaryBossBarTitle("Defensive player killed!");
+                if(killer != null){
+                    defendingLoss();
+                }
             }
         }
+    }
+
+    public void attackingLoss() {
+        int nbAttackers = getNumberOfOnlineAttackers();
+        double multiplier = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("warScoreMultiplier");
+        int score = (int) (multiplier / nbAttackers * 500);
+        addScore(-score);
+        setTemporaryBossBarTitle("Attacking player killed!");
+    }
+
+    public void defendingLoss() {
+        int nbDefenders = getNumberOfOnlineDefenders();
+        double multiplier = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("warScoreMultiplier");
+        int score = (int) (multiplier / nbDefenders * 500);
+        addScore(score);
+        setTemporaryBossBarTitle("Defensive player killed!");
     }
 
     private int getNumberOfOnlineDefenders() {
@@ -265,6 +290,7 @@ public class CurrentAttacks {
         }
         return false;
     }
+
 
     public Collection<ITerritoryData> getDefenders() {
         return defenders;

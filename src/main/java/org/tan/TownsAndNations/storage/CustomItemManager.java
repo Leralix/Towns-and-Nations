@@ -1,9 +1,9 @@
 package org.tan.TownsAndNations.storage;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +14,7 @@ public class CustomItemManager {
     private static final HashMap<String, Integer> customItemsMap = new HashMap<>();
 
     public static void loadCustomItems() {
-        List<Map<?, ?>> customItemsList = ConfigUtil.getCustomConfig("config.yml").getMapList("customRareItems");
+        List<Map<?, ?>> customItemsList = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getMapList("customRareItems");
 
         for (Map<?, ?> itemConfig : customItemsList) {
             String itemName = (String) itemConfig.get("item");

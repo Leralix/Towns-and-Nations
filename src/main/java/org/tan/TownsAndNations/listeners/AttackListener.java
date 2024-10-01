@@ -1,7 +1,6 @@
 package org.tan.TownsAndNations.listeners;
 
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,9 +14,6 @@ public class AttackListener implements Listener {
     public void onPlayerKilled(PlayerDeathEvent e) {
         Player killed = e.getEntity();
         Player killer = e.getEntity().getKiller();
-        if(killer == null) {
-            return;
-        }
-        PlayerDataStorage.get(killed).notifyDeathToAttacks();
+        PlayerDataStorage.get(killed).notifyDeath(killer);
     }
 }

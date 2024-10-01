@@ -1,6 +1,7 @@
 package org.tan.TownsAndNations.commands.subcommands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -8,10 +9,10 @@ import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 import org.tan.TownsAndNations.utils.EconomyUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
@@ -75,8 +76,14 @@ public class PayCommand extends SubCommand  {
                 }
             }
 
-            double distance = player.getLocation().distance(receiver.getLocation());
-            if(distance > ConfigUtil.getCustomConfig("config.yml").getInt("maxPayDistance")){
+            Location senderLocation = player.getLocation();
+            Location receiverLocation = receiver.getLocation();
+            if(senderLocation.getWorld() != receiverLocation.getWorld()){
+                player.sendMessage(getTANString() + Lang.INTERACTION_TOO_FAR_ERROR.get());
+                return;
+            }
+
+            if(senderLocation.distance(receiverLocation) > ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("maxPayDistance")){
                 player.sendMessage(getTANString() + Lang.INTERACTION_TOO_FAR_ERROR.get());
                 return;
             }

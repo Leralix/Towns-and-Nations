@@ -18,6 +18,7 @@ import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlannedAttackStorage;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -225,9 +226,5 @@ public abstract class ITerritoryData {
             return true;
         }
         return false;
-    }
-
-    public ChatColor getChunkColorClass() {
-        return ChatColor.of(getChunkColorInHex());
     }
 }

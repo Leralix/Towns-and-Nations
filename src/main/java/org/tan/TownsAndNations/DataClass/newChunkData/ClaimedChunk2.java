@@ -71,7 +71,7 @@ public abstract class ClaimedChunk2 {
 
     void playerCantPerformAction(Player player){
         player.sendMessage(getTANString() + Lang.PLAYER_ACTION_NO_PERMISSION.get());
-        player.sendMessage(getTANString() + Lang.CHUNK_BELONGS_TO.get(TownDataStorage.get(getOwnerID()).getName()));
+        player.sendMessage(getTANString() + Lang.CHUNK_BELONGS_TO.get(getOwner().getName()));
     }
 
     public abstract void unclaimChunk(Player player, Chunk chunk);
@@ -87,7 +87,8 @@ public abstract class ClaimedChunk2 {
     }
 
     public ITerritoryData getOwner() {
-        return TerritoryUtil.getTerritory(this.ownerID);
+        if(ownerID == null) return null;
+        return TerritoryUtil.getTerritory(ownerID);
     }
 
     public TextComponent getMapIcon(Player player) {

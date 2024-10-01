@@ -3,7 +3,8 @@ package org.tan.TownsAndNations.DataClass.wars;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.DataClass.wars.wargoals.NoWarGoal;
 import org.tan.TownsAndNations.DataClass.wars.wargoals.WarGoal;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 public class CreateAttackData {
 
@@ -16,8 +17,8 @@ public class CreateAttackData {
 
     public CreateAttackData(ITerritoryData mainAttacker, ITerritoryData mainDefender){
 
-        minTime = ConfigUtil.getCustomConfig("config.yml").getInt("MinimumTimeBeforeAttack",120);
-        maxTime = ConfigUtil.getCustomConfig("config.yml").getInt("MaximumTimeBeforeAttack",4320);
+        minTime = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MinimumTimeBeforeAttack",120);
+        maxTime = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MaximumTimeBeforeAttack",4320);
         minTime = minTime * 60 * 20;
         maxTime = maxTime * 60 * 20;
 

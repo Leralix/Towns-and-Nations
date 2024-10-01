@@ -13,7 +13,8 @@ import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ArchiveUtil;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 import org.tan.TownsAndNations.utils.EconomyUtil;
 
 import java.util.Calendar;
@@ -29,8 +30,8 @@ public class DailyTasks {
             public void run() {
                 Calendar calendar = new GregorianCalendar();
 
-                int minute = ConfigUtil.getCustomConfig("config.yml").getInt("taxHourTime",0);
-                int hour = ConfigUtil.getCustomConfig("config.yml").getInt("taxMinuteTime",0);
+                int minute = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("taxHourTime",0);
+                int hour = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("taxMinuteTime",0);
 
                 if (calendar.get(Calendar.HOUR_OF_DAY) == hour && calendar.get(Calendar.MINUTE) == minute) {
                     executeMidnightTasks();
@@ -107,7 +108,7 @@ public class DailyTasks {
     }
     public static void ChunkPayment(){
 
-        float upkeepCost = ConfigUtil.getCustomConfig("config.yml").getInt("TownChunkUpkeepCost");
+        float upkeepCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownChunkUpkeepCost");
 
         for(TownData town : TownDataStorage.getTownMap().values()){
 
@@ -145,10 +146,10 @@ public class DailyTasks {
     }
 
     public static void ClearOldTaxes() {
-        int timeBeforeClearing = ConfigUtil.getCustomConfig("config.yml").getInt("TimeBeforeClearingTaxHistory",30);
-        int TimeBeforeClearingChunk = ConfigUtil.getCustomConfig("config.yml").getInt("TimeBeforeClearingChunkHistory",30);
-        int timeBeforeClearingDonation = ConfigUtil.getCustomConfig("config.yml").getInt("NumberOfDonationBeforeClearing",100);
-        int timeBeforeClearingMisc = ConfigUtil.getCustomConfig("config.yml").getInt("NumberOfMiscPurchaseBeforeClearing",100);
+        int timeBeforeClearing = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingTaxHistory",30);
+        int TimeBeforeClearingChunk = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingChunkHistory",30);
+        int timeBeforeClearingDonation = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("NumberOfDonationBeforeClearing",100);
+        int timeBeforeClearingMisc = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("NumberOfMiscPurchaseBeforeClearing",100);
 
 
         for (TownData town : TownDataStorage.getTownMap().values()) {

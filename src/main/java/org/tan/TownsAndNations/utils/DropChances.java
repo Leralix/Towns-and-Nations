@@ -10,6 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.tan.TownsAndNations.DataClass.RareItem;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +33,7 @@ public class DropChances {
     public static void load(){
 
 
-        FileConfiguration config = ConfigUtil.getCustomConfig("config.yml");
+        FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
 
         if(!config.getBoolean("RARE_RESOURCES_SPAWN", true)){
             return;

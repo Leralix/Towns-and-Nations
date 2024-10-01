@@ -3,7 +3,8 @@ package org.tan.TownsAndNations.Lang;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import java.io.File;
 import java.util.HashMap;
@@ -120,6 +121,7 @@ public enum Lang {
     ADMIN_SPAWN_RARE_ITEM,
     ADMIN_UNCLAIM_DESC,
     ADMIN_OPEN_GUI,
+    ADMIN_RELOAD_COMMAND,
     ADMIN_SUDO_COMMAND,
     DEBUG_CHAT_STORAGE,
     DEBUG_SAVE_ALL_DATA,
@@ -436,6 +438,8 @@ public enum Lang {
     ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS,
     ADMIN_GUI_LANDMARK_ICON,
     ADMIN_GUI_LANDMARK_DESC1,
+    ADMIN_GUI_WAR_ICON,
+    ADMIN_GUI_WAR_DESC1,
     ADMIN_GUI_CREATE_LANDMARK,
     LANDMARK_ALREADY_IN_POSITION,
     GUI_LANDMARK_LEFT_CLICK_TO_CLAIM,
@@ -734,12 +738,13 @@ public enum Lang {
     BROADCAST_PLAYER_REGION_DELETED,
     MAP_CLAIM_TYPE,
     MAP_TOWN,
-    MAP_REGION;
+    MAP_REGION,
+    RELOAD_SUCCESS;
 
 
     private static final Map<Lang, String> translations = new HashMap<>();
 
-    public static boolean loadTranslations(String filename) {
+    public static void loadTranslations(String filename) {
 
         File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
 
@@ -757,7 +762,7 @@ public enum Lang {
         if(!file.exists())
             TownsAndNations.getPlugin().saveResource("lang/" + filename, true);
 
-        boolean replace = ConfigUtil.getCustomConfig("lang.yml").getBoolean("autoUpdateLangFiles",true);
+        boolean replace = ConfigUtil.getCustomConfig(ConfigTag.LANG).getBoolean("autoUpdateLangFiles",true);
         if(replace) {
             TownsAndNations.getPlugin().saveResource("lang/" + filename, true);
         }
@@ -769,7 +774,6 @@ public enum Lang {
             }
         }
         TownsAndNations.getPluginLogger().info(LANGUAGE_SUCCESSFULLY_LOADED.get());
-        return true;
     }
 
     public String get() {

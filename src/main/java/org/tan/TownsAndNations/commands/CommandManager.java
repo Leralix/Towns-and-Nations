@@ -3,8 +3,8 @@ package org.tan.TownsAndNations.commands;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.commands.subcommands.*;
-import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class CommandManager implements CommandExecutor, TabExecutor, TabComplete
         subCommands.add(new TownSpawnCommand());
         subCommands.add(new SetTownSpawnCommand());
 
-        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("AllowSellRareRessourcesByCommand",true)){
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowSellRareRessourcesByCommand",true)){
             subCommands.add(new SellRareItem());
         }
     }
@@ -78,6 +78,7 @@ public class CommandManager implements CommandExecutor, TabExecutor, TabComplete
                 if(subCmd.getName().startsWith(args[0].toLowerCase())) {
                     suggestions.add(subCmd.getName());
                 }
+                suggestions.add("help");
             }
         }else {
             SubCommand subCmd = subCommands.stream().filter(cmd -> cmd.getName().equalsIgnoreCase(args[0])).findFirst().orElse(null);

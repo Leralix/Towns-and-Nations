@@ -3,6 +3,7 @@ package org.tan.TownsAndNations.GUI;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -28,6 +29,8 @@ import org.tan.TownsAndNations.storage.Invitation.RegionInviteDataStorage;
 import org.tan.TownsAndNations.storage.Invitation.TownRelationConfirmStorage;
 import org.tan.TownsAndNations.storage.Legacy.UpgradeStorage;
 import org.tan.TownsAndNations.utils.*;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import static org.tan.TownsAndNations.TownsAndNations.isDynmapAddonLoaded;
 import static org.tan.TownsAndNations.TownsAndNations.isSQLEnabled;
@@ -95,12 +98,12 @@ public class playerGUI implements IGUI {
         int slotTown = 6;
         int slotPlayer = 8;
 
-        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("EnableKingdom",true) &&
-                ConfigUtil.getCustomConfig("config.yml").getBoolean("EnableRegion",true)) {
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableKingdom",true) &&
+                ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableRegion",true)) {
             gui.setItem(2, slotKingdom, Kingdom);
         }
 
-        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("EnableRegion",true)){
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableRegion",true)){
             gui.setItem(2,slotRegion,Region);
         }
         else {
@@ -587,7 +590,7 @@ public class playerGUI implements IGUI {
 
         Gui gui = IGUI.createChestGui("Town",3);
 
-        int townPrice = ConfigUtil.getCustomConfig("config.yml").getInt("townCost", 1000);
+        int townPrice = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("townCost", 1000);
 
         ItemStack createTown = HeadUtils.createCustomItemStack(Material.GRASS_BLOCK,
                 Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.get(),
@@ -1346,7 +1349,7 @@ public class playerGUI implements IGUI {
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
-            if(town.getNumberOfRank() >= ConfigUtil.getCustomConfig("config.yml").getInt("townMaxRank",8)){
+            if(town.getNumberOfRank() >= ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("townMaxRank",8)){
                 player.sendMessage(getTANString() + Lang.TOWN_RANK_CAP_REACHED.get());
                 return;
             }
@@ -1735,7 +1738,7 @@ public class playerGUI implements IGUI {
 
         // Chunk upkeep
         int numberClaimedChunk = town.getNumberOfClaimedChunk();
-        float upkeepCost = ConfigUtil.getCustomConfig("config.yml").getInt("TownChunkUpkeepCost");
+        float upkeepCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownChunkUpkeepCost");
         float totalUpkeep = numberClaimedChunk * upkeepCost/10;
         int totalSalary = town.getTotalSalaryCost();
         int regionalTax =  town.getRegionTaxRate();
@@ -1971,7 +1974,7 @@ public class playerGUI implements IGUI {
 
                 int i = 0;
 
-                float upkeepCost = ConfigUtil.getCustomConfig("config.yml").getInt("TownChunkUpkeepCost");
+                float upkeepCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownChunkUpkeepCost");
 
                 for(TransactionHistory chunkTax : town.getChunkHistory().get().values()){
 
@@ -2091,7 +2094,7 @@ public class playerGUI implements IGUI {
                 ItemStack upgradeTownLevel = HeadUtils.createCustomItemStack(Material.ORANGE_STAINED_GLASS_PANE,
                         Lang.GUI_TOWN_LEVEL_UP.get(),
                         Lang.GUI_TOWN_LEVEL_UP_DESC1.get(townLevel.getTownLevel()),
-                        Lang.GUI_TOWN_LEVEL_UP_DESC2.get(townLevel.getTownLevel() + 1, townLevel.getMoneyRequiredTownLevel()));
+                        Lang.GUI_TOWN_LEVEL_UP_DESC2.get(townLevel.getTownLevel() + 1, townLevel.getMoneyRequiredForLevelUp()));
 
                 _bottompannel = ItemBuilder.from(upgradeTownLevel).asGuiItem(event -> {
                     event.setCancelled(true);
@@ -2134,7 +2137,7 @@ public class playerGUI implements IGUI {
         });
         GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
             event.setCancelled(true);
-            int townMaxLevel = ConfigUtil.getCustomConfig("config.yml").getInt("TownMaxLevel",10);
+            int townMaxLevel = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownMaxLevel",10);
             if(level < (townMaxLevel - 7))
                 OpenTownLevel(player,level + 1);
         });
@@ -2156,7 +2159,7 @@ public class playerGUI implements IGUI {
 
         PlayerData playerData = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(player);
-        int changeTownNameCost = ConfigUtil.getCustomConfig("config.yml").getInt("ChangeTownNameCost");
+        int changeTownNameCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("ChangeTownNameCost");
 
 
         ItemStack TownIcon = playerTown.getIconWithInformations();
@@ -2190,7 +2193,7 @@ public class playerGUI implements IGUI {
         ItemStack changeChunkColor = HeadUtils.createCustomItemStack(Material.PURPLE_WOOL,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR.get(),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(),
-                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(playerTown.getChunkColor() + playerTown.getChunkColorInHex()),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(new TextComponent(playerTown.getChunkColor() + playerTown.getChunkColorInHex()).getText()),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3.get());
 
         ItemStack changeTag = HeadUtils.createCustomItemStack(Material.FLOWER_BANNER_PATTERN,
@@ -2355,7 +2358,7 @@ public class playerGUI implements IGUI {
 
         gui.setItem(3,2, _quitRegion);
 
-        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("EnablePlayerPrefix",false))
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnablePlayerPrefix",false))
             gui.setItem(3,7, _changeTag);
         if(isDynmapAddonLoaded())
             gui.setItem(3,8, _changeChunkColor);
@@ -2804,24 +2807,24 @@ public class playerGUI implements IGUI {
 
 
         Object[][] itemData = {
-                {ChunkPermissionType.OPEN_DOOR, Material.OAK_DOOR, Lang.GUI_TOWN_CLAIM_SETTINGS_DOOR},
-                {ChunkPermissionType.CHEST, Material.CHEST, Lang.GUI_TOWN_CLAIM_SETTINGS_CHEST},
+                {ChunkPermissionType.INTERACT_DOOR, Material.OAK_DOOR, Lang.GUI_TOWN_CLAIM_SETTINGS_DOOR},
+                {ChunkPermissionType.INTERACT_CHEST, Material.CHEST, Lang.GUI_TOWN_CLAIM_SETTINGS_CHEST},
                 {ChunkPermissionType.PLACE_BLOCK, Material.BRICKS, Lang.GUI_TOWN_CLAIM_SETTINGS_BUILD},
                 {ChunkPermissionType.BREAK_BLOCK, Material.IRON_PICKAXE, Lang.GUI_TOWN_CLAIM_SETTINGS_BREAK},
                 {ChunkPermissionType.ATTACK_PASSIVE_MOB, Material.BEEF, Lang.GUI_TOWN_CLAIM_SETTINGS_ATTACK_PASSIVE_MOBS},
-                {ChunkPermissionType.USE_BUTTONS, Material.STONE_BUTTON, Lang.GUI_TOWN_CLAIM_SETTINGS_BUTTON},
-                {ChunkPermissionType.USE_REDSTONE, Material.REDSTONE, Lang.GUI_TOWN_CLAIM_SETTINGS_REDSTONE},
-                {ChunkPermissionType.USE_FURNACE, Material.FURNACE, Lang.GUI_TOWN_CLAIM_SETTINGS_FURNACE},
+                {ChunkPermissionType.INTERACT_BUTTON, Material.STONE_BUTTON, Lang.GUI_TOWN_CLAIM_SETTINGS_BUTTON},
+                {ChunkPermissionType.INTERACT_REDSTONE, Material.REDSTONE, Lang.GUI_TOWN_CLAIM_SETTINGS_REDSTONE},
+                {ChunkPermissionType.INTERACT_FURNACE, Material.FURNACE, Lang.GUI_TOWN_CLAIM_SETTINGS_FURNACE},
                 {ChunkPermissionType.INTERACT_ITEM_FRAME, Material.ITEM_FRAME, Lang.GUI_TOWN_CLAIM_SETTINGS_INTERACT_ITEM_FRAME},
                 {ChunkPermissionType.INTERACT_ARMOR_STAND, Material.ARMOR_STAND, Lang.GUI_TOWN_CLAIM_SETTINGS_INTERACT_ARMOR_STAND},
-                {ChunkPermissionType.DECORATIVE_BLOCK, Material.CAULDRON, Lang.GUI_TOWN_CLAIM_SETTINGS_DECORATIVE_BLOCK},
-                {ChunkPermissionType.MUSIC_BLOCK, Material.JUKEBOX, Lang.GUI_TOWN_CLAIM_SETTINGS_MUSIC_BLOCK},
-                {ChunkPermissionType.LEAD, Material.LEAD, Lang.GUI_TOWN_CLAIM_SETTINGS_LEAD},
-                {ChunkPermissionType.SHEARS, Material.SHEARS, Lang.GUI_TOWN_CLAIM_SETTINGS_SHEARS},
-                {ChunkPermissionType.PLACE_BOAT, Material.OAK_BOAT, Lang.GUI_TOWN_CLAIM_SETTINGS_PLACE_BOAT},
-                {ChunkPermissionType.PLACE_MINECART, Material.MINECART, Lang.GUI_TOWN_CLAIM_SETTINGS_PLACE_VEHICLE},
-                {ChunkPermissionType.GATHER_BERRIES, Material.SWEET_BERRIES, Lang.GUI_TOWN_CLAIM_SETTINGS_GATHER_BERRIES},
-                {ChunkPermissionType.USE_BONEMEAL, Material.BONE_MEAL, Lang.GUI_TOWN_CLAIM_SETTINGS_USE_BONE_MEAL},
+                {ChunkPermissionType.INTERACT_DECORATIVE_BLOCK, Material.CAULDRON, Lang.GUI_TOWN_CLAIM_SETTINGS_DECORATIVE_BLOCK},
+                {ChunkPermissionType.INTERACT_MUSIC_BLOCK, Material.JUKEBOX, Lang.GUI_TOWN_CLAIM_SETTINGS_MUSIC_BLOCK},
+                {ChunkPermissionType.USE_LEAD, Material.LEAD, Lang.GUI_TOWN_CLAIM_SETTINGS_LEAD},
+                {ChunkPermissionType.USE_SHEARS, Material.SHEARS, Lang.GUI_TOWN_CLAIM_SETTINGS_SHEARS},
+                {ChunkPermissionType.INTERACT_BOAT, Material.OAK_BOAT, Lang.GUI_TOWN_CLAIM_SETTINGS_PLACE_BOAT},
+                {ChunkPermissionType.INTERACT_MINECART, Material.MINECART, Lang.GUI_TOWN_CLAIM_SETTINGS_PLACE_VEHICLE},
+                {ChunkPermissionType.INTERACT_BERRIES, Material.SWEET_BERRIES, Lang.GUI_TOWN_CLAIM_SETTINGS_GATHER_BERRIES},
+                {ChunkPermissionType.USE_BONE_MEAL, Material.BONE_MEAL, Lang.GUI_TOWN_CLAIM_SETTINGS_USE_BONE_MEAL},
 
         };
 
@@ -2853,7 +2856,7 @@ public class playerGUI implements IGUI {
         Gui gui = IGUI.createChestGui("Region",3);
 
 
-        int regionCost = ConfigUtil.getCustomConfig("config.yml").getInt("regionCost");
+        int regionCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
 
         ItemStack createRegion = HeadUtils.createCustomItemStack(Material.STONE_BRICKS,
                 Lang.GUI_REGION_CREATE.get(),

@@ -5,7 +5,8 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.tan.TownsAndNations.storage.Legacy.UpgradeStorage;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,17 +68,17 @@ public class TownLevel {
 
 
 
-    public int getMoneyRequiredTownLevel() {
-        return getRequiredMoney("townLevelUpRequirement.yml", "TownExpression", getTownLevel());
+    public int getMoneyRequiredForLevelUp() {
+        return getRequiredMoney(getTownLevel());
     }
 
 
 
-    private int getRequiredMoney(String configFileName, String expressionKey, int level) {
-        FileConfiguration fg = ConfigUtil.getCustomConfig(configFileName);
-        ConfigurationSection section = fg.getConfigurationSection("default");
+    private int getRequiredMoney(int level) {
+        FileConfiguration fg = ConfigUtil.getCustomConfig(ConfigTag.UPGRADES);
+        ConfigurationSection section = fg.getConfigurationSection("townUpgrades");
 
-        String expressionString = section.getString(expressionKey);
+        String expressionString = section.getString("TownLevelExpression");
 
         double squareMultiplier = section.getDouble("squareMultiplier");
         double flatMultiplier = section.getDouble("flatMultiplier");

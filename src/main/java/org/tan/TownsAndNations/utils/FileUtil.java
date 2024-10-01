@@ -2,6 +2,8 @@ package org.tan.TownsAndNations.utils;
 
 import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.TownsAndNations;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,7 +17,7 @@ import java.time.LocalDate;
 public class FileUtil {
     public static void addLineToHistory(final @NotNull String lineToAdd) {
 
-        if(!ConfigUtil.getCustomConfig("config.yml").getBoolean("archiveHistory",true)) {
+        if(!ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("archiveHistory",true)) {
             return;
         }
 

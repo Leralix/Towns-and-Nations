@@ -21,6 +21,8 @@ import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.DataStorage.*;
 import org.tan.TownsAndNations.utils.*;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -275,7 +277,7 @@ public class RegionData extends ITerritoryData {
             player.sendMessage(getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return;
         }
-        int cost = ConfigUtil.getCustomConfig("config.yml").getInt("CostOfRegionChunk",5);
+        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfRegionChunk",5);
 
         if(regionData.getBalance() < cost){
             player.sendMessage(getTANString() + Lang.REGION_NOT_ENOUGH_MONEY_EXTENDED.get(cost - regionData.getBalance()));

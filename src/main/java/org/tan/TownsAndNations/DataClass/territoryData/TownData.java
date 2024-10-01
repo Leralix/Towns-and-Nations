@@ -15,6 +15,8 @@ import org.tan.TownsAndNations.enums.*;
 import org.tan.TownsAndNations.storage.DataStorage.*;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.utils.*;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import java.util.*;
 
@@ -118,7 +120,7 @@ public class TownData extends ITerritoryData {
     }
 
     public boolean isRankNameUsed(String message) {
-        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("AllowNameDuplication",false))
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",false))
             return false;
 
         for (TownRank rank : this.getRanks()) {
@@ -620,7 +622,7 @@ public class TownData extends ITerritoryData {
         }
 
 
-        int cost = ConfigUtil.getCustomConfig("config.yml").getInt("CostOfTownChunk",0);
+        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfTownChunk",0);
         if(getBalance() < cost){
             player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(cost - getBalance()));
             return;
@@ -633,7 +635,7 @@ public class TownData extends ITerritoryData {
 
         if(getNumberOfClaimedChunk() != 0 &&
                 !NewClaimedChunkStorage.isAdjacentChunkClaimedBySameTown(chunk,getID()) &&
-                !ConfigUtil.getCustomConfig("config.yml").getBoolean("TownAllowNonAdjacentChunks",false)) {
+                !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("TownAllowNonAdjacentChunks",false)) {
             player.sendMessage(getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
             return;
         }
@@ -907,13 +909,13 @@ public class TownData extends ITerritoryData {
             SoundUtil.playSound(player,NOT_ALLOWED);
             return;
         }
-        if(this.getBalance() < townLevel.getMoneyRequiredTownLevel()) {
+        if(this.getBalance() < townLevel.getMoneyRequiredForLevelUp()) {
             player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
             SoundUtil.playSound(player,NOT_ALLOWED);
             return;
         }
 
-        this.removeFromBalance(townLevel.getMoneyRequiredTownLevel());
+        this.removeFromBalance(townLevel.getMoneyRequiredForLevelUp());
         townLevel.TownLevelUp();
         SoundUtil.playSound(player,LEVEL_UP);
         player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());

@@ -4,7 +4,6 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
-import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -22,8 +21,9 @@ import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
-import org.tan.TownsAndNations.utils.ConfigUtil;
 import org.tan.TownsAndNations.utils.SoundUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import static org.tan.TownsAndNations.enums.SoundEnum.BAD;
 import static org.tan.TownsAndNations.enums.SoundEnum.NOT_ALLOWED;
@@ -140,7 +140,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
         }
         TownRelation relation = TownDataStorage.get(player).getRelationWith(townTo);
 
-        if(relation == TownRelation.WAR && ConfigUtil.getCustomConfig("config.yml").getBoolean("notifyEnemyEnterTown",true)){
+        if(relation == TownRelation.WAR && ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("notifyEnemyEnterTown",true)){
             SoundUtil.playSound(player, BAD);
             player.sendMessage(getTANString() + Lang.CHUNK_ENTER_TOWN_AT_WAR.get());
             townTo.broadCastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.get(player).getName(),player.getName()), BAD);
@@ -154,13 +154,17 @@ public class TownClaimedChunk extends ClaimedChunk2{
 
     @Override
     public TextComponent getMapIcon(PlayerData playerData) {
-        TextComponent textComponent = new TextComponent(getTown().getChunkColorClass() + "⬛");
+
+        TextComponent textComponent = new TextComponent("⬛");
+        textComponent.setColor(getTown().getChunkColor());
         textComponent.setHoverEvent(new HoverEvent(
-                        HoverEvent.Action.SHOW_TEXT,
-                        new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
-                                getTown().getColoredName() + "\n" +
-                                Lang.LEFT_CLICK_TO_CLAIM.get())));
+            HoverEvent.Action.SHOW_TEXT,
+            new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
+                    getTown().getColoredName() + "\n" +
+                    Lang.LEFT_CLICK_TO_CLAIM.get())));
         return textComponent;
+
+
     }
 
     @Override
@@ -169,7 +173,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
         if(territoryData.canConquerChunk(this))
             return true;
 
-        player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(this.getOwner().getColoredName()));
+        player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName()));
         return false;
     }
 }

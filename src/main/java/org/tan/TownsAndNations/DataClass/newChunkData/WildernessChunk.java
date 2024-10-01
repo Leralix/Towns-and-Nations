@@ -1,9 +1,9 @@
 package org.tan.TownsAndNations.DataClass.newChunkData;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
-import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -12,6 +12,8 @@ import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 public class WildernessChunk extends ClaimedChunk2 {
 
@@ -22,7 +24,7 @@ public class WildernessChunk extends ClaimedChunk2 {
 
     @Override
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
-        return true;
+        return (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("wildernessRules." + permissionType,true));
     }
 
     @Override
@@ -45,12 +47,13 @@ public class WildernessChunk extends ClaimedChunk2 {
 
     @Override
     public TextComponent getMapIcon(PlayerData playerData) {
-        TextComponent textComponent = new TextComponent(ChatColor.WHITE + "⬜");
+        TextComponent textComponent = new TextComponent("⬜");
+        textComponent.setColor(ChatColor.WHITE);
         textComponent.setHoverEvent(new HoverEvent(
-                HoverEvent.Action.SHOW_TEXT,
-                new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
-                        Lang.WILDERNESS.get() + "\n" +
-                        Lang.LEFT_CLICK_TO_CLAIM.get())));
+            HoverEvent.Action.SHOW_TEXT,
+            new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
+                    Lang.WILDERNESS.get() + "\n" +
+                    Lang.LEFT_CLICK_TO_CLAIM.get())));
         return textComponent;
     }
 

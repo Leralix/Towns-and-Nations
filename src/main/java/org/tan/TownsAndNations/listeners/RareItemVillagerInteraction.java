@@ -10,7 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.CustomVillagerProfession;
 import org.tan.TownsAndNations.utils.ChatUtils;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 import org.tan.TownsAndNations.utils.EconomyUtil;
 
 import java.util.Set;
@@ -33,7 +34,7 @@ public class RareItemVillagerInteraction implements Listener {
             }
 
             if(customProfession == null){
-                if(ConfigUtil.getCustomConfig("config.yml").getBoolean("removeAllVillagerInteractions", false))
+                if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("removeAllVillagerInteractions", false))
                     event.setCancelled(true);
                 return;
             }
@@ -42,19 +43,19 @@ public class RareItemVillagerInteraction implements Listener {
 
             int price = 0;
             if (customProfession == CustomVillagerProfession.GOLDSMITH ) {
-                price = ConfigUtil.getCustomConfig("config.yml").getInt("rareStoneValue");
+                price = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("rareStoneValue");
             }
             if (customProfession == CustomVillagerProfession.BOTANIST ) {
-                price = ConfigUtil.getCustomConfig("config.yml").getInt("rareWoodValue");
+                price = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("rareWoodValue");
             }
             if (customProfession == CustomVillagerProfession.COOK ) {
-                price = ConfigUtil.getCustomConfig("config.yml").getInt("rareCropsValue");
+                price = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("rareCropsValue");
             }
             if(customProfession == CustomVillagerProfession.WIZARD){
-                price = ConfigUtil.getCustomConfig("config.yml").getInt("rareSoulValue");
+                price = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("rareSoulValue");
             }
             if(customProfession == CustomVillagerProfession.FISHERMAN){
-                price = ConfigUtil.getCustomConfig("config.yml").getInt("rareFishValue");
+                price = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("rareFishValue");
             }
 
             ItemStack item = player.getInventory().getItemInMainHand();

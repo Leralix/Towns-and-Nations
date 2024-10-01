@@ -3,6 +3,8 @@ package org.tan.TownsAndNations.utils;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 /**
  * Utility class for handling prefix
@@ -13,7 +15,7 @@ public class prefixUtil {
      * @param player The player to add the prefix to
      */
     public static void addPrefix(Player player){
-        if(!ConfigUtil.getCustomConfig("config.yml").getBoolean("EnableTownPrefix",true)){
+        if(!ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableTownPrefix",true)){
             return;
         }
         PlayerData playerData = PlayerDataStorage.get(player);

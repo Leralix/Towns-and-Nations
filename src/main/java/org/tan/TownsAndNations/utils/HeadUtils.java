@@ -141,9 +141,23 @@ public class HeadUtils {
      * @return                      The {@link ItemStack} with custom texture.
      */
     public static @NotNull ItemStack makeSkullB64(final @NotNull String name, final @NotNull String base64EncodedString, List<String> lore) {
+        return makeSkullURL(name,getUrlFromBase64_2(base64EncodedString),lore);
+    }
 
-        PlayerProfile profile = getProfile(getUrlFromBase64_2(base64EncodedString));
-        System.out.println(profile.getTextures().getSkin().toString());
+    public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull String url, String... lore) {
+        return makeSkull(name,getProfile(createURL(url)),Arrays.asList(lore));
+    }
+    public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull String url, List<String> lore) {
+        return makeSkull(name,getProfile(createURL(url)),lore);
+    }
+    public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull URL url, String... lore) {
+        return makeSkull(name,getProfile(url),Arrays.asList(lore));
+    }
+    public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull URL url, List<String> lore) {
+        return makeSkull(name,getProfile(url),lore);
+    }
+
+    public static @NotNull ItemStack makeSkull(final @NotNull String name, final @NotNull PlayerProfile profile, List<String> lore) {
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         meta.setOwnerProfile(profile);
@@ -158,33 +172,13 @@ public class HeadUtils {
     }
 
     private static final UUID RANDOM_UUID = UUID.fromString("92864445-51c5-4c3b-9039-517c9927d1b4"); // We reuse the same "random" UUID all the time
-    private static PlayerProfile getProfile(String url) {
-        URL urlObject;
-        try {
-            urlObject = new URL(url); // The URL to the skin, for example: https://textures.minecraft.net/texture/18813764b2abc94ec3c3bc67b9147c21be850cdf996679703157f4555997ea63a
-        } catch (MalformedURLException exception) {
-            throw new RuntimeException("Invalid URL", exception);
-        }
-        return getProfile(urlObject);
-    }
 
     private static PlayerProfile getProfile(URL url) {
-        PlayerProfile profile = Bukkit.createPlayerProfile(RANDOM_UUID); // Get a new player profile
+        PlayerProfile profile = Bukkit.createPlayerProfile(RANDOM_UUID);
         PlayerTextures textures = profile.getTextures();
-        textures.setSkin(url); // Set the skin of the player profile to the URL
-        profile.setTextures(textures); // Set the textures back to the profile
+        textures.setSkin(url);
+        profile.setTextures(textures);
         return profile;
-    }
-
-    public static URL getUrlFromBase64(String base64){
-        String decoded = new String(Base64.getDecoder().decode(base64));
-        URL url;
-        try {
-            url = new URL(decoded.substring("{\"textures\":{\"SKIN\":{\"url\":\"".length(), decoded.length() - "\"}}}".length()));
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-        return url;
     }
 
 
@@ -194,16 +188,16 @@ public class HeadUtils {
         var url = json.getAsJsonObject("textures")
                 .getAsJsonObject("SKIN")
                 .get("url").getAsString();
-        URL urlObject;
+        return createURL(url);
+    }
+
+    private static URL createURL(String url) {
         try {
-            urlObject = new URL(url);
+            return new URL(url);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
-        return urlObject;
-
     }
-
 
 
 

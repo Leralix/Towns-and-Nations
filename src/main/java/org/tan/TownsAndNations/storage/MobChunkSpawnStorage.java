@@ -1,7 +1,8 @@
 package org.tan.TownsAndNations.storage;
 
 import org.tan.TownsAndNations.enums.MobChunkSpawnEnum;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,9 +18,9 @@ public class MobChunkSpawnStorage {
         //Only load the enum values if they have been written in the config file
         for (MobChunkSpawnEnum mob : MobChunkSpawnEnum.values()) {
 
-            if(ConfigUtil.getCustomConfig("config.yml").get("CancelMobSpawnInTown." + mob.name()) == null)
+            if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).get("CancelMobSpawnInTown." + mob.name()) == null)
                 continue;
-            if(ConfigUtil.getCustomConfig("config.yml").getInt("CancelMobSpawnInTown." + mob.name()) <0)
+            if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CancelMobSpawnInTown." + mob.name()) <0)
                 continue;
             mobSpawnStorage.put(mob.name(), mob);
         }
@@ -34,7 +35,7 @@ public class MobChunkSpawnStorage {
     }
 
     public static int getMobSpawnCost(MobChunkSpawnEnum mob) {
-        return ConfigUtil.getCustomConfig("config.yml").getInt("CancelMobSpawnInTown." + mob.name());
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CancelMobSpawnInTown." + mob.name());
     }
 
 }

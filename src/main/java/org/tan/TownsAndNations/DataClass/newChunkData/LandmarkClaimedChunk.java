@@ -1,10 +1,10 @@
 package org.tan.TownsAndNations.DataClass.newChunkData;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
-import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -34,18 +34,18 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
     @Override
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
 
-        if(permissionType == ChunkPermissionType.CHEST ||
-                permissionType == ChunkPermissionType.OPEN_DOOR ||
+        if(permissionType == ChunkPermissionType.INTERACT_CHEST ||
+                permissionType == ChunkPermissionType.INTERACT_DOOR ||
                 permissionType == ChunkPermissionType.ATTACK_PASSIVE_MOB ||
-                permissionType == ChunkPermissionType.USE_BUTTONS ||
-                permissionType == ChunkPermissionType.USE_REDSTONE ||
-                permissionType == ChunkPermissionType.USE_FURNACE ||
+                permissionType == ChunkPermissionType.INTERACT_BUTTON ||
+                permissionType == ChunkPermissionType.INTERACT_REDSTONE ||
+                permissionType == ChunkPermissionType.INTERACT_FURNACE ||
                 permissionType == ChunkPermissionType.INTERACT_ITEM_FRAME ||
                 permissionType == ChunkPermissionType.INTERACT_ARMOR_STAND ||
-                permissionType == ChunkPermissionType.DECORATIVE_BLOCK ||
-                permissionType == ChunkPermissionType.MUSIC_BLOCK ||
-                permissionType == ChunkPermissionType.LEAD ||
-                permissionType == ChunkPermissionType.SHEARS){
+                permissionType == ChunkPermissionType.INTERACT_DECORATIVE_BLOCK ||
+                permissionType == ChunkPermissionType.INTERACT_MUSIC_BLOCK ||
+                permissionType == ChunkPermissionType.USE_LEAD ||
+                permissionType == ChunkPermissionType.USE_SHEARS){
             return true;
         }
 
@@ -73,8 +73,8 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
 
     @Override
     public TextComponent getMapIcon(PlayerData playerData) {
-        TextComponent textComponent = new TextComponent(ChatColor.GOLD + "⬛");
-        textComponent.setBold(true);
+        TextComponent textComponent = new TextComponent("⬛");
+        textComponent.setColor(ChatColor.GOLD);
         textComponent.setHoverEvent(new HoverEvent(
                 HoverEvent.Action.SHOW_TEXT,
                 new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +

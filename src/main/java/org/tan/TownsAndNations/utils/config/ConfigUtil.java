@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.utils;
+package org.tan.TownsAndNations.utils.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -15,15 +15,29 @@ public class ConfigUtil {
     /**
      * This map is used to store the custom configs.
      */
-    private static final Map<String, FileConfiguration> configs = new HashMap<>();
+    private static final Map<ConfigTag, FileConfiguration> configs = new HashMap<>();
 
     /**
      * Get a custom config by its name.
-     * @param fileName  The name of the config file.
+     * @param tag       The tag of the config file.
      * @return          The {@link FileConfiguration } object.
      */
-    public static FileConfiguration getCustomConfig(final @NotNull String fileName) {
-        return configs.get(fileName);
+    public static FileConfiguration getCustomConfig(final @NotNull ConfigTag tag) {
+        return configs.get(tag);
+    }
+
+    /**
+     * Load a custom config file into the memory
+     * @param fileName  The name of the file to load
+     */
+    public static void addCustomConfig(String fileName, ConfigTag tag) {
+
+        File configFile = new File(TownsAndNations.getPlugin().getDataFolder(), fileName);
+        if (!configFile.exists()) {
+            TownsAndNations.getPluginLogger().severe(fileName + " does not exist!");
+            return;
+        }
+        configs.put(tag, YamlConfiguration.loadConfiguration(configFile));
     }
 
     /**
@@ -42,8 +56,6 @@ public class ConfigUtil {
      * @param fileName  The name of the resource file.
      */
     public static void saveAndUpdateResource(final @NotNull String fileName) {
-
-
         File currentFile = new File(TownsAndNations.getPlugin().getDataFolder(),fileName);
         if (!currentFile.exists()) {
             TownsAndNations.getPlugin().saveResource(fileName, false);
@@ -117,22 +129,4 @@ public class ConfigUtil {
             e.printStackTrace();
         }
     }
-
-    /**
-     * Load a custom config file into the memory
-     * @param fileName  The name of the file to load
-     */
-    public static void loadCustomConfig(String fileName) {
-
-        File configFile = new File(TownsAndNations.getPlugin().getDataFolder(), fileName);
-        if (!configFile.exists()) {
-            TownsAndNations.getPluginLogger().severe(fileName + " does not exist!");
-            return;
-        }
-        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
-        configs.put(fileName, config);
-    }
-
-
-
 }

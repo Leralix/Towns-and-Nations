@@ -3,7 +3,8 @@ package org.tan.TownsAndNations.storage.Legacy;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.tan.TownsAndNations.DataClass.TownUpgrade;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public class UpgradeStorage {
     private static final HashMap<String, TownUpgrade> UpgradeMap = new HashMap<>();
 
     public static void init() {
-        FileConfiguration upgradeConfig = ConfigUtil.getCustomConfig("townUpgrades.yml");
+        FileConfiguration upgradeConfig = ConfigUtil.getCustomConfig(ConfigTag.UPGRADES);
         ConfigurationSection upgradesSection = upgradeConfig.getConfigurationSection("upgrades");
 
         if (upgradesSection != null) {

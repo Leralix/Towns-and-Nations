@@ -11,7 +11,8 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.TeleportationRegister;
 import org.tan.TownsAndNations.utils.ChatUtils;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 public class SpawnListener implements Listener {
 
@@ -21,7 +22,7 @@ public class SpawnListener implements Listener {
             if(TeleportationRegister.isPlayerRegistered(player.getUniqueId().toString()) &&
                     !TeleportationRegister.getTeleportationData(player).isCancelled()) {
 
-                if(ConfigUtil.getCustomConfig("config.yml").getBoolean("cancelTeleportOnDamage", true)) {
+                if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnDamage", true)) {
                     PlayerData playerData = PlayerDataStorage.get(player.getUniqueId().toString());
                     TeleportationRegister.getTeleportationData(playerData).setCancelled(true);
                     player.sendMessage(ChatUtils.getTANString() + Lang.TELEPORTATION_CANCELLED.get());
@@ -43,13 +44,13 @@ public class SpawnListener implements Listener {
 
             //If player moves only his head
             if(locationFrom.getBlockX() == locationTo.getBlockX() && locationFrom.getBlockZ() == locationTo.getBlockZ()) {
-                if(ConfigUtil.getCustomConfig("config.yml").getBoolean("cancelTeleportOnMoveHead", false)) {
+                if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnMoveHead", false)) {
                     cancelTeleportation(player);
                 }
             }
             else{
                 //If player moves to a different position
-                if(ConfigUtil.getCustomConfig("config.yml").getBoolean("cancelTeleportOnMovePosition", true)) {
+                if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnMovePosition", true)) {
                     cancelTeleportation(player);
                 }
             }

@@ -1,5 +1,9 @@
 package org.tan.TownsAndNations.utils;
 
+import org.bukkit.configuration.file.FileConfiguration;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
+
 public class RareItemUtil {
     /**
      * Get the price of a rare item
@@ -7,13 +11,13 @@ public class RareItemUtil {
      * @return              The price of the rare item
      */
     public static int getPrice(String rareItemTag) {
-
+        FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         return switch (rareItemTag) {
-            case "rareStone" -> ConfigUtil.getCustomConfig("config.yml").getInt("rareStoneValue");
-            case "rareWood" -> ConfigUtil.getCustomConfig("config.yml").getInt("rareWoodValue");
-            case "rareCrops" -> ConfigUtil.getCustomConfig("config.yml").getInt("rareCropsValue");
-            case "rareSoul" -> ConfigUtil.getCustomConfig("config.yml").getInt("rareSoulValue");
-            case "rareFish" -> ConfigUtil.getCustomConfig("config.yml").getInt("rareFishValue");
+            case "rareStone" -> config.getInt("rareStoneValue");
+            case "rareWood" -> config.getInt("rareWoodValue");
+            case "rareCrops" -> config.getInt("rareCropsValue");
+            case "rareSoul" -> config.getInt("rareSoulValue");
+            case "rareFish" -> config.getInt("rareFishValue");
             default -> 0;
         };
 

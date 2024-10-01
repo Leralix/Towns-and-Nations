@@ -2,9 +2,7 @@ package org.tan.TownsAndNations.commands.subcommands;
 
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
@@ -58,32 +56,22 @@ public class MapCommand extends SubCommand {
 
     public static void openMap(Player player, MapType type) {
         Chunk currentChunk = player.getLocation().getChunk();
-
         int radius = 4;
-        List<Chunk> nearbyChunks = new ArrayList<>();
-        for (int dx = -radius; dx <= radius; dx++) {
-            for (int dz = -radius; dz <= radius; dz++) {
-                Chunk chunk = player.getWorld().getChunkAt(currentChunk.getX() + dx, currentChunk.getZ() + dz);
-                nearbyChunks.add(chunk);
-            }
-        }
-
         Map<Integer,TextComponent> text = new HashMap<>();
         TextComponent claimType = new TextComponent(Lang.MAP_CLAIM_TYPE.get());
         claimType.setHoverEvent(null);
+        claimType.setColor(net.md_5.bungee.api.ChatColor.GRAY);
         text.put(-4, claimType);
         TextComponent claimButton = type.getButton();
         text.put(-3,claimButton);
 
-
-
         player.sendMessage("╭─────────⟢⟐⟣─────────╮");
 
-        for (int dx = -radius; dx <= radius; dx++) {
+        for (int dz = -radius; dz <= radius; dz++) {
             ComponentBuilder newLine = new ComponentBuilder();
 
             newLine.append("   ");
-            for (int dz = -radius; dz <= radius; dz++) {
+            for (int dx = -radius; dx <= radius; dx++) {
                 Chunk chunk = player.getWorld().getChunkAt(currentChunk.getX() + dx, currentChunk.getZ() + dz);
 
                 ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunk);
@@ -92,8 +80,8 @@ public class MapCommand extends SubCommand {
 
                 newLine.append(icon);
             }
-            if(text.containsKey(dx)){
-                newLine.append(text.get(dx));
+            if(text.containsKey(dz)){
+                newLine.append(text.get(dz));
             }
 
             player.spigot().sendMessage(newLine.create());

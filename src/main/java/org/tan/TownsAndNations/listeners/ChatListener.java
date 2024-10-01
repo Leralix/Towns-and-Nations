@@ -19,6 +19,8 @@ import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.utils.*;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import static org.tan.TownsAndNations.enums.MessageKey.*;
 import static org.tan.TownsAndNations.enums.SoundEnum.MINOR_LEVEL_UP;
@@ -122,7 +124,7 @@ public class ChatListener implements Listener {
     }
 
     private void RankCreation(Player player, String message) {
-        int maxNameSize = ConfigUtil.getCustomConfig("config.yml").getInt("RankNameSize");
+        int maxNameSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RankNameSize");
 
         if(message.length() > maxNameSize){
             player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxNameSize));
@@ -141,7 +143,7 @@ public class ChatListener implements Listener {
     private void ChangeRegionDescription(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newDesc) {
         String regionID = chatData.getData().get(REGION_ID);
 
-        FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
+        FileConfiguration config =  ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         int maxSize = config.getInt("TownDescSize");
         if(newDesc.length() > maxSize){
             player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
@@ -234,7 +236,7 @@ public class ChatListener implements Listener {
 
         Landmark landmark = LandmarkStorage.get(chatData.getData().get(LANDMARK_ID));
 
-        int nameMaxSize = ConfigUtil.getCustomConfig("config.yml").getInt("landmarkNameMaxSize",25);
+        int nameMaxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("landmarkNameMaxSize",25);
         if(message.length() >= nameMaxSize){
             player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(nameMaxSize));
             return;
@@ -278,7 +280,7 @@ public class ChatListener implements Listener {
         RegionData regionData = RegionDataStorage.get(chatData.getData().get(REGION_ID));
         int regionCost = Integer.parseInt(chatData.getData().get(COST));
 
-        int maxSize = ConfigUtil.getCustomConfig("config.yml").getInt("RegionNameSize");
+        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RegionNameSize");
 
         if(newName.length() > maxSize){
             player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
@@ -299,7 +301,7 @@ public class ChatListener implements Listener {
         TownData town = TownDataStorage.get(chatData.getData().get(TOWN_ID));
         int townCost = Integer.parseInt(chatData.getData().get(COST));
 
-        int maxSize = ConfigUtil.getCustomConfig("config.yml").getInt("TownNameSize");
+        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownNameSize");
 
         if(newName.length() > maxSize){
             player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
@@ -311,7 +313,7 @@ public class ChatListener implements Listener {
     }
     private void ChangeTownDescription(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newDesc) {
         String townId = chatData.getData().get(TOWN_ID);
-        int maxSize = ConfigUtil.getCustomConfig("config.yml").getInt("TownDescSize");
+        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownDescSize");
 
         if(newDesc.length() > maxSize){
             player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
@@ -334,7 +336,7 @@ public class ChatListener implements Listener {
     }
     private void RenameRank(Player player, PlayerChatListenerStorage.PlayerChatData chatData, String newRankName) {
 
-        FileConfiguration config =  ConfigUtil.getCustomConfig("config.yml");
+        FileConfiguration config =  ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         TownData playerTown = TownDataStorage.get(player);
         int maxSize = config.getInt("RankNameSize");
 
@@ -370,7 +372,7 @@ public class ChatListener implements Listener {
         PropertyData propertyData = TownDataStorage.get(townID).getProperty(propertyID);
 
 
-        int maxSize = ConfigUtil.getCustomConfig("config.yml").getInt("PropertyNameSize");
+        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("PropertyNameSize");
 
         if(message.length() > maxSize){
             player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
@@ -391,7 +393,7 @@ public class ChatListener implements Listener {
         String propertyID = ids[1];
         PropertyData propertyData = TownDataStorage.get(townID).getProperty(propertyID);
 
-        int maxSize = ConfigUtil.getCustomConfig("config.yml").getInt("PropertyDescSize");
+        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("PropertyDescSize");
 
         if(message.length() > maxSize){
             player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
@@ -439,7 +441,7 @@ public class ChatListener implements Listener {
         removePlayer(player);
 
         TownData town = TownDataStorage.get(chatData.getData().get(TOWN_ID));
-        int size = ConfigUtil.getCustomConfig("config.yml").getInt("prefixSize");
+        int size = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize");
 
         if(message.length() != size){
             player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_NOT_RIGHT_SIZE.get(size));

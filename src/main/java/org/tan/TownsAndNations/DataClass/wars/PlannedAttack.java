@@ -12,7 +12,8 @@ import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlannedAttackStorage;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 import org.tan.TownsAndNations.utils.DateUtil;
 import org.tan.TownsAndNations.utils.TerritoryUtil;
 
@@ -46,7 +47,7 @@ public class PlannedAttack {
         this.defendersID.add(mainDefenderID);
 
         this.startTime = (long) (new Date().getTime() * 0.02 + startTime);
-        this.endTime = this.startTime + ConfigUtil.getCustomConfig("config.yml").getLong("WarDuration") * 1200;
+        this.endTime = this.startTime + ConfigUtil.getCustomConfig(ConfigTag.MAIN).getLong("WarDuration") * 1200;
 
         createAttackData.getMainDefender().addPlannedAttack(this);
         createAttackData.getMainAttacker().addPlannedAttack(this);

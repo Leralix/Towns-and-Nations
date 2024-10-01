@@ -15,6 +15,14 @@
 # - MAX_LANDMARKS: maximum number of owned landmarks per town
 # - LANDMARK_BONUS: percentage of bonus on landmarks (ex 50 = 50%)
 # You can create your own names, prerequisites and benefits in the lang files.
+
+# The cost of the upgrade is calculated with the expression. The expression is a string that will be evaluated with the level of the upgrade.
+townUpgrades:
+  TownLevelExpression: '(squareMultiplier * level ^ 2 + flatMultiplier * level + base) * 10'
+  squareMultiplier: 8.0
+  flatMultiplier: 10.0
+  base: 100.0
+
 upgrades:
 
   CITY_HALL: #"City hall" upgrade is already unlocked whqen creating a town.

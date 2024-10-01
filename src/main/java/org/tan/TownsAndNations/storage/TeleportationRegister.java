@@ -9,7 +9,8 @@ import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.SoundEnum;
-import org.tan.TownsAndNations.utils.ConfigUtil;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 import org.tan.TownsAndNations.utils.SoundUtil;
 
 import java.util.HashMap;
@@ -53,7 +54,7 @@ public class TeleportationRegister {
     }
 
     public static void teleportToTownSpawn(PlayerData playerData, TownData townData){
-        int secondBeforeTeleport = ConfigUtil.getCustomConfig("config.yml").getInt("timeBeforeTeleport", 5);
+        int secondBeforeTeleport = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("timeBeforeTeleport", 5);
 
         Player player = Bukkit.getPlayer(playerData.getUUID());
         if(player == null)

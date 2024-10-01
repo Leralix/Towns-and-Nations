@@ -36,7 +36,7 @@ import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 public class AdminGUI implements IGUI{
     public static void OpenMainMenu(Player player){
 
-        Gui gui = IGUI.createChestGui("Main menu - Admin",3);
+        Gui gui = IGUI.createChestGui("Main menu - Admin",4);
 
         ItemStack regionHead = HeadUtils.makeSkullB64(Lang.GUI_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
         ItemStack townHead = HeadUtils.makeSkullB64(Lang.GUI_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
@@ -46,6 +46,9 @@ public class AdminGUI implements IGUI{
                 Lang.ADMIN_GUI_PLAYER_DESC.get());
         ItemStack landmark = HeadUtils.makeSkullB64(Lang.ADMIN_GUI_LANDMARK_ICON.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmQ3NjFjYzE2NTYyYzg4ZDJmYmU0MGFkMzg1MDJiYzNiNGE4Nzg1OTg4N2RiYzM1ZjI3MmUzMGQ4MDcwZWVlYyJ9fX0=",
                 Lang.ADMIN_GUI_LANDMARK_DESC1.get());
+        ItemStack landMark = HeadUtils.makeSkullURL(Lang.ADMIN_GUI_WAR_ICON.get(), "http://textures.minecraft.net/texture/e2941b8b71abe79ce12775aee601fec9126dee730e2a57257a784231de6da848",
+                Lang.ADMIN_GUI_WAR_DESC1.get());
+
 
         GuiItem _region = ItemBuilder.from(regionHead).asGuiItem(event -> {
             event.setCancelled(true);
@@ -66,19 +69,28 @@ public class AdminGUI implements IGUI{
             event.setCancelled(true);
             OpenLandmarks(player, 0);
         });
+        GuiItem _wars = ItemBuilder.from(landMark).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenAdminWarMenu(player);
+        });
 
 
-        gui.setItem(12,_region);
-        gui.setItem(14,_town);
-        gui.setItem(16,_player);
-        gui.setItem(17,_landmark);
-        gui.setItem(3,1, IGUI.CreateBackArrow(player,p -> player.closeInventory()));
+        gui.setItem(2,2,_region);
+        gui.setItem(2,3,_town);
+        gui.setItem(2, 6,_player);
+        gui.setItem(2, 7,_landmark);
+        gui.setItem(2, 8,_wars);
+        gui.setItem(4,1, IGUI.CreateBackArrow(player,p -> player.closeInventory()));
 
         gui.open(player);
     }
 
-    private static void OpenLandmarks(Player player, int page) {
+    private static void OpenAdminWarMenu(Player player) {
 
+
+    }
+
+    private static void OpenLandmarks(Player player, int page) {
         Gui gui = IGUI.createChestGui("Landmarks - Admin", 6);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
@@ -106,7 +118,6 @@ public class AdminGUI implements IGUI{
 
 
                     SoundUtil.playSound(player, SoundEnum.GOOD);
-                    return;
                 }
             });
             guiItems.add(item);
@@ -124,11 +135,9 @@ public class AdminGUI implements IGUI{
 
             ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(player.getLocation().getBlock().getChunk());
 
-            if(claimedChunk != null) {
-                if (claimedChunk instanceof LandmarkClaimedChunk) {
-                    player.sendMessage(getTANString() + Lang.ADMIN_CHUNK_ALREADY_LANDMARK.get());
-                    return;
-                }
+            if (claimedChunk instanceof LandmarkClaimedChunk) {
+                player.sendMessage(getTANString() + Lang.ADMIN_CHUNK_ALREADY_LANDMARK.get());
+                return;
             }
             LandmarkStorage.addLandmark(player.getLocation());
             OpenLandmarks(player,page);
@@ -174,13 +183,13 @@ public class AdminGUI implements IGUI{
         GuiItem _setReward = ItemBuilder.from(setReward).asGuiItem(event -> {
             event.setCancelled(true);
             ItemStack itemOnCursor = player.getItemOnCursor();
-            if(itemOnCursor.getType() != Material.AIR){
-                player.sendMessage(getTANString() + Lang.ADMIN_GUI_LANDMARK_REWARD_SET.get(itemOnCursor.getAmount(), itemOnCursor.getType().name()));
-                landmark.setReward(itemOnCursor);
-                OpenSpecificLandmarkMenu(player, landmark);
-                SoundUtil.playSound(player, SoundEnum.GOOD);
+            if(itemOnCursor.getType() == Material.AIR){
                 return;
             }
+            player.sendMessage(getTANString() + Lang.ADMIN_GUI_LANDMARK_REWARD_SET.get(itemOnCursor.getAmount(), itemOnCursor.getType().name()));
+            landmark.setReward(itemOnCursor);
+            OpenSpecificLandmarkMenu(player, landmark);
+            SoundUtil.playSound(player, SoundEnum.GOOD);
         });
 
 

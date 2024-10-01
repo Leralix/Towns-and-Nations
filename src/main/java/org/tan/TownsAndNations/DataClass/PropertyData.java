@@ -13,6 +13,8 @@ import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.*;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +98,7 @@ public class PropertyData {
     public void allocateRenter(Player renter){
         rentingPlayerID = renter.getUniqueId().toString();
         this.isForRent = false;
-        if(ConfigUtil.getCustomConfig("config.yml").getBoolean("payRentAtStart", false))
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("payRentAtStart", false))
             payRent();
         this.updateSign();
         getAllowedPlayersID().clear();

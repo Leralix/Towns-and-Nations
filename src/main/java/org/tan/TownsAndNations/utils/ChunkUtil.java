@@ -11,6 +11,8 @@ import org.tan.TownsAndNations.enums.TownRolePermission;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
+import org.tan.TownsAndNations.utils.config.ConfigTag;
+import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
@@ -42,7 +44,7 @@ public class ChunkUtil {
             player.sendMessage(getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return;
         }
-        int cost = ConfigUtil.getCustomConfig("config.yml").getInt("CostOfRegionChunk",5);
+        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfRegionChunk",5);
 
         if(regionData.getBalance() < cost){
             player.sendMessage(getTANString() + Lang.REGION_NOT_ENOUGH_MONEY_EXTENDED.get(cost - regionData.getBalance()));
@@ -79,7 +81,7 @@ public class ChunkUtil {
         }
         boolean isRegionClaimed = false;
 
-        int cost = ConfigUtil.getCustomConfig("config.yml").getInt("CostOfTownChunk",0);
+        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfTownChunk",0);
         if(townData.getBalance() < cost){
             player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(cost - townData.getBalance()));
             return;
@@ -100,7 +102,7 @@ public class ChunkUtil {
 
         if(townData.getNumberOfClaimedChunk() != 0 &&
                 !NewClaimedChunkStorage.isAdjacentChunkClaimedBySameTown(chunkToClaim,townData.getID()) &&
-                !ConfigUtil.getCustomConfig("config.yml").getBoolean("TownAllowNonAdjacentChunks",false))
+                !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("TownAllowNonAdjacentChunks",false))
         {
             player.sendMessage(getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
             return;
