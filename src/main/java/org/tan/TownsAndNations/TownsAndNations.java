@@ -65,7 +65,7 @@ public final class TownsAndNations extends JavaPlugin {
      * Used to check if the plugin is up-to-date to the latest version. Also
      * used to check if the plugin has just been updated and config file needs an update
      */
-    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,10,1);
+    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,11,0);
     /**
      * Minimum required version of the Towns and Nations dynmap plugin.
      */
@@ -107,11 +107,6 @@ public final class TownsAndNations extends JavaPlugin {
      */
     private static final long dateOfStart = System.currentTimeMillis();
     /**
-     * The list of available lang file. Should be updated later
-     */
-    private static final List<String> langList = new ArrayList<>();
-
-    /**
      * This method is called when the plugin is enabled.
      * It is used to load the plugin and all its features.
      */
@@ -133,14 +128,9 @@ public final class TownsAndNations extends JavaPlugin {
         ConfigUtil.addCustomConfig("lang.yml", ConfigTag.LANG);
         String lang = ConfigUtil.getCustomConfig(ConfigTag.LANG).getString("language");
 
-        langList.add("eng.yml");
-        langList.add("fra.yml");
-        langList.add("nor.yml");
-        langList.add("pol.yml");
 
-
-        Lang.loadTranslations(lang + ".yml");
-        DynamicLang.loadTranslations(lang + "-upgrades.yml");
+        Lang.loadTranslations(lang);
+        DynamicLang.loadTranslations(lang);
 
 
         logger.info("[TaN] -Loading Configs");
@@ -351,7 +341,6 @@ public final class TownsAndNations extends JavaPlugin {
             }
         } catch (Exception e) {
             getPluginLogger().warning("[TaN] An error occurred while trying to check for updates.");
-            e.printStackTrace();
         }
     }
 
@@ -437,13 +426,4 @@ public final class TownsAndNations extends JavaPlugin {
     public static boolean isDynmapAddonLoaded() {
         return dynmapAddonLoaded;
     }
-
-    /**
-     * Get the list of available lang file
-     * @return the list of available lang file
-     */
-    public static List<String> getLangList() {
-        return langList;
-    }
-
 }

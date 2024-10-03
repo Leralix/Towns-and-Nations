@@ -35,11 +35,15 @@ public class PlannedAttack {
     private final long endTime;
     WarGoal warGoal;
 
+    boolean isAdminApproved;
+
     public PlannedAttack(String ID, String name, CreateAttackData createAttackData, long startTime){
         this.ID = ID;
         this.name = name;
         this.mainAttackerID = createAttackData.getMainAttacker().getID();
         this.mainDefenderID = createAttackData.getMainDefender().getID();
+
+        this.isAdminApproved = !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AdminApproval",false);
 
         this.attackersID = new ArrayList<>();
         this.attackersID.add(mainAttackerID);
@@ -71,6 +75,14 @@ public class PlannedAttack {
 
     public ITerritoryData getMainAttacker() {
         return TerritoryUtil.getTerritory(mainAttackerID);
+    }
+
+    public boolean isAdminApproved() {
+        return isAdminApproved;
+    }
+
+    public void setAdminApproved(boolean isAdminApproved) {
+        this.isAdminApproved = isAdminApproved;
     }
 
     public Collection<PlayerData> getDefendingPlayers() {
@@ -155,6 +167,33 @@ public class PlannedAttack {
         attackersID.add(territoryData.getID());
     }
 
+
+    public ItemStack getAdminIcon(){
+        ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if(itemMeta != null){
+            itemMeta.setDisplayName(name);
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add(Lang.ATTACK_ICON_DESC_1.get(getMainAttacker().getName()));
+            lore.add(Lang.ATTACK_ICON_DESC_2.get(getMainDefender().getName()));
+            lore.add(Lang.ATTACK_ICON_DESC_3.get(getNumberOfAttackers()));
+            lore.add(Lang.ATTACK_ICON_DESC_4.get(getNumberOfDefenders()));
+            lore.add(Lang.ATTACK_ICON_DESC_5.get(warGoal.getCurrentDesc()));
+            lore.add(Lang.ATTACK_ICON_DESC_6.get(DateUtil.getStringDeltaDateTime((long) (getStartTime() - new Date().getTime() * 0.02))));
+            lore.add(Lang.ATTACK_ICON_DESC_7.get(DateUtil.getStringDeltaDateTime((long) ((getEndTime() - getStartTime())))));
+            if(isAdminApproved){
+                lore.add(Lang.ATTACK_ICON_DESC_ADMIN_APPROVED.get());
+            }else{
+                lore.add(Lang.ATTACK_ICON_DESC_ADMIN_NOT_APPROVED.get());
+                lore.add(Lang.LEFT_CLICK_TO_AUTHORIZE.get());
+                lore.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get());
+                lore.add(Lang.ATTACK_WILL_NOT_TRIGGER_IF_NOT_APPROVED.get());
+            }
+            itemMeta.setLore(lore);
+        }
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
     public ItemStack getIcon(ITerritoryData territoryConcerned){
         ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
         ItemMeta itemMeta = itemStack.getItemMeta();

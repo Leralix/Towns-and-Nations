@@ -233,6 +233,7 @@ public enum Lang {
     GUI_ATTACK_ICON_DESC1,
     GUI_ATTACK_NOT_MAIN_ATTACKER,
     ATTACK_SUCCESSFULLY_CANCELLED,
+    ATTACK_WILL_NOT_TRIGGER_IF_NOT_APPROVED,
     GUI_TREASURY_STORAGE,
     GUI_TREASURY_STORAGE_DESC1,
     GUI_TREASURY_STORAGE_DESC2,
@@ -508,6 +509,7 @@ public enum Lang {
     PLAYER_ENTER_LANDMARK_CHUNK,
     CHUNK_ENTER_TOWN_AT_WAR,
     CHUNK_INTRUSION_ALERT,
+    WILDERNESS_NO_PERMISSION,
     HISTORY_TOWN_CREATED,
     HISTORY_TOWN_DELETED,
     HISTORY_REGION_CREATED,
@@ -592,6 +594,7 @@ public enum Lang {
     DISPLAY_COORDINATES,
     GUI_BASIC_NAME,
     LEFT_CLICK_TO_SELECT,
+    LEFT_CLICK_TO_AUTHORIZE,
     LEFT_CLICK_TO_MODIFY,
     GUI_PLAYER_NEW_PROPERTY,
     GUI_PROPERTY_DESCRIPTION,
@@ -667,6 +670,8 @@ public enum Lang {
     ATTACK_ICON_DESC_6,
     ATTACK_ICON_DESC_7,
     ATTACK_ICON_DESC_8,
+    ATTACK_ICON_DESC_ADMIN_APPROVED,
+    ATTACK_ICON_DESC_ADMIN_NOT_APPROVED,
     GUI_TOWN_ATTACK_ALREADY_ATTACKING,
     TITLE_ATTACK,
     PLAYER_WON_ATTACK,
@@ -739,12 +744,12 @@ public enum Lang {
     MAP_CLAIM_TYPE,
     MAP_TOWN,
     MAP_REGION,
-    RELOAD_SUCCESS;
+    RELOAD_SUCCESS,;
 
 
     private static final Map<Lang, String> translations = new HashMap<>();
 
-    public static void loadTranslations(String filename) {
+    public static void loadTranslations(String fileTag) {
 
         File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
 
@@ -752,20 +757,20 @@ public enum Lang {
             langFolder.mkdir();
         }
 
-
-        if(!TownsAndNations.getLangList().contains(filename)){
-            filename = "eng.yml";
-            TownsAndNations.getPlugin().getLogger().warning("[TaN] -Language file not found, loading default language file");
+        File SpecificLangFolder = new File(langFolder, fileTag);
+        if(!SpecificLangFolder.exists()) {
+            SpecificLangFolder.mkdir();
         }
-        File file = new File(langFolder, filename);
 
-        if(!file.exists())
-            TownsAndNations.getPlugin().saveResource("lang/" + filename, true);
+        File file = new File(SpecificLangFolder, "main.yml");
 
         boolean replace = ConfigUtil.getCustomConfig(ConfigTag.LANG).getBoolean("autoUpdateLangFiles",true);
-        if(replace) {
-            TownsAndNations.getPlugin().saveResource("lang/" + filename, true);
+
+
+        if(!file.exists() || replace) {
+            TownsAndNations.getPlugin().saveResource("lang/" + fileTag + "/main.yml", true);
         }
+
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         for (Lang key : Lang.values()) {
             String message = config.getString("language." + key.name());

@@ -15,6 +15,7 @@ import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.newChunkData.LandmarkClaimedChunk;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
+import org.tan.TownsAndNations.DataClass.wars.PlannedAttack;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.ChatCategory;
@@ -71,7 +72,7 @@ public class AdminGUI implements IGUI{
         });
         GuiItem _wars = ItemBuilder.from(landMark).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenAdminWarMenu(player);
+            OpenAdminWarMenu(player,0);
         });
 
 
@@ -85,9 +86,30 @@ public class AdminGUI implements IGUI{
         gui.open(player);
     }
 
-    private static void OpenAdminWarMenu(Player player) {
+    private static void OpenAdminWarMenu(Player player, int page) {
+        Gui gui = IGUI.createChestGui("Wars - Admin", 6);
+        ArrayList<GuiItem> guiItems = new ArrayList<>();
+        for(PlannedAttack plannedAttack : PlannedAttackStorage.getWars()){
+            ItemStack icon = plannedAttack.getAdminIcon();
 
-
+            GuiItem item = ItemBuilder.from(icon).asGuiItem(event -> {
+                event.setCancelled(true);
+                if(!plannedAttack.isAdminApproved()){
+                    if(event.isLeftClick()){
+                        plannedAttack.setAdminApproved(true);
+                    }
+                    else if(event.isRightClick()){
+                        plannedAttack.remove();
+                    }
+                }
+                OpenAdminWarMenu(player, page);
+            });
+            guiItems.add(item);
+        }
+        GuiUtil.createIterator(gui, guiItems,page,player, p -> OpenMainMenu(player),
+                p -> OpenAdminWarMenu(player, page + 1),
+                p -> OpenAdminWarMenu(player, page - 1));
+        gui.open(player);
     }
 
     private static void OpenLandmarks(Player player, int page) {

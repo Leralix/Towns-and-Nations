@@ -24,7 +24,12 @@ public class WildernessChunk extends ClaimedChunk2 {
 
     @Override
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
-        return (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("wildernessRules." + permissionType,true));
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("wildernessRules." + permissionType,true))
+            return true;
+        else {
+            player.sendMessage(Lang.WILDERNESS_NO_PERMISSION.get());
+            return false;
+        }
     }
 
     @Override

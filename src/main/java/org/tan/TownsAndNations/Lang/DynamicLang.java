@@ -11,16 +11,21 @@ public class DynamicLang {
 
     private static final Map<String, String> values = new HashMap<>();
 
-    public static void loadTranslations(String filename) {
+    public static void loadTranslations(String fileTag) {
         File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
 
         if (!langFolder.exists()) {
             langFolder.mkdir();
         }
 
-        File file = new File(langFolder, filename);
+        File SpecificLangFolder = new File(langFolder, fileTag);
+        if(!SpecificLangFolder.exists()) {
+            SpecificLangFolder.mkdir();
+        }
 
-        TownsAndNations.getPlugin().saveResource("lang/" + filename, true);
+        File file = new File(SpecificLangFolder, "upgrades.yml");
+
+        TownsAndNations.getPlugin().saveResource("lang/" + fileTag + "/upgrades.yml", true);
 
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 

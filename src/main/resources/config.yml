@@ -151,6 +151,9 @@ RankNameSize: 25
 #Enable war
 EnableWar: true
 
+#Admin need to approve every war. Admins need to use /tan admin gui to approve or deny a war
+AdminApproval: false
+
 #The duration of a war in minutes
 WarDuration: 30
 
