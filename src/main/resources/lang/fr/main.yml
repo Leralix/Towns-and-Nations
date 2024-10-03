@@ -671,6 +671,7 @@ language:
   PLAYER_ENTER_LANDMARK_CHUNK: "§6Point d'intérêt"
   CHUNK_ENTER_TOWN_AT_WAR: "§cVous êtes en guerre avec cette ville. Les joueurs de la ville ont été alerté de votre présence"
   CHUNK_INTRUSION_ALERT: "§cUn ennemi de la ville {0} est entré dans vos frontières: {1}"
+  WILDERNESS_NO_PERMISSION: "§cVous n'avez pas la permission d'effectuer cette action dans les terres sauvages"
   #History
   HISTORY_TOWN_CREATED: "{0} a fondé la ville : §9{1}"
   HISTORY_TOWN_DELETED: "{0} a supprimé la ville : §9{1}"

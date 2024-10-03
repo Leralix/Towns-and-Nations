@@ -671,6 +671,7 @@ language:
   PLAYER_ENTER_LANDMARK_CHUNK: "§f입장: §6랜드마크"
   CHUNK_ENTER_TOWN_AT_WAR: "§c당신은 이 마을과 전쟁 중입니다. 국경을 넘었다는 알림이 전송되었습니다"
   CHUNK_INTRUSION_ALERT: "§c적이 당신의 마을 국경을 넘었습니다: {0}, 침입자: {1}"
+  WILDERNESS_NO_PERMISSION: "§cYou do not have permission to do this action in the wilderness"
   #History
   HISTORY_TOWN_CREATED: "{0}이(가) 마을을 생성했습니다: §9{1}"
   HISTORY_TOWN_DELETED: "{0}이(가) 마을을 삭제했습니다: §9{1}"

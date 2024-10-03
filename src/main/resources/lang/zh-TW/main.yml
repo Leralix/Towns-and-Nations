@@ -671,6 +671,7 @@ language:
   PLAYER_ENTER_LANDMARK_CHUNK: "§fEntering : §6Landmark"
   CHUNK_ENTER_TOWN_AT_WAR: "§cYou are at war with this town. Players have been alerted that you crossed the border"
   CHUNK_INTRUSION_ALERT: "§cAn ennemy from the town {0} has enter your borders: {1}"
+  WILDERNESS_NO_PERMISSION: "§cYou do not have permission to do this action in the wilderness"
   #History
   HISTORY_TOWN_CREATED: "{0} has created the town §9{1}"
   HISTORY_TOWN_DELETED: "{0} has deleted the town §9{1}"

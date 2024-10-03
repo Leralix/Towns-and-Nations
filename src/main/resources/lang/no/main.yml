@@ -671,6 +671,7 @@ language:
   PLAYER_ENTER_LANDMARK_CHUNK: "§fEntering : §6Landmark"
   CHUNK_ENTER_TOWN_AT_WAR: "§cDu er i krig med denne byen. Spillere har blitt varslet om at du krysset grensen"
   CHUNK_INTRUSION_ALERT: "§cEn fiende fra byen {0} har krysset dine grenser: {1}"
+  WILDERNESS_NO_PERMISSION: "§cYou do not have permission to do this action in the wilderness"
   #History
   HISTORY_TOWN_CREATED: "{0} har opprettet byen §9{1}"
   HISTORY_TOWN_DELETED: "{0} har slettet byen §9{1}"
