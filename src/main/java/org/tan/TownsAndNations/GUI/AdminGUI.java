@@ -10,7 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
-import org.tan.TownsAndNations.DataClass.*;
+import org.tan.TownsAndNations.DataClass.Landmark;
+import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.newChunkData.LandmarkClaimedChunk;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
@@ -18,19 +19,18 @@ import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.DataClass.wars.PlannedAttack;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.enums.ChatCategory;
-import org.tan.TownsAndNations.enums.MessageKey;
 import org.tan.TownsAndNations.enums.SoundEnum;
+import org.tan.TownsAndNations.listeners.ChatListener.Events.ChangeDescription;
+import org.tan.TownsAndNations.listeners.ChatListener.Events.ChangeLandmarkName;
+import org.tan.TownsAndNations.listeners.ChatListener.Events.ChangeTerritoryName;
+import org.tan.TownsAndNations.listeners.ChatListener.Events.CreateEmptyTown;
+import org.tan.TownsAndNations.listeners.ChatListener.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.storage.DataStorage.*;
-import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.utils.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
-import static org.tan.TownsAndNations.enums.ChatCategory.*;
 import static org.tan.TownsAndNations.enums.SoundEnum.GOOD;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
@@ -187,12 +187,7 @@ public class AdminGUI implements IGUI{
         GuiItem _changeLandmarkName = ItemBuilder.from(changeLandmarkName).asGuiItem(event -> {
             event.setCancelled(true);
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
-            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
-            player.closeInventory();
-
-            Map<MessageKey, String> data = new HashMap<>();
-            data.put(MessageKey.LANDMARK_ID,landmark.getID());
-            PlayerChatListenerStorage.addPlayer(CHANGE_LANDMARK_NAME,player,data);
+            PlayerChatListenerStorage.register(player, new ChangeLandmarkName(landmark));
         });
 
         GuiItem _deleteLandmark = ItemBuilder.from(deleteLandmark).asGuiItem(event -> {
@@ -267,26 +262,15 @@ public class AdminGUI implements IGUI{
                 Lang.ADMIN_GUI_DELETE_TOWN_DESC1.get(regionData.getName()));
 
         GuiItem _changeRegionName = ItemBuilder.from(changeRegionName).asGuiItem(event -> {
-
+            event.setCancelled(true);
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
-            Map<MessageKey, String> data = new HashMap<>();
-
-            data.put(MessageKey.REGION_ID,regionData.getID());
-            data.put(MessageKey.COST,Integer.toString(0));
-
-            PlayerChatListenerStorage.addPlayer(CHANGE_REGION_NAME,player,data);
-            player.closeInventory();
-
+            PlayerChatListenerStorage.register(player, new ChangeTerritoryName(regionData, 0, p -> OpenSpecificRegionMenu(player, regionData)));
         });
         GuiItem _changeRegionDescription = ItemBuilder.from(changeRegionDescription).asGuiItem(event -> {
+            event.setCancelled(true);
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
-            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
-            player.closeInventory();
 
-
-            Map<MessageKey, String> data = new HashMap<>();
-            data.put(MessageKey.REGION_ID,regionData.getID());
-            PlayerChatListenerStorage.addPlayer(CHANGE_REGION_DESCRIPTION,player,data);
+            PlayerChatListenerStorage.register(player, new ChangeDescription(regionData, p -> OpenSpecificRegionMenu(player, regionData)));
             event.setCancelled(true);
         });
 
@@ -384,10 +368,7 @@ public class AdminGUI implements IGUI{
         GuiItem _createTown = ItemBuilder.from(createTown).asGuiItem(event -> {
             event.setCancelled(true);
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
-            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
-            player.closeInventory();
-
-            PlayerChatListenerStorage.addPlayer(ChatCategory.CREATE_ADMIN_TOWN,player);
+            PlayerChatListenerStorage.register(player, new CreateEmptyTown());
         });
 
 
@@ -420,27 +401,14 @@ public class AdminGUI implements IGUI{
         GuiItem _changeTownName = ItemBuilder.from(changeTownName).asGuiItem(event -> {
 
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
-            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
             player.closeInventory();
 
-            Map<MessageKey, String> data = new HashMap<>();
-
-            data.put(MessageKey.TOWN_ID,townData.getID());
-            data.put(MessageKey.COST,Integer.toString(0));
-            PlayerChatListenerStorage.addPlayer(CHANGE_TOWN_NAME,player,data);
-
-
+            PlayerChatListenerStorage.register(player, new ChangeTerritoryName(townData,0, p -> OpenSpecificTownMenu(player, townData)));
 
         });
         GuiItem _changeTownDescription = ItemBuilder.from(changeTownDescription).asGuiItem(event -> {
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
-            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
-            player.closeInventory();
-
-            Map<MessageKey, String> data = new HashMap<>();
-            data.put(MessageKey.TOWN_ID,townData.getID());
-            PlayerChatListenerStorage.addPlayer(CHANGE_TOWN_DESCRIPTION,player,data);
-
+            PlayerChatListenerStorage.register(player, new ChangeDescription(townData, p -> OpenSpecificTownMenu(player, townData)));
             event.setCancelled(true);
         });
 

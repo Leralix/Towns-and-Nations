@@ -6,24 +6,29 @@ import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
-import org.tan.TownsAndNations.DataClass.wars.PlannedAttack;
 import org.tan.TownsAndNations.DataClass.ClaimedChunkSettings;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.TownRelations;
+import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.wars.CurrentAttacks;
+import org.tan.TownsAndNations.DataClass.wars.PlannedAttack;
+import org.tan.TownsAndNations.Economy.EconomyUtil;
+import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.SoundEnum;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.CurrentAttacksStorage;
 import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlannedAttackStorage;
+import org.tan.TownsAndNations.utils.ChatUtils;
+import org.tan.TownsAndNations.utils.SoundUtil;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
+
+import static org.tan.TownsAndNations.enums.SoundEnum.MINOR_LEVEL_UP;
 
 public abstract class ITerritoryData {
 
@@ -226,5 +231,27 @@ public abstract class ITerritoryData {
             return true;
         }
         return false;
+    }
+
+    public void addDonation(Player player, Integer amount) {
+        int playerBalance = EconomyUtil.getBalance(player);
+
+        if(playerBalance < amount ){
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.get());
+            return;
+        }
+        if(amount <= 0 ){
+            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NEED_1_OR_ABOVE.get());
+            return;
+        }
+
+
+        EconomyUtil.removeFromBalance(player,amount);
+        addToBalance(amount);
+
+        //getDonationHistory().add(player.getName(),player.getUniqueId().toString(),amount); TODO : Add History to region
+
+        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_TOWN.get(amount));
+        SoundUtil.playSound(player, MINOR_LEVEL_UP);
     }
 }

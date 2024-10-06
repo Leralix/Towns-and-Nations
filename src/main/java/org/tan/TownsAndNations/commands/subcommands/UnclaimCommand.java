@@ -45,7 +45,7 @@ public class UnclaimCommand extends SubCommand {
             return;
         }
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunk);
-        claimedChunk.unclaimChunk(player, chunk);
+        claimedChunk.unclaimChunk(player);
     }
 }
 

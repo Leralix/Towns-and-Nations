@@ -45,7 +45,7 @@ repositories {
     maven {
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
-    maven { url 'https://jitpack.io' }
+    maven { url 'https://jitpack.io' } //Vault
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://oss.sonatype.org/content/repositories/central' }
 }
@@ -55,8 +55,7 @@ dependencies {
     compileOnly 'com.mojang:authlib:4.0.43'
     compileOnly 'net.luckperms:api:5.4'
     compileOnly 'com.comphenix.protocol:ProtocolLib:5.1.0'
-    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
-    compileOnly 'me.clip:placeholderapi:2.11.5'
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     compileOnly 'me.clip:placeholderapi:2.11.5'
     implementation 'dev.triumphteam:triumph-gui:+'
     implementation 'net.objecthunter:exp4j:0.4.8'

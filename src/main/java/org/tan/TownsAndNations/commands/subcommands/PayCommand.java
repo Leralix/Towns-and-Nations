@@ -11,7 +11,7 @@ import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.utils.config.ConfigTag;
 import org.tan.TownsAndNations.utils.config.ConfigUtil;
-import org.tan.TownsAndNations.utils.EconomyUtil;
+import org.tan.TownsAndNations.Economy.EconomyUtil;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class PayCommand extends SubCommand  {
 
     @Override
     public void perform(Player player, String[] args){
-        if(TownsAndNations.hasEconomy()){
+        if(TownsAndNations.hasExternalEconomy()){
             player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.get());
             return;
         }

@@ -4,32 +4,28 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.tan.TownsAndNations.DataClass.*;
+import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
+import org.tan.TownsAndNations.Economy.EconomyUtil;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
-import org.tan.TownsAndNations.enums.ChatCategory;
-import org.tan.TownsAndNations.enums.MessageKey;
-import org.tan.TownsAndNations.storage.*;
+import org.tan.TownsAndNations.listeners.ChatListener.Events.CreateTown;
+import org.tan.TownsAndNations.listeners.ChatListener.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.config.ConfigTag;
 import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.tan.TownsAndNations.enums.MessageKey.COST;
-import static org.tan.TownsAndNations.enums.SoundEnum.*;
-import static org.tan.TownsAndNations.storage.PlayerChatListenerStorage.removePlayer;
+import static org.tan.TownsAndNations.Economy.EconomyUtil.getBalance;
+import static org.tan.TownsAndNations.Economy.EconomyUtil.removeFromBalance;
+import static org.tan.TownsAndNations.enums.SoundEnum.LEVEL_UP;
+import static org.tan.TownsAndNations.listeners.ChatListener.PlayerChatListenerStorage.removePlayer;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
-import static org.tan.TownsAndNations.utils.EconomyUtil.getBalance;
-import static org.tan.TownsAndNations.utils.EconomyUtil.removeFromBalance;
 import static org.tan.TownsAndNations.utils.TeamUtils.setIndividualScoreBoard;
 
 public class TownUtil {
 
-    public static void CreateTown(final @NotNull Player player, final int townCost, final @NotNull String townName){
+    public static void createTown(final @NotNull Player player, final int townCost, final @NotNull String townName){
 
         PlayerData playerData = PlayerDataStorage.get(player);
         int playerBalance = getBalance(player);
@@ -73,17 +69,12 @@ public class TownUtil {
             player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(townPrice - playerMoney));
         }
         else {
-            Map<MessageKey,String> data = new HashMap<>();
-            data.put(COST,Integer.toString(townPrice));
-            PlayerChatListenerStorage.addPlayer(ChatCategory.CREATE_CITY,player,data);
-
             player.sendMessage(getTANString() + Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get());
-            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
-            player.closeInventory();
+            PlayerChatListenerStorage.register(player, new CreateTown(townPrice));
         }
     }
 
-    public static void CreateAdminTown(Player player, String townName) {
+    public static void createAdminTown(Player player, String townName) {
 
         FileConfiguration config =  ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         int maxSize = config.getInt("TownNameSize");

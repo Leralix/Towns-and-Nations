@@ -49,9 +49,6 @@ public class SpawnVillager extends SubCommand {
     @Override
     public void perform(Player player, String[] args) {
 
-        if(TownsAndNations.hasEconomy()){
-            player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.get());
-        }
 
         switch (args[1]) {
             case "goldsmith" -> {

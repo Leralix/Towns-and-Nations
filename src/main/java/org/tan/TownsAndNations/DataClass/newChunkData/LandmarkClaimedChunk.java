@@ -58,7 +58,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
     public Landmark getLandMark(){
         return LandmarkStorage.get(ownerID);
     }
-    public void unclaimChunk(Player player, Chunk chunk){
+    public void unclaimChunk(Player player){
         player.sendMessage(getTANString() + Lang.CANNOT_UNCLAIM_LANDMARK_CHUNK.get());
     }
 
@@ -86,6 +86,16 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
     @Override
     public boolean canPlayerClaim(Player player, ITerritoryData townData) {
         player.sendMessage(getTANString() + Lang.CANNOT_CLAIM_LANDMARK.get());
+        return false;
+    }
+
+    @Override
+    public boolean isClaimed() {
+        return true;
+    }
+
+    @Override
+    public boolean canBeOverClaimed(ITerritoryData territoryData) {
         return false;
     }
 }

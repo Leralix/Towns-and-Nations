@@ -1,6 +1,9 @@
 package org.tan.TownsAndNations.enums;
 
 import org.bukkit.ChatColor;
+import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
+import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 
 public enum TownChunkPermission {
 
@@ -37,4 +40,24 @@ public enum TownChunkPermission {
         return this.next;
     }
 
+    public boolean isAllowed(ITerritoryData ownerTown, PlayerData playerData) {
+        switch (this) {
+            case ALLIANCE -> {
+                if(playerData.haveTown()){
+                    if(ownerTown.getRelations().getRelationWith(playerData.getTown()) == TownRelation.ALLIANCE){
+                        return true;
+                    }
+                }
+                if(playerData.haveRegion()){
+                    if(ownerTown.getRelations().getRelationWith(playerData.getRegion()) == TownRelation.ALLIANCE){
+                        return true;
+                    }
+                }
+            }
+            case FOREIGN -> {
+                return true;
+            }
+        }
+        return false;
+    }
 }

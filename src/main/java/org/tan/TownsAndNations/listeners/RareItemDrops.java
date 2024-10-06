@@ -49,6 +49,7 @@ public class RareItemDrops implements Listener {
             }
             if(!NewClaimedChunkStorage.isOwner(block.getChunk(), playerData.getTownId()))
                 return; //chunk is claimed by player's town
+            //Add a check for properties,maybe switch this after the "check player permission"
         }
 
         if(type == Material.WHEAT || type == Material.BEETROOTS || type == Material.POTATOES || type == Material.CARROTS) {

@@ -6,7 +6,9 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
+import org.tan.TownsAndNations.Economy.EconomyUtil;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.enums.SoundEnum;
@@ -346,7 +348,7 @@ public class PropertyData {
         return allowedPlayers;
     }
 
-    public boolean isAllowed(PlayerData playerData) {
+    public boolean isPlayerAllowed(PlayerData playerData) {
         if(getAllowedPlayersID().contains(playerData.getID()))
             return true;
         if(isRented())
@@ -398,5 +400,16 @@ public class PropertyData {
 
     public boolean isPlayerAuthorized(String playerID) {
         return getAllowedPlayersID().contains(playerID);
+    }
+
+    public boolean isInChunk(ClaimedChunk2 chunk) {
+        int minX = Math.min(p1.getX() >> 4, p2.getX() >> 4);
+        int maxX = Math.max(p1.getX() >> 4, p2.getX() >> 4);
+        int minZ = Math.min(p1.getZ() >> 4, p2.getZ() >> 4);
+        int maxZ = Math.max(p1.getZ() >> 4, p2.getZ() >> 4);
+        int chunkX = chunk.getX();
+        int chunkZ = chunk.getZ();
+
+        return (chunkX >= minX && chunkX <= maxX && chunkZ >= minZ && chunkZ <= maxZ);
     }
 }

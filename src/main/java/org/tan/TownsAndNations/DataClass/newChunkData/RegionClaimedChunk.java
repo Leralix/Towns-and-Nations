@@ -31,13 +31,21 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     }
 
     public String getName(){
-        return RegionDataStorage.get(getOwnerID()).getName();
+        return getOwner().getName();
     }
     @Override
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
         PlayerData playerData = PlayerDataStorage.get(player);
-        RegionData region = RegionDataStorage.get(ownerID);
 
+        if(!playerData.haveTown()){
+            player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
+        }
+
+        if(!playerData.haveRegion()){
+            player.sendMessage(getTANString() + Lang.TOWN_NO_REGION.get());
+        }
+
+        RegionData region = getRegion();
 
         if(!region.isPlayerInRegion(playerData)){
             playerCantPerformAction(player);
@@ -51,7 +59,7 @@ public class RegionClaimedChunk extends ClaimedChunk2{
         return RegionDataStorage.get(getOwnerID());
     }
 
-    public void unclaimChunk(Player player, Chunk chunk){
+    public void unclaimChunk(Player player){
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
         if(!playerStat.haveTown()){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
@@ -63,29 +71,23 @@ public class RegionClaimedChunk extends ClaimedChunk2{
             return;
         }
 
-        TownData townStat = playerStat.getTown();
         RegionData regionData = playerStat.getRegion();
 
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunk);
-
-        if(!claimedChunk.getOwnerID().equals(regionData.getID())){
-            RegionData otherRegion = RegionDataStorage.get(claimedChunk.getOwnerID());
-            player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_REGION.get(otherRegion.getName()));
+        if(!regionData.equals(getRegion())){
+            player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_REGION.get(getRegion().getName()));
+            return;
         }
 
         if(!playerStat.isRegionLeader()){
             player.sendMessage(getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return;
         }
-
-        NewClaimedChunkStorage.unclaimChunk(chunk);
-        player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_REGION.get(regionData.getNumberOfClaimedChunk(),townStat.getTownLevel().getChunkCap()));
-
+        NewClaimedChunkStorage.unclaimChunk(this);
+        player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_REGION.get(regionData.getNumberOfClaimedChunk()));
     }
 
     public void playerEnterClaimedArea(Player player){
-        RegionData region = getRegion();
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.PLAYER_ENTER_REGION_CHUNK.get(region.getName())));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.PLAYER_ENTER_REGION_CHUNK.get(getRegion().getName())));
     }
 
     @Override
@@ -118,6 +120,16 @@ public class RegionClaimedChunk extends ClaimedChunk2{
         }
         player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName()));
         return false;
+    }
+
+    @Override
+    public boolean isClaimed() {
+        return true;
+    }
+
+    @Override
+    public boolean canBeOverClaimed(ITerritoryData territoryData) {
+        return getRegion().getSubjects().contains(territoryData);
     }
 
 }

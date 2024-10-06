@@ -10,10 +10,11 @@ import org.tan.TownsAndNations.DataClass.History.*;
 import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
 import org.tan.TownsAndNations.DataClass.newChunkData.TownClaimedChunk;
 import org.tan.TownsAndNations.DataClass.wars.PlannedAttack;
+import org.tan.TownsAndNations.Economy.EconomyUtil;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.*;
 import org.tan.TownsAndNations.storage.DataStorage.*;
-import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
+import org.tan.TownsAndNations.listeners.ChatListener.PlayerChatListenerStorage;
 import org.tan.TownsAndNations.utils.*;
 import org.tan.TownsAndNations.utils.config.ConfigTag;
 import org.tan.TownsAndNations.utils.config.ConfigUtil;
@@ -83,7 +84,7 @@ public class TownData extends ITerritoryData {
         this.salaryHistory = new SalaryHistory();
         this.taxHistory = new TaxHistory();
 
-        addRank("default");
+        newRank("default");
         if(leaderID != null)
             addPlayer(leaderID);
     }
@@ -275,7 +276,7 @@ public class TownData extends ITerritoryData {
         this.TownName = newName;
     }
 
-    public TownRank addRank(String rankName)    {
+    public TownRank newRank(String rankName)    {
         int nextRankId = 0;
         for(TownRank rank : this.getRanks()){
             if(rank.getID() >= nextRankId)
@@ -861,32 +862,6 @@ public class TownData extends ITerritoryData {
         return totalSalary;
     }
 
-    public void addDonation(Player player, int amountDonated){
-        int playerBalance = EconomyUtil.getBalance(player);
-
-        if(playerBalance < amountDonated ){
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.get());
-            PlayerChatListenerStorage.removePlayer(player);
-            return;
-        }
-        if(amountDonated <= 0 ){
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NEED_1_OR_ABOVE.get());
-            PlayerChatListenerStorage.removePlayer(player);
-            return;
-        }
-
-        TownData playerTown = TownDataStorage.get(player);
-
-        EconomyUtil.removeFromBalance(player,amountDonated);
-        playerTown.addToBalance(amountDonated);
-
-        if(!isSQLEnabled())
-            playerTown.getDonationHistory().add(player.getName(),player.getUniqueId().toString(),amountDonated);
-
-        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_TOWN.get(amountDonated));
-        PlayerChatListenerStorage.removePlayer(player);
-        SoundUtil.playSound(player, MINOR_LEVEL_UP);
-    }
 
     public void kickPlayer(OfflinePlayer kickedPlayer) {
         PlayerData kickedPlayerData = PlayerDataStorage.get(kickedPlayer);
@@ -1011,7 +986,7 @@ public class TownData extends ITerritoryData {
     @Override
     public void delete(){
         super.delete();
-        broadCastMessageWithSound(Lang.BROADCAST_PLAYER_TOWN_DELETED.get(getColoredName()), BAD);
+        broadCastMessageWithSound(Lang.BROADCAST_PLAYER_TOWN_DELETED.get(getLeaderData().getName(), getColoredName()), BAD);
         removeAllLandmark(); //Remove all Landmark from the deleted town
         for(String playerID : getPlayerIDList()){ //Kick all Players from the deleted town
             removePlayer(PlayerDataStorage.get(playerID));

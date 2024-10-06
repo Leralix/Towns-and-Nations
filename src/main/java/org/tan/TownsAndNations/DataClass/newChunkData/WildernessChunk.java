@@ -33,7 +33,7 @@ public class WildernessChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public void unclaimChunk(Player player, Chunk chunk) {
+    public void unclaimChunk(Player player) {
     }
 
     @Override
@@ -65,5 +65,15 @@ public class WildernessChunk extends ClaimedChunk2 {
     @Override
     public boolean canPlayerClaim(Player player, ITerritoryData townData) {
         return true;
+    }
+
+    @Override
+    public boolean isClaimed() {
+        return false;
+    }
+
+    @Override
+    public boolean canBeOverClaimed(ITerritoryData territoryData) {
+        return false;
     }
 }

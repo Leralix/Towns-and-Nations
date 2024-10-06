@@ -2,7 +2,6 @@ package org.tan.TownsAndNations.commands.AdminSubcommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.TownsAndNations;
@@ -10,7 +9,6 @@ import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.utils.FileUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
@@ -45,7 +43,7 @@ public class SetMoney extends SubCommand {
     @Override
     public void perform(Player player, String[] args) {
 
-        if(TownsAndNations.hasEconomy()){
+        if(TownsAndNations.hasExternalEconomy()){
             player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.get());
             return;
         }

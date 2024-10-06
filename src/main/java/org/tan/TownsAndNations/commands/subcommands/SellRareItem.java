@@ -1,17 +1,13 @@
 package org.tan.TownsAndNations.commands.subcommands;
 
-import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.tan.TownsAndNations.DataClass.RareItem;
-import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
+import org.tan.TownsAndNations.Economy.EconomyUtil;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
-import org.tan.TownsAndNations.listeners.RareItemDrops;
 import org.tan.TownsAndNations.storage.CustomItemManager;
-import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.utils.*;
 
 import java.util.List;

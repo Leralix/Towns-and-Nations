@@ -7,10 +7,12 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tan.TownsAndNations.API.tanAPI;
 import org.tan.TownsAndNations.Bstats.Metrics;
 import org.tan.TownsAndNations.DataClass.PluginVersion;
+import org.tan.TownsAndNations.Economy.TanEcon;
 import org.tan.TownsAndNations.Lang.DynamicLang;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.PlaceholderAPI.PlaceHolderAPI;
@@ -20,6 +22,7 @@ import org.tan.TownsAndNations.commands.AdminCommandManager;
 import org.tan.TownsAndNations.commands.CommandManager;
 import org.tan.TownsAndNations.commands.DebugCommandManager;
 import org.tan.TownsAndNations.listeners.*;
+import org.tan.TownsAndNations.listeners.ChatListener.ChatListener;
 import org.tan.TownsAndNations.storage.CustomItemManager;
 import org.tan.TownsAndNations.storage.DataStorage.*;
 import org.tan.TownsAndNations.storage.Legacy.UpgradeStorage;
@@ -27,7 +30,7 @@ import org.tan.TownsAndNations.storage.MobChunkSpawnStorage;
 import org.tan.TownsAndNations.storage.SoundStorage;
 import org.tan.TownsAndNations.utils.CustomNBT;
 import org.tan.TownsAndNations.utils.DropChances;
-import org.tan.TownsAndNations.utils.EconomyUtil;
+import org.tan.TownsAndNations.Economy.EconomyUtil;
 import org.tan.TownsAndNations.utils.UpdateUtil;
 import org.tan.TownsAndNations.utils.config.ConfigTag;
 import org.tan.TownsAndNations.utils.config.ConfigUtil;
@@ -36,8 +39,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -110,6 +111,8 @@ public final class TownsAndNations extends JavaPlugin {
      * This method is called when the plugin is enabled.
      * It is used to load the plugin and all its features.
      */
+
+    private static boolean externalVault = false;
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -182,12 +185,8 @@ public final class TownsAndNations extends JavaPlugin {
         getCommand("tanadmin").setExecutor(new AdminCommandManager());
         getCommand("tandebug").setExecutor(new DebugCommandManager());
 
-        if (setupEconomy()) {
-            logger.info("[TaN] -Vault API successfully loaded");
-            EconomyUtil.setEconomy(true);
-        } else {
-            logger.info("[TaN] -Vault API not found, using own economy system");
-        }
+        setupEconomy();
+
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             logger.info("[TaN] -Loading PlaceholderAPI");
@@ -206,16 +205,28 @@ public final class TownsAndNations extends JavaPlugin {
      * Method used to set up the economy of the server if Vault is enabled.
      * @return true if the economy is successfully setup with vault, false otherwise.
      */
-    private boolean setupEconomy() {
+    private void setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
+            logger.info("[TaN] -Vault is not detected. Running standalone economy");
+            return; //Vault not found, using own econ
         }
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
+
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("UseTanEconomy",true)){
+            econ = new TanEcon();
+            Bukkit.getServicesManager().register(Economy.class, econ, this, ServicePriority.Normal);
+            logger.info("[TaN] -Vault is detected, registering TaN Economy");
+            EconomyUtil.setEconomy(true); //Vault found and using tan for vault Econ
         }
-        econ = rsp.getProvider();
-        return true;
+        else{
+            RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+            if (rsp == null) {
+                logger.info("[TaN] -Vault is detected but no Economy plugin are used. Running standalone economy");
+                return; //Vault not found, using own econ
+            }
+            econ = rsp.getProvider();
+            logger.info("[TaN] -Vault is detected, using " + econ.getName() + " as economy");
+            externalVault = true;
+        }
     }
 
     /**
@@ -298,8 +309,8 @@ public final class TownsAndNations extends JavaPlugin {
      * Return true if Vault is installed.
      * @return true if the plugin have an economy system, false otherwise.
      */
-    public static boolean hasEconomy(){
-        return econ != null;
+    public static boolean hasExternalEconomy(){
+        return externalVault;
     }
 
     /**

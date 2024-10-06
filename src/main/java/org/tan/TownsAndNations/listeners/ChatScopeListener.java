@@ -4,9 +4,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.tan.TownsAndNations.enums.ChatScope;
 import org.tan.TownsAndNations.storage.LocalChatStorage;
-import org.tan.TownsAndNations.storage.PlayerChatListenerStorage;
+import org.tan.TownsAndNations.listeners.ChatListener.PlayerChatListenerStorage;
 
 public class ChatScopeListener implements Listener {
 
@@ -17,7 +16,7 @@ public class ChatScopeListener implements Listener {
         String playerUUID = player.getUniqueId().toString();
 
         //If player has better commands to do
-        if(PlayerChatListenerStorage.contains(playerUUID))
+        if(PlayerChatListenerStorage.contains(player))
             return;
 
         if(!LocalChatStorage.isPlayerInChatScope(playerUUID))

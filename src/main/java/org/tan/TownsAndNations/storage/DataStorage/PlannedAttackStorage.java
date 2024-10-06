@@ -20,15 +20,12 @@ import java.util.Map;
 public class PlannedAttackStorage {
     private static Map<String, PlannedAttack> warDataMapWithWarKey = new HashMap<>();
 
-    public static void newWar(CreateAttackData createAttackData){
-        newWar(Lang.BASIC_ATTACK_NAME.get(createAttackData.getMainAttacker().getName(), createAttackData.getMainDefender().getName()), createAttackData);
-    }
 
-    public static void newWar(String warName, CreateAttackData createAttackData){
+    public static void newWar(CreateAttackData createAttackData){
 
         String newID = getNewID();
         long deltaDateTime = createAttackData.getDeltaDateTime();
-        PlannedAttack plannedAttack = new PlannedAttack(newID,warName, createAttackData, deltaDateTime);
+        PlannedAttack plannedAttack = new PlannedAttack(newID, createAttackData, deltaDateTime);
         add(plannedAttack);
         save();
     }

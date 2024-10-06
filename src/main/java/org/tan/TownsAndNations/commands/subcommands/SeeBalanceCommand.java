@@ -35,7 +35,7 @@ public class SeeBalanceCommand extends SubCommand  {
 
     @Override
     public void perform(Player player, String[] args){
-        if(TownsAndNations.hasEconomy()){
+        if(TownsAndNations.hasExternalEconomy()){
             player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.get());
             return;
         }

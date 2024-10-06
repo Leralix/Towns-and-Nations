@@ -12,7 +12,7 @@ import org.tan.TownsAndNations.enums.CustomVillagerProfession;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.config.ConfigTag;
 import org.tan.TownsAndNations.utils.config.ConfigUtil;
-import org.tan.TownsAndNations.utils.EconomyUtil;
+import org.tan.TownsAndNations.Economy.EconomyUtil;
 
 import java.util.Set;
 

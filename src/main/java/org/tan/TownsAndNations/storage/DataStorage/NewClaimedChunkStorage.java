@@ -139,18 +139,6 @@ public class NewClaimedChunkStorage {
         return claimedChunk;
     }
 
-    public static boolean isChunkClaimedByTownRegion(TownData townData, Chunk chunkToClaim) {
-        return isChunkClaimedByTownRegion(townData, get(chunkToClaim));
-    }
-
-    public static boolean isChunkClaimedByTownRegion(TownData townData, ClaimedChunk2 claimedChunk) {
-        if(claimedChunk instanceof RegionClaimedChunk){
-            RegionData regionData = ((RegionClaimedChunk) claimedChunk).getRegion();
-            return regionData.isTownInRegion(townData);
-        }
-        return false;
-    }
-
     public static void loadStats() {
         Gson gson = new Gson();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Claimed Chunks.json");

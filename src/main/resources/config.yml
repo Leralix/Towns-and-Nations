@@ -46,6 +46,11 @@ prefixSize: 3
 ##      Economy       ##
 ########################
 
+#Use TownsAndNations economy for vault
+#If set to false, plugin will use the economy plugin linked to vault
+#If no other economy plugin are provided by vault, the plugin will use its own economy system without linking to vault
+UseTanEconomy: true
+
 #Max distance between 2 players to be able to trade (/tan pay)
 maxPayDistance: 15
 

@@ -9,7 +9,6 @@ import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.utils.FileUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
@@ -41,7 +40,7 @@ public class AddMoney extends SubCommand {
     @Override
     public void perform(Player player, String[] args) {
 
-        if(TownsAndNations.hasEconomy()){
+        if(TownsAndNations.hasExternalEconomy()){
             player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.get());
             return;
         }

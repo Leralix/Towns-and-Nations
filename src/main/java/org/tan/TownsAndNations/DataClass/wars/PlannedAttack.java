@@ -1,5 +1,6 @@
 package org.tan.TownsAndNations.DataClass.wars;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -37,9 +38,9 @@ public class PlannedAttack {
 
     boolean isAdminApproved;
 
-    public PlannedAttack(String ID, String name, CreateAttackData createAttackData, long startTime){
+    public PlannedAttack(String ID, CreateAttackData createAttackData, long startTime){
         this.ID = ID;
-        this.name = name;
+        this.name = Lang.BASIC_ATTACK_NAME.get(createAttackData.getMainAttacker().getName(), createAttackData.getMainDefender().getName());
         this.mainAttackerID = createAttackData.getMainAttacker().getID();
         this.mainDefenderID = createAttackData.getMainDefender().getID();
 
@@ -172,7 +173,7 @@ public class PlannedAttack {
         ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
         ItemMeta itemMeta = itemStack.getItemMeta();
         if(itemMeta != null){
-            itemMeta.setDisplayName(name);
+            itemMeta.setDisplayName(ChatColor.GREEN + name);
             ArrayList<String> lore = new ArrayList<>();
             lore.add(Lang.ATTACK_ICON_DESC_1.get(getMainAttacker().getName()));
             lore.add(Lang.ATTACK_ICON_DESC_2.get(getMainDefender().getName()));
@@ -198,7 +199,7 @@ public class PlannedAttack {
         ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
         ItemMeta itemMeta = itemStack.getItemMeta();
         if(itemMeta != null){
-            itemMeta.setDisplayName(name);
+            itemMeta.setDisplayName(ChatColor.GREEN + name);
             ArrayList<String> lore = new ArrayList<>();
             lore.add(Lang.ATTACK_ICON_DESC_1.get(getMainAttacker().getName()));
             lore.add(Lang.ATTACK_ICON_DESC_2.get(getMainDefender().getName()));
@@ -308,4 +309,7 @@ public class PlannedAttack {
         return itemStack;
     }
 
+    public void rename(String message) {
+        this.name = message;
+    }
 }

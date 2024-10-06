@@ -61,16 +61,16 @@ public class AcceptRelationCommand extends SubCommand {
                 TownRelationConfirmStorage.removeInvitation(player.getUniqueId().toString(), otherTown.getID());
 
                 if(newRelation == null){ // From negative to neutral
-                    town.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getName(),"neutral"),
+                    town.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getColoredName(),TownRelation.NEUTRAL),
                             GOOD);
-                    otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(town.getName(),"neutral"),
+                    otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(town.getColoredName(),TownRelation.NEUTRAL),
                             GOOD);
                     RelationUtil.removeTownRelation(town,otherTown);
                 }
                 else { // from neutral to positive
-                    town.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getName(),newRelation.getColoredName()),
+                    town.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getColoredName(),newRelation.getColoredName()),
                             GOOD);
-                    otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(town.getName(),newRelation.getColoredName()),
+                    otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(town.getColoredName(),newRelation.getColoredName()),
                             GOOD);
 
                     RelationUtil.addTownRelation(town,otherTown,newRelation);

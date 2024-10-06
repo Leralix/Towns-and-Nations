@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.utils;
+package org.tan.TownsAndNations.Economy;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -33,7 +33,6 @@ public class EconomyUtil {
     public static int getBalance(OfflinePlayer offlinePlayer){
         if(hasEconomy)
             return (int)TownsAndNations.getEconomy().getBalance(offlinePlayer);
-
         return PlayerDataStorage.get(offlinePlayer).getBalance();
     }
 

@@ -4,6 +4,8 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.tan.TownsAndNations.DataClass.PlayerData;
+import org.tan.TownsAndNations.DataClass.newChunkData.ClaimedChunk2;
+import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -79,7 +81,6 @@ public class ChunkUtil {
             player.sendMessage(getTANString() + Lang.MAX_CHUNK_LIMIT_REACHED.get());
             return;
         }
-        boolean isRegionClaimed = false;
 
         int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfTownChunk",0);
         if(townData.getBalance() < cost){
@@ -87,15 +88,14 @@ public class ChunkUtil {
             return;
         }
 
+        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunkToClaim);
+        boolean overClaimed = false;
 
-        //Chunk already claimed by the town
-        if(NewClaimedChunkStorage.isChunkClaimed(chunkToClaim)){
-            //If chunk belongs to the region in which the town is, then the town can get the chunk
-            if(NewClaimedChunkStorage.isChunkClaimedByTownRegion(townData,chunkToClaim)){
-                isRegionClaimed = true;
-            }
+        if(claimedChunk.isClaimed()){
+            if(claimedChunk.canBeOverClaimed(townData))
+                overClaimed = true;
             else{
-                player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(NewClaimedChunkStorage.getChunkOwnerName(chunkToClaim)));
+                player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(claimedChunk.getOwner().getName()));
                 return;
             }
         }
@@ -108,7 +108,7 @@ public class ChunkUtil {
             return;
         }
 
-        TownClaim(isRegionClaimed, chunkToClaim, townData, player);
+        TownClaim(overClaimed, chunkToClaim, townData, player);
 
 
     }

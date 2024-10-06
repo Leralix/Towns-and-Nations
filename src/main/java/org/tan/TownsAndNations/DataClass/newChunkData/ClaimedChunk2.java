@@ -12,7 +12,6 @@ import org.tan.TownsAndNations.DataClass.territoryData.ITerritoryData;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.ChunkPermissionType;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
-import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.TerritoryUtil;
 
 import java.util.Objects;
@@ -74,7 +73,7 @@ public abstract class ClaimedChunk2 {
         player.sendMessage(getTANString() + Lang.CHUNK_BELONGS_TO.get(getOwner().getName()));
     }
 
-    public abstract void unclaimChunk(Player player, Chunk chunk);
+    public abstract void unclaimChunk(Player player);
 
     public abstract void playerEnterClaimedArea(Player player);
 
@@ -98,4 +97,8 @@ public abstract class ClaimedChunk2 {
     public abstract TextComponent getMapIcon(PlayerData playerData);
 
     public abstract boolean canPlayerClaim(Player player, ITerritoryData territoryData);
+
+    public abstract boolean isClaimed();
+
+    public abstract boolean canBeOverClaimed(ITerritoryData territoryData);
 }

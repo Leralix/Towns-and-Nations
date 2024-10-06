@@ -27,8 +27,6 @@ import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
 import static org.tan.TownsAndNations.enums.SoundEnum.BAD;
 import static org.tan.TownsAndNations.enums.SoundEnum.NOT_ALLOWED;
-import static org.tan.TownsAndNations.enums.TownChunkPermission.ALLIANCE;
-import static org.tan.TownsAndNations.enums.TownChunkPermission.FOREIGN;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 public class TownClaimedChunk extends ClaimedChunk2{
@@ -54,11 +52,11 @@ public class TownClaimedChunk extends ClaimedChunk2{
         TownData ownerTown = getTown();
         PropertyData property = ownerTown.getProperty(location);
         if(property != null){
-            if(property.isAllowed(playerData)){
+            if(property.isPlayerAllowed(playerData)){
                 return true;
             }
             else {
-                player.sendMessage(property.getDenyMessage());
+                player.sendMessage(getTANString() + property.getDenyMessage());
                 return false;
             }
         }
@@ -70,27 +68,18 @@ public class TownClaimedChunk extends ClaimedChunk2{
         }
 
         TownData playerTown = TownDataStorage.get(player);
-
         //player is a part of a war with this town.
         for(CurrentAttacks currentAttacks : playerTown.getCurrentAttacks())
             if(currentAttacks.containsPlayer(playerData))
                 return true;
 
 
-        TownData chunkTown = TownDataStorage.get(ownerID);
-
-        //Same town, can interact
-        if(ownerID.equals(playerData.getTown().getID()))
+        if(getTown().havePlayer(playerData)){
             return true;
+        }
 
-        TownChunkPermission townPermission = chunkTown.getPermission(permissionType);
-
-        //Same alliance + alliance accepted permission
-        if(townPermission == ALLIANCE &&  chunkTown.getRelationWith(playerTown) == TownRelation.ALLIANCE)
-            return true;
-
-        //permission is on foreign
-        if(townPermission == FOREIGN)
+        TownChunkPermission townPermission = ownerTown.getPermission(permissionType);
+        if(townPermission.isAllowed(ownerTown, playerData))
             return true;
 
         playerCantPerformAction(player);
@@ -98,8 +87,8 @@ public class TownClaimedChunk extends ClaimedChunk2{
     }
 
 
-    public void unclaimChunk(Player player, Chunk chunk){
-        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
+    public void unclaimChunk(Player player){
+        PlayerData playerStat = PlayerDataStorage.get(player);
         if(!playerStat.haveTown()){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
             return;
@@ -111,23 +100,22 @@ public class TownClaimedChunk extends ClaimedChunk2{
             return;
         }
 
-        TownData townStat = playerStat.getTown();
-        if(!playerStat.getID().equals(townStat.getLeaderID())){
-            player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+        TownData playerTown = playerStat.getTown();
+
+        if(!getOwner().equals(playerTown)){
+            player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_TOWN.get(getOwner().getName()));
+            return;
         }
 
-
-
-        if(NewClaimedChunkStorage.isChunkClaimed(chunk)){
-            if(NewClaimedChunkStorage.isOwner(chunk, townStat.getID())) {
-                NewClaimedChunkStorage.unclaimChunk(player.getLocation().getChunk());
-                player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_TOWN.get(townStat.getNumberOfClaimedChunk(),townStat.getTownLevel().getChunkCap()));
+        for(PropertyData propertyData : getTown().getPropertyDataList()){
+            if(propertyData.isInChunk(this)){
+                player.sendMessage(getTANString() + Lang.PROPERTY_IN_CHUNK.get(propertyData.getName()));
                 return;
             }
-            TownData otherTown = TownDataStorage.get(NewClaimedChunkStorage.getChunkOwnerID(chunk));
-            player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_TOWN.get(otherTown.getName()));
-
         }
+
+        player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_TOWN.get(playerTown.getNumberOfClaimedChunk(),playerTown.getTownLevel().getChunkCap()));
+        NewClaimedChunkStorage.unclaimChunk(player.getLocation().getChunk());
     }
 
     public void playerEnterClaimedArea(Player player){
@@ -138,7 +126,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
         if(playerTown == null){
             return;
         }
-        TownRelation relation = TownDataStorage.get(player).getRelationWith(townTo);
+        TownRelation relation = playerTown.getRelationWith(townTo);
 
         if(relation == TownRelation.WAR && ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("notifyEnemyEnterTown",true)){
             SoundUtil.playSound(player, BAD);
@@ -174,6 +162,16 @@ public class TownClaimedChunk extends ClaimedChunk2{
             return true;
 
         player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName()));
+        return false;
+    }
+
+    @Override
+    public boolean isClaimed() {
+        return true;
+    }
+
+    @Override
+    public boolean canBeOverClaimed(ITerritoryData territoryData) {
         return false;
     }
 }

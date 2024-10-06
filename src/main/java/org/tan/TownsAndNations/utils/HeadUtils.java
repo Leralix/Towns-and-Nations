@@ -1,9 +1,6 @@
 package org.tan.TownsAndNations.utils;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -18,13 +15,13 @@ import org.jetbrains.annotations.Nullable;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
+import org.tan.TownsAndNations.Economy.EconomyUtil;
 import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 
-import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;

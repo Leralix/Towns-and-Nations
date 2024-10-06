@@ -15,7 +15,7 @@ import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.ArchiveUtil;
 import org.tan.TownsAndNations.utils.config.ConfigTag;
 import org.tan.TownsAndNations.utils.config.ConfigUtil;
-import org.tan.TownsAndNations.utils.EconomyUtil;
+import org.tan.TownsAndNations.Economy.EconomyUtil;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
