@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.commands.subcommands;
+package org.tan.TownsAndNations.commands.playerSubCommand;
 
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
@@ -31,7 +31,7 @@ public class TownSpawnCommand extends SubCommand {
         return "/tan spawn";
     }
     @Override
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
         return null;
     }
     @Override

@@ -18,9 +18,9 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.PlaceholderAPI.PlaceHolderAPI;
 import org.tan.TownsAndNations.Tasks.DailyTasks;
 import org.tan.TownsAndNations.Tasks.SaveStats;
-import org.tan.TownsAndNations.commands.AdminCommandManager;
-import org.tan.TownsAndNations.commands.CommandManager;
-import org.tan.TownsAndNations.commands.DebugCommandManager;
+import org.tan.TownsAndNations.commands.adminSubcommands.AdminCommandManager;
+import org.tan.TownsAndNations.commands.playerSubCommand.PlayerCommandManager;
+import org.tan.TownsAndNations.commands.debugSubcommands.DebugCommandManager;
 import org.tan.TownsAndNations.listeners.*;
 import org.tan.TownsAndNations.listeners.ChatListener.ChatListener;
 import org.tan.TownsAndNations.storage.CustomItemManager;
@@ -181,7 +181,7 @@ public final class TownsAndNations extends JavaPlugin {
         DailyTasks.scheduleMidnightTask();
 
         EnableEventList();
-        getCommand("tan").setExecutor(new CommandManager());
+        getCommand("tan").setExecutor(new PlayerCommandManager());
         getCommand("tanadmin").setExecutor(new AdminCommandManager());
         getCommand("tandebug").setExecutor(new DebugCommandManager());
 

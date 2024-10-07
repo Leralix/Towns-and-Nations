@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.commands.subcommands;
+package org.tan.TownsAndNations.commands.playerSubCommand;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
@@ -29,7 +29,7 @@ public class UnclaimCommand extends SubCommand {
     public String getSyntax() {
         return "/tan unclaim";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
         return null;
     }
     @Override

@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.commands.AdminSubcommands;
+package org.tan.TownsAndNations.commands.adminSubcommands;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
@@ -31,9 +31,9 @@ public class UnclaimAdminCommand extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/tandebug unclaim";
+        return "/tanadmin unclaim";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
         return null;
     }
     @Override

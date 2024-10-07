@@ -5,6 +5,7 @@ import org.tan.TownsAndNations.Lang.Lang;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.utils.ArchiveUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
@@ -30,9 +31,8 @@ public class CreateBackup extends SubCommand {
     public String getSyntax() {
         return "/tandebug createBackup";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
-
-        return null;
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
+        return new ArrayList<>();
     }
     @Override
     public void perform(Player player, String[] args) {

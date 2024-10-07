@@ -27,7 +27,7 @@ public class GetDropChances extends SubCommand {
     public String getSyntax() {
         return "/tandebug dropchances";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
         return null;
     }
     @Override

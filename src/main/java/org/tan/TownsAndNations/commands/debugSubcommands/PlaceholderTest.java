@@ -30,7 +30,7 @@ public class PlaceholderTest extends SubCommand {
     }
 
     @Override
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
         return null;
     }
     @Override

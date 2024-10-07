@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.commands.subcommands;
+package org.tan.TownsAndNations.commands.playerSubCommand;
 
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.DataClass.PlayerData;
@@ -39,7 +39,7 @@ public class JoinTownCommand extends SubCommand {
     }
 
     @Override
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
             suggestions.add("<Town ID>");

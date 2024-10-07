@@ -5,6 +5,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.commands.SubCommand;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActionBarCommand extends SubCommand {
@@ -28,8 +29,8 @@ public class ActionBarCommand extends SubCommand {
     public String getSyntax() {
         return "/tandebug actionbar";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
-        return null;
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
+        return new ArrayList<>();
     }
     @Override
     public void perform(Player player, String[] args) {

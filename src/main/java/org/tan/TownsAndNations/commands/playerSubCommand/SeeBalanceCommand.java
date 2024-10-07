@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.commands.subcommands;
+package org.tan.TownsAndNations.commands.playerSubCommand;
 
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -29,7 +29,7 @@ public class SeeBalanceCommand extends SubCommand  {
     public String getSyntax() {
         return "/tan balance";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
         return null;
     }
 

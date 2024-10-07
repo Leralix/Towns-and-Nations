@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.commands.subcommands;
+package org.tan.TownsAndNations.commands.playerSubCommand;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
@@ -31,7 +31,7 @@ public class ClaimCommand extends SubCommand {
         return "/tan claim <town/region>";
     }
     @Override
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
             suggestions.add("town");

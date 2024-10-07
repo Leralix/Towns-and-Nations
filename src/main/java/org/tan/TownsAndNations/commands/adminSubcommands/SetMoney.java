@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.commands.AdminSubcommands;
+package org.tan.TownsAndNations.commands.adminSubcommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -32,9 +32,9 @@ public class SetMoney extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/tandebug setmoney <player> <amount>";
+        return "/tanadmin setmoney <player> <amount>";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
         return payPlayerSuggestion(args);
     }
 
