@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.commands.AdminSubcommands;
+package org.tan.TownsAndNations.commands.adminSubcommands;
 
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.Lang.Lang;
@@ -29,9 +29,9 @@ public class getRareItem extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/tandebug getrareitem";
+        return "/tanadmin getrareitem";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
 
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {

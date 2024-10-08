@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.commands.AdminSubcommands;
+package org.tan.TownsAndNations.commands.adminSubcommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -33,7 +33,7 @@ public class SudoPlayer extends SubCommand {
     public String getSyntax() {
         return "/tanadmin sudo <optional - player> ";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
 
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {

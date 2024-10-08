@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.commands.subcommands;
+package org.tan.TownsAndNations.commands.playerSubCommand;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -28,7 +28,7 @@ public class SellRareItem extends SubCommand {
     public String getSyntax() {
         return "/tan sell";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
         return null;
     }
     @Override

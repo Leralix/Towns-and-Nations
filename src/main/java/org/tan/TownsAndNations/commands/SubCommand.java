@@ -15,7 +15,7 @@ public abstract class SubCommand {
     public abstract int getArguments();
 
     public abstract String getSyntax();
-    public abstract List<String> getTabCompleteSuggestions(Player player, String[] args);
+    public abstract List<String> getTabCompleteSuggestions(Player player, String currentMessage, String[] args);
 
     public abstract void perform(Player player, String[] args);
 

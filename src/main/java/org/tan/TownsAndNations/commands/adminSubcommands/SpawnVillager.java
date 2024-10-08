@@ -1,9 +1,8 @@
-package org.tan.TownsAndNations.commands.AdminSubcommands;
+package org.tan.TownsAndNations.commands.adminSubcommands;
 
 
 import org.bukkit.entity.Player;
 import org.tan.TownsAndNations.Lang.Lang;
-import org.tan.TownsAndNations.TownsAndNations;
 import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.CustomVillagerProfession;
 import org.tan.TownsAndNations.utils.ChatUtils;
@@ -11,8 +10,6 @@ import org.tan.TownsAndNations.utils.VillagerUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 public class SpawnVillager extends SubCommand {
 
@@ -33,9 +30,9 @@ public class SpawnVillager extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/tandebug spawnvillager <Villager Name>";
+        return "/tanadmin spawnvillager <Villager Name>";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
             suggestions.add("goldsmith");

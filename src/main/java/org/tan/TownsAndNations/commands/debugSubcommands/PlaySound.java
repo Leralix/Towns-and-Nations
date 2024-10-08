@@ -30,7 +30,7 @@ public class PlaySound extends SubCommand {
     public String getSyntax() {
         return "/tandebug playsound";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
             suggestions.add("levelup");

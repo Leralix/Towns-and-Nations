@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.commands.subcommands;
+package org.tan.TownsAndNations.commands.playerSubCommand;
 
 
 import org.tan.TownsAndNations.GUI.playerGUI;
@@ -33,7 +33,7 @@ public class OpenGuiCommand extends SubCommand  {
     }
 
     @Override
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
         return null;
     }
     @Override

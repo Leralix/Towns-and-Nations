@@ -1,4 +1,4 @@
-package org.tan.TownsAndNations.commands.subcommands;
+package org.tan.TownsAndNations.commands.playerSubCommand;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -35,7 +35,7 @@ public class InvitePlayerCommand extends SubCommand {
     }
 
     @Override
-    public List<String> getTabCompleteSuggestions(Player player, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
             for (Player p : Bukkit.getOnlinePlayers()) {
