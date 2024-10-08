@@ -42,35 +42,35 @@ language:
   NEW_VERSION_AVAILABLE_2: "§cDownload it on Spigot or GitHub"
   #Level up
   BASIC_LEVEL_UP: "§aLevel up !"
-  #Teleportation
-  WAIT_BEFORE_ANOTHER_TELEPORTATION: "§cPlease wait before teleporting again"
-  TELEPORTATION_CANCELLED: "§cTeleportation cancelled"
-  TELEPORTATION_IN_X_SECONDS: "§fTeleportation in §a{0}§f seconds"
-  TELEPORTATION_IN_X_SECONDS_NOT_MOVE: "§fTeleportation in §a{0}§f seconds. Do not move"
-  #ChunkListener
-  CHUNK_BELONGS_TO: "§cThis chunk belongs to: §9{0}"
-  #Commands
-  NOT_ENOUGH_ARGS_ERROR: "§cNot enough arguments"
-  TOO_MANY_ARGS_ERROR: "§cToo many arguments"
-  SYNTAX_ERROR: "§cIncorrect syntax"
-  SYNTAX_ERROR_AMOUNT: "§cIncorrect syntax for the amount"
-  CORRECT_SYNTAX_INFO: "§cCorrect syntax: {0}"
-  MESSAGE_TOO_LONG: "§cMessage is too long: {0} max"
-  ECONOMY_EXISTS: "§cA plugin is handling the economy. Use it instead"
-  CANCELLED_ACTION: "§cAction cancelled"
-  #Cancel
-  CANCEL_WORD: "cancel" #The cancel word can be modified
-  WRITE_CANCEL_TO_CANCEL: "§fWrite §c{0}§f in the chat to cancel"
-  #Ask to join a town
-  PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f asked to join the town. You can find the application in the members menu"
-  PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "You successfully asked to join the town: §9{0}§f. Right click on the town to cancel"
-  PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "You cancelled your application"
-  PLAYER_TOWN_NOT_RECRUITING: "§cThis town is not recruiting"
-  #BROADCAST
-  TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the town: §9{1}"
-  TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c has left the town !"
-  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the region: §b{1}"
-  GUI_REGION_KICK_TOWN_BROADCAST: "§fThe town §9{0}§f has been kicked from the region"
+  #Отмена телепортации
+  WAIT_BEFORE_ANOTHER_TELEPORTATION: "§cПожалуйста, подождите перед следующей телепортацией"
+  TELEPORTATION_CANCELLED: "§cТелепортация отменена"
+  TELEPORTATION_IN_X_SECONDS: "§fТелепортация через §a{0}§f секунд"
+  TELEPORTATION_IN_X_SECONDS_NOT_MOVE: "§fТелепортация через §a{0}§f секунд. Не двигайтесь"
+  #Обработчик чанков
+  CHUNK_BELONGS_TO: "§cЭтот чанк принадлежит: §9{0}"
+  #Команды
+  NOT_ENOUGH_ARGS_ERROR: "§cНедостаточно аргументов"
+  TOO_MANY_ARGS_ERROR: "§cСлишком много аргументов"
+  SYNTAX_ERROR: "§cНекорректный синтаксис"
+  SYNTAX_ERROR_AMOUNT: "§cНекорректный синтаксис для суммы"
+  CORRECT_SYNTAX_INFO: "§cКорректный синтаксис: {0}"
+  MESSAGE_TOO_LONG: "§cСообщение слишком длинное: максимум {0}"
+  ECONOMY_EXISTS: "§cПлагин уже обрабатывает экономику. Используйте его"
+  CANCELLED_ACTION: "§cДействие отменено"
+  #Отмена
+  CANCEL_WORD: "отмена" # Слово для отмены может быть изменено
+  WRITE_CANCEL_TO_CANCEL: "§fНапишите §c{0}§f в чат для отмены"
+  #Запрос на вступление в город
+  PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f запросил вступление в город. Вы можете найти заявку в меню участников"
+  PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Вы успешно подали заявку на вступление в город: §9{0}§f. Щелкните правой кнопкой по городу для отмены"
+  PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Вы отменили свою заявку"
+  PLAYER_TOWN_NOT_RECRUITING: "§cЭтот город не набирает новых участников"
+  #Объявления
+  TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f успешно создал город: §9{1}"
+  TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c покинул город!"
+  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f успешно создал регион: §b{1}"
+  GUI_REGION_KICK_TOWN_BROADCAST: "§fГород §9{0}§f был исключён из региона"
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "Claim a chunk"
   CHUNK_ALREADY_CLAIMED_WARNING: "§cThis chunk is already claimed by: §9{0}"
