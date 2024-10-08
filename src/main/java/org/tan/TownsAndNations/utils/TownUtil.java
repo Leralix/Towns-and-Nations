@@ -16,8 +16,6 @@ import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.utils.config.ConfigTag;
 import org.tan.TownsAndNations.utils.config.ConfigUtil;
 
-import static org.tan.TownsAndNations.Economy.EconomyUtil.getBalance;
-import static org.tan.TownsAndNations.Economy.EconomyUtil.removeFromBalance;
 import static org.tan.TownsAndNations.enums.SoundEnum.LEVEL_UP;
 import static org.tan.TownsAndNations.listeners.ChatListener.PlayerChatListenerStorage.removePlayer;
 import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
@@ -28,7 +26,7 @@ public class TownUtil {
     public static void createTown(final @NotNull Player player, final int townCost, final @NotNull String townName){
 
         PlayerData playerData = PlayerDataStorage.get(player);
-        int playerBalance = getBalance(player);
+        int playerBalance = EconomyUtil.getBalance(player);
 
         if(playerBalance < townCost){
             player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(townCost - playerBalance));
@@ -49,7 +47,7 @@ public class TownUtil {
         }
 
         TownData newTown = TownDataStorage.newTown(townName,player);
-        removeFromBalance(player,townCost);
+        EconomyUtil.removeFromBalance(player,townCost);
         playerData.joinTown(newTown);
 
 

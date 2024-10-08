@@ -890,7 +890,7 @@ public class TownData extends ITerritoryData {
             return;
         }
 
-        this.removeFromBalance(townLevel.getMoneyRequiredForLevelUp());
+        removeFromBalance(townLevel.getMoneyRequiredForLevelUp());
         townLevel.TownLevelUp();
         SoundUtil.playSound(player,LEVEL_UP);
         player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());
@@ -898,7 +898,6 @@ public class TownData extends ITerritoryData {
     public void upgradeTown(Player player, TownUpgrade townUpgrade, int townUpgradeLevel){
         PlayerData playerData = PlayerDataStorage.get(player);
 
-        TownLevel townLevel = this.getTownLevel();
         if(!playerData.hasPermission(TownRolePermission.UPGRADE_TOWN)){
             player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             SoundUtil.playSound(player,NOT_ALLOWED);
@@ -910,13 +909,14 @@ public class TownData extends ITerritoryData {
             SoundUtil.playSound(player,NOT_ALLOWED);
             return;
         }
+        TownLevel townLevel = this.getTownLevel();
         if(townLevel.getUpgradeLevel(townUpgrade.getName()) >= townUpgrade.getMaxLevel()){
             player.sendMessage(getTANString() + Lang.TOWN_UPGRADE_MAX_LEVEL.get());
             SoundUtil.playSound(player,NOT_ALLOWED);
             return;
         }
 
-        this.removeFromBalance(townUpgrade.getCost(townUpgradeLevel));
+        removeFromBalance(townUpgrade.getCost(townUpgradeLevel));
         townLevel.levelUp(townUpgrade);
         SoundUtil.playSound(player,LEVEL_UP);
         player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());

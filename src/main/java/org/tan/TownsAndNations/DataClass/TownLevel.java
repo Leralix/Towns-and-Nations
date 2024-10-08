@@ -43,7 +43,7 @@ public class TownLevel {
         return this.townLevel;
     }
     public void TownLevelUp(){
-        this.townLevel = this.townLevel + 1;
+        this.townLevel++;
     }
 
     public int getPlayerCap() {
@@ -98,7 +98,8 @@ public class TownLevel {
     }
 
     public void levelUp(TownUpgrade townUpgrade) {
-        this.levelMap.put(townUpgrade.getName(), this.levelMap.get(townUpgrade.getName()) + 1);
+        int currentLevel = this.getUpgradeLevel(townUpgrade.getName());
+        this.levelMap.put(townUpgrade.getName(), currentLevel + 1);
     }
 
     public Map<String, Integer> getTotalBenefits() {

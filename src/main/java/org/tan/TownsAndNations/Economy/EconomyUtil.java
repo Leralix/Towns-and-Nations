@@ -53,8 +53,10 @@ public class EconomyUtil {
      * @param amount            The amount of money to be subtracted
      */
     public static void removeFromBalance(OfflinePlayer offlinePlayer, int amount){
-        if(hasEconomy)
-            TownsAndNations.getEconomy().withdrawPlayer(offlinePlayer,amount);
+        if(hasEconomy) {
+            TownsAndNations.getEconomy().withdrawPlayer(offlinePlayer, amount);
+            return;
+        }
         PlayerDataStorage.get(offlinePlayer).removeFromBalance(amount);
     }
 
@@ -63,9 +65,11 @@ public class EconomyUtil {
      * @param player     The player whose balance is going to be affected
      * @param amount     The amount of money to be subtracted
      */
-    public static void removeFromBalance(Player player, int amount){
-        if(hasEconomy)
-            TownsAndNations.getEconomy().withdrawPlayer(player,amount);
+    public static void removeFromBalance(Player player, int amount) {
+        if (hasEconomy){
+            TownsAndNations.getEconomy().withdrawPlayer(player, amount);
+            return;
+        }
         PlayerDataStorage.get(player).removeFromBalance(amount);
     }
     /**
@@ -74,8 +78,10 @@ public class EconomyUtil {
      * @param amount     The amount of money to be added
      */
     public static void addFromBalance(Player player, int amount){
-        if(hasEconomy)
-            TownsAndNations.getEconomy().depositPlayer(player,amount);
+        if(hasEconomy) {
+            TownsAndNations.getEconomy().depositPlayer(player, amount);
+            return;
+        }
         PlayerDataStorage.get(player).addToBalance(amount);
     }
     /**
@@ -83,9 +89,11 @@ public class EconomyUtil {
      * @param offlinePlayer     The player whose balance is going to be affected
      * @param amount            The amount of money to be added
      */
-    public static void addFromBalance(OfflinePlayer offlinePlayer, int amount){
-        if(hasEconomy)
-            TownsAndNations.getEconomy().depositPlayer(offlinePlayer,amount);
+    public static void addFromBalance(OfflinePlayer offlinePlayer, int amount) {
+        if (hasEconomy){
+            TownsAndNations.getEconomy().depositPlayer(offlinePlayer, amount);
+            return;
+        }
         PlayerDataStorage.get(offlinePlayer.getUniqueId().toString()).addToBalance(amount);
     }
 

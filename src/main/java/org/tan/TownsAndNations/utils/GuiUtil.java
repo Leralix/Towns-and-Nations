@@ -26,38 +26,6 @@ import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 public class GuiUtil {
 
     /**
-     * Creates a {@link GuiItem} for upgrading a town's level based on the provided town upgrade and town data.
-     * @param player the player who is viewing the GUI and attempting the upgrade
-     * @param townUpgrade the town upgrade to be applied
-     * @param townData the data of the town to be upgraded
-     * @return a GUI item representing the upgrade action
-     */
-    public static GuiItem makeUpgradeGuiItem(final @NotNull Player player, final @NotNull  TownUpgrade townUpgrade, final @NotNull  TownData townData){
-
-        TownLevel townLevelClass = townData.getTownLevel();
-        int townUpgradeLevel = townLevelClass.getUpgradeLevel(townUpgrade.getName());
-
-        List<String> lore = townUpgrade.getItemLore(townLevelClass, townUpgradeLevel);
-
-        ItemStack upgradeItemStack = HeadUtils.createCustomItemStack(
-                Material.getMaterial(townUpgrade.getMaterialCode()),
-                DynamicLang.get(townUpgrade.getName()),
-                lore);
-
-        return ItemBuilder.from(upgradeItemStack).asGuiItem(event -> {
-            event.setCancelled(true);
-            if(townUpgrade.isPrerequisiteMet(townLevelClass)){
-                townData.upgradeTown(player,townUpgrade,townUpgradeLevel);
-            }
-            else {
-                player.sendMessage(getTANString() + Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.get());
-                SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
-            }
-            playerGUI.OpenTownLevel(player,0);
-        });
-    }
-
-    /**
      * Create the town upgrade resume {@link GuiItem}. This gui is used to summarise
      * every upgrade rewards the town currently have.
      * @param townData  The town on which the upgrade should be shown

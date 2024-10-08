@@ -2064,7 +2064,7 @@ public class playerGUI implements IGUI {
                 _pannel = ItemBuilder.from(green_level).asGuiItem(event -> event.setCancelled(true));
                 _bottompannel = ItemBuilder.from(filler_green).asGuiItem(event -> event.setCancelled(true));
             }
-            else if(townLevel.getTownLevel() == (i - 2 + level)){
+            else if(townLevel.getTownLevel() == (i-2 + level)){
                 _pannel = _iron_bars;
                 ItemStack upgradeTownLevel = HeadUtils.createCustomItemStack(Material.ORANGE_STAINED_GLASS_PANE,
                         Lang.GUI_TOWN_LEVEL_UP.get(),
@@ -2090,7 +2090,7 @@ public class playerGUI implements IGUI {
         }
 
         for(TownUpgrade townUpgrade : UpgradeStorage.getUpgrades()){
-            GuiItem _guiItem = GuiUtil.makeUpgradeGuiItem(player,townUpgrade,townData);
+            GuiItem _guiItem = townUpgrade.createGuiItem(player, townData, level);
             if(level + 1 <= townUpgrade.getCol() && townUpgrade.getCol() <= level + 7)
                 gui.setItem(townUpgrade.getRow(),townUpgrade.getCol() + (1 - level),_guiItem);
         }

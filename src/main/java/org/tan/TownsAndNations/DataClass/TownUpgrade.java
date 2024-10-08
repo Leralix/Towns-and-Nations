@@ -1,12 +1,24 @@
 package org.tan.TownsAndNations.DataClass;
 
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.tan.TownsAndNations.DataClass.territoryData.TownData;
+import org.tan.TownsAndNations.GUI.playerGUI;
 import org.tan.TownsAndNations.Lang.DynamicLang;
 import org.tan.TownsAndNations.Lang.Lang;
+import org.tan.TownsAndNations.enums.SoundEnum;
+import org.tan.TownsAndNations.utils.HeadUtils;
+import org.tan.TownsAndNations.utils.SoundUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.tan.TownsAndNations.utils.ChatUtils.getTANString;
 
 public class TownUpgrade {
     private final String name;
@@ -139,5 +151,27 @@ public class TownUpgrade {
             }
         }
         return requirementsMet;
+    }
+
+    public GuiItem createGuiItem(Player player, TownData townData, int page) {
+        TownLevel townLevel = townData.getTownLevel();
+        int townUpgradeLevel = townLevel.getUpgradeLevel(getName());
+
+        List<String> lore = getItemLore(townLevel, townUpgradeLevel);
+
+        ItemStack upgradeItemStack = HeadUtils.createCustomItemStack(
+                Material.getMaterial(getMaterialCode()),
+                DynamicLang.get(getName()),
+                lore);
+
+        return ItemBuilder.from(upgradeItemStack).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(!isPrerequisiteMet(townLevel)){
+                player.sendMessage(getTANString() + Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.get());
+                SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+            }
+            townData.upgradeTown(player,this,townUpgradeLevel);
+            playerGUI.OpenTownLevel(player,page);
+        });
     }
 }
