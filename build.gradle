@@ -1,10 +1,10 @@
 plugins {
     id 'java'
     id "com.github.johnrengelman.shadow" version "7.1.1"
-    id "org.sonarqube" version "5.1.0.4882"
 }
 shadowJar {
-    relocate("dev.triumphteam.gui", "org.tan.TownsAndNations.gui")
+    relocate("dev.triumphteam.gui", "org.leralix.tan.gui")
+    relocate 'org.bstats', 'org.leralix.tan'
     archiveClassifier.set('')
 }
 
@@ -57,6 +57,7 @@ dependencies {
     compileOnly 'com.comphenix.protocol:ProtocolLib:5.1.0'
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     compileOnly 'me.clip:placeholderapi:2.11.5'
+    implementation 'org.bstats:bstats-bukkit:3.0.2'
     implementation 'dev.triumphteam:triumph-gui:+'
     implementation 'net.objecthunter:exp4j:0.4.8'
 }
@@ -78,12 +79,5 @@ processResources {
     filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {
         expand props
-    }
-}
-
-sonar {
-    properties {
-        property "sonar.projectKey", "Leralix_Towns-and-Nations_af9c411a-5737-4f09-82a0-67dffb464482"
-        property "sonar.projectName", "Towns-and-Nations"
     }
 }

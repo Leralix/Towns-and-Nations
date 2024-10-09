@@ -1,0 +1,37 @@
+package org.leralix.tan.dataclass;
+
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Random;
+
+public class RareItem {
+    private final int dropChance;
+    private final ItemStack item;
+    private int price;
+
+    public RareItem(int dropChance, ItemStack rareMaterial) {
+        this.dropChance = dropChance;
+        this.item = rareMaterial;
+    }
+
+    public int getDropChance() {
+        return dropChance;
+    }
+
+    public ItemStack getRareItem() {
+        return item;
+    }
+
+    public Item spawn(World world, Location location) {
+        Random rand = new Random();
+        int int_random = rand.nextInt(1, 100);
+
+        if(int_random <= dropChance){
+            return world.dropItem(location, item);
+        }
+        return null;
+    }
+}

@@ -1,6 +1,6 @@
 name: TownsAndNations
 version: '${version}'
-main: org.tan.TownsAndNations.TownsAndNations
+main: org.leralix.tan.TownsAndNations
 api-version: 1.20
 authors: [ Leralix ]
 softdepend: [Vault, PlaceholderAPI]
