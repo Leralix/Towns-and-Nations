@@ -83,7 +83,7 @@ processResources {
 
 sonar {
     properties {
-        property "sonar.projectKey", "Leralix_Towns-and-Nations-Dynmap_00ddef15-a938-47fa-952f-c81375653a90"
-        property "sonar.projectName", "Towns-and-Nations-Dynmap"
+        property "sonar.projectKey", "Leralix_Towns-and-Nations_af9c411a-5737-4f09-82a0-67dffb464482"
+        property "sonar.projectName", "Towns-and-Nations"
     }
 }
