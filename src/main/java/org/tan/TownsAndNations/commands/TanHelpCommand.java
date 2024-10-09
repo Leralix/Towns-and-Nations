@@ -5,6 +5,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.entity.Player;
+import org.tan.TownsAndNations.Lang.Lang;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class TanHelpCommand extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "explanation on every command";
+        return Lang.HELP_DESC.get();
     }
 
     @Override
@@ -60,10 +61,12 @@ public class TanHelpCommand extends SubCommand {
     private void sendHelp(Player p, int page) {
         List<SubCommand> commandList = new ArrayList<>(commandManager.getSubCommands());
 
+        int maxPage = (7 + commandList.size()) / 8 - 1;
+
         if(page < 0)
             page = 0;
-        if(page > commandList.size() / 8)
-            page = commandList.size() / 8;
+        if(page > maxPage)
+            page = maxPage;
 
         p.sendMessage("╭──────────⟢⟐⟣──────────╮");
         commandList.subList(page * 8, Math.min(commandList.size(), (page + 1) * 8)).forEach(subCommand -> p.sendMessage(subCommand.getSyntax() + ChatColor.GRAY + " - " + subCommand.getDescription()));
@@ -75,9 +78,9 @@ public class TanHelpCommand extends SubCommand {
         pageLine.color(ChatColor.GOLD);
         pageLine.bold(true);
         pageLine.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + commandManager.getName() + " help " + (page - 1)));
-        pageLine.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to go to the previous page").create()));
+        pageLine.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Lang.CLICK_TO_GO_PREVIOUS_PAGE.get()).create()));
 
-        pageLine.append(" page n°" + page + " ");
+        pageLine.append(Lang.PAGE_NUMBER.get(page,maxPage));
         pageLine.color(ChatColor.WHITE);
         pageLine.bold(false);
         pageLine.event((ClickEvent) null);
@@ -86,9 +89,8 @@ public class TanHelpCommand extends SubCommand {
         pageLine.append(">>");
         pageLine.color(ChatColor.GOLD);
         pageLine.bold(true);
-
         pageLine.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + commandManager.getName() + " help " + (page + 1)));
-        pageLine.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to go to the next page").create()));
+        pageLine.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Lang.CLICK_TO_GO_NEXT_PAGE.get()).create()));
 
         pageLine.append("───────╯");
         pageLine.color(ChatColor.WHITE);

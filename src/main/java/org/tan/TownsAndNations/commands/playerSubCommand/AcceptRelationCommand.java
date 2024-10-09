@@ -7,7 +7,6 @@ import org.tan.TownsAndNations.commands.SubCommand;
 import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
 import org.tan.TownsAndNations.storage.Invitation.TownRelationConfirmStorage;
-import org.tan.TownsAndNations.utils.RelationUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,19 +60,10 @@ public class AcceptRelationCommand extends SubCommand {
                 TownRelationConfirmStorage.removeInvitation(player.getUniqueId().toString(), otherTown.getID());
 
                 if(newRelation == null){ // From negative to neutral
-                    town.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getColoredName(),TownRelation.NEUTRAL),
-                            GOOD);
-                    otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(town.getColoredName(),TownRelation.NEUTRAL),
-                            GOOD);
-                    RelationUtil.removeTownRelation(town,otherTown);
+                    town.setRelation(otherTown,TownRelation.NEUTRAL);
                 }
-                else { // from neutral to positive
-                    town.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTown.getColoredName(),newRelation.getColoredName()),
-                            GOOD);
-                    otherTown.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(town.getColoredName(),newRelation.getColoredName()),
-                            GOOD);
-
-                    RelationUtil.addTownRelation(town,otherTown,newRelation);
+                else {
+                    town.setRelation(otherTown,newRelation);
                 }
             }
             else{

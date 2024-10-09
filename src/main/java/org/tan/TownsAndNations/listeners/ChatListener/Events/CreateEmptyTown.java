@@ -31,8 +31,8 @@ public class CreateEmptyTown extends ChatListenerEvent {
             player.sendMessage(ChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
             return;
         }
-        TownDataStorage.newTown(townName);
 
+        TownDataStorage.newTown(townName);
         Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(),townName));
         SoundUtil.playSound(player, LEVEL_UP);
         removePlayer(player);

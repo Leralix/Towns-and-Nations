@@ -12,13 +12,15 @@ import java.util.List;
 public abstract class CommandManager implements CommandExecutor, TabExecutor, TabCompleter {
 
     private final HashMap<String, SubCommand> subCommands;
-    protected void addSubCommand(SubCommand subCommand){
-        subCommands.put(subCommand.getName(), subCommand);
-    }
 
     protected CommandManager() {
         subCommands = new HashMap<>();
     }
+
+    protected void addSubCommand(SubCommand subCommand){
+        subCommands.put(subCommand.getName(), subCommand);
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (sender instanceof Player p){

@@ -582,7 +582,14 @@ public class playerGUI implements IGUI {
 
         GuiItem _create = ItemBuilder.from(createTown).asGuiItem(event -> {
             event.setCancelled(true);
-            TownUtil.registerNewTown(player,townPrice);
+            int playerMoney = EconomyUtil.getBalance(player);
+            if (playerMoney < townPrice) {
+                player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(townPrice - playerMoney));
+            }
+            else {
+                player.sendMessage(getTANString() + Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get());
+                PlayerChatListenerStorage.register(player, new CreateTown(townPrice));
+            }
         });
 
         GuiItem _browseTown = ItemBuilder.from(browseTown).asGuiItem(event -> {
@@ -2555,9 +2562,7 @@ public class playerGUI implements IGUI {
                         player.closeInventory();
                     }
                     else{ //Can only be bad relations
-                        territory.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTerritory.getColoredName(),relation.getColoredName()), BAD);
-                        otherTerritory.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(territory.getColoredName(),relation.getColoredName()), BAD);
-                        RelationUtil.addTownRelation(territory,otherTerritory,relation);
+                        territory.setRelation(otherTerritory,relation);
                         openSingleRelation(player,territory, relation,0,exit);
                     }
                 });
@@ -2592,9 +2597,7 @@ public class playerGUI implements IGUI {
                         player.closeInventory();
                     }
                     else{
-                        territory.broadCastMessageWithSound(Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(otherTerritory.getColoredName(),"neutral"), BAD);
-                        otherTerritory.broadCastMessageWithSound(getTANString() + Lang.GUI_TOWN_CHANGED_RELATION_RESUME.get(territory.getColoredName(),"neutral"), BAD);
-                        RelationUtil.removeTownRelation(territory,otherTerritory, relation);
+                        territory.setRelation(otherTerritory, TownRelation.NEUTRAL);
                     }
                     openSingleRelation(player,territory,relation,0, exit);
                 });
@@ -2868,10 +2871,12 @@ public class playerGUI implements IGUI {
 
         ItemStack regionIcon = getRegionIcon(playerRegion);
 
-        ItemStack GoldIcon = HeadUtils.makeSkullB64(Lang.GUI_TOWN_TREASURY_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
+        ItemStack goldIcon = HeadUtils.makeSkullB64(Lang.GUI_TOWN_TREASURY_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
                 Lang.GUI_TOWN_TREASURY_ICON_DESC1.get());
         ItemStack townIcon = HeadUtils.makeSkullB64(Lang.GUI_REGION_TOWN_LIST.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
                 Lang.GUI_REGION_TOWN_LIST_DESC1.get());
+        ItemStack manageLaws = HeadUtils.makeSkullURL(Lang.GUI_MANAGE_LAWS.get() ,"https://textures.minecraft.net/texture/1818d1cc53c275c294f5dfb559174dd931fc516a85af61a1de256aed8bca5e7",
+                Lang.GUI_MANAGE_LAWS_DESC1.get());
         ItemStack browseTerritory = HeadUtils.makeSkullB64(Lang.GUI_OTHER_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=",
                 Lang.GUI_OTHER_REGION_ICON_DESC1.get());
         ItemStack relationIcon = HeadUtils.makeSkullB64(Lang.GUI_RELATION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=",
@@ -2899,30 +2904,30 @@ public class playerGUI implements IGUI {
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get());
             }
         });
-        GuiItem _goldIcon = ItemBuilder.from(GoldIcon).asGuiItem(event -> {
+        GuiItem _goldIcon = ItemBuilder.from(goldIcon).asGuiItem(event -> {
             event.setCancelled(true);
             OpenRegionEconomy(player);
+        });
+        GuiItem _manageLaws = ItemBuilder.from(manageLaws).asGuiItem(event -> {
+            event.setCancelled(true);
+            OpenRegionLaws(player);
         });
         GuiItem _townIcon = ItemBuilder.from(townIcon).asGuiItem(event -> {
             event.setCancelled(true);
             OpenTownInRegion(player);
         });
-
         GuiItem _browseTerritory = ItemBuilder.from(browseTerritory).asGuiItem(event -> {
             event.setCancelled(true);
             browseTerritory(player, playerRegion, BrowseScope.ALL,p -> OpenRegionMenu(player), 0);
         });
-
         GuiItem _relationIcon = ItemBuilder.from(relationIcon).asGuiItem(event -> {
             event.setCancelled(true);
             OpenRelations(player, playerRegion, p -> OpenRegionMenu(player));
         });
-
         GuiItem _settingsIcon = ItemBuilder.from(settingIcon).asGuiItem(event -> {
             event.setCancelled(true);
             OpenRegionSettings(player);
         });
-
         GuiItem _war = ItemBuilder.from(war).asGuiItem(event -> {
             event.setCancelled(true);
             OpenWarMenu(player, playerRegion, p -> dispatchPlayerRegion(player), 0);
@@ -2932,7 +2937,8 @@ public class playerGUI implements IGUI {
         gui.setItem(1,5, _regionIcon);
         gui.setItem(2,2, _goldIcon);
         gui.setItem(2,3, _townIcon);
-        gui.setItem(2,4, _browseTerritory);
+        //gui.setItem(2,4, _manageLaws);
+        gui.setItem(2,5, _browseTerritory);
         gui.setItem(2,6, _war);
         gui.setItem(2,7, _relationIcon);
         gui.setItem(2,8, _settingsIcon);
@@ -2941,6 +2947,15 @@ public class playerGUI implements IGUI {
 
         gui.open(player);
     }
+
+    private static void OpenRegionLaws(Player player) {
+        Gui gui = IGUI.createChestGui("Laws",3);
+
+
+
+        gui.open(player);
+    }
+
     private static void OpenTownInRegion(Player player){
 
         Gui gui = IGUI.createChestGui("Region",4);

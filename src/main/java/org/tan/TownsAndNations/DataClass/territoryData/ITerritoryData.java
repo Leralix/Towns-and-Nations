@@ -21,6 +21,7 @@ import org.tan.TownsAndNations.storage.DataStorage.NewClaimedChunkStorage;
 import org.tan.TownsAndNations.storage.DataStorage.PlannedAttackStorage;
 import org.tan.TownsAndNations.utils.ChatUtils;
 import org.tan.TownsAndNations.utils.SoundUtil;
+import org.tan.TownsAndNations.utils.TeamUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static org.tan.TownsAndNations.enums.SoundEnum.MINOR_LEVEL_UP;
+import static org.tan.TownsAndNations.enums.SoundEnum.*;
 
 public abstract class ITerritoryData {
 
@@ -69,11 +70,28 @@ public abstract class ITerritoryData {
     public abstract boolean havePlayer(PlayerData playerData);
     public abstract boolean havePlayer(String playerID);
     public abstract TownRelations getRelations();
-    public abstract void addRelation(TownRelation relation, ITerritoryData territoryData);
-    public abstract void addRelation(TownRelation relation, String territoryID);
+    public void setRelation(ITerritoryData otherTerritory, TownRelation relation){
+        TownRelation actualRelation = getRelationWith(otherTerritory);
+        if(relation.isRankSuperior(actualRelation)){
+            broadCastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(getColoredName(), otherTerritory.getColoredName(),relation.getColoredName()), GOOD);
+            otherTerritory.broadCastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(otherTerritory.getColoredName(), getColoredName(),relation.getColoredName()), BAD);
+        }
+        else{
+            broadCastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(getColoredName(), otherTerritory.getColoredName(),relation.getColoredName()), GOOD);
+            otherTerritory.broadCastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(otherTerritory.getColoredName(), getColoredName(),relation.getColoredName()), BAD);
+        }
+
+        addRelation(relation,otherTerritory);
+        otherTerritory.addRelation(relation,this);
+        TeamUtils.updateAllScoreboardColor();
+    }
+    protected abstract void addRelation(TownRelation relation, ITerritoryData territoryData);
+    protected abstract void addRelation(TownRelation relation, String territoryID);
     public  abstract void removeRelation(TownRelation relation, ITerritoryData territoryData);
     public abstract void removeRelation(TownRelation relation, String territoryID);
-    public abstract TownRelation getRelationWith(ITerritoryData iRelation);
+    public TownRelation getRelationWith(ITerritoryData territoryData){
+        return getRelationWith(territoryData.getID());
+    }
     public abstract TownRelation getRelationWith(String territoryID);
 
     public abstract void addToBalance(int balance);

@@ -391,11 +391,6 @@ public class TownData extends ITerritoryData {
     }
 
     @Override
-    public TownRelation getRelationWith(ITerritoryData otherPlayerTown) {
-        return getRelationWith(otherPlayerTown.getID());
-    }
-
-    @Override
     public TownRelation getRelationWith(String otherTownID) {
         String townID = getID();
 

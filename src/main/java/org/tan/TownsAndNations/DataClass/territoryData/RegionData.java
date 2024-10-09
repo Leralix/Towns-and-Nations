@@ -534,13 +534,7 @@ public class RegionData extends ITerritoryData {
     }
 
     @Override
-    public TownRelation getRelationWith(ITerritoryData relation) {
-        return getRelationWith(relation.getID());
-    }
-
-    @Override
     public TownRelation getRelationWith(String otherTownID) {
-
         if(getID().equals(otherTownID))
             return TownRelation.REGION;
 

@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id "com.github.johnrengelman.shadow" version "7.1.1"
-
+    id "org.sonarqube" version "5.1.0.4882"
 }
 shadowJar {
     relocate("dev.triumphteam.gui", "org.tan.TownsAndNations.gui")
@@ -15,7 +15,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 group = 'org.tan'
-version = '0.11.0'
+version = '0.11.2'
 
 repositories {
     mavenCentral()
@@ -78,5 +78,12 @@ processResources {
     filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {
         expand props
+    }
+}
+
+sonar {
+    properties {
+        property "sonar.projectKey", "Leralix_Towns-and-Nations-Dynmap_00ddef15-a938-47fa-952f-c81375653a90"
+        property "sonar.projectName", "Towns-and-Nations-Dynmap"
     }
 }

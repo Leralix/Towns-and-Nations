@@ -11,13 +11,11 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.tan.TownsAndNations.DataClass.PlayerData;
 import org.tan.TownsAndNations.DataClass.territoryData.RegionData;
 import org.tan.TownsAndNations.DataClass.territoryData.TownData;
 import org.tan.TownsAndNations.Economy.EconomyUtil;
 import org.tan.TownsAndNations.Lang.Lang;
-import org.tan.TownsAndNations.enums.TownRelation;
 import org.tan.TownsAndNations.storage.DataStorage.PlayerDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.RegionDataStorage;
 import org.tan.TownsAndNations.storage.DataStorage.TownDataStorage;
@@ -267,40 +265,6 @@ public class HeadUtils {
             lore.add(Lang.GUI_REGION_INFO_DESC3.get(regionData.getTotalPlayerCount()));
             lore.add(Lang.GUI_REGION_INFO_DESC4.get(regionData.getBalance()));
             lore.add(Lang.GUI_REGION_INFO_DESC5.get(regionData.getNumberOfClaimedChunk()));
-            meta.setLore(lore);
-            icon.setItemMeta(meta);
-        }
-        return icon;
-    }
-
-    public static @NotNull ItemStack getRegionIconWithInformations(final @NotNull String regionID, final @Nullable String ownTerritoryID) {
-        return getRegionIconWithInformations(RegionDataStorage.get(regionID), ownTerritoryID);
-    }
-    public static @NotNull ItemStack getRegionIconWithInformations(final @NotNull RegionData regionData, final @Nullable String ownTerritoryID){
-
-        ItemStack icon = getRegionIcon(regionData);
-
-        ItemMeta meta = icon.getItemMeta();
-        if(meta != null){
-            meta.setDisplayName(ChatColor.GREEN + regionData.getName());
-
-            List<String> lore = meta.getLore();
-            if(lore == null){
-                lore = new ArrayList<>();
-            }
-
-            if(ownTerritoryID != null){
-                TownRelation relation = regionData.getRelationWith(ownTerritoryID);
-                String relationName;
-                if(relation == null){
-                    relationName = Lang.GUI_TOWN_RELATION_NEUTRAL.get();
-                }
-                else {
-                    relationName = relation.getColor() + relation.getName();
-                }
-                lore.add(Lang.GUI_TOWN_INFO_TOWN_RELATION.get(relationName));
-            }
-
             meta.setLore(lore);
             icon.setItemMeta(meta);
         }
