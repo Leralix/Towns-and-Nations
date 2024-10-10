@@ -15,7 +15,7 @@ import org.leralix.tan.utils.TerritoryUtil;
 
 import java.util.function.Consumer;
 
-import static org.leralix.tan.gui.playerGUI.OpenStartWarSettings;
+import static org.leralix.tan.gui.PlayerGUI.OpenStartWarSettings;
 import static org.leralix.tan.enums.SoundEnum.ADD;
 import static org.leralix.tan.enums.SoundEnum.REMOVE;
 

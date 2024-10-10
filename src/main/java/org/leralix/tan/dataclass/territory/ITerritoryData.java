@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.dataclass.ClaimedChunkSettings;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.TownRelations;
@@ -69,7 +70,7 @@ public abstract class ITerritoryData {
     public abstract TownRelations getRelations();
     public void setRelation(ITerritoryData otherTerritory, TownRelation relation){
         TownRelation actualRelation = getRelationWith(otherTerritory);
-        if(relation.isRankSuperior(actualRelation)){
+        if(relation.isSuperiorTo(actualRelation)){
             broadCastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(getColoredName(), otherTerritory.getColoredName(),relation.getColoredName()), GOOD);
             otherTerritory.broadCastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(otherTerritory.getColoredName(), getColoredName(),relation.getColoredName()), BAD);
         }
@@ -104,7 +105,30 @@ public abstract class ITerritoryData {
 
     public abstract ItemStack getIcon();
     public abstract ItemStack getIconWithInformations();
-    public abstract ItemStack getIconWithInformationAndRelation(ITerritoryData territoryData);
+    public ItemStack getIconWithInformationAndRelation(ITerritoryData territoryData){
+        ItemStack icon = getIconWithInformations();
+
+        ItemMeta meta = icon.getItemMeta();
+        if(meta != null){
+            List<String> lore = meta.getLore();
+
+            if(territoryData != null && lore != null){
+                TownRelation relation = getRelationWith(territoryData);
+                String relationName;
+                if(relation == null){
+                    relationName = Lang.GUI_TOWN_RELATION_NEUTRAL.get();
+                }
+                else {
+                    relationName = relation.getColor() + relation.getName();
+                }
+                lore.add(Lang.GUI_TOWN_INFO_TOWN_RELATION.get(relationName));
+            }
+
+            meta.setLore(lore);
+            icon.setItemMeta(meta);
+        }
+        return icon;
+    }
 
     public Collection<String> getAttacksInvolvedID(){
         if(attackIncomingList == null)

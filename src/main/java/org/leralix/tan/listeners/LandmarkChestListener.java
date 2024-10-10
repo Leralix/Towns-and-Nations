@@ -12,7 +12,7 @@ import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
-import org.leralix.tan.gui.playerGUI;
+import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.Lang.Lang;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.storage.DataStorage.LandmarkStorage;
@@ -39,7 +39,7 @@ public class LandmarkChestListener implements Listener {
                             player.sendMessage(Lang.PLAYER_NO_TOWN.get());
                             return;
                         }
-                        playerGUI.dispatchLandmarkGui(player, landmark);
+                        PlayerGUI.dispatchLandmarkGui(player, landmark);
                     }
                 }
             }

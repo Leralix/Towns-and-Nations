@@ -6,7 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.gui.playerGUI;
+import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.Lang.DynamicLang;
 import org.leralix.tan.Lang.Lang;
 import org.leralix.tan.enums.SoundEnum;
@@ -170,7 +170,7 @@ public class TownUpgrade {
                 SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             }
             townData.upgradeTown(player,this,townUpgradeLevel);
-            playerGUI.OpenTownLevel(player,page);
+            PlayerGUI.OpenTownLevel(player,page);
         });
     }
 }

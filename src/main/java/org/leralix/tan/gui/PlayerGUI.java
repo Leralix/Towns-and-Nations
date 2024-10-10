@@ -51,9 +51,9 @@ import static org.leralix.tan.utils.GuiUtil.createIterator;
 import static org.leralix.tan.utils.HeadUtils.getRegionIcon;
 import static org.leralix.tan.utils.TeamUtils.updateAllScoreboardColor;
 
-public class playerGUI implements IGUI {
+public class PlayerGUI implements IGUI {
 
-    public static void OpenMainMenu(Player player){
+    public static void openMainMenu(Player player){
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         boolean playerHaveTown = playerStat.haveTown();
@@ -68,29 +68,29 @@ public class playerGUI implements IGUI {
 
         Gui gui = IGUI.createChestGui("Main menu",3);
 
-        ItemStack kingdomHead = HeadUtils.makeSkullB64(Lang.GUI_KINGDOM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=",
+        ItemStack kingdomIcon = HeadUtils.makeSkullB64(Lang.GUI_KINGDOM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=",
                 Lang.GUI_KINGDOM_ICON_DESC1.get());
-        ItemStack regionHead = HeadUtils.makeSkullB64(Lang.GUI_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=",
+        ItemStack regionIcon = HeadUtils.makeSkullB64(Lang.GUI_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=",
                 playerHaveRegion? Lang.GUI_REGION_ICON_DESC1_REGION.get(region.getName()):Lang.GUI_REGION_ICON_DESC1_NO_REGION.get());
-        ItemStack townHead = HeadUtils.makeSkullB64(Lang.GUI_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
+        ItemStack townIcon = HeadUtils.makeSkullB64(Lang.GUI_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
                 playerHaveTown? Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(town.getName()):Lang.GUI_TOWN_ICON_DESC1_NO_TOWN.get());
-        ItemStack PlayerHead = HeadUtils.getPlayerHeadInformation(player);
+        ItemStack profileIcon = HeadUtils.getPlayerHeadInformation(player);
 
-        GuiItem Kingdom = ItemBuilder.from(kingdomHead).asGuiItem(event -> {
+        GuiItem kingdomGui = ItemBuilder.from(kingdomIcon).asGuiItem(event -> {
             event.setCancelled(true);
             player.sendMessage(getTANString() + Lang.GUI_WARNING_STILL_IN_DEV.get());
         });
-        GuiItem Region = ItemBuilder.from(regionHead).asGuiItem(event -> {
+        GuiItem regionGui = ItemBuilder.from(regionIcon).asGuiItem(event -> {
             event.setCancelled(true);
             dispatchPlayerRegion(player);
         });
-        GuiItem Town = ItemBuilder.from(townHead).asGuiItem(event -> {
+        GuiItem townGui = ItemBuilder.from(townIcon).asGuiItem(event -> {
             event.setCancelled(true);
             dispatchPlayerTown(player);
         });
-        GuiItem Player = ItemBuilder.from(PlayerHead).asGuiItem(event -> {
+        GuiItem playerGui = ItemBuilder.from(profileIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenPlayerProfileMenu(player);
+            openPlayerProfileMenu(player);
         });
 
 
@@ -101,20 +101,20 @@ public class playerGUI implements IGUI {
 
         if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableKingdom",true) &&
                 ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableRegion",true)) {
-            gui.setItem(2, slotKingdom, Kingdom);
+            gui.setItem(2, slotKingdom, kingdomGui);
         }
 
         if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableRegion",true)){
-            gui.setItem(2,slotRegion,Region);
+            gui.setItem(2,slotRegion,regionGui);
         }
         else {
             slotTown = 4;
             slotPlayer = 6;
         }
 
-        gui.setItem(2,slotTown,Town);
-        gui.setItem(2,slotPlayer,Player);
-        gui.setItem(2,slotPlayer,Player);
+        gui.setItem(2,slotTown,townGui);
+        gui.setItem(2,slotPlayer,playerGui);
+        gui.setItem(2,slotPlayer,playerGui);
         gui.setItem(3,1,IGUI.createBackArrow(player, p -> player.closeInventory()));
 
         gui.open(player);
@@ -138,33 +138,33 @@ public class playerGUI implements IGUI {
         }
     }
 
-    public static void OpenPlayerProfileMenu(Player player){
+    public static void openPlayerProfileMenu(Player player){
 
         Gui gui = IGUI.createChestGui("Profile",3);
 
 
         ItemStack playerHead = HeadUtils.getPlayerHead(Lang.GUI_YOUR_PROFILE.get(),player);
-        ItemStack goldPurse = HeadUtils.createCustomItemStack(Material.GOLD_NUGGET, Lang.GUI_YOUR_BALANCE.get(),Lang.GUI_YOUR_BALANCE_DESC1.get(EconomyUtil.getBalance(player)));
-        ItemStack properties = HeadUtils.createCustomItemStack(Material.OAK_HANGING_SIGN, Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(),Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get());
+        ItemStack treasuryIcon = HeadUtils.createCustomItemStack(Material.GOLD_NUGGET, Lang.GUI_YOUR_BALANCE.get(),Lang.GUI_YOUR_BALANCE_DESC1.get(EconomyUtil.getBalance(player)));
+        ItemStack propertiesIcon = HeadUtils.createCustomItemStack(Material.OAK_HANGING_SIGN, Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(),Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get());
 
 
-        GuiItem _playerHead = ItemBuilder.from(playerHead).asGuiItem(event -> event.setCancelled(true));
-        GuiItem _goldPurse = ItemBuilder.from(goldPurse).asGuiItem(event -> event.setCancelled(true));
-        GuiItem _properties = ItemBuilder.from(properties).asGuiItem(event -> {
+        GuiItem playerGui = ItemBuilder.from(playerHead).asGuiItem(event -> event.setCancelled(true));
+        GuiItem treasuryGui = ItemBuilder.from(treasuryIcon).asGuiItem(event -> event.setCancelled(true));
+        GuiItem propertiesGui = ItemBuilder.from(propertiesIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            OpenPlayerPropertiesMenu(player);
+            openPlayerPropertiesMenu(player);
         });
 
-        gui.setItem(1,5, _playerHead);
-        gui.setItem(2,2, _goldPurse);
-        gui.setItem(2,4, _properties);
+        gui.setItem(1,5, playerGui);
+        gui.setItem(2,2, treasuryGui);
+        gui.setItem(2,4, propertiesGui);
 
 
-        gui.setItem(18, IGUI.createBackArrow(player, p -> OpenMainMenu(player)));
+        gui.setItem(18, IGUI.createBackArrow(player, p -> openMainMenu(player)));
 
         gui.open(player);
     }
-    public static void OpenPlayerPropertiesMenu(Player player){
+    public static void openPlayerPropertiesMenu(Player player){
         int nRows = 6;
         Gui gui = IGUI.createChestGui("Properties of " + player.getName(),nRows);
 
@@ -176,11 +176,11 @@ public class playerGUI implements IGUI {
             ItemStack property = propertyData.getIcon();
 
 
-            GuiItem _property = ItemBuilder.from(property).asGuiItem(event -> {
+            GuiItem propertyGui = ItemBuilder.from(property).asGuiItem(event -> {
                 OpenPropertyManagerMenu(player, propertyData);
                 event.setCancelled(true);
             });
-            gui.setItem(i,_property);
+            gui.setItem(i,propertyGui);
             i++;
         }
 
@@ -189,7 +189,7 @@ public class playerGUI implements IGUI {
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19"
         );
 
-        GuiItem _newProperty = ItemBuilder.from(newProperty).asGuiItem(event -> {
+        GuiItem newPropertyGui = ItemBuilder.from(newProperty).asGuiItem(event -> {
             event.setCancelled(true);
 
             TownData playerTown = playerData.getTown();
@@ -214,8 +214,8 @@ public class playerGUI implements IGUI {
             player.closeInventory();
         });
 
-        gui.setItem(nRows,3, _newProperty);
-        gui.setItem(nRows,1, IGUI.createBackArrow(player, p -> OpenMainMenu(player)));
+        gui.setItem(nRows,3, newPropertyGui);
+        gui.setItem(nRows,1, IGUI.createBackArrow(player, p -> openMainMenu(player)));
 
         gui.open(player);
     }
@@ -231,9 +231,9 @@ public class playerGUI implements IGUI {
                 Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY_DESC1.get());
 
 
-        GuiItem _propertyIcon = ItemBuilder.from(propertyIcon).asGuiItem(event -> event.setCancelled(true));
+        GuiItem propertyButton = ItemBuilder.from(propertyIcon).asGuiItem(event -> event.setCancelled(true));
 
-        GuiItem _stopRentingProperty = ItemBuilder.from(stopRentingProperty).asGuiItem(event -> {
+        GuiItem stopRentingButton = ItemBuilder.from(stopRentingProperty).asGuiItem(event -> {
             event.setCancelled(true);
             propertyData.expelRenter(true);
 
@@ -249,9 +249,8 @@ public class playerGUI implements IGUI {
             player.closeInventory();
         });
 
-        gui.setItem(1,5,_propertyIcon);
-
-        gui.setItem(2,7,_stopRentingProperty);
+        gui.setItem(1,5,propertyButton);
+        gui.setItem(2,7,stopRentingButton);
 
         gui.setItem(nRows,1, IGUI.createBackArrow(player, p -> player.closeInventory()));
 
@@ -374,7 +373,7 @@ public class playerGUI implements IGUI {
         GuiItem _deleteProperty = ItemBuilder.from(deleteProperty).asGuiItem(event -> {
             event.setCancelled(true);
             propertyData.delete();
-            OpenPlayerPropertiesMenu(player);
+            openPlayerPropertiesMenu(player);
         });
 
         GuiItem _playerList = ItemBuilder.from(playerList).asGuiItem(event -> {
@@ -421,7 +420,7 @@ public class playerGUI implements IGUI {
 
 
 
-        gui.setItem(nRows,1, IGUI.createBackArrow(player, p -> OpenPlayerPropertiesMenu(player)));
+        gui.setItem(nRows,1, IGUI.createBackArrow(player, p -> openPlayerPropertiesMenu(player)));
 
         gui.open(player);
     }
@@ -598,7 +597,7 @@ public class playerGUI implements IGUI {
 
         gui.setItem(11, _create);
         gui.setItem(15, _browseTown);
-        gui.setItem(18, IGUI.createBackArrow(player, p -> OpenMainMenu(player)));
+        gui.setItem(18, IGUI.createBackArrow(player, p -> openMainMenu(player)));
 
         gui.open(player);
     }
@@ -765,7 +764,7 @@ public class playerGUI implements IGUI {
         gui.setItem(3,3,_landmark);
         gui.setItem(3,4,_war);
 
-        gui.setItem(nRows,1, IGUI.createBackArrow(player, p -> OpenMainMenu(player)));
+        gui.setItem(nRows,1, IGUI.createBackArrow(player, p -> openMainMenu(player)));
 
         gui.open(player);
     }
@@ -1771,19 +1770,19 @@ public class playerGUI implements IGUI {
         GuiItem _goldInfo = ItemBuilder.from(goldIcon).asGuiItem(event -> event.setCancelled(true));
         GuiItem _goldSpendingIcon = ItemBuilder.from(goldSpendingIcon).asGuiItem(event -> event.setCancelled(true));
         GuiItem _taxHistory = ItemBuilder.from(taxHistory).asGuiItem(event -> {
-            OpenTownEconomicsHistory(player,HistoryEnum.TAX);
+            openTownEconomicsHistory(player,HistoryEnum.TAX);
             event.setCancelled(true);
         });
         GuiItem _salarySpending = ItemBuilder.from(salarySpending).asGuiItem(event -> {
-            OpenTownEconomicsHistory(player,HistoryEnum.SALARY);
+            openTownEconomicsHistory(player,HistoryEnum.SALARY);
             event.setCancelled(true);
         });
         GuiItem _chunkSpending = ItemBuilder.from(chunkSpending).asGuiItem(event -> {
-            OpenTownEconomicsHistory(player,HistoryEnum.CHUNK);
+            openTownEconomicsHistory(player,HistoryEnum.CHUNK);
             event.setCancelled(true);
         });
         GuiItem _miscSpending = ItemBuilder.from(miscSpending).asGuiItem(event -> {
-            OpenTownEconomicsHistory(player,HistoryEnum.MISCELLANEOUS);
+            openTownEconomicsHistory(player,HistoryEnum.MISCELLANEOUS);
             event.setCancelled(true);
         });
         GuiItem _donation = ItemBuilder.from(donation).asGuiItem(event -> {
@@ -1794,7 +1793,7 @@ public class playerGUI implements IGUI {
             event.setCancelled(true);
         });
         GuiItem _donationHistory = ItemBuilder.from(donationHistory).asGuiItem(event -> {
-            OpenTownEconomicsHistory(player,HistoryEnum.DONATION);
+            openTownEconomicsHistory(player,HistoryEnum.DONATION);
             event.setCancelled(true);
         });
 
@@ -1883,7 +1882,7 @@ public class playerGUI implements IGUI {
         gui.open(player);
 
     }
-    public static void OpenTownEconomicsHistory(Player player, HistoryEnum historyType) {
+    public static void openTownEconomicsHistory(Player player, HistoryEnum historyType) {
 
         Gui gui = IGUI.createChestGui("Town",6);
 
@@ -2498,11 +2497,11 @@ public class playerGUI implements IGUI {
 
         gui.open(player);
     }
-    public static void OpenTownRelationModification(Player player,ITerritoryData territory, Action action, TownRelation relation, int page, Consumer<Player> exit) {
+    public static void OpenTownRelationModification(Player player,ITerritoryData territory, Action action, TownRelation wantedRelation, int page, Consumer<Player> exit) {
         int nRows = 6;
         Gui gui = IGUI.createChestGui("Town - Relation",nRows);
 
-        List<String> relationListID = territory.getRelations().getTerritoriesIDWithRelation(relation);
+        List<String> relationListID = territory.getRelations().getTerritoriesIDWithRelation(wantedRelation);
         ItemStack decorativeGlass = getDecorativeGlass(action);
         List<GuiItem> guiItems = new ArrayList<>();
 
@@ -2516,13 +2515,10 @@ public class playerGUI implements IGUI {
             territories.remove(territory.getID()); //Remove itself
 
             for(String otherTownUUID : territories){
-
-
                 ITerritoryData otherTerritory = TerritoryUtil.getTerritory(otherTownUUID);
                 ItemStack icon = otherTerritory.getIconWithInformationAndRelation(territory);
 
-
-                GuiItem _town = ItemBuilder.from(icon).asGuiItem(event -> {
+                GuiItem iconGui = ItemBuilder.from(icon).asGuiItem(event -> {
                     event.setCancelled(true);
 
                     if(otherTerritory.haveNoLeader()){
@@ -2530,37 +2526,34 @@ public class playerGUI implements IGUI {
                         return;
                     }
 
-                    if(territory.getRelations().getRelationWith(otherTerritory) != null){
-                        player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION.get());
-                        SoundUtil.playSound(player, NOT_ALLOWED);
+                    TownRelation actualRelation = territory.getRelationWith(otherTerritory);
+
+                    if(wantedRelation.isSuperiorTo(actualRelation)){
+                        territory.setRelation(otherTerritory,wantedRelation);
+                        openSingleRelation(player,territory, wantedRelation,0,exit);
                         return;
                     }
-                    if(relation.getNeedsConfirmationToStart()){
-                        // Can only be good relations
-                        OfflinePlayer otherTownLeader = Bukkit.getOfflinePlayer(UUID.fromString(otherTerritory.getLeaderID()));
 
-                        if (!otherTownLeader.isOnline()) {
-                            player.sendMessage(getTANString() + Lang.LEADER_NOT_ONLINE.get());
-                            return;
-                        }
-                        Player otherTownLeaderOnline = otherTownLeader.getPlayer();
-                        if(otherTownLeaderOnline == null)
-                            return;
-                        TownRelationConfirmStorage.addInvitation(otherTerritory.getLeaderID(), territory.getID(), relation);
+                    OfflinePlayer otherTownLeader = Bukkit.getOfflinePlayer(UUID.fromString(otherTerritory.getLeaderID()));
 
-                        otherTownLeaderOnline.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(territory.getName(),relation.getColor() + relation.getName()));
-                        ChatUtils.sendClickableCommand(otherTownLeaderOnline,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + territory.getID());
-
-                        player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS.get(otherTownLeaderOnline.getName()));
-
-                        player.closeInventory();
+                    if (!otherTownLeader.isOnline()) {
+                        player.sendMessage(getTANString() + Lang.LEADER_NOT_ONLINE.get());
+                        return;
                     }
-                    else{ //Can only be bad relations
-                        territory.setRelation(otherTerritory,relation);
-                        openSingleRelation(player,territory, relation,0,exit);
-                    }
+                    Player otherTownLeaderOnline = otherTownLeader.getPlayer();
+                    if(otherTownLeaderOnline == null)
+                        return;
+                    TownRelationConfirmStorage.addInvitation(otherTerritory.getLeaderID(), territory.getID(), wantedRelation);
+
+                    otherTownLeaderOnline.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(territory.getName(),wantedRelation.getColor() + wantedRelation.getName()));
+                    ChatUtils.sendClickableCommand(otherTownLeaderOnline,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + territory.getID());
+
+                    player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS.get(otherTownLeaderOnline.getName()));
+
+                    player.closeInventory();
+
                 });
-                guiItems.add(_town);
+                guiItems.add(iconGui);
             }
         }
         else if(action == Action.REMOVE){
@@ -2568,10 +2561,13 @@ public class playerGUI implements IGUI {
                 ITerritoryData otherTerritory = TerritoryUtil.getTerritory(otherTownUUID);
                 ItemStack townIcon = otherTerritory.getIconWithInformationAndRelation(territory);
 
-                GuiItem _town = ItemBuilder.from(townIcon).asGuiItem(event -> {
+                GuiItem townGui = ItemBuilder.from(townIcon).asGuiItem(event -> {
                     event.setCancelled(true);
-                    if(relation.getNeedsConfirmationToEnd()){ //Can only be better relations
-
+                    TownRelation neutral = TownRelation.NEUTRAL;
+                    if(wantedRelation.isSuperiorTo(neutral)){ //Can only be better relations
+                        territory.setRelation(otherTerritory, TownRelation.NEUTRAL);
+                    }
+                    else {
                         OfflinePlayer otherTownLeader = Bukkit.getOfflinePlayer(UUID.fromString(otherTerritory.getLeaderID()));
 
                         if (!otherTownLeader.isOnline()) {
@@ -2590,19 +2586,16 @@ public class playerGUI implements IGUI {
                         ChatUtils.sendClickableCommand(otherTownLeaderOnline,getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(),"tan accept "  + territory.getID());
                         player.closeInventory();
                     }
-                    else{
-                        territory.setRelation(otherTerritory, TownRelation.NEUTRAL);
-                    }
-                    openSingleRelation(player,territory,relation,0, exit);
+                    openSingleRelation(player,territory,wantedRelation,0, exit);
                 });
-                guiItems.add(_town);
+                guiItems.add(townGui);
             }
         }
 
 
-        createIterator(gui, guiItems, 0, player, p -> openSingleRelation(player, territory, relation,0, exit),
-                p -> openSingleRelation(player, territory, relation,page - 1, exit),
-                p -> openSingleRelation(player, territory, relation,page + 1, exit),
+        createIterator(gui, guiItems, 0, player, p -> openSingleRelation(player, territory, wantedRelation,0, exit),
+                p -> openSingleRelation(player, territory, wantedRelation,page - 1, exit),
+                p -> openSingleRelation(player, territory, wantedRelation,page + 1, exit),
                 decorativeGlass);
 
 
@@ -2852,7 +2845,7 @@ public class playerGUI implements IGUI {
 
         gui.setItem(2,4, _createRegion);
         gui.setItem(2,6, _browseRegion);
-        gui.setItem(3,1, IGUI.createBackArrow(player, p -> OpenMainMenu(player)));
+        gui.setItem(3,1, IGUI.createBackArrow(player, p -> openMainMenu(player)));
 
         gui.open(player);
     }
@@ -2937,7 +2930,7 @@ public class playerGUI implements IGUI {
         gui.setItem(2,7, _relationIcon);
         gui.setItem(2,8, _settingsIcon);
 
-        gui.setItem(3,1, IGUI.createBackArrow(player, p -> OpenMainMenu(player)));
+        gui.setItem(3,1, IGUI.createBackArrow(player, p -> openMainMenu(player)));
 
         gui.open(player);
     }
@@ -3108,7 +3101,7 @@ public class playerGUI implements IGUI {
                 playerRegion.delete();
                 SoundUtil.playSound(player, GOOD);
                 player.sendMessage(getTANString() + Lang.CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED.get());
-                OpenMainMenu(player);
+                openMainMenu(player);
             }, remove -> OpenTownSettings(player));
         });
 
@@ -3390,7 +3383,7 @@ public class playerGUI implements IGUI {
             return;
         }
         if(townData.ownLandmark(landmark)){
-            OpenPlayerOwnLandmark(player,landmark);
+            openPlayerOwnLandmark(player,landmark);
             return;
         }
         TownData owner = TownDataStorage.get(landmark.getOwnerID());
@@ -3444,7 +3437,7 @@ public class playerGUI implements IGUI {
         gui.open(player);
     }
 
-    private static void OpenPlayerOwnLandmark(Player player, Landmark landmark) {
+    private static void openPlayerOwnLandmark(Player player, Landmark landmark) {
         TownData townData = TownDataStorage.get(landmark.getOwnerID());
         Gui gui = IGUI.createChestGui("Landmark - " + townData.getName(), 3);
 

@@ -210,31 +210,6 @@ public class TownData extends ITerritoryData {
         return icon;
     }
 
-    @Override
-    public ItemStack getIconWithInformationAndRelation(ITerritoryData ownTerritory){
-        ItemStack icon = getIconWithInformations();
-
-        ItemMeta meta = icon.getItemMeta();
-        if(meta != null){
-            List<String> lore = meta.getLore();
-
-            if(ownTerritory != null){
-                TownRelation relation = getRelationWith(ownTerritory);
-                String relationName;
-                if(relation == null){
-                    relationName = Lang.GUI_TOWN_RELATION_NEUTRAL.get();
-                }
-                else {
-                    relationName = relation.getColor() + relation.getName();
-                }
-                lore.add(Lang.GUI_TOWN_INFO_TOWN_RELATION.get(relationName));
-            }
-
-            meta.setLore(lore);
-            icon.setItemMeta(meta);
-        }
-        return icon;
-    }
     //////////////////////////////////////
     //          ITerritoryData          //
     //////////////////////////////////////

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
-import org.leralix.tan.gui.playerGUI;
+import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.Lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
 
@@ -36,7 +36,7 @@ public class LiberateWarGoal extends WarGoal {
                     Lang.LEFT_CLICK_TO_SELECT.get());
 
             selectedTerritoryGui = ItemBuilder.from(selectTerritory).asGuiItem(event -> {
-                playerGUI.openSelecteTerritoryToLiberate(player, createAttackData,this, exit);
+                PlayerGUI.openSelecteTerritoryToLiberate(player, createAttackData,this, exit);
                 event.setCancelled(true);
             });
         }
@@ -45,7 +45,7 @@ public class LiberateWarGoal extends WarGoal {
                     Lang.GUI_SELECTED_TERRITORY_TO_LIBERATE.get(territoryToLiberate.getName()),
                     Lang.LEFT_CLICK_TO_SELECT.get());
             selectedTerritoryGui = ItemBuilder.from(selectedTerritory).asGuiItem(event -> {
-                playerGUI.openSelecteTerritoryToLiberate(player, createAttackData,this, exit);
+                PlayerGUI.openSelecteTerritoryToLiberate(player, createAttackData,this, exit);
                 event.setCancelled(true);
             });
         }

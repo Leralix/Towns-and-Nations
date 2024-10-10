@@ -31,7 +31,6 @@ import java.util.List;
 
 import static org.leralix.tan.enums.SoundEnum.BAD;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
-import static org.leralix.tan.utils.TeamUtils.updateAllScoreboardColor;
 
 public class RegionData extends ITerritoryData {
 
@@ -212,32 +211,6 @@ public class RegionData extends ITerritoryData {
             lore.add(Lang.GUI_REGION_INFO_DESC3.get(getTotalPlayerCount()));
             lore.add(Lang.GUI_REGION_INFO_DESC4.get(getBalance()));
             lore.add(Lang.GUI_REGION_INFO_DESC5.get(getNumberOfClaimedChunk()));
-            meta.setLore(lore);
-            icon.setItemMeta(meta);
-        }
-        return icon;
-    }
-
-    @Override
-    public ItemStack getIconWithInformationAndRelation(ITerritoryData territoryData){
-        ItemStack icon = getIconWithInformations();
-
-        ItemMeta meta = icon.getItemMeta();
-        if(meta != null){
-            List<String> lore = meta.getLore();
-
-            if(territoryData != null){
-                TownRelation relation = getRelationWith(territoryData);
-                String relationName;
-                if(relation == null){
-                    relationName = Lang.GUI_TOWN_RELATION_NEUTRAL.get();
-                }
-                else {
-                    relationName = relation.getColor() + relation.getName();
-                }
-                lore.add(Lang.GUI_TOWN_INFO_TOWN_RELATION.get(relationName));
-            }
-
             meta.setLore(lore);
             icon.setItemMeta(meta);
         }
@@ -520,7 +493,7 @@ public class RegionData extends ITerritoryData {
     @Override
     public TownRelation getRelationWith(String otherTownID) {
         if(getID().equals(otherTownID))
-            return TownRelation.REGION;
+            return TownRelation.OVERLORD;
 
         return null;
     }

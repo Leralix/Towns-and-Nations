@@ -207,7 +207,8 @@ language:
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Neutral"
   RELATION_CITY_NAME: "Town"
-  RELATION_REGION_NAME: "Region"
+  RELATION_OVERLORD_NAME: "Region"
+  RELATION_VASSAL_NAME: "Vassal"
   RELATION_ALLIANCE_NAME: "Alliance"
   RELATION_NON_AGGRESSION_NAME: "Non-aggression"
   RELATION_EMBARGO_NAME: "Embargo"
