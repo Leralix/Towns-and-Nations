@@ -8,7 +8,7 @@ import org.leralix.tan.commands.SubCommand;
 import java.util.Collections;
 import java.util.List;
 
-import static org.leralix.tan.GUI.AdminGUI.OpenMainMenu;
+import static org.leralix.tan.gui.AdminGUI.openMainMenu;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 
@@ -39,7 +39,7 @@ public class OpenAdminGUI extends SubCommand  {
     public void perform(Player player, String[] args){
         if (args.length == 1){
 
-            OpenMainMenu(player);
+            openMainMenu(player);
         }else if(args.length > 1){
             player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
             player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));

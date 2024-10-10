@@ -14,20 +14,17 @@ public class TransactionHistory {
     private final String uuid;
     private final int amount;
 
-    public TransactionHistory(int amount) {
-        this(null, amount);
-    }
     public TransactionHistory(String transactionParty, int amount) {
         this(transactionParty,null, amount);
     }
-    public TransactionHistory(String transactionParty, String UUID, int amount) {
+    public TransactionHistory(String transactionParty, String uuid, int amount) {
 
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
 
         this.date = today.format(formatter);
         this.transactionParty = transactionParty;
-        this.uuid = UUID;
+        this.uuid = uuid;
         this.amount = amount;
     }
 

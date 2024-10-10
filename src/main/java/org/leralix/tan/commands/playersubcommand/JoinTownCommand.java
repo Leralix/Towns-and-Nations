@@ -8,6 +8,7 @@ import org.leralix.tan.commands.SubCommand;
 import org.leralix.tan.storage.DataStorage.PlayerDataStorage;
 import org.leralix.tan.storage.DataStorage.TownDataStorage;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
+import org.leralix.tan.utils.TeamUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +80,7 @@ public class JoinTownCommand extends SubCommand {
 
             TownInviteDataStorage.removeInvitation(player,townData.getID());
 
-            updateAllScoreboardColor();
+            TeamUtils.updateAllScoreboardColor();
 
         }
         else{

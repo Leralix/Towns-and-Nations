@@ -5,8 +5,6 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.Lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
 
-import static org.leralix.tan.utils.HeadUtils.makeSkullB64;
-
 public enum TownRankEnum {
 
     ONE(1, ChatColor.GOLD, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODIxNGEyYmUzM2YwMzdiZmU2ZmEzZTI0YjFjMmZlMDRmMWU1ZmZkNzQ4ODA5NGQ0ZmY3YWJiMGIzNzBlZjViZSJ9fX0="),
@@ -19,10 +17,10 @@ public enum TownRankEnum {
     private final ChatColor color;
     private final String skullTexture;
 
-    TownRankEnum(int _level, ChatColor _color, String _skullTexture){
-        this.level = _level;
-        this.color = _color;
-        this.skullTexture = _skullTexture;
+    TownRankEnum(int level, ChatColor color, String skullTexture){
+        this.level = level;
+        this.color = color;
+        this.skullTexture = skullTexture;
     }
 
     public int getLevel() {
@@ -34,10 +32,6 @@ public enum TownRankEnum {
     }
     public String getSkullTexture() {
         return skullTexture;
-    }
-    //je t'aime mimi
-    public String getRankName(){
-        return getColor() + Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_X.get(getLevel());
     }
 
     public TownRankEnum getRankByLevel(int level){

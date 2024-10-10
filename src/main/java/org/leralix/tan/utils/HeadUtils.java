@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.Economy.EconomyUtil;
+import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.Lang.Lang;
 import org.leralix.tan.storage.DataStorage.PlayerDataStorage;
 import org.leralix.tan.storage.DataStorage.RegionDataStorage;

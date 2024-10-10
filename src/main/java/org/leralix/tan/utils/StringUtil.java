@@ -1,7 +1,5 @@
 package org.leralix.tan.utils;
 
-import net.md_5.bungee.api.ChatColor;
-
 import java.util.Random;
 
 /**
@@ -9,6 +7,9 @@ import java.util.Random;
  *
  */
 public class StringUtil {
+    private StringUtil() {
+        throw new IllegalStateException("Utility class");
+    }
     /**
      * Check if a string is a valid hex color code (ex: 00FF00 for green)
      * @param colorCode The color code to check
@@ -27,17 +28,8 @@ public class StringUtil {
         return Integer.parseInt(hexColor, 16);
     }
 
-    /**
-     * Get the {@link ChatColor} from a hex color code
-     * @param hexaColor The color to get the hex code of
-     * @return      The hex code of the color
-     */
-    public static ChatColor getHexColor(String hexaColor){
-        return net.md_5.bungee.api.ChatColor.of(hexaColor);
-    }
-
     public static int randomColor() {
-        Random random = new Random();
+        Random random = RandomUtil.getRandom();
         int red = random.nextInt(256);
         int green = random.nextInt(256);
         int blue = random.nextInt(256);

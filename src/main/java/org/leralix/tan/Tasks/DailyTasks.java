@@ -15,7 +15,7 @@ import org.leralix.tan.storage.DataStorage.TownDataStorage;
 import org.leralix.tan.utils.ArchiveUtil;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
-import org.leralix.tan.Economy.EconomyUtil;
+import org.leralix.tan.economy.EconomyUtil;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -126,7 +126,7 @@ public class DailyTasks {
             for (TownRank rank : town.getRanks()){
 
                 int rankSalary = rank.getSalary();
-                List<String> playerIdList = rank.getPlayers(town.getID());
+                List<String> playerIdList = rank.getPlayers();
                 int costOfSalary = playerIdList.size() * rankSalary;
 
                 if(rankSalary == 0 || costOfSalary > town.getBalance() ){

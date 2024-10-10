@@ -11,7 +11,7 @@ import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.storage.DataStorage.PlayerDataStorage;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
-import org.leralix.tan.Economy.EconomyUtil;
+import org.leralix.tan.economy.EconomyUtil;
 
 import java.util.List;
 

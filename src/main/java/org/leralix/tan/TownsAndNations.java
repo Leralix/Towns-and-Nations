@@ -11,8 +11,8 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.tan.dataclass.PluginVersion;
-import org.leralix.tan.Economy.EconomyUtil;
-import org.leralix.tan.Economy.TanEcon;
+import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.economy.TanEcon;
 import org.leralix.tan.Lang.DynamicLang;
 import org.leralix.tan.Lang.Lang;
 import org.leralix.tan.PlaceholderAPI.PlaceHolderAPI;
@@ -26,12 +26,11 @@ import org.leralix.tan.listeners.*;
 import org.leralix.tan.listeners.ChatListener.ChatListener;
 import org.leralix.tan.storage.CustomItemManager;
 import org.leralix.tan.storage.DataStorage.*;
-import org.leralix.tan.storage.Legacy.UpgradeStorage;
+import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.SoundStorage;
 import org.leralix.tan.utils.CustomNBT;
 import org.leralix.tan.utils.DropChances;
-import org.leralix.tan.utils.UpdateUtil;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
 
@@ -157,7 +156,6 @@ public final class TownsAndNations extends JavaPlugin {
 
         logger.info("[TaN] -Loading blocks data");
         CustomNBT.setBlocsData();
-        UpdateUtil.update();
 
 
         logger.info("[TaN] -Loading commands");

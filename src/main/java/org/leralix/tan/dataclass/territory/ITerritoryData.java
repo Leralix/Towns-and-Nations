@@ -12,7 +12,7 @@ import org.leralix.tan.dataclass.TownRelations;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.wars.CurrentAttacks;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
-import org.leralix.tan.Economy.EconomyUtil;
+import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.Lang.Lang;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.TownRelation;

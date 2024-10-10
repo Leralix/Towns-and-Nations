@@ -14,7 +14,7 @@ import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.Vector3D;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.GUI.playerGUI;
+import org.leralix.tan.gui.playerGUI;
 import org.leralix.tan.Lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.enums.SoundEnum;

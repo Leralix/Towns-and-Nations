@@ -7,7 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.GUI.IGUI;
+import org.leralix.tan.gui.IGUI;
 import org.leralix.tan.Lang.DynamicLang;
 import org.leralix.tan.Lang.Lang;
 
@@ -57,7 +57,7 @@ public class GuiUtil {
         createIterator(gui, guItems, page, player, backArrowAction, nextPageAction, previousPageAction, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
     }
 
-    public static void createIterator(Gui gui, ArrayList<GuiItem> guItems, int page,
+    public static void createIterator(Gui gui, List<GuiItem> guItems, int page,
                                       Player player, Consumer<Player> backArrowAction,
                                       Consumer<Player> nextPageAction, Consumer<Player> previousPageAction,
                                       ItemStack decorativeGlassPane) {
@@ -113,7 +113,7 @@ public class GuiUtil {
 
         int lastRow = gui.getRows();
 
-        gui.setItem(lastRow,1, IGUI.CreateBackArrow(player, backArrowAction));
+        gui.setItem(lastRow,1, IGUI.createBackArrow(player, backArrowAction));
         gui.setItem(lastRow,2, panel);
         gui.setItem(lastRow,3, panel);
         gui.setItem(lastRow,4, panel);

@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.leralix.tan.Economy.EconomyUtil;
+import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.Lang.Lang;
 import org.leralix.tan.commands.SubCommand;
 import org.leralix.tan.storage.CustomItemManager;

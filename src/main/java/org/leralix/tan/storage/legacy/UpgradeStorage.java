@@ -1,4 +1,4 @@
-package org.leralix.tan.storage.Legacy;
+package org.leralix.tan.storage.legacy;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;

@@ -10,6 +10,10 @@ import org.leralix.tan.enums.CustomVillagerProfession;
  */
 public class VillagerUtil {
 
+    private VillagerUtil() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /***
      * This method is used to create a custom villager for selling rare items
      * @param player the player who is creating the villager. His position will be used to spawn the villager in the exact same position.

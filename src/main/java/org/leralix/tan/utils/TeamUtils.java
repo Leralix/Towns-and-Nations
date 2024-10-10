@@ -4,16 +4,20 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.storage.DataStorage.PlayerDataStorage;
-import org.leralix.tan.storage.DataStorage.TownDataStorage;
 
 /**
  * Utility class for handling teams for scoreboard color coding
  */
 public class TeamUtils {
+
+    private TeamUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * Update the color of all the scoreboards
      */
@@ -60,16 +64,16 @@ public class TeamUtils {
     /**
      * Add a player to the correct team
      * @param player        The player's scoreboard
-     * @param toAdd         The player to add to the team scoreboard
+     * @param playerToAdd         The player to add to the team scoreboard
      */
-    public static void addPlayerToCorrectTeam(Player player, Player toAdd) {
+    public static void addPlayerToCorrectTeam(Player player, Player playerToAdd) {
 
         Scoreboard scoreboard = player.getScoreboard();
-        if(!PlayerDataStorage.get(toAdd).haveTown() || !PlayerDataStorage.get(player).haveTown())
+        if(!PlayerDataStorage.get(playerToAdd).haveTown() || !PlayerDataStorage.get(player).haveTown())
             return;
 
-
-        TownRelation relation = getRelation(player, toAdd);
+        PlayerData playerData = PlayerDataStorage.get(player);
+        TownRelation relation = playerData.getRelationWithPlayer(playerToAdd);
         if(relation == null)
             return;
 
@@ -78,31 +82,7 @@ public class TeamUtils {
             TeamUtils.setIndividualScoreBoard(player);
             playerTeam = scoreboard.getTeam(relation.getName().toLowerCase());
         }
-        playerTeam.addEntry(toAdd.getName());
-    }
-
-    /**
-     * Check if two players have a specific relation
-     * @param player            The player to check the relation of. Player must have a town
-     * @param otherPlayer       The other player to check the relation with. Player must have a town
-     * @return                  True if the players have the specific relation, false otherwise
-     */
-    private static TownRelation getRelation(Player player, Player otherPlayer){
-
-        TownData playerTown = TownDataStorage.get(player);
-        TownData otherPlayerTown = TownDataStorage.get(otherPlayer);
-
-
-
-        TownRelation currentRelation = playerTown.getRelationWith(otherPlayerTown);
-
-
-        //If no relation, check if maybe they are from the same region
-        if(currentRelation == null && playerTown.haveOverlord() && otherPlayerTown.haveOverlord()){
-            currentRelation = playerTown.getOverlord().getRelationWith(otherPlayerTown.getOverlord());
-        }
-
-        return currentRelation;
+        playerTeam.addEntry(playerToAdd.getName());
     }
 
 }

@@ -3,18 +3,23 @@ package org.leralix.tan.dataclass;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.block.sign.Side;
+import org.bukkit.block.sign.SignSide;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.Economy.EconomyUtil;
+import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.Lang.Lang;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.storage.DataStorage.PlayerDataStorage;
 import org.leralix.tan.storage.DataStorage.TownDataStorage;
-import org.leralix.tan.utils.*;
+import org.leralix.tan.utils.ChatUtils;
+import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.ParticleUtils;
+import org.leralix.tan.utils.SoundUtil;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
 
@@ -38,8 +43,8 @@ public class PropertyData {
     private final Vector3D p2;
     private Vector3D signLocation;
 
-    public PropertyData(String ID, Vector3D p1, Vector3D p2, PlayerData player) {
-        this.ID = ID;
+    public PropertyData(String id, Vector3D p1, Vector3D p2, PlayerData player) {
+        this.ID = id;
         this.owningPlayerID = player.getID();
         this.p1 = p1;
         this.p2 = p2;
@@ -89,9 +94,6 @@ public class PropertyData {
     }
     public String getOwnerID() {
         return owningPlayerID;
-    }
-    public String getRentingPlayerID() {
-        return rentingPlayerID;
     }
     public PlayerData getOwner() {
         return PlayerDataStorage.get(owningPlayerID);
@@ -206,12 +208,12 @@ public class PropertyData {
     }
 
     public boolean isNearProperty(Location blockLocation, int margin) {
-        double minX = Math.min(this.p1.getX(), this.p2.getX()) - margin;
-        double minY = Math.min(this.p1.getY(), this.p2.getY()) - margin;
-        double minZ = Math.min(this.p1.getZ(), this.p2.getZ()) - margin;
-        double maxX = Math.max(this.p1.getX(), this.p2.getX()) + margin;
-        double maxY = Math.max(this.p1.getY(), this.p2.getY()) + margin;
-        double maxZ = Math.max(this.p1.getZ(), this.p2.getZ()) + margin;
+        double minX = (double) Math.min(this.p1.getX(), this.p2.getX()) - margin;
+        double minY = (double) Math.min(this.p1.getY(), this.p2.getY()) - margin;
+        double minZ = (double) Math.min(this.p1.getZ(), this.p2.getZ()) - margin;
+        double maxX = (double) Math.max(this.p1.getX(), this.p2.getX()) + margin;
+        double maxY = (double) Math.max(this.p1.getY(), this.p2.getY()) + margin;
+        double maxZ = (double) Math.max(this.p1.getZ(), this.p2.getZ()) + margin;
 
         double blockX = blockLocation.getX();
         double blockY = blockLocation.getY();
@@ -233,15 +235,17 @@ public class PropertyData {
 
         Sign sign = (Sign) signBlock.getState();
 
-            String[] lines = updateLines();
+        String[] lines = updateLines();
 
-            sign.setLine(0, lines[0]);
-            sign.setLine(1, lines[1]);
-            sign.setLine(2, lines[2]);
-            sign.setLine(3, lines[3]);
+        SignSide signSide = sign.getSide(Side.FRONT);
 
-            sign.update();
-        }
+        signSide.setLine(0, lines[0]);
+        signSide.setLine(1, lines[1]);
+        signSide.setLine(2, lines[2]);
+        signSide.setLine(3, lines[3]);
+
+        sign.update();
+    }
 
     private String[] updateLines() {
 

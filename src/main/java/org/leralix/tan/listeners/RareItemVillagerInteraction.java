@@ -12,7 +12,7 @@ import org.leralix.tan.enums.CustomVillagerProfession;
 import org.leralix.tan.utils.ChatUtils;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
-import org.leralix.tan.Economy.EconomyUtil;
+import org.leralix.tan.economy.EconomyUtil;
 
 import java.util.Set;
 

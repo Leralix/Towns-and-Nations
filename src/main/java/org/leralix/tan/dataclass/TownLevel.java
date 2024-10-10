@@ -4,14 +4,14 @@ import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.leralix.tan.storage.Legacy.UpgradeStorage;
+import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.leralix.tan.storage.Legacy.UpgradeStorage.loadIntoMap;
+import static org.leralix.tan.storage.legacy.UpgradeStorage.loadIntoMap;
 
 public class TownLevel {
     private int townLevel;
@@ -30,19 +30,14 @@ public class TownLevel {
         if(upgradeName.equals("TOWN_LEVEL")){
             return this.townLevel;
         }
-        Integer level = levelMap.get(upgradeName);
-        if (level == null) {
-            levelMap.put(upgradeName, 0);
-            return 0;
-        }
-        return level; // Retourne la valeur existante
+        return levelMap.computeIfAbsent(upgradeName, k -> 0);
     }
 
 
     public int getTownLevel() {
         return this.townLevel;
     }
-    public void TownLevelUp(){
+    public void townLevelUp(){
         this.townLevel++;
     }
 
@@ -80,19 +75,22 @@ public class TownLevel {
 
         String expressionString = section.getString("TownLevelExpression");
 
-        double squareMultiplier = section.getDouble("squareMultiplier");
-        double flatMultiplier = section.getDouble("flatMultiplier");
+        String squareMultName = "squareMultiplier";
+        String flatMultName = "flatMultiplier";
+
+        double squareMultiplier = section.getDouble(squareMultName);
+        double flatMultiplier = section.getDouble(flatMultName);
         double base = section.getDouble("base");
 
         Expression expression = new ExpressionBuilder(expressionString)
                 .variable("level")
-                .variable("squareMultiplier")
-                .variable("flatMultiplier")
+                .variable(squareMultName)
+                .variable(flatMultName)
                 .variable("base")
                 .build()
                 .setVariable("level", level)
-                .setVariable("squareMultiplier", squareMultiplier)
-                .setVariable("flatMultiplier", flatMultiplier)
+                .setVariable(squareMultName, squareMultiplier)
+                .setVariable(flatMultName, flatMultiplier)
                 .setVariable("base", base);
         return (int) expression.evaluate();
     }
@@ -108,7 +106,7 @@ public class TownLevel {
         for(TownUpgrade townUpgrade : UpgradeStorage.getUpgrades()){
 
             String name = townUpgrade.getName();
-            HashMap<String, Integer> map = townUpgrade.getBenefits();
+            Map<String, Integer> map = townUpgrade.getBenefits();
 
             for(final Map.Entry<String, Integer> entry : map.entrySet()) {
                 String benefitName = entry.getKey();

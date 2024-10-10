@@ -40,7 +40,7 @@ public class TownRank {
         this.salary = salary;
     }
 
-    public void swapPayingTaxes(String townID) {
+    public void swapPayingTaxes() {
         this.isPayingTaxes = !this.isPayingTaxes;
     }
     public String getName(){
@@ -55,11 +55,11 @@ public class TownRank {
     public TownRankEnum getRankEnum(){
         return this.rankEnum;
     }
-    public void setRankEnum(String townID, TownRankEnum rankEnum){
+    public void setRankEnum(TownRankEnum rankEnum){
         this.rankEnum = rankEnum;
     }
     public int getLevel(){return this.rankEnum.getLevel();}
-    public void incrementLevel(String townID){
+    public void incrementLevel(){
         this.rankEnum = rankEnum.nextRank();
     }
     public String getRankIconName(){
@@ -84,7 +84,7 @@ public class TownRank {
         removePlayer(player.getUniqueId().toString());
     }
 
-    public List<String> getPlayers(String townID){
+    public List<String> getPlayers(){
         return this.players;
     }
 
@@ -92,29 +92,29 @@ public class TownRank {
         return this.isPayingTaxes;
     }
 
-    public void setPayingTaxes(String townID, boolean payingTaxes) {
+    public void setPayingTaxes(boolean payingTaxes) {
         this.isPayingTaxes = payingTaxes;
     }
-    public void setRankIconName(String townID, String rankIconName) {
+    public void setRankIconName(String rankIconName) {
         this.rankIconName = rankIconName;
     }
 
-    public int getNumberOfPlayer(String townID){
+    public int getNumberOfPlayer(){
         return players.size();
     }
 
     public void addPermission(TownRolePermission permission) {
         permissions.add(permission);
     }
-    public boolean hasPermission(String townID,TownRolePermission permission) {
+    public boolean hasPermission(TownRolePermission permission) {
         return permissions.contains(permission);
     }
     public void removePermission(TownRolePermission permission) {
         permissions.remove(permission);
     }
 
-    public void switchPermission(String townID, TownRolePermission permission) {
-        if(hasPermission(townID,permission))
+    public void switchPermission(TownRolePermission permission) {
+        if(hasPermission(permission))
             removePermission(permission);
         else
             addPermission(permission);
@@ -128,10 +128,10 @@ public class TownRank {
     public void addOneFromSalary() {
         this.salary += 1;
     }
-    public void addFromSalary(String townID, int amount) {
+    public void addFromSalary(int amount) {
         this.salary += amount;
     }
-    public void removeFromSalary(String townID, int amount) {
+    public void removeFromSalary(int amount) {
         this.salary -= amount;
     }
 

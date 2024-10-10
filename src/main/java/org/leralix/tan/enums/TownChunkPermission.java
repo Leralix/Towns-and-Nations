@@ -42,19 +42,20 @@ public enum TownChunkPermission {
     public boolean isAllowed(ITerritoryData ownerTown, PlayerData playerData) {
         switch (this) {
             case ALLIANCE -> {
-                if(playerData.haveTown()){
-                    if(ownerTown.getRelations().getRelationWith(playerData.getTown()) == TownRelation.ALLIANCE){
+                if(playerData.haveTown() && ownerTown.getRelations().getRelationWith(playerData.getTown()) == TownRelation.ALLIANCE){
                         return true;
                     }
-                }
-                if(playerData.haveRegion()){
-                    if(ownerTown.getRelations().getRelationWith(playerData.getRegion()) == TownRelation.ALLIANCE){
+
+                if(playerData.haveRegion() && ownerTown.getRelations().getRelationWith(playerData.getRegion()) == TownRelation.ALLIANCE){
                         return true;
                     }
-                }
+
             }
             case FOREIGN -> {
                 return true;
+            }
+            default -> {
+                return false;
             }
         }
         return false;

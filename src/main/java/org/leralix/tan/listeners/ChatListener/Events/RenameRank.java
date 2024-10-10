@@ -3,7 +3,7 @@ package org.leralix.tan.listeners.ChatListener.Events;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.TownRank;
-import org.leralix.tan.GUI.playerGUI;
+import org.leralix.tan.gui.playerGUI;
 import org.leralix.tan.Lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.listeners.ChatListener.ChatListenerEvent;

@@ -1,4 +1,4 @@
-package org.leralix.tan.GUI;
+package org.leralix.tan.gui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.components.GuiType;
@@ -23,7 +23,7 @@ public interface IGUI {
                 .rows(nRow)
                 .create();
     }
-    static GuiItem CreateBackArrow(Player player, Consumer<Player> openMenuAction) {
+    static GuiItem createBackArrow(Player player, Consumer<Player> openMenuAction) {
         ItemStack getBackArrow = HeadUtils.createCustomItemStack(Material.ARROW, Lang.GUI_BACK_ARROW.get());
         return ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);

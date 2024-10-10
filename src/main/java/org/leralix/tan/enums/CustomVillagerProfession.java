@@ -17,10 +17,10 @@ public enum CustomVillagerProfession {
     private final Profession profession;
     private final ItemStack buyingItem;
 
-    CustomVillagerProfession(String name, Profession profession, ItemStack _buyingItem){
+    CustomVillagerProfession(String name, Profession profession, ItemStack buyingItem){
         this.name = name;
         this.profession = profession;
-        this.buyingItem = _buyingItem;
+        this.buyingItem = buyingItem;
     }
     public static CustomVillagerProfession getVillager(String tag){
 

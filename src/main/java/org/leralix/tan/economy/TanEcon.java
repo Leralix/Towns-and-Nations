@@ -1,4 +1,4 @@
-package org.leralix.tan.Economy;
+package org.leralix.tan.economy;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -7,6 +7,7 @@ import org.bukkit.OfflinePlayer;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.storage.DataStorage.PlayerDataStorage;
 
+import java.util.Collections;
 import java.util.List;
 
 public class TanEcon implements Economy {
@@ -212,7 +213,7 @@ public class TanEcon implements Economy {
 
     @Override
     public List<String> getBanks() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override

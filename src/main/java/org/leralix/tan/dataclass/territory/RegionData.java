@@ -572,7 +572,7 @@ public class RegionData extends ITerritoryData {
     public void delete(){
         super.delete();
         broadCastMessageWithSound(Lang.BROADCAST_PLAYER_REGION_DELETED.get(getLeaderData().getName(), getColoredName()), BAD);
-        updateAllScoreboardColor();
+        TeamUtils.updateAllScoreboardColor();
         RegionDataStorage.deleteRegion(this);
     }
 }

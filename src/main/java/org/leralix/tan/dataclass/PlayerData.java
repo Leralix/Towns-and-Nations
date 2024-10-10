@@ -7,8 +7,10 @@ import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.wars.CurrentAttacks;
+import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.TownRolePermission;
 import org.leralix.tan.storage.CurrentAttacksStorage;
+import org.leralix.tan.storage.DataStorage.PlayerDataStorage;
 import org.leralix.tan.storage.DataStorage.TownDataStorage;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
 import org.leralix.tan.utils.config.ConfigTag;
@@ -93,7 +95,7 @@ public class PlayerData {
         if(!haveTown())
             return false;
         TownData townData = getTown();
-        return townData.getRank(this.townRankID).hasPermission(townData.getID(),rolePermission) ;
+        return townData.getRank(this.townRankID).hasPermission(rolePermission) ;
     }
 
     public void leaveTown(){
@@ -230,5 +232,23 @@ public class PlayerData {
 
     public void removeWar(@NotNull CurrentAttacks currentAttacks){
         getAttackInvolvedIn().remove(currentAttacks.getId());
+    }
+
+    public TownRelation getRelationWithPlayer(Player playerToAdd) {
+        PlayerData otherPlayer = PlayerDataStorage.get(playerToAdd);
+        if(!haveTown() || !otherPlayer.haveTown())
+            return null;
+
+        TownData playerTown = TownDataStorage.get(this);
+        TownData otherPlayerTown = TownDataStorage.get(playerToAdd);
+
+        TownRelation currentRelation = playerTown.getRelationWith(otherPlayerTown);
+
+        //If no relation, check if maybe they are from the same region TODO implement this inside TownData#getRelationWith()
+        if(currentRelation == null && playerTown.haveOverlord() && otherPlayerTown.haveOverlord()){
+            currentRelation = playerTown.getOverlord().getRelationWith(otherPlayerTown.getOverlord());
+        }
+
+        return currentRelation;
     }
 }

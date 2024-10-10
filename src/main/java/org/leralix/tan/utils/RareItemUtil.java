@@ -5,6 +5,10 @@ import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
 
 public class RareItemUtil {
+    private RareItemUtil() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * Get the price of a rare item
      * @param rareItemTag   The tag of the rare item

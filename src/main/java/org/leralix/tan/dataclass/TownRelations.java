@@ -9,6 +9,7 @@ import org.leralix.tan.utils.TerritoryUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.leralix.tan.utils.ChatUtils.getTANString;
@@ -30,7 +31,7 @@ public class TownRelations {
     public void removeRelation(TownRelation relation, String townID){
         townRelations.get(relation).remove(townID);
     }
-    public ArrayList<String> getTerritoriesIDWithRelation(TownRelation relation){
+    public List<String> getTerritoriesIDWithRelation(TownRelation relation){
         return townRelations.get(relation);
     }
 

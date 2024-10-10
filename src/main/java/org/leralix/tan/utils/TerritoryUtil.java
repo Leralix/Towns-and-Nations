@@ -6,14 +6,17 @@ import org.leralix.tan.storage.DataStorage.TownDataStorage;
 
 public class TerritoryUtil {
 
-    public static ITerritoryData getTerritory(String ID){
+    private TerritoryUtil() {
+        throw new IllegalStateException("Utility class");
+    }
+    public static ITerritoryData getTerritory(String id){
 
 
-        if(ID.startsWith("T")) {
-            return TownDataStorage.get(ID);
+        if(id.startsWith("T")) {
+            return TownDataStorage.get(id);
         }
-        if(ID.startsWith("R")) {
-            return RegionDataStorage.get(ID);
+        if(id.startsWith("R")) {
+            return RegionDataStorage.get(id);
         }
         return null;
     }

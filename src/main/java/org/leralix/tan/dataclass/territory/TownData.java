@@ -10,7 +10,7 @@ import org.leralix.tan.dataclass.history.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
-import org.leralix.tan.Economy.EconomyUtil;
+import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.Lang.Lang;
 import org.leralix.tan.enums.*;
 import org.leralix.tan.storage.DataStorage.*;
@@ -24,7 +24,6 @@ import java.util.*;
 import static org.leralix.tan.enums.SoundEnum.*;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 import static org.leralix.tan.utils.HeadUtils.getPlayerHead;
-import static org.leralix.tan.utils.TeamUtils.updateAllScoreboardColor;
 
 public class TownData extends ITerritoryData {
 
@@ -850,7 +849,7 @@ public class TownData extends ITerritoryData {
         int totalSalary = 0;
         for (TownRank rank : getRanks()) {
 
-            List<String> playerIdList = rank.getPlayers(getID());
+            List<String> playerIdList = rank.getPlayers();
             totalSalary += playerIdList.size() * rank.getSalary();
         }
         return totalSalary;
@@ -885,7 +884,7 @@ public class TownData extends ITerritoryData {
         }
 
         removeFromBalance(townLevel.getMoneyRequiredForLevelUp());
-        townLevel.TownLevelUp();
+        townLevel.townLevelUp();
         SoundUtil.playSound(player,LEVEL_UP);
         player.sendMessage(getTANString() + Lang.BASIC_LEVEL_UP.get());
     }
@@ -985,7 +984,7 @@ public class TownData extends ITerritoryData {
         for(String playerID : getPlayerIDList()){ //Kick all Players from the deleted town
             removePlayer(PlayerDataStorage.get(playerID));
         }
-        updateAllScoreboardColor();
+       TeamUtils.updateAllScoreboardColor();
         TownDataStorage.deleteTown(this);
     }
 

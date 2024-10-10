@@ -10,6 +10,10 @@ import org.leralix.tan.utils.config.ConfigUtil;
  * Utility class for playing sounds
  */
 public class SoundUtil {
+
+    private SoundUtil() {
+        throw new IllegalStateException("Utility class");
+    }
     /**
      * Play a predefined sound to the player
      * @param player    The player to play the sound to

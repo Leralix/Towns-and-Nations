@@ -4,13 +4,11 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Random;
+import org.leralix.tan.utils.RandomUtil;
 
 public class RareItem {
     private final int dropChance;
     private final ItemStack item;
-    private int price;
 
     public RareItem(int dropChance, ItemStack rareMaterial) {
         this.dropChance = dropChance;
@@ -26,10 +24,9 @@ public class RareItem {
     }
 
     public Item spawn(World world, Location location) {
-        Random rand = new Random();
-        int int_random = rand.nextInt(1, 100);
+        int randInt = RandomUtil.getRandom().nextInt(1, 100);
 
-        if(int_random <= dropChance){
+        if(randInt <= dropChance){
             return world.dropItem(location, item);
         }
         return null;
