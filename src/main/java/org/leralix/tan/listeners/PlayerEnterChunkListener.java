@@ -10,9 +10,9 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.WildernessChunk;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.ChunkType;
-import org.leralix.tan.storage.DataStorage.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.PlayerAutoClaimStorage;
 import org.leralix.tan.utils.ChunkUtil;
 

@@ -8,14 +8,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.SoundUtil;
 import org.leralix.tan.utils.TerritoryUtil;
 
 import java.util.function.Consumer;
 
-import static org.leralix.tan.gui.PlayerGUI.OpenStartWarSettings;
+import static org.leralix.tan.gui.PlayerGUI.openStartWarSettings;
 import static org.leralix.tan.enums.SoundEnum.ADD;
 import static org.leralix.tan.enums.SoundEnum.REMOVE;
 
@@ -53,7 +53,7 @@ public class ConquerWarGoal extends WarGoal {
             } else if(event.isLeftClick()){
                 numberOfChunks += 1;
             }
-            OpenStartWarSettings(player, exit, createAttackData);
+            openStartWarSettings(player, exit, createAttackData);
         });
 
         GuiItem chunkInfoGui = ItemBuilder.from(chunkInfo).asGuiItem(event -> event.setCancelled(true));
@@ -69,7 +69,7 @@ public class ConquerWarGoal extends WarGoal {
             if(numberOfChunks < 1){
                 numberOfChunks = 1;
             }
-            OpenStartWarSettings(player, exit, createAttackData);
+            openStartWarSettings(player, exit, createAttackData);
         });
 
         gui.setItem(3, 5, removeChunkGui);

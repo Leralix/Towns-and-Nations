@@ -12,10 +12,10 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.ChunkPermissionType;
-import org.leralix.tan.storage.DataStorage.LandmarkStorage;
-import org.leralix.tan.storage.DataStorage.TownDataStorage;
+import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 

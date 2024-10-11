@@ -2,7 +2,7 @@ package org.leralix.tan.commands.playersubcommand;
 
 
 import org.leralix.tan.gui.PlayerGUI;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.commands.SubCommand;
 
 

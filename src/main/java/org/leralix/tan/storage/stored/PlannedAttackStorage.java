@@ -1,4 +1,4 @@
-package org.leralix.tan.storage.DataStorage;
+package org.leralix.tan.storage.stored;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -8,7 +8,7 @@ import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
 import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.storage.TypeAdapter.WargoalTypeAdapter;
+import org.leralix.tan.storage.typeadapter.WargoalTypeAdapter;
 
 import java.io.*;
 import java.lang.reflect.Type;

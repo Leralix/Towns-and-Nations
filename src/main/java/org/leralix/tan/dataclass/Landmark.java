@@ -8,11 +8,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.storage.DataStorage.LandmarkStorage;
-import org.leralix.tan.storage.DataStorage.NewClaimedChunkStorage;
-import org.leralix.tan.storage.DataStorage.TownDataStorage;
+import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.CustomNBT;
 import org.leralix.tan.utils.TerritoryUtil;
 

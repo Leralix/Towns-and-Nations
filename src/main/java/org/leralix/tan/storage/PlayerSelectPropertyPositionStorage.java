@@ -15,11 +15,11 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.Vector3D;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.gui.PlayerGUI;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.enums.SoundEnum;
-import org.leralix.tan.storage.DataStorage.NewClaimedChunkStorage;
-import org.leralix.tan.storage.DataStorage.PlayerDataStorage;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.ChatUtils;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
@@ -102,7 +102,7 @@ public class PlayerSelectPropertyPositionStorage {
             removePlayer(playerID);
 
             PropertyData property = playerTown.registerNewProperty(vList.get(0),vList.get(1),playerData);
-            PlayerGUI.OpenPropertyManagerMenu(player,property);
+            PlayerGUI.openPropertyManagerMenu(player,property);
 
             createPropertyPanel(player, property, block, blockFace);
             property.updateSign();

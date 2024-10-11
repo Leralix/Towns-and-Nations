@@ -3,9 +3,9 @@ package org.leralix.tan.api;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.storage.DataStorage.NewClaimedChunkStorage;
-import org.leralix.tan.storage.DataStorage.RegionDataStorage;
-import org.leralix.tan.storage.DataStorage.TownDataStorage;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 
 import java.util.Collection;
 import java.util.Map;

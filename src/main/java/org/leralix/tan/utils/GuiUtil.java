@@ -8,8 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.IGUI;
-import org.leralix.tan.Lang.DynamicLang;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.DynamicLang;
+import org.leralix.tan.lang.Lang;
 
 import java.util.ArrayList;
 import java.util.List;

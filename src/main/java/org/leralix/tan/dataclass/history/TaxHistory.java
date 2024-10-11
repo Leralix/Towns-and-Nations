@@ -1,7 +1,7 @@
 package org.leralix.tan.dataclass.history;
 
 import org.leralix.tan.dataclass.TransactionHistory;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

@@ -7,7 +7,7 @@ import org.bukkit.scoreboard.Team;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.storage.DataStorage.PlayerDataStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 /**
  * Utility class for handling teams for scoreboard color coding

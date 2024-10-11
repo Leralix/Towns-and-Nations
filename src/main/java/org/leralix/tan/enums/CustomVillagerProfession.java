@@ -2,7 +2,7 @@ package org.leralix.tan.enums;
 
 import org.bukkit.entity.Villager.Profession;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.DropChances;
 
 public enum CustomVillagerProfession {

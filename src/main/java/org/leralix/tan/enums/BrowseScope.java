@@ -1,6 +1,6 @@
 package org.leralix.tan.enums;
 
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 
 public enum BrowseScope {
 

@@ -24,8 +24,8 @@ import org.bukkit.inventory.FurnaceInventory;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.enums.ChunkPermissionType;
-import org.leralix.tan.storage.DataStorage.NewClaimedChunkStorage;
-import org.leralix.tan.storage.DataStorage.PlayerDataStorage;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.SudoPlayerStorage;
 
 import static org.leralix.tan.enums.ChunkPermissionType.*;

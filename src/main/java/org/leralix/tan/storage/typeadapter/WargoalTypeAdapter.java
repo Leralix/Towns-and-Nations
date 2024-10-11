@@ -1,4 +1,4 @@
-package org.leralix.tan.storage.TypeAdapter;
+package org.leralix.tan.storage.typeadapter;
 
 import com.google.gson.*;
 import org.leralix.tan.dataclass.wars.wargoals.*;

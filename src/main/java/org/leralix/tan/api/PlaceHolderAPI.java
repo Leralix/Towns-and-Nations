@@ -1,12 +1,12 @@
-package org.leralix.tan.PlaceholderAPI;
+package org.leralix.tan.api;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.storage.DataStorage.PlayerDataStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 public class PlaceHolderAPI extends PlaceholderExpansion {
 

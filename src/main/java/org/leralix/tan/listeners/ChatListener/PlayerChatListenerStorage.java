@@ -1,7 +1,7 @@
 package org.leralix.tan.listeners.ChatListener;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 
 import java.util.HashMap;
 import java.util.Map;

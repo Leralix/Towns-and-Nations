@@ -40,6 +40,11 @@ language:
   #Update needed
   NEW_VERSION_AVAILABLE: "§cEn ny versjon er tilgjengelig: §f{0}"
   NEW_VERSION_AVAILABLE_2: "§cDownload it on Spigot or GitHub"
+  #Help command
+  HELP_DESC: "Show a list explaining all the commands"
+  CLICK_TO_GO_NEXT_PAGE: "§fClick to go to the next page"
+  CLICK_TO_GO_PREVIOUS_PAGE: "§fClick to go to the previous page"
+  PAGE_NUMBER: "§fPage {0}/{1}"
   #Level up
   BASIC_LEVEL_UP: "§aNivå opp !"
   #Teleportation
@@ -114,7 +119,7 @@ language:
   TOWN_RELATION_ACCEPTED_MEMBER_SIDE: "§fDin by har nå relasjonen {0} med §9{1}"
   TOWN_RELATION_ACCEPTED_TOWN_SIDE: "§e{0}§f har akseptert relasjonen {1} med din by"
   #Autoclaim command
-  TOWN_AUTO_CLAIM_DESC: "§fAktiver automatisk krav mens du beveger deg mellom biter"
+  TOWN_AUTO_CLAIM_DESC: "Enable auto claiming while moving between chunks"
   AUTO_CLAIM_ON_FOR: "§fAutomatisk krav er nå på for bitetype: §9{0}"
   AUTO_CLAIM_OFF: "§fAutomatisk krav er nå deaktivert"
   #Chance chat
@@ -143,6 +148,7 @@ language:
   DEBUG_UNCLAIMED_CHUNK_SUCCESS_REGION: "Chunk unclaimed ! Current number of chunks §9{0} §f: §2{1}♦"
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cDenne chunken er hevdet av en annen by: §e{0}"
   UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§cThis chunk is claimed by another region: §b{0}"
+  PROPERTY_IN_CHUNK: "§cThis chunk contains a property §f({0})"
   #Map command
   MAP_COMMAND_DESC: "Open the map of chunks around the player"
   #Debug commands
@@ -201,7 +207,8 @@ language:
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Nøytral"
   RELATION_CITY_NAME: "By"
-  RELATION_REGION_NAME: "Region"
+  RELATION_OVERLORD_NAME: "Overlord"
+  RELATION_VASSAL_NAME: "Vassal"
   RELATION_ALLIANCE_NAME: "Allianse"
   RELATION_NON_AGGRESSION_NAME: "Ikke-aggresjon"
   RELATION_EMBARGO_NAME: "Embargo"
@@ -209,6 +216,7 @@ language:
   #GUI generic
   GUI_GENERIC_CLICK_TO_OPEN: "§fLeft click to open"
   GUI_GENERIC_CLICK_TO_DELETE: "§fClick to delete"
+  GUI_GENERIC_CLICK_TO_RENAME: "§fClick to rename"
   GUI_GENERIC_RIGHT_CLICK_TO_DELETE: "§fRight click to delete"
   GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT: "§fShift + click to teleport"
   GUI_GENERIC_CLICK_TO_SWITCH_SCOPE: "§fClick to switch scope"
@@ -350,7 +358,8 @@ language:
   GUI_TOWN_RELATION_NEUTRAL: "Nøytral"
   GUI_TOWN_RELATION_ADD_TOWN: "§aLegg til by"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aFjern by"
-  GUI_TOWN_CHANGED_RELATION_RESUME: "§fDin bys relasjoner med {0} har endret seg til: {1}"
+  BROADCAST_RELATION_IMPROVE: "§fRelation between {0}§f and {1}§f has improved to: {2}"
+  BROADCAST_RELATION_WORSEN: "§fRelation between {0}§f and {1}§f has worsen to: {2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cHøyreklikk for å starte et angrep"
   GUI_TOWN_ATTACK_TOWN_EXECUTED: "§cDu startet et angrep mot {0}"
   GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} have launched an attack against {1} !"
@@ -400,7 +409,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS: "§aVellykket endret ikonet"
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO: "§aListe over spillere med denne rollen:"
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1: "§fVenstreklikk for å legge til en spiller i denne rollen"
-  GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC: "§f{0}"
+  GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC: "§f➖ {0}"
   GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME: "§aGi rollen nytt navn"
   GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION: "§aAdministrer tillatelser"
   GUI_TOWN_MEMBERS_ROLE_PAY_TAXES: "§aDenne rollen betaler skatter"
@@ -435,6 +444,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_MOB_SPAWN: "§aAdministrer mobspawning"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_PROPERTY: "§aCreate property"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_PROPERTY: "§aManage properties"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_TOWN_ADMINISTRATOR: "§aTown administrator"
   GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION: "§fDenne rollen§a har§f denne tillatelsen"
   GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION: "§fDenne rollen §char ikke§f denne tillatelsen"
   GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER: "§cDu kan ikke sette en lønn lavere enn 0✦"
@@ -757,6 +767,7 @@ language:
   WARGOAL_CONQUER_SUCCESS_WINNING_SIDE: "§fYou can now claim {0}§f chunks from {1}"
   WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE: "{0}§f can now claim {1}§f chunks from {2}"
   GUI_CANCEL_ATTACK: "§cCancel attack"
+  GUI_RENAME_ATTACK: "§aRename attack"
   GUI_QUIT_WAR: "§aLeave the attack"
   GUI_QUIT_WAR_DESC1: "§fStop supporting one side and become neutral again"
   TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE: "{0}§f no longer takes part in the war \"{1}\""

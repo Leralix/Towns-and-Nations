@@ -3,10 +3,10 @@ package org.leralix.tan.commands.playersubcommand;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.commands.SubCommand;
 import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.storage.DataStorage.TownDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.storage.invitation.TownRelationConfirmStorage;
 import org.leralix.tan.utils.TerritoryUtil;
 

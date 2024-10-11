@@ -15,10 +15,10 @@ import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.Lang.Lang;
-import org.leralix.tan.storage.DataStorage.PlayerDataStorage;
-import org.leralix.tan.storage.DataStorage.RegionDataStorage;
-import org.leralix.tan.storage.DataStorage.TownDataStorage;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 
 import java.net.MalformedURLException;
 import java.net.URL;

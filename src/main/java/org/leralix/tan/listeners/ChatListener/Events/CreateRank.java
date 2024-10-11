@@ -5,10 +5,10 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.TownRank;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.PlayerGUI;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.listeners.ChatListener.ChatListenerEvent;
-import org.leralix.tan.storage.DataStorage.TownDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.ChatUtils;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
@@ -36,6 +36,6 @@ public class CreateRank extends ChatListenerEvent {
 
         removePlayer(player);
         TownRank newRank = townData.newRank(message);
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> PlayerGUI.OpenTownRankManager(player, newRank.getID()));
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> PlayerGUI.openTownRankManager(player, newRank.getID()));
     }
 }

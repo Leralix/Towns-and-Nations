@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.storage.DataStorage.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 
 public class MobSpawnListener implements Listener {
 

@@ -3,7 +3,7 @@ package org.leralix.tan.listeners.ChatListener.Events;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.ChatListener.ChatListenerEvent;
 import org.leralix.tan.utils.ChatUtils;
 import org.leralix.tan.utils.FileUtil;

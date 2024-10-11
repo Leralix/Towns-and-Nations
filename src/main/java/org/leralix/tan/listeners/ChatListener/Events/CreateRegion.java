@@ -2,7 +2,7 @@ package org.leralix.tan.listeners.ChatListener.Events;
 
 import org.bukkit.entity.Player;
 import org.leralix.tan.listeners.ChatListener.ChatListenerEvent;
-import org.leralix.tan.storage.DataStorage.RegionDataStorage;
+import org.leralix.tan.storage.stored.RegionDataStorage;
 
 public class CreateRegion extends ChatListenerEvent {
 

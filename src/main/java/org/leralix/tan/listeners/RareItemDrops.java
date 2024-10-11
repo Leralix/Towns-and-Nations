@@ -19,8 +19,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.RareItem;
-import org.leralix.tan.storage.DataStorage.NewClaimedChunkStorage;
-import org.leralix.tan.storage.DataStorage.PlayerDataStorage;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.DropChances;
 
 

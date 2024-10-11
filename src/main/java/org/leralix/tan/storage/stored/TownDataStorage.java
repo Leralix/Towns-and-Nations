@@ -1,4 +1,4 @@
-package org.leralix.tan.storage.DataStorage;
+package org.leralix.tan.storage.stored;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;

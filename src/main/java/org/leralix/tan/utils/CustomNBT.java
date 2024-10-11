@@ -13,8 +13,8 @@ import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.storage.DataStorage.LandmarkStorage;
-import org.leralix.tan.storage.DataStorage.TownDataStorage;
+import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 
 
 /**

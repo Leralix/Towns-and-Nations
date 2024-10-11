@@ -1,11 +1,15 @@
-package org.leralix.tan.Tasks;
+package org.leralix.tan.tasks;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.storage.DataStorage.PlannedAttackStorage;
-import org.leralix.tan.storage.DataStorage.*;
+import org.leralix.tan.storage.stored.PlannedAttackStorage;
+import org.leralix.tan.storage.stored.*;
 
 public class SaveStats {
+
+    private SaveStats() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static void startSchedule() {
         new BukkitRunnable() {

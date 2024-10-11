@@ -2,7 +2,7 @@ package org.leralix.tan.utils;
 
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.CustomVillagerProfession;
 
 /**

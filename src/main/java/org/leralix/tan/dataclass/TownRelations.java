@@ -1,7 +1,7 @@
 package org.leralix.tan.dataclass;
 
 import org.leralix.tan.dataclass.territory.ITerritoryData;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.utils.TerritoryUtil;

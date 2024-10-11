@@ -1,7 +1,7 @@
 package org.leralix.tan.enums;
 
 import org.bukkit.ChatColor;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 
 public enum TownRelation {
 

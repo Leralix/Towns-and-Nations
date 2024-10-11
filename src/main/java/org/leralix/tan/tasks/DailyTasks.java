@@ -1,4 +1,4 @@
-package org.leralix.tan.Tasks;
+package org.leralix.tan.tasks;
 
 
 import org.bukkit.Bukkit;
@@ -8,10 +8,10 @@ import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.storage.DataStorage.LandmarkStorage;
-import org.leralix.tan.storage.DataStorage.PlayerDataStorage;
-import org.leralix.tan.storage.DataStorage.RegionDataStorage;
-import org.leralix.tan.storage.DataStorage.TownDataStorage;
+import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.ArchiveUtil;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;

@@ -40,6 +40,11 @@ language:
   #Update needed
   NEW_VERSION_AVAILABLE: "§cDostępna jest nowa wersja: §f{0}"
   NEW_VERSION_AVAILABLE_2: "§cPobierz go z Spigota lub z GitHuba"
+  #Help command
+  HELP_DESC: "Show a list explaining all the commands"
+  CLICK_TO_GO_NEXT_PAGE: "§fClick to go to the next page"
+  CLICK_TO_GO_PREVIOUS_PAGE: "§fClick to go to the previous page"
+  PAGE_NUMBER: "§fPage {0}/{1}"
   #Level up
   BASIC_LEVEL_UP: "§aPoziom wzrósł !"
   #Teleportation
@@ -114,7 +119,7 @@ language:
   TOWN_RELATION_ACCEPTED_MEMBER_SIDE: "§fTwoje miasto ma teraz powiązanie {0} z §9{1}"
   TOWN_RELATION_ACCEPTED_TOWN_SIDE: "§eGracz {0}§f zaakceptował tę relację {1} z twoim miastem"
   #Autoclaim command
-  TOWN_AUTO_CLAIM_DESC: "§fWłączono automatycznie przejmowanie chunków podczas przemieszczania się między nimi"
+  TOWN_AUTO_CLAIM_DESC: "Enable auto claiming while moving between chunks"
   AUTO_CLAIM_ON_FOR: "§fAutomatycznie przejmowanie jest teraz włączone do typu chuncka: §9{0}"
   AUTO_CLAIM_OFF: "§fAutomatyczne przejmowanie jest teraz wyłączone"
   #Chance chat
@@ -143,6 +148,7 @@ language:
   DEBUG_UNCLAIMED_CHUNK_SUCCESS_REGION: "Chunk odebrany! Aktualna ilość chunków §9{0} §f: §2{1}♦"
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cTen chunk należy do innego miasta: §e{0}"
   UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§cTen chunk jest zajęty przez inny region: §b{0}"
+  PROPERTY_IN_CHUNK: "§cThis chunk contains a property §f({0})"
   #Map command
   MAP_COMMAND_DESC: "Otwórz mapę chunków wokół gracza"
   #Debug commands
@@ -201,7 +207,8 @@ language:
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Neutralne"
   RELATION_CITY_NAME: "Miasto"
-  RELATION_REGION_NAME: "Region"
+  RELATION_OVERLORD_NAME: "Overlord"
+  RELATION_VASSAL_NAME: "Vassal"
   RELATION_ALLIANCE_NAME: "Sojusz"
   RELATION_NON_AGGRESSION_NAME: "Łagodny"
   RELATION_EMBARGO_NAME: "Embargo"
@@ -209,6 +216,7 @@ language:
   #GUI generic
   GUI_GENERIC_CLICK_TO_OPEN: "§fLewy przycisk myszy, aby otworzyć"
   GUI_GENERIC_CLICK_TO_DELETE: "§fClick to delete"
+  GUI_GENERIC_CLICK_TO_RENAME: "§fClick to rename"
   GUI_GENERIC_RIGHT_CLICK_TO_DELETE: "§fPrawy przycisk myszy, aby usunąć"
   GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT: "§fShift + kliknięcie, aby się teleportować"
   GUI_GENERIC_CLICK_TO_SWITCH_SCOPE: "§fClick to switch scope"
@@ -350,7 +358,8 @@ language:
   GUI_TOWN_RELATION_NEUTRAL: "Neutralne"
   GUI_TOWN_RELATION_ADD_TOWN: "§aDodaj miasto"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aUsuń miasto"
-  GUI_TOWN_CHANGED_RELATION_RESUME: "§fRelacje twojego miasta {0} zostały zmienione na: {1}"
+  BROADCAST_RELATION_IMPROVE: "§fRelation between {0}§f and {1}§f has improved to: {2}"
+  BROADCAST_RELATION_WORSEN: "§fRelation between {0}§f and {1}§f has worsen to: {2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cKliknij prawym przyciskiem myszy, aby rozpocząć atak"
   GUI_TOWN_ATTACK_TOWN_EXECUTED: "§cPrzypuściłeś atak na {0}"
   GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} przypuścili atak na {1} !"
@@ -400,7 +409,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS: "§aPomyślnie zmieniono ikonę"
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO: "§aLista graczy z tą rolą:"
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1: "§fKliknij lewym przyciskiem myszy, aby dodać gracza do tej rangi"
-  GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC: "§f{0}"
+  GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC: "§f➖ {0}"
   GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME: "§aZmień nazwę rangi"
   GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION: "§aZarządzaj uprawnieniami"
   GUI_TOWN_MEMBERS_ROLE_PAY_TAXES: "§aTa rola płaci podatki"
@@ -435,6 +444,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_MOB_SPAWN: "§aZarządzaj spawnem mobów"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_PROPERTY: "§aStwórz własność"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_PROPERTY: "§aZarządzaj własnościami"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_TOWN_ADMINISTRATOR: "§aTown administrator"
   GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION: "§fRanga§a posiada§f to uprawnienie"
   GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION: "§fTa ranga §cnie posiada§f tych uprawnień"
   GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER: "§cNie można ustalić wynagrodzenia niższego niż 0✦"
@@ -757,6 +767,7 @@ language:
   WARGOAL_CONQUER_SUCCESS_WINNING_SIDE: "§fYou can now claim {0}§f chunks from {1}"
   WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE: "{0}§f can now claim {1}§f chunks from {2}"
   GUI_CANCEL_ATTACK: "§cCancel attack"
+  GUI_RENAME_ATTACK: "§aRename attack"
   GUI_QUIT_WAR: "§aLeave the attack"
   GUI_QUIT_WAR_DESC1: "§fStop supporting one side and become neutral again"
   TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE: "{0}§f no longer takes part in the war \"{1}\""

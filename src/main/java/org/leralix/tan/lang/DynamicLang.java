@@ -1,4 +1,4 @@
-package org.leralix.tan.Lang;
+package org.leralix.tan.lang;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.leralix.tan.TownsAndNations;

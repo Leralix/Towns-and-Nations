@@ -6,7 +6,7 @@ import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.TeleportationData;
 import org.leralix.tan.dataclass.TeleportationPosition;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.utils.config.ConfigTag;

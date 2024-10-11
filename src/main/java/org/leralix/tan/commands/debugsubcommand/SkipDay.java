@@ -1,8 +1,8 @@
 package org.leralix.tan.commands.debugsubcommand;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.Lang.Lang;
-import org.leralix.tan.Tasks.DailyTasks;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.commands.SubCommand;
 
 import java.util.List;

@@ -11,10 +11,10 @@ import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.storage.CurrentAttacksStorage;
-import org.leralix.tan.storage.DataStorage.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
 

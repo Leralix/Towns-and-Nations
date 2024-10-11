@@ -2,7 +2,7 @@ package org.leralix.tan.enums;
 
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
 
 public enum TownRankEnum {

@@ -17,7 +17,7 @@ import org.leralix.tan.dataclass.chunk.LandmarkClaimedChunk;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.listeners.ChatListener.Events.ChangeDescription;
@@ -25,7 +25,7 @@ import org.leralix.tan.listeners.ChatListener.Events.ChangeLandmarkName;
 import org.leralix.tan.listeners.ChatListener.Events.ChangeTerritoryName;
 import org.leralix.tan.listeners.ChatListener.Events.CreateEmptyTown;
 import org.leralix.tan.listeners.ChatListener.PlayerChatListenerStorage;
-import org.leralix.tan.storage.DataStorage.*;
+import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.*;
 
 import java.util.ArrayList;

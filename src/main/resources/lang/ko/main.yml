@@ -40,6 +40,11 @@ language:
   #Update needed
   NEW_VERSION_AVAILABLE: "§c새 버전이 출시되었습니다: §f{0}"
   NEW_VERSION_AVAILABLE_2: "§cSpigot 또는 GitHub에서 다운로드"
+  #Help command
+  HELP_DESC: "Show a list explaining all the commands"
+  CLICK_TO_GO_NEXT_PAGE: "§fClick to go to the next page"
+  CLICK_TO_GO_PREVIOUS_PAGE: "§fClick to go to the previous page"
+  PAGE_NUMBER: "§fPage {0}/{1}"
   #Level up
   BASIC_LEVEL_UP: "§a레벨업!"
   #Teleportation
@@ -114,7 +119,7 @@ language:
   TOWN_RELATION_ACCEPTED_MEMBER_SIDE: "§f당신의 마을은 이제 §9{1}§f과(와) {0} 관계를 맺었습니다"
   TOWN_RELATION_ACCEPTED_TOWN_SIDE: "§e{0}§f님이 마을과 {1} 관계를 수락했습니다"
   #Autoclaim command
-  TOWN_AUTO_CLAIM_DESC: "§f청크를 이동할 때 자동 소유 기능을 활성화합니다"
+  TOWN_AUTO_CLAIM_DESC: "Enable auto claiming while moving between chunks"
   AUTO_CLAIM_ON_FOR: "§f자동 소유가 청크 유형 §9{0}§f에 대해 활성화되었습니다"
   AUTO_CLAIM_OFF: "§f자동 소유가 비활성화되었습니다"
   #Chance chat
@@ -143,6 +148,7 @@ language:
   DEBUG_UNCLAIMED_CHUNK_SUCCESS_REGION: "청크가 포기되었습니다! 현재 청크 수 §9{0} §f: §2{1}♦"
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§c이 청크는 다른 마을에 소유권이 있습니다: §e{0}"
   UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§c이 청크는 다른 지역에 소유권이 있습니다: §b{0}"
+  PROPERTY_IN_CHUNK: "§cThis chunk contains a property §f({0})"
   #Map command
   MAP_COMMAND_DESC: "플레이어 주변의 청크 지도를 엽니다"
   #Debug commands
@@ -201,7 +207,8 @@ language:
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "중립"
   RELATION_CITY_NAME: "마을"
-  RELATION_REGION_NAME: "지역"
+  RELATION_OVERLORD_NAME: "Overlord"
+  RELATION_VASSAL_NAME: "Vassal"
   RELATION_ALLIANCE_NAME: "동맹"
   RELATION_NON_AGGRESSION_NAME: "불가침"
   RELATION_EMBARGO_NAME: "봉쇄"
@@ -209,6 +216,7 @@ language:
   #GUI generic
   GUI_GENERIC_CLICK_TO_OPEN: "§f좌클릭하여 엽니다"
   GUI_GENERIC_CLICK_TO_DELETE: "§fClick to delete"
+  GUI_GENERIC_CLICK_TO_RENAME: "§fClick to rename"
   GUI_GENERIC_RIGHT_CLICK_TO_DELETE: "§f우클릭하여 삭제합니다"
   GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT: "§fShift + 클릭하여 텔레포트합니다"
   GUI_GENERIC_CLICK_TO_SWITCH_SCOPE: "§fClick to switch scope"
@@ -350,7 +358,8 @@ language:
   GUI_TOWN_RELATION_NEUTRAL: "중립"
   GUI_TOWN_RELATION_ADD_TOWN: "§a마을 추가"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§a마을 제거"
-  GUI_TOWN_CHANGED_RELATION_RESUME: "§f{0}와(과) 마을의 관계가 {1}로 변경되었습니다"
+  BROADCAST_RELATION_IMPROVE: "§fRelation between {0}§f and {1}§f has improved to: {2}"
+  BROADCAST_RELATION_WORSEN: "§fRelation between {0}§f and {1}§f has worsen to: {2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§c우클릭하여 공격을 시작하세요"
   GUI_TOWN_ATTACK_TOWN_EXECUTED: "§c{0}에 대한 공격을 시작했습니다"
   GUI_TOWN_ATTACK_TOWN_INFO: "§c{0}가(이) {1}에 대한 공격을 시작했습니다!"
@@ -400,7 +409,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS: "§a아이콘 변경 성공"
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO: "§a이 직급을 가진 플레이어 목록:"
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1: "§f좌클릭하여 이 직급에 플레이어를 추가하세요"
-  GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC: "§f{0}"
+  GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC: "§f➖ {0}"
   GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME: "§a직급 이름 변경"
   GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION: "§a권한 관리"
   GUI_TOWN_MEMBERS_ROLE_PAY_TAXES: "§a이 직급은 세금을 냅니다"
@@ -435,6 +444,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_MOB_SPAWN: "§a몹 스포닝 관리"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_PROPERTY: "§a재산 생성"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_PROPERTY: "§a재산 관리"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_TOWN_ADMINISTRATOR: "§aTown administrator"
   GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION: "§f이 직급은 §a이 권한을§f 가지고 있습니다"
   GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION: "§f이 직급은 §c이 권한을§f 가지고 있지 않습니다"
   GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER: "§c급여는 0✦보다 낮게 설정할 수 없습니다"
@@ -757,6 +767,7 @@ language:
   WARGOAL_CONQUER_SUCCESS_WINNING_SIDE: "§fYou can now claim {0}§f chunks from {1}"
   WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE: "{0}§f can now claim {1}§f chunks from {2}"
   GUI_CANCEL_ATTACK: "§cCancel attack"
+  GUI_RENAME_ATTACK: "§aRename attack"
   GUI_QUIT_WAR: "§aLeave the attack"
   GUI_QUIT_WAR_DESC1: "§fStop supporting one side and become neutral again"
   TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE: "{0}§f no longer takes part in the war \"{1}\""

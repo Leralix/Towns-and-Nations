@@ -1,8 +1,8 @@
 package org.leralix.tan.dataclass;
 
 import org.bukkit.ChatColor;
-import org.leralix.tan.Lang.Lang;
-import org.leralix.tan.storage.DataStorage.PlayerDataStorage;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

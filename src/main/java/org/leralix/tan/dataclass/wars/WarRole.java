@@ -1,6 +1,6 @@
 package org.leralix.tan.dataclass.wars;
 
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 
 public enum WarRole {
 

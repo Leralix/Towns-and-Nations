@@ -14,11 +14,11 @@ import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.gui.PlayerGUI;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.storage.DataStorage.NewClaimedChunkStorage;
-import org.leralix.tan.storage.DataStorage.PlayerDataStorage;
-import org.leralix.tan.storage.DataStorage.TownDataStorage;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 
 public class PropertySignListener implements Listener {
     @EventHandler
@@ -48,9 +48,9 @@ public class PropertySignListener implements Listener {
 
 
                             if(propertyData.getOwnerID().equals(player.getUniqueId().toString())){
-                                PlayerGUI.OpenPropertyManagerMenu(player, propertyData);
+                                PlayerGUI.openPropertyManagerMenu(player, propertyData);
                             }else if(propertyData.isRented() && propertyData.getRenterID().equals(player.getUniqueId().toString())){
-                                PlayerGUI.OpenPropertyManagerRentMenu(player, propertyData);
+                                PlayerGUI.openPropertyManagerRentMenu(player, propertyData);
                             }
                             else {
                                 if(propertyData.isForRent() || propertyData.isForSale()){

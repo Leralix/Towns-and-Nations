@@ -5,7 +5,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 
 /**
  * This class is used for chat related utilities.

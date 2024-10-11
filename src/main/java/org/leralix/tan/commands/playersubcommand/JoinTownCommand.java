@@ -3,10 +3,10 @@ package org.leralix.tan.commands.playersubcommand;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.commands.SubCommand;
-import org.leralix.tan.storage.DataStorage.PlayerDataStorage;
-import org.leralix.tan.storage.DataStorage.TownDataStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
 import org.leralix.tan.utils.TeamUtils;
 
@@ -15,7 +15,6 @@ import java.util.List;
 
 import static org.leralix.tan.enums.SoundEnum.GOOD;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
-import static org.leralix.tan.utils.TeamUtils.updateAllScoreboardColor;
 
 public class JoinTownCommand extends SubCommand {
     @Override

@@ -1,8 +1,8 @@
 package org.leralix.tan.utils;
 
 import org.leralix.tan.dataclass.territory.ITerritoryData;
-import org.leralix.tan.storage.DataStorage.RegionDataStorage;
-import org.leralix.tan.storage.DataStorage.TownDataStorage;
+import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 
 public class TerritoryUtil {
 

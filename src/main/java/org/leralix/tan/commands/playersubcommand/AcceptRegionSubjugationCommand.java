@@ -3,10 +3,10 @@ package org.leralix.tan.commands.playersubcommand;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.Lang.Lang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.commands.SubCommand;
-import org.leralix.tan.storage.DataStorage.RegionDataStorage;
-import org.leralix.tan.storage.DataStorage.TownDataStorage;
+import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.storage.invitation.RegionInviteDataStorage;
 import org.leralix.tan.utils.SoundUtil;
 
