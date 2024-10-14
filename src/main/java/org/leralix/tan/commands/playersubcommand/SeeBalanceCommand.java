@@ -1,6 +1,7 @@
 package org.leralix.tan.commands.playersubcommand;
 
 import org.bukkit.entity.Player;
+import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.commands.SubCommand;
@@ -36,7 +37,7 @@ public class SeeBalanceCommand extends SubCommand  {
 
     @Override
     public void perform(Player player, String[] args){
-        if(TownsAndNations.hasExternalEconomy()){
+        if(EconomyUtil.hasExternalEconomy()){
             player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.get());
             return;
         }

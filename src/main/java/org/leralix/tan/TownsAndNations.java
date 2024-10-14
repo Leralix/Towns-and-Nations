@@ -38,6 +38,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -45,12 +46,10 @@ import java.util.logging.Logger;
  * @author Leralix
  */
 public final class TownsAndNations extends JavaPlugin {
+
+
     private static TownsAndNations plugin;
-    static Logger logger;
-    /**
-     * Economy variable used to manage the economy of the server if Vault is enabled.
-     */
-    private static Economy econ;
+    Logger logger;
     /**
      * User agent used to access the GitHub API.
      */
@@ -71,51 +70,50 @@ public final class TownsAndNations extends JavaPlugin {
      * Latest version of the plugin from GitHub.
      * Used to check if the plugin is up-to-date to the latest version.
      */
-    private static PluginVersion latestVersion;
+    private PluginVersion latestVersion;
     /**
      * Class used to access the API of the plugin.
      */
-    private static TanApi api;
+    private TanApi api;
     /**
      * If enabled, current player usernames will be from the color of the relation.
      * This option cannot be enabled with allowTownTag.
      */
-    private static boolean allowColorCodes = false;
+    private boolean allowColorCodes = false;
     /**
      * If Enabled, player username will have a 3 letter prefix of their town name.
      * This option cannot be enabled with allowColorCodes.
      */
-    private static boolean allowTownTag = false;
+    private boolean allowTownTag = false;
     /**
      * If enabled, the Towns and Nations dynmap plugin is installed.
      * This will enable new features for the core plugin.
      */
-    private static boolean dynmapAddonLoaded = true;
+    private boolean dynmapAddonLoaded = true;
     /**
      * This variable is used to check when the plugin has launched
      * If the plugin close in less than 30 seconds, it is most likely a crash
      * during onEnable. Since a crash here might erase stored data, saving will not take place
      */
-    private static final long DATE_OF_START = System.currentTimeMillis();
+    private final long dateOfStart = System.currentTimeMillis();
     /**
      * This method is called when the plugin is enabled.
      * It is used to load the plugin and all its features.
      */
 
-    private static boolean externalVault = false;
     @Override
     public void onEnable() {
         // Plugin startup logic
         plugin = this;
         logger = this.getLogger();
-        getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
-        getLogger().info("To report a bug or request a feature, please ask on my discord server: https://discord.gg/Q8gZSFUuzb");
+        getLogger().log(Level.INFO, "\u001B[33m----------------Towns & Nations------------------\u001B[0m");
+        getLogger().log(Level.INFO,"To report a bug or request a feature, please ask on my discord server: https://discord.gg/Q8gZSFUuzb");
 
-        logger.info("[TaN] Loading Plugin");
+        logger.log(Level.INFO,"[TaN] Loading Plugin");
 
         checkForUpdate();
 
-        logger.info("[TaN] -Loading Lang");
+        logger.log(Level.INFO,"[TaN] -Loading Lang");
 
         ConfigUtil.saveAndUpdateResource("lang.yml");
         ConfigUtil.addCustomConfig("lang.yml", ConfigTag.LANG);
@@ -124,9 +122,10 @@ public final class TownsAndNations extends JavaPlugin {
 
         Lang.loadTranslations(lang);
         DynamicLang.loadTranslations(lang);
+        TownsAndNations.getPlugin().getPluginLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
 
 
-        logger.info("[TaN] -Loading Configs");
+        logger.log(Level.INFO, "[TaN] -Loading Configs");
         ConfigUtil.saveAndUpdateResource("config.yml");
         ConfigUtil.addCustomConfig("config.yml", ConfigTag.MAIN);
         ConfigUtil.saveAndUpdateResource("townUpgrades.yml");
@@ -145,7 +144,7 @@ public final class TownsAndNations extends JavaPlugin {
 
 
 
-        logger.info("[TaN] -Loading Local data");
+        logger.log(Level.INFO,"[TaN] -Loading Local data");
         RegionDataStorage.loadStats();
         PlayerDataStorage.loadStats();
         NewClaimedChunkStorage.loadStats();
@@ -154,11 +153,11 @@ public final class TownsAndNations extends JavaPlugin {
         PlannedAttackStorage.load();
 
 
-        logger.info("[TaN] -Loading blocks data");
+        logger.log(Level.INFO,"[TaN] -Loading blocks data");
         CustomNBT.setBlocsData();
 
 
-        logger.info("[TaN] -Loading commands");
+        logger.log(Level.INFO,"[TaN] -Loading commands");
         SaveStats.startSchedule();
         DailyTasks.scheduleMidnightTask();
 
@@ -171,11 +170,11 @@ public final class TownsAndNations extends JavaPlugin {
 
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            logger.info("[TaN] -Loading PlaceholderAPI");
+            logger.log(Level.INFO,"[TaN] -Loading PlaceholderAPI");
             new PlaceHolderAPI().register();
         }
 
-        logger.info("[TaN] Plugin successfully loaded");
+        logger.log(Level.INFO,"[TaN] Plugin successfully loaded");
 
         api = new TanApi();
 
@@ -185,29 +184,27 @@ public final class TownsAndNations extends JavaPlugin {
 
     /**
      * Method used to set up the economy of the server if Vault is enabled.
-     * @return true if the economy is successfully setup with vault, false otherwise.
      */
     private void setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            logger.info("[TaN] -Vault is not detected. Running standalone economy");
+            logger.log(Level.INFO,"[TaN] -Vault is not detected. Running standalone economy");
             return; //Vault not found, using own econ
         }
-
         if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("UseTanEconomy",true)){
-            econ = new TanEcon();
+            Economy econ = new TanEcon();
+            EconomyUtil.setEconomy(econ, false);
             Bukkit.getServicesManager().register(Economy.class, econ, this, ServicePriority.Normal);
-            logger.info("[TaN] -Vault is detected, registering TaN Economy");
-            EconomyUtil.setEconomy(true); //Vault found and using tan for vault Econ
+            logger.log(Level.INFO,"[TaN] -Vault is detected, registering TaN Economy");
         }
         else{
             RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
             if (rsp == null) {
-                logger.info("[TaN] -Vault is detected but no Economy plugin are used. Running standalone economy");
+                logger.log(Level.INFO,"[TaN] -Vault is detected but no Economy plugin are used. Running standalone economy");
                 return; //Vault not found, using own econ
             }
-            econ = rsp.getProvider();
-            logger.info("[TaN] -Vault is detected, using " + econ.getName() + " as economy");
-            externalVault = true;
+            Economy econ = rsp.getProvider();
+            EconomyUtil.setEconomy(econ, true);
+            logger.log(Level.INFO,"[TaN] -Vault is detected, using {} as economy", econ.getName());
         }
     }
 
@@ -217,7 +214,7 @@ public final class TownsAndNations extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        if(System.currentTimeMillis() - DATE_OF_START < 30000){
+        if(System.currentTimeMillis() - dateOfStart < 30000){
             logger.info("[TaN] Not saving data because plugin was closed less than 30s after launch");
             logger.info("[TaN] Plugin disabled");
             return;
@@ -273,25 +270,10 @@ public final class TownsAndNations extends JavaPlugin {
      * Get the plugin Logger
      * @return the plugin logger
      */
-    public static Logger getPluginLogger() {
+    public Logger getPluginLogger() {
         return logger;
     }
 
-    /**
-     * Get the economy of the server is Vault is enabled.
-     * @return the economy of the server or null if Vault is not enabled.
-     */
-    public static Economy getEconomy() {
-        return econ;
-    }
-
-    /**
-     * Return true if Vault is installed.
-     * @return true if the plugin have an economy system, false otherwise.
-     */
-    public static boolean hasExternalEconomy(){
-        return externalVault;
-    }
 
     /**
      * Check GitHub and notify admins if a new version of Towns and Nations is available.
@@ -322,7 +304,7 @@ public final class TownsAndNations extends JavaPlugin {
 
                 latestVersion = extractVersionFromResponse(response.toString());
                 if (CURRENT_VERSION.isOlderThan(latestVersion)) {
-                    getPluginLogger().info("[TaN] A new version is available : " + latestVersion);
+                    getPluginLogger().log(Level.INFO,"[TaN] A new version is available : {0}", latestVersion);
                 } else {
                     getPluginLogger().info("[TaN] Towns and Nation is up to date: "+ CURRENT_VERSION);
                 }
@@ -350,7 +332,7 @@ public final class TownsAndNations extends JavaPlugin {
      * Check if the plugin is up-to-date to the latest version outside the main class
      * @return true if the plugin is up-to-date, false otherwise.
      */
-    public static boolean isLatestVersion(){
+    public boolean isLatestVersion(){
         return CURRENT_VERSION.isOlderThan(latestVersion);
     }
 
@@ -358,7 +340,7 @@ public final class TownsAndNations extends JavaPlugin {
      * Get the latest version of the plugin from GitHub
      * @return the latest version of the plugin
      */
-    public static PluginVersion getLatestVersion(){
+    public PluginVersion getLatestVersion(){
         return latestVersion;
     }
 
@@ -366,14 +348,14 @@ public final class TownsAndNations extends JavaPlugin {
      * Get the current version of the plugin
      * @return the current version of the plugin
      */
-    public static PluginVersion getCurrentVersion() {
+    public PluginVersion getCurrentVersion() {
         return CURRENT_VERSION;
     }
     /**
      * Get the API of the plugin
      * @return the API of the plugin
      */
-    public static TanApi getAPI() {
+    public TanApi getAPI() {
         return api;
     }
 
@@ -381,7 +363,7 @@ public final class TownsAndNations extends JavaPlugin {
      * Check if the color code is enabled
      * @return true if color code is enabled, false otherwise.
      */
-    public static boolean colorCodeIsNotEnabled(){
+    public boolean colorCodeIsNotEnabled(){
         return !allowColorCodes;
     }
 
@@ -389,7 +371,7 @@ public final class TownsAndNations extends JavaPlugin {
      * Check if the town tag is enabled
      * @return true if town tag is enabled, false otherwise.
      */
-    public static boolean townTagIsEnabled(){
+    public boolean townTagIsEnabled(){
         return allowTownTag;
     }
 
@@ -398,15 +380,15 @@ public final class TownsAndNations extends JavaPlugin {
      * dynmap features should be enabled.
      * @param dynmapAddonLoaded should be true if dynmap is loaded, false otherwise.
      */
-    public static void setDynmapAddonLoaded(boolean dynmapAddonLoaded) {
-        TownsAndNations.dynmapAddonLoaded = dynmapAddonLoaded;
+    public void setDynmapAddonLoaded(boolean dynmapAddonLoaded) {
+        this.dynmapAddonLoaded = dynmapAddonLoaded;
     }
 
     /**
      * Check if the dynmap addon is loaded
      * @return true if the dynmap addon is loaded, false otherwise.
      */
-    public static boolean isDynmapAddonLoaded() {
+    public boolean isDynmapAddonLoaded() {
         return dynmapAddonLoaded;
     }
 }

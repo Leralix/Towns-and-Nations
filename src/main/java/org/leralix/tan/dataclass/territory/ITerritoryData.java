@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.dataclass.ClaimedChunkSettings;
+import org.leralix.tan.dataclass.DiplomacyProposal;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.TownRelations;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -44,9 +45,11 @@ public abstract class ITerritoryData {
     private Collection<String> attackIncomingList = new ArrayList<>();
     private Collection<String> currentAttackList = new ArrayList<>();
     private HashMap<String, Integer> availableClaims;
+    private Map<String, DiplomacyProposal> diplomacyProposals;
 
     protected ITerritoryData(){
         availableClaims = new HashMap<>();
+        diplomacyProposals = new HashMap<>();
     }
 
     public abstract String getID();
@@ -79,18 +82,47 @@ public abstract class ITerritoryData {
             otherTerritory.broadCastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(otherTerritory.getColoredName(), getColoredName(),relation.getColoredName()), BAD);
         }
 
-        addRelation(relation,otherTerritory);
-        otherTerritory.addRelation(relation,this);
+        getRelations().setRelation(relation,otherTerritory);
+        otherTerritory.getRelations().setRelation(relation,this);
+
         TeamUtils.updateAllScoreboardColor();
     }
-    protected abstract void addRelation(TownRelation relation, ITerritoryData territoryData);
-    protected abstract void addRelation(TownRelation relation, String territoryID);
-    public  abstract void removeRelation(TownRelation relation, ITerritoryData territoryData);
-    public abstract void removeRelation(TownRelation relation, String territoryID);
+
+
+    public Map<String, DiplomacyProposal> getDiplomacyProposals(){
+        if(diplomacyProposals == null)
+            diplomacyProposals = new HashMap<>();
+        return diplomacyProposals;
+    }
+    public void sendRelationProposal(ITerritoryData otherTerritory, TownRelation wantedRelation) {
+        getDiplomacyProposals().remove(otherTerritory.getID());
+        getDiplomacyProposals().put(otherTerritory.getID(), new DiplomacyProposal(getID(), otherTerritory.getID(), wantedRelation));
+    }
+
+    public Collection<DiplomacyProposal> getAllDiplomacyProposal(){
+        return getDiplomacyProposals().values();
+    }
+
     public TownRelation getRelationWith(ITerritoryData territoryData){
         return getRelationWith(territoryData.getID());
     }
-    public abstract TownRelation getRelationWith(String territoryID);
+    public TownRelation getRelationWith(String territoryID){
+        TownRelation relation = getRelations().getRelationWith(territoryID);
+
+        if(relation != TownRelation.NEUTRAL)
+            return relation;
+
+        if(getID().equals(territoryID))
+            return TownRelation.SELF;
+
+        if(haveOverlord() && getOverlord().getID().equals(territoryID))
+            return TownRelation.OVERLORD;
+
+        if(getSubjectsID().contains(territoryID))
+            return TownRelation.VASSAL;
+        
+        return TownRelation.NEUTRAL;
+    }
 
     public abstract void addToBalance(int balance);
 
@@ -293,4 +325,6 @@ public abstract class ITerritoryData {
         player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_TOWN.get(amount));
         SoundUtil.playSound(player, MINOR_LEVEL_UP);
     }
+
+
 }

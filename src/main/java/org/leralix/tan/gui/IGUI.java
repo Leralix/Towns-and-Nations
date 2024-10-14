@@ -8,6 +8,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.tan.enums.Action;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
 
@@ -31,5 +32,11 @@ public interface IGUI {
         });
     }
 
+    static ItemStack getDecorativeGlass(Action action) {
+        if (action == Action.ADD)
+            return new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
+        else
+            return new ItemStack(Material.RED_STAINED_GLASS_PANE);
+    }
 
 }

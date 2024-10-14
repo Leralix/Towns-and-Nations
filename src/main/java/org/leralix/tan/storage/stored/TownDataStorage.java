@@ -1,19 +1,24 @@
 package org.leralix.tan.storage.stored;
 
 import com.google.common.reflect.TypeToken;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.*;
-import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.*;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TownDataStorage {
 
@@ -71,7 +76,6 @@ public class TownDataStorage {
     }
 
     public static void loadStats() {
-
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Towns.json");
         if (!file.exists())
             return;
@@ -85,26 +89,22 @@ public class TownDataStorage {
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
-                .registerTypeAdapter(Map.class, (JsonDeserializer<Map<String, Object>>) (json1, typeOfT, context) -> new Gson().fromJson(json1, typeOfT))
-                .create();
+                .registerTypeAdapter(new TypeToken<Map<TownRelation, List<String>>>() {}.getType(),
+                new EnumMapDeserializer<>(TownRelation.class, new TypeToken<List<String>>(){}.getType()))                .create();
 
         Type type = new TypeToken<LinkedHashMap<String, TownData>>() {}.getType();
 
         townDataMap = gson.fromJson(reader, type);
 
-
-
-
         int ID = 0;
-        for (Map.Entry<String, TownData> entry : townDataMap.entrySet()) {
-            String cle = entry.getKey();
-            int newID =  Integer.parseInt(cle.substring(1));
-            if(newID > ID)
+        for (String cle : townDataMap.keySet()) {
+            int newID = Integer.parseInt(cle.substring(1));
+            if (newID > ID)
                 ID = newID;
         }
-        newTownId = ID+1;
-
+        newTownId = ID + 1;
     }
+
 
     public static void saveStats() {
 

@@ -45,7 +45,7 @@ public class PayCommand extends SubCommand  {
 
     @Override
     public void perform(Player player, String[] args){
-        if(TownsAndNations.hasExternalEconomy()){
+        if(EconomyUtil.hasExternalEconomy()){
             player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.get());
             return;
         }

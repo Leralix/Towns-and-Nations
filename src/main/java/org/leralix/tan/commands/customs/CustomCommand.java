@@ -1,4 +1,4 @@
-package org.leralix.tan.CommandExecutor;
+package org.leralix.tan.commands.customs;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

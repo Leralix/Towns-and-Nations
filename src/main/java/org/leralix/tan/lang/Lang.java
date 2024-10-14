@@ -307,6 +307,8 @@ public enum Lang {
     GUI_TOWN_RELATION_NAP_DESC1,
     GUI_TOWN_RELATION_ALLIANCE,
     GUI_TOWN_RELATION_ALLIANCE_DESC1,
+    GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL,
+    GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC1,
     GUI_TOWN_RELATION_ADD_TOWN,
     GUI_TOWN_RELATION_REMOVE_TOWN,
     BROADCAST_RELATION_IMPROVE,
@@ -607,6 +609,7 @@ public enum Lang {
     LEFT_CLICK_TO_SELECT,
     LEFT_CLICK_TO_AUTHORIZE,
     LEFT_CLICK_TO_MODIFY,
+    LEFT_CLICK_TO_ACCEPT,
     GUI_PLAYER_NEW_PROPERTY,
     GUI_PROPERTY_DESCRIPTION,
     GUI_PROPERTY_STRUCTURE_OWNER,
@@ -756,7 +759,11 @@ public enum Lang {
     MAP_CLAIM_TYPE,
     MAP_TOWN,
     MAP_REGION,
-    RELOAD_SUCCESS,;
+    RELOAD_SUCCESS,
+    DIPLOMATIC_RELATION,
+    DIPLOMATIC_RELATION_DESC1,
+    DIPLOMATIC_RELATION_DESC2,
+    ;
 
 
     private static final Map<Lang, String> translations = new HashMap<>();
@@ -769,12 +776,12 @@ public enum Lang {
             langFolder.mkdir();
         }
 
-        File SpecificLangFolder = new File(langFolder, fileTag);
-        if(!SpecificLangFolder.exists()) {
-            SpecificLangFolder.mkdir();
+        File specificLangFolder = new File(langFolder, fileTag);
+        if(!specificLangFolder.exists()) {
+            specificLangFolder.mkdir();
         }
 
-        File file = new File(SpecificLangFolder, "main.yml");
+        File file = new File(specificLangFolder, "main.yml");
 
         boolean replace = ConfigUtil.getCustomConfig(ConfigTag.LANG).getBoolean("autoUpdateLangFiles",true);
 
@@ -790,7 +797,6 @@ public enum Lang {
                 translations.put(key, message);
             }
         }
-        TownsAndNations.getPluginLogger().info(LANGUAGE_SUCCESSFULLY_LOADED.get());
     }
 
     public String get() {

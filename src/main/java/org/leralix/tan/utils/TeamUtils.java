@@ -22,7 +22,7 @@ public class TeamUtils {
      * Update the color of all the scoreboards
      */
     public static void updateAllScoreboardColor(){
-        if(TownsAndNations.colorCodeIsNotEnabled())
+        if(TownsAndNations.getPlugin().colorCodeIsNotEnabled())
             return;
         for(Player player : Bukkit.getOnlinePlayers())
             setIndividualScoreBoard(player);
@@ -34,7 +34,7 @@ public class TeamUtils {
      */
 
     public static void setIndividualScoreBoard(Player player) {
-        if(TownsAndNations.colorCodeIsNotEnabled())
+        if(TownsAndNations.getPlugin().colorCodeIsNotEnabled())
             return;
 
         Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();

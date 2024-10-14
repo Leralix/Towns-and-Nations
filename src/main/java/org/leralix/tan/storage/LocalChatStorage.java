@@ -13,14 +13,7 @@ import org.leralix.tan.storage.stored.TownDataStorage;
 import java.util.HashMap;
 
 public class LocalChatStorage {
-
-
     private static final HashMap<String, ChatScope> playerChatScope = new HashMap<>();
-
-
-    public void setPlayerChatScope(String uuid, ChatScope scope){
-        playerChatScope.put(uuid, scope);
-    }
 
     public static void setPlayerChatScope(Player player, ChatScope scope){
         playerChatScope.put(player.getUniqueId().toString(), scope);
@@ -71,9 +64,7 @@ public class LocalChatStorage {
 
             playerTown.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.get(playerTown.getName(),player.getName(),message));
 
-            playerTown.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE).forEach(townID -> {
-                TownDataStorage.get(townID).broadCastMessage(Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.get(playerTown.getName(),player.getName(),message));
-            });
+            playerTown.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE).forEach(townID -> TownDataStorage.get(townID).broadCastMessage(Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.get(playerTown.getName(),player.getName(),message)));
 
         }
 

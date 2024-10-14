@@ -49,7 +49,6 @@ public class AcceptRelationCommand extends SubCommand {
             player.sendMessage(getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
             player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         } else if (args.length == 2){
-
             String territoryID = args[1];
             ITerritoryData otherTerritory = TerritoryUtil.getTerritory(territoryID);
             TownData town = TownDataStorage.get(player);

@@ -470,33 +470,6 @@ public class RegionData extends ITerritoryData {
         return relations;
     }
 
-    @Override
-    public void addRelation(TownRelation relation, ITerritoryData territoryData) {
-        addRelation(relation, territoryData.getID());
-    }
-
-    @Override
-    public void addRelation(TownRelation relation, String territoryID) {
-        getRelations().addRelation(relation, territoryID);
-    }
-
-    @Override
-    public void removeRelation(TownRelation relation, ITerritoryData territoryData) {
-        removeRelation(relation, territoryData.getID());
-    }
-
-    @Override
-    public void removeRelation(TownRelation relation, String territoryID) {
-        getRelations().removeRelation(relation, territoryID);
-    }
-
-    @Override
-    public TownRelation getRelationWith(String otherTownID) {
-        if(getID().equals(otherTownID))
-            return TownRelation.OVERLORD;
-
-        return null;
-    }
 
     @Override
     public void addToBalance(int balance) {

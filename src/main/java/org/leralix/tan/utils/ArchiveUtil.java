@@ -54,7 +54,7 @@ public class ArchiveUtil {
             addFileToZip(zipOutputStream, file3);
             addFileToZip(zipOutputStream, file4);
         } catch (IOException e) {
-            TownsAndNations.getPluginLogger().severe("Error while archiving files : " + e.getMessage());
+            TownsAndNations.getPlugin().getPluginLogger().severe("Error while archiving files : " + e.getMessage());
         }
     }
 

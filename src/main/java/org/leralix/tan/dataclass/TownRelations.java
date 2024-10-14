@@ -16,29 +16,48 @@ import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class TownRelations {
 
-    private final LinkedHashMap<TownRelation, ArrayList<String>> townRelations = new LinkedHashMap<>();
+    private final Map<TownRelation, List<String>> townRelations = new LinkedHashMap<>();
 
 
     public TownRelations(){
-        for(TownRelation relation : TownRelation.values()){
-            this.townRelations.put(relation, new ArrayList<>());
-        }
+        this.townRelations.put(TownRelation.WAR, new ArrayList<>());
+        this.townRelations.put(TownRelation.EMBARGO, new ArrayList<>());
+        this.townRelations.put(TownRelation.NON_AGGRESSION, new ArrayList<>());
+        this.townRelations.put(TownRelation.ALLIANCE, new ArrayList<>());
     }
+
+    public void setRelation(TownRelation relation, ITerritoryData territoryID){
+        setRelation(relation, territoryID.getID());
+    }
+
+    public void setRelation(TownRelation relation, String territoryID){
+        if(!townRelations.containsKey(relation))
+            return;
+        removeAllRelationWith(territoryID);
+        addRelation(relation, territoryID);
+    }
+
 
     public void addRelation(TownRelation relation, String townID){
         townRelations.get(relation).add(townID);
     }
     public void removeRelation(TownRelation relation, String townID){
+        if(!townRelations.containsKey(relation))
+            return;
         townRelations.get(relation).remove(townID);
     }
-    public List<String> getTerritoriesIDWithRelation(TownRelation relation){
+    public List<String> getTerritoriesIDWithRelation(TownRelation relation) {
         return townRelations.get(relation);
     }
 
+    public Map<TownRelation, List<String>> getAll() {
+        return townRelations;
+    }
+
     public TownRelation getRelationWith(String territoryID) {
-        for (Map.Entry<TownRelation, ArrayList<String>> entry : townRelations.entrySet()) {
+        for (Map.Entry<TownRelation, List<String>> entry : townRelations.entrySet()) {
             TownRelation relation = entry.getKey();
-            ArrayList<String> list = entry.getValue();
+            List<String> list = entry.getValue();
 
             for (String townUUID : list) {
                 if (territoryID.equals(townUUID)) {
@@ -46,7 +65,7 @@ public class TownRelations {
                 }
             }
         }
-        return null;
+        return TownRelation.NEUTRAL;
     }
     public TownRelation getRelationWith(ITerritoryData territory) {
         return getRelationWith(territory.getID());
@@ -77,15 +96,8 @@ public class TownRelations {
     }
 
     public void removeAllRelationWith(String townID){
-        for(TownRelation relation : TownRelation.values()){
-
-            if(relation == TownRelation.NEUTRAL)
-                continue;
-
-            ArrayList<String> territoryList = townRelations.get(relation);
-            if(territoryList == null)
-                continue;
-            territoryList.remove(townID);
+        for(List<String> territories : townRelations.values()){
+            territories.remove(townID);
         }
     }
 }

@@ -33,15 +33,14 @@ public class PlayerJoinListener implements Listener {
                 );
             }
             playerStat.updateCurrentAttack();
-            if(TownsAndNations.townTagIsEnabled())
+            if(TownsAndNations.getPlugin().townTagIsEnabled())
                 prefixUtil.addPrefix(player);
         }
 
         setIndividualScoreBoard(player);
 
-        if(player.hasPermission("tan.debug"))
-            if(!TownsAndNations.isLatestVersion()){
-                player.sendMessage(getTANString() + Lang.NEW_VERSION_AVAILABLE.get(TownsAndNations.getLatestVersion()));
+        if(player.hasPermission("tan.debug") && !TownsAndNations.getPlugin().isLatestVersion()){
+                player.sendMessage(getTANString() + Lang.NEW_VERSION_AVAILABLE.get(TownsAndNations.getPlugin().getLatestVersion()));
                 player.sendMessage(getTANString() + Lang.NEW_VERSION_AVAILABLE_2.get());
             }
 

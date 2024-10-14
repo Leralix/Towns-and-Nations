@@ -40,6 +40,6 @@ public class TanApi {
     }
 
     public void setDynmapAddon(Boolean isLoaded){
-        TownsAndNations.setDynmapAddonLoaded(isLoaded);
+        TownsAndNations.getPlugin().setDynmapAddonLoaded(isLoaded);
     }
 }

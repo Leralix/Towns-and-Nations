@@ -34,7 +34,7 @@ public class ConfigUtil {
 
         File configFile = new File(TownsAndNations.getPlugin().getDataFolder(), fileName);
         if (!configFile.exists()) {
-            TownsAndNations.getPluginLogger().severe(fileName + " does not exist!");
+            TownsAndNations.getPlugin().getPluginLogger().severe(fileName + " does not exist!");
             return;
         }
         configs.put(tag, YamlConfiguration.loadConfiguration(configFile));
@@ -107,7 +107,7 @@ public class ConfigUtil {
             String baseKey = baseLine.contains(":") ? baseLine.split(":")[0].trim() : baseLine;
             if (!currentFileMap.containsKey(baseKey)) {
                 // Add line if not already present
-                TownsAndNations.getPluginLogger().warning("Adding config line : " + baseLine + " in config file");
+                TownsAndNations.getPlugin().getPluginLogger().warning("Adding config line : " + baseLine + " in config file");
                 currentFileLines.add(baseLine);
             }
         }

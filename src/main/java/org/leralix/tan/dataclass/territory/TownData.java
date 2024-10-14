@@ -40,26 +40,21 @@ public class TownData extends ITerritoryData {
     private Integer flatTax;
     private Integer chunkColor;
     private String townTag;
+    private TownLevel townLevel = new TownLevel();
+    private final HashSet<String> townPlayerListId = new HashSet<>();
+    private TownRelations relations = new TownRelations();
+    private HashMap<Integer,TownRank> newRanks = new HashMap<>();
+    private Collection<String> ownedLandmarks = new ArrayList<>();
+    private HashSet<String> PlayerJoinRequestSet = new HashSet<>();
+    private Map<String, PropertyData> propertyDataMap;
+    private ClaimedChunkSettings chunkSettings = new ClaimedChunkSettings();
+    private TeleportationPosition teleportationPosition;
 
     private ChunkHistory chunkHistory;
     private DonationHistory donationHistory;
     private MiscellaneousHistory miscellaneousHistory;
     private SalaryHistory salaryHistory;
     private TaxHistory taxHistory;
-
-    private final HashSet<String> townPlayerListId = new HashSet<>();
-    private HashMap<Integer,TownRank> newRanks = new HashMap<>();
-    private Collection<String> ownedLandmarks = new ArrayList<>();
-
-    private HashSet<String> PlayerJoinRequestSet = new HashSet<>();
-    private Map<String, PropertyData> propertyDataMap;
-
-    private TownLevel townLevel = new TownLevel();
-    private ClaimedChunkSettings chunkSettings = new ClaimedChunkSettings();
-    private TownRelations relations = new TownRelations();
-
-    private TeleportationPosition teleportationPosition;
-
 
     //First time creating a town
     public TownData(String townId, String townName, String leaderID){
@@ -337,40 +332,10 @@ public class TownData extends ITerritoryData {
     }
 
     @Override
-    public void addRelation(TownRelation relation, ITerritoryData territoryData){
-        addRelation(relation,territoryData.getID());
-    }
-
-    @Override
-    public void addRelation(TownRelation relation, String territoryID){
-        this.relations.addRelation(relation,territoryID);
-    }
-
-    @Override
-    public void removeRelation(TownRelation relation, ITerritoryData townData) {
-        removeRelation(relation,townData.getID());
-    }
-
-    @Override
-    public void removeRelation(TownRelation relation, String townId) {
-        this.relations.removeRelation(relation,townId);
-    }
-
-    @Override
     public ClaimedChunkSettings getChunkSettings() {
         if(chunkSettings == null)
             chunkSettings = new ClaimedChunkSettings();
         return chunkSettings;
-    }
-
-    @Override
-    public TownRelation getRelationWith(String otherTownID) {
-        String townID = getID();
-
-        if(townID.equals(otherTownID))
-            return TownRelation.CITY;
-
-        return this.relations.getRelationWith(otherTownID);
     }
 
     //////////////////////////////////////
