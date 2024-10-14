@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.enums.TownChunkPermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.utils.config.ConfigTag;
@@ -21,6 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 public class TownDataStorage {
+
+    private TownDataStorage() {
+        throw new IllegalStateException("Utility class");
+    }
 
     private static LinkedHashMap<String, TownData> townDataMap = new LinkedHashMap<>();
     private static int newTownId = 1;
@@ -38,7 +43,7 @@ public class TownDataStorage {
         return newTown;
     }
 
-    public static TownData newTown(String townName){
+    public static void newTown(String townName){
         String townId = "T"+newTownId;
         newTownId++;
 
@@ -46,7 +51,6 @@ public class TownDataStorage {
 
         townDataMap.put(townId,newTown);
         saveStats();
-        return newTown;
     }
 
 
@@ -55,7 +59,7 @@ public class TownDataStorage {
         saveStats();
     }
 
-    public static LinkedHashMap<String, TownData> getTownMap() {
+    public static Map<String, TownData> getTownMap() {
         return townDataMap;
     }
 
@@ -89,20 +93,21 @@ public class TownDataStorage {
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
-                .registerTypeAdapter(new TypeToken<Map<TownRelation, List<String>>>() {}.getType(),
-                new EnumMapDeserializer<>(TownRelation.class, new TypeToken<List<String>>(){}.getType()))                .create();
+                .registerTypeAdapter(new TypeToken<Map<TownRelation, List<String>>>() {}.getType(),new EnumMapDeserializer<>(TownRelation.class, new TypeToken<List<String>>(){}.getType()))
+                .registerTypeAdapter(new TypeToken<List<TownChunkPermission>>() {}.getType(),new EnumMapDeserializer<>(TownChunkPermission.class, new TypeToken<List<String>>(){}.getType()))
+                .create();
 
         Type type = new TypeToken<LinkedHashMap<String, TownData>>() {}.getType();
 
         townDataMap = gson.fromJson(reader, type);
 
-        int ID = 0;
+        int id = 0;
         for (String cle : townDataMap.keySet()) {
             int newID = Integer.parseInt(cle.substring(1));
-            if (newID > ID)
-                ID = newID;
+            if (newID > id)
+                id = newID;
         }
-        newTownId = ID + 1;
+        newTownId = id + 1;
     }
 
 

@@ -94,9 +94,9 @@ public abstract class ITerritoryData {
             diplomacyProposals = new HashMap<>();
         return diplomacyProposals;
     }
-    public void sendRelationProposal(ITerritoryData otherTerritory, TownRelation wantedRelation) {
-        getDiplomacyProposals().remove(otherTerritory.getID());
-        getDiplomacyProposals().put(otherTerritory.getID(), new DiplomacyProposal(getID(), otherTerritory.getID(), wantedRelation));
+    public void receiveDiplomaticProposal(ITerritoryData proposingTerritory, TownRelation wantedRelation) {
+        getDiplomacyProposals().remove(proposingTerritory.getID());
+        getDiplomacyProposals().put(proposingTerritory.getID(), new DiplomacyProposal(proposingTerritory.getID(), getID(), wantedRelation));
     }
 
     public Collection<DiplomacyProposal> getAllDiplomacyProposal(){

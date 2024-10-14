@@ -223,6 +223,7 @@ language:
   LEFT_CLICK_TO_SELECT: "§fLeft click to select"
   LEFT_CLICK_TO_AUTHORIZE: "§fLeft click to authorize"
   LEFT_CLICK_TO_MODIFY: "§fLeft click to modify"
+  LEFT_CLICK_TO_ACCEPT: "§fLeft click to accept"
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§e개발 중입니다"
   GUI_BACK_ARROW: "돌아가기"
@@ -355,6 +356,8 @@ language:
   GUI_TOWN_RELATION_NAP_DESC1: "§f불가침 조약을 맺은 영토를 관리합니다"
   GUI_TOWN_RELATION_ALLIANCE: "§a동맹"
   GUI_TOWN_RELATION_ALLIANCE_DESC1: "§f군사 동맹을 맺은 영토를 관리합니다"
+  GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL: "§aDiplomatic proposal"
+  GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC1: "§fList of pending diplomatic proposals"
   GUI_TOWN_RELATION_NEUTRAL: "중립"
   GUI_TOWN_RELATION_ADD_TOWN: "§a마을 추가"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§a마을 제거"
@@ -802,3 +805,7 @@ language:
   MAP_REGION: "    §b[Region]"
   #Reload
   RELOAD_SUCCESS: "§aConfiguration reloaded"
+  #Diplomatic relations
+  DIPLOMATIC_RELATION: "§fProposal by : {0}"
+  DIPLOMATIC_RELATION_DESC1: "§fChange the relation to : {0}"
+  DIPLOMATIC_RELATION_DESC2: "§fCurrent relation : {0}"

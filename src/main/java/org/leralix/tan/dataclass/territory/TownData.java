@@ -43,7 +43,7 @@ public class TownData extends ITerritoryData {
     private TownLevel townLevel = new TownLevel();
     private final HashSet<String> townPlayerListId = new HashSet<>();
     private TownRelations relations = new TownRelations();
-    private HashMap<Integer,TownRank> newRanks = new HashMap<>();
+    private Map<Integer,TownRank> newRanks = new HashMap<>();
     private Collection<String> ownedLandmarks = new ArrayList<>();
     private HashSet<String> PlayerJoinRequestSet = new HashSet<>();
     private Map<String, PropertyData> propertyDataMap;
@@ -85,7 +85,7 @@ public class TownData extends ITerritoryData {
     //used for sql, loading a town
     public TownData(String townId, String townName, String leaderID, String description,
                     String townIconMaterialCode, int townDefaultRankID, long dateTimeCreated, Boolean isRecruiting, int balance,
-                    int flatTax, int chunkColor, HashMap<Integer, TownRank> newRanks){
+                    int flatTax, int chunkColor, Map<Integer, TownRank> newRanks){
         this.TownId = townId;
         this.TownName = townName;
         this.UuidLeader = leaderID;
@@ -653,7 +653,7 @@ public class TownData extends ITerritoryData {
 
     @Override
     public List<String> getSubjectsID() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override

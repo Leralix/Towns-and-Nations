@@ -9,9 +9,11 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.listeners.ChatListener.PlayerChatListenerStorage;
+import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.utils.ChatUtils;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
@@ -19,10 +21,7 @@ import org.leralix.tan.utils.FileUtil;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 
@@ -117,32 +116,33 @@ public class RegionDataStorage {
 
     public static void loadStats() {
 
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Date.class, new DateTypeAdapter())
-                .create();
-
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Regions.json");
-        if (file.exists()){
-            Reader reader = null;
-            try {
-                reader = new FileReader(file);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            Type type = new TypeToken<LinkedHashMap<String, RegionData>>() {}.getType();
-            regionStorage = gson.fromJson(reader, type);
-
-            int ID = 0;
-            for (Map.Entry<String, RegionData> entry : regionStorage.entrySet()) {
-                String cle = entry.getKey();
-                int newID =  Integer.parseInt(cle.substring(1));
-                if(newID > ID)
-                    ID = newID;
-            }
-            nextID = ID+1;
-
+        if (!file.exists()){
+            return;
         }
 
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateTypeAdapter())
+                .registerTypeAdapter(new TypeToken<Map<TownRelation, List<String>>>() {}.getType(),new EnumMapDeserializer<>(TownRelation.class, new TypeToken<List<String>>(){}.getType()))
+                .create();
+
+        Reader reader;
+        try {
+            reader = new FileReader(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        Type type = new TypeToken<LinkedHashMap<String, RegionData>>() {}.getType();
+        regionStorage = gson.fromJson(reader, type);
+
+        int ID = 0;
+        for (Map.Entry<String, RegionData> entry : regionStorage.entrySet()) {
+            String cle = entry.getKey();
+            int newID =  Integer.parseInt(cle.substring(1));
+            if(newID > ID)
+                ID = newID;
+        }
+        nextID = ID+1;
     }
 
     public static void saveStats() {

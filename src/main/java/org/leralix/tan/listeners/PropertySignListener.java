@@ -54,7 +54,7 @@ public class PropertySignListener implements Listener {
                             }
                             else {
                                 if(propertyData.isForRent() || propertyData.isForSale()){
-                                    PlayerGUI.OpenPropertyBuyMenu(player, propertyData);
+                                    PlayerGUI.openPropertyBuyMenu(player, propertyData);
                                 }
                                 else
                                     player.sendMessage(Lang.PROPERTY_NOT_FOR_SALE_OR_RENT.get());
