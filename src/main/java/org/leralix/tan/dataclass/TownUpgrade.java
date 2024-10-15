@@ -170,7 +170,7 @@ public class TownUpgrade {
                 SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             }
             townData.upgradeTown(player,this,townUpgradeLevel);
-            PlayerGUI.OpenTownLevel(player,page);
+            PlayerGUI.openTownLevel(player,page);
         });
     }
 }
