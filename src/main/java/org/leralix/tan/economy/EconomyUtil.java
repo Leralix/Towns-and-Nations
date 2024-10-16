@@ -13,16 +13,11 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
  */
 public class EconomyUtil {
 
-    /**
-     * Storing if vault is running on the server. Initialised at False
-     */
-    private static boolean hasEconomy = false;
     private static boolean isExternalEconomy = false;
-    private static Economy econ;
+    private static AbstractTanEcon econ;
 
-    public static void setEconomy(Economy newEcon, boolean isExternal) {
+    public static void setEconomy(AbstractTanEcon newEcon, boolean isExternal) {
         econ = newEcon;
-        hasEconomy = true;
         isExternalEconomy = isExternal;
     }
 
@@ -32,9 +27,7 @@ public class EconomyUtil {
      * @return              The player's current balance.
      */
     public static int getBalance(OfflinePlayer offlinePlayer){
-        if(hasEconomy)
-            return (int)econ.getBalance(offlinePlayer);
-        return PlayerDataStorage.get(offlinePlayer).getBalance();
+        return econ.getBalance(PlayerDataStorage.get(offlinePlayer));
     }
 
     /**
@@ -43,9 +36,7 @@ public class EconomyUtil {
      * @return          The player's current balance.
      */
     public static int getBalance(Player player){
-        if(hasEconomy)
-            return (int)econ.getBalance(player);
-        return PlayerDataStorage.get(player).getBalance();
+        return econ.getBalance(PlayerDataStorage.get(player));
     }
 
     /**
@@ -54,11 +45,7 @@ public class EconomyUtil {
      * @param amount            The amount of money to be subtracted
      */
     public static void removeFromBalance(OfflinePlayer offlinePlayer, int amount){
-        if(hasEconomy) {
-            econ.withdrawPlayer(offlinePlayer, amount);
-            return;
-        }
-        PlayerDataStorage.get(offlinePlayer).removeFromBalance(amount);
+        econ.withdrawPlayer(PlayerDataStorage.get(offlinePlayer), amount);
     }
 
     /**
@@ -67,11 +54,7 @@ public class EconomyUtil {
      * @param amount     The amount of money to be subtracted
      */
     public static void removeFromBalance(Player player, int amount) {
-        if (hasEconomy){
-            econ.withdrawPlayer(player, amount);
-            return;
-        }
-        PlayerDataStorage.get(player).removeFromBalance(amount);
+        econ.withdrawPlayer(PlayerDataStorage.get(player), amount);
     }
     /**
      * Add the given amount of money to a player balance
@@ -79,11 +62,7 @@ public class EconomyUtil {
      * @param amount     The amount of money to be added
      */
     public static void addFromBalance(Player player, int amount){
-        if(hasEconomy) {
-            econ.depositPlayer(player, amount);
-            return;
-        }
-        PlayerDataStorage.get(player).addToBalance(amount);
+        econ.depositPlayer(PlayerDataStorage.get(player), amount);
     }
     /**
      * Add the given amount of money to a player balance
@@ -91,11 +70,7 @@ public class EconomyUtil {
      * @param amount            The amount of money to be added
      */
     public static void addFromBalance(OfflinePlayer offlinePlayer, int amount) {
-        if (hasEconomy){
-            econ.depositPlayer(offlinePlayer, amount);
-            return;
-        }
-        PlayerDataStorage.get(offlinePlayer.getUniqueId().toString()).addToBalance(amount);
+        econ.depositPlayer(PlayerDataStorage.get(offlinePlayer), amount);
     }
 
     public static boolean hasExternalEconomy() {

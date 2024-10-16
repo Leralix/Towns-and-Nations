@@ -3,16 +3,12 @@ package org.leralix.tan;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.tan.dataclass.PluginVersion;
-import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.economy.TanEcon;
+import org.leralix.tan.economy.*;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.api.PlaceHolderAPI;
@@ -188,24 +184,10 @@ public final class TownsAndNations extends JavaPlugin {
     private void setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             logger.log(Level.INFO,"[TaN] -Vault is not detected. Running standalone economy");
-            return; //Vault not found, using own econ
+            EconomyUtil.setEconomy(new TanEconomyStandalone(), false);
+            return;
         }
-        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("UseTanEconomy",true)){
-            Economy econ = new TanEcon();
-            EconomyUtil.setEconomy(econ, false);
-            Bukkit.getServicesManager().register(Economy.class, econ, this, ServicePriority.Normal);
-            logger.log(Level.INFO,"[TaN] -Vault is detected, registering TaN Economy");
-        }
-        else{
-            RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-            if (rsp == null) {
-                logger.log(Level.INFO,"[TaN] -Vault is detected but no Economy plugin are used. Running standalone economy");
-                return; //Vault not found, using own econ
-            }
-            Economy econ = rsp.getProvider();
-            EconomyUtil.setEconomy(econ, true);
-            logger.log(Level.INFO,"[TaN] -Vault is detected, using {} as economy", econ.getName());
-        }
+        VaultManager.setupVault();
     }
 
     /**

@@ -10,7 +10,12 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import java.util.Collections;
 import java.util.List;
 
-public class TanEcon implements Economy {
+public class TanEconomyVault extends TanEconomyStandalone implements Economy {
+
+    public TanEconomyVault() {
+        super();
+    }
+
     @Override
     public boolean isEnabled() {
         return true;
@@ -73,8 +78,7 @@ public class TanEcon implements Economy {
 
     @Override
     public double getBalance(OfflinePlayer offlinePlayer) {
-        PlayerData playerData = PlayerDataStorage.get(offlinePlayer);
-        return playerData.getBalance();
+        return super.getBalance(PlayerDataStorage.get(offlinePlayer));
     }
 
     @Override
@@ -114,7 +118,7 @@ public class TanEcon implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, double v) {
-        if( v < 0)
+        if(v < 0)
             return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Cannot withdraw negative funds");
         if(!has(offlinePlayer, v))
             return new EconomyResponse(v, PlayerDataStorage.get(offlinePlayer).getBalance(), EconomyResponse.ResponseType.FAILURE, "Player does not have enough money");
@@ -235,4 +239,6 @@ public class TanEcon implements Economy {
     public boolean createPlayerAccount(OfflinePlayer offlinePlayer, String s) {
         return false;
     }
+
+
 }
