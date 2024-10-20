@@ -30,6 +30,8 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.*;
 import org.leralix.tan.listeners.ChatListener.Events.*;
 import org.leralix.tan.listeners.ChatListener.PlayerChatListenerStorage;
+import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.newsletter.PlayerJoinRequestNL;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.storage.invitation.RegionInviteDataStorage;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
@@ -149,7 +151,7 @@ public class PlayerGUI implements IGUI {
         ItemStack playerHead = HeadUtils.getPlayerHead(Lang.GUI_YOUR_PROFILE.get(),player);
         ItemStack treasuryIcon = HeadUtils.createCustomItemStack(Material.GOLD_NUGGET, Lang.GUI_YOUR_BALANCE.get(),Lang.GUI_YOUR_BALANCE_DESC1.get(EconomyUtil.getBalance(player)));
         ItemStack propertiesIcon = HeadUtils.createCustomItemStack(Material.OAK_HANGING_SIGN, Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(),Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get());
-
+        ItemStack newsletterIcon = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK, Lang.GUI_PLAYER_NEWSLETTER.get(),Lang.GUI_PLAYER_NEWSLETTER_DESC1.get());
 
         GuiItem playerGui = ItemBuilder.from(playerHead).asGuiItem(event -> event.setCancelled(true));
         GuiItem treasuryGui = ItemBuilder.from(treasuryIcon).asGuiItem(event -> event.setCancelled(true));
@@ -157,16 +159,38 @@ public class PlayerGUI implements IGUI {
             event.setCancelled(true);
             openPlayerPropertiesMenu(player);
         });
+        GuiItem newsletterGui = ItemBuilder.from(newsletterIcon).asGuiItem(event -> {
+            event.setCancelled(true);
+            openNewsletter(player,0);
+        });
 
         gui.setItem(1,5, playerGui);
         gui.setItem(2,2, treasuryGui);
         gui.setItem(2,4, propertiesGui);
+        gui.setItem(2,6, newsletterGui);
 
 
         gui.setItem(18, IGUI.createBackArrow(player, p -> openMainMenu(player)));
 
         gui.open(player);
     }
+
+    private static void openNewsletter(Player player, int page) {
+        int nRows = 6;
+        Gui gui = IGUI.createChestGui("Newsletter",nRows);
+
+        ArrayList<GuiItem> guiItems = new ArrayList<>(NewsletterStorage.getNewsForPlayer(player));
+
+
+        createIterator(gui, guiItems, 0, player,
+                p -> openPlayerProfileMenu(player),
+                p -> openNewsletter(player, page + 1),
+                p -> openNewsletter(player, page - 1)
+        );
+
+        gui.open(player);
+    }
+
     public static void openPlayerPropertiesMenu(Player player){
         int nRows = 6;
         Gui gui = IGUI.createChestGui("Properties of " + player.getName(),nRows);
@@ -609,33 +633,35 @@ public class PlayerGUI implements IGUI {
 
         ArrayList<GuiItem> townItemStacks = new ArrayList<>();
 
-        for(TownData townData : TownDataStorage.getTownMap().values()){
-            ItemStack townIcon = townData.getIconWithInformations();
+        for(TownData specificTownData : TownDataStorage.getTownMap().values()){
+            ItemStack townIcon = specificTownData.getIconWithInformations();
             HeadUtils.addLore(townIcon,
                     "",
-                    (townData.isRecruiting()) ? Lang.GUI_TOWN_INFO_IS_RECRUITING.get() : Lang.GUI_TOWN_INFO_IS_NOT_RECRUITING.get(),
-                    (townData.isPlayerAlreadyRequested(player)) ? Lang.GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL.get() : Lang.GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN.get()
+                    (specificTownData.isRecruiting()) ? Lang.GUI_TOWN_INFO_IS_RECRUITING.get() : Lang.GUI_TOWN_INFO_IS_NOT_RECRUITING.get(),
+                    (specificTownData.isPlayerAlreadyRequested(player)) ? Lang.GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL.get() : Lang.GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN.get()
             );
             GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
 
                 if(event.isLeftClick()){
-                    if(townData.isPlayerAlreadyRequested(player)){
+                    if(specificTownData.isPlayerAlreadyRequested(player)){
                         return;
                     }
-                    if(!townData.isRecruiting()){
+                    if(!specificTownData.isRecruiting()){
                         player.sendMessage(getTANString() + Lang.PLAYER_TOWN_NOT_RECRUITING.get());
                         return;
                     }
-                    townData.addPlayerJoinRequest(player);
-                    player.sendMessage(getTANString() + Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(townData.getName()));
+                    specificTownData.addPlayerJoinRequest(player);
+                    player.sendMessage(getTANString() + Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(specificTownData.getName()));
+                    NewsletterStorage.registerNewsletter(new PlayerJoinRequestNL(player, specificTownData));
                     openSearchTownMenu(player,page);
                 }
                 if(event.isRightClick()){
-                    if(!townData.isPlayerAlreadyRequested(player)){
+                    if(!specificTownData.isPlayerAlreadyRequested(player)){
                         return;
                     }
-                    townData.removePlayerJoinRequest(player);
+                    specificTownData.removePlayerJoinRequest(player);
+                    NewsletterStorage.removePlayerJoinRequest(player, specificTownData);
                     player.sendMessage(getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get());
                     openSearchTownMenu(player,page);
                 }
@@ -1215,13 +1241,13 @@ public class PlayerGUI implements IGUI {
 
 
         PlayerData playerStat = PlayerDataStorage.get(player);
-        TownData town = TownDataStorage.get(playerStat);
+        TownData townData = TownDataStorage.get(playerStat);
 
-        int rowSize = Math.min(town.getPlayerJoinRequestSet().size() / 9 + 3,6);
+        int rowSize = Math.min(townData.getPlayerJoinRequestSet().size() / 9 + 3,6);
 
         Gui gui = IGUI.createChestGui("Town",rowSize);
 
-        HashSet<String> players = town.getPlayerJoinRequestSet();
+        HashSet<String> players = townData.getPlayerJoinRequestSet();
 
         int i = 0;
         for (String playerUUID: players) {
@@ -1233,28 +1259,27 @@ public class PlayerGUI implements IGUI {
                     Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC2.get(),
                     Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC3.get());
 
-            GuiItem _playerIcon = ItemBuilder.from(playerHead).asGuiItem(event -> {
+            GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(event.isLeftClick()){
-
                     if(!playerStat.hasPermission(TownRolePermission.INVITE_PLAYER)){
                         player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
-                    if(town.isFull()){
+                    if(townData.isFull()){
                         player.sendMessage(getTANString() + Lang.INVITATION_TOWN_FULL.get());
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
 
-                    town.addPlayer(playerIterateData);
+                    townData.addPlayer(playerIterateData);
 
                     Player playerIterateOnline = playerIterate.getPlayer();
                     if(playerIterateOnline != null)
-                        playerIterateOnline.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(town.getName()));
+                        playerIterateOnline.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(townData.getName()));
 
-                    town.broadCastMessageWithSound(
+                    townData.broadCastMessageWithSound(
                             Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerIterateData.getName()),
                             MINOR_GOOD);
 
@@ -1263,23 +1288,19 @@ public class PlayerGUI implements IGUI {
                     for (TownData allTown : TownDataStorage.getTownMap().values()){
                         allTown.removePlayerJoinRequest(playerIterateData.getID());
                     }
-
-                    player.sendMessage(getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get());
-
                 }
                 if(event.isRightClick()){
                     if(!playerStat.hasPermission(TownRolePermission.INVITE_PLAYER)){
                         player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                         return;
                     }
-
-                    town.removePlayerJoinRequest(playerIterateData.getID());
-                    player.sendMessage(getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get());
+                    townData.removePlayerJoinRequest(playerIterateData.getID());
                 }
+                NewsletterStorage.removePlayerJoinRequest(player, townData);
                 openTownMemberList(player);
             });
 
-            gui.setItem(i, _playerIcon);
+            gui.setItem(i, playerButton);
             i++;
         }
         ItemStack itemStack = HeadUtils.createCustomItemStack(Material.LIME_STAINED_GLASS_PANE,"");

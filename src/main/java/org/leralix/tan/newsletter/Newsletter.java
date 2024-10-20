@@ -17,9 +17,13 @@ public abstract class Newsletter {
 
     public abstract GuiItem createGuiItem(Player player);
 
+    public abstract boolean shouldShowtoPlayer(Player player);
+
     public double getDate() {
         return date;
     }
+
+    public abstract NewsletterType getType();
 
 
 

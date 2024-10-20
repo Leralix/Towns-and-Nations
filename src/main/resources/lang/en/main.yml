@@ -255,6 +255,8 @@ language:
   GUI_YOUR_BALANCE_DESC1: "§fCurrent balance: §e{0}"
   GUI_PLAYER_MANAGE_PROPERTIES: "Manage properties"
   GUI_PLAYER_MANAGE_PROPERTIES_DESC1: "§fCreate, delete or manage your properties"
+  GUI_PLAYER_NEWSLETTER: "§aNewsletter"
+  GUI_PLAYER_NEWSLETTER_DESC1: "§fGet the latest news"
   GUI_PLAYER_NEW_PROPERTY: "Create a new property"
   #Towns
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCreate a new town"
