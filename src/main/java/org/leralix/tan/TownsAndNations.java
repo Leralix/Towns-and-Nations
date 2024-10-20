@@ -61,6 +61,7 @@ public final class TownsAndNations extends JavaPlugin {
      * used to check if the plugin has just been updated and config file needs an update
      */
     private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,11,2);
+    private static final PluginVersion MINIMUM_SUPPORTING_DYNMAP = new PluginVersion(0,6,0);
 
     /**
      * Latest version of the plugin from GitHub.
@@ -372,5 +373,9 @@ public final class TownsAndNations extends JavaPlugin {
      */
     public boolean isDynmapAddonLoaded() {
         return dynmapAddonLoaded;
+    }
+
+    public PluginVersion getMinimumSupportingDynmap() {
+        return MINIMUM_SUPPORTING_DYNMAP;
     }
 }

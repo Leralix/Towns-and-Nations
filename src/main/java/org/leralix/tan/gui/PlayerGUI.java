@@ -2253,7 +2253,9 @@ public class PlayerGUI implements IGUI {
                 Lang.GUI_TOWN_RELATION_ALLIANCE_DESC1.get());
         ItemStack diplomacyProposal = HeadUtils.createCustomItemStack(Material.PAPER,
                 Lang.GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL.get(),
-                Lang.GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC1.get());
+                Lang.GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC1.get(),
+                Lang.GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC2.get(territory.getAllDiplomacyProposal().size())
+                );
 
         GuiItem warButton = ItemBuilder.from(war).asGuiItem(event -> {
             event.setCancelled(true);
@@ -2273,7 +2275,7 @@ public class PlayerGUI implements IGUI {
             event.setCancelled(true);
             openSingleRelation(player,territory, TownRelation.ALLIANCE,0, exitMenu);
         });
-        GuiItem diplomacyButton = ItemBuilder.from(diplomacyProposal).asGuiItem(event -> {
+        GuiItem proposalsButton = ItemBuilder.from(diplomacyProposal).asGuiItem(event -> {
             event.setCancelled(true);
             PlayerData playerData = PlayerDataStorage.get(player);
             if(!playerData.hasPermission(MANAGE_TOWN_RELATION)){
@@ -2300,7 +2302,7 @@ public class PlayerGUI implements IGUI {
         gui.setItem(11, embargoButton);
         gui.setItem(13, napButton);
         gui.setItem(15, allianceButton);
-        gui.setItem(17, diplomacyButton);
+        gui.setItem(17, proposalsButton);
 
 
         gui.setItem(3,1, IGUI.createBackArrow(player,exitMenu));
