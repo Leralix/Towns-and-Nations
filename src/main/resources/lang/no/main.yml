@@ -255,6 +255,8 @@ language:
   GUI_YOUR_BALANCE_DESC1: "§fNåværende saldo: §e{0}"
   GUI_PLAYER_MANAGE_PROPERTIES: "Manage properties"
   GUI_PLAYER_MANAGE_PROPERTIES_DESC1: "§fCreate, delete or manage your properties"
+  GUI_PLAYER_NEWSLETTER: "§aNewsletter"
+  GUI_PLAYER_NEWSLETTER_DESC1: "§fGet the latest news"
   GUI_PLAYER_NEW_PROPERTY: "Create a new property"
   #Towns
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aOpprett en ny by"
@@ -358,6 +360,7 @@ language:
   GUI_TOWN_RELATION_ALLIANCE_DESC1: "§fManage territories you have a military alliance with"
   GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL: "§aDiplomatic proposal"
   GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC1: "§fList of pending diplomatic proposals"
+  GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC2: "§6{0}§f pending proposals"
   GUI_TOWN_RELATION_NEUTRAL: "Nøytral"
   GUI_TOWN_RELATION_ADD_TOWN: "§aLegg til by"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aFjern by"
@@ -809,3 +812,9 @@ language:
   DIPLOMATIC_RELATION: "§fProposal by : {0}"
   DIPLOMATIC_RELATION_DESC1: "§fChange the relation to : {0}"
   DIPLOMATIC_RELATION_DESC2: "§fCurrent relation : {0}"
+  #Newsletter
+  NEWSLETTER_PLAYER_APPLICATION: "§fTown application from §3{0}"
+  NEWSLETTER_PLAYER_APPLICATION_DESC1: "§3{0}§f has applied to join {1}"
+  NEWSLETTER_PLAYER_APPLICATION_DESC2: "§fLeft click to manage the application"
+
+

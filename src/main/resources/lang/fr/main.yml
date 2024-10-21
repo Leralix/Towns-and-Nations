@@ -255,6 +255,8 @@ language:
   GUI_YOUR_BALANCE_DESC1: "§fSolde actuel : §e{0}"
   GUI_PLAYER_MANAGE_PROPERTIES: "Gestion des propriétés"
   GUI_PLAYER_MANAGE_PROPERTIES_DESC1: "§fCréer, supprimer ou gérer vos propriétés"
+  GUI_PLAYER_NEWSLETTER: "§aBoite aux lettres"
+  GUI_PLAYER_NEWSLETTER_DESC1: "§fParcourir les dernières informations"
   GUI_PLAYER_NEW_PROPERTY: "Créer une nouvelle propriété"
   #Towns
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCréer une nouvelle ville"
@@ -358,6 +360,7 @@ language:
   GUI_TOWN_RELATION_ALLIANCE_DESC1: "§fGérer les territoires avec lesquels vous avez une alliance"
   GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL: "§aPropositions diplomatiques"
   GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC1: "§fListe des propositions diplomatiques en attente"
+  GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC2: "§6{0}§f propositions en attente"
   GUI_TOWN_RELATION_NEUTRAL: "Neutre"
   GUI_TOWN_RELATION_ADD_TOWN: "§aAjouter une ville"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aSupprimer une ville"
@@ -809,3 +812,9 @@ language:
   DIPLOMATIC_RELATION: "§fProposition de : {0}"
   DIPLOMATIC_RELATION_DESC1: "§fEtablir la relation : {0}"
   DIPLOMATIC_RELATION_DESC2: "§f Relation actuelle : {0}"
+  #Newsletter
+  NEWSLETTER_PLAYER_APPLICATION: "§fCandidature de §3{0}"
+  NEWSLETTER_PLAYER_APPLICATION_DESC1: "§3{0}§f candidate pour rejoindre {1}"
+  NEWSLETTER_PLAYER_APPLICATION_DESC2: "§fClic gauche pour gérer la demande"
+
+

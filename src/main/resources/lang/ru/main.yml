@@ -47,14 +47,14 @@ language:
   PAGE_NUMBER: "§fPage {0}/{1}"
   #Level up
   BASIC_LEVEL_UP: "§aLevel up !"
-  #Отмена телепортации
+  #Teleportation
   WAIT_BEFORE_ANOTHER_TELEPORTATION: "§cПожалуйста, подождите перед следующей телепортацией"
   TELEPORTATION_CANCELLED: "§cТелепортация отменена"
   TELEPORTATION_IN_X_SECONDS: "§fТелепортация через §a{0}§f секунд"
   TELEPORTATION_IN_X_SECONDS_NOT_MOVE: "§fТелепортация через §a{0}§f секунд. Не двигайтесь"
-  #Обработчик чанков
+  #ChunkListener
   CHUNK_BELONGS_TO: "§cЭтот чанк принадлежит: §9{0}"
-  #Команды
+  #Commands
   NOT_ENOUGH_ARGS_ERROR: "§cНедостаточно аргументов"
   TOO_MANY_ARGS_ERROR: "§cСлишком много аргументов"
   SYNTAX_ERROR: "§cНекорректный синтаксис"
@@ -63,15 +63,15 @@ language:
   MESSAGE_TOO_LONG: "§cСообщение слишком длинное: максимум {0}"
   ECONOMY_EXISTS: "§cПлагин уже обрабатывает экономику. Используйте его"
   CANCELLED_ACTION: "§cДействие отменено"
-  #Отмена
-  CANCEL_WORD: "отмена" # Слово для отмены может быть изменено
+  #Cancel
+  CANCEL_WORD: "отмена" #The cancel word can be modified
   WRITE_CANCEL_TO_CANCEL: "§fНапишите §c{0}§f в чат для отмены"
-  #Запрос на вступление в город
+  #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f запросил вступление в город. Вы можете найти заявку в меню участников"
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Вы успешно подали заявку на вступление в город: §9{0}§f. Щелкните правой кнопкой по городу для отмены"
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Вы отменили свою заявку"
   PLAYER_TOWN_NOT_RECRUITING: "§cЭтот город не набирает новых участников"
-  #Объявления
+  #BROADCAST
   TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f успешно создал город: §9{1}"
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c покинул город!"
   REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f успешно создал регион: §b{1}"
@@ -148,6 +148,7 @@ language:
   DEBUG_UNCLAIMED_CHUNK_SUCCESS_REGION: "Чанк свободен ! Текущее количество чанков §9{0} §f: §2{1}♦"
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cЭтот чанк принадлежит другому городу: §e{0}"
   UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§cЭтот чанк принадлежит другому региону: §b{0}"
+  PROPERTY_IN_CHUNK: "§cThis chunk contains a property §f({0})"
   #Map command
   MAP_COMMAND_DESC: "Открыть карту чанков рядом с вами"
   #Debug commands
@@ -206,7 +207,8 @@ language:
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Нейтрально"
   RELATION_CITY_NAME: "Город"
-  RELATION_REGION_NAME: "Регион"
+  RELATION_OVERLORD_NAME: "Overlord"
+  RELATION_VASSAL_NAME: "Vassal"
   RELATION_ALLIANCE_NAME: "Альянс"
   RELATION_NON_AGGRESSION_NAME: "Не аргессивно"
   RELATION_EMBARGO_NAME: "Эмбарго"
@@ -214,12 +216,14 @@ language:
   #GUI generic
   GUI_GENERIC_CLICK_TO_OPEN: "§fЩелкните ЛКМ чтобы открыть"
   GUI_GENERIC_CLICK_TO_DELETE: "§fНажмите чтобы удалить"
+  GUI_GENERIC_CLICK_TO_RENAME: "§fClick to rename"
   GUI_GENERIC_RIGHT_CLICK_TO_DELETE: "§fЩелкните ПКМ чтобы удалить"
   GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT: "§fShift + ЛКМ чтобы телепортироваться"
   GUI_GENERIC_CLICK_TO_SWITCH_SCOPE: "§fЩелкните чтобы переключить область"
   LEFT_CLICK_TO_SELECT: "§fЩелкните ЛКМ чтобы выбрать"
   LEFT_CLICK_TO_AUTHORIZE: "§fЩелкните ЛКМ для авторизаии"
   LEFT_CLICK_TO_MODIFY: "§fЩелкните ЛКМ для модификации"
+  LEFT_CLICK_TO_ACCEPT: "§fLeft click to accept"
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§eВ разработке"
   GUI_BACK_ARROW: "Назад"
@@ -251,6 +255,8 @@ language:
   GUI_YOUR_BALANCE_DESC1: "§fТекущий баланс: §e{0}"
   GUI_PLAYER_MANAGE_PROPERTIES: "Управление собственностью"
   GUI_PLAYER_MANAGE_PROPERTIES_DESC1: "§fСоздание, удаление и управление собственностью"
+  GUI_PLAYER_NEWSLETTER: "§aNewsletter"
+  GUI_PLAYER_NEWSLETTER_DESC1: "§fGet the latest news"
   GUI_PLAYER_NEW_PROPERTY: "Создать новую собственность"
   #Towns
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aСоздать новый город"
@@ -337,7 +343,7 @@ language:
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nПредварительные условия:"
   GUI_TOWN_LEVEL_UP_UNI_DESC3_1: "§f- {0}: §a{1}/{2}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3_2: "§f- {0}: §c{1}/{2}"
-  GUI_TOWN_LEVEL_UP_UNI_DESC4: "§f§nUpgrade rewards:":"
+  GUI_TOWN_LEVEL_UP_UNI_DESC4: "§f§nUpgrade rewards:\":"
   GUI_TOWN_LEVEL_UP_UNI_DESC4_1: "§f- {0}: §a+{1}"
   GUI_TOWN_LEVEL_UP_UNI_DESC4_2: "§f- {0}: §c{1}"
   GUI_TOWN_LEVEL_UP_UNI_DESC5: "§f§nВсего:"
@@ -352,10 +358,14 @@ language:
   GUI_TOWN_RELATION_NAP_DESC1: "§fУправление территориями, с которыми у вас заключён пакт о ненападении"
   GUI_TOWN_RELATION_ALLIANCE: "§aАльянс"
   GUI_TOWN_RELATION_ALLIANCE_DESC1: "§fУправление территориями, с которыми у вас военный альянс"
+  GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL: "§aDiplomatic proposal"
+  GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC1: "§fList of pending diplomatic proposals"
+  GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC2: "§6{0}§f pending proposals"
   GUI_TOWN_RELATION_NEUTRAL: "Нейтральный"
   GUI_TOWN_RELATION_ADD_TOWN: "§aДобавить город"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aУдалить город"
-  GUI_TOWN_CHANGED_RELATION_RESUME: "§fОтношения вашего города с {0} изменились на: {1}"
+  BROADCAST_RELATION_IMPROVE: "§fRelation between {0}§f and {1}§f has improved to: {2}"
+  BROADCAST_RELATION_WORSEN: "§fRelation between {0}§f and {1}§f has worsen to: {2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cПравый клик, чтобы начать атаку"
   GUI_TOWN_ATTACK_TOWN_EXECUTED: "§cВы начали атаку на {0}"
   GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} начали атаку на {1}!"
@@ -440,6 +450,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_MOB_SPAWN: "§aУправление спавном мобов"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_PROPERTY: "§aСоздать собственность"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_PROPERTY: "§aУправление собственностями"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_TOWN_ADMINISTRATOR: "§aTown administrator"
   GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION: "§fЭтот ранг§имеет§f это разрешение"
   GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION: "§fЭтот ранг §cне имеет§f Этого разрешения"
   GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER: "§cВы не можете сделать зарплату меньше, чем 0✦"
@@ -653,7 +664,7 @@ language:
   CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED: "§fРегион удалён, стоимость региона возвращена"
   WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cГород {0},§c с которым вы находились в состоянии: {1},§c был удалён"
   #Custom Item
-   ITEM_RARE_STONE: "§3Редкий кристалл"
+  ITEM_RARE_STONE: "§3Редкий кристалл"
   ITEM_RARE_WOOD: "§3Редкая древесина"
   ITEM_RARE_CROP: "§3Редкий росток"
   ITEM_RARE_SOUL: "§3Душа монстра"
@@ -762,6 +773,7 @@ language:
   WARGOAL_CONQUER_SUCCESS_WINNING_SIDE: "§fТеперь вы можете получить {0}§f чанков от {1}"
   WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE: "{0}§f получил {1}§f чанков от {2}"
   GUI_CANCEL_ATTACK: "§cОтменить атаку"
+  GUI_RENAME_ATTACK: "§aRename attack"
   GUI_QUIT_WAR: "§aПокинуть атаку"
   GUI_QUIT_WAR_DESC1: "§fПрекратить поддерживать одну из сторон и снова стать нейтральной"
   TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE: "{0}§f больше не участвует в войне \"{1}\""
@@ -796,3 +808,13 @@ language:
   MAP_REGION: "    §b[Region]"
   #Reload
   RELOAD_SUCCESS: "§aКонфиг перезагружен"
+  #Diplomatic relations
+  DIPLOMATIC_RELATION: "§fProposal by : {0}"
+  DIPLOMATIC_RELATION_DESC1: "§fChange the relation to : {0}"
+  DIPLOMATIC_RELATION_DESC2: "§fCurrent relation : {0}"
+  #Newsletter
+  NEWSLETTER_PLAYER_APPLICATION: "§fTown application from §3{0}"
+  NEWSLETTER_PLAYER_APPLICATION_DESC1: "§3{0}§f has applied to join {1}"
+  NEWSLETTER_PLAYER_APPLICATION_DESC2: "§fLeft click to manage the application"
+
+
