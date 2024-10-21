@@ -1,17 +1,17 @@
 ##Ugrades
 #Names
-CITY_HALL: "City hall"
-BARRACKS: "Barracks"
-ADMINISTRATION: "Administration"
-WATCHTOWER: "Watchtower"
-PORTAL: "Portal"
-GUARDS: "Guards"
-COUNCIL_CHAMBER: "Council Chambers"
-NOTARY_HOUSE: "Notary house"
-EXTRACTION_TEAM: "Extraction team"
-BETTER_TOOLS: "Better tools"
+CITY_HALL: "Ратуша"
+BARRACKS: "Бараки"
+ADMINISTRATION: "Администрация"
+WATCHTOWER: "Сторожевая башня"
+PORTAL: "Портал"
+GUARDS: "Защита"
+COUNCIL_CHAMBER: "Зал совета"
+NOTARY_HOUSE: "Нотариус"
+EXTRACTION_TEAM: "Группа эвакуации"
+BETTER_TOOLS: "Улучшенные инструменты"
 #Prerequisites
-TOWN_LEVEL: "Town level"
+TOWN_LEVEL: "Уровень города"
 #Benefits
 PLAYER_CAP: "Player cap"
 CHUNK_CAP: "Chunk cap"
