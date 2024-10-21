@@ -136,7 +136,7 @@ public class PlayerGUI implements IGUI {
 
     public static void dispatchPlayerTown(Player player){
         if(PlayerDataStorage.get(player).haveTown()){
-            OpenTownMenuHaveTown(player);
+            openTownMenuHaveTown(player);
         }
         else{
             openNoTownMenu(player);
@@ -602,7 +602,7 @@ public class PlayerGUI implements IGUI {
                 Lang.GUI_NO_TOWN_JOIN_A_TOWN.get(),
                 Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(TownDataStorage.getNumberOfTown()));
 
-        GuiItem _create = ItemBuilder.from(createTown).asGuiItem(event -> {
+        GuiItem createButton = ItemBuilder.from(createTown).asGuiItem(event -> {
             event.setCancelled(true);
             int playerMoney = EconomyUtil.getBalance(player);
             if (playerMoney < townPrice) {
@@ -619,7 +619,7 @@ public class PlayerGUI implements IGUI {
             openSearchTownMenu(player,0);
         });
 
-        gui.setItem(11, _create);
+        gui.setItem(11, createButton);
         gui.setItem(15, browseButton);
         gui.setItem(18, IGUI.createBackArrow(player, p -> openMainMenu(player)));
 
@@ -640,7 +640,7 @@ public class PlayerGUI implements IGUI {
                     (specificTownData.isRecruiting()) ? Lang.GUI_TOWN_INFO_IS_RECRUITING.get() : Lang.GUI_TOWN_INFO_IS_NOT_RECRUITING.get(),
                     (specificTownData.isPlayerAlreadyRequested(player)) ? Lang.GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL.get() : Lang.GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN.get()
             );
-            GuiItem _townIteration = ItemBuilder.from(townIcon).asGuiItem(event -> {
+            GuiItem townButton = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
 
                 if(event.isLeftClick()){
@@ -667,7 +667,7 @@ public class PlayerGUI implements IGUI {
                 }
 
             });
-            townItemStacks.add(_townIteration);
+            townItemStacks.add(townButton);
         }
 
         createIterator(gui, townItemStacks, page, player, p -> openNoTownMenu(player),
@@ -677,7 +677,7 @@ public class PlayerGUI implements IGUI {
 
         gui.open(player);
     }
-    public static void OpenTownMenuHaveTown(Player player) {
+    public static void openTownMenuHaveTown(Player player) {
         int nRows = 4;
         Gui gui = IGUI.createChestGui("Town",nRows);
 
@@ -733,7 +733,7 @@ public class PlayerGUI implements IGUI {
 
             else {
                 playerTown.setIconMaterial(itemMaterial);
-                OpenTownMenuHaveTown(player);
+                openTownMenuHaveTown(player);
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get());
             }
         });
@@ -751,7 +751,7 @@ public class PlayerGUI implements IGUI {
         });
         GuiItem browseMenu = ItemBuilder.from(otherTownIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            browseTerritory(player, playerTown, BrowseScope.TOWNS, p -> OpenTownMenuHaveTown(player), 0);
+            browseTerritory(player, playerTown, BrowseScope.TOWNS, p -> openTownMenuHaveTown(player), 0);
         });
         GuiItem relationButton = ItemBuilder.from(diplomacy).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1099,7 +1099,7 @@ public class PlayerGUI implements IGUI {
             landmarkGui.add(landmarkButton);
         }
         GuiUtil.createIterator(gui, landmarkGui, page, player,
-                p -> OpenTownMenuHaveTown(player),
+                p -> openTownMenuHaveTown(player),
                 p -> openOwnedLandmark(player, townData, page + 1),
                 p -> openOwnedLandmark(player, townData, page - 1)
         );
@@ -1165,7 +1165,7 @@ public class PlayerGUI implements IGUI {
                     Lang.GUI_TOWN_MEMBER_DESC2.get(EconomyUtil.getBalance(playerIterate)),
                     playerStat.hasPermission(KICK_PLAYER) ? Lang.GUI_TOWN_MEMBER_DESC3.get() : "");
 
-            GuiItem _playerIcon = ItemBuilder.from(playerHead).asGuiItem(event -> {
+            GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(event.getClick() == ClickType.RIGHT){
                     event.setCancelled(true);
@@ -1201,7 +1201,7 @@ public class PlayerGUI implements IGUI {
                 openTownMemberList(player);
             });
 
-            gui.setItem(i, _playerIcon);
+            gui.setItem(i, playerButton);
             i++;
         }
 
@@ -1211,7 +1211,7 @@ public class PlayerGUI implements IGUI {
                 Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(playerTown.getPlayerJoinRequestSet().size())
         );
 
-        GuiItem _manageRanks = ItemBuilder.from(manageRanks).asGuiItem(event -> {
+        GuiItem manageRanksButton = ItemBuilder.from(manageRanks).asGuiItem(event -> {
             event.setCancelled(true);
             openTownRanks(player);
         });
@@ -1224,7 +1224,7 @@ public class PlayerGUI implements IGUI {
 
         gui.setItem(rowSize,1, IGUI.createBackArrow(player, p -> dispatchPlayerTown(player)));
         gui.setItem(rowSize,2,panelIcon);
-        gui.setItem(rowSize,3, _manageRanks);
+        gui.setItem(rowSize,3, manageRanksButton);
         gui.setItem(rowSize,4, mangeApplicationPanel);
         gui.setItem(rowSize,5,panelIcon);
         gui.setItem(rowSize,6,panelIcon);
@@ -1302,18 +1302,18 @@ public class PlayerGUI implements IGUI {
             i++;
         }
         ItemStack itemStack = HeadUtils.createCustomItemStack(Material.LIME_STAINED_GLASS_PANE,"");
-        GuiItem _panel = ItemBuilder.from(itemStack).asGuiItem(event -> event.setCancelled(true));
+        GuiItem panel = ItemBuilder.from(itemStack).asGuiItem(event -> event.setCancelled(true));
 
 
         gui.setItem(rowSize,1, IGUI.createBackArrow(player, p -> openTownMemberList(player)));
-        gui.setItem(rowSize,2,_panel);
-        gui.setItem(rowSize,3,_panel);
-        gui.setItem(rowSize,4,_panel);
-        gui.setItem(rowSize,5,_panel);
-        gui.setItem(rowSize,6,_panel);
-        gui.setItem(rowSize,7,_panel);
-        gui.setItem(rowSize,8,_panel);
-        gui.setItem(rowSize,9,_panel);
+        gui.setItem(rowSize,2,panel);
+        gui.setItem(rowSize,3,panel);
+        gui.setItem(rowSize,4,panel);
+        gui.setItem(rowSize,5,panel);
+        gui.setItem(rowSize,6,panel);
+        gui.setItem(rowSize,7,panel);
+        gui.setItem(rowSize,8,panel);
+        gui.setItem(rowSize,9,panel);
 
 
 
@@ -1350,7 +1350,7 @@ public class PlayerGUI implements IGUI {
         }
 
         ItemStack createNewRole = HeadUtils.makeSkullB64(Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTBjOTdlNGI2OGFhYWFlODQ3MmUzNDFiMWQ4NzJiOTNiMzZkNGViNmVhODllY2VjMjZhNjZlNmM0ZTE3OCJ9fX0=");
-        GuiItem _createNewRole = ItemBuilder.from(createNewRole).asGuiItem(event -> {
+        GuiItem createNewButton = ItemBuilder.from(createNewRole).asGuiItem(event -> {
             event.setCancelled(true);
 
             if(!playerData.hasPermission(TownRolePermission.CREATE_RANK)) {
@@ -1367,7 +1367,7 @@ public class PlayerGUI implements IGUI {
 
 
         gui.setItem(row,1, IGUI.createBackArrow(player, p -> openTownMemberList(player)));
-        gui.setItem(row,3, _createNewRole);
+        gui.setItem(row,3, createNewButton);
 
         gui.open(player);
 
@@ -1798,9 +1798,9 @@ public class PlayerGUI implements IGUI {
                             Lang.DONATION_SINGLE_LINE_2.get(donation.getDate())
                     );
 
-                    GuiItem _transactionIcon = ItemBuilder.from(transactionIcon).asGuiItem(event -> event.setCancelled(true));
+                    GuiItem transactionButton = ItemBuilder.from(transactionIcon).asGuiItem(event -> event.setCancelled(true));
 
-                    gui.setItem(i,_transactionIcon);
+                    gui.setItem(i,transactionButton);
                     i = i + 1;
                     if (i > 44){
                         break;
@@ -1830,9 +1830,9 @@ public class PlayerGUI implements IGUI {
 
                     ItemStack transactionHistoryItem = HeadUtils.createCustomItemStack(Material.PAPER,date,lines);
 
-                    GuiItem _transactionHistoryItem = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> event.setCancelled(true));
+                    GuiItem transactionHistoryInfo = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> event.setCancelled(true));
 
-                    gui.setItem(i,_transactionHistoryItem);
+                    gui.setItem(i,transactionHistoryInfo);
                     i = i+1;
                     if (i > 44){
                         break;
@@ -1856,9 +1856,9 @@ public class PlayerGUI implements IGUI {
 
                     );
 
-                    GuiItem _transactionIcon = ItemBuilder.from(transactionIcon).asGuiItem(event -> event.setCancelled(true));
+                    GuiItem transactionInfo = ItemBuilder.from(transactionIcon).asGuiItem(event -> event.setCancelled(true));
 
-                    gui.setItem(i,_transactionIcon);
+                    gui.setItem(i,transactionInfo);
                     i = i + 1;
 
                     if (i > 44){
@@ -1885,9 +1885,9 @@ public class PlayerGUI implements IGUI {
 
                     ItemStack transactionHistoryItem = HeadUtils.createCustomItemStack(Material.PAPER,date,lines);
 
-                    GuiItem _transactionHistoryItem = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> event.setCancelled(true));
+                    GuiItem transactionHistoryInfo = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> event.setCancelled(true));
 
-                    gui.setItem(i,_transactionHistoryItem);
+                    gui.setItem(i,transactionHistoryInfo);
                     i = i+1;
                     if (i > 44){
                         break;
@@ -1905,9 +1905,9 @@ public class PlayerGUI implements IGUI {
                             Lang.MISCELLANEOUS_HISTORY_DESC2.get(miscellaneous.getAmount())
                     );
 
-                    GuiItem _transactionIcon = ItemBuilder.from(transactionIcon).asGuiItem(event -> event.setCancelled(true));
+                    GuiItem transactionButton = ItemBuilder.from(transactionIcon).asGuiItem(event -> event.setCancelled(true));
 
-                    gui.setItem(i,_transactionIcon);
+                    gui.setItem(i,transactionButton);
                     i = i + 1;
 
                     if (i > 44){
@@ -1974,8 +1974,8 @@ public class PlayerGUI implements IGUI {
             }
             else{
                 pannelIcon = ironBarsIcon;
-                ItemStack red_level = HeadUtils.createCustomItemStack(Material.RED_STAINED_GLASS_PANE,"Town level " + (i + level - 1) + " locked");
-                bottomIcon = ItemBuilder.from(red_level).asGuiItem(event -> event.setCancelled(true));
+                ItemStack redLevel = HeadUtils.createCustomItemStack(Material.RED_STAINED_GLASS_PANE,"Town level " + (i + level - 1) + " locked");
+                bottomIcon = ItemBuilder.from(redLevel).asGuiItem(event -> event.setCancelled(true));
             }
             gui.setItem(1,i, pannelIcon);
             gui.setItem(2,i, pannelIcon);
@@ -2071,9 +2071,9 @@ public class PlayerGUI implements IGUI {
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1.get(playerTown.getColoredTag()),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TAG_DESC2.get());
 
-        GuiItem _townIcon = ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
+        GuiItem townIconButton = ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
 
-        GuiItem _leaveTown = ItemBuilder.from(leaveTown).asGuiItem(event -> {
+        GuiItem leaveTownButton = ItemBuilder.from(leaveTown).asGuiItem(event -> {
             event.setCancelled(true);
             if (playerData.isTownLeader()){
                 SoundUtil.playSound(player, NOT_ALLOWED);
@@ -2107,7 +2107,7 @@ public class PlayerGUI implements IGUI {
 
         });
 
-        GuiItem _changeOwnershipTown = ItemBuilder.from(changeOwnershipTown).asGuiItem(event -> {
+        GuiItem changeOwnershipTownButton = ItemBuilder.from(changeOwnershipTown).asGuiItem(event -> {
 
             event.setCancelled(true);
 
@@ -2146,7 +2146,7 @@ public class PlayerGUI implements IGUI {
                 player.sendMessage(getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
         });
 
-        GuiItem _quitRegion = ItemBuilder.from(quitRegion).asGuiItem(event -> {
+        GuiItem quitRegionButton = ItemBuilder.from(quitRegion).asGuiItem(event -> {
             event.setCancelled(true);
             if (!playerTown.haveOverlord()) {
                 player.sendMessage(getTANString() + Lang.TOWN_NO_REGION.get());
@@ -2173,7 +2173,7 @@ public class PlayerGUI implements IGUI {
             }, remove -> openTownSettings(player));
         });
 
-        GuiItem _changeChunkColor = ItemBuilder.from(changeChunkColor).asGuiItem(event -> {
+        GuiItem changeChunkColorButton = ItemBuilder.from(changeChunkColor).asGuiItem(event -> {
             event.setCancelled(true);
 
             if(playerData.hasPermission(TOWN_ADMINISTRATOR)){
@@ -2201,20 +2201,20 @@ public class PlayerGUI implements IGUI {
 
 
 
-        gui.setItem(4, _townIcon);
-        gui.setItem(2,2, _leaveTown);
+        gui.setItem(4, townIconButton);
+        gui.setItem(2,2, leaveTownButton);
         gui.setItem(2,3, deleteButton);
-        gui.setItem(2,4, _changeOwnershipTown);
+        gui.setItem(2,4, changeOwnershipTownButton);
         gui.setItem(2,6, changeMessageButton);
         gui.setItem(2,7, toggleApplicationButton);
         gui.setItem(2,8, changeTownButton);
 
-        gui.setItem(3,2, _quitRegion);
+        gui.setItem(3,2, quitRegionButton);
 
         if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnablePlayerPrefix",false))
             gui.setItem(3,7, changeTagButton);
         if(TownsAndNations.getPlugin().isDynmapAddonLoaded())
-            gui.setItem(3,8, _changeChunkColor);
+            gui.setItem(3,8, changeChunkColorButton);
 
         gui.setItem(4,1, IGUI.createBackArrow(player, p -> dispatchPlayerTown(player)));
         gui.open(player);
