@@ -12,6 +12,7 @@ import org.leralix.tan.economy.*;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.api.PlaceHolderAPI;
+import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.api.TanApi;
@@ -134,7 +135,6 @@ public final class TownsAndNations extends JavaPlugin {
         SoundStorage.init();
         CustomItemManager.loadCustomItems();
 
-
         FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         allowColorCodes = mainConfig.getBoolean("EnablePlayerColorCode", false);
         allowTownTag = mainConfig.getBoolean("EnablePlayerPrefix",false);
@@ -148,6 +148,7 @@ public final class TownsAndNations extends JavaPlugin {
         TownDataStorage.loadStats();
         LandmarkStorage.load();
         PlannedAttackStorage.load();
+        NewsletterStorage.load();
 
 
         logger.log(Level.INFO,"[TaN] -Loading blocks data");
@@ -212,6 +213,7 @@ public final class TownsAndNations extends JavaPlugin {
         NewClaimedChunkStorage.save();
         LandmarkStorage.save();
         PlannedAttackStorage.save();
+        NewsletterStorage.save();
 
         try {
             Thread.sleep(50);

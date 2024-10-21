@@ -1274,7 +1274,6 @@ public class PlayerGUI implements IGUI {
                     }
 
                     townData.addPlayer(playerIterateData);
-
                     Player playerIterateOnline = playerIterate.getPlayer();
                     if(playerIterateOnline != null)
                         playerIterateOnline.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(townData.getName()));
@@ -1284,7 +1283,6 @@ public class PlayerGUI implements IGUI {
                             MINOR_GOOD);
 
                     updateAllScoreboardColor();
-
                     for (TownData allTown : TownDataStorage.getTownMap().values()){
                         allTown.removePlayerJoinRequest(playerIterateData.getID());
                     }
@@ -1296,7 +1294,7 @@ public class PlayerGUI implements IGUI {
                     }
                     townData.removePlayerJoinRequest(playerIterateData.getID());
                 }
-                NewsletterStorage.removePlayerJoinRequest(player, townData);
+                NewsletterStorage.removePlayerJoinRequest(playerIterateData, townData);
                 openTownMemberList(player);
             });
 
