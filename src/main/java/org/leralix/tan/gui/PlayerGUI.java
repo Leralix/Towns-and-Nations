@@ -179,7 +179,7 @@ public class PlayerGUI implements IGUI {
         int nRows = 6;
         Gui gui = IGUI.createChestGui("Newsletter",nRows);
 
-        ArrayList<GuiItem> guiItems = new ArrayList<>(NewsletterStorage.getNewsForPlayer(player));
+        ArrayList<GuiItem> guiItems = new ArrayList<>(NewsletterStorage.getNewsletterForPlayer(player));
 
 
         createIterator(gui, guiItems, 0, player,

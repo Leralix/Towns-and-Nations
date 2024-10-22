@@ -51,7 +51,7 @@ public class PlayerJoinRequestNL extends Newsletter {
     }
 
     @Override
-    public boolean shouldShowtoPlayer(Player player) {
+    public boolean shouldShowToPlayer(Player player) {
         TownData townData = TownDataStorage.get(townID);
         if(townData == null) {
             return false;

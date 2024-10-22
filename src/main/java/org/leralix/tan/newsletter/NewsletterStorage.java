@@ -24,11 +24,11 @@ public class NewsletterStorage {
 
     static Map<NewsletterType,NewsletterCategory> categories;
 
-    public static List<GuiItem> getNewsForPlayer(Player player) {
+    public static List<GuiItem> getNewsletterForPlayer(Player player) {
         List<GuiItem> newsletters = new ArrayList<>();
         for(NewsletterCategory category : categories.values()) {
             for(Newsletter newsletter : category.getAll()) {
-                if(newsletter.shouldShowtoPlayer(player))
+                if(newsletter.shouldShowToPlayer(player))
                     newsletters.add(newsletter.createGuiItem(player));
             }
         }
@@ -40,10 +40,6 @@ public class NewsletterStorage {
             categories.put(newsletter.getType(), new NewsletterCategory());
         categories.get(newsletter.getType()).add(newsletter);
         save();
-    }
-
-    public static NewsletterCategory getCategory(NewsletterType type) {
-        return categories.get(type);
     }
 
     public static void removePlayerJoinRequest(PlayerData playerData, TownData townData) {
@@ -59,9 +55,9 @@ public class NewsletterStorage {
             return;
 
         category.getAll().removeIf(newsletter ->
-                newsletter instanceof PlayerJoinRequestNL &&
-                        ((PlayerJoinRequestNL) newsletter).getPlayerID().equals(playerID) &&
-                        ((PlayerJoinRequestNL) newsletter).getTownID().equals(townID)
+            newsletter instanceof PlayerJoinRequestNL &&
+                    ((PlayerJoinRequestNL) newsletter).getPlayerID().equals(playerID) &&
+                    ((PlayerJoinRequestNL) newsletter).getTownID().equals(townID)
         );
     }
 
@@ -105,5 +101,16 @@ public class NewsletterStorage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static int getNbNewsletterForPlayer(PlayerData playerData){
+        int count = 0;
+        for(NewsletterCategory category : categories.values()) {
+            for(Newsletter newsletter : category.getAll()) {
+                if(newsletter.shouldShowToPlayer(playerData.getPlayer()))
+                    count++;
+            }
+        }
+        return count;
     }
 }
