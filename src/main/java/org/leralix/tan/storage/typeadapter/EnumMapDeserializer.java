@@ -22,6 +22,7 @@ public class EnumMapDeserializer<E extends Enum<E>, V> implements JsonDeserializ
         Map<E, V> resultMap = new HashMap<>();
         JsonObject jsonObject = json.getAsJsonObject();
 
+        System.out.println("Enum for deserialization: " + enumClass.getName());
         for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
             String key = entry.getKey();
             E enumValue;
