@@ -44,10 +44,7 @@ public class SetMoney extends SubCommand {
     @Override
     public void perform(Player player, String[] args) {
 
-        if(EconomyUtil.hasExternalEconomy()){
-            player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.get());
-            return;
-        }
+
 
         if (args.length < 3) {
             player.sendMessage("Not enough arguments");

@@ -1168,7 +1168,6 @@ public class PlayerGUI implements IGUI {
             GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(event.getClick() == ClickType.RIGHT){
-                    event.setCancelled(true);
 
                     PlayerData playerData = PlayerDataStorage.get(player);
                     PlayerData kickedPlayerData = PlayerDataStorage.get(playerIterate);
@@ -1198,7 +1197,6 @@ public class PlayerGUI implements IGUI {
                             confirmAction -> playerTown.kickPlayer(playerIterate),
                             p -> openTownMemberList(player));
                 }
-                openTownMemberList(player);
             });
 
             gui.setItem(i, playerButton);

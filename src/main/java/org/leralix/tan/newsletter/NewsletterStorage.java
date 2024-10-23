@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.storage.typeadapter.NewsletterAdapter;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -62,24 +63,31 @@ public class NewsletterStorage {
     }
 
     public static void load() {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Newsletter.class, new NewsletterAdapter())
+                .setPrettyPrinting()
+                .create();
+
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Newsletter.json");
-        if (file.exists()){
-            Reader reader;
-            try {
-                reader = new FileReader(file);
-            } catch (FileNotFoundException e) {
+        if (file.exists()) {
+            try (Reader reader = new FileReader(file)) {
+                Type type = new TypeToken<EnumMap<NewsletterType, NewsletterCategory>>() {}.getType();
+                categories = gson.fromJson(reader, type);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            Type type = new TypeToken<EnumMap<NewsletterType,NewsletterCategory>>() {}.getType();
-            categories = gson.fromJson(reader, type);
         }
-        if (categories == null)
+        if (categories == null) {
             categories = new EnumMap<>(NewsletterType.class);
+        }
     }
 
     public static void save() {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Newsletter.class, new NewsletterAdapter())
+                .setPrettyPrinting()
+                .create();
+
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Newsletter.json");
         file.getParentFile().mkdir();
 
@@ -88,16 +96,9 @@ public class NewsletterStorage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Writer writer;
-        try {
-            writer = new FileWriter(file, false);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        gson.toJson(categories, writer);
-        try {
-            writer.flush();
-            writer.close();
+
+        try (Writer writer = new FileWriter(file, false)) {
+            gson.toJson(categories, writer);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

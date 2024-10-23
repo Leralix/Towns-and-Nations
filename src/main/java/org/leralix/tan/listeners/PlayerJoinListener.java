@@ -33,12 +33,6 @@ public class PlayerJoinListener implements Listener {
 
 
         if(playerData.haveTown()){
-            if(!TownDataStorage.get(playerData).getPlayerJoinRequestSet().isEmpty() && playerData.hasPermission(INVITE_PLAYER)){
-                player.sendMessage(
-                        Lang.NEWSLETTER_STRING.get() +
-                        Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(TownDataStorage.get(playerData).getPlayerJoinRequestSet().size())
-                );
-            }
             playerData.updateCurrentAttack();
             if(TownsAndNations.getPlugin().townTagIsEnabled())
                 prefixUtil.addPrefix(player);
@@ -57,7 +51,7 @@ public class PlayerJoinListener implements Listener {
             TextComponent message = new TextComponent(Lang.CLICK_TO_OPEN_NEWSLETTER.get());
             message.setColor(ChatColor.GOLD);
             message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tan newsletter"));
-            player.spigot().sendMessage();
+            player.spigot().sendMessage(message);
         }
     }
 }

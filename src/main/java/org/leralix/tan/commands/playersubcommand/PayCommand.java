@@ -45,10 +45,6 @@ public class PayCommand extends SubCommand  {
 
     @Override
     public void perform(Player player, String[] args){
-        if(EconomyUtil.hasExternalEconomy()){
-            player.sendMessage(getTANString() + Lang.ECONOMY_EXISTS.get());
-            return;
-        }
         if (args.length < 3){
             player.sendMessage(getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
             player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
