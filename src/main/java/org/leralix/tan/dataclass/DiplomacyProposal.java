@@ -30,7 +30,7 @@ public class DiplomacyProposal {
         ITerritoryData askingTerritory = TerritoryUtil.getTerritory(askingTerritoryID);
 
         if(askingTerritory == null){
-            receivingTerritory.getDiplomacyProposals().remove(askingTerritoryID);
+            receivingTerritory.removeDiplomaticProposal(askingTerritoryID);
             return null;
         }
 
@@ -45,8 +45,8 @@ public class DiplomacyProposal {
             event.setCancelled(true);
             if (event.isLeftClick()) {
                 askingTerritory.setRelation(receivingTerritory, relationProposal);
+                receivingTerritory.removeDiplomaticProposal(askingTerritoryID);
             }
-            receivingTerritory.getDiplomacyProposals().remove(askingTerritoryID);
             PlayerGUI.openProposalMenu(player, territoryData, page, exitMenu);
         });
 

@@ -18,6 +18,8 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.newsletter.DiplomacyProposalNL;
+import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
@@ -46,7 +48,6 @@ public abstract class ITerritoryData {
     private Collection<String> currentAttackList = new ArrayList<>();
     private HashMap<String, Integer> availableClaims;
     private Map<String, DiplomacyProposal> diplomacyProposals;
-
     protected ITerritoryData(){
         availableClaims = new HashMap<>();
         diplomacyProposals = new HashMap<>();
@@ -60,6 +61,9 @@ public abstract class ITerritoryData {
     public abstract String getLeaderID();
     public abstract PlayerData getLeaderData();
     public abstract void setLeaderID(String leaderID);
+    public boolean isLeader(PlayerData playerData){
+        return isLeader(playerData.getID());
+    }
     public abstract boolean isLeader(String playerID);
     public abstract String getDescription();
     public abstract void setDescription(String newDescription);
@@ -89,14 +93,26 @@ public abstract class ITerritoryData {
     }
 
 
-    public Map<String, DiplomacyProposal> getDiplomacyProposals(){
+    private Map<String, DiplomacyProposal> getDiplomacyProposals(){
         if(diplomacyProposals == null)
             diplomacyProposals = new HashMap<>();
         return diplomacyProposals;
     }
-    public void receiveDiplomaticProposal(ITerritoryData proposingTerritory, TownRelation wantedRelation) {
-        getDiplomacyProposals().remove(proposingTerritory.getID());
+
+    public void removeDiplomaticProposal(ITerritoryData proposingTerritory){
+        removeDiplomaticProposal(proposingTerritory.getID());
+    }
+    public void removeDiplomaticProposal(String proposingTerritoryID){
+        getDiplomacyProposals().remove(proposingTerritoryID);
+    }
+    private void addDiplomaticProposal(ITerritoryData proposingTerritory, TownRelation wantedRelation){
         getDiplomacyProposals().put(proposingTerritory.getID(), new DiplomacyProposal(proposingTerritory.getID(), getID(), wantedRelation));
+        NewsletterStorage.registerNewsletter(new DiplomacyProposalNL(proposingTerritory.getID(), getID(), wantedRelation));
+    }
+
+    public void receiveDiplomaticProposal(ITerritoryData proposingTerritory, TownRelation wantedRelation) {
+        removeDiplomaticProposal(proposingTerritory);
+        addDiplomaticProposal(proposingTerritory, wantedRelation);
     }
 
     public Collection<DiplomacyProposal> getAllDiplomacyProposal(){
