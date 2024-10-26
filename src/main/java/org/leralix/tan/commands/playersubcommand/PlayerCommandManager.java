@@ -16,7 +16,7 @@ public class PlayerCommandManager extends CommandManager {
         addSubCommand(new SeeBalanceCommand());
         addSubCommand(new PayCommand());
         addSubCommand(new OpenGuiCommand());
-
+        addSubCommand(new OpenNewsletterCommand());
         addSubCommand(new AcceptRelationCommand());
         addSubCommand(new ChannelChatScopeCommand());
         addSubCommand(new AcceptRegionSubjugationCommand());

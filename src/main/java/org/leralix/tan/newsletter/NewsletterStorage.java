@@ -23,12 +23,12 @@ public class NewsletterStorage {
         throw new IllegalStateException("Utility class");
     }
 
-    static Map<NewsletterType,NewsletterCategory> categories;
+    static Map<NewsletterType,List<Newsletter>> categories;
 
     public static List<GuiItem> getNewsletterForPlayer(Player player) {
         List<GuiItem> newsletters = new ArrayList<>();
-        for(NewsletterCategory category : categories.values()) {
-            for(Newsletter newsletter : category.getAll()) {
+        for(List<Newsletter> category : categories.values()) {
+            for(Newsletter newsletter : category) {
                 if(newsletter.shouldShowToPlayer(player))
                     newsletters.add(newsletter.createGuiItem(player));
             }
@@ -38,7 +38,7 @@ public class NewsletterStorage {
 
     public static void registerNewsletter(Newsletter newsletter) {
         if(!categories.containsKey(newsletter.getType()))
-            categories.put(newsletter.getType(), new NewsletterCategory());
+            categories.put(newsletter.getType(), new ArrayList<>());
         categories.get(newsletter.getType()).add(newsletter);
         save();
     }
@@ -50,12 +50,12 @@ public class NewsletterStorage {
         removePlayerJoinRequest(player.getUniqueId().toString(), townData.getID());
     }
     public static void removePlayerJoinRequest(String playerID, String townID) {
-        NewsletterCategory category = categories.get(NewsletterType.PLAYER_TOWN_JOIN_REQUEST);
+        List<Newsletter> category = categories.get(NewsletterType.PLAYER_TOWN_JOIN_REQUEST);
 
         if (category == null)
             return;
 
-        category.getAll().removeIf(newsletter ->
+        category.removeIf(newsletter ->
             newsletter instanceof PlayerJoinRequestNL &&
                     ((PlayerJoinRequestNL) newsletter).getPlayerID().equals(playerID) &&
                     ((PlayerJoinRequestNL) newsletter).getTownID().equals(townID)
@@ -71,7 +71,7 @@ public class NewsletterStorage {
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Newsletter.json");
         if (file.exists()) {
             try (Reader reader = new FileReader(file)) {
-                Type type = new TypeToken<EnumMap<NewsletterType, NewsletterCategory>>() {}.getType();
+                Type type = new TypeToken<EnumMap<NewsletterType, List<Newsletter>>>() {}.getType();
                 categories = gson.fromJson(reader, type);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -98,16 +98,18 @@ public class NewsletterStorage {
         }
 
         try (Writer writer = new FileWriter(file, false)) {
-            gson.toJson(categories, writer);
+            Type type = new TypeToken<Map<NewsletterType, List<Newsletter>>>() {}.getType();
+            gson.toJson(categories, type, writer); // Spécifiez le type ici
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     public static int getNbNewsletterForPlayer(PlayerData playerData){
         int count = 0;
-        for(NewsletterCategory category : categories.values()) {
-            for(Newsletter newsletter : category.getAll()) {
+        for(List<Newsletter> category : categories.values()) {
+            for(Newsletter newsletter : category) {
                 if(newsletter.shouldShowToPlayer(playerData.getPlayer()))
                     count++;
             }

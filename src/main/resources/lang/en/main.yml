@@ -131,6 +131,8 @@ language:
   ADD_MONEY_COMMAND_SUCCESS: "Added §6+{0}✦§f to §3{1}"
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Open the town and nation GUI"
+  #Newsletter command
+  OPEN_NEWSLETTER_DESC: "Get the latest news"
   #Pay command
   PAY_COMMAND_DESC: "Give money to another player"
   PAY_MINIMUM_REQUIRED: "§cYou need to send a least 1✦"
