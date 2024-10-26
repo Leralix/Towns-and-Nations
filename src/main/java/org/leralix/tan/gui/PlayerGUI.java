@@ -180,7 +180,7 @@ public class PlayerGUI implements IGUI {
         Gui gui = IGUI.createChestGui("Newsletter",nRows);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>(NewsletterStorage.getNewsletterForPlayer(player));
-
+        System.out.println(guiItems);
 
         createIterator(gui, guiItems, 0, player,
                 p -> openPlayerProfileMenu(player),
