@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.newsletter.news.Newsletter;
+import org.leralix.tan.newsletter.news.PlayerJoinRequestNL;
 import org.leralix.tan.storage.typeadapter.NewsletterAdapter;
 
 import java.io.*;
@@ -43,6 +45,9 @@ public class NewsletterStorage {
         save();
     }
 
+    public static void removePlayerJoinRequest(PlayerJoinRequestNL playerJoinRequestNL) {
+        removePlayerJoinRequest(playerJoinRequestNL.getPlayerID(), playerJoinRequestNL.getTownID());
+    }
     public static void removePlayerJoinRequest(PlayerData playerData, TownData townData) {
         removePlayerJoinRequest(playerData.getID(), townData.getID());
     }
@@ -116,4 +121,6 @@ public class NewsletterStorage {
         }
         return count;
     }
+
+
 }

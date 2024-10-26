@@ -820,7 +820,10 @@ language:
   CLICK_TO_OPEN_NEWSLETTER: "[Click to open your newsletter]"
   NEWSLETTER_PLAYER_APPLICATION: "§fTown application from §3{0}"
   NEWSLETTER_PLAYER_APPLICATION_DESC1: "§3{0}§f has applied to join {1}"
-  NEWSLETTER_PLAYER_APPLICATION_DESC2: "§fLeft click to manage the application"
+  NEWSLETTER_PLAYER_APPLICATION_DESC2: "§fLeft click to manage applications"
+  NEWSLETTER_DIPLOMACY_PROPOSAL: "§fDiplomacy proposal from {0}"
+  NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1: "§fChange relation with {0}§f to {1}"
+  NEWSLETTER_DIPLOMACY_PROPOSAL_DESC2: "§fLeft click to manage diplomacy"
 
 
 

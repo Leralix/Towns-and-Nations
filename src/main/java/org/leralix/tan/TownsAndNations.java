@@ -265,7 +265,7 @@ public final class TownsAndNations extends JavaPlugin {
      * This method is called when the plugin is enabled.
      */
     private void checkForUpdate() {
-        if(TownsAndNations.getPlugin().getConfig().getBoolean("CheckForUpdate",true)){
+        if(!TownsAndNations.getPlugin().getConfig().getBoolean("CheckForUpdate",true)){
             getLogger().info("[TaN] Update check is disabled");
             latestVersion = CURRENT_VERSION;
             return;
@@ -318,7 +318,7 @@ public final class TownsAndNations extends JavaPlugin {
      * @return true if the plugin is up-to-date, false otherwise.
      */
     public boolean isLatestVersion(){
-        return CURRENT_VERSION.isOlderThan(latestVersion);
+        return !CURRENT_VERSION.isOlderThan(latestVersion);
     }
 
     /**

@@ -31,7 +31,7 @@ import org.leralix.tan.enums.*;
 import org.leralix.tan.listeners.ChatListener.Events.*;
 import org.leralix.tan.listeners.ChatListener.PlayerChatListenerStorage;
 import org.leralix.tan.newsletter.NewsletterStorage;
-import org.leralix.tan.newsletter.PlayerJoinRequestNL;
+import org.leralix.tan.newsletter.news.PlayerJoinRequestNL;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.storage.invitation.RegionInviteDataStorage;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
@@ -59,6 +59,8 @@ public class PlayerGUI implements IGUI {
     }
 
     public static void openMainMenu(Player player){
+        Gui gui = IGUI.createChestGui("Main menu",3);
+
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         boolean playerHaveTown = playerStat.haveTown();
@@ -69,9 +71,6 @@ public class PlayerGUI implements IGUI {
         if(playerHaveRegion){
             region = town.getOverlord();
         }
-
-
-        Gui gui = IGUI.createChestGui("Main menu",3);
 
         ItemStack kingdomIcon = HeadUtils.makeSkullB64(Lang.GUI_KINGDOM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=",
                 Lang.GUI_KINGDOM_ICON_DESC1.get());
@@ -125,7 +124,7 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
     }
 
-    private static void dispatchPlayerRegion(Player player) {
+    public static void dispatchPlayerRegion(Player player) {
         if(PlayerDataStorage.get(player).haveRegion()) {
             OpenRegionMenu(player);
         }
@@ -145,7 +144,7 @@ public class PlayerGUI implements IGUI {
 
     public static void openPlayerProfileMenu(Player player){
 
-        Gui gui = IGUI.createChestGui("Profile",3);
+        Gui gui = IGUI.createChestGui("Player profile",3);
 
 
         ItemStack playerHead = HeadUtils.getPlayerHead(Lang.GUI_YOUR_PROFILE.get(),player);
@@ -450,7 +449,6 @@ public class PlayerGUI implements IGUI {
 
         gui.open(player);
     }
-
     private static void openPlayerPropertyPlayerList(Player player, PropertyData propertyData, int page) {
 
         int nRows = 4;
@@ -498,7 +496,6 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
 
     }
-
     private static void openPlayerPropertyAddPlayer(Player player, PropertyData propertyData) {
         Gui gui = IGUI.createChestGui("Property " + propertyData.getName(),3);
 
@@ -528,7 +525,6 @@ public class PlayerGUI implements IGUI {
 
         gui.open(player);
     }
-
     public static void openPropertyBuyMenu(Player player, @NotNull PropertyData propertyData) {
         Gui gui = IGUI.createChestGui("Property " + propertyData.getName(),3);
 
@@ -624,7 +620,6 @@ public class PlayerGUI implements IGUI {
 
         gui.open(player);
     }
-    //Search town menu is separate from other : only sort towns and player can join them
     public static void openSearchTownMenu(Player player, int page) {
 
         Gui gui = IGUI.createChestGui("Town list | page " + (page + 1),6);
@@ -1145,11 +1140,11 @@ public class PlayerGUI implements IGUI {
     public static void openTownMemberList(Player player) {
 
         PlayerData playerStat = PlayerDataStorage.get(player);
-        TownData playerTown = TownDataStorage.get(playerStat);
+        TownData playerTown = playerStat.getTown();
 
         int rowSize = Math.min(playerTown.getPlayerIDList().size() / 9 + 3,6);
-
         Gui gui = IGUI.createChestGui("Town",rowSize);
+
 
 
 
@@ -1193,7 +1188,10 @@ public class PlayerGUI implements IGUI {
                     }
 
                     openConfirmMenu(player, Lang.CONFIRM_PLAYER_KICKED.get(playerIterate.getName()),
-                            confirmAction -> playerTown.kickPlayer(playerIterate),
+                            confirmAction -> {
+                                playerTown.kickPlayer(playerIterate);
+                                openTownMemberList(player);
+                            },
                             p -> openTownMemberList(player));
                 }
             });
@@ -1242,7 +1240,7 @@ public class PlayerGUI implements IGUI {
 
         int rowSize = Math.min(townData.getPlayerJoinRequestSet().size() / 9 + 3,6);
 
-        Gui gui = IGUI.createChestGui("Town",rowSize);
+        Gui gui = IGUI.createChestGui("Application",rowSize);
 
         HashSet<String> players = townData.getPlayerJoinRequestSet();
 
@@ -1320,7 +1318,7 @@ public class PlayerGUI implements IGUI {
     public static void openTownRanks(Player player) {
 
         int row = 3;
-        Gui gui = IGUI.createChestGui("Town",row);
+        Gui gui = IGUI.createChestGui("Ranks",row);
 
         PlayerData playerData = PlayerDataStorage.get(player);
         TownData town = TownDataStorage.get(playerData);
@@ -1374,7 +1372,7 @@ public class PlayerGUI implements IGUI {
         TownData townData = TownDataStorage.get(player);
         TownRank townRank = townData.getRank(rankID);
 
-        Gui gui = IGUI.createChestGui("Town - Rank " + townRank.getName(),4);
+        Gui gui = IGUI.createChestGui("Rank " + townRank.getName(),4);
 
 
         boolean isDefaultRank = Objects.equals(townRank.getID(), townData.getTownDefaultRankID());
@@ -1608,7 +1606,7 @@ public class PlayerGUI implements IGUI {
     }
     public static void openTownEconomy(Player player) {
 
-        Gui gui = IGUI.createChestGui("Town",4);
+        Gui gui = IGUI.createChestGui("Economy",4);
 
 
         TownData town = TownDataStorage.get(player);
@@ -2216,7 +2214,6 @@ public class PlayerGUI implements IGUI {
         gui.setItem(4,1, IGUI.createBackArrow(player, p -> dispatchPlayerTown(player)));
         gui.open(player);
     }
-
     public static void OpenTownChangeOwnershipPlayerSelect(Player player, TownData townData) {
 
         Gui gui = IGUI.createChestGui("Town",3);
@@ -2252,7 +2249,7 @@ public class PlayerGUI implements IGUI {
     }
     public static void openRelations(Player player, ITerritoryData territory, Consumer<Player> exitMenu) {
 
-        Gui gui = IGUI.createChestGui("Town",3);
+        Gui gui = IGUI.createChestGui("Relations - " + territory.getName(),3);
 
 
         ItemStack war = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
@@ -2337,7 +2334,7 @@ public class PlayerGUI implements IGUI {
 
     public static void openProposalMenu(Player player, ITerritoryData territoryData, int page, Consumer<Player> exitMenu){
 
-        Gui gui = IGUI.createChestGui("Town",6);
+        Gui gui = IGUI.createChestGui("Diplomatic proposals",6);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
@@ -2428,7 +2425,7 @@ public class PlayerGUI implements IGUI {
     }
     public static void openTownRelationModification(Player player, ITerritoryData territory, Action action, TownRelation wantedRelation, int page, Consumer<Player> exit) {
         int nRows = 6;
-        Gui gui = IGUI.createChestGui("Town - Relation",nRows);
+        Gui gui = IGUI.createChestGui("Relation - " + territory.getName(),nRows);
 
         List<String> relationListID = territory.getRelations().getTerritoriesIDWithRelation(wantedRelation);
         ItemStack decorativeGlass = IGUI.getDecorativeGlass(action);
@@ -2502,9 +2499,6 @@ public class PlayerGUI implements IGUI {
 
         gui.open(player);
     }
-
-
-
     public static void OpenTownChunk(Player player) {
         Gui gui = IGUI.createChestGui("Town",3);
 

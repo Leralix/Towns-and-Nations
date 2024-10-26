@@ -1,7 +1,8 @@
-package org.leralix.tan.newsletter;
+package org.leralix.tan.newsletter.news;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.leralix.tan.newsletter.NewsletterType;
 
 import java.util.Date;
 

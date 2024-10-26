@@ -11,6 +11,7 @@ import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.*;
 import org.leralix.tan.storage.stored.*;
@@ -931,6 +932,11 @@ public class TownData extends ITerritoryData {
     @Override
     public boolean canConquerChunk(ClaimedChunk2 chunk) {
         return false;
+    }
+
+    @Override
+    public void openMainMenu(Player player) {
+        PlayerGUI.dispatchPlayerTown(player);
     }
 }
 

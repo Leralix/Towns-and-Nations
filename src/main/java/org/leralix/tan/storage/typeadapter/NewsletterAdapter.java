@@ -5,16 +5,15 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.google.gson.JsonParseException;
-import org.leralix.tan.newsletter.DiplomacyProposalNL;
-import org.leralix.tan.newsletter.Newsletter;
-import org.leralix.tan.newsletter.PlayerJoinRequestNL;
+import org.leralix.tan.newsletter.news.DiplomacyProposalNL;
+import org.leralix.tan.newsletter.news.Newsletter;
+import org.leralix.tan.newsletter.news.PlayerJoinRequestNL;
 
 import java.io.IOException;
 
 public class NewsletterAdapter extends TypeAdapter<Newsletter> {
     @Override
     public void write(JsonWriter out, Newsletter value) throws IOException {
-        System.out.println("Enregistrement de la newsletter " + value.getClass().getSimpleName());
         out.beginObject();
         out.name("type").value(value.getClass().getSimpleName()); // Écrit le type de sous-classe
         out.name("data");

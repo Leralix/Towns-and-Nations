@@ -16,6 +16,7 @@ import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.TownRelations;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.RegionClaimedChunk;
+import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.TownRelation;
@@ -520,5 +521,10 @@ public class RegionData extends ITerritoryData {
         broadCastMessageWithSound(Lang.BROADCAST_PLAYER_REGION_DELETED.get(getLeaderData().getName(), getColoredName()), BAD);
         TeamUtils.updateAllScoreboardColor();
         RegionDataStorage.deleteRegion(this);
+    }
+
+    @Override
+    public void openMainMenu(Player player) {
+        PlayerGUI.dispatchPlayerRegion(player);
     }
 }

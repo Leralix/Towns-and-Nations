@@ -18,7 +18,7 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.newsletter.DiplomacyProposalNL;
+import org.leralix.tan.newsletter.news.DiplomacyProposalNL;
 import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
@@ -341,6 +341,8 @@ public abstract class ITerritoryData {
         player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_TOWN.get(amount));
         SoundUtil.playSound(player, MINOR_LEVEL_UP);
     }
+
+    public abstract void openMainMenu(Player player);
 
 
 }

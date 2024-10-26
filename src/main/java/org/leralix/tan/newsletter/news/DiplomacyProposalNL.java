@@ -1,15 +1,20 @@
-package org.leralix.tan.newsletter;
+package org.leralix.tan.newsletter.news;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.gui.PlayerGUI;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.newsletter.NewsletterType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
 
 public class DiplomacyProposalNL extends Newsletter {
@@ -26,12 +31,20 @@ public class DiplomacyProposalNL extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player) {
-        ItemStack icon = new ItemStack(Material.PAPER);
-        GuiItem guiItem = ItemBuilder.from(icon).setName("Diplomacy proposal").asGuiItem(event -> {
+        ITerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
+        ITerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
+        if(proposingTerritory == null || receivingTerritory == null)
+            return null;
+
+        ItemStack icon = HeadUtils.createCustomItemStack(Material.PAPER,
+                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL.get(proposingTerritory.getColoredName()),
+                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1.get(receivingTerritory.getColoredName(), wantedRelation.getColoredName()),
+                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC2.get());
+        return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);
+            PlayerGUI.openProposalMenu(player, receivingTerritory, 0, p -> receivingTerritory.openMainMenu(player));
         });
 
-        return guiItem;
     }
 
     @Override

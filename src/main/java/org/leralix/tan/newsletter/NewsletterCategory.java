@@ -1,5 +1,7 @@
 package org.leralix.tan.newsletter;
 
+import org.leralix.tan.newsletter.news.Newsletter;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
