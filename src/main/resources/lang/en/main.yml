@@ -824,6 +824,8 @@ language:
   NEWSLETTER_DIPLOMACY_PROPOSAL: "§fDiplomacy proposal from {0}"
   NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1: "§fChange relation with {0}§f to {1}"
   NEWSLETTER_DIPLOMACY_PROPOSAL_DESC2: "§fLeft click to manage diplomacy"
+  NEWSLETTER_SHOW_ALL: "§fShow all news"
+  NEWSLETTER_SHOW_ONLY_UNREAD: "§fShow only unread news"
 
 
 

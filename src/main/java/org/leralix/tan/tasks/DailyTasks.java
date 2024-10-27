@@ -8,6 +8,8 @@ import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.newsletter.NewsletterScope;
+import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
@@ -49,6 +51,7 @@ public class DailyTasks {
         PropertyRent();
 
         ClearOldTaxes();
+        NewsletterStorage.clearOldNewsletters();
         LandmarkStorage.generateAllRessources();
         ArchiveUtil.archiveFiles();
 

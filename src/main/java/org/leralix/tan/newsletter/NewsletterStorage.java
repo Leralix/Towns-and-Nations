@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class NewsletterStorage {
 
@@ -27,12 +28,12 @@ public class NewsletterStorage {
 
     static Map<NewsletterType,List<Newsletter>> categories;
 
-    public static List<GuiItem> getNewsletterForPlayer(Player player) {
+    public static List<GuiItem> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onclick){
         List<GuiItem> newsletters = new ArrayList<>();
         for(List<Newsletter> category : categories.values()) {
             for(Newsletter newsletter : category) {
-                if(newsletter.shouldShowToPlayer(player))
-                    newsletters.add(newsletter.createGuiItem(player));
+                if(newsletter.shouldShowToPlayer(player, scope))
+                    newsletters.add(newsletter.createGuiItem(player, onclick));
             }
         }
         return newsletters;
@@ -65,6 +66,17 @@ public class NewsletterStorage {
                     ((PlayerJoinRequestNL) newsletter).getPlayerID().equals(playerID) &&
                     ((PlayerJoinRequestNL) newsletter).getTownID().equals(townID)
         );
+    }
+
+    public static int getNbUnreadNewsletterForPlayer(PlayerData playerData){
+        int count = 0;
+        for(List<Newsletter> category : categories.values()) {
+            for(Newsletter newsletter : category) {
+                if(newsletter.shouldShowToPlayer(playerData.getPlayer(), NewsletterScope.SHOW_ONLY_UNREAD))
+                    count++;
+            }
+        }
+        return count;
     }
 
     public static void load() {
@@ -111,16 +123,8 @@ public class NewsletterStorage {
 
     }
 
-    public static int getNbNewsletterForPlayer(PlayerData playerData){
-        int count = 0;
-        for(List<Newsletter> category : categories.values()) {
-            for(Newsletter newsletter : category) {
-                if(newsletter.shouldShowToPlayer(playerData.getPlayer()))
-                    count++;
-            }
-        }
-        return count;
+
+    public static void clearOldNewsletters() {
+
     }
-
-
 }

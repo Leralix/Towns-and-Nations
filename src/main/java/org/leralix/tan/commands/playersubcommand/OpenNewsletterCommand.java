@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.commands.SubCommand;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.newsletter.NewsletterScope;
 
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +41,7 @@ public class OpenNewsletterCommand extends SubCommand {
             player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
             return;
         }
-        PlayerGUI.openNewsletter(player,0);
+        PlayerGUI.openNewsletter(player,0, NewsletterScope.SHOW_ONLY_UNREAD);
 
     }
 

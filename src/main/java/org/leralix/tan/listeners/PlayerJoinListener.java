@@ -1,11 +1,8 @@
 package org.leralix.tan.listeners;
 
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.milkbowl.vault.chat.Chat;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,10 +12,8 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.prefixUtil;
 
-import static org.leralix.tan.enums.TownRolePermission.INVITE_PLAYER;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 import static org.leralix.tan.utils.TeamUtils.setIndividualScoreBoard;
 
@@ -45,7 +40,7 @@ public class PlayerJoinListener implements Listener {
             player.sendMessage(getTANString() + Lang.NEW_VERSION_AVAILABLE_2.get());
         }
 
-        int nbNewsletterForPlayer = NewsletterStorage.getNbNewsletterForPlayer(playerData);
+        int nbNewsletterForPlayer = NewsletterStorage.getNbUnreadNewsletterForPlayer(playerData);
         if (nbNewsletterForPlayer > 0) {
             player.sendMessage(Lang.NEWSLETTER_STRING.get() + Lang.NEWSLETTER_GREETING.get(nbNewsletterForPlayer));
             TextComponent message = new TextComponent(Lang.CLICK_TO_OPEN_NEWSLETTER.get());
