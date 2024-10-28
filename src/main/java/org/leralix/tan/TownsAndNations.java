@@ -13,6 +13,7 @@ import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.api.PlaceHolderAPI;
 import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.api.TanApi;
@@ -134,6 +135,7 @@ public final class TownsAndNations extends JavaPlugin {
         MobChunkSpawnStorage.init();
         SoundStorage.init();
         CustomItemManager.loadCustomItems();
+        ClaimBlacklistStorage.init();
 
         FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         allowColorCodes = mainConfig.getBoolean("EnablePlayerColorCode", false);

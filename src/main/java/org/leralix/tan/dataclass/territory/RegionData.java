@@ -20,6 +20,7 @@ import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.*;
 import org.leralix.tan.utils.config.ConfigTag;
@@ -245,6 +246,11 @@ public class RegionData extends ITerritoryData {
         PlayerData playerData = PlayerDataStorage.get(player);
         TownData townData = TownDataStorage.get(player);
         RegionData regionData = townData.getOverlord();
+
+        if(ClaimBlacklistStorage.cannotBeClaimed(chunk)){
+            player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
+            return;
+        }
 
         //Not leader of the region
         if(!playerData.isRegionLeader()){

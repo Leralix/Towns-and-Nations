@@ -14,6 +14,7 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.*;
+import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.listeners.ChatListener.PlayerChatListenerStorage;
 import org.leralix.tan.utils.*;
@@ -546,6 +547,12 @@ public class TownData extends ITerritoryData {
     public void claimChunk(Player player, Chunk chunk) {
 
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
+
+        if(ClaimBlacklistStorage.cannotBeClaimed(chunk)){
+            player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
+            return;
+        }
+
         if(!playerStat.hasPermission(TownRolePermission.CLAIM_CHUNK)){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             return;

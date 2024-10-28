@@ -777,7 +777,8 @@ public enum Lang {
     NEWSLETTER_DIPLOMACY_PROPOSAL_DESC2,
     NEWSLETTER_SHOW_ALL,
     NEWSLETTER_SHOW_ONLY_UNREAD,
-    NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ;
+    NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ,
+    CHUNK_IS_BLACKLISTED;
 
 
     private static final Map<Lang, String> translations = new HashMap<>();

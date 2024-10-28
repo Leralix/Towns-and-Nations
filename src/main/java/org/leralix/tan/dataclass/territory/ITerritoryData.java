@@ -20,6 +20,7 @@ import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.newsletter.news.DiplomacyProposalNL;
 import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;

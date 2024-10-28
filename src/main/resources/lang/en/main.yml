@@ -826,6 +826,9 @@ language:
   NEWSLETTER_DIPLOMACY_PROPOSAL_DESC2: "§fLeft click to manage diplomacy"
   NEWSLETTER_SHOW_ALL: "§fShow all news"
   NEWSLETTER_SHOW_ONLY_UNREAD: "§fShow only unread news"
+  NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ: "§fRight click to mark as read"
+  #Chunk blacklist
+  CHUNK_IS_BLACKLISTED: "§cYou cannot claim this chunk"
 
 
 
