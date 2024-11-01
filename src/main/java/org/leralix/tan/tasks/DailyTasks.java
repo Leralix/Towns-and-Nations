@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.dataclass.*;
+import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.TownsAndNations;
@@ -71,16 +72,15 @@ public class DailyTasks {
 
         for(RegionData regionData: RegionDataStorage.getAllRegions()){
 
-            for(String townID : regionData.getSubjectsID()){
-                TownData town = TownDataStorage.get(townID);
+            for(ITerritoryData town : regionData.getVassals()){
                 if(town == null) continue;
                 if(town.getBalance() < regionData.getTaxRate()){
-                    regionData.getTaxHistory().add(town.getName(), townID, -1);
+                    regionData.getTaxHistory().add(town.getName(), town.getID(), -1);
                     continue;
                 }
                 town.removeFromBalance(regionData.getTaxRate());
                 regionData.addBalance(regionData.getTaxRate());
-                regionData.getTaxHistory().add(town.getName(), townID, regionData.getTaxRate());
+                regionData.getTaxHistory().add(town.getName(), town.getID(), regionData.getTaxRate());
 
             }
         }

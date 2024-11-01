@@ -232,10 +232,6 @@ public class RegionData extends ITerritoryData {
         return capitalID;
     }
 
-    public TownData getCapital() {
-        return TownDataStorage.get(capitalID);
-    }
-
     @Override
     public boolean haveOverlord() {
         return nationID != null;
@@ -295,10 +291,6 @@ public class RegionData extends ITerritoryData {
 
     public void setTaxRate(Integer taxRate) {
         this.taxRate = taxRate;
-    }
-
-    public List<String> getSubjectsID() {
-        return townsInRegion;
     }
 
     public List<ITerritoryData> getSubjects() {
@@ -433,6 +425,7 @@ public class RegionData extends ITerritoryData {
         townsInRegion.remove(townID);
     }
 
+
     public int getNumberOfClaimedChunk() {
         int count = 0;
         for (ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getClaimedChunksMap().values()) {
@@ -532,5 +525,32 @@ public class RegionData extends ITerritoryData {
     @Override
     public void openMainMenu(Player player) {
         PlayerGUI.dispatchPlayerRegion(player);
+    }
+
+    @Override
+    public boolean canHaveVassals() {
+        return true;
+    }
+
+    @Override
+    public boolean canHaveOverlord() {
+        return true;
+    }
+
+    @Override
+    public List<String> getVassalsID() {
+        return townsInRegion;
+    }
+
+    @Override
+    public boolean isVassal(String territoryID) {
+        return townsInRegion.contains(territoryID);
+    }
+
+    @Override
+    public boolean isCapitalOf(String territoryID) {
+        if(!hasNation())
+            return false;
+        return getOverlord().getCapitalID().equals(territoryID);
     }
 }

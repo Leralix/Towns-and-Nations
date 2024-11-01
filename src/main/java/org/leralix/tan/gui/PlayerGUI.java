@@ -13,7 +13,6 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
@@ -25,19 +24,19 @@ import org.leralix.tan.dataclass.wars.wargoals.ConquerWarGoal;
 import org.leralix.tan.dataclass.wars.wargoals.LiberateWarGoal;
 import org.leralix.tan.dataclass.wars.wargoals.SubjugateWarGoal;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.enums.*;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.*;
 import org.leralix.tan.listeners.ChatListener.Events.*;
 import org.leralix.tan.listeners.ChatListener.PlayerChatListenerStorage;
 import org.leralix.tan.newsletter.NewsletterScope;
 import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.newsletter.news.PlayerJoinRequestNL;
-import org.leralix.tan.storage.stored.*;
-import org.leralix.tan.storage.invitation.RegionInviteDataStorage;
-import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.PlayerSelectPropertyPositionStorage;
+import org.leralix.tan.storage.invitation.RegionInviteDataStorage;
+import org.leralix.tan.storage.legacy.UpgradeStorage;
+import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.*;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
@@ -136,7 +135,7 @@ public class PlayerGUI implements IGUI {
 
     public static void dispatchPlayerTown(Player player){
         if(PlayerDataStorage.get(player).haveTown()){
-            openTownMenuHaveTown(player);
+            openTownMenu(player);
         }
         else{
             openNoTownMenu(player);
@@ -681,7 +680,7 @@ public class PlayerGUI implements IGUI {
 
         gui.open(player);
     }
-    public static void openTownMenuHaveTown(Player player) {
+    public static void openTownMenu(Player player) {
         int nRows = 4;
         Gui gui = IGUI.createChestGui("Town",nRows);
 
@@ -722,6 +721,9 @@ public class PlayerGUI implements IGUI {
         ItemStack war = HeadUtils.makeSkullB64(Lang.GUI_ATTACK_ICON.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjVkZTRmZjhiZTcwZWVlNGQxMDNiMWVlZGY0NTRmMGFiYjlmMDU2OGY1ZjMyNmVjYmE3Y2FiNmE0N2Y5YWRlNCJ9fX0=",
                 Lang.GUI_ATTACK_ICON_DESC1.get());
 
+        ItemStack hierarchy = HeadUtils.makeSkullB64(Lang.GUI_HIERARCHY_MENU.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
+                Lang.GUI_HIERARCHY_MENU_DESC1.get());
+
         GuiItem townIconButton = ItemBuilder.from(townIcon).asGuiItem(event -> {
             event.setCancelled(true);
 
@@ -737,7 +739,7 @@ public class PlayerGUI implements IGUI {
 
             else {
                 playerTown.setIconMaterial(itemMaterial);
-                openTownMenuHaveTown(player);
+                openTownMenu(player);
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get());
             }
         });
@@ -755,7 +757,7 @@ public class PlayerGUI implements IGUI {
         });
         GuiItem browseMenu = ItemBuilder.from(otherTownIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            browseTerritory(player, playerTown, BrowseScope.TOWNS, p -> openTownMenuHaveTown(player), 0);
+            browseTerritory(player, playerTown, BrowseScope.TOWNS, p -> openTownMenu(player), 0);
         });
         GuiItem relationButton = ItemBuilder.from(diplomacy).asGuiItem(event -> {
             event.setCancelled(true);
@@ -781,6 +783,11 @@ public class PlayerGUI implements IGUI {
             event.setCancelled(true);
             openWarMenu(player, playerTown, p -> dispatchPlayerTown(player), 0);
         });
+        GuiItem hierarchyButton = ItemBuilder.from(hierarchy).asGuiItem(event -> {
+            event.setCancelled(true);
+            openHierarchyMenu(player, playerTown);
+        });
+
 
         gui.setItem(4, townIconButton);
         gui.setItem(2,2, treasuryButton);
@@ -793,6 +800,7 @@ public class PlayerGUI implements IGUI {
         gui.setItem(3,2,propertyButton);
         gui.setItem(3,3,landmarksButton);
         gui.setItem(3,4,warButton);
+        gui.setItem(3,5,hierarchyButton);
 
         gui.setItem(nRows,1, IGUI.createBackArrow(player, p -> openMainMenu(player)));
 
@@ -1008,7 +1016,7 @@ public class PlayerGUI implements IGUI {
         Gui gui = IGUI.createChestGui("War on " + createAttackData.getMainDefender().getName(),6);
 
         ITerritoryData territoryToAttack = createAttackData.getMainDefender();
-        for(ITerritoryData territoryData : territoryToAttack.getSubjects()){
+        for(ITerritoryData territoryData : territoryToAttack.getVassals()){
             if(territoryData.isCapital()){
                 continue;
             }
@@ -1103,7 +1111,7 @@ public class PlayerGUI implements IGUI {
             landmarkGui.add(landmarkButton);
         }
         GuiUtil.createIterator(gui, landmarkGui, page, player,
-                p -> openTownMenuHaveTown(player),
+                p -> openTownMenu(player),
                 p -> openOwnedLandmark(player, townData, page + 1),
                 p -> openOwnedLandmark(player, townData, page - 1)
         );
@@ -2759,8 +2767,10 @@ public class PlayerGUI implements IGUI {
 
         ItemStack treasury = HeadUtils.makeSkullB64(Lang.GUI_TOWN_TREASURY_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
                 Lang.GUI_TOWN_TREASURY_ICON_DESC1.get());
-        ItemStack vassals = HeadUtils.makeSkullB64(Lang.GUI_REGION_TOWN_LIST.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
-                Lang.GUI_REGION_TOWN_LIST_DESC1.get());
+
+        ItemStack hierarchy = HeadUtils.makeSkullB64(Lang.GUI_HIERARCHY_MENU.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
+                Lang.GUI_HIERARCHY_MENU_DESC1.get());
+
         ItemStack manageLaws = HeadUtils.makeSkullURL(Lang.GUI_MANAGE_LAWS.get() ,"https://textures.minecraft.net/texture/1818d1cc53c275c294f5dfb559174dd931fc516a85af61a1de256aed8bca5e7",
                 Lang.GUI_MANAGE_LAWS_DESC1.get());
         ItemStack browse = HeadUtils.makeSkullB64(Lang.GUI_OTHER_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=",
@@ -2794,13 +2804,9 @@ public class PlayerGUI implements IGUI {
             event.setCancelled(true);
             openRegionEconomy(player);
         });
-        GuiItem manageLawsButton = ItemBuilder.from(manageLaws).asGuiItem(event -> {
+        GuiItem hierarchyButton = ItemBuilder.from(hierarchy).asGuiItem(event -> {
             event.setCancelled(true);
-            openRegionLaws(player);
-        });
-        GuiItem vassalsButton = ItemBuilder.from(vassals).asGuiItem(event -> {
-            event.setCancelled(true);
-            openTownInRegion(player);
+            openHierarchyMenu(player, playerRegion);
         });
         GuiItem browseButton = ItemBuilder.from(browse).asGuiItem(event -> {
             event.setCancelled(true);
@@ -2822,8 +2828,7 @@ public class PlayerGUI implements IGUI {
 
         gui.setItem(1,5, regionButton);
         gui.setItem(2,2, treasuryButton);
-        gui.setItem(2,3, vassalsButton);
-        //gui.setItem(2,4, manageLawsButton);
+        gui.setItem(2,3, hierarchyButton);
         gui.setItem(2,5, browseButton);
         gui.setItem(2,6, warIcon);
         gui.setItem(2,7, diplomacyButton);
@@ -2834,21 +2839,12 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
     }
 
-    private static void openRegionLaws(Player player) {
-        Gui gui = IGUI.createChestGui("Laws",3);
-
-
-
-        gui.open(player);
-    }
-
-    private static void openTownInRegion(Player player){
+    private static void openVassalsList(Player player, ITerritoryData territoryData){
 
         Gui gui = IGUI.createChestGui("Region",4);
         PlayerData playerData = PlayerDataStorage.get(player);
-        RegionData regionData = RegionDataStorage.get(player);
 
-        for (ITerritoryData townData : regionData.getSubjects()){
+        for (ITerritoryData townData : territoryData.getVassals()){
             ItemStack townIcon = townData.getIconWithInformations();
 
             GuiItem townInfo = ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
@@ -2865,7 +2861,7 @@ public class PlayerGUI implements IGUI {
                 player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
                 return;
             }
-            openRegionTownInteraction(player, Action.ADD);
+            openRegionTownInteraction(player, territoryData, Action.ADD);
         });
         GuiItem removeButton = ItemBuilder.from(removeTown).asGuiItem(event -> {
             event.setCancelled(true);
@@ -2873,27 +2869,26 @@ public class PlayerGUI implements IGUI {
                 player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
                 return;
             }
-            openRegionTownInteraction(player, Action.REMOVE);
+            openRegionTownInteraction(player, territoryData, Action.REMOVE);
         });
 
 
-        gui.setItem(4,1, IGUI.createBackArrow(player, p -> openRegionMenu(player)));
+        gui.setItem(4,1, IGUI.createBackArrow(player, p -> openHierarchyMenu(player, territoryData)));
         gui.setItem(4,2, addButton);
         gui.setItem(4,3, removeButton);
         gui.open(player);
     }
-    private static void openRegionTownInteraction(Player player, Action action) {
+    private static void openRegionTownInteraction(Player player, ITerritoryData territoryData,  Action action) {
 
         Gui gui = IGUI.createChestGui("Region", 4);
-        RegionData regionData = RegionDataStorage.get(player);
 
         if(action == Action.ADD) {
             for (TownData townData : TownDataStorage.getTownMap().values()) {
 
-                if(regionData.isTownInRegion(townData))
+                if(territoryData.isVassal(townData))
                     continue;
 
-                ItemStack townIcon = townData.getIconWithInformationAndRelation(regionData);
+                ItemStack townIcon = townData.getIconWithInformationAndRelation(territoryData);
                 HeadUtils.addLore(townIcon, Lang.GUI_REGION_INVITE_TOWN_DESC1.get());
 
                 GuiItem townButton = ItemBuilder.from(townIcon).asGuiItem(event -> {
@@ -2907,32 +2902,32 @@ public class PlayerGUI implements IGUI {
                     if(townLeader == null)
                         return;
 
-                    RegionInviteDataStorage.addInvitation(townData.getLeaderID(), regionData.getID());
+                    RegionInviteDataStorage.addInvitation(townData.getLeaderID(), territoryData.getID());
 
-                    townLeader.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(regionData.getName(), townData.getName()));
-                    ChatUtils.sendClickableCommand(townLeader, getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(), "tan acceptregion " + regionData.getID());
+                    townLeader.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_1.get(territoryData.getName(), townData.getName()));
+                    ChatUtils.sendClickableCommand(townLeader, getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_RECEIVED_2.get(), "tan acceptregion " + territoryData.getID());
 
-                    player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS.get(townLeader.getName(), regionData.getName()));
+                    player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS.get(townLeader.getName(), territoryData.getName()));
                     player.closeInventory();
                 });
                 gui.addItem(townButton);
             }
         }
         else if (action == Action.REMOVE){
-            for (ITerritoryData townData : regionData.getSubjects()){
-                ItemStack townIcon = townData.getIconWithInformationAndRelation(regionData);
+            for (ITerritoryData townData : territoryData.getVassals()){
+                ItemStack townIcon = townData.getIconWithInformationAndRelation(territoryData);
                 HeadUtils.addLore(townIcon, Lang.GUI_REGION_INVITE_TOWN_DESC1.get());
 
                 GuiItem townButton = ItemBuilder.from(townIcon).asGuiItem(event -> {
                     event.setCancelled(true);
 
-                    if(regionData.getCapitalID().equals(townData.getID())){
+                    if(townData.isCapitalOf(territoryData)){
                         player.sendMessage(getTANString() + Lang.CANT_KICK_REGIONAL_CAPITAL.get(townData.getName()));
                         return;
                     }
-                    regionData.broadCastMessageWithSound(Lang.GUI_REGION_KICK_TOWN_BROADCAST.get(townData.getName()), BAD);
+                    territoryData.broadCastMessageWithSound(Lang.GUI_REGION_KICK_TOWN_BROADCAST.get(townData.getName()), BAD);
                     townData.removeOverlord();
-                    regionData.removeSubject(townData);
+                    territoryData.removeSubject(townData);
                     player.closeInventory();
                 });
                 gui.addItem(townButton);
@@ -2940,7 +2935,7 @@ public class PlayerGUI implements IGUI {
         }
 
 
-        gui.setItem(4,1, IGUI.createBackArrow(player, p -> openTownInRegion(player)));
+        gui.setItem(4,1, IGUI.createBackArrow(player, p -> openVassalsList(player, territoryData)));
         gui.open(player);
     }
     private static void openRegionSettings(Player player) {
@@ -3261,7 +3256,7 @@ public class PlayerGUI implements IGUI {
 
             }
 
-            GuiUtil.createIterator(gui,guiItems,page, player,
+            GuiUtil.createIterator(gui, guiItems, page, player,
                     p -> openRegionSettings(player),
                     p -> openRegionChangeOwnership(player,page + 1),
                     p -> openRegionChangeOwnership(player,page - 1));
@@ -3449,6 +3444,150 @@ public class PlayerGUI implements IGUI {
 
         gui.setItem(2,4,confirmButton);
         gui.setItem(2,6,cancelButton);
+
+        gui.open(player);
+    }
+
+    public static void openHierarchyMenu(Player player, ITerritoryData territoryData) {
+        Gui gui = IGUI.createChestGui("Vassals", 3);
+
+        PlayerData playerData = PlayerDataStorage.get(player);
+        GuiItem decorativeGlass = IGUI.getUnnamedItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
+
+
+        GuiItem overlordInfo;
+        if(territoryData.canHaveOverlord()){
+            GuiItem overlordButton;
+            if(territoryData.haveOverlord()){
+                ITerritoryData overlord = territoryData.getOverlord();
+                ItemStack overlordIcon = overlord.getIcon();
+                ItemStack declareIndependence = HeadUtils.createCustomItemStack(Material.SPRUCE_DOOR, Lang.GUI_OVERLORD_DECLARE_INDEPENDENCE.get(),
+                        Lang.GUI_OVERLORD_DECLARE_INDEPENDENCE_DESC1.get());
+
+                overlordInfo = ItemBuilder.from(overlordIcon).asGuiItem(event -> event.setCancelled(true));
+                overlordButton = ItemBuilder.from(declareIndependence).asGuiItem(event -> {
+                    event.setCancelled(true);
+                    if (!territoryData.haveOverlord()) {
+                        player.sendMessage(getTANString() + Lang.TERRITORY_NO_OVERLORD.get());
+                        openHierarchyMenu(player, territoryData); //This should trigger only if town have been kicked from region during the menu
+                        return;
+                    }
+                    ITerritoryData overlordData = territoryData.getOverlord();
+
+                    if (territoryData.isCapital()){
+                        player.sendMessage(getTANString() + Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_CAPITAL.get(overlord.getColoredName()));
+                        return;
+                    }
+
+                    openConfirmMenu(player, Lang.GUI_CONFIRM_DECLARE_INDEPENDENCE.get(territoryData.getColoredName(), overlord.getColoredName()), confirm -> {
+                        overlordData.removeSubject(territoryData);
+                        territoryData.removeOverlord();
+                        territoryData.broadCastMessageWithSound(Lang.TOWN_BROADCAST_TOWN_LEFT_REGION.get(territoryData.getName(), overlordData.getName()), BAD);
+                        overlordData.broadCastMessage(Lang.REGION_BROADCAST_TOWN_LEFT_REGION.get(territoryData.getName()));
+
+                        player.closeInventory();
+                    },remove -> openHierarchyMenu(player, territoryData));
+                });
+            }
+            else {
+                ItemStack noCurrentOverlord = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET, Lang.OVERLORD_GUI.get(),
+                        Lang.NO_OVERLORD.get());
+                overlordInfo = ItemBuilder.from(noCurrentOverlord).asGuiItem(event -> event.setCancelled(true));
+
+                ItemStack joinOverlord = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK, Lang.BROWSE_OVERLORD_INVITATION.get(),
+                        Lang.BROWSE_OVERLORD_INVITATION_DESC1.get(territoryData.getHierarchyProposal().getNumberOfProposals()));
+
+                overlordButton = ItemBuilder.from(joinOverlord).asGuiItem(event -> {
+                    event.setCancelled(true);
+                    openChooseOverlordMenu(player, territoryData,0);
+                });
+            }
+            gui.setItem(2,2, overlordButton);
+        }
+        else{
+            ItemStack noOverlordItem = HeadUtils.createCustomItemStack(Material.IRON_BARS, Lang.OVERLORD_GUI.get(),
+                    Lang.CANNOT_HAVE_OVERLORD.get());
+            overlordInfo = ItemBuilder.from(noOverlordItem).asGuiItem(event -> event.setCancelled(true));
+
+            gui.setItem(2,2, overlordInfo);
+            gui.setItem(2,3, overlordInfo);
+            gui.setItem(2,4, overlordInfo);
+
+        }
+        gui.setItem(1,3, overlordInfo);
+
+        GuiItem vassalInfo;
+        if(territoryData.canHaveVassals()){
+            ItemStack vassalIcon = HeadUtils.createCustomItemStack(Material.GOLDEN_SWORD, Lang.VASSAL_GUI.get(),
+                    Lang.VASSAL_GUI_DESC1.get(territoryData.getColoredName(), territoryData.getVassalCount()));
+
+            ItemStack vassals = HeadUtils.makeSkullB64(Lang.GUI_REGION_TOWN_LIST.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
+                    Lang.GUI_REGION_TOWN_LIST_DESC1.get());
+            GuiItem vassalsButton = ItemBuilder.from(vassals).asGuiItem(event -> {
+                event.setCancelled(true);
+                openVassalsList(player, territoryData);
+            });
+
+
+
+            vassalInfo = ItemBuilder.from(vassalIcon).asGuiItem(event -> event.setCancelled(true));
+
+            gui.setItem(2,6, vassalsButton);
+
+
+        }
+        else {
+            ItemStack noVassalsIcon = HeadUtils.createCustomItemStack(Material.IRON_BARS, Lang.VASSAL_GUI.get(),
+                    Lang.CANNOT_HAVE_VASSAL.get());
+            vassalInfo = ItemBuilder.from(noVassalsIcon).asGuiItem(event -> event.setCancelled(true));
+            gui.setItem(2,6, vassalInfo);
+            gui.setItem(2,7, vassalInfo);
+            gui.setItem(2,8, vassalInfo);
+        }
+        gui.setItem(1,7, vassalInfo);
+
+
+
+
+
+
+
+
+        gui.setItem(1,1, decorativeGlass);
+        gui.setItem(1,2, decorativeGlass);
+        gui.setItem(1,4, decorativeGlass);
+        gui.setItem(1,5, decorativeGlass);
+        gui.setItem(1,6, decorativeGlass);
+        gui.setItem(1,8, decorativeGlass);
+        gui.setItem(1,9, decorativeGlass);
+        gui.setItem(2,5, decorativeGlass);
+        gui.setItem(2,1, decorativeGlass);
+        gui.setItem(2,9, decorativeGlass);
+        gui.setItem(3,1, decorativeGlass);
+        gui.setItem(3,2, decorativeGlass);
+        gui.setItem(3,3, decorativeGlass);
+        gui.setItem(3,4, decorativeGlass);
+        gui.setItem(3,5, decorativeGlass);
+        gui.setItem(3,6, decorativeGlass);
+        gui.setItem(3,7, decorativeGlass);
+        gui.setItem(3,8, decorativeGlass);
+        gui.setItem(3,9, decorativeGlass);
+
+
+        gui.setItem(3,1, IGUI.createBackArrow(player, p -> territoryData.openMainMenu(player)));
+        gui.open(player);
+    }
+
+    private static void openChooseOverlordMenu(Player player, ITerritoryData territoryData, int page) {
+        Gui gui = IGUI.createChestGui("Choose Overlord", 3);
+
+        List<GuiItem> guiItems = territoryData.getHierarchyProposal().getAllProposals();
+
+        createIterator(gui, guiItems, page, player,
+                p -> openHierarchyMenu(player, territoryData),
+                p -> openChooseOverlordMenu(player, territoryData,page + 1),
+                p -> openChooseOverlordMenu(player, territoryData, page - 1));
+
 
         gui.open(player);
     }

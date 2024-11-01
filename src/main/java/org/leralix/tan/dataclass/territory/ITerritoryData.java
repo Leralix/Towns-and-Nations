@@ -7,10 +7,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.leralix.tan.dataclass.ClaimedChunkSettings;
-import org.leralix.tan.dataclass.DiplomacyProposal;
-import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.TownRelations;
+import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.wars.CurrentAttacks;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
@@ -20,13 +17,13 @@ import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.newsletter.news.DiplomacyProposalNL;
 import org.leralix.tan.newsletter.NewsletterStorage;
-import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.utils.ChatUtils;
 import org.leralix.tan.utils.SoundUtil;
 import org.leralix.tan.utils.TeamUtils;
+import org.leralix.tan.utils.TerritoryUtil;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -49,9 +46,11 @@ public abstract class ITerritoryData {
     private Collection<String> currentAttackList = new ArrayList<>();
     private HashMap<String, Integer> availableClaims;
     private Map<String, DiplomacyProposal> diplomacyProposals;
+    private VassalProposal overlordProposal;
     protected ITerritoryData(){
         availableClaims = new HashMap<>();
         diplomacyProposals = new HashMap<>();
+        overlordProposal = new VassalProposal();
     }
 
     public abstract String getID();
@@ -135,7 +134,7 @@ public abstract class ITerritoryData {
         if(haveOverlord() && getOverlord().getID().equals(territoryID))
             return TownRelation.OVERLORD;
 
-        if(getSubjectsID().contains(territoryID))
+        if(getVassalsID().contains(territoryID))
             return TownRelation.VASSAL;
         
         return TownRelation.NEUTRAL;
@@ -236,12 +235,14 @@ public abstract class ITerritoryData {
     public abstract void addSubject(ITerritoryData territoryToAdd);
     public abstract void removeSubject(ITerritoryData territoryToRemove);
     public abstract void removeSubject(String townID);
-    public abstract List<String> getSubjectsID();
-    public abstract List<ITerritoryData> getSubjects();
 
     public abstract boolean isCapital();
 
-    public abstract ITerritoryData getCapital();
+    public ITerritoryData getCapital(){
+        return TerritoryUtil.getTerritory(getCapitalID());
+    }
+    public abstract String getCapitalID();
+
 
     public abstract int getChildColorCode();
 
@@ -305,7 +306,7 @@ public abstract class ITerritoryData {
         if(haveOverlord())
             getOverlord().removeSubject(this);
 
-        for(ITerritoryData territory : getSubjects()){
+        for(ITerritoryData territory : getVassals()){
             territory.removeOverlord();
         }
 
@@ -344,6 +345,38 @@ public abstract class ITerritoryData {
     }
 
     public abstract void openMainMenu(Player player);
+
+    public abstract boolean canHaveVassals();
+    public abstract boolean canHaveOverlord();
+    public VassalProposal getHierarchyProposal(){
+        if(overlordProposal == null)
+            overlordProposal = new VassalProposal();
+        return overlordProposal;
+    }
+
+    public abstract List<String> getVassalsID();
+    public List<ITerritoryData> getVassals(){
+        List<ITerritoryData> res = new ArrayList<>();
+        for(String vassalID : getVassalsID()){
+            ITerritoryData vassal = TerritoryUtil.getTerritory(vassalID);
+            if(vassal != null)
+                res.add(vassal);
+        }
+        return res;
+    }
+    public int getVassalCount(){
+        return getVassalsID().size();
+    }
+
+    public boolean isVassal(ITerritoryData territoryData) {
+        return isVassal(territoryData.getID());
+    }
+    public abstract boolean isVassal(String territoryID);
+
+    public boolean isCapitalOf(ITerritoryData territoryData) {
+        return isCapitalOf(territoryData.getID());
+    }
+    public abstract boolean isCapitalOf(String territoryID);
 
 
 }

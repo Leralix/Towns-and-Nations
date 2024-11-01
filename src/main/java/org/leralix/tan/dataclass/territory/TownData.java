@@ -659,15 +659,6 @@ public class TownData extends ITerritoryData {
         //Region have no subjects
     }
 
-    @Override
-    public List<String> getSubjectsID() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public List<ITerritoryData> getSubjects() {
-        return new ArrayList<>();
-    }
 
     @Override
     public boolean isCapital() {
@@ -677,9 +668,10 @@ public class TownData extends ITerritoryData {
     }
 
     @Override
-    public ITerritoryData getCapital() {
-        return null;
+    public String getCapitalID() {
+        return regionID;
     }
+
 
     public boolean isRegionalCapital() {
         if(!haveOverlord())
@@ -944,6 +936,33 @@ public class TownData extends ITerritoryData {
     @Override
     public void openMainMenu(Player player) {
         PlayerGUI.dispatchPlayerTown(player);
+    }
+
+    @Override
+    public boolean canHaveVassals() {
+        return false;
+    }
+
+    @Override
+    public boolean canHaveOverlord() {
+        return true;
+    }
+
+    @Override
+    public List<String> getVassalsID() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public boolean isVassal(String territoryID) {
+        return false;
+    }
+
+    @Override
+    public boolean isCapitalOf(String territoryID) {
+        if(!haveOverlord())
+            return false;
+        return getOverlord().getCapitalID().equals(getID());
     }
 }
 

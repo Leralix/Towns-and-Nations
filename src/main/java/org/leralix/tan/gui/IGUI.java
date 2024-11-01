@@ -6,8 +6,10 @@ import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.enums.Action;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
@@ -37,6 +39,14 @@ public interface IGUI {
             return new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
         else
             return new ItemStack(Material.RED_STAINED_GLASS_PANE);
+    }
+
+    static GuiItem getUnnamedItem(Material material) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName("");
+        item.setItemMeta(itemMeta);
+        return ItemBuilder.from(item).asGuiItem(event -> event.setCancelled(true));
     }
 
 }

@@ -50,7 +50,7 @@ public class GuiUtil {
         return ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
     }
 
-    public static void createIterator(Gui gui, ArrayList<GuiItem> guItems, int page,
+    public static void createIterator(Gui gui, List<GuiItem> guItems, int page,
                                       Player player, Consumer<Player> backArrowAction,
                                       Consumer<Player> nextPageAction, Consumer<Player> previousPageAction) {
 
