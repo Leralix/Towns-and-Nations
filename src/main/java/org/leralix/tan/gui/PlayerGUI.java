@@ -2070,9 +2070,6 @@ public class PlayerGUI implements IGUI {
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1.get(playerTown.getName()),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC2.get(),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3.get(changeTownNameCost));
-        ItemStack quitRegion = HeadUtils.createCustomItemStack(Material.SPRUCE_DOOR,
-                Lang.GUI_TOWN_SETTINGS_QUIT_REGION.get(),
-                playerTown.haveOverlord() ? Lang.GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION.get(playerTown.getOverlord().getName()) : Lang.TOWN_NO_REGION.get());
         ItemStack changeChunkColor = HeadUtils.createCustomItemStack(Material.PURPLE_WOOL,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR.get(),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(),
@@ -2159,33 +2156,6 @@ public class PlayerGUI implements IGUI {
                 player.sendMessage(getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
         });
 
-        GuiItem quitRegionButton = ItemBuilder.from(quitRegion).asGuiItem(event -> {
-            event.setCancelled(true);
-            if (!playerTown.haveOverlord()) {
-                player.sendMessage(getTANString() + Lang.TOWN_NO_REGION.get());
-                return;
-            }
-
-
-            RegionData regionData = playerTown.getOverlord();
-
-            if (playerTown.isRegionalCapital()){
-                player.sendMessage(getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get());
-                return;
-            }
-
-            openConfirmMenu(player, Lang.GUI_CONFIRM_TOWN_LEAVE_REGION.get(playerTown.getName()), confirm -> {
-
-                regionData.removeSubject(playerTown);
-                playerTown.removeOverlord();
-                playerTown.broadCastMessageWithSound(Lang.TOWN_BROADCAST_TOWN_LEFT_REGION.get(playerTown.getName(), regionData.getName()), BAD);
-                regionData.broadCastMessage(Lang.REGION_BROADCAST_TOWN_LEFT_REGION.get(playerTown.getName()));
-
-                player.closeInventory();
-
-            }, remove -> openTownSettings(player));
-        });
-
         GuiItem changeChunkColorButton = ItemBuilder.from(changeChunkColor).asGuiItem(event -> {
             event.setCancelled(true);
 
@@ -2221,8 +2191,6 @@ public class PlayerGUI implements IGUI {
         gui.setItem(2,6, changeMessageButton);
         gui.setItem(2,7, toggleApplicationButton);
         gui.setItem(2,8, changeTownButton);
-
-        gui.setItem(3,2, quitRegionButton);
 
         if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnablePlayerPrefix",false))
             gui.setItem(3,7, changeTagButton);
@@ -3451,16 +3419,21 @@ public class PlayerGUI implements IGUI {
     public static void openHierarchyMenu(Player player, ITerritoryData territoryData) {
         Gui gui = IGUI.createChestGui("Vassals", 3);
 
-        PlayerData playerData = PlayerDataStorage.get(player);
         GuiItem decorativeGlass = IGUI.getUnnamedItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
-
 
         GuiItem overlordInfo;
         if(territoryData.canHaveOverlord()){
             GuiItem overlordButton;
             if(territoryData.haveOverlord()){
                 ITerritoryData overlord = territoryData.getOverlord();
-                ItemStack overlordIcon = overlord.getIcon();
+                ItemStack overlordIcon = overlord.getIconItem();
+                ItemMeta meta = overlordIcon.getItemMeta();
+                meta.setDisplayName(Lang.OVERLORD_GUI.get());
+                List<String> lore = new ArrayList<>();
+                lore.add(Lang.GUI_OVERLORD_INFO.get(overlord.getName()));
+                meta.setLore(lore);
+                overlordIcon.setItemMeta(meta);
+
                 ItemStack declareIndependence = HeadUtils.createCustomItemStack(Material.SPRUCE_DOOR, Lang.GUI_OVERLORD_DECLARE_INDEPENDENCE.get(),
                         Lang.GUI_OVERLORD_DECLARE_INDEPENDENCE_DESC1.get());
 
