@@ -28,6 +28,10 @@ public class VassalProposal {
         overlordsProposals.remove(proposal.getID());
     }
 
+    public boolean containsProposal(ITerritoryData proposal){
+        return overlordsProposals.contains(proposal.getID());
+    }
+
     public int getNumberOfProposals(){
         return overlordsProposals.size();
     }

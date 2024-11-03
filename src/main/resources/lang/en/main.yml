@@ -106,7 +106,7 @@ language:
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f has joined the town !"
   #Relation diplomatique
   TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§cYou already have a relation with this town"
-  TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Invitation sent to §e{0}"
+  TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Vassalisation proposal send to {0}"
   TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§fYour town §9{0}§f has joined the region §9{1}"
   #Diplomatic relation confirmation
   TOWN_DIPLOMATIC_INVITATION_RECEIVED_1: "The town §9{0}§f wants to change their diplomatic status to: §3{1}"
@@ -189,8 +189,7 @@ language:
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Write the name of the town in the chat."
   PLAYER_WRITE_QUANTITY_IN_CHAT: "Write the quantity in the chat"
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aYou successfully retrieved §6{0}✦§a from the town"
-  PLAYER_SEND_MONEY_TO_TOWN: "§fYou sent §6{0}✦§f to the town"
-  PLAYER_SEND_MONEY_TO_REGION: "§fYou sent §6{0}✦§f to the region"
+  PLAYER_SEND_MONEY_SUCCESS: "§fYou sent §6{0}✦§f to {1}"
   PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY: "Right click 2 blocs to create your private property"
   PLAYER_FIRST_POINT_SET: "First point set in §9{0}"
   PLAYER_SECOND_POINT_SET: "Second point set in §9{0}"
@@ -660,6 +659,8 @@ language:
   CANNOT_DECLARE_INDEPENDENCE_BECAUSE_CAPITAL: "§cYou cannot declare independence because {0}§f is the capital of the region"
   BROWSE_OVERLORD_INVITATION: "§aBrowse suzerain invitations"
   BROWSE_OVERLORD_INVITATION_DESC1: "§fYou have §6{0}§f proposals"
+  GUI_OVERLORD_DONATE: "§aDonate to the suzerain"
+  GUI_OVERLORD_DONATE_DESC1: "§fLeft click to donate to the suzerain"
   VASSAL_GUI: "§aVassals"
   VASSAL_GUI_DESC1: "{0}§f have §6{1}§f vassals"
   CANNOT_HAVE_VASSAL: "§fThis territory cannot have vassals"

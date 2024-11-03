@@ -340,7 +340,7 @@ public abstract class ITerritoryData {
 
         //getDonationHistory().add(player.getName(),player.getUniqueId().toString(),amount); TODO : Add History to region
 
-        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_TO_TOWN.get(amount));
+        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_SUCCESS.get(amount, getColoredName()));
         SoundUtil.playSound(player, MINOR_LEVEL_UP);
     }
 
@@ -377,6 +377,7 @@ public abstract class ITerritoryData {
         return isCapitalOf(territoryData.getID());
     }
     public abstract boolean isCapitalOf(String territoryID);
+    public abstract boolean isLeaderOnline();
 
-
+    public abstract Collection<ITerritoryData> getPotentialVassals();
 }

@@ -641,6 +641,11 @@ public class TownData extends ITerritoryData {
         return player != null && player.isOnline();
     }
 
+    @Override
+    public Collection<ITerritoryData> getPotentialVassals() {
+        return Collections.emptyList();
+    }
+
     public void removeOverlord() {
         this.regionID = null;
     }

@@ -1,35 +1,35 @@
 package org.leralix.tan.dataclass.territory;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.dataclass.ClaimedChunkSettings;
-import org.leralix.tan.dataclass.history.ChunkHistory;
-import org.leralix.tan.dataclass.history.DonationHistory;
-import org.leralix.tan.dataclass.history.MiscellaneousHistory;
-import org.leralix.tan.dataclass.history.TaxHistory;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.TownRelations;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.RegionClaimedChunk;
+import org.leralix.tan.dataclass.history.ChunkHistory;
+import org.leralix.tan.dataclass.history.DonationHistory;
+import org.leralix.tan.dataclass.history.MiscellaneousHistory;
+import org.leralix.tan.dataclass.history.TaxHistory;
+import org.leralix.tan.dataclass.wars.PlannedAttack;
+import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.SoundEnum;
-import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
-import org.leralix.tan.storage.stored.*;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.*;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.leralix.tan.enums.SoundEnum.BAD;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
@@ -552,5 +552,16 @@ public class RegionData extends ITerritoryData {
         if(!hasNation())
             return false;
         return getOverlord().getCapitalID().equals(territoryID);
+    }
+
+    @Override
+    public boolean isLeaderOnline() {
+        Player player = Bukkit.getServer().getPlayer(UUID.fromString(this.leaderID));
+        return player != null && player.isOnline();
+    }
+
+    @Override
+    public Collection<ITerritoryData> getPotentialVassals() {
+        return new ArrayList<>(TownDataStorage.getTownMap().values());
     }
 }
