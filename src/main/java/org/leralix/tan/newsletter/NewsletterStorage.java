@@ -7,7 +7,9 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.newsletter.news.JoinRegionProposalNL;
 import org.leralix.tan.newsletter.news.Newsletter;
 import org.leralix.tan.newsletter.news.PlayerJoinRequestNL;
 import org.leralix.tan.storage.typeadapter.NewsletterAdapter;
@@ -59,10 +61,8 @@ public class NewsletterStorage {
     }
     public static void removePlayerJoinRequest(String playerID, String townID) {
         List<Newsletter> category = categories.get(NewsletterType.PLAYER_TOWN_JOIN_REQUEST);
-
         if (category == null)
             return;
-
         category.removeIf(newsletter ->
             newsletter instanceof PlayerJoinRequestNL &&
                     ((PlayerJoinRequestNL) newsletter).getPlayerID().equals(playerID) &&
@@ -132,5 +132,16 @@ public class NewsletterStorage {
         for(List<Newsletter> category : categories.values()) {
             category.removeIf(newsletter -> newsletter.getDate() < currentTime);
         }
+    }
+
+    public static void removeVassalisationProposal(ITerritoryData proposer, ITerritoryData receiver) {
+        List<Newsletter> category = categories.get(NewsletterType.JOIN_REGION_PROPOSAL);
+        if (category == null)
+            return;
+        category.removeIf(newsletter ->
+                newsletter instanceof JoinRegionProposalNL proposalNL &&
+                        proposalNL.getProposingTerritoryID().equals(proposer.getID()) &&
+                        proposalNL.getReceivingTerritoryID().equals(receiver.getID())
+        );
     }
 }

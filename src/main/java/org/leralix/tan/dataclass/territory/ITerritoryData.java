@@ -20,6 +20,7 @@ import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.newsletter.news.DiplomacyProposalNL;
 import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.newsletter.news.JoinRegionProposalNL;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
@@ -232,9 +233,19 @@ public abstract class ITerritoryData {
 
     public abstract ITerritoryData getOverlord();
     public abstract void removeOverlord();
-    public abstract void setOverlord(ITerritoryData overlord);
+    public void setOverlord(ITerritoryData overlord){
+        getOverlordsProposals().remove(overlord.getID());
+        broadCastMessageWithSound(getTANString() + Lang.TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION.get(this.getColoredName(), overlord.getColoredName()), GOOD);
+        setOverlordPrivate(overlord);
+    }
+    protected abstract void setOverlordPrivate(ITerritoryData newOverlord);
 
-    public abstract void addVassal(ITerritoryData vassal);
+    public void addVassal(ITerritoryData vassal){
+        NewsletterStorage.removeVassalisationProposal(this, vassal);
+        broadCastMessageWithSound(getTANString() + Lang.TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION.get(vassal.getColoredName(), getColoredName()), GOOD);
+        addVassalPrivate(vassal);
+    }
+    protected abstract void addVassalPrivate (ITerritoryData vassal);
     public void removeVassal(ITerritoryData territoryToRemove){
         removeVassal(territoryToRemove.getID());
     }
@@ -388,6 +399,8 @@ public abstract class ITerritoryData {
 
     public void addVassalisationProposal(ITerritoryData proposal){
         getOverlordsProposals().add(proposal.getID());
+        broadCastMessageWithSound(Lang.REGION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getColoredName(), getColoredName()), MINOR_GOOD);
+        NewsletterStorage.registerNewsletter(new JoinRegionProposalNL(proposal, this));
     }
 
     public void removeVassalisationProposal(ITerritoryData proposal){
@@ -413,11 +426,9 @@ public abstract class ITerritoryData {
             GuiItem acceptInvitation = ItemBuilder.from(territoryItem).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(event.isLeftClick()){
-                    this.setOverlord(proposalOverlord);
-                    getOverlordsProposals().remove(proposalID);
+                    setOverlord(proposalOverlord);
                     proposalOverlord.addVassal(this);
-                    proposalOverlord.broadCastMessageWithSound(getTANString() + Lang.TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION.get(this.getName(), proposalOverlord.getName()), GOOD);
-                    this.broadCastMessageWithSound(getTANString() + Lang.TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION.get(this.getName(), proposalOverlord.getName()), GOOD);
+                    broadCastMessageWithSound(getTANString() + Lang.TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION.get(this.getColoredName(), proposalOverlord.getName()), GOOD);
                     PlayerGUI.openHierarchyMenu(player, this);
                 }
                 if(event.isRightClick()){

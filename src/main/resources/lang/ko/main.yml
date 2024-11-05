@@ -107,12 +107,9 @@ language:
   #Relation diplomatique
   TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§c이 마을과 이미 관계를 맺고 있습니다"
   TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Vassalisation proposal send to {0}"
-  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§f당신의 마을 §9{0}§f이(가) §9{1}§f 지역에 가입했습니다"
+  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§fYour town {0}§f has joined the region {1}"
   #Diplomatic relation confirmation
-  TOWN_DIPLOMATIC_INVITATION_RECEIVED_1: "§9{0}§f 마을이 외교 상태를 §3{1}§f로 변경하려고 합니다"
-  TOWN_DIPLOMATIC_INVITATION_RECEIVED_2: "§l§2수락하려면 클릭"
-  REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "§9{0}§f님이 마을 §9{1}§f을(를) 그들의 지역에 초대했습니다"
-  REGION_DIPLOMATIC_INVITATION_RECEIVED_2: "§l§2수락하려면 클릭"
+  REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f invited your town {1}§f to join their region"
   #Accept a town relation
   TOWN_ACCEPT_RELATION_DESC: "보류 중인 마을 관계 요청을 수락합니다"
   TOWN_RELATION_NO_INVITATION: "§a받은 관계 초대장이 없습니다"
@@ -843,6 +840,9 @@ language:
   NEWSLETTER_DIPLOMACY_PROPOSAL: "§fDiplomacy proposal from {0}"
   NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1: "§fChange relation with {0}§f to : {1}"
   NEWSLETTER_DIPLOMACY_PROPOSAL_DESC2: "§fLeft click to manage diplomacy"
+  NEWSLETTER_JOIN_REGION_PROPOSAL: "§fJoin region proposal"
+  NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1: "{0}§f has asked {1}§f to join its region"
+  NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2: "§fLeft click to open the proposal"
   NEWSLETTER_SHOW_ALL: "§fShow all news"
   NEWSLETTER_SHOW_ONLY_UNREAD: "§fShow only unread news"
   NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ: "§fRight click to mark as read"

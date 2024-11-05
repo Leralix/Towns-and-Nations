@@ -107,12 +107,9 @@ language:
   #Relation diplomatique
   TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§cYou already have a relation with this town"
   TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Vassalisation proposal send to {0}"
-  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§fYour town §9{0}§f has joined the region §9{1}"
+  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "{0}§f has joined the region {1}"
   #Diplomatic relation confirmation
-  TOWN_DIPLOMATIC_INVITATION_RECEIVED_1: "The town §9{0}§f wants to change their diplomatic status to: §3{1}"
-  TOWN_DIPLOMATIC_INVITATION_RECEIVED_2: "§l§2To accept, click here"
-  REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "§9{0}§f invited your town §9{1}§f to join their region"
-  REGION_DIPLOMATIC_INVITATION_RECEIVED_2: "§l§2To accept, click here"
+  REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f invited your town {1}§f to join their region"
   #Accept a town relation
   TOWN_ACCEPT_RELATION_DESC: "Accept a pending town relation request"
   TOWN_RELATION_NO_INVITATION: "§aYou have no pending relations"
@@ -843,6 +840,9 @@ language:
   NEWSLETTER_DIPLOMACY_PROPOSAL: "§fDiplomacy proposal from {0}"
   NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1: "§fChange relation with {0}§f to : {1}"
   NEWSLETTER_DIPLOMACY_PROPOSAL_DESC2: "§fLeft click to manage diplomacy"
+  NEWSLETTER_JOIN_REGION_PROPOSAL: "§fJoin region proposal"
+  NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1: "{0}§f has asked {1}§f to join its region"
+  NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2: "§fLeft click to open the proposal"
   NEWSLETTER_SHOW_ALL: "§fShow all news"
   NEWSLETTER_SHOW_ONLY_UNREAD: "§fShow only unread news"
   NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ: "§fRight click to mark as read"

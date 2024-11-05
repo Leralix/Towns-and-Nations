@@ -599,10 +599,10 @@ public class TownData extends ITerritoryData {
         return this.regionID;
     }
 
-    public void setOverlord(ITerritoryData region){
-        setOverlord(region.getID());
+    public void setOverlordPrivate(ITerritoryData region){
+        setOverlordPrivate(region.getID());
     }
-    public void setOverlord(String regionID){
+    public void setOverlordPrivate(String regionID){
         this.regionID = regionID;
     }
 
@@ -650,7 +650,7 @@ public class TownData extends ITerritoryData {
         this.regionID = null;
     }
     @Override
-    public void addVassal(ITerritoryData vassal) {
+    public void addVassalPrivate(ITerritoryData vassal) {
         //town have no vassals
     }
 

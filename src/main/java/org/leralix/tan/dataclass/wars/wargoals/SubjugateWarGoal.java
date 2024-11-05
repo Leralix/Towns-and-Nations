@@ -51,7 +51,6 @@ public class SubjugateWarGoal extends WarGoal {
         }
         territoryData.setOverlord(newOverlord);
         newOverlord.addVassal(territoryData);
-
     }
 
     @Override

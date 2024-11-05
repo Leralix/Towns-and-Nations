@@ -6,6 +6,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.google.gson.JsonParseException;
 import org.leralix.tan.newsletter.news.DiplomacyProposalNL;
+import org.leralix.tan.newsletter.news.JoinRegionProposalNL;
 import org.leralix.tan.newsletter.news.Newsletter;
 import org.leralix.tan.newsletter.news.PlayerJoinRequestNL;
 
@@ -49,6 +50,8 @@ public class NewsletterAdapter extends TypeAdapter<Newsletter> {
                 return PlayerJoinRequestNL.class;
             case "DiplomacyProposalNL":
                 return DiplomacyProposalNL.class;
+            case "JoinRegionProposalNL":
+                return JoinRegionProposalNL.class;
             default:
                 throw new JsonParseException("Unknown type: " + type);
         }

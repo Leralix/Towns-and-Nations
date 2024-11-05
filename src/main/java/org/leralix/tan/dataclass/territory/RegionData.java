@@ -314,7 +314,7 @@ public class RegionData extends ITerritoryData {
 
 
     @Override
-    public void addVassal(ITerritoryData vassal) {
+    public void addVassalPrivate(ITerritoryData vassal) {
         addSubject(vassal.getID());
     }
 
@@ -347,7 +347,7 @@ public class RegionData extends ITerritoryData {
     }
 
     @Override
-    public void setOverlord(ITerritoryData overlord) {
+    public void setOverlordPrivate(ITerritoryData overlord) {
         // Kingdoms are not implemented yet
     }
 

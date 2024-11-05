@@ -3512,14 +3512,8 @@ public class PlayerGUI implements IGUI {
                 event.setCancelled(true);
                 openVassalsList(player, territoryData, 0);
             });
-
-
-
             vassalInfo = ItemBuilder.from(vassalIcon).asGuiItem(event -> event.setCancelled(true));
-
             gui.setItem(2,6, vassalsButton);
-
-
         }
         else {
             ItemStack noVassalsIcon = HeadUtils.createCustomItemStack(Material.IRON_BARS, Lang.VASSAL_GUI.get(),
@@ -3564,7 +3558,7 @@ public class PlayerGUI implements IGUI {
     }
 
     public static void openChooseOverlordMenu(Player player, ITerritoryData territoryData, int page) {
-        Gui gui = IGUI.createChestGui("Choose Overlord", 3);
+        Gui gui = IGUI.createChestGui("Choose Overlord", 6);
 
         List<GuiItem> guiItems = territoryData.getAllSubjugationProposals(player, page);
 

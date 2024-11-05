@@ -107,12 +107,9 @@ language:
   #Relation diplomatique
   TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§cVous avez déjà une relation diplomatique avec cette ville"
   TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Proposition de vassalisation envoyée à {0}"
-  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§fVotre ville (§9{0}§f) a rejoint la région §9{1}"
+  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§fVotre ville {0}§f a rejoint la région {1}"
   #Diplomatic relation confirmation
-  TOWN_DIPLOMATIC_INVITATION_RECEIVED_1: "§9{0}§f veut changer la relation avec votre ville en : §3{1}"
-  TOWN_DIPLOMATIC_INVITATION_RECEIVED_2: "§l§2[Cliquez ici pour accepter]"
-  REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "§9{0}§f invite votre ville (§9{1}§f) à rejoindre sa région"
-  REGION_DIPLOMATIC_INVITATION_RECEIVED_2: "§l§2Cliquez ici pour accepter"
+  REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f invite votre ville {1}§f à rejoindre sa région"
   #Accept a town relation
   TOWN_ACCEPT_RELATION_DESC: "Accepter une invitation à changer de relation diplomatique avec une autre ville"
   TOWN_RELATION_NO_INVITATION: "§aVous n'avez pas de d'invitations à changer de relation diplomatique en attente"
@@ -843,6 +840,9 @@ language:
   NEWSLETTER_DIPLOMACY_PROPOSAL: "§fProposition diplomatique de la part de {0}"
   NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1: "§fChanger de relation avec {0}§f pour : {1}"
   NEWSLETTER_DIPLOMACY_PROPOSAL_DESC2: "§fClic gauche pour gérer la diplomatie"
+  NEWSLETTER_JOIN_REGION_PROPOSAL: "§fProposition de vassalisation"
+  NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1: "{0}§f propose à {1}§f de devenir son vassal"
+  NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2: "§fClic gauche pour accéder a la proposition"
   NEWSLETTER_SHOW_ALL: "§fAfficher toutes les actualités"
   NEWSLETTER_SHOW_ONLY_UNREAD: "§fAfficher les actualités non lues"
   NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ: "§fClic droit pour marquer comme lu"
