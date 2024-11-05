@@ -106,7 +106,7 @@ language:
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f à rejoint la ville !"
   #Relation diplomatique
   TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§cVous avez déjà une relation diplomatique avec cette ville"
-  TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Invitation envoyée à §e{0}"
+  TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Proposition de vassalisation envoyée à {0}"
   TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§fVotre ville (§9{0}§f) a rejoint la région §9{1}"
   #Diplomatic relation confirmation
   TOWN_DIPLOMATIC_INVITATION_RECEIVED_1: "§9{0}§f veut changer la relation avec votre ville en : §3{1}"
@@ -131,6 +131,8 @@ language:
   ADD_MONEY_COMMAND_SUCCESS: "Don de §6+{0}✦§f à §3{1}"
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Ouvre l'interface de Towns & Nations"
+  #Newsletter command
+  OPEN_NEWSLETTER_DESC: "Consulter les informations récentes"
   #Pay command
   PAY_COMMAND_DESC: "Donne de l'argent à un autre joueur"
   PAY_MINIMUM_REQUIRED: "§cVous devez envoyer 1✦ minimum"
@@ -187,8 +189,7 @@ language:
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Entrez le nom de la ville dans le tchat."
   PLAYER_WRITE_QUANTITY_IN_CHAT: "Ecrire la quantité dans le chat"
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aVous avez retiré §6{0}✦§a de la ville"
-  PLAYER_SEND_MONEY_TO_TOWN: "§fVous avez donné §6{0}✦§f à la ville"
-  PLAYER_SEND_MONEY_TO_REGION: "§fVous avez donné §6{0}✦§f à la région"
+  PLAYER_SEND_MONEY_SUCCESS: "§fVous avez envoyé §6{0}✦§f à {1}"
   PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY: "Faites un clic droit sur les 2 coins opposés de votre future propriété pour la créer"
   PLAYER_FIRST_POINT_SET: "Premier point défini en §9{0}"
   PLAYER_SECOND_POINT_SET: "Second point défini en §9{0}"
@@ -224,6 +225,7 @@ language:
   LEFT_CLICK_TO_AUTHORIZE: "§fClic gauche pour autoriser"
   LEFT_CLICK_TO_MODIFY: "§fClic gauche pour modifier"
   LEFT_CLICK_TO_ACCEPT: "§fClic gauche pour accepter"
+  RIGHT_CLICK_TO_REFUSE: "§fClic droit pour refuser"
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§eEn développement"
   GUI_BACK_ARROW: "Retour"
@@ -516,6 +518,8 @@ language:
   GUI_REGION_INFO_DESC5: "§fNombre de chunks régionaux : §2{0}♦"
   GUI_REGION_TOWN_LIST: "§aListe des villes"
   GUI_REGION_TOWN_LIST_DESC1: "§fClic gauche pour consulter les villes"
+  GUI_HIERARCHY_MENU: "§aHierarchie"
+  GUI_HIERARCHY_MENU_DESC1: "§fGérer la hiérarchie"
   GUI_REGION_CHANGE_CAPITAL: "§aChanger la capitale régionale"
   GUI_REGION_CHANGE_CAPITAL_DESC1: "§fCapitale actuelle : §3{0}"
   GUI_REGION_CHANGE_CAPITAL_DESC2: "§fClic gauche pour changer la capitale régionale"
@@ -643,6 +647,23 @@ language:
   CANCEL_SALE: "§cAnnuler la vente"
   SELL_PROPERTY: "§aVendre la propriété"
   RENT_PROPERTY: "§aLouer la propriété"
+  #Hierarchy gui
+  OVERLORD_GUI: "§aSuzerain"
+  CANNOT_HAVE_OVERLORD: "§fCe territoire ne peut pas avoir un suzerain"
+  NO_OVERLORD: "§cPas de suzerain"
+  GUI_OVERLORD_INFO: "§fSuzerain actuel : §3{0}"
+  GUI_OVERLORD_DECLARE_INDEPENDENCE: "§aQuitter le suzerain"
+  GUI_OVERLORD_DECLARE_INDEPENDENCE_DESC1: "§fClic gauche pour déclarer l'indépendance"
+  GUI_CONFIRM_DECLARE_INDEPENDENCE: "{0}§f déclarera l'indépendance de {1}"
+  TERRITORY_NO_OVERLORD: "§cCe territoire n'a pas de suzerain"
+  CANNOT_DECLARE_INDEPENDENCE_BECAUSE_CAPITAL: "§cVous ne pouvez pas déclarer l'indépendance car {0}§f est la capitale régionale"
+  BROWSE_OVERLORD_INVITATION: "§aConsulter les invitations de vassalisation"
+  BROWSE_OVERLORD_INVITATION_DESC1: "§fVous avez §6{0}§f propositions"
+  GUI_OVERLORD_DONATE: "§aEffectuer une donation au suzerain"
+  GUI_OVERLORD_DONATE_DESC1: "§fClic gauche pour effectuer une donation au suzerain"
+  VASSAL_GUI: "§aVassaux"
+  VASSAL_GUI_DESC1: "{0}§f possède §6{1}§f vassaux"
+  CANNOT_HAVE_VASSAL: "§fCe territoire ne peux pas avoir de vassaux"
   #Transaction history
   TRANSACTION_HISTORY: "§f[{0}] - §3{1} §f : {2}✦"
   DONATION_SINGLE_LINE_1: "§a+{0}✦"
@@ -762,7 +783,7 @@ language:
   GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED: "§cVous ne pouvez pas subjuguer un territoire de rang égal ou supérieur"
   GUI_WARGOAL_SUBJUGATE_WAR_GOAL_RESULT: "§f{0} sera subjugué à {1}"
   LIBERATE_SUBJECT_WAR_GOAL: "§aLibération"
-  LIBERATE_SUBJECT_WAR_GOAL_DESC: "§fLibérer un territoire de son suzerain"
+  LIBERATE_SUBJECT_WAR_GOAL_DESC: "§fLibérer un territoire spécifique de son suzerain actuel"
   GUI_WARGOAL_LIBERATE_CANNOT_BE_USED: "§cUne ville n'a pas de vassal"
   GUI_WARGOAL_LIBERATE_WAR_GOAL_RESULT: "§f{0} sera libéré de {1}"
   GUI_SELECT_TERRITORY_TO_LIBERATE: "§aSélectionner le territoire à libérer"
@@ -812,9 +833,24 @@ language:
   DIPLOMATIC_RELATION: "§fProposition de : {0}"
   DIPLOMATIC_RELATION_DESC1: "§fEtablir la relation : {0}"
   DIPLOMATIC_RELATION_DESC2: "§f Relation actuelle : {0}"
-  #Newsletter
+  ##Newsletter
+  #Greeting
+  NEWSLETTER_GREETING: "§fVous avez §b{0}§f nouvelles non lues"
+  CLICK_TO_OPEN_NEWSLETTER: "[Clic pour ouvrir la newsletter]"
   NEWSLETTER_PLAYER_APPLICATION: "§fCandidature de §3{0}"
   NEWSLETTER_PLAYER_APPLICATION_DESC1: "§3{0}§f candidate pour rejoindre {1}"
-  NEWSLETTER_PLAYER_APPLICATION_DESC2: "§fClic gauche pour gérer la demande"
+  NEWSLETTER_PLAYER_APPLICATION_DESC2: "§fClic gauche pour gérer les demandes"
+  NEWSLETTER_DIPLOMACY_PROPOSAL: "§fProposition diplomatique de la part de {0}"
+  NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1: "§fChanger de relation avec {0}§f pour : {1}"
+  NEWSLETTER_DIPLOMACY_PROPOSAL_DESC2: "§fClic gauche pour gérer la diplomatie"
+  NEWSLETTER_SHOW_ALL: "§fAfficher toutes les actualités"
+  NEWSLETTER_SHOW_ONLY_UNREAD: "§fAfficher les actualités non lues"
+  NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ: "§fClic droit pour marquer comme lu"
+  NEWSLETTER_SUBJUGATE_PROPOSAL: "§fProposition de vassalisation par {0}"
+  NEWSLETTER_SUBJUGATE_PROPOSAL_DESC1: "§f{0}§f demande {1}§f sa vassalisation"
+  NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§fClic gauche pour consulter la proposition"
+  #Chunk blacklist
+  CHUNK_IS_BLACKLISTED: "§cVous ne pouvez pas revendiquer ce chunk"
+
 
 

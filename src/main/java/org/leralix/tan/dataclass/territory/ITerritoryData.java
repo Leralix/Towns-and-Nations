@@ -1,5 +1,7 @@
 package org.leralix.tan.dataclass.territory;
 
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -12,6 +14,7 @@ import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.wars.CurrentAttacks;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.TownRelation;
@@ -20,15 +23,13 @@ import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
-import org.leralix.tan.utils.ChatUtils;
-import org.leralix.tan.utils.SoundUtil;
-import org.leralix.tan.utils.TeamUtils;
-import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.utils.*;
 
 import java.util.*;
 import java.util.function.Consumer;
 
 import static org.leralix.tan.enums.SoundEnum.*;
+import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public abstract class ITerritoryData {
 
@@ -46,11 +47,12 @@ public abstract class ITerritoryData {
     private Collection<String> currentAttackList = new ArrayList<>();
     private HashMap<String, Integer> availableClaims;
     private Map<String, DiplomacyProposal> diplomacyProposals;
-    private VassalProposal overlordProposal;
+    List<String> overlordsProposals;
+
     protected ITerritoryData(){
         availableClaims = new HashMap<>();
         diplomacyProposals = new HashMap<>();
-        overlordProposal = new VassalProposal();
+        overlordsProposals = new ArrayList<>();
     }
 
     public abstract String getID();
@@ -232,9 +234,11 @@ public abstract class ITerritoryData {
     public abstract void removeOverlord();
     public abstract void setOverlord(ITerritoryData overlord);
 
-    public abstract void addSubject(ITerritoryData territoryToAdd);
-    public abstract void removeSubject(ITerritoryData territoryToRemove);
-    public abstract void removeSubject(String townID);
+    public abstract void addVassal(ITerritoryData vassal);
+    public void removeVassal(ITerritoryData territoryToRemove){
+        removeVassal(territoryToRemove.getID());
+    }
+    public abstract void removeVassal(String townID);
 
     public abstract boolean isCapital();
 
@@ -304,7 +308,7 @@ public abstract class ITerritoryData {
         castActionToAllPlayers(HumanEntity::closeInventory);
 
         if(haveOverlord())
-            getOverlord().removeSubject(this);
+            getOverlord().removeVassal(this);
 
         for(ITerritoryData territory : getVassals()){
             territory.removeOverlord();
@@ -348,11 +352,6 @@ public abstract class ITerritoryData {
 
     public abstract boolean canHaveVassals();
     public abstract boolean canHaveOverlord();
-    public VassalProposal getHierarchyProposal(){
-        if(overlordProposal == null)
-            overlordProposal = new VassalProposal();
-        return overlordProposal;
-    }
 
     public abstract List<String> getVassalsID();
     public List<ITerritoryData> getVassals(){
@@ -380,4 +379,56 @@ public abstract class ITerritoryData {
     public abstract boolean isLeaderOnline();
 
     public abstract Collection<ITerritoryData> getPotentialVassals();
+
+    private List<String> getOverlordsProposals(){
+        if(overlordsProposals == null)
+            overlordsProposals = new ArrayList<>();
+        return overlordsProposals;
+    }
+
+    public void addVassalisationProposal(ITerritoryData proposal){
+        getOverlordsProposals().add(proposal.getID());
+    }
+
+    public void removeVassalisationProposal(ITerritoryData proposal){
+        getOverlordsProposals().remove(proposal.getID());
+    }
+
+    public boolean containsVassalisationProposal(ITerritoryData proposal){
+        return getOverlordsProposals().contains(proposal.getID());
+    }
+
+    public int getNumberOfVassalisationProposals(){
+        return getOverlordsProposals().size();
+    }
+
+    public List<GuiItem> getAllSubjugationProposals(Player player, int page){
+        ArrayList<GuiItem> proposals = new ArrayList<>();
+        for(String proposalID : getOverlordsProposals()) {
+            ITerritoryData proposalOverlord = TerritoryUtil.getTerritory(proposalID);
+            if (proposalOverlord == null)
+                continue;
+            ItemStack territoryItem = proposalOverlord.getIconWithInformations();
+            HeadUtils.addLore(territoryItem, Lang.LEFT_CLICK_TO_ACCEPT.get(), Lang.RIGHT_CLICK_TO_REFUSE.get());
+            GuiItem acceptInvitation = ItemBuilder.from(territoryItem).asGuiItem(event -> {
+                event.setCancelled(true);
+                if(event.isLeftClick()){
+                    this.setOverlord(proposalOverlord);
+                    getOverlordsProposals().remove(proposalID);
+                    proposalOverlord.addVassal(this);
+                    proposalOverlord.broadCastMessageWithSound(getTANString() + Lang.TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION.get(this.getName(), proposalOverlord.getName()), GOOD);
+                    this.broadCastMessageWithSound(getTANString() + Lang.TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION.get(this.getName(), proposalOverlord.getName()), GOOD);
+                    PlayerGUI.openHierarchyMenu(player, this);
+                }
+                if(event.isRightClick()){
+                    getOverlordsProposals().remove(proposalID);
+                    PlayerGUI.openChooseOverlordMenu(player, this, page);
+                }
+
+
+            });
+            proposals.add(acceptInvitation);
+        }
+        return proposals;
+    }
 }

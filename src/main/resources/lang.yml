@@ -1,8 +1,15 @@
 #The language of the plugin
 ##Help us translate the plugin in your language! Reach us on our discord !
 ##Language available:
-## 100 % : en, fr
-## <100% : pl, no, ko,
+##- en: English (Leralix, iii_coke_iii)
+##- fr: French (Leralix)
+##- zh-CN: Simplified Chinese (cool chengge)
+##- no: Norwegian (Senator)
+##- ko: Korean (don_key_don)
+##- ru: Russian (micro_comrade)
+##- pl : Polish (szkogis)
+
+## Thanks to all the translators!
 language: en
 
 #Auto Update lang files

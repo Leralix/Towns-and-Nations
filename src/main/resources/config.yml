@@ -365,7 +365,11 @@ sounds:
   MINOR_BAD: [ "ENTITY_SLIME_ATTACK", "1", "6" ]
 
 
-
+########################
+##     Newsletter     ##
+########################
+#Time before old newsletter are deleted in days (will be deleted at midnight)
+TimeBeforeClearingNewsletter: 7
 
 
 

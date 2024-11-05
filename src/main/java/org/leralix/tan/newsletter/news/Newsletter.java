@@ -13,12 +13,12 @@ import java.util.function.Consumer;
 
 public abstract class Newsletter {
 
-    double date;
+    long date;
     List<String> playerMarkAsRead;
 
 
     protected Newsletter() {
-        this.date = new Date().getTime();
+        this.date = System.currentTimeMillis();
         this.playerMarkAsRead = new ArrayList<>();
     }
 
@@ -26,7 +26,7 @@ public abstract class Newsletter {
 
     public abstract boolean shouldShowToPlayer(Player player, NewsletterScope scope);
 
-    public double getDate() {
+    public long getDate() {
         return date;
     }
 

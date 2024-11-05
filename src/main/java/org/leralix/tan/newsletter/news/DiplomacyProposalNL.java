@@ -63,8 +63,7 @@ public class DiplomacyProposalNL extends Newsletter {
         if(!territoryData.havePlayer(playerData))
             return false;
         //TODO check if player have right to accept relation (need to add role in territory) Right now only leader can see newsletter
-        territoryData.isLeader(playerData);
-        return true;
+        return territoryData.isLeader(playerData);
     }
 
     @Override

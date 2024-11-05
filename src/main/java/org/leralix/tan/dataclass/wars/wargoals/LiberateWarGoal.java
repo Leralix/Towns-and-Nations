@@ -59,7 +59,7 @@ public class LiberateWarGoal extends WarGoal {
     public void applyWarGoal() {
         if(!territoryToLiberate.haveOverlord())
             return;
-        territoryToLiberate.getOverlord().removeSubject(territoryToLiberate);
+        territoryToLiberate.getOverlord().removeVassal(territoryToLiberate);
         territoryToLiberate.removeOverlord();
     }
 

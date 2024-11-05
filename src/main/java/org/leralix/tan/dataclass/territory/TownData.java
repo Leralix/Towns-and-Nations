@@ -650,18 +650,13 @@ public class TownData extends ITerritoryData {
         this.regionID = null;
     }
     @Override
-    public void addSubject(ITerritoryData territoryToAdd) {
-        //town have no subjects
+    public void addVassal(ITerritoryData vassal) {
+        //town have no vassals
     }
 
     @Override
-    public void removeSubject(ITerritoryData townToDelete) {
-        //Town have no subjects
-    }
-
-    @Override
-    public void removeSubject(String townID) {
-        //Region have no subjects
+    public void removeVassal(String townID) {
+        //Town have no vassals
     }
 
 

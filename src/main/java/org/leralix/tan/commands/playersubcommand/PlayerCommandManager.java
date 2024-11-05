@@ -9,7 +9,7 @@ public class PlayerCommandManager extends CommandManager {
 
     public PlayerCommandManager(){
         addSubCommand(new InvitePlayerCommand());
-        addSubCommand(new JoinTownCommand());
+        addSubCommand(new JoinTownCommand()); //hidden
         addSubCommand(new ClaimCommand());
         addSubCommand(new UnclaimCommand());
         addSubCommand(new MapCommand());
@@ -17,9 +17,7 @@ public class PlayerCommandManager extends CommandManager {
         addSubCommand(new PayCommand());
         addSubCommand(new OpenGuiCommand());
         addSubCommand(new OpenNewsletterCommand());
-        addSubCommand(new AcceptRelationCommand());
         addSubCommand(new ChannelChatScopeCommand());
-        addSubCommand(new AcceptRegionSubjugationCommand());
         addSubCommand(new AutoClaimCommand());
         addSubCommand(new TownSpawnCommand());
         addSubCommand(new SetTownSpawnCommand());

@@ -106,7 +106,7 @@ language:
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f присоединился к городу !"
   #Relation diplomatique
   TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§cУ вас уже есть связи с этим городом"
-  TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Приглашение отправлено §e{0}"
+  TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Vassalisation proposal send to {0}"
   TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§fВаш город §9{0}§f был присоединён к региону §9{1}"
   #Diplomatic relation confirmation
   TOWN_DIPLOMATIC_INVITATION_RECEIVED_1: "Город §9{0}§f хочет изменить свой дипломатический статус на: §3{1}"
@@ -131,6 +131,8 @@ language:
   ADD_MONEY_COMMAND_SUCCESS: "Добавлено §6+{0}✦§f игроку §3{1}"
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Открыть Town&Nation GUI"
+  #Newsletter command
+  OPEN_NEWSLETTER_DESC: "Get the latest news"
   #Pay command
   PAY_COMMAND_DESC: "Дать денег другому игроку"
   PAY_MINIMUM_REQUIRED: "§cНужно отправить хотя бы 1✦"
@@ -187,8 +189,7 @@ language:
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Напишите имя города в чат"
   PLAYER_WRITE_QUANTITY_IN_CHAT: "Напишите количество в чат"
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aВы успешно забрали §6{0}✦§a из города"
-  PLAYER_SEND_MONEY_TO_TOWN: "§fВы отправили §6{0}✦§f в город"
-  PLAYER_SEND_MONEY_TO_REGION: "§fВы отправили §6{0}✦§f в регион"
+  PLAYER_SEND_MONEY_SUCCESS: "§fYou sent §6{0}✦§f to {1}"
   PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY: "Щелкните ПКМ на двух блоках, чтобы создать собственность"
   PLAYER_FIRST_POINT_SET: "Первая точка установлена: §9{0}"
   PLAYER_SECOND_POINT_SET: "Вторая точка установлена: §9{0}"
@@ -207,7 +208,7 @@ language:
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Нейтрально"
   RELATION_CITY_NAME: "Город"
-  RELATION_OVERLORD_NAME: "Overlord"
+  RELATION_OVERLORD_NAME: "Suzerain"
   RELATION_VASSAL_NAME: "Vassal"
   RELATION_ALLIANCE_NAME: "Альянс"
   RELATION_NON_AGGRESSION_NAME: "Не аргессивно"
@@ -224,6 +225,7 @@ language:
   LEFT_CLICK_TO_AUTHORIZE: "§fЩелкните ЛКМ для авторизаии"
   LEFT_CLICK_TO_MODIFY: "§fЩелкните ЛКМ для модификации"
   LEFT_CLICK_TO_ACCEPT: "§fLeft click to accept"
+  RIGHT_CLICK_TO_REFUSE: "§fRight click to refuse"
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§eВ разработке"
   GUI_BACK_ARROW: "Назад"
@@ -516,6 +518,8 @@ language:
   GUI_REGION_INFO_DESC5: "§fКоличество чанков региона: §2{0}♦"
   GUI_REGION_TOWN_LIST: "§aСписок городов"
   GUI_REGION_TOWN_LIST_DESC1: "§fНажмитеЛКМ, чтобы открыть список городов"
+  GUI_HIERARCHY_MENU: "§aHierarchy"
+  GUI_HIERARCHY_MENU_DESC1: "§fManage the territory hierarchy"
   GUI_REGION_CHANGE_CAPITAL: "§aИзменить столицу региона"
   GUI_REGION_CHANGE_CAPITAL_DESC1: "§fТекущая столица: §3{0}"
   GUI_REGION_CHANGE_CAPITAL_DESC2: "§fНажмите ЛКМ, чтобы сменить столицу региона"
@@ -643,6 +647,23 @@ language:
   CANCEL_SALE: "§cОтменить продажу"
   SELL_PROPERTY: "§aПродать собственность"
   RENT_PROPERTY: "§aСдать собственность в аренду"
+  #Hierarchy gui
+  OVERLORD_GUI: "§aSuzerain"
+  CANNOT_HAVE_OVERLORD: "§fThis territory cannot have an suzerain"
+  NO_OVERLORD: "§cNo suzerain"
+  GUI_OVERLORD_INFO: "§fActual suzerain : §3{0}"
+  GUI_OVERLORD_DECLARE_INDEPENDENCE: "§aQuit the suzerain"
+  GUI_OVERLORD_DECLARE_INDEPENDENCE_DESC1: "§fLeft click to declare independence"
+  GUI_CONFIRM_DECLARE_INDEPENDENCE: "{0}§f will declare independence from {1}"
+  TERRITORY_NO_OVERLORD: "§cThis territory does not have an suzerain"
+  CANNOT_DECLARE_INDEPENDENCE_BECAUSE_CAPITAL: "§cYou cannot declare independence because {0}§f is the capital of the region"
+  BROWSE_OVERLORD_INVITATION: "§aBrowse suzerain invitations"
+  BROWSE_OVERLORD_INVITATION_DESC1: "§fYou have §6{0}§f proposals"
+  GUI_OVERLORD_DONATE: "§aDonate to the suzerain"
+  GUI_OVERLORD_DONATE_DESC1: "§fLeft click to donate to the suzerain"
+  VASSAL_GUI: "§aVassals"
+  VASSAL_GUI_DESC1: "{0}§f have §6{1}§f vassals"
+  CANNOT_HAVE_VASSAL: "§fThis territory cannot have vassals"
   #Transaction history
   TRANSACTION_HISTORY: "§f[{0}] - §3{1} §f: {2}✦"
   DONATION_SINGLE_LINE_1: "§a+{0}✦"
@@ -662,9 +683,9 @@ language:
   CHAT_PLAYER_LEFT_THE_TOWN: "§fВы покинули город"
   CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fГород удалён"
   CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED: "§fРегион удалён, стоимость региона возвращена"
-  WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cГород {0},§c с которым вы находились в состоянии: {1},§c был удалён"
+  WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cThe town {0}§c, with which you had a relation: {1}§c has been deleted"
   #Custom Item
-  ITEM_RARE_STONE: "§3Редкий кристалл"
+  ITEM_RARE_STONE: "§3Rare Stone"
   ITEM_RARE_WOOD: "§3Редкая древесина"
   ITEM_RARE_CROP: "§3Редкий росток"
   ITEM_RARE_SOUL: "§3Душа монстра"
@@ -762,7 +783,7 @@ language:
   GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED: "§cВы не можете подчинить себе территорию такого же или более высокого ранга"
   GUI_WARGOAL_SUBJUGATE_WAR_GOAL_RESULT: "§f{0} был подчинён: {1}"
   LIBERATE_SUBJECT_WAR_GOAL: "§aОсвободить"
-  LIBERATE_SUBJECT_WAR_GOAL_DESC: "§fОсвободить определенную территорию от ее нынешнего правителя"
+  LIBERATE_SUBJECT_WAR_GOAL_DESC: "§fLiberate a specific territory from its current suzerain"
   GUI_WARGOAL_LIBERATE_CANNOT_BE_USED: "§cУ города нет вассала"
   GUI_WARGOAL_LIBERATE_WAR_GOAL_RESULT: "§f{0} был освобождён: {1}"
   GUI_SELECT_TERRITORY_TO_LIBERATE: "§aВыберите территорию для освобождения"
@@ -812,9 +833,24 @@ language:
   DIPLOMATIC_RELATION: "§fProposal by : {0}"
   DIPLOMATIC_RELATION_DESC1: "§fChange the relation to : {0}"
   DIPLOMATIC_RELATION_DESC2: "§fCurrent relation : {0}"
-  #Newsletter
+  ##Newsletter
+  #Greeting
+  NEWSLETTER_GREETING: "§fYou have §b{0}§f unread news"
+  CLICK_TO_OPEN_NEWSLETTER: "[Click to open your newsletter]"
   NEWSLETTER_PLAYER_APPLICATION: "§fTown application from §3{0}"
   NEWSLETTER_PLAYER_APPLICATION_DESC1: "§3{0}§f has applied to join {1}"
-  NEWSLETTER_PLAYER_APPLICATION_DESC2: "§fLeft click to manage the application"
+  NEWSLETTER_PLAYER_APPLICATION_DESC2: "§fLeft click to manage applications"
+  NEWSLETTER_DIPLOMACY_PROPOSAL: "§fDiplomacy proposal from {0}"
+  NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1: "§fChange relation with {0}§f to : {1}"
+  NEWSLETTER_DIPLOMACY_PROPOSAL_DESC2: "§fLeft click to manage diplomacy"
+  NEWSLETTER_SHOW_ALL: "§fShow all news"
+  NEWSLETTER_SHOW_ONLY_UNREAD: "§fShow only unread news"
+  NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ: "§fRight click to mark as read"
+  NEWSLETTER_SUBJUGATE_PROPOSAL: "§fSubjugate proposal from {0}"
+  NEWSLETTER_SUBJUGATE_PROPOSAL_DESC1: "§f{0}§f asked {1}§f for its vassalage"
+  NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§fLeft click to access the proposal"
+  #Chunk blacklist
+  CHUNK_IS_BLACKLISTED: "§cYou cannot claim this chunk"
+
 
 

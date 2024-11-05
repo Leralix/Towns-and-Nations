@@ -314,8 +314,8 @@ public class RegionData extends ITerritoryData {
 
 
     @Override
-    public void addSubject(ITerritoryData territoryToAdd) {
-        addSubject(territoryToAdd.getID());
+    public void addVassal(ITerritoryData vassal) {
+        addSubject(vassal.getID());
     }
 
     public void addSubject(String townID) {
@@ -418,10 +418,8 @@ public class RegionData extends ITerritoryData {
         return this.chunkColor;
     }
 
-    public void removeSubject(ITerritoryData townToDelete) {
-        removeSubject(townToDelete.getID());
-    }
-    public void removeSubject(String townID) {
+
+    public void removeVassal(String townID) {
         townsInRegion.remove(townID);
     }
 
