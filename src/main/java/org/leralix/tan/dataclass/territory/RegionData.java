@@ -1,14 +1,15 @@
 package org.leralix.tan.dataclass.territory;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.Material;
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.dataclass.ClaimedChunkSettings;
 import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.TownRank;
 import org.leralix.tan.dataclass.TownRelations;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.RegionClaimedChunk;
@@ -17,6 +18,7 @@ import org.leralix.tan.dataclass.history.DonationHistory;
 import org.leralix.tan.dataclass.history.MiscellaneousHistory;
 import org.leralix.tan.dataclass.history.TaxHistory;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
+import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
@@ -32,6 +34,7 @@ import org.leralix.tan.utils.config.ConfigUtil;
 import java.util.*;
 
 import static org.leralix.tan.enums.SoundEnum.BAD;
+import static org.leralix.tan.enums.TownRolePermission.KICK_PLAYER;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class RegionData extends ITerritoryData {
@@ -91,7 +94,7 @@ public class RegionData extends ITerritoryData {
         return name;
     }
 
-    public int getRank() {
+    public int getHierarchyRank() {
         return 1;
     }
 
@@ -561,5 +564,26 @@ public class RegionData extends ITerritoryData {
     @Override
     public Collection<ITerritoryData> getPotentialVassals() {
         return new ArrayList<>(TownDataStorage.getTownMap().values());
+    }
+
+
+    @Override
+    public TownRank getRank(PlayerData playerData) {
+        return getRank(playerData.getRegionRankID());
+    }
+
+    @Override
+    public List<GuiItem> getMemberList(PlayerData playerData) {
+        List<GuiItem> res = new ArrayList<>();
+        for (String playerUUID: getPlayerIDList()) {
+            OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
+            PlayerData playerIterateData = PlayerDataStorage.get(playerUUID);
+            ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
+                    Lang.GUI_TOWN_MEMBER_DESC1.get(playerIterateData.getTownRank().getColoredName()));
+
+            GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> event.setCancelled(true));
+            res.add(playerButton);
+        }
+        return res;
     }
 }

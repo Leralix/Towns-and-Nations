@@ -8,12 +8,10 @@ import org.leralix.tan.commands.SubCommand;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
-import org.leralix.tan.utils.TeamUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.leralix.tan.enums.SoundEnum.GOOD;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class JoinTownCommand extends SubCommand {
@@ -72,15 +70,7 @@ public class JoinTownCommand extends SubCommand {
             }
 
             townData.addPlayer(playerData);
-
-            player.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(townData.getName()));
-            townData.broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerData.getName()),
-                    GOOD);
-
             TownInviteDataStorage.removeInvitation(player,townData.getID());
-
-            TeamUtils.updateAllScoreboardColor();
-
         }
         else{
             player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());

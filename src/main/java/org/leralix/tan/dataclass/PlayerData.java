@@ -26,6 +26,7 @@ public class PlayerData {
     private Integer Balance;
     private String TownId;
     private Integer townRankID;
+    private Integer regionRankID;
     private List<String> propertiesListID;
     private List<String> attackInvolvedIn;
 
@@ -122,7 +123,7 @@ public class PlayerData {
     public void setTownRankID(int townRankID) {
         this.townRankID = townRankID;
     }
-    public int getTownRankId(){
+    public int getTownRankID(){
         return this.townRankID;
     }
 
@@ -250,5 +251,9 @@ public class PlayerData {
         }
 
         return currentRelation;
+    }
+
+    public int getRegionRankID() {
+        return regionRankID;
     }
 }

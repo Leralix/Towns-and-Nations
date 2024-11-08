@@ -3,10 +3,13 @@ package org.leralix.tan.dataclass.territory;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.dataclass.*;
@@ -24,12 +27,17 @@ import org.leralix.tan.newsletter.news.JoinRegionProposalNL;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.*;
+import org.leralix.tan.utils.config.ConfigTag;
+import org.leralix.tan.utils.config.ConfigUtil;
 
 import java.util.*;
 import java.util.function.Consumer;
 
 import static org.leralix.tan.enums.SoundEnum.*;
+import static org.leralix.tan.enums.TownRolePermission.KICK_PLAYER;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public abstract class ITerritoryData {
@@ -44,13 +52,20 @@ public abstract class ITerritoryData {
 //    private int balance;
 //    private TownRelations relations;
     Integer color;
-    private Collection<String> attackIncomingList = new ArrayList<>();
-    private Collection<String> currentAttackList = new ArrayList<>();
+    Integer defaultRankID;
+    private Map<Integer, TownRank> ranks;
+    private Collection<String> attackIncomingList;
+    private Collection<String> currentAttackList;
     private HashMap<String, Integer> availableClaims;
     private Map<String, DiplomacyProposal> diplomacyProposals;
     List<String> overlordsProposals;
 
     protected ITerritoryData(){
+        ranks = new HashMap<>();
+        registerNewRank("default");
+
+        attackIncomingList = new ArrayList<>();
+        currentAttackList = new ArrayList<>();
         availableClaims = new HashMap<>();
         diplomacyProposals = new HashMap<>();
         overlordsProposals = new ArrayList<>();
@@ -58,7 +73,7 @@ public abstract class ITerritoryData {
 
     public abstract String getID();
     public abstract String getName();
-    public abstract int getRank();
+    public abstract int getHierarchyRank();
     public abstract String getColoredName();
     public abstract void rename(Player player, int cost, String name);
     public abstract String getLeaderID();
@@ -442,4 +457,68 @@ public abstract class ITerritoryData {
         }
         return proposals;
     }
+
+    protected Map<Integer, TownRank> getRanks(){
+        if(ranks == null) {
+            ranks = new HashMap<>();
+            registerNewRank("default");
+        }
+        return ranks;
+    }
+    public Collection<TownRank> getAllRanks(){
+        return getRanks().values();
+    }
+
+    public TownRank getRank(int rankID){
+        return getRanks().get(rankID);
+    }
+    public abstract TownRank getRank(PlayerData playerData);
+    public int getNumberOfRank(){
+        return getRanks().size();
+    }
+
+    public boolean isRankNameUsed(String message) {
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",false))
+            return false;
+
+        for (TownRank rank : getAllRanks()) {
+            if (rank.getName().equals(message)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public TownRank registerNewRank(String rankName){
+        int nextRankId = 0;
+        for(TownRank rank : getAllRanks()){
+            if(rank.getID() >= nextRankId)
+                nextRankId = rank.getID() + 1;
+        }
+
+        TownRank newRank = new TownRank(nextRankId, rankName);
+        getRanks().put(nextRankId,newRank);
+        return newRank;
+    }
+
+    public void removeRank(int key){
+        getRanks().remove(key);
+    }
+
+    public int getTownDefaultRankID() {
+        if(defaultRankID == null){
+            for(TownRank rank : getAllRanks()) {
+                defaultRankID = rank.getID();
+                return defaultRankID;
+            }
+        }
+            defaultRankID = 0;
+        return defaultRankID;
+    }
+
+    public void setDefaultRank(int rankID) {
+        this.defaultRankID = rankID;
+    }
+
+    public abstract List<GuiItem> getMemberList(PlayerData playerData);
 }

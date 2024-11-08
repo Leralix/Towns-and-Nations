@@ -9,7 +9,6 @@ import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.newsletter.NewsletterScope;
 import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -126,8 +125,7 @@ public class DailyTasks {
 
         for (TownData town: TownDataStorage.getTownMap().values()){
             //Loop through each rank, only paying if everyone of the rank can be paid
-            for (TownRank rank : town.getRanks()){
-
+            for (TownRank rank : town.getAllRanks()){
                 int rankSalary = rank.getSalary();
                 List<String> playerIdList = rank.getPlayers();
                 int costOfSalary = playerIdList.size() * rankSalary;

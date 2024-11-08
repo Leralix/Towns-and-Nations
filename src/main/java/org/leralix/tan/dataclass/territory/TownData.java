@@ -1,7 +1,10 @@
 package org.leralix.tan.dataclass.territory;
 
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -24,6 +27,7 @@ import org.leralix.tan.utils.config.ConfigUtil;
 import java.util.*;
 
 import static org.leralix.tan.enums.SoundEnum.*;
+import static org.leralix.tan.enums.TownRolePermission.KICK_PLAYER;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 import static org.leralix.tan.utils.HeadUtils.getPlayerHead;
 
@@ -79,56 +83,28 @@ public class TownData extends ITerritoryData {
         this.salaryHistory = new SalaryHistory();
         this.taxHistory = new TaxHistory();
 
-        newRank("default");
+        registerNewRank("default");
         if(leaderID != null)
             addPlayer(leaderID);
     }
 
-    //used for sql, loading a town
-    public TownData(String townId, String townName, String leaderID, String description,
-                    String townIconMaterialCode, int townDefaultRankID, long dateTimeCreated, Boolean isRecruiting, int balance,
-                    int flatTax, int chunkColor, Map<Integer, TownRank> newRanks){
-        this.TownId = townId;
-        this.TownName = townName;
-        this.UuidLeader = leaderID;
-        this.Description = description;
-        this.townIconMaterialCode = townIconMaterialCode;
-        this.dateTimeCreated = dateTimeCreated;
-        this.newRanks = newRanks;
-        this.PlayerJoinRequestSet= new HashSet<>();
-        this.townPlayerListId.add(leaderID);
-        this.townDefaultRankID = townDefaultRankID;
-        this.isRecruiting = isRecruiting;
-        this.balance = balance;
-        this.flatTax = flatTax;
-        this.chunkColor = chunkColor;
+    @Override //because old code was not using the centralised attribute
+    protected Map<Integer,TownRank> getRanks(){
+        if(newRanks == null)
+            newRanks = new HashMap<>();
 
-        this.relations = null;
-        this.chunkSettings = null;
-        this.townLevel = null;
+        return newRanks;
+    }
 
+    @Override
+    public TownRank getRank(PlayerData playerData) {
+        return getRank(playerData.getTownRankID());
     }
 
     public String getLeaderName() {
         if(this.UuidLeader == null)
             return Lang.NO_LEADER.get();
         return Bukkit.getOfflinePlayer(UUID.fromString(this.UuidLeader)).getName();
-    }
-
-    public boolean isRankNameUsed(String message) {
-        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",false))
-            return false;
-
-        for (TownRank rank : this.getRanks()) {
-            if (rank.getName().equals(message)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void removeRank(int key){
-        this.newRanks.remove(key);
     }
 
     public long getDateTimeCreated() {
@@ -149,6 +125,17 @@ public class TownData extends ITerritoryData {
         townPlayerListId.add(playerData.getID());
         getTownDefaultRank().addPlayer(playerData.getID());
         playerData.joinTown(this);
+
+        Player playerIterateOnline = playerData.getPlayer();
+        if(playerIterateOnline != null)
+            playerIterateOnline.sendMessage(getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(getColoredName()));
+        broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerData.getName()), MINOR_GOOD);
+
+        for (TownData allTown : TownDataStorage.getTownMap().values()){
+            allTown.removePlayerJoinRequest(playerData.getID());
+        }
+
+        TeamUtils.updateAllScoreboardColor();
         TownDataStorage.saveStats();
     }
 
@@ -222,7 +209,7 @@ public class TownData extends ITerritoryData {
     }
 
     @Override
-    public int getRank() {
+    public int getHierarchyRank() {
         return 0;
     }
 
@@ -244,18 +231,6 @@ public class TownData extends ITerritoryData {
         removeFromBalance(townCost);
         FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player.getName(),this.getName(),newName));
         this.TownName = newName;
-    }
-
-    public TownRank newRank(String rankName)    {
-        int nextRankId = 0;
-        for(TownRank rank : this.getRanks()){
-            if(rank.getID() >= nextRankId)
-                nextRankId = rank.getID() + 1;
-        }
-
-        TownRank newRank = new TownRank(nextRankId, rankName);
-        this.newRanks.put(nextRankId,newRank);
-        return newRank;
     }
 
     @Override
@@ -394,25 +369,8 @@ public class TownData extends ITerritoryData {
         broadCastMessageWithSound(message, soundEnum, true);
     }
 
-
-
-
-    public TownRank getRank(int rankID) {
-        return this.newRanks.get(rankID);
-    }
-
-    public TownRank getRank(PlayerData playerData){
-        return getRank(playerData.getTownRankId());
-    }
-
     public TownRank getRank(Player player){
         return getRank(PlayerDataStorage.get(player));
-    }
-
-    public List<TownRank> getRanks(){
-        if(newRanks == null)
-            return null;
-        return this.newRanks.values().stream().toList();
     }
 
     public void setTownDefaultRank(int rankID){
@@ -689,14 +647,65 @@ public class TownData extends ITerritoryData {
         playerStat.setTownRankID(rankID);
     }
 
-    public Integer getTownDefaultRankID() {
+    public int getTownDefaultRankID() {
         if(this.townDefaultRankID == null)
-            this.townDefaultRankID = getRanks().get(0).getID(); //Bad fix of a bug, removed in 0.9.0
+            this.townDefaultRankID = getRanks().get(0).getID(); //Bad fix of a bug removed in 0.9.0. TODO remove in v0.1.0
         return townDefaultRankID;
     }
 
-    public void setTownDefaultRankID(int rankID){
+    @Override
+    public void setDefaultRank(int rankID){
         this.townDefaultRankID = rankID;
+    }
+
+    @Override
+    public List<GuiItem> getMemberList(PlayerData playerData) {
+        Player player = playerData.getPlayer();
+        List<GuiItem> res = new ArrayList<>();
+        for (String playerUUID: getPlayerIDList()) {
+            OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
+            PlayerData playerIterateData = PlayerDataStorage.get(playerUUID);
+            ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
+                    Lang.GUI_TOWN_MEMBER_DESC1.get(playerIterateData.getTownRank().getColoredName()),
+                    Lang.GUI_TOWN_MEMBER_DESC2.get(EconomyUtil.getBalance(playerIterate)),
+                    playerData.hasPermission(KICK_PLAYER) ? Lang.GUI_TOWN_MEMBER_DESC3.get() : "");
+
+            GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> {
+                event.setCancelled(true);
+                if(event.getClick() == ClickType.RIGHT){
+
+                    PlayerData kickedPlayerData = PlayerDataStorage.get(playerIterate);
+                    TownData townData = TownDataStorage.get(playerData);
+
+
+                    if(!playerData.hasPermission(KICK_PLAYER)){
+                        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                        return;
+                    }
+                    if(townData.getRank(kickedPlayerData).isSuperiorTo(townData.getRank(playerData))){
+                        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
+                        return;
+                    }
+                    if(kickedPlayerData.isTownLeader()){
+                        player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get());
+                        return;
+                    }
+                    if(playerData.getID().equals(kickedPlayerData.getID())){
+                        player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_YOURSELF.get());
+                        return;
+                    }
+
+                    PlayerGUI.openConfirmMenu(player, Lang.CONFIRM_PLAYER_KICKED.get(playerIterate.getName()),
+                            confirmAction -> {
+                                kickPlayer(playerIterate);
+                                PlayerGUI.openMemberList(player, this);
+                            },
+                            p -> PlayerGUI.openMemberList(player, this));
+                }
+            });
+            res.add(playerButton);
+        }
+        return res;
     }
 
     public Map<String, PropertyData> getPropertyDataMap(){
@@ -787,7 +796,7 @@ public class TownData extends ITerritoryData {
 
     public int getTotalSalaryCost() {
         int totalSalary = 0;
-        for (TownRank rank : getRanks()) {
+        for (TownRank rank : getAllRanks()) {
 
             List<String> playerIdList = rank.getPlayers();
             totalSalary += playerIdList.size() * rank.getSalary();

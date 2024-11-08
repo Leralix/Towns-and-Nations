@@ -3,7 +3,6 @@ package org.leralix.tan.newsletter.news;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,7 +14,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.newsletter.NewsletterScope;
 import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.newsletter.NewsletterType;
-import org.leralix.tan.newsletter.news.Newsletter;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.HeadUtils;
@@ -52,7 +50,7 @@ public class PlayerJoinRequestNL extends Newsletter {
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);
             if(event.isLeftClick()){
-                PlayerGUI.openTownApplications(player);
+                PlayerGUI.openTownApplications(player,getTownData());
             }
             if(event.isRightClick()){
                 markAsRead(player);
@@ -67,7 +65,7 @@ public class PlayerJoinRequestNL extends Newsletter {
             return false;
 
 
-        TownData townData = TownDataStorage.get(townID);
+        TownData townData = getTownData();
         if(townData == null) {
             NewsletterStorage.removePlayerJoinRequest(this);
             return false;
@@ -75,6 +73,10 @@ public class PlayerJoinRequestNL extends Newsletter {
         PlayerData playerData = PlayerDataStorage.get(player);
 
         return townData.havePlayer(playerData) && playerData.hasPermission(TownRolePermission.INVITE_PLAYER);
+    }
+
+    protected TownData getTownData(){
+        return TownDataStorage.get(townID);
     }
 
     public String getPlayerID() {

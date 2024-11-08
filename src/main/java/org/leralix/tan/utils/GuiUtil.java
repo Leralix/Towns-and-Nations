@@ -6,6 +6,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.IGUI;
 import org.leralix.tan.lang.DynamicLang;
@@ -50,11 +51,25 @@ public class GuiUtil {
         return ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
     }
 
+
+
     public static void createIterator(Gui gui, List<GuiItem> guItems, int page,
                                       Player player, Consumer<Player> backArrowAction,
                                       Consumer<Player> nextPageAction, Consumer<Player> previousPageAction) {
 
-        createIterator(gui, guItems, page, player, backArrowAction, nextPageAction, previousPageAction, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
+        createIterator(gui, guItems, page, player, backArrowAction, nextPageAction, previousPageAction, Material.GRAY_STAINED_GLASS_PANE);
+    }
+
+    public static void createIterator(Gui gui, List<GuiItem> guItems, int page,
+                                      Player player, Consumer<Player> backArrowAction,
+                                      Consumer<Player> nextPageAction, Consumer<Player> previousPageAction,
+                                      Material decorativeMaterial) {
+
+        ItemStack decorativeGlassPane = new ItemStack(decorativeMaterial);
+        ItemMeta itemMeta = decorativeGlassPane.getItemMeta();
+        itemMeta.setDisplayName("");
+        decorativeGlassPane.setItemMeta(itemMeta);
+        createIterator(gui, guItems, page, player, backArrowAction, nextPageAction, previousPageAction, decorativeGlassPane);
     }
 
     public static void createIterator(Gui gui, List<GuiItem> guItems, int page,

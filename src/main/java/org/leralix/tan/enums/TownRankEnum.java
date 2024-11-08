@@ -1,26 +1,31 @@
 package org.leralix.tan.enums;
 
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
 
 public enum TownRankEnum {
 
-    ONE(1, ChatColor.GOLD, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODIxNGEyYmUzM2YwMzdiZmU2ZmEzZTI0YjFjMmZlMDRmMWU1ZmZkNzQ4ODA5NGQ0ZmY3YWJiMGIzNzBlZjViZSJ9fX0="),
-    TWO(2, ChatColor.DARK_PURPLE,"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWEwZjQ2MDQ2YWUxM2QzMTkzZDQyNTcyZmRiY2I2MmVhMWQ2OWMzODA3ZjA2ZTQwYmQxMTc4MmY1MTQxNGM0NCJ9fX0="),
-    THREE(3, ChatColor.BLUE,"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTlhMWMxOTFlMGViYWJlODlkZGYxOGE4YmFjOGY0MjgwZTNhYzZiYzY2MWMxM2NlMWRmZjY3NGRhZDI4ODVlMyJ9fX0="),
-    FOUR(4, ChatColor.DARK_GREEN,"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTFmZGM4YTk1YzEzM2NlYTRlZDNlNGQ0Njg0MWNkMjM1YmRmYmJlZjYwN2I0MDAzYjM5ZjQ0NzQ1NzQ5OTQyMSJ9fX0="),
-    FIVE(5, ChatColor.GREEN,"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmNmZTg2ODQ4MjdiMDUxM2UzMTBiNDVlODAyMzc2ZTEzM2YxYTI4MmZkYzEzNTBjZGQ0ZjdiZWExYmNjNzllZiJ9fX0=");
+    ONE(5, ChatColor.GOLD, Material.NETHERITE_HELMET, Material.YELLOW_STAINED_GLASS_PANE),
+    TWO(4, ChatColor.DARK_PURPLE, Material.DIAMOND_HELMET, Material.PURPLE_STAINED_GLASS_PANE),
+    THREE(3, ChatColor.BLUE,Material.GOLDEN_HELMET, Material.BLUE_STAINED_GLASS_PANE),
+    FOUR(2, ChatColor.DARK_GREEN,Material.IRON_HELMET, Material.GREEN_STAINED_GLASS_PANE),
+    FIVE(1, ChatColor.GREEN, Material.LEATHER_HELMET, Material.LIME_STAINED_GLASS_PANE);
 
     private final int level;
     private final ChatColor color;
-    private final String skullTexture;
+    private final Material material;
+    private final Material helmetMaterial;
 
-    TownRankEnum(int level, ChatColor color, String skullTexture){
+    TownRankEnum(int level, ChatColor color, Material helmetMaterial, Material colorMaterial) {
         this.level = level;
         this.color = color;
-        this.skullTexture = skullTexture;
+        this.material = colorMaterial;
+        this.helmetMaterial = helmetMaterial;
     }
 
     public int getLevel() {
@@ -30,17 +35,14 @@ public enum TownRankEnum {
     public ChatColor getColor() {
         return color;
     }
-    public String getSkullTexture() {
-        return skullTexture;
-    }
 
     public TownRankEnum getRankByLevel(int level){
         return switch (level) {
-            case 2 -> TWO;
+            case 2 -> FOUR;
             case 3 -> THREE;
-            case 4 -> FOUR;
-            case 5 -> FIVE;
-            default -> ONE;
+            case 4 -> TWO;
+            case 5 -> ONE;
+            default -> FIVE;
         };
     }
 
@@ -48,12 +50,19 @@ public enum TownRankEnum {
         return getRankByLevel((this.getLevel() % 5) + 1);
     }
 
+    public Material getBasicRankIcon(){
+        return helmetMaterial;
+    }
     public ItemStack getRankGuiIcon(){
-        return HeadUtils.makeSkullB64(
+        return HeadUtils.createCustomItemStack(helmetMaterial,
                 this.getColor() + Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_X.get(getLevel()),
-                getSkullTexture(),
                 Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1.get(),
                 Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2.get());
+    }
+
+    public GuiItem getRankColorGuiIcon(){
+        ItemStack itemStack = HeadUtils.createCustomItemStack(material, "");
+        return ItemBuilder.from(itemStack).asGuiItem(e -> e.setCancelled(true));
     }
 
 }

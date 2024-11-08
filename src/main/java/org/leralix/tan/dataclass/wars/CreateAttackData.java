@@ -37,7 +37,7 @@ public class CreateAttackData {
     }
 
     public boolean canBeSubjugated(){
-        return mainAttacker.getRank() > mainDefender.getRank();
+        return mainAttacker.getHierarchyRank() > mainDefender.getHierarchyRank();
     }
 
     public void addDeltaDateTime(long deltaDateTime){

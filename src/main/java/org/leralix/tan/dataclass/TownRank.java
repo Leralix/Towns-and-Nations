@@ -1,5 +1,6 @@
 package org.leralix.tan.dataclass;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.tan.enums.TownRankEnum;
 import org.leralix.tan.enums.TownRolePermission;
@@ -24,20 +25,10 @@ public class TownRank {
         this.ID = id;
         this.name = name;
         this.rankEnum = FIVE;
-        this.rankIconName = "DANDELION";
+        this.rankIconName = null;
         this.players = new ArrayList<>();
         this.isPayingTaxes = true;
         this.salary = 0;
-    }
-
-    public TownRank(Integer id , String name,String rankEnum, String rankIconName, boolean isPayingTaxes,int salary){
-        this.ID = id;
-        this.name = name;
-        this.rankEnum = TownRankEnum.valueOf(rankEnum);
-        this.rankIconName = rankIconName;
-        this.players = null;
-        this.isPayingTaxes = isPayingTaxes;
-        this.salary = salary;
     }
 
     public void swapPayingTaxes() {
@@ -55,21 +46,17 @@ public class TownRank {
     public TownRankEnum getRankEnum(){
         return this.rankEnum;
     }
-    public void setRankEnum(TownRankEnum rankEnum){
-        this.rankEnum = rankEnum;
-    }
     public int getLevel(){return this.rankEnum.getLevel();}
     public void incrementLevel(){
         this.rankEnum = rankEnum.nextRank();
     }
-    public String getRankIconName(){
-        return this.rankIconName;
+    public Material getRankInconMaterial(){
+        if(this.rankIconName == null)
+            return rankEnum.getBasicRankIcon();
+        return Material.getMaterial(this.rankIconName);
     }
     public void addPlayer(String playerUUID){
         this.players.add(playerUUID);
-    }
-    public void addPlayer(Player player){
-        addPlayer(player.getUniqueId().toString());
     }
     public void addPlayer(PlayerData playerData){
         addPlayer(playerData.getID());
@@ -91,14 +78,9 @@ public class TownRank {
     public boolean isPayingTaxes() {
         return this.isPayingTaxes;
     }
-
-    public void setPayingTaxes(boolean payingTaxes) {
-        this.isPayingTaxes = payingTaxes;
-    }
     public void setRankIconName(String rankIconName) {
         this.rankIconName = rankIconName;
     }
-
     public int getNumberOfPlayer(){
         return players.size();
     }
@@ -145,5 +127,9 @@ public class TownRank {
     }
     public void setID(int id) {
         this.ID = id;
+    }
+
+    public boolean isSuperiorTo(TownRank rank) {
+        return this.rankEnum.getLevel() > rank.getRankEnum().getLevel();
     }
 }
