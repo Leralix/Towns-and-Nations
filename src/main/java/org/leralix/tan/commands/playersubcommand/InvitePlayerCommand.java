@@ -53,12 +53,13 @@ public class InvitePlayerCommand extends SubCommand {
         }else if(args.length == 2){
 
             PlayerData playerData = PlayerDataStorage.get(player);
+            TownData townData = TownDataStorage.get(player);
 
-            if(playerData.getTownId() == null){
+            if(townData == null){
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
                 return;
             }
-            if(!playerData.hasPermission(TownRolePermission.INVITE_PLAYER)){
+            if(!townData.doesPlayerHavePermission(playerData, TownRolePermission.INVITE_PLAYER)){
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }

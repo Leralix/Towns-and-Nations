@@ -70,7 +70,7 @@ public class ChunkUtil {
 
         //No permission
         TownData townData = TownDataStorage.get(player);
-        if(!playerStat.hasPermission(TownRolePermission.CLAIM_CHUNK)){
+        if(!townData.doesPlayerHavePermission(playerStat ,TownRolePermission.CLAIM_CHUNK)){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             return;
         }

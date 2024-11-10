@@ -6,7 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.dataclass.TownRank;
+import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.utils.HeadUtils;
 
@@ -40,7 +40,7 @@ public enum TownRolePermission {
     }
 
 
-    public GuiItem createGuiItem(Player player, TownRank townRank) {
+    public GuiItem createGuiItem(Player player, RankData townRank) {
         ItemStack itemStack = HeadUtils.createCustomItemStack(material, description,(townRank.hasPermission(this)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             townRank.switchPermission(this);

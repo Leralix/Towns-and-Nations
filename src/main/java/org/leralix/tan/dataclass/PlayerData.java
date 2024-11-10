@@ -8,7 +8,6 @@ import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.wars.CurrentAttacks;
 import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.enums.TownRolePermission;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -36,6 +35,7 @@ public class PlayerData {
         this.Balance = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("StartingMoney");
         this.TownId = null;
         this.townRankID = null;
+        this.regionRankID = null;
         this.propertiesListID = new ArrayList<>();
         this.attackInvolvedIn = new ArrayList<>();
     }
@@ -70,8 +70,11 @@ public class PlayerData {
         return this.TownId != null;
     }
 
-    public TownRank getTownRank() {
-        return getTown().getRank(townRankID);
+    public RankData getTownRank() {
+        return getTown().getRank(getTownRankID());
+    }
+    public RankData getRegionRank() {
+        return getRegion().getRank(getRegionRankID());
     }
     public void addToBalance(int money) {
         this.Balance = this.Balance + money;
@@ -90,18 +93,10 @@ public class PlayerData {
         return getRegion().isLeader(getID());
     }
 
-    public boolean hasPermission(TownRolePermission rolePermission){
-        if(isTownLeader())
-            return true;
-        if(!haveTown())
-            return false;
-        TownData townData = getTown();
-        return townData.getRank(this.townRankID).hasPermission(rolePermission) ;
-    }
-
     public void leaveTown(){
         this.TownId = null;
         this.townRankID = null;
+        this.regionRankID = null;
     }
 
     public boolean haveRegion(){
@@ -129,7 +124,7 @@ public class PlayerData {
 
     public void joinTown(TownData townData){
         this.TownId = townData.getID();
-        this.townRankID = townData.getTownDefaultRankID();
+        this.townRankID = townData.getDefaultRankID();
 
         //remove all invitation
         for (TownData otherTown : TownDataStorage.getTownMap().values()) {
@@ -254,6 +249,12 @@ public class PlayerData {
     }
 
     public int getRegionRankID() {
+        if(regionRankID == null)
+            regionRankID = getRegion().getDefaultRankID();
         return regionRankID;
+    }
+
+    public void setRegionRankID(Integer rankID) {
+        this.regionRankID = rankID;
     }
 }

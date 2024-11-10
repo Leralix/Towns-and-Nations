@@ -3,13 +3,10 @@ package org.leralix.tan.dataclass.territory;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.dataclass.*;
@@ -17,6 +14,7 @@ import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.wars.CurrentAttacks;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.enums.TownRolePermission;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.SoundEnum;
@@ -28,7 +26,6 @@ import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.*;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
@@ -37,7 +34,6 @@ import java.util.*;
 import java.util.function.Consumer;
 
 import static org.leralix.tan.enums.SoundEnum.*;
-import static org.leralix.tan.enums.TownRolePermission.KICK_PLAYER;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public abstract class ITerritoryData {
@@ -53,7 +49,7 @@ public abstract class ITerritoryData {
 //    private TownRelations relations;
     Integer color;
     Integer defaultRankID;
-    private Map<Integer, TownRank> ranks;
+    private Map<Integer, RankData> ranks;
     private Collection<String> attackIncomingList;
     private Collection<String> currentAttackList;
     private HashMap<String, Integer> availableClaims;
@@ -458,21 +454,24 @@ public abstract class ITerritoryData {
         return proposals;
     }
 
-    protected Map<Integer, TownRank> getRanks(){
+    protected Map<Integer, RankData> getRanks(){
         if(ranks == null) {
             ranks = new HashMap<>();
             registerNewRank("default");
         }
         return ranks;
     }
-    public Collection<TownRank> getAllRanks(){
+    public Collection<RankData> getAllRanks(){
         return getRanks().values();
     }
 
-    public TownRank getRank(int rankID){
+    public RankData getRank(int rankID){
         return getRanks().get(rankID);
     }
-    public abstract TownRank getRank(PlayerData playerData);
+    public abstract RankData getRank(PlayerData playerData);
+    public RankData getRank(Player player){
+        return getRank(PlayerDataStorage.get(player));
+    }
     public int getNumberOfRank(){
         return getRanks().size();
     }
@@ -481,7 +480,7 @@ public abstract class ITerritoryData {
         if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",false))
             return false;
 
-        for (TownRank rank : getAllRanks()) {
+        for (RankData rank : getAllRanks()) {
             if (rank.getName().equals(message)) {
                 return true;
             }
@@ -489,14 +488,14 @@ public abstract class ITerritoryData {
         return false;
     }
 
-    public TownRank registerNewRank(String rankName){
+    public RankData registerNewRank(String rankName){
         int nextRankId = 0;
-        for(TownRank rank : getAllRanks()){
+        for(RankData rank : getAllRanks()){
             if(rank.getID() >= nextRankId)
                 nextRankId = rank.getID() + 1;
         }
 
-        TownRank newRank = new TownRank(nextRankId, rankName);
+        RankData newRank = new RankData(nextRankId, rankName);
         getRanks().put(nextRankId,newRank);
         return newRank;
     }
@@ -505,14 +504,10 @@ public abstract class ITerritoryData {
         getRanks().remove(key);
     }
 
-    public int getTownDefaultRankID() {
+    public int getDefaultRankID() {
         if(defaultRankID == null){
-            for(TownRank rank : getAllRanks()) {
-                defaultRankID = rank.getID();
-                return defaultRankID;
-            }
+            defaultRankID = getAllRanks().iterator().next().getID(); //If no default rank is set, we take the first one
         }
-            defaultRankID = 0;
         return defaultRankID;
     }
 
@@ -521,4 +516,28 @@ public abstract class ITerritoryData {
     }
 
     public abstract List<GuiItem> getMemberList(PlayerData playerData);
+
+
+    public boolean doesPlayerHavePermission(Player player, TownRolePermission townRolePermission) {
+        return doesPlayerHavePermission(PlayerDataStorage.get(player), townRolePermission);
+    }
+    public boolean doesPlayerHavePermission(PlayerData playerData, TownRolePermission townRolePermission) {
+        //Player is not in the territory, he has no permission
+        if(!havePlayer(playerData)){
+            return false; //Later implement
+        }
+        //Leader have all rights
+        if(isLeader(playerData))
+            return true;
+
+        return getRank(playerData).hasPermission(townRolePermission);
+    }
+
+    public void setPlayerRank(PlayerData playerStat, int rankID) {
+        getRank(playerStat).removePlayer(playerStat);
+        getRank(rankID).addPlayer(playerStat);
+        specificSetPlayerRank(playerStat, rankID);
+    }
+
+    protected abstract void specificSetPlayerRank(PlayerData playerStat, int rankID);
 }

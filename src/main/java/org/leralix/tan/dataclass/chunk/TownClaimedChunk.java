@@ -89,18 +89,19 @@ public class TownClaimedChunk extends ClaimedChunk2{
 
     public void unclaimChunk(Player player){
         PlayerData playerStat = PlayerDataStorage.get(player);
-        if(!playerStat.haveTown()){
+        TownData playerTown = playerStat.getTown();
+
+        if(playerTown == null){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
             return;
         }
 
-        if(!playerStat.hasPermission(TownRolePermission.UNCLAIM_CHUNK)){
+        if(!playerTown.doesPlayerHavePermission(playerStat, TownRolePermission.UNCLAIM_CHUNK)){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             SoundUtil.playSound(player, NOT_ALLOWED);
             return;
         }
 
-        TownData playerTown = playerStat.getTown();
 
         if(!getOwner().equals(playerTown)){
             player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_TOWN.get(getOwner().getName()));

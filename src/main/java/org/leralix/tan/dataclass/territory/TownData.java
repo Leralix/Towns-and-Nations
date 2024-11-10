@@ -49,7 +49,7 @@ public class TownData extends ITerritoryData {
     private TownLevel townLevel = new TownLevel();
     private final HashSet<String> townPlayerListId = new HashSet<>();
     private TownRelations relations = new TownRelations();
-    private Map<Integer,TownRank> newRanks = new HashMap<>();
+    private Map<Integer, RankData> newRanks = new HashMap<>();
     private Collection<String> ownedLandmarks = new ArrayList<>();
     private HashSet<String> PlayerJoinRequestSet = new HashSet<>();
     private Map<String, PropertyData> propertyDataMap;
@@ -89,7 +89,7 @@ public class TownData extends ITerritoryData {
     }
 
     @Override //because old code was not using the centralised attribute
-    protected Map<Integer,TownRank> getRanks(){
+    protected Map<Integer, RankData> getRanks(){
         if(newRanks == null)
             newRanks = new HashMap<>();
 
@@ -97,7 +97,7 @@ public class TownData extends ITerritoryData {
     }
 
     @Override
-    public TownRank getRank(PlayerData playerData) {
+    public RankData getRank(PlayerData playerData) {
         return getRank(playerData.getTownRankID());
     }
 
@@ -123,7 +123,7 @@ public class TownData extends ITerritoryData {
 
     public void addPlayer(PlayerData playerData){
         townPlayerListId.add(playerData.getID());
-        getTownDefaultRank().addPlayer(playerData.getID());
+        getTownDefaultRank().addPlayer(playerData);
         playerData.joinTown(this);
 
         Player playerIterateOnline = playerData.getPlayer();
@@ -143,7 +143,6 @@ public class TownData extends ITerritoryData {
         getRank(playerData).removePlayer(playerData);
         townPlayerListId.remove(playerData.getID());
         playerData.leaveTown();
-
         TownDataStorage.saveStats();
     }
 
@@ -369,16 +368,12 @@ public class TownData extends ITerritoryData {
         broadCastMessageWithSound(message, soundEnum, true);
     }
 
-    public TownRank getRank(Player player){
+    public RankData getRank(Player player){
         return getRank(PlayerDataStorage.get(player));
     }
 
-    public void setTownDefaultRank(int rankID){
-        this.townDefaultRankID = rankID;
-    }
-
-    public TownRank getTownDefaultRank(){
-        return getRank(getTownDefaultRankID());
+    public RankData getTownDefaultRank(){
+        return getRank(getDefaultRankID());
     }
 
     public int getNumberOfRank(){
@@ -504,14 +499,15 @@ public class TownData extends ITerritoryData {
     @Override
     public void claimChunk(Player player, Chunk chunk) {
 
-        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
+        PlayerData playerData = PlayerDataStorage.get(player.getUniqueId().toString());
+
 
         if(ClaimBlacklistStorage.cannotBeClaimed(chunk)){
             player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
             return;
         }
 
-        if(!playerStat.hasPermission(TownRolePermission.CLAIM_CHUNK)){
+        if(!doesPlayerHavePermission(playerData,TownRolePermission.CLAIM_CHUNK)){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             return;
         }
@@ -606,6 +602,9 @@ public class TownData extends ITerritoryData {
 
     public void removeOverlord() {
         this.regionID = null;
+        for(PlayerData playerData : getPlayerDataList()){
+            playerData.setRegionRankID(null);
+        }
     }
     @Override
     public void addVassalPrivate(ITerritoryData vassal) {
@@ -641,21 +640,13 @@ public class TownData extends ITerritoryData {
         return this.getRelationWith(otherTown) != null;
     }
 
-    public void setPlayerRank(PlayerData playerStat, int rankID) {
-        getRank(playerStat).removePlayer(playerStat);
-        getRank(rankID).addPlayer(playerStat);
-        playerStat.setTownRankID(rankID);
-    }
-
-    public int getTownDefaultRankID() {
-        if(this.townDefaultRankID == null)
-            this.townDefaultRankID = getRanks().get(0).getID(); //Bad fix of a bug removed in 0.9.0. TODO remove in v0.1.0
-        return townDefaultRankID;
-    }
-
     @Override
     public void setDefaultRank(int rankID){
         this.townDefaultRankID = rankID;
+    }
+    @Override
+    public int getDefaultRankID() {
+        return this.townDefaultRankID;
     }
 
     @Override
@@ -668,7 +659,7 @@ public class TownData extends ITerritoryData {
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
                     Lang.GUI_TOWN_MEMBER_DESC1.get(playerIterateData.getTownRank().getColoredName()),
                     Lang.GUI_TOWN_MEMBER_DESC2.get(EconomyUtil.getBalance(playerIterate)),
-                    playerData.hasPermission(KICK_PLAYER) ? Lang.GUI_TOWN_MEMBER_DESC3.get() : "");
+                    doesPlayerHavePermission(playerData,KICK_PLAYER) ? Lang.GUI_TOWN_MEMBER_DESC3.get() : "");
 
             GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
@@ -678,7 +669,7 @@ public class TownData extends ITerritoryData {
                     TownData townData = TownDataStorage.get(playerData);
 
 
-                    if(!playerData.hasPermission(KICK_PLAYER)){
+                    if(!doesPlayerHavePermission(playerData,KICK_PLAYER)){
                         player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                         return;
                     }
@@ -706,6 +697,11 @@ public class TownData extends ITerritoryData {
             res.add(playerButton);
         }
         return res;
+    }
+
+    @Override
+    protected void specificSetPlayerRank(PlayerData playerStat, int rankID) {
+        playerStat.setTownRankID(rankID);
     }
 
     public Map<String, PropertyData> getPropertyDataMap(){
@@ -796,7 +792,7 @@ public class TownData extends ITerritoryData {
 
     public int getTotalSalaryCost() {
         int totalSalary = 0;
-        for (TownRank rank : getAllRanks()) {
+        for (RankData rank : getAllRanks()) {
 
             List<String> playerIdList = rank.getPlayers();
             totalSalary += playerIdList.size() * rank.getSalary();
@@ -821,7 +817,7 @@ public class TownData extends ITerritoryData {
     public void upgradeTown(Player player) {
         PlayerData playerData = PlayerDataStorage.get(player);
         TownLevel townLevel = this.getTownLevel();
-        if(!playerData.hasPermission(TownRolePermission.UPGRADE_TOWN)){
+        if(!doesPlayerHavePermission(playerData,TownRolePermission.UPGRADE_TOWN)){
             player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             SoundUtil.playSound(player,NOT_ALLOWED);
             return;
@@ -840,7 +836,7 @@ public class TownData extends ITerritoryData {
     public void upgradeTown(Player player, TownUpgrade townUpgrade, int townUpgradeLevel){
         PlayerData playerData = PlayerDataStorage.get(player);
 
-        if(!playerData.hasPermission(TownRolePermission.UPGRADE_TOWN)){
+        if(!doesPlayerHavePermission(playerData,TownRolePermission.UPGRADE_TOWN)){
             player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             SoundUtil.playSound(player,NOT_ALLOWED);
             return;

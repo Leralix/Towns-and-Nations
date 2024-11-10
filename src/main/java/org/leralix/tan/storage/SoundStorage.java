@@ -7,12 +7,18 @@ import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SoundStorage {
 
-    public static final HashMap<SoundEnum, SoundData> soundMap = new HashMap<>();
+    private SoundStorage() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    private static final Map<SoundEnum, SoundData> soundMap = new EnumMap<>(SoundEnum.class);
 
     public static void init(){
         ConfigurationSection soundsSection = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getConfigurationSection("sounds");
@@ -25,7 +31,6 @@ public class SoundStorage {
                 float pitch = Float.parseFloat(soundValues.get(2));
 
                 soundMap.put(SoundEnum.valueOf(key), new SoundData(soundName, volume, pitch));
-
             }
         }
     }

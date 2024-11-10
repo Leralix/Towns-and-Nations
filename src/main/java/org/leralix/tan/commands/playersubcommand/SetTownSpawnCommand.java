@@ -52,13 +52,13 @@ public class SetTownSpawnCommand extends SubCommand {
         }
 
         //No permission
+        TownData townData = TownDataStorage.get(player);
 
-        if(!playerStat.hasPermission(TownRolePermission.TOWN_ADMINISTRATOR)){
+        if(!townData.doesPlayerHavePermission(playerStat, TownRolePermission.TOWN_ADMINISTRATOR)){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             return;
         }
 
-        TownData townData = TownDataStorage.get(player);
 
         //Spawn Unlocked
         if(townData.isSpawnLocked()){

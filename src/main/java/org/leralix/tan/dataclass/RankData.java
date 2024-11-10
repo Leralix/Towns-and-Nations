@@ -1,7 +1,6 @@
 package org.leralix.tan.dataclass;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.leralix.tan.enums.TownRankEnum;
 import org.leralix.tan.enums.TownRolePermission;
 
@@ -9,7 +8,7 @@ import java.util.*;
 
 import static org.leralix.tan.enums.TownRankEnum.FIVE;
 
-public class TownRank {
+public class RankData {
 
     private Integer ID;
     private String name;
@@ -21,7 +20,7 @@ public class TownRank {
 
     private boolean isPayingTaxes;
 
-    public TownRank(int id, String name){
+    public RankData(int id, String name){
         this.ID = id;
         this.name = name;
         this.rankEnum = FIVE;
@@ -66,9 +65,6 @@ public class TownRank {
     }
     public void removePlayer(PlayerData player){
         removePlayer(player.getID());
-    }
-    public void removePlayer(Player player){
-        removePlayer(player.getUniqueId().toString());
     }
 
     public List<String> getPlayers(){
@@ -129,7 +125,7 @@ public class TownRank {
         this.ID = id;
     }
 
-    public boolean isSuperiorTo(TownRank rank) {
+    public boolean isSuperiorTo(RankData rank) {
         return this.rankEnum.getLevel() > rank.getRankEnum().getLevel();
     }
 }

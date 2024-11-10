@@ -18,14 +18,6 @@ public class SoundData {
     public Sound getSound() {
         return soundName;
     }
-
-    public int getVolume() {
-        return volume;
-    }
-
-    public float getPitch() {
-        return pitch;
-    }
     public void playSound(Player player){
         player.playSound(player.getLocation(), soundName, volume, pitch);
     }

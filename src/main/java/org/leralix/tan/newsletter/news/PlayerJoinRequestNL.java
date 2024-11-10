@@ -63,16 +63,12 @@ public class PlayerJoinRequestNL extends Newsletter {
     public boolean shouldShowToPlayer(Player player, NewsletterScope scope) {
         if(isRead(player) && scope == NewsletterScope.SHOW_ONLY_UNREAD)
             return false;
-
-
         TownData townData = getTownData();
         if(townData == null) {
             NewsletterStorage.removePlayerJoinRequest(this);
             return false;
         }
-        PlayerData playerData = PlayerDataStorage.get(player);
-
-        return townData.havePlayer(playerData) && playerData.hasPermission(TownRolePermission.INVITE_PLAYER);
+        return townData.doesPlayerHavePermission(player, TownRolePermission.INVITE_PLAYER);
     }
 
     protected TownData getTownData(){

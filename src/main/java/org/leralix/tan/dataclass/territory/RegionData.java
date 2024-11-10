@@ -4,12 +4,11 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.dataclass.ClaimedChunkSettings;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.TownRank;
+import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.dataclass.TownRelations;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.RegionClaimedChunk;
@@ -18,7 +17,6 @@ import org.leralix.tan.dataclass.history.DonationHistory;
 import org.leralix.tan.dataclass.history.MiscellaneousHistory;
 import org.leralix.tan.dataclass.history.TaxHistory;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
-import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
@@ -34,7 +32,6 @@ import org.leralix.tan.utils.config.ConfigUtil;
 import java.util.*;
 
 import static org.leralix.tan.enums.SoundEnum.BAD;
-import static org.leralix.tan.enums.TownRolePermission.KICK_PLAYER;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class RegionData extends ITerritoryData {
@@ -568,7 +565,7 @@ public class RegionData extends ITerritoryData {
 
 
     @Override
-    public TownRank getRank(PlayerData playerData) {
+    public RankData getRank(PlayerData playerData) {
         return getRank(playerData.getRegionRankID());
     }
 
@@ -579,11 +576,16 @@ public class RegionData extends ITerritoryData {
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
             PlayerData playerIterateData = PlayerDataStorage.get(playerUUID);
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
-                    Lang.GUI_TOWN_MEMBER_DESC1.get(playerIterateData.getTownRank().getColoredName()));
+                    Lang.GUI_TOWN_MEMBER_DESC1.get(playerIterateData.getRegionRank().getColoredName()));
 
             GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> event.setCancelled(true));
             res.add(playerButton);
         }
         return res;
+    }
+
+    @Override
+    protected void specificSetPlayerRank(PlayerData playerStat, int rankID) {
+        playerStat.setRegionRankID(rankID);
     }
 }
