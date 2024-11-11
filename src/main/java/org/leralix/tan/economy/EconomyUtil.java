@@ -26,7 +26,7 @@ public class EconomyUtil {
      * @param offlinePlayer The player whose balance is to be retrieved.
      * @return              The player's current balance.
      */
-    public static int getBalance(OfflinePlayer offlinePlayer){
+    public static double getBalance(OfflinePlayer offlinePlayer){
         return econ.getBalance(PlayerDataStorage.get(offlinePlayer));
     }
 
@@ -35,7 +35,7 @@ public class EconomyUtil {
      * @param player    The player whose balance is to be retrieved.
      * @return          The player's current balance.
      */
-    public static int getBalance(Player player){
+    public static double getBalance(Player player){
         return econ.getBalance(PlayerDataStorage.get(player));
     }
 
@@ -44,7 +44,7 @@ public class EconomyUtil {
      * @param offlinePlayer     The player whose balance is going to be affected
      * @param amount            The amount of money to be subtracted
      */
-    public static void removeFromBalance(OfflinePlayer offlinePlayer, int amount){
+    public static void removeFromBalance(OfflinePlayer offlinePlayer, double amount){
         econ.withdrawPlayer(PlayerDataStorage.get(offlinePlayer), amount);
     }
 
@@ -53,7 +53,7 @@ public class EconomyUtil {
      * @param player     The player whose balance is going to be affected
      * @param amount     The amount of money to be subtracted
      */
-    public static void removeFromBalance(Player player, int amount) {
+    public static void removeFromBalance(Player player, double amount) {
         econ.withdrawPlayer(PlayerDataStorage.get(player), amount);
     }
     /**
@@ -61,7 +61,7 @@ public class EconomyUtil {
      * @param player     The player whose balance is going to be affected
      * @param amount     The amount of money to be added
      */
-    public static void addFromBalance(Player player, int amount){
+    public static void addFromBalance(Player player, double amount){
         econ.depositPlayer(PlayerDataStorage.get(player), amount);
     }
     /**
@@ -69,7 +69,7 @@ public class EconomyUtil {
      * @param offlinePlayer     The player whose balance is going to be affected
      * @param amount            The amount of money to be added
      */
-    public static void addFromBalance(OfflinePlayer offlinePlayer, int amount) {
+    public static void addFromBalance(OfflinePlayer offlinePlayer, double amount) {
         econ.depositPlayer(PlayerDataStorage.get(offlinePlayer), amount);
     }
 

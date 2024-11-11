@@ -47,9 +47,9 @@ public class AddMoney extends SubCommand {
         }
         else if (args.length == 3) {
             PlayerData target = PlayerDataStorage.get(Bukkit.getServer().getPlayer(args[1]));
-            int amount;
+            double amount;
             try {
-                amount = Integer.parseInt(args[2]);
+                amount = Double.parseDouble(args[2]);
             } catch (NumberFormatException e) {
                 player.sendMessage(getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
                 return;

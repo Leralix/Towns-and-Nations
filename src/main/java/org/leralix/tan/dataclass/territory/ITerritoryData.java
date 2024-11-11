@@ -4,7 +4,6 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Chunk;
-import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -14,7 +13,7 @@ import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.wars.CurrentAttacks;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.enums.TownRolePermission;
+import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.SoundEnum;
@@ -82,7 +81,7 @@ public abstract class ITerritoryData {
     public abstract String getDescription();
     public abstract void setDescription(String newDescription);
     public abstract ItemStack getIconItem();
-    public abstract void setIconMaterial(Material material);
+    public abstract void setIcon(ItemStack icon);
     public abstract Collection<String> getPlayerIDList();
     public abstract Collection<PlayerData> getPlayerDataList();
     public abstract ClaimedChunkSettings getChunkSettings();
@@ -154,9 +153,9 @@ public abstract class ITerritoryData {
         return TownRelation.NEUTRAL;
     }
 
-    public abstract void addToBalance(int balance);
+    public abstract void addToBalance(double balance);
 
-    public abstract void removeFromBalance(int balance);
+    public abstract void removeFromBalance(double balance);
 
     public abstract void broadCastMessage(String message);
 
@@ -240,7 +239,7 @@ public abstract class ITerritoryData {
     public abstract boolean atWarWith(String territoryID);
 
 
-    public abstract int getBalance();
+    public abstract double getBalance();
 
     public abstract ITerritoryData getOverlord();
     public abstract void removeOverlord();
@@ -348,8 +347,8 @@ public abstract class ITerritoryData {
         return false;
     }
 
-    public void addDonation(Player player, Integer amount) {
-        int playerBalance = EconomyUtil.getBalance(player);
+    public void addDonation(Player player, double amount) {
+        double playerBalance = EconomyUtil.getBalance(player);
 
         if(playerBalance < amount ){
             player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.get());
@@ -518,10 +517,10 @@ public abstract class ITerritoryData {
     public abstract List<GuiItem> getMemberList(PlayerData playerData);
 
 
-    public boolean doesPlayerHavePermission(Player player, TownRolePermission townRolePermission) {
+    public boolean doesPlayerHavePermission(Player player, RolePermission townRolePermission) {
         return doesPlayerHavePermission(PlayerDataStorage.get(player), townRolePermission);
     }
-    public boolean doesPlayerHavePermission(PlayerData playerData, TownRolePermission townRolePermission) {
+    public boolean doesPlayerHavePermission(PlayerData playerData, RolePermission townRolePermission) {
         //Player is not in the territory, he has no permission
         if(!havePlayer(playerData)){
             return false; //Later implement

@@ -39,8 +39,8 @@ public class SeeBalanceCommand extends SubCommand  {
     public void perform(Player player, String[] args){
         if (args.length == 1){
             player.sendMessage(getTANString() + Lang.BAL_AMOUNT.get(PlayerDataStorage.get(player).getBalance()));
-
-        }else if(args.length > 1){
+        }
+        else if(args.length > 1){
             player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
             player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }

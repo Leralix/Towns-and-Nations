@@ -8,7 +8,7 @@ import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.TownRolePermission;
+import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -41,7 +41,7 @@ public class ChunkUtil {
         RegionData regionData = townData.getOverlord();
 
         //Not leader of the region
-        if(!playerStat.isRegionLeader()){
+        if(!regionData.doesPlayerHavePermission(playerStat, RolePermission.CLAIM_CHUNK)){
             player.sendMessage(getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return;
         }
@@ -70,7 +70,7 @@ public class ChunkUtil {
 
         //No permission
         TownData townData = TownDataStorage.get(player);
-        if(!townData.doesPlayerHavePermission(playerStat ,TownRolePermission.CLAIM_CHUNK)){
+        if(!townData.doesPlayerHavePermission(playerStat , RolePermission.CLAIM_CHUNK)){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             return;
         }

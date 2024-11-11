@@ -1,10 +1,10 @@
-package org.leralix.tan.listeners.ChatListener.Events;
+package org.leralix.tan.listeners.chatlistener.events;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.listeners.ChatListener.ChatListenerEvent;
+import org.leralix.tan.listeners.chatlistener.ChatListenerEvent;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.ChatUtils;
 import org.leralix.tan.utils.FileUtil;
@@ -13,7 +13,7 @@ import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
 
 import static org.leralix.tan.enums.SoundEnum.LEVEL_UP;
-import static org.leralix.tan.listeners.ChatListener.PlayerChatListenerStorage.removePlayer;
+import static org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage.removePlayer;
 
 public class CreateEmptyTown extends ChatListenerEvent {
     @Override

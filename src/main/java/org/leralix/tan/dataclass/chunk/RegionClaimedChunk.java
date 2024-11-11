@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.ChunkPermissionType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
@@ -77,7 +78,7 @@ public class RegionClaimedChunk extends ClaimedChunk2{
             return;
         }
 
-        if(!playerStat.isRegionLeader()){
+        if(!regionData.doesPlayerHavePermission(playerStat, RolePermission.UNCLAIM_CHUNK)){
             player.sendMessage(getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return;
         }

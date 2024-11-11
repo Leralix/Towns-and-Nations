@@ -56,7 +56,7 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
             return playerData.haveTown() ? Integer.toString(playerData.getTown().getNumberOfClaimedChunk()) : Lang.NO_TOWN.get();
         }
         else if (params.equalsIgnoreCase("player_town_balance")) {
-            return playerData.haveTown() ? Integer.toString(playerData.getTown().getBalance()) : Lang.NO_TOWN.get();
+            return playerData.haveTown() ? Double.toString(playerData.getTown().getBalance()) : Lang.NO_TOWN.get();
         }
         else if (params.equalsIgnoreCase("player_town_rank_name")) {
             return playerData.haveTown() ? playerData.getTownRank().getName() : Lang.NO_TOWN.get();
@@ -74,7 +74,7 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
             return playerData.haveRegion() ? Integer.toString(playerData.getRegion().getNumberOfClaimedChunk()) : Lang.NO_REGION.get();
         }
         else if (params.equalsIgnoreCase("player_region_balance")) {
-            return playerData.haveRegion() ? Integer.toString(playerData.getRegion().getBalance()) : Lang.NO_REGION.get();
+            return playerData.haveRegion() ? Double.toString(playerData.getRegion().getBalance()) : Lang.NO_REGION.get();
         }
 
         return null;

@@ -2,7 +2,7 @@ package org.leralix.tan.dataclass;
 
 import org.bukkit.Material;
 import org.leralix.tan.enums.TownRankEnum;
-import org.leralix.tan.enums.TownRolePermission;
+import org.leralix.tan.enums.RolePermission;
 
 import java.util.*;
 
@@ -16,7 +16,7 @@ public class RankData {
     private String rankIconName;
     private final List<String> players;
     private int salary;
-    private final Set<TownRolePermission> permissions = EnumSet.noneOf(TownRolePermission.class);
+    private final Set<RolePermission> permissions = EnumSet.noneOf(RolePermission.class);
 
     private boolean isPayingTaxes;
 
@@ -81,17 +81,17 @@ public class RankData {
         return players.size();
     }
 
-    public void addPermission(TownRolePermission permission) {
+    public void addPermission(RolePermission permission) {
         permissions.add(permission);
     }
-    public boolean hasPermission(TownRolePermission permission) {
+    public boolean hasPermission(RolePermission permission) {
         return permissions.contains(permission);
     }
-    public void removePermission(TownRolePermission permission) {
+    public void removePermission(RolePermission permission) {
         permissions.remove(permission);
     }
 
-    public void switchPermission(TownRolePermission permission) {
+    public void switchPermission(RolePermission permission) {
         if(hasPermission(permission))
             removePermission(permission);
         else

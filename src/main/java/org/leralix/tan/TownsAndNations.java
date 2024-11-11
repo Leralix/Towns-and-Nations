@@ -21,7 +21,7 @@ import org.leralix.tan.commands.adminsubcommand.AdminCommandManager;
 import org.leralix.tan.commands.debugsubcommand.DebugCommandManager;
 import org.leralix.tan.commands.playersubcommand.PlayerCommandManager;
 import org.leralix.tan.listeners.*;
-import org.leralix.tan.listeners.ChatListener.ChatListener;
+import org.leralix.tan.listeners.chatlistener.ChatListener;
 import org.leralix.tan.storage.CustomItemManager;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.storage.legacy.UpgradeStorage;

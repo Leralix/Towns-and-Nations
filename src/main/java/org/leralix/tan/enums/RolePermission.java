@@ -10,7 +10,7 @@ import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.utils.HeadUtils;
 
-public enum TownRolePermission {
+public enum RolePermission {
 
     MANAGE_TAXES(Material.GOLD_INGOT, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TAXES.get()),
     PROMOTE_RANK_PLAYER(Material.EMERALD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_PROMOTE_RANK_PLAYER.get()),
@@ -34,7 +34,7 @@ public enum TownRolePermission {
     public final String description;
 
 
-    TownRolePermission(Material material, String description) {
+    RolePermission(Material material, String description) {
         this.material = material;
         this.description = description;
     }

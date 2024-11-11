@@ -6,7 +6,7 @@ import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.commands.SubCommand;
-import org.leralix.tan.enums.TownRolePermission;
+import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.utils.ChatUtils;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -59,7 +59,7 @@ public class InvitePlayerCommand extends SubCommand {
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
                 return;
             }
-            if(!townData.doesPlayerHavePermission(playerData, TownRolePermission.INVITE_PLAYER)){
+            if(!townData.doesPlayerHavePermission(playerData, RolePermission.INVITE_PLAYER)){
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }

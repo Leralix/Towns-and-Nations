@@ -1,8 +1,8 @@
-package org.leralix.tan.listeners.ChatListener.Events;
+package org.leralix.tan.listeners.chatlistener.events;
 
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
-import org.leralix.tan.listeners.ChatListener.ChatListenerEvent;
+import org.leralix.tan.listeners.chatlistener.ChatListenerEvent;
 
 import java.util.function.Consumer;
 

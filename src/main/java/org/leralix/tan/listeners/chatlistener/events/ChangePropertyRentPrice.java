@@ -1,14 +1,14 @@
-package org.leralix.tan.listeners.ChatListener.Events;
+package org.leralix.tan.listeners.chatlistener.events;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.listeners.ChatListener.ChatListenerEvent;
+import org.leralix.tan.listeners.chatlistener.ChatListenerEvent;
 
 import java.util.function.Consumer;
 
-import static org.leralix.tan.listeners.ChatListener.PlayerChatListenerStorage.removePlayer;
+import static org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage.removePlayer;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class ChangePropertyRentPrice extends ChatListenerEvent {

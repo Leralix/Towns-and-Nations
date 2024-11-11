@@ -126,6 +126,7 @@ language:
   CHAT_SCOPE_NOT_FOUND: "§cUnfounded chat scope"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Added §6+{0}✦§f to §3{1}"
+  SET_MONEY_COMMAND_SUCCESS: "Successfully set the balance of §3{0}§f to §6{1}✦"
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Open the town and nation GUI"
   #Newsletter command

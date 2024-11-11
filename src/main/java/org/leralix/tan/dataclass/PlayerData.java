@@ -22,7 +22,7 @@ public class PlayerData {
 
     private final String UUID;
     private String PlayerName;
-    private Integer Balance;
+    private Double Balance;
     private String TownId;
     private Integer townRankID;
     private Integer regionRankID;
@@ -32,7 +32,7 @@ public class PlayerData {
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
         this.PlayerName = player.getName();
-        this.Balance = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("StartingMoney");
+        this.Balance = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("StartingMoney");
         this.TownId = null;
         this.townRankID = null;
         this.regionRankID = null;
@@ -52,11 +52,12 @@ public class PlayerData {
         this.PlayerName = newPlayerName;
     }
 
-    public int getBalance() {
-        return Balance;
+    public double getBalance() {
+        double digitVal = Math.pow(10,ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("DecimalDigits",2));
+        return (long)(Balance * digitVal) / digitVal;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(double balance) {
         this.Balance = balance;
     }
 
@@ -76,21 +77,11 @@ public class PlayerData {
     public RankData getRegionRank() {
         return getRegion().getRank(getRegionRankID());
     }
-    public void addToBalance(int money) {
-        this.Balance = this.Balance + money;
+    public void addToBalance(double amount) {
+        this.Balance = this.Balance + amount;
     }
-    public void removeFromBalance(int money) {
-        this.Balance = this.Balance - money;
-    }
-    public boolean isTownLeader(){
-        return this.UUID.equals(TownDataStorage.get(this).getLeaderID());
-    }
-    public boolean isRegionLeader(){
-        if(!haveTown())
-            return false;
-        if(!getTown().haveOverlord())
-            return false;
-        return getRegion().isLeader(getID());
+    public void removeFromBalance(double amount) {
+        this.Balance = this.Balance - amount;
     }
 
     public void leaveTown(){

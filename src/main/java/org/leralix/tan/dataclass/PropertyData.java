@@ -312,7 +312,7 @@ public class PropertyData {
 
     public void buyProperty(Player player) {
 
-        int playerBalance = EconomyUtil.getBalance(player);
+        double playerBalance = EconomyUtil.getBalance(player);
         if(playerBalance < salePrice){
             player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(salePrice - playerBalance));
             SoundUtil.playSound(player, SoundEnum.MINOR_BAD);

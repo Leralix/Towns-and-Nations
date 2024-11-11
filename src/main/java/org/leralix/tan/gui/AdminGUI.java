@@ -20,11 +20,11 @@ import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.enums.SoundEnum;
-import org.leralix.tan.listeners.ChatListener.Events.ChangeDescription;
-import org.leralix.tan.listeners.ChatListener.Events.ChangeLandmarkName;
-import org.leralix.tan.listeners.ChatListener.Events.ChangeTerritoryName;
-import org.leralix.tan.listeners.ChatListener.Events.CreateEmptyTown;
-import org.leralix.tan.listeners.ChatListener.PlayerChatListenerStorage;
+import org.leralix.tan.listeners.chatlistener.events.ChangeDescription;
+import org.leralix.tan.listeners.chatlistener.events.ChangeLandmarkName;
+import org.leralix.tan.listeners.chatlistener.events.ChangeTerritoryName;
+import org.leralix.tan.listeners.chatlistener.events.CreateEmptyTown;
+import org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.*;
 
@@ -512,7 +512,7 @@ public class AdminGUI implements IGUI{
                 event.setCancelled(true);
                 TownData townData = playerData.getTown();
 
-                if(playerData.isTownLeader()){
+                if(townData.isLeader(playerData)){
                     player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get());
                     return;
                 }

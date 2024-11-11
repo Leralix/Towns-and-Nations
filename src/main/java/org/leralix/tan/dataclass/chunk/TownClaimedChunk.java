@@ -17,7 +17,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.ChunkPermissionType;
 import org.leralix.tan.enums.TownChunkPermission;
 import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.enums.TownRolePermission;
+import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -96,7 +96,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
             return;
         }
 
-        if(!playerTown.doesPlayerHavePermission(playerStat, TownRolePermission.UNCLAIM_CHUNK)){
+        if(!playerTown.doesPlayerHavePermission(playerStat, RolePermission.UNCLAIM_CHUNK)){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             SoundUtil.playSound(player, NOT_ALLOWED);
             return;

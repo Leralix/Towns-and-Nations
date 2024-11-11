@@ -51,6 +51,9 @@ prefixSize: 3
 #If no other economy plugin are provided by vault, the plugin will use its own economy system without linking to vault
 UseTanEconomy: true
 
+#If TownsAndNations economy is used, set the number of digits (0,1,2,3...)
+DecimalDigits: 2
+
 #Max distance between 2 players to be able to trade (/tan pay)
 maxPayDistance: 15
 
@@ -62,7 +65,7 @@ maxPayDistance: 15
 EnableKingdom: true
 
 #The amount of money a player starts with (only if no economy plugin is linked to the server)
-StartingMoney: 100
+StartingMoney: 100.0
 
 ########################
 ##       Regions      ##
@@ -309,11 +312,7 @@ landmarkNameMaxSize: 25
 
 claimBlacklist:
   - name : "world"
-    coordinate : [0,0,10,10]
-  - name: "world"
-    coordinate: [ 0,0,10,10 ]
-  - name: "world"
-    coordinate: [ 0,0,10,10 ]
+    coordinate : [0,0,1,1]
 
 
 

@@ -47,23 +47,25 @@ public class SetMoney extends SubCommand {
 
 
         if (args.length < 3) {
-            player.sendMessage("Not enough arguments");
+            player.sendMessage(getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         } else if (args.length == 3) {
             PlayerData target = PlayerDataStorage.get(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
-            int amount;
+            double amount;
             try {
-                amount = Integer.parseInt(args[2]);
+                amount = Double.parseDouble(args[2]);
             } catch (NumberFormatException e) {
-                player.sendMessage("Invalid Syntax for the amount of money");
+                player.sendMessage(getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
                 return;
             }
 
             target.setBalance(amount);
-            player.sendMessage("Set Balance of "+ target.getName() + " to " + amount);
+            player.sendMessage(getTANString() + Lang.SET_MONEY_COMMAND_SUCCESS.get(amount,target.getName()));
             FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_SET_MONEY.get(player.getName(),amount,target.getName()));
 
         } else {
-            player.sendMessage("Too many arguments");
+            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
+            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
     }
 }

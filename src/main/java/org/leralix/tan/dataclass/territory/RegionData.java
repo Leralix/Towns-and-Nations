@@ -6,10 +6,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.leralix.tan.dataclass.ClaimedChunkSettings;
-import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.RankData;
-import org.leralix.tan.dataclass.TownRelations;
+import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.RegionClaimedChunk;
 import org.leralix.tan.dataclass.history.ChunkHistory;
@@ -18,6 +15,7 @@ import org.leralix.tan.dataclass.history.MiscellaneousHistory;
 import org.leralix.tan.dataclass.history.TaxHistory;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.enums.SoundEnum;
+import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
@@ -33,6 +31,7 @@ import java.util.*;
 
 import static org.leralix.tan.enums.SoundEnum.BAD;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
+import static org.leralix.tan.utils.HeadUtils.getPlayerHead;
 
 public class RegionData extends ITerritoryData {
 
@@ -43,8 +42,9 @@ public class RegionData extends ITerritoryData {
     private String nationID;
     private Long dateTimeCreated;
     private String regionIconType;
+    private TerritoryIcon territoryIcon;
     private Integer taxRate;
-    private Integer balance;
+    private Double balance;
     private Integer chunkColor;
     private String description;
     private final List<String> townsInRegion;
@@ -65,7 +65,7 @@ public class RegionData extends ITerritoryData {
         this.nationID = null;
         this.regionIconType = null;
         this.taxRate = 1;
-        this.balance = 0;
+        this.balance = 0.0;
         this.description = "default description";
         this.townsInRegion = new ArrayList<>();
         this.townsInRegion.add(ownerTown.getID());
@@ -139,20 +139,22 @@ public class RegionData extends ITerritoryData {
 
     @Override
     public ItemStack getIconItem() {
-        if(this.regionIconType == null)
-            return getCapital().getIconItem();
-        return new ItemStack(Material.valueOf(this.regionIconType));
+        if(this.territoryIcon == null){
+            if(this.regionIconType == null){
+                return getCapital().getIconItem();
+            }
+            else { // regionIconType is a legacy code, it should be updated anymore but we keep it for compatibility (todo delete before v0.1)
+                territoryIcon = new TerritoryIcon(new ItemStack(Material.getMaterial(regionIconType)));
+            }
+        }
+        return territoryIcon.getIcon();
     }
 
     @Override
-    public void setIconMaterial(Material regionIconType) {
-        setIconMaterial(regionIconType.name());
+    public void setIcon(ItemStack icon) {
+        this.territoryIcon = new TerritoryIcon(icon);
     }
 
-
-    public void setIconMaterial(String regionIconType) {
-        this.regionIconType = regionIconType;
-    }
 
     @Override
     public Collection<String> getPlayerIDList(){
@@ -196,6 +198,7 @@ public class RegionData extends ITerritoryData {
             icon.setItemMeta(meta);
         }
         return icon;
+
     }
 
     @Override
@@ -248,8 +251,8 @@ public class RegionData extends ITerritoryData {
             return;
         }
 
-        //Not leader of the region
-        if(!playerData.isRegionLeader()){
+
+        if(!regionData.doesPlayerHavePermission(playerData, RolePermission.CLAIM_CHUNK)){
             player.sendMessage(getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return;
         }
@@ -337,8 +340,9 @@ public class RegionData extends ITerritoryData {
     }
 
 
-    public int getBalance() {
-        return balance;
+    public double getBalance() {
+        double digitVal = Math.pow(10,ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("DecimalDigits",2));
+        return (long)(balance * digitVal) / digitVal;
     }
 
     @Override
@@ -470,12 +474,12 @@ public class RegionData extends ITerritoryData {
 
 
     @Override
-    public void addToBalance(int balance) {
+    public void addToBalance(double balance) {
         this.balance += balance;
     }
 
     @Override
-    public void removeFromBalance(int balance) {
+    public void removeFromBalance(double balance) {
         this.balance -= balance;
     }
 

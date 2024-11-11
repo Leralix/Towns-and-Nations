@@ -5,7 +5,7 @@ import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.commands.SubCommand;
-import org.leralix.tan.enums.TownRolePermission;
+import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
@@ -54,7 +54,7 @@ public class SetTownSpawnCommand extends SubCommand {
         //No permission
         TownData townData = TownDataStorage.get(player);
 
-        if(!townData.doesPlayerHavePermission(playerStat, TownRolePermission.TOWN_ADMINISTRATOR)){
+        if(!townData.doesPlayerHavePermission(playerStat, RolePermission.TOWN_ADMINISTRATOR)){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             return;
         }

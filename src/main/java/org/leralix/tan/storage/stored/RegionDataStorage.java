@@ -12,7 +12,7 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.listeners.ChatListener.PlayerChatListenerStorage;
+import org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.utils.ChatUtils;
 import org.leralix.tan.utils.config.ConfigTag;

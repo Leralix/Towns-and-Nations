@@ -4,22 +4,22 @@ import org.leralix.tan.dataclass.PlayerData;
 
 public class TanEconomyStandalone extends AbstractTanEcon{
     @Override
-    public int getBalance(PlayerData playerData) {
+    public double getBalance(PlayerData playerData) {
         return playerData.getBalance();
     }
 
     @Override
-    public boolean has(PlayerData playerData, int v) {
-        return playerData.getBalance() > v;
+    public boolean has(PlayerData playerData, double amount) {
+        return playerData.getBalance() > amount;
     }
 
     @Override
-    public void withdrawPlayer(PlayerData playerData, int v) {
-        playerData.removeFromBalance(v);
+    public void withdrawPlayer(PlayerData playerData, double amount) {
+        playerData.removeFromBalance(amount);
     }
 
     @Override
-    public void depositPlayer(PlayerData playerData, int v) {
-        playerData.addToBalance(v);
+    public void depositPlayer(PlayerData playerData, double amount) {
+        playerData.addToBalance(amount);
     }
 }

@@ -71,7 +71,6 @@ public class PlayerEnterChunkListener implements Listener {
 
     private void autoClaimChunk(final @NotNull PlayerMoveEvent e, final @NotNull Chunk nextChunk, final @NotNull Player player) {
         ChunkType chunkType = PlayerAutoClaimStorage.getChunkType(e.getPlayer());
-
         switch (chunkType){
             case TOWN:
                 ChunkUtil.claimChunkForTown(player, nextChunk);
