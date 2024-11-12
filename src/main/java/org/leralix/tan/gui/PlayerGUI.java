@@ -211,10 +211,7 @@ public class PlayerGUI implements IGUI {
 
         int i = 0;
         for (PropertyData propertyData : playerData.getProperties()){
-
             ItemStack property = propertyData.getIcon();
-
-
             GuiItem propertyGui = ItemBuilder.from(property).asGuiItem(event -> {
                 openPropertyManagerMenu(player, propertyData);
                 event.setCancelled(true);
@@ -2626,13 +2623,12 @@ public class PlayerGUI implements IGUI {
         );
 
         GuiItem createRegionButton = ItemBuilder.from(createRegion).asGuiItem(event -> {
+            event.setCancelled(true);
             PlayerData playerData = PlayerDataStorage.get(player);
             if(!playerData.haveTown()){
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
                 return;
             }
-
-            event.setCancelled(true);
             double townMoney = TownDataStorage.get(player).getBalance();
             if (townMoney < regionCost) {
                 player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(regionCost - townMoney));

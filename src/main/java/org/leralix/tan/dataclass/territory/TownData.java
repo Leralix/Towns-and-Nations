@@ -75,7 +75,8 @@ public class TownData extends ITerritoryData {
         this.balance = 0.0;
         this.flatTax = 1;
         this.townDefaultRankID = 0;
-        this.townTag = townName.substring(0,3).toUpperCase();
+        int prefixSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize",3);
+        this.townTag = townName.length() >= prefixSize ? townName.substring(0, prefixSize).toUpperCase() : townName.toUpperCase();
         super.color = StringUtil.randomColor();
 
         this.chunkHistory = new ChunkHistory();
