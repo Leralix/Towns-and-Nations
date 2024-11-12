@@ -15,6 +15,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
@@ -453,6 +454,12 @@ public class ChunkListener implements Listener {
         if(!canPlayerDoAction(loc,player, USE_SHEARS)){
             event.setCancelled(true);
         }
+    }
+
+
+    @EventHandler
+    public void onExplosion(EntityExplodeEvent event){
+        event.blockList().removeIf(block -> !NewClaimedChunkStorage.get(block.getChunk()).canExplosionGrief());
     }
 
 

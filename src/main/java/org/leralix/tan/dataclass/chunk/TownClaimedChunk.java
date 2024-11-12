@@ -175,4 +175,9 @@ public class TownClaimedChunk extends ClaimedChunk2{
     public boolean canBeOverClaimed(ITerritoryData territoryData) {
         return false;
     }
+
+    @Override
+    public boolean canExplosionGrief() {
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableExplosionGriefInTown",false);
+    }
 }

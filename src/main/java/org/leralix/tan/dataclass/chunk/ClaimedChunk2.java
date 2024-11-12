@@ -102,4 +102,5 @@ public abstract class ClaimedChunk2 {
     public abstract boolean isClaimed();
 
     public abstract boolean canBeOverClaimed(ITerritoryData territoryData);
+    public abstract boolean canExplosionGrief();
 }

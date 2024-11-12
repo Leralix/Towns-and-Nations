@@ -78,4 +78,9 @@ public class WildernessChunk extends ClaimedChunk2 {
     public boolean canBeOverClaimed(ITerritoryData territoryData) {
         return false;
     }
+
+    @Override
+    public boolean canExplosionGrief() {
+        return true;
+    }
 }

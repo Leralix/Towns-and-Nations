@@ -5,6 +5,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.gui.PlayerGUI;
@@ -40,11 +41,11 @@ public enum RolePermission {
     }
 
 
-    public GuiItem createGuiItem(Player player, RankData townRank) {
+    public GuiItem createGuiItem(Player player, ITerritoryData territoryData, RankData townRank) {
         ItemStack itemStack = HeadUtils.createCustomItemStack(material, description,(townRank.hasPermission(this)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             townRank.switchPermission(this);
-            PlayerGUI.openTownRankManagerPermissions(player, townRank.getID());
+            PlayerGUI.openTownRankManagerPermissions(player, territoryData, townRank.getID());
             event.setCancelled(true);
         });
     }

@@ -27,8 +27,8 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.*;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.listeners.chatlistener.events.*;
 import org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage;
+import org.leralix.tan.listeners.chatlistener.events.*;
 import org.leralix.tan.newsletter.NewsletterScope;
 import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.newsletter.news.PlayerJoinRequestNL;
@@ -39,12 +39,12 @@ import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.*;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
-
+import org.leralix.tan.listeners.chatlistener.*;
 import java.util.*;
 import java.util.function.Consumer;
 
-import static org.leralix.tan.enums.SoundEnum.*;
 import static org.leralix.tan.enums.RolePermission.*;
+import static org.leralix.tan.enums.SoundEnum.*;
 import static org.leralix.tan.storage.MobChunkSpawnStorage.getMobSpawnCost;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 import static org.leralix.tan.utils.GuiUtil.createIterator;
@@ -1380,7 +1380,7 @@ public class PlayerGUI implements IGUI {
         });
         GuiItem managePermissionGui = ItemBuilder.from(managePermission).asGuiItem(event -> {
             event.setCancelled(true);
-            openTownRankManagerPermissions(player,rankID);
+            openTownRankManagerPermissions(player,territoryData, rankID);
         });
         GuiItem membersRankGui = ItemBuilder.from(membersRank).asGuiItem(event -> {
             openTownRankManagerAddPlayer(player,territoryData, rankID);
@@ -1530,20 +1530,19 @@ public class PlayerGUI implements IGUI {
         gui.setItem(3,1, IGUI.createBackArrow(player, p -> openTownRankManager(player, territoryData, rankID)));
         gui.open(player);
     }
-    public static void openTownRankManagerPermissions(Player player, int rankID) {
+    public static void openTownRankManagerPermissions(Player player, ITerritoryData territoryData, int rankID) {
 
         Gui gui = IGUI.createChestGui("Town",3);
 
-        TownData town = TownDataStorage.get(player);
-        RankData townRank = town.getRank(rankID);
+        RankData townRank = territoryData.getRank(rankID);
 
 
         for(RolePermission townRolePermission : RolePermission.values()){
-            GuiItem guiItem = townRolePermission.createGuiItem(player, townRank);
+            GuiItem guiItem = townRolePermission.createGuiItem(player, territoryData,  townRank);
             gui.addItem(guiItem);
         }
 
-        gui.setItem(3,1, IGUI.createBackArrow(player, p -> openTownRankManager(player, town, rankID)));
+        gui.setItem(3,1, IGUI.createBackArrow(player, p -> openTownRankManager(player, territoryData, rankID)));
 
         gui.open(player);
 

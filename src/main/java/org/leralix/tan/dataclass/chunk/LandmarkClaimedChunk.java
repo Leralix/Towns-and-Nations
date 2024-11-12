@@ -98,4 +98,9 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
     public boolean canBeOverClaimed(ITerritoryData territoryData) {
         return false;
     }
+
+    @Override
+    public boolean canExplosionGrief() {
+        return false; //Landmark cannot be griefed
+    }
 }

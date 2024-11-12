@@ -17,6 +17,8 @@ import org.leralix.tan.enums.ChunkPermissionType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.utils.config.ConfigTag;
+import org.leralix.tan.utils.config.ConfigUtil;
 
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 
@@ -129,6 +131,11 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     @Override
     public boolean canBeOverClaimed(ITerritoryData territoryData) {
         return getRegion().getSubjects().contains(territoryData);
+    }
+
+    @Override
+    public boolean canExplosionGrief() {
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableExplosionGriefInRegion",false);
     }
 
 }

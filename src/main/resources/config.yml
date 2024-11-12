@@ -16,7 +16,7 @@ AllowNameDuplication: true
 #Remove all villager interactions except the one from the plugin (usefull to prevent duplication of items)
 removeAllVillagerInteractions: false
 
-#Time of the day when taxes are collected (default is midnight)
+#Time of the day when taxes are collected (default is midnight in 0:00)
 taxHourTime: 0 #0-23
 taxMinuteTime: 0 #0-59
 
@@ -57,6 +57,9 @@ DecimalDigits: 2
 #Max distance between 2 players to be able to trade (/tan pay)
 maxPayDistance: 15
 
+#The amount of money a player starts with (only works if no external economy plugin is used)
+StartingMoney: 100.0
+
 ########################
 ##      Kingdoms      ##
 ########################
@@ -64,8 +67,6 @@ maxPayDistance: 15
 #Enable Kingdoms
 EnableKingdom: true
 
-#The amount of money a player starts with (only if no economy plugin is linked to the server)
-StartingMoney: 100.0
 
 ########################
 ##       Regions      ##
@@ -96,6 +97,10 @@ RegionAllowNonAdjacentChunks: false
 #Notify if a player from an enemy territory enters
 notifyEnemyEnterRegion: true
 
+#Enable explosion grief in region claimed chunks (creeper explosion, tnt explosion, etc)
+#Explosion will still damage players
+EnableExplosionGriefInRegion: false
+
 ########################
 ##       Towns        ##
 ########################
@@ -125,6 +130,9 @@ notifyEnemyEnterTown: true
 #Town max level
 TownMaxLevel: 10
 
+#Enable explosion grief in town claimed chunks (creeper explosion, tnt explosion, etc)
+#Explosion will still damage players
+EnableExplosionGriefInTown: false
 
 ########################
 ##     Properties     ##
