@@ -102,12 +102,12 @@ language:
   #Accept the town invitation
   TOWN_ACCEPT_INVITE_DESC: "Join a town that invited you"
   TOWN_INVITATION_NO_INVITATION: "§aYou have no pending invitation"
-  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fYou are now a member of the town: §3{0}"
+  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fYou are now a member of the town: {0}"
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f has joined the town !"
   #Relation diplomatique
   TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§cYou already have a relation with this town"
   TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Vassalisation proposal send to {0}"
-  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§fYour town {0}§f has joined the region {1}"
+  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "{0}§f has joined the region {1}"
   #Diplomatic relation confirmation
   REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f invited your town {1}§f to join their region"
   #Accept a town relation
@@ -126,6 +126,7 @@ language:
   CHAT_SCOPE_NOT_FOUND: "§cUnfounded chat scope"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Added §6+{0}✦§f to §3{1}"
+  SET_MONEY_COMMAND_SUCCESS: "Successfully set the balance of §3{0}§f to §6{1}✦"
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Open the town and nation GUI"
   #Newsletter command
@@ -238,11 +239,13 @@ language:
   GUI_KINGDOM_ICON: "§a王国"
   GUI_KINGDOM_ICON_DESC1: "§f开发中"
   GUI_REGION_ICON: "§a区域"
-  GUI_REGION_ICON_DESC1_REGION: "§f你当前的区域: §b{0}"
+  GUI_REGION_ICON_DESC1_REGION: "§fCurrent region: {0}"
+  GUI_REGION_ICON_DESC2_REGION: "§fRegion rank: {0}"
   GUI_REGION_ICON_DESC1_NO_REGION: "§f创建或查看区域"
   GUI_TOWN_ICON: "§a城镇"
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§f加入或创建你自己的城镇"
-  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§f你当前的城镇: §9{0}"
+  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fCurrent town: {0}"
+  GUI_TOWN_ICON_DESC2_HAVE_TOWN: "§fTown rank: {0}"
   GUI_PROFILE_ICON_DESC1: "§f查看你的统计数据"
   #Player
   GUI_PLAYER_PROFILE_DESC1: "§f余额 : §6{0}✦"
@@ -422,7 +425,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1: "§f左键点击以更改"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_X: "等级 {0}"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§f左键点击以更改角色"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§f数字越小，等级越高"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fThe bigger the number, the better the rank is"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT: "§a此等级为默认角色"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§a此等级§c不是§a 默认角色"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§f被邀请的玩家将自动加入默认等级"

@@ -102,12 +102,12 @@ language:
   #Accept the town invitation
   TOWN_ACCEPT_INVITE_DESC: "Присоединиться к городу, в который вас пригласили"
   TOWN_INVITATION_NO_INVITATION: "§aК вам не поступало приглашений"
-  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fТеперь вы житель города: §3{0}"
+  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fYou are now a member of the town: {0}"
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f присоединился к городу !"
   #Relation diplomatique
   TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§cУ вас уже есть связи с этим городом"
   TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Vassalisation proposal send to {0}"
-  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§fYour town {0}§f has joined the region {1}"
+  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "{0}§f has joined the region {1}"
   #Diplomatic relation confirmation
   REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f invited your town {1}§f to join their region"
   #Accept a town relation
@@ -126,6 +126,7 @@ language:
   CHAT_SCOPE_NOT_FOUND: "§cОбласть чата не найдена"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Добавлено §6+{0}✦§f игроку §3{1}"
+  SET_MONEY_COMMAND_SUCCESS: "Successfully set the balance of §3{0}§f to §6{1}✦"
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Открыть Town&Nation GUI"
   #Newsletter command
@@ -238,11 +239,13 @@ language:
   GUI_KINGDOM_ICON: "§aКоролевство"
   GUI_KINGDOM_ICON_DESC1: "§fВ разработке"
   GUI_REGION_ICON: "§aРегион"
-  GUI_REGION_ICON_DESC1_REGION: "§fВаш текущий регион: §b{0}"
+  GUI_REGION_ICON_DESC1_REGION: "§fCurrent region: {0}"
+  GUI_REGION_ICON_DESC2_REGION: "§fRegion rank: {0}"
   GUI_REGION_ICON_DESC1_NO_REGION: "§fСоздать или просмотреть регионы"
   GUI_TOWN_ICON: "§aГород"
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§fПрисоединиться или создать город"
-  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fВаш текущий город: §9{0}"
+  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fCurrent town: {0}"
+  GUI_TOWN_ICON_DESC2_HAVE_TOWN: "§fTown rank: {0}"
   GUI_PROFILE_ICON_DESC1: "§fПросмотр статистики"
   #Player
   GUI_PLAYER_PROFILE_DESC1: "§fБаланс : §6{0}✦"
@@ -422,7 +425,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1: "§fЩёлкните ЛКМ, чтобы изменить"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_X: "Ранг {0}"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§fЩёлкните ЛКМ, чтобы изменить ранг"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fЧем меньше число, тем выше ранг"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fThe bigger the number, the better the rank is"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT: "§aЭтот ранг является рангом по умолчанию"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§aЭтот ранг §cне является§a рангом по умолчанию"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fИгроки, приглашенные в город, автоматически получают ранг по умолчанию"

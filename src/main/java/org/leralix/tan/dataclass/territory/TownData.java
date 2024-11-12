@@ -927,11 +927,18 @@ public class TownData extends ITerritoryData {
         super.delete();
         broadCastMessageWithSound(Lang.BROADCAST_PLAYER_TOWN_DELETED.get(getLeaderData().getName(), getColoredName()), BAD);
         removeAllLandmark(); //Remove all Landmark from the deleted town
+        removeAllProperty(); //Remove all Property from the deleted town
         for(String playerID : getPlayerIDList()){ //Kick all Players from the deleted town
             removePlayer(PlayerDataStorage.get(playerID));
         }
        TeamUtils.updateAllScoreboardColor();
         TownDataStorage.deleteTown(this);
+    }
+
+    private void removeAllProperty() {
+        for(PropertyData propertyData : getPropertyDataList()){
+            propertyData.delete();
+        }
     }
 
     @Override

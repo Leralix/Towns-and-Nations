@@ -102,12 +102,12 @@ language:
   #Accept the town invitation
   TOWN_ACCEPT_INVITE_DESC: "Join a town that invited you"
   TOWN_INVITATION_NO_INVITATION: "§aYou have no pending invitation"
-  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fYou are now a member of the town: §3{0}"
+  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fYou are now a member of the town: {0}"
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f has joined the town !"
   #Relation diplomatique
   TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§cYou already have a relation with this town"
   TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Vassalisation proposal send to {0}"
-  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§fYour town {0}§f has joined the region {1}"
+  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "{0}§f has joined the region {1}"
   #Diplomatic relation confirmation
   REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f invited your town {1}§f to join their region"
   #Accept a town relation
@@ -126,6 +126,7 @@ language:
   CHAT_SCOPE_NOT_FOUND: "§cUnfounded chat scope"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Added §6+{0}✦§f to §3{1}"
+  SET_MONEY_COMMAND_SUCCESS: "Successfully set the balance of §3{0}§f to §6{1}✦"
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Open the town and nation GUI"
   #Newsletter command
@@ -238,11 +239,13 @@ language:
   GUI_KINGDOM_ICON: "§aKingdom"
   GUI_KINGDOM_ICON_DESC1: "§fIn development"
   GUI_REGION_ICON: "§aRegion"
-  GUI_REGION_ICON_DESC1_REGION: "§fYour current region: §b{0}"
+  GUI_REGION_ICON_DESC1_REGION: "§fCurrent region: {0}"
+  GUI_REGION_ICON_DESC2_REGION: "§fRegion rank: {0}"
   GUI_REGION_ICON_DESC1_NO_REGION: "§fCreate or look at regions"
   GUI_TOWN_ICON: "§aTown"
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§fJoin or create your own town"
-  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fYour current town: §9{0}"
+  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fCurrent town: {0}"
+  GUI_TOWN_ICON_DESC2_HAVE_TOWN: "§fTown rank: {0}"
   GUI_PROFILE_ICON_DESC1: "§fLook at your stats"
   #Player
   GUI_PLAYER_PROFILE_DESC1: "§fBalance : §6{0}✦"
@@ -422,7 +425,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1: "§fLeft click to change"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_X: "Rank {0}"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§fLeft click to change the role"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fThe smaller the number, the better the rank is"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fThe bigger the number, the better the rank is"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT: "§aThis rank is the default role"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§aThis rank §cis not§a the default role"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fPlayers that are invited to the town automatically join the default rank"

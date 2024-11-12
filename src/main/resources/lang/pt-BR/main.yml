@@ -102,14 +102,14 @@ language:
   #Accept the town invitation
   TOWN_ACCEPT_INVITE_DESC: "Junte-se a cidade que convidou você"
   TOWN_INVITATION_NO_INVITATION: "§aVocê não tem convite pendente"
-  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fVocê agora é um membro da cidade: §3{0}"
+  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fYou are now a member of the town: {0}"
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f juntou-se a cidade !"
   #Relation diplomatique
   TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§cVocê já tem uma relação com esta cidade"
   TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Proposta de vassalo enviado a"
-  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§fYour town {0}§f has joined the region {1}"
+  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "{0}§f se juntou a região {1}"
   #Diplomatic relation confirmation
-  REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f invited your town {1}§f to join their region"
+  REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f convidou sua cidade  {1}§f para se unir a sua região"
   #Accept a town relation
   TOWN_ACCEPT_RELATION_DESC: "Aceitar um pedido de relação de cidade pendente"
   TOWN_RELATION_NO_INVITATION: "§aVocê não tem relações pendentes"
@@ -126,6 +126,7 @@ language:
   CHAT_SCOPE_NOT_FOUND: "§cEscopo de chat infundado"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Adicionado §6+{0}✦§f a §3{1}"
+  SET_MONEY_COMMAND_SUCCESS: "Successfully set the balance of §3{0}§f to §6{1}✦"
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Abra a Menu de cidade e nação"
   #Newsletter command
@@ -238,11 +239,13 @@ language:
   GUI_KINGDOM_ICON: "§aReino"
   GUI_KINGDOM_ICON_DESC1: "§fEm desenvolvimento"
   GUI_REGION_ICON: "§aRegião"
-  GUI_REGION_ICON_DESC1_REGION: "§fSua região atual: §b{0}"
+  GUI_REGION_ICON_DESC1_REGION: "§fCurrent region: {0}"
+  GUI_REGION_ICON_DESC2_REGION: "§fRegion rank: {0}"
   GUI_REGION_ICON_DESC1_NO_REGION: "§fCriar ou olhar para regiões"
   GUI_TOWN_ICON: "§aCidade"
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§fJunte-se ou crie sua própria cidade"
-  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fSua cidade atual: §9{0}"
+  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fCurrent town: {0}"
+  GUI_TOWN_ICON_DESC2_HAVE_TOWN: "§fTown rank: {0}"
   GUI_PROFILE_ICON_DESC1: "§fVisualize suas estatísticas"
   #Player
   GUI_PLAYER_PROFILE_DESC1: "§fSaldo : §6{0}✦"
@@ -422,7 +425,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1: "§fClique esquerdo para alterar"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_X: "Cargo {0}"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§fClique com o botão esquerdo para mudar o cargo"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fQuanto menor o número, melhor é o cargo"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fThe bigger the number, the better the rank is"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT: "§aEste cargo é o cargo padrão"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§aEste cargo §cnão é§a o cargo padrão"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fJogadores que são convidados para a cidade automaticamente entram no cargo padrão"
@@ -840,9 +843,9 @@ language:
   NEWSLETTER_DIPLOMACY_PROPOSAL: "§fProposta diplomática de {0}"
   NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1: "§fMudou a relação com {0}§f para : {1}"
   NEWSLETTER_DIPLOMACY_PROPOSAL_DESC2: "§fClique esquerdo para gerenciar a diplomacia"
-  NEWSLETTER_JOIN_REGION_PROPOSAL: "§fJoin region proposal"
-  NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1: "{0}§f has asked {1}§f to join its region"
-  NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2: "§fLeft click to open the proposal"
+  NEWSLETTER_JOIN_REGION_PROPOSAL: "§fProposta de juntar-se a região"
+  NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1: "{0}§f perguntou {1}§f para se juntar a sua região"
+  NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2: "§fClique esquero para abrir a proposta"
   NEWSLETTER_SHOW_ALL: "§fMostrar todas as notícias"
   NEWSLETTER_SHOW_ONLY_UNREAD: "§fMostrar apenas notícias não lidas"
   NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ: "§fClique direito para marcar como lido"

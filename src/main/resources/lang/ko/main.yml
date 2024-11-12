@@ -102,12 +102,12 @@ language:
   #Accept the town invitation
   TOWN_ACCEPT_INVITE_DESC: "초대된 마을에 가입합니다"
   TOWN_INVITATION_NO_INVITATION: "§a받은 초대장이 없습니다"
-  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§f이제 §3{0}§f 마을의 멤버가 되었습니다"
+  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fYou are now a member of the town: {0}"
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f님이 마을에 가입했습니다!"
   #Relation diplomatique
   TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§c이 마을과 이미 관계를 맺고 있습니다"
   TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Vassalisation proposal send to {0}"
-  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§fYour town {0}§f has joined the region {1}"
+  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "{0}§f has joined the region {1}"
   #Diplomatic relation confirmation
   REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f invited your town {1}§f to join their region"
   #Accept a town relation
@@ -126,6 +126,7 @@ language:
   CHAT_SCOPE_NOT_FOUND: "§c채팅 범위를 찾을 수 없습니다"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "§3{1}§f에게 §6+{0}✦§f를 추가했습니다"
+  SET_MONEY_COMMAND_SUCCESS: "Successfully set the balance of §3{0}§f to §6{1}✦"
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "마을 및 국가 GUI를 엽니다"
   #Newsletter command
@@ -238,11 +239,13 @@ language:
   GUI_KINGDOM_ICON: "§a왕국"
   GUI_KINGDOM_ICON_DESC1: "§f개발 중입니다"
   GUI_REGION_ICON: "§a지역"
-  GUI_REGION_ICON_DESC1_REGION: "§f현재 지역: §b{0}"
+  GUI_REGION_ICON_DESC1_REGION: "§fCurrent region: {0}"
+  GUI_REGION_ICON_DESC2_REGION: "§fRegion rank: {0}"
   GUI_REGION_ICON_DESC1_NO_REGION: "§f지역을 생성하거나 확인하세요"
   GUI_TOWN_ICON: "§a마을"
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§f마을을 생성하거나 가입하세요"
-  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§f현재 마을: §9{0}"
+  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fCurrent town: {0}"
+  GUI_TOWN_ICON_DESC2_HAVE_TOWN: "§fTown rank: {0}"
   GUI_PROFILE_ICON_DESC1: "§f자신의 통계를 확인하세요"
   #Player
   GUI_PLAYER_PROFILE_DESC1: "§f잔액: §6{0}✦"
@@ -422,7 +425,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1: "§f좌클릭하여 변경합니다"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_X: "직급 {0}"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§f좌클릭하여 직급을 변경합니다"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§f숫자가 작을수록 높은 직급입니다"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fThe bigger the number, the better the rank is"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT: "§a이 직급은 기본 직급입니다"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§a이 직급은 §c기본 직급이 아닙니다"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§f마을에 초대된 플레이어는 자동으로 기본 직급에 가입됩니다"

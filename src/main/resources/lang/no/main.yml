@@ -102,12 +102,12 @@ language:
   #Accept the town invitation
   TOWN_ACCEPT_INVITE_DESC: "Bli med i en by som inviterte deg"
   TOWN_INVITATION_NO_INVITATION: "§aDu har ingen ventende invitasjon"
-  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fDu er nå et medlem av byen: §3{0}"
+  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fYou are now a member of the town: {0}"
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f har blitt med i byen !"
   #Relation diplomatique
   TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§cDu har allerede et forhold til denne byen"
   TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Vassalisation proposal send to {0}"
-  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§fYour town {0}§f has joined the region {1}"
+  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "{0}§f has joined the region {1}"
   #Diplomatic relation confirmation
   REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f invited your town {1}§f to join their region"
   #Accept a town relation
@@ -126,6 +126,7 @@ language:
   CHAT_SCOPE_NOT_FOUND: "§cUgrunnlagt chatteområde"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Lagt til §6+{0}✦§f til §3{1}"
+  SET_MONEY_COMMAND_SUCCESS: "Successfully set the balance of §3{0}§f to §6{1}✦"
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Åpne by- og nasjonsgrensesnittet"
   #Newsletter command
@@ -238,11 +239,13 @@ language:
   GUI_KINGDOM_ICON: "§aKongerike"
   GUI_KINGDOM_ICON_DESC1: "§fUnder utvikling"
   GUI_REGION_ICON: "§aRegion"
-  GUI_REGION_ICON_DESC1_REGION: "§fYour current region: §b{0}"
+  GUI_REGION_ICON_DESC1_REGION: "§fCurrent region: {0}"
+  GUI_REGION_ICON_DESC2_REGION: "§fRegion rank: {0}"
   GUI_REGION_ICON_DESC1_NO_REGION: "§fOpprett eller se på regioner"
   GUI_TOWN_ICON: "§aBy"
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§fBli med eller opprett din egen by"
-  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fYour current town: §9{0}"
+  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fCurrent town: {0}"
+  GUI_TOWN_ICON_DESC2_HAVE_TOWN: "§fTown rank: {0}"
   GUI_PROFILE_ICON_DESC1: "§fSe på dine statistikker"
   #Player
   GUI_PLAYER_PROFILE_DESC1: "§fSaldo: §6{0}✦"
@@ -422,7 +425,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1: "§fVenstreklikk for å endre"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_X: "Rolle {0}"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§fVenstreklikk for å endre rollen"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fJo mindre tallet, desto bedre er rollen"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fThe bigger the number, the better the rank is"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT: "§aDenne rollen er standardrolle"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§aDenne rollen §cer ikke§a standardrollen"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fSpillere som blir invitert til byen blir automatisk lagt til i standardrollen"

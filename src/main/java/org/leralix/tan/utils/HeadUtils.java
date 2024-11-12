@@ -46,25 +46,7 @@ public class HeadUtils {
 
         head.setItemMeta(skullMeta);
 
-        PlayerData playerData = PlayerDataStorage.get(offlinePlayer);
-        TownData playerTown = TownDataStorage.get(playerData);
-
-
-        if(playerTown != null){
-            setLore(head,
-                    Lang.GUI_PLAYER_PROFILE_DESC1.get(EconomyUtil.getBalance(offlinePlayer)),
-                    Lang.GUI_PLAYER_PROFILE_DESC2.get(playerTown.getName()),
-                    Lang.GUI_PLAYER_PROFILE_DESC3.get(playerData.getTownRank().getColoredName())
-            );
-
-        }
-        else {
-            setLore(head,
-                    Lang.GUI_PLAYER_PROFILE_DESC1.get(EconomyUtil.getBalance(offlinePlayer)),
-                    Lang.GUI_PLAYER_PROFILE_NO_TOWN.get()
-            );
-        }
-
+        setLore(head, Lang.GUI_PLAYER_PROFILE_DESC1.get(EconomyUtil.getBalance(offlinePlayer)));
         return head;
     }
     /**

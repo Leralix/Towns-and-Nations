@@ -47,7 +47,6 @@ public class DailyTasks {
         RegionTaxPayment();
         ChunkPayment();
         SalaryPayment();
-
         PropertyRent();
 
         ClearOldTaxes();
@@ -70,7 +69,6 @@ public class DailyTasks {
     public static void RegionTaxPayment() {
 
         for(RegionData regionData: RegionDataStorage.getAllRegions()){
-
             for(ITerritoryData town : regionData.getVassals()){
                 if(town == null) continue;
                 if(town.getBalance() < regionData.getTaxRate()){
@@ -116,7 +114,10 @@ public class DailyTasks {
 
             int numberClaimedChunk = town.getNumberOfClaimedChunk();
             int totalUpkeep = (int) ( numberClaimedChunk * upkeepCost/10);
-
+            if (totalUpkeep > town.getBalance()){
+                town.removeFromBalance(town.getBalance()); //TODO: Destroy chunk when treasury cannot pay chunks
+                continue;
+            }
             town.removeFromBalance(totalUpkeep);
             town.getChunkHistory().add(numberClaimedChunk,totalUpkeep);
         }

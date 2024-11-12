@@ -102,12 +102,12 @@ language:
   #Accept the town invitation
   TOWN_ACCEPT_INVITE_DESC: "Dołącz do miasta, które Cię zaprosiło!"
   TOWN_INVITATION_NO_INVITATION: "§aNie masz oczekujących zaproszeń."
-  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fJesteś teraz członkiem miasta: §3{0}"
+  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fYou are now a member of the town: {0}"
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3Gracz {0}§f dołączył do miasta !"
   #Relation diplomatique
   TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§cJuż masz związane relacje z tym miastem."
   TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Vassalisation proposal send to {0}"
-  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "§fYour town {0}§f has joined the region {1}"
+  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "{0}§f has joined the region {1}"
   #Diplomatic relation confirmation
   REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f invited your town {1}§f to join their region"
   #Accept a town relation
@@ -126,6 +126,7 @@ language:
   CHAT_SCOPE_NOT_FOUND: "§cNieuzasadniony zakres czatu"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Dodane §6+{0}✦§f do §3{1}"
+  SET_MONEY_COMMAND_SUCCESS: "Successfully set the balance of §3{0}§f to §6{1}✦"
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Otworzono GUI Miasta"
   #Newsletter command
@@ -238,11 +239,13 @@ language:
   GUI_KINGDOM_ICON: "§aKrólestwo"
   GUI_KINGDOM_ICON_DESC1: "§fW rozwoju"
   GUI_REGION_ICON: "§aRegion"
-  GUI_REGION_ICON_DESC1_REGION: "§fTwój obecny region: §b{0}"
+  GUI_REGION_ICON_DESC1_REGION: "§fCurrent region: {0}"
+  GUI_REGION_ICON_DESC2_REGION: "§fRegion rank: {0}"
   GUI_REGION_ICON_DESC1_NO_REGION: "§fStwórz lub przeglądaj regiony"
   GUI_TOWN_ICON: "§aMiasto"
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§fDołącz lub stwórz własne miasto"
-  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fTwoje obecne miasto: §9{0}"
+  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fCurrent town: {0}"
+  GUI_TOWN_ICON_DESC2_HAVE_TOWN: "§fTown rank: {0}"
   GUI_PROFILE_ICON_DESC1: "§fZobacz swoje statystyki"
   #Player
   GUI_PLAYER_PROFILE_DESC1: "§fStan konta : §6{0}✦"
@@ -422,7 +425,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1: "§fKliknij lewym przyciskiem myszy, aby zmienić"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_X: "Ranga {0}"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§fKliknij lewym przyciskiem myszy, aby zmienić rolę"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fIm mniejsza liczba, tym lepsza pozycja w rankingu"
+  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§fThe bigger the number, the better the rank is"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT: "§aTa ranga jest rolą domyślną"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§aTa ranga §cnie jest§a rolą domyślną"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fGracze zaproszeni do miasta automatycznie otrzymują rolę domyślną"

@@ -39,7 +39,6 @@ import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.*;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
-import org.leralix.tan.listeners.chatlistener.*;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -72,10 +71,22 @@ public class PlayerGUI implements IGUI {
 
         ItemStack kingdomIcon = HeadUtils.makeSkullB64(Lang.GUI_KINGDOM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=",
                 Lang.GUI_KINGDOM_ICON_DESC1.get());
-        ItemStack regionIcon = HeadUtils.makeSkullB64(Lang.GUI_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=",
-                playerHaveRegion? Lang.GUI_REGION_ICON_DESC1_REGION.get(region.getName()):Lang.GUI_REGION_ICON_DESC1_NO_REGION.get());
-        ItemStack townIcon = HeadUtils.makeSkullB64(Lang.GUI_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
-                playerHaveTown? Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(town.getName()):Lang.GUI_TOWN_ICON_DESC1_NO_TOWN.get());
+        ItemStack regionIcon = HeadUtils.makeSkullB64(Lang.GUI_REGION_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
+        if(playerHaveRegion) {
+            HeadUtils.addLore(regionIcon, Lang.GUI_REGION_ICON_DESC1_REGION.get(region.getColoredName()), Lang.GUI_REGION_ICON_DESC2_REGION.get(region.getRank(player).getColoredName()));
+        }
+        else {
+            HeadUtils.addLore(regionIcon, Lang.GUI_REGION_ICON_DESC1_NO_REGION.get());
+        }
+
+        ItemStack townIcon = HeadUtils.makeSkullB64(Lang.GUI_TOWN_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
+        if(playerHaveTown) {
+            HeadUtils.addLore(townIcon, Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(town.getColoredName()), Lang.GUI_TOWN_ICON_DESC2_HAVE_TOWN.get(town.getRank(player).getColoredName()));
+        }
+        else {
+            HeadUtils.addLore(townIcon, Lang.GUI_TOWN_ICON_DESC1_NO_TOWN.get());
+        }
+
         ItemStack profileIcon = HeadUtils.getPlayerHeadInformation(player);
 
         GuiItem kingdomGui = ItemBuilder.from(kingdomIcon).asGuiItem(event -> {
@@ -1380,7 +1391,7 @@ public class PlayerGUI implements IGUI {
         });
         GuiItem managePermissionGui = ItemBuilder.from(managePermission).asGuiItem(event -> {
             event.setCancelled(true);
-            openTownRankManagerPermissions(player,territoryData, rankID);
+            openTownRankManagerPermissions(player,territoryData,     rankID);
         });
         GuiItem membersRankGui = ItemBuilder.from(membersRank).asGuiItem(event -> {
             openTownRankManagerAddPlayer(player,territoryData, rankID);
