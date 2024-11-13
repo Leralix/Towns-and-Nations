@@ -1270,7 +1270,7 @@ public class PlayerGUI implements IGUI {
                     player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                     return;
                 }
-                if(territoryData.getRank(playerData).getLevel() >= rank.getLevel() && !territoryData.isLeader(playerData)){
+                if(territoryData.getRank(playerData).getLevel() <= rank.getLevel() && !territoryData.isLeader(playerData)){
                     player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
                     return;
                 }
@@ -1382,9 +1382,20 @@ public class PlayerGUI implements IGUI {
         });
 
         GuiItem rankIconButton = ItemBuilder.from(roleRankIcon).asGuiItem(event -> {
-            townRank.incrementLevel();
-            openTownRankManager(player, territoryData, rankID);
             event.setCancelled(true);
+            if(event.isLeftClick()){
+                RankData playerRank = territoryData.getRank(player);
+                if(playerRank.getRankEnum().getLevel() > (townRank.getRankEnum().getLevel() + 1)){
+                    townRank.incrementLevel();
+                }
+                else{
+                    player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_RANK_UP_INFERIOR_RANK.get(playerRank.getColoredName()));
+                }
+            }
+            else if(event.isRightClick()){
+                townRank.decrementLevel();
+            }
+            openTownRankManager(player, territoryData, rankID);
         });
         GuiItem managePermissionGui = ItemBuilder.from(managePermission).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1520,15 +1531,13 @@ public class PlayerGUI implements IGUI {
             GuiItem playerInfo = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
 
-                if(territoryData.getRank(player).getLevel() >= territoryData.getRank(otherPlayerData).getLevel() && !territoryData.isLeader(playerData)){
+                if(territoryData.getRank(player).getLevel() <= territoryData.getRank(otherPlayerData).getLevel() && !territoryData.isLeader(playerData)){
                     player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
                     return;
                 }
 
                 PlayerData playerStat = PlayerDataStorage.get(otherPlayerUUID);
-
                 territoryData.setPlayerRank(playerStat, rankID);
-
                 openTownRankManager(player, territoryData, rankID);
             });
 

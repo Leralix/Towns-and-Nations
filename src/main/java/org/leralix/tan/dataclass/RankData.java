@@ -49,6 +49,10 @@ public class RankData {
     public void incrementLevel(){
         this.rankEnum = rankEnum.nextRank();
     }
+
+    public void decrementLevel() {
+        this.rankEnum = rankEnum.previousRank();
+    }
     public Material getRankInconMaterial(){
         if(this.rankIconName == null)
             return rankEnum.getBasicRankIcon();
@@ -126,6 +130,8 @@ public class RankData {
     }
 
     public boolean isSuperiorTo(RankData rank) {
-        return this.rankEnum.getLevel() > rank.getRankEnum().getLevel();
+        return this.getRankEnum().getLevel() > rank.getRankEnum().getLevel();
     }
+
+
 }

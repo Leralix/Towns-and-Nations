@@ -47,7 +47,12 @@ public enum TownRankEnum {
     }
 
     public TownRankEnum nextRank(){
-        return getRankByLevel((this.getLevel() % 5) + 1);
+        if(this.getLevel() == 5) return FIVE;
+        return getRankByLevel((this.getLevel() + 1));
+    }
+    public TownRankEnum previousRank(){
+        if(this.getLevel() == 1) return ONE;
+        return getRankByLevel((this.getLevel() - 1));
     }
 
     public Material getBasicRankIcon(){
