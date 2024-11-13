@@ -1314,7 +1314,7 @@ public class PlayerGUI implements IGUI {
     public static void openTownRankManager(Player player,ITerritoryData territoryData,  int rankID) {
 
         RankData townRank = territoryData.getRank(rankID);
-
+        PlayerData playerData = PlayerDataStorage.get(player);
         Gui gui = IGUI.createChestGui("Rank " + townRank.getName(),4);
 
 
@@ -1385,7 +1385,7 @@ public class PlayerGUI implements IGUI {
             event.setCancelled(true);
             if(event.isLeftClick()){
                 RankData playerRank = territoryData.getRank(player);
-                if(playerRank.getRankEnum().getLevel() > (townRank.getRankEnum().getLevel() + 1)){
+                if(playerRank.getRankEnum().getLevel() > (townRank.getRankEnum().getLevel() + 1) || territoryData.isLeader(playerData)){
                     townRank.incrementLevel();
                 }
                 else{
@@ -2042,7 +2042,7 @@ public class PlayerGUI implements IGUI {
         });
         GuiItem deleteButton = ItemBuilder.from(deleteTown).asGuiItem(event -> {
             event.setCancelled(true);
-            if (townData.isLeader(playerData)){
+            if (!townData.isLeader(playerData)){
                 player.sendMessage(getTANString() + Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.get());
                 return;
             }
