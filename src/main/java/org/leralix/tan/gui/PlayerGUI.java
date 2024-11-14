@@ -746,7 +746,7 @@ public class PlayerGUI implements IGUI {
         });
         GuiItem treasuryButton = ItemBuilder.from(treasury).asGuiItem(event -> {
             event.setCancelled(true);
-            openTownEconomy(player);
+            openTreasury(player, playerTown);
         });
         GuiItem membersButton = ItemBuilder.from(memberIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1329,7 +1329,7 @@ public class PlayerGUI implements IGUI {
 
         ArrayList<String> playerNames = new ArrayList<>();
         playerNames.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1.get());
-        for (String playerUUID : townRank.getPlayers()) {
+        for (String playerUUID : townRank.getPlayersID()) {
             String playerName = PlayerDataStorage.get(playerUUID).getName();
             playerNames.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC.get(playerName));
         }
@@ -1515,7 +1515,7 @@ public class PlayerGUI implements IGUI {
             PlayerData otherPlayerData = PlayerDataStorage.get(otherPlayerUUID);
             boolean skip = false;
 
-            for (String playerWithRoleUUID : rank.getPlayers()) {
+            for (String playerWithRoleUUID : rank.getPlayersID()) {
                 if (otherPlayerUUID.equals(playerWithRoleUUID)) {
                     skip = true;
                     break;
@@ -1564,7 +1564,7 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
 
     }
-    public static void openTownEconomy(Player player) {
+    public static void openTreasury(Player player, ITerritoryData territoryData) {
 
         Gui gui = IGUI.createChestGui("Economy",4);
 
@@ -1573,15 +1573,7 @@ public class PlayerGUI implements IGUI {
         PlayerData playerStat = PlayerDataStorage.get(player);
 
         // Chunk upkeep
-        int numberClaimedChunk = townData.getNumberOfClaimedChunk();
-        float upkeepCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownChunkUpkeepCost");
-        float totalUpkeep = numberClaimedChunk * upkeepCost/10;
-        int totalSalary = townData.getTotalSalaryCost();
         int regionalTax =  townData.getRegionTaxRate();
-
-        ItemStack goldIcon = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_STORAGE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
-                Lang.GUI_TREASURY_STORAGE_DESC1.get(townData.getBalance()),
-                Lang.GUI_TREASURY_STORAGE_DESC2.get(townData.computeNextRevenue()));
 
         ItemStack goldSpendingIcon = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
                 Lang.GUI_TREASURY_SPENDING_DESC1.get(totalSalary + totalUpkeep + regionalTax),
@@ -1617,22 +1609,23 @@ public class PlayerGUI implements IGUI {
 
 
 
-        GuiItem treasuryInfo = ItemBuilder.from(goldIcon).asGuiItem(event -> event.setCancelled(true));
+        GuiItem treasuryInfo = territoryData.getTreasuryResume();
+
         GuiItem spendingInfo = ItemBuilder.from(goldSpendingIcon).asGuiItem(event -> event.setCancelled(true));
         GuiItem taxHistoryButton = ItemBuilder.from(taxHistory).asGuiItem(event -> {
-            openTownEconomicsHistory(player,HistoryEnum.TAX);
+            openTownEconomicsHistory(player, territoryData, HistoryEnum.TAX);
             event.setCancelled(true);
         });
         GuiItem salaryHistoryButton = ItemBuilder.from(salarySpending).asGuiItem(event -> {
-            openTownEconomicsHistory(player,HistoryEnum.SALARY);
+            openTownEconomicsHistory(player, territoryData, HistoryEnum.SALARY);
             event.setCancelled(true);
         });
         GuiItem chunkSpendingButton = ItemBuilder.from(chunkSpending).asGuiItem(event -> {
-            openTownEconomicsHistory(player,HistoryEnum.CHUNK);
+            openTownEconomicsHistory(player, territoryData, HistoryEnum.CHUNK);
             event.setCancelled(true);
         });
         GuiItem miscSpendingButton = ItemBuilder.from(miscSpending).asGuiItem(event -> {
-            openTownEconomicsHistory(player,HistoryEnum.MISCELLANEOUS);
+            openTownEconomicsHistory(player, territoryData, HistoryEnum.MISCELLANEOUS);
             event.setCancelled(true);
         });
         GuiItem donationButton = ItemBuilder.from(donation).asGuiItem(event -> {
@@ -1643,7 +1636,7 @@ public class PlayerGUI implements IGUI {
             event.setCancelled(true);
         });
         GuiItem donationHistoryButton = ItemBuilder.from(donationHistory).asGuiItem(event -> {
-            openTownEconomicsHistory(player,HistoryEnum.DONATION);
+            openTownEconomicsHistory(player, territoryData, HistoryEnum.DONATION);
             event.setCancelled(true);
         });
 
@@ -1664,11 +1657,11 @@ public class PlayerGUI implements IGUI {
             SoundUtil.playSound(player, REMOVE);
 
             townData.addToFlatTax(-amountToRemove);
-            openTownEconomy(player);
+            openTreasury(player, territoryData);
         });
         GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
             event.setCancelled(true);
-            openTownEconomy(player);
+            openTreasury(player, territoryData);
         });
         GuiItem increaseTaxButton = ItemBuilder.from(increaseTax).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1682,7 +1675,7 @@ public class PlayerGUI implements IGUI {
 
             townData.addToFlatTax(amountToAdd);
             SoundUtil.playSound(player, ADD);
-            openTownEconomy(player);
+            openTreasury(player, territoryData);
         });
 
         GuiItem retrieveButton = ItemBuilder.from(retrieveMoney).asGuiItem(event -> {
@@ -1732,7 +1725,7 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
 
     }
-    public static void openTownEconomicsHistory(Player player, HistoryEnum historyType) {
+    public static void openTownEconomicsHistory(Player player, ITerritoryData territoryData, HistoryEnum historyType) {
 
         Gui gui = IGUI.createChestGui("Town",6);
 
@@ -1873,7 +1866,7 @@ public class PlayerGUI implements IGUI {
 
         }
 
-        gui.setItem(6,1, IGUI.createBackArrow(player, p -> openTownEconomy(player)));
+        gui.setItem(6,1, IGUI.createBackArrow(player, p -> openTreasury(player, territoryData)));
         gui.open(player);
 
     }

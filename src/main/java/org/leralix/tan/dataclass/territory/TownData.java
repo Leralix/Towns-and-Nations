@@ -12,6 +12,8 @@ import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.history.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
+import org.leralix.tan.dataclass.territory.economy.Budget;
+import org.leralix.tan.dataclass.territory.economy.PlayerTaxLine;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.PlayerGUI;
@@ -444,6 +446,11 @@ public class TownData extends ITerritoryData {
         return count;
     }
 
+    @Override
+    public double getChunkUpkeepCost() {
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("TownChunkUpkeepCost",0) / 10;
+    }
+
     public TownChunkPermission getPermission(ChunkPermissionType type) {
         return this.chunkSettings.getPermission(type);
     }
@@ -706,6 +713,11 @@ public class TownData extends ITerritoryData {
         playerStat.setTownRankID(rankID);
     }
 
+    @Override
+    protected void addSpecificTaxes(Budget budget) {
+        budget.addProfitLine(new PlayerTaxLine(this));
+    }
+
     public Map<String, PropertyData> getPropertyDataMap(){
         if(this.propertyDataMap == null)
             this.propertyDataMap = new HashMap<>();
@@ -775,32 +787,6 @@ public class TownData extends ITerritoryData {
         return res;
     }
 
-    public int computeNextRevenue() {
-
-        int nextTaxes = 0;
-        for (String playerID : getPlayerIDList()){
-            PlayerData otherPlayerData = PlayerDataStorage.get(playerID);
-            OfflinePlayer otherPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
-            if(!otherPlayerData.getTownRank().isPayingTaxes()){
-                continue;
-            }
-            if(EconomyUtil.getBalance(otherPlayer) < getFlatTax()){
-                continue;
-            }
-            nextTaxes = nextTaxes + getFlatTax();
-        }
-        return nextTaxes;
-    }
-
-    public int getTotalSalaryCost() {
-        int totalSalary = 0;
-        for (RankData rank : getAllRanks()) {
-
-            List<String> playerIdList = rank.getPlayers();
-            totalSalary += playerIdList.size() * rank.getSalary();
-        }
-        return totalSalary;
-    }
 
 
     public void kickPlayer(OfflinePlayer kickedPlayer) {

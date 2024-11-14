@@ -13,6 +13,7 @@ import org.leralix.tan.dataclass.history.ChunkHistory;
 import org.leralix.tan.dataclass.history.DonationHistory;
 import org.leralix.tan.dataclass.history.MiscellaneousHistory;
 import org.leralix.tan.dataclass.history.TaxHistory;
+import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.RolePermission;
@@ -438,6 +439,11 @@ public class RegionData extends ITerritoryData {
         return count;
     }
 
+    @Override
+    public double getChunkUpkeepCost() {
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("RegionChunkUpkeepCost",0) / 10;
+    }
+
     public boolean isPlayerInRegion(PlayerData playerData) {
         for (ITerritoryData town : getSubjects()){
             if(town.havePlayer(playerData))
@@ -591,5 +597,10 @@ public class RegionData extends ITerritoryData {
     @Override
     protected void specificSetPlayerRank(PlayerData playerStat, int rankID) {
         playerStat.setRegionRankID(rankID);
+    }
+
+    @Override
+    protected void addSpecificTaxes(Budget budget) {
+
     }
 }

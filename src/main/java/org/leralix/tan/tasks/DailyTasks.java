@@ -128,7 +128,7 @@ public class DailyTasks {
             //Loop through each rank, only paying if everyone of the rank can be paid
             for (RankData rank : town.getAllRanks()){
                 int rankSalary = rank.getSalary();
-                List<String> playerIdList = rank.getPlayers();
+                List<String> playerIdList = rank.getPlayersID();
                 int costOfSalary = playerIdList.size() * rankSalary;
 
                 if(rankSalary == 0 || costOfSalary > town.getBalance() ){

@@ -3,6 +3,7 @@ package org.leralix.tan.dataclass;
 import org.bukkit.Material;
 import org.leralix.tan.enums.TownRankEnum;
 import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 import java.util.*;
 
@@ -71,8 +72,16 @@ public class RankData {
         removePlayer(player.getID());
     }
 
-    public List<String> getPlayers(){
+    public List<String> getPlayersID(){
         return this.players;
+    }
+
+    public List<PlayerData> getPlayers(){
+        List<PlayerData> playerList = new ArrayList<>();
+        for(String playerID : this.players){
+            playerList.add(PlayerDataStorage.get(playerID));
+        }
+        return playerList;
     }
 
     public boolean isPayingTaxes() {
