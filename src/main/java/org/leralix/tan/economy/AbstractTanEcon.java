@@ -12,5 +12,7 @@ public abstract class AbstractTanEcon {
 
     public abstract void depositPlayer(PlayerData s, double amount);
 
+    public abstract String getMoneyIcon();
+
 
 }

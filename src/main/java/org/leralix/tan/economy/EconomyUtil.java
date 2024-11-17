@@ -76,4 +76,8 @@ public class EconomyUtil {
     public static boolean hasExternalEconomy() {
         return isExternalEconomy;
     }
+
+    public static String getMoneyIcon() {
+        return econ.getMoneyIcon();
+    }
 }

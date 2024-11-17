@@ -44,10 +44,10 @@ public class TaxHistory {
     }
 
 
-    public void add(String playerName, String playerID, int amount){
+    public void add(String playerName, String playerID, double amount){
         add(LocalDate.now(),playerName,playerID,amount);
     }
-    public void add(LocalDate date, String playerName, String playerID, int amount){
+    public void add(LocalDate date, String playerName, String playerID, double amount){
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
 

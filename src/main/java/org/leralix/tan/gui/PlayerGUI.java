@@ -17,6 +17,7 @@ import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.dataclass.wars.WarRole;
@@ -1571,16 +1572,11 @@ public class PlayerGUI implements IGUI {
 
         TownData townData = TownDataStorage.get(player);
         PlayerData playerStat = PlayerDataStorage.get(player);
+        Budget budget = territoryData.getBudget();
 
-        // Chunk upkeep
-        int regionalTax =  townData.getRegionTaxRate();
 
-        ItemStack goldSpendingIcon = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
-                Lang.GUI_TREASURY_SPENDING_DESC1.get(totalSalary + totalUpkeep + regionalTax),
-                Lang.GUI_TREASURY_SPENDING_DESC2.get(totalSalary),
-                Lang.GUI_TREASURY_SPENDING_DESC3.get(totalUpkeep),
-                Lang.GUI_TREASURY_SPENDING_DESC4.get(regionalTax));
-
+        ItemStack budgetIcon = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_STORAGE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
+                budget.createLore());
         ItemStack lowerTax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_LOWER_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=",
                 Lang.GUI_DECREASE_1_DESC.get(),
                 Lang.GUI_DECREASE_10_DESC.get());
@@ -1592,11 +1588,11 @@ public class PlayerGUI implements IGUI {
         ItemStack taxHistory = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_TAX_HISTORY.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmU1OWYyZDNiOWU3ZmI5NTBlOGVkNzkyYmU0OTIwZmI3YTdhOWI5MzQ1NjllNDQ1YjJiMzUwM2ZlM2FiOTAyIn19fQ==",
                 townData.getTaxHistory().get(5), Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
         ItemStack salarySpending = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_SALARY_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjlhNjAwYWIwYTgzMDk3MDY1Yjk1YWUyODRmODA1OTk2MTc3NDYwOWFkYjNkYmQzYTRjYTI2OWQ0NDQwOTU1MSJ9fX0=",
-                Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.get(totalSalary));
+                Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.get(0));
         ItemStack chunkSpending = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=",
-                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.get(totalUpkeep),
-                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(upkeepCost),
-                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(numberClaimedChunk));
+                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.get(0),
+                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(0),
+                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(0));
         ItemStack miscSpending = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGMzNjA0NTIwOGY5YjVkZGNmOGM0NDMzZTQyNGIxY2ExN2I5NGY2Yjk2MjAyZmIxZTUyNzBlZThkNTM4ODFiMSJ9fX0=",
                 Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1.get());
         HeadUtils.setLore(miscSpending, townData.getMiscellaneousHistory().get(5), Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
@@ -1609,9 +1605,8 @@ public class PlayerGUI implements IGUI {
 
 
 
-        GuiItem treasuryInfo = territoryData.getTreasuryResume();
 
-        GuiItem spendingInfo = ItemBuilder.from(goldSpendingIcon).asGuiItem(event -> event.setCancelled(true));
+        GuiItem budgetInfo = ItemBuilder.from(budgetIcon).asGuiItem(event -> event.setCancelled(true));
         GuiItem taxHistoryButton = ItemBuilder.from(taxHistory).asGuiItem(event -> {
             openTownEconomicsHistory(player, territoryData, HistoryEnum.TAX);
             event.setCancelled(true);
@@ -1698,13 +1693,13 @@ public class PlayerGUI implements IGUI {
         gui.setItem(1,1, panel);
         gui.setItem(1,2, panel);
         gui.setItem(1,3, panel);
-        gui.setItem(1,5, panel);
+        gui.setItem(1,4, panel);
+        gui.setItem(1,6, panel);
         gui.setItem(1,7, panel);
         gui.setItem(1,8, panel);
         gui.setItem(1,9, panel);
 
-        gui.setItem(1,4, treasuryInfo);
-        gui.setItem(1,6, spendingInfo);
+        gui.setItem(1,5, budgetInfo);
 
         gui.setItem(2,2, lowerTaxButton);
         gui.setItem(2,3, taxInfo);
@@ -2968,7 +2963,7 @@ public class PlayerGUI implements IGUI {
         TownData playerTown = playerStat.getTown();
         RegionData playerRegion = playerTown.getOverlord();
 
-        int taxRate = playerRegion.getTaxRate();
+        double taxRate = playerRegion.getTax();
         double treasury = playerRegion.getBalance();
         int taxTomorrow = playerRegion.getIncomeTomorrow();
 
@@ -3019,7 +3014,7 @@ public class PlayerGUI implements IGUI {
 
         GuiItem increaseTaxButton = ItemBuilder.from(increaseTax).asGuiItem(event -> {
             event.setCancelled(true);
-            int currentTax = playerRegion.getTaxRate();
+            double currentTax = playerRegion.getTax();
             int amountToRemove = event.isShiftClick() && currentTax >= 10 ? 10 : 1;
 
             SoundUtil.playSound(player, ADD);

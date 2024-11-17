@@ -71,13 +71,13 @@ public class DailyTasks {
         for(RegionData regionData: RegionDataStorage.getAllRegions()){
             for(ITerritoryData town : regionData.getVassals()){
                 if(town == null) continue;
-                if(town.getBalance() < regionData.getTaxRate()){
+                if(town.getBalance() < regionData.getTax()){
                     regionData.getTaxHistory().add(town.getName(), town.getID(), -1);
                     continue;
                 }
-                town.removeFromBalance(regionData.getTaxRate());
-                regionData.addBalance(regionData.getTaxRate());
-                regionData.getTaxHistory().add(town.getName(), town.getID(), regionData.getTaxRate());
+                town.removeFromBalance(regionData.getTax());
+                regionData.addToBalance(regionData.getTax());
+                regionData.getTaxHistory().add(town.getName(), town.getID(), regionData.getTax());
 
             }
         }

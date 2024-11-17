@@ -11,6 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.territory.economy.Budget;
+import org.leralix.tan.dataclass.territory.economy.ChunkUpkeepLine;
 import org.leralix.tan.dataclass.territory.economy.SalaryPaymentLine;
 import org.leralix.tan.dataclass.wars.CurrentAttacks;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
@@ -542,20 +543,16 @@ public abstract class ITerritoryData {
 
     protected abstract void specificSetPlayerRank(PlayerData playerStat, int rankID);
 
-    public GuiItem getTreasuryResume() {
+    public Budget getBudget() {
         Budget budget = new Budget();
         addCommonTaxes(budget);
         addSpecificTaxes(budget);
-
-        ItemStack goldIcon = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_STORAGE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemMeta itemMeta = goldIcon.getItemMeta();
-        itemMeta.setLore(budget.createLore());
-
-        return ItemBuilder.from(goldIcon).asGuiItem(e -> e.setCancelled(true));
+        return budget;
     }
 
     private void addCommonTaxes(Budget budget) {
         budget.addProfitLine(new SalaryPaymentLine(this));
+        budget.addProfitLine(new ChunkUpkeepLine(this));
     }
 
     protected abstract void addSpecificTaxes(Budget budget);
@@ -563,4 +560,6 @@ public abstract class ITerritoryData {
     public abstract int getNumberOfClaimedChunk();
 
     public abstract double getChunkUpkeepCost();
+
+    public abstract double getTax();
 }

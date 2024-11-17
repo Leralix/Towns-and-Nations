@@ -51,6 +51,9 @@ prefixSize: 3
 #If no other economy plugin are provided by vault, the plugin will use its own economy system without linking to vault
 UseTanEconomy: true
 
+#If TownsAndNations economy is used, set the currency symbol
+moneyIcon: "✦"
+
 #If TownsAndNations economy is used, set the number of digits (0,1,2,3...)
 DecimalDigits: 2
 
@@ -321,11 +324,6 @@ landmarkNameMaxSize: 25
 claimBlacklist:
   - name : "world"
     coordinate : [0,0,1,1]
-
-
-
-
-
 
 ########################
 ##     Wilderness     ##

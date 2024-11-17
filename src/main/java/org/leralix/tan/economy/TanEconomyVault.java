@@ -6,6 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.config.ConfigTag;
+import org.leralix.tan.utils.config.ConfigUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +35,7 @@ public class TanEconomyVault extends TanEconomyStandalone implements Economy {
 
     @Override
     public int fractionalDigits() {
-        return 0;
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("DecimalDigits");
     }
 
     @Override
@@ -43,12 +45,12 @@ public class TanEconomyVault extends TanEconomyStandalone implements Economy {
 
     @Override
     public String currencyNamePlural() {
-        return "✦";
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("moneyIcon");
     }
 
     @Override
     public String currencyNameSingular() {
-        return "✦";
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("moneyIcon");
     }
 
     @Override

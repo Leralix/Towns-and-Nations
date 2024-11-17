@@ -14,6 +14,7 @@ import org.leralix.tan.dataclass.history.DonationHistory;
 import org.leralix.tan.dataclass.history.MiscellaneousHistory;
 import org.leralix.tan.dataclass.history.TaxHistory;
 import org.leralix.tan.dataclass.territory.economy.Budget;
+import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.RolePermission;
@@ -289,7 +290,7 @@ public class RegionData extends ITerritoryData {
         this.nationID = nationID;
     }
 
-    public Integer getTaxRate() {
+    public double getTax() {
         return taxRate;
     }
 
@@ -354,15 +355,6 @@ public class RegionData extends ITerritoryData {
     @Override
     public void setOverlordPrivate(ITerritoryData overlord) {
         // Kingdoms are not implemented yet
-    }
-
-
-
-    public void addBalance(Integer amount) {
-        balance += amount;
-    }
-    public void removeFromBalance(Integer amount) {
-        balance -= amount;
     }
 
     public int getIncomeTomorrow() {
@@ -601,6 +593,6 @@ public class RegionData extends ITerritoryData {
 
     @Override
     protected void addSpecificTaxes(Budget budget) {
-
+        budget.addProfitLine(new SubjectTaxLine(this));
     }
 }

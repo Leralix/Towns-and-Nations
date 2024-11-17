@@ -13,6 +13,7 @@ import org.leralix.tan.dataclass.history.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.territory.economy.Budget;
+import org.leralix.tan.dataclass.territory.economy.OverlordTaxLine;
 import org.leralix.tan.dataclass.territory.economy.PlayerTaxLine;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
@@ -451,6 +452,11 @@ public class TownData extends ITerritoryData {
         return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("TownChunkUpkeepCost",0) / 10;
     }
 
+    @Override
+    public double getTax() {
+        return getFlatTax();
+    }
+
     public TownChunkPermission getPermission(ChunkPermissionType type) {
         return this.chunkSettings.getPermission(type);
     }
@@ -716,6 +722,7 @@ public class TownData extends ITerritoryData {
     @Override
     protected void addSpecificTaxes(Budget budget) {
         budget.addProfitLine(new PlayerTaxLine(this));
+        budget.addProfitLine(new OverlordTaxLine(this));
     }
 
     public Map<String, PropertyData> getPropertyDataMap(){
@@ -883,12 +890,6 @@ public class TownData extends ITerritoryData {
 
     public boolean canClaimMoreLandmarks() {
         return getTownLevel().getTotalBenefits().get("MAX_LANDMARKS") > getNumberOfOwnedLandmarks();
-    }
-
-    public int getRegionTaxRate() {
-        if(!haveOverlord())
-            return 0;
-        return getOverlord().getTaxRate();
     }
 
 

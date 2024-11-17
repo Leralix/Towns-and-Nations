@@ -35,4 +35,9 @@ public class TanEconomyExternal extends AbstractTanEcon {
         UUID uuid = UUID.fromString(s.getID());
         externalEconomy.depositPlayer(Bukkit.getOfflinePlayer(uuid), v);
     }
+
+    @Override
+    public String getMoneyIcon() {
+        return externalEconomy.currencyNameSingular();
+    }
 }

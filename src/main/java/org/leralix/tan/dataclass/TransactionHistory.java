@@ -12,12 +12,12 @@ public class TransactionHistory {
     private final String date;
     private final String transactionParty;
     private final String uuid;
-    private final int amount;
+    private final double amount;
 
-    public TransactionHistory(String transactionParty, int amount) {
+    public TransactionHistory(String transactionParty, double amount) {
         this(transactionParty,null, amount);
     }
-    public TransactionHistory(String transactionParty, String uuid, int amount) {
+    public TransactionHistory(String transactionParty, String uuid, double amount) {
 
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
@@ -54,7 +54,7 @@ public class TransactionHistory {
         return transactionParty;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
