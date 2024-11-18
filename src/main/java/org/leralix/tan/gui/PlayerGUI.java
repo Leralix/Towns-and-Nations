@@ -1574,25 +1574,18 @@ public class PlayerGUI implements IGUI {
         PlayerData playerStat = PlayerDataStorage.get(player);
         Budget budget = territoryData.getBudget();
 
+        budget.createGui(gui, player);
 
         ItemStack budgetIcon = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_STORAGE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
                 budget.createLore());
-        ItemStack lowerTax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_LOWER_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=",
-                Lang.GUI_DECREASE_1_DESC.get(),
-                Lang.GUI_DECREASE_10_DESC.get());
-        ItemStack increaseTax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_INCREASE_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19",
-                Lang.GUI_INCREASE_1_DESC.get(),
-                Lang.GUI_INCREASE_10_DESC.get());
-        ItemStack tax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_FLAT_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk4ZGY0MmY0NzdmMjEzZmY1ZTlkN2ZhNWE0Y2M0YTY5ZjIwZDljZWYyYjkwYzRhZTRmMjliZDE3Mjg3YjUifX19",
-                Lang.GUI_TREASURY_FLAT_TAX_DESC1.get(townData.getFlatTax()));
+
+
+
         ItemStack taxHistory = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_TAX_HISTORY.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmU1OWYyZDNiOWU3ZmI5NTBlOGVkNzkyYmU0OTIwZmI3YTdhOWI5MzQ1NjllNDQ1YjJiMzUwM2ZlM2FiOTAyIn19fQ==",
                 townData.getTaxHistory().get(5), Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
         ItemStack salarySpending = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_SALARY_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjlhNjAwYWIwYTgzMDk3MDY1Yjk1YWUyODRmODA1OTk2MTc3NDYwOWFkYjNkYmQzYTRjYTI2OWQ0NDQwOTU1MSJ9fX0=",
                 Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.get(0));
-        ItemStack chunkSpending = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=",
-                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.get(0),
-                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(0),
-                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(0));
+
         ItemStack miscSpending = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGMzNjA0NTIwOGY5YjVkZGNmOGM0NDMzZTQyNGIxY2ExN2I5NGY2Yjk2MjAyZmIxZTUyNzBlZThkNTM4ODFiMSJ9fX0=",
                 Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1.get());
         HeadUtils.setLore(miscSpending, townData.getMiscellaneousHistory().get(5), Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
@@ -1611,14 +1604,6 @@ public class PlayerGUI implements IGUI {
             openTownEconomicsHistory(player, territoryData, HistoryEnum.TAX);
             event.setCancelled(true);
         });
-        GuiItem salaryHistoryButton = ItemBuilder.from(salarySpending).asGuiItem(event -> {
-            openTownEconomicsHistory(player, territoryData, HistoryEnum.SALARY);
-            event.setCancelled(true);
-        });
-        GuiItem chunkSpendingButton = ItemBuilder.from(chunkSpending).asGuiItem(event -> {
-            openTownEconomicsHistory(player, territoryData, HistoryEnum.CHUNK);
-            event.setCancelled(true);
-        });
         GuiItem miscSpendingButton = ItemBuilder.from(miscSpending).asGuiItem(event -> {
             openTownEconomicsHistory(player, territoryData, HistoryEnum.MISCELLANEOUS);
             event.setCancelled(true);
@@ -1635,43 +1620,7 @@ public class PlayerGUI implements IGUI {
             event.setCancelled(true);
         });
 
-        GuiItem lowerTaxButton = ItemBuilder.from(lowerTax).asGuiItem(event -> {
-            event.setCancelled(true);
-            if(!townData.doesPlayerHavePermission(playerStat, MANAGE_TAXES)) {
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-                return;
-            }
 
-            int currentTax = townData.getFlatTax();
-            int amountToRemove = event.isShiftClick() && currentTax > 10 ? 10 : 1;
-
-            if(currentTax <= 0){
-                player.sendMessage(getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get());
-                return;
-            }
-            SoundUtil.playSound(player, REMOVE);
-
-            townData.addToFlatTax(-amountToRemove);
-            openTreasury(player, territoryData);
-        });
-        GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
-            event.setCancelled(true);
-            openTreasury(player, territoryData);
-        });
-        GuiItem increaseTaxButton = ItemBuilder.from(increaseTax).asGuiItem(event -> {
-            event.setCancelled(true);
-
-            if(!townData.doesPlayerHavePermission(playerStat, MANAGE_TAXES)){
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-                return;
-            }
-
-            int amountToAdd = event.isShiftClick() ? 10 : 1;
-
-            townData.addToFlatTax(amountToAdd);
-            SoundUtil.playSound(player, ADD);
-            openTreasury(player, territoryData);
-        });
 
         GuiItem retrieveButton = ItemBuilder.from(retrieveMoney).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1701,12 +1650,6 @@ public class PlayerGUI implements IGUI {
 
         gui.setItem(1,5, budgetInfo);
 
-        gui.setItem(2,2, lowerTaxButton);
-        gui.setItem(2,3, taxInfo);
-        gui.setItem(2,4, increaseTaxButton);
-
-        gui.setItem(2,6, salaryHistoryButton);
-        gui.setItem(2,7, chunkSpendingButton);
         gui.setItem(2,8, miscSpendingButton);
 
         gui.setItem(3,2, donationButton);
@@ -2699,7 +2642,7 @@ public class PlayerGUI implements IGUI {
         });
         GuiItem treasuryButton = ItemBuilder.from(treasury).asGuiItem(event -> {
             event.setCancelled(true);
-            openRegionEconomy(player);
+            openTreasury(player, playerRegion);
         });
         GuiItem hierarchyButton = ItemBuilder.from(hierarchy).asGuiItem(event -> {
             event.setCancelled(true);
@@ -2956,116 +2899,6 @@ public class PlayerGUI implements IGUI {
 
         gui.open(player);
     }
-    private static void openRegionEconomy(Player player) {
-        Gui gui = IGUI.createChestGui("Region", 4);
-
-        PlayerData playerStat = PlayerDataStorage.get(player);
-        TownData playerTown = playerStat.getTown();
-        RegionData playerRegion = playerTown.getOverlord();
-
-        double taxRate = playerRegion.getTax();
-        double treasury = playerRegion.getBalance();
-        int taxTomorrow = playerRegion.getIncomeTomorrow();
-
-
-        ItemStack goldIcon = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_STORAGE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
-                Lang.GUI_TREASURY_STORAGE_DESC1.get(treasury),
-                Lang.GUI_TREASURY_STORAGE_DESC2.get(taxTomorrow));
-        ItemStack goldSpendingIcon = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
-                Lang.GUI_WARNING_STILL_IN_DEV.get());
-
-        ItemStack lowerTax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_LOWER_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=",
-                Lang.GUI_DECREASE_1_DESC.get(),
-                Lang.GUI_DECREASE_10_DESC.get());
-        ItemStack increaseTax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_INCREASE_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19",
-                Lang.GUI_INCREASE_1_DESC.get(),
-                Lang.GUI_INCREASE_10_DESC.get());
-        ItemStack tax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_FLAT_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk4ZGY0MmY0NzdmMjEzZmY1ZTlkN2ZhNWE0Y2M0YTY5ZjIwZDljZWYyYjkwYzRhZTRmMjliZDE3Mjg3YjUifX19",
-                Lang.GUI_TREASURY_FLAT_TAX_DESC1.get(taxRate));
-        ItemStack taxHistory = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_TAX_HISTORY.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmU1OWYyZDNiOWU3ZmI5NTBlOGVkNzkyYmU0OTIwZmI3YTdhOWI5MzQ1NjllNDQ1YjJiMzUwM2ZlM2FiOTAyIn19fQ==",
-                playerRegion.getTaxHistory().get(5),
-                Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
-        ItemStack chunkSpending = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=");
-        ItemStack donation = HeadUtils.createCustomItemStack(Material.DIAMOND,
-                Lang.GUI_TREASURY_DONATION.get(),
-                Lang.GUI_REGION_TREASURY_DONATION_DESC1.get());
-        ItemStack donationHistory = HeadUtils.createCustomItemStack(Material.PAPER,
-                Lang.GUI_TREASURY_DONATION_HISTORY.get(),
-                playerRegion.getDonationHistory().get(5),
-                Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
-
-
-
-        GuiItem goldInfo = ItemBuilder.from(goldIcon).asGuiItem(event -> event.setCancelled(true));
-        GuiItem spendingInfo = ItemBuilder.from(goldSpendingIcon).asGuiItem(event -> event.setCancelled(true));
-        GuiItem lowerTaxButton = ItemBuilder.from(lowerTax).asGuiItem(event -> {
-            event.setCancelled(true);
-            int amountToRemove = event.isShiftClick() && taxRate > 10 ? 10 : 1;
-
-            if(taxRate < 1){
-                player.sendMessage(getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get());
-                return;
-            }
-            SoundUtil.playSound(player, REMOVE);
-
-            playerRegion.addToTax(-amountToRemove);
-            openRegionEconomy(player);
-        });
-
-        GuiItem increaseTaxButton = ItemBuilder.from(increaseTax).asGuiItem(event -> {
-            event.setCancelled(true);
-            double currentTax = playerRegion.getTax();
-            int amountToRemove = event.isShiftClick() && currentTax >= 10 ? 10 : 1;
-
-            SoundUtil.playSound(player, ADD);
-
-            playerRegion.addToTax(amountToRemove);
-            openRegionEconomy(player);
-        });
-
-        GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> event.setCancelled(true));
-
-        GuiItem chunkSpendingInfo = ItemBuilder.from(chunkSpending).asGuiItem(event -> event.setCancelled(true));
-
-        GuiItem donationButton = ItemBuilder.from(donation).asGuiItem(event -> {
-            event.setCancelled(true);
-            player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get());
-            PlayerChatListenerStorage.register(player, new DonateToTerritory(playerRegion));
-        });
-
-        GuiItem donationHistoryButton = ItemBuilder.from(donationHistory).asGuiItem(event -> {
-            event.setCancelled(true);
-            openRegionEconomyHistory(player, HistoryEnum.DONATION);
-        });
-
-        GuiItem taxHistoryButton = ItemBuilder.from(taxHistory).asGuiItem(event -> {
-            event.setCancelled(true);
-            openRegionEconomyHistory(player, HistoryEnum.TAX);
-        });
-
-        GuiItem decorativeGlassInfo = ItemBuilder.from(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
-        gui.setItem(1,1, decorativeGlassInfo);
-        gui.setItem(1,2, decorativeGlassInfo);
-        gui.setItem(1,3, decorativeGlassInfo);
-        gui.setItem(1,5, decorativeGlassInfo);
-        gui.setItem(1,7, decorativeGlassInfo);
-        gui.setItem(1,8, decorativeGlassInfo);
-        gui.setItem(1,9, decorativeGlassInfo);
-
-
-        gui.setItem(1,4, goldInfo);
-        gui.setItem(1,6, spendingInfo);
-        gui.setItem(2,2, lowerTaxButton);
-        gui.setItem(2,3, taxInfo);
-        gui.setItem(2,4, increaseTaxButton);
-
-        gui.setItem(3,2, donationButton);
-        gui.setItem(3,3, donationHistoryButton);
-        gui.setItem(3,4, taxHistoryButton);
-        gui.setItem(4,1, IGUI.createBackArrow(player, p -> openRegionMenu(player)));
-
-        gui.open(player);
-    }
     public static void openRegionEconomyHistory(Player player, HistoryEnum historyType) {
 
         Gui gui = IGUI.createChestGui("Town", 6);
@@ -3127,7 +2960,7 @@ public class PlayerGUI implements IGUI {
                 }
             }
         }
-        gui.setItem(6,1, IGUI.createBackArrow(player, p -> openRegionEconomy(player)));
+        gui.setItem(6,1, IGUI.createBackArrow(player, p -> openTreasury(player, region)));
         gui.open(player);
     }
     public static void openRegionChangeOwnership(Player player, int page){

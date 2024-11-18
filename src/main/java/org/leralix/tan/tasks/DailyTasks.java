@@ -86,15 +86,13 @@ public class DailyTasks {
 
 
     public static void TownTaxPayment() {
-
-
         for (PlayerData playerStat : PlayerDataStorage.getLists()){
             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerStat.getID()));
 
             if (!playerStat.haveTown()) continue;
             TownData playerTown = TownDataStorage.get(playerStat);
             if (!playerStat.getTownRank().isPayingTaxes()) continue;
-            int tax = playerTown.getFlatTax();
+            double tax = playerTown.getFlatTax();
 
             if(EconomyUtil.getBalance(offlinePlayer) > tax){
                 EconomyUtil.removeFromBalance(offlinePlayer,tax);

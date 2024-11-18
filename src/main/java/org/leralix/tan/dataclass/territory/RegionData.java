@@ -45,7 +45,7 @@ public class RegionData extends ITerritoryData {
     private Long dateTimeCreated;
     private String regionIconType;
     private TerritoryIcon territoryIcon;
-    private Integer taxRate;
+    private Double taxRate;
     private Double balance;
     private Integer chunkColor;
     private String description;
@@ -66,7 +66,7 @@ public class RegionData extends ITerritoryData {
         this.dateTimeCreated = new Date().getTime();
         this.nationID = null;
         this.regionIconType = null;
-        this.taxRate = 1;
+        this.taxRate = 1.0;
         this.balance = 0.0;
         this.description = "default description";
         this.townsInRegion = new ArrayList<>();
@@ -294,10 +294,6 @@ public class RegionData extends ITerritoryData {
         return taxRate;
     }
 
-    public void setTaxRate(Integer taxRate) {
-        this.taxRate = taxRate;
-    }
-
     public List<ITerritoryData> getSubjects() {
         List<ITerritoryData> towns = new ArrayList<>();
         for (String townID : townsInRegion) {
@@ -367,8 +363,14 @@ public class RegionData extends ITerritoryData {
         return income;
     }
 
-    public void addToTax(int i) {
+    @Override
+    public void addToTax(double i) {
         taxRate += i;
+    }
+
+    @Override
+    public void removeToTax(double i) {
+        taxRate -= i;
     }
 
     public ChunkHistory getChunkHistory() {

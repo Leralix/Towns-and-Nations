@@ -47,7 +47,7 @@ public class TownData extends ITerritoryData {
     private String regionID;
     private boolean isRecruiting;
     private Double balance;
-    private Integer flatTax;
+    private Double flatTax;
     private Integer chunkColor;
     private String townTag;
     private TownLevel townLevel = new TownLevel();
@@ -76,7 +76,7 @@ public class TownData extends ITerritoryData {
         this.townIconMaterialCode = null;
         this.isRecruiting = false;
         this.balance = 0.0;
-        this.flatTax = 1;
+        this.flatTax = 1.0;
         this.townDefaultRankID = 0;
         int prefixSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize",3);
         this.townTag = townName.length() >= prefixSize ? townName.substring(0, prefixSize).toUpperCase() : townName.toUpperCase();
@@ -427,14 +427,19 @@ public class TownData extends ITerritoryData {
         this.isRecruiting = !this.isRecruiting;
     }
 
-    public int getFlatTax() {
+    public double getFlatTax() {
         if(this.flatTax == null)
-            this.flatTax = 1;
+            this.flatTax = 1.0;
         return this.flatTax;
     }
-
-    public void addToFlatTax(int flatTax) {
+    @Override
+    public void addToTax(double flatTax) {
         this.flatTax += flatTax;
+    }
+
+    @Override
+    public void removeToTax(double i) {
+        this.flatTax -= i;
     }
 
     public int getNumberOfClaimedChunk() {

@@ -1,5 +1,8 @@
 package org.leralix.tan.dataclass.territory.economy;
 
+import dev.triumphteam.gui.guis.Gui;
+import org.bukkit.entity.Player;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,5 +26,11 @@ public class Budget {
             lore.add(profitLine.getLine());
         }
         return lore;
+    }
+
+    public void createGui(Gui gui, Player player) {
+        for(ProfitLine profitLine : profitList){
+            profitLine.addItems(gui, player);
+        }
     }
 }

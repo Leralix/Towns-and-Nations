@@ -562,4 +562,7 @@ public abstract class ITerritoryData {
     public abstract double getChunkUpkeepCost();
 
     public abstract double getTax();
+
+    public abstract void addToTax(double i);
+    public abstract void removeToTax(double i);
 }
