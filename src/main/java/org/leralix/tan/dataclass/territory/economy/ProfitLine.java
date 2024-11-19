@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.economy.EconomyUtil;
 
-public abstract class ProfitLine {
+public abstract class ProfitLine implements Comparable<ProfitLine> {
 
     protected final ITerritoryData territoryData;
 
@@ -13,8 +13,11 @@ public abstract class ProfitLine {
         this.territoryData = territoryData;
     }
 
-    protected String getColoredMoney(double money){
+
+    public abstract double getMoney();
+    protected String getColoredMoney(){
         String moneyChar = EconomyUtil.getMoneyIcon();
+        double money = getMoney();
         if(money > 0){
             return "§a+" + money + moneyChar;
         }else if(money < 0){
@@ -25,4 +28,9 @@ public abstract class ProfitLine {
     public abstract String getLine();
 
     public abstract void addItems(Gui gui, Player player);
+
+    @Override
+    public int compareTo(ProfitLine otherLine) {
+        return Double.compare(otherLine.getMoney(), getMoney());
+    }
 }

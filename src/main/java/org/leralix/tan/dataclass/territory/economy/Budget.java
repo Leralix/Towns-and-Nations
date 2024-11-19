@@ -3,6 +3,8 @@ package org.leralix.tan.dataclass.territory.economy;
 import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class Budget {
         for(ProfitLine profitLine : profitList){
             lore.add(profitLine.getLine());
         }
+        Collections.sort(lore);
         return lore;
     }
 

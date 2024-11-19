@@ -1,19 +1,17 @@
 package org.leralix.tan.dataclass.history;
 
-import org.leralix.tan.dataclass.TransactionHistory;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class MiscellaneousHistory {
 
-    List<TransactionHistory> miscellaneousPurchaseHistory;
+    List<OldTransactionHistory> miscellaneousPurchaseHistory;
 
     public MiscellaneousHistory(){
         this.miscellaneousPurchaseHistory = new ArrayList<>();
     }
 
-    public List<TransactionHistory> get(){
+    public List<OldTransactionHistory> get(){
         return miscellaneousPurchaseHistory;
     }
 
@@ -30,7 +28,7 @@ public class MiscellaneousHistory {
         return latestDonations;
     }
     public void add(String miscellaneous, int amount){
-        this.miscellaneousPurchaseHistory.add(new TransactionHistory(miscellaneous, amount));
+        this.miscellaneousPurchaseHistory.add(new OldTransactionHistory(miscellaneous, amount));
     }
 
     public List<String> getMiscellaneousLimitedHistory(int wantedNumberOfRows){

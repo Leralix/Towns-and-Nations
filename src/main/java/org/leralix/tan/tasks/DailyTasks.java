@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.dataclass.*;
+import org.leralix.tan.dataclass.newhistory.SalaryTransactionHistory;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -98,9 +99,10 @@ public class DailyTasks {
                 EconomyUtil.removeFromBalance(offlinePlayer,tax);
                 playerTown.addToBalance(tax);
                 playerTown.getTaxHistory().add(playerStat.getName(), playerStat.getID(), tax);
+                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SalaryTransactionHistory(playerTown,playerStat,tax));
             }
             else{
-                playerTown.getTaxHistory().add(playerStat.getName(), playerStat.getID(), -1);
+                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SalaryTransactionHistory(playerTown,playerStat,-1));
             }
         }
     }

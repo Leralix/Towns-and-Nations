@@ -1,4 +1,4 @@
-package org.leralix.tan.dataclass;
+package org.leralix.tan.dataclass.history;
 
 import org.bukkit.ChatColor;
 import org.leralix.tan.lang.Lang;
@@ -7,17 +7,17 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class TransactionHistory {
+public class OldTransactionHistory {
 
     private final String date;
     private final String transactionParty;
     private final String uuid;
     private final double amount;
 
-    public TransactionHistory(String transactionParty, double amount) {
+    public OldTransactionHistory(String transactionParty, double amount) {
         this(transactionParty,null, amount);
     }
-    public TransactionHistory(String transactionParty, String uuid, double amount) {
+    public OldTransactionHistory(String transactionParty, String uuid, double amount) {
 
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");

@@ -63,7 +63,7 @@ public class TownData extends ITerritoryData {
     private ChunkHistory chunkHistory;
     private DonationHistory donationHistory;
     private MiscellaneousHistory miscellaneousHistory;
-    private SalaryHistory salaryHistory;
+    private OldSalaryHistory salaryHistory;
     private TaxHistory taxHistory;
 
     //First time creating a town
@@ -85,7 +85,7 @@ public class TownData extends ITerritoryData {
         this.chunkHistory = new ChunkHistory();
         this.donationHistory = new DonationHistory();
         this.miscellaneousHistory = new MiscellaneousHistory();
-        this.salaryHistory = new SalaryHistory();
+        this.salaryHistory = new OldSalaryHistory();
         this.taxHistory = new TaxHistory();
 
         registerNewRank("default");
@@ -598,9 +598,9 @@ public class TownData extends ITerritoryData {
         return miscellaneousHistory;
     }
 
-    public SalaryHistory getSalaryHistory() {
+    public OldSalaryHistory getSalaryHistory() {
         if(salaryHistory == null)
-            salaryHistory = new SalaryHistory();
+            salaryHistory = new OldSalaryHistory();
         return salaryHistory;
     }
 

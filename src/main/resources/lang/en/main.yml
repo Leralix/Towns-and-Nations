@@ -214,6 +214,7 @@ language:
   RELATION_HOSTILE_NAME: "Hostile"
   #GUI generic
   GUI_GENERIC_CLICK_TO_OPEN: "§fLeft click to open"
+  GUI_GENERIC_CLICK_TO_OPEN_HISTORY: "§fLeft click to open the newsletter"
   GUI_GENERIC_CLICK_TO_DELETE: "§fClick to delete"
   GUI_GENERIC_CLICK_TO_RENAME: "§fClick to rename"
   GUI_GENERIC_RIGHT_CLICK_TO_DELETE: "§fRight click to delete"
@@ -326,7 +327,7 @@ language:
   GUI_TREASURY_FLAT_TAX_DESC1: "§fTown daily tax: §6{0}✦§f"
   GUI_TREASURY_TAX_HISTORY: "§aTax History"
   GUI_TREASURY_SALARY_HISTORY: "§aSalary history"
-  GUI_TREASURY_SALARY_HISTORY_DESC1: "§fSalary spending is up to: §c-{0}✦"
+  GUI_TREASURY_SALARY_HISTORY_DESC1: "§fSalary spending is up to: {0}"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY: "§aChunk spending history"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1: "§fChunk upkeep is up to: §c{0}✦"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "§c-{0}✦§f for every 10 chunks claimed"

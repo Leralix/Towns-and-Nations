@@ -1,29 +1,27 @@
 package org.leralix.tan.dataclass.history;
 
-import org.leralix.tan.dataclass.TransactionHistory;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class DonationHistory {
 
-    List<TransactionHistory> donationHistory;
+    List<OldTransactionHistory> donationHistory;
 
     public DonationHistory(){
         this.donationHistory = new ArrayList<>();
     }
 
     public void add(String playerName, String playerID, int amount){
-        this.donationHistory.add(new TransactionHistory(playerName,playerID, amount));
+        this.donationHistory.add(new OldTransactionHistory(playerName,playerID, amount));
     }
-    public List<TransactionHistory> getReverse(){
-        List<TransactionHistory> reverse = new ArrayList<>(donationHistory);
+    public List<OldTransactionHistory> getReverse(){
+        List<OldTransactionHistory> reverse = new ArrayList<>(donationHistory);
         Collections.reverse(reverse);
         return reverse;
     }
 
-    public List<TransactionHistory> get(){
+    public List<OldTransactionHistory> get(){
         return donationHistory;
     }
     public List<String> get(int wantedNumberOfRows){

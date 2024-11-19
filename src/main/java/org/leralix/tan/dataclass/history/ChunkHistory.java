@@ -1,21 +1,19 @@
 package org.leralix.tan.dataclass.history;
 
-import org.leralix.tan.dataclass.TransactionHistory;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class ChunkHistory {
 
-    LinkedHashMap<String, TransactionHistory> historyMap;
+    LinkedHashMap<String, OldTransactionHistory> historyMap;
 
 
     public ChunkHistory(){
         this.historyMap = new LinkedHashMap<>();
     }
 
-    public Map<String, TransactionHistory> getMap(){
+    public Map<String, OldTransactionHistory> getMap(){
         return historyMap;
     }
 
@@ -27,7 +25,7 @@ public class ChunkHistory {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
         String formattedDate = date.format(formatter);
 
-        this.historyMap.put(formattedDate,new TransactionHistory(String.valueOf(numberOfChunk), amount));
+        this.historyMap.put(formattedDate,new OldTransactionHistory(String.valueOf(numberOfChunk), amount));
     }
 
     public void clearHistory(int timeBeforeClearing) {
@@ -35,9 +33,9 @@ public class ChunkHistory {
         if(timeBeforeClearing == 0)
             return;
 
-        Iterator<Map.Entry<String, TransactionHistory>> iterator = this.historyMap.entrySet().iterator();
+        Iterator<Map.Entry<String, OldTransactionHistory>> iterator = this.historyMap.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, TransactionHistory> entry = iterator.next();
+            Map.Entry<String, OldTransactionHistory> entry = iterator.next();
             LocalDate dateToCheck = LocalDate.parse(entry.getKey(), DateTimeFormatter.ofPattern("yyyy MM dd"));
             if (dateToCheck.isBefore(LocalDate.now().minusDays(timeBeforeClearing))) {
                 iterator.remove();

@@ -1,7 +1,5 @@
 package org.leralix.tan.dataclass.history;
 
-import org.leralix.tan.dataclass.TransactionHistory;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -9,15 +7,15 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class SalaryHistory {
+public class OldSalaryHistory {
 
-    LinkedHashMap<String, ArrayList<TransactionHistory>> historyMap;
+    LinkedHashMap<String, ArrayList<OldTransactionHistory>> historyMap;
 
-    public SalaryHistory(){
+    public OldSalaryHistory(){
         this.historyMap = new LinkedHashMap<>();
     }
 
-    public Map<String, ArrayList<TransactionHistory>> getMap(){
+    public Map<String, ArrayList<OldTransactionHistory>> getMap(){
         return historyMap;
     }
 
@@ -32,7 +30,7 @@ public class SalaryHistory {
         if (!this.historyMap.containsKey(formattedDate)) {
             this.historyMap.put(formattedDate, new ArrayList<>());
         }
-        this.historyMap.get(formattedDate).add(new TransactionHistory(null,playerID, amount));
+        this.historyMap.get(formattedDate).add(new OldTransactionHistory(null,playerID, amount));
     }
 
     public void clearHistory(int daysBeforeCleaning) {
@@ -40,9 +38,9 @@ public class SalaryHistory {
         if(daysBeforeCleaning == 0)
             return;
 
-        Iterator<Map.Entry<String, ArrayList<TransactionHistory>>> iterator = this.historyMap.entrySet().iterator();
+        Iterator<Map.Entry<String, ArrayList<OldTransactionHistory>>> iterator = this.historyMap.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, ArrayList<TransactionHistory>> entry = iterator.next();
+            Map.Entry<String, ArrayList<OldTransactionHistory>> entry = iterator.next();
             LocalDate dateToCheck = LocalDate.parse(entry.getKey(), DateTimeFormatter.ofPattern("yyyy MM dd"));
             if (dateToCheck.isBefore(LocalDate.now().minusDays(daysBeforeCleaning))) {
                 iterator.remove();

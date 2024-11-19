@@ -13,7 +13,11 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
+import org.leralix.tan.dataclass.history.OldTransactionHistory;
+import org.leralix.tan.dataclass.newhistory.TransactionHistory;
+import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -1579,34 +1583,22 @@ public class PlayerGUI implements IGUI {
         ItemStack budgetIcon = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_STORAGE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
                 budget.createLore());
 
-
-
-        ItemStack taxHistory = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_TAX_HISTORY.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmU1OWYyZDNiOWU3ZmI5NTBlOGVkNzkyYmU0OTIwZmI3YTdhOWI5MzQ1NjllNDQ1YjJiMzUwM2ZlM2FiOTAyIn19fQ==",
-                townData.getTaxHistory().get(5), Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
-        ItemStack salarySpending = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_SALARY_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjlhNjAwYWIwYTgzMDk3MDY1Yjk1YWUyODRmODA1OTk2MTc3NDYwOWFkYjNkYmQzYTRjYTI2OWQ0NDQwOTU1MSJ9fX0=",
-                Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.get(0));
-
         ItemStack miscSpending = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGMzNjA0NTIwOGY5YjVkZGNmOGM0NDMzZTQyNGIxY2ExN2I5NGY2Yjk2MjAyZmIxZTUyNzBlZThkNTM4ODFiMSJ9fX0=",
-                Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1.get());
-        HeadUtils.setLore(miscSpending, townData.getMiscellaneousHistory().get(5), Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
-        ItemStack donation = HeadUtils.createCustomItemStack(Material.DIAMOND,Lang.GUI_TREASURY_DONATION.get(),Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get());
-        ItemStack donationHistory = HeadUtils.createCustomItemStack(Material.PAPER,Lang.GUI_TREASURY_DONATION_HISTORY.get());
-        HeadUtils.setLore(donationHistory, townData.getDonationHistory().get(5),Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
-
+                Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get());
+        ItemStack donation = HeadUtils.createCustomItemStack(Material.DIAMOND, Lang.GUI_TREASURY_DONATION.get(),
+                Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get());
+        ItemStack donationHistory = HeadUtils.createCustomItemStack(Material.PAPER, Lang.GUI_TREASURY_DONATION_HISTORY.get(),
+                Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get());
         ItemStack retrieveMoney = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_RETRIEVE_GOLD.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWE2NDUwMWIxYmE1M2QxZDRlOWY0MDI5MTdiNWJkNDc3MjdiMTY3MDJhY2Y2OTMwZDYxMjFjMDdkYzQyYWUxYSJ9fX0=",
                 Lang.GUI_TREASURY_RETRIEVE_GOLD_DESC1.get());
 
 
-
-
         GuiItem budgetInfo = ItemBuilder.from(budgetIcon).asGuiItem(event -> event.setCancelled(true));
-        GuiItem taxHistoryButton = ItemBuilder.from(taxHistory).asGuiItem(event -> {
-            openTownEconomicsHistory(player, territoryData, HistoryEnum.TAX);
-            event.setCancelled(true);
-        });
+
+
         GuiItem miscSpendingButton = ItemBuilder.from(miscSpending).asGuiItem(event -> {
-            openTownEconomicsHistory(player, territoryData, HistoryEnum.MISCELLANEOUS);
             event.setCancelled(true);
+            openTownEconomicsHistory(player, territoryData, HistoryEnum.MISCELLANEOUS);
         });
         GuiItem donationButton = ItemBuilder.from(donation).asGuiItem(event -> {
             player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get());
@@ -1619,8 +1611,6 @@ public class PlayerGUI implements IGUI {
             openTownEconomicsHistory(player, territoryData, HistoryEnum.DONATION);
             event.setCancelled(true);
         });
-
-
 
         GuiItem retrieveButton = ItemBuilder.from(retrieveMoney).asGuiItem(event -> {
             event.setCancelled(true);
@@ -1647,6 +1637,20 @@ public class PlayerGUI implements IGUI {
         gui.setItem(1,7, panel);
         gui.setItem(1,8, panel);
         gui.setItem(1,9, panel);
+        gui.setItem(2,1, panel);
+        gui.setItem(2,5, panel);
+        gui.setItem(2,9, panel);
+        gui.setItem(3,1, panel);
+        gui.setItem(3,5, panel);
+        gui.setItem(3,9, panel);
+        gui.setItem(4,2, panel);
+        gui.setItem(4,3, panel);
+        gui.setItem(4,4, panel);
+        gui.setItem(4,5, panel);
+        gui.setItem(4,6, panel);
+        gui.setItem(4,7, panel);
+        gui.setItem(4,8, panel);
+        gui.setItem(4,9, panel);
 
         gui.setItem(1,5, budgetInfo);
 
@@ -1654,9 +1658,8 @@ public class PlayerGUI implements IGUI {
 
         gui.setItem(3,2, donationButton);
         gui.setItem(3,3, donationHistoryButton);
-        gui.setItem(3,4, taxHistoryButton);
 
-        gui.setItem(3,6, retrieveButton);
+        gui.setItem(3,4, retrieveButton);
 
         gui.setItem(4,1, IGUI.createBackArrow(player, p -> dispatchPlayerTown(player)));
 
@@ -1664,6 +1667,9 @@ public class PlayerGUI implements IGUI {
 
     }
     public static void openTownEconomicsHistory(Player player, ITerritoryData territoryData, HistoryEnum historyType) {
+        openTownEconomicsHistory(player, territoryData, historyType, 0);
+    }
+        public static void openTownEconomicsHistory(Player player, ITerritoryData territoryData, HistoryEnum historyType, int page) {
 
         Gui gui = IGUI.createChestGui("Town",6);
 
@@ -1676,7 +1682,7 @@ public class PlayerGUI implements IGUI {
             case DONATION -> {
 
                 int i = 0;
-                for(TransactionHistory donation : town.getDonationHistory().getReverse()){
+                for(OldTransactionHistory donation : town.getDonationHistory().getReverse()){
 
                     ItemStack transactionIcon = HeadUtils.createCustomItemStack(Material.PAPER,
                             ChatColor.DARK_AQUA + donation.getName(),
@@ -1696,15 +1702,15 @@ public class PlayerGUI implements IGUI {
             case TAX -> {
 
                 int i = 0;
-                for(Map.Entry<String,ArrayList<TransactionHistory>> oneDay : town.getTaxHistory().get().entrySet()){
+                for(Map.Entry<String,ArrayList<OldTransactionHistory>> oneDay : town.getTaxHistory().get().entrySet()){
 
                     String date = oneDay.getKey();
-                    ArrayList<TransactionHistory> taxes = oneDay.getValue();
+                    ArrayList<OldTransactionHistory> taxes = oneDay.getValue();
 
 
                     List<String> lines = new ArrayList<>();
 
-                    for (TransactionHistory singleTax : taxes){
+                    for (OldTransactionHistory singleTax : taxes){
 
                         if(singleTax.getAmount() == -1){
                             lines.add(Lang.TAX_SINGLE_LINE_NOT_ENOUGH.get(singleTax.getName()));
@@ -1732,7 +1738,7 @@ public class PlayerGUI implements IGUI {
 
                 float upkeepCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownChunkUpkeepCost");
 
-                for(TransactionHistory chunkTax : town.getChunkHistory().getMap().values()){
+                for(OldTransactionHistory chunkTax : town.getChunkHistory().getMap().values()){
 
 
                     ItemStack transactionIcon = HeadUtils.createCustomItemStack(Material.PAPER,
@@ -1755,35 +1761,24 @@ public class PlayerGUI implements IGUI {
             }
             case SALARY -> {
 
-                int i = 0;
-                for(Map.Entry<String,ArrayList<TransactionHistory>> oneDay : town.getSalaryHistory().getMap().entrySet()){
 
-                    String date = oneDay.getKey();
-                    ArrayList<TransactionHistory> salaries = oneDay.getValue();
+                List<TransactionHistory> transactionHistories = TownsAndNations.getPlugin().getDatabaseHandler().getTransactionHistory(territoryData, TransactionHistoryEnum.SALARY);
 
-                    List<String> lines = new ArrayList<>();
+                List<GuiItem> guiItems = new ArrayList<>();
 
-                    for (TransactionHistory singleSalary : salaries){
-                        if(singleSalary.getAmount() < 0){
-                            lines.add(Lang.HISTORY_NEGATIVE_SINGLE_LINE.get(singleSalary.getPlayerName(), singleSalary.getAmount()));
-                        }
-                    }
-
-                    ItemStack transactionHistoryItem = HeadUtils.createCustomItemStack(Material.PAPER,date,lines);
-
-                    GuiItem transactionHistoryInfo = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> event.setCancelled(true));
-
-                    gui.setItem(i,transactionHistoryInfo);
-                    i = i+1;
-                    if (i > 44){
-                        break;
-                    }
+                for(TransactionHistory transactionHistory : transactionHistories){
+                    guiItems.add(transactionHistory.createGuiItem());
                 }
+                createIterator(gui, guiItems, 0, player,
+                        p -> openTreasury(player, territoryData),
+                        p -> openTownEconomicsHistory(player, territoryData, historyType, page + 1),
+                        p -> openTownEconomicsHistory(player, territoryData, historyType, page - 1));
+
             }
             case MISCELLANEOUS -> {
                 int i = 0;
 
-                for (TransactionHistory miscellaneous : town.getMiscellaneousHistory().get()){
+                for (OldTransactionHistory miscellaneous : town.getMiscellaneousHistory().get()){
 
                     ItemStack transactionIcon = HeadUtils.createCustomItemStack(Material.PAPER,
                             ChatColor.DARK_AQUA + miscellaneous.getDate(),
@@ -2899,70 +2894,7 @@ public class PlayerGUI implements IGUI {
 
         gui.open(player);
     }
-    public static void openRegionEconomyHistory(Player player, HistoryEnum historyType) {
 
-        Gui gui = IGUI.createChestGui("Town", 6);
-
-        PlayerData playerStat = PlayerDataStorage.get(player);
-        RegionData region = playerStat.getRegion();
-
-
-        switch (historyType) {
-
-            case DONATION -> {
-
-                int i = 0;
-                for (TransactionHistory donation : region.getDonationHistory().getReverse()) {
-
-                    ItemStack transactionIcon = HeadUtils.createCustomItemStack(Material.PAPER,
-                            ChatColor.DARK_AQUA + donation.getName(),
-                            Lang.DONATION_SINGLE_LINE_1.get(donation.getAmount()),
-                            Lang.DONATION_SINGLE_LINE_2.get(donation.getDate())
-                    );
-
-                    GuiItem transactionIconButton = ItemBuilder.from(transactionIcon).asGuiItem(event -> event.setCancelled(true));
-
-                    gui.setItem(i, transactionIconButton);
-                    i = i + 1;
-                    if (i > 44) {
-                        break;
-                    }
-                }
-            }
-            case TAX -> {
-
-                int i = 0;
-                for (Map.Entry<String, ArrayList<TransactionHistory>> oneDay : region.getTaxHistory().get().entrySet()) {
-
-                    String date = oneDay.getKey();
-                    ArrayList<TransactionHistory> taxes = oneDay.getValue();
-
-
-                    List<String> lines = new ArrayList<>();
-
-                    for (TransactionHistory singleTax : taxes) {
-
-                        if (singleTax.getAmount() == -1) {
-                            lines.add(Lang.TAX_SINGLE_LINE_NOT_ENOUGH.get(singleTax.getName()));
-                        } else {
-                            lines.add(Lang.TAX_SINGLE_LINE.get(singleTax.getName(), singleTax.getAmount()));
-                        }
-                    }
-
-                    ItemStack transactionHistoryItem = HeadUtils.createCustomItemStack(Material.PAPER, date, lines);
-                    GuiItem transactionHistoryButton = ItemBuilder.from(transactionHistoryItem).asGuiItem(event -> event.setCancelled(true));
-
-                    gui.setItem(i, transactionHistoryButton);
-                    i = i + 1;
-                    if (i > 44) {
-                        break;
-                    }
-                }
-            }
-        }
-        gui.setItem(6,1, IGUI.createBackArrow(player, p -> openTreasury(player, region)));
-        gui.open(player);
-    }
     public static void openRegionChangeOwnership(Player player, int page){
 
             Gui gui = IGUI.createChestGui("Region", 6);

@@ -14,6 +14,8 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.api.PlaceHolderAPI;
 import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
+import org.leralix.tan.storage.database.DatabaseHandler;
+import org.leralix.tan.storage.database.SQLiteHandler;
 import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.api.TanApi;
@@ -36,6 +38,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -96,9 +99,9 @@ public final class TownsAndNations extends JavaPlugin {
      */
     private final long dateOfStart = System.currentTimeMillis();
     /**
-     * This method is called when the plugin is enabled.
-     * It is used to load the plugin and all its features.
+     * Database handler used to access the database.
      */
+    private DatabaseHandler databaseHandler;
 
     @Override
     public void onEnable() {
@@ -124,11 +127,19 @@ public final class TownsAndNations extends JavaPlugin {
         TownsAndNations.getPlugin().getPluginLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
 
 
+
         logger.log(Level.INFO, "[TaN] -Loading Configs");
         ConfigUtil.saveAndUpdateResource("config.yml");
         ConfigUtil.addCustomConfig("config.yml", ConfigTag.MAIN);
         ConfigUtil.saveAndUpdateResource("townUpgrades.yml");
         ConfigUtil.addCustomConfig("townUpgrades.yml", ConfigTag.UPGRADES);
+
+
+        logger.log(Level.INFO, "[TaN] -Loading Database");
+        loadDB();
+
+
+        logger.log(Level.INFO, "[TaN] -Loading Storage");
 
         DropChances.load();
         UpgradeStorage.init();
@@ -180,6 +191,17 @@ public final class TownsAndNations extends JavaPlugin {
 
         new Metrics(this, 20527);
         getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
+    }
+
+    private void loadDB() {
+        String dbName = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("dbType", "sqlite");
+        if(dbName.equalsIgnoreCase("sqlite"))
+            databaseHandler = new SQLiteHandler(getDataFolder().getAbsolutePath() + "/database/main.db");
+        try {
+            databaseHandler.connect();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -381,5 +403,9 @@ public final class TownsAndNations extends JavaPlugin {
 
     public PluginVersion getMinimumSupportingDynmap() {
         return MINIMUM_SUPPORTING_DYNMAP;
+    }
+
+    public DatabaseHandler getDatabaseHandler() {
+        return databaseHandler;
     }
 }

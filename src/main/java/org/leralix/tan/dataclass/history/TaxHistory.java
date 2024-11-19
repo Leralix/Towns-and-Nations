@@ -1,6 +1,5 @@
 package org.leralix.tan.dataclass.history;
 
-import org.leralix.tan.dataclass.TransactionHistory;
 import org.leralix.tan.lang.Lang;
 
 import java.time.LocalDate;
@@ -9,14 +8,14 @@ import java.util.*;
 
 public class TaxHistory {
 
-    LinkedHashMap<String, ArrayList<TransactionHistory>> taxHistory;
+    LinkedHashMap<String, ArrayList<OldTransactionHistory>> taxHistory;
 
 
     public TaxHistory(){
         this.taxHistory = new LinkedHashMap<>();
     }
 
-    public LinkedHashMap<String, ArrayList<TransactionHistory>> get(){
+    public LinkedHashMap<String, ArrayList<OldTransactionHistory>> get(){
         return taxHistory;
     }
 
@@ -27,14 +26,14 @@ public class TaxHistory {
 
         ArrayList<String> latestDonations = new ArrayList<>();
         int count = 0;
-        for(Map.Entry<String, ArrayList<TransactionHistory>> entry : taxHistory.entrySet()){
+        for(Map.Entry<String, ArrayList<OldTransactionHistory>> entry : taxHistory.entrySet()){
             if (count == wantedNumberOfRows) {
                 break;
             }
             String date = entry.getKey();
             int balance = 0;
 
-            for(TransactionHistory transaction : entry.getValue()){
+            for(OldTransactionHistory transaction : entry.getValue()){
                 balance += transaction.getAmount();
             }
             latestDonations.add(Lang.TOTAL_TAX_LINE.get(date,balance));
@@ -56,7 +55,7 @@ public class TaxHistory {
         if (!this.taxHistory.containsKey(formattedDate)) {
             this.taxHistory.put(formattedDate, new ArrayList<>());
         }
-        this.taxHistory.get(formattedDate).add(new TransactionHistory(playerName,playerID, amount));
+        this.taxHistory.get(formattedDate).add(new OldTransactionHistory(playerName,playerID, amount));
     }
 
     public void clearHistory(int daysBeforeCleaning) {
@@ -64,9 +63,9 @@ public class TaxHistory {
         if(daysBeforeCleaning == 0)
             return;
 
-        Iterator<Map.Entry<String, ArrayList<TransactionHistory>>> iterator = this.taxHistory.entrySet().iterator();
+        Iterator<Map.Entry<String, ArrayList<OldTransactionHistory>>> iterator = this.taxHistory.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, ArrayList<TransactionHistory>> entry = iterator.next();
+            Map.Entry<String, ArrayList<OldTransactionHistory>> entry = iterator.next();
             LocalDate dateToCheck = LocalDate.parse(entry.getKey(), DateTimeFormatter.ofPattern("yyyy MM dd"));
             if (dateToCheck.isBefore(LocalDate.now().minusDays(daysBeforeCleaning))) {
                 iterator.remove();
