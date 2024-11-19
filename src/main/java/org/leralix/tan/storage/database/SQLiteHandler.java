@@ -1,9 +1,7 @@
 package org.leralix.tan.storage.database;
 
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.newhistory.SalaryTransactionHistory;
-import org.leralix.tan.dataclass.newhistory.TransactionHistory;
-import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
+import org.leralix.tan.dataclass.newhistory.*;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
 
 import java.io.File;
@@ -61,8 +59,8 @@ public class SQLiteHandler extends DatabaseHandler {
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
             preparedStatement.setString(1, transactionHistory.getDate());
             preparedStatement.setString(2, transactionHistory.getType().toString());
-            preparedStatement.setString(3, transactionHistory.getTransactionParty());
-            preparedStatement.setString(4, transactionHistory.getTerritoryDataID());
+            preparedStatement.setString(3, transactionHistory.getTerritoryDataID());
+            preparedStatement.setString(4, transactionHistory.getTransactionParty());
             preparedStatement.setDouble(5, transactionHistory.getAmount());
 
             preparedStatement.executeUpdate();
@@ -74,32 +72,40 @@ public class SQLiteHandler extends DatabaseHandler {
     @Override
     public List<TransactionHistory> getTransactionHistory(ITerritoryData territoryData, TransactionHistoryEnum type) {
         String selectSQL = """
-        SELECT date, type, transactionParty, territoryDataID, amount
+        SELECT date, type, territoryDataID, transactionParty, amount
         FROM territoryTransactionHistory
         WHERE territoryDataID = ? AND type = ?
     """;
         List<TransactionHistory> transactionHistories = new ArrayList<>();
-
         try (PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
             preparedStatement.setString(1, territoryData.getID());
             preparedStatement.setString(2, type.toString());
-            System.out.println("Getting transaction history for territoryDataID: " + territoryData.getID() + " and type: " + type.toString());
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    // Lire les colonnes du résultat
                     String date = resultSet.getString("date");
                     TransactionHistoryEnum transactionHistoryEnum = TransactionHistoryEnum.valueOf(resultSet.getString("type"));
-                    String transactionParty = resultSet.getString("transactionParty");
                     String territoryDataID = resultSet.getString("territoryDataID");
+                    String transactionParty = resultSet.getString("transactionParty");
                     double amount = resultSet.getDouble("amount");
 
-                    // Créer un objet TransactionHistory
                     if(transactionHistoryEnum == TransactionHistoryEnum.SALARY){
-                        transactionHistories.add(new SalaryTransactionHistory(date, transactionParty, territoryDataID, amount));
-                        System.out.println("Added salary transaction history");
-                        continue;
+                        transactionHistories.add(new SalaryPaymentHistory(date, territoryDataID, transactionParty, amount));
                     }
-                    System.out.println("Unknown transaction history type: " + transactionHistoryEnum);
+                    if(transactionHistoryEnum == TransactionHistoryEnum.PLAYER_TAX){
+                        transactionHistories.add(new PlayerTaxHistory(date, territoryDataID, transactionParty, amount));
+                    }
+                    if(transactionHistoryEnum == TransactionHistoryEnum.SUBJECT_TAX) {
+                        transactionHistories.add(new SubjectTaxHistory(date, territoryDataID, transactionParty, amount));
+                    }
+                    if(transactionHistoryEnum == TransactionHistoryEnum.MISCELLANEOUS) {
+                        transactionHistories.add(new MiscellaneousHistory(date, territoryDataID, amount));
+                    }
+                    if (transactionHistoryEnum == TransactionHistoryEnum.CHUNK_SPENDING) {
+                        transactionHistories.add(new ChunkPaymentHistory(date, territoryDataID, amount));
+                    }
+                    if(transactionHistoryEnum == TransactionHistoryEnum.DONATION) {
+                        transactionHistories.add(new PlayerDonationHistory(date, territoryDataID, transactionParty, amount));
+                    }
                 }
             }
         } catch (SQLException e) {

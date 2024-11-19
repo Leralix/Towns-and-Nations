@@ -5,11 +5,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.dataclass.*;
-import org.leralix.tan.dataclass.newhistory.SalaryTransactionHistory;
+import org.leralix.tan.dataclass.newhistory.ChunkPaymentHistory;
+import org.leralix.tan.dataclass.newhistory.PlayerTaxHistory;
+import org.leralix.tan.dataclass.newhistory.SalaryPaymentHistory;
+import org.leralix.tan.dataclass.newhistory.SubjectTaxHistory;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
 import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -72,14 +76,15 @@ public class DailyTasks {
         for(RegionData regionData: RegionDataStorage.getAllRegions()){
             for(ITerritoryData town : regionData.getVassals()){
                 if(town == null) continue;
-                if(town.getBalance() < regionData.getTax()){
-                    regionData.getTaxHistory().add(town.getName(), town.getID(), -1);
-                    continue;
+                double tax = regionData.getTax();
+                if(town.getBalance() < tax){
+                    TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SubjectTaxHistory(regionData,town,-1));
                 }
-                town.removeFromBalance(regionData.getTax());
-                regionData.addToBalance(regionData.getTax());
-                regionData.getTaxHistory().add(town.getName(), town.getID(), regionData.getTax());
-
+                else {
+                    town.removeFromBalance(tax);
+                    regionData.addToBalance(tax);
+                    TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SubjectTaxHistory(regionData,town,tax));
+                }
             }
         }
 
@@ -98,11 +103,10 @@ public class DailyTasks {
             if(EconomyUtil.getBalance(offlinePlayer) > tax){
                 EconomyUtil.removeFromBalance(offlinePlayer,tax);
                 playerTown.addToBalance(tax);
-                playerTown.getTaxHistory().add(playerStat.getName(), playerStat.getID(), tax);
-                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SalaryTransactionHistory(playerTown,playerStat,tax));
+                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerTaxHistory(playerTown,playerStat,tax));
             }
             else{
-                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SalaryTransactionHistory(playerTown,playerStat,-1));
+                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerTaxHistory(playerTown,playerStat,-1));
             }
         }
     }
@@ -119,7 +123,7 @@ public class DailyTasks {
                 continue;
             }
             town.removeFromBalance(totalUpkeep);
-            town.getChunkHistory().add(numberClaimedChunk,totalUpkeep);
+            TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new ChunkPaymentHistory(town,totalUpkeep));
         }
     }
     public static void SalaryPayment(){
@@ -129,18 +133,16 @@ public class DailyTasks {
             for (RankData rank : town.getAllRanks()){
                 int rankSalary = rank.getSalary();
                 List<String> playerIdList = rank.getPlayersID();
-                int costOfSalary = playerIdList.size() * rankSalary;
+                double costOfSalary = playerIdList.size() * rankSalary;
 
                 if(rankSalary == 0 || costOfSalary > town.getBalance() ){
                     continue;
                 }
-
                 town.removeFromBalance(costOfSalary);
                 for(String playerId : playerIdList){
-                    PlayerData player = PlayerDataStorage.get(playerId);
-                    player.addToBalance(rankSalary);
-                    town.getSalaryHistory().add(player.getID(), -costOfSalary);
-
+                    PlayerData playerData = PlayerDataStorage.get(playerId);
+                    playerData.addToBalance(rankSalary);
+                    TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SalaryPaymentHistory(town, String.valueOf(rank.getID()), costOfSalary));
                 }
             }
 
@@ -156,13 +158,15 @@ public class DailyTasks {
 
         for (TownData town : TownDataStorage.getTownMap().values()) {
 
+            /*
+                town.getTaxHistory().clearHistory(timeBeforeClearing);
+                town.getChunkHistory().clearHistory(TimeBeforeClearingChunk);
 
-            town.getTaxHistory().clearHistory(timeBeforeClearing);
-            town.getChunkHistory().clearHistory(TimeBeforeClearingChunk);
+                town.getDonationHistory().clearHistory(timeBeforeClearingDonation);
+                town.getMiscellaneousHistory().clearHistory(timeBeforeClearingMisc);
+                town.getSalaryHistory().clearHistory(timeBeforeClearing);
+             */
 
-            town.getDonationHistory().clearHistory(timeBeforeClearingDonation);
-            town.getMiscellaneousHistory().clearHistory(timeBeforeClearingMisc);
-            town.getSalaryHistory().clearHistory(timeBeforeClearing);
         }
     }
 }

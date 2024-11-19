@@ -4,8 +4,8 @@ import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
-import org.leralix.tan.enums.HistoryEnum;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
@@ -35,7 +35,7 @@ public class ChunkUpkeepLine extends ProfitLine {
                 Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(0),
                 Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(0));
         GuiItem chunkSpendingItem = new GuiItem(chunkSpending, event -> {
-            PlayerGUI.openTownEconomicsHistory(player, territoryData, HistoryEnum.CHUNK);
+            PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.CHUNK_SPENDING);
             event.setCancelled(true);
         });
         gui.setItem(2,7, chunkSpendingItem);

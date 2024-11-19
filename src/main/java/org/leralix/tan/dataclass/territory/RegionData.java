@@ -9,10 +9,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.RegionClaimedChunk;
-import org.leralix.tan.dataclass.history.ChunkHistory;
-import org.leralix.tan.dataclass.history.DonationHistory;
-import org.leralix.tan.dataclass.history.MiscellaneousHistory;
-import org.leralix.tan.dataclass.history.TaxHistory;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
@@ -50,10 +46,6 @@ public class RegionData extends ITerritoryData {
     private Integer chunkColor;
     private String description;
     private final List<String> townsInRegion;
-    private ChunkHistory chunkHistory;
-    private DonationHistory donationHistory;
-    private MiscellaneousHistory miscellaneousHistory;
-    private TaxHistory taxHistory;
     private TownRelations relations;
 
     public RegionData(String id, String name, String ownerID) {
@@ -72,11 +64,6 @@ public class RegionData extends ITerritoryData {
         this.townsInRegion = new ArrayList<>();
         this.townsInRegion.add(ownerTown.getID());
         super.color = StringUtil.randomColor();
-
-        this.chunkHistory = new ChunkHistory();
-        this.donationHistory = new DonationHistory();
-        this.miscellaneousHistory = new MiscellaneousHistory();
-        this.taxHistory = new TaxHistory();
     }
 
     //////////////////////////////////////
@@ -371,30 +358,6 @@ public class RegionData extends ITerritoryData {
     @Override
     public void removeToTax(double i) {
         taxRate -= i;
-    }
-
-    public ChunkHistory getChunkHistory() {
-        if(chunkHistory == null)
-            this.chunkHistory = new ChunkHistory();
-        return chunkHistory;
-    }
-
-    public DonationHistory getDonationHistory() {
-        if(donationHistory == null)
-            donationHistory = new DonationHistory();
-        return donationHistory;
-    }
-
-    public MiscellaneousHistory getMiscellaneousHistory() {
-        if(miscellaneousHistory == null)
-            miscellaneousHistory = new MiscellaneousHistory();
-        return miscellaneousHistory;
-    }
-
-    public TaxHistory getTaxHistory() {
-        if(taxHistory == null)
-            taxHistory = new TaxHistory();
-        return taxHistory;
     }
 
     public boolean isTownInRegion(TownData townData) {

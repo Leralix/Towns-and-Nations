@@ -1,6 +1,8 @@
 package org.leralix.tan.listeners.chatlistener.events;
 
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.dataclass.newhistory.PlayerDonationHistory;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chatlistener.ChatListenerEvent;
@@ -25,6 +27,7 @@ public class DonateToTerritory extends ChatListenerEvent {
             return;
         }
         removePlayer(player);
+        TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerDonationHistory(territoryToDonate, player, amount));
         territoryToDonate.addDonation(player, amount);
     }
 }

@@ -6,6 +6,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.RankData;
+import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.enums.HistoryEnum;
 import org.leralix.tan.gui.PlayerGUI;
@@ -39,7 +40,7 @@ public class SalaryPaymentLine extends ProfitLine {
                 Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.get(getColoredMoney()),
                 Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get());
         GuiItem salaryHistoryButton = ItemBuilder.from(salarySpending).asGuiItem(event -> {
-            PlayerGUI.openTownEconomicsHistory(player, territoryData, HistoryEnum.SALARY);
+            PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.SALARY);
             event.setCancelled(true);
         });
         gui.setItem(2,6, salaryHistoryButton);

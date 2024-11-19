@@ -5,6 +5,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
@@ -12,20 +13,20 @@ import org.leralix.tan.utils.HeadUtils;
 
 import java.util.UUID;
 
-public class SalaryTransactionHistory extends TransactionHistory {
+public class PlayerDonationHistory extends TransactionHistory {
 
 
-    public SalaryTransactionHistory(String date, String territoryDataID, String playerID, double amount) {
+    public PlayerDonationHistory(String date, String territoryDataID, String playerID, double amount) {
         super(date, territoryDataID, playerID, amount);
     }
-    public SalaryTransactionHistory(ITerritoryData territoryData, PlayerData playerData, double amount) {
-        super(territoryData.getID(),playerData.getID(),amount);
+    public PlayerDonationHistory(ITerritoryData territoryData, Player player, double amount) {
+        super(territoryData.getID(),player.getUniqueId().toString(),amount);
     }
 
 
     @Override
     public TransactionHistoryEnum getType() {
-        return TransactionHistoryEnum.SALARY;
+        return TransactionHistoryEnum.DONATION;
     }
 
     @Override

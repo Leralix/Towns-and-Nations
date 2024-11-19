@@ -8,29 +8,33 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
-import org.leralix.tan.dataclass.history.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
+import org.leralix.tan.dataclass.newhistory.MiscellaneousHistory;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.OverlordTaxLine;
 import org.leralix.tan.dataclass.territory.economy.PlayerTaxLine;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.enums.ChunkPermissionType;
+import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.enums.SoundEnum;
+import org.leralix.tan.enums.TownChunkPermission;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.*;
+import org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.stored.*;
-import org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage;
 import org.leralix.tan.utils.*;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
 
 import java.util.*;
 
-import static org.leralix.tan.enums.SoundEnum.*;
 import static org.leralix.tan.enums.RolePermission.KICK_PLAYER;
+import static org.leralix.tan.enums.SoundEnum.*;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 import static org.leralix.tan.utils.HeadUtils.getPlayerHead;
 
@@ -60,11 +64,6 @@ public class TownData extends ITerritoryData {
     private ClaimedChunkSettings chunkSettings = new ClaimedChunkSettings();
     private TeleportationPosition teleportationPosition;
 
-    private ChunkHistory chunkHistory;
-    private DonationHistory donationHistory;
-    private MiscellaneousHistory miscellaneousHistory;
-    private OldSalaryHistory salaryHistory;
-    private TaxHistory taxHistory;
 
     //First time creating a town
     public TownData(String townId, String townName, String leaderID){
@@ -81,12 +80,6 @@ public class TownData extends ITerritoryData {
         int prefixSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize",3);
         this.townTag = townName.length() >= prefixSize ? townName.substring(0, prefixSize).toUpperCase() : townName.toUpperCase();
         super.color = StringUtil.randomColor();
-
-        this.chunkHistory = new ChunkHistory();
-        this.donationHistory = new DonationHistory();
-        this.miscellaneousHistory = new MiscellaneousHistory();
-        this.salaryHistory = new OldSalaryHistory();
-        this.taxHistory = new TaxHistory();
 
         registerNewRank("default");
         if(leaderID != null)
@@ -231,7 +224,8 @@ public class TownData extends ITerritoryData {
 
         PlayerChatListenerStorage.removePlayer(player);
         player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get(this.getName(),newName));
-        getMiscellaneousHistory().add(Lang.GUI_TOWN_SETTINGS_NEW_TOWN_NAME_HISTORY.get(this.getName() ,newName),townCost);
+        TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new MiscellaneousHistory(this, townCost));
+
         removeFromBalance(townCost);
         FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player.getName(),this.getName(),newName));
         this.TownName = newName;
@@ -578,36 +572,6 @@ public class TownData extends ITerritoryData {
     }
     public void setOverlordPrivate(String regionID){
         this.regionID = regionID;
-    }
-
-    public ChunkHistory getChunkHistory() {
-        if(chunkHistory == null)
-            chunkHistory = new ChunkHistory();
-        return chunkHistory;
-    }
-
-    public DonationHistory getDonationHistory() {
-        if(donationHistory == null)
-            donationHistory = new DonationHistory();
-        return donationHistory;
-    }
-
-    public MiscellaneousHistory getMiscellaneousHistory() {
-        if(miscellaneousHistory == null)
-            miscellaneousHistory = new MiscellaneousHistory();
-        return miscellaneousHistory;
-    }
-
-    public OldSalaryHistory getSalaryHistory() {
-        if(salaryHistory == null)
-            salaryHistory = new OldSalaryHistory();
-        return salaryHistory;
-    }
-
-    public TaxHistory getTaxHistory() {
-        if(taxHistory == null)
-            taxHistory = new TaxHistory();
-        return taxHistory;
     }
 
     public boolean isLeaderOnline() {

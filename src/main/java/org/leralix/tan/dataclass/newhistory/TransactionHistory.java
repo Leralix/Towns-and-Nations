@@ -14,16 +14,16 @@ public abstract class TransactionHistory implements Comparable<TransactionHistor
     private final double amount;
 
 
-    protected TransactionHistory(String date, String transactionParty, String territoryDataID, double amount) {
+    protected TransactionHistory(String date, String territoryDataID, String transactionParty,  double amount) {
         this.date = date;
-        this.transactionParty = transactionParty;
         this.territoryDataID = territoryDataID;
+        this.transactionParty = transactionParty;
         this.amount = amount;
     }
-    protected TransactionHistory(String transactionParty, String territoryDataID, double amount) {
+    protected TransactionHistory(String territoryDataID, String transactionParty, double amount) {
         this.date = dateToString(LocalDate.now());
-        this.transactionParty = transactionParty;
         this.territoryDataID = territoryDataID;
+        this.transactionParty = transactionParty;
         this.amount = amount;
     }
 
