@@ -5,16 +5,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.dataclass.*;
-import org.leralix.tan.dataclass.newhistory.ChunkPaymentHistory;
-import org.leralix.tan.dataclass.newhistory.PlayerTaxHistory;
-import org.leralix.tan.dataclass.newhistory.SalaryPaymentHistory;
-import org.leralix.tan.dataclass.newhistory.SubjectTaxHistory;
+import org.leralix.tan.dataclass.newhistory.*;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
 import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
@@ -150,23 +148,19 @@ public class DailyTasks {
     }
 
     public static void ClearOldTaxes() {
-        int timeBeforeClearing = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingTaxHistory",30);
-        int TimeBeforeClearingChunk = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingChunkHistory",30);
-        int timeBeforeClearingDonation = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("NumberOfDonationBeforeClearing",100);
-        int timeBeforeClearingMisc = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("NumberOfMiscPurchaseBeforeClearing",100);
+        int timeBeforeClearingDonation = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("NumberOfDonationBeforeClearing",90);
+        int timeBeforeClearingHistory = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingTaxHistory",90);
+        int timeBeforeClearingSalary = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingSalaryHistory",90);
+        int timeBeforeClearingMisc = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("NumberOfMiscPurchaseBeforeClearing",90);
+        int TimeBeforeClearingChunk = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingChunkHistory",90);
 
+        DatabaseHandler databaseHandler = TownsAndNations.getPlugin().getDatabaseHandler();
+        databaseHandler.deleteOldHistory(timeBeforeClearingDonation, TransactionHistoryEnum.DONATION);
+        databaseHandler.deleteOldHistory(timeBeforeClearingHistory, TransactionHistoryEnum.PLAYER_TAX);
+        databaseHandler.deleteOldHistory(timeBeforeClearingHistory, TransactionHistoryEnum.SUBJECT_TAX);
+        databaseHandler.deleteOldHistory(timeBeforeClearingSalary, TransactionHistoryEnum.SALARY);
+        databaseHandler.deleteOldHistory(timeBeforeClearingMisc, TransactionHistoryEnum.MISCELLANEOUS);
+        databaseHandler.deleteOldHistory(TimeBeforeClearingChunk, TransactionHistoryEnum.CHUNK_SPENDING);
 
-        for (TownData town : TownDataStorage.getTownMap().values()) {
-
-            /*
-                town.getTaxHistory().clearHistory(timeBeforeClearing);
-                town.getChunkHistory().clearHistory(TimeBeforeClearingChunk);
-
-                town.getDonationHistory().clearHistory(timeBeforeClearingDonation);
-                town.getMiscellaneousHistory().clearHistory(timeBeforeClearingMisc);
-                town.getSalaryHistory().clearHistory(timeBeforeClearing);
-             */
-
-        }
     }
 }

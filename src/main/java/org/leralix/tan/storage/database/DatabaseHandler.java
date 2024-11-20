@@ -21,6 +21,7 @@ public abstract class DatabaseHandler {
     public abstract void addTransactionHistory(TransactionHistory transactionHistory);
 
     public abstract List<TransactionHistory> getTransactionHistory(ITerritoryData territoryData, TransactionHistoryEnum type);
+    public abstract void deleteOldHistory(int nbDays, TransactionHistoryEnum type);
 
     public abstract void connect() throws SQLException;
     public abstract void disconnect() throws SQLException;

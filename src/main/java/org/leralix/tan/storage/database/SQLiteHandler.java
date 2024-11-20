@@ -3,6 +3,7 @@ package org.leralix.tan.storage.database;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.newhistory.*;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.lang.Lang;
 
 import java.io.File;
 import java.io.IOException;
@@ -113,6 +114,24 @@ public class SQLiteHandler extends DatabaseHandler {
         }
 
         return transactionHistories; // Retourner la liste
+    }
+
+    @Override
+    public void deleteOldHistory(int nbDays, TransactionHistoryEnum type) {
+        String deleteSQL = """
+        DELETE FROM territoryTransactionHistory
+        WHERE date < DATE('now', '-' || ? || ' days')
+        AND type != ?
+    """;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL)) {
+            preparedStatement.setInt(1, nbDays);
+            preparedStatement.setString(1, type.toString());
+            int rowsAffected = preparedStatement.executeUpdate();
+            TownsAndNations.getPlugin().getLogger().info(Lang.DATABASE_SUCCESSFULLY_DELETED_OLD_ROWS.get(rowsAffected));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

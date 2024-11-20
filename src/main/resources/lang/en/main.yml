@@ -40,6 +40,8 @@ language:
   #Update needed
   NEW_VERSION_AVAILABLE: "§cA new version is available: §f{0}"
   NEW_VERSION_AVAILABLE_2: "§cDownload it on Spigot or GitHub"
+  #Database
+  DATABASE_SUCCESSFULLY_DELETED_OLD_ROWS: "{0} old history rows have been successfully deleted"
   #Help command
   HELP_DESC: "Show a list explaining all the commands"
   CLICK_TO_GO_NEXT_PAGE: "§fClick to go to the next page"

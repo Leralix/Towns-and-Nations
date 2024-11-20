@@ -406,14 +406,13 @@ SQL:
 archiveHistory: true
 
 
-#Time before tax history is cleared in days (can be set to 0 to disable the clearing)
-TimeBeforeClearingTaxHistory: 30
-#Time before chunk history is cleared in days (can be set to 0 to disable the clearing)
-TimeBeforeClearingChunkHistory: 30
-#Number of donation before it is cleared (can be set to 0 to disable the clearing)
-NumberOfDonationBeforeClearing: 100
-#Number of Miscellaneous purchase before it is cleared (can be set to 0 to disable the clearing)
-NumberOfMiscPurchaseBeforeClearing: 100
+#Time before history is cleared in days (can be set to -1 to disable)
+#The more history kept the more storage is used and some action may take longer
+TimeBeforeClearingTaxHistory: 90
+TimeBeforeClearingChunkHistory: 90
+TimeBeforeClearingSalaryHistory: 90
+NumberOfDonationBeforeClearing: 90
+NumberOfMiscPurchaseBeforeClearing: 90
 
 
 #Write the type of mobs you want a town to be able to cancel the spawn of.
