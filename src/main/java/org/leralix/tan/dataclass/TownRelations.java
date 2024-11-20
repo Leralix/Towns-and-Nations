@@ -31,9 +31,9 @@ public class TownRelations {
     }
 
     public void setRelation(TownRelation relation, String territoryID){
+        removeAllRelationWith(territoryID);
         if(!townRelations.containsKey(relation))
             return;
-        removeAllRelationWith(territoryID);
         addRelation(relation, territoryID);
     }
 

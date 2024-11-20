@@ -64,12 +64,15 @@ public class TeleportationRegister {
             player.sendMessage(getTANString() + Lang.WAIT_BEFORE_ANOTHER_TELEPORTATION.get());
             return;
         }
-        if(secondBeforeTeleport > 0)
-            player.sendMessage(getTANString() +Lang.TELEPORTATION_IN_X_SECONDS_NOT_MOVE.get(secondBeforeTeleport));
+        if(secondBeforeTeleport > 0) {
+            if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnMovePosition", true)) {
+                player.sendMessage(getTANString() + Lang.TELEPORTATION_IN_X_SECONDS_NOT_MOVE.get(secondBeforeTeleport));
+            } else {
+                player.sendMessage(getTANString() + Lang.TELEPORTATION_IN_X_SECONDS.get(secondBeforeTeleport));
+            }
 
-        registerSpawn(playerData, townData);
-
-
+            registerSpawn(playerData, townData);
+        }
         Bukkit.getScheduler().runTaskLater(TownsAndNations.getPlugin(),
                 () -> confirmTeleportation(playerData), secondBeforeTeleport * 20L);
     }

@@ -8,8 +8,10 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.newhistory.PlayerDonationHistory;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.ChunkUpkeepLine;
 import org.leralix.tan.dataclass.territory.economy.SalaryPaymentLine;
@@ -95,14 +97,14 @@ public abstract class ITerritoryData {
         TownRelation actualRelation = getRelationWith(otherTerritory);
         if(relation.isSuperiorTo(actualRelation)){
             broadCastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(getColoredName(), otherTerritory.getColoredName(),relation.getColoredName()), GOOD);
-            otherTerritory.broadCastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(otherTerritory.getColoredName(), getColoredName(),relation.getColoredName()), BAD);
+            otherTerritory.broadCastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(otherTerritory.getColoredName(), getColoredName(),relation.getColoredName()), GOOD);
         }
         else{
-            broadCastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(getColoredName(), otherTerritory.getColoredName(),relation.getColoredName()), GOOD);
+            broadCastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(getColoredName(), otherTerritory.getColoredName(),relation.getColoredName()), BAD);
             otherTerritory.broadCastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(otherTerritory.getColoredName(), getColoredName(),relation.getColoredName()), BAD);
         }
 
-        getRelations().setRelation(relation,otherTerritory);
+        this.getRelations().setRelation(relation,otherTerritory);
         otherTerritory.getRelations().setRelation(relation,this);
 
         TeamUtils.updateAllScoreboardColor();
@@ -248,14 +250,14 @@ public abstract class ITerritoryData {
     public abstract void removeOverlord();
     public void setOverlord(ITerritoryData overlord){
         getOverlordsProposals().remove(overlord.getID());
-        broadCastMessageWithSound(getTANString() + Lang.TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION.get(this.getColoredName(), overlord.getColoredName()), GOOD);
+        broadCastMessageWithSound(getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), overlord.getColoredName()), GOOD);
         setOverlordPrivate(overlord);
     }
     protected abstract void setOverlordPrivate(ITerritoryData newOverlord);
 
     public void addVassal(ITerritoryData vassal){
         NewsletterStorage.removeVassalisationProposal(this, vassal);
-        broadCastMessageWithSound(getTANString() + Lang.TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION.get(vassal.getColoredName(), getColoredName()), GOOD);
+        broadCastMessageWithSound(getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(vassal.getColoredName(), getColoredName()), GOOD);
         addVassalPrivate(vassal);
     }
     protected abstract void addVassalPrivate (ITerritoryData vassal);
@@ -366,8 +368,7 @@ public abstract class ITerritoryData {
         EconomyUtil.removeFromBalance(player,amount);
         addToBalance(amount);
 
-        //getDonationHistory().add(player.getName(),player.getUniqueId().toString(),amount); TODO : Add History to region
-
+        TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerDonationHistory(this, player, amount));
         player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_SUCCESS.get(amount, getColoredName()));
         SoundUtil.playSound(player, MINOR_LEVEL_UP);
     }
@@ -441,7 +442,7 @@ public abstract class ITerritoryData {
                 if(event.isLeftClick()){
                     setOverlord(proposalOverlord);
                     proposalOverlord.addVassal(this);
-                    broadCastMessageWithSound(getTANString() + Lang.TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION.get(this.getColoredName(), proposalOverlord.getName()), GOOD);
+                    broadCastMessageWithSound(getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), proposalOverlord.getName()), GOOD);
                     PlayerGUI.openHierarchyMenu(player, this);
                 }
                 if(event.isRightClick()){

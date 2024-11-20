@@ -1,14 +1,10 @@
 package org.leralix.tan.dataclass.newhistory;
 
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.StringUtil;
 import org.leralix.tan.utils.TerritoryUtil;
-
-import java.util.UUID;
 
 public class SalaryPaymentHistory extends TransactionHistory {
 
@@ -29,7 +25,7 @@ public class SalaryPaymentHistory extends TransactionHistory {
     @Override
     public String addLoreLine() {
         ITerritoryData territoryData = TerritoryUtil.getTerritory(getTerritoryDataID());
-        RankData rankData = territoryData.getRank(Integer.valueOf(getTransactionParty()));
+        RankData rankData = territoryData.getRank(Integer.parseInt(getTransactionParty()));
         return Lang.SALARY_PAYMENT_HISTORY_LORE.get(rankData.getColoredName(), StringUtil.getColoredMoney(-getAmount()));
     }
 }

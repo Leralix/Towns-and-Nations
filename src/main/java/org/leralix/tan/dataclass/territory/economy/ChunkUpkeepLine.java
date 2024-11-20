@@ -33,8 +33,8 @@ public class ChunkUpkeepLine extends ProfitLine {
     public void addItems(Gui gui, Player player) {
         ItemStack chunkSpending = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=",
                 Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.get(StringUtil.getColoredMoney(getMoney())),
-                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(0),
-                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(0));
+                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(territoryData.getChunkUpkeepCost()),
+                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(territoryData.getNumberOfClaimedChunk()));
         GuiItem chunkSpendingItem = new GuiItem(chunkSpending, event -> {
             PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.CHUNK_SPENDING);
             event.setCancelled(true);

@@ -27,7 +27,6 @@ public class DonateToTerritory extends ChatListenerEvent {
             return;
         }
         removePlayer(player);
-        TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerDonationHistory(territoryToDonate, player, amount));
         territoryToDonate.addDonation(player, amount);
     }
 }

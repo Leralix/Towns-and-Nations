@@ -1683,7 +1683,7 @@ public class PlayerGUI implements IGUI {
             guiItems.add(ItemBuilder.from(transactionIcon).asGuiItem(event -> event.setCancelled(true)));
         }
 
-
+        Collections.reverse(guiItems);//newer first
 
         createIterator(gui, guiItems, 0, player,
                 p -> openTreasury(player, territoryData),
@@ -2194,7 +2194,7 @@ public class PlayerGUI implements IGUI {
 
                     if(wantedRelation.isSuperiorTo(actualRelation)){
                         otherTerritory.receiveDiplomaticProposal(territory, wantedRelation);
-                        player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS.get(otherTerritory.getName()));
+                        player.sendMessage(getTANString() + Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(otherTerritory.getName()));
                         SoundUtil.playSound(player, MINOR_GOOD);
                     }
                     else{
@@ -2219,7 +2219,7 @@ public class PlayerGUI implements IGUI {
                     }
                     else {
                         otherTerritory.receiveDiplomaticProposal(territory, TownRelation.NEUTRAL);
-                        player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS.get(otherTerritory.getName()));
+                        player.sendMessage(getTANString() + Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(otherTerritory.getName()));
                         SoundUtil.playSound(player, MINOR_GOOD);
                     }
                     openSingleRelation(player,territory,wantedRelation,0, exit);
@@ -2628,7 +2628,6 @@ public class PlayerGUI implements IGUI {
             GuiItem townButton = ItemBuilder.from(territoryIcon).asGuiItem(event -> {
                 event.setCancelled(true);
                 potentialVassal.addVassalisationProposal(territoryData);
-                player.sendMessage(getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS.get(territoryData.getColoredName()));
                 openAddVassal(player, territoryData, page);
             });
             guiItems.add(townButton);

@@ -64,7 +64,6 @@ language:
   SYNTAX_ERROR_AMOUNT: "§cIncorrect syntax for the amount"
   CORRECT_SYNTAX_INFO: "§cCorrect syntax: {0}"
   MESSAGE_TOO_LONG: "§cMessage is too long: {0} max"
-  ECONOMY_EXISTS: "§cA plugin is handling the economy. Use it instead"
   CANCELLED_ACTION: "§cAction cancelled"
   #Cancel
   CANCEL_WORD: "cancel" #The cancel word can be modified
@@ -108,16 +107,11 @@ language:
   TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fYou are now a member of the town: {0}"
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f has joined the town !"
   #Relation diplomatique
-  TOWN_DIPLOMATIC_INVITATION_ALREADY_HAVE_RELATION: "§cYou already have a relation with this town"
-  TOWN_DIPLOMATIC_INVITATION_SENT_SUCCESS: "Vassalisation proposal send to {0}"
-  TOWN_ACCEPTED_REGION_DIPLOMATIC_INVITATION: "{0}§f has joined the region {1}"
+  DIPLOMATIC_INVITATION_SENT_SUCCESS: "Proposition sent to {0}"
+  VASSALISATION_PROPOSAL_SENT_SUCCESS: "Vassalisation proposal send to {0}"
+  ACCEPTED_VASSALISATION_PROPOSAL_ALL: "{0}§f has joined the region {1}"
   #Diplomatic relation confirmation
   REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f invited your town {1}§f to join their region"
-  #Accept a town relation
-  TOWN_ACCEPT_RELATION_DESC: "Accept a pending town relation request"
-  TOWN_RELATION_NO_INVITATION: "§aYou have no pending relations"
-  TOWN_RELATION_ACCEPTED_MEMBER_SIDE: "§fYour town now has the relation {0} with §9{1}"
-  TOWN_RELATION_ACCEPTED_TOWN_SIDE: "§e{0}§f has accepted the relation {1} with your town"
   #Autoclaim command
   TOWN_AUTO_CLAIM_DESC: "Enable auto claiming while moving between chunks"
   AUTO_CLAIM_ON_FOR: "§fAuto claim is now on for chunk type: §9{0}"
@@ -167,12 +161,10 @@ language:
   ADMIN_RELOAD_COMMAND: "Reload the plugin"
   ADMIN_SUDO_COMMAND: "Grant the player the ability to bypass chunk protection"
   ##Debug commands
-  DEBUG_CHAT_STORAGE: "Displays the contents of PlayerChatListenerStorage"
   DEBUG_SAVE_ALL_DATA: "Saves all the stats"
   DEBUG_CREATE_BACKUP: "Create a backup of the plugin data."
   DEBUG_GET_COLOR_CODE: "Get a sample of the plugin color code"
   DEBUG_SKIP_DAY: "Collect every taxes and salary for a day"
-  DEBUG_PLAY_SOUND: "Play a sound used in the plugin"
   #SUDO command
   SUDO_PLAYER_ADDED: "§3{0}§f is now on sudo mode"
   SUDO_PLAYER_REMOVED: "§3{0}§f has been removed from sudo mode"
@@ -184,7 +176,6 @@ language:
   PLAYER_NEED_1_OR_ABOVE: "§fYou need at least §1✦"
   TOWN_NOT_ENOUGH_MONEY: "§cThe town doesn't have enough money to perform this action"
   TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cThe town doesn't have enough money to perform this action. It need {0}✦ more"
-  REGION_NOT_ENOUGH_MONEY: "§cThe region doesn't have enough money to perform this action"
   REGION_NOT_ENOUGH_MONEY_EXTENDED: "§cThe region doesn't have enough money to perform this action. It need {0}✦ more"
   NAME_ALREADY_USED: "§cThis name is already used"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Write the name of the town in the chat."
@@ -231,7 +222,6 @@ language:
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§eStill in development"
   GUI_BACK_ARROW: "Return"
-  GUI_QUIT_ARROW: "Quit"
   GUI_NEXT_PAGE: "Next"
   GUI_PREVIOUS_PAGE: "Previous"
   GUI_LEFT_CLICK_TO_INTERACT: "§eLeft click to interact"
@@ -250,12 +240,8 @@ language:
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§fJoin or create your own town"
   GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fCurrent town: {0}"
   GUI_TOWN_ICON_DESC2_HAVE_TOWN: "§fTown rank: {0}"
-  GUI_PROFILE_ICON_DESC1: "§fLook at your stats"
   #Player
   GUI_PLAYER_PROFILE_DESC1: "§fBalance : §6{0}✦"
-  GUI_PLAYER_PROFILE_DESC2: "§fTown : §9{0}"
-  GUI_PLAYER_PROFILE_DESC3: "§fTown rank : §e{0}"
-  GUI_PLAYER_PROFILE_NO_TOWN: "§fNo town"
   GUI_YOUR_PROFILE: "§aYour profile"
   GUI_YOUR_BALANCE: "§aYour Balance"
   GUI_YOUR_BALANCE_DESC1: "§fCurrent balance: §e{0}"
@@ -317,12 +303,6 @@ language:
   OVERLORD_TAX_LINE: "§f -From overlord taxes: {0}"
   PLAYER_SALARY_LINE: "§f -From salary: {0}"
   TERRITORY_UPKEEP_LINE: "§f -From territory upkeep: {0}"
-  GUI_TREASURY_STORAGE_DESC2: "§fBalance evolution tomorrow: §a+{0}✦"
-  GUI_TREASURY_SPENDING: "§aSpending"
-  GUI_TREASURY_SPENDING_DESC1: "§fTown current spending: §c-{0}✦"
-  GUI_TREASURY_SPENDING_DESC2: "§f- From Salary: §c-{0}✦"
-  GUI_TREASURY_SPENDING_DESC3: "§f- From Chunks: §c-{0}✦"
-  GUI_TREASURY_SPENDING_DESC4: "§f- From Regional taxes: §c-{0}✦"
   GUI_TREASURY_LOWER_TAX: "§aLower the tax"
   GUI_TREASURY_CANT_TAX_LESS: "§cYou cannot tax less that §60✦"
   GUI_TREASURY_INCREASE_TAX: "§aIncrease the tax"
@@ -332,8 +312,8 @@ language:
   GUI_TREASURY_SALARY_HISTORY: "§aSalary history"
   GUI_TREASURY_SALARY_HISTORY_DESC1: "§fSalary spending is up to: {0}"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY: "§aChunk spending history"
-  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1: "§fChunk upkeep is up to: §c{0}✦"
-  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "§c-{0}✦§f for every 10 chunks claimed"
+  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1: "§fChunk upkeep is up to : {0}"
+  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "§cSingle chunk upkeep cost : {0}"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3: "§fYour town have §2{0}♦§f chunks"
   GUI_TREASURY_MISCELLANEOUS_SPENDING: "§aMiscellaneous spending"
   GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1: "§fLeft click to open Miscellaneous spending history"
