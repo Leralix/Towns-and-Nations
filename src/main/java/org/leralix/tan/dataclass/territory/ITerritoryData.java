@@ -360,7 +360,7 @@ public abstract class ITerritoryData {
             return;
         }
         if(amount <= 0 ){
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NEED_1_OR_ABOVE.get());
+            player.sendMessage(ChatUtils.getTANString() + Lang.PAY_MINIMUM_REQUIRED.get());
             return;
         }
 

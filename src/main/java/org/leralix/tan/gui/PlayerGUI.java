@@ -159,7 +159,7 @@ public class PlayerGUI implements IGUI {
 
 
         ItemStack playerHead = HeadUtils.getPlayerHead(Lang.GUI_YOUR_PROFILE.get(),player);
-        ItemStack treasuryIcon = HeadUtils.createCustomItemStack(Material.GOLD_NUGGET, Lang.GUI_YOUR_BALANCE.get(),Lang.GUI_YOUR_BALANCE_DESC1.get(EconomyUtil.getBalance(player)));
+        ItemStack treasuryIcon = HeadUtils.createCustomItemStack(Material.GOLD_NUGGET, Lang.GUI_YOUR_BALANCE.get(),Lang.GUI_YOUR_BALANCE_DESC1.get(StringUtil.formatMoney(EconomyUtil.getBalance(player))));
         ItemStack propertiesIcon = HeadUtils.createCustomItemStack(Material.OAK_HANGING_SIGN, Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(),Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get());
         ItemStack newsletterIcon = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK, Lang.GUI_PLAYER_NEWSLETTER.get(),Lang.GUI_PLAYER_NEWSLETTER_DESC1.get());
 

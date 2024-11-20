@@ -42,11 +42,25 @@ public class StringUtil {
     public static String getColoredMoney(double money){
         String moneyChar = EconomyUtil.getMoneyIcon();
         if(money > 0){
-            return "§a+" + money + moneyChar;
+            return "§a+" + formatMoney(money) + moneyChar;
         }else if(money < 0){
-            return "§c" + money + moneyChar;
+            return "§c" + formatMoney(money) + moneyChar;
         }
-        return "§7" + money + moneyChar;
+        return "§7" + formatMoney(money) + moneyChar;
     }
 
+    public static String formatMoney(double amount) {
+
+        if (amount < 1_000) {
+            return String.valueOf(amount);
+        } else if (amount < 1_000_000) {
+            return String.format("%.1fK", amount / 1_000) ;
+        } else if (amount < 1_000_000_000) {
+            return String.format("%.1fM", amount / 1_000_000);
+        } else if (amount < 1_000_000_000_000L) {
+            return String.format("%.1fB", amount / 1_000_000_000);
+        } else {
+            return String.format("%.1fT", amount / 1_000_000_000_000L);
+        }
+    }
 }

@@ -3,6 +3,7 @@ package org.leralix.tan.lang;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
 
@@ -132,10 +133,8 @@ public enum Lang {
     PLAYER_NOT_ENOUGH_MONEY,
     PLAYER_NOT_ENOUGH_MONEY_EXTENDED,
     PLAYER_PAY_AT_EMBARGO_ERROR,
-    PLAYER_NEED_1_OR_ABOVE,
     TOWN_NOT_ENOUGH_MONEY,
     TOWN_NOT_ENOUGH_MONEY_EXTENDED,
-    REGION_NOT_ENOUGH_MONEY,
     REGION_NOT_ENOUGH_MONEY_EXTENDED,
     NAME_ALREADY_USED,
     PLAYER_WRITE_TOWN_NAME_IN_CHAT,
@@ -847,8 +846,19 @@ public enum Lang {
                 String val = placeholders[i] == null ? "null" : placeholders[i].toString();
                 translation = translation.replace("{" + i + "}",val);
             }
+            translation = replaceCommonPlaceholders(translation);
             return translation;
         }
         return "Message not found for " + this.name() + " in this language file.";
     }
+
+    private String replaceCommonPlaceholders(String translation) {
+
+        translation = translation.replace("{CANCEL}", Lang.CANCEL_WORD.get());
+        translation = translation.replace("{MONEY_CHAR}", EconomyUtil.getMoneyIcon());
+
+        return translation;
+    }
+
+
 }

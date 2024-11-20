@@ -642,7 +642,7 @@ public class TownData extends ITerritoryData {
             PlayerData playerIterateData = PlayerDataStorage.get(playerUUID);
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
                     Lang.GUI_TOWN_MEMBER_DESC1.get(playerIterateData.getTownRank().getColoredName()),
-                    Lang.GUI_TOWN_MEMBER_DESC2.get(EconomyUtil.getBalance(playerIterate)),
+                    Lang.GUI_TOWN_MEMBER_DESC2.get(StringUtil.formatMoney(EconomyUtil.getBalance(playerIterate))),
                     doesPlayerHavePermission(playerData,KICK_PLAYER) ? Lang.GUI_TOWN_MEMBER_DESC3.get() : "");
 
             GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> {

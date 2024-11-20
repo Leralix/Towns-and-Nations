@@ -90,7 +90,7 @@ public class PayCommand extends SubCommand  {
             return;
         }
         if(amount <1){
-            player.sendMessage(getTANString() + Lang.PAY_MINIMUM_REQUIRED.get());
+            player.sendMessage(getTANString() + Lang.PAY_MINIMUM_REQUIRED.get(EconomyUtil.getMoneyIcon()));
             return;
         }
         if(EconomyUtil.getBalance(player) < amount){
@@ -100,8 +100,9 @@ public class PayCommand extends SubCommand  {
         }
         EconomyUtil.removeFromBalance(player,amount);
         EconomyUtil.addFromBalance(receiver,amount);
-        player.sendMessage(getTANString() + Lang.PAY_CONFIRMED_SENDER.get(amount,receiver.getName()));
-        receiver.sendMessage(getTANString() + Lang.PAY_CONFIRMED_RECEIVER.get(amount,player.getName()));
+        String moneyIcon = EconomyUtil.getMoneyIcon();
+        player.sendMessage(getTANString() + Lang.PAY_CONFIRMED_SENDER.get(amount + moneyIcon,receiver.getName()));
+        receiver.sendMessage(getTANString() + Lang.PAY_CONFIRMED_RECEIVER.get(amount + moneyIcon,player.getName()));
     }
 
 

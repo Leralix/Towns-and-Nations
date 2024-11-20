@@ -73,10 +73,6 @@ public class EconomyUtil {
         econ.depositPlayer(PlayerDataStorage.get(offlinePlayer), amount);
     }
 
-    public static boolean hasExternalEconomy() {
-        return isExternalEconomy;
-    }
-
     public static String getMoneyIcon() {
         return econ.getMoneyIcon();
     }
