@@ -4,9 +4,11 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.StringUtil;
 
 public class PlaceHolderAPI extends PlaceholderExpansion {
 
@@ -46,6 +48,10 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
             return "Data not found"; // Gérer le cas où les données du joueur ne sont pas trouvées
         }
 
+        if (params.equalsIgnoreCase("player_balance")) {
+            String moneyChar = EconomyUtil.getMoneyIcon();
+            return StringUtil.formatMoney(EconomyUtil.getBalance(player)) + moneyChar;
+        }
         if (params.equalsIgnoreCase("player_town_name")) {
             return playerData.haveTown() ? playerData.getTown().getName() : Lang.NO_TOWN.get();
         }
