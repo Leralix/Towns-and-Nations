@@ -42,7 +42,6 @@ language:
   NEW_VERSION_AVAILABLE_2: "§cDownload it on Spigot or GitHub"
   #Database
   DATABASE_SUCCESSFULLY_DELETED_OLD_ROWS: "{0} old history rows have been successfully deleted"
-
   #Help command
   HELP_DESC: "Show a list explaining all the commands"
   CLICK_TO_GO_NEXT_PAGE: "§fClick to go to the next page"
@@ -123,14 +122,14 @@ language:
   CHAT_SCOPE_NOT_FOUND: "§cUnfounded chat scope"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Added §6+{0}{MONEY_CHAR}§f to §3{1}"
-  SET_MONEY_COMMAND_SUCCESS: "Successfully set the balance of §3{0}{MONEY_CHAR}§f to §6{1}"
+  SET_MONEY_COMMAND_SUCCESS: "Successfully set the balance of §3{0}§f to §6{1}{MONEY_CHAR}"
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Open the town and nation GUI"
   #Newsletter command
   OPEN_NEWSLETTER_DESC: "Get the latest news"
   #Pay command
   PAY_COMMAND_DESC: "Give money to another player"
-  PAY_MINIMUM_REQUIRED: "§cYou need to send a least 1{0}{MONEY_CHAR}"
+  PAY_MINIMUM_REQUIRED: "§cYou need to send a least 1{MONEY_CHAR}"
   PAY_CONFIRMED_SENDER: "Sending §6{0}{MONEY_CHAR}§f to §3{1}"
   PAY_CONFIRMED_RECEIVER: "Receiving §6+{0}{MONEY_CHAR}§f from §3{1}"
   PAY_SELF_ERROR: "§cYou cannot send money to yourself"
@@ -251,7 +250,7 @@ language:
   GUI_PLAYER_NEW_PROPERTY: "Create a new property"
   #Towns
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCreate a new town"
-  GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fCost: §6{0}{MONEY_CHAR}"
+  GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fCost : §6{0}{MONEY_CHAR}"
   GUI_NO_TOWN_JOIN_A_TOWN: "§aJoin a town"
   GUI_NO_TOWN_JOIN_A_TOWN_DESC1: "§fThere are currently §e{0}§f towns in total"
   GUI_TOWN_INFO_DESC0: "§7§o\"{0}\"" #town's quote
@@ -296,9 +295,9 @@ language:
   GUI_TREASURY_STORAGE: "§aTreasury"
   GUI_TREASURY_STORAGE_DESC1: "§fCurrent treasury: §6{0}{MONEY_CHAR}"
   PLAYER_TAX_LINE: "§f -From taxes: {0}"
-  PLAYER_TAX_MISSING_LINE: "§f -From taxes : {0} §7(missing {1})"
+  PLAYER_TAX_MISSING_LINE: "§f -From taxes : {0}{MONEY_CHAR} §7(missing {1}{MONEY_CHAR})"
   VASSAL_TAX_LINE: "§f -From vassal taxes: {0}"
-  VASSAL_TAX_MISSING_LINE: "§f -From vassal taxes : {0} §7(missing {1})"
+  VASSAL_TAX_MISSING_LINE: "§f -From vassal taxes : {0}{MONEY_CHAR}§7 (missing {1}{MONEY_CHAR})"
   OVERLORD_TAX_LINE: "§f -From overlord taxes: {0}"
   PLAYER_SALARY_LINE: "§f -From salary: {0}"
   TERRITORY_UPKEEP_LINE: "§f -From territory upkeep: {0}"
@@ -306,13 +305,13 @@ language:
   GUI_TREASURY_CANT_TAX_LESS: "§cYou cannot tax less that §60{MONEY_CHAR}"
   GUI_TREASURY_INCREASE_TAX: "§aIncrease the tax"
   GUI_TREASURY_FLAT_TAX: "§aFlat tax"
-  GUI_TREASURY_FLAT_TAX_DESC1: "§fTown daily tax: §6{0}{MONEY_CHAR}§f"
+  GUI_TREASURY_FLAT_TAX_DESC1: "§fTown daily tax: §6{0}{MONEY_CHAR}"
   GUI_TREASURY_TAX_HISTORY: "§aTax History"
   GUI_TREASURY_SALARY_HISTORY: "§aSalary history"
-  GUI_TREASURY_SALARY_HISTORY_DESC1: "§fSalary spending is up to: {0}"
+  GUI_TREASURY_SALARY_HISTORY_DESC1: "§fSalary spending is up to: {0}{MONEY_CHAR}"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY: "§aChunk spending history"
-  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1: "§fChunk upkeep is up to : {0}"
-  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "§cSingle chunk upkeep cost : {0}"
+  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1: "§fChunk upkeep is up to : {0}{MONEY_CHAR}"
+  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "§cSingle chunk upkeep cost : {0}{MONEY_CHAR}"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3: "§fYour town have §2{0}♦§f chunks"
   GUI_TREASURY_MISCELLANEOUS_SPENDING: "§aMiscellaneous spending"
   GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1: "§fLeft click to open Miscellaneous spending history"
@@ -630,7 +629,7 @@ language:
   GUI_RIGHT_CLICK_TO_CHANGE_PRICE: "§f- Right click to change the price"
   CONFIRM_RENT: "§aRent property"
   CONFIRM_RENT_DESC1: "§fClick to rent the property"
-  CONFIRM_RENT_DESC2: "§fRenting price: §6{0}{MONEY_CHAR}/day"
+  CONFIRM_RENT_DESC2: "§fRenting price : §6{0}{MONEY_CHAR}/day"
   CANCEL_RENT: "§cCancel rent"
   CONFIRM_SALE: "§aSell property"
   CONFIRM_SALE_DESC1: "§fClick to rent the property"
@@ -656,7 +655,7 @@ language:
   VASSAL_GUI_DESC1: "{0}§f have §6{1}§f vassals"
   CANNOT_HAVE_VASSAL: "§fThis territory cannot have vassals"
   #Transaction history
-  CHUNK_PAYMENT_HISTORY_LORE: "§fTotal cost: {0}"
+  CHUNK_PAYMENT_HISTORY_LORE: "§fTotal cost : {0}{MONEY_CHAR}"
   MISCELLANEOUS_PAYMENT_HISTORY_LORE: "§f{0}"
   DONATION_PAYMENT_HISTORY_LORE: "§f{0} : {1}"
   TAX_PAYMENT_HISTORY_LORE: "§f{0} : {1}"
