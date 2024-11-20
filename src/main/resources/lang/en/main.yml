@@ -42,6 +42,7 @@ language:
   NEW_VERSION_AVAILABLE_2: "§cDownload it on Spigot or GitHub"
   #Database
   DATABASE_SUCCESSFULLY_DELETED_OLD_ROWS: "{0} old history rows have been successfully deleted"
+
   #Help command
   HELP_DESC: "Show a list explaining all the commands"
   CLICK_TO_GO_NEXT_PAGE: "§fClick to go to the next page"
@@ -676,6 +677,12 @@ language:
   VASSAL_GUI_DESC1: "{0}§f have §6{1}§f vassals"
   CANNOT_HAVE_VASSAL: "§fThis territory cannot have vassals"
   #Transaction history
+  CHUNK_PAYMENT_HISTORY_LORE: "§fTotal cost: {0}"
+  MISCELLANEOUS_PAYMENT_HISTORY_LORE: "§f{0}"
+  DONATION_PAYMENT_HISTORY_LORE: "§f{0} : {1}"
+  TAX_PAYMENT_HISTORY_LORE: "§f{0} : {1}"
+  TAX_PAYMENT_HISTORY_LORE_NOT_ENOUGH_MONEY: "§f{0} :§c not enough money"
+  SALARY_PAYMENT_HISTORY_LORE: "§f{0} : {1}"
   TRANSACTION_HISTORY: "§f[{0}] - §3{1} §f: {2}✦"
   DONATION_SINGLE_LINE_1: "§a+{0}✦"
   DONATION_SINGLE_LINE_2: "§f{0}"
@@ -844,6 +851,7 @@ language:
   DIPLOMATIC_RELATION: "§fProposal by : {0}"
   DIPLOMATIC_RELATION_DESC1: "§fChange the relation to : {0}"
   DIPLOMATIC_RELATION_DESC2: "§fCurrent relation : {0}"
+  ##Newsletter
   ##Newsletter
   #Greeting
   NEWSLETTER_GREETING: "§fYou have §b{0}§f unread news"

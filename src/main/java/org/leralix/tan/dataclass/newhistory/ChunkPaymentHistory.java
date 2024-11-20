@@ -1,17 +1,10 @@
 package org.leralix.tan.dataclass.newhistory;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.GuiItem;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
-import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.StringUtil;
 
-import java.util.UUID;
-
-    public class ChunkPaymentHistory extends TransactionHistory {
+public class ChunkPaymentHistory extends TransactionHistory {
 
     public ChunkPaymentHistory(String date, String territoryID, double amount) {
         super(date, territoryID, null, amount);
@@ -26,10 +19,8 @@ import java.util.UUID;
         return TransactionHistoryEnum.CHUNK_SPENDING;
     }
 
-    @Override
-    public GuiItem createGuiItem() {
-
-        ItemStack item = HeadUtils.createCustomItemStack(Material.PAPER, getDate(), String.valueOf(getAmount()));
-        return ItemBuilder.from(item).asGuiItem(e -> e.setCancelled(true));
+        @Override
+        public String addLoreLine() {
+            return Lang.CHUNK_PAYMENT_HISTORY_LORE.get(StringUtil.getColoredMoney(-getAmount()));
+        }
     }
-}

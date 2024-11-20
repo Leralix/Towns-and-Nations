@@ -46,8 +46,6 @@ public abstract class TransactionHistory implements Comparable<TransactionHistor
         return Long.compare(dateToLong(this.date),dateToLong(o.date));
     }
 
-    public abstract GuiItem createGuiItem();
-
     public String getDate() {
         return date;
     }
@@ -63,4 +61,6 @@ public abstract class TransactionHistory implements Comparable<TransactionHistor
     public double getAmount() {
         return amount;
     }
+
+    public abstract String addLoreLine();
 }

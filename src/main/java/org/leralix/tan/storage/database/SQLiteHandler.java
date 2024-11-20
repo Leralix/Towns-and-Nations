@@ -9,7 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SQLiteHandler extends DatabaseHandler {
 
@@ -71,16 +73,21 @@ public class SQLiteHandler extends DatabaseHandler {
     }
 
     @Override
-    public List<TransactionHistory> getTransactionHistory(ITerritoryData territoryData, TransactionHistoryEnum type) {
+    public List<List<TransactionHistory>> getTransactionHistory(ITerritoryData territoryData, TransactionHistoryEnum type) {
         String selectSQL = """
         SELECT date, type, territoryDataID, transactionParty, amount
         FROM territoryTransactionHistory
         WHERE territoryDataID = ? AND type = ?
+        ORDER BY date
     """;
-        List<TransactionHistory> transactionHistories = new ArrayList<>();
+
+        // Map pour regrouper les transactions par date
+        Map<String, List<TransactionHistory>> groupedByDate = new HashMap<>();
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
             preparedStatement.setString(1, territoryData.getID());
             preparedStatement.setString(2, type.toString());
+
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     String date = resultSet.getString("date");
@@ -89,32 +96,19 @@ public class SQLiteHandler extends DatabaseHandler {
                     String transactionParty = resultSet.getString("transactionParty");
                     double amount = resultSet.getDouble("amount");
 
-                    if(transactionHistoryEnum == TransactionHistoryEnum.SALARY){
-                        transactionHistories.add(new SalaryPaymentHistory(date, territoryDataID, transactionParty, amount));
-                    }
-                    if(transactionHistoryEnum == TransactionHistoryEnum.PLAYER_TAX){
-                        transactionHistories.add(new PlayerTaxHistory(date, territoryDataID, transactionParty, amount));
-                    }
-                    if(transactionHistoryEnum == TransactionHistoryEnum.SUBJECT_TAX) {
-                        transactionHistories.add(new SubjectTaxHistory(date, territoryDataID, transactionParty, amount));
-                    }
-                    if(transactionHistoryEnum == TransactionHistoryEnum.MISCELLANEOUS) {
-                        transactionHistories.add(new MiscellaneousHistory(date, territoryDataID, amount));
-                    }
-                    if (transactionHistoryEnum == TransactionHistoryEnum.CHUNK_SPENDING) {
-                        transactionHistories.add(new ChunkPaymentHistory(date, territoryDataID, amount));
-                    }
-                    if(transactionHistoryEnum == TransactionHistoryEnum.DONATION) {
-                        transactionHistories.add(new PlayerDonationHistory(date, territoryDataID, transactionParty, amount));
-                    }
+                    TransactionHistory transactionHistory = transactionHistoryEnum.createTransactionHistory(
+                            date, territoryDataID, transactionParty, amount
+                    );
+
+                    groupedByDate.computeIfAbsent(date, k -> new ArrayList<>()).add(transactionHistory);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return transactionHistories; // Retourner la liste
+        return new ArrayList<>(groupedByDate.values());
     }
+
 
     @Override
     public void deleteOldHistory(int nbDays, TransactionHistoryEnum type) {

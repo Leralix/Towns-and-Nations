@@ -12,6 +12,7 @@ import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.SoundUtil;
+import org.leralix.tan.utils.StringUtil;
 
 import static org.leralix.tan.enums.SoundEnum.ADD;
 import static org.leralix.tan.enums.SoundEnum.REMOVE;
@@ -41,9 +42,9 @@ public class SubjectTaxLine extends ProfitLine{
     @Override
     public String getLine() {
         if(missingTaxes > 0)
-            return Lang.PLAYER_TAX_MISSING_LINE.get(getColoredMoney(), missingTaxes);
+            return Lang.PLAYER_TAX_MISSING_LINE.get(StringUtil.getColoredMoney(getMoney()), missingTaxes);
         else
-            return Lang.PLAYER_TAX_LINE.get(getColoredMoney());
+            return Lang.PLAYER_TAX_LINE.get(StringUtil.getColoredMoney(getMoney()));
     }
 
     @Override

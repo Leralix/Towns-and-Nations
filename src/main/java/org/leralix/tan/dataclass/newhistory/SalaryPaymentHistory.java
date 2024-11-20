@@ -1,14 +1,11 @@
 package org.leralix.tan.dataclass.newhistory;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
-import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.StringUtil;
 import org.leralix.tan.utils.TerritoryUtil;
 
 import java.util.UUID;
@@ -30,10 +27,9 @@ public class SalaryPaymentHistory extends TransactionHistory {
     }
 
     @Override
-    public GuiItem createGuiItem() {
+    public String addLoreLine() {
         ITerritoryData territoryData = TerritoryUtil.getTerritory(getTerritoryDataID());
         RankData rankData = territoryData.getRank(Integer.valueOf(getTransactionParty()));
-        ItemStack item = HeadUtils.createCustomItemStack(Material.PAPER, getDate(), rankData.getColoredName(), String.valueOf(getAmount()));
-        return ItemBuilder.from(item).asGuiItem(e -> e.setCancelled(true));
+        return Lang.SALARY_PAYMENT_HISTORY_LORE.get(rankData.getColoredName(), StringUtil.getColoredMoney(-getAmount()));
     }
 }

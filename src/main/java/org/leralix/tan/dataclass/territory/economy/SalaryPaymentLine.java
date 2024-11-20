@@ -12,6 +12,7 @@ import org.leralix.tan.enums.HistoryEnum;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.StringUtil;
 
 public class SalaryPaymentLine extends ProfitLine {
     double totalSalaries;
@@ -31,13 +32,13 @@ public class SalaryPaymentLine extends ProfitLine {
 
     @Override
     public String getLine() {
-        return Lang.PLAYER_SALARY_LINE.get(getColoredMoney());
+        return Lang.PLAYER_SALARY_LINE.get(StringUtil.getColoredMoney(getMoney()));
     }
 
     @Override
     public void addItems(Gui gui, Player player) {
         ItemStack salarySpending = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_SALARY_HISTORY.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjlhNjAwYWIwYTgzMDk3MDY1Yjk1YWUyODRmODA1OTk2MTc3NDYwOWFkYjNkYmQzYTRjYTI2OWQ0NDQwOTU1MSJ9fX0=",
-                Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.get(getColoredMoney()),
+                Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.get(StringUtil.getColoredMoney(getMoney())),
                 Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get());
         GuiItem salaryHistoryButton = ItemBuilder.from(salarySpending).asGuiItem(event -> {
             PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.SALARY);

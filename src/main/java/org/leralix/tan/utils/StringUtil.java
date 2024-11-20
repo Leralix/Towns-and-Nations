@@ -1,5 +1,7 @@
 package org.leralix.tan.utils;
 
+import org.leralix.tan.economy.EconomyUtil;
+
 import java.util.Random;
 
 /**
@@ -35,6 +37,16 @@ public class StringUtil {
         int blue = random.nextInt(256);
 
         return  (red << 16) | (green << 8) | blue;
+    }
+
+    public static String getColoredMoney(double money){
+        String moneyChar = EconomyUtil.getMoneyIcon();
+        if(money > 0){
+            return "§a+" + money + moneyChar;
+        }else if(money < 0){
+            return "§c" + money + moneyChar;
+        }
+        return "§7" + money + moneyChar;
     }
 
 }

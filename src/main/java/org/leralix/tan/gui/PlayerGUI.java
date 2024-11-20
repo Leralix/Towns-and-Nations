@@ -3,6 +3,7 @@ package org.leralix.tan.gui;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -1671,14 +1672,19 @@ public class PlayerGUI implements IGUI {
         public static void openTownEconomicsHistory(Player player, ITerritoryData territoryData, TransactionHistoryEnum transactionHistoryEnum, int page) {
 
         Gui gui = IGUI.createChestGui("Town",6);
-
-        List<TransactionHistory> transactionHistories = TownsAndNations.getPlugin().getDatabaseHandler().getTransactionHistory(territoryData, transactionHistoryEnum);
-
         List<GuiItem> guiItems = new ArrayList<>();
 
-        for(TransactionHistory transactionHistory : transactionHistories){
-            guiItems.add(transactionHistory.createGuiItem());
+        for(List<TransactionHistory> transactionHistory : TownsAndNations.getPlugin().getDatabaseHandler().getTransactionHistory(territoryData, transactionHistoryEnum)){
+            ItemStack transactionIcon = HeadUtils.createCustomItemStack(Material.PAPER, ChatColor.GREEN + transactionHistory.get(0).getDate());
+
+            for (TransactionHistory transaction : transactionHistory) {
+                HeadUtils.addLore(transactionIcon, transaction.addLoreLine());
+            }
+            guiItems.add(ItemBuilder.from(transactionIcon).asGuiItem(event -> event.setCancelled(true)));
         }
+
+
+
         createIterator(gui, guiItems, 0, player,
                 p -> openTreasury(player, territoryData),
                 p -> openTownEconomicsHistory(player, territoryData, transactionHistoryEnum, page + 1),

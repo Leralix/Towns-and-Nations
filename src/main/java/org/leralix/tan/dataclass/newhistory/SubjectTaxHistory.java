@@ -1,16 +1,8 @@
 package org.leralix.tan.dataclass.newhistory;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.GuiItem;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
-import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.TerritoryUtil;
-
-import java.util.UUID;
 
 public class SubjectTaxHistory extends TransactionHistory {
 
@@ -28,10 +20,13 @@ public class SubjectTaxHistory extends TransactionHistory {
     }
 
     @Override
-    public GuiItem createGuiItem() {
-        ITerritoryData territoryData = TerritoryUtil.getTerritory(getTerritoryDataID());
-        String playerName = territoryData != null ? territoryData.getColoredName() : "Unknown";
-        ItemStack item = HeadUtils.createCustomItemStack(Material.PAPER, getDate(), playerName, String.valueOf(getAmount()));
-        return ItemBuilder.from(item).asGuiItem(e -> e.setCancelled(true));
+    public String addLoreLine() {
+        ITerritoryData vassal = TerritoryUtil.getTerritory(getTransactionParty());
+        if(getAmount() > 0) {
+            return Lang.TAX_PAYMENT_HISTORY_LORE.get(vassal.getColoredName(), getAmount());
+        } else {
+            return Lang.TAX_PAYMENT_HISTORY_LORE_NOT_ENOUGH_MONEY.get(vassal.getColoredName());
+        }
     }
+
 }

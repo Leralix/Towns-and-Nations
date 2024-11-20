@@ -13,18 +13,8 @@ public abstract class ProfitLine implements Comparable<ProfitLine> {
         this.territoryData = territoryData;
     }
 
-
     public abstract double getMoney();
-    protected String getColoredMoney(){
-        String moneyChar = EconomyUtil.getMoneyIcon();
-        double money = getMoney();
-        if(money > 0){
-            return "§a+" + money + moneyChar;
-        }else if(money < 0){
-            return "§c" + money + moneyChar;
-        }
-        return "§7" + money + moneyChar;
-    }
+
     public abstract String getLine();
 
     public abstract void addItems(Gui gui, Player player);

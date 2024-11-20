@@ -4,6 +4,7 @@ import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.StringUtil;
 
 public class OverlordTaxLine extends ProfitLine {
 
@@ -23,7 +24,7 @@ public class OverlordTaxLine extends ProfitLine {
     }
 
     public String getLine() {
-        return Lang.OVERLORD_TAX_LINE.get(getColoredMoney());
+        return Lang.OVERLORD_TAX_LINE.get(StringUtil.getColoredMoney(getMoney()));
     }
 
     @Override
