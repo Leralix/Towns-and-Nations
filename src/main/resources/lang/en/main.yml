@@ -579,6 +579,9 @@ language:
   ADMIN_GUI_DELETE_LANDMARK: "§cDelete landmark"
   ADMIN_GUI_DELETE_LANDMARK_DESC1: "§fLeft click to delete the landmark"
   CLICK_TO_OPEN_LANDMARK_MENU: "§fLeft click to manage landmarks"
+  GUI_CANNOT_QUIT_IF_LEADER: "§cYou cannot remove the town from the region because it is the capital"
+  GUI_RIGHT_CLICK_TO_QUIT: "§cRight click to remove the town from the region"
+  GUI_LEFT_CLICK_TO_SET_REGION: "§fLeft click to set the region"
   #Other GUI
   GUI_PROPERTY_DESCRIPTION: "§7§o\"{0}\""
   GUI_PROPERTY_STRUCTURE_OWNER: "§fCity: §9{0}"

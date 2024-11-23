@@ -555,10 +555,10 @@ public abstract class TerritoryData {
         return getRank(playerData).hasPermission(townRolePermission);
     }
 
-    public void setPlayerRank(PlayerData playerStat, int rankID) {
+    public void setPlayerRank(PlayerData playerStat, RankData rankData) {
         getRank(playerStat).removePlayer(playerStat);
-        getRank(rankID).addPlayer(playerStat);
-        specificSetPlayerRank(playerStat, rankID);
+        rankData.addPlayer(playerStat);
+        specificSetPlayerRank(playerStat, rankData.getID());
     }
 
     protected abstract void specificSetPlayerRank(PlayerData playerStat, int rankID);

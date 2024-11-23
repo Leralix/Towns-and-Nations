@@ -15,6 +15,7 @@ import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.LandmarkClaimedChunk;
 import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.lang.Lang;
@@ -28,8 +29,8 @@ import org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.*;
 
-import java.util.ArrayList;
-import java.util.UUID;
+import javax.swing.plaf.synth.Region;
+import java.util.*;
 
 import static org.leralix.tan.enums.SoundEnum.GOOD;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
@@ -249,60 +250,71 @@ public class AdminGUI implements IGUI{
         gui.open(player);
     }
 
-    private static void openSpecificRegionMenu(Player player, RegionData regionData) {
+    private static void openSpecificTerritoryMenu(Player player, TerritoryData territoryData) {
+        if(territoryData instanceof TownData){
+            openSpecificTownMenu(player, (TownData) territoryData);
+        }
+        else if(territoryData instanceof RegionData){
+            openSpecificRegionMenu(player, (RegionData) territoryData);
+        }
+    }
+
+
+        private static void openSpecificRegionMenu(Player player, RegionData regionData) {
         Gui gui = IGUI.createChestGui("Region - Admin",3);
 
+        addCommonTerritoryDebugOption(gui, player, regionData);
 
-        ItemStack changeRegionName = HeadUtils.createCustomItemStack(Material.NAME_TAG,
-                Lang.ADMIN_GUI_CHANGE_TOWN_NAME.get(),
-                Lang.ADMIN_GUI_CHANGE_TOWN_NAME_DESC1.get(regionData.getName()));
-        ItemStack changeRegionDescription = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK,
-                Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION.get(),
-                Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION_DESC1.get(regionData.getDescription()));
+
         ItemStack changeTownLeader = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,
                 Lang.ADMIN_GUI_CHANGE_REGION_LEADER.get(),
                 Lang.ADMIN_GUI_CHANGE_REGION_LEADER_DESC1.get(regionData.getLeaderData().getName(),regionData.getCapital().getName()));
+        GuiItem changeTownLeaderGui = ItemBuilder.from(changeTownLeader).asGuiItem(event -> {
+            event.setCancelled(true);
+            openRegionDebugChangeOwnershipPlayerSelect(player, regionData,0);
+        });
+        gui.setItem(2,6, changeTownLeaderGui);
+
+        gui.setItem(3,1, IGUI.createBackArrow(player, p -> openRegionDebugMenu(player, 0)));
+
+        gui.open(player);
+    }
+
+    private static void addCommonTerritoryDebugOption(Gui gui, Player player, TerritoryData territoryData){
+
+        ItemStack changeRegionName = HeadUtils.createCustomItemStack(Material.NAME_TAG,
+                Lang.ADMIN_GUI_CHANGE_TOWN_NAME.get(),
+                Lang.ADMIN_GUI_CHANGE_TOWN_NAME_DESC1.get(territoryData.getName()));
+        ItemStack changeRegionDescription = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK,
+                Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION.get(),
+                Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION_DESC1.get(territoryData.getDescription()));
         ItemStack deleteRegion = HeadUtils.createCustomItemStack(Material.BARRIER,
                 Lang.ADMIN_GUI_DELETE_TOWN.get(),
-                Lang.ADMIN_GUI_DELETE_TOWN_DESC1.get(regionData.getName()));
+                Lang.ADMIN_GUI_DELETE_TOWN_DESC1.get(territoryData.getName()));
 
         GuiItem changeRegionNameGui = ItemBuilder.from(changeRegionName).asGuiItem(event -> {
             event.setCancelled(true);
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
-            PlayerChatListenerStorage.register(player, new ChangeTerritoryName(regionData, 0, p -> openSpecificRegionMenu(player, regionData)));
+            PlayerChatListenerStorage.register(player, new ChangeTerritoryName(territoryData, 0, p -> openSpecificTerritoryMenu(player, territoryData)));
         });
         GuiItem changeRegionDescriptionGui = ItemBuilder.from(changeRegionDescription).asGuiItem(event -> {
             event.setCancelled(true);
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
-
-            PlayerChatListenerStorage.register(player, new ChangeDescription(regionData, p -> openSpecificRegionMenu(player, regionData)));
-            event.setCancelled(true);
+            PlayerChatListenerStorage.register(player, new ChangeDescription(territoryData, p -> openSpecificTerritoryMenu(player, territoryData)));
         });
-
-        GuiItem changeTownLeaderGui = ItemBuilder.from(changeTownLeader).asGuiItem(event -> {
-
-            event.setCancelled(true);
-            openRegionDebugChangeOwnershipPlayerSelect(player, regionData,0);
-
-        });
-
         GuiItem deleteRegionGui = ItemBuilder.from(deleteRegion).asGuiItem(event -> {
             event.setCancelled(true);
 
-            FileUtil.addLineToHistory(Lang.HISTORY_REGION_DELETED.get(player.getName(),regionData.getName()));
-            regionData.delete();
+            FileUtil.addLineToHistory(Lang.HISTORY_REGION_DELETED.get(player.getName(),territoryData.getName()));
+            territoryData.delete();
 
-            player.closeInventory();
             player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get());
+            player.closeInventory();
         });
 
-        gui.setItem(2,2, changeRegionNameGui);
+        gui.setItem(2,3, changeRegionNameGui);
         gui.setItem(2,4, changeRegionDescriptionGui);
-        gui.setItem(2,6, changeTownLeaderGui);
         gui.setItem(2,8, deleteRegionGui);
-
-        gui.setItem(3,1, IGUI.createBackArrow(player, p -> openRegionDebugMenu(player, 0)));
-        gui.open(player);
     }
 
     private static void openRegionDebugChangeOwnershipPlayerSelect(Player player, RegionData regionData, int page) {
@@ -343,8 +355,6 @@ public class AdminGUI implements IGUI{
     }
 
     public static void openTownMenuDebug(Player player, int page){
-
-
         Gui gui = IGUI.createChestGui("Town - Admin",6);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for (TownData townData : TownDataStorage.getTownMap().values()) {
@@ -386,62 +396,79 @@ public class AdminGUI implements IGUI{
 
     public static void openSpecificTownMenu(Player player, @NotNull TownData townData) {
 
-
         Gui gui = IGUI.createChestGui( townData.getName() + " - Admin",3);
 
+        addCommonTerritoryDebugOption(gui, player, townData);
 
-        ItemStack changeTownName = HeadUtils.createCustomItemStack(Material.NAME_TAG,
-                Lang.ADMIN_GUI_CHANGE_TOWN_NAME.get(),
-                Lang.ADMIN_GUI_CHANGE_TOWN_NAME_DESC1.get(townData.getName()));
-        ItemStack changeTownDescription = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK,
-                Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION.get(),
-                Lang.ADMIN_GUI_CHANGE_TOWN_DESCRIPTION_DESC1.get(townData.getDescription()));
         ItemStack changeTownLeader = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,
                 Lang.ADMIN_GUI_CHANGE_TOWN_LEADER.get(),
                 Lang.ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1.get(townData.getLeaderName()));
-        ItemStack deleteTown = HeadUtils.createCustomItemStack(Material.BARRIER,
-                Lang.ADMIN_GUI_DELETE_TOWN.get(),
-                Lang.ADMIN_GUI_DELETE_TOWN_DESC1.get(townData.getName()));
 
-        GuiItem changeTownNameGui = ItemBuilder.from(changeTownName).asGuiItem(event -> {
-
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
-            player.closeInventory();
-
-            PlayerChatListenerStorage.register(player, new ChangeTerritoryName(townData,0, p -> openSpecificTownMenu(player, townData)));
-
-        });
-        GuiItem changeTownDescriptionGui = ItemBuilder.from(changeTownDescription).asGuiItem(event -> {
-            player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
-            PlayerChatListenerStorage.register(player, new ChangeDescription(townData, p -> openSpecificTownMenu(player, townData)));
-            event.setCancelled(true);
-        });
+        ItemStack setRegionIcon = HeadUtils.makeSkullB64(townData.haveOverlord() ? townData.getOverlord().getName() : Lang.NO_REGION.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
+        if(townData.haveOverlord()) {
+            if(townData.isCapital())
+                HeadUtils.addLore(setRegionIcon, Lang.GUI_CANNOT_QUIT_IF_LEADER.get());
+            else
+                HeadUtils.addLore(setRegionIcon, Lang.GUI_RIGHT_CLICK_TO_QUIT.get());
+        }
+        else {
+            HeadUtils.addLore(setRegionIcon, Lang.GUI_LEFT_CLICK_TO_SET_REGION.get());
+        }
 
         GuiItem changeTownLeaderGui = ItemBuilder.from(changeTownLeader).asGuiItem(event -> {
             event.setCancelled(true);
             openTownDebugChangeOwnershipPlayerSelect(player, townData);
         });
-        GuiItem deleteTownGui = ItemBuilder.from(deleteTown).asGuiItem(event -> {
-            event.setCancelled(true);
-            if(townData.isRegionalCapital()){
-                player.sendMessage(getTANString() + Lang.ADMIN_GUI_CANT_DELETE_REGIONAL_CAPITAL.get());
-                return;
-            }
-            FileUtil.addLineToHistory(Lang.HISTORY_TOWN_DELETED.get(player.getName(),townData.getName()));
-            townData.delete();
 
-            player.closeInventory();
-            player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get());
+        GuiItem setRegionButton = ItemBuilder.from(setRegionIcon).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(townData.haveOverlord()) {
+                if(townData.isCapital())
+                    player.sendMessage(Lang.GUI_CANNOT_QUIT_IF_LEADER.get());
+                else{
+                    townData.removeOverlord();
+                    openSpecificTownMenu(player, townData);
+                }
+            }
+            else {
+                openChooseNewOverlord(player, townData, 0);
+            }
         });
 
-        gui.setItem(2,2, changeTownNameGui);
-        gui.setItem(2,4, changeTownDescriptionGui);
+        gui.setItem(2,2, setRegionButton);
         gui.setItem(2,6, changeTownLeaderGui);
-        gui.setItem(2,8, deleteTownGui);
 
         gui.setItem(3,1, IGUI.createBackArrow(player, p -> openTownMenuDebug(player, 0)));
 
         gui.open(player);
+    }
+
+    private static void openChooseNewOverlord(Player player, TerritoryData territoryData, int page) {
+
+        Gui gui = IGUI.createChestGui("Choose new overlord",6);
+
+        Collection<RegionData> territoryDataList = RegionDataStorage.getAllRegions();
+
+        List<GuiItem> guiItems = new ArrayList<>();
+
+        for(TerritoryData potentialOverlord : territoryDataList){
+            ItemStack potentialOverlordIcon =  potentialOverlord.getIconWithInformations();
+            HeadUtils.addLore(potentialOverlordIcon, Lang.LEFT_CLICK_TO_SELECT.get());
+
+            guiItems.add(ItemBuilder.from(potentialOverlordIcon).asGuiItem(event -> {
+                event.setCancelled(true);
+                territoryData.setOverlord(potentialOverlord);
+                potentialOverlord.addVassal(territoryData);
+                openSpecificTerritoryMenu(player, territoryData);
+            }));
+        }
+        GuiUtil.createIterator(gui, guiItems, page, player,
+                p -> openSpecificTerritoryMenu(player, territoryData),
+                p -> openChooseNewOverlord(player, territoryData, page + 1),
+                p -> openChooseNewOverlord(player, territoryData, page - 1));
+
+        gui.open(player);
+
     }
 
     private static void openTownDebugChangeOwnershipPlayerSelect(Player player, TownData townData) {

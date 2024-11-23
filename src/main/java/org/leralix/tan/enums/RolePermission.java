@@ -15,8 +15,6 @@ import org.leralix.tan.utils.HeadUtils;
 public enum RolePermission {
 
     MANAGE_TAXES(false, Material.GOLD_INGOT, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TAXES.get()),
-    PROMOTE_RANK_PLAYER(false, Material.EMERALD, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_PROMOTE_RANK_PLAYER.get()),
-    DERANK_RANK_PLAYER(false, Material.REDSTONE, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DERANK_RANK_PLAYER.get()),
     CLAIM_CHUNK(false, Material.EMERALD_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CLAIM_CHUNK.get()),
     UNCLAIM_CHUNK(false, Material.REDSTONE_BLOCK, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_UNCLAIM_CHUNK.get()),
     UPGRADE_TOWN(true, Material.SPECTRAL_ARROW, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_UPGRADE_TOWN.get()),
@@ -51,11 +49,11 @@ public enum RolePermission {
     }
 
 
-    public GuiItem createGuiItem(Player player, TerritoryData territoryData, RankData townRank) {
-        ItemStack itemStack = HeadUtils.createCustomItemStack(material, description,(townRank.hasPermission(this)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
+    public GuiItem createGuiItem(Player player, TerritoryData territoryData, RankData rankData) {
+        ItemStack itemStack = HeadUtils.createCustomItemStack(material, description,(rankData.hasPermission(this)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
-            townRank.switchPermission(this);
-            PlayerGUI.openTownRankManagerPermissions(player, territoryData, townRank.getID());
+            rankData.switchPermission(this);
+            PlayerGUI.openRankManagerPermissions(player, territoryData, rankData);
             event.setCancelled(true);
         });
     }
