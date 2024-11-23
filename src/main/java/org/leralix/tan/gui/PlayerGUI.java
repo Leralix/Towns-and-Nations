@@ -1580,9 +1580,12 @@ public class PlayerGUI implements IGUI {
 
         budget.createGui(gui, player);
 
-        ItemStack budgetIcon = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_STORAGE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
-                budget.createLore());
+        List<String> budgetLore = new ArrayList<>();
+        budgetLore.add(Lang.GUI_TREASURY_STORAGE_DESC1.get(territoryData.getBalance()));
+        budgetLore.addAll(budget.createLore());
 
+        ItemStack budgetIcon = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_STORAGE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
+                budgetLore);
         ItemStack miscSpending = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGMzNjA0NTIwOGY5YjVkZGNmOGM0NDMzZTQyNGIxY2ExN2I5NGY2Yjk2MjAyZmIxZTUyNzBlZThkNTM4ODFiMSJ9fX0=",
                 Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get());
         ItemStack donation = HeadUtils.createCustomItemStack(Material.DIAMOND, Lang.GUI_TREASURY_DONATION.get(),
