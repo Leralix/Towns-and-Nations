@@ -122,7 +122,7 @@ public class SQLiteHandler extends DatabaseHandler {
             preparedStatement.setInt(1, nbDays);
             preparedStatement.setString(1, type.toString());
             int rowsAffected = preparedStatement.executeUpdate();
-            TownsAndNations.getPlugin().getLogger().info(Lang.DATABASE_SUCCESSFULLY_DELETED_OLD_ROWS.get(rowsAffected));
+            //TownsAndNations.getPlugin().getLogger().info(Lang.DATABASE_SUCCESSFULLY_DELETED_OLD_ROWS.get(rowsAffected));
         } catch (SQLException e) {
             e.printStackTrace();
         }

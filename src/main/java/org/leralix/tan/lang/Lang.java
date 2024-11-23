@@ -855,11 +855,18 @@ public enum Lang {
 
     private String replaceCommonPlaceholders(String translation) {
 
-        translation = translation.replace("{CANCEL}", Lang.CANCEL_WORD.get());
+        translation = translation.replace("{CANCEL}", Lang.CANCEL_WORD.getWithoutPlaceholder());
         translation = translation.replace("{MONEY_CHAR}", EconomyUtil.getMoneyIcon());
 
         return translation;
     }
 
 
+    public String getWithoutPlaceholder() {
+        String translation = translations.get(this);
+        if (translation != null) {
+            return ChatColor.translateAlternateColorCodes('§', translation);
+        }
+        return "Message not found for " + this.name() + " in this language file.";
+    }
 }

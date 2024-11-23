@@ -407,7 +407,7 @@ public class RegionData extends ITerritoryData {
 
     @Override
     public double getChunkUpkeepCost() {
-        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("RegionChunkUpkeepCost",0) / 10;
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("RegionChunkUpkeepCost",0);
     }
 
     public boolean isPlayerInRegion(PlayerData playerData) {

@@ -13,6 +13,7 @@ import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.newhistory.ChunkPaymentHistory;
 import org.leralix.tan.dataclass.newhistory.PlayerDonationHistory;
+import org.leralix.tan.dataclass.newhistory.SalaryPaymentHistory;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.ChunkUpkeepLine;
 import org.leralix.tan.dataclass.territory.economy.SalaryPaymentLine;
@@ -31,7 +32,6 @@ import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.*;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
@@ -589,27 +589,37 @@ public abstract class ITerritoryData {
     public abstract void removeToTax(double i);
 
     public void executeTasks(){
-
-        double minimumMoneyToKeep = haveOverlord() ? getOverlord().getTax() : 0;
-
         collectTaxes();
-        paySalaries(minimumMoneyToKeep);
-        payChunkUpkeep(minimumMoneyToKeep);
+        paySalaries();
+        payChunkUpkeep();
     }
 
-    protected void paySalaries(double moneyInReserve) {
+    private void paySalaries() {
+        for (RankData rank : getAllRanks()){
+            int rankSalary = rank.getSalary();
+            List<String> playerIdList = rank.getPlayersID();
+            double costOfSalary = (double) playerIdList.size() * rankSalary;
 
+            if(rankSalary == 0 || costOfSalary > getBalance() ){
+                continue;
+            }
+            removeFromBalance(costOfSalary);
+            for(String playerId : playerIdList){
+                PlayerData playerData = PlayerDataStorage.get(playerId);
+                playerData.addToBalance(rankSalary);
+                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SalaryPaymentHistory(this, String.valueOf(rank.getID()), costOfSalary));
+            }
+        }
     }
 
-    private void payChunkUpkeep(double moneyInReserve) {
+    private void payChunkUpkeep() {
         double upkeepCost = this.getChunkUpkeepCost();
 
-
         int numberClaimedChunk = getNumberOfClaimedChunk();
-        int totalUpkeep = (int) ( numberClaimedChunk * upkeepCost/10);
+        double totalUpkeep = numberClaimedChunk * upkeepCost;
         if (totalUpkeep > getBalance()){
             deletePortionOfChunk();
-
+            TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new ChunkPaymentHistory(this,-1));
         }
         else{
             removeFromBalance(totalUpkeep);
@@ -619,28 +629,29 @@ public abstract class ITerritoryData {
     }
 
     private void deletePortionOfChunk() {
-        int minNbOfUnclaimedChunk = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("minimumNumberOfChunksUnclaimed");
+        int minNbOfUnclaimedChunk = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("minimumNumberOfChunksUnclaimed",5);
         int nbOfUnclaimedChunk = 0;
-        double minPercentageOfChunkToKeep = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("percentageOfChunksUnclaimed") / 100;
+        double minPercentageOfChunkToKeep = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("percentageOfChunksUnclaimed",10) / 100;
 
 
         Collection<ClaimedChunk2> allChunkFrom = NewClaimedChunkStorage.getAllChunkFrom(this);
         for(ClaimedChunk2 claimedChunk2 : allChunkFrom){
-
             if(Math.random() < minPercentageOfChunkToKeep){
                 NewClaimedChunkStorage.unclaimChunk(claimedChunk2);
                 nbOfUnclaimedChunk++;
             }
         }
-
+        System.out.println("nbOfUnclaimedChunk today = " + nbOfUnclaimedChunk);
         if(nbOfUnclaimedChunk < minNbOfUnclaimedChunk){
             for(ClaimedChunk2 claimedChunk2 : allChunkFrom){
+                System.out.println("another one");
                 NewClaimedChunkStorage.unclaimChunk(claimedChunk2);
                 nbOfUnclaimedChunk++;
                 if(nbOfUnclaimedChunk >= minNbOfUnclaimedChunk)
                     break;
             }
         }
+
 
     }
 

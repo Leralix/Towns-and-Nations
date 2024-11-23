@@ -10,7 +10,6 @@ import org.leralix.tan.dataclass.territory.ITerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
 import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.stored.LandmarkStorage;
@@ -24,7 +23,6 @@ import org.leralix.tan.economy.EconomyUtil;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.UUID;
 
 public class DailyTasks {
@@ -50,19 +48,16 @@ public class DailyTasks {
             town.executeTasks();
         }
 
-        ChunkPayment();
-        SalaryPayment();
-
-        PropertyRent();
-
-        ClearOldTaxes();
+        chunkPayment();
+        propertyRent();
+        clearOldTaxes();
         NewsletterStorage.clearOldNewsletters();
         LandmarkStorage.generateAllRessources();
         ArchiveUtil.archiveFiles();
 
     }
 
-    private static void PropertyRent() {
+    private static void propertyRent() {
         for (TownData town : TownDataStorage.getTownMap().values()) {
             for (PropertyData property : town.getPropertyDataList()) {
                 if (property.isRented()) {
@@ -110,7 +105,7 @@ public class DailyTasks {
             }
         }
     }
-    public static void ChunkPayment(){
+    public static void chunkPayment(){
 
         float upkeepCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownChunkUpkeepCost");
 
@@ -126,30 +121,8 @@ public class DailyTasks {
             TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new ChunkPaymentHistory(town,totalUpkeep));
         }
     }
-    public static void SalaryPayment(){
 
-        for (TownData town: TownDataStorage.getTownMap().values()){
-            //Loop through each rank, only paying if everyone of the rank can be paid
-            for (RankData rank : town.getAllRanks()){
-                int rankSalary = rank.getSalary();
-                List<String> playerIdList = rank.getPlayersID();
-                double costOfSalary = playerIdList.size() * rankSalary;
-
-                if(rankSalary == 0 || costOfSalary > town.getBalance() ){
-                    continue;
-                }
-                town.removeFromBalance(costOfSalary);
-                for(String playerId : playerIdList){
-                    PlayerData playerData = PlayerDataStorage.get(playerId);
-                    playerData.addToBalance(rankSalary);
-                    TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SalaryPaymentHistory(town, String.valueOf(rank.getID()), costOfSalary));
-                }
-            }
-
-        }
-    }
-
-    public static void ClearOldTaxes() {
+    public static void clearOldTaxes() {
         int timeBeforeClearingDonation = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("NumberOfDonationBeforeClearing",90);
         int timeBeforeClearingHistory = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingTaxHistory",90);
         int timeBeforeClearingSalary = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingSalaryHistory",90);

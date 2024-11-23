@@ -38,7 +38,7 @@ public class DropChances {
         if(!config.getBoolean("RARE_RESOURCES_SPAWN", true)){
             return;
         }
-        loadDropChances(config,"rareStone",  getRareStone());
+        loadDropChances(config,"rareStone", getRareStone());
         loadDropChances(config,"rareWood", getRareWood());
         loadDropChances(config,"rareCrops", getRareCrops());
         loadDropChances(config,"rareSoul", getRareSoul());
@@ -107,9 +107,9 @@ public class DropChances {
         ItemMeta rareStoneItemMeta = rareItem.getItemMeta();
         if(rareStoneItemMeta != null){
             rareStoneItemMeta.setCustomModelData(101);
-            rareStoneItemMeta.setDisplayName(name.get());
+            rareStoneItemMeta.setDisplayName(name.getWithoutPlaceholder());
             ArrayList<String> lore = new ArrayList<>();
-            lore.add(Lang.RARE_ITEM_DESC_1.get());
+            lore.add(Lang.RARE_ITEM_DESC_1.getWithoutPlaceholder());
             rareStoneItemMeta.setLore(lore);
             rareItem.setItemMeta(rareStoneItemMeta);
         }

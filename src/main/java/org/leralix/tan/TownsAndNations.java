@@ -124,7 +124,7 @@ public final class TownsAndNations extends JavaPlugin {
 
         Lang.loadTranslations(lang);
         DynamicLang.loadTranslations(lang);
-        TownsAndNations.getPlugin().getPluginLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
+        TownsAndNations.getPlugin().getPluginLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.getWithoutPlaceholder());
 
 
 
@@ -138,6 +138,8 @@ public final class TownsAndNations extends JavaPlugin {
         logger.log(Level.INFO, "[TaN] -Loading Database");
         loadDB();
 
+        logger.log(Level.INFO, "[TaN] -Loading Economy");
+        setupEconomy();
 
         logger.log(Level.INFO, "[TaN] -Loading Storage");
 
@@ -177,7 +179,6 @@ public final class TownsAndNations extends JavaPlugin {
         getCommand("tanadmin").setExecutor(new AdminCommandManager());
         getCommand("tandebug").setExecutor(new DebugCommandManager());
 
-        setupEconomy();
 
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {

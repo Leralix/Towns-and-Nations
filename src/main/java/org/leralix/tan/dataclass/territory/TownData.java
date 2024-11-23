@@ -462,7 +462,7 @@ public class TownData extends ITerritoryData {
 
     @Override
     public double getChunkUpkeepCost() {
-        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("TownChunkUpkeepCost",0) / 10;
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("TownChunkUpkeepCost",0);
     }
 
     @Override
