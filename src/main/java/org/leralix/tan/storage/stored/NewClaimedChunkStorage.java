@@ -48,6 +48,16 @@ public class NewClaimedChunkStorage {
         return TownDataStorage.get(NewClaimedChunkStorage.getChunkOwnerID(chunk));
     }
 
+    public static Collection<ClaimedChunk2> getAllChunkFrom(ITerritoryData territoryData){
+        List<ClaimedChunk2> chunks = new ArrayList<>();
+        for(ClaimedChunk2 chunk : claimedChunksMap.values()){
+            if(chunk.getOwnerID().equals(territoryData.getID())){
+                chunks.add(chunk);
+            }
+        }
+        return Collections.unmodifiableCollection(chunks);
+    }
+
     public static String getChunkOwnerName(Chunk chunk) {
 
         ClaimedChunk2 claimedChunk = claimedChunksMap.get(getChunkKey(chunk));

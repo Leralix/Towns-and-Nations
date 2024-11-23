@@ -295,7 +295,7 @@ language:
   GUI_TREASURY_STORAGE: "§aTreasury"
   GUI_TREASURY_STORAGE_DESC1: "§fCurrent treasury: §6{0}{MONEY_CHAR}"
   PLAYER_TAX_LINE: "§f -From taxes: {0}"
-  PLAYER_TAX_MISSING_LINE: "§f -From taxes : {0}{MONEY_CHAR} §7(missing {1}{MONEY_CHAR})"
+  PLAYER_TAX_MISSING_LINE: "§f -From taxes : {0} §7(missing {1}{MONEY_CHAR})"
   VASSAL_TAX_LINE: "§f -From vassal taxes: {0}"
   VASSAL_TAX_MISSING_LINE: "§f -From vassal taxes : {0}{MONEY_CHAR}§7 (missing {1}{MONEY_CHAR})"
   OVERLORD_TAX_LINE: "§f -From overlord taxes: {0}"

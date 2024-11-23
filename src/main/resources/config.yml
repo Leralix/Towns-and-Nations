@@ -307,7 +307,7 @@ cancelTeleportOnDamage: true
 landmarkNameMaxSize: 25
 
 ########################
-##   Claim blacklist  ##
+##       Claims       ##
 ########################
 
 #List of every claim that cannot be claimed
@@ -325,11 +325,18 @@ claimBlacklist:
   - name : "world"
     coordinate : [0,0,1,1]
 
+#If a town cannot pay the territory upkeep, % of chunks that will be unclaimed
+percentageOfChunksUnclaimed: 15.0
+
+#Minimum number of chunks that will be unclaimed if a town cannot pay the territory upkeep
+minimumNumberOfChunksUnclaimed: 5
+
+
 ########################
 ##     Wilderness     ##
 ########################
 
-#Set rules for player on wilderness chunks (if disableWildernessRules is set to false)
+#Set rules for player on wilderness chunks (unclaimed)
 wildernessRules:
   INTERACT_CHEST : true
   INTERACT_DOOR: true

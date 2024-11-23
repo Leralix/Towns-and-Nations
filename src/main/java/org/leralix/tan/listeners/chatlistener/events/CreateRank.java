@@ -34,6 +34,6 @@ public class CreateRank extends ChatListenerEvent {
 
         removePlayer(player);
         RankData newRank = territoryData.registerNewRank(message);
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> PlayerGUI.openTownRankManager(player, territoryData, newRank.getID()));
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> PlayerGUI.openRankManager(player, territoryData, newRank.getID()));
     }
 }

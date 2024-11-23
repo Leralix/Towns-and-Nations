@@ -11,6 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.newhistory.ChunkPaymentHistory;
 import org.leralix.tan.dataclass.newhistory.PlayerDonationHistory;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.ChunkUpkeepLine;
@@ -30,6 +31,7 @@ import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.*;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
@@ -88,6 +90,17 @@ public abstract class ITerritoryData {
     public abstract ItemStack getIconItem();
     public abstract void setIcon(ItemStack icon);
     public abstract Collection<String> getPlayerIDList();
+    public Collection<String> getOrderedPlayerIDList(){
+        List<String> sortedList = new ArrayList<>();
+        List<PlayerData> playerDataSorted = getPlayerDataList().stream()
+                .sorted(Comparator.comparingInt(playerData -> -this.getRank(playerData.getRankID(this)).getLevel()))
+                .toList();
+
+        for(PlayerData playerData : playerDataSorted){
+            sortedList.add(playerData.getID());
+        }
+        return sortedList;
+    }
     public abstract Collection<PlayerData> getPlayerDataList();
     public abstract ClaimedChunkSettings getChunkSettings();
     public abstract boolean havePlayer(PlayerData playerData);
@@ -468,6 +481,12 @@ public abstract class ITerritoryData {
         return getRanks().values();
     }
 
+    public Collection<RankData> getAllRanksSorted(){
+        return getRanks().values().stream()
+                .sorted(Comparator.comparingInt(p -> -p.getLevel()))
+                .toList();
+    }
+
     public RankData getRank(int rankID){
         return getRanks().get(rankID);
     }
@@ -518,7 +537,7 @@ public abstract class ITerritoryData {
         this.defaultRankID = rankID;
     }
 
-    public abstract List<GuiItem> getMemberList(PlayerData playerData);
+    public abstract List<GuiItem> getOrderedMemberList(PlayerData playerData);
 
 
     public boolean doesPlayerHavePermission(Player player, RolePermission townRolePermission) {
@@ -558,7 +577,9 @@ public abstract class ITerritoryData {
 
     protected abstract void addSpecificTaxes(Budget budget);
 
-    public abstract int getNumberOfClaimedChunk();
+    public int getNumberOfClaimedChunk(){
+        return NewClaimedChunkStorage.getAllChunkFrom(this).size();
+    }
 
     public abstract double getChunkUpkeepCost();
 
@@ -566,4 +587,63 @@ public abstract class ITerritoryData {
 
     public abstract void addToTax(double i);
     public abstract void removeToTax(double i);
+
+    public void executeTasks(){
+
+        double minimumMoneyToKeep = haveOverlord() ? getOverlord().getTax() : 0;
+
+        collectTaxes();
+        paySalaries(minimumMoneyToKeep);
+        payChunkUpkeep(minimumMoneyToKeep);
+    }
+
+    protected void paySalaries(double moneyInReserve) {
+
+    }
+
+    private void payChunkUpkeep(double moneyInReserve) {
+        double upkeepCost = this.getChunkUpkeepCost();
+
+
+        int numberClaimedChunk = getNumberOfClaimedChunk();
+        int totalUpkeep = (int) ( numberClaimedChunk * upkeepCost/10);
+        if (totalUpkeep > getBalance()){
+            deletePortionOfChunk();
+
+        }
+        else{
+            removeFromBalance(totalUpkeep);
+            TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new ChunkPaymentHistory(this,totalUpkeep));
+        }
+
+    }
+
+    private void deletePortionOfChunk() {
+        int minNbOfUnclaimedChunk = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("minimumNumberOfChunksUnclaimed");
+        int nbOfUnclaimedChunk = 0;
+        double minPercentageOfChunkToKeep = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("percentageOfChunksUnclaimed") / 100;
+
+
+        Collection<ClaimedChunk2> allChunkFrom = NewClaimedChunkStorage.getAllChunkFrom(this);
+        for(ClaimedChunk2 claimedChunk2 : allChunkFrom){
+
+            if(Math.random() < minPercentageOfChunkToKeep){
+                NewClaimedChunkStorage.unclaimChunk(claimedChunk2);
+                nbOfUnclaimedChunk++;
+            }
+        }
+
+        if(nbOfUnclaimedChunk < minNbOfUnclaimedChunk){
+            for(ClaimedChunk2 claimedChunk2 : allChunkFrom){
+                NewClaimedChunkStorage.unclaimChunk(claimedChunk2);
+                nbOfUnclaimedChunk++;
+                if(nbOfUnclaimedChunk >= minNbOfUnclaimedChunk)
+                    break;
+            }
+        }
+
+    }
+
+
+    protected abstract void collectTaxes();
 }

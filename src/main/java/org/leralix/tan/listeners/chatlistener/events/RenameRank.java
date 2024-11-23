@@ -33,7 +33,7 @@ public class RenameRank extends ChatListenerEvent {
         }
 
         townRank.setName(message);
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> PlayerGUI.openTownRankManager(player, territoryConcerned, townRank.getID()));
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> PlayerGUI.openRankManager(player, territoryConcerned, townRank.getID()));
         removePlayer(player);
     }
 }

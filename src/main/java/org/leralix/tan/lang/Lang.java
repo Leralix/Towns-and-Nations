@@ -833,6 +833,7 @@ public enum Lang {
     public String get() {
         String translation = translations.get(this);
         if (translation != null) {
+            replaceCommonPlaceholders(translation);
             return ChatColor.translateAlternateColorCodes('§', translation);
         }
         return "Message not found for " + this.name() + " in this language file.";

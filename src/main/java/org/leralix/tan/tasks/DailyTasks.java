@@ -46,10 +46,13 @@ public class DailyTasks {
     }
 
     public static void executeMidnightTasks() {
-        TownTaxPayment();
-        RegionTaxPayment();
+        for(TownData town : TownDataStorage.getTownMap().values()){
+            town.executeTasks();
+        }
+
         ChunkPayment();
         SalaryPayment();
+
         PropertyRent();
 
         ClearOldTaxes();
@@ -70,20 +73,19 @@ public class DailyTasks {
     }
 
     public static void RegionTaxPayment() {
-
         for(RegionData regionData: RegionDataStorage.getAllRegions()){
-            for(ITerritoryData town : regionData.getVassals()){
-                if(town == null) continue;
-                double tax = regionData.getTax();
-                if(town.getBalance() < tax){
-                    TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SubjectTaxHistory(regionData,town,-1));
+                for(ITerritoryData town : regionData.getVassals()){
+                    if(town == null) continue;
+                    double tax = regionData.getTax();
+                    if(town.getBalance() < tax){
+                        TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SubjectTaxHistory(regionData,town,-1));
+                    }
+                    else {
+                        town.removeFromBalance(tax);
+                        regionData.addToBalance(tax);
+                        TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SubjectTaxHistory(regionData,town,tax));
+                    }
                 }
-                else {
-                    town.removeFromBalance(tax);
-                    regionData.addToBalance(tax);
-                    TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SubjectTaxHistory(regionData,town,tax));
-                }
-            }
         }
 
     }

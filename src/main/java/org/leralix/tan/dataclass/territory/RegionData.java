@@ -6,9 +6,11 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.RegionClaimedChunk;
+import org.leralix.tan.dataclass.newhistory.SubjectTaxHistory;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
@@ -361,6 +363,22 @@ public class RegionData extends ITerritoryData {
         taxRate -= i;
     }
 
+    @Override
+    protected void collectTaxes() {
+        for(ITerritoryData town : getVassals()){
+            if(town == null) continue;
+            double tax = getTax();
+            if(town.getBalance() < tax){
+                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SubjectTaxHistory(this,town,-1));
+            }
+            else {
+                town.removeFromBalance(tax);
+                addToBalance(tax);
+                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SubjectTaxHistory(this,town,tax));
+            }
+        }
+    }
+
     public boolean isTownInRegion(TownData townData) {
         return townsInRegion.contains(townData.getID());
     }
@@ -386,16 +404,6 @@ public class RegionData extends ITerritoryData {
         townsInRegion.remove(townID);
     }
 
-
-    public int getNumberOfClaimedChunk() {
-        int count = 0;
-        for (ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getClaimedChunksMap().values()) {
-            if (claimedChunk.getOwnerID().equals(this.id)) {
-                count++;
-            }
-        }
-        return count;
-    }
 
     @Override
     public double getChunkUpkeepCost() {
@@ -538,9 +546,9 @@ public class RegionData extends ITerritoryData {
     }
 
     @Override
-    public List<GuiItem> getMemberList(PlayerData playerData) {
+    public List<GuiItem> getOrderedMemberList(PlayerData playerData) {
         List<GuiItem> res = new ArrayList<>();
-        for (String playerUUID: getPlayerIDList()) {
+        for (String playerUUID: getOrderedPlayerIDList()) {
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
             PlayerData playerIterateData = PlayerDataStorage.get(playerUUID);
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,

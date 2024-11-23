@@ -1,6 +1,7 @@
 package org.leralix.tan.dataclass;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.ITerritoryData;
@@ -247,5 +248,19 @@ public class PlayerData {
 
     public void setRegionRankID(Integer rankID) {
         this.regionRankID = rankID;
+    }
+
+    public int getRankID(ITerritoryData territoryData) {
+        if(territoryData instanceof TownData){
+            return getTownRankID();
+        }
+        else if(territoryData instanceof RegionData){
+            return getRegionRankID();
+        }
+        return -1;
+    }
+
+    public OfflinePlayer getOfflinePlayer() {
+        return Bukkit.getServer().getOfflinePlayer(getUUID());
     }
 }
