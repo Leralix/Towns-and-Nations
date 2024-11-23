@@ -2,7 +2,7 @@ package org.leralix.tan.listeners.chatlistener.events;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chatlistener.ChatListenerEvent;
 import org.leralix.tan.utils.ChatUtils;
@@ -15,10 +15,10 @@ import static org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage.r
 
 public class ChangeTerritoryName extends ChatListenerEvent {
 
-    private ITerritoryData territoryToRename;
+    private TerritoryData territoryToRename;
     int cost;
     private Consumer<Player> guiCallback;
-    public ChangeTerritoryName(@NotNull ITerritoryData territoryToRename, int cost, Consumer<Player> guiCallback) {
+    public ChangeTerritoryName(@NotNull TerritoryData territoryToRename, int cost, Consumer<Player> guiCallback) {
         this.territoryToRename = territoryToRename;
         this.cost = cost;
         this.guiCallback = guiCallback;

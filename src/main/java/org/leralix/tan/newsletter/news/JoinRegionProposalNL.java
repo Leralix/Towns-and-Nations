@@ -6,8 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
-import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.newsletter.NewsletterScope;
@@ -22,7 +21,7 @@ public class JoinRegionProposalNL extends Newsletter {
     String proposingTerritoryID;
     String receivingTerritoryID;
 
-    public JoinRegionProposalNL(ITerritoryData proposingTerritory, ITerritoryData receivingTerritory) {
+    public JoinRegionProposalNL(TerritoryData proposingTerritory, TerritoryData receivingTerritory) {
         this(proposingTerritory.getID(), receivingTerritory.getID());
     }
 
@@ -34,8 +33,8 @@ public class JoinRegionProposalNL extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
-        ITerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
-        ITerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
+        TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
+        TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         if(proposingTerritory == null || receivingTerritory == null)
             return null;
 
@@ -62,7 +61,7 @@ public class JoinRegionProposalNL extends Newsletter {
     public boolean shouldShowToPlayer(Player player, NewsletterScope scope) {
         if(isRead(player) && scope == NewsletterScope.SHOW_ONLY_UNREAD)
             return false;
-        ITerritoryData territoryData = TerritoryUtil.getTerritory(receivingTerritoryID);
+        TerritoryData territoryData = TerritoryUtil.getTerritory(receivingTerritoryID);
         if(territoryData == null)
             return false;
         PlayerData playerData = PlayerDataStorage.get(player);

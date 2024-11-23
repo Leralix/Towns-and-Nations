@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
@@ -70,11 +70,11 @@ public class PlannedAttack {
         return name;
     }
 
-    public ITerritoryData getMainDefender() {
+    public TerritoryData getMainDefender() {
         return TerritoryUtil.getTerritory(mainDefenderID);
     }
 
-    public ITerritoryData getMainAttacker() {
+    public TerritoryData getMainAttacker() {
         return TerritoryUtil.getTerritory(mainAttackerID);
     }
 
@@ -88,7 +88,7 @@ public class PlannedAttack {
 
     public Collection<PlayerData> getDefendingPlayers() {
         Collection<PlayerData> defenders = new ArrayList<>();
-        for(ITerritoryData defendingTerritory : getDefendingTerritories()){
+        for(TerritoryData defendingTerritory : getDefendingTerritories()){
             defenders.addAll(defendingTerritory.getPlayerDataList());
         }
         return defenders;
@@ -96,22 +96,22 @@ public class PlannedAttack {
 
     public Collection<PlayerData> getAttackersPlayers() {
         Collection<PlayerData> defenders = new ArrayList<>();
-        for(ITerritoryData attackingTerritory : getAttackingTerritories()){
+        for(TerritoryData attackingTerritory : getAttackingTerritories()){
             defenders.addAll(attackingTerritory.getPlayerDataList());
         }
         return defenders;
     }
 
-    public Collection<ITerritoryData> getDefendingTerritories() {
-        Collection<ITerritoryData> defenders = new ArrayList<>();
+    public Collection<TerritoryData> getDefendingTerritories() {
+        Collection<TerritoryData> defenders = new ArrayList<>();
         for(String defenderID : defendersID){
             defenders.add(TerritoryUtil.getTerritory(defenderID));
         }
         return defenders;
     }
 
-    public Collection<ITerritoryData> getAttackingTerritories() {
-        Collection<ITerritoryData> attackers = new ArrayList<>();
+    public Collection<TerritoryData> getAttackingTerritories() {
+        Collection<TerritoryData> attackers = new ArrayList<>();
         for(String attackerID : attackersID){
             attackers.add(TerritoryUtil.getTerritory(attackerID));
         }
@@ -127,9 +127,9 @@ public class PlannedAttack {
     }
 
     public void broadCastMessageWithSound(String message, SoundEnum soundEnum){
-        Collection<ITerritoryData> territoryData = getAttackingTerritories();
+        Collection<TerritoryData> territoryData = getAttackingTerritories();
         territoryData.addAll(getDefendingTerritories());
-        for(ITerritoryData territory : territoryData){
+        for(TerritoryData territory : territoryData){
             territory.broadCastMessageWithSound(message, soundEnum);
         }
     }
@@ -161,10 +161,10 @@ public class PlannedAttack {
         remove();
     }
 
-    public void addDefender(ITerritoryData territory){
+    public void addDefender(TerritoryData territory){
         defendersID.add(territory.getID());
     }
-    public void addAttacker(ITerritoryData territoryData){
+    public void addAttacker(TerritoryData territoryData){
         attackersID.add(territoryData.getID());
     }
 
@@ -195,7 +195,7 @@ public class PlannedAttack {
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
-    public ItemStack getIcon(ITerritoryData territoryConcerned){
+    public ItemStack getIcon(TerritoryData territoryConcerned){
         ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
         ItemMeta itemMeta = itemStack.getItemMeta();
         if(itemMeta != null){
@@ -227,28 +227,28 @@ public class PlannedAttack {
 
 
     public void remove() {
-        for(ITerritoryData territory : getAttackingTerritories()){
+        for(TerritoryData territory : getAttackingTerritories()){
             territory.removePlannedAttack(this);
         }
-        for(ITerritoryData territory : getDefendingTerritories()){
+        for(TerritoryData territory : getDefendingTerritories()){
             territory.removePlannedAttack(this);
         }
         PlannedAttackStorage.remove(this);
     }
 
-    public boolean isMainAttacker(ITerritoryData territory) {
+    public boolean isMainAttacker(TerritoryData territory) {
         return territory.getID().equals(mainAttackerID);
     }
 
-    public boolean isMainDefender(ITerritoryData territory) {
+    public boolean isMainDefender(TerritoryData territory) {
         return territory.getID().equals(mainDefenderID);
     }
 
-    private boolean isSecondaryAttacker(ITerritoryData territoryConcerned) {
+    private boolean isSecondaryAttacker(TerritoryData territoryConcerned) {
         return attackersID.contains(territoryConcerned.getID());
     }
 
-    private boolean isSecondaryDefender(ITerritoryData territoryConcerned) {
+    private boolean isSecondaryDefender(TerritoryData territoryConcerned) {
         return defendersID.contains(territoryConcerned.getID());
     }
 
@@ -256,7 +256,7 @@ public class PlannedAttack {
         return warGoal;
     }
 
-    public WarRole getTerritoryRole(ITerritoryData territory) {
+    public WarRole getTerritoryRole(TerritoryData territory) {
         if(isMainAttacker(territory))
             return WarRole.MAIN_ATTACKER;
         if(isMainDefender(territory))
@@ -268,7 +268,7 @@ public class PlannedAttack {
         return WarRole.NEUTRAL;
     }
 
-    public void removeBelligerent(ITerritoryData territory) {
+    public void removeBelligerent(TerritoryData territory) {
         String territoryID = territory.getID();
         //no need to check, it only removes if it is a part of it
         attackersID.remove(territoryID);
@@ -287,7 +287,7 @@ public class PlannedAttack {
         List<String> lore = new ArrayList<>();
         itemMeta.setDisplayName(Lang.GUI_ATTACKING_SIDE_ICON.get());
         lore.add(Lang.GUI_ATTACKING_SIDE_ICON_DESC1.get());
-        for(ITerritoryData territoryData : getAttackingTerritories()){
+        for(TerritoryData territoryData : getAttackingTerritories()){
             lore.add(Lang.GUI_ICON_LIST.get(territoryData.getColoredName()));
         }
         itemMeta.setLore(lore);
@@ -301,7 +301,7 @@ public class PlannedAttack {
         List<String> lore = new ArrayList<>();
         itemMeta.setDisplayName(Lang.GUI_DEFENDING_SIDE_ICON.get());
         lore.add(Lang.GUI_DEFENDING_SIDE_ICON_DESC1.get());
-        for(ITerritoryData territoryData : getDefendingTerritories()){
+        for(TerritoryData territoryData : getDefendingTerritories()){
             lore.add(Lang.GUI_ICON_LIST.get(territoryData.getColoredName()));
         }
         itemMeta.setLore(lore);

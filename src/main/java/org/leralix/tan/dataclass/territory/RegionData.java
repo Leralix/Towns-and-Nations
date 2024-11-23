@@ -14,7 +14,6 @@ import org.leralix.tan.dataclass.newhistory.SubjectTaxHistory;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
-import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.PlayerGUI;
@@ -34,7 +33,7 @@ import static org.leralix.tan.enums.SoundEnum.BAD;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 import static org.leralix.tan.utils.HeadUtils.getPlayerHead;
 
-public class RegionData extends ITerritoryData {
+public class RegionData extends TerritoryData {
 
     private final String id;
     private String name;
@@ -151,7 +150,7 @@ public class RegionData extends ITerritoryData {
     @Override
     public Collection<String> getPlayerIDList(){
         ArrayList<String> playerList = new ArrayList<>();
-        for (ITerritoryData townData : getSubjects()){
+        for (TerritoryData townData : getSubjects()){
             playerList.addAll(townData.getPlayerIDList());
         }
         return playerList;
@@ -216,7 +215,7 @@ public class RegionData extends ITerritoryData {
 
     public int getTotalPlayerCount() {
         int count = 0;
-        for (ITerritoryData town : getSubjects()){
+        for (TerritoryData town : getSubjects()){
             count += town.getPlayerIDList().size();
         }
         return count;
@@ -269,7 +268,7 @@ public class RegionData extends ITerritoryData {
         return nationID != null;
     }
 
-    public ITerritoryData getOverlord() {
+    public TerritoryData getOverlord() {
         return null;
     }
     public String getNationID() {
@@ -284,8 +283,8 @@ public class RegionData extends ITerritoryData {
         return taxRate;
     }
 
-    public List<ITerritoryData> getSubjects() {
-        List<ITerritoryData> towns = new ArrayList<>();
+    public List<TerritoryData> getSubjects() {
+        List<TerritoryData> towns = new ArrayList<>();
         for (String townID : townsInRegion) {
             towns.add(TerritoryUtil.getTerritory(townID));
         }
@@ -305,7 +304,7 @@ public class RegionData extends ITerritoryData {
 
 
     @Override
-    public void addVassalPrivate(ITerritoryData vassal) {
+    public void addVassalPrivate(TerritoryData vassal) {
         addSubject(vassal.getID());
     }
 
@@ -339,13 +338,13 @@ public class RegionData extends ITerritoryData {
     }
 
     @Override
-    public void setOverlordPrivate(ITerritoryData overlord) {
+    public void setOverlordPrivate(TerritoryData overlord) {
         // Kingdoms are not implemented yet
     }
 
     public int getIncomeTomorrow() {
         int income = 0;
-        for (ITerritoryData town  : getSubjects()) {
+        for (TerritoryData town  : getSubjects()) {
             if(town.getBalance() > taxRate) {
                 income += taxRate;
             }
@@ -365,7 +364,7 @@ public class RegionData extends ITerritoryData {
 
     @Override
     protected void collectTaxes() {
-        for(ITerritoryData town : getVassals()){
+        for(TerritoryData town : getVassals()){
             if(town == null) continue;
             double tax = getTax();
             if(town.getBalance() < tax){
@@ -411,7 +410,7 @@ public class RegionData extends ITerritoryData {
     }
 
     public boolean isPlayerInRegion(PlayerData playerData) {
-        for (ITerritoryData town : getSubjects()){
+        for (TerritoryData town : getSubjects()){
             if(town.havePlayer(playerData))
                 return true;
         }
@@ -457,19 +456,19 @@ public class RegionData extends ITerritoryData {
 
     @Override
     public void broadCastMessage(String message) {
-        for(ITerritoryData townData : getSubjects())
+        for(TerritoryData townData : getSubjects())
             townData.broadCastMessage(message);
     }
 
     @Override
     public void broadCastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix) {
-        for(ITerritoryData townData : getSubjects())
+        for(TerritoryData townData : getSubjects())
             townData.broadCastMessageWithSound(message, soundEnum, addPrefix);
     }
 
     @Override
     public void broadCastMessageWithSound(String message, SoundEnum soundEnum) {
-        for(ITerritoryData townData : getSubjects())
+        for(TerritoryData townData : getSubjects())
             townData.broadCastMessageWithSound(message, soundEnum);
     }
 
@@ -535,7 +534,7 @@ public class RegionData extends ITerritoryData {
     }
 
     @Override
-    public Collection<ITerritoryData> getPotentialVassals() {
+    public Collection<TerritoryData> getPotentialVassals() {
         return new ArrayList<>(TownDataStorage.getTownMap().values());
     }
 

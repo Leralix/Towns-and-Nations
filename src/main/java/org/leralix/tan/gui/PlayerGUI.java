@@ -17,7 +17,7 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.newhistory.TransactionHistory;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.economy.Budget;
@@ -813,7 +813,7 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
     }
 
-    private static void openWarMenu(Player player, ITerritoryData territory, Consumer<Player> exit, int page) {
+    private static void openWarMenu(Player player, TerritoryData territory, Consumer<Player> exit, int page) {
         Gui gui = IGUI.createChestGui("Wars | page " + (page + 1),6);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
@@ -834,7 +834,7 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
     }
 
-    private static void openSpecificPlannedAttackMenu(Player player, ITerritoryData territory, PlannedAttack plannedAttack, Consumer<Player> exit, int page) {
+    private static void openSpecificPlannedAttackMenu(Player player, TerritoryData territory, PlannedAttack plannedAttack, Consumer<Player> exit, int page) {
         Gui gui = IGUI.createChestGui("War manager", 3);
 
         GuiItem attackIcon = ItemBuilder.from(plannedAttack.getIcon(territory)).asGuiItem(event -> event.setCancelled(true));
@@ -928,8 +928,8 @@ public class PlayerGUI implements IGUI {
         Gui gui = IGUI.createChestGui("War on " + createAttackData.getMainDefender().getName(),3);
 
 
-        ITerritoryData mainAttacker = createAttackData.getMainAttacker();
-        ITerritoryData mainDefender = createAttackData.getMainDefender();
+        TerritoryData mainAttacker = createAttackData.getMainAttacker();
+        TerritoryData mainDefender = createAttackData.getMainDefender();
 
         ItemStack addTime = HeadUtils.makeSkullB64(Lang.GUI_ATTACK_ADD_TIME.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjMyZmZmMTYzZTIzNTYzMmY0MDQ3ZjQ4NDE1OTJkNDZmODVjYmJmZGU4OWZjM2RmNjg3NzFiZmY2OWE2NjIifX19",
                 Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(),
@@ -1021,8 +1021,8 @@ public class PlayerGUI implements IGUI {
 
         Gui gui = IGUI.createChestGui("War on " + createAttackData.getMainDefender().getName(),6);
 
-        ITerritoryData territoryToAttack = createAttackData.getMainDefender();
-        for(ITerritoryData territoryData : territoryToAttack.getVassals()){
+        TerritoryData territoryToAttack = createAttackData.getMainDefender();
+        for(TerritoryData territoryData : territoryToAttack.getVassals()){
             if(territoryData.isCapital()){
                 continue;
             }
@@ -1126,11 +1126,11 @@ public class PlayerGUI implements IGUI {
 
     }
 
-    public static void browseTerritory(Player player, ITerritoryData territoryData,BrowseScope scope, Consumer<Player> exitMenu, int page) {
+    public static void browseTerritory(Player player, TerritoryData territoryData, BrowseScope scope, Consumer<Player> exitMenu, int page) {
         Gui gui = IGUI.createChestGui("Territory list | page " + (page + 1),6);
 
 
-        List<ITerritoryData> territoryList = new ArrayList<>();
+        List<TerritoryData> territoryList = new ArrayList<>();
 
         if(scope == BrowseScope.ALL || scope == BrowseScope.TOWNS)
             territoryList.addAll(TownDataStorage.getTownMap().values());
@@ -1139,7 +1139,7 @@ public class PlayerGUI implements IGUI {
 
         ArrayList<GuiItem> townGuiItems = new ArrayList<>();
 
-        for(ITerritoryData specificTerritoryData : territoryList){
+        for(TerritoryData specificTerritoryData : territoryList){
             ItemStack territoryIcon = specificTerritoryData.getIconWithInformationAndRelation(territoryData);
             GuiItem territoryGUI = ItemBuilder.from(territoryIcon).asGuiItem(event -> event.setCancelled(true));
 
@@ -1160,11 +1160,11 @@ public class PlayerGUI implements IGUI {
     }
 
 
-    public static void openMemberList(Player player, ITerritoryData territoryData) {
+    public static void openMemberList(Player player, TerritoryData territoryData) {
         openMemberList(player, territoryData, 0);
     }
 
-    public static void openMemberList(Player player, ITerritoryData territoryData, int page) {
+    public static void openMemberList(Player player, TerritoryData territoryData, int page) {
 
         PlayerData playerData = PlayerDataStorage.get(player);
 
@@ -1259,7 +1259,7 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
 
     }
-    public static void openTerritoryRanks(Player player, ITerritoryData territoryData) {
+    public static void openTerritoryRanks(Player player, TerritoryData territoryData) {
 
         int row = 3;
         Gui gui = IGUI.createChestGui("Ranks",row);
@@ -1316,7 +1316,7 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
 
     }
-    public static void openRankManager(Player player, ITerritoryData territoryData, int rankID) {
+    public static void openRankManager(Player player, TerritoryData territoryData, int rankID) {
 
         RankData townRank = territoryData.getRank(rankID);
         PlayerData playerData = PlayerDataStorage.get(player);
@@ -1508,7 +1508,7 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
 
     }
-    public static void openTownRankManagerAddPlayer(Player player,ITerritoryData territoryData, int rankID) {
+    public static void openTownRankManagerAddPlayer(Player player, TerritoryData territoryData, int rankID) {
 
         Gui gui = IGUI.createChestGui("Add player",3);
 
@@ -1552,7 +1552,7 @@ public class PlayerGUI implements IGUI {
         gui.setItem(3,1, IGUI.createBackArrow(player, p -> openRankManager(player, territoryData, rankID)));
         gui.open(player);
     }
-    public static void openTownRankManagerPermissions(Player player, ITerritoryData territoryData, int rankID) {
+    public static void openTownRankManagerPermissions(Player player, TerritoryData territoryData, int rankID) {
 
         Gui gui = IGUI.createChestGui("Town",3);
 
@@ -1560,8 +1560,10 @@ public class PlayerGUI implements IGUI {
 
 
         for(RolePermission townRolePermission : RolePermission.values()){
-            GuiItem guiItem = townRolePermission.createGuiItem(player, territoryData,  townRank);
-            gui.addItem(guiItem);
+            if(townRolePermission.isForTerritory(territoryData)){
+                GuiItem guiItem = townRolePermission.createGuiItem(player, territoryData,  townRank);
+                gui.addItem(guiItem);
+            }
         }
 
         gui.setItem(3,1, IGUI.createBackArrow(player, p -> openRankManager(player, territoryData, rankID)));
@@ -1569,7 +1571,7 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
 
     }
-    public static void openTreasury(Player player, ITerritoryData territoryData) {
+    public static void openTreasury(Player player, TerritoryData territoryData) {
 
         Gui gui = IGUI.createChestGui("Economy",4);
 
@@ -1669,10 +1671,10 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
 
     }
-    public static void openTownEconomicsHistory(Player player, ITerritoryData territoryData, TransactionHistoryEnum transactionHistoryEnum) {
+    public static void openTownEconomicsHistory(Player player, TerritoryData territoryData, TransactionHistoryEnum transactionHistoryEnum) {
         openTownEconomicsHistory(player, territoryData, transactionHistoryEnum, 0);
     }
-        public static void openTownEconomicsHistory(Player player, ITerritoryData territoryData, TransactionHistoryEnum transactionHistoryEnum, int page) {
+        public static void openTownEconomicsHistory(Player player, TerritoryData territoryData, TransactionHistoryEnum transactionHistoryEnum, int page) {
 
         Gui gui = IGUI.createChestGui("Town",6);
         List<GuiItem> guiItems = new ArrayList<>();
@@ -1988,7 +1990,7 @@ public class PlayerGUI implements IGUI {
         gui.setItem(3,1, IGUI.createBackArrow(player, p -> openTownSettings(player, townData)));
         gui.open(player);
     }
-    public static void openRelations(Player player, ITerritoryData territory, Consumer<Player> exitMenu) {
+    public static void openRelations(Player player, TerritoryData territory, Consumer<Player> exitMenu) {
 
         Gui gui = IGUI.createChestGui("Relations - " + territory.getName(),3);
 
@@ -2073,7 +2075,7 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
     }
 
-    public static void openProposalMenu(Player player, ITerritoryData territoryData, int page, Consumer<Player> exitMenu){
+    public static void openProposalMenu(Player player, TerritoryData territoryData, int page, Consumer<Player> exitMenu){
 
         Gui gui = IGUI.createChestGui("Diplomatic proposals",6);
 
@@ -2092,7 +2094,7 @@ public class PlayerGUI implements IGUI {
 
     }
 
-    public static void openSingleRelation(Player player, ITerritoryData mainTerritory, TownRelation relation, int page, Consumer<Player> doubleExit) {
+    public static void openSingleRelation(Player player, TerritoryData mainTerritory, TownRelation relation, int page, Consumer<Player> doubleExit) {
         Gui gui = IGUI.createChestGui("Relation | page " + (page + 1), 6);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
@@ -2100,7 +2102,7 @@ public class PlayerGUI implements IGUI {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for(String territoryID : mainTerritory.getRelations().getTerritoriesIDWithRelation(relation)){
 
-            ITerritoryData territoryData = TerritoryUtil.getTerritory(territoryID);
+            TerritoryData territoryData = TerritoryUtil.getTerritory(territoryID);
             ItemStack icon = territoryData.getIconWithInformationAndRelation(mainTerritory);
 
             if (relation == TownRelation.WAR) {
@@ -2164,7 +2166,7 @@ public class PlayerGUI implements IGUI {
 
         gui.open(player);
     }
-    public static void openTownRelationModification(Player player, ITerritoryData territory, Action action, TownRelation wantedRelation, int page, Consumer<Player> exit) {
+    public static void openTownRelationModification(Player player, TerritoryData territory, Action action, TownRelation wantedRelation, int page, Consumer<Player> exit) {
         int nRows = 6;
         Gui gui = IGUI.createChestGui("Relation - " + territory.getName(),nRows);
 
@@ -2182,7 +2184,7 @@ public class PlayerGUI implements IGUI {
             territories.remove(territory.getID()); //Remove itself
 
             for(String otherTownUUID : territories){
-                ITerritoryData otherTerritory = TerritoryUtil.getTerritory(otherTownUUID);
+                TerritoryData otherTerritory = TerritoryUtil.getTerritory(otherTownUUID);
                 ItemStack icon = otherTerritory.getIconWithInformationAndRelation(territory);
 
                 GuiItem iconGui = ItemBuilder.from(icon).asGuiItem(event -> {
@@ -2211,7 +2213,7 @@ public class PlayerGUI implements IGUI {
         }
         else if(action == Action.REMOVE){
             for(String otherTownUUID : relationListID){
-                ITerritoryData otherTerritory = TerritoryUtil.getTerritory(otherTownUUID);
+                TerritoryData otherTerritory = TerritoryUtil.getTerritory(otherTownUUID);
                 ItemStack townIcon = otherTerritory.getIconWithInformationAndRelation(territory);
 
                 GuiItem townGui = ItemBuilder.from(townIcon).asGuiItem(event -> {
@@ -2571,14 +2573,14 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
     }
 
-    private static void openVassalsList(Player player, ITerritoryData territoryData, int page){
+    private static void openVassalsList(Player player, TerritoryData territoryData, int page){
 
         Gui gui = IGUI.createChestGui("Region",6);
         PlayerData playerData = PlayerDataStorage.get(player);
 
         List<GuiItem> guiList = new ArrayList<>();
 
-        for (ITerritoryData townData : territoryData.getVassals()){
+        for (TerritoryData townData : territoryData.getVassals()){
             ItemStack townIcon = townData.getIconWithInformations();
             GuiItem townInfo = ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
             guiList.add(townInfo);
@@ -2615,13 +2617,13 @@ public class PlayerGUI implements IGUI {
         gui.setItem(6,4, removeButton);
         gui.open(player);
     }
-    private static void openAddVassal(Player player, ITerritoryData territoryData, int page) {
+    private static void openAddVassal(Player player, TerritoryData territoryData, int page) {
 
         Gui gui = IGUI.createChestGui("Vassals", 6);
 
         List<GuiItem> guiItems = new ArrayList<>();
 
-        for (ITerritoryData potentialVassal : territoryData.getPotentialVassals()) {
+        for (TerritoryData potentialVassal : territoryData.getPotentialVassals()) {
             if(territoryData.isVassal(potentialVassal) || potentialVassal.containsVassalisationProposal(territoryData))
                 continue;
 
@@ -2643,12 +2645,12 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
     }
 
-    private static void openRemoveVassal(Player player, ITerritoryData territoryData, int page) {
+    private static void openRemoveVassal(Player player, TerritoryData territoryData, int page) {
 
         Gui gui = IGUI.createChestGui("Vassals", 6);
 
         List<GuiItem> guiItems = new ArrayList<>();
-        for (ITerritoryData townData : territoryData.getVassals()){
+        for (TerritoryData townData : territoryData.getVassals()){
             ItemStack townIcon = townData.getIconWithInformationAndRelation(territoryData);
             HeadUtils.addLore(townIcon, Lang.GUI_REGION_INVITE_TOWN_DESC1.get());
 
@@ -2972,7 +2974,7 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
     }
 
-    private static GuiItem createGuiItem(ItemStack itemStack, ITerritoryData territoryData, PlayerData playerData, Player player, Consumer<Void> action) {
+    private static GuiItem createGuiItem(ItemStack itemStack, TerritoryData territoryData, PlayerData playerData, Player player, Consumer<Void> action) {
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);
             if (!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_CLAIM_SETTINGS)) {
@@ -3010,7 +3012,7 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
     }
 
-    public static void openHierarchyMenu(Player player, ITerritoryData territoryData) {
+    public static void openHierarchyMenu(Player player, TerritoryData territoryData) {
         Gui gui = IGUI.createChestGui("Vassals", 3);
 
         GuiItem decorativeGlass = IGUI.getUnnamedItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
@@ -3019,7 +3021,7 @@ public class PlayerGUI implements IGUI {
         if(territoryData.canHaveOverlord()){
             GuiItem overlordButton;
             if(territoryData.haveOverlord()){
-                ITerritoryData overlord = territoryData.getOverlord();
+                TerritoryData overlord = territoryData.getOverlord();
                 ItemStack overlordIcon = overlord.getIconItem();
                 ItemMeta meta = overlordIcon.getItemMeta();
                 meta.setDisplayName(Lang.OVERLORD_GUI.get());
@@ -3042,7 +3044,7 @@ public class PlayerGUI implements IGUI {
                         openHierarchyMenu(player, territoryData); //This should trigger only if town have been kicked from region during the menu
                         return;
                     }
-                    ITerritoryData overlordData = territoryData.getOverlord();
+                    TerritoryData overlordData = territoryData.getOverlord();
 
                     if (territoryData.isCapital()){
                         player.sendMessage(getTANString() + Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_CAPITAL.get(territoryData.getColoredName()));
@@ -3148,7 +3150,7 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
     }
 
-    public static void openChooseOverlordMenu(Player player, ITerritoryData territoryData, int page) {
+    public static void openChooseOverlordMenu(Player player, TerritoryData territoryData, int page) {
         Gui gui = IGUI.createChestGui("Choose Overlord", 6);
 
         List<GuiItem> guiItems = territoryData.getAllSubjugationProposals(player, page);

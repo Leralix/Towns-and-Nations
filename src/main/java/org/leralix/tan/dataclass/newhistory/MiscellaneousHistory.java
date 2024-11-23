@@ -1,6 +1,6 @@
 package org.leralix.tan.dataclass.newhistory;
 
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.StringUtil;
 
@@ -10,7 +10,7 @@ public class MiscellaneousHistory extends TransactionHistory {
         super(date, territoryDataID, null, amount);
     }
 
-    public MiscellaneousHistory(ITerritoryData territoryData, double amount) {
+    public MiscellaneousHistory(TerritoryData territoryData, double amount) {
         super(territoryData.getID(), null, amount);
     }
 

@@ -1,9 +1,7 @@
 package org.leralix.tan.listeners.chatlistener.events;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.newhistory.PlayerDonationHistory;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chatlistener.ChatListenerEvent;
 import org.leralix.tan.utils.ChatUtils;
@@ -12,9 +10,9 @@ import static org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage.r
 
 public class DonateToTerritory extends ChatListenerEvent {
 
-    ITerritoryData territoryToDonate;
+    TerritoryData territoryToDonate;
 
-    public DonateToTerritory(ITerritoryData territoryToDonate){
+    public DonateToTerritory(TerritoryData territoryToDonate){
         super();
         this.territoryToDonate = territoryToDonate;
     }

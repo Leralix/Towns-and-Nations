@@ -1,6 +1,6 @@
 package org.leralix.tan.dataclass.newhistory;
 
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.TerritoryUtil;
 
@@ -10,7 +10,7 @@ public class SubjectTaxHistory extends TransactionHistory {
     public SubjectTaxHistory(String date, String territoryDataID, String playerID, double amount) {
         super(date, territoryDataID, playerID, amount);
     }
-    public SubjectTaxHistory(ITerritoryData territoryData, ITerritoryData subject, double amount) {
+    public SubjectTaxHistory(TerritoryData territoryData, TerritoryData subject, double amount) {
         super(territoryData.getID(),subject.getID(),amount);
     }
 
@@ -21,7 +21,7 @@ public class SubjectTaxHistory extends TransactionHistory {
 
     @Override
     public String addLoreLine() {
-        ITerritoryData vassal = TerritoryUtil.getTerritory(getTransactionParty());
+        TerritoryData vassal = TerritoryUtil.getTerritory(getTransactionParty());
         if(getAmount() > 0) {
             return Lang.TAX_PAYMENT_HISTORY_LORE.get(vassal.getColoredName(), getAmount());
         } else {

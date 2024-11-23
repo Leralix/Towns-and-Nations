@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import org.bukkit.Chunk;
 import org.leralix.tan.dataclass.chunk.*;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.TownsAndNations;
 
@@ -48,7 +48,7 @@ public class NewClaimedChunkStorage {
         return TownDataStorage.get(NewClaimedChunkStorage.getChunkOwnerID(chunk));
     }
 
-    public static Collection<ClaimedChunk2> getAllChunkFrom(ITerritoryData territoryData){
+    public static Collection<ClaimedChunk2> getAllChunkFrom(TerritoryData territoryData){
         List<ClaimedChunk2> chunks = new ArrayList<>();
         for(ClaimedChunk2 chunk : claimedChunksMap.values()){
             if(chunk.getOwnerID().equals(territoryData.getID())){
@@ -123,7 +123,7 @@ public class NewClaimedChunkStorage {
         save();
     }
 
-    public static void unclaimAllChunksFromTerritory(ITerritoryData territoryData){
+    public static void unclaimAllChunksFromTerritory(TerritoryData territoryData){
         unclaimAllChunkFromID(territoryData.getID());
     }
 

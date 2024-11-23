@@ -2,7 +2,7 @@ package org.leralix.tan.enums;
 
 import org.bukkit.ChatColor;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 
 public enum TownChunkPermission {
 
@@ -39,7 +39,7 @@ public enum TownChunkPermission {
         return this.next;
     }
 
-    public boolean isAllowed(ITerritoryData ownerTown, PlayerData playerData) {
+    public boolean isAllowed(TerritoryData ownerTown, PlayerData playerData) {
         switch (this) {
             case ALLIANCE -> {
                 if(playerData.haveTown() && ownerTown.getRelations().getRelationWith(playerData.getTown()) == TownRelation.ALLIANCE){

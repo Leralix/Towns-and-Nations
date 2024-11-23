@@ -2,7 +2,7 @@ package org.leralix.tan.storage.database;
 
 import org.leralix.tan.dataclass.newhistory.TransactionHistory;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -20,7 +20,7 @@ public abstract class DatabaseHandler {
 
     public abstract void addTransactionHistory(TransactionHistory transactionHistory);
 
-    public abstract List<List<TransactionHistory>> getTransactionHistory(ITerritoryData territoryData, TransactionHistoryEnum type);
+    public abstract List<List<TransactionHistory>> getTransactionHistory(TerritoryData territoryData, TransactionHistoryEnum type);
     public abstract void deleteOldHistory(int nbDays, TransactionHistoryEnum type);
 
     public abstract void connect() throws SQLException;

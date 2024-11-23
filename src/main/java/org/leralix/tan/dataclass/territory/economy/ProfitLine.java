@@ -2,14 +2,13 @@ package org.leralix.tan.dataclass.territory.economy;
 
 import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
-import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 
 public abstract class ProfitLine implements Comparable<ProfitLine> {
 
-    protected final ITerritoryData territoryData;
+    protected final TerritoryData territoryData;
 
-    protected ProfitLine(ITerritoryData territoryData) {
+    protected ProfitLine(TerritoryData territoryData) {
         this.territoryData = territoryData;
     }
 

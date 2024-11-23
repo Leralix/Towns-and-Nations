@@ -3,7 +3,7 @@ package org.leralix.tan.dataclass;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
@@ -24,10 +24,10 @@ public class DiplomacyProposal {
         this.relationProposal = relationProposal;
     }
 
-    public GuiItem createGuiItem(Player player, ITerritoryData territoryData, int page, Consumer<Player> exitMenu) {
+    public GuiItem createGuiItem(Player player, TerritoryData territoryData, int page, Consumer<Player> exitMenu) {
 
-        ITerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
-        ITerritoryData askingTerritory = TerritoryUtil.getTerritory(askingTerritoryID);
+        TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
+        TerritoryData askingTerritory = TerritoryUtil.getTerritory(askingTerritoryID);
 
         if(askingTerritory == null){
             receivingTerritory.removeDiplomaticProposal(askingTerritoryID);

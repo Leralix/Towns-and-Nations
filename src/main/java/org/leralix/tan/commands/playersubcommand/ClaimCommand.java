@@ -2,7 +2,7 @@ package org.leralix.tan.commands.playersubcommand;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.commands.SubCommand;
 import org.leralix.tan.enums.MapType;
@@ -49,7 +49,7 @@ public class ClaimCommand extends SubCommand {
         }
 
 
-        ITerritoryData territoryData;
+        TerritoryData territoryData;
 
         if(args[1].equals("town")){
             territoryData = TownDataStorage.get(player);

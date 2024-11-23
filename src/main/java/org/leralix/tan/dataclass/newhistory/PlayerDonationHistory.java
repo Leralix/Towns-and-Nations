@@ -3,7 +3,7 @@ package org.leralix.tan.dataclass.newhistory;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.StringUtil;
 
@@ -15,7 +15,7 @@ public class PlayerDonationHistory extends TransactionHistory {
     public PlayerDonationHistory(String date, String territoryDataID, String playerID, double amount) {
         super(date, territoryDataID, playerID, amount);
     }
-    public PlayerDonationHistory(ITerritoryData territoryData, Player player, double amount) {
+    public PlayerDonationHistory(TerritoryData territoryData, Player player, double amount) {
         super(territoryData.getID(),player.getUniqueId().toString(),amount);
     }
 

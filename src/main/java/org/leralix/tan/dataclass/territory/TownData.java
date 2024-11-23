@@ -39,7 +39,7 @@ import static org.leralix.tan.enums.SoundEnum.*;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 import static org.leralix.tan.utils.HeadUtils.getPlayerHead;
 
-public class TownData extends ITerritoryData {
+public class TownData extends TerritoryData {
 
     private final String TownId;
     private String TownName;
@@ -581,7 +581,7 @@ public class TownData extends ITerritoryData {
         return this.regionID;
     }
 
-    public void setOverlordPrivate(ITerritoryData region){
+    public void setOverlordPrivate(TerritoryData region){
         setOverlordPrivate(region.getID());
     }
     public void setOverlordPrivate(String regionID){
@@ -594,7 +594,7 @@ public class TownData extends ITerritoryData {
     }
 
     @Override
-    public Collection<ITerritoryData> getPotentialVassals() {
+    public Collection<TerritoryData> getPotentialVassals() {
         return Collections.emptyList();
     }
 
@@ -605,7 +605,7 @@ public class TownData extends ITerritoryData {
         }
     }
     @Override
-    public void addVassalPrivate(ITerritoryData vassal) {
+    public void addVassalPrivate(TerritoryData vassal) {
         //town have no vassals
     }
 

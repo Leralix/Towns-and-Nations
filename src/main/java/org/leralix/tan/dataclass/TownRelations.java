@@ -1,6 +1,6 @@
 package org.leralix.tan.dataclass;
 
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.TownRelation;
@@ -26,7 +26,7 @@ public class TownRelations {
         this.townRelations.put(TownRelation.ALLIANCE, new ArrayList<>());
     }
 
-    public void setRelation(TownRelation relation, ITerritoryData territoryID){
+    public void setRelation(TownRelation relation, TerritoryData territoryID){
         setRelation(relation, territoryID.getID());
     }
 
@@ -67,11 +67,11 @@ public class TownRelations {
         }
         return TownRelation.NEUTRAL;
     }
-    public TownRelation getRelationWith(ITerritoryData territory) {
+    public TownRelation getRelationWith(TerritoryData territory) {
         return getRelationWith(territory.getID());
     }
 
-    public void cleanAll(ITerritoryData territoryData){
+    public void cleanAll(TerritoryData territoryData){
 
         for(TownRelation relation : TownRelation.values()){
 
@@ -82,7 +82,7 @@ public class TownRelations {
 
             for (String otherTerritory : territories) {
 
-                ITerritoryData otherTerritoryData = TerritoryUtil.getTerritory(otherTerritory);
+                TerritoryData otherTerritoryData = TerritoryUtil.getTerritory(otherTerritory);
                 if(otherTerritoryData == null)
                     continue;
 

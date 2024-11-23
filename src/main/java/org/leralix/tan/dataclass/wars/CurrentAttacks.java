@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
@@ -29,13 +29,13 @@ public class CurrentAttacks {
 
     private static final int MAX_SCORE = 1000;
     private long remainingTime;
-    final Collection<ITerritoryData> attackers;
-    final Collection<ITerritoryData> defenders;
+    final Collection<TerritoryData> attackers;
+    final Collection<TerritoryData> defenders;
     BossBar bossBar;
     String originalTitle;
     WarGoal warGoal;
 
-    public CurrentAttacks(String id, Collection<ITerritoryData> attackers, Collection<ITerritoryData> defenders, WarGoal warGoal) {
+    public CurrentAttacks(String id, Collection<TerritoryData> attackers, Collection<TerritoryData> defenders, WarGoal warGoal) {
         this.id = id;
         this.attackers = attackers;
         this.defenders = defenders;
@@ -45,7 +45,7 @@ public class CurrentAttacks {
         this.warGoal = warGoal;
 
         bossBar = Bukkit.createBossBar(this.originalTitle, BarColor.RED, BarStyle.SOLID);
-        for(ITerritoryData territoryData : this.attackers) {
+        for(TerritoryData territoryData : this.attackers) {
             for(PlayerData playerData : territoryData.getPlayerDataList()) {
                 playerData.addWar(this);
                 Player player = playerData.getPlayer();
@@ -54,7 +54,7 @@ public class CurrentAttacks {
                 }
             }
         }
-        for(ITerritoryData territoryData : this.defenders) {
+        for(TerritoryData territoryData : this.defenders) {
             for(PlayerData playerData : territoryData.getPlayerDataList()) {
                 playerData.addWar(this);
                 Player player = playerData.getPlayer();
@@ -87,7 +87,7 @@ public class CurrentAttacks {
 
 
     public void playerKilled(PlayerData playerData, Player killer) {
-        for (ITerritoryData territoryData : attackers) {
+        for (TerritoryData territoryData : attackers) {
             if (territoryData.havePlayer(playerData)) {
                 if(killer != null){
                     attackingLoss();
@@ -103,7 +103,7 @@ public class CurrentAttacks {
 
             }
         }
-        for (ITerritoryData territoryData : defenders) {
+        for (TerritoryData territoryData : defenders) {
             if (territoryData.havePlayer(playerData) && killer != null){
                     defendingLoss();
                 }
@@ -129,7 +129,7 @@ public class CurrentAttacks {
 
     private int getNumberOfOnlineDefenders() {
         int sum = 0;
-        for(ITerritoryData territoryData : this.defenders) {
+        for(TerritoryData territoryData : this.defenders) {
             for(String playerID : territoryData.getPlayerIDList()) {
                 if(Bukkit.getPlayer(UUID.fromString(playerID)) != null)
                     sum++;
@@ -140,7 +140,7 @@ public class CurrentAttacks {
 
     private int getNumberOfOnlineAttackers() {
         int sum = 0;
-        for(ITerritoryData territoryData : this.attackers) {
+        for(TerritoryData territoryData : this.attackers) {
             for(String playerID : territoryData.getPlayerIDList()) {
                 if(Bukkit.getPlayer(UUID.fromString(playerID)) != null)
                     sum++;
@@ -172,7 +172,7 @@ public class CurrentAttacks {
 
     private void attackerWin() {
 
-        for(ITerritoryData territoryData : this.attackers) {
+        for(TerritoryData territoryData : this.attackers) {
             for(PlayerData playerData : territoryData.getPlayerDataList()) {
                 Player player = playerData.getPlayer();
                 if(player != null){
@@ -180,7 +180,7 @@ public class CurrentAttacks {
                 }
             }
         }
-        for(ITerritoryData territoryData : this.defenders) {
+        for(TerritoryData territoryData : this.defenders) {
             for(PlayerData playerData : territoryData.getPlayerDataList()) {
                 Player player = playerData.getPlayer();
                 if(player != null){
@@ -195,7 +195,7 @@ public class CurrentAttacks {
 
     private void defenderWin(){
 
-        for(ITerritoryData territoryData : this.attackers) {
+        for(TerritoryData territoryData : this.attackers) {
             for(PlayerData playerData : territoryData.getPlayerDataList()) {
                 Player player = playerData.getPlayer();
                 if(player != null){
@@ -203,7 +203,7 @@ public class CurrentAttacks {
                 }
             }
         }
-        for(ITerritoryData territoryData : this.defenders) {
+        for(TerritoryData territoryData : this.defenders) {
             for(PlayerData playerData : territoryData.getPlayerDataList()) {
                 Player player = playerData.getPlayer();
                 if(player != null) {
@@ -248,12 +248,12 @@ public class CurrentAttacks {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for(ITerritoryData territoryData : attackers) {
+                for(TerritoryData territoryData : attackers) {
                     for(PlayerData playerData : territoryData.getPlayerDataList()) {
                         playerData.removeWar(CurrentAttacks.this);
                     }
                 }
-                for(ITerritoryData territoryData : defenders) {
+                for(TerritoryData territoryData : defenders) {
                     for(PlayerData playerData : territoryData.getPlayerDataList()) {
                         playerData.removeWar(CurrentAttacks.this);
                     }
@@ -266,10 +266,10 @@ public class CurrentAttacks {
                 id = null;
                 CurrentAttacksStorage.remove(CurrentAttacks.this);
 
-                for(ITerritoryData territoryData : attackers) {
+                for(TerritoryData territoryData : attackers) {
                     territoryData.removeCurrentAttack(CurrentAttacks.this);
                 }
-                for(ITerritoryData territoryData : defenders) {
+                for(TerritoryData territoryData : defenders) {
                     territoryData.removeCurrentAttack(CurrentAttacks.this);
                 }
 
@@ -278,12 +278,12 @@ public class CurrentAttacks {
     }
 
     public boolean containsPlayer(PlayerData playerData) {
-        for(ITerritoryData territoryData : attackers) {
+        for(TerritoryData territoryData : attackers) {
             if(territoryData.havePlayer(playerData)){
                 return true;
             }
         }
-        for(ITerritoryData territoryData : defenders) {
+        for(TerritoryData territoryData : defenders) {
             if(territoryData.havePlayer(playerData)){
                 return true;
             }
@@ -292,7 +292,7 @@ public class CurrentAttacks {
     }
 
 
-    public Collection<ITerritoryData> getDefenders() {
+    public Collection<TerritoryData> getDefenders() {
         return defenders;
     }
 }

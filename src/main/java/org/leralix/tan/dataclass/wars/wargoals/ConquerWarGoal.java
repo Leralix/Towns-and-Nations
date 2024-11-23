@@ -6,7 +6,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
@@ -90,7 +90,7 @@ public class ConquerWarGoal extends WarGoal {
 
     @Override
     public void applyWarGoal() {
-        ITerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
+        TerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
         if (attackingTerritory == null)
             return;
         attackingTerritory.addAvailableClaims(defendingTerritoryID, numberOfChunks);
@@ -109,8 +109,8 @@ public class ConquerWarGoal extends WarGoal {
     @Override
     public void sendAttackSuccessToAttackers(Player player) {
         super.sendAttackSuccessToAttackers(player);
-        ITerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
-        ITerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
+        TerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
+        TerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
         if (attackingTerritory == null || defendingTerritory == null)
             return;
 
@@ -120,8 +120,8 @@ public class ConquerWarGoal extends WarGoal {
     @Override
     public void sendAttackSuccessToDefenders(Player player) {
         super.sendAttackSuccessToDefenders(player);
-        ITerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
-        ITerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
+        TerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
+        TerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
         if (attackingTerritory == null || defendingTerritory == null)
             return;
         player.sendMessage(Lang.WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE.get(attackingTerritory.getColoredName(), numberOfChunks, defendingTerritory.getColoredName()));

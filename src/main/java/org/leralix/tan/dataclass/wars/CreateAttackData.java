@@ -1,6 +1,6 @@
 package org.leralix.tan.dataclass.wars;
 
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.wargoals.NoWarGoal;
 import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
 import org.leralix.tan.utils.config.ConfigTag;
@@ -12,10 +12,10 @@ public class CreateAttackData {
     long maxTime;
     long deltaDateTime;
     WarGoal warGoal;
-    ITerritoryData mainAttacker;
-    ITerritoryData mainDefender;
+    TerritoryData mainAttacker;
+    TerritoryData mainDefender;
 
-    public CreateAttackData(ITerritoryData mainAttacker, ITerritoryData mainDefender){
+    public CreateAttackData(TerritoryData mainAttacker, TerritoryData mainDefender){
 
         minTime = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MinimumTimeBeforeAttack",120);
         maxTime = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MaximumTimeBeforeAttack",4320);
@@ -28,11 +28,11 @@ public class CreateAttackData {
         this.mainDefender = mainDefender;
     }
 
-    public ITerritoryData getMainAttacker() {
+    public TerritoryData getMainAttacker() {
         return mainAttacker;
     }
 
-    public ITerritoryData getMainDefender() {
+    public TerritoryData getMainDefender() {
         return mainDefender;
     }
 

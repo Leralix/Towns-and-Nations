@@ -3,7 +3,7 @@ package org.leralix.tan.storage.stored;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
 import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
@@ -116,7 +116,7 @@ public class PlannedAttackStorage {
 
     }
 
-    public static void territoryDeleted(ITerritoryData territoryData) {
+    public static void territoryDeleted(TerritoryData territoryData) {
         for(PlannedAttack plannedAttack : getWars()){
             if(plannedAttack.isMainAttacker(territoryData) || plannedAttack.isMainDefender(territoryData))
                 plannedAttack.remove();

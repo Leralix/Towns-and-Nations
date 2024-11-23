@@ -7,8 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
-import org.leralix.tan.enums.HistoryEnum;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
@@ -16,7 +15,7 @@ import org.leralix.tan.utils.StringUtil;
 
 public class SalaryPaymentLine extends ProfitLine {
     double totalSalaries;
-    public SalaryPaymentLine(ITerritoryData territoryData) {
+    public SalaryPaymentLine(TerritoryData territoryData) {
         super(territoryData);
         totalSalaries = 0;
 

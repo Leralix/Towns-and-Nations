@@ -2,8 +2,7 @@ package org.leralix.tan.storage.database;
 
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.newhistory.*;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
-import org.leralix.tan.lang.Lang;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,7 +72,7 @@ public class SQLiteHandler extends DatabaseHandler {
     }
 
     @Override
-    public List<List<TransactionHistory>> getTransactionHistory(ITerritoryData territoryData, TransactionHistoryEnum type) {
+    public List<List<TransactionHistory>> getTransactionHistory(TerritoryData territoryData, TransactionHistoryEnum type) {
         String selectSQL = """
         SELECT date, type, territoryDataID, transactionParty, amount
         FROM territoryTransactionHistory

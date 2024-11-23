@@ -6,7 +6,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 public class LiberateWarGoal extends WarGoal {
 
-    ITerritoryData territoryToLiberate;
+    TerritoryData territoryToLiberate;
     @Override
     public ItemStack getIcon() {
         return buildIcon(Material.LANTERN, Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC.get());
@@ -75,14 +75,14 @@ public class LiberateWarGoal extends WarGoal {
         return Lang.GUI_WARGOAL_LIBERATE_WAR_GOAL_RESULT.get();
     }
 
-    public void setTerritoryToLiberate(ITerritoryData territoryToLiberate) {
+    public void setTerritoryToLiberate(TerritoryData territoryToLiberate) {
         this.territoryToLiberate = territoryToLiberate;
     }
 
     @Override
     public void sendAttackSuccessToAttackers(Player player) {
         super.sendAttackSuccessToAttackers(player);
-        ITerritoryData loosingTerritory = territoryToLiberate.getOverlord();
+        TerritoryData loosingTerritory = territoryToLiberate.getOverlord();
         if(loosingTerritory == null)
             return;
         player.sendMessage(Lang.WARGOAL_LIBERATE_SUCCESS.get(territoryToLiberate.getColoredName(), loosingTerritory.getColoredName()));

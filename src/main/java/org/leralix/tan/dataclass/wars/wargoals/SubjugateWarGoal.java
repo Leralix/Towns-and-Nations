@@ -4,7 +4,7 @@ import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.TerritoryUtil;
@@ -40,8 +40,8 @@ public class SubjugateWarGoal extends WarGoal {
 
     @Override
     public void applyWarGoal() {
-        ITerritoryData territoryData = TerritoryUtil.getTerritory(territoryToSubjugate);
-        ITerritoryData newOverlord = TerritoryUtil.getTerritory(newOverlordID);
+        TerritoryData territoryData = TerritoryUtil.getTerritory(territoryToSubjugate);
+        TerritoryData newOverlord = TerritoryUtil.getTerritory(newOverlordID);
         if(territoryData == null || newOverlord == null)
             return;
 
@@ -67,8 +67,8 @@ public class SubjugateWarGoal extends WarGoal {
     public void sendAttackSuccessToAttackers(Player player) {
         super.sendAttackSuccessToAttackers(player);
 
-        ITerritoryData loosingTerritory = TerritoryUtil.getTerritory(territoryToSubjugate);
-        ITerritoryData winningTerritory = TerritoryUtil.getTerritory(newOverlordID);
+        TerritoryData loosingTerritory = TerritoryUtil.getTerritory(territoryToSubjugate);
+        TerritoryData winningTerritory = TerritoryUtil.getTerritory(newOverlordID);
         if(loosingTerritory == null || winningTerritory == null)
             return;
         player.sendMessage(Lang.WARGOAL_SUBJUGATE_SUCCESS.get(loosingTerritory.getColoredName(), winningTerritory.getColoredName()));

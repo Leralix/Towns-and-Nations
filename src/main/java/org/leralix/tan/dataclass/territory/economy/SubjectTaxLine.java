@@ -6,7 +6,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
@@ -26,7 +26,7 @@ public class SubjectTaxLine extends ProfitLine{
     public SubjectTaxLine(RegionData regionData){
         super(regionData);
         double tax = regionData.getTax();
-        for(ITerritoryData townData : regionData.getVassals()){
+        for(TerritoryData townData : regionData.getVassals()){
             if(townData.getBalance() > tax)
                 actualTaxes += tax;
             else

@@ -5,7 +5,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
@@ -14,7 +14,7 @@ import org.leralix.tan.utils.StringUtil;
 public class ChunkUpkeepLine extends ProfitLine {
     private final double totalUpkeep;
 
-    public ChunkUpkeepLine(ITerritoryData territoryData) {
+    public ChunkUpkeepLine(TerritoryData territoryData) {
         super(territoryData);
         this.totalUpkeep = territoryData.getNumberOfClaimedChunk() * -territoryData.getChunkUpkeepCost();
     }

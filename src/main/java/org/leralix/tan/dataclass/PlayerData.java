@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.wars.CurrentAttacks;
@@ -201,7 +201,7 @@ public class PlayerData {
         }
     }
 
-    public boolean isAtWarWith(ITerritoryData territoryData){
+    public boolean isAtWarWith(TerritoryData territoryData){
         if(territoryData == null){
             return false;
         }
@@ -250,7 +250,7 @@ public class PlayerData {
         this.regionRankID = rankID;
     }
 
-    public int getRankID(ITerritoryData territoryData) {
+    public int getRankID(TerritoryData territoryData) {
         if(territoryData instanceof TownData){
             return getTownRankID();
         }

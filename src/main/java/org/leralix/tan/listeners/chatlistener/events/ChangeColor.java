@@ -1,7 +1,7 @@
 package org.leralix.tan.listeners.chatlistener.events;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chatlistener.ChatListenerEvent;
 import org.leralix.tan.utils.ChatUtils;
@@ -13,9 +13,9 @@ import static org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage.r
 import static org.leralix.tan.utils.StringUtil.hexColorToInt;
 
 public class ChangeColor extends ChatListenerEvent {
-    private final ITerritoryData territoryData;
+    private final TerritoryData territoryData;
     private final Consumer<Player> guiCallback;
-    public ChangeColor(ITerritoryData territoryData, Consumer<Player> guiCallback) {
+    public ChangeColor(TerritoryData territoryData, Consumer<Player> guiCallback) {
         this.territoryData = territoryData;
         this.guiCallback = guiCallback;
     }

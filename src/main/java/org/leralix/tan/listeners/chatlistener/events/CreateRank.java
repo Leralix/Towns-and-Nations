@@ -3,7 +3,7 @@ package org.leralix.tan.listeners.chatlistener.events;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.RankData;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
@@ -15,8 +15,8 @@ import org.leralix.tan.utils.config.ConfigUtil;
 import static org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage.removePlayer;
 
 public class CreateRank extends ChatListenerEvent {
-    ITerritoryData territoryData;
-    public CreateRank(ITerritoryData townData){
+    TerritoryData territoryData;
+    public CreateRank(TerritoryData townData){
         this.territoryData = townData;
     }
     @Override

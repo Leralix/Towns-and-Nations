@@ -7,7 +7,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.newsletter.news.JoinRegionProposalNL;
 import org.leralix.tan.newsletter.news.Newsletter;
@@ -134,7 +134,7 @@ public class NewsletterStorage {
         }
     }
 
-    public static void removeVassalisationProposal(ITerritoryData proposer, ITerritoryData receiver) {
+    public static void removeVassalisationProposal(TerritoryData proposer, TerritoryData receiver) {
         List<Newsletter> category = categories.get(NewsletterType.JOIN_REGION_PROPOSAL);
         if (category == null)
             return;

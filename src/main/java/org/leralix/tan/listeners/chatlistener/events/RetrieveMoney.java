@@ -1,7 +1,7 @@
 package org.leralix.tan.listeners.chatlistener.events;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chatlistener.ChatListenerEvent;
@@ -12,8 +12,8 @@ import static org.leralix.tan.enums.SoundEnum.MINOR_LEVEL_UP;
 import static org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage.removePlayer;
 
 public class RetrieveMoney extends ChatListenerEvent {
-    ITerritoryData territoryData;
-    public RetrieveMoney(ITerritoryData territoryData) {
+    TerritoryData territoryData;
+    public RetrieveMoney(TerritoryData territoryData) {
         this.territoryData = territoryData;
     }
 

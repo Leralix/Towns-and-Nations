@@ -3,7 +3,7 @@ package org.leralix.tan.listeners.chatlistener.events;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.RankData;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
@@ -16,9 +16,9 @@ import static org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage.r
 
 public class RenameRank extends ChatListenerEvent {
 
-    private final ITerritoryData territoryConcerned;
+    private final TerritoryData territoryConcerned;
     private final RankData townRank;
-    public RenameRank(ITerritoryData territoryData, RankData townRank) {
+    public RenameRank(TerritoryData territoryData, RankData townRank) {
         this.territoryConcerned = territoryData;
         this.townRank = townRank;
     }

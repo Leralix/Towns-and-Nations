@@ -9,7 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.territory.ITerritoryData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.lang.Lang;
@@ -110,7 +110,7 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     }
 
     @Override
-    public boolean canPlayerClaim(Player player, ITerritoryData territoryData) {
+    public boolean canPlayerClaim(Player player, TerritoryData territoryData) {
 
         if(territoryData.canConquerChunk(this))
             return true;
@@ -129,7 +129,7 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     }
 
     @Override
-    public boolean canBeOverClaimed(ITerritoryData territoryData) {
+    public boolean canBeOverClaimed(TerritoryData territoryData) {
         return getRegion().getSubjects().contains(territoryData);
     }
 

@@ -42,7 +42,7 @@ import java.util.function.Consumer;
 import static org.leralix.tan.enums.SoundEnum.*;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 
-public abstract class ITerritoryData {
+public abstract class TerritoryData {
 
 //    private String ID;
 //    private String name;
@@ -62,7 +62,7 @@ public abstract class ITerritoryData {
     private Map<String, DiplomacyProposal> diplomacyProposals;
     List<String> overlordsProposals;
 
-    protected ITerritoryData(){
+    protected TerritoryData(){
         ranks = new HashMap<>();
         registerNewRank("default");
 
@@ -106,7 +106,7 @@ public abstract class ITerritoryData {
     public abstract boolean havePlayer(PlayerData playerData);
     public abstract boolean havePlayer(String playerID);
     public abstract TownRelations getRelations();
-    public void setRelation(ITerritoryData otherTerritory, TownRelation relation){
+    public void setRelation(TerritoryData otherTerritory, TownRelation relation){
         TownRelation actualRelation = getRelationWith(otherTerritory);
         if(relation.isSuperiorTo(actualRelation)){
             broadCastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(getColoredName(), otherTerritory.getColoredName(),relation.getColoredName()), GOOD);
@@ -130,18 +130,18 @@ public abstract class ITerritoryData {
         return diplomacyProposals;
     }
 
-    public void removeDiplomaticProposal(ITerritoryData proposingTerritory){
+    public void removeDiplomaticProposal(TerritoryData proposingTerritory){
         removeDiplomaticProposal(proposingTerritory.getID());
     }
     public void removeDiplomaticProposal(String proposingTerritoryID){
         getDiplomacyProposals().remove(proposingTerritoryID);
     }
-    private void addDiplomaticProposal(ITerritoryData proposingTerritory, TownRelation wantedRelation){
+    private void addDiplomaticProposal(TerritoryData proposingTerritory, TownRelation wantedRelation){
         getDiplomacyProposals().put(proposingTerritory.getID(), new DiplomacyProposal(proposingTerritory.getID(), getID(), wantedRelation));
         NewsletterStorage.registerNewsletter(new DiplomacyProposalNL(proposingTerritory.getID(), getID(), wantedRelation));
     }
 
-    public void receiveDiplomaticProposal(ITerritoryData proposingTerritory, TownRelation wantedRelation) {
+    public void receiveDiplomaticProposal(TerritoryData proposingTerritory, TownRelation wantedRelation) {
         removeDiplomaticProposal(proposingTerritory);
         addDiplomaticProposal(proposingTerritory, wantedRelation);
     }
@@ -150,7 +150,7 @@ public abstract class ITerritoryData {
         return getDiplomacyProposals().values();
     }
 
-    public TownRelation getRelationWith(ITerritoryData territoryData){
+    public TownRelation getRelationWith(TerritoryData territoryData){
         return getRelationWith(territoryData.getID());
     }
     public TownRelation getRelationWith(String territoryID){
@@ -184,7 +184,7 @@ public abstract class ITerritoryData {
 
     public abstract ItemStack getIcon();
     public abstract ItemStack getIconWithInformations();
-    public ItemStack getIconWithInformationAndRelation(ITerritoryData territoryData){
+    public ItemStack getIconWithInformationAndRelation(TerritoryData territoryData){
         ItemStack icon = getIconWithInformations();
 
         ItemMeta meta = icon.getItemMeta();
@@ -259,29 +259,29 @@ public abstract class ITerritoryData {
 
     public abstract double getBalance();
 
-    public abstract ITerritoryData getOverlord();
+    public abstract TerritoryData getOverlord();
     public abstract void removeOverlord();
-    public void setOverlord(ITerritoryData overlord){
+    public void setOverlord(TerritoryData overlord){
         getOverlordsProposals().remove(overlord.getID());
         broadCastMessageWithSound(getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), overlord.getColoredName()), GOOD);
         setOverlordPrivate(overlord);
     }
-    protected abstract void setOverlordPrivate(ITerritoryData newOverlord);
+    protected abstract void setOverlordPrivate(TerritoryData newOverlord);
 
-    public void addVassal(ITerritoryData vassal){
+    public void addVassal(TerritoryData vassal){
         NewsletterStorage.removeVassalisationProposal(this, vassal);
         broadCastMessageWithSound(getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(vassal.getColoredName(), getColoredName()), GOOD);
         addVassalPrivate(vassal);
     }
-    protected abstract void addVassalPrivate (ITerritoryData vassal);
-    public void removeVassal(ITerritoryData territoryToRemove){
+    protected abstract void addVassalPrivate (TerritoryData vassal);
+    public void removeVassal(TerritoryData territoryToRemove){
         removeVassal(territoryToRemove.getID());
     }
     public abstract void removeVassal(String townID);
 
     public abstract boolean isCapital();
 
-    public ITerritoryData getCapital(){
+    public TerritoryData getCapital(){
         return TerritoryUtil.getTerritory(getCapitalID());
     }
     public abstract String getCapitalID();
@@ -349,7 +349,7 @@ public abstract class ITerritoryData {
         if(haveOverlord())
             getOverlord().removeVassal(this);
 
-        for(ITerritoryData territory : getVassals()){
+        for(TerritoryData territory : getVassals()){
             territory.removeOverlord();
         }
 
@@ -392,10 +392,10 @@ public abstract class ITerritoryData {
     public abstract boolean canHaveOverlord();
 
     public abstract List<String> getVassalsID();
-    public List<ITerritoryData> getVassals(){
-        List<ITerritoryData> res = new ArrayList<>();
+    public List<TerritoryData> getVassals(){
+        List<TerritoryData> res = new ArrayList<>();
         for(String vassalID : getVassalsID()){
-            ITerritoryData vassal = TerritoryUtil.getTerritory(vassalID);
+            TerritoryData vassal = TerritoryUtil.getTerritory(vassalID);
             if(vassal != null)
                 res.add(vassal);
         }
@@ -405,18 +405,18 @@ public abstract class ITerritoryData {
         return getVassalsID().size();
     }
 
-    public boolean isVassal(ITerritoryData territoryData) {
+    public boolean isVassal(TerritoryData territoryData) {
         return isVassal(territoryData.getID());
     }
     public abstract boolean isVassal(String territoryID);
 
-    public boolean isCapitalOf(ITerritoryData territoryData) {
+    public boolean isCapitalOf(TerritoryData territoryData) {
         return isCapitalOf(territoryData.getID());
     }
     public abstract boolean isCapitalOf(String territoryID);
     public abstract boolean isLeaderOnline();
 
-    public abstract Collection<ITerritoryData> getPotentialVassals();
+    public abstract Collection<TerritoryData> getPotentialVassals();
 
     private List<String> getOverlordsProposals(){
         if(overlordsProposals == null)
@@ -424,17 +424,17 @@ public abstract class ITerritoryData {
         return overlordsProposals;
     }
 
-    public void addVassalisationProposal(ITerritoryData proposal){
+    public void addVassalisationProposal(TerritoryData proposal){
         getOverlordsProposals().add(proposal.getID());
         broadCastMessageWithSound(Lang.REGION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getColoredName(), getColoredName()), MINOR_GOOD);
         NewsletterStorage.registerNewsletter(new JoinRegionProposalNL(proposal, this));
     }
 
-    public void removeVassalisationProposal(ITerritoryData proposal){
+    public void removeVassalisationProposal(TerritoryData proposal){
         getOverlordsProposals().remove(proposal.getID());
     }
 
-    public boolean containsVassalisationProposal(ITerritoryData proposal){
+    public boolean containsVassalisationProposal(TerritoryData proposal){
         return getOverlordsProposals().contains(proposal.getID());
     }
 
@@ -445,7 +445,7 @@ public abstract class ITerritoryData {
     public List<GuiItem> getAllSubjugationProposals(Player player, int page){
         ArrayList<GuiItem> proposals = new ArrayList<>();
         for(String proposalID : getOverlordsProposals()) {
-            ITerritoryData proposalOverlord = TerritoryUtil.getTerritory(proposalID);
+            TerritoryData proposalOverlord = TerritoryUtil.getTerritory(proposalID);
             if (proposalOverlord == null)
                 continue;
             ItemStack territoryItem = proposalOverlord.getIconWithInformations();
@@ -641,10 +641,8 @@ public abstract class ITerritoryData {
                 nbOfUnclaimedChunk++;
             }
         }
-        System.out.println("nbOfUnclaimedChunk today = " + nbOfUnclaimedChunk);
         if(nbOfUnclaimedChunk < minNbOfUnclaimedChunk){
             for(ClaimedChunk2 claimedChunk2 : allChunkFrom){
-                System.out.println("another one");
                 NewClaimedChunkStorage.unclaimChunk(claimedChunk2);
                 nbOfUnclaimedChunk++;
                 if(nbOfUnclaimedChunk >= minNbOfUnclaimedChunk)
