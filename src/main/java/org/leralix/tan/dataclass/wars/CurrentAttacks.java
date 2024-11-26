@@ -88,7 +88,7 @@ public class CurrentAttacks {
 
     public void playerKilled(PlayerData playerData, Player killer) {
         for (TerritoryData territoryData : attackers) {
-            if (territoryData.havePlayer(playerData)) {
+            if (territoryData.isPlayerIn(playerData)) {
                 if(killer != null){
                     attackingLoss();
                 }
@@ -104,7 +104,7 @@ public class CurrentAttacks {
             }
         }
         for (TerritoryData territoryData : defenders) {
-            if (territoryData.havePlayer(playerData) && killer != null){
+            if (territoryData.isPlayerIn(playerData) && killer != null){
                     defendingLoss();
                 }
 
@@ -279,12 +279,12 @@ public class CurrentAttacks {
 
     public boolean containsPlayer(PlayerData playerData) {
         for(TerritoryData territoryData : attackers) {
-            if(territoryData.havePlayer(playerData)){
+            if(territoryData.isPlayerIn(playerData)){
                 return true;
             }
         }
         for(TerritoryData territoryData : defenders) {
-            if(territoryData.havePlayer(playerData)){
+            if(territoryData.isPlayerIn(playerData)){
                 return true;
             }
         }

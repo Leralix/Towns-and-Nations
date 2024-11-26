@@ -17,8 +17,8 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.newhistory.TransactionHistory;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
-import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
@@ -2256,7 +2256,7 @@ public class PlayerGUI implements IGUI {
 
         GuiItem playerChunkButton = ItemBuilder.from(playerChunkIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            openTownChunkPlayerSettings(player);
+            openTownChunkPlayerSettings(player, playerTown);
         });
 
         GuiItem mobChunkButton = ItemBuilder.from(mobChunckIcon).asGuiItem(event -> {
@@ -2376,54 +2376,122 @@ public class PlayerGUI implements IGUI {
                 p -> openTownPropertiesMenu(player,page - 1));
         gui.open(player);
     }
-    public static void openTownChunkPlayerSettings(Player player){
-        Gui gui = IGUI.createChestGui("Town",4);
+    public static void openTownChunkPlayerSettings(Player player, TownData territoryData){
+        Gui gui = IGUI.createChestGui("Chunk permission",4);
 
-        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
         TownData townData = TownDataStorage.get(player);
 
 
+        for(ChunkPermissionType type : ChunkPermissionType.values()){
+            RelationPermission permission = townData.getPermission(type).getOverallPermission();
+            ItemStack icon = type.getIcon(permission);
+                GuiItem guiItem = ItemBuilder.from(icon).asGuiItem(event -> {
+                        event.setCancelled(true);
+                        if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_CLAIM_SETTINGS)) {
+                            player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                            return;
+                        }
+                        if(event.isLeftClick()){
+                            territoryData.nextPermission(type);
+                            openTownChunkPlayerSettings(player, territoryData);
+                        }
+                        else if(event.isRightClick()){
+                            openPlayerListForChunkPermission(player, territoryData, type, 0);
+                        }
 
-        Object[][] itemData = {
-                {ChunkPermissionType.INTERACT_DOOR, Material.OAK_DOOR, Lang.GUI_TOWN_CLAIM_SETTINGS_DOOR},
-                {ChunkPermissionType.INTERACT_CHEST, Material.CHEST, Lang.GUI_TOWN_CLAIM_SETTINGS_CHEST},
-                {ChunkPermissionType.PLACE_BLOCK, Material.BRICKS, Lang.GUI_TOWN_CLAIM_SETTINGS_BUILD},
-                {ChunkPermissionType.BREAK_BLOCK, Material.IRON_PICKAXE, Lang.GUI_TOWN_CLAIM_SETTINGS_BREAK},
-                {ChunkPermissionType.ATTACK_PASSIVE_MOB, Material.BEEF, Lang.GUI_TOWN_CLAIM_SETTINGS_ATTACK_PASSIVE_MOBS},
-                {ChunkPermissionType.INTERACT_BUTTON, Material.STONE_BUTTON, Lang.GUI_TOWN_CLAIM_SETTINGS_BUTTON},
-                {ChunkPermissionType.INTERACT_REDSTONE, Material.REDSTONE, Lang.GUI_TOWN_CLAIM_SETTINGS_REDSTONE},
-                {ChunkPermissionType.INTERACT_FURNACE, Material.FURNACE, Lang.GUI_TOWN_CLAIM_SETTINGS_FURNACE},
-                {ChunkPermissionType.INTERACT_ITEM_FRAME, Material.ITEM_FRAME, Lang.GUI_TOWN_CLAIM_SETTINGS_INTERACT_ITEM_FRAME},
-                {ChunkPermissionType.INTERACT_ARMOR_STAND, Material.ARMOR_STAND, Lang.GUI_TOWN_CLAIM_SETTINGS_INTERACT_ARMOR_STAND},
-                {ChunkPermissionType.INTERACT_DECORATIVE_BLOCK, Material.CAULDRON, Lang.GUI_TOWN_CLAIM_SETTINGS_DECORATIVE_BLOCK},
-                {ChunkPermissionType.INTERACT_MUSIC_BLOCK, Material.JUKEBOX, Lang.GUI_TOWN_CLAIM_SETTINGS_MUSIC_BLOCK},
-                {ChunkPermissionType.USE_LEAD, Material.LEAD, Lang.GUI_TOWN_CLAIM_SETTINGS_LEAD},
-                {ChunkPermissionType.USE_SHEARS, Material.SHEARS, Lang.GUI_TOWN_CLAIM_SETTINGS_SHEARS},
-                {ChunkPermissionType.INTERACT_BOAT, Material.OAK_BOAT, Lang.GUI_TOWN_CLAIM_SETTINGS_PLACE_BOAT},
-                {ChunkPermissionType.INTERACT_MINECART, Material.MINECART, Lang.GUI_TOWN_CLAIM_SETTINGS_PLACE_VEHICLE},
-                {ChunkPermissionType.INTERACT_BERRIES, Material.SWEET_BERRIES, Lang.GUI_TOWN_CLAIM_SETTINGS_GATHER_BERRIES},
-                {ChunkPermissionType.USE_BONE_MEAL, Material.BONE_MEAL, Lang.GUI_TOWN_CLAIM_SETTINGS_USE_BONE_MEAL},
+                });
 
-        };
-
-        for (int i = 0; i < itemData.length; i++) {
-            ChunkPermissionType type = (ChunkPermissionType) itemData[i][0];
-            Material material = (Material) itemData[i][1];
-            Lang label = (Lang) itemData[i][2];
-
-            TownChunkPermission permission = townData.getPermission(type);
-            ItemStack itemStack = HeadUtils.createCustomItemStack(
-                    material,
-                    label.get(),
-                    Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.get(permission.getColoredName()),
-                    Lang.GUI_LEFT_CLICK_TO_INTERACT.get()
-            );
-
-            GuiItem guiItem = createGuiItem(itemStack, townData, playerStat, player, v -> townData.nextPermission(type));
-            gui.setItem(i, guiItem);
+            gui.addItem(guiItem);
         }
 
         gui.setItem(27, IGUI.createBackArrow(player, p -> openTownChunk(player)));
+
+        gui.open(player);
+    }
+
+    private static void openPlayerListForChunkPermission(Player player, TownData territoryData, ChunkPermissionType type, int page) {
+        Gui gui = IGUI.createChestGui(type.getLabel(),6);
+
+        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
+
+        List<GuiItem> guiItems = new ArrayList<>();
+
+        for(String authorizedPlayerID : territoryData.getPermission(type).getAuthorizedPlayers()){
+            OfflinePlayer authorizedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(authorizedPlayerID));
+            ItemStack icon = HeadUtils.getPlayerHead(authorizedPlayer.getName(),authorizedPlayer,
+                    Lang.GUI_TOWN_MEMBER_DESC3.get());
+
+            GuiItem guiItem = ItemBuilder.from(icon).asGuiItem(event -> {
+                event.setCancelled(true);
+                if(!territoryData.doesPlayerHavePermission(playerStat, RolePermission.MANAGE_CLAIM_SETTINGS)){
+                    player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                    return;
+                }
+                if(event.isRightClick()){
+                    territoryData.getPermission(type).removeSpecificPlayerPermission(authorizedPlayerID);
+                    openPlayerListForChunkPermission(player, territoryData, type, page);
+                }
+            });
+            guiItems.add(guiItem);
+        }
+
+        createIterator(gui, guiItems, 0, player,
+                p -> openTownChunkPlayerSettings(player, territoryData),
+                p -> openPlayerListForChunkPermission(player, territoryData, type, page + 1),
+                p -> openPlayerListForChunkPermission(player, territoryData, type, page + 1));
+
+
+        ItemStack addIcon = HeadUtils.makeSkullB64(Lang.GUI_GENERIC_ADD_BUTTON.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
+
+        GuiItem addButton = ItemBuilder.from(addIcon).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(!territoryData.doesPlayerHavePermission(playerStat, RolePermission.MANAGE_CLAIM_SETTINGS)){
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                SoundUtil.playSound(player, NOT_ALLOWED);
+                return;
+            }
+            openAddPlayerForChunkPermission(player, territoryData, type, 0);
+        });
+
+        gui.setItem(6,3, addButton);
+
+        gui.open(player);
+    }
+
+    private static void openAddPlayerForChunkPermission(Player player, TownData territoryData, ChunkPermissionType type, int page) {
+        Gui gui = IGUI.createChestGui("Add player",6);
+
+        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
+
+        List<GuiItem> guiItems = new ArrayList<>();
+
+        for(Player playerToAdd : Bukkit.getOnlinePlayers()){
+
+            PlayerData playerData = PlayerDataStorage.get(playerToAdd);
+            if(territoryData.getPermission(type).isAllowed(territoryData, playerData))
+                continue;
+
+            ItemStack icon = HeadUtils.getPlayerHead(playerToAdd.getName(),playerToAdd,
+                    Lang.GUI_GENERIC_ADD_BUTTON.get());
+
+            GuiItem guiItem = ItemBuilder.from(icon).asGuiItem(event -> {
+                event.setCancelled(true);
+                if(!territoryData.doesPlayerHavePermission(playerStat, RolePermission.MANAGE_CLAIM_SETTINGS)){
+                    player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                    return;
+                }
+                territoryData.getPermission(type).addSpecificPlayerPermission(playerToAdd.getUniqueId().toString());
+                openPlayerListForChunkPermission(player, territoryData, type, 0);
+                SoundUtil.playSound(player, ADD);
+
+            });
+            guiItems.add(guiItem);
+        }
+
+        createIterator(gui, guiItems, 0, player,
+                p -> openPlayerListForChunkPermission(player, territoryData, type, 0),
+                p -> openAddPlayerForChunkPermission(player, territoryData, type, page + 1),
+                p -> openAddPlayerForChunkPermission(player, territoryData, type, page + 1));
 
         gui.open(player);
     }
@@ -2969,18 +3037,6 @@ public class PlayerGUI implements IGUI {
 
 
         gui.open(player);
-    }
-
-    private static GuiItem createGuiItem(ItemStack itemStack, TerritoryData territoryData, PlayerData playerData, Player player, Consumer<Void> action) {
-        return ItemBuilder.from(itemStack).asGuiItem(event -> {
-            event.setCancelled(true);
-            if (!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_CLAIM_SETTINGS)) {
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-                return;
-            }
-            action.accept(null);
-            openTownChunkPlayerSettings(player);
-        });
     }
 
     public static void openConfirmMenu(Player player, String confirmLore, Consumer<Void> confirmAction, Consumer<Void> returnAction) {

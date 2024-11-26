@@ -1,32 +1,42 @@
 package org.leralix.tan.dataclass;
 
+import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.enums.ChunkPermissionType;
 import org.leralix.tan.enums.MobChunkSpawnEnum;
-import org.leralix.tan.enums.TownChunkPermission;
 
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ClaimedChunkSettings {
-    private final Map<ChunkPermissionType, TownChunkPermission> permissions;
-    private final Map<String, UpgradeStatus> mobSpawnStorage;
+    private Map<ChunkPermissionType, ChunkPermission> newPermission;
+    private Map<String, UpgradeStatus> mobSpawnStorage;
 
     public ClaimedChunkSettings(){
-        this.permissions = new EnumMap<>(ChunkPermissionType.class);
+        this.newPermission = new EnumMap<>(ChunkPermissionType.class);
         this.mobSpawnStorage = new HashMap<>();
 
         for (ChunkPermissionType type : ChunkPermissionType.values()) {
-            permissions.put(type, TownChunkPermission.TOWN);
+            newPermission.put(type, new ChunkPermission());
         }
     }
-    public TownChunkPermission getPermission(ChunkPermissionType type) {
-        if(!permissions.containsKey(type))
-            permissions.put(type, TownChunkPermission.TOWN);
-        return permissions.get(type);
+
+    public Map<ChunkPermissionType, ChunkPermission> getNewPermission() {
+        if(newPermission == null)
+            newPermission = new EnumMap<>(ChunkPermissionType.class);
+        return newPermission;
+    }
+
+    public ChunkPermission getPermission(ChunkPermissionType type) {
+        var map =  getNewPermission();
+
+        if(map.containsKey(type))
+            map.put(type, new ChunkPermission());
+
+        return map.get(type);
     }
     public void nextPermission(ChunkPermissionType type) {
-        this.permissions.put(type, permissions.get(type).getNext());
+        getNewPermission().get(type).nextPermission();
     }
     public UpgradeStatus getSpawnControl(MobChunkSpawnEnum mobType) {
         return getSpawnControl(mobType.name());

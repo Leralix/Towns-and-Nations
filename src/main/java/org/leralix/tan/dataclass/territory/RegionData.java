@@ -45,7 +45,6 @@ public class RegionData extends TerritoryData {
     private TerritoryIcon territoryIcon;
     private Double taxRate;
     private Double balance;
-    private Integer chunkColor;
     private String description;
     private final List<String> townsInRegion;
     private TownRelations relations;
@@ -170,14 +169,6 @@ public class RegionData extends TerritoryData {
         return null;
     }
 
-    @Override
-    public boolean havePlayer(String playerID) {
-        return getPlayerIDList().contains(playerID);
-    }
-    @Override
-    public boolean havePlayer(PlayerData playerData) {
-        return havePlayer(playerData.getID());
-    }
 
     @Override
     public ItemStack getIcon() {
@@ -224,6 +215,11 @@ public class RegionData extends TerritoryData {
 
     public String getCapitalID() {
         return capitalID;
+    }
+
+    @Override
+    public int getChildColorCode() {
+        return 0;
     }
 
     @Override
@@ -394,15 +390,9 @@ public class RegionData extends TerritoryData {
         return (red << 16) | (green << 8) | blue;
     }
 
-    public int getChildColorCode() {
-        return this.chunkColor;
-    }
-
-
     public void removeVassal(String townID) {
         townsInRegion.remove(townID);
     }
-
 
     @Override
     public double getChunkUpkeepCost() {
@@ -411,7 +401,7 @@ public class RegionData extends TerritoryData {
 
     public boolean isPlayerInRegion(PlayerData playerData) {
         for (TerritoryData town : getSubjects()){
-            if(town.havePlayer(playerData))
+            if(town.isPlayerIn(playerData))
                 return true;
         }
         return false;

@@ -8,7 +8,7 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.ChunkPermissionType;
-import org.leralix.tan.enums.TownChunkPermission;
+import org.leralix.tan.enums.RelationPermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.storage.typeadapter.EnumMapKeyValueDeserializer;
@@ -93,9 +93,9 @@ public class TownDataStorage {
 
 
         Gson gson = new GsonBuilder()
-            .registerTypeAdapter(new TypeToken<Map<ChunkPermissionType, TownChunkPermission>>() {}.getType(), new EnumMapKeyValueDeserializer<>(ChunkPermissionType.class, TownChunkPermission.class))
+            .registerTypeAdapter(new TypeToken<Map<ChunkPermissionType, RelationPermission>>() {}.getType(), new EnumMapKeyValueDeserializer<>(ChunkPermissionType.class, RelationPermission.class))
             .registerTypeAdapter(new TypeToken<Map<TownRelation, List<String>>>() {}.getType(),new EnumMapDeserializer<>(TownRelation.class, new TypeToken<List<String>>(){}.getType()))
-            .registerTypeAdapter(new TypeToken<List<TownChunkPermission>>() {}.getType(),new EnumMapDeserializer<>(TownChunkPermission.class, new TypeToken<List<String>>(){}.getType()))
+            .registerTypeAdapter(new TypeToken<List<RelationPermission>>() {}.getType(),new EnumMapDeserializer<>(RelationPermission.class, new TypeToken<List<String>>(){}.getType()))
             .create();
 
         Type type = new TypeToken<LinkedHashMap<String, TownData>>() {}.getType();

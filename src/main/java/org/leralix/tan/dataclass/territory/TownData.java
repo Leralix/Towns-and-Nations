@@ -17,12 +17,12 @@ import org.leralix.tan.dataclass.newhistory.PlayerTaxHistory;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.OverlordTaxLine;
 import org.leralix.tan.dataclass.territory.economy.PlayerTaxLine;
+import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.ChunkPermissionType;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.SoundEnum;
-import org.leralix.tan.enums.TownChunkPermission;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage;
@@ -289,15 +289,6 @@ public class TownData extends TerritoryData {
         this.territoryIcon = new TerritoryIcon(icon);
     }
 
-    @Override
-    public boolean havePlayer(PlayerData player){
-        return havePlayer(player.getID());
-    }
-
-    @Override
-    public boolean havePlayer(String playerID){
-        return this.townPlayerListId.contains(playerID);
-    }
 
     //////////////////////////////////////
     //             IRelation            //
@@ -470,7 +461,7 @@ public class TownData extends TerritoryData {
         return getFlatTax();
     }
 
-    public TownChunkPermission getPermission(ChunkPermissionType type) {
+    public ChunkPermission getPermission(ChunkPermissionType type) {
         return this.chunkSettings.getPermission(type);
     }
 

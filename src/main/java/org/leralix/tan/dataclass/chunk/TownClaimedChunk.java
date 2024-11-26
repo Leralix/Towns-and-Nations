@@ -12,10 +12,10 @@ import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.dataclass.wars.CurrentAttacks;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.ChunkPermissionType;
-import org.leralix.tan.enums.TownChunkPermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
@@ -73,12 +73,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
             if(currentAttacks.containsPlayer(playerData))
                 return true;
 
-
-        if(getTown().havePlayer(playerData)){
-            return true;
-        }
-
-        TownChunkPermission townPermission = ownerTown.getPermission(permissionType);
+        ChunkPermission townPermission = ownerTown.getPermission(permissionType);
         if(townPermission.isAllowed(ownerTown, playerData))
             return true;
 

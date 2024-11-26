@@ -90,6 +90,13 @@ public abstract class TerritoryData {
     public abstract ItemStack getIconItem();
     public abstract void setIcon(ItemStack icon);
     public abstract Collection<String> getPlayerIDList();
+    public boolean isPlayerIn(PlayerData playerData){
+        return isPlayerIn(playerData.getID());
+    }
+    public boolean isPlayerIn(String playerID){
+        return getPlayerIDList().contains(playerID);
+    }
+
     public Collection<String> getOrderedPlayerIDList(){
         List<String> sortedList = new ArrayList<>();
         List<PlayerData> playerDataSorted = getPlayerDataList().stream()
@@ -103,8 +110,6 @@ public abstract class TerritoryData {
     }
     public abstract Collection<PlayerData> getPlayerDataList();
     public abstract ClaimedChunkSettings getChunkSettings();
-    public abstract boolean havePlayer(PlayerData playerData);
-    public abstract boolean havePlayer(String playerID);
     public abstract TownRelations getRelations();
     public void setRelation(TerritoryData otherTerritory, TownRelation relation){
         TownRelation actualRelation = getRelationWith(otherTerritory);
@@ -545,7 +550,7 @@ public abstract class TerritoryData {
     }
     public boolean doesPlayerHavePermission(PlayerData playerData, RolePermission townRolePermission) {
         //Player is not in the territory, he has no permission
-        if(!havePlayer(playerData)){
+        if(!this.isPlayerIn(playerData)){
             return false; //Later implement
         }
         //Leader have all rights

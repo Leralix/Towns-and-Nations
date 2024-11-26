@@ -65,7 +65,7 @@ public class JoinRegionProposalNL extends Newsletter {
         if(territoryData == null)
             return false;
         PlayerData playerData = PlayerDataStorage.get(player);
-        if(!territoryData.havePlayer(playerData))
+        if(!territoryData.isPlayerIn(playerData))
             return false;
         //TODO check if player have right to accept relation (need to add role in territory) Right now only leader can see newsletter
         return territoryData.isLeader(playerData);

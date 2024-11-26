@@ -212,6 +212,7 @@ language:
   GUI_GENERIC_RIGHT_CLICK_TO_DELETE: "§fRight click to delete"
   GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT: "§fShift + click to teleport"
   GUI_GENERIC_CLICK_TO_SWITCH_SCOPE: "§fClick to switch scope"
+  GUI_GENERIC_ADD_BUTTON: "§fAdd"
   LEFT_CLICK_TO_SELECT: "§fLeft click to select"
   LEFT_CLICK_TO_AUTHORIZE: "§fLeft click to authorize"
   LEFT_CLICK_TO_MODIFY: "§fLeft click to modify"

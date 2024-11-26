@@ -1,10 +1,13 @@
 package org.leralix.tan.enums;
 
 import org.bukkit.ChatColor;
+import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.HeadUtils;
 
-public enum TownChunkPermission {
+public enum RelationPermission {
 
     TOWN("Town", ChatColor.GREEN),
     ALLIANCE("Alliance", ChatColor.BLUE),
@@ -12,9 +15,9 @@ public enum TownChunkPermission {
 
     private final String name;
     private final ChatColor color;
-    private TownChunkPermission next;
+    private RelationPermission next;
 
-    TownChunkPermission(String name, ChatColor color) {
+    RelationPermission(String name, ChatColor color) {
         this.name = name;
         this.color = color;
     }
@@ -35,21 +38,26 @@ public enum TownChunkPermission {
     public String getColoredName(){
         return this.color + this.name;
     }
-    public TownChunkPermission getNext(){
+    public RelationPermission getNext(){
         return this.next;
     }
 
+
     public boolean isAllowed(TerritoryData ownerTown, PlayerData playerData) {
         switch (this) {
+
+            case TOWN -> {
+                if(ownerTown.isPlayerIn(playerData)){
+                    return true;
+                }
+            }
             case ALLIANCE -> {
                 if(playerData.haveTown() && ownerTown.getRelations().getRelationWith(playerData.getTown()) == TownRelation.ALLIANCE){
                         return true;
                     }
-
                 if(playerData.haveRegion() && ownerTown.getRelations().getRelationWith(playerData.getRegion()) == TownRelation.ALLIANCE){
                         return true;
                     }
-
             }
             case FOREIGN -> {
                 return true;
