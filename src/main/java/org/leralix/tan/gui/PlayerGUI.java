@@ -21,6 +21,7 @@ import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.economy.Budget;
+import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.dataclass.wars.WarRole;
@@ -2417,6 +2418,7 @@ public class PlayerGUI implements IGUI {
         List<GuiItem> guiItems = new ArrayList<>();
 
         for(String authorizedPlayerID : territoryData.getPermission(type).getAuthorizedPlayers()){
+            System.out.println("authorizedPlayerID : " + authorizedPlayerID);
             OfflinePlayer authorizedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(authorizedPlayerID));
             ItemStack icon = HeadUtils.getPlayerHead(authorizedPlayer.getName(),authorizedPlayer,
                     Lang.GUI_TOWN_MEMBER_DESC3.get());

@@ -2,6 +2,7 @@ package org.leralix.tan.enums;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
 

@@ -2,7 +2,6 @@ package org.leralix.tan.dataclass.territory.permission;
 
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.enums.RelationPermission;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,6 +46,7 @@ public class ChunkPermission {
     }
 
     public Collection<String> getAuthorizedPlayers() {
+        System.out.println("getAuthorizedPlayers : " + specificPlayerPermissions);
         return this.specificPlayerPermissions;
     }
 }

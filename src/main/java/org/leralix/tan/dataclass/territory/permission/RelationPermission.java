@@ -1,11 +1,9 @@
-package org.leralix.tan.enums;
+package org.leralix.tan.dataclass.territory.permission;
 
 import org.bukkit.ChatColor;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.enums.TownRelation;
 
 public enum RelationPermission {
 

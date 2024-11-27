@@ -106,7 +106,8 @@ public class ChunkListener implements Listener {
                 materialBlock == Material.HOPPER ||
                 materialBlock == Material.DISPENSER ||
                 materialBlock == Material.DROPPER ||
-                materialBlock == Material.BREWING_STAND){
+                materialBlock == Material.BREWING_STAND ||
+                materialBlock == Material.SHULKER_BOX){
 
             if(!canPlayerDoAction(loc, player, INTERACT_CHEST)){
                 event.setCancelled(true);

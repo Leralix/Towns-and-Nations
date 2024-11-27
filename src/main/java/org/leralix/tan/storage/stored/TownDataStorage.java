@@ -8,7 +8,7 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.ChunkPermissionType;
-import org.leralix.tan.enums.RelationPermission;
+import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.storage.typeadapter.EnumMapKeyValueDeserializer;

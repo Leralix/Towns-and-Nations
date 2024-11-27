@@ -28,9 +28,9 @@ public class ClaimedChunkSettings {
     }
 
     public ChunkPermission getPermission(ChunkPermissionType type) {
-        var map =  getNewPermission();
+        var map = getNewPermission();
 
-        if(map.containsKey(type))
+        if(!map.containsKey(type))
             map.put(type, new ChunkPermission());
 
         return map.get(type);
