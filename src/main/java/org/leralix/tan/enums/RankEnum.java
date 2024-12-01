@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
 
-public enum TownRankEnum {
+public enum RankEnum {
 
     ONE(5, ChatColor.GOLD, Material.NETHERITE_HELMET, Material.YELLOW_STAINED_GLASS_PANE),
     TWO(4, ChatColor.DARK_PURPLE, Material.DIAMOND_HELMET, Material.PURPLE_STAINED_GLASS_PANE),
@@ -21,7 +21,7 @@ public enum TownRankEnum {
     private final Material material;
     private final Material helmetMaterial;
 
-    TownRankEnum(int level, ChatColor color, Material helmetMaterial, Material colorMaterial) {
+    RankEnum(int level, ChatColor color, Material helmetMaterial, Material colorMaterial) {
         this.level = level;
         this.color = color;
         this.material = colorMaterial;
@@ -36,7 +36,7 @@ public enum TownRankEnum {
         return color;
     }
 
-    public TownRankEnum getRankByLevel(int level){
+    public RankEnum getRankByLevel(int level){
         return switch (level) {
             case 2 -> FOUR;
             case 3 -> THREE;
@@ -46,17 +46,17 @@ public enum TownRankEnum {
         };
     }
 
-    public TownRankEnum nextRank(){
+    public RankEnum nextRank(){
         if(this.getLevel() == 5) return ONE;
         return getRankByLevel((this.getLevel() + 1));
     }
-    public TownRankEnum previousRank(){
+    public RankEnum previousRank(){
         if(this.getLevel() == 1) return FIVE;
         return getRankByLevel((this.getLevel() - 1));
     }
 
-    public Material getBasicRankIcon(){
-        return helmetMaterial;
+    public ItemStack getBasicRankIcon(){
+        return new ItemStack(helmetMaterial);
     }
     public ItemStack getRankGuiIcon(){
         return HeadUtils.createCustomItemStack(helmetMaterial,

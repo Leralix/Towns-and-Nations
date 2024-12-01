@@ -48,7 +48,7 @@ public class TownData extends TerritoryData {
     private String Description;
     private Long dateTimeCreated;
     private String townIconMaterialCode;
-    private TerritoryIcon territoryIcon;
+    private CustomIcon territoryIcon;
     private String regionID;
     private boolean isRecruiting;
     private Double balance;
@@ -278,7 +278,7 @@ public class TownData extends TerritoryData {
                 return getPlayerHead(getName(), Bukkit.getOfflinePlayer(UUID.fromString(getLeaderID())));
             }
             else { // townIconMaterialCode is a legacy code, it should be updated anymore but we keep it for compatibility (todo delete before v0.1)
-                territoryIcon = new TerritoryIcon(new ItemStack(Material.getMaterial(townIconMaterialCode)));
+                territoryIcon = new CustomIcon(new ItemStack(Material.getMaterial(townIconMaterialCode)));
             }
         }
         return territoryIcon.getIcon();
@@ -286,7 +286,7 @@ public class TownData extends TerritoryData {
 
     @Override
     public void setIcon(ItemStack icon) {
-        this.territoryIcon = new TerritoryIcon(icon);
+        this.territoryIcon = new CustomIcon(icon);
     }
 
 

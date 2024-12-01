@@ -48,7 +48,9 @@ import java.util.logging.Logger;
  */
 public final class TownsAndNations extends JavaPlugin {
 
-
+    /**
+     * Singleton instance of the plugin.
+     */
     private static TownsAndNations plugin;
     Logger logger;
     /**

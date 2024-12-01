@@ -1,20 +1,20 @@
 package org.leralix.tan.dataclass;
 
-import org.bukkit.Material;
-import org.leralix.tan.enums.TownRankEnum;
+import org.bukkit.inventory.ItemStack;
+import org.leralix.tan.enums.RankEnum;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 import java.util.*;
 
-import static org.leralix.tan.enums.TownRankEnum.FIVE;
+import static org.leralix.tan.enums.RankEnum.FIVE;
 
 public class RankData {
 
     private Integer ID;
     private String name;
-    private TownRankEnum rankEnum;
-    private String rankIconName;
+    private RankEnum rankEnum;
+    CustomIcon rankIcon;
     private final List<String> players;
     private int salary;
     private final Set<RolePermission> permissions = EnumSet.noneOf(RolePermission.class);
@@ -25,7 +25,6 @@ public class RankData {
         this.ID = id;
         this.name = name;
         this.rankEnum = FIVE;
-        this.rankIconName = null;
         this.players = new ArrayList<>();
         this.isPayingTaxes = true;
         this.salary = 0;
@@ -43,7 +42,7 @@ public class RankData {
     public void setName(String newName){
         this.name = newName;
     }
-    public TownRankEnum getRankEnum(){
+    public RankEnum getRankEnum(){
         return this.rankEnum;
     }
     public int getLevel(){return this.rankEnum.getLevel();}
@@ -54,10 +53,10 @@ public class RankData {
     public void decrementLevel() {
         this.rankEnum = rankEnum.previousRank();
     }
-    public Material getRankInconMaterial(){
-        if(this.rankIconName == null)
+    public ItemStack getRankIcon(){
+        if(this.rankIcon == null)
             return rankEnum.getBasicRankIcon();
-        return Material.getMaterial(this.rankIconName);
+        return rankIcon.getIcon();
     }
     public void addPlayer(String playerUUID){
         this.players.add(playerUUID);
@@ -87,8 +86,8 @@ public class RankData {
     public boolean isPayingTaxes() {
         return this.isPayingTaxes;
     }
-    public void setRankIconName(String rankIconName) {
-        this.rankIconName = rankIconName;
+    public void setRankIconName(ItemStack rankItem) {
+        this.rankIcon = new CustomIcon(rankItem);
     }
     public int getNumberOfPlayer(){
         return players.size();

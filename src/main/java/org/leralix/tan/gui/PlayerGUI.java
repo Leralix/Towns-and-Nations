@@ -1268,8 +1268,7 @@ public class PlayerGUI implements IGUI {
         PlayerData playerData = PlayerDataStorage.get(player);
 
         for (RankData rank: territoryData.getAllRanksSorted()) {
-            Material townMaterial = rank.getRankInconMaterial();
-            ItemStack townRankItemStack = HeadUtils.createCustomItemStack(townMaterial, rank.getColoredName());
+            ItemStack townRankItemStack = HeadUtils.createCustomItemStack(rank.getRankIcon(), rank.getColoredName());
             GuiItem singleRankButton = ItemBuilder.from(townRankItemStack).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_RANKS)) {
@@ -1326,7 +1325,7 @@ public class PlayerGUI implements IGUI {
         boolean isDefaultRank = Objects.equals(rankData.getID(), territoryData.getDefaultRankID());
 
         ItemStack roleIcon = HeadUtils.createCustomItemStack(
-                rankData.getRankInconMaterial(),
+                rankData.getRankIcon(),
                 Lang.GUI_BASIC_NAME.get(rankData.getColoredName()),
                 Lang.GUI_TOWN_MEMBERS_ROLE_NAME_DESC1.get());
 
@@ -1370,20 +1369,17 @@ public class PlayerGUI implements IGUI {
         GuiItem roleGui = ItemBuilder.from(roleIcon).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if(event.getCursor() == null)
+            if(event.getCursor() == null || event.getCursor().getData() == null)
                 return;
-
-            if(event.getCursor().getData() != null)
-                return;
-            Material itemMaterial = event.getCursor().getData().getItemType();
-            if(itemMaterial == Material.AIR){
+            ItemStack itemMaterial = event.getCursor();
+            if(itemMaterial.getType() == Material.AIR){
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.get());
+                return;
             }
-            else {
-                rankData.setRankIconName(itemMaterial.toString());
-                openRankManager(player, territoryData, rankData);
-                player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get());
-            }
+            rankData.setRankIconName(itemMaterial);
+            openRankManager(player, territoryData, rankData);
+            player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get());
+
         });
 
         GuiItem rankIconButton = ItemBuilder.from(roleRankIcon).asGuiItem(event -> {
@@ -2418,7 +2414,6 @@ public class PlayerGUI implements IGUI {
         List<GuiItem> guiItems = new ArrayList<>();
 
         for(String authorizedPlayerID : territoryData.getPermission(type).getAuthorizedPlayers()){
-            System.out.println("authorizedPlayerID : " + authorizedPlayerID);
             OfflinePlayer authorizedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(authorizedPlayerID));
             ItemStack icon = HeadUtils.getPlayerHead(authorizedPlayer.getName(),authorizedPlayer,
                     Lang.GUI_TOWN_MEMBER_DESC3.get());

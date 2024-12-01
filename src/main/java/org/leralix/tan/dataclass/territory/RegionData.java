@@ -42,7 +42,7 @@ public class RegionData extends TerritoryData {
     private String nationID;
     private Long dateTimeCreated;
     private String regionIconType;
-    private TerritoryIcon territoryIcon;
+    private CustomIcon territoryIcon;
     private Double taxRate;
     private Double balance;
     private String description;
@@ -134,7 +134,7 @@ public class RegionData extends TerritoryData {
                 return getCapital().getIconItem();
             }
             else { // regionIconType is a legacy code, it should be updated anymore but we keep it for compatibility (todo delete before v0.1)
-                territoryIcon = new TerritoryIcon(new ItemStack(Material.getMaterial(regionIconType)));
+                territoryIcon = new CustomIcon(new ItemStack(Material.getMaterial(regionIconType)));
             }
         }
         return territoryIcon.getIcon();
@@ -142,7 +142,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     public void setIcon(ItemStack icon) {
-        this.territoryIcon = new TerritoryIcon(icon);
+        this.territoryIcon = new CustomIcon(icon);
     }
 
 

@@ -46,7 +46,6 @@ public class ChunkPermission {
     }
 
     public Collection<String> getAuthorizedPlayers() {
-        System.out.println("getAuthorizedPlayers : " + specificPlayerPermissions);
         return this.specificPlayerPermissions;
     }
 }

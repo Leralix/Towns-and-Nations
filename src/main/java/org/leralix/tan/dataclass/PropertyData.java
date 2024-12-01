@@ -8,6 +8,7 @@ import org.bukkit.block.sign.SignSide;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
@@ -74,10 +75,14 @@ public class PropertyData {
     public String getTotalID() {
         return ID;
     }
-    public String getOwningStructureID(){
+    private String getOwningStructureID(){
         String[] parts = ID.split("_");
         return parts[0];
     }
+    public TownData getTerritory(){
+        return TownDataStorage.get(getOwningStructureID());
+    }
+
     public String getPropertyID(){
         String[] parts = ID.split("_");
         return parts[1];
@@ -133,9 +138,15 @@ public class PropertyData {
     }
     public void payRent(){
         OfflinePlayer renter = Bukkit.getOfflinePlayer(UUID.fromString(rentingPlayerID));
-        EconomyUtil.removeFromBalance(renter, rentPrice);
         OfflinePlayer owner = Bukkit.getOfflinePlayer(UUID.fromString(owningPlayerID));
-        EconomyUtil.addFromBalance(owner, rentPrice);
+        TerritoryData town = getTerritory();
+
+        double tax = town.getTaxOnRentingProperty(rentPrice);
+
+        EconomyUtil.removeFromBalance(renter, rentPrice);
+        EconomyUtil.addFromBalance(owner, rentPrice - tax);
+        town.addToBalance(tax);
+
     }
     public boolean containsBloc(Block block){
         return containsLocation(block.getLocation());
@@ -169,7 +180,7 @@ public class PropertyData {
             List<String> lore = new ArrayList<>();
 
             lore.add(Lang.GUI_PROPERTY_DESCRIPTION.get(getDescription()));
-            lore.add(Lang.GUI_PROPERTY_STRUCTURE_OWNER.get(TownDataStorage.get(getOwningStructureID()).getName()));
+            lore.add(Lang.GUI_PROPERTY_STRUCTURE_OWNER.get(getTerritory().getName()));
 
             lore.add(Lang.GUI_PROPERTY_OWNER.get(getOwner().getName()));
             if(isForSale())
@@ -285,9 +296,11 @@ public class PropertyData {
         return Bukkit.getWorld(signLocation.getWorldID()).getBlockAt(this.signLocation.getX(), this.signLocation.getY(), this.signLocation.getZ());
     }
 
+
+
     public void delete() {
         PlayerData owner = PlayerDataStorage.get(owningPlayerID);
-        TownData town = TownDataStorage.get(getOwningStructureID());
+        TownData town = getTerritory();
         expelRenter(false);
         removeSign();
 
@@ -329,8 +342,13 @@ public class PropertyData {
         player.sendMessage(ChatUtils.getTANString() + Lang.PROPERTY_SOLD_NEW_OWNER.get(getName(), getBuyingPrice()));
         SoundUtil.playSound(player, SoundEnum.GOOD);
 
+        TownData town = getTerritory();
+        double tax = getTerritory().getTaxOnBuyingProperty(salePrice);
+
+
         EconomyUtil.removeFromBalance(player, salePrice);
-        EconomyUtil.addFromBalance(exOwnerOffline, salePrice);
+        EconomyUtil.addFromBalance(exOwnerOffline, salePrice - tax);
+        town.addToBalance(tax);
 
         PlayerData exOwnerData = PlayerDataStorage.get(owningPlayerID);
         PlayerData newOwnerData = PlayerDataStorage.get(player.getUniqueId().toString());

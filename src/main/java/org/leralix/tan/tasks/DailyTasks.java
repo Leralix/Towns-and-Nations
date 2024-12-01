@@ -38,6 +38,8 @@ public class DailyTasks {
     }
 
     public static void executeMidnightTasks() {
+        propertyRent();
+
         for(TownData town : TownDataStorage.getTownMap().values()){
             town.executeTasks();
         }
@@ -45,7 +47,6 @@ public class DailyTasks {
             regionData.executeTasks();
         }
 
-        propertyRent();
         clearOldTaxes();
 
         NewsletterStorage.clearOldNewsletters();

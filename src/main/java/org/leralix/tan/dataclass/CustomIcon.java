@@ -4,12 +4,12 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class TerritoryIcon {
+public class CustomIcon {
 
     String materialTypeName;
     Integer customModelData;
 
-    public TerritoryIcon(ItemStack icon) {
+    public CustomIcon(ItemStack icon) {
         this.materialTypeName = icon.getType().name();
         ItemMeta meta = icon.getItemMeta();
         if(meta != null && meta.hasCustomModelData())
