@@ -35,7 +35,7 @@ public class SubjectTaxLine extends ProfitLine{
     }
 
     @Override
-    public double getMoney() {
+    protected double getMoney() {
         return actualTaxes;
     }
 

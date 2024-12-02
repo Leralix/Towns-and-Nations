@@ -14,9 +14,7 @@ import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.newhistory.MiscellaneousHistory;
 import org.leralix.tan.dataclass.newhistory.PlayerTaxHistory;
-import org.leralix.tan.dataclass.territory.economy.Budget;
-import org.leralix.tan.dataclass.territory.economy.OverlordTaxLine;
-import org.leralix.tan.dataclass.territory.economy.PlayerTaxLine;
+import org.leralix.tan.dataclass.territory.economy.*;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
@@ -697,6 +695,8 @@ public class TownData extends TerritoryData {
     protected void addSpecificTaxes(Budget budget) {
         budget.addProfitLine(new PlayerTaxLine(this));
         budget.addProfitLine(new OverlordTaxLine(this));
+        budget.addProfitLine(new PropertyRentTax(this));
+        budget.addProfitLine(new PropertySellTax(this));
     }
 
     public Map<String, PropertyData> getPropertyDataMap(){

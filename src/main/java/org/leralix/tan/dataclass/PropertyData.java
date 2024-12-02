@@ -37,9 +37,9 @@ public class PropertyData {
     private String name;
     private String description;
     private boolean isForSale;
-    private int salePrice;
+    private double salePrice;
     private boolean isForRent;
-    private int rentPrice;
+    private double rentPrice;
     private final Vector3D p1;
     private final Vector3D p2;
     private Vector3D signLocation;
@@ -141,7 +141,7 @@ public class PropertyData {
         OfflinePlayer owner = Bukkit.getOfflinePlayer(UUID.fromString(owningPlayerID));
         TerritoryData town = getTerritory();
 
-        double tax = town.getTaxOnRentingProperty(rentPrice);
+        double tax = rentPrice * town.getTaxOnRentingProperty();
 
         EconomyUtil.removeFromBalance(renter, rentPrice);
         EconomyUtil.addFromBalance(owner, rentPrice - tax);
@@ -161,7 +161,7 @@ public class PropertyData {
     public boolean isForSale(){
         return this.isForSale;
     }
-    public int getRentPrice(){
+    public double getRentPrice(){
         return this.rentPrice;
     }
 
@@ -201,7 +201,7 @@ public class PropertyData {
         return property;
     }
 
-    public int getBuyingPrice() {
+    public double getBuyingPrice() {
         return this.salePrice;
     }
 
@@ -282,12 +282,12 @@ public class PropertyData {
         return lines;
     }
 
-    public void setRentPrice(int i) {
+    public void setRentPrice(double i) {
         this.rentPrice = i;
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), this::updateSign);
     }
 
-    public void setSalePrice(int i) {
+    public void setSalePrice(double i) {
         this.salePrice = i;
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), this::updateSign);
     }
@@ -343,7 +343,7 @@ public class PropertyData {
         SoundUtil.playSound(player, SoundEnum.GOOD);
 
         TownData town = getTerritory();
-        double tax = getTerritory().getTaxOnBuyingProperty(salePrice);
+        double tax = salePrice * getTerritory().getTaxOnBuyingProperty();
 
 
         EconomyUtil.removeFromBalance(player, salePrice);

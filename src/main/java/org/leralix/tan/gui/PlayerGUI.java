@@ -1567,7 +1567,7 @@ public class PlayerGUI implements IGUI {
     }
     public static void openTreasury(Player player, TerritoryData territoryData) {
 
-        Gui gui = IGUI.createChestGui("Economy",4);
+        Gui gui = IGUI.createChestGui("Economy",6);
 
 
         TownData townData = TownDataStorage.get(player);
@@ -1642,14 +1642,12 @@ public class PlayerGUI implements IGUI {
         gui.setItem(3,1, panel);
         gui.setItem(3,5, panel);
         gui.setItem(3,9, panel);
-        gui.setItem(4,2, panel);
-        gui.setItem(4,3, panel);
-        gui.setItem(4,4, panel);
+        gui.setItem(4,1, panel);
         gui.setItem(4,5, panel);
-        gui.setItem(4,6, panel);
-        gui.setItem(4,7, panel);
-        gui.setItem(4,8, panel);
         gui.setItem(4,9, panel);
+        gui.setItem(5,1, panel);
+        gui.setItem(5,5, panel);
+        gui.setItem(5,9, panel);
 
         gui.setItem(1,5, budgetInfo);
 
@@ -1660,7 +1658,7 @@ public class PlayerGUI implements IGUI {
 
         gui.setItem(3,4, retrieveButton);
 
-        gui.setItem(4,1, IGUI.createBackArrow(player, p -> dispatchPlayerTown(player)));
+        gui.setItem(6,1, IGUI.createBackArrow(player, p -> dispatchPlayerTown(player)));
 
         gui.open(player);
 
@@ -1668,7 +1666,7 @@ public class PlayerGUI implements IGUI {
     public static void openTownEconomicsHistory(Player player, TerritoryData territoryData, TransactionHistoryEnum transactionHistoryEnum) {
         openTownEconomicsHistory(player, territoryData, transactionHistoryEnum, 0);
     }
-        public static void openTownEconomicsHistory(Player player, TerritoryData territoryData, TransactionHistoryEnum transactionHistoryEnum, int page) {
+    public static void openTownEconomicsHistory(Player player, TerritoryData territoryData, TransactionHistoryEnum transactionHistoryEnum, int page) {
 
         Gui gui = IGUI.createChestGui("Town",6);
         List<GuiItem> guiItems = new ArrayList<>();

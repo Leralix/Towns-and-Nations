@@ -19,7 +19,7 @@ public class OverlordTaxLine extends ProfitLine {
     }
 
     @Override
-    public double getMoney() {
+    protected double getMoney() {
         return tax;
     }
 

@@ -20,7 +20,7 @@ public class ChunkUpkeepLine extends ProfitLine {
     }
 
     @Override
-    public double getMoney() {
+    protected double getMoney() {
         return totalUpkeep;
     }
 

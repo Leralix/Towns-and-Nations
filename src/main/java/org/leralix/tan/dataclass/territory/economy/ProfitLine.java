@@ -12,7 +12,7 @@ public abstract class ProfitLine implements Comparable<ProfitLine> {
         this.territoryData = territoryData;
     }
 
-    public abstract double getMoney();
+    protected abstract double getMoney();
 
     public abstract String getLine();
 

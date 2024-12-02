@@ -53,8 +53,8 @@ public abstract class TerritoryData {
 //    private String iconMaterial;
 //    private int balance;
 //    private TownRelations relations;
-    double propertyRentTax;
-    double propertyBuyTax;
+    int propertyRentTax;
+    int propertyBuyTax;
     Integer color;
     Integer defaultRankID;
     private Map<Integer, RankData> ranks;
@@ -65,8 +65,8 @@ public abstract class TerritoryData {
     List<String> overlordsProposals;
 
     protected TerritoryData(){
-        this.propertyRentTax = 0.1;
-        this.propertyBuyTax = 0.1;
+        this.propertyRentTax = 1;
+        this.propertyBuyTax = 1;
         ranks = new HashMap<>();
         registerNewRank("default");
 
@@ -665,11 +665,20 @@ public abstract class TerritoryData {
 
     protected abstract void collectTaxes();
 
-    public double getTaxOnRentingProperty(int rentPrice) {
-        return rentPrice * propertyRentTax;
+    public double getTaxOnRentingProperty() {
+        return propertyRentTax;
     }
 
-    public double getTaxOnBuyingProperty(int rentPrice) {
-        return rentPrice * propertyBuyTax;
+    public void addToRentTax(int value) {
+        propertyRentTax += value;
     }
+
+    public double getTaxOnBuyingProperty() {
+        return propertyBuyTax;
+    }
+
+    public void addToBuyTax(int value) {
+        propertyBuyTax += value;
+    }
+
 }

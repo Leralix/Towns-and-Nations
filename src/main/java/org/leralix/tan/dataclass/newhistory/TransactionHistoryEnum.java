@@ -6,7 +6,8 @@ public enum TransactionHistoryEnum {
     SALARY,
     DONATION,
     PLAYER_TAX,
-    SUBJECT_TAX;
+    SUBJECT_TAX,
+    PROPERTY_RENT_TAX;
 
     public TransactionHistory createTransactionHistory(String date, String territoryDataID, String transactionParty, double amount) {
         return switch (this) {
@@ -16,7 +17,7 @@ public enum TransactionHistoryEnum {
             case DONATION -> new PlayerDonationHistory(date, territoryDataID, transactionParty, amount);
             case PLAYER_TAX -> new PlayerTaxHistory(date, territoryDataID, transactionParty, amount);
             case SUBJECT_TAX -> new SubjectTaxHistory(date, territoryDataID, transactionParty, amount);
-            default -> null;
+            case PROPERTY_RENT_TAX -> new PropertyRentTaxHistory(date, territoryDataID, transactionParty, amount);
         };
     }
 }
