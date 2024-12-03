@@ -90,7 +90,7 @@ public class RegionDataStorage {
     }
 
 
-    public static LinkedHashMap<String, RegionData> getRegionStorage(){
+    public static Map<String, RegionData> getRegionStorage(){
         return regionStorage;
     }
 
@@ -158,7 +158,7 @@ public class RegionDataStorage {
             throw new RuntimeException(e);
         }
 
-        Writer writer = null;
+        Writer writer;
         try {
             writer = new FileWriter(file, false);
         } catch (IOException e) {

@@ -637,6 +637,7 @@ language:
   GUI_CONFIRM_ATTACK_DESC1: "§fConfirm attack on §6{0}"
   GUI_BUYING_PRICE: "§fBuying price is set to §6{0}{MONEY_CHAR}"
   GUI_RENTING_PRICE: "§fRenting price is set to §6{0}{MONEY_CHAR}/day"
+  GUI_TOWN_RATE: "§fTown rate: §6{0}%"
   GUI_LEFT_CLICK_TO_SWITCH_SALE: "§f- Left click to allow rent"
   GUI_LEFT_CLICK_TO_SWITCH_RENT: "§f- Left click to allow sale"
   GUI_PROPERTY_DRAWN_BOX: "§aShow property boundaries"

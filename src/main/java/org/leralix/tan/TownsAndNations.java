@@ -7,28 +7,27 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.leralix.tan.dataclass.PluginVersion;
-import org.leralix.tan.economy.*;
-import org.leralix.tan.lang.DynamicLang;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.api.PlaceHolderAPI;
-import org.leralix.tan.newsletter.NewsletterStorage;
-import org.leralix.tan.storage.ClaimBlacklistStorage;
-import org.leralix.tan.storage.database.DatabaseHandler;
-import org.leralix.tan.storage.database.SQLiteHandler;
-import org.leralix.tan.tasks.DailyTasks;
-import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.api.TanApi;
 import org.leralix.tan.commands.adminsubcommand.AdminCommandManager;
 import org.leralix.tan.commands.debugsubcommand.DebugCommandManager;
 import org.leralix.tan.commands.playersubcommand.PlayerCommandManager;
+import org.leralix.tan.dataclass.PluginVersion;
+import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.economy.TanEconomyStandalone;
+import org.leralix.tan.economy.VaultManager;
+import org.leralix.tan.lang.DynamicLang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.*;
 import org.leralix.tan.listeners.chatlistener.ChatListener;
-import org.leralix.tan.storage.CustomItemManager;
-import org.leralix.tan.storage.stored.*;
+import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.storage.*;
+import org.leralix.tan.storage.database.DatabaseHandler;
+import org.leralix.tan.storage.database.SQLiteHandler;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
-import org.leralix.tan.storage.MobChunkSpawnStorage;
-import org.leralix.tan.storage.SoundStorage;
+import org.leralix.tan.storage.stored.*;
+import org.leralix.tan.tasks.DailyTasks;
+import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.utils.CustomNBT;
 import org.leralix.tan.utils.DropChances;
 import org.leralix.tan.utils.config.ConfigTag;
@@ -89,11 +88,6 @@ public final class TownsAndNations extends JavaPlugin {
      * This option cannot be enabled with allowColorCodes.
      */
     private boolean allowTownTag = false;
-    /**
-     * If enabled, the Towns and Nations dynmap plugin is installed.
-     * This will enable new features for the core plugin.
-     */
-    private boolean dynmapAddonLoaded = true;
     /**
      * This variable is used to check when the plugin has launched
      * If the plugin close in less than 30 seconds, it is most likely a crash
@@ -159,6 +153,7 @@ public final class TownsAndNations extends JavaPlugin {
 
 
         logger.log(Level.INFO,"[TaN] -Loading Local data");
+
         RegionDataStorage.loadStats();
         PlayerDataStorage.loadStats();
         NewClaimedChunkStorage.loadStats();
@@ -203,7 +198,7 @@ public final class TownsAndNations extends JavaPlugin {
         try {
             databaseHandler.connect();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error while loading DB",e);
         }
     }
 
@@ -232,6 +227,7 @@ public final class TownsAndNations extends JavaPlugin {
         }
 
         logger.info("[TaN] Savings Data");
+
 
         RegionDataStorage.saveStats();
         TownDataStorage.saveStats();
@@ -393,15 +389,10 @@ public final class TownsAndNations extends JavaPlugin {
      * @param dynmapAddonLoaded should be true if dynmap is loaded, false otherwise.
      */
     public void setDynmapAddonLoaded(boolean dynmapAddonLoaded) {
-        this.dynmapAddonLoaded = dynmapAddonLoaded;
-    }
-
-    /**
-     * Check if the dynmap addon is loaded
-     * @return true if the dynmap addon is loaded, false otherwise.
-     */
-    public boolean isDynmapAddonLoaded() {
-        return dynmapAddonLoaded;
+        /**
+         * If enabled, the Towns and Nations dynmap plugin is installed.
+         * This will enable new features for the core plugin.
+         */
     }
 
     public PluginVersion getMinimumSupportingDynmap() {

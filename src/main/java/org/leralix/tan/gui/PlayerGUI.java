@@ -329,6 +329,7 @@ public class PlayerGUI implements IGUI {
         HeadUtils.setLore(isForSale,
                 propertyData.isForSale() ? Lang.GUI_PROPERTY_FOR_SALE.get(): Lang.GUI_PROPERTY_NOT_FOR_SALE.get(),
                 Lang.GUI_BUYING_PRICE.get(propertyData.getBuyingPrice()),
+                Lang.GUI_TOWN_RATE.get(propertyData.getTerritory().getTaxOnBuyingProperty()),
                 Lang.GUI_LEFT_CLICK_TO_SWITCH_SALE.get(),
                 Lang.GUI_RIGHT_CLICK_TO_CHANGE_PRICE.get()
         );
@@ -345,6 +346,7 @@ public class PlayerGUI implements IGUI {
         HeadUtils.setLore(isForRent,
                 propertyData.isForRent() ? Lang.GUI_PROPERTY_FOR_RENT.get(): Lang.GUI_PROPERTY_NOT_FOR_RENT.get(),
                 Lang.GUI_RENTING_PRICE.get(propertyData.getRentPrice()),
+                Lang.GUI_TOWN_RATE.get(propertyData.getTerritory().getTaxOnRentingProperty()),
                 Lang.GUI_LEFT_CLICK_TO_SWITCH_SALE.get(),
                 Lang.GUI_RIGHT_CLICK_TO_CHANGE_PRICE.get()
         );
