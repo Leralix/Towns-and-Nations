@@ -2,8 +2,10 @@ package org.leralix.tan.dataclass.newhistory;
 
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.StringUtil;
+import org.leralix.tan.utils.TerritoryUtil;
 
 public class PropertyRentTaxHistory extends TransactionHistory {
 
@@ -22,6 +24,9 @@ public class PropertyRentTaxHistory extends TransactionHistory {
 
         @Override
         public String addLoreLine() {
-            return Lang.CHUNK_PAYMENT_HISTORY_LORE.get(StringUtil.getColoredMoney(-getAmount()));
+            TownData territoryData = (TownData) getTerritoryData();
+            PropertyData propertyData = territoryData.getProperty(getTransactionParty());
+            return Lang.PROPERTY_RENT_LINE.get(territoryData.getName(), propertyData.getName(), StringUtil.getColoredMoney(-getAmount()));
         }
-    }
+
+}

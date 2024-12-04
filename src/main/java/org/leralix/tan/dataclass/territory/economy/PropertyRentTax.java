@@ -47,13 +47,13 @@ public class PropertyRentTax extends ProfitLine{
 
         PlayerData playerData = PlayerDataStorage.get(player);
 
-        ItemStack lowerTax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_LOWER_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=",
+        ItemStack lowerTax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_LOWER_TAX.get(),"https://textures.minecraft.net/texture/a9dbed522e8de1a681dddd37854ee4267efc48b59917f9a9acb420d6fdb9",
                 Lang.GUI_DECREASE_1PERCENT_DESC.get(),
                 Lang.GUI_DECREASE_10PERCENT_DESC.get());
-        ItemStack increaseTax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_INCREASE_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19",
+        ItemStack increaseTax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_INCREASE_TAX.get(),"https://textures.minecraft.net/texture/bf6b85f626444dbd5bddf7a521fe52748fe43564e03fbd35b6b5e797de942d",
                 Lang.GUI_INCREASE_1PERCENT_DESC.get(),
                 Lang.GUI_INCREASE_10PERCENT_DESC.get());
-        ItemStack tax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_RENT_PROPERTY_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk4ZGY0MmY0NzdmMjEzZmY1ZTlkN2ZhNWE0Y2M0YTY5ZjIwZDljZWYyYjkwYzRhZTRmMjliZDE3Mjg3YjUifX19",
+        ItemStack tax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_RENT_PROPERTY_TAX.get(),"https://textures.minecraft.net/texture/e19997593f2c592b9fbd4f15ead1673b76f519d7ab3efa15edd19448d1a20bfc",
                 Lang.GUI_TREASURY_PROPERTY_RENT_TAX_DESC1.get(String.format("%.2f", territoryData.getTaxOnRentingProperty())),
                 Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get());
 
@@ -79,7 +79,7 @@ public class PropertyRentTax extends ProfitLine{
         });
         GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
             event.setCancelled(true);
-            PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.PROPERTY_RENT_TAX);
+            PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.PROPERTY_BUY_TAX);
         });
         GuiItem increaseTaxButton = ItemBuilder.from(increaseTax).asGuiItem(event -> {
             event.setCancelled(true);
@@ -103,8 +103,8 @@ public class PropertyRentTax extends ProfitLine{
             PlayerGUI.openTreasury(player, territoryData);
         });
 
-        gui.setItem(5, 2, lowerTaxButton);
-        gui.setItem(5, 3, taxInfo);
-        gui.setItem(5, 4, increaseTaxButton);
+        gui.setItem(4, 2, lowerTaxButton);
+        gui.setItem(4, 3, taxInfo);
+        gui.setItem(4, 4, increaseTaxButton);
     }
 }

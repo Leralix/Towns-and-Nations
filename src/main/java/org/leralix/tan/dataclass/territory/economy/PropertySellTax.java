@@ -47,13 +47,13 @@ public class PropertySellTax extends ProfitLine{
 
         PlayerData playerData = PlayerDataStorage.get(player);
 
-        ItemStack lowerTax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_LOWER_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=",
+        ItemStack lowerTax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_LOWER_TAX.get(),"https://textures.minecraft.net/texture/a9dbed522e8de1a681dddd37854ee4267efc48b59917f9a9acb420d6fdb9",
                 Lang.GUI_DECREASE_1PERCENT_DESC.get(),
                 Lang.GUI_DECREASE_10PERCENT_DESC.get());
-        ItemStack increaseTax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_INCREASE_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19",
+        ItemStack increaseTax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_INCREASE_TAX.get(),"https://textures.minecraft.net/texture/bf6b85f626444dbd5bddf7a521fe52748fe43564e03fbd35b6b5e797de942d",
                 Lang.GUI_INCREASE_1PERCENT_DESC.get(),
                 Lang.GUI_INCREASE_10PERCENT_DESC.get());
-        ItemStack tax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_BUY_PROPERTY_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk4ZGY0MmY0NzdmMjEzZmY1ZTlkN2ZhNWE0Y2M0YTY5ZjIwZDljZWYyYjkwYzRhZTRmMjliZDE3Mjg3YjUifX19",
+        ItemStack tax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_BUY_PROPERTY_TAX.get(),"http://textures.minecraft.net/texture/97f82aceb98fe069e8c166ced00242a76660bbe07091c92cdde54c6ed10dcff9",
                 Lang.GUI_TREASURY_PROPERTY_RENT_TAX_DESC1.get(String.format("%.2f", territoryData.getTaxOnBuyingProperty())),
                 Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get());
 
@@ -103,8 +103,8 @@ public class PropertySellTax extends ProfitLine{
             PlayerGUI.openTreasury(player, territoryData);
         });
 
-        gui.setItem(4, 2, lowerTaxButton);
-        gui.setItem(4, 3, taxInfo);
-        gui.setItem(4, 4, increaseTaxButton);
+        gui.setItem(4, 6, lowerTaxButton);
+        gui.setItem(4, 7, taxInfo);
+        gui.setItem(4, 8, increaseTaxButton);
     }
 }

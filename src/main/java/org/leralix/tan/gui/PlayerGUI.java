@@ -1569,10 +1569,9 @@ public class PlayerGUI implements IGUI {
     }
     public static void openTreasury(Player player, TerritoryData territoryData) {
 
-        Gui gui = IGUI.createChestGui("Economy",6);
+        Gui gui = IGUI.createChestGui("Economy",5);
 
 
-        TownData townData = TownDataStorage.get(player);
         PlayerData playerStat = PlayerDataStorage.get(player);
         Budget budget = territoryData.getBudget();
 
@@ -1605,7 +1604,7 @@ public class PlayerGUI implements IGUI {
             player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get());
             player.closeInventory();
 
-            PlayerChatListenerStorage.register(player, new DonateToTerritory(townData));
+            PlayerChatListenerStorage.register(player, new DonateToTerritory(territoryData));
             event.setCancelled(true);
         });
         GuiItem donationHistoryButton = ItemBuilder.from(donationHistory).asGuiItem(event -> {
@@ -1616,12 +1615,12 @@ public class PlayerGUI implements IGUI {
         GuiItem retrieveButton = ItemBuilder.from(retrieveMoney).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if(!townData.doesPlayerHavePermission(playerStat, MANAGE_TAXES)){
+            if(!territoryData.doesPlayerHavePermission(playerStat, MANAGE_TAXES)){
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
             player.sendMessage(getTANString() + Lang.PLAYER_WRITE_QUANTITY_IN_CHAT.get());
-            PlayerChatListenerStorage.register(player,new RetrieveMoney(townData));
+            PlayerChatListenerStorage.register(player,new RetrieveMoney(territoryData));
             player.closeInventory();
 
         });
@@ -1634,24 +1633,32 @@ public class PlayerGUI implements IGUI {
         gui.setItem(1,2, panel);
         gui.setItem(1,3, panel);
         gui.setItem(1,4, panel);
+        gui.setItem(1,5, budgetInfo);
         gui.setItem(1,6, panel);
         gui.setItem(1,7, panel);
         gui.setItem(1,8, panel);
         gui.setItem(1,9, panel);
+
         gui.setItem(2,1, panel);
         gui.setItem(2,5, panel);
         gui.setItem(2,9, panel);
+
         gui.setItem(3,1, panel);
         gui.setItem(3,5, panel);
         gui.setItem(3,9, panel);
+
         gui.setItem(4,1, panel);
         gui.setItem(4,5, panel);
         gui.setItem(4,9, panel);
-        gui.setItem(5,1, panel);
-        gui.setItem(5,5, panel);
-        gui.setItem(5,9, panel);
 
-        gui.setItem(1,5, budgetInfo);
+        gui.setItem(5,2, panel);
+        gui.setItem(5,3, panel);
+        gui.setItem(5,4, panel);
+        gui.setItem(5,5, panel);
+        gui.setItem(5,6, panel);
+        gui.setItem(5,7, panel);
+        gui.setItem(5,8, panel);
+        gui.setItem(5,9, panel);
 
         gui.setItem(2,8, miscSpendingButton);
 
@@ -1660,7 +1667,7 @@ public class PlayerGUI implements IGUI {
 
         gui.setItem(3,4, retrieveButton);
 
-        gui.setItem(6,1, IGUI.createBackArrow(player, p -> dispatchPlayerTown(player)));
+        gui.setItem(5,1, IGUI.createBackArrow(player, p -> dispatchPlayerTown(player)));
 
         gui.open(player);
 

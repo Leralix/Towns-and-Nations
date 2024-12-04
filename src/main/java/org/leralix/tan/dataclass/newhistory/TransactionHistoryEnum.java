@@ -1,5 +1,7 @@
 package org.leralix.tan.dataclass.newhistory;
 
+import org.leralix.tan.dataclass.PropertyBuyTaxTransaction;
+
 public enum TransactionHistoryEnum {
     CHUNK_SPENDING,
     MISCELLANEOUS,
@@ -7,7 +9,8 @@ public enum TransactionHistoryEnum {
     DONATION,
     PLAYER_TAX,
     SUBJECT_TAX,
-    PROPERTY_RENT_TAX;
+    PROPERTY_RENT_TAX,
+    PROPERTY_BUY_TAX;
 
     public TransactionHistory createTransactionHistory(String date, String territoryDataID, String transactionParty, double amount) {
         return switch (this) {
@@ -18,6 +21,7 @@ public enum TransactionHistoryEnum {
             case PLAYER_TAX -> new PlayerTaxHistory(date, territoryDataID, transactionParty, amount);
             case SUBJECT_TAX -> new SubjectTaxHistory(date, territoryDataID, transactionParty, amount);
             case PROPERTY_RENT_TAX -> new PropertyRentTaxHistory(date, territoryDataID, transactionParty, amount);
+            case PROPERTY_BUY_TAX -> new PropertyBuyTaxTransaction(date, territoryDataID, transactionParty, amount);
         };
     }
 }

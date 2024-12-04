@@ -77,6 +77,7 @@ public class DailyTasks {
         databaseHandler.deleteOldHistory(timeBeforeClearingHistory, TransactionHistoryEnum.PLAYER_TAX);
         databaseHandler.deleteOldHistory(timeBeforeClearingHistory, TransactionHistoryEnum.SUBJECT_TAX);
         databaseHandler.deleteOldHistory(timeBeforeClearingHistory, TransactionHistoryEnum.PROPERTY_RENT_TAX);
+        databaseHandler.deleteOldHistory(timeBeforeClearingHistory, TransactionHistoryEnum.PROPERTY_BUY_TAX);
         databaseHandler.deleteOldHistory(timeBeforeClearingSalary, TransactionHistoryEnum.SALARY);
         databaseHandler.deleteOldHistory(timeBeforeClearingMisc, TransactionHistoryEnum.MISCELLANEOUS);
         databaseHandler.deleteOldHistory(timeBeforeClearingChunk, TransactionHistoryEnum.CHUNK_SPENDING);

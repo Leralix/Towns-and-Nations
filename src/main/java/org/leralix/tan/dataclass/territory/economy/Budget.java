@@ -2,6 +2,8 @@ package org.leralix.tan.dataclass.territory.economy;
 
 import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.StringUtil;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -23,11 +25,15 @@ public class Budget {
 
 
     public List<String> createLore() {
-        List<String> lore = new LinkedList<>();
+        double total = 0;
+        LinkedList<String> lore = new LinkedList<>();
+
+        Collections.sort(profitList);
         for(ProfitLine profitLine : profitList){
             lore.add(profitLine.getLine());
+            total += profitLine.getMoney();
         }
-        Collections.sort(lore);
+        lore.addFirst(Lang.TOTAL_ESTIMATED_EVOLUTION.get(StringUtil.getColoredMoney(total)));
         return lore;
     }
 
