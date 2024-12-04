@@ -3,6 +3,7 @@ package org.leralix.tan.utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
@@ -37,7 +38,11 @@ public class TeamUtils {
         if(TownsAndNations.getPlugin().colorCodeIsNotEnabled())
             return;
 
-        Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
+        ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
+        if(scoreboardManager == null)
+            return;
+
+        Scoreboard board = scoreboardManager.getNewScoreboard();
 
         for (TownRelation relation : TownRelation.values()) {
             Team team = board.getTeam(relation.getName().toLowerCase());
@@ -53,7 +58,7 @@ public class TeamUtils {
 
         for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
 
-            if(PlayerDataStorage.get(otherPlayer).getTownId() != null){
+            if(PlayerDataStorage.get(otherPlayer).haveTown()){
                 addPlayerToCorrectTeam(otherPlayer, player);
                 if(!otherPlayer.getUniqueId().equals(player.getUniqueId())) //If player is not himself, no need to do it twice
                     addPlayerToCorrectTeam(player, otherPlayer);

@@ -752,7 +752,7 @@ public class TownData extends TerritoryData {
     }
 
     public String getColoredTag() {
-        return getChunkColorCode() + "[" + getTownTag() + "]";
+        return getChunkColor() + "[" + getTownTag() + "]";
     }
 
     @SuppressWarnings("unused") //API

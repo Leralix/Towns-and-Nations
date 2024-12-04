@@ -12,10 +12,10 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.TeamUtils;
 import org.leralix.tan.utils.prefixUtil;
 
 import static org.leralix.tan.utils.ChatUtils.getTANString;
-import static org.leralix.tan.utils.TeamUtils.setIndividualScoreBoard;
 
 
 public class PlayerJoinListener implements Listener {
@@ -33,7 +33,7 @@ public class PlayerJoinListener implements Listener {
                 prefixUtil.addPrefix(player);
         }
 
-        setIndividualScoreBoard(player);
+        TeamUtils.setIndividualScoreBoard(player);
 
         if(player.hasPermission("tan.debug") && !TownsAndNations.getPlugin().isLatestVersion()){
             player.sendMessage(getTANString() + Lang.NEW_VERSION_AVAILABLE.get(TownsAndNations.getPlugin().getLatestVersion()));

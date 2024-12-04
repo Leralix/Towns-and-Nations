@@ -648,7 +648,7 @@ language:
   CONFIRM_RENT_DESC2: "§fRenting price : §6{0}{MONEY_CHAR}/day"
   CANCEL_RENT: "§cCancel rent"
   CONFIRM_SALE: "§aSell property"
-  CONFIRM_SALE_DESC1: "§fClick to rent the property"
+  CONFIRM_SALE_DESC1: "§fClick to buy the property"
   CONFIRM_SALE_DESC2: "§fPrice: §6{0}{MONEY_CHAR}"
   CANCEL_SALE: "§cCancel sale"
   SELL_PROPERTY: "§aSell property"

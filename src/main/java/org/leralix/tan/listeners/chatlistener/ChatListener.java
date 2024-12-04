@@ -12,7 +12,7 @@ import static org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage.r
 public class ChatListener implements Listener {
 
     @EventHandler
-    public void OnPlayerChat(AsyncPlayerChatEvent event){
+    public void onPlayerChat(AsyncPlayerChatEvent event){
         Player player = event.getPlayer();
         ChatListenerEvent chatListenerEvent = PlayerChatListenerStorage.getPlayer(player);
 
