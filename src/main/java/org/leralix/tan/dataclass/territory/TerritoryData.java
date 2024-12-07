@@ -645,7 +645,7 @@ public abstract class TerritoryData {
 
         Collection<ClaimedChunk2> allChunkFrom = NewClaimedChunkStorage.getAllChunkFrom(this);
         for(ClaimedChunk2 claimedChunk2 : allChunkFrom){
-            if(Math.random() < minPercentageOfChunkToKeep){
+            if(RandomUtil.getRandom().nextDouble() < minPercentageOfChunkToKeep){
                 NewClaimedChunkStorage.unclaimChunk(claimedChunk2);
                 nbOfUnclaimedChunk++;
             }
