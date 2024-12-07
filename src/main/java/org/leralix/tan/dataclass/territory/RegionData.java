@@ -324,8 +324,7 @@ public class RegionData extends TerritoryData {
 
 
     public double getBalance() {
-        double digitVal = Math.pow(10,ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("DecimalDigits",2));
-        return (long)(balance * digitVal) / digitVal;
+        return StringUtil.handleDigits(balance);
     }
 
     @Override

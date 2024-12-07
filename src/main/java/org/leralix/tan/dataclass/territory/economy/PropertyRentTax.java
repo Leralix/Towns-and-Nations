@@ -28,7 +28,7 @@ public class PropertyRentTax extends ProfitLine{
     public PropertyRentTax(TownData townData){
         super(townData);
         for(PropertyData propertyData : townData.getPropertyDataList()){
-            taxes += propertyData.getRentPrice() * townData.getTaxOnRentingProperty();
+            taxes += propertyData.getRentPrice() * townData.getTaxOnRentingProperty() / 100;
         }
     }
 
@@ -106,5 +106,10 @@ public class PropertyRentTax extends ProfitLine{
         gui.setItem(4, 2, lowerTaxButton);
         gui.setItem(4, 3, taxInfo);
         gui.setItem(4, 4, increaseTaxButton);
+    }
+
+    @Override
+    public boolean isRecurrent() {
+        return true;
     }
 }

@@ -55,7 +55,7 @@ public class PlayerTaxLine extends ProfitLine{
     @Override
     public String getLine() {
        if(missingTaxes > 0)
-           return Lang.PLAYER_TAX_MISSING_LINE.get(StringUtil.getColoredMoney(getMoney()), missingTaxes);
+           return Lang.PLAYER_TAX_MISSING_LINE.get(StringUtil.getColoredMoney(getMoney()), StringUtil.formatMoney(missingTaxes));
        else
            return Lang.PLAYER_TAX_LINE.get(StringUtil.getColoredMoney(getMoney()));
     }
@@ -72,7 +72,7 @@ public class PlayerTaxLine extends ProfitLine{
                 Lang.GUI_INCREASE_1_DESC.get(),
                 Lang.GUI_INCREASE_10_DESC.get());
         ItemStack tax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_FLAT_TAX.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk4ZGY0MmY0NzdmMjEzZmY1ZTlkN2ZhNWE0Y2M0YTY5ZjIwZDljZWYyYjkwYzRhZTRmMjliZDE3Mjg3YjUifX19",
-                Lang.GUI_TREASURY_FLAT_TAX_DESC1.get(territoryData.getTax()),
+                Lang.GUI_TREASURY_FLAT_TAX_DESC1.get(StringUtil.formatMoney(territoryData.getTax())),
                 Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get());
 
 
@@ -117,5 +117,10 @@ public class PlayerTaxLine extends ProfitLine{
         gui.setItem(2, 2, lowerTaxButton);
         gui.setItem(2, 3, taxInfo);
         gui.setItem(2, 4, increaseTaxButton);
+    }
+
+    @Override
+    public boolean isRecurrent() {
+        return true;
     }
 }

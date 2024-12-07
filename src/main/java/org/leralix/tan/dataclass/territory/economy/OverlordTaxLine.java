@@ -32,5 +32,10 @@ public class OverlordTaxLine extends ProfitLine {
 
     }
 
+    @Override
+    public boolean isRecurrent() {
+        return true;
+    }
+
 
 }

@@ -41,4 +41,9 @@ public class ChunkUpkeepLine extends ProfitLine {
         });
         gui.setItem(2,7, chunkSpendingItem);
     }
+
+    @Override
+    public boolean isRecurrent() {
+        return true;
+    }
 }

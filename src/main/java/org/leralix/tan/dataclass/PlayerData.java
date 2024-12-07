@@ -13,6 +13,7 @@ import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
+import org.leralix.tan.utils.StringUtil;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
 
@@ -54,8 +55,7 @@ public class PlayerData {
     }
 
     public double getBalance() {
-        double digitVal = Math.pow(10,ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("DecimalDigits",2));
-        return (long)(Balance * digitVal) / digitVal;
+        return StringUtil.handleDigits(Balance);
     }
 
     public void setBalance(double balance) {

@@ -23,23 +23,19 @@ import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class PropertySellTax extends ProfitLine{
 
-    double taxes = 0;
 
     public PropertySellTax(TownData townData){
         super(townData);
-        for(PropertyData propertyData : townData.getPropertyDataList()){
-            taxes += propertyData.getRentPrice() * townData.getTaxOnRentingProperty();
-        }
     }
 
     @Override
     public double getMoney() {
-        return taxes;
+        return 0;
     }
 
     @Override
     public String getLine() {
-        return Lang.PROPERTY_TAX_LINE.get(StringUtil.getColoredMoney(getMoney()));
+        return null;
     }
 
     @Override
@@ -106,5 +102,10 @@ public class PropertySellTax extends ProfitLine{
         gui.setItem(4, 6, lowerTaxButton);
         gui.setItem(4, 7, taxInfo);
         gui.setItem(4, 8, increaseTaxButton);
+    }
+
+    @Override
+    public boolean isRecurrent() {
+        return false;
     }
 }

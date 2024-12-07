@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.StringUtil;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,8 +29,10 @@ public class Budget {
 
         Collections.sort(profitList);
         for(ProfitLine profitLine : profitList){
-            lore.add(profitLine.getLine());
-            total += profitLine.getMoney();
+            if(profitLine.isRecurrent()){
+                lore.add(profitLine.getLine());
+                total += profitLine.getMoney();
+            }
         }
         lore.addFirst(Lang.TOTAL_ESTIMATED_EVOLUTION.get(StringUtil.getColoredMoney(total)));
         return lore;

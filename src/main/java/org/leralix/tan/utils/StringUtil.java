@@ -1,6 +1,8 @@
 package org.leralix.tan.utils;
 
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.utils.config.ConfigTag;
+import org.leralix.tan.utils.config.ConfigUtil;
 
 import java.util.Random;
 
@@ -52,7 +54,7 @@ public class StringUtil {
     public static String formatMoney(double amount) {
 
         if (amount < 1_000) {
-            return String.valueOf(amount);
+            return Double.toString(handleDigits(amount));
         } else if (amount < 1_000_000) {
             return String.format("%.1fK", amount / 1_000) ;
         } else if (amount < 1_000_000_000) {
@@ -62,5 +64,11 @@ public class StringUtil {
         } else {
             return String.format("%.1fT", amount / 1_000_000_000_000L);
         }
+    }
+
+    public static double handleDigits(double amount) {
+        double digitVal = Math.pow(10,ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("DecimalDigits",2));
+        double value = Math.round(amount * digitVal) / digitVal;
+        return value;
     }
 }

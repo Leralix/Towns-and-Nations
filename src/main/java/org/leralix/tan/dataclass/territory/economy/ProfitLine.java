@@ -22,4 +22,6 @@ public abstract class ProfitLine implements Comparable<ProfitLine> {
     public int compareTo(ProfitLine otherLine) {
         return Double.compare(otherLine.getMoney(), getMoney());
     }
+
+    public abstract boolean isRecurrent();
 }

@@ -95,4 +95,9 @@ public class SubjectTaxLine extends ProfitLine{
         gui.setItem(2, 4, increaseTaxButton);
 
     }
+
+    @Override
+    public boolean isRecurrent() {
+        return true;
+    }
 }

@@ -46,4 +46,9 @@ public class SalaryPaymentLine extends ProfitLine {
         gui.setItem(2,6, salaryHistoryButton);
 
     }
+
+    @Override
+    public boolean isRecurrent() {
+        return true;
+    }
 }
