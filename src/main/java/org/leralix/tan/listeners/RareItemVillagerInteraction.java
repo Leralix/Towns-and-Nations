@@ -22,7 +22,6 @@ public class RareItemVillagerInteraction implements Listener {
     public void onPlayerInteract(PlayerInteractEntityEvent event){
 
         Player player = event.getPlayer();
-
         if (event.getRightClicked() instanceof Villager villager) {
 
             CustomVillagerProfession customProfession = null;
@@ -75,7 +74,7 @@ public class RareItemVillagerInteraction implements Listener {
 
                 player.getInventory().setItemInMainHand(new ItemStack(Material.AIR, 1));
 
-                EconomyUtil.addFromBalance(player, quantity * price);
+                EconomyUtil.addFromBalance(player, (double) quantity * price);
 
 
                 player.sendMessage(
@@ -93,7 +92,6 @@ public class RareItemVillagerInteraction implements Listener {
             ));
 
         }
-
 
 
     }

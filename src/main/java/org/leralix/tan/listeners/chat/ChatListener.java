@@ -1,4 +1,4 @@
-package org.leralix.tan.listeners.chatlistener;
+package org.leralix.tan.listeners.chat;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -7,7 +7,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.ChatUtils;
 
-import static org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage.removePlayer;
+import static org.leralix.tan.listeners.chat.PlayerChatListenerStorage.removePlayer;
 
 public class ChatListener implements Listener {
 

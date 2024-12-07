@@ -26,7 +26,7 @@ import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage;
+import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.newsletter.news.DiplomacyProposalNL;
 import org.leralix.tan.newsletter.news.JoinRegionProposalNL;
@@ -53,6 +53,7 @@ public abstract class TerritoryData {
     private Long dateTimeCreated;
     private CustomIcon customIcon;
     private RelationData relations;
+    private Double baseTax;
     int propertyRentTax;
     int propertyBuyTax;
     Integer color;
@@ -669,7 +670,18 @@ public abstract class TerritoryData {
 
     public abstract double getChunkUpkeepCost();
 
-    public abstract double getTax();
+    public double getTax(){
+        if(baseTax == null){
+            baseTax = getOldTax();
+        }
+        return baseTax;
+    }
+    public void setTax(double newTax){
+        this.baseTax = newTax;
+    }
+
+
+    public abstract Double getOldTax(); //TODO : delete before v0.1
 
     public abstract void addToTax(double i);
 

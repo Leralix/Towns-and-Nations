@@ -1,4 +1,4 @@
-package org.leralix.tan.listeners.chatlistener;
+package org.leralix.tan.listeners.chat;
 
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

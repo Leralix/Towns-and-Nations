@@ -19,7 +19,7 @@ import org.leralix.tan.economy.VaultManager;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.*;
-import org.leralix.tan.listeners.chatlistener.ChatListener;
+import org.leralix.tan.listeners.chat.ChatListener;
 import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.*;
 import org.leralix.tan.storage.database.DatabaseHandler;

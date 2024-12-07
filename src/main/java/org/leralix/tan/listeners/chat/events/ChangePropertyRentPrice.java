@@ -1,21 +1,29 @@
-package org.leralix.tan.listeners.chatlistener.events;
+package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.listeners.chatlistener.ChatListenerEvent;
+import org.leralix.tan.listeners.chat.ChatListenerEvent;
 
+import java.util.function.Consumer;
+
+import static org.leralix.tan.listeners.chat.PlayerChatListenerStorage.removePlayer;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 
-public class ChangePropertySalePrice extends ChatListenerEvent {
+public class ChangePropertyRentPrice extends ChatListenerEvent {
+
     PropertyData propertyData;
-    public ChangePropertySalePrice(@NotNull PropertyData propertyData) {
+    Consumer<Player> guiCallback;
+
+    public ChangePropertyRentPrice(@NotNull PropertyData propertyData, Consumer<Player> guiCallback) {
         this.propertyData = propertyData;
+        this.guiCallback = guiCallback;
     }
 
     @Override
     public void execute(Player player, String message) {
+        removePlayer(player);
         int amount;
         try{
             amount = Integer.parseInt(message);
@@ -24,6 +32,7 @@ public class ChangePropertySalePrice extends ChatListenerEvent {
             player.sendMessage(getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
             return;
         }
-        propertyData.setSalePrice(amount);
+
+        propertyData.setRentPrice(amount);
     }
 }

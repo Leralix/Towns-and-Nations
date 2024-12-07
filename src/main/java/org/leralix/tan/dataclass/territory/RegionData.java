@@ -258,7 +258,8 @@ public class RegionData extends TerritoryData {
     protected String getOverlordPrivate() {
         return null;
     }
-    public double getTax() {
+    @Override
+    public Double getOldTax() {
         return taxRate;
     }
 

@@ -5,7 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.leralix.tan.storage.LocalChatStorage;
-import org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage;
+import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 
 public class ChatScopeListener implements Listener {
 

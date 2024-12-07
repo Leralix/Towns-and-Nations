@@ -380,7 +380,8 @@ public class TownData extends TerritoryData {
         this.isRecruiting = !this.isRecruiting;
     }
 
-    public double getFlatTax() {
+    @Override
+    public Double getOldTax() {
         if(this.flatTax == null)
             this.flatTax = 1.0;
         return this.flatTax;

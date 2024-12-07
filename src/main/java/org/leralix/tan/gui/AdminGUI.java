@@ -21,15 +21,14 @@ import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.enums.SoundEnum;
-import org.leralix.tan.listeners.chatlistener.events.ChangeDescription;
-import org.leralix.tan.listeners.chatlistener.events.ChangeLandmarkName;
-import org.leralix.tan.listeners.chatlistener.events.ChangeTerritoryName;
-import org.leralix.tan.listeners.chatlistener.events.CreateEmptyTown;
-import org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage;
+import org.leralix.tan.listeners.chat.events.ChangeDescription;
+import org.leralix.tan.listeners.chat.events.ChangeLandmarkName;
+import org.leralix.tan.listeners.chat.events.ChangeTerritoryName;
+import org.leralix.tan.listeners.chat.events.CreateEmptyTown;
+import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.*;
 
-import javax.swing.plaf.synth.Region;
 import java.util.*;
 
 import static org.leralix.tan.enums.SoundEnum.GOOD;
