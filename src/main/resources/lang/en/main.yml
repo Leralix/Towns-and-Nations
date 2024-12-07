@@ -33,6 +33,8 @@ language:
   #Common uses
   DISPLAY_COORDINATES: "§fCoordinates: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
+  #Common default messages
+  DEFAULT_DESCRIPTION: "Default description"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§9[{0}]§f <{1}> {2}"
   CHAT_SCOPE_REGION_MESSAGE: "§b[{0}]§f <{1}> {2}"

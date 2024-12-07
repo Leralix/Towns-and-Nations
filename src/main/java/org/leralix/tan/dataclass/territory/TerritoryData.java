@@ -12,6 +12,7 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.newhistory.ChunkPaymentHistory;
+import org.leralix.tan.dataclass.newhistory.MiscellaneousHistory;
 import org.leralix.tan.dataclass.newhistory.PlayerDonationHistory;
 import org.leralix.tan.dataclass.newhistory.SalaryPaymentHistory;
 import org.leralix.tan.dataclass.territory.economy.Budget;
@@ -21,12 +22,13 @@ import org.leralix.tan.dataclass.wars.CurrentAttacks;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
-import org.leralix.tan.gui.PlayerGUI;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.newsletter.news.DiplomacyProposalNL;
+import org.leralix.tan.gui.PlayerGUI;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage;
 import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.newsletter.news.DiplomacyProposalNL;
 import org.leralix.tan.newsletter.news.JoinRegionProposalNL;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
@@ -44,15 +46,13 @@ import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public abstract class TerritoryData {
 
-//    private String ID;
-//    private String name;
-//    private String description;
-//    private String leaderID;
-//    private String overlordID;
-//    private Long dateTimeCreated;
-//    private String iconMaterial;
-//    private int balance;
-//    private TownRelations relations;
+    private String id;
+    private String name;
+    private String description;
+    private String overlordID;
+    private Long dateTimeCreated;
+    private CustomIcon customIcon;
+    private RelationData relations;
     int propertyRentTax;
     int propertyBuyTax;
     Integer color;
@@ -64,7 +64,13 @@ public abstract class TerritoryData {
     private Map<String, DiplomacyProposal> diplomacyProposals;
     List<String> overlordsProposals;
 
-    protected TerritoryData(){
+    protected TerritoryData(String id, String name){
+        this.id = id;
+        this.name = name;
+        this.description = Lang.DEFAULT_DESCRIPTION.get();
+        this.dateTimeCreated = new Date().getTime();
+
+
         this.propertyRentTax = 1;
         this.propertyBuyTax = 1;
         ranks = new HashMap<>();
@@ -77,11 +83,37 @@ public abstract class TerritoryData {
         overlordsProposals = new ArrayList<>();
     }
 
-    public abstract String getID();
-    public abstract String getName();
+    protected abstract String getOldID();
+    public String getID(){
+        if(id == null)
+            id = getOldID();
+        return id;
+    }
+    protected abstract String getOldName();
+    public String getName(){
+        if(name == null)
+            name = getOldName();
+        return name;
+    }
+    public void rename(Player player, int cost, String newName){
+        if(getBalance() <= cost){
+            player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
+            return;
+        }
+
+        PlayerChatListenerStorage.removePlayer(player);
+        TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new MiscellaneousHistory(this, cost));
+
+        removeFromBalance(cost);
+        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player.getName(),this.getName(),newName));
+
+        player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get(this.getName(),newName));
+        SoundUtil.playSound(player, SoundEnum.GOOD);
+        this.name = newName;
+    }
+
     public abstract int getHierarchyRank();
     public abstract String getColoredName();
-    public abstract void rename(Player player, int cost, String name);
     public abstract String getLeaderID();
     public abstract PlayerData getLeaderData();
     public abstract void setLeaderID(String leaderID);
@@ -89,9 +121,24 @@ public abstract class TerritoryData {
         return isLeader(playerData.getID());
     }
     public abstract boolean isLeader(String playerID);
-    public abstract String getDescription();
-    public abstract void setDescription(String newDescription);
-    public abstract ItemStack getIconItem();
+
+    protected abstract String getOldDescription();
+    public String getDescription(){
+        if(description == null)
+            description = getOldDescription();
+        return description;
+    }
+    public void setDescription(String newDescription){
+        this.description = newDescription;
+    }
+    public ItemStack getIcon(){
+        if(this.customIcon == null){
+            customIcon = new CustomIcon(getOldIcon());
+        }
+        return customIcon.getIcon();
+    }
+    protected abstract ItemStack getOldIcon(); // TODO: delete before v1.0
+
     public abstract void setIcon(ItemStack icon);
     public abstract Collection<String> getPlayerIDList();
     public boolean isPlayerIn(PlayerData playerData){
@@ -114,7 +161,14 @@ public abstract class TerritoryData {
     }
     public abstract Collection<PlayerData> getPlayerDataList();
     public abstract ClaimedChunkSettings getChunkSettings();
-    public abstract TownRelations getRelations();
+    public RelationData getRelations(){
+        if(relations == null)
+            relations = getOldRelations();
+        return relations;
+    }
+
+    protected abstract RelationData getOldRelations(); //TODO : remove before v1.0
+
     public void setRelation(TerritoryData otherTerritory, TownRelation relation){
         TownRelation actualRelation = getRelationWith(otherTerritory);
         if(relation.isSuperiorTo(actualRelation)){
@@ -179,6 +233,15 @@ public abstract class TerritoryData {
         
         return TownRelation.NEUTRAL;
     }
+    @SuppressWarnings("unused")
+    public long getDateTimeCreated(){
+        if(dateTimeCreated == null){
+            dateTimeCreated = getOldDateTime();
+        }
+        return dateTimeCreated;
+    }
+
+    protected abstract long getOldDateTime();
 
     public abstract void addToBalance(double balance);
 
@@ -191,7 +254,7 @@ public abstract class TerritoryData {
     public abstract void broadCastMessageWithSound(String message, SoundEnum soundEnum);
     public abstract boolean haveNoLeader();
 
-    public abstract ItemStack getIcon();
+    protected abstract ItemStack getIconWithName();
     public abstract ItemStack getIconWithInformations();
     public ItemStack getIconWithInformationAndRelation(TerritoryData territoryData){
         ItemStack icon = getIconWithInformations();
@@ -268,14 +331,29 @@ public abstract class TerritoryData {
 
     public abstract double getBalance();
 
-    public abstract TerritoryData getOverlord();
-    public abstract void removeOverlord();
+
+
+    public abstract void removeOverlordPrivate();
     public void setOverlord(TerritoryData overlord){
         getOverlordsProposals().remove(overlord.getID());
         broadCastMessageWithSound(getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), overlord.getColoredName()), GOOD);
-        setOverlordPrivate(overlord);
+        this.overlordID = overlord.getID();
     }
-    protected abstract void setOverlordPrivate(TerritoryData newOverlord);
+    public TerritoryData getOverlord(){
+        if(overlordID == null)
+            overlordID = getOverlordPrivate();
+        return TerritoryUtil.getTerritory(overlordID);
+    }
+    /**
+     * @return The ID of the overlord from the territory perspective. Used for old compatibility (TODO : remove before v1.0)
+     */
+    protected abstract String getOverlordPrivate();
+
+    public void removeOverlord(){
+        this.overlordID = null;
+        removeOverlordPrivate();
+    }
+
 
     public void addVassal(TerritoryData vassal){
         NewsletterStorage.removeVassalisationProposal(this, vassal);
@@ -423,7 +501,6 @@ public abstract class TerritoryData {
         return isCapitalOf(territoryData.getID());
     }
     public abstract boolean isCapitalOf(String territoryID);
-    public abstract boolean isLeaderOnline();
 
     public abstract Collection<TerritoryData> getPotentialVassals();
 
@@ -595,7 +672,6 @@ public abstract class TerritoryData {
     public abstract double getTax();
 
     public abstract void addToTax(double i);
-    public abstract void removeToTax(double i);
 
     public void executeTasks(){
         collectTaxes();

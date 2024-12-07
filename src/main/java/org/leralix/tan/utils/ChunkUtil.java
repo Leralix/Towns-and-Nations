@@ -39,7 +39,7 @@ public class ChunkUtil {
             return;
         }
 
-        RegionData regionData = townData.getOverlord();
+        RegionData regionData = townData.getSpecificOverlord();
 
         //Not leader of the region
         if(!regionData.doesPlayerHavePermission(playerStat, RolePermission.CLAIM_CHUNK)){

@@ -12,7 +12,6 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
-import org.leralix.tan.dataclass.newhistory.MiscellaneousHistory;
 import org.leralix.tan.dataclass.newhistory.PlayerTaxHistory;
 import org.leralix.tan.dataclass.territory.economy.*;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
@@ -23,7 +22,6 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.listeners.chatlistener.PlayerChatListenerStorage;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.*;
@@ -55,7 +53,7 @@ public class TownData extends TerritoryData {
     private String townTag;
     private TownLevel townLevel = new TownLevel();
     private final HashSet<String> townPlayerListId = new HashSet<>();
-    private TownRelations relations = new TownRelations();
+    private RelationData relations = new RelationData();
     private Map<Integer, RankData> newRanks = new HashMap<>();
     private Collection<String> ownedLandmarks = new ArrayList<>();
     private HashSet<String> PlayerJoinRequestSet = new HashSet<>();
@@ -66,6 +64,7 @@ public class TownData extends TerritoryData {
 
     //First time creating a town
     public TownData(String townId, String townName, String leaderID){
+        super(townId, townName);
         this.TownId = townId;
         this.UuidLeader = leaderID;
         this.TownName = townName;
@@ -104,11 +103,6 @@ public class TownData extends TerritoryData {
         return Bukkit.getOfflinePlayer(UUID.fromString(this.UuidLeader)).getName();
     }
 
-    public long getDateTimeCreated() {
-        if(this.dateTimeCreated == null)
-            this.dateTimeCreated = new Date().getTime();
-        return this.dateTimeCreated;
-    }
     public TownLevel getTownLevel() {
         return townLevel;
     }
@@ -158,8 +152,8 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public ItemStack getIcon(){
-        ItemStack itemStack = getIconItem();
+    public ItemStack getIconWithName(){
+        ItemStack itemStack = getIcon();
 
         ItemMeta meta = itemStack.getItemMeta();
         if(meta != null){
@@ -196,12 +190,12 @@ public class TownData extends TerritoryData {
     //////////////////////////////////////
 
     @Override
-    public String getID() {
+    public String getOldID() {
         return this.TownId;
     }
 
     @Override
-    public String getName(){
+    public String getOldName(){
         return this.TownName;
     }
 
@@ -213,22 +207,6 @@ public class TownData extends TerritoryData {
     @Override
     public String getColoredName() {
         return "§9" + getName();
-    }
-
-    @Override
-    public void rename(Player player, int townCost, String newName) {
-        if(getBalance() <= townCost){
-            player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
-            return;
-        }
-
-        PlayerChatListenerStorage.removePlayer(player);
-        player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get(this.getName(),newName));
-        TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new MiscellaneousHistory(this, townCost));
-
-        removeFromBalance(townCost);
-        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player.getName(),this.getName(),newName));
-        this.TownName = newName;
     }
 
     @Override
@@ -257,17 +235,13 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public String getDescription() {
+    protected String getOldDescription() {
         return this.Description;
     }
 
-    @Override
-    public void setDescription(String description) {
-        this.Description = description;
-    }
 
     @Override
-    public ItemStack getIconItem() {
+    public ItemStack getOldIcon() {
         if(haveNoLeader()){
             return new ItemStack(Material.SKELETON_SKULL);
         }
@@ -291,10 +265,9 @@ public class TownData extends TerritoryData {
     //////////////////////////////////////
     //             IRelation            //
     //////////////////////////////////////
-    @Override
-    public TownRelations getRelations(){
+    public RelationData getOldRelations(){
         if(this.relations == null)
-            this.relations = new TownRelations();
+            this.relations = new RelationData();
         return relations;
     }
 
@@ -357,10 +330,6 @@ public class TownData extends TerritoryData {
         broadCastMessageWithSound(message, soundEnum, true);
     }
 
-    public RankData getRank(Player player){
-        return getRank(PlayerDataStorage.get(player));
-    }
-
     public RankData getTownDefaultRank(){
         return getRank(getDefaultRankID());
     }
@@ -399,7 +368,7 @@ public class TownData extends TerritoryData {
         return isPlayerAlreadyRequested(player.getUniqueId().toString());
     }
 
-    public HashSet<String> getPlayerJoinRequestSet(){
+    public Set<String> getPlayerJoinRequestSet(){
         return this.PlayerJoinRequestSet;
     }
 
@@ -419,11 +388,6 @@ public class TownData extends TerritoryData {
     @Override
     public void addToTax(double flatTax) {
         this.flatTax += flatTax;
-    }
-
-    @Override
-    public void removeToTax(double i) {
-        this.flatTax -= i;
     }
 
     @Override
@@ -561,24 +525,21 @@ public class TownData extends TerritoryData {
         );
     }
 
-    public RegionData getOverlord(){
+    public RegionData getSpecificOverlord(){
         return RegionDataStorage.get(this.regionID);
+    }
+
+    @Override
+    protected String getOverlordPrivate() {
+        return regionID;
     }
 
     public String getRegionID(){
         return this.regionID;
     }
 
-    public void setOverlordPrivate(TerritoryData region){
-        setOverlordPrivate(region.getID());
-    }
     public void setOverlordPrivate(String regionID){
         this.regionID = regionID;
-    }
-
-    public boolean isLeaderOnline() {
-        Player player = Bukkit.getServer().getPlayer(UUID.fromString(this.UuidLeader));
-        return player != null && player.isOnline();
     }
 
     @Override
@@ -586,7 +547,7 @@ public class TownData extends TerritoryData {
         return Collections.emptyList();
     }
 
-    public void removeOverlord() {
+    public void removeOverlordPrivate() {
         this.regionID = null;
         for(PlayerData playerData : getPlayerDataList()){
             playerData.setRegionRankID(null);
@@ -758,11 +719,10 @@ public class TownData extends TerritoryData {
     public Collection<TownClaimedChunk> getClaims(){
         Collection<TownClaimedChunk> res = new ArrayList<>();
         for(ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getClaimedChunksMap().values()){
-            if(claimedChunk instanceof TownClaimedChunk townClaimedChunk){
-                if(townClaimedChunk.getOwnerID().equals(getID())){
+            if(claimedChunk instanceof TownClaimedChunk townClaimedChunk && townClaimedChunk.getOwnerID().equals(getID())){
                     res.add(townClaimedChunk);
                 }
-            }
+
         }
         return res;
     }
@@ -937,6 +897,10 @@ public class TownData extends TerritoryData {
         if(!haveOverlord())
             return false;
         return getOverlord().getCapitalID().equals(getID());
+    }
+
+    protected long getOldDateTime(){
+        return dateTimeCreated;
     }
 }
 

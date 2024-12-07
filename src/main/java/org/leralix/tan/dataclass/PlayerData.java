@@ -100,7 +100,7 @@ public class PlayerData {
     public RegionData getRegion(){
         if(!haveRegion())
             return null;
-        return getTown().getOverlord();
+        return getTown().getSpecificOverlord();
     }
 
     public UUID getUUID() {

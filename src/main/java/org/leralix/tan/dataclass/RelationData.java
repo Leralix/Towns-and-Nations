@@ -14,12 +14,12 @@ import java.util.Map;
 
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 
-public class TownRelations {
+public class RelationData {
 
     private final Map<TownRelation, List<String>> townRelations = new LinkedHashMap<>();
 
 
-    public TownRelations(){
+    public RelationData(){
         this.townRelations.put(TownRelation.WAR, new ArrayList<>());
         this.townRelations.put(TownRelation.EMBARGO, new ArrayList<>());
         this.townRelations.put(TownRelation.NON_AGGRESSION, new ArrayList<>());

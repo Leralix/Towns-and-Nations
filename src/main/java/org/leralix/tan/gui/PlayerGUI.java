@@ -72,7 +72,7 @@ public class PlayerGUI implements IGUI {
         TownData town = TownDataStorage.get(playerStat);
         RegionData region = null;
         if(playerHaveRegion){
-            region = town.getOverlord();
+            region = town.getSpecificOverlord();
         }
 
         ItemStack kingdomIcon = HeadUtils.makeSkullB64(Lang.GUI_KINGDOM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=",
@@ -1215,7 +1215,7 @@ public class PlayerGUI implements IGUI {
         Gui gui = IGUI.createChestGui("Application",6);
 
         List<GuiItem> guiItems = new ArrayList<>();
-        HashSet<String> players = townData.getPlayerJoinRequestSet();
+        Set<String> players = townData.getPlayerJoinRequestSet();
         for (String playerUUID: players) {
 
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
@@ -2750,7 +2750,7 @@ public class PlayerGUI implements IGUI {
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
-        RegionData playerRegion = playerTown.getOverlord();
+        RegionData playerRegion = playerTown.getSpecificOverlord();
 
         ItemStack regionIcon = getRegionIcon(playerRegion);
 
@@ -3079,7 +3079,7 @@ public class PlayerGUI implements IGUI {
             GuiItem overlordButton;
             if(territoryData.haveOverlord()){
                 TerritoryData overlord = territoryData.getOverlord();
-                ItemStack overlordIcon = overlord.getIconItem();
+                ItemStack overlordIcon = overlord.getIcon();
                 ItemMeta meta = overlordIcon.getItemMeta();
                 meta.setDisplayName(Lang.OVERLORD_GUI.get());
                 List<String> lore = new ArrayList<>();
