@@ -164,11 +164,9 @@ public abstract class TerritoryData {
     public abstract ClaimedChunkSettings getChunkSettings();
     public RelationData getRelations(){
         if(relations == null)
-            relations = getOldRelations();
+            relations = new RelationData();
         return relations;
     }
-
-    protected abstract RelationData getOldRelations(); //TODO : remove before v1.0
 
     public void setRelation(TerritoryData otherTerritory, TownRelation relation){
         TownRelation actualRelation = getRelationWith(otherTerritory);
@@ -681,9 +679,11 @@ public abstract class TerritoryData {
     }
 
 
-    public abstract Double getOldTax(); //TODO : delete before v0.1
+    protected abstract Double getOldTax(); //TODO : delete before v0.1
 
-    public abstract void addToTax(double i);
+    public void addToTax(double i){
+        setTax(getTax() + i);
+    }
 
     public void executeTasks(){
         collectTaxes();

@@ -42,7 +42,7 @@ public class TownData extends TerritoryData {
     private String UuidLeader;
     private Integer townDefaultRankID;
     private String Description;
-    private Long dateTimeCreated;
+    private Long townDateTimeCreated;
     private String townIconMaterialCode;
     private CustomIcon territoryIcon;
     private String regionID;
@@ -53,7 +53,6 @@ public class TownData extends TerritoryData {
     private String townTag;
     private TownLevel townLevel = new TownLevel();
     private final HashSet<String> townPlayerListId = new HashSet<>();
-    private RelationData relations = new RelationData();
     private Map<Integer, RankData> newRanks = new HashMap<>();
     private Collection<String> ownedLandmarks = new ArrayList<>();
     private HashSet<String> PlayerJoinRequestSet = new HashSet<>();
@@ -69,7 +68,7 @@ public class TownData extends TerritoryData {
         this.UuidLeader = leaderID;
         this.TownName = townName;
         this.Description = "default description";
-        this.dateTimeCreated = new Date().getTime();
+        this.townDateTimeCreated = new Date().getTime();
         this.townIconMaterialCode = null;
         this.isRecruiting = false;
         this.balance = 0.0;
@@ -265,11 +264,6 @@ public class TownData extends TerritoryData {
     //////////////////////////////////////
     //             IRelation            //
     //////////////////////////////////////
-    public RelationData getOldRelations(){
-        if(this.relations == null)
-            this.relations = new RelationData();
-        return relations;
-    }
 
     @Override
     public ClaimedChunkSettings getChunkSettings() {
@@ -386,10 +380,6 @@ public class TownData extends TerritoryData {
             this.flatTax = 1.0;
         return this.flatTax;
     }
-    @Override
-    public void addToTax(double flatTax) {
-        this.flatTax += flatTax;
-    }
 
     @Override
     protected void collectTaxes() {
@@ -398,7 +388,7 @@ public class TownData extends TerritoryData {
             OfflinePlayer offlinePlayer = playerData.getOfflinePlayer();
 
             if (!playerData.getTownRank().isPayingTaxes()) continue;
-            double tax = getFlatTax();
+            double tax = getTax();
 
             if(EconomyUtil.getBalance(offlinePlayer) > tax){
                 EconomyUtil.removeFromBalance(offlinePlayer,tax);
@@ -416,11 +406,6 @@ public class TownData extends TerritoryData {
     @Override
     public double getChunkUpkeepCost() {
         return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("TownChunkUpkeepCost",0);
-    }
-
-    @Override
-    public double getTax() {
-        return getFlatTax();
     }
 
     public ChunkPermission getPermission(ChunkPermissionType type) {
@@ -901,7 +886,7 @@ public class TownData extends TerritoryData {
     }
 
     protected long getOldDateTime(){
-        return dateTimeCreated;
+        return townDateTimeCreated;
     }
 }
 

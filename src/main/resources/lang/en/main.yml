@@ -485,6 +485,7 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT: "Enter the new town message"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_IN_CHAT_SUCCESS: "Successfully changed the town message"
   GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT: "Enter the new message"
+  TOWN_SET_TAX_IN_CHAT: "Enter the new tax"
   CHANGE_MESSAGE_SUCCESS: "Successfully changed the message"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aModify town application"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fTown §aaccepts §fapplication"

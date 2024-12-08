@@ -13,6 +13,8 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
+import org.leralix.tan.listeners.chat.events.SetSpecificTax;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.SoundUtil;
@@ -32,7 +34,7 @@ public class PlayerTaxLine extends ProfitLine{
 
     public PlayerTaxLine(TownData townData){
         super(townData);
-        double flatTax = townData.getFlatTax();
+        double flatTax = townData.getTax();
         for (String playerID : townData.getPlayerIDList()){
             PlayerData otherPlayerData = PlayerDataStorage.get(playerID);
             OfflinePlayer otherPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
@@ -97,7 +99,14 @@ public class PlayerTaxLine extends ProfitLine{
         });
         GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
             event.setCancelled(true);
-            PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.PLAYER_TAX);
+            if(event.isLeftClick()){
+                PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.PLAYER_TAX);
+            }
+            else if(event.isRightClick()){
+                player.sendMessage(getTANString() + Lang.TOWN_SET_TAX_IN_CHAT.get());
+                PlayerChatListenerStorage.register(player, new SetSpecificTax(territoryData));
+                player.closeInventory();
+            }
         });
         GuiItem increaseTaxButton = ItemBuilder.from(increaseTax).asGuiItem(event -> {
             event.setCancelled(true);

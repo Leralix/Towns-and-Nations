@@ -10,6 +10,8 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
+import org.leralix.tan.listeners.chat.events.SetSpecificTax;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.SoundUtil;
 import org.leralix.tan.utils.StringUtil;
@@ -87,7 +89,14 @@ public class SubjectTaxLine extends ProfitLine{
 
         GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
             event.setCancelled(true);
-            PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.SUBJECT_TAX);
+            if(event.isLeftClick()){
+                PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.SUBJECT_TAX);
+            }
+            else if(event.isRightClick()){
+                player.sendMessage(getTANString() + Lang.TOWN_SET_TAX_IN_CHAT.get());
+                PlayerChatListenerStorage.register(player, new SetSpecificTax(territoryData));
+                player.closeInventory();
+            }
         });
 
         gui.setItem(2, 2, lowerTaxButton);

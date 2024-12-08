@@ -31,34 +31,33 @@ import java.util.*;
 
 public class RegionData extends TerritoryData {
 
-    private final String id;
-    private final String name;
+    private final String regionId;
+    private final String regionName;
     private String leaderID;
     private String capitalID;
     private String nationID;
-    private Long dateTimeCreated;
+    private Long regionDateTimeCreated;
     private String regionIconType;
     private CustomIcon territoryIcon;
     private Double taxRate;
     private Double balance;
-    private String description;
+    private String regionDescription;
     private final List<String> townsInRegion;
-    private RelationData relations;
 
     public RegionData(String id, String name, String ownerID) {
         super(id, name);
         PlayerData owner = PlayerDataStorage.get(ownerID);
         TownData ownerTown = TownDataStorage.get(owner);
 
-        this.id = id;
-        this.name = name;
+        this.regionId = id;
+        this.regionName = name;
         this.capitalID = ownerTown.getID();
-        this.dateTimeCreated = new Date().getTime();
+        this.regionDateTimeCreated = new Date().getTime();
         this.nationID = null;
         this.regionIconType = null;
         this.taxRate = 1.0;
         this.balance = 0.0;
-        this.description = "default description";
+        this.regionDescription = "default description";
         this.townsInRegion = new ArrayList<>();
         this.townsInRegion.add(ownerTown.getID());
         super.color = StringUtil.randomColor();
@@ -70,12 +69,12 @@ public class RegionData extends TerritoryData {
 
     @Override
     public String getOldID() {
-        return id;
+        return regionId;
     }
 
     @Override
     public String getOldName() {
-        return name;
+        return regionName;
     }
 
     public int getHierarchyRank() {
@@ -109,7 +108,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     protected String getOldDescription() {
-        return description;
+        return regionDescription;
     }
 
 
@@ -326,10 +325,6 @@ public class RegionData extends TerritoryData {
         return income;
     }
 
-    @Override
-    public void addToTax(double i) {
-        taxRate += i;
-    }
 
     @Override
     protected void collectTaxes() {
@@ -391,14 +386,6 @@ public class RegionData extends TerritoryData {
         }
         return res;
 
-    }
-
-
-    @Override
-    public RelationData getOldRelations() {
-        if(relations == null)
-            relations = new RelationData();
-        return relations;
     }
 
 
@@ -522,6 +509,6 @@ public class RegionData extends TerritoryData {
     }
 
     protected long getOldDateTime(){
-        return dateTimeCreated;
+        return regionDateTimeCreated;
     }
 }
