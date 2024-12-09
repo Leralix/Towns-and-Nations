@@ -54,8 +54,8 @@ public abstract class TerritoryData {
     private CustomIcon customIcon;
     private RelationData relations;
     private Double baseTax;
-    int propertyRentTax;
-    int propertyBuyTax;
+    double propertyRentTax;
+    double propertyBuyTax;
     Integer color;
     Integer defaultRankID;
     private Map<Integer, RankData> ranks;
@@ -72,8 +72,8 @@ public abstract class TerritoryData {
         this.dateTimeCreated = new Date().getTime();
 
 
-        this.propertyRentTax = 1;
-        this.propertyBuyTax = 1;
+        this.propertyRentTax = 0.1;
+        this.propertyBuyTax = 0.1;
         ranks = new HashMap<>();
         registerNewRank("default");
 
@@ -754,19 +754,31 @@ public abstract class TerritoryData {
     protected abstract void collectTaxes();
 
     public double getTaxOnRentingProperty() {
+        if(propertyRentTax > 1)
+            propertyRentTax = 1; //Convert to percentage
         return propertyRentTax;
     }
 
-    public void addToRentTax(int value) {
+    public void addToRentTax(double value) {
         propertyRentTax += value;
+    }
+    public void setRentRate(double amount) {
+        propertyRentTax = amount;
     }
 
     public double getTaxOnBuyingProperty() {
+        if(propertyBuyTax > 1)
+            propertyBuyTax = 1; //Convert to percentage
         return propertyBuyTax;
     }
 
-    public void addToBuyTax(int value) {
+    public void addToBuyTax(double value) {
         propertyBuyTax += value;
     }
+
+    public void setBuyRate(double amount) {
+        propertyBuyTax = amount;
+    }
+
 
 }

@@ -11,6 +11,10 @@ import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
+import org.leralix.tan.listeners.chat.events.RateType;
+import org.leralix.tan.listeners.chat.events.SetSpecificRate;
+import org.leralix.tan.listeners.chat.events.SetSpecificTax;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.SoundUtil;
@@ -50,8 +54,9 @@ public class PropertySellTax extends ProfitLine{
                 Lang.GUI_INCREASE_1PERCENT_DESC.get(),
                 Lang.GUI_INCREASE_10PERCENT_DESC.get());
         ItemStack tax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_BUY_PROPERTY_TAX.get(),"http://textures.minecraft.net/texture/97f82aceb98fe069e8c166ced00242a76660bbe07091c92cdde54c6ed10dcff9",
-                Lang.GUI_TREASURY_PROPERTY_RENT_TAX_DESC1.get(String.format("%.2f", territoryData.getTaxOnBuyingProperty())),
-                Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get());
+                Lang.GUI_TREASURY_PROPERTY_RENT_TAX_DESC1.get(String.format("%.2f", territoryData.getTaxOnBuyingProperty() * 100)),
+                Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get(),
+                Lang.RIGHT_CLICK_TO_SET_TAX.get());
 
 
         GuiItem lowerTaxButton = ItemBuilder.from(lowerTax).asGuiItem(event -> {
@@ -62,20 +67,28 @@ public class PropertySellTax extends ProfitLine{
             }
 
             double currentTax = territoryData.getTaxOnBuyingProperty();
-            int amountToRemove = event.isShiftClick() && currentTax > 9 ? 10 : 1;
+            double amountToRemove = event.isShiftClick() ? 0.1 : 0.01;
 
             if(currentTax - amountToRemove < 0){
                 player.sendMessage(getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS_PERCENT.get());
+                territoryData.setBuyRate(0);
                 return;
             }
-            SoundUtil.playSound(player, REMOVE);
 
             territoryData.addToBuyTax(-amountToRemove);
+            SoundUtil.playSound(player, REMOVE);
             PlayerGUI.openTreasury(player, territoryData);
         });
         GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
             event.setCancelled(true);
-            PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.PROPERTY_RENT_TAX);
+            if(event.isLeftClick()){
+                PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.PROPERTY_BUY_TAX);
+            }
+            else if(event.isRightClick()){
+                player.sendMessage(getTANString() + Lang.TOWN_SET_TAX_IN_CHAT.get());
+                PlayerChatListenerStorage.register(player, new SetSpecificRate(territoryData, RateType.BUY));
+                player.closeInventory();
+            }
         });
         GuiItem increaseTaxButton = ItemBuilder.from(increaseTax).asGuiItem(event -> {
             event.setCancelled(true);
@@ -86,9 +99,9 @@ public class PropertySellTax extends ProfitLine{
             }
 
             double currentTax = territoryData.getTaxOnBuyingProperty();
-            int amountToAdd = event.isShiftClick() ? 10 : 1;
+            double amountToAdd = event.isShiftClick() ? 0.10 : 0.01;
 
-            if(currentTax + amountToAdd > 100){
+            if(currentTax + amountToAdd > 1){
                 player.sendMessage(getTANString() + Lang.GUI_TREASURY_CANT_TAX_MORE_PERCENT.get());
                 return;
             }

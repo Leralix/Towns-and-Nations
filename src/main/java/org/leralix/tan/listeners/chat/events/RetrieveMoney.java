@@ -20,7 +20,7 @@ public class RetrieveMoney extends ChatListenerEvent {
     @Override
     public void execute(Player player, String message) {
 
-        Integer amount = parseStringToInt(message);
+        Double amount = parseStringToDouble(message);
         if(amount == null){
             player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
             return;

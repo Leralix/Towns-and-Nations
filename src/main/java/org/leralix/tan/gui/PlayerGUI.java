@@ -329,7 +329,7 @@ public class PlayerGUI implements IGUI {
         HeadUtils.setLore(isForSale,
                 propertyData.isForSale() ? Lang.GUI_PROPERTY_FOR_SALE.get(): Lang.GUI_PROPERTY_NOT_FOR_SALE.get(),
                 Lang.GUI_BUYING_PRICE.get(propertyData.getBuyingPrice()),
-                Lang.GUI_TOWN_RATE.get(propertyData.getTerritory().getTaxOnBuyingProperty()),
+                Lang.GUI_TOWN_RATE.get(String.format("%.2f", propertyData.getTerritory().getTaxOnBuyingProperty()*100)),
                 Lang.GUI_LEFT_CLICK_TO_SWITCH_SALE.get(),
                 Lang.GUI_RIGHT_CLICK_TO_CHANGE_PRICE.get()
         );
@@ -346,7 +346,7 @@ public class PlayerGUI implements IGUI {
         HeadUtils.setLore(isForRent,
                 propertyData.isForRent() ? Lang.GUI_PROPERTY_FOR_RENT.get(): Lang.GUI_PROPERTY_NOT_FOR_RENT.get(),
                 Lang.GUI_RENTING_PRICE.get(propertyData.getRentPrice()),
-                Lang.GUI_TOWN_RATE.get(propertyData.getTerritory().getTaxOnRentingProperty()),
+                Lang.GUI_TOWN_RATE.get(String.format("%.2f", propertyData.getTerritory().getTaxOnRentingProperty()*100)),
                 Lang.GUI_LEFT_CLICK_TO_SWITCH_SALE.get(),
                 Lang.GUI_RIGHT_CLICK_TO_CHANGE_PRICE.get()
         );
@@ -2267,7 +2267,7 @@ public class PlayerGUI implements IGUI {
             event.setCancelled(true);
 
             if(playerTown.getTownLevel().getBenefitsLevel("UNLOCK_MOB_BAN") >= 1)
-                openTownChunkMobSettings(player,1);
+                openTownChunkMobSettings(player,0);
             else{
                 player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_LEVEL.get(DynamicLang.get("UNLOCK_MOB_BAN")));
                 SoundUtil.playSound(player, NOT_ALLOWED);
