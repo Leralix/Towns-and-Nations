@@ -15,6 +15,8 @@ import org.leralix.tan.dataclass.newhistory.ChunkPaymentHistory;
 import org.leralix.tan.dataclass.newhistory.MiscellaneousHistory;
 import org.leralix.tan.dataclass.newhistory.PlayerDonationHistory;
 import org.leralix.tan.dataclass.newhistory.SalaryPaymentHistory;
+import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
+import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.ChunkUpkeepLine;
 import org.leralix.tan.dataclass.territory.economy.SalaryPaymentLine;
@@ -65,12 +67,13 @@ public abstract class TerritoryData {
     private Map<String, DiplomacyProposal> diplomacyProposals;
     List<String> overlordsProposals;
 
-    protected TerritoryData(String id, String name){
+    protected TerritoryData(String id, String name, String ownerID){
         this.id = id;
         this.name = name;
         this.description = Lang.DEFAULT_DESCRIPTION.get();
         this.dateTimeCreated = new Date().getTime();
 
+        this.customIcon = new PlayerHeadIcon(ownerID);
 
         this.propertyRentTax = 0.1;
         this.propertyBuyTax = 0.1;
@@ -134,13 +137,13 @@ public abstract class TerritoryData {
     }
     public ItemStack getIcon(){
         if(this.customIcon == null){
-            customIcon = new CustomIcon(getOldIcon());
+            customIcon = new PlayerHeadIcon(getLeaderID());
         }
         return customIcon.getIcon();
     }
-    protected abstract ItemStack getOldIcon(); // TODO: delete before v1.0
-
-    public abstract void setIcon(ItemStack icon);
+    public void setIcon(CustomIcon icon){
+        this.customIcon = icon;
+    }
     public abstract Collection<String> getPlayerIDList();
     public boolean isPlayerIn(PlayerData playerData){
         return isPlayerIn(playerData.getID());

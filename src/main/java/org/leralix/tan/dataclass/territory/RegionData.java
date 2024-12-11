@@ -11,6 +11,7 @@ import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.RegionClaimedChunk;
 import org.leralix.tan.dataclass.newhistory.SubjectTaxHistory;
+import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
@@ -38,14 +39,13 @@ public class RegionData extends TerritoryData {
     private String nationID;
     private Long regionDateTimeCreated;
     private String regionIconType;
-    private CustomIcon territoryIcon;
     private Double taxRate;
     private Double balance;
     private String regionDescription;
     private final List<String> townsInRegion;
 
     public RegionData(String id, String name, String ownerID) {
-        super(id, name);
+        super(id, name, ownerID);
         PlayerData owner = PlayerDataStorage.get(ownerID);
         TownData ownerTown = TownDataStorage.get(owner);
 
@@ -111,24 +111,6 @@ public class RegionData extends TerritoryData {
         return regionDescription;
     }
 
-
-    @Override
-    public ItemStack getOldIcon() {
-        if(this.territoryIcon == null){
-            if(this.regionIconType == null){
-                return getCapital().getIcon();
-            }
-            else { // regionIconType is a legacy code, it should not be updated anymore but we keep it for compatibility (todo delete before v0.1)
-                territoryIcon = new CustomIcon(new ItemStack(Material.getMaterial(regionIconType)));
-            }
-        }
-        return territoryIcon.getIcon();
-    }
-
-    @Override
-    public void setIcon(ItemStack icon) {
-        this.territoryIcon = new CustomIcon(icon);
-    }
 
 
     @Override

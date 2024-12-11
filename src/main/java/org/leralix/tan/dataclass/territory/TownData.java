@@ -13,6 +13,7 @@ import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.newhistory.PlayerTaxHistory;
+import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.dataclass.territory.economy.*;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
@@ -44,7 +45,6 @@ public class TownData extends TerritoryData {
     private String Description;
     private Long townDateTimeCreated;
     private String townIconMaterialCode;
-    private CustomIcon territoryIcon;
     private String regionID;
     private boolean isRecruiting;
     private Double balance;
@@ -63,7 +63,7 @@ public class TownData extends TerritoryData {
 
     //First time creating a town
     public TownData(String townId, String townName, String leaderID){
-        super(townId, townName);
+        super(townId, townName, leaderID);
         this.TownId = townId;
         this.UuidLeader = leaderID;
         this.TownName = townName;
@@ -172,7 +172,6 @@ public class TownData extends TerritoryData {
 
             List<String> lore = new ArrayList<>();
             lore.add(Lang.GUI_TOWN_INFO_DESC0.get(getDescription()));
-            lore.add("");
             lore.add(Lang.GUI_TOWN_INFO_DESC1.get(getLeaderName()));
             lore.add(Lang.GUI_TOWN_INFO_DESC2.get(getPlayerIDList().size()));
             lore.add(Lang.GUI_TOWN_INFO_DESC3.get(getNumberOfClaimedChunk()));
@@ -238,27 +237,6 @@ public class TownData extends TerritoryData {
         return this.Description;
     }
 
-
-    @Override
-    public ItemStack getOldIcon() {
-        if(haveNoLeader()){
-            return new ItemStack(Material.SKELETON_SKULL);
-        }
-        if(this.territoryIcon == null){
-            if(this.townIconMaterialCode == null){
-                return getPlayerHead(getName(), Bukkit.getOfflinePlayer(UUID.fromString(getLeaderID())));
-            }
-            else { // townIconMaterialCode is a legacy code, it should be updated anymore but we keep it for compatibility (todo delete before v0.1)
-                territoryIcon = new CustomIcon(new ItemStack(Material.getMaterial(townIconMaterialCode)));
-            }
-        }
-        return territoryIcon.getIcon();
-    }
-
-    @Override
-    public void setIcon(ItemStack icon) {
-        this.territoryIcon = new CustomIcon(icon);
-    }
 
 
     //////////////////////////////////////
