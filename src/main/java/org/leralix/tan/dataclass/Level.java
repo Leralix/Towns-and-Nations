@@ -13,13 +13,13 @@ import java.util.Map;
 
 import static org.leralix.tan.storage.legacy.UpgradeStorage.loadIntoMap;
 
-public class TownLevel {
+public class Level {
     private int townLevel;
 
     Map<String,Integer> levelMap;
 
     //for json
-    public TownLevel(){
+    public Level(){
         levelMap = new HashMap<>();
         levelMap.put("townLevel",1);
         loadIntoMap(levelMap);

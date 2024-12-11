@@ -58,8 +58,16 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
         else if (params.equalsIgnoreCase("player_town_resident_quantity")) {
             return playerData.haveTown() ? Integer.toString(playerData.getTown().getPlayerIDList().size()) : Lang.NO_TOWN.get();
         }
-        else if (params.equalsIgnoreCase("player_town_chunk_quantity")) {
+        else if (params.equalsIgnoreCase("player_town_chunk_actual_quantity")) {
             return playerData.haveTown() ? Integer.toString(playerData.getTown().getNumberOfClaimedChunk()) : Lang.NO_TOWN.get();
+        }
+        else if (params.equalsIgnoreCase("player_town_chunk_max_quantity")) {
+            return playerData.haveTown() ? Integer.toString(playerData.getTown().getLevel().getChunkCap()) : Lang.NO_TOWN.get();
+        }
+        else if (params.equalsIgnoreCase("player_town_chunk_remaining_quantity")) {
+            if(!playerData.haveTown()) return Lang.NO_TOWN.get();
+            int remaining = playerData.getTown().getLevel().getChunkCap() - playerData.getTown().getNumberOfClaimedChunk();
+            return Integer.toString(remaining);
         }
         else if (params.equalsIgnoreCase("player_town_balance")) {
             return playerData.haveTown() ? Double.toString(playerData.getTown().getBalance()) : Lang.NO_TOWN.get();
@@ -76,7 +84,7 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
         else if (params.equalsIgnoreCase("player_region_resident_quantity")) {
             return playerData.haveRegion() ? Integer.toString(playerData.getRegion().getTotalPlayerCount()) : Lang.NO_REGION.get();
         }
-        else if (params.equalsIgnoreCase("player_region_chunk_quantity")) {
+        else if (params.equalsIgnoreCase("player_region_chunk_actual_quantity")) {
             return playerData.haveRegion() ? Integer.toString(playerData.getRegion().getNumberOfClaimedChunk()) : Lang.NO_REGION.get();
         }
         else if (params.equalsIgnoreCase("player_region_balance")) {

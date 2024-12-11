@@ -147,7 +147,7 @@ public class Landmark {
     }
 
     public int computeStoredReward(TownData townData){
-        long bonus = (townData.getTownLevel().getTotalBenefits().get("LANDMARK_BONUS") + 100 ) /100;
+        long bonus = (townData.getLevel().getTotalBenefits().get("LANDMARK_BONUS") + 100 ) /100;
         return (int) (this.amount * storedDays * bonus);
     }
 

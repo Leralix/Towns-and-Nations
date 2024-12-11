@@ -13,7 +13,6 @@ import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.newhistory.PlayerTaxHistory;
-import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.dataclass.territory.economy.*;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
@@ -51,7 +50,7 @@ public class TownData extends TerritoryData {
     private Double flatTax;
     private Integer chunkColor;
     private String townTag;
-    private TownLevel townLevel = new TownLevel();
+    private Level townLevel = new Level();
     private final HashSet<String> townPlayerListId = new HashSet<>();
     private Map<Integer, RankData> newRanks = new HashMap<>();
     private Collection<String> ownedLandmarks = new ArrayList<>();
@@ -102,7 +101,7 @@ public class TownData extends TerritoryData {
         return Bukkit.getOfflinePlayer(UUID.fromString(this.UuidLeader)).getName();
     }
 
-    public TownLevel getTownLevel() {
+    public Level getLevel() {
         return townLevel;
     }
 
@@ -485,7 +484,7 @@ public class TownData extends TerritoryData {
 
         player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.get(
                 getNumberOfClaimedChunk(),
-                getTownLevel().getChunkCap())
+                getLevel().getChunkCap())
         );
     }
 
@@ -708,7 +707,7 @@ public class TownData extends TerritoryData {
 
     public void upgradeTown(Player player) {
         PlayerData playerData = PlayerDataStorage.get(player);
-        TownLevel townLevel = this.getTownLevel();
+        Level townLevel = this.getLevel();
         if(!doesPlayerHavePermission(playerData, RolePermission.UPGRADE_TOWN)){
             player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             SoundUtil.playSound(player,NOT_ALLOWED);
@@ -739,7 +738,7 @@ public class TownData extends TerritoryData {
             SoundUtil.playSound(player,NOT_ALLOWED);
             return;
         }
-        TownLevel townLevel = this.getTownLevel();
+        Level townLevel = this.getLevel();
         if(townLevel.getUpgradeLevel(townUpgrade.getName()) >= townUpgrade.getMaxLevel()){
             player.sendMessage(getTANString() + Lang.TOWN_UPGRADE_MAX_LEVEL.get());
             SoundUtil.playSound(player,NOT_ALLOWED);
@@ -786,7 +785,7 @@ public class TownData extends TerritoryData {
     }
 
     public boolean canClaimMoreLandmarks() {
-        return getTownLevel().getTotalBenefits().get("MAX_LANDMARKS") > getNumberOfOwnedLandmarks();
+        return getLevel().getTotalBenefits().get("MAX_LANDMARKS") > getNumberOfOwnedLandmarks();
     }
 
 

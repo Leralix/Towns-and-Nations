@@ -244,7 +244,7 @@ public class PlayerGUI implements IGUI {
                 return;
             }
 
-            if(playerTown.getPropertyDataMap().size() >= playerTown.getTownLevel().getPropertyCap()){
+            if(playerTown.getPropertyDataMap().size() >= playerTown.getLevel().getPropertyCap()){
                 player.sendMessage(getTANString() + Lang.PLAYER_PROPERTY_CAP_REACHED.get());
                 return;
             }
@@ -1731,7 +1731,7 @@ public class PlayerGUI implements IGUI {
         Gui gui = IGUI.createChestGui("Town Upgrades | " + (level + 1),6);
 
         TownData townData = TownDataStorage.get(player);
-        TownLevel townLevel = townData.getTownLevel();
+        Level townLevel = townData.getLevel();
 
         ItemStack whitePanel = HeadUtils.createCustomItemStack(Material.WHITE_STAINED_GLASS_PANE,"");
         ItemStack ironBars = HeadUtils.createCustomItemStack(Material.IRON_BARS,Lang.LEVEL_LOCKED.get());
@@ -2295,7 +2295,7 @@ public class PlayerGUI implements IGUI {
         GuiItem mobChunkButton = ItemBuilder.from(mobChunckIcon).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if(playerTown.getTownLevel().getBenefitsLevel("UNLOCK_MOB_BAN") >= 1)
+            if(playerTown.getLevel().getBenefitsLevel("UNLOCK_MOB_BAN") >= 1)
                 openTownChunkMobSettings(player,0);
             else{
                 player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_LEVEL.get(DynamicLang.get("UNLOCK_MOB_BAN")));

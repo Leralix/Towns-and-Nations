@@ -67,7 +67,7 @@ public class UnclaimAdminCommand extends SubCommand {
         NewClaimedChunkStorage.unclaimChunk(chunk);
 
         player.sendMessage(getTANString() + Lang.DEBUG_UNCLAIMED_CHUNK_SUCCESS_TOWN.get(townData.getName(),
-                townData.getNumberOfClaimedChunk(),townData.getTownLevel().getChunkCap()));
+                townData.getNumberOfClaimedChunk(),townData.getLevel().getChunkCap()));
     }
 
     private void UnclaimChunkRegion(Player player, Chunk chunk, RegionClaimedChunk regionClaimedChunk) {

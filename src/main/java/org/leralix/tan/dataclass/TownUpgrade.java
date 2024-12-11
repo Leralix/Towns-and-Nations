@@ -79,7 +79,7 @@ public class TownUpgrade {
         return maxLevel;
     }
 
-    public List<String> getItemLore(TownLevel townLevelClass, int townUpgradeLevel ) {
+    public List<String> getItemLore(Level townLevelClass, int townUpgradeLevel ) {
         List <String> lore = new ArrayList<>();
         boolean isMaxLevel = townUpgradeLevel >= this.getMaxLevel();
 
@@ -136,7 +136,7 @@ public class TownUpgrade {
         return lore;
     }
 
-    public boolean isPrerequisiteMet(TownLevel townLevel) {
+    public boolean isPrerequisiteMet(Level townLevel) {
         if(prerequisites.isEmpty())
             return true;
 
@@ -153,7 +153,7 @@ public class TownUpgrade {
     }
 
     public GuiItem createGuiItem(Player player, TownData townData, int page) {
-        TownLevel townLevel = townData.getTownLevel();
+        Level townLevel = townData.getLevel();
         int townUpgradeLevel = townLevel.getUpgradeLevel(getName());
 
         List<String> lore = getItemLore(townLevel, townUpgradeLevel);

@@ -110,7 +110,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
             }
         }
 
-        player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_TOWN.get(playerTown.getNumberOfClaimedChunk(),playerTown.getTownLevel().getChunkCap()));
+        player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_TOWN.get(playerTown.getNumberOfClaimedChunk(),playerTown.getLevel().getChunkCap()));
         NewClaimedChunkStorage.unclaimChunk(player.getLocation().getChunk());
     }
 

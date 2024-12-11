@@ -31,7 +31,7 @@ public class GuiUtil {
         List<String> lore = new ArrayList<>();
         lore.add(Lang.TOWN_LEVEL_BONUS_RECAP.get());
 
-        Map<String,Integer> benefits = townData.getTownLevel().getTotalBenefits();
+        Map<String,Integer> benefits = townData.getLevel().getTotalBenefits();
 
         for(Map.Entry<String,Integer> entry : benefits.entrySet()){
             String value_ID = entry.getKey();
