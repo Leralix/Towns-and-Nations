@@ -41,7 +41,6 @@ public class RegionData extends TerritoryData {
     private String regionIconType;
     private Double taxRate;
     private Double balance;
-    private String regionDescription;
     private final List<String> townsInRegion;
 
     public RegionData(String id, String name, String ownerID) {
@@ -57,7 +56,6 @@ public class RegionData extends TerritoryData {
         this.regionIconType = null;
         this.taxRate = 1.0;
         this.balance = 0.0;
-        this.regionDescription = "default description";
         this.townsInRegion = new ArrayList<>();
         this.townsInRegion.add(ownerTown.getID());
         super.color = StringUtil.randomColor();
@@ -106,10 +104,6 @@ public class RegionData extends TerritoryData {
         return getLeaderID().equals(id);
     }
 
-    @Override
-    protected String getOldDescription() {
-        return regionDescription;
-    }
 
 
 

@@ -126,10 +126,9 @@ public abstract class TerritoryData {
     }
     public abstract boolean isLeader(String playerID);
 
-    protected abstract String getOldDescription();
     public String getDescription(){
         if(description == null)
-            description = getOldDescription();
+            description = Lang.DEFAULT_DESCRIPTION.get();
         return description;
     }
     public void setDescription(String newDescription){

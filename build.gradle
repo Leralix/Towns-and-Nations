@@ -15,7 +15,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 group = 'org.tan'
-version = '0.11.8'
+version = '0.11.9'
 
 repositories {
     mavenCentral()

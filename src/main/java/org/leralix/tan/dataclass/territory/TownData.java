@@ -41,9 +41,7 @@ public class TownData extends TerritoryData {
     private String TownName;
     private String UuidLeader;
     private Integer townDefaultRankID;
-    private String Description;
     private Long townDateTimeCreated;
-    private String townIconMaterialCode;
     private String regionID;
     private boolean isRecruiting;
     private Double balance;
@@ -66,9 +64,7 @@ public class TownData extends TerritoryData {
         this.TownId = townId;
         this.UuidLeader = leaderID;
         this.TownName = townName;
-        this.Description = "default description";
         this.townDateTimeCreated = new Date().getTime();
-        this.townIconMaterialCode = null;
         this.isRecruiting = false;
         this.balance = 0.0;
         this.flatTax = 1.0;
@@ -231,10 +227,6 @@ public class TownData extends TerritoryData {
         return isLeader(player.getUniqueId().toString());
     }
 
-    @Override
-    protected String getOldDescription() {
-        return this.Description;
-    }
 
 
 

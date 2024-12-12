@@ -745,7 +745,7 @@ language:
   SIGN_SALE_PRICE: "Price: {0}{MONEY_CHAR}"
   SIGN_RENT: "For rent"
   SIGN_RENT_PRICE: "Rent: {0}{MONEY_CHAR}/day"
-  SIGN_RENTED_BY: "Rented by :"
+  SIGN_RENTED_BY: "Rented by:"
   SIGN_NOT_FOR_SALE: "Not for sale"
   #PlaceHolderAPI
   NO_TOWN: "No town"
