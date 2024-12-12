@@ -749,7 +749,13 @@ public class PlayerGUI implements IGUI {
             ItemStack itemMaterial = event.getCursor();
             if(itemMaterial.getType() == Material.AIR ){
                 if(event.isRightClick()){
-                    openSelectHeadTerritoryMenu(player, townData, 0);
+                    if(townData.doesPlayerHavePermission(player, TOWN_ADMINISTRATOR)){
+                        openSelectHeadTerritoryMenu(player, townData, 0);
+                    }
+                    else{
+                        player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                        SoundUtil.playSound(player,MINOR_BAD);
+                    }
                 }
             }
             else {
@@ -2624,7 +2630,13 @@ public class PlayerGUI implements IGUI {
             ItemStack itemMaterial = event.getCursor();
             if(itemMaterial.getType() == Material.AIR ){
                 if(event.isRightClick()){
-                    openSelectHeadTerritoryMenu(player, regionData, 0);
+                    if(regionData.doesPlayerHavePermission(player, TOWN_ADMINISTRATOR)){
+                        openSelectHeadTerritoryMenu(player, regionData, 0);
+                    }
+                    else{
+                        player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                        SoundUtil.playSound(player,MINOR_BAD);
+                    }
                 }
             }
             else {
