@@ -609,7 +609,8 @@ public class TownData extends TerritoryData {
     @Override
     protected void addSpecificTaxes(Budget budget) {
         budget.addProfitLine(new PlayerTaxLine(this));
-        budget.addProfitLine(new OverlordTaxLine(this));
+        if(haveOverlord())
+            budget.addProfitLine(new OverlordTaxLine(this));
         budget.addProfitLine(new PropertyRentTax(this));
         budget.addProfitLine(new PropertySellTax(this));
     }
