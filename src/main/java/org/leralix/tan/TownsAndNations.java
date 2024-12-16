@@ -383,18 +383,6 @@ public final class TownsAndNations extends JavaPlugin {
         return allowTownTag;
     }
 
-    /**
-     * Notify the plugin that the dynmap addon is loaded and that
-     * dynmap features should be enabled.
-     * @param dynmapAddonLoaded should be true if dynmap is loaded, false otherwise.
-     */
-    public void setDynmapAddonLoaded(boolean dynmapAddonLoaded) {
-        /**
-         * If enabled, the Towns and Nations dynmap plugin is installed.
-         * This will enable new features for the core plugin.
-         */
-    }
-
     public PluginVersion getMinimumSupportingDynmap() {
         return MINIMUM_SUPPORTING_DYNMAP;
     }

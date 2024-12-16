@@ -66,6 +66,7 @@ public abstract class TerritoryData {
     private HashMap<String, Integer> availableClaims;
     private Map<String, DiplomacyProposal> diplomacyProposals;
     List<String> overlordsProposals;
+    ChunkCoordinates strongholdCoordinates;
 
     protected TerritoryData(String id, String name, String ownerID){
         this.id = id;
@@ -780,6 +781,16 @@ public abstract class TerritoryData {
 
     public void setBuyRate(double amount) {
         propertyBuyTax = amount;
+    }
+
+    public ChunkCoordinates getStrongholdCoordinates(){
+        if(strongholdCoordinates == null)
+            setStrongholdCoordinates(NewClaimedChunkStorage.getAllChunkFrom(this).iterator().next().getChunk());
+        return strongholdCoordinates;
+    }
+
+    public void setStrongholdCoordinates(Chunk chunk){
+        this.strongholdCoordinates = new ChunkCoordinates(chunk);
     }
 
 

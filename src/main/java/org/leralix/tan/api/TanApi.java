@@ -39,7 +39,4 @@ public class TanApi {
         return getChunkColor(chunk.getOwnerID());
     }
 
-    public void setDynmapAddon(Boolean isLoaded){
-        TownsAndNations.getPlugin().setDynmapAddonLoaded(isLoaded);
-    }
 }

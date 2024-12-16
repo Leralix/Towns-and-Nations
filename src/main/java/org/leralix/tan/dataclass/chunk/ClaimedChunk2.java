@@ -103,4 +103,12 @@ public abstract class ClaimedChunk2 {
 
     public abstract boolean canBeOverClaimed(TerritoryData territoryData);
     public abstract boolean canExplosionGrief();
+
+    public Chunk getChunk() {
+        World world = Bukkit.getWorld(UUID.fromString(this.worldUUID));
+        if(world == null) {
+            return null;
+        }
+        return world.getChunkAt(x, z);
+    }
 }
