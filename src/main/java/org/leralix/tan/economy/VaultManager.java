@@ -20,7 +20,7 @@ public class VaultManager {
 
         if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("UseTanEconomy",true)){
             TanEconomyVault tanEconomyVault = new TanEconomyVault();
-            EconomyUtil.setEconomy(tanEconomyVault, false);
+            EconomyUtil.setEconomy(tanEconomyVault);
             Bukkit.getServicesManager().register(Economy.class, tanEconomyVault, TownsAndNations.getPlugin(), ServicePriority.Normal);
             logger.log(Level.INFO,"[TaN] -Vault is detected, registering TaN Economy");
         }
@@ -28,12 +28,12 @@ public class VaultManager {
             RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
             if (rsp == null) {
                 logger.log(Level.INFO,"[TaN] -No active vault economy. Running standalone");
-                EconomyUtil.setEconomy(new TanEconomyStandalone(), false);
+                EconomyUtil.setEconomy(new TanEconomyStandalone());
                 return;
             }
             tanEcon = new TanEconomyExternal(rsp.getProvider());
-            EconomyUtil.setEconomy(tanEcon, true);
-            logger.log(Level.INFO,"[TaN] -Vault is detected, using {} as economy", rsp.getProvider().getName());
+            EconomyUtil.setEconomy(tanEcon);
+            logger.log(Level.INFO,"[TaN] -Vault is detected, using {0} as economy", rsp.getProvider().getName());
         }
     }
 }

@@ -706,7 +706,7 @@ public abstract class TerritoryData {
             removeFromBalance(costOfSalary);
             for(String playerId : playerIdList){
                 PlayerData playerData = PlayerDataStorage.get(playerId);
-                playerData.addToBalance(rankSalary);
+                EconomyUtil.addFromBalance(playerData, rankSalary);
                 TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SalaryPaymentHistory(this, String.valueOf(rank.getID()), costOfSalary));
             }
         }

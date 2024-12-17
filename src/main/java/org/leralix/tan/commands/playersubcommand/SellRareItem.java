@@ -67,7 +67,7 @@ public class SellRareItem extends SubCommand {
         player.sendMessage(Lang.RARE_ITEM_SELLING_SUCCESS.get(quantity,
                 itemMeta.hasDisplayName() ? itemMeta.getDisplayName() : itemStack.getType().name(),
                 value * quantity));
-        EconomyUtil.addFromBalance(player, value * itemStack.getAmount());
+        EconomyUtil.addFromBalance(player, (double) value * itemStack.getAmount());
         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
     }
 }

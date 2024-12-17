@@ -120,7 +120,7 @@ public final class TownsAndNations extends JavaPlugin {
 
         Lang.loadTranslations(lang);
         DynamicLang.loadTranslations(lang);
-        TownsAndNations.getPlugin().getPluginLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.getWithoutPlaceholder());
+        TownsAndNations.getPlugin().getPluginLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
 
 
 
@@ -208,7 +208,7 @@ public final class TownsAndNations extends JavaPlugin {
     private void setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             logger.log(Level.INFO,"[TaN] -Vault is not detected. Running standalone economy");
-            EconomyUtil.setEconomy(new TanEconomyStandalone(), false);
+            EconomyUtil.setEconomy(new TanEconomyStandalone());
             return;
         }
         VaultManager.setupVault();

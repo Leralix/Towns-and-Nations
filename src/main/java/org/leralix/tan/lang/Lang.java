@@ -879,9 +879,12 @@ public enum Lang {
 
     private String replaceCommonPlaceholders(String translation) {
 
-        translation = translation.replace("{CANCEL}", Lang.CANCEL_WORD.getWithoutPlaceholder());
-        translation = translation.replace("{MONEY_CHAR}", EconomyUtil.getMoneyIcon());
-
+        if(translation.contains("{MONEY_CHAR}")) {
+            translation = translation.replace("{MONEY_CHAR}", EconomyUtil.getMoneyIcon());
+        }
+        if(translation.contains("{CANCEL}")) {
+            translation = translation.replace("{CANCEL}", Lang.CANCEL_WORD.get());
+        }
         return translation;
     }
 

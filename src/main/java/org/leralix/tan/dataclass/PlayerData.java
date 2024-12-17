@@ -8,6 +8,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.wars.CurrentAttacks;
+import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -55,7 +56,7 @@ public class PlayerData {
     }
 
     public double getBalance() {
-        return StringUtil.handleDigits(Balance);
+        return StringUtil.handleDigits(EconomyUtil.getBalance(this));
     }
 
     public void setBalance(double balance) {

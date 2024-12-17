@@ -55,8 +55,7 @@ public class AddMoney extends SubCommand {
                 player.sendMessage(getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
                 return;
             }
-
-            target.addToBalance(amount);
+            EconomyUtil.addFromBalance(target, amount);
             player.sendMessage(getTANString() + Lang.ADD_MONEY_COMMAND_SUCCESS.get(amount,target.getName()));
             FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_GIVE_MONEY.get(player.getName(),amount,target.getName()));
         }

@@ -59,6 +59,7 @@ public class SetMoney extends SubCommand {
                 return;
             }
 
+            EconomyUtil.setBalance(target, amount);
             target.setBalance(amount);
             player.sendMessage(getTANString() + Lang.SET_MONEY_COMMAND_SUCCESS.get(amount,target.getName()));
             FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_SET_MONEY.get(player.getName(),amount,target.getName()));
