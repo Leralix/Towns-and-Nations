@@ -56,7 +56,7 @@ public class PlayerData {
     }
 
     public double getBalance() {
-        return StringUtil.handleDigits(EconomyUtil.getBalance(this));
+        return this.Balance;
     }
 
     public void setBalance(double balance) {

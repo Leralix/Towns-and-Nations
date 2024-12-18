@@ -143,6 +143,13 @@ public class PropertyData {
 
         double tax = rentPrice * town.getTaxOnRentingProperty();
 
+
+        if(EconomyUtil.getBalance(renter) < rentPrice){
+            expelRenter(true);
+            return;
+        }
+
+
         EconomyUtil.removeFromBalance(renter, rentPrice);
         EconomyUtil.addFromBalance(owner, rentPrice - tax);
         town.addToBalance(tax);

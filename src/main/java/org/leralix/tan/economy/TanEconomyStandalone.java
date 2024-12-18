@@ -12,7 +12,7 @@ public class TanEconomyStandalone extends AbstractTanEcon{
 
     @Override
     public boolean has(PlayerData playerData, double amount) {
-        return playerData.getBalance() > amount;
+        return getBalance(playerData) > amount;
     }
 
     @Override

@@ -50,6 +50,9 @@ public enum RelationPermission {
                 }
             }
             case ALLIANCE -> {
+                if(ownerTown.isPlayerIn(playerData)){
+                    return true;
+                }
                 if(playerData.haveTown() && ownerTown.getRelations().getRelationWith(playerData.getTown()) == TownRelation.ALLIANCE){
                         return true;
                     }
