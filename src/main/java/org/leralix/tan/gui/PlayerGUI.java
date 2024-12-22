@@ -254,6 +254,7 @@ public class PlayerGUI implements IGUI {
                 return;
             }
             player.sendMessage(getTANString() + Lang.PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY.get());
+            player.sendMessage(getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
             PlayerSelectPropertyPositionStorage.addPlayer(playerData);
             player.closeInventory();
         });

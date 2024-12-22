@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.PlayerSelectPropertyPositionStorage;
 import org.leralix.tan.utils.ChatUtils;
 
 import static org.leralix.tan.listeners.chat.PlayerChatListenerStorage.removePlayer;
@@ -24,6 +25,7 @@ public class ChatListener implements Listener {
 
         if (message.equalsIgnoreCase(Lang.CANCEL_WORD.get())) {
             player.sendMessage(ChatUtils.getTANString() + Lang.CANCELLED_ACTION.get());
+            PlayerSelectPropertyPositionStorage.removePlayer(player);
             removePlayer(player);
             return;
         }

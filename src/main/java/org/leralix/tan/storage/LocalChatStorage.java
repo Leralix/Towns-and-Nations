@@ -9,6 +9,7 @@ import org.leralix.tan.enums.ChatScope;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.TerritoryUtil;
 
 import java.util.HashMap;
 
@@ -63,8 +64,7 @@ public class LocalChatStorage {
             TownData playerTown = playerData.getTown();
 
             playerTown.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.get(playerTown.getName(),player.getName(),message));
-
-            playerTown.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE).forEach(townID -> TownDataStorage.get(townID).broadCastMessage(Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.get(playerTown.getName(),player.getName(),message)));
+            playerTown.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE).forEach(territoryID -> TerritoryUtil.getTerritory(territoryID).broadCastMessage(Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.get(playerTown.getName(),player.getName(),message)));
 
         }
 
