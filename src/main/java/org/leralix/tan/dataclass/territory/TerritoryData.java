@@ -794,4 +794,7 @@ public abstract class TerritoryData {
     }
 
 
+    public boolean isAtWar() {
+        return !getCurrentAttacks().isEmpty();
+    }
 }

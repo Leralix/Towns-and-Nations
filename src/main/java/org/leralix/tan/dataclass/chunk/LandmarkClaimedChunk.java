@@ -101,6 +101,11 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
 
     @Override
     public boolean canExplosionGrief() {
-        return false; //Landmark cannot be griefed
+        return false;
+    }
+
+    @Override
+    public boolean canFireGrief() {
+        return false;
     }
 }

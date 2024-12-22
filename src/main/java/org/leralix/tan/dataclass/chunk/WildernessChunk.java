@@ -83,4 +83,9 @@ public class WildernessChunk extends ClaimedChunk2 {
     public boolean canExplosionGrief() {
         return true;
     }
+
+    @Override
+    public boolean canFireGrief() {
+        return true;
+    }
 }

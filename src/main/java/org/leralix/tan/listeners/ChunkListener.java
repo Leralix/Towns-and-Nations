@@ -1,5 +1,6 @@
 package org.leralix.tan.listeners;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Tag;
@@ -13,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -34,7 +36,7 @@ import static org.leralix.tan.enums.ChunkPermissionType.*;
 public class ChunkListener implements Listener {
 
     @EventHandler
-    public void OnBlockBreak(BlockBreakEvent event){
+    public void onBlockBreak(BlockBreakEvent event){
 
         Player player = event.getPlayer();
         Block breakedBlock = event.getBlock();
@@ -70,7 +72,7 @@ public class ChunkListener implements Listener {
 
     }
     @EventHandler
-    public void OnPlayerInteractEvent(PlayerInteractEvent event){
+    public void onPlayerInteractEvent(PlayerInteractEvent event){
         Player player = event.getPlayer();
         Block block = event.getClickedBlock();
 
@@ -185,7 +187,7 @@ public class ChunkListener implements Listener {
     }
 
     @EventHandler
-    public void OnBlocPlaced(BlockPlaceEvent event){
+    public void onBlocPlaced(BlockPlaceEvent event){
 
         Player player = event.getPlayer();
         Location loc = event.getBlock().getLocation();
@@ -457,10 +459,18 @@ public class ChunkListener implements Listener {
         }
     }
 
-
     @EventHandler
     public void onExplosion(EntityExplodeEvent event){
         event.blockList().removeIf(block -> !NewClaimedChunkStorage.get(block.getChunk()).canExplosionGrief());
+    }
+
+    @EventHandler
+    public void onBurning(BlockBurnEvent event){
+        Chunk chunk = event.getBlock().getChunk();
+
+        if(NewClaimedChunkStorage.get(chunk).canFireGrief()){
+            event.setCancelled(true);
+        }
     }
 
 

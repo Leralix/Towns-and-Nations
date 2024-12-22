@@ -188,6 +188,17 @@ MaximumTimeBeforeAttack: 4320 #72 hours
 #The lower the multiplier, the longer the war will last.
 warScoreMultiplier : 0.70
 
+########################
+## Fire and explosion ##
+########################
+
+#Enable fire and explosion grief in claimed chunk
+#Always - Always allow fire and explosion grief
+#WarOnly - Allow fire and explosion grief only during a war
+#Never - Never allow fire and explosion grief
+#[ALWAYS, WAR_ONLY, NEVER]
+fireGrief: "ALWAYS"
+explosionGrief: "ALWAYS"
 
 ########################
 ##  RARES RESSOURCES  ##

@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.dataclass.wars.GriefAllowed;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.ChunkPermissionType;
@@ -135,7 +136,16 @@ public class RegionClaimedChunk extends ClaimedChunk2{
 
     @Override
     public boolean canExplosionGrief() {
-        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableExplosionGriefInRegion",false);
+        String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("explosionGrief", "ALWAYS");
+        GriefAllowed griefAllowed =  GriefAllowed.valueOf(fireGrief);
+        return griefAllowed.canGrief(getRegion());
+    }
+
+    @Override
+    public boolean canFireGrief() {
+        String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("fireGrief", "ALWAYS");
+        GriefAllowed griefAllowed =  GriefAllowed.valueOf(fireGrief);
+        return griefAllowed.canGrief(getRegion());
     }
 
 }

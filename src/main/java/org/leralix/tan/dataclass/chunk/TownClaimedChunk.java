@@ -14,6 +14,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.dataclass.wars.CurrentAttacks;
+import org.leralix.tan.dataclass.wars.GriefAllowed;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.ChunkPermissionType;
 import org.leralix.tan.enums.TownRelation;
@@ -173,6 +174,15 @@ public class TownClaimedChunk extends ClaimedChunk2{
 
     @Override
     public boolean canExplosionGrief() {
-        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableExplosionGriefInTown",false);
+        String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("explosionGrief", "ALWAYS");
+        GriefAllowed griefAllowed =  GriefAllowed.valueOf(fireGrief);
+        return griefAllowed.canGrief(getTown());
+    }
+
+    @Override
+    public boolean canFireGrief() {
+        String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("fireGrief", "ALWAYS");
+        GriefAllowed griefAllowed = GriefAllowed.valueOf(fireGrief);
+        return griefAllowed.canGrief(getTown());
     }
 }
