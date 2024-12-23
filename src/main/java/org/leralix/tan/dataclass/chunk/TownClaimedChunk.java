@@ -13,7 +13,7 @@ import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
-import org.leralix.tan.dataclass.wars.CurrentAttacks;
+import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.dataclass.wars.GriefAllowed;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.ChunkPermissionType;
@@ -34,7 +34,6 @@ public class TownClaimedChunk extends ClaimedChunk2{
     public TownClaimedChunk(Chunk chunk, String owner) {
         super(chunk, owner);
     }
-
     public TownClaimedChunk(int x, int z, String worldUUID, String ownerID) {
         super(x,z,worldUUID,ownerID);
     }
@@ -70,7 +69,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
 
         TownData playerTown = TownDataStorage.get(player);
         //player is a part of a war with this town.
-        for(CurrentAttacks currentAttacks : playerTown.getCurrentAttacks())
+        for(CurrentAttack currentAttacks : playerTown.getCurrentAttacks())
             if(currentAttacks.containsPlayer(playerData))
                 return true;
 

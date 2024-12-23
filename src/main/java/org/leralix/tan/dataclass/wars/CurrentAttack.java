@@ -7,12 +7,13 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.territory.StrongholdData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.config.ConfigTag;
@@ -21,7 +22,7 @@ import org.leralix.tan.utils.config.ConfigUtil;
 import java.util.Collection;
 import java.util.UUID;
 
-public class CurrentAttacks {
+public class CurrentAttack {
 
     private String id;
     private int score = 500;
@@ -29,13 +30,15 @@ public class CurrentAttacks {
 
     private static final int MAX_SCORE = 1000;
     private long remainingTime;
-    final Collection<TerritoryData> attackers;
-    final Collection<TerritoryData> defenders;
-    BossBar bossBar;
-    String originalTitle;
-    WarGoal warGoal;
+    private final Collection<TerritoryData> attackers;
+    private final Collection<TerritoryData> defenders;
+    private BossBar bossBar;
+    private String originalTitle;
+    private final WarGoal warGoal;
+    private final StrongholdData defenderStronghold;
+    StrongholdListener strongholdListener;
 
-    public CurrentAttacks(String id, Collection<TerritoryData> attackers, Collection<TerritoryData> defenders, WarGoal warGoal) {
+    public CurrentAttack(String id, Collection<TerritoryData> attackers, Collection<TerritoryData> defenders, WarGoal warGoal, StrongholdData defenderStronghold) {
         this.id = id;
         this.attackers = attackers;
         this.defenders = defenders;
@@ -44,7 +47,11 @@ public class CurrentAttacks {
         this.remainingTime = warDuration * 60 * 20;
         this.warGoal = warGoal;
 
-        bossBar = Bukkit.createBossBar(this.originalTitle, BarColor.RED, BarStyle.SOLID);
+        this.bossBar = Bukkit.createBossBar(this.originalTitle, BarColor.RED, BarStyle.SOLID);
+        this.defenderStronghold = defenderStronghold;
+        this.defenderStronghold.setHolderSide(AttackSide.DEFENDER);
+        this.strongholdListener = new StrongholdListener(this, defenderStronghold);
+
         for(TerritoryData territoryData : this.attackers) {
             for(PlayerData playerData : territoryData.getPlayerDataList()) {
                 playerData.addWar(this);
@@ -67,8 +74,12 @@ public class CurrentAttacks {
     }
 
 
-    public CurrentAttacks(String newID, PlannedAttack plannedAttack) {
-        this(newID, plannedAttack.getAttackingTerritories(), plannedAttack.getDefendingTerritories(), plannedAttack.getWarGoal());
+    public CurrentAttack(String newID, PlannedAttack plannedAttack) {
+        this(newID,
+                plannedAttack.getAttackingTerritories(),
+                plannedAttack.getDefendingTerritories(),
+                plannedAttack.getWarGoal(),
+                plannedAttack.getDefenderStronghold());
     }
 
     public String getId() {
@@ -87,32 +98,31 @@ public class CurrentAttacks {
 
 
     public void playerKilled(PlayerData playerData, Player killer) {
-        for (TerritoryData territoryData : attackers) {
-            if (territoryData.isPlayerIn(playerData)) {
-                if(killer != null){
+        AttackSide attackSide = getSideOfPlayer(playerData);
+
+        if(attackSide == AttackSide.ATTACKER){
+            if(killer != null){
+                attackingLoss();
+            }
+            else {
+                Location playerLocation = playerData.getPlayer().getLocation();
+                ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(playerLocation.getChunk());
+                if (defenders.contains(claimedChunk.getOwner())) {
                     attackingLoss();
                 }
-                else {
-                    Location playerLocation = playerData.getPlayer().getLocation();
-                    ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(playerLocation.getChunk());
-                    if (defenders.contains(claimedChunk.getOwner())) {
-                        attackingLoss();
-                    }
-
-                }
-
             }
         }
-        for (TerritoryData territoryData : defenders) {
-            if (territoryData.isPlayerIn(playerData) && killer != null){
-                    defendingLoss();
-                }
-
+        if(attackSide == AttackSide.DEFENDER && killer != null){
+            defendingLoss();
         }
+
     }
 
     public void attackingLoss() {
         int nbAttackers = getNumberOfOnlineAttackers();
+        if(nbAttackers == 0){
+            return;
+        }
         double multiplier = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("warScoreMultiplier");
         int deltaScore = (int) (multiplier / nbAttackers * 500);
         addScore(-deltaScore);
@@ -121,6 +131,9 @@ public class CurrentAttacks {
 
     public void defendingLoss() {
         int nbDefenders = getNumberOfOnlineDefenders();
+        if (nbDefenders == 0) {
+            return;
+        }
         double multiplier = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("warScoreMultiplier");
         int deltaScore = (int) (multiplier / nbDefenders * 500);
         addScore(deltaScore);
@@ -236,6 +249,7 @@ public class CurrentAttacks {
                     else
                         defenderWin();
                     this.cancel();
+                    strongholdListener.stop();
                 }
             }
         };
@@ -250,12 +264,12 @@ public class CurrentAttacks {
             public void run() {
                 for(TerritoryData territoryData : attackers) {
                     for(PlayerData playerData : territoryData.getPlayerDataList()) {
-                        playerData.removeWar(CurrentAttacks.this);
+                        playerData.removeWar(CurrentAttack.this);
                     }
                 }
                 for(TerritoryData territoryData : defenders) {
                     for(PlayerData playerData : territoryData.getPlayerDataList()) {
-                        playerData.removeWar(CurrentAttacks.this);
+                        playerData.removeWar(CurrentAttack.this);
                     }
                 }
 
@@ -264,13 +278,13 @@ public class CurrentAttacks {
                 bossBar.removeAll();
                 bossBar = null;
                 id = null;
-                CurrentAttacksStorage.remove(CurrentAttacks.this);
+                CurrentAttacksStorage.remove(CurrentAttack.this);
 
                 for(TerritoryData territoryData : attackers) {
-                    territoryData.removeCurrentAttack(CurrentAttacks.this);
+                    territoryData.removeCurrentAttack(CurrentAttack.this);
                 }
                 for(TerritoryData territoryData : defenders) {
-                    territoryData.removeCurrentAttack(CurrentAttacks.this);
+                    territoryData.removeCurrentAttack(CurrentAttack.this);
                 }
 
             }
@@ -294,5 +308,39 @@ public class CurrentAttacks {
 
     public Collection<TerritoryData> getDefenders() {
         return defenders;
+    }
+
+    public void strongholdHeldBy(AttackSide attackSide) {
+        if(attackSide == AttackSide.ATTACKER){
+            setTemporaryBossBarTitle("Stronghold held by attackers");
+        }
+        if(attackSide == AttackSide.DEFENDER){
+            setTemporaryBossBarTitle("Stronghold held by defenders");
+        }
+    }
+
+    public AttackSide getSideOfPlayer(PlayerData playerData) {
+        for (TerritoryData territoryData : attackers) {
+            if (territoryData.isPlayerIn(playerData)) {
+                return AttackSide.ATTACKER;
+            }
+        }
+        for (TerritoryData territoryData : defenders) {
+            if (territoryData.isPlayerIn(playerData)){
+                return AttackSide.DEFENDER;
+            }
+        }
+        return AttackSide.NOT_PARTICIPATING;
+    }
+
+    public void addScoreOfStronghold() {
+        AttackSide attackSide = this.defenderStronghold.getHolderSide();
+
+        if(attackSide == AttackSide.ATTACKER){
+            addScore(5);
+        }
+        if(attackSide == AttackSide.DEFENDER){
+            addScore(-5);
+        }
     }
 }

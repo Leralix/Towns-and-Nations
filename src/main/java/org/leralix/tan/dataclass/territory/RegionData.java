@@ -176,6 +176,7 @@ public class RegionData extends TerritoryData {
     }
 
 
+    @Override
     public String getCapitalID() {
         return capitalID;
     }
@@ -191,36 +192,37 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public void claimChunk(Player player, Chunk chunk) {
+    public Optional<ClaimedChunk2> claimChunkInternal(Player player, Chunk chunk) {
         PlayerData playerData = PlayerDataStorage.get(player);
         TownData townData = TownDataStorage.get(player);
-        RegionData regionData = townData.getSpecificOverlord();
+        RegionData regionData = townData.getRegion();
 
         if(ClaimBlacklistStorage.cannotBeClaimed(chunk)){
             player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
-            return;
+            return Optional.empty();
         }
 
 
         if(!regionData.doesPlayerHavePermission(playerData, RolePermission.CLAIM_CHUNK)){
             player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
-            return;
+            return Optional.empty();
         }
         int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfRegionChunk",5);
 
         if(regionData.getBalance() < cost){
             player.sendMessage(ChatUtils.getTANString() + Lang.REGION_NOT_ENOUGH_MONEY_EXTENDED.get(cost - regionData.getBalance()));
-            return;
+            return Optional.empty();
         }
 
         ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.get(chunk);
         if(!currentClaimedChunk.canPlayerClaim(player, regionData)){
-            return;
+            return Optional.empty();
         }
 
         regionData.removeFromBalance(cost);
         NewClaimedChunkStorage.claimRegionChunk(chunk, regionData.getID());
         player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_CLAIMED_SUCCESS_REGION.get());
+        return Optional.of(NewClaimedChunkStorage.get(chunk));
     }
 
     public boolean hasNation() {
@@ -232,10 +234,6 @@ public class RegionData extends TerritoryData {
         return null;
     }
 
-    @Override
-    protected String getOverlordPrivate() {
-        return null;
-    }
     @Override
     public Double getOldTax() {
         return taxRate;

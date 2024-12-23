@@ -74,7 +74,7 @@ public class PlayerGUI implements IGUI {
         TownData town = TownDataStorage.get(playerStat);
         RegionData region = null;
         if(playerHaveRegion){
-            region = town.getSpecificOverlord();
+            region = town.getRegion();
         }
 
         ItemStack kingdomIcon = HeadUtils.makeSkullB64(Lang.GUI_KINGDOM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=",
@@ -1656,7 +1656,7 @@ public class PlayerGUI implements IGUI {
 
         gui.setItem(3,4, retrieveButton);
 
-        gui.setItem(5,1, IGUI.createBackArrow(player, p -> dispatchPlayerTown(player)));
+        gui.setItem(5,1, IGUI.createBackArrow(player, p -> territoryData.openMainMenu(player)));
 
         gui.open(player);
 
@@ -2105,6 +2105,11 @@ public class PlayerGUI implements IGUI {
                 event.setCancelled(true);
 
                 if (relation == TownRelation.WAR) {
+                    if(territoryData.getNumberOfClaimedChunk() < 1){
+                        player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_NO_CLAIMED_CHUNK.get());
+                        SoundUtil.playSound(player, NOT_ALLOWED);
+                        return;
+                    }
                     if(mainTerritory.atWarWith(territoryID)){
                         player.sendMessage(getTANString() + Lang.GUI_TOWN_ATTACK_ALREADY_ATTACKING.get());
                         SoundUtil.playSound(player, NOT_ALLOWED);
@@ -2758,7 +2763,7 @@ public class PlayerGUI implements IGUI {
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         TownData playerTown = TownDataStorage.get(playerStat);
-        RegionData playerRegion = playerTown.getSpecificOverlord();
+        RegionData playerRegion = playerTown.getRegion();
 
         ItemStack regionIcon = getRegionIcon(playerRegion);
 

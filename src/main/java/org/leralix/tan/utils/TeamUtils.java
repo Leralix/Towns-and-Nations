@@ -2,6 +2,7 @@ package org.leralix.tan.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
@@ -35,6 +36,10 @@ public class TeamUtils {
      */
 
     public static void setIndividualScoreBoard(Player player) {
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> setIndividualScoreBoardSync(player));
+    }
+
+    private static void setIndividualScoreBoardSync(Player player) {
         if(TownsAndNations.getPlugin().colorCodeIsNotEnabled())
             return;
 

@@ -20,7 +20,7 @@ import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.ChunkUpkeepLine;
 import org.leralix.tan.dataclass.territory.economy.SalaryPaymentLine;
-import org.leralix.tan.dataclass.wars.CurrentAttacks;
+import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
@@ -51,22 +51,22 @@ public abstract class TerritoryData {
     private String id;
     private String name;
     private String description;
-    private String overlordID;
+    String overlordID;
     private Long dateTimeCreated;
     private CustomIcon customIcon;
     private RelationData relations;
     private Double baseTax;
-    double propertyRentTax;
-    double propertyBuyTax;
+    private double propertyRentTax;
+    private double propertyBuyTax;
     Integer color;
-    Integer defaultRankID;
+    private Integer defaultRankID;
     private Map<Integer, RankData> ranks;
     private Collection<String> attackIncomingList;
     private Collection<String> currentAttackList;
     private HashMap<String, Integer> availableClaims;
     private Map<String, DiplomacyProposal> diplomacyProposals;
-    List<String> overlordsProposals;
-    ChunkCoordinates strongholdCoordinates;
+    private List<String> overlordsProposals;
+    private StrongholdData stronghold;
 
     protected TerritoryData(String id, String name, String ownerID){
         this.id = id;
@@ -304,20 +304,20 @@ public abstract class TerritoryData {
             this.currentAttackList = new ArrayList<>();
         return currentAttackList;
     }
-    public Collection<CurrentAttacks> getCurrentAttacks(){
-        Collection<CurrentAttacks> res = new ArrayList<>();
+    public Collection<CurrentAttack> getCurrentAttacks(){
+        Collection<CurrentAttack> res = new ArrayList<>();
         for(String attackID : getCurrentAttacksID()){
-            CurrentAttacks attackInvolved = CurrentAttacksStorage.get(attackID);
+            CurrentAttack attackInvolved = CurrentAttacksStorage.get(attackID);
             res.add(attackInvolved);
         }
         return res;
     }
 
-    public void addCurrentAttack(CurrentAttacks currentAttacks){
+    public void addCurrentAttack(CurrentAttack currentAttacks){
         getAttacksInvolvedID().add(currentAttacks.getId());
 
     }
-    public void removeCurrentAttack(CurrentAttacks currentAttacks){
+    public void removeCurrentAttack(CurrentAttack currentAttacks){
         getAttacksInvolvedID().remove(currentAttacks.getId());
     }
 
@@ -334,15 +334,10 @@ public abstract class TerritoryData {
         broadCastMessageWithSound(getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), overlord.getColoredName()), GOOD);
         this.overlordID = overlord.getID();
     }
+
     public TerritoryData getOverlord(){
-        if(overlordID == null)
-            overlordID = getOverlordPrivate();
         return TerritoryUtil.getTerritory(overlordID);
     }
-    /**
-     * @return The ID of the overlord from the territory perspective. Used for old compatibility (TODO : remove before v1.0)
-     */
-    protected abstract String getOverlordPrivate();
 
     public void removeOverlord(){
         this.overlordID = null;
@@ -389,7 +384,9 @@ public abstract class TerritoryData {
         this.color = color;
     }
 
-    public abstract boolean haveOverlord();
+    public boolean haveOverlord(){
+        return this.overlordID != null;
+    }
 
 
     public Map<String, Integer> getAvailableEnemyClaims() {
@@ -412,7 +409,22 @@ public abstract class TerritoryData {
         claimChunk(player, chunk);
     }
 
-    public abstract void claimChunk(Player player,Chunk chunk);
+    public void claimChunk(Player player, Chunk chunk){
+        Optional<ClaimedChunk2> claimedChunk2 = claimChunkInternal(player, chunk);
+        if(claimedChunk2.isPresent() && getNumberOfClaimedChunk() == 1){
+            stronghold = new StrongholdData(claimedChunk2.get());
+        }
+    }
+
+    public StrongholdData getStronghold(){
+        if(stronghold == null){
+            ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getAllChunkFrom(this).iterator().next();
+            stronghold = new StrongholdData(claimedChunk2);
+        }
+        return stronghold;
+    }
+
+    protected abstract Optional<ClaimedChunk2> claimChunkInternal(Player player, Chunk chunk);
 
 
     public void castActionToAllPlayers(Consumer<Player> action){
@@ -774,16 +786,6 @@ public abstract class TerritoryData {
 
     public void setBuyRate(double amount) {
         propertyBuyTax = amount;
-    }
-
-    public ChunkCoordinates getStrongholdCoordinates(){
-        if(strongholdCoordinates == null)
-            setStrongholdCoordinates(NewClaimedChunkStorage.getAllChunkFrom(this).iterator().next().getChunk());
-        return strongholdCoordinates;
-    }
-
-    public void setStrongholdCoordinates(Chunk chunk){
-        this.strongholdCoordinates = new ChunkCoordinates(chunk);
     }
 
 

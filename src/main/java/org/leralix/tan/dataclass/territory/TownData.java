@@ -42,7 +42,6 @@ public class TownData extends TerritoryData {
     private String UuidLeader;
     private Integer townDefaultRankID;
     private Long townDateTimeCreated;
-    private String regionID;
     private boolean isRecruiting;
     private Double balance;
     private Double flatTax;
@@ -427,75 +426,60 @@ public class TownData extends TerritoryData {
         return this.townLevel.getBenefitsLevel("UNLOCK_TOWN_SPAWN") <= 0;
     }
 
-    public boolean haveOverlord(){
-        return this.regionID != null;
-    }
-
     @Override
-    public void claimChunk(Player player, Chunk chunk) {
+    public Optional<ClaimedChunk2> claimChunkInternal(Player player, Chunk chunk) {
 
         PlayerData playerData = PlayerDataStorage.get(player.getUniqueId().toString());
 
 
         if(ClaimBlacklistStorage.cannotBeClaimed(chunk)){
             player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
-            return;
+            return Optional.empty();
         }
 
         if(!doesPlayerHavePermission(playerData, RolePermission.CLAIM_CHUNK)){
             player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-            return;
+            return Optional.empty();
         }
 
         if(!canClaimMoreChunk()){
             player.sendMessage(getTANString() + Lang.MAX_CHUNK_LIMIT_REACHED.get());
-            return;
+            return Optional.empty();
         }
 
 
         int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfTownChunk",0);
         if(getBalance() < cost){
             player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(cost - getBalance()));
-            return;
+            return Optional.empty();
         }
 
         ClaimedChunk2 chunkData = NewClaimedChunkStorage.get(chunk);
         if(!chunkData.canPlayerClaim(player,this)){
-            return;
+            return Optional.empty();
         }
 
         if(getNumberOfClaimedChunk() != 0 &&
                 !NewClaimedChunkStorage.isAdjacentChunkClaimedBySameTown(chunk,getID()) &&
                 !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("TownAllowNonAdjacentChunks",false)) {
             player.sendMessage(getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
-            return;
+            return Optional.empty();
         }
 
-        NewClaimedChunkStorage.unclaimChunk(chunk); //Un-claim in case it was already claimed and territory has the right to claim it
+        NewClaimedChunkStorage.unclaimChunk(chunk);
         NewClaimedChunkStorage.claimTownChunk(chunk,getID());
 
         player.sendMessage(getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.get(
                 getNumberOfClaimedChunk(),
                 getLevel().getChunkCap())
         );
+        return Optional.of(NewClaimedChunkStorage.get(chunk));
     }
 
-    public RegionData getSpecificOverlord(){
-        return RegionDataStorage.get(this.regionID);
+    public RegionData getRegion(){
+        return RegionDataStorage.get(this.overlordID);
     }
 
-    @Override
-    protected String getOverlordPrivate() {
-        return regionID;
-    }
-
-    public String getRegionID(){
-        return this.regionID;
-    }
-
-    public void setOverlordPrivate(String regionID){
-        this.regionID = regionID;
-    }
 
     @Override
     public Collection<TerritoryData> getPotentialVassals() {
@@ -503,7 +487,6 @@ public class TownData extends TerritoryData {
     }
 
     public void removeOverlordPrivate() {
-        this.regionID = null;
         for(PlayerData playerData : getPlayerDataList()){
             playerData.setRegionRankID(null);
         }
@@ -528,7 +511,7 @@ public class TownData extends TerritoryData {
 
     @Override
     public String getCapitalID() {
-        return regionID;
+        return null;
     }
 
 

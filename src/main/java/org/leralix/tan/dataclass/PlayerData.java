@@ -7,14 +7,12 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.dataclass.wars.CurrentAttacks;
-import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
-import org.leralix.tan.utils.StringUtil;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
 
@@ -101,7 +99,7 @@ public class PlayerData {
     public RegionData getRegion(){
         if(!haveRegion())
             return null;
-        return getTown().getSpecificOverlord();
+        return getTown().getRegion();
     }
 
     public UUID getUUID() {
@@ -161,7 +159,7 @@ public class PlayerData {
         return Bukkit.getPlayer(getUUID());
     }
 
-    public Collection<String> getAttackInvolvedIn(){
+    public List<String> getAttackInvolvedIn(){
         if(attackInvolvedIn == null)
             attackInvolvedIn = new ArrayList<>();
         return attackInvolvedIn;
@@ -171,7 +169,7 @@ public class PlayerData {
         Iterator<String> iterator = getAttackInvolvedIn().iterator();
         while (iterator.hasNext()) {
             String attackID = iterator.next();
-            CurrentAttacks currentAttacks = CurrentAttacksStorage.get(attackID);
+            CurrentAttack currentAttacks = CurrentAttacksStorage.get(attackID);
             if (currentAttacks != null) {
                 currentAttacks.playerKilled(this, killer);
             } else {
@@ -180,7 +178,7 @@ public class PlayerData {
         }
     }
 
-    public void addWar(CurrentAttacks currentAttacks){
+    public void addWar(CurrentAttack currentAttacks){
         if(getAttackInvolvedIn().contains(currentAttacks.getId())){
             return;
         }
@@ -188,8 +186,9 @@ public class PlayerData {
     }
 
     public void updateCurrentAttack(){
-        for(String attackID : getAttackInvolvedIn()){
-            CurrentAttacks currentAttack = CurrentAttacksStorage.get(attackID);
+        List<String> attackInvolvedIn = getAttackInvolvedIn();
+        for(String attackID : attackInvolvedIn){
+            CurrentAttack currentAttack = CurrentAttacksStorage.get(attackID);
             if(currentAttack == null){
                 getAttackInvolvedIn().remove(attackID);
             }
@@ -207,7 +206,7 @@ public class PlayerData {
             return false;
         }
         for(String attackID : getAttackInvolvedIn()){
-            CurrentAttacks currentAttack = CurrentAttacksStorage.get(attackID);
+            CurrentAttack currentAttack = CurrentAttacksStorage.get(attackID);
             if(currentAttack == null){
                 getAttackInvolvedIn().remove(attackID);
                 continue;
@@ -219,7 +218,7 @@ public class PlayerData {
         return false;
     }
 
-    public void removeWar(@NotNull CurrentAttacks currentAttacks){
+    public void removeWar(@NotNull CurrentAttack currentAttacks){
         getAttackInvolvedIn().remove(currentAttacks.getId());
     }
 

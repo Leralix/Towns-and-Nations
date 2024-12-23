@@ -8,18 +8,21 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.WildernessChunk;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.ChunkType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.PlayerAutoClaimStorage;
-import org.leralix.tan.utils.ChunkUtil;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+
+import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class PlayerEnterChunkListener implements Listener {
 
     @EventHandler
-    public void PlayerMoveEvent(final @NotNull PlayerMoveEvent e){
+    public void playerMoveEvent(final @NotNull PlayerMoveEvent e){
 
         Chunk currentChunk = e.getFrom().getChunk();
         if(e.getTo() == null){
@@ -44,16 +47,16 @@ public class PlayerEnterChunkListener implements Listener {
         }
 
 
-        ClaimedChunk2 CurrentClaimedChunk = NewClaimedChunkStorage.get(currentChunk);
-        ClaimedChunk2 NextClaimedChunk = NewClaimedChunkStorage.get(nextChunk);
+        ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.get(currentChunk);
+        ClaimedChunk2 nextClaimedChunk = NewClaimedChunkStorage.get(nextChunk);
 
         //Both chunks have the same owner, no need to change
-        if(equalsWithNulls(CurrentClaimedChunk,NextClaimedChunk)){
+        if(equalsWithNulls(currentClaimedChunk,nextClaimedChunk)){
             return;
         }
 
         //Three case: Into wilderness, into town, into region
-        if(NextClaimedChunk instanceof WildernessChunk){
+        if(nextClaimedChunk instanceof WildernessChunk){
             //If auto claim is on, claim the chunk
             if(PlayerAutoClaimStorage.containsPlayer(e.getPlayer())){
                 autoClaimChunk(e, nextChunk, player);
@@ -64,20 +67,28 @@ public class PlayerEnterChunkListener implements Listener {
 
         }
         else {
-            NextClaimedChunk.playerEnterClaimedArea(player);
+            nextClaimedChunk.playerEnterClaimedArea(player);
         }
 
     }
 
     private void autoClaimChunk(final @NotNull PlayerMoveEvent e, final @NotNull Chunk nextChunk, final @NotNull Player player) {
         ChunkType chunkType = PlayerAutoClaimStorage.getChunkType(e.getPlayer());
-        switch (chunkType){
-            case TOWN:
-                ChunkUtil.claimChunkForTown(player, nextChunk);
-                break;
-            case REGION:
-                ChunkUtil.claimChunkForRegion(player, nextChunk);
-                break;
+        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
+
+        if(chunkType == ChunkType.TOWN) {
+            if (!playerStat.haveTown()) {
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
+                return;
+            }
+            playerStat.getTown().claimChunk(player, nextChunk);
+        }
+        if(chunkType == ChunkType.REGION) {
+            if(!playerStat.haveRegion()){
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_REGION.get());
+                return;
+            }
+            playerStat.getRegion().claimChunk(player, nextChunk);
         }
     }
 

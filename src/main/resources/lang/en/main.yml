@@ -6,6 +6,7 @@ language:
   NEWSLETTER_STRING: "§6[TaN - Newsletter]§f "
   #Common errors
   PLAYER_NO_TOWN: "§cYou do not have a town"
+  PLAYER_NO_REGION: "§cYou do not have a region"
   TOWN_NO_REGION: "§cYour town does not belongs to a region"
   PLAYER_NOT_LEADER_OF_REGION: "§cYou need to be the leader of the region to execute this action"
   PLAYER_NO_PERMISSION: "§cYou do not have permission to execute this command"
@@ -259,7 +260,7 @@ language:
   GUI_PLAYER_NEW_PROPERTY: "Create a new property"
   #GUI
   ##menu headers
-  HEADER_MAIN_MENU : "Main menu"
+  HEADER_MAIN_MENU: "Main menu"
   HEADER_PLAYER_PROFILE: "Profile"
   HEADER_NEWSLETTER: "Newsletter"
   HEADER_PLAYER_PROPERTIES: "Properties"
@@ -299,7 +300,6 @@ language:
   HEADER_LANDMARK_CLAIMED: "Landmark | {0}"
   HEADER_CONFIRMATION: "Confirmation"
   HEADER_HIERARCHY: "Hierarchy"
-
   HEADER_ADMIN_MAIN_MENU: "§aMain menu - Admin"
   HEADER_ADMIN_WAR_MENU: "§aWars - Admin"
   HEADER_ADMIN_LANDMARK_MENU: "§aLandmarks - Admin"
@@ -308,12 +308,11 @@ language:
   HEADER_ADMIN_SPECIFIC_REGION_MENU: "§aRegion : {0} - Admin"
   HEADER_ADMIN_CHANGE_REGION_LEADER: "§aChange {0} leader - Admin"
   HEADER_ADMIN_TOWN_MENU: "§aTowns - Admin"
-  HEADER_ADMIN_SPECIFIC_TOWN_MENU: "§aRegion : {0} - Admin"
-  HEADER_ADMIN_CHANGE_OVERLORD: "§aChange {0} overlord - Admin"
-  HEADER_ADMIN_CHANGE_TOWN_LEADER: "§aChange {0} leader - Admin"
-  HEADER_ADMIN_PLAYER_MENU: "§aPlayers - Admin"
-  HEADER_ADMIN_SET_PLAYER_TOWN: "§aSet {0} town - Admin"
-
+  HEADER_ADMIN_SPECIFIC_TOWN_MENU: "Region : {0} - Admin"
+  HEADER_ADMIN_CHANGE_OVERLORD: "Change {0} overlord - Admin"
+  HEADER_ADMIN_CHANGE_TOWN_LEADER: "Change {0} leader - Admin"
+  HEADER_ADMIN_PLAYER_MENU: "Players - Admin"
+  HEADER_ADMIN_SET_PLAYER_TOWN: "Set {0} town - Admin"
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCreate a new town"
   GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fCost : §6{0}{MONEY_CHAR}"
   GUI_NO_TOWN_JOIN_A_TOWN: "§aJoin a town"
@@ -341,8 +340,8 @@ language:
   GUI_TOWN_MEMBERS_ICON_DESC1: "§fManage members, roles and applications"
   GUI_CLAIM_ICON: "§aLand"
   GUI_CLAIM_ICON_DESC1: "§fManage town territory authorizations"
-  GUI_BROWSE_TERRITORY_ICON: "§aBrowse all territory"
-  GUI_BROWSE_TERRITORY_ICON_DESC1: "§fGet information on all existing territories"
+  GUI_BROWSE_TERRITORY_ICON: "Browse all territory"
+  GUI_BROWSE_TERRITORY_ICON_DESC1: "Get information on all existing territories"
   GUI_RELATION_ICON: "§aDiplomacy"
   GUI_RELATION_ICON_DESC1: "§fManage foreign diplomacy/policy"
   GUI_TOWN_LEVEL_ICON: "§aTown level"

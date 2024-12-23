@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.territory.StrongholdData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
 import org.leralix.tan.lang.Lang;
@@ -34,12 +35,12 @@ public class PlannedAttack {
 
     private final long startTime;
     private final long endTime;
-    WarGoal warGoal;
+    private WarGoal warGoal;
 
     boolean isAdminApproved;
 
-    public PlannedAttack(String ID, CreateAttackData createAttackData, long startTime){
-        this.ID = ID;
+    public PlannedAttack(String id, CreateAttackData createAttackData, long startTime){
+        this.ID = id;
         this.name = Lang.BASIC_ATTACK_NAME.get(createAttackData.getMainAttacker().getName(), createAttackData.getMainDefender().getName());
         this.mainAttackerID = createAttackData.getMainAttacker().getID();
         this.mainDefenderID = createAttackData.getMainDefender().getID();
@@ -311,5 +312,9 @@ public class PlannedAttack {
 
     public void rename(String message) {
         this.name = message;
+    }
+
+    public StrongholdData getDefenderStronghold() {
+        return getMainDefender().getStronghold();
     }
 }
