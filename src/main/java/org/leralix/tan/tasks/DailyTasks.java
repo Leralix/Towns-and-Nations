@@ -43,7 +43,7 @@ public class DailyTasks {
         for(TownData town : TownDataStorage.getTownMap().values()){
             town.executeTasks();
         }
-        for(RegionData regionData : RegionDataStorage.getAllRegions()){
+        for(RegionData regionData : RegionDataStorage.getAll()){
             regionData.executeTasks();
         }
 

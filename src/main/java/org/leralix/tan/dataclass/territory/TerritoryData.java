@@ -267,14 +267,7 @@ public abstract class TerritoryData {
 
             if(territoryData != null && lore != null){
                 TownRelation relation = getRelationWith(territoryData);
-                String relationName;
-                if(relation == null){
-                    relationName = Lang.GUI_TOWN_RELATION_NEUTRAL.get();
-                }
-                else {
-                    relationName = relation.getColor() + relation.getName();
-                }
-                lore.add(Lang.GUI_TOWN_INFO_TOWN_RELATION.get(relationName));
+                lore.add(Lang.GUI_TOWN_INFO_TOWN_RELATION.get(relation.getColor() + relation.getName()));
             }
 
             meta.setLore(lore);

@@ -94,7 +94,7 @@ public class RegionDataStorage {
         return regionStorage;
     }
 
-    public static Collection<RegionData> getAllRegions(){
+    public static Collection<RegionData> getAll(){
         return regionStorage.values();
     }
 

@@ -2,16 +2,20 @@ package org.leralix.tan.dataclass.territory;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.*;
+import org.leralix.tan.dataclass.ClaimedChunkSettings;
+import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.RegionClaimedChunk;
 import org.leralix.tan.dataclass.newhistory.SubjectTaxHistory;
-import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
@@ -37,8 +41,7 @@ public class RegionData extends TerritoryData {
     private String leaderID;
     private String capitalID;
     private String nationID;
-    private Long regionDateTimeCreated;
-    private String regionIconType;
+    private final Long regionDateTimeCreated;
     private Double taxRate;
     private Double balance;
     private final List<String> townsInRegion;
@@ -53,7 +56,6 @@ public class RegionData extends TerritoryData {
         this.capitalID = ownerTown.getID();
         this.regionDateTimeCreated = new Date().getTime();
         this.nationID = null;
-        this.regionIconType = null;
         this.taxRate = 1.0;
         this.balance = 0.0;
         this.townsInRegion = new ArrayList<>();
@@ -157,8 +159,8 @@ public class RegionData extends TerritoryData {
             lore.add(Lang.GUI_REGION_INFO_DESC1.get(getCapital().getName()));
             lore.add(Lang.GUI_REGION_INFO_DESC2.get(getNumberOfTownsIn()));
             lore.add(Lang.GUI_REGION_INFO_DESC3.get(getTotalPlayerCount()));
-            lore.add(Lang.GUI_REGION_INFO_DESC4.get(getBalance()));
             lore.add(Lang.GUI_REGION_INFO_DESC5.get(getNumberOfClaimedChunk()));
+
             meta.setLore(lore);
             icon.setItemMeta(meta);
         }
@@ -225,6 +227,7 @@ public class RegionData extends TerritoryData {
         return nationID != null;
     }
 
+    @Override
     public TerritoryData getOverlord() {
         return null;
     }
@@ -268,12 +271,6 @@ public class RegionData extends TerritoryData {
     }
 
 
-    public boolean isCapital( TownData town) {
-        return isCapital(town.getID());
-    }
-    public boolean isCapital( String townID) {
-        return capitalID.equals(townID);
-    }
     public void setCapital(TownData town) {
         setCapital(town.getID());
     }
@@ -289,16 +286,6 @@ public class RegionData extends TerritoryData {
     @Override
     public void removeOverlordPrivate() {
         // Kingdoms are not implemented yet
-    }
-
-    public int getIncomeTomorrow() {
-        int income = 0;
-        for (TerritoryData town  : getSubjects()) {
-            if(town.getBalance() > taxRate) {
-                income += taxRate;
-            }
-        }
-        return income;
     }
 
 
@@ -320,18 +307,6 @@ public class RegionData extends TerritoryData {
 
     public boolean isTownInRegion(TownData townData) {
         return townsInRegion.contains(townData.getID());
-    }
-
-    public int setBasicColor(int colorHex) {
-        int red = (colorHex >> 16) & 0xFF;
-        int green = (colorHex >> 8) & 0xFF;
-        int blue = colorHex & 0xFF;
-
-        red = Math.max(0, red - 25);
-        green = Math.max(0, green - 25);
-        blue = Math.max(0, blue - 25);
-
-        return (red << 16) | (green << 8) | blue;
     }
 
     public void removeVassal(String townID) {

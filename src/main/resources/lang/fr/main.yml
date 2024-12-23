@@ -285,7 +285,7 @@ language:
   GUI_TOWN_MEMBERS_ICON_DESC1: "§fGérer les membres, les rôles et les candidatures"
   GUI_CLAIM_ICON: "§aTerritoire"
   GUI_CLAIM_ICON_DESC1: "§fGérer les autorisations au sein de la ville"
-  GUI_OTHER_TOWN_ICON: "§aConsulter les régions"
+  GUI_OTHER_TOWN_ICON: "§aConsulter les villes"
   GUI_OTHER_TOWN_ICON_DESC1: "§fInformations basiques sur les autres villes"
   GUI_OTHER_REGION_ICON: "§aConsulter les régions"
   GUI_OTHER_REGION_ICON_DESC1: "§fInformations sur les autres régions"

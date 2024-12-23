@@ -17,6 +17,7 @@ import org.leralix.tan.utils.config.ConfigUtil;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -143,6 +144,10 @@ public class TownDataStorage {
                 return true;
         }
         return false;
+    }
+
+    public static Collection<TownData> getAll(){
+        return getTownMap().values();
     }
 
 }
