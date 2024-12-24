@@ -39,7 +39,7 @@ public class WildernessChunk extends ClaimedChunk2 {
 
     @Override
     public void playerEnterClaimedArea(Player player) {
-        //No need to notify player entered a wilderness chunk
+        //TODO : add wilderness enter message in PlayerEnterChunkListener
     }
 
     @Override

@@ -103,7 +103,7 @@ public class PlayerData {
     }
 
     public UUID getUUID() {
-        return java.util.UUID.fromString(this.UUID);
+        return java.util.UUID.fromString(UUID);
     }
 
     public void setTownRankID(int townRankID) {

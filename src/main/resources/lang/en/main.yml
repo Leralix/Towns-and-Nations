@@ -829,6 +829,11 @@ language:
   PLAYER_LOST_ATTACK: "§cThe attack has been lost !"
   WAR_ATTACKER_WON_ANNOUNCEMENT: "§a Attackers have won !"
   WAR_DEFENDER_WON_ANNOUNCEMENT: "§a Defenders have won !"
+  BOSS_BAR_STRONGHOLD_HELD_BY_ATTACKERS: "§cStronghold held by attackers"
+  BOSS_BAR_STRONGHOLD_HELD_BY_DEFENDERS: "§aStronghold held by defenders"
+  BOSS_BAR_STRONGHOLD_CONTESTED: "§6Stronghold contested"
+  ACTION_BAR_NUMBER_ATTACKER_ON_STRONGHOLD: "§c attackers : {0}"
+  ACTION_BAR_NUMBER_DEFENDER_ON_STRONGHOLD: "§a defenders : {0}"
   #Confirmation GUI
   GENERIC_CONFIRM_ACTION: "§aConfirm action"
   GENERIC_CANCEL_ACTION: "§cCancel action"

@@ -138,14 +138,14 @@ public class RegionDataStorage {
         Type type = new TypeToken<LinkedHashMap<String, RegionData>>() {}.getType();
         regionStorage = gson.fromJson(reader, type);
 
-        int ID = 0;
+        int id = 0;
         for (Map.Entry<String, RegionData> entry : regionStorage.entrySet()) {
             String cle = entry.getKey();
             int newID =  Integer.parseInt(cle.substring(1));
-            if(newID > ID)
-                ID = newID;
+            if(newID > id)
+                id = newID;
         }
-        nextID = ID+1;
+        nextID = id+1;
     }
 
     public static void saveStats() {

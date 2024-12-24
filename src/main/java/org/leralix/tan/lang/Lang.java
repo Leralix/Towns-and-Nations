@@ -8,9 +8,7 @@ import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.EnumMap;
 public enum Lang {
     WELCOME,
     LANGUAGE_SUCCESSFULLY_LOADED,
@@ -790,6 +788,11 @@ public enum Lang {
     PLAYER_LOST_ATTACK,
     WAR_ATTACKER_WON_ANNOUNCEMENT,
     WAR_DEFENDER_WON_ANNOUNCEMENT,
+    BOSS_BAR_STRONGHOLD_HELD_BY_ATTACKERS,
+    BOSS_BAR_STRONGHOLD_HELD_BY_DEFENDERS,
+    BOSS_BAR_STRONGHOLD_CONTESTED,
+    ACTION_BAR_NUMBER_ATTACKER_ON_STRONGHOLD,
+    ACTION_BAR_NUMBER_DEFENDER_ON_STRONGHOLD,
     GENERIC_CONFIRM_ACTION,
     GENERIC_CANCEL_ACTION,
     GENERIC_CANCEL_ACTION_DESC1,
@@ -881,7 +884,7 @@ public enum Lang {
     CHUNK_IS_BLACKLISTED;
 
 
-    private static final Map<Lang, String> translations = new HashMap<>();
+    private static final EnumMap<Lang, String> translations = new EnumMap<>(Lang.class);
 
     public static void loadTranslations(String fileTag) {
 
@@ -913,6 +916,9 @@ public enum Lang {
             }
         }
     }
+    static final String MESSAGE_NOT_FOUND_FOR = "Message not found for ";
+    static final String IN_THIS_LANGUAGE_FILE = " in this language file.";
+
 
     public String get() {
         String translation = translations.get(this);
@@ -920,7 +926,7 @@ public enum Lang {
             replaceCommonPlaceholders(translation);
             return ChatColor.translateAlternateColorCodes('§', translation);
         }
-        return "Message not found for " + this.name() + " in this language file.";
+        return MESSAGE_NOT_FOUND_FOR + this.name() + IN_THIS_LANGUAGE_FILE;
     }
 
     public String get(Object... placeholders) {
@@ -934,7 +940,7 @@ public enum Lang {
             translation = replaceCommonPlaceholders(translation);
             return translation;
         }
-        return "Message not found for " + this.name() + " in this language file.";
+        return MESSAGE_NOT_FOUND_FOR + this.name() + IN_THIS_LANGUAGE_FILE;
     }
 
     private String replaceCommonPlaceholders(String translation) {
@@ -954,6 +960,6 @@ public enum Lang {
         if (translation != null) {
             return ChatColor.translateAlternateColorCodes('§', translation);
         }
-        return "Message not found for " + this.name() + " in this language file.";
+        return MESSAGE_NOT_FOUND_FOR + this.name() + IN_THIS_LANGUAGE_FILE;
     }
 }

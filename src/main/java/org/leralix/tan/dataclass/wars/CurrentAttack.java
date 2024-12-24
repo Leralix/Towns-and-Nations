@@ -1,5 +1,8 @@
 package org.leralix.tan.dataclass.wars;
 
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
@@ -16,6 +19,7 @@ import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.utils.ProgressBar;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
 
@@ -42,7 +46,7 @@ public class CurrentAttack {
         this.id = id;
         this.attackers = attackers;
         this.defenders = defenders;
-        this.originalTitle = "War";
+        this.originalTitle = "War start";
         long warDuration = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("WarDuration");
         this.remainingTime = warDuration * 60 * 20;
         this.warGoal = warGoal;
@@ -50,6 +54,7 @@ public class CurrentAttack {
         this.bossBar = Bukkit.createBossBar(this.originalTitle, BarColor.RED, BarStyle.SOLID);
         this.defenderStronghold = defenderStronghold;
         this.defenderStronghold.setHolderSide(AttackSide.DEFENDER);
+        this.defenderStronghold.setControlLevel(0);
         this.strongholdListener = new StrongholdListener(this, defenderStronghold);
 
         for(TerritoryData territoryData : this.attackers) {
@@ -126,7 +131,7 @@ public class CurrentAttack {
         double multiplier = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("warScoreMultiplier");
         int deltaScore = (int) (multiplier / nbAttackers * 500);
         addScore(-deltaScore);
-        setTemporaryBossBarTitle("Attacking player killed!");
+        sendChatMessage("Attacking player killed !");
     }
 
     public void defendingLoss() {
@@ -137,7 +142,7 @@ public class CurrentAttack {
         double multiplier = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("warScoreMultiplier");
         int deltaScore = (int) (multiplier / nbDefenders * 500);
         addScore(deltaScore);
-        setTemporaryBossBarTitle("Defensive player killed!");
+        sendChatMessage("Defensive player killed!");
     }
 
     private int getNumberOfOnlineDefenders() {
@@ -162,14 +167,8 @@ public class CurrentAttack {
         return sum;
     }
 
-    private void setTemporaryBossBarTitle(String title) {
-        originalTitle = "War - " + title;
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                originalTitle = "War";
-            }
-        }.runTaskLater(TownsAndNations.getPlugin(), 5L * 20);
+    private void setBossBarTitle(String title) {
+        originalTitle = title;
     }
 
     private void addScore(int score) {
@@ -310,16 +309,11 @@ public class CurrentAttack {
         return defenders;
     }
 
-    public void strongholdHeldBy(AttackSide attackSide) {
-        if(attackSide == AttackSide.ATTACKER){
-            setTemporaryBossBarTitle("Stronghold held by attackers");
-        }
-        if(attackSide == AttackSide.DEFENDER){
-            setTemporaryBossBarTitle("Stronghold held by defenders");
-        }
-        if(attackSide == AttackSide.CONTESTED){
-            setTemporaryBossBarTitle("Stronghold contested");
-        }
+    public void updateControl() {
+        String controlSide = defenderStronghold.getHolderSide().getBossBarMessage();
+        String progressBar = ProgressBar.createProgressBar(defenderStronghold.getControlLevel(), 10, 20, ChatColor.RED, ChatColor.GREEN);
+
+        setBossBarTitle(controlSide + ChatColor.WHITE + " | " + progressBar);
     }
 
     public AttackSide getSideOfPlayer(PlayerData playerData) {
@@ -333,7 +327,7 @@ public class CurrentAttack {
                 return AttackSide.DEFENDER;
             }
         }
-        return AttackSide.NOT_PARTICIPATING;
+        return null;
     }
 
     public void addScoreOfStronghold() {
@@ -344,6 +338,25 @@ public class CurrentAttack {
         }
         if(attackSide == AttackSide.DEFENDER){
             addScore(-5);
+        }
+    }
+
+    public void sendChatMessage(String message) {
+        for(TerritoryData territoryData : attackers) {
+            for(PlayerData playerData : territoryData.getPlayerDataList()) {
+                Player player = playerData.getPlayer();
+                if(player != null){
+                    player.spigot().sendMessage(ChatMessageType.CHAT, new TextComponent(message));
+                }
+            }
+        }
+        for (TerritoryData territoryData : defenders) {
+            for (PlayerData playerData : territoryData.getPlayerDataList()) {
+                Player player = playerData.getPlayer();
+                if (player != null) {
+                    player.spigot().sendMessage(ChatMessageType.CHAT, new TextComponent(message));
+                }
+            }
         }
     }
 }

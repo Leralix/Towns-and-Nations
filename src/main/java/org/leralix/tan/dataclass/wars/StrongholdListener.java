@@ -20,8 +20,8 @@ public class StrongholdListener {
     public void scanStronghold(){
         strongholdData.updateControl(currentAttack);
 
-        AttackSide attackSide = strongholdData.getHolderSide();
-        currentAttack.strongholdHeldBy(attackSide);
+        currentAttack.updateControl();
+        strongholdData.broadcastControl();
         currentAttack.addScoreOfStronghold();
 
     }

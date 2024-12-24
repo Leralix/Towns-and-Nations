@@ -1,5 +1,8 @@
 package org.leralix.tan.dataclass.territory;
 
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -8,7 +11,9 @@ import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.wars.AttackSide;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,6 +24,8 @@ public class StrongholdData {
     private ChunkCoordinates claimedChunk;
     private AttackSide controlledBy;
     private int controlLevel;
+    private int nbAttackers;
+    private int nbDefenders;
 
     public StrongholdData(ClaimedChunk2 claimedChunk) {
         this.claimedChunk = new ChunkCoordinates(claimedChunk.getChunk());
@@ -33,8 +40,8 @@ public class StrongholdData {
 
     public void updateControl(CurrentAttack currentAttack){
         Collection<PlayerData> players = getPlayersInChunk();
-        int nbAttackers = 0;
-        int nbDefenders = 0;
+        nbAttackers = 0;
+        nbDefenders = 0;
         for(PlayerData playerData : players){
             AttackSide playerSide = currentAttack.getSideOfPlayer(playerData);
             if(playerSide == AttackSide.ATTACKER){
@@ -43,7 +50,7 @@ public class StrongholdData {
                 nbDefenders++;
             }
         }
-        System.out.println("Attackers: " + nbAttackers + " Defenders: " + nbDefenders);
+
         if(nbDefenders > nbAttackers) {
             controlLevel--;
         }
@@ -84,5 +91,35 @@ public class StrongholdData {
 
     public void setPosition(Chunk chunk) {
         this.claimedChunk = new ChunkCoordinates(chunk);
+    }
+
+    public int getControlLevel() {
+        return controlLevel;
+    }
+
+    public void broadcastControl() {
+
+
+        String part1 = Lang.ACTION_BAR_NUMBER_ATTACKER_ON_STRONGHOLD.get(nbAttackers);
+        String part2 = ProgressBar.createProgressBar(controlLevel, 10, 20, ChatColor.RED, ChatColor.GREEN);
+        String part3 = Lang.ACTION_BAR_NUMBER_DEFENDER_ON_STRONGHOLD.get(nbDefenders);
+        String message;
+        if(nbAttackers > nbDefenders){
+            message = part1 + ChatColor.RED + ">>" + part2 + part3;
+        }
+        else if (nbDefenders > nbAttackers){
+            message = part1 + part2 + ChatColor.GREEN + "<<" + part3;
+        }
+        else{
+            message = part1 + part2 + part3;
+        }
+
+        for(PlayerData playerData : getPlayersInChunk()){
+            playerData.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(message));
+        }
+    }
+
+    public void setControlLevel(int controlLevel) {
+        this.controlLevel = controlLevel;
     }
 }
