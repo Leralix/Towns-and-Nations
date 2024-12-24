@@ -7,11 +7,13 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.enums.ChunkPermissionType;
 import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.storage.typeadapter.EnumMapKeyValueDeserializer;
+import org.leralix.tan.storage.typeadapter.IconAdapter;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
 
@@ -97,6 +99,7 @@ public class TownDataStorage {
             .registerTypeAdapter(new TypeToken<Map<ChunkPermissionType, RelationPermission>>() {}.getType(), new EnumMapKeyValueDeserializer<>(ChunkPermissionType.class, RelationPermission.class))
             .registerTypeAdapter(new TypeToken<Map<TownRelation, List<String>>>() {}.getType(),new EnumMapDeserializer<>(TownRelation.class, new TypeToken<List<String>>(){}.getType()))
             .registerTypeAdapter(new TypeToken<List<RelationPermission>>() {}.getType(),new EnumMapDeserializer<>(RelationPermission.class, new TypeToken<List<String>>(){}.getType()))
+            .registerTypeAdapter(CustomIcon.class, new IconAdapter())
             .create();
 
         Type type = new TypeToken<LinkedHashMap<String, TownData>>() {}.getType();
@@ -115,7 +118,11 @@ public class TownDataStorage {
 
     public static void saveStats() {
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting()
+                .registerTypeAdapter(CustomIcon.class, new IconAdapter())
+                .create();
+
+
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Towns.json");
         file.getParentFile().mkdirs();
         try {

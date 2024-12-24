@@ -9,11 +9,13 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
+import org.leralix.tan.storage.typeadapter.IconAdapter;
 import org.leralix.tan.utils.ChatUtils;
 import org.leralix.tan.utils.config.ConfigTag;
 import org.leralix.tan.utils.config.ConfigUtil;
@@ -124,6 +126,7 @@ public class RegionDataStorage {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
                 .registerTypeAdapter(new TypeToken<Map<TownRelation, List<String>>>() {}.getType(),new EnumMapDeserializer<>(TownRelation.class, new TypeToken<List<String>>(){}.getType()))
+                .registerTypeAdapter(CustomIcon.class, new IconAdapter())
                 .create();
 
         Reader reader;
@@ -147,7 +150,9 @@ public class RegionDataStorage {
 
     public static void saveStats() {
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting()
+                .registerTypeAdapter(CustomIcon.class, new IconAdapter())
+                .create();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Regions.json");
         file.getParentFile().mkdirs();
         try {

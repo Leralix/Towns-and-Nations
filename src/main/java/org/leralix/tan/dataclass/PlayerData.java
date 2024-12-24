@@ -186,9 +186,7 @@ public class PlayerData {
     }
 
     public void updateCurrentAttack() {
-        List<String> attackInvolvedIn = getAttackInvolvedIn();
-        Iterator<String> iterator = attackInvolvedIn.iterator();
-
+        Iterator<String> iterator = getAttackInvolvedIn().iterator();
         while (iterator.hasNext()) {
             String attackID = iterator.next();
             CurrentAttack currentAttack = CurrentAttacksStorage.get(attackID);

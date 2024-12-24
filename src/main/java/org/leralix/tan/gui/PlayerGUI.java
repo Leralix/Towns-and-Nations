@@ -731,24 +731,18 @@ public class PlayerGUI implements IGUI {
 
         GuiItem townIconButton = ItemBuilder.from(townIcon).asGuiItem(event -> {
             event.setCancelled(true);
-
-            if(!townData.doesPlayerHavePermission(playerData, TOWN_ADMINISTRATOR))
+            if(!townData.doesPlayerHavePermission(playerData, TOWN_ADMINISTRATOR)){
+                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                SoundUtil.playSound(player,NOT_ALLOWED);
                 return;
-            if(event.getCursor() == null)
-               return;
-
+            }
+            if(event.getCursor() == null){
+                return;
+            }
 
             ItemStack itemMaterial = event.getCursor();
-            if(itemMaterial.getType() == Material.AIR ){
-                if(event.isRightClick()){
-                    if(townData.doesPlayerHavePermission(player, TOWN_ADMINISTRATOR)){
-                        openSelectHeadTerritoryMenu(player, townData, 0);
-                    }
-                    else{
-                        player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-                        SoundUtil.playSound(player,MINOR_BAD);
-                    }
-                }
+            if(itemMaterial.getType() == Material.AIR && event.isRightClick()){
+                openSelectHeadTerritoryMenu(player, townData, 0);
             }
             else {
                 townData.setIcon(new CustomIcon(itemMaterial));
@@ -802,7 +796,7 @@ public class PlayerGUI implements IGUI {
         });
 
 
-        gui.setItem(4, townIconButton);
+        gui.setItem(1,5, townIconButton);
         gui.setItem(2,2, treasuryButton);
         gui.setItem(2,3, membersButton);
         gui.setItem(2,4, claimButton);
