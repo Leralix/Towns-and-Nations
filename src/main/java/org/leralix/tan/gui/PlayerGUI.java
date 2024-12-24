@@ -5,9 +5,7 @@ import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -15,9 +13,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.newhistory.TransactionHistory;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.dataclass.territory.StrongholdData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
@@ -856,10 +856,45 @@ public class PlayerGUI implements IGUI {
             });
             guiItems.add(attackButton);
         }
+        StrongholdData territoryStronghold = territory.getStronghold();
+        ItemStack strongholdItem;
+        if(territoryStronghold == null){
+            strongholdItem = HeadUtils.createCustomItemStack(Material.IRON_BLOCK,Lang.GUI_STRONGHOLD.get(), Lang.GUI_NO_STRONGHOLD.get());
+        }
+        else {
+            strongholdItem = HeadUtils.createCustomItemStack(Material.IRON_BLOCK, Lang.GUI_STRONGHOLD.get(), Lang.GUI_STRONGHOLD_LOCATION.get(), Lang.GUI_LEFT_CLICK_TO_SET_STRONGHOLD.get());
+        }
+
+        GuiItem strongHoldIcon = ItemBuilder.from(strongholdItem).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(territoryStronghold == null){
+                return;
+            }
+            if(event.isLeftClick()){
+               if(territory.doesPlayerHavePermission(player, TOWN_ADMINISTRATOR)){
+                   Chunk playerChunk = player.getLocation().getChunk();
+                   ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(playerChunk);
+                   if(!claimedChunk.getOwnerID().equals(territory.getID())){
+                       player.sendMessage(Lang.CHUNK_DO_NOT_BELONG_TO_TERRITORY.get());
+                       SoundUtil.playSound(player,NOT_ALLOWED);
+                       return;
+                   }
+                    territory.setStrongholdPosition(playerChunk);
+                    player.sendMessage("new Stronghold is at x : " + playerChunk.getX() *16 + " z : " + playerChunk.getZ() * 16 );
+               }
+               else{
+                   player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                    SoundUtil.playSound(player,NOT_ALLOWED);
+               }
+            }
+        });
 
         createIterator(gui, guiItems, page, player, exit,
                 p -> openWarMenu(player, territory, exit,page + 1),
                 p -> openWarMenu(player, territory, exit,page - 1));
+
+        gui.setItem(6, 5, strongHoldIcon);
+
         gui.open(player);
     }
 

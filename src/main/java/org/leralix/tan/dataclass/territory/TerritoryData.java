@@ -409,6 +409,10 @@ public abstract class TerritoryData {
         claimChunk(player, chunk);
     }
 
+    public void setStrongholdPosition(Chunk newChunk){
+        this.stronghold.setPosition(newChunk);
+    }
+
     public void claimChunk(Player player, Chunk chunk){
         Optional<ClaimedChunk2> claimedChunk2 = claimChunkInternal(player, chunk);
         if(claimedChunk2.isPresent() && getNumberOfClaimedChunk() == 1){
@@ -417,6 +421,8 @@ public abstract class TerritoryData {
     }
 
     public StrongholdData getStronghold(){
+        if(getNumberOfClaimedChunk() == 0)
+            return null;
         if(stronghold == null){
             ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getAllChunkFrom(this).iterator().next();
             stronghold = new StrongholdData(claimedChunk2);

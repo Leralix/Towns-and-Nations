@@ -185,17 +185,16 @@ public class PlayerData {
         getAttackInvolvedIn().add(currentAttacks.getId());
     }
 
-    public void updateCurrentAttack(){
+    public void updateCurrentAttack() {
         List<String> attackInvolvedIn = getAttackInvolvedIn();
-        for(String attackID : attackInvolvedIn){
+        Iterator<String> iterator = attackInvolvedIn.iterator();
+
+        while (iterator.hasNext()) {
+            String attackID = iterator.next();
             CurrentAttack currentAttack = CurrentAttacksStorage.get(attackID);
-            if(currentAttack == null){
-                getAttackInvolvedIn().remove(attackID);
-            }
-            else if(!currentAttack.containsPlayer(this)){
-                getAttackInvolvedIn().remove(attackID);
-            }
-            else{
+            if (currentAttack == null || !currentAttack.containsPlayer(this)) {
+                iterator.remove();
+            } else {
                 currentAttack.addPlayer(this);
             }
         }

@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 
+import java.util.UUID;
+
 public class ChunkCoordinates {
     private final int x;
     private final int z;
@@ -22,7 +24,7 @@ public class ChunkCoordinates {
 
 
     public Chunk getChunk() {
-        World world = Bukkit.getWorld(worldID);
+        World world = Bukkit.getWorld(UUID.fromString(worldID));
         if(world == null) {
             return null;
         }

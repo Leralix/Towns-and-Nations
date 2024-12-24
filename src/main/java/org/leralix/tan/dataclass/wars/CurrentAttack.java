@@ -317,6 +317,9 @@ public class CurrentAttack {
         if(attackSide == AttackSide.DEFENDER){
             setTemporaryBossBarTitle("Stronghold held by defenders");
         }
+        if(attackSide == AttackSide.CONTESTED){
+            setTemporaryBossBarTitle("Stronghold contested");
+        }
     }
 
     public AttackSide getSideOfPlayer(PlayerData playerData) {

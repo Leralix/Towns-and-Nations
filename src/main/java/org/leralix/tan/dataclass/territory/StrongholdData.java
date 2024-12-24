@@ -16,7 +16,7 @@ import java.util.List;
 
 public class StrongholdData {
 
-    private final ChunkCoordinates claimedChunk;
+    private ChunkCoordinates claimedChunk;
     private AttackSide controlledBy;
     private int controlLevel;
 
@@ -43,11 +43,12 @@ public class StrongholdData {
                 nbDefenders++;
             }
         }
+        System.out.println("Attackers: " + nbAttackers + " Defenders: " + nbDefenders);
         if(nbDefenders > nbAttackers) {
-            controlLevel++;
+            controlLevel--;
         }
         else if(nbAttackers > nbDefenders){
-            controlLevel--;
+            controlLevel++;
         }
         controlLevel = Math.max(0,Math.min(10,controlLevel));
         switch (controlLevel){
@@ -79,5 +80,9 @@ public class StrongholdData {
             }
         }
         return players;
+    }
+
+    public void setPosition(Chunk chunk) {
+        this.claimedChunk = new ChunkCoordinates(chunk);
     }
 }
