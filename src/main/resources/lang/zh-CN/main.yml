@@ -31,6 +31,7 @@ language:
   POSITION_NOT_IN_CLAIMED_CHUNK: "§c位置需要在已占领的区块内"
   LANDMARK_ALREADY_CLAIMED: "§c此地标已被 §9{0} 占领"
   INTERACTION_TOO_FAR_ERROR: "§c你距离太远，无法执行此操作"
+  CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§cThis chunk does not belong to {0}"
   #Common uses
   DISPLAY_COORDINATES: "§f坐标: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
@@ -657,6 +658,11 @@ language:
   GUI_CANNOT_QUIT_IF_LEADER: "§cYou cannot remove the town from the region because it is the capital"
   GUI_RIGHT_CLICK_TO_QUIT: "§cRight click to remove the town from the region"
   GUI_LEFT_CLICK_TO_SET_REGION: "§fLeft click to set the region"
+  ##Common territory GUI
+  GUI_STRONGHOLD: "Stronghold"
+  GUI_NO_STRONGHOLD: "§fYou do not have a stronghold because you have no claimed chunks"
+  GUI_STRONGHOLD_LOCATION: "§fLocation: §9x:{0}§f, §9z:{1}"
+  GUI_LEFT_CLICK_TO_SET_STRONGHOLD: "§fLeft click to set the position of the stronghold"
   #Other GUI
   GUI_PROPERTY_DESCRIPTION: "§7§o\"{0}\""
   GUI_PROPERTY_STRUCTURE_OWNER: "§f城市: §9{0}"
@@ -823,6 +829,11 @@ language:
   PLAYER_LOST_ATTACK: "§c攻击已失利！"
   WAR_ATTACKER_WON_ANNOUNCEMENT: "§a攻击者获胜！"
   WAR_DEFENDER_WON_ANNOUNCEMENT: "§a防守者获胜！"
+  BOSS_BAR_STRONGHOLD_HELD_BY_ATTACKERS: "§cStronghold held by attackers"
+  BOSS_BAR_STRONGHOLD_HELD_BY_DEFENDERS: "§aStronghold held by defenders"
+  BOSS_BAR_STRONGHOLD_CONTESTED: "§6Stronghold contested"
+  ACTION_BAR_NUMBER_ATTACKER_ON_STRONGHOLD: "§c attackers : {0}"
+  ACTION_BAR_NUMBER_DEFENDER_ON_STRONGHOLD: "§a defenders : {0}"
   #Confirmation GUI
   GENERIC_CONFIRM_ACTION: "§a确认操作"
   GENERIC_CANCEL_ACTION: "§c取消操作"

@@ -152,7 +152,8 @@ public class TownClaimedChunk extends ClaimedChunk2{
     }
 
     @Override
-    public boolean canPlayerClaim(Player player, TerritoryData territoryData) {
+    public boolean canTerritoryClaim(Player player, TerritoryData territoryData) {
+        System.out.println("canTerritoryClaim ? " + territoryData.getName() + " : " + getTown().getName());
 
         if(territoryData.canConquerChunk(this))
             return true;

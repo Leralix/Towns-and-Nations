@@ -84,7 +84,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
     }
 
     @Override
-    public boolean canPlayerClaim(Player player, TerritoryData townData) {
+    public boolean canTerritoryClaim(Player player, TerritoryData townData) {
         player.sendMessage(getTANString() + Lang.CANNOT_CLAIM_LANDMARK.get());
         return false;
     }

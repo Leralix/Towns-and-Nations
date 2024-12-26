@@ -428,7 +428,6 @@ public class TownData extends TerritoryData {
 
     @Override
     public Optional<ClaimedChunk2> claimChunkInternal(Player player, Chunk chunk) {
-
         PlayerData playerData = PlayerDataStorage.get(player.getUniqueId().toString());
 
 
@@ -455,7 +454,7 @@ public class TownData extends TerritoryData {
         }
 
         ClaimedChunk2 chunkData = NewClaimedChunkStorage.get(chunk);
-        if(!chunkData.canPlayerClaim(player,this)){
+        if(!chunkData.canTerritoryClaim(player,this)){
             return Optional.empty();
         }
 
@@ -799,11 +798,6 @@ public class TownData extends TerritoryData {
         for(PropertyData propertyData : getPropertyDataList()){
             propertyData.delete();
         }
-    }
-
-    @Override
-    public boolean canConquerChunk(ClaimedChunk2 chunk) {
-        return false;
     }
 
     @Override

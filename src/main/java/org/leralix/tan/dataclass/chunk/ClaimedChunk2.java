@@ -97,7 +97,7 @@ public abstract class ClaimedChunk2 {
 
     public abstract TextComponent getMapIcon(PlayerData playerData);
 
-    public abstract boolean canPlayerClaim(Player player, TerritoryData territoryData);
+    public abstract boolean canTerritoryClaim(Player player, TerritoryData territoryData);
 
     public abstract boolean isClaimed();
 

@@ -31,6 +31,7 @@ language:
   POSITION_NOT_IN_CLAIMED_CHUNK: "§cPozice musí být v přivlastněném chunku"
   LANDMARK_ALREADY_CLAIMED: "§cTento mezník již patří §9{0}"
   INTERACTION_TOO_FAR_ERROR: "§cJste příliš daleko pro provedení této akce"
+  CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§cThis chunk does not belong to {0}"
   #Common uses
   DISPLAY_COORDINATES: "§fSouřadnice: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
@@ -657,6 +658,11 @@ language:
   GUI_CANNOT_QUIT_IF_LEADER: "§cNemůžete odstranit město z regionu, protože je hlavním městem"
   GUI_RIGHT_CLICK_TO_QUIT: "§cPravým klikem odeberte město z regionu"
   GUI_LEFT_CLICK_TO_SET_REGION: "§fLevým klikem nastavte region"
+  ##Common territory GUI
+  GUI_STRONGHOLD: "Stronghold"
+  GUI_NO_STRONGHOLD: "§fYou do not have a stronghold because you have no claimed chunks"
+  GUI_STRONGHOLD_LOCATION: "§fLocation: §9x:{0}§f, §9z:{1}"
+  GUI_LEFT_CLICK_TO_SET_STRONGHOLD: "§fLeft click to set the position of the stronghold"
   #Other GUI
   GUI_PROPERTY_DESCRIPTION: "§7§o\"{0}\""
   GUI_PROPERTY_STRUCTURE_OWNER: "§fMěsto: §9{0}"
@@ -823,6 +829,11 @@ language:
   PLAYER_LOST_ATTACK: "§cÚtok byl prohrán!"
   WAR_ATTACKER_WON_ANNOUNCEMENT: "§a Útočníci zvítězili!"
   WAR_DEFENDER_WON_ANNOUNCEMENT: "§a Obránci zvítězili!"
+  BOSS_BAR_STRONGHOLD_HELD_BY_ATTACKERS: "§cStronghold held by attackers"
+  BOSS_BAR_STRONGHOLD_HELD_BY_DEFENDERS: "§aStronghold held by defenders"
+  BOSS_BAR_STRONGHOLD_CONTESTED: "§6Stronghold contested"
+  ACTION_BAR_NUMBER_ATTACKER_ON_STRONGHOLD: "§c attackers : {0}"
+  ACTION_BAR_NUMBER_DEFENDER_ON_STRONGHOLD: "§a defenders : {0}"
   #Confirmation GUI
   GENERIC_CONFIRM_ACTION: "§aPotvrdit akci"
   GENERIC_CANCEL_ACTION: "§cZrušit akci"

@@ -111,8 +111,7 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     }
 
     @Override
-    public boolean canPlayerClaim(Player player, TerritoryData territoryData) {
-
+    public boolean canTerritoryClaim(Player player, TerritoryData territoryData) {
         if(territoryData.canConquerChunk(this))
             return true;
 

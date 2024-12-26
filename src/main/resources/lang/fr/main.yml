@@ -31,6 +31,7 @@ language:
   POSITION_NOT_IN_CLAIMED_CHUNK: "§cLa position doit être située dans un chunk revendiqué"
   LANDMARK_ALREADY_CLAIMED: "§cCe point d'intérêt a déjà été revendiqué par §9{0}"
   INTERACTION_TOO_FAR_ERROR: "§cVous êtes trop loin pour effectuer cette action"
+  CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§cCe chunk n'appartient pas à {0}"
   #Common uses
   DISPLAY_COORDINATES: "§fCoordonnées : §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
@@ -306,7 +307,7 @@ language:
   HEADER_ADMIN_SPECIFIC_LANDMARK_MENU: "Point de repère : {0} - Admin"
   HEADER_ADMIN_REGION_MENU: "Régions - Admin"
   HEADER_ADMIN_SPECIFIC_REGION_MENU: "Région : {0} - Admin"
-  HEADER_ADMIN_CHANGE_REGION_LEADER: "Changer le chef {0} - Admin"
+  HEADER_ADMIN_CHANGE_REGION_LEADER: "Changer le chef de {0} - Admin"
   HEADER_ADMIN_TOWN_MENU: "Villes - Admin"
   HEADER_ADMIN_SPECIFIC_TOWN_MENU: "Région : {0} - Admin"
   HEADER_ADMIN_CHANGE_OVERLORD: "Changer le Suzerain {0} - Admin"
@@ -657,6 +658,11 @@ language:
   GUI_CANNOT_QUIT_IF_LEADER: "§cVous ne pouvez pas retirer la ville de la région car c'est la capitale"
   GUI_RIGHT_CLICK_TO_QUIT: "§fClic droit pour retirer la ville de la région"
   GUI_LEFT_CLICK_TO_SET_REGION: "§fClic gauche pour sélectionner la région"
+  ##Common territory GUI
+  GUI_STRONGHOLD: "Forteresse §a"
+  GUI_NO_STRONGHOLD: "§fVous n'avez pas de forteresse car vous n'avez aucun chunk revendiqué"
+  GUI_STRONGHOLD_LOCATION: "§fEmplacement: §9x:{0}§f, §9z:{1}"
+  GUI_LEFT_CLICK_TO_SET_STRONGHOLD: "§fClic gauche pour définir la position de la forteresse"
   #Other GUI
   GUI_PROPERTY_DESCRIPTION: "§7§o\"{0}\""
   GUI_PROPERTY_STRUCTURE_OWNER: "§fVille : §9{0}"
@@ -823,6 +829,11 @@ language:
   PLAYER_LOST_ATTACK: "§cL'attaque a été perdue !"
   WAR_ATTACKER_WON_ANNOUNCEMENT: "§aLes attaquants ont gagné !"
   WAR_DEFENDER_WON_ANNOUNCEMENT: "§aLes défenseurs ont gagnés !"
+  BOSS_BAR_STRONGHOLD_HELD_BY_ATTACKERS: "Forteresse §cdétenue par les assaillants§f"
+  BOSS_BAR_STRONGHOLD_HELD_BY_DEFENDERS: "Forteresse §adétenue par les défenseurs§f"
+  BOSS_BAR_STRONGHOLD_CONTESTED: "Forteresse §6contestée§f"
+  ACTION_BAR_NUMBER_ATTACKER_ON_STRONGHOLD: "§c Attaquants : {0}"
+  ACTION_BAR_NUMBER_DEFENDER_ON_STRONGHOLD: "§a Défenseurs : {0}"
   #Confirmation GUI
   GENERIC_CONFIRM_ACTION: "§aConfirmer l'action"
   GENERIC_CANCEL_ACTION: "§cAnnuler l'action"

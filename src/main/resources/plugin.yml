@@ -4,7 +4,7 @@ main: org.leralix.tan.TownsAndNations
 api-version: "1.19"
 authors: [ Leralix ]
 softdepend: [Vault, PlaceholderAPI]
-description: A town plugin with rp tools
+description: A town plugin with rp mechanics
 commands:
   tan:
     description: base command of Town and Nation
