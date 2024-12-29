@@ -60,6 +60,8 @@ public class DiplomacyProposalNL extends Newsletter {
             return false;
         TerritoryData territoryData = TerritoryUtil.getTerritory(receivingTerritoryID);
         PlayerData playerData = PlayerDataStorage.get(player);
+        if(territoryData == null)
+            return false;
         if(!territoryData.isPlayerIn(playerData))
             return false;
         //TODO check if player have right to accept relation (need to add role in territory) Right now only leader can see newsletter

@@ -153,8 +153,6 @@ public class TownClaimedChunk extends ClaimedChunk2{
 
     @Override
     public boolean canTerritoryClaim(Player player, TerritoryData territoryData) {
-        System.out.println("canTerritoryClaim ? " + territoryData.getName() + " : " + getTown().getName());
-
         if(territoryData.canConquerChunk(this))
             return true;
 
@@ -185,4 +183,6 @@ public class TownClaimedChunk extends ClaimedChunk2{
         GriefAllowed griefAllowed = GriefAllowed.valueOf(fireGrief);
         return griefAllowed.canGrief(getTown());
     }
+
+
 }

@@ -197,8 +197,8 @@ warScoreMultiplier : 0.70
 #WarOnly - Allow fire and explosion grief only during a war
 #Never - Never allow fire and explosion grief
 #[ALWAYS, WAR_ONLY, NEVER]
-fireGrief: "ALWAYS"
-explosionGrief: "ALWAYS"
+fireGrief: "NEVER" #grief and spread of fire
+explosionGrief: "NEVER"
 
 ########################
 ##  RARES RESSOURCES  ##

@@ -12,10 +12,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockBurnEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
@@ -468,7 +465,16 @@ public class ChunkListener implements Listener {
     public void onBurning(BlockBurnEvent event){
         Chunk chunk = event.getBlock().getChunk();
 
-        if(NewClaimedChunkStorage.get(chunk).canFireGrief()){
+        if(!NewClaimedChunkStorage.get(chunk).canFireGrief()){
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onFireSpreading(BlockSpreadEvent event){
+        Chunk chunk = event.getBlock().getChunk();
+
+        if(!NewClaimedChunkStorage.get(chunk).canFireGrief()){
             event.setCancelled(true);
         }
     }
