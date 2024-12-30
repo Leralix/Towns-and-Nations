@@ -30,7 +30,6 @@ public class CreateTown extends ChatListenerEvent {
 
     @Override
     public void execute(Player player, String message) {
-        PlayerData playerData = PlayerDataStorage.get(player);
         double playerBalance = EconomyUtil.getBalance(player);
 
         if(playerBalance < cost){
@@ -51,18 +50,22 @@ public class CreateTown extends ChatListenerEvent {
             return;
         }
 
-        TownData newTown = TownDataStorage.newTown(message,player);
+        createTown(player, message);
+
+    }
+
+    public void createTown(Player player, String message) {
+        PlayerData playerData = PlayerDataStorage.get(player);
+        TownData newTown = TownDataStorage.newTown(message, player);
         EconomyUtil.removeFromBalance(player,cost);
         playerData.joinTown(newTown);
 
 
-
-        Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(),message));
+        Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(), message));
         SoundUtil.playSound(player, LEVEL_UP);
         removePlayer(player);
-        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_CREATED.get(player.getName(),message));
+        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_CREATED.get(player.getName(), message));
 
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> setIndividualScoreBoard(player));
-
     }
 }

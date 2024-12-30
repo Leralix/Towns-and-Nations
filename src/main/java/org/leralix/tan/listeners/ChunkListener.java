@@ -472,10 +472,12 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onFireSpreading(BlockSpreadEvent event){
-        Chunk chunk = event.getBlock().getChunk();
 
-        if(!NewClaimedChunkStorage.get(chunk).canFireGrief()){
-            event.setCancelled(true);
+        if(event.getSource().getType() == Material.FIRE){
+            Chunk chunk = event.getBlock().getChunk();
+            if(!NewClaimedChunkStorage.get(chunk).canFireGrief()){
+                event.setCancelled(true);
+            }
         }
     }
 

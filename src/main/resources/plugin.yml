@@ -7,16 +7,20 @@ softdepend: [Vault, PlaceholderAPI]
 description: A town plugin with rp mechanics
 commands:
   tan:
-    description: base command of Town and Nation
+    description: base command of Towns and Nations
     permission: townandnation.base
     usage: /<command>
   tanadmin:
-    description: admin command of Town and Nation
+    description: admin command of Towns and Nations
     permission: townandnation.admin
     usage: /<command>
   tandebug:
-    description: debug command of Town and Nation
+    description: debug command of Towns and Nations
     permission: townandnation.admin
+    usage: /<command>
+  tanserver:
+    description: server side command of Towns and Nations.
+    permission: townandnation.server
     usage: /<command>
 
 

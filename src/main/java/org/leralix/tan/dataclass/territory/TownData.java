@@ -22,6 +22,8 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.newsletter.news.PlayerJoinRequestNL;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.*;
@@ -310,6 +312,7 @@ public class TownData extends TerritoryData {
 
     public void addPlayerJoinRequest(Player player) {
         addPlayerJoinRequest(player.getUniqueId().toString());
+        NewsletterStorage.registerNewsletter(new PlayerJoinRequestNL(player, this));
     }
 
     public void addPlayerJoinRequest(String playerUUID) {
@@ -790,7 +793,7 @@ public class TownData extends TerritoryData {
         for(String playerID : getPlayerIDList()){ //Kick all Players from the deleted town
             removePlayer(PlayerDataStorage.get(playerID));
         }
-       TeamUtils.updateAllScoreboardColor();
+        TeamUtils.updateAllScoreboardColor();
         TownDataStorage.deleteTown(this);
     }
 

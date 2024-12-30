@@ -659,7 +659,6 @@ public class PlayerGUI implements IGUI {
                     }
                     specificTownData.addPlayerJoinRequest(player);
                     player.sendMessage(getTANString() + Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(specificTownData.getName()));
-                    NewsletterStorage.registerNewsletter(new PlayerJoinRequestNL(player, specificTownData));
                     openSearchTownMenu(player,page);
                 }
                 if(event.isRightClick()){
@@ -1884,6 +1883,10 @@ public class PlayerGUI implements IGUI {
                 player.sendMessage(getTANString() + Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.get());
                 return;
             }
+            if(townData.isCapital()){
+                player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(townData.getOverlord().getColoredName()));
+                return;
+            }
 
             openConfirmMenu(player, Lang.GUI_CONFIRM_PLAYER_DELETE_TOWN.get(townData.getName()), confirm -> {
                 FileUtil.addLineToHistory(Lang.HISTORY_TOWN_DELETED.get(player.getName(),townData.getName()));
@@ -2835,6 +2838,10 @@ public class PlayerGUI implements IGUI {
             event.setCancelled(true);
             if(!playerRegion.isLeader(playerStat)){
                 player.sendMessage(getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get());
+                return;
+            }
+            if(playerRegion.isCapital()){
+                player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(playerRegion.getOverlord().getColoredName()));
                 return;
             }
 

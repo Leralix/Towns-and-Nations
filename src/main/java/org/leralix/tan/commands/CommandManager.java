@@ -11,7 +11,7 @@ import java.util.List;
 
 public abstract class CommandManager implements CommandExecutor, TabExecutor, TabCompleter {
 
-    private final HashMap<String, SubCommand> subCommands;
+    protected final HashMap<String, SubCommand> subCommands;
 
     protected CommandManager() {
         subCommands = new HashMap<>();
@@ -24,14 +24,13 @@ public abstract class CommandManager implements CommandExecutor, TabExecutor, Ta
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (sender instanceof Player p && args.length > 0){
-                SubCommand subCommand = subCommands.get(args[0]);
-                if(subCommand != null) {
-                    subCommand.perform(p, args);
-                    return true;
-                }
+            SubCommand subCommand = subCommands.get(args[0]);
+            if(subCommand != null) {
+                subCommand.perform(p, args);
+                return true;
             }
-
-        return true;
+        }
+        return false;
     }
 
     @Override

@@ -304,6 +304,11 @@ public class AdminGUI implements IGUI{
             event.setCancelled(true);
 
             FileUtil.addLineToHistory(Lang.HISTORY_REGION_DELETED.get(player.getName(),territoryData.getName()));
+
+            if(territoryData.isCapital()){
+                player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(territoryData.getOverlord().getColoredName()));
+                return;
+            }
             territoryData.delete();
 
             player.sendMessage(ChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get());

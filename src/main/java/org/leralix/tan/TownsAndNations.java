@@ -12,6 +12,7 @@ import org.leralix.tan.api.TanApi;
 import org.leralix.tan.commands.adminsubcommand.AdminCommandManager;
 import org.leralix.tan.commands.debugsubcommand.DebugCommandManager;
 import org.leralix.tan.commands.playersubcommand.PlayerCommandManager;
+import org.leralix.tan.commands.server.ServerCommandManager;
 import org.leralix.tan.dataclass.PluginVersion;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.economy.TanEconomyStandalone;
@@ -66,7 +67,7 @@ public final class TownsAndNations extends JavaPlugin {
      * Used to check if the plugin is up-to-date to the latest version. Also
      * used to check if the plugin has just been updated and config file needs an update
      */
-    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,12,1);
+    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,12,2);
     private static final PluginVersion MINIMUM_SUPPORTING_DYNMAP = new PluginVersion(0,10,1);
 
     /**
@@ -175,7 +176,7 @@ public final class TownsAndNations extends JavaPlugin {
         getCommand("tan").setExecutor(new PlayerCommandManager());
         getCommand("tanadmin").setExecutor(new AdminCommandManager());
         getCommand("tandebug").setExecutor(new DebugCommandManager());
-
+        getCommand("tanserver").setExecutor(new ServerCommandManager());
 
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
