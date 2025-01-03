@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.util.UUID;
 
 public class PlayerHeadIcon extends CustomIcon {
-    String playerUUID;
+    private final String playerUUID;
     public PlayerHeadIcon(String playerID) {
         super(new ItemStack(Material.PLAYER_HEAD));
         this.playerUUID = playerID;
@@ -20,12 +20,17 @@ public class PlayerHeadIcon extends CustomIcon {
         ItemStack icon = new ItemStack(Material.PLAYER_HEAD);
 
         SkullMeta skullMeta = (SkullMeta) icon.getItemMeta();
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
 
         if(skullMeta == null){
             return icon;
         }
-        skullMeta.setOwningPlayer(offlinePlayer);
+        if(playerUUID != null){
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
+            skullMeta.setOwningPlayer(offlinePlayer);
+        }
+        else {
+            return new ItemStack(Material.SKELETON_SKULL);
+        }
         icon.setItemMeta(skullMeta);
         return icon;
     }

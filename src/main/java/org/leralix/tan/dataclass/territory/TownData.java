@@ -787,7 +787,7 @@ public class TownData extends TerritoryData {
     @Override
     public void delete(){
         super.delete();
-        broadCastMessageWithSound(Lang.BROADCAST_PLAYER_TOWN_DELETED.get(getLeaderData().getName(), getColoredName()), BAD);
+        broadCastMessageWithSound(Lang.BROADCAST_PLAYER_TOWN_DELETED.get(getLeaderName(), getColoredName()), BAD);
         removeAllLandmark(); //Remove all Landmark from the deleted town
         removeAllProperty(); //Remove all Property from the deleted town
         for(String playerID : getPlayerIDList()){ //Kick all Players from the deleted town
