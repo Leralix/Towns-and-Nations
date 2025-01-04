@@ -32,6 +32,8 @@ language:
   LANDMARK_ALREADY_CLAIMED: "§cTento mezník již patří §9{0}"
   INTERACTION_TOO_FAR_ERROR: "§cJste příliš daleko pro provedení této akce"
   CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§cThis chunk does not belong to {0}"
+  CANNOT_DELETE_TERRITORY_IF_CAPITAL: "§cThis territory cannot be deleted because it is the leader of {0}"
+  ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT: "§cYou cannot interact with thispermission because your rank does not have it"
   #Common uses
   DISPLAY_COORDINATES: "§fSouřadnice: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
@@ -367,6 +369,8 @@ language:
   OVERLORD_TAX_LINE: "§f - Z daní protektora: {0}"
   PLAYER_SALARY_LINE: "§f - Ze mzdy: {0}"
   TERRITORY_UPKEEP_LINE: "§f - Za údržbu území: {0}"
+  GUI_LOWER_SALARY: "Lower salary"
+  GUI_INCREASE_SALARY: "Increase salary"
   GUI_TREASURY_LOWER_TAX: "§aSnížit daň"
   GUI_TREASURY_CANT_TAX_LESS: "§cNemůžete nastavit daň nižší než §60{MONEY_CHAR}"
   GUI_TREASURY_CANT_TAX_LESS_PERCENT: "§cNemůžete nastavit daň nižší než§6 0%"

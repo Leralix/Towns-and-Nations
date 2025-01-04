@@ -32,6 +32,8 @@ language:
   LANDMARK_ALREADY_CLAIMED: "§cQuesto punto di riferimento è già reclamato da §9{0}"
   INTERACTION_TOO_FAR_ERROR: "§cYou are too far to do this action"
   CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§cThis chunk does not belong to {0}"
+  CANNOT_DELETE_TERRITORY_IF_CAPITAL: "§cThis territory cannot be deleted because it is the leader of {0}"
+  ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT: "§cYou cannot interact with thispermission because your rank does not have it"
   #Common uses
   DISPLAY_COORDINATES: "§fCoordinate: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: ""
@@ -70,7 +72,7 @@ language:
   CANCELLED_ACTION: "§cAction cancelled"
   #Cancel
   CANCEL_WORD: "cancel" #The cancel word can be modified
-  WRITE_CANCEL_TO_CANCEL: "§fWrite §c{0}§f in the chat to cancel"
+  WRITE_CANCEL_TO_CANCEL: "Write §c{0}§f in the chat to cancel"
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f asked to join the town. You can find the application in the members menu"
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "You successfully asked to join the town: §9{0}§f. Right click on the town to cancel"
@@ -185,7 +187,7 @@ language:
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aYou successfully retrieved §6{0}{MONEY_CHAR}§a from the town"
   TOWN_SET_TAX_SUCCESS: "§aYou successfully set the tax to §6{0}{MONEY_CHAR}"
   TOWN_SET_RATE_SUCCESS: "§aYou successfully set the rate to §6{0}%"
-  PLAYER_SEND_MONEY_SUCCESS: "§fYou sent §6{0}{MONEY_CHAR}§f to {1}"
+  PLAYER_SEND_MONEY_SUCCESS: "You sent §6{0}{MONEY_CHAR}§f to {1}"
   PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY: "Right click 2 blocs to create your private property"
   PLAYER_FIRST_POINT_SET: "First point set in §9{0}"
   PLAYER_SECOND_POINT_SET: "Second point set in §9{0}"
@@ -367,6 +369,8 @@ language:
   OVERLORD_TAX_LINE: "§f -From overlord taxes: {0}"
   PLAYER_SALARY_LINE: "§f -From salary: {0}"
   TERRITORY_UPKEEP_LINE: "§f -From territory upkeep: {0}"
+  GUI_LOWER_SALARY: "Lower salary"
+  GUI_INCREASE_SALARY: "Increase salary"
   GUI_TREASURY_LOWER_TAX: "§aLower the tax"
   GUI_TREASURY_CANT_TAX_LESS: "§cYou cannot tax less that §60{MONEY_CHAR}"
   GUI_TREASURY_CANT_TAX_LESS_PERCENT: "§cYou cannot tax less than :§6 0%"

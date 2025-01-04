@@ -32,6 +32,8 @@ language:
   LANDMARK_ALREADY_CLAIMED: "§cDieses Wahrzeichen ist bereits von §9{0} beansprucht"
   INTERACTION_TOO_FAR_ERROR: "§cDu bist zu weit entfernt, um diese Aktion auszuführen"
   CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§cThis chunk does not belong to {0}"
+  CANNOT_DELETE_TERRITORY_IF_CAPITAL: "§cThis territory cannot be deleted because it is the leader of {0}"
+  ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT: "§cYou cannot interact with thispermission because your rank does not have it"
   #Common uses
   DISPLAY_COORDINATES: "§fKoordinaten: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
@@ -367,6 +369,8 @@ language:
   OVERLORD_TAX_LINE: "§f -From overlord taxes: {0}"
   PLAYER_SALARY_LINE: "§f -From salary: {0}"
   TERRITORY_UPKEEP_LINE: "§f -From territory upkeep: {0}"
+  GUI_LOWER_SALARY: "Lower salary"
+  GUI_INCREASE_SALARY: "Increase salary"
   GUI_TREASURY_LOWER_TAX: "§aLower the tax"
   GUI_TREASURY_CANT_TAX_LESS: "§cYou cannot tax less that §60{MONEY_CHAR}"
   GUI_TREASURY_CANT_TAX_LESS_PERCENT: "§cYou cannot tax less than :§6 0%"

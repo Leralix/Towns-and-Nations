@@ -10,7 +10,10 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.gui.PlayerGUI;
+import org.leralix.tan.utils.ChatUtils;
 import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.SoundUtil;
+import org.leralix.tan.utils.StringUtil;
 
 public enum RolePermission {
 
@@ -52,6 +55,11 @@ public enum RolePermission {
     public GuiItem createGuiItem(Player player, TerritoryData territoryData, RankData rankData) {
         ItemStack itemStack = HeadUtils.createCustomItemStack(material, description,(rankData.hasPermission(this)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
+            if(!territoryData.getRank(player).hasPermission(this)) {
+                player.sendMessage(ChatUtils.getTANString() + Lang.ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT.get());
+                SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                return;
+            }
             rankData.switchPermission(this);
             PlayerGUI.openRankManagerPermissions(player, territoryData, rankData);
             event.setCancelled(true);
