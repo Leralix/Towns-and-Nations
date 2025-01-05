@@ -7,8 +7,6 @@ import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.utils.ChatUtils;
 
-import static org.leralix.tan.listeners.chat.PlayerChatListenerStorage.removePlayer;
-
 
 public class DonateToTerritory extends ChatListenerEvent {
 
@@ -27,7 +25,6 @@ public class DonateToTerritory extends ChatListenerEvent {
             player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
             return;
         }
-        removePlayer(player);
         territoryToDonate.addDonation(player, amount);
     }
 }

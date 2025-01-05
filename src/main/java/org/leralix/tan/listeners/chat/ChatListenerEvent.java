@@ -24,6 +24,7 @@ public abstract class ChatListenerEvent {
     }
 
     protected static Double parseStringToDouble(String stringAmount) {
+
         if (stringAmount != null && stringAmount.matches("-?\\d+(\\.\\d+)?")) {
             return Double.valueOf(stringAmount);
         } else {

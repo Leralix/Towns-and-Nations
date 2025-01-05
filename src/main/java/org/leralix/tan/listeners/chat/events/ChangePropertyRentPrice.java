@@ -27,7 +27,9 @@ public class ChangePropertyRentPrice extends ChatListenerEvent {
         int amount;
         try{
             amount = Integer.parseInt(message);
-
+            if(amount < 0) {
+                amount = 0;
+            }
         } catch (NumberFormatException e) {
             player.sendMessage(getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
             return;

@@ -18,6 +18,12 @@ public class CustomIcon {
 
     public ItemStack getIcon() {
         ItemStack icon = new ItemStack(Material.getMaterial(materialTypeName));
+        if(icon.getType() == Material.AIR){
+            materialTypeName = Material.COBBLESTONE.name();
+            icon = new ItemStack(Material.getMaterial(materialTypeName));
+        }
+
+
         if(customModelData != null){
             ItemMeta meta = icon.getItemMeta();
             meta.setCustomModelData(customModelData);
