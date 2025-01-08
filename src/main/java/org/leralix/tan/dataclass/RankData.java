@@ -87,7 +87,7 @@ public class RankData {
     public boolean isPayingTaxes() {
         return this.isPayingTaxes;
     }
-    public void setRankIconName(ItemStack rankItem) {
+    public void setRankIcon(ItemStack rankItem) {
         this.rankIcon = new CustomIcon(rankItem);
     }
     public int getNumberOfPlayer(){

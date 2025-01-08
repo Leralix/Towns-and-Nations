@@ -386,6 +386,7 @@ sounds:
   MINOR_GOOD: [ "BLOCK_AMETHYST_BLOCK_BREAK", "1", "1" ]
   BAD: [ "BLOCK_BELL_USE", "1", "1.5" ]
   MINOR_BAD: [ "ENTITY_SLIME_ATTACK", "1", "6" ]
+  WRITE: [ "UI_CARTOGRAPHY_TABLE_TAKE_RESULT", "1", "1" ]
 
 
 ########################

@@ -8,6 +8,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -64,7 +65,7 @@ public class PlayerGUI implements IGUI {
 
     public static void openMainMenu(Player player){
         Gui gui = IGUI.createChestGui(Lang.HEADER_MAIN_MENU.get(),3);
-
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         boolean playerHaveTown = playerStat.haveTown();
@@ -96,22 +97,10 @@ public class PlayerGUI implements IGUI {
 
         ItemStack profileIcon = HeadUtils.getPlayerHeadInformation(player);
 
-        GuiItem kingdomGui = ItemBuilder.from(kingdomIcon).asGuiItem(event -> {
-            event.setCancelled(true);
-            player.sendMessage(getTANString() + Lang.GUI_WARNING_STILL_IN_DEV.get());
-        });
-        GuiItem regionGui = ItemBuilder.from(regionIcon).asGuiItem(event -> {
-            event.setCancelled(true);
-            dispatchPlayerRegion(player);
-        });
-        GuiItem townGui = ItemBuilder.from(townIcon).asGuiItem(event -> {
-            event.setCancelled(true);
-            dispatchPlayerTown(player);
-        });
-        GuiItem playerGui = ItemBuilder.from(profileIcon).asGuiItem(event -> {
-            event.setCancelled(true);
-            openPlayerProfileMenu(player);
-        });
+        GuiItem kingdomGui = ItemBuilder.from(kingdomIcon).asGuiItem(event -> player.sendMessage(getTANString() + Lang.GUI_WARNING_STILL_IN_DEV.get()));
+        GuiItem regionGui = ItemBuilder.from(regionIcon).asGuiItem(event -> dispatchPlayerRegion(player));
+        GuiItem townGui = ItemBuilder.from(townIcon).asGuiItem(event -> dispatchPlayerTown(player));
+        GuiItem playerGui = ItemBuilder.from(profileIcon).asGuiItem(event -> openPlayerProfileMenu(player));
 
 
         int slotKingdom = 2;
@@ -157,22 +146,17 @@ public class PlayerGUI implements IGUI {
     }
     public static void openPlayerProfileMenu(Player player){
         Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_PROFILE.get(),3);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ItemStack playerHead = HeadUtils.getPlayerHead(Lang.GUI_YOUR_PROFILE.get(),player);
         ItemStack treasuryIcon = HeadUtils.createCustomItemStack(Material.GOLD_NUGGET, Lang.GUI_YOUR_BALANCE.get(),Lang.GUI_YOUR_BALANCE_DESC1.get(StringUtil.formatMoney(EconomyUtil.getBalance(player))));
         ItemStack propertiesIcon = HeadUtils.createCustomItemStack(Material.OAK_HANGING_SIGN, Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(),Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get());
         ItemStack newsletterIcon = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK, Lang.GUI_PLAYER_NEWSLETTER.get(),Lang.GUI_PLAYER_NEWSLETTER_DESC1.get());
 
-        GuiItem playerGui = ItemBuilder.from(playerHead).asGuiItem(event -> event.setCancelled(true));
-        GuiItem treasuryGui = ItemBuilder.from(treasuryIcon).asGuiItem(event -> event.setCancelled(true));
-        GuiItem propertiesGui = ItemBuilder.from(propertiesIcon).asGuiItem(event -> {
-            event.setCancelled(true);
-            openPlayerPropertiesMenu(player);
-        });
-        GuiItem newsletterGui = ItemBuilder.from(newsletterIcon).asGuiItem(event -> {
-            event.setCancelled(true);
-            openNewsletter(player,0, NewsletterScope.SHOW_ONLY_UNREAD);
-        });
+        GuiItem playerGui = ItemBuilder.from(playerHead).asGuiItem();
+        GuiItem treasuryGui = ItemBuilder.from(treasuryIcon).asGuiItem();
+        GuiItem propertiesGui = ItemBuilder.from(propertiesIcon).asGuiItem(event -> openPlayerPropertiesMenu(player, 0));
+        GuiItem newsletterGui = ItemBuilder.from(newsletterIcon).asGuiItem(event -> openNewsletter(player,0, NewsletterScope.SHOW_ONLY_UNREAD));
 
         gui.setItem(1,5, playerGui);
         gui.setItem(2,2, treasuryGui);
@@ -187,6 +171,7 @@ public class PlayerGUI implements IGUI {
 
     public static void openNewsletter(Player player, int page, NewsletterScope scope){
         Gui gui = IGUI.createChestGui(Lang.HEADER_NEWSLETTER.get(),6);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ArrayList<GuiItem> guiItems = new ArrayList<>(NewsletterStorage.getNewsletterForPlayer(player, scope, p -> openNewsletter(player, page, scope) ));
 
@@ -200,27 +185,22 @@ public class PlayerGUI implements IGUI {
                 Lang.GUI_GENERIC_CLICK_TO_SWITCH_SCOPE.get());
         GuiItem checkScopeGui = ItemBuilder.from(checkScope).asGuiItem(event -> {
             openNewsletter(player,0,scope.getNextScope());
-            event.setCancelled(true);
         });
 
         gui.setItem(6,5,checkScopeGui);
         gui.open(player);
     }
-    public static void openPlayerPropertiesMenu(Player player){
+    public static void openPlayerPropertiesMenu(Player player, int page){
         int nRows = 6;
         Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_PROPERTIES.get(),nRows);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         PlayerData playerData = PlayerDataStorage.get(player);
-
-        int i = 0;
+        List<GuiItem> guiItems = new ArrayList<>();
         for (PropertyData propertyData : playerData.getProperties()){
             ItemStack property = propertyData.getIcon();
-            GuiItem propertyGui = ItemBuilder.from(property).asGuiItem(event -> {
-                openPropertyManagerMenu(player, propertyData);
-                event.setCancelled(true);
-            });
-            gui.setItem(i,propertyGui);
-            i++;
+            GuiItem propertyGui = ItemBuilder.from(property).asGuiItem(event -> openPropertyManagerMenu(player, propertyData));
+            guiItems.add(propertyGui);
         }
 
         ItemStack newProperty = HeadUtils.makeSkullB64(
@@ -228,11 +208,15 @@ public class PlayerGUI implements IGUI {
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19"
         );
 
+        createIterator(gui, guiItems, page, player,
+                p -> openPlayerProfileMenu(player),
+                p -> openPlayerPropertiesMenu(player, page + 1),
+                p -> openPlayerPropertiesMenu(player, page - 1)
+        );
+
         GuiItem newPropertyGui = ItemBuilder.from(newProperty).asGuiItem(event -> {
-            event.setCancelled(true);
 
             TownData playerTown = playerData.getTown();
-
             if(!playerTown.doesPlayerHavePermission(playerData, CREATE_PROPERTY)){
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 SoundUtil.playSound(player, NOT_ALLOWED);
@@ -263,6 +247,7 @@ public class PlayerGUI implements IGUI {
         int nRows = 4;
 
         Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(propertyData.getName()), nRows);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ItemStack propertyIcon = propertyData.getIcon();
 
@@ -274,7 +259,6 @@ public class PlayerGUI implements IGUI {
         GuiItem propertyButton = ItemBuilder.from(propertyIcon).asGuiItem(event -> event.setCancelled(true));
 
         GuiItem stopRentingButton = ItemBuilder.from(stopRentingProperty).asGuiItem(event -> {
-            event.setCancelled(true);
             propertyData.expelRenter(true);
 
             player.sendMessage(getTANString() + Lang.PROPERTY_RENTER_LEAVE_RENTER_SIDE.get(propertyData.getName()));
@@ -300,6 +284,7 @@ public class PlayerGUI implements IGUI {
     public static void openPropertyManagerMenu(Player player, @NotNull PropertyData propertyData){
         int nRows = 4;
         Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(propertyData.getName()),nRows);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ItemStack changeName = HeadUtils.createCustomItemStack(
                 Material.NAME_TAG,
@@ -354,33 +339,28 @@ public class PlayerGUI implements IGUI {
         ItemStack playerList = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,Lang.GUI_PROPERTY_PLAYER_LIST.get(),
                 Lang.GUI_PROPERTY_PLAYER_LIST_DESC1.get());
 
-        GuiItem propertyIcon = ItemBuilder.from(propertyData.getIcon()).asGuiItem(event -> event.setCancelled(true));
+        GuiItem propertyIcon = ItemBuilder.from(propertyData.getIcon()).asGuiItem();
 
         GuiItem changeNameButton = ItemBuilder.from(changeName).asGuiItem(event -> {
-            event.setCancelled(true);
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
             PlayerChatListenerStorage.register(player, new ChangePropertyName(propertyData, p -> openPropertyManagerMenu(player, propertyData)));
         });
         GuiItem changeDescButton = ItemBuilder.from(changeDescription).asGuiItem(event -> {
-            event.setCancelled(true);
             player.sendMessage(ChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
             PlayerChatListenerStorage.register(player, new ChangePropertyDescription(propertyData, p -> openPropertyManagerMenu(player, propertyData)));
         });
 
 
         GuiItem drawBoxButton = ItemBuilder.from(drawnBox).asGuiItem(event -> {
-            event.setCancelled(true);
             player.closeInventory();
             propertyData.showBox(player);
         });
 
         GuiItem isForSaleButton = ItemBuilder.from(isForSale).asGuiItem(event -> {
-            event.setCancelled(true);
-
             if(event.getClick() == ClickType.RIGHT){
-                event.setCancelled(true);
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
                 PlayerChatListenerStorage.register(player, new ChangePropertySalePrice(propertyData));
+                player.closeInventory();
             }
             else if (event.getClick() == ClickType.LEFT){
                 if(propertyData.isRented()){
@@ -392,8 +372,6 @@ public class PlayerGUI implements IGUI {
             }
         });
         GuiItem isForRentButton = ItemBuilder.from(isForRent).asGuiItem(event -> {
-            event.setCancelled(true);
-
             if(event.getClick() == ClickType.RIGHT){
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
                 PlayerChatListenerStorage.register(player, new ChangePropertyRentPrice(propertyData, p -> openPropertyManagerMenu(player, propertyData)));
@@ -409,15 +387,11 @@ public class PlayerGUI implements IGUI {
         });
 
         GuiItem deleteButton = ItemBuilder.from(deleteProperty).asGuiItem(event -> {
-            event.setCancelled(true);
             propertyData.delete();
-            openPlayerPropertiesMenu(player);
+            openPlayerPropertiesMenu(player, 0);
         });
 
-        GuiItem openListButton = ItemBuilder.from(playerList).asGuiItem(event -> {
-            event.setCancelled(true);
-            openPlayerPropertyPlayerList(player, propertyData, 0);
-        });
+        GuiItem openListButton = ItemBuilder.from(playerList).asGuiItem(event -> openPlayerPropertyPlayerList(player, propertyData, 0));
 
         if(propertyData.isRented()){
             ItemStack renterIcon = HeadUtils.getPlayerHead(
@@ -458,7 +432,7 @@ public class PlayerGUI implements IGUI {
 
 
 
-        gui.setItem(nRows,1, IGUI.createBackArrow(player, p -> openPlayerPropertiesMenu(player)));
+        gui.setItem(nRows,1, IGUI.createBackArrow(player, p -> openPlayerPropertiesMenu(player, 0)));
 
         gui.open(player);
     }
@@ -466,6 +440,7 @@ public class PlayerGUI implements IGUI {
 
         int nRows = 4;
         Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(propertyData.getName()),nRows);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         PlayerData playerData = PlayerDataStorage.get(player);
         boolean canKick = propertyData.canPlayerManageInvites(playerData.getID());
@@ -511,6 +486,7 @@ public class PlayerGUI implements IGUI {
     }
     private static void openPlayerPropertyAddPlayer(Player player, PropertyData propertyData) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(propertyData.getName()),3);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for(Player playerIter : Bukkit.getOnlinePlayers()){
@@ -540,6 +516,7 @@ public class PlayerGUI implements IGUI {
     }
     public static void openPropertyBuyMenu(Player player, @NotNull PropertyData propertyData) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(propertyData.getName()),3);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ItemStack propertyIcon = propertyData.getIcon();
 
@@ -599,6 +576,7 @@ public class PlayerGUI implements IGUI {
     }
     public static void openNoTownMenu(Player player){
         Gui gui = IGUI.createChestGui(Lang.HEADER_NO_TOWN_MENU.get(), 3);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         int townPrice = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("townCost", 1000);
 
@@ -634,7 +612,7 @@ public class PlayerGUI implements IGUI {
     }
     public static void openSearchTownMenu(Player player, int page) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_LIST.get(page + 1),6);
-
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ArrayList<GuiItem> townItemStacks = new ArrayList<>();
 
@@ -687,7 +665,11 @@ public class PlayerGUI implements IGUI {
         TownData townData = TownDataStorage.get(playerData);
 
         Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_MENU.get(townData.getName()),nRows);
-
+        gui.setDefaultClickAction(event -> {
+            if(!(event.getSlotType() == InventoryType.SlotType.CONTAINER || event.getSlotType() == InventoryType.SlotType.QUICKBAR)){
+                event.setCancelled(true);
+            }
+        });
 
         ItemStack townIcon = townData.getIconWithInformations();
         HeadUtils.addLore(townIcon,
@@ -737,7 +719,9 @@ public class PlayerGUI implements IGUI {
             if(event.getCursor() == null){
                 return;
             }
-
+            if(event.getCursor().getType() == Material.AIR){
+                return;
+            }
             ItemStack itemMaterial = event.getCursor();
             if(itemMaterial.getType() == Material.AIR && event.isRightClick()){
                 openSelectHeadTerritoryMenu(player, townData, 0);
@@ -802,10 +786,10 @@ public class PlayerGUI implements IGUI {
         gui.setItem(2,6, relationButton);
         gui.setItem(2,7, levelButton);
         gui.setItem(2,8, settingsButton);
-        gui.setItem(3,2,propertyButton);
-        gui.setItem(3,3,landmarksButton);
-        gui.setItem(3,4,warButton);
-        gui.setItem(3,5,hierarchyButton);
+        gui.setItem(3,2, propertyButton);
+        gui.setItem(3,3, landmarksButton);
+        gui.setItem(3,4, warButton);
+        gui.setItem(3,5, hierarchyButton);
 
         gui.setItem(nRows,1, IGUI.createBackArrow(player, p -> openMainMenu(player)));
 
@@ -814,6 +798,8 @@ public class PlayerGUI implements IGUI {
 
     private static void openSelectHeadTerritoryMenu(Player player, TerritoryData territoryData, int page) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_SELECT_ICON.get() + (page + 1),6);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
+
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for(String playerID : territoryData.getPlayerIDList()){
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
@@ -836,8 +822,9 @@ public class PlayerGUI implements IGUI {
 
     private static void openWarMenu(Player player, TerritoryData territory, Consumer<Player> exit, int page) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_WARS_MENU.get(page + 1),6);
-        ArrayList<GuiItem> guiItems = new ArrayList<>();
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
+        ArrayList<GuiItem> guiItems = new ArrayList<>();
         for(PlannedAttack plannedAttack : PlannedAttackStorage.getWars()){
             ItemStack attackIcon = plannedAttack.getIcon(territory);
             GuiItem attackButton = ItemBuilder.from(attackIcon).asGuiItem(event -> {
@@ -854,7 +841,9 @@ public class PlayerGUI implements IGUI {
             strongholdItem = HeadUtils.createCustomItemStack(Material.IRON_BLOCK,Lang.GUI_STRONGHOLD.get(), Lang.GUI_NO_STRONGHOLD.get());
         }
         else {
-            strongholdItem = HeadUtils.createCustomItemStack(Material.IRON_BLOCK, Lang.GUI_STRONGHOLD.get(), Lang.GUI_STRONGHOLD_LOCATION.get(), Lang.GUI_LEFT_CLICK_TO_SET_STRONGHOLD.get());
+            int x = territoryStronghold.getClaimedChunk().getX() * 16 + 8;
+            int z = territoryStronghold.getClaimedChunk().getZ() * 16 + 8;
+            strongholdItem = HeadUtils.createCustomItemStack(Material.IRON_BLOCK, Lang.GUI_STRONGHOLD.get(), Lang.GUI_STRONGHOLD_LOCATION.get(), Lang.GUI_LEFT_CLICK_TO_SET_STRONGHOLD.get(x,z));
         }
 
         GuiItem strongHoldIcon = ItemBuilder.from(strongholdItem).asGuiItem(event -> {
@@ -892,16 +881,17 @@ public class PlayerGUI implements IGUI {
 
     private static void openSpecificPlannedAttackMenu(Player player, TerritoryData territory, PlannedAttack plannedAttack, Consumer<Player> exit, int page) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_WAR_MANAGER.get(), 3);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
-        GuiItem attackIcon = ItemBuilder.from(plannedAttack.getIcon(territory)).asGuiItem(event -> event.setCancelled(true));
+        GuiItem attackIcon = ItemBuilder.from(plannedAttack.getIcon(territory)).asGuiItem();
         gui.setItem(1,5, attackIcon);
 
         ItemStack attackingSideInfo = plannedAttack.getAttackingIcon();
-        GuiItem attackingSidePanel = ItemBuilder.from(attackingSideInfo).asGuiItem(event -> event.setCancelled(true));
+        GuiItem attackingSidePanel = ItemBuilder.from(attackingSideInfo).asGuiItem();
         gui.setItem(2,2, attackingSidePanel);
 
         ItemStack defendingSideInfo = plannedAttack.getDefendingIcon();
-        GuiItem defendingSidePanel = ItemBuilder.from(defendingSideInfo).asGuiItem(event -> event.setCancelled(true));
+        GuiItem defendingSidePanel = ItemBuilder.from(defendingSideInfo).asGuiItem();
         gui.setItem(2,4, defendingSidePanel);
 
 
@@ -925,7 +915,6 @@ public class PlayerGUI implements IGUI {
 
             gui.setItem(2,6, renameButton);
             gui.setItem(2,8, cancelButton);
-
         }
 
         else if(territoryRole == WarRole.MAIN_DEFENDER){
@@ -982,7 +971,7 @@ public class PlayerGUI implements IGUI {
 
     public static void openStartWarSettings(Player player, Consumer<Player> exit, CreateAttackData createAttackData) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_CREATE_WAR_MANAGER.get(createAttackData.getMainDefender().getName()),3);
-
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         TerritoryData mainAttacker = createAttackData.getMainAttacker();
         TerritoryData mainDefender = createAttackData.getMainDefender();
@@ -1075,6 +1064,7 @@ public class PlayerGUI implements IGUI {
 
     public static void openSelecteTerritoryToLiberate(Player player, CreateAttackData createAttackData, LiberateWarGoal liberateWarGoal, Consumer<Player> exit) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_CREATE_WAR_MANAGER.get(createAttackData.getMainDefender().getName()),6);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         TerritoryData territoryToAttack = createAttackData.getMainDefender();
         for(TerritoryData territoryData : territoryToAttack.getVassals()){
@@ -1100,6 +1090,7 @@ public class PlayerGUI implements IGUI {
 
     private static void openSelectWarGoalMenu(Player player, Consumer<Player> exit, CreateAttackData createAttackData) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_SELECT_WARGOAL.get(), 3);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         boolean canBeSubjugated = createAttackData.canBeSubjugated();
         boolean canBeLiberated = !(createAttackData.getMainDefender() instanceof TownData);
@@ -1162,6 +1153,7 @@ public class PlayerGUI implements IGUI {
 
     private static void openOwnedLandmark(Player player, TownData townData, int page) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_OWNED_LANDMARK.get(page + 1),6);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ArrayList<GuiItem> landmarkGui = new ArrayList<>();
 
@@ -1183,6 +1175,7 @@ public class PlayerGUI implements IGUI {
 
     public static void browseTerritory(Player player, TerritoryData territoryData, BrowseScope scope, Consumer<Player> exitMenu, int page) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_TERRITORY_LIST.get(page + 1),6);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         List<TerritoryData> territoryList = new ArrayList<>();
 
@@ -1219,10 +1212,10 @@ public class PlayerGUI implements IGUI {
     }
 
     public static void openMemberList(Player player, TerritoryData territoryData, int page) {
+        Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_MEMBERS.get(),6);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         PlayerData playerData = PlayerDataStorage.get(player);
-
-        Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_MEMBERS.get(),6);
 
         List<GuiItem> guiItems = territoryData.getOrderedMemberList(playerData);
 
@@ -1262,6 +1255,7 @@ public class PlayerGUI implements IGUI {
     }
     public static void openTownApplications(Player player, TownData townData, int page) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_APPLICATIONS.get(),6);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         PlayerData playerStat = PlayerDataStorage.get(player);
         List<GuiItem> guiItems = new ArrayList<>();
@@ -1312,9 +1306,9 @@ public class PlayerGUI implements IGUI {
 
     }
     public static void openTerritoryRanks(Player player, TerritoryData territoryData) {
-
         int row = 3;
         Gui gui = IGUI.createChestGui(Lang.HEADER_TERRITORY_RANKS.get(),row);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         PlayerData playerData = PlayerDataStorage.get(player);
 
@@ -1368,10 +1362,7 @@ public class PlayerGUI implements IGUI {
 
     }
     public static void openRankManager(Player player, TerritoryData territoryData, RankData rankData) {
-
-        PlayerData playerData = PlayerDataStorage.get(player);
         Gui gui = IGUI.createChestGui(Lang.HEADER_TERRITORY_SPECIFIC_RANK.get(rankData.getName()),4);
-
 
         boolean isDefaultRank = Objects.equals(rankData.getID(), territoryData.getDefaultRankID());
 
@@ -1419,16 +1410,15 @@ public class PlayerGUI implements IGUI {
 
         GuiItem roleGui = ItemBuilder.from(roleIcon).asGuiItem(event -> {
             event.setCancelled(true);
-
-            if(event.getCursor() == null || event.getCursor().getData() == null)
-                return;
+            System.out.println("avant le test null");
             ItemStack itemMaterial = event.getCursor();
+            System.out.println("avant le test air");
             if(itemMaterial.getType() == Material.AIR){
-
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.get());
                 return;
             }
-            rankData.setRankIconName(itemMaterial);
+            System.out.println("après le test air");
+            rankData.setRankIcon(itemMaterial);
             openRankManager(player, territoryData, rankData);
             player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get());
 
@@ -1438,8 +1428,9 @@ public class PlayerGUI implements IGUI {
             event.setCancelled(true);
             if(event.isLeftClick()){
                 RankData playerRank = territoryData.getRank(player);
-                if(playerRank.getRankEnum().getLevel() > (rankData.getRankEnum().getLevel() + 1) || territoryData.isLeader(playerData)){
+                if(playerRank.getRankEnum().getLevel() > (rankData.getRankEnum().getLevel() + 1) || territoryData.isLeader(player.getUniqueId().toString())){
                     rankData.incrementLevel();
+                    SoundUtil.playSound(player, ADD);
                 }
                 else{
                     player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_RANK_UP_INFERIOR_RANK.get(playerRank.getColoredName()));
@@ -1447,6 +1438,7 @@ public class PlayerGUI implements IGUI {
             }
             else if(event.isRightClick()){
                 rankData.decrementLevel();
+                SoundUtil.playSound(player, REMOVE);
             }
             openRankManager(player, territoryData, rankData);
         });
@@ -1455,30 +1447,31 @@ public class PlayerGUI implements IGUI {
             openRankManagerPermissions(player,territoryData, rankData);
         });
         GuiItem membersRankGui = ItemBuilder.from(membersRank).asGuiItem(event -> {
-            openTownRankManagerAddPlayer(player,territoryData, rankData, 0);
             event.setCancelled(true);
+            openTownRankManagerAddPlayer(player,territoryData, rankData, 0);
         });
         GuiItem renameGui = ItemBuilder.from(renameRank).asGuiItem(event -> {
+            event.setCancelled(true);
             player.sendMessage(getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get());
             PlayerChatListenerStorage.register(player, new RenameRank(territoryData , rankData));
-
             player.closeInventory();
-            event.setCancelled(true);
         });
         GuiItem taxButton = ItemBuilder.from(changeRoleTaxRelation).asGuiItem(event -> {
+            event.setCancelled(true);
             rankData.swapPayingTaxes();
             openRankManager(player, territoryData, rankData);
-            event.setCancelled(true);
+            SoundUtil.playSound(player, ADD);
         });
         GuiItem defaultRankButton = ItemBuilder.from(makeRankDefault).asGuiItem(event -> {
             event.setCancelled(true);
-
             if(isDefaultRank){
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT.get());
+                SoundUtil.playSound(player, NOT_ALLOWED);
             }
             else{
                 territoryData.setDefaultRank(rankData.getID());
                 openRankManager(player, territoryData, rankData);
+                SoundUtil.playSound(player, ADD);
             }
         });
 
@@ -1487,24 +1480,27 @@ public class PlayerGUI implements IGUI {
 
             if(rankData.getNumberOfPlayer() != 0){
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY.get());
+                SoundUtil.playSound(player, NOT_ALLOWED);
             }
             else if(territoryData.getDefaultRankID() == rankData.getID()){
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_DEFAULT.get());
+                SoundUtil.playSound(player, NOT_ALLOWED);
             }
             else{
                 territoryData.removeRank(rankData.getID());
                 openTerritoryRanks(player, territoryData);
+                SoundUtil.playSound(player, MINOR_GOOD);
             }
         });
 
         GuiItem lowerSalaryButton = ItemBuilder.from(lowerSalary).asGuiItem(event -> {
             event.setCancelled(true);
-
             int currentSalary = rankData.getSalary();
             int amountToRemove = event.isShiftClick() && currentSalary >= 10 ? 10 : 1;
 
             if (currentSalary <= 0) {
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER.get());
+                SoundUtil.playSound(player, NOT_ALLOWED);
                 return;
             }
 
@@ -1513,9 +1509,7 @@ public class PlayerGUI implements IGUI {
             openRankManager(player, territoryData, rankData);
         });
         GuiItem increaseSalaryButton = ItemBuilder.from(increaseSalary).asGuiItem(event -> {
-
             event.setCancelled(true);
-
             int amountToAdd = event.isShiftClick() ? 10 : 1;
 
             rankData.addFromSalary(amountToAdd);
@@ -1528,16 +1522,9 @@ public class PlayerGUI implements IGUI {
 
         GuiItem panel = rankData.getRankEnum().getRankColorGuiIcon();
 
-        gui.setItem(1,1, panel);
-        gui.setItem(1,2, panel);
-        gui.setItem(1,3, panel);
-        gui.setItem(1,4, panel);
-        gui.setItem(1,5, roleGui);
-        gui.setItem(1,6, panel);
-        gui.setItem(1,7, panel);
-        gui.setItem(1,8, panel);
-        gui.setItem(1,9, panel);
+        gui.getFiller().fillTop(panel);
 
+        gui.setItem(1,5, roleGui);
 
         gui.setItem(2,2, rankIconButton);
         gui.setItem(2,3, membersRankGui);

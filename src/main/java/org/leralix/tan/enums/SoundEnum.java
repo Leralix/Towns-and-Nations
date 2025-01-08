@@ -11,6 +11,7 @@ public enum SoundEnum {
     GOOD,
     MINOR_GOOD,
     BAD,
-    MINOR_BAD;
+    MINOR_BAD,
+    WRITE;
 
 }
