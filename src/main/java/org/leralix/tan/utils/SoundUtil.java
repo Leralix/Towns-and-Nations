@@ -1,6 +1,7 @@
 package org.leralix.tan.utils;
 
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.SoundData;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.storage.SoundStorage;
 import org.leralix.tan.utils.config.ConfigTag;
@@ -21,7 +22,9 @@ public class SoundUtil {
      */
     public static void playSound(Player player, SoundEnum soundEnum){
         if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("enableSounds",true)){
-            SoundStorage.getSoundData(soundEnum).playSound(player);
+            SoundData soundData = SoundStorage.getSoundData(soundEnum);
+            if(soundData != null)
+                soundData.playSound(player);
         }
     }
 }

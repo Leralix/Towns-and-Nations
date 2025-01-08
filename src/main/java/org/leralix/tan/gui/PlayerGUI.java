@@ -1410,14 +1410,11 @@ public class PlayerGUI implements IGUI {
 
         GuiItem roleGui = ItemBuilder.from(roleIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            System.out.println("avant le test null");
             ItemStack itemMaterial = event.getCursor();
-            System.out.println("avant le test air");
             if(itemMaterial.getType() == Material.AIR){
                 player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.get());
                 return;
             }
-            System.out.println("après le test air");
             rankData.setRankIcon(itemMaterial);
             openRankManager(player, territoryData, rankData);
             player.sendMessage(getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get());
