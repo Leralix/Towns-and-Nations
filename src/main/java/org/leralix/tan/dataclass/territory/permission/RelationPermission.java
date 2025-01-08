@@ -41,30 +41,25 @@ public enum RelationPermission {
     }
 
 
-    public boolean isAllowed(TerritoryData ownerTown, PlayerData playerData) {
+    public boolean isAllowed(TerritoryData territory, PlayerData playerData) {
         switch (this) {
-
             case TOWN -> {
-                if(ownerTown.isPlayerIn(playerData)){
+                if(territory.isPlayerIn(playerData)){
                     return true;
                 }
             }
             case ALLIANCE -> {
-                if(ownerTown.isPlayerIn(playerData)){
+                if(territory.isPlayerIn(playerData)){
                     return true;
                 }
-                if(playerData.haveTown() && ownerTown.getRelations().getRelationWith(playerData.getTown()) == TownRelation.ALLIANCE){
+                for(TerritoryData playerTerritory : playerData.getAllTerritoriesPlayerIsIn()){
+                    if(territory.getRelations().getRelationWith(playerTerritory) == TownRelation.ALLIANCE){
                         return true;
                     }
-                if(playerData.haveRegion() && ownerTown.getRelations().getRelationWith(playerData.getRegion()) == TownRelation.ALLIANCE){
-                        return true;
-                    }
+                }
             }
             case FOREIGN -> {
                 return true;
-            }
-            default -> {
-                return false;
             }
         }
         return false;

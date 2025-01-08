@@ -22,7 +22,7 @@ import java.util.*;
 public class PlayerData {
 
     private final String UUID;
-    private String PlayerName;
+    private String storedName;
     private Double Balance;
     private String TownId;
     private Integer townRankID;
@@ -32,7 +32,7 @@ public class PlayerData {
 
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
-        this.PlayerName = player.getName();
+        this.storedName = player.getName();
         this.Balance = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("StartingMoney");
         this.TownId = null;
         this.townRankID = null;
@@ -46,11 +46,17 @@ public class PlayerData {
     }
 
     public String getName(){
-        return PlayerName;
+        if(storedName == null){
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(java.util.UUID.fromString(UUID));
+            storedName = offlinePlayer.getName();
+            if(storedName == null){
+                storedName = "Unknown name";
+            }
+        }
+        return storedName;
     }
-
-    public void setName(String newPlayerName){
-        this.PlayerName = newPlayerName;
+    public void clearName(){
+        this.storedName = null;
     }
 
     public double getBalance() {
@@ -255,6 +261,17 @@ public class PlayerData {
             return getRegionRankID();
         }
         return -1;
+    }
+
+    public List<TerritoryData> getAllTerritoriesPlayerIsIn() {
+        List<TerritoryData> territories = new ArrayList<>();
+        if(haveTown()){
+            territories.add(getTown());
+        }
+        if(haveRegion()){
+            territories.add(getRegion());
+        }
+        return territories;
     }
 
     public OfflinePlayer getOfflinePlayer() {

@@ -33,7 +33,6 @@ public class SkipDay extends SubCommand {
     }
     @Override
     public void perform(Player player, String[] args) {
-
         DailyTasks.executeMidnightTasks();
     }
 }

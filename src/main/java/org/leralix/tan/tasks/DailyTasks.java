@@ -10,6 +10,7 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.ArchiveUtil;
@@ -48,10 +49,17 @@ public class DailyTasks {
         }
 
         clearOldTaxes();
+        updatePlayerUsernames();
 
         NewsletterStorage.clearOldNewsletters();
         LandmarkStorage.generateAllRessources();
         ArchiveUtil.archiveFiles();
+    }
+
+    private static void updatePlayerUsernames() {
+        for(PlayerData player : PlayerDataStorage.getLists()){
+            player.clearName();
+        }
     }
 
     private static void propertyRent() {

@@ -67,14 +67,14 @@ public class TownClaimedChunk extends ClaimedChunk2{
             return false;
         }
 
-        TownData playerTown = TownDataStorage.get(player);
-        //player is a part of a war with this town.
-        for(CurrentAttack currentAttacks : playerTown.getCurrentAttacks())
-            if(currentAttacks.containsPlayer(playerData))
+        //Player is at war with the town
+        for(CurrentAttack currentAttacks : ownerTown.getCurrentAttacks()) {
+            if (currentAttacks.containsPlayer(playerData))
                 return true;
+        }
 
-        ChunkPermission townPermission = ownerTown.getPermission(permissionType);
-        if(townPermission.isAllowed(ownerTown, playerData))
+        ChunkPermission chunkPermission = ownerTown.getPermission(permissionType);
+        if(chunkPermission.isAllowed(ownerTown, playerData))
             return true;
 
         playerCantPerformAction(player);

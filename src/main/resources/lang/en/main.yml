@@ -170,6 +170,8 @@ language:
   DEBUG_CREATE_BACKUP: "Create a backup of the plugin data."
   DEBUG_GET_COLOR_CODE: "Get a sample of the plugin color code"
   DEBUG_SKIP_DAY: "Collect every taxes and salary for a day"
+  DEBUG_SEND_REPORT: "Create a report to send to the developer for debugging"
+  DEBUG_REPORT_CREATED: "Report has been created. You can find him in /plugins/TownsAndNations/reports"
   #SUDO command
   SUDO_PLAYER_ADDED: "§3{0}§f is now on sudo mode"
   SUDO_PLAYER_REMOVED: "§3{0}§f has been removed from sudo mode"

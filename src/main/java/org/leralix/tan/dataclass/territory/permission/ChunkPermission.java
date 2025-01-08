@@ -1,6 +1,7 @@
 package org.leralix.tan.dataclass.territory.permission;
 
 import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 
 import java.util.ArrayList;
@@ -38,8 +39,8 @@ public class ChunkPermission {
     }
 
 
-    public boolean isAllowed(TownData ownerTown, PlayerData playerData) {
-        if(this.overallPermission.isAllowed(ownerTown, playerData)) {
+    public boolean isAllowed(TerritoryData playerTerritory, PlayerData playerData) {
+            if(this.overallPermission.isAllowed(playerTerritory, playerData)) {
             return true;
         }
         return isPlayerAllowed(playerData.getID());

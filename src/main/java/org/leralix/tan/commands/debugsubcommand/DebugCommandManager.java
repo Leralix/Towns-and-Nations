@@ -16,7 +16,7 @@ public class DebugCommandManager extends CommandManager {
         addSubCommand(new ActionBarCommand());
         addSubCommand(new GetDropChances());
         addSubCommand(new TanHelpCommand(this));
-
+        addSubCommand(new SendReport());
     }
 
     @Override

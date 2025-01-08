@@ -20,9 +20,11 @@ import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.ChunkUpkeepLine;
 import org.leralix.tan.dataclass.territory.economy.SalaryPaymentLine;
+import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.enums.ChunkPermissionType;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.TownRelation;
@@ -66,6 +68,7 @@ public abstract class TerritoryData {
     private HashMap<String, Integer> availableClaims;
     private Map<String, DiplomacyProposal> diplomacyProposals;
     private List<String> overlordsProposals;
+    private ClaimedChunkSettings chunkSettings;
     private StrongholdData stronghold;
 
     protected TerritoryData(String id, String name, String ownerID){
@@ -164,7 +167,13 @@ public abstract class TerritoryData {
         return sortedList;
     }
     public abstract Collection<PlayerData> getPlayerDataList();
-    public abstract ClaimedChunkSettings getChunkSettings();
+
+    public ClaimedChunkSettings getChunkSettings(){
+        if(chunkSettings == null)
+            chunkSettings = new ClaimedChunkSettings();
+        return chunkSettings;
+    }
+
     public RelationData getRelations(){
         if(relations == null)
             relations = new RelationData();
@@ -797,4 +806,15 @@ public abstract class TerritoryData {
     public boolean isAtWar() {
         return !getCurrentAttacks().isEmpty();
     }
+
+
+
+    public ChunkPermission getPermission(ChunkPermissionType type) {
+        return getChunkSettings().getPermission(type);
+    }
+
+    public void nextPermission(ChunkPermissionType type) {
+        getChunkSettings().nextPermission(type);
+    }
+
 }

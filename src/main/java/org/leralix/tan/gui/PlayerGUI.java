@@ -758,7 +758,7 @@ public class PlayerGUI implements IGUI {
         });
         GuiItem claimButton = ItemBuilder.from(claims).asGuiItem(event -> {
             event.setCancelled(true);
-            openTownChunk(player, townData);
+            openChunkSettings(player, townData);
         });
         GuiItem browseMenu = ItemBuilder.from(otherTownIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -2281,14 +2281,14 @@ public class PlayerGUI implements IGUI {
     }
 
 
-    public static void openTownChunk(Player player, TownData townData) {
-        Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_MENU.get(townData.getName()),3);
+    public static void openChunkSettings(Player player, TerritoryData territoryData) {
+        Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_MENU.get(territoryData.getName()),3);
 
 
         ItemStack playerChunkIcon = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,
                 Lang.GUI_TOWN_CHUNK_PLAYER.get(),
                 Lang.GUI_TOWN_CHUNK_PLAYER_DESC1.get()
-                );
+        );
 
         ItemStack mobChunckIcon = HeadUtils.createCustomItemStack(Material.CREEPER_HEAD,
                 Lang.GUI_TOWN_CHUNK_MOB.get(),
@@ -2297,17 +2297,19 @@ public class PlayerGUI implements IGUI {
 
         GuiItem playerChunkButton = ItemBuilder.from(playerChunkIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            openTownChunkPlayerSettings(player, townData);
+            openChunkPlayerSettings(player, territoryData);
         });
 
         GuiItem mobChunkButton = ItemBuilder.from(mobChunckIcon).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if(townData.getLevel().getBenefitsLevel("UNLOCK_MOB_BAN") >= 1)
-                openTownChunkMobSettings(player,0);
-            else{
-                player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_LEVEL.get(DynamicLang.get("UNLOCK_MOB_BAN")));
-                SoundUtil.playSound(player, NOT_ALLOWED);
+            if(territoryData instanceof TownData townData){
+                if(townData.getLevel().getBenefitsLevel("UNLOCK_MOB_BAN") >= 1)
+                    openTownChunkMobSettings(player,0);
+                else{
+                    player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_LEVEL.get(DynamicLang.get("UNLOCK_MOB_BAN")));
+                    SoundUtil.playSound(player, NOT_ALLOWED);
+                }
             }
         });
 
@@ -2375,7 +2377,7 @@ public class PlayerGUI implements IGUI {
             guiLists.add(mobItem);
         }
 
-        createIterator(gui, guiLists, page, player, p -> openTownChunk(player, townData),
+        createIterator(gui, guiLists, page, player, p -> openChunkSettings(player, townData),
                 p -> openTownChunkMobSettings(player, page + 1),
                 p -> openTownChunkMobSettings(player, page - 1));
 
@@ -2417,12 +2419,11 @@ public class PlayerGUI implements IGUI {
                 p -> openTownPropertiesMenu(player,page - 1));
         gui.open(player);
     }
-    public static void openTownChunkPlayerSettings(Player player, TownData territoryData){
+    public static void openChunkPlayerSettings(Player player, TerritoryData territoryData){
         Gui gui = IGUI.createChestGui(Lang.HEADER_CHUNK_PERMISSION.get(),4);
 
-        TownData townData = TownDataStorage.get(player);
         for(ChunkPermissionType type : ChunkPermissionType.values()){
-            RelationPermission permission = townData.getPermission(type).getOverallPermission();
+            RelationPermission permission = territoryData.getPermission(type).getOverallPermission();
             ItemStack icon = type.getIcon(permission);
                 GuiItem guiItem = ItemBuilder.from(icon).asGuiItem(event -> {
                         event.setCancelled(true);
@@ -2432,7 +2433,7 @@ public class PlayerGUI implements IGUI {
                         }
                         if(event.isLeftClick()){
                             territoryData.nextPermission(type);
-                            openTownChunkPlayerSettings(player, territoryData);
+                            openChunkPlayerSettings(player, territoryData);
                         }
                         else if(event.isRightClick()){
                             openPlayerListForChunkPermission(player, territoryData, type, 0);
@@ -2440,15 +2441,14 @@ public class PlayerGUI implements IGUI {
                 });
             gui.addItem(guiItem);
         }
-        gui.setItem(27, IGUI.createBackArrow(player, p -> openTownChunk(player, townData)));
+        gui.setItem(27, IGUI.createBackArrow(player, p -> openChunkSettings(player, territoryData)));
         gui.open(player);
     }
 
-    private static void openPlayerListForChunkPermission(Player player, TownData territoryData, ChunkPermissionType type, int page) {
+    private static void openPlayerListForChunkPermission(Player player, TerritoryData territoryData, ChunkPermissionType type, int page) {
         Gui gui = IGUI.createChestGui(type.getLabel(),6);
 
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
-
         List<GuiItem> guiItems = new ArrayList<>();
 
         for(String authorizedPlayerID : territoryData.getPermission(type).getAuthorizedPlayers()){
@@ -2471,7 +2471,7 @@ public class PlayerGUI implements IGUI {
         }
 
         createIterator(gui, guiItems, 0, player,
-                p -> openTownChunkPlayerSettings(player, territoryData),
+                p -> openChunkPlayerSettings(player, territoryData),
                 p -> openPlayerListForChunkPermission(player, territoryData, type, page + 1),
                 p -> openPlayerListForChunkPermission(player, territoryData, type, page + 1));
 
@@ -2493,7 +2493,7 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
     }
 
-    private static void openAddPlayerForChunkPermission(Player player, TownData territoryData, ChunkPermissionType type, int page) {
+    private static void openAddPlayerForChunkPermission(Player player, TerritoryData territoryData, ChunkPermissionType type, int page) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_AUTHORIZE_PLAYER.get(),6);
 
         PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
@@ -2524,7 +2524,7 @@ public class PlayerGUI implements IGUI {
         }
 
         createIterator(gui, guiItems, 0, player,
-                p -> openPlayerListForChunkPermission(player, territoryData, type, 0),
+                p -> territoryData.openMainMenu(player),
                 p -> openAddPlayerForChunkPermission(player, territoryData, type, page + 1),
                 p -> openAddPlayerForChunkPermission(player, territoryData, type, page + 1));
 
@@ -2603,7 +2603,8 @@ public class PlayerGUI implements IGUI {
 
         ItemStack memberIcon = HeadUtils.makeSkullB64(Lang.GUI_TOWN_MEMBERS_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Q0ZDQ5NmIxZGEwNzUzNmM5NGMxMzEyNGE1ODMzZWJlMGM1MzgyYzhhMzM2YWFkODQ2YzY4MWEyOGQ5MzU2MyJ9fX0=",
                 Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get());
-
+        ItemStack claims = HeadUtils.makeSkullB64(Lang.GUI_CLAIM_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=",
+                Lang.GUI_CLAIM_ICON_DESC1.get());
         ItemStack manageLaws = HeadUtils.makeSkullURL(Lang.GUI_MANAGE_LAWS.get() ,"https://textures.minecraft.net/texture/1818d1cc53c275c294f5dfb559174dd931fc516a85af61a1de256aed8bca5e7",
                 Lang.GUI_MANAGE_LAWS_DESC1.get());
         ItemStack browse = HeadUtils.makeSkullB64(Lang.GUI_BROWSE_TERRITORY_ICON.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=",
@@ -2666,6 +2667,10 @@ public class PlayerGUI implements IGUI {
             event.setCancelled(true);
             openRegionSettings(player);
         });
+        GuiItem claimButton = ItemBuilder.from(claims).asGuiItem(event -> {
+            event.setCancelled(true);
+            openChunkSettings(player, regionData);
+        });
         GuiItem warIcon = ItemBuilder.from(war).asGuiItem(event -> {
             event.setCancelled(true);
             openWarMenu(player, regionData, p -> dispatchPlayerRegion(player), 0);
@@ -2680,6 +2685,8 @@ public class PlayerGUI implements IGUI {
         gui.setItem(2,6, warIcon);
         gui.setItem(2,7, diplomacyButton);
         gui.setItem(2,8, settingsButton);
+        gui.setItem(3,2, claimButton);
+
 
         gui.setItem(3,1, IGUI.createBackArrow(player, p -> openMainMenu(player)));
 

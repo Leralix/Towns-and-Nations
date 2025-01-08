@@ -127,11 +127,6 @@ public class RegionData extends TerritoryData {
         return playerDataList;
     }
 
-    @Override
-    public ClaimedChunkSettings getChunkSettings(){
-        return null;
-    }
-
 
     @Override
     public ItemStack getIconWithName() {

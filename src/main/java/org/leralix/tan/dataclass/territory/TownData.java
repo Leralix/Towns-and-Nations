@@ -55,7 +55,6 @@ public class TownData extends TerritoryData {
     private Collection<String> ownedLandmarks = new ArrayList<>();
     private HashSet<String> PlayerJoinRequestSet = new HashSet<>();
     private Map<String, PropertyData> propertyDataMap;
-    private ClaimedChunkSettings chunkSettings = new ClaimedChunkSettings();
     private TeleportationPosition teleportationPosition;
 
 
@@ -231,16 +230,6 @@ public class TownData extends TerritoryData {
 
 
 
-    //////////////////////////////////////
-    //             IRelation            //
-    //////////////////////////////////////
-
-    @Override
-    public ClaimedChunkSettings getChunkSettings() {
-        if(chunkSettings == null)
-            chunkSettings = new ClaimedChunkSettings();
-        return chunkSettings;
-    }
 
     //////////////////////////////////////
     //              IMoney              //
@@ -379,13 +368,6 @@ public class TownData extends TerritoryData {
         return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("TownChunkUpkeepCost",0);
     }
 
-    public ChunkPermission getPermission(ChunkPermissionType type) {
-        return this.chunkSettings.getPermission(type);
-    }
-
-    public void nextPermission(ChunkPermissionType type) {
-        this.chunkSettings.nextPermission(type);
-    }
 
     //////////////////////////////////////
     //           IChunkColor            //

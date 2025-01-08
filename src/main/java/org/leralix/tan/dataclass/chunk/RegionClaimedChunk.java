@@ -9,8 +9,12 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
+import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.dataclass.wars.GriefAllowed;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.lang.Lang;
@@ -40,22 +44,27 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
         PlayerData playerData = PlayerDataStorage.get(player);
 
+        //Location is in a property and players owns or rent it
+        RegionData ownerRegion = getRegion();
+        //Chunk is claimed yet player have no town
         if(!playerData.haveTown()){
-            player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
-        }
-
-        if(!playerData.haveRegion()){
-            player.sendMessage(getTANString() + Lang.TOWN_NO_REGION.get());
-        }
-
-        RegionData region = getRegion();
-
-        if(!region.isPlayerInRegion(playerData)){
             playerCantPerformAction(player);
             return false;
         }
 
-        return true;
+        //Player is at war with the region
+        for(CurrentAttack currentAttacks : ownerRegion.getCurrentAttacks()) {
+            if (currentAttacks.containsPlayer(playerData))
+                return true;
+        }
+
+        //Player have the right to do the action
+        ChunkPermission chunkPermission = ownerRegion.getPermission(permissionType);
+        if(chunkPermission.isAllowed(ownerRegion, playerData))
+            return true;
+
+        playerCantPerformAction(player);
+        return false;
     }
 
     public RegionData getRegion() {

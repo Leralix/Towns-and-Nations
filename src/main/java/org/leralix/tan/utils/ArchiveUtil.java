@@ -18,19 +18,24 @@ import java.util.zip.ZipOutputStream;
  */
 public class ArchiveUtil {
 
+
+    public static void archiveFiles(){
+        String dateStr = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        archiveFiles("archive", dateStr);
+    }
+
     /**
      * Main method to archive files.
      * Every data file will be copied and stored in a zip
      * file with the current date as the name.
      */
-    public static void archiveFiles() {
+    public static void archiveFiles(String archiveFolderChild, String name) {
         File DataFolder = TownsAndNations.getPlugin().getDataFolder();
-        File archiveFolder = new File(DataFolder, "archive");
+        File archiveFolder = new File(DataFolder, archiveFolderChild);
         if (!archiveFolder.exists()) {
             archiveFolder.mkdirs();
         }
 
-        String dateStr = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
         File file1 = new File(DataFolder, "TAN - Claimed Chunks.json");
         File file2 = new File(DataFolder, "TAN - Players.json");
@@ -41,7 +46,7 @@ public class ArchiveUtil {
         int counter = 0;
         while (true) {
             String suffix = counter == 0 ? "" : " - " + counter;
-            zipFile = new File(archiveFolder, dateStr + suffix + ".zip");
+            zipFile = new File(archiveFolder, name + suffix + ".zip");
             if (!zipFile.exists()) {
                 break;
             }
