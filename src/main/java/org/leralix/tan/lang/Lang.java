@@ -952,7 +952,11 @@ public enum Lang {
     private String replaceCommonPlaceholders(String translation) {
 
         if(translation.contains("{MONEY_CHAR}")) {
-            translation = translation.replace("{MONEY_CHAR}", EconomyUtil.getMoneyIcon());
+            String moneyChar = EconomyUtil.getMoneyIcon();
+            if(moneyChar == null) {
+                moneyChar = "$";
+            }
+            translation = translation.replace("{MONEY_CHAR}", moneyChar);
         }
         if(translation.contains("{CANCEL}")) {
             translation = translation.replace("{CANCEL}", Lang.CANCEL_WORD.get());

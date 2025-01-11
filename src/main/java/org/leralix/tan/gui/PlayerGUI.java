@@ -589,6 +589,13 @@ public class PlayerGUI implements IGUI {
 
         GuiItem createButton = ItemBuilder.from(createTown).asGuiItem(event -> {
             event.setCancelled(true);
+
+            if(!player.hasPermission("tan.base.town.create")){
+                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get());
+                SoundUtil.playSound(player, NOT_ALLOWED);
+                return;
+            }
+
             double playerMoney = EconomyUtil.getBalance(player);
             if (playerMoney < townPrice) {
                 player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(townPrice - playerMoney));
@@ -627,6 +634,12 @@ public class PlayerGUI implements IGUI {
                 event.setCancelled(true);
 
                 if(event.isLeftClick()){
+
+                    if(!player.hasPermission("tan.base.town.join")){
+                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get());
+                        SoundUtil.playSound(player, NOT_ALLOWED);
+                        return;
+                    }
                     if(specificTownData.isPlayerAlreadyRequested(player)){
                         return;
                     }
@@ -1852,6 +1865,12 @@ public class PlayerGUI implements IGUI {
                 return;
             }
 
+            if(!player.hasPermission("tan.base.town.quit")){
+                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get());
+                SoundUtil.playSound(player, NOT_ALLOWED);
+                return;
+            }
+
             openConfirmMenu(player, Lang.GUI_CONFIRM_PLAYER_LEAVE_TOWN.get(playerData.getName()), confirm -> {
 
                 player.closeInventory();
@@ -1868,6 +1887,12 @@ public class PlayerGUI implements IGUI {
             }
             if(townData.isCapital()){
                 player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(townData.getOverlord().getColoredName()));
+                return;
+            }
+
+            if(!player.hasPermission("tan.base.town.disband")){
+                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get());
+                SoundUtil.playSound(player, NOT_ALLOWED);
                 return;
             }
 
@@ -2537,6 +2562,13 @@ public class PlayerGUI implements IGUI {
 
         GuiItem createRegionButton = ItemBuilder.from(createRegion).asGuiItem(event -> {
             event.setCancelled(true);
+
+            if(!player.hasPermission("tan.base.region.create")){
+                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get());
+                SoundUtil.playSound(player, NOT_ALLOWED);
+                return;
+            }
+
             PlayerData playerData = PlayerDataStorage.get(player);
             if(!playerData.haveTown()){
                 player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
@@ -2832,6 +2864,12 @@ public class PlayerGUI implements IGUI {
             }
             if(playerRegion.isCapital()){
                 player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(playerRegion.getOverlord().getColoredName()));
+                return;
+            }
+
+            if(!player.hasPermission("tan.base.region.disband")){
+                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get());
+                SoundUtil.playSound(player, NOT_ALLOWED);
                 return;
             }
 

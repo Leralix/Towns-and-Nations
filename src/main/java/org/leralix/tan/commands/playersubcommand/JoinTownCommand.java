@@ -8,10 +8,12 @@ import org.leralix.tan.commands.SubCommand;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
+import org.leralix.tan.utils.SoundUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.leralix.tan.enums.SoundEnum.NOT_ALLOWED;
 import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class JoinTownCommand extends SubCommand {
@@ -53,6 +55,12 @@ public class JoinTownCommand extends SubCommand {
             player.sendMessage(getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
             player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         } else if (args.length == 2){
+
+            if(!player.hasPermission("tan.base.town.join")){
+                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get());
+                SoundUtil.playSound(player, NOT_ALLOWED);
+                return;
+            }
 
             String townID = args[1];
 

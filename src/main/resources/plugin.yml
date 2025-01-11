@@ -4,24 +4,69 @@ main: org.leralix.tan.TownsAndNations
 api-version: "1.19"
 authors: [ Leralix ]
 softdepend: [Vault, PlaceholderAPI]
-description: A town plugin with rp mechanics
+description: A town plugin with roleplay elements
 commands:
   tan:
     description: base command of Towns and Nations
-    permission: townandnation.base
+    permission: tan.base.commands
     usage: /<command>
   tanadmin:
     description: admin command of Towns and Nations
-    permission: townandnation.admin
+    permission: tan.admin.commands
     usage: /<command>
   tandebug:
     description: debug command of Towns and Nations
-    permission: townandnation.admin
+    permission: tan.admin.commands
     usage: /<command>
   tanserver:
     description: server side command of Towns and Nations.
-    permission: townandnation.server
+    permission: tan.server.commands
     usage: /<command>
 
+permissions:
+  tan.base.*:
+    description: Base permission of Towns and Nations
+    default: true
+    children:
+      tan.base.town.*: true
+      tan.base.region.*: true
 
+  tan.base.town.*:
+    description: All town-related permissions
+    default: true
+    children:
+      tan.base.town.create: true
+      tan.base.town.join: true
+      tan.base.town.quit: true
+      tan.base.town.disband: true
 
+  tan.base.town.create:
+    description: Permission to create a town
+    default: true
+
+  tan.base.town.join:
+    description: Permission to join a town
+    default: true
+
+  tan.base.town.quit:
+    description: Permission to join a town
+    default: true
+
+  tan.base.town.disband:
+    description: Permission to join a town
+    default: true
+
+  tan.base.region.*:
+    description: All region-related permissions
+    default: true
+    children:
+      tan.base.region.create: true
+      tan.base.region.disband: true
+
+  tan.base.region.create:
+    description: Permission to create a region
+    default: true
+
+  tan.base.region.disband:
+    description: Permission to create a region
+    default: true
