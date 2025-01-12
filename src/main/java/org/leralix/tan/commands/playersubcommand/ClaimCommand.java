@@ -2,10 +2,10 @@ package org.leralix.tan.commands.playersubcommand;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.commands.SubCommand;
-import org.leralix.tan.enums.MapType;
+import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.enums.MapSettings;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
@@ -44,10 +44,10 @@ public class ClaimCommand extends SubCommand {
 
 
         if (!(args.length == 2 || args.length == 4)) {
+            player.sendMessage(getTANString() + Lang.SYNTAX_ERROR.get());
             player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()) );
             return;
         }
-
 
         TerritoryData territoryData;
 
@@ -75,7 +75,7 @@ public class ClaimCommand extends SubCommand {
             int z = Integer.parseInt(args[3]);
             Chunk chunk = player.getWorld().getChunkAt(x, z);
             territoryData.claimChunk(player,chunk);
-            MapCommand.openMap(player, MapType.valueOf(args[1].toUpperCase()));
+            MapCommand.openMap(player, new MapSettings(args[0], args[1]));
         }
         else {
             territoryData.claimChunk(player);

@@ -6,9 +6,11 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.enums.ClaimAction;
+import org.leralix.tan.enums.MapSettings;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.commands.SubCommand;
-import org.leralix.tan.enums.MapType;
+import org.leralix.tan.enums.ClaimType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 
 import java.util.*;
@@ -41,12 +43,11 @@ public class MapCommand extends SubCommand {
     @Override
     public void perform(Player player, String[] args) {
         if(args.length == 1) {
-            openMap(player, MapType.TOWN);
+            openMap(player, new MapSettings());
             return;
         }
-        if(args.length == 2) {
-            if(Arrays.stream(MapType.values()).anyMatch(e -> e.name().equals(args[1])))
-                openMap(player, MapType.valueOf(args[1]));
+        if(args.length == 3) {
+            openMap(player, new MapSettings(args[1],args[2]));
             return;
         }
 
@@ -54,7 +55,7 @@ public class MapCommand extends SubCommand {
         player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
     }
 
-    public static void openMap(Player player, MapType type) {
+    public static void openMap(Player player, MapSettings settings) {
         Chunk currentChunk = player.getLocation().getChunk();
         int radius = 4;
         Map<Integer,TextComponent> text = new HashMap<>();
@@ -62,21 +63,23 @@ public class MapCommand extends SubCommand {
         claimType.setHoverEvent(null);
         claimType.setColor(net.md_5.bungee.api.ChatColor.GRAY);
         text.put(-4, claimType);
-        TextComponent claimButton = type.getButton();
-        text.put(-3,claimButton);
+        TextComponent typeButton = settings.getMapTypeButton();
+        text.put(-3,typeButton);
+        TextComponent actionButton = settings.getClaimTypeButton();
+        text.put(-2,actionButton);
 
         player.sendMessage("╭─────────⟢⟐⟣─────────╮");
-
         for (int dz = -radius; dz <= radius; dz++) {
             ComponentBuilder newLine = new ComponentBuilder();
-
             newLine.append("   ");
             for (int dx = -radius; dx <= radius; dx++) {
                 Chunk chunk = player.getWorld().getChunkAt(currentChunk.getX() + dx, currentChunk.getZ() + dz);
 
                 ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunk);
                 TextComponent icon = claimedChunk.getMapIcon(player);
-                icon.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tan claim " + type.toString().toLowerCase() + " " + chunk.getX() + " " + chunk.getZ()));
+                ClaimAction claimAction = settings.getClaimActionType();
+                ClaimType mapType = settings.getClaimType();
+                icon.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tan " + claimAction.toString().toLowerCase() + " " + mapType.toString().toLowerCase() + " " + chunk.getX() + " " + chunk.getZ()));
 
                 newLine.append(icon);
             }
