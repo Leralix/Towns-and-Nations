@@ -133,7 +133,7 @@ public class ConfigUtil {
                     }
                 }
                 if(!found){
-                    logger.log(Level.INFO, "Added key : {0}", wantedLine);
+                    logger.log(Level.INFO, "Added new config line : {0}", wantedLine);
                     mergedLines.add(wantedLine); //Line is new, save it
                     updated = true;
                 }

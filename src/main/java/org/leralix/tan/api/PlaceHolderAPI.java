@@ -140,6 +140,15 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
             if (territoryData == null) return "Invalid territory";
             return territoryData.getLeaderData().getOfflinePlayer().getName();
         }
+        else if(params.startsWith("player_{") && params.endsWith("_have_town")){
+            String[] values = extractValues(params);
+            if(values.length == 0) return "Invalid values";
+            String playerName = values[0];
+            if(playerName == null) return "Invalid player name";
+            PlayerData playerData1 = PlayerDataStorage.get(playerName);
+            if(playerData1 == null) return "Invalid player";
+            return playerData1.haveTown() ? "TRUE" : "FALSE";
+        }
 
         return null;
     }
