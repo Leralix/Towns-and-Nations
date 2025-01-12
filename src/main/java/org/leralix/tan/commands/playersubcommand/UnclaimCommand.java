@@ -1,6 +1,5 @@
 package org.leralix.tan.commands.playersubcommand;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -53,7 +52,6 @@ public class UnclaimCommand extends SubCommand {
             int x = Integer.parseInt(args[2]);
             int y = Integer.parseInt(args[3]);
             chunk = player.getLocation().getWorld().getChunkAt(x, y);
-            MapCommand.openMap(player, new MapSettings(args[0], args[1]));
         }
 
         if(!NewClaimedChunkStorage.isChunkClaimed(chunk)){
@@ -62,6 +60,9 @@ public class UnclaimCommand extends SubCommand {
         }
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunk);
         claimedChunk.unclaimChunk(player);
+        if(args.length == 4){
+            MapCommand.openMap(player, new MapSettings(args[0], args[1]));
+        }
     }
 }
 

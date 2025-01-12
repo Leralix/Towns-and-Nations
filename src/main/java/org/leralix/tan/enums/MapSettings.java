@@ -17,12 +17,12 @@ public class MapSettings {
         this.claimAction = ClaimAction.CLAIM;
     }
     public MapSettings(String claimActionTypeName, String mapTypeName){
-        this.claimAction = ClaimAction.valueOf(mapTypeName.toUpperCase());
-        this.claimType = ClaimType.valueOf(claimActionTypeName.toUpperCase());
+        this.claimAction = ClaimAction.valueOf(claimActionTypeName.toUpperCase());
+        this.claimType = ClaimType.valueOf(mapTypeName.toUpperCase());
     }
 
-    private String getNextCommand(ClaimType mapType, ClaimAction claimAction){
-        return "/tan map " + mapType.getTypeCommand() + " " + claimAction.getTypeCommand();
+    private String getNextCommand(ClaimAction claimAction , ClaimType mapType){
+        return "/tan map " + claimAction.getTypeCommand() + " " + mapType.getTypeCommand();
     }
 
     public ClaimType getClaimType() {
@@ -36,14 +36,14 @@ public class MapSettings {
     public TextComponent getMapTypeButton(){
         TextComponent claimButton = new TextComponent(claimType.getName());
         claimButton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Lang.LEFT_CLICK_TO_MODIFY.get())));
-        claimButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, getNextCommand(claimType.getNextType(), claimAction)));
+        claimButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, getNextCommand(claimAction, claimType.getNextType())));
         return claimButton;
     }
 
     public TextComponent getClaimTypeButton(){
         TextComponent claimButton = new TextComponent(claimAction.getName());
         claimButton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Lang.LEFT_CLICK_TO_MODIFY.get())));
-        claimButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, getNextCommand(claimType, claimAction.getNextType())));
+        claimButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, getNextCommand(claimAction.getNextType(), claimType)));
         return claimButton;
     }
 }

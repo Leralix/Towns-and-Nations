@@ -911,7 +911,7 @@ language:
   MAP_TOWN: "    §9[Town]"
   MAP_REGION: "    §b[Region]"
   CLAIM_BUTTON: "    §a[Claim]"
-  UNCLAIM_BUTTON: "   §c[Unclaim]"
+  UNCLAIM_BUTTON: "    §c[Unclaim]"
   #Reload
   RELOAD_SUCCESS: "§aConfiguration reloaded"
   #Diplomatic relations
