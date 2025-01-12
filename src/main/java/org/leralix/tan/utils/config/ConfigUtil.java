@@ -7,6 +7,8 @@ import org.leralix.tan.TownsAndNations;
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class is used for config related utilities.
@@ -109,27 +111,34 @@ public class ConfigUtil {
      */
     private static boolean mergeAndPreserveLines(File file, List<String> baseFileLines, List<String> actualFileLine) {
         List<String> mergedLines = new ArrayList<>();
+        Logger logger = TownsAndNations.getPlugin().getPluginLogger();
 
         boolean updated = false;
-        int i = 0;
-        for (String actualLine : actualFileLine) {
-            String baseLine = baseFileLines.get(i);
-            i++;
-            if(i == baseFileLines.size()){
-                break;
+        int indexActual = 0;
+
+        for(String wantedLine : baseFileLines){
+            String actualLine = actualFileLine.get(indexActual);
+            if(extractKey(wantedLine).equals(extractKey(actualLine))){
+                mergedLines.add(actualLine);
+                indexActual++;
             }
-            if(extractKey(actualLine).equals(extractKey(baseLine))){
-                mergedLines.add(actualLine); //Line existed, keep it
-                continue;
+            else {
+                boolean found = false;
+                for(int indexActual2 = indexActual; indexActual2 < actualFileLine.size(); indexActual2++){
+                    actualLine = actualFileLine.get(indexActual2);
+                    if(extractKey(wantedLine).equals(extractKey(actualLine))){
+                        mergedLines.add(actualLine);
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found){
+                    logger.log(Level.INFO, "Added key : {0}", wantedLine);
+                    mergedLines.add(wantedLine); //Line is new, save it
+                    updated = true;
+                }
+
             }
-            System.out.println("Missing line : " + baseLine);
-            mergedLines.add(baseLine); //Line is new, save it
-            updated = true;
-        }
-        while(i < actualFileLine.size() - 1){
-            mergedLines.add(actualFileLine.get(i)); //Line is new, save it
-            updated = true;
-            i++;
         }
 
         if (updated) {
