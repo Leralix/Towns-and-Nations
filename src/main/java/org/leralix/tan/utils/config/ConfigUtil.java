@@ -15,7 +15,7 @@ public class ConfigUtil {
     /**
      * This map is used to store the custom configs.
      */
-    private static final Map<ConfigTag, FileConfiguration> configs = new HashMap<>();
+    private static final Map<ConfigTag, FileConfiguration> configs = new EnumMap<>(ConfigTag.class);
 
     /**
      * Get a custom config by its name.
@@ -41,86 +41,133 @@ public class ConfigUtil {
     }
 
     /**
-     * Save a resource file.
-     * @param fileName the name of the ressource file.
-     */
-    public static void saveResource(final @NotNull String fileName) {
-        File file = new File(TownsAndNations.getPlugin().getDataFolder(),fileName);
-        if (!file.exists()) {
-            TownsAndNations.getPlugin().saveResource(fileName, false);
-        }
-    }
-
-    /**
-     * Save and update a resource file. If some lines are missing in the current file, they will be added at the end
+     * Save and update a resource file. If some lines are missing in the current file, they will be added at the correct position.
      * @param fileName  The name of the resource file.
      */
     public static void saveAndUpdateResource(final @NotNull String fileName) {
-        File currentFile = new File(TownsAndNations.getPlugin().getDataFolder(),fileName);
+        File currentFile = new File(TownsAndNations.getPlugin().getDataFolder(), fileName);
         if (!currentFile.exists()) {
             TownsAndNations.getPlugin().saveResource(fileName, false);
         }
 
         InputStream baseFile = TownsAndNations.getPlugin().getResource(fileName);
 
-        List<String> baseFileLines = new ArrayList<>();
-        List<String> currentFileLines = new ArrayList<>();
+        List<String> baseFileLines = loadFileAsList(baseFile);
+        List<String> currentFileLines = loadFileAsList(currentFile);
 
-        //Read base file
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(currentFile)))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                currentFileLines.add(line);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        if (baseFileLines != null && currentFileLines != null) {
+            boolean updated = mergeAndPreserveLines(currentFile, baseFileLines, currentFileLines);
 
-        //Read current file
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(baseFile))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                baseFileLines.add(line);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        updateCurrentFileWithBaseFile(currentFile, baseFileLines, currentFileLines);
-    }
-
-
-    /**
-     * Update the current file with the base file. If some lines are missing in the current file, they will be added at the end
-     * @param file              The file to update
-     * @param baseFileLines     The lines of the base file
-     * @param currentFileLines  The lines of the current file
-     */
-    public static void updateCurrentFileWithBaseFile(final @NotNull File file, final @NotNull  List<String> baseFileLines, final @NotNull List<String> currentFileLines) {
-        Map<String, String> currentFileMap = new HashMap<>();
-        for (String line : currentFileLines) {
-            String key = line.contains(":") ? line.split(":")[0].trim() : line;
-            currentFileMap.put(key, line);
-        }
-
-        for (String baseLine : baseFileLines) {
-            String baseKey = baseLine.contains(":") ? baseLine.split(":")[0].trim() : baseLine;
-            if (!currentFileMap.containsKey(baseKey)) {
-                // Add line if not already present
-                TownsAndNations.getPlugin().getPluginLogger().warning("Adding config line : " + baseLine + " in config file");
-                currentFileLines.add(baseLine);
+            if (updated) {
+                TownsAndNations.getPlugin().getPluginLogger().info("The file " + fileName + " has been updated with missing lines.");
+            } else {
+                TownsAndNations.getPlugin().getPluginLogger().info("No updates were necessary for the file " + fileName + ".");
             }
         }
-        writeToFile(currentFileLines, file);
     }
 
     /**
-     * Write a list of lines to complete an updated config file
-     * @param lines         The list of new lines to add to the config file
-     * @param fileToWrite   The file to write
+     * Load a file as a list of lines.
+     * @param file  The input file.
+     * @return      A list of lines, or null if an error occurs.
      */
-    public static void writeToFile(List<String> lines, File fileToWrite) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileToWrite, false))) { // false pour écraser le contenu existant
+    private static List<String> loadFileAsList(InputStream file) {
+        if (file == null) return null;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file))) {
+            List<String> lines = new ArrayList<>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
+            return lines;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static List<String> loadFileAsList(File file) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            List<String> lines = new ArrayList<>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
+            return lines;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Merge the base file lines into the current file lines, preserving order and comments.
+     * @param file              The file to update.
+     * @param baseFileLines     The lines from the base file.
+     * @param actualFileLine  The lines from the current file.
+     * @return                  True if updates were made, false otherwise.
+     */
+    private static boolean mergeAndPreserveLines(File file, List<String> baseFileLines, List<String> actualFileLine) {
+        List<String> mergedLines = new ArrayList<>();
+
+        boolean updated = false;
+        int i = 0;
+        for (String actualLine : actualFileLine) {
+            String baseLine = baseFileLines.get(i);
+            i++;
+            if(i == baseFileLines.size()){
+                break;
+            }
+            if(extractKey(actualLine).equals(extractKey(baseLine))){
+                mergedLines.add(actualLine); //Line existed, keep it
+                continue;
+            }
+            System.out.println("Missing line : " + baseLine);
+            mergedLines.add(baseLine); //Line is new, save it
+            updated = true;
+        }
+        while(i < actualFileLine.size() - 1){
+            mergedLines.add(actualFileLine.get(i)); //Line is new, save it
+            updated = true;
+            i++;
+        }
+
+        if (updated) {
+            writeToFile(mergedLines, file);
+        }
+
+        return updated;
+    }
+
+    /**
+     * Extracts a key from a configuration line.
+     * @param line  The line to process.
+     * @return      The key if found, or null otherwise.
+     */
+    private static String extractKey(String line) {
+        if(line == null)
+            return "";
+        line = line.trim();
+        if (line.isEmpty()) {
+            return "";
+        }
+        if(line.startsWith("#")){
+            return line;
+        }
+        if (line.contains(":")) {
+            return line.split(":")[0].trim();
+        }
+        return "";
+    }
+
+    /**
+     * Write a list of lines to a file.
+     * @param lines         The list of lines to write.
+     * @param fileToWrite   The file to write to.
+     */
+    private static void writeToFile(List<String> lines, File fileToWrite) {
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileToWrite, false))) {
             for (String line : lines) {
                 writer.write(line);
                 writer.newLine();
