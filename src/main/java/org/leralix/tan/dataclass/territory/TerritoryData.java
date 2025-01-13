@@ -129,6 +129,9 @@ public abstract class TerritoryData {
         return isLeader(playerData.getID());
     }
     public abstract boolean isLeader(String playerID);
+    public boolean isLeader(Player player){
+        return isLeader(player.getUniqueId().toString());
+    }
 
     public String getDescription(){
         if(description == null)

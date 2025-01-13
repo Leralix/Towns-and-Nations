@@ -223,10 +223,6 @@ public class TownData extends TerritoryData {
         return getLeaderID().equals(leaderID);
     }
 
-    public boolean isLeader(@NotNull Player player){
-        return isLeader(player.getUniqueId().toString());
-    }
-
 
 
 

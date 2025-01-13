@@ -56,7 +56,7 @@ public enum RolePermission {
         ItemStack itemStack = HeadUtils.createCustomItemStack(material, description,(rankData.hasPermission(this)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);
-            if(!territoryData.getRank(player).hasPermission(this)) {
+            if(!territoryData.getRank(player).hasPermission(this) && !territoryData.isLeader(player)) {
                 player.sendMessage(ChatUtils.getTANString() + Lang.ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT.get());
                 SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                 return;
