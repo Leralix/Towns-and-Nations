@@ -7,7 +7,7 @@ language:
   #Common errors
   PLAYER_NO_TOWN: "§c你没有一个城镇"
   PLAYER_NO_REGION: "§cYou do not have a region"
-  TOWN_NO_REGION: "§cYour town does not belongs to a region"
+  TOWN_NO_REGION: "§c你的城镇不属于任何地区"
   PLAYER_NOT_LEADER_OF_REGION: "§c你需要是该地区的领导才能执行此操作"
   PLAYER_NO_PERMISSION: "§c你没有权限执行此命令"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§c你没有权限对排名高于或等于你的人执行此操作"
@@ -170,6 +170,8 @@ language:
   DEBUG_CREATE_BACKUP: "Create a backup of the plugin data."
   DEBUG_GET_COLOR_CODE: "Get a sample of the plugin color code"
   DEBUG_SKIP_DAY: "Collect every taxes and salary for a day"
+  DEBUG_SEND_REPORT: "Create a report to send to the developer for debugging"
+  DEBUG_REPORT_CREATED: "Report has been created. You can find him in /plugins/TownsAndNations/reports"
   #SUDO command
   SUDO_PLAYER_ADDED: "§3{0}§f is now on sudo mode"
   SUDO_PLAYER_REMOVED: "§3{0}§f has been removed from sudo mode"
@@ -187,7 +189,7 @@ language:
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aYou successfully retrieved §6{0}{MONEY_CHAR}§a from the town"
   TOWN_SET_TAX_SUCCESS: "§aYou successfully set the tax to §6{0}{MONEY_CHAR}"
   TOWN_SET_RATE_SUCCESS: "§aYou successfully set the rate to §6{0}%"
-  PLAYER_SEND_MONEY_SUCCESS: "You sent §6{0}{MONEY_CHAR}§f to {1}"
+  PLAYER_SEND_MONEY_SUCCESS: "§fYou sent §6{0}{MONEY_CHAR}§f to {1}"
   PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY: "Right click 2 blocs to create your private property"
   PLAYER_FIRST_POINT_SET: "First point set in §9{0}"
   PLAYER_SECOND_POINT_SET: "Second point set in §9{0}"
@@ -808,7 +810,7 @@ language:
   SIGN_SALE_PRICE: "Price: {0}{MONEY_CHAR}"
   SIGN_RENT: "出租"
   SIGN_RENT_PRICE: "Rent: {0}{MONEY_CHAR}/day"
-  SIGN_RENTED_BY: "Rented by:"
+  SIGN_RENTED_BY: "租赁者："
   SIGN_NOT_FOR_SALE: "不出售"
   #PlaceHolderAPI
   NO_TOWN: "没有城镇"
@@ -908,6 +910,8 @@ language:
   MAP_CLAIM_TYPE: "    申请类型："
   MAP_TOWN: "    §9[城镇]"
   MAP_REGION: "    §b[区域]"
+  CLAIM_BUTTON: "    §a[Claim]"
+  UNCLAIM_BUTTON: "    §c[Unclaim]"
   #Reload
   RELOAD_SUCCESS: "§a配置已重新加载"
   #Diplomatic relations

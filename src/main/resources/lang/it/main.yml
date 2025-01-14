@@ -7,7 +7,7 @@ language:
   #Common errors
   PLAYER_NO_TOWN: "§cNon fai parte di una città"
   PLAYER_NO_REGION: "§cYou do not have a region"
-  TOWN_NO_REGION: "§cYour town does not belongs to a region"
+  TOWN_NO_REGION: "§cLa tua città non appartiene a una regione"
   PLAYER_NOT_LEADER_OF_REGION: "§cDevi essere il leader della regione per eseguire quest'azione"
   PLAYER_NO_PERMISSION: "§cNon hai il permesso di eseguire questo comando"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cNon hai il permesso di eseguire quest'azione su un tuo superiore o pari"
@@ -72,7 +72,7 @@ language:
   CANCELLED_ACTION: "§cAction cancelled"
   #Cancel
   CANCEL_WORD: "cancel" #The cancel word can be modified
-  WRITE_CANCEL_TO_CANCEL: "Write §c{0}§f in the chat to cancel"
+  WRITE_CANCEL_TO_CANCEL: "§fWrite §c{0}§f in the chat to cancel"
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f asked to join the town. You can find the application in the members menu"
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "You successfully asked to join the town: §9{0}§f. Right click on the town to cancel"
@@ -170,6 +170,8 @@ language:
   DEBUG_CREATE_BACKUP: "Create a backup of the plugin data."
   DEBUG_GET_COLOR_CODE: "Get a sample of the plugin color code"
   DEBUG_SKIP_DAY: "Collect every taxes and salary for a day"
+  DEBUG_SEND_REPORT: "Create a report to send to the developer for debugging"
+  DEBUG_REPORT_CREATED: "Report has been created. You can find him in /plugins/TownsAndNations/reports"
   #SUDO command
   SUDO_PLAYER_ADDED: "§3{0}§f is now on sudo mode"
   SUDO_PLAYER_REMOVED: "§3{0}§f has been removed from sudo mode"
@@ -187,7 +189,7 @@ language:
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aYou successfully retrieved §6{0}{MONEY_CHAR}§a from the town"
   TOWN_SET_TAX_SUCCESS: "§aYou successfully set the tax to §6{0}{MONEY_CHAR}"
   TOWN_SET_RATE_SUCCESS: "§aYou successfully set the rate to §6{0}%"
-  PLAYER_SEND_MONEY_SUCCESS: "You sent §6{0}{MONEY_CHAR}§f to {1}"
+  PLAYER_SEND_MONEY_SUCCESS: "§fYou sent §6{0}{MONEY_CHAR}§f to {1}"
   PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY: "Right click 2 blocs to create your private property"
   PLAYER_FIRST_POINT_SET: "First point set in §9{0}"
   PLAYER_SECOND_POINT_SET: "Second point set in §9{0}"
@@ -908,6 +910,8 @@ language:
   MAP_CLAIM_TYPE: "    Type of claims : "
   MAP_TOWN: "    §9[Town]"
   MAP_REGION: "    §b[Region]"
+  CLAIM_BUTTON: "    §a[Claim]"
+  UNCLAIM_BUTTON: "    §c[Unclaim]"
   #Reload
   RELOAD_SUCCESS: "§aConfiguration reloaded"
   #Diplomatic relations

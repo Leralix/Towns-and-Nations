@@ -7,7 +7,7 @@ language:
   #Common errors
   PLAYER_NO_TOWN: "§cDu bist keiner Stadt zugeordnet"
   PLAYER_NO_REGION: "§cYou do not have a region"
-  TOWN_NO_REGION: "§cYour town does not belongs to a region"
+  TOWN_NO_REGION: "§cDeine Stadt gehört zu keiner Region"
   PLAYER_NOT_LEADER_OF_REGION: "§cDu musst der Leader dieser Region sein, um dies zu können"
   PLAYER_NO_PERMISSION: "§cDu hast nicht die Berechtigung dafür"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cDu hast nicht die Berechtigung, diese Aktion an einem höheren oder deinem eigenen Rang durchzuführen"
@@ -170,6 +170,8 @@ language:
   DEBUG_CREATE_BACKUP: "Erstelle eine Sicherung der Plugin-Daten."
   DEBUG_GET_COLOR_CODE: "Ein Beispiel für den Farbcode des Plugins erhalten"
   DEBUG_SKIP_DAY: "Sammle für einen Tag alle Steuern und Gehälter"
+  DEBUG_SEND_REPORT: "Create a report to send to the developer for debugging"
+  DEBUG_REPORT_CREATED: "Report has been created. You can find him in /plugins/TownsAndNations/reports"
   #SUDO command
   SUDO_PLAYER_ADDED: "§3{0}§f ist jetzt im Sudo-Modus"
   SUDO_PLAYER_REMOVED: "§3{0}§f wurde aus dem Sudo-Modus entfernt"
@@ -908,6 +910,8 @@ language:
   MAP_CLAIM_TYPE: "    Type of claims : "
   MAP_TOWN: "    §9[Town]"
   MAP_REGION: "    §b[Region]"
+  CLAIM_BUTTON: "    §a[Claim]"
+  UNCLAIM_BUTTON: "    §c[Unclaim]"
   #Reload
   RELOAD_SUCCESS: "§aConfiguration reloaded"
   #Diplomatic relations

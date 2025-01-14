@@ -34,14 +34,14 @@ public class GuiUtil {
         Map<String,Integer> benefits = townData.getLevel().getTotalBenefits();
 
         for(Map.Entry<String,Integer> entry : benefits.entrySet()){
-            String value_ID = entry.getKey();
+            String valueId = entry.getKey();
             Integer value = entry.getValue();
             String line;
             if(value > 0){
-                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(DynamicLang.get(value_ID), value);
+                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(DynamicLang.get(valueId), value);
             }
             else {
-                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(DynamicLang.get(value_ID), value);
+                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(DynamicLang.get(valueId), value);
             }
             lore.add(line);
         }

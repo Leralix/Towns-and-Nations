@@ -7,7 +7,7 @@ language:
   #Common errors
   PLAYER_NO_TOWN: "§cNemáte město"
   PLAYER_NO_REGION: "§cYou do not have a region"
-  TOWN_NO_REGION: "§cYour town does not belongs to a region"
+  TOWN_NO_REGION: "§cVaše město nepatří do žádného regionu"
   PLAYER_NOT_LEADER_OF_REGION: "§cPro tuto akci musíte být vůdcem regionu"
   PLAYER_NO_PERMISSION: "§cNemáte oprávnění k provedení tohoto příkazu"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cNemáte oprávnění provést tuto akci na hráči s vyšším nebo stejným hodnocením"
@@ -170,6 +170,8 @@ language:
   DEBUG_CREATE_BACKUP: "Vytvořit zálohu dat pluginu."
   DEBUG_GET_COLOR_CODE: "Získat ukázku kódů pro barvy pluginu"
   DEBUG_SKIP_DAY: "Shromáždit všechny daně a platy za den"
+  DEBUG_SEND_REPORT: "Create a report to send to the developer for debugging"
+  DEBUG_REPORT_CREATED: "Report has been created. You can find him in /plugins/TownsAndNations/reports"
   #SUDO command
   SUDO_PLAYER_ADDED: "§3{0}§f je nyní v sudo režimu"
   SUDO_PLAYER_REMOVED: "§3{0}§f byl odebrán ze sudo režimu"
@@ -808,7 +810,7 @@ language:
   SIGN_SALE_PRICE: "Cena: {0}{MONEY_CHAR}"
   SIGN_RENT: "K pronájmu"
   SIGN_RENT_PRICE: "Pronájem: {0}{MONEY_CHAR}/den"
-  SIGN_RENTED_BY: "Rented by:"
+  SIGN_RENTED_BY: "Pronajato:"
   SIGN_NOT_FOR_SALE: "Není na prodej"
   #PlaceHolderAPI
   NO_TOWN: "Žádné město"
@@ -908,6 +910,8 @@ language:
   MAP_CLAIM_TYPE: "    Typ přivlastnění: "
   MAP_TOWN: "    §9[Město]"
   MAP_REGION: "    §b[Region]"
+  CLAIM_BUTTON: "    §a[Claim]"
+  UNCLAIM_BUTTON: "    §c[Unclaim]"
   #Reload
   RELOAD_SUCCESS: "§aKonfigurace byla znovu načtena"
   #Diplomatic relations

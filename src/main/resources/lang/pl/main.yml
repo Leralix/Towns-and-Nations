@@ -7,7 +7,7 @@ language:
   #Common errors
   PLAYER_NO_TOWN: "§cNie masz swojego miasta"
   PLAYER_NO_REGION: "§cYou do not have a region"
-  TOWN_NO_REGION: "§cYour town does not belongs to a region"
+  TOWN_NO_REGION: "§cTwoje miasto nie podlega pod region"
   PLAYER_NOT_LEADER_OF_REGION: "§cAby wykonać tę czynność, musisz być przywódcą regionu"
   PLAYER_NO_PERMISSION: "§cNie masz uprawnień, aby wykonać tę komendę!"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cNie masz uprawnień do wykonania tej czynności na wyższej lub równej Ci randze"
@@ -170,6 +170,8 @@ language:
   DEBUG_CREATE_BACKUP: "Stwórz kopię zapasową danych pluginu."
   DEBUG_GET_COLOR_CODE: "Pobierz próbkę kodu koloru pluginu"
   DEBUG_SKIP_DAY: "Zbierz wszystkie podatki i pensję za dzień"
+  DEBUG_SEND_REPORT: "Create a report to send to the developer for debugging"
+  DEBUG_REPORT_CREATED: "Report has been created. You can find him in /plugins/TownsAndNations/reports"
   #SUDO command
   SUDO_PLAYER_ADDED: "§3Gracz {0}§f jest teraz w trybie sudo"
   SUDO_PLAYER_REMOVED: "§3Gracz {0}§f został usunięty z trybu sudo"
@@ -187,7 +189,7 @@ language:
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aYou successfully retrieved §6{0}{MONEY_CHAR}§a from the town"
   TOWN_SET_TAX_SUCCESS: "§aYou successfully set the tax to §6{0}{MONEY_CHAR}"
   TOWN_SET_RATE_SUCCESS: "§aYou successfully set the rate to §6{0}%"
-  PLAYER_SEND_MONEY_SUCCESS: "You sent §6{0}{MONEY_CHAR}§f to {1}"
+  PLAYER_SEND_MONEY_SUCCESS: "§fYou sent §6{0}{MONEY_CHAR}§f to {1}"
   PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY: "Kliknij prawym przyciskiem myszy 2 bloki, aby utworzyć swoją prywatną własność"
   PLAYER_FIRST_POINT_SET: "Pierwszy punkt ustawiony na §9{0}"
   PLAYER_SECOND_POINT_SET: "Drugi punkt ustawiony na §9{0}"
@@ -908,6 +910,8 @@ language:
   MAP_CLAIM_TYPE: "    Type of claims : "
   MAP_TOWN: "    §9[Town]"
   MAP_REGION: "    §b[Region]"
+  CLAIM_BUTTON: "    §a[Claim]"
+  UNCLAIM_BUTTON: "    §c[Unclaim]"
   #Reload
   RELOAD_SUCCESS: "§aConfiguration reloaded"
   #Diplomatic relations

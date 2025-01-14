@@ -50,6 +50,7 @@ public class ConfigUtil {
         File currentFile = new File(TownsAndNations.getPlugin().getDataFolder(), fileName);
         if (!currentFile.exists()) {
             TownsAndNations.getPlugin().saveResource(fileName, false);
+            return;
         }
 
         InputStream baseFile = TownsAndNations.getPlugin().getResource(fileName);

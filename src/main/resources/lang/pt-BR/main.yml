@@ -7,7 +7,7 @@ language:
   #Common errors
   PLAYER_NO_TOWN: "§cVocê não tem uma cidade"
   PLAYER_NO_REGION: "§cYou do not have a region"
-  TOWN_NO_REGION: "§cYour town does not belongs to a region"
+  TOWN_NO_REGION: "§cSua cidade não pertence a uma região"
   PLAYER_NOT_LEADER_OF_REGION: "§cVocê precisa ser o líder da região para executar esta ação"
   PLAYER_NO_PERMISSION: "§cVocê não tem permissão para executar este comando"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cVocê não tem permissão para realizar esta ação em um cargo superior ou igual ao seu"
@@ -170,6 +170,8 @@ language:
   DEBUG_CREATE_BACKUP: "Cria um backup dos dados do plugin"
   DEBUG_GET_COLOR_CODE: "Obtenha uma amostra do código de cor do plugin"
   DEBUG_SKIP_DAY: "Coletar todos os impostos e salários de um dia"
+  DEBUG_SEND_REPORT: "Create a report to send to the developer for debugging"
+  DEBUG_REPORT_CREATED: "Report has been created. You can find him in /plugins/TownsAndNations/reports"
   #SUDO command
   SUDO_PLAYER_ADDED: "§3{0}§f agora está no modo sudo"
   SUDO_PLAYER_REMOVED: "§3{0}§f foi removido do modo sudo"
@@ -187,7 +189,7 @@ language:
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aYou successfully retrieved §6{0}{MONEY_CHAR}§a from the town"
   TOWN_SET_TAX_SUCCESS: "§aYou successfully set the tax to §6{0}{MONEY_CHAR}"
   TOWN_SET_RATE_SUCCESS: "§aYou successfully set the rate to §6{0}%"
-  PLAYER_SEND_MONEY_SUCCESS: "You sent §6{0}{MONEY_CHAR}§f to {1}"
+  PLAYER_SEND_MONEY_SUCCESS: "§fYou sent §6{0}{MONEY_CHAR}§f to {1}"
   PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY: "Clique com o botão direito em 2 blocos para criar sua propriedade privada"
   PLAYER_FIRST_POINT_SET: "Primeiro ponto definido em §9{0}"
   PLAYER_SECOND_POINT_SET: "Segundo ponto definido em §9{0}"
@@ -808,7 +810,7 @@ language:
   SIGN_SALE_PRICE: "Price: {0}{MONEY_CHAR}"
   SIGN_RENT: "Para alugar"
   SIGN_RENT_PRICE: "Rent: {0}{MONEY_CHAR}/day"
-  SIGN_RENTED_BY: "Rented by:"
+  SIGN_RENTED_BY: "Alugado por:"
   SIGN_NOT_FOR_SALE: "Não está à venda"
   #PlaceHolderAPI
   NO_TOWN: "Sem cidade"
@@ -908,6 +910,8 @@ language:
   MAP_CLAIM_TYPE: "    Tipo de claims : "
   MAP_TOWN: "    §9[Cidade]"
   MAP_REGION: "    §b[Região]"
+  CLAIM_BUTTON: "    §a[Claim]"
+  UNCLAIM_BUTTON: "    §c[Unclaim]"
   #Reload
   RELOAD_SUCCESS: "§aConfiguração recarregada"
   #Diplomatic relations

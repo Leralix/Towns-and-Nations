@@ -25,7 +25,7 @@ public class DropChances {
     /**
      * Storing every different rareItem in a map
      */
-    private static final Map<String, RareItem> dropChances = new HashMap<>();
+    private static final Map<String, RareItem> dropChancesData = new HashMap<>();
 
     /**
      * Load the class and fill up the drop chances.
@@ -51,7 +51,7 @@ public class DropChances {
      * @return          The {@link RareItem} dropped from the block or null if the {@link Block} is not giving {@link RareItem}
      */
     public static RareItem getRareItem(Block block) {
-        return dropChances.get(block.getType().name());
+        return dropChancesData.get(block.getType().name());
     }
     /**
      * Get the {@link RareItem} from a {@link Entity}
@@ -67,7 +67,7 @@ public class DropChances {
      * @return              The {@link RareItem} dropped from the block or null if the {@link EntityType} is not giving {@link RareItem}
      */
     public static RareItem getRareItem(EntityType entityType) {
-        return dropChances.get(entityType.name());
+        return dropChancesData.get(entityType.name());
     }
     /**
      * Get the {@link RareItem} from a {@link EntityType}
@@ -75,15 +75,15 @@ public class DropChances {
      * @return          The {@link RareItem} dropped from the block or null if the name is not giving {@link RareItem}
      */
     public static RareItem getRareItem(String name) {
-        return dropChances.get(name);
+        return dropChancesData.get(name);
     }
 
     /**
      * get the map storing every rare items
      * @return the map storing all {@link RareItem}
      */
-    public static Map<String, RareItem> getDropChances() {
-        return dropChances;
+    public static Map<String, RareItem> getDropChancesData() {
+        return dropChancesData;
     }
 
     /**
@@ -98,7 +98,7 @@ public class DropChances {
             return;
         for (String key : confSec.getKeys(false)) {
             int dropChance = config.getInt(section + "." + key);
-            dropChances.put(key, new RareItem(dropChance, item));
+            dropChancesData.put(key, new RareItem(dropChance, item));
         }
     }
 

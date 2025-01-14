@@ -33,7 +33,7 @@ public class GetDropChances extends SubCommand {
     }
     @Override
     public void perform(Player player, String[] args) {
-        player.sendMessage("Drop chances: " + DropChances.getDropChances().keySet());
+        player.sendMessage("Drop chances: " + DropChances.getDropChancesData().keySet());
 
 
     }
