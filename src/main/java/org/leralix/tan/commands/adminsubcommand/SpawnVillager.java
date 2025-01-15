@@ -2,11 +2,11 @@ package org.leralix.tan.commands.adminsubcommand;
 
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.commands.SubCommand;
-import org.leralix.tan.enums.CustomVillagerProfession;
-import org.leralix.tan.utils.ChatUtils;
+import org.leralix.lib.commands.SubCommand;
+import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.VillagerUtil;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.enums.CustomVillagerProfession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,8 +69,8 @@ public class SpawnVillager extends SubCommand {
                 return;
             }
         }
-        player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR.get());
-        player.sendMessage(ChatUtils.getTANString() + getSyntax());
+        player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR.get());
+        player.sendMessage(TanChatUtils.getTANString() + getSyntax());
 
     }
 }

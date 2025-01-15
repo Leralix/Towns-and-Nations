@@ -45,12 +45,17 @@ repositories {
     maven {
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
+    maven {
+        name = "local"
+        url = uri("D:/github/Sphere/SphereLib/build/repo")
+    }
     maven { url 'https://jitpack.io' } //Vault
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://oss.sonatype.org/content/repositories/central' }
 }
 
 dependencies {
+    implementation 'org.leralix:SphereLib:0.1.1'
     compileOnly 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'
     compileOnly 'com.mojang:authlib:4.0.43'
     compileOnly 'net.luckperms:api:5.4'
@@ -60,6 +65,7 @@ dependencies {
     implementation 'org.bstats:bstats-bukkit:3.0.2'
     implementation 'dev.triumphteam:triumph-gui:+'
     implementation 'net.objecthunter:exp4j:0.4.8'
+
 }
 
 def targetJavaVersion = 17

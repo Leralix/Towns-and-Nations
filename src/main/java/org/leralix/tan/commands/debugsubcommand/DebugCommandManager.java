@@ -1,7 +1,7 @@
 package org.leralix.tan.commands.debugsubcommand;
 
-import org.leralix.tan.commands.CommandManager;
-import org.leralix.tan.commands.TanHelpCommand;
+import org.leralix.lib.commands.CommandManager;
+import org.leralix.lib.commands.MainHelpCommand;
 
 public class DebugCommandManager extends CommandManager {
 
@@ -15,7 +15,7 @@ public class DebugCommandManager extends CommandManager {
         addSubCommand(new PlaySound());
         addSubCommand(new ActionBarCommand());
         addSubCommand(new GetDropChances());
-        addSubCommand(new TanHelpCommand(this));
+        addSubCommand(new MainHelpCommand(this));
         addSubCommand(new SendReport());
     }
 

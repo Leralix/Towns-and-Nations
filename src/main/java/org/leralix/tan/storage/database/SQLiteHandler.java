@@ -1,7 +1,8 @@
 package org.leralix.tan.storage.database;
 
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.newhistory.*;
+import org.leralix.tan.dataclass.newhistory.TransactionHistory;
+import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 
 import java.io.File;

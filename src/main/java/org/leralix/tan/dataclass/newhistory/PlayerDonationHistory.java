@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.StringUtil;
+import org.leralix.tan.lang.Lang;
 
 import java.util.UUID;
 

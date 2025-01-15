@@ -2,8 +2,8 @@ package org.leralix.tan.storage;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +14,7 @@ public class CustomItemManager {
     private static final HashMap<String, Integer> customItemsMap = new HashMap<>();
 
     public static void loadCustomItems() {
-        List<Map<?, ?>> customItemsList = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getMapList("customRareItems");
+        List<Map<?, ?>> customItemsList = ConfigUtil.getCustomConfig(ConfigTag.TAN).getMapList("customRareItems");
 
         for (Map<?, ?> itemConfig : customItemsList) {
             String itemName = (String) itemConfig.get("item");

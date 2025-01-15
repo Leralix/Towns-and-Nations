@@ -7,25 +7,23 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.StringUtil;
+import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.SetSpecificTax;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.SoundUtil;
-import org.leralix.tan.utils.StringUtil;
 
 import java.util.UUID;
-
-import static org.leralix.tan.enums.RolePermission.MANAGE_TAXES;
-import static org.leralix.tan.enums.SoundEnum.ADD;
-import static org.leralix.tan.enums.SoundEnum.REMOVE;
-import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class PlayerTaxLine extends ProfitLine{
 
@@ -81,8 +79,8 @@ public class PlayerTaxLine extends ProfitLine{
 
         GuiItem lowerTaxButton = ItemBuilder.from(lowerTax).asGuiItem(event -> {
             event.setCancelled(true);
-            if(!territoryData.doesPlayerHavePermission(playerData, MANAGE_TAXES)) {
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+            if(!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)) {
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
 
@@ -90,10 +88,10 @@ public class PlayerTaxLine extends ProfitLine{
             int amountToRemove = event.isShiftClick() && currentTax > 9 ? 10 : 1;
 
             if(currentTax <= 0){
-                player.sendMessage(getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get());
                 return;
             }
-            SoundUtil.playSound(player, REMOVE);
+            SoundUtil.playSound(player, SoundEnum.REMOVE);
 
             territoryData.addToTax(-amountToRemove);
             PlayerGUI.openTreasury(player, territoryData);
@@ -104,7 +102,7 @@ public class PlayerTaxLine extends ProfitLine{
                 PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.PLAYER_TAX);
             }
             else if(event.isRightClick()){
-                player.sendMessage(getTANString() + Lang.TOWN_SET_TAX_IN_CHAT.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_SET_TAX_IN_CHAT.get());
                 PlayerChatListenerStorage.register(player, new SetSpecificTax(territoryData));
                 player.closeInventory();
             }
@@ -112,15 +110,15 @@ public class PlayerTaxLine extends ProfitLine{
         GuiItem increaseTaxButton = ItemBuilder.from(increaseTax).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if(!territoryData.doesPlayerHavePermission(playerData, MANAGE_TAXES)){
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+            if(!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)){
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
 
             int amountToAdd = event.isShiftClick() ? 10 : 1;
 
             territoryData.addToTax(amountToAdd);
-            SoundUtil.playSound(player, ADD);
+            SoundUtil.playSound(player, SoundEnum.ADD);
             PlayerGUI.openTreasury(player, territoryData);
         });
 

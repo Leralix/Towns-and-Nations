@@ -1,14 +1,12 @@
 package org.leralix.tan.dataclass;
 
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
-import org.leralix.tan.enums.RankEnum;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
+import org.leralix.tan.enums.RankEnum;
 
 import java.util.*;
-
-import static org.leralix.tan.enums.RankEnum.FIVE;
 
 public class RankData {
 
@@ -25,7 +23,7 @@ public class RankData {
     public RankData(int id, String name){
         this.ID = id;
         this.name = name;
-        this.rankEnum = FIVE;
+        this.rankEnum = RankEnum.FIVE;
         this.players = new ArrayList<>();
         this.isPayingTaxes = true;
         this.salary = 0;

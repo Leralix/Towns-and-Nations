@@ -1,7 +1,7 @@
 package org.leralix.tan.commands.debugsubcommand;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.commands.SubCommand;
+import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.utils.DropChances;
 
 import java.util.Collections;

@@ -3,7 +3,7 @@ package org.leralix.tan.commands.debugsubcommand;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
-import org.leralix.tan.commands.SubCommand;
+import org.leralix.lib.commands.SubCommand;
 
 import java.util.ArrayList;
 import java.util.List;

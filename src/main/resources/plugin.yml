@@ -3,6 +3,7 @@ version: '${version}'
 main: org.leralix.tan.TownsAndNations
 api-version: "1.19"
 authors: [ Leralix ]
+depend: [SphereLib]
 softdepend: [Vault, PlaceholderAPI]
 description: A town plugin with roleplay elements
 commands:

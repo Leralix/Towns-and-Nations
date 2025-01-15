@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -13,8 +12,9 @@ import org.leralix.tan.newsletter.news.JoinRegionProposalNL;
 import org.leralix.tan.newsletter.news.Newsletter;
 import org.leralix.tan.newsletter.news.PlayerJoinRequestNL;
 import org.leralix.tan.storage.typeadapter.NewsletterAdapter;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.TownsAndNations;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -127,7 +127,7 @@ public class NewsletterStorage {
 
 
     public static void clearOldNewsletters() {
-        int nbDays = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingNewsletter");
+        int nbDays = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("TimeBeforeClearingNewsletter");
         long currentTime = System.currentTimeMillis() - 1000L * 60 * 60 * 24 * nbDays; // 1 week
         for(List<Newsletter> category : categories.values()) {
             category.removeIf(newsletter -> newsletter.getDate() < currentTime);

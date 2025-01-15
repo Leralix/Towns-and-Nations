@@ -1,8 +1,8 @@
 package org.leralix.tan.storage.typeadapter;
 
 import com.google.gson.*;
-import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
+import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 
 import java.lang.reflect.Type;
 

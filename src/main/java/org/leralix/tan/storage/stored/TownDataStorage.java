@@ -4,6 +4,11 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.entity.Player;
+import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.storage.typeadapter.EnumMapKeyValueDeserializer;
+import org.leralix.tan.storage.typeadapter.IconAdapter;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -11,11 +16,6 @@ import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.enums.ChunkPermissionType;
 import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
-import org.leralix.tan.storage.typeadapter.EnumMapKeyValueDeserializer;
-import org.leralix.tan.storage.typeadapter.IconAdapter;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -143,7 +143,7 @@ public class TownDataStorage {
 
 
     public static boolean isNameUsed(String townName){
-        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",true))
+        if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("AllowNameDuplication",true))
             return false;
         
         for (TownData town : townDataMap.values()){

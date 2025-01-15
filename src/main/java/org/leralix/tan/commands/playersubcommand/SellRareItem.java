@@ -4,16 +4,16 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.commands.SubCommand;
 import org.leralix.tan.storage.CustomItemManager;
-import org.leralix.tan.utils.*;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.CustomNBT;
+import org.leralix.tan.utils.RareItemUtil;
+import org.leralix.tan.lang.Lang;
 
 import java.util.Collections;
 import java.util.List;
-
-import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class SellRareItem extends SubCommand {
     @Override
@@ -35,14 +35,14 @@ public class SellRareItem extends SubCommand {
     @Override
     public void perform(Player player, String[] args){
         if (args.length != 1){
-            player.sendMessage(getTANString() +  Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+            player.sendMessage(TanChatUtils.getTANString() +  Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
             return;
         }
 
         ItemStack itemStack = player.getInventory().getItemInMainHand();
 
         if (itemStack.getType() == Material.AIR){
-            player.sendMessage(getTANString() + Lang.NO_ITEM_IN_HAND.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.NO_ITEM_IN_HAND.get());
             return;
         }
 
@@ -54,7 +54,7 @@ public class SellRareItem extends SubCommand {
             //Basic rare item check
             String rareItemTag = CustomNBT.getCustomStringTag(itemStack, "tanRareItem");
             if(rareItemTag == null){
-                player.sendMessage(getTANString() + Lang.NOT_RARE_ITEM_IN_HAND.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_RARE_ITEM_IN_HAND.get());
                 return;
             }
             value = RareItemUtil.getPrice(rareItemTag);

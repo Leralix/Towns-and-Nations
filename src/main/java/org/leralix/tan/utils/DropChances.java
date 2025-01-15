@@ -10,8 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.dataclass.RareItem;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class DropChances {
     public static void load(){
 
 
-        FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
+        FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.TAN);
 
         if(!config.getBoolean("RARE_RESOURCES_SPAWN", true)){
             return;

@@ -3,26 +3,24 @@ package org.leralix.tan;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.leralix.tan.api.PlaceHolderAPI;
-import org.leralix.tan.api.TanApi;
+import org.leralix.lib.data.PluginVersion;
+import org.leralix.tan.bstat.Metrics;
 import org.leralix.tan.commands.adminsubcommand.AdminCommandManager;
 import org.leralix.tan.commands.debugsubcommand.DebugCommandManager;
 import org.leralix.tan.commands.playersubcommand.PlayerCommandManager;
 import org.leralix.tan.commands.server.ServerCommandManager;
-import org.leralix.tan.dataclass.PluginVersion;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.economy.TanEconomyStandalone;
 import org.leralix.tan.economy.VaultManager;
-import org.leralix.tan.lang.DynamicLang;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.*;
 import org.leralix.tan.listeners.chat.ChatListener;
 import org.leralix.tan.newsletter.NewsletterStorage;
-import org.leralix.tan.storage.*;
+import org.leralix.tan.storage.ClaimBlacklistStorage;
+import org.leralix.tan.storage.CustomItemManager;
+import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.database.SQLiteHandler;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
@@ -31,8 +29,12 @@ import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.utils.CustomNBT;
 import org.leralix.tan.utils.DropChances;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.api.PlaceHolderAPI;
+import org.leralix.tan.api.TanApi;
+import org.leralix.tan.lang.DynamicLang;
+import org.leralix.tan.lang.Lang;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -114,9 +116,9 @@ public final class TownsAndNations extends JavaPlugin {
 
         logger.log(Level.INFO,"[TaN] -Loading Lang");
 
-        ConfigUtil.saveAndUpdateResource("lang.yml");
-        ConfigUtil.addCustomConfig("lang.yml", ConfigTag.LANG);
-        String lang = ConfigUtil.getCustomConfig(ConfigTag.LANG).getString("language");
+        ConfigUtil.saveAndUpdateResource(this, "lang.yml");
+        ConfigUtil.addCustomConfig(this, "lang.yml", ConfigTag.TAN_LANG);
+        String lang = ConfigUtil.getCustomConfig(ConfigTag.TAN_LANG).getString("language");
 
 
         Lang.loadTranslations(lang);
@@ -126,10 +128,10 @@ public final class TownsAndNations extends JavaPlugin {
 
 
         logger.log(Level.INFO, "[TaN] -Loading Configs");
-        ConfigUtil.saveAndUpdateResource("config.yml");
-        ConfigUtil.addCustomConfig("config.yml", ConfigTag.MAIN);
-        ConfigUtil.saveAndUpdateResource("townUpgrades.yml");
-        ConfigUtil.addCustomConfig("townUpgrades.yml", ConfigTag.UPGRADES);
+        ConfigUtil.saveAndUpdateResource(this, "config.yml");
+        ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.TAN);
+        ConfigUtil.saveAndUpdateResource(this, "townUpgrades.yml");
+        ConfigUtil.addCustomConfig(this, "townUpgrades.yml", ConfigTag.TAN_UPGRADE);
 
 
         logger.log(Level.INFO, "[TaN] -Loading Database");
@@ -143,11 +145,10 @@ public final class TownsAndNations extends JavaPlugin {
         DropChances.load();
         UpgradeStorage.init();
         MobChunkSpawnStorage.init();
-        SoundStorage.init();
         CustomItemManager.loadCustomItems();
         ClaimBlacklistStorage.init();
 
-        FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
+        FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.TAN);
         allowColorCodes = mainConfig.getBoolean("EnablePlayerColorCode", false);
         allowTownTag = mainConfig.getBoolean("EnablePlayerPrefix",false);
 
@@ -193,7 +194,7 @@ public final class TownsAndNations extends JavaPlugin {
     }
 
     private void loadDB() {
-        String dbName = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("dbType", "sqlite");
+        String dbName = ConfigUtil.getCustomConfig(ConfigTag.TAN).getString("dbType", "sqlite");
         if(dbName.equalsIgnoreCase("sqlite"))
             databaseHandler = new SQLiteHandler(getDataFolder().getAbsolutePath() + "/database/main.db");
         try {

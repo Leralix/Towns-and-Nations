@@ -12,12 +12,12 @@ import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
-import org.leralix.tan.gui.PlayerGUI;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.gui.PlayerGUI;
+import org.leralix.tan.lang.Lang;
 
 public class LandmarkChestListener implements Listener {
     @EventHandler
@@ -27,8 +27,6 @@ public class LandmarkChestListener implements Listener {
 
         if (clickedBlock != null && (event.getAction() == Action.RIGHT_CLICK_BLOCK)){
             if (clickedBlock.getType() == Material.CHEST) {
-
-
                 if(clickedBlock.hasMetadata("LandmarkChest")){
                     event.setCancelled(true);
                     PlayerData playerData = PlayerDataStorage.get(player);
@@ -46,17 +44,4 @@ public class LandmarkChestListener implements Listener {
         }
     }
 
-    private boolean playerEmbargoWithTown(Player player, Block clickedBlock) {
-        ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.get(clickedBlock.getChunk());
-        PlayerData playerData = PlayerDataStorage.get(player);
-        if(claimedChunk2 != null &&
-                playerData.haveTown() &&
-                claimedChunk2 instanceof TownClaimedChunk townClaimedChunk){
-
-            TownRelation townRelation = townClaimedChunk.getTown().getRelationWith(playerData.getTown());
-
-            return townRelation == TownRelation.EMBARGO || townRelation == TownRelation.WAR;
-        }
-        return false;
-    }
 }

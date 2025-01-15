@@ -1,8 +1,8 @@
 package org.leralix.tan.economy;
 
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
 
 public class TanEconomyStandalone extends AbstractTanEcon{
     @Override
@@ -27,6 +27,6 @@ public class TanEconomyStandalone extends AbstractTanEcon{
 
     @Override
     public String getMoneyIcon() {
-        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("moneyIcon");
+        return ConfigUtil.getCustomConfig(ConfigTag.TAN).getString("moneyIcon");
     }
 }

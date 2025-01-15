@@ -4,17 +4,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.storage.CurrentAttacksStorage;
+import org.leralix.tan.storage.invitation.TownInviteDataStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.storage.CurrentAttacksStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.storage.invitation.TownInviteDataStorage;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
+import org.leralix.tan.dataclass.territory.RegionData;
 
 import java.util.*;
 
@@ -33,7 +33,7 @@ public class PlayerData {
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
         this.storedName = player.getName();
-        this.Balance = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("StartingMoney");
+        this.Balance = ConfigUtil.getCustomConfig(ConfigTag.TAN).getDouble("StartingMoney");
         this.TownId = null;
         this.townRankID = null;
         this.regionRankID = null;

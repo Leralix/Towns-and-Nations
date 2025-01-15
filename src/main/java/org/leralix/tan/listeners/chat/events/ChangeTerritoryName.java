@@ -3,15 +3,14 @@ package org.leralix.tan.listeners.chat.events;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
-import org.leralix.tan.utils.ChatUtils;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
+import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.lang.Lang;
 
 import java.util.function.Consumer;
-
-import static org.leralix.tan.listeners.chat.PlayerChatListenerStorage.removePlayer;
 
 public class ChangeTerritoryName extends ChatListenerEvent {
 
@@ -27,14 +26,14 @@ public class ChangeTerritoryName extends ChatListenerEvent {
     @Override
     public void execute(Player player, String message) {
 
-        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownNameSize");
+        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("TownNameSize");
 
         if(message.length() > maxSize){
-            player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
+            player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
             return;
         }
 
-        removePlayer(player);
+        PlayerChatListenerStorage.removePlayer(player);
         territoryToRename.rename(player, cost, message);
         openGui(guiCallback, player);
     }

@@ -368,26 +368,6 @@ wildernessRules:
   USE_BONE_MEAL: true
   INTERACT_BERRIES: true
 
-########################
-##       Sounds       ##
-########################
-enableSounds: true
-#1 - Sound name
-#2 - Volume
-#3 - Pitch
-sounds:
-  LEVEL_UP: [ "ENTITY_PLAYER_LEVELUP", "1", "1" ]
-  MINOR_LEVEL_UP: [ "ENTITY_PLAYER_LEVELUP", "1", "6" ]
-  ADD: [ "BLOCK_NOTE_BLOCK_HAT", "1", "8" ]
-  REMOVE: [ "BLOCK_NOTE_BLOCK_HAT", "1", "6" ]
-  NOT_ALLOWED: [ "BLOCK_NOTE_BLOCK_HAT", "1", "2" ]
-  WAR: [ "ITEM_GOAT_HORN_SOUND_0", "1", "1" ]
-  GOOD: [ "ENTITY_EXPERIENCE_ORB_PICKUP", "1", "1.7" ]
-  MINOR_GOOD: [ "BLOCK_AMETHYST_BLOCK_BREAK", "1", "1" ]
-  BAD: [ "BLOCK_BELL_USE", "1", "1.5" ]
-  MINOR_BAD: [ "ENTITY_SLIME_ATTACK", "1", "6" ]
-  WRITE: [ "UI_CARTOGRAPHY_TABLE_TAKE_RESULT", "1", "1" ]
-
 
 ########################
 ##     Newsletter     ##

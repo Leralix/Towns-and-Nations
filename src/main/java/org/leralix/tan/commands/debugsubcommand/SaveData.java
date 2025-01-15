@@ -1,11 +1,11 @@
 package org.leralix.tan.commands.debugsubcommand;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.commands.SubCommand;
+import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.ChatUtils;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.lang.Lang;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,6 +38,6 @@ public class SaveData extends SubCommand {
     public void perform(Player player, String[] args) {
         TownDataStorage.saveStats();
         PlayerDataStorage.saveStats();
-        player.sendMessage(ChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
+        player.sendMessage(TanChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
 }

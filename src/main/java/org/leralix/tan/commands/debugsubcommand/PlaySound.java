@@ -1,13 +1,13 @@
 package org.leralix.tan.commands.debugsubcommand;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.commands.SubCommand;
-import org.leralix.tan.utils.SoundUtil;
+import org.leralix.lib.commands.SubCommand;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.leralix.tan.enums.SoundEnum.*;
 
 public class PlaySound extends SubCommand {
 
@@ -51,34 +51,34 @@ public class PlaySound extends SubCommand {
             return;
 
         if (args[1].equalsIgnoreCase("levelup")) {
-            SoundUtil.playSound(player, LEVEL_UP);
+            SoundUtil.playSound(player, SoundEnum.LEVEL_UP);
         }
         if (args[1].equalsIgnoreCase("minorlevelup")) {
-            SoundUtil.playSound(player, MINOR_LEVEL_UP);
+            SoundUtil.playSound(player, SoundEnum.MINOR_LEVEL_UP);
         }
         else if (args[1].equalsIgnoreCase("add")) {
-            SoundUtil.playSound(player, ADD);
+            SoundUtil.playSound(player, SoundEnum.ADD);
         }
         else if (args[1].equalsIgnoreCase("remove")) {
-            SoundUtil.playSound(player, REMOVE);
+            SoundUtil.playSound(player, SoundEnum.REMOVE);
         }
         else if (args[1].equalsIgnoreCase("notallowed")) {
-            SoundUtil.playSound(player, NOT_ALLOWED);
+            SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
         }
         else if (args[1].equalsIgnoreCase("war")) {
-            SoundUtil.playSound(player, WAR);
+            SoundUtil.playSound(player, SoundEnum.WAR);
         }
         else if (args[1].equalsIgnoreCase("good")) {
-            SoundUtil.playSound(player, GOOD);
+            SoundUtil.playSound(player, SoundEnum.GOOD);
         }
         else if (args[1].equalsIgnoreCase("minorgood")) {
-            SoundUtil.playSound(player, MINOR_GOOD);
+            SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
         }
         else if (args[1].equalsIgnoreCase("bad")) {
-            SoundUtil.playSound(player, BAD);
+            SoundUtil.playSound(player, SoundEnum.BAD);
         }
         else if (args[1].equalsIgnoreCase("minorbad")) {
-            SoundUtil.playSound(player, MINOR_BAD);
+            SoundUtil.playSound(player, SoundEnum.MINOR_BAD);
         }
 
 

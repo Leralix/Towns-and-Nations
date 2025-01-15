@@ -13,12 +13,12 @@ import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
-import org.leralix.tan.gui.PlayerGUI;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.gui.PlayerGUI;
+import org.leralix.tan.lang.Lang;
 
 public class PropertySignListener implements Listener {
     @EventHandler

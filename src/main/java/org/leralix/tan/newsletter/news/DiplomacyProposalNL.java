@@ -7,14 +7,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.gui.PlayerGUI;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.newsletter.NewsletterScope;
-import org.leralix.tan.newsletter.NewsletterType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.gui.PlayerGUI;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.newsletter.NewsletterType;
 
 import java.util.function.Consumer;
 

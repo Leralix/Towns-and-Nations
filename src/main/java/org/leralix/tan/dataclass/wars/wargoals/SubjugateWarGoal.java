@@ -4,10 +4,10 @@ import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.lang.Lang;
 
 import java.util.function.Consumer;
 

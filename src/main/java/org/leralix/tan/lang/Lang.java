@@ -2,10 +2,10 @@ package org.leralix.tan.lang;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
 
 import java.io.File;
 import java.util.EnumMap;
@@ -909,7 +909,7 @@ public enum Lang {
 
         File file = new File(specificLangFolder, "main.yml");
 
-        boolean replace = ConfigUtil.getCustomConfig(ConfigTag.LANG).getBoolean("autoUpdateLangFiles",true);
+        boolean replace = ConfigUtil.getCustomConfig(ConfigTag.TAN_LANG).getBoolean("autoUpdateLangFiles",true);
 
 
         if(!file.exists() || replace) {

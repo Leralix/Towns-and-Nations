@@ -5,20 +5,19 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.SoundEnum;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.SoundUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class TownUpgrade {
     private final String name;
@@ -166,7 +165,7 @@ public class TownUpgrade {
         return ItemBuilder.from(upgradeItemStack).asGuiItem(event -> {
             event.setCancelled(true);
             if(!isPrerequisiteMet(townLevel)){
-                player.sendMessage(getTANString() + Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.get());
                 SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             }
             townData.upgradeTown(player,this,townUpgradeLevel);

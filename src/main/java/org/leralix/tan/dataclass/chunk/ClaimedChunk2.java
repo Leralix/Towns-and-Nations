@@ -9,15 +9,14 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.ChunkPermissionType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.enums.ChunkPermissionType;
+import org.leralix.tan.lang.Lang;
 
 import java.util.Objects;
 import java.util.UUID;
-
-import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public abstract class ClaimedChunk2 {
 
@@ -70,8 +69,8 @@ public abstract class ClaimedChunk2 {
     public abstract boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location);
 
     void playerCantPerformAction(Player player){
-        player.sendMessage(getTANString() + Lang.PLAYER_ACTION_NO_PERMISSION.get());
-        player.sendMessage(getTANString() + Lang.CHUNK_BELONGS_TO.get(getOwner().getName()));
+        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_ACTION_NO_PERMISSION.get());
+        player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_BELONGS_TO.get(getOwner().getName()));
     }
 
     public abstract void unclaimChunk(Player player);

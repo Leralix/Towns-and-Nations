@@ -9,8 +9,10 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.ClaimedChunkSettings;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -20,7 +22,6 @@ import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.enums.RolePermission;
-import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
@@ -29,8 +30,6 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.*;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
 
 import java.util.*;
 
@@ -42,7 +41,6 @@ public class RegionData extends TerritoryData {
     private String capitalID;
     private String nationID;
     private final Long regionDateTimeCreated;
-    private Double taxRate;
     private Double balance;
     private final List<String> townsInRegion;
 
@@ -56,7 +54,7 @@ public class RegionData extends TerritoryData {
         this.capitalID = ownerTown.getID();
         this.regionDateTimeCreated = new Date().getTime();
         this.nationID = null;
-        this.taxRate = 1.0;
+        Double taxRate = 1.0;
         this.balance = 0.0;
         this.townsInRegion = new ArrayList<>();
         this.townsInRegion.add(ownerTown.getID());
@@ -193,19 +191,19 @@ public class RegionData extends TerritoryData {
         RegionData regionData = townData.getRegion(); //TODO : Does regionData is usefull ?
 
         if(ClaimBlacklistStorage.cannotBeClaimed(chunk)){
-            player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
             return Optional.empty();
         }
 
 
         if(!regionData.doesPlayerHavePermission(playerData, RolePermission.CLAIM_CHUNK)){
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return Optional.empty();
         }
-        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfRegionChunk",5);
+        int cost = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("CostOfRegionChunk",5);
 
         if(regionData.getBalance() < cost){
-            player.sendMessage(ChatUtils.getTANString() + Lang.REGION_NOT_ENOUGH_MONEY_EXTENDED.get(cost - regionData.getBalance()));
+            player.sendMessage(TanChatUtils.getTANString() + Lang.REGION_NOT_ENOUGH_MONEY_EXTENDED.get(cost - regionData.getBalance()));
             return Optional.empty();
         }
 
@@ -216,7 +214,7 @@ public class RegionData extends TerritoryData {
 
         regionData.removeFromBalance(cost);
         NewClaimedChunkStorage.claimRegionChunk(chunk, regionData.getID());
-        player.sendMessage(ChatUtils.getTANString() + Lang.CHUNK_CLAIMED_SUCCESS_REGION.get());
+        player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_CLAIMED_SUCCESS_REGION.get());
         return Optional.of(NewClaimedChunkStorage.get(chunk));
     }
 
@@ -227,11 +225,6 @@ public class RegionData extends TerritoryData {
     @Override
     public TerritoryData getOverlord() {
         return null;
-    }
-
-    @Override
-    public Double getOldTax() {
-        return taxRate;
     }
 
     public List<TerritoryData> getSubjects() {
@@ -308,7 +301,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     public double getChunkUpkeepCost() {
-        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("RegionChunkUpkeepCost",0);
+        return ConfigUtil.getCustomConfig(ConfigTag.TAN).getDouble("RegionChunkUpkeepCost",0);
     }
 
     public boolean isPlayerInRegion(PlayerData playerData) {

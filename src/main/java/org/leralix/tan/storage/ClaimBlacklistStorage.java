@@ -2,8 +2,8 @@ package org.leralix.tan.storage;
 
 import org.bukkit.Chunk;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +20,7 @@ public class ClaimBlacklistStorage {
 
     public static void init() {
         blacklist = new ArrayList<>();
-        FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
+        FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.TAN);
         for (Object item : config.getList("claimBlacklist", Collections.emptyList())){
             if (item instanceof Map<?, ?> map) {
                 String name = (String) map.get("name");

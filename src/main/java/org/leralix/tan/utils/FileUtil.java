@@ -1,8 +1,8 @@
 package org.leralix.tan.utils;
 
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,7 +18,7 @@ public class FileUtil {
     }
     public static void addLineToHistory(final String lineToAdd) {
 
-        if(!ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("archiveHistory",true)) {
+        if(!ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("archiveHistory",true)) {
             return;
         }
 

@@ -4,10 +4,10 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
+import org.leralix.tan.dataclass.PlayerData;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +35,7 @@ public class TanEconomyVault extends TanEconomyStandalone implements Economy {
 
     @Override
     public int fractionalDigits() {
-        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("DecimalDigits");
+        return ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("DecimalDigits");
     }
 
     @Override
@@ -45,12 +45,12 @@ public class TanEconomyVault extends TanEconomyStandalone implements Economy {
 
     @Override
     public String currencyNamePlural() {
-        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("moneyIcon");
+        return ConfigUtil.getCustomConfig(ConfigTag.TAN).getString("moneyIcon");
     }
 
     @Override
     public String currencyNameSingular() {
-        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("moneyIcon");
+        return ConfigUtil.getCustomConfig(ConfigTag.TAN).getString("moneyIcon");
     }
 
     @Override

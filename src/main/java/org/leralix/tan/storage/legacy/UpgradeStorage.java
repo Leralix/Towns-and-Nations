@@ -2,9 +2,9 @@ package org.leralix.tan.storage.legacy;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.TownUpgrade;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ public class UpgradeStorage {
     private static final HashMap<String, TownUpgrade> UpgradeMap = new HashMap<>();
 
     public static void init() {
-        FileConfiguration upgradeConfig = ConfigUtil.getCustomConfig(ConfigTag.UPGRADES);
+        FileConfiguration upgradeConfig = ConfigUtil.getCustomConfig(ConfigTag.TAN_UPGRADE);
         ConfigurationSection upgradesSection = upgradeConfig.getConfigurationSection("upgrades");
 
         if (upgradesSection != null) {

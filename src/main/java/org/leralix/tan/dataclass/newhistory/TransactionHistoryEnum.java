@@ -1,7 +1,5 @@
 package org.leralix.tan.dataclass.newhistory;
 
-import org.leralix.tan.dataclass.PropertyBuyTaxTransaction;
-
 public enum TransactionHistoryEnum {
     CHUNK_SPENDING,
     MISCELLANEOUS,

@@ -2,7 +2,6 @@ package org.leralix.tan.dataclass.territory.permission;
 
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
 
 import java.util.ArrayList;
 import java.util.Collection;

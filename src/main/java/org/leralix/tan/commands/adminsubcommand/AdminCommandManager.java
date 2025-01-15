@@ -1,7 +1,7 @@
 package org.leralix.tan.commands.adminsubcommand;
 
-import org.leralix.tan.commands.CommandManager;
-import org.leralix.tan.commands.TanHelpCommand;
+import org.leralix.lib.commands.CommandManager;
+import org.leralix.lib.commands.MainHelpCommand;
 
 public class AdminCommandManager extends CommandManager {
 
@@ -15,7 +15,7 @@ public class AdminCommandManager extends CommandManager {
         addSubCommand(new UnclaimAdminCommand());
         addSubCommand(new OpenAdminGUI());
         addSubCommand(new SudoPlayer());
-        addSubCommand(new TanHelpCommand(this));
+        addSubCommand(new MainHelpCommand(this));
     }
 
     @Override

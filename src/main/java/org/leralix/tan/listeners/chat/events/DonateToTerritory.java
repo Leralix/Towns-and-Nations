@@ -2,10 +2,10 @@ package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.utils.ChatUtils;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.lang.Lang;
 
 
 public class DonateToTerritory extends ChatListenerEvent {
@@ -22,7 +22,7 @@ public class DonateToTerritory extends ChatListenerEvent {
         PlayerChatListenerStorage.removePlayer(player);
         Double amount = parseStringToDouble(message);
         if (amount == null) {
-            player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
             return;
         }
         territoryToDonate.addDonation(player, amount);

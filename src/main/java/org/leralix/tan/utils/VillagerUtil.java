@@ -32,6 +32,6 @@ public class VillagerUtil {
 
         villager.addScoreboardTag(customProfession.name());
 
-        player.sendMessage(ChatUtils.getTANString() + Lang.CUSTOM_VILLAGER_CREATED_SUCCESS.get());
+        player.sendMessage(TanChatUtils.getTANString() + Lang.CUSTOM_VILLAGER_CREATED_SUCCESS.get());
     }
 }

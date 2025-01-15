@@ -1,14 +1,13 @@
 package org.leralix.tan.commands.debugsubcommand;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.commands.SubCommand;
+import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.utils.ArchiveUtil;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.lang.Lang;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class CreateBackup extends SubCommand {
 
@@ -38,7 +37,7 @@ public class CreateBackup extends SubCommand {
     public void perform(Player player, String[] args) {
 
         ArchiveUtil.archiveFiles();
-        player.sendMessage(getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
+        player.sendMessage(TanChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
 
 }

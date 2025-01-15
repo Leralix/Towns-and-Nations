@@ -8,12 +8,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.ChunkCoordinates;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.wars.AttackSide;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.ProgressBar;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.lang.Lang;
 
 import java.util.ArrayList;
 import java.util.Collection;

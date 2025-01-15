@@ -11,13 +11,12 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.WildernessChunk;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.ChunkType;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.PlayerAutoClaimStorage;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-
-import static org.leralix.tan.utils.ChatUtils.getTANString;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.enums.ChunkType;
+import org.leralix.tan.lang.Lang;
 
 public class PlayerEnterChunkListener implements Listener {
 
@@ -78,14 +77,14 @@ public class PlayerEnterChunkListener implements Listener {
 
         if(chunkType == ChunkType.TOWN) {
             if (!playerStat.haveTown()) {
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
                 return;
             }
             playerStat.getTown().claimChunk(player, nextChunk);
         }
         if(chunkType == ChunkType.REGION) {
             if(!playerStat.haveRegion()){
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_REGION.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_REGION.get());
                 return;
             }
             playerStat.getRegion().claimChunk(player, nextChunk);

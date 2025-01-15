@@ -1,18 +1,17 @@
 package org.leralix.tan.dataclass;
 
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.TerritoryUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.utils.TerritoryUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class RelationData {
 
@@ -88,7 +87,7 @@ public class RelationData {
 
                 otherTerritoryData.getRelations().removeAllRelationWith(territoryData.getID());
                 otherTerritoryData.broadCastMessageWithSound(
-                        getTANString() + Lang.WARNING_OTHER_TOWN_HAS_BEEN_DELETED.get(territoryData.getColoredName(),relation.getColoredName()),
+                        TanChatUtils.getTANString() + Lang.WARNING_OTHER_TOWN_HAS_BEEN_DELETED.get(territoryData.getColoredName(),relation.getColoredName()),
                         SoundEnum.MINOR_BAD
                 );
             }

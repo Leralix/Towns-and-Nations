@@ -10,18 +10,18 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.leralix.tan.TownsAndNations;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.territory.StrongholdData;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.ProgressBar;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
+import org.leralix.tan.dataclass.territory.StrongholdData;
+import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.lang.Lang;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -47,7 +47,7 @@ public class CurrentAttack {
         this.attackers = attackers;
         this.defenders = defenders;
         this.originalTitle = "War start";
-        long warDuration = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("WarDuration");
+        long warDuration = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("WarDuration");
         this.remainingTime = warDuration * 60 * 20;
         this.warGoal = warGoal;
 
@@ -128,7 +128,7 @@ public class CurrentAttack {
         if(nbAttackers == 0){
             return;
         }
-        double multiplier = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("warScoreMultiplier");
+        double multiplier = ConfigUtil.getCustomConfig(ConfigTag.TAN).getDouble("warScoreMultiplier");
         int deltaScore = (int) (multiplier / nbAttackers * 500);
         addScore(-deltaScore);
         sendChatMessage("Attacking player killed !");
@@ -139,7 +139,7 @@ public class CurrentAttack {
         if (nbDefenders == 0) {
             return;
         }
-        double multiplier = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("warScoreMultiplier");
+        double multiplier = ConfigUtil.getCustomConfig(ConfigTag.TAN).getDouble("warScoreMultiplier");
         int deltaScore = (int) (multiplier / nbDefenders * 500);
         addScore(deltaScore);
         sendChatMessage("Defensive player killed!");

@@ -1,6 +1,5 @@
 package org.leralix.tan.dataclass.newhistory;
 
-import dev.triumphteam.gui.guis.GuiItem;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.utils.TerritoryUtil;

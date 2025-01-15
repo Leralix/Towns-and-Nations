@@ -5,19 +5,19 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.territory.StrongholdData;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
 import org.leralix.tan.utils.DateUtil;
 import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.dataclass.territory.StrongholdData;
+import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
+import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.TownsAndNations;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,7 +45,7 @@ public class PlannedAttack {
         this.mainAttackerID = createAttackData.getMainAttacker().getID();
         this.mainDefenderID = createAttackData.getMainDefender().getID();
 
-        this.isAdminApproved = !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AdminApproval",false);
+        this.isAdminApproved = !ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("AdminApproval",false);
 
         this.attackersID = new ArrayList<>();
         this.attackersID.add(mainAttackerID);
@@ -53,7 +53,7 @@ public class PlannedAttack {
         this.defendersID.add(mainDefenderID);
 
         this.startTime = (long) (new Date().getTime() * 0.02 + startTime);
-        this.endTime = this.startTime + ConfigUtil.getCustomConfig(ConfigTag.MAIN).getLong("WarDuration") * 1200;
+        this.endTime = this.startTime + ConfigUtil.getCustomConfig(ConfigTag.TAN).getLong("WarDuration") * 1200;
 
         createAttackData.getMainDefender().addPlannedAttack(this);
         createAttackData.getMainAttacker().addPlannedAttack(this);

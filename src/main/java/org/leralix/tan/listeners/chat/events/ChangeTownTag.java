@@ -2,15 +2,14 @@ package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
-import org.leralix.tan.utils.ChatUtils;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 
 import java.util.function.Consumer;
-
-import static org.leralix.tan.listeners.chat.PlayerChatListenerStorage.removePlayer;
 
 public class ChangeTownTag extends ChatListenerEvent {
 
@@ -24,15 +23,15 @@ public class ChangeTownTag extends ChatListenerEvent {
     @Override
     public void execute(Player player, String message) {
 
-        int size = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize");
+        int size = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("prefixSize");
         if(message.length() != size){
-            player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_NOT_RIGHT_SIZE.get(size));
+            player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_NOT_RIGHT_SIZE.get(size));
             return;
         }
 
         townData.setTownTag(message);
-        player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
-        removePlayer(player);
+        player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
+        PlayerChatListenerStorage.removePlayer(player);
         openGui(guiCallback, player);
 
     }

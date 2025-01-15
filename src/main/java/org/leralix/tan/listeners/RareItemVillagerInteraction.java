@@ -7,12 +7,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.CustomVillagerProfession;
-import org.leralix.tan.utils.ChatUtils;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.enums.CustomVillagerProfession;
+import org.leralix.tan.lang.Lang;
 
 import java.util.Set;
 
@@ -33,7 +33,7 @@ public class RareItemVillagerInteraction implements Listener {
             }
 
             if(customProfession == null){
-                if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("removeAllVillagerInteractions", false))
+                if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("removeAllVillagerInteractions", false))
                     event.setCancelled(true);
                 return;
             }
@@ -42,24 +42,24 @@ public class RareItemVillagerInteraction implements Listener {
 
             int price = 0;
             if (customProfession == CustomVillagerProfession.GOLDSMITH ) {
-                price = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("rareStoneValue");
+                price = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("rareStoneValue");
             }
             if (customProfession == CustomVillagerProfession.BOTANIST ) {
-                price = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("rareWoodValue");
+                price = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("rareWoodValue");
             }
             if (customProfession == CustomVillagerProfession.COOK ) {
-                price = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("rareCropsValue");
+                price = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("rareCropsValue");
             }
             if(customProfession == CustomVillagerProfession.WIZARD){
-                price = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("rareSoulValue");
+                price = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("rareSoulValue");
             }
             if(customProfession == CustomVillagerProfession.FISHERMAN){
-                price = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("rareFishValue");
+                price = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("rareFishValue");
             }
 
             ItemStack item = player.getInventory().getItemInMainHand();
             if (item.getItemMeta() == null){
-                player.sendMessage(ChatUtils.getTANString() + Lang.RARE_ITEM_NO_ITEM_IN_HANDS.get(
+                player.sendMessage(TanChatUtils.getTANString() + Lang.RARE_ITEM_NO_ITEM_IN_HANDS.get(
                         customProfession.getBuyingItem().getItemMeta().getDisplayName(),
                         price)
                 );
@@ -78,7 +78,7 @@ public class RareItemVillagerInteraction implements Listener {
 
 
                 player.sendMessage(
-                        ChatUtils.getTANString() +
+                        TanChatUtils.getTANString() +
                         Lang.RARE_ITEM_SELLING_SUCCESS.get(
                                 quantity,
                                 itemName,
@@ -87,7 +87,7 @@ public class RareItemVillagerInteraction implements Listener {
                 );
                 return;
             }
-            player.sendMessage(ChatUtils.getTANString() + Lang.RARE_ITEM_WRONG_ITEM.get(
+            player.sendMessage(TanChatUtils.getTANString() + Lang.RARE_ITEM_WRONG_ITEM.get(
                     customProfession.getBuyingItem().getItemMeta().getDisplayName()
             ));
 

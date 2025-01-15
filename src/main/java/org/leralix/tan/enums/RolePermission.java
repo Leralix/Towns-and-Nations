@@ -5,15 +5,15 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.dataclass.RankData;
-import org.leralix.tan.gui.PlayerGUI;
-import org.leralix.tan.utils.ChatUtils;
+import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.SoundUtil;
-import org.leralix.tan.utils.StringUtil;
 
 public enum RolePermission {
 
@@ -57,7 +57,7 @@ public enum RolePermission {
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);
             if(!territoryData.getRank(player).hasPermission(this) && !territoryData.isLeader(player)) {
-                player.sendMessage(ChatUtils.getTANString() + Lang.ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT.get());
                 SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                 return;
             }

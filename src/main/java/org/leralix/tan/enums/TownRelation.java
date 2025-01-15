@@ -5,7 +5,7 @@ import org.leralix.tan.lang.Lang;
 
 public enum TownRelation {
 
-    SELF(8,Lang.RELATION_CITY_NAME.get(), ChatColor.DARK_GREEN),
+    SELF(8, Lang.RELATION_CITY_NAME.get(), ChatColor.DARK_GREEN),
     OVERLORD(7,Lang.RELATION_OVERLORD_NAME.get(), ChatColor.GREEN),
     VASSAL(6,Lang.RELATION_VASSAL_NAME.get(), ChatColor.DARK_PURPLE),
     ALLIANCE(5,Lang.RELATION_ALLIANCE_NAME.get(), ChatColor.BLUE),

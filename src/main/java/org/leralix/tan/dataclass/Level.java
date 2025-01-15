@@ -4,14 +4,12 @@ import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.leralix.tan.storage.legacy.UpgradeStorage.loadIntoMap;
 
 public class Level {
     private int townLevel;
@@ -22,7 +20,7 @@ public class Level {
     public Level(){
         levelMap = new HashMap<>();
         levelMap.put("townLevel",1);
-        loadIntoMap(levelMap);
+        UpgradeStorage.loadIntoMap(levelMap);
         levelMap.put("CITY_HALL",1);
     }
 
@@ -70,7 +68,7 @@ public class Level {
 
 
     private int getRequiredMoney(int level) {
-        FileConfiguration fg = ConfigUtil.getCustomConfig(ConfigTag.UPGRADES);
+        FileConfiguration fg = ConfigUtil.getCustomConfig(ConfigTag.TAN_UPGRADE);
         ConfigurationSection section = fg.getConfigurationSection("townUpgrades");
 
         String expressionString = section.getString("TownLevelExpression");

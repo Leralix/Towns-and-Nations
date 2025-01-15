@@ -17,14 +17,11 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.RareItem;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.enums.ChunkPermissionType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.DropChances;
+import org.leralix.tan.enums.ChunkPermissionType;
 
 
 public class RareItemDrops implements Listener {

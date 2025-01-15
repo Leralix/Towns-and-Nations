@@ -11,8 +11,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 

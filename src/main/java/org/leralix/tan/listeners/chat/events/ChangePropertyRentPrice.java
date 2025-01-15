@@ -3,13 +3,12 @@ package org.leralix.tan.listeners.chat.events;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
+import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.lang.Lang;
 
 import java.util.function.Consumer;
-
-import static org.leralix.tan.listeners.chat.PlayerChatListenerStorage.removePlayer;
-import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class ChangePropertyRentPrice extends ChatListenerEvent {
 
@@ -23,7 +22,7 @@ public class ChangePropertyRentPrice extends ChatListenerEvent {
 
     @Override
     public void execute(Player player, String message) {
-        removePlayer(player);
+        PlayerChatListenerStorage.removePlayer(player);
         int amount;
         try{
             amount = Integer.parseInt(message);
@@ -31,7 +30,7 @@ public class ChangePropertyRentPrice extends ChatListenerEvent {
                 amount = 0;
             }
         } catch (NumberFormatException e) {
-            player.sendMessage(getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
             return;
         }
 

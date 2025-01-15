@@ -24,15 +24,6 @@ public class TeleportationPosition {
         this.yaw = location.getYaw();
     }
 
-    public TeleportationPosition(int x, int y, int z, String world, float pitch, float yaw){
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.world = world;
-        this.pitch = pitch;
-        this.yaw = yaw;
-    }
-
     public void teleport(Player player){
         player.teleport(new Location(Bukkit.getWorld(UUID.fromString(world)), x, y, z, yaw, pitch));
     }

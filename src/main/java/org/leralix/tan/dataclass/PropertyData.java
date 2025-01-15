@@ -8,21 +8,23 @@ import org.bukkit.block.sign.SignSide;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.data.Vector3D;
+import org.leralix.lib.utils.ParticleUtils;
+import org.leralix.lib.utils.SoundUtil;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.dataclass.newhistory.PropertyBuyTaxTransaction;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.enums.SoundEnum;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.ChatUtils;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.ParticleUtils;
-import org.leralix.tan.utils.SoundUtil;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +109,7 @@ public class PropertyData {
     public void allocateRenter(Player renter){
         rentingPlayerID = renter.getUniqueId().toString();
         this.isForRent = false;
-        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("payRentAtStart", false))
+        if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("payRentAtStart", false))
             payRent();
         this.updateSign();
         getAllowedPlayersID().clear();
@@ -243,7 +245,7 @@ public class PropertyData {
     }
 
     public void showBox(Player player) {
-        ParticleUtils.showBox(player,this.getP1(),this.getP2(), 10);
+        ParticleUtils.showBox(TownsAndNations.getPlugin(), player,this.getP1(),this.getP2(), 10);
     }
     public void updateSign(){
         World world = Bukkit.getWorld(signLocation.getWorldID());
@@ -316,7 +318,7 @@ public class PropertyData {
 
         Player player = Bukkit.getPlayer(UUID.fromString(owningPlayerID));
         if (player != null){
-            player.sendMessage(ChatUtils.getTANString() + Lang.PROPERTY_DELETED.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_DELETED.get());
             SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
         }
 
@@ -334,7 +336,7 @@ public class PropertyData {
 
         double playerBalance = EconomyUtil.getBalance(player);
         if(playerBalance < salePrice){
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(salePrice - playerBalance));
+            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(salePrice - playerBalance));
             SoundUtil.playSound(player, SoundEnum.MINOR_BAD);
             return;
         }
@@ -343,10 +345,10 @@ public class PropertyData {
         OfflinePlayer exOwnerOffline = Bukkit.getOfflinePlayer(UUID.fromString(owningPlayerID));
 
         if(exOwner != null){
-            exOwner.sendMessage(ChatUtils.getTANString() + Lang.PROPERTY_SOLD_EX_OWNER.get(getName(),player.getName(), getBuyingPrice()));
+            exOwner.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_SOLD_EX_OWNER.get(getName(),player.getName(), getBuyingPrice()));
             SoundUtil.playSound(exOwner, SoundEnum.GOOD);
         }
-        player.sendMessage(ChatUtils.getTANString() + Lang.PROPERTY_SOLD_NEW_OWNER.get(getName(), getBuyingPrice()));
+        player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_SOLD_NEW_OWNER.get(getName(), getBuyingPrice()));
         SoundUtil.playSound(player, SoundEnum.GOOD);
 
         TownData town = getTerritory();

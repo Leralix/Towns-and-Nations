@@ -2,16 +2,15 @@ package org.leralix.tan.commands.playersubcommand;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
+import org.leralix.lib.commands.SubCommand;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.enums.MapSettings;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.commands.SubCommand;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 
 import java.util.Collections;
 import java.util.List;
-
-import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class UnclaimCommand extends SubCommand {
     @Override
@@ -38,8 +37,8 @@ public class UnclaimCommand extends SubCommand {
     public void perform(Player player, String[] args){
 
         if (!(args.length == 1 || args.length == 4)) {
-            player.sendMessage(getTANString() + Lang.SYNTAX_ERROR.get());
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()) );
+            player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()) );
             return;
         }
 
@@ -55,7 +54,7 @@ public class UnclaimCommand extends SubCommand {
         }
 
         if(!NewClaimedChunkStorage.isChunkClaimed(chunk)){
-            player.sendMessage(getTANString() + Lang.CHUNK_NOT_CLAIMED.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_CLAIMED.get());
             return;
         }
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunk);

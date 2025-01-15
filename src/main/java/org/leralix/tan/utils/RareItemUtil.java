@@ -1,8 +1,8 @@
 package org.leralix.tan.utils;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 
 public class RareItemUtil {
     private RareItemUtil() {
@@ -15,7 +15,7 @@ public class RareItemUtil {
      * @return              The price of the rare item
      */
     public static int getPrice(String rareItemTag) {
-        FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
+        FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.TAN);
         return switch (rareItemTag) {
             case "rareStone" -> config.getInt("rareStoneValue");
             case "rareWood" -> config.getInt("rareWoodValue");

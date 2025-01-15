@@ -10,10 +10,10 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.ChunkPermissionType;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
 
 public class WildernessChunk extends ClaimedChunk2 {
 
@@ -24,7 +24,7 @@ public class WildernessChunk extends ClaimedChunk2 {
 
     @Override
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
-        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("wildernessRules." + permissionType,true))
+        if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("wildernessRules." + permissionType,true))
             return true;
         else {
             player.sendMessage(Lang.WILDERNESS_NO_PERMISSION.get());

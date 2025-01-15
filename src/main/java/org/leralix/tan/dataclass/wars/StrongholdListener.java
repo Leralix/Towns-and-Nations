@@ -1,8 +1,8 @@
 package org.leralix.tan.dataclass.wars;
 
 import org.bukkit.Bukkit;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.territory.StrongholdData;
+import org.leralix.tan.TownsAndNations;
 
 public class StrongholdListener {
     private final CurrentAttack currentAttack;

@@ -1,8 +1,8 @@
 package org.leralix.tan.utils;
 
 import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 
 import java.util.Random;
 
@@ -67,7 +67,7 @@ public class StringUtil {
     }
 
     public static double handleDigits(double amount) {
-        double digitVal = Math.pow(10,ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("DecimalDigits",2));
+        double digitVal = Math.pow(10,ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("DecimalDigits",2));
         double value = Math.round(amount * digitVal) / digitVal;
         return value;
     }

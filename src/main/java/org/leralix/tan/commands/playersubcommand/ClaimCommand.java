@@ -2,17 +2,16 @@ package org.leralix.tan.commands.playersubcommand;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-import org.leralix.tan.commands.SubCommand;
+import org.leralix.lib.commands.SubCommand;
+import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.MapSettings;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class ClaimCommand extends SubCommand {
     @Override
@@ -44,8 +43,8 @@ public class ClaimCommand extends SubCommand {
 
 
         if (!(args.length == 2 || args.length == 4)) {
-            player.sendMessage(getTANString() + Lang.SYNTAX_ERROR.get());
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()) );
+            player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()) );
             return;
         }
 
@@ -54,19 +53,19 @@ public class ClaimCommand extends SubCommand {
         if(args[1].equals("town")){
             territoryData = TownDataStorage.get(player);
             if(territoryData == null){
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
                 return;
             }
         }
         else if(args[1].equals("region")){
             territoryData = RegionDataStorage.get(player);
             if(territoryData == null){
-                player.sendMessage(getTANString() + Lang.TOWN_NO_REGION.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NO_REGION.get());
                 return;
             }
         }
         else{
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()) );
+            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()) );
             return;
         }
 

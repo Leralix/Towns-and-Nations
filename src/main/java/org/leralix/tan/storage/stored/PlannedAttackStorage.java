@@ -3,12 +3,12 @@ package org.leralix.tan.storage.stored;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
+import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.storage.typeadapter.WargoalTypeAdapter;
+import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.TownsAndNations;
 
 import java.io.*;
 import java.lang.reflect.Type;

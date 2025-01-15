@@ -2,8 +2,8 @@ package org.leralix.tan.lang;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 
 import java.io.File;
 import java.util.HashMap;
@@ -27,7 +27,7 @@ public class DynamicLang {
 
         File file = new File(SpecificLangFolder, "upgrades.yml");
 
-        boolean replace = ConfigUtil.getCustomConfig(ConfigTag.LANG).getBoolean("autoUpdateLangFiles",true);
+        boolean replace = ConfigUtil.getCustomConfig(ConfigTag.TAN_LANG).getBoolean("autoUpdateLangFiles",true);
         if(!file.exists() || replace) {
             TownsAndNations.getPlugin().saveResource("lang/" + fileTag + "/upgrades.yml", true);
         }

@@ -5,25 +5,21 @@ import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.RateType;
 import org.leralix.tan.listeners.chat.events.SetSpecificRate;
-import org.leralix.tan.listeners.chat.events.SetSpecificTax;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.SoundUtil;
-import org.leralix.tan.utils.StringUtil;
 
-import static org.leralix.tan.enums.RolePermission.MANAGE_TAXES;
-import static org.leralix.tan.enums.SoundEnum.ADD;
-import static org.leralix.tan.enums.SoundEnum.REMOVE;
-import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class PropertySellTax extends ProfitLine{
 
@@ -61,8 +57,8 @@ public class PropertySellTax extends ProfitLine{
 
         GuiItem lowerTaxButton = ItemBuilder.from(lowerTax).asGuiItem(event -> {
             event.setCancelled(true);
-            if(!territoryData.doesPlayerHavePermission(playerData, MANAGE_TAXES)) {
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+            if(!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)) {
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
 
@@ -70,13 +66,13 @@ public class PropertySellTax extends ProfitLine{
             double amountToRemove = event.isShiftClick() ? 0.1 : 0.01;
 
             if(currentTax - amountToRemove < 0){
-                player.sendMessage(getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS_PERCENT.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS_PERCENT.get());
                 territoryData.setBuyRate(0);
                 return;
             }
 
             territoryData.addToBuyTax(-amountToRemove);
-            SoundUtil.playSound(player, REMOVE);
+            SoundUtil.playSound(player, SoundEnum.REMOVE);
             PlayerGUI.openTreasury(player, territoryData);
         });
         GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
@@ -85,7 +81,7 @@ public class PropertySellTax extends ProfitLine{
                 PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.PROPERTY_BUY_TAX);
             }
             else if(event.isRightClick()){
-                player.sendMessage(getTANString() + Lang.TOWN_SET_TAX_IN_CHAT.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_SET_TAX_IN_CHAT.get());
                 PlayerChatListenerStorage.register(player, new SetSpecificRate(territoryData, RateType.BUY));
                 player.closeInventory();
             }
@@ -93,8 +89,8 @@ public class PropertySellTax extends ProfitLine{
         GuiItem increaseTaxButton = ItemBuilder.from(increaseTax).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if(!territoryData.doesPlayerHavePermission(playerData, MANAGE_TAXES)){
-                player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+            if(!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)){
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
 
@@ -102,13 +98,13 @@ public class PropertySellTax extends ProfitLine{
             double amountToAdd = event.isShiftClick() ? 0.10 : 0.01;
 
             if(currentTax + amountToAdd > 1){
-                player.sendMessage(getTANString() + Lang.GUI_TREASURY_CANT_TAX_MORE_PERCENT.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TREASURY_CANT_TAX_MORE_PERCENT.get());
                 return;
             }
 
 
             territoryData.addToBuyTax(amountToAdd);
-            SoundUtil.playSound(player, ADD);
+            SoundUtil.playSound(player, SoundEnum.ADD);
             PlayerGUI.openTreasury(player, territoryData);
         });
 

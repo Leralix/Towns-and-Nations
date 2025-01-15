@@ -1,7 +1,6 @@
 package org.leralix.tan.storage;
 
 import org.bukkit.Chunk;
-import org.bukkit.World;
 
 import java.util.List;
 

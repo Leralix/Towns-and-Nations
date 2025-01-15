@@ -2,20 +2,19 @@ package org.leralix.tan.storage;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.TeleportationData;
 import org.leralix.tan.dataclass.TeleportationPosition;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.enums.SoundEnum;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
-import org.leralix.tan.utils.SoundUtil;
 
 import java.util.HashMap;
-
-import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 /**
  * This class is used to register players that are teleporting to a location.
@@ -54,21 +53,21 @@ public class TeleportationRegister {
     }
 
     public static void teleportToTownSpawn(PlayerData playerData, TownData townData){
-        int secondBeforeTeleport = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("timeBeforeTeleport", 5);
+        int secondBeforeTeleport = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("timeBeforeTeleport", 5);
 
         Player player = Bukkit.getPlayer(playerData.getUUID());
         if(player == null)
             return;
 
         if(isPlayerRegistered(playerData.getID())){
-            player.sendMessage(getTANString() + Lang.WAIT_BEFORE_ANOTHER_TELEPORTATION.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.WAIT_BEFORE_ANOTHER_TELEPORTATION.get());
             return;
         }
         if(secondBeforeTeleport > 0) {
-            if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnMovePosition", true)) {
-                player.sendMessage(getTANString() + Lang.TELEPORTATION_IN_X_SECONDS_NOT_MOVE.get(secondBeforeTeleport));
+            if (ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("cancelTeleportOnMovePosition", true)) {
+                player.sendMessage(TanChatUtils.getTANString() + Lang.TELEPORTATION_IN_X_SECONDS_NOT_MOVE.get(secondBeforeTeleport));
             } else {
-                player.sendMessage(getTANString() + Lang.TELEPORTATION_IN_X_SECONDS.get(secondBeforeTeleport));
+                player.sendMessage(TanChatUtils.getTANString() + Lang.TELEPORTATION_IN_X_SECONDS.get(secondBeforeTeleport));
             }
 
             registerSpawn(playerData, townData);
@@ -92,7 +91,7 @@ public class TeleportationRegister {
         if(player != null){
             teleportationPosition.teleport(player);
             SoundUtil.playSound(player, SoundEnum.MINOR_GOOD );
-            player.sendMessage(getTANString() + Lang.SPAWN_TELEPORTED.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.SPAWN_TELEPORTED.get());
         }
         removePlayer(playerData);
 

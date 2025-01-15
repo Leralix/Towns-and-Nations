@@ -8,14 +8,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.TeamUtils;
 import org.leralix.tan.utils.prefixUtil;
-
-import static org.leralix.tan.utils.ChatUtils.getTANString;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.newsletter.NewsletterStorage;
 
 
 public class PlayerJoinListener implements Listener {
@@ -36,8 +35,8 @@ public class PlayerJoinListener implements Listener {
         TeamUtils.setIndividualScoreBoard(player);
 
         if(player.hasPermission("tan.debug") && !TownsAndNations.getPlugin().isLatestVersion()){
-            player.sendMessage(getTANString() + Lang.NEW_VERSION_AVAILABLE.get(TownsAndNations.getPlugin().getLatestVersion()));
-            player.sendMessage(getTANString() + Lang.NEW_VERSION_AVAILABLE_2.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.NEW_VERSION_AVAILABLE.get(TownsAndNations.getPlugin().getLatestVersion()));
+            player.sendMessage(TanChatUtils.getTANString() + Lang.NEW_VERSION_AVAILABLE_2.get());
         }
 
         int nbNewsletterForPlayer = NewsletterStorage.getNbUnreadNewsletterForPlayer(playerData);

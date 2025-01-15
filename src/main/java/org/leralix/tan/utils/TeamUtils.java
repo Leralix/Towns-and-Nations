@@ -2,14 +2,13 @@ package org.leralix.tan.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 /**
  * Utility class for handling teams for scoreboard color coding

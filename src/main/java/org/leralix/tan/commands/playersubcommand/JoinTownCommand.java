@@ -1,20 +1,19 @@
 package org.leralix.tan.commands.playersubcommand;
 
 import org.bukkit.entity.Player;
+import org.leralix.lib.commands.SubCommand;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.storage.invitation.TownInviteDataStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.commands.SubCommand;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.storage.invitation.TownInviteDataStorage;
-import org.leralix.tan.utils.SoundUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.leralix.tan.enums.SoundEnum.NOT_ALLOWED;
-import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class JoinTownCommand extends SubCommand {
     @Override
@@ -52,20 +51,20 @@ public class JoinTownCommand extends SubCommand {
 
 
         if (args.length == 1) {
-            player.sendMessage(getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+            player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         } else if (args.length == 2){
 
             if(!player.hasPermission("tan.base.town.join")){
                 player.sendMessage(Lang.PLAYER_NO_PERMISSION.get());
-                SoundUtil.playSound(player, NOT_ALLOWED);
+                SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                 return;
             }
 
             String townID = args[1];
 
             if(!TownInviteDataStorage.isInvited(player.getUniqueId().toString(),townID)){
-                player.sendMessage(getTANString() + Lang.TOWN_INVITATION_NO_INVITATION.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_INVITATION_NO_INVITATION.get());
                 return;
             }
 
@@ -73,7 +72,7 @@ public class JoinTownCommand extends SubCommand {
             PlayerData playerData = PlayerDataStorage.get(player);
 
             if(townData.isFull()){
-                player.sendMessage(getTANString() + Lang.INVITATION_TOWN_FULL.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.INVITATION_TOWN_FULL.get());
                 return;
             }
 
@@ -81,8 +80,8 @@ public class JoinTownCommand extends SubCommand {
             TownInviteDataStorage.removeInvitation(player,townData.getID());
         }
         else{
-            player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
-            player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+            player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
     }
 }

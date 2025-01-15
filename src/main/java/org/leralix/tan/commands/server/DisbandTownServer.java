@@ -2,9 +2,9 @@ package org.leralix.tan.commands.server;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 import java.util.Collections;
 import java.util.List;

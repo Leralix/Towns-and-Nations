@@ -2,20 +2,21 @@ package org.leralix.tan.tasks;
 
 
 import org.bukkit.scheduler.BukkitRunnable;
-import org.leralix.tan.dataclass.*;
-import org.leralix.tan.dataclass.newhistory.*;
-import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.PropertyData;
+import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.utils.ArchiveUtil;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -28,8 +29,8 @@ public class DailyTasks {
             public void run() {
                 Calendar calendar = new GregorianCalendar();
 
-                int minute = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("taxHourTime",0);
-                int hour = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("taxMinuteTime",0);
+                int minute = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("taxHourTime",0);
+                int hour = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("taxMinuteTime",0);
 
                 if (calendar.get(Calendar.HOUR_OF_DAY) == hour && calendar.get(Calendar.MINUTE) == minute) {
                     executeMidnightTasks();
@@ -74,11 +75,11 @@ public class DailyTasks {
 
 
     public static void clearOldTaxes() {
-        int timeBeforeClearingDonation = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("NumberOfDonationBeforeClearing",90);
-        int timeBeforeClearingHistory = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingTaxHistory",90);
-        int timeBeforeClearingSalary = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingSalaryHistory",90);
-        int timeBeforeClearingMisc = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("NumberOfMiscPurchaseBeforeClearing",90);
-        int timeBeforeClearingChunk = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingChunkHistory",90);
+        int timeBeforeClearingDonation = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("NumberOfDonationBeforeClearing",90);
+        int timeBeforeClearingHistory = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("TimeBeforeClearingTaxHistory",90);
+        int timeBeforeClearingSalary = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("TimeBeforeClearingSalaryHistory",90);
+        int timeBeforeClearingMisc = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("NumberOfMiscPurchaseBeforeClearing",90);
+        int timeBeforeClearingChunk = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("TimeBeforeClearingChunkHistory",90);
 
         DatabaseHandler databaseHandler = TownsAndNations.getPlugin().getDatabaseHandler();
         databaseHandler.deleteOldHistory(timeBeforeClearingDonation, TransactionHistoryEnum.DONATION);

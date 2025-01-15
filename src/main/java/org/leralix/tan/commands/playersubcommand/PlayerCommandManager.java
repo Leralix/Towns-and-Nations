@@ -1,9 +1,9 @@
 package org.leralix.tan.commands.playersubcommand;
 
-import org.leralix.tan.commands.CommandManager;
-import org.leralix.tan.commands.TanHelpCommand;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
+import org.leralix.lib.commands.CommandManager;
+import org.leralix.lib.commands.MainHelpCommand;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 
 public class PlayerCommandManager extends CommandManager {
 
@@ -21,10 +21,10 @@ public class PlayerCommandManager extends CommandManager {
         addSubCommand(new AutoClaimCommand());
         addSubCommand(new TownSpawnCommand());
         addSubCommand(new SetTownSpawnCommand());
-        addSubCommand(new TanHelpCommand(this));
+        addSubCommand(new MainHelpCommand(this));
 
 
-        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowSellRareRessourcesByCommand",true)){
+        if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("AllowSellRareRessourcesByCommand",true)){
             addSubCommand(new SellRareItem());
         }
     }

@@ -9,11 +9,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.PlayerSelectPropertyPositionStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.PlayerSelectPropertyPositionStorage;
-import org.leralix.tan.utils.ChatUtils;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.lang.Lang;
 
 public class CreatePropertyListener implements Listener {
 
@@ -33,7 +33,7 @@ public class CreatePropertyListener implements Listener {
 
         Chunk blocChunk = block.getChunk();
         if (!NewClaimedChunkStorage.isChunkClaimed(blocChunk)){
-            player.sendMessage(ChatUtils.getTANString() + Lang.POSITION_NEED_TO_BE_IN_CLAIMED_CHUNK.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.POSITION_NEED_TO_BE_IN_CLAIMED_CHUNK.get());
             return;
 
         }
@@ -46,7 +46,7 @@ public class CreatePropertyListener implements Listener {
 
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(blocChunk);
         if (!claimedChunk.getOwnerID().equals(playerData.getTownId())){
-            player.sendMessage(ChatUtils.getTANString() + Lang.POSITION_NEED_TO_BE_IN_PLAYER_TOWN.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.POSITION_NEED_TO_BE_IN_PLAYER_TOWN.get());
             return;
         }
 

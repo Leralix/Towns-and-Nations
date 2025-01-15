@@ -5,17 +5,16 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
+import org.leralix.lib.commands.SubCommand;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.enums.ClaimAction;
 import org.leralix.tan.enums.MapSettings;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.commands.SubCommand;
 import org.leralix.tan.enums.ClaimType;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 
 import java.util.*;
-
-import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class MapCommand extends SubCommand {
 
@@ -51,8 +50,8 @@ public class MapCommand extends SubCommand {
             return;
         }
 
-        player.sendMessage(getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
-        player.sendMessage(getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+        player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
+        player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
     }
 
     public static void openMap(Player player, MapSettings settings) {

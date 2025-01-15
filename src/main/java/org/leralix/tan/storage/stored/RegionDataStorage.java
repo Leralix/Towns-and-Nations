@@ -6,26 +6,24 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.FileUtil;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.storage.typeadapter.IconAdapter;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
-import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
-import org.leralix.tan.storage.typeadapter.IconAdapter;
-import org.leralix.tan.utils.ChatUtils;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
-import org.leralix.tan.utils.FileUtil;
 
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
-
-import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class RegionDataStorage {
 
@@ -38,28 +36,28 @@ public class RegionDataStorage {
         TownData town = TownDataStorage.get(player);
 
         if(!town.isLeader(player)){
-            player.sendMessage(getTANString() + Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get());
             return;
         }
 
-        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
+        int cost = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("regionCost");
         if(town.getBalance() < cost){
-            player.sendMessage(getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
             return;
         }
 
-        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RegionNameSize");
+        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("RegionNameSize");
         if(regionName.length() > maxSize){
-            player.sendMessage(ChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
+            player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
             return;
         }
 
         if(isNameUsed(regionName)){
-            player.sendMessage(ChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
             return;
         }
 
-        Bukkit.broadcastMessage(ChatUtils.getTANString() + Lang.REGION_CREATE_SUCCESS_BROADCAST.get(town.getName(),regionName));
+        Bukkit.broadcastMessage(TanChatUtils.getTANString() + Lang.REGION_CREATE_SUCCESS_BROADCAST.get(town.getName(),regionName));
         PlayerChatListenerStorage.removePlayer(player);
 
         String regionID = "R"+nextID;
@@ -106,7 +104,7 @@ public class RegionDataStorage {
     }
 
     public static boolean isNameUsed(String name){
-        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",true))
+        if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("AllowNameDuplication",true))
             return false;
 
         for (RegionData region : regionStorage.values()){

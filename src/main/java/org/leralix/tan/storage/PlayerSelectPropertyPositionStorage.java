@@ -9,21 +9,21 @@ import org.bukkit.block.Sign;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.data.Vector3D;
+import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.PropertyData;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.dataclass.Vector3D;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.enums.SoundEnum;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.ChatUtils;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
-import org.leralix.tan.utils.SoundUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +33,6 @@ import java.util.Map;
 public class PlayerSelectPropertyPositionStorage {
 
     private static final Map<String, List<Vector3D>> playerList = new HashMap<>();
-
     public static boolean contains(Player player){
         return contains(player.getUniqueId().toString());
     }
@@ -72,33 +71,33 @@ public class PlayerSelectPropertyPositionStorage {
         if(vList.isEmpty()){
             Vector3D vector3D = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
             vList.add(vector3D);
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_FIRST_POINT_SET.get(vector3D));
+            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_FIRST_POINT_SET.get(vector3D));
         }
         else if(vList.size() == 1) {
 
-            int maxPropertySize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("maxPropertySize", 50000);
+            int maxPropertySize = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("maxPropertySize", 50000);
             if(Math.abs(vList.get(0).getX() - block.getX()) * Math.abs(vList.get(0).getY() - block.getY()) * Math.abs(vList.get(0).getZ() - block.getZ()) > maxPropertySize){
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_PROPERTY_TOO_BIG.get(maxPropertySize));
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_PROPERTY_TOO_BIG.get(maxPropertySize));
                 return;
             }
 
 
             Vector3D vector3D = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
             vList.add(vector3D);
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SECOND_POINT_SET.get(vector3D));
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_PLACE_SIGN.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_SECOND_POINT_SET.get(vector3D));
+            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_PLACE_SIGN.get());
         }
         else if(vList.size() == 2){
-            int margin = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("maxPropertyMargin",3);
+            int margin = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("maxPropertyMargin",3);
             if(!isNearProperty(block.getLocation(),vList.get(0),vList.get(1), margin)){
-                player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_PROPERTY_SIGN_TOO_FAR.get(margin));
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_PROPERTY_SIGN_TOO_FAR.get(margin));
                 return;
             }
 
 
 
             SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_PROPERTY_CREATED.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_PROPERTY_CREATED.get());
             removePlayer(playerID);
 
             PropertyData property = playerTown.registerNewProperty(vList.get(0),vList.get(1),playerData);

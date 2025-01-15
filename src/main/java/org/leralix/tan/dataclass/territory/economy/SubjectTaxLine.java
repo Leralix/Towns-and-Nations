@@ -5,20 +5,18 @@ import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.StringUtil;
+import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.SetSpecificTax;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.SoundUtil;
-import org.leralix.tan.utils.StringUtil;
-
-import static org.leralix.tan.enums.SoundEnum.ADD;
-import static org.leralix.tan.enums.SoundEnum.REMOVE;
-import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public class SubjectTaxLine extends ProfitLine{
 
@@ -69,10 +67,10 @@ public class SubjectTaxLine extends ProfitLine{
             event.setCancelled(true);
             int amountToRemove = event.isShiftClick() && taxRate > 10 ? 10 : 1;
             if(taxRate < 1){
-                player.sendMessage(getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get());
                 return;
             }
-            SoundUtil.playSound(player, REMOVE);
+            SoundUtil.playSound(player, SoundEnum.REMOVE);
 
             territoryData.addToTax(-amountToRemove);
             PlayerGUI.openTreasury(player, territoryData);
@@ -82,7 +80,7 @@ public class SubjectTaxLine extends ProfitLine{
             event.setCancelled(true);
             int amountToRemove = event.isShiftClick() && taxRate >= 10 ? 10 : 1;
 
-            SoundUtil.playSound(player, ADD);
+            SoundUtil.playSound(player, SoundEnum.ADD);
 
             territoryData.addToTax(amountToRemove);
             PlayerGUI.openTreasury(player, territoryData);
@@ -94,7 +92,7 @@ public class SubjectTaxLine extends ProfitLine{
                 PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.SUBJECT_TAX);
             }
             else if(event.isRightClick()){
-                player.sendMessage(getTANString() + Lang.TOWN_SET_TAX_IN_CHAT.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_SET_TAX_IN_CHAT.get());
                 PlayerChatListenerStorage.register(player, new SetSpecificTax(territoryData));
                 player.closeInventory();
             }

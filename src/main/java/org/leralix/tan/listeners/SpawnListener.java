@@ -7,12 +7,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.TeleportationRegister;
-import org.leralix.tan.utils.ChatUtils;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.lang.Lang;
 
 public class SpawnListener implements Listener {
 
@@ -22,10 +22,10 @@ public class SpawnListener implements Listener {
             if(TeleportationRegister.isPlayerRegistered(player.getUniqueId().toString()) &&
                     !TeleportationRegister.getTeleportationData(player).isCancelled()) {
 
-                if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnDamage", true)) {
+                if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("cancelTeleportOnDamage", true)) {
                     PlayerData playerData = PlayerDataStorage.get(player.getUniqueId().toString());
                     TeleportationRegister.getTeleportationData(playerData).setCancelled(true);
-                    player.sendMessage(ChatUtils.getTANString() + Lang.TELEPORTATION_CANCELLED.get());
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.TELEPORTATION_CANCELLED.get());
                 }
 
 
@@ -44,13 +44,13 @@ public class SpawnListener implements Listener {
 
             //If player moves only his head
             if(locationFrom.getBlockX() == locationTo.getBlockX() && locationFrom.getBlockZ() == locationTo.getBlockZ()) {
-                if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnMoveHead", false)) {
+                if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("cancelTeleportOnMoveHead", false)) {
                     cancelTeleportation(player);
                 }
             }
             else{
                 //If player moves to a different position
-                if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnMovePosition", true)) {
+                if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("cancelTeleportOnMovePosition", true)) {
                     cancelTeleportation(player);
                 }
             }
@@ -62,6 +62,6 @@ public class SpawnListener implements Listener {
     public void cancelTeleportation(Player player) {
         PlayerData playerData = PlayerDataStorage.get(player.getUniqueId().toString());
         TeleportationRegister.getTeleportationData(playerData).setCancelled(true);
-        player.sendMessage(ChatUtils.getTANString() + Lang.TELEPORTATION_CANCELLED.get());
+        player.sendMessage(TanChatUtils.getTANString() + Lang.TELEPORTATION_CANCELLED.get());
     }
 }

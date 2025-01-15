@@ -11,10 +11,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.TownsAndNations;
 
 
 /**

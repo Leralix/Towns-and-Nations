@@ -6,18 +6,17 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.SoundUtil;
 import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.lang.Lang;
 
 import java.util.function.Consumer;
 
 import static org.leralix.tan.gui.PlayerGUI.openStartWarSettings;
-import static org.leralix.tan.enums.SoundEnum.ADD;
-import static org.leralix.tan.enums.SoundEnum.REMOVE;
 
 public class ConquerWarGoal extends WarGoal {
 
@@ -47,7 +46,7 @@ public class ConquerWarGoal extends WarGoal {
 
         GuiItem addChunkGui = ItemBuilder.from(addChunk).asGuiItem(event -> {
             event.setCancelled(true);
-            SoundUtil.playSound(player, ADD);
+            SoundUtil.playSound(player, SoundEnum.ADD);
             if(event.isShiftClick()){
                 numberOfChunks += 10;
             } else if(event.isLeftClick()){
@@ -60,7 +59,7 @@ public class ConquerWarGoal extends WarGoal {
 
         GuiItem removeChunkGui = ItemBuilder.from(removeChunk).asGuiItem(event -> {
             event.setCancelled(true);
-            SoundUtil.playSound(player, REMOVE);
+            SoundUtil.playSound(player, SoundEnum.REMOVE);
             if(event.isShiftClick()){
                 numberOfChunks -= 10;
             } else if(event.isLeftClick()){

@@ -8,6 +8,10 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -26,7 +30,6 @@ import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.ChunkPermissionType;
 import org.leralix.tan.enums.RolePermission;
-import org.leralix.tan.enums.SoundEnum;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
@@ -39,14 +42,9 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.*;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
 
 import java.util.*;
 import java.util.function.Consumer;
-
-import static org.leralix.tan.enums.SoundEnum.*;
-import static org.leralix.tan.utils.ChatUtils.getTANString;
 
 public abstract class TerritoryData {
 
@@ -105,7 +103,7 @@ public abstract class TerritoryData {
     }
     public void rename(Player player, int cost, String newName){
         if(getBalance() <= cost){
-            player.sendMessage(ChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
             return;
         }
 
@@ -115,7 +113,7 @@ public abstract class TerritoryData {
         removeFromBalance(cost);
         FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player.getName(),this.getName(),newName));
 
-        player.sendMessage(ChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get(this.getName(),newName));
+        player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get(this.getName(),newName));
         SoundUtil.playSound(player, SoundEnum.GOOD);
         this.name = newName;
     }
@@ -186,12 +184,12 @@ public abstract class TerritoryData {
     public void setRelation(TerritoryData otherTerritory, TownRelation relation){
         TownRelation actualRelation = getRelationWith(otherTerritory);
         if(relation.isSuperiorTo(actualRelation)){
-            broadCastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(getColoredName(), otherTerritory.getColoredName(),relation.getColoredName()), GOOD);
-            otherTerritory.broadCastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(otherTerritory.getColoredName(), getColoredName(),relation.getColoredName()), GOOD);
+            broadCastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(getColoredName(), otherTerritory.getColoredName(),relation.getColoredName()), SoundEnum.GOOD);
+            otherTerritory.broadCastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(otherTerritory.getColoredName(), getColoredName(),relation.getColoredName()), SoundEnum.GOOD);
         }
         else{
-            broadCastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(getColoredName(), otherTerritory.getColoredName(),relation.getColoredName()), BAD);
-            otherTerritory.broadCastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(otherTerritory.getColoredName(), getColoredName(),relation.getColoredName()), BAD);
+            broadCastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(getColoredName(), otherTerritory.getColoredName(),relation.getColoredName()), SoundEnum.BAD);
+            otherTerritory.broadCastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(otherTerritory.getColoredName(), getColoredName(),relation.getColoredName()), SoundEnum.BAD);
         }
 
         this.getRelations().setRelation(relation,otherTerritory);
@@ -343,7 +341,7 @@ public abstract class TerritoryData {
     public abstract void removeOverlordPrivate();
     public void setOverlord(TerritoryData overlord){
         getOverlordsProposals().remove(overlord.getID());
-        broadCastMessageWithSound(getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), overlord.getColoredName()), GOOD);
+        broadCastMessageWithSound(TanChatUtils.getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), overlord.getColoredName()), SoundEnum.GOOD);
         this.overlordID = overlord.getID();
     }
 
@@ -359,7 +357,7 @@ public abstract class TerritoryData {
 
     public void addVassal(TerritoryData vassal){
         NewsletterStorage.removeVassalisationProposal(this, vassal);
-        broadCastMessageWithSound(getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(vassal.getColoredName(), getColoredName()), GOOD);
+        broadCastMessageWithSound(TanChatUtils.getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(vassal.getColoredName(), getColoredName()), SoundEnum.GOOD);
         addVassalPrivate(vassal);
     }
     protected abstract void addVassalPrivate (TerritoryData vassal);
@@ -480,11 +478,11 @@ public abstract class TerritoryData {
         double playerBalance = EconomyUtil.getBalance(player);
 
         if(playerBalance < amount ){
-            player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.get());
             return;
         }
         if(amount <= 0 ){
-            player.sendMessage(ChatUtils.getTANString() + Lang.PAY_MINIMUM_REQUIRED.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.PAY_MINIMUM_REQUIRED.get());
             return;
         }
 
@@ -493,8 +491,8 @@ public abstract class TerritoryData {
         addToBalance(amount);
 
         TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerDonationHistory(this, player, amount));
-        player.sendMessage(ChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_SUCCESS.get(amount, getColoredName()));
-        SoundUtil.playSound(player, MINOR_LEVEL_UP);
+        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_SUCCESS.get(amount, getColoredName()));
+        SoundUtil.playSound(player, SoundEnum.MINOR_LEVEL_UP);
     }
 
     public abstract void openMainMenu(Player player);
@@ -536,7 +534,7 @@ public abstract class TerritoryData {
 
     public void addVassalisationProposal(TerritoryData proposal){
         getOverlordsProposals().add(proposal.getID());
-        broadCastMessageWithSound(Lang.REGION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getColoredName(), getColoredName()), MINOR_GOOD);
+        broadCastMessageWithSound(Lang.REGION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getColoredName(), getColoredName()), SoundEnum.MINOR_GOOD);
         NewsletterStorage.registerNewsletter(new JoinRegionProposalNL(proposal, this));
     }
 
@@ -565,7 +563,7 @@ public abstract class TerritoryData {
                 if(event.isLeftClick()){
                     setOverlord(proposalOverlord);
                     proposalOverlord.addVassal(this);
-                    broadCastMessageWithSound(getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), proposalOverlord.getName()), GOOD);
+                    broadCastMessageWithSound(TanChatUtils.getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), proposalOverlord.getName()), SoundEnum.GOOD);
                     PlayerGUI.openHierarchyMenu(player, this);
                 }
                 if(event.isRightClick()){
@@ -609,7 +607,7 @@ public abstract class TerritoryData {
     }
 
     public boolean isRankNameUsed(String message) {
-        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",false))
+        if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("AllowNameDuplication",false))
             return false;
 
         for (RankData rank : getAllRanks()) {
@@ -694,17 +692,11 @@ public abstract class TerritoryData {
     public abstract double getChunkUpkeepCost();
 
     public double getTax(){
-        if(baseTax == null){
-            baseTax = getOldTax();
-        }
         return baseTax;
     }
     public void setTax(double newTax){
         this.baseTax = newTax;
     }
-
-
-    protected abstract Double getOldTax(); //TODO : delete before v0.1
 
     public void addToTax(double i){
         setTax(getTax() + i);
@@ -751,9 +743,9 @@ public abstract class TerritoryData {
     }
 
     private void deletePortionOfChunk() {
-        int minNbOfUnclaimedChunk = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("minimumNumberOfChunksUnclaimed",5);
+        int minNbOfUnclaimedChunk = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("minimumNumberOfChunksUnclaimed",5);
         int nbOfUnclaimedChunk = 0;
-        double minPercentageOfChunkToKeep = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("percentageOfChunksUnclaimed",10) / 100;
+        double minPercentageOfChunkToKeep = ConfigUtil.getCustomConfig(ConfigTag.TAN).getDouble("percentageOfChunksUnclaimed",10) / 100;
 
 
         Collection<ClaimedChunk2> allChunkFrom = NewClaimedChunkStorage.getAllChunkFrom(this);

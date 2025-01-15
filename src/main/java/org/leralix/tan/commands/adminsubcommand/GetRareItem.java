@@ -1,11 +1,11 @@
 package org.leralix.tan.commands.adminsubcommand;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.commands.SubCommand;
-import org.leralix.tan.utils.ChatUtils;
+import org.leralix.lib.commands.SubCommand;
+import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.DropChances;
 import org.leralix.tan.utils.FileUtil;
+import org.leralix.tan.lang.Lang;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,11 +52,11 @@ public class GetRareItem extends SubCommand {
             case "raresoul" -> player.getLocation().getWorld().dropItemNaturally(player.getLocation(), DropChances.getRareSoul());
             case "rarefish" -> player.getLocation().getWorld().dropItemNaturally(player.getLocation(), DropChances.getRareFish());
             default -> {
-                player.sendMessage(ChatUtils.getTANString() + Lang.SYNTAX_ERROR.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR.get());
                 return;
             }
         }
         FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_SUMMON_RARE_ITEM.get(player.getName(), 1, args[1]));
-        player.sendMessage(ChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
+        player.sendMessage(TanChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
 }

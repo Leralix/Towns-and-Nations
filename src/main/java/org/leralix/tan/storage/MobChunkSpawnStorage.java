@@ -1,8 +1,8 @@
 package org.leralix.tan.storage;
 
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.enums.MobChunkSpawnEnum;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,9 +18,9 @@ public class MobChunkSpawnStorage {
         //Only load the enum values if they have been written in the config file
         for (MobChunkSpawnEnum mob : MobChunkSpawnEnum.values()) {
 
-            if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).get("CancelMobSpawnInTown." + mob.name()) == null)
+            if(ConfigUtil.getCustomConfig(ConfigTag.TAN).get("CancelMobSpawnInTown." + mob.name()) == null)
                 continue;
-            if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CancelMobSpawnInTown." + mob.name()) <0)
+            if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("CancelMobSpawnInTown." + mob.name()) <0)
                 continue;
             mobSpawnStorage.put(mob.name(), mob);
         }
@@ -35,7 +35,7 @@ public class MobChunkSpawnStorage {
     }
 
     public static int getMobSpawnCost(MobChunkSpawnEnum mob) {
-        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CancelMobSpawnInTown." + mob.name());
+        return ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("CancelMobSpawnInTown." + mob.name());
     }
 
 }

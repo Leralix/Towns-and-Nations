@@ -8,27 +8,25 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.dataclass.wars.GriefAllowed;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.ChunkPermissionType;
-import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.SoundUtil;
-import org.leralix.tan.utils.config.ConfigTag;
-import org.leralix.tan.utils.config.ConfigUtil;
-
-import static org.leralix.tan.enums.SoundEnum.BAD;
-import static org.leralix.tan.enums.SoundEnum.NOT_ALLOWED;
-import static org.leralix.tan.utils.ChatUtils.getTANString;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.enums.ChunkPermissionType;
 
 public class TownClaimedChunk extends ClaimedChunk2{
     public TownClaimedChunk(Chunk chunk, String owner) {
@@ -56,7 +54,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
                 return true;
             }
             else {
-                player.sendMessage(getTANString() + property.getDenyMessage());
+                player.sendMessage(TanChatUtils.getTANString() + property.getDenyMessage());
                 return false;
             }
         }
@@ -87,30 +85,30 @@ public class TownClaimedChunk extends ClaimedChunk2{
         TownData playerTown = playerStat.getTown();
 
         if(playerTown == null){
-            player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
             return;
         }
 
         if(!playerTown.doesPlayerHavePermission(playerStat, RolePermission.UNCLAIM_CHUNK)){
-            player.sendMessage(getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-            SoundUtil.playSound(player, NOT_ALLOWED);
+            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+            SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             return;
         }
 
 
         if(!getOwner().equals(playerTown)){
-            player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_TOWN.get(getOwner().getName()));
+            player.sendMessage(TanChatUtils.getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_TOWN.get(getOwner().getName()));
             return;
         }
 
         for(PropertyData propertyData : getTown().getPropertyDataList()){
             if(propertyData.isInChunk(this)){
-                player.sendMessage(getTANString() + Lang.PROPERTY_IN_CHUNK.get(propertyData.getName()));
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_IN_CHUNK.get(propertyData.getName()));
                 return;
             }
         }
 
-        player.sendMessage(getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_TOWN.get(playerTown.getNumberOfClaimedChunk(),playerTown.getLevel().getChunkCap()));
+        player.sendMessage(TanChatUtils.getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_TOWN.get(playerTown.getNumberOfClaimedChunk(),playerTown.getLevel().getChunkCap()));
         NewClaimedChunkStorage.unclaimChunk(this);
     }
 
@@ -124,10 +122,10 @@ public class TownClaimedChunk extends ClaimedChunk2{
         }
         TownRelation relation = playerTown.getRelationWith(townTo);
 
-        if(relation == TownRelation.WAR && ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("notifyEnemyEnterTown",true)){
-            SoundUtil.playSound(player, BAD);
-            player.sendMessage(getTANString() + Lang.CHUNK_ENTER_TOWN_AT_WAR.get());
-            townTo.broadCastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.get(player).getName(),player.getName()), BAD);
+        if(relation == TownRelation.WAR && ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("notifyEnemyEnterTown",true)){
+            SoundUtil.playSound(player, SoundEnum.BAD);
+            player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ENTER_TOWN_AT_WAR.get());
+            townTo.broadCastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.get(player).getName(),player.getName()), SoundEnum.BAD);
         }
     }
 
@@ -156,7 +154,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
         if(territoryData.canConquerChunk(this))
             return true;
 
-        player.sendMessage(getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName()));
+        player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName()));
         return false;
     }
 
@@ -172,14 +170,14 @@ public class TownClaimedChunk extends ClaimedChunk2{
 
     @Override
     public boolean canExplosionGrief() {
-        String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("explosionGrief", "ALWAYS");
+        String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.TAN).getString("explosionGrief", "ALWAYS");
         GriefAllowed griefAllowed =  GriefAllowed.valueOf(fireGrief);
         return griefAllowed.canGrief(getTown());
     }
 
     @Override
     public boolean canFireGrief() {
-        String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("fireGrief", "ALWAYS");
+        String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.TAN).getString("fireGrief", "ALWAYS");
         GriefAllowed griefAllowed = GriefAllowed.valueOf(fireGrief);
         return griefAllowed.canGrief(getTown());
     }
