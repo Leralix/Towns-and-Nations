@@ -1,14 +1,16 @@
 package org.leralix.tan.dataclass.territory;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.GuiItem;
+import org.leralix.lib.gui
+.builder.item.ItemBuilder;
+import org.leralix.lib.gui
+.guis.GuiItem;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.data.Vector3D;
+import org.leralix.lib.data.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -276,6 +278,7 @@ public class TownData extends TerritoryData {
         return getRank(getDefaultRankID());
     }
 
+    @Override
     public int getNumberOfRank(){
         return newRanks.size();
     }
@@ -583,15 +586,15 @@ public class TownData extends TerritoryData {
 
     public PropertyData registerNewProperty(Vector3D p1, Vector3D p2, PlayerData owner){
         String propertyID = nextPropertyID();
-        String ID = this.getID() + "_" + propertyID;
-        PropertyData newProperty = new PropertyData(ID,p1,p2,owner);
+        String id = this.getID() + "_" + propertyID;
+        PropertyData newProperty = new PropertyData(id,p1,p2,owner);
         this.propertyDataMap.put(propertyID, newProperty);
         owner.addProperty(newProperty);
         return newProperty;
     }
 
-    public PropertyData getProperty(String ID){
-        return getPropertyDataMap().get(ID);
+    public PropertyData getProperty(String id){
+        return getPropertyDataMap().get(id);
     }
 
     public PropertyData getProperty(Location location) {
@@ -680,15 +683,15 @@ public class TownData extends TerritoryData {
             SoundUtil.playSound(player,SoundEnum.NOT_ALLOWED);
             return;
         }
-        Level townLevel = this.getLevel();
-        if(townLevel.getUpgradeLevel(townUpgrade.getName()) >= townUpgrade.getMaxLevel()){
+        Level level = this.getLevel();
+        if(level.getUpgradeLevel(townUpgrade.getName()) >= townUpgrade.getMaxLevel()){
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_UPGRADE_MAX_LEVEL.get());
             SoundUtil.playSound(player,SoundEnum.NOT_ALLOWED);
             return;
         }
 
         removeFromBalance(townUpgrade.getCost(townUpgradeLevel));
-        townLevel.levelUp(townUpgrade);
+        level.levelUp(townUpgrade);
         SoundUtil.playSound(player,SoundEnum.LEVEL_UP);
         player.sendMessage(TanChatUtils.getTANString() + Lang.BASIC_LEVEL_UP.get());
     }

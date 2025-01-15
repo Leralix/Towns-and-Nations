@@ -114,7 +114,7 @@ public class HeadUtils {
      * @return                      The {@link ItemStack} with custom texture.
      */
     public static @NotNull ItemStack makeSkullB64(final @NotNull String name, final @NotNull String base64EncodedString, List<String> lore) {
-        return makeSkullURL(name,getUrlFromBase64_2(base64EncodedString),lore);
+        return makeSkullURL(name, getUrlFromBase64(base64EncodedString),lore);
     }
 
     public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull String url, String... lore) {
@@ -155,9 +155,10 @@ public class HeadUtils {
     }
 
 
-    public static URL getUrlFromBase64_2(String base64){
+    public static URL getUrlFromBase64(String base64){
         var decoded = new String(Base64.getDecoder().decode(base64));
-        var json = JsonParser.parseString(decoded).getAsJsonObject();
+        JsonParser parser = new JsonParser();
+        var json = parser.parse(decoded).getAsJsonObject();
         var url = json.getAsJsonObject("textures")
                 .getAsJsonObject("SKIN")
                 .get("url").getAsString();

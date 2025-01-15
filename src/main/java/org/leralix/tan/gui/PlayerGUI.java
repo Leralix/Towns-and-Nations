@@ -1,8 +1,11 @@
 package org.leralix.tan.gui;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.Gui;
-import dev.triumphteam.gui.guis.GuiItem;
+import org.leralix.lib.gui
+.builder.item.ItemBuilder;
+import org.leralix.lib.gui
+.guis.Gui;
+import org.leralix.lib.gui
+.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;

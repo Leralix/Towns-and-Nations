@@ -1,6 +1,7 @@
 package org.leralix.tan.dataclass.wars.wargoals;
 
-import dev.triumphteam.gui.guis.Gui;
+import org.leralix.lib.gui
+.guis.Gui;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

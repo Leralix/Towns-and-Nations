@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.data.Vector3D;
+import org.leralix.lib.data.position.Vector3D;
 import org.leralix.lib.utils.ParticleUtils;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;

@@ -1,6 +1,7 @@
 package org.leralix.tan.newsletter.news;
 
-import dev.triumphteam.gui.guis.GuiItem;
+import org.leralix.lib.gui
+.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.newsletter.NewsletterScope;

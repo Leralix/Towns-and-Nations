@@ -185,7 +185,7 @@ public final class TownsAndNations extends JavaPlugin {
             new PlaceHolderAPI().register();
         }
 
-        logger.log(Level.INFO,"[TaN] Plugin successfully loaded");
+        logger.log(Level.INFO,"[TaN] Plugin loaded successfully");
 
         api = new TanApi();
 
@@ -333,7 +333,8 @@ public final class TownsAndNations extends JavaPlugin {
      * @return the {@link PluginVersion Version} of the plugin.
      */
     private PluginVersion extractVersionFromResponse(String response) {
-        JsonObject jsonResponse = JsonParser.parseString(response).getAsJsonObject();
+        JsonParser parser = new JsonParser();
+        JsonObject jsonResponse = parser.parse(response).getAsJsonObject();
         String version = jsonResponse.get("tag_name").getAsString();
         return new PluginVersion(version);
     }

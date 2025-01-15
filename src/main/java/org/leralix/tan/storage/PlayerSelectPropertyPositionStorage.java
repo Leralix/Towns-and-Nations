@@ -10,7 +10,7 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.data.Vector3D;
+import org.leralix.lib.data.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.TanChatUtils;

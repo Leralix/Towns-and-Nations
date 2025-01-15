@@ -1,21 +1,16 @@
 plugins {
     id 'java'
-    id "com.github.johnrengelman.shadow" version "7.1.1"
 }
-shadowJar {
-    relocate("dev.triumphteam.gui", "org.leralix.tan.gui")
-    relocate 'org.bstats', 'org.leralix.tan'
-    archiveClassifier.set('')
-}
+
+
+group = 'org.tan'
+version = '0.12.5'
 
 compileJava.options.encoding = 'UTF-8'
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
-
-group = 'org.tan'
-version = '0.12.5'
 
 repositories {
     mavenCentral()
@@ -55,7 +50,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.leralix:SphereLib:0.1.1'
+    implementation 'org.leralix:SphereLib:0.1.6'
     compileOnly 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'
     compileOnly 'com.mojang:authlib:4.0.43'
     compileOnly 'net.luckperms:api:5.4'
@@ -63,7 +58,6 @@ dependencies {
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     compileOnly 'me.clip:placeholderapi:2.11.5'
     implementation 'org.bstats:bstats-bukkit:3.0.2'
-    implementation 'dev.triumphteam:triumph-gui:+'
     implementation 'net.objecthunter:exp4j:0.4.8'
 
 }

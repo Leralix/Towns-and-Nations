@@ -3,7 +3,8 @@ package org.leralix.tan.newsletter;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.triumphteam.gui.guis.GuiItem;
+import org.leralix.lib.gui
+.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
