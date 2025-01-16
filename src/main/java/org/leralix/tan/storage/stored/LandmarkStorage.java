@@ -73,9 +73,7 @@ public class LandmarkStorage {
                     ID = newID;
             }
             newLandmarkID = ID+1;
-
         }
-
     }
 
     public static void save() {
