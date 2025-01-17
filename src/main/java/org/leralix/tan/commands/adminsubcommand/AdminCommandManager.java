@@ -8,8 +8,6 @@ public class AdminCommandManager extends CommandManager {
     public AdminCommandManager(){
         addSubCommand(new AddMoney());
         addSubCommand(new SetMoney());
-        addSubCommand(new SpawnVillager());
-        addSubCommand(new GetRareItem());
 
         addSubCommand(new ReloadCommand());
         addSubCommand(new UnclaimAdminCommand());

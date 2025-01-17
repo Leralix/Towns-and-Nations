@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.gui.builder.item.ItemBuilder;
 import org.leralix.lib.gui.guis.GuiItem;
+import org.leralix.lib.utils.RandomUtil;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;

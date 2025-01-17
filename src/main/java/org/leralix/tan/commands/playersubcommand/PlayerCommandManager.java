@@ -22,11 +22,6 @@ public class PlayerCommandManager extends CommandManager {
         addSubCommand(new TownSpawnCommand());
         addSubCommand(new SetTownSpawnCommand());
         addSubCommand(new MainHelpCommand(this));
-
-
-        if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("AllowSellRareRessourcesByCommand",true)){
-            addSubCommand(new SellRareItem());
-        }
     }
 
     @Override

@@ -28,7 +28,6 @@ import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.utils.CustomNBT;
-import org.leralix.tan.utils.DropChances;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.api.PlaceHolderAPI;
@@ -142,7 +141,6 @@ public final class TownsAndNations extends JavaPlugin {
 
         logger.log(Level.INFO, "[TaN] -Loading Storage");
 
-        DropChances.load();
         UpgradeStorage.init();
         MobChunkSpawnStorage.init();
         CustomItemManager.loadCustomItems();
@@ -254,8 +252,6 @@ public final class TownsAndNations extends JavaPlugin {
      */
     private void enableEventList() {
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
-        getServer().getPluginManager().registerEvents(new RareItemDrops(), this);
-        getServer().getPluginManager().registerEvents(new RareItemVillagerInteraction(), this);
         getServer().getPluginManager().registerEvents(new ChunkListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerEnterChunkListener(), this);

@@ -1,5 +1,6 @@
 package org.leralix.tan.utils;
 
+import org.leralix.lib.utils.RandomUtil;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
