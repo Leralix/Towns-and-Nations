@@ -29,8 +29,9 @@ public class SQLiteHandler extends DatabaseHandler {
                 if (dbFile.getParentFile() != null && !dbFile.getParentFile().exists()) {
                     dbFile.getParentFile().mkdirs();
                 }
-                dbFile.createNewFile();
-                TownsAndNations.getPlugin().getLogger().info("SQLite database created");
+                if(dbFile.createNewFile()){
+                    TownsAndNations.getPlugin().getLogger().info("SQLite database created");
+                }
             } catch (IOException e) {
                 throw new SQLException("Error while creating SQLite database", e);
             }

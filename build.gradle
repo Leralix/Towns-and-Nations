@@ -56,7 +56,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.leralix:SphereLib:0.1.6'
+    compileOnly 'org.leralix:SphereLib:0.1.6'
     compileOnly 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'
     compileOnly 'com.mojang:authlib:4.0.43'
     compileOnly 'net.luckperms:api:5.4'
