@@ -1,6 +1,7 @@
 package org.leralix.tan.commands.playersubcommand;
 
 import org.bukkit.entity.Player;
+import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.storage.LocalChatStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -12,7 +13,7 @@ import org.leralix.tan.enums.ChatScope;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChannelChatScopeCommand extends SubCommand {
+public class ChannelChatScopeCommand extends PlayerSubCommand {
     @Override
     public String getName() {
         return "chat";

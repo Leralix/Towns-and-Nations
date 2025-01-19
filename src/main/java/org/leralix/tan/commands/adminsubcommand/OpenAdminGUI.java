@@ -2,6 +2,7 @@ package org.leralix.tan.commands.adminsubcommand;
 
 
 import org.bukkit.entity.Player;
+import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.lang.Lang;
@@ -12,7 +13,7 @@ import java.util.List;
 import static org.leralix.tan.gui.AdminGUI.openMainMenu;
 
 
-public class OpenAdminGUI extends SubCommand {
+public class OpenAdminGUI extends PlayerSubCommand {
     @Override
     public String getName() {
         return "gui";
@@ -38,7 +39,6 @@ public class OpenAdminGUI extends SubCommand {
     @Override
     public void perform(Player player, String[] args){
         if (args.length == 1){
-
             openMainMenu(player);
         }else if(args.length > 1){
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());

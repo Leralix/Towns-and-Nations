@@ -1,11 +1,5 @@
 package org.leralix.tan.gui;
 
-import org.leralix.lib.gui
-.builder.item.ItemBuilder;
-import org.leralix.lib.gui
-.guis.Gui;
-import org.leralix.lib.gui
-.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -18,7 +12,12 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.lib.gui.builder.item.ItemBuilder;
+import org.leralix.lib.gui.guis.Gui;
+import org.leralix.lib.gui.guis.GuiItem;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -51,8 +50,6 @@ import org.leralix.tan.storage.PlayerSelectPropertyPositionStorage;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.*;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -185,9 +182,7 @@ public class PlayerGUI implements IGUI {
 
         ItemStack checkScope = HeadUtils.createCustomItemStack(Material.NAME_TAG,scope.getName(),
                 Lang.GUI_GENERIC_CLICK_TO_SWITCH_SCOPE.get());
-        GuiItem checkScopeGui = ItemBuilder.from(checkScope).asGuiItem(event -> {
-            openNewsletter(player,0,scope.getNextScope());
-        });
+        GuiItem checkScopeGui = ItemBuilder.from(checkScope).asGuiItem(event -> openNewsletter(player,0,scope.getNextScope()));
 
         gui.setItem(6,5,checkScopeGui);
         gui.open(player);
@@ -2294,11 +2289,14 @@ public class PlayerGUI implements IGUI {
 
     public static void openChunkSettings(Player player, TerritoryData territoryData) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_MENU.get(territoryData.getName()),3);
-
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ItemStack playerChunkIcon = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,
                 Lang.GUI_TOWN_CHUNK_PLAYER.get(),
                 Lang.GUI_TOWN_CHUNK_PLAYER_DESC1.get()
+        );
+        ItemStack generalChunkSettingsIcon = HeadUtils.makeSkullURL(Lang.CHUNK_GENERAL_SETTINGS.get(),"https://textures.minecraft.net/texture/5f8c703105180d2586d7f96019dac489776ae488dd6ceb981d08fae4325ea4d1",
+                Lang.CHUNK_GENERAL_SETTINGS_DESC1.get()
         );
 
         ItemStack mobChunckIcon = HeadUtils.createCustomItemStack(Material.CREEPER_HEAD,
@@ -2307,13 +2305,14 @@ public class PlayerGUI implements IGUI {
         );
 
         GuiItem playerChunkButton = ItemBuilder.from(playerChunkIcon).asGuiItem(event -> {
-            event.setCancelled(true);
             openChunkPlayerSettings(player, territoryData);
         });
 
-        GuiItem mobChunkButton = ItemBuilder.from(mobChunckIcon).asGuiItem(event -> {
-            event.setCancelled(true);
+        GuiItem generalChunkSettingsButton = ItemBuilder.from(generalChunkSettingsIcon).asGuiItem(event -> {
+            openChunkGeneralSettings(player, territoryData);
+        });
 
+        GuiItem mobChunkButton = ItemBuilder.from(mobChunckIcon).asGuiItem(event -> {
             if(territoryData instanceof TownData townData){
                 if(townData.getLevel().getBenefitsLevel("UNLOCK_MOB_BAN") >= 1)
                     openTownChunkMobSettings(player,0);
@@ -2324,14 +2323,40 @@ public class PlayerGUI implements IGUI {
             }
         });
 
-        gui.setItem(2,4, playerChunkButton);
-        gui.setItem(2,6, mobChunkButton);
+        gui.setItem(2,3, playerChunkButton);
+        gui.setItem(2,5, generalChunkSettingsButton);
+        gui.setItem(2,7, mobChunkButton);
 
 
         gui.setItem(3,1, IGUI.createBackArrow(player, p -> dispatchPlayerTown(player)));
 
         gui.open(player);
     }
+
+    private static void openChunkGeneralSettings(Player player, TerritoryData territoryData) {
+        Gui gui = IGUI.createChestGui(Lang.HEADER_CHUNK_GENERAL_SETTINGS.get(),3);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
+        Map<GeneralChunkSetting, Boolean> generalSettings = territoryData.getChunkSettings().getChunkSetting();
+        
+        for(GeneralChunkSetting generalChunkSetting : GeneralChunkSetting.values()){
+            
+            GuiItem guiItem = ItemBuilder.from(generalChunkSetting.getIcon(generalSettings.get(generalChunkSetting))).asGuiItem(event -> {
+                event.setCancelled(true);
+                if(!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_CLAIM_SETTINGS)){
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                    return;
+                }
+                generalSettings.put(generalChunkSetting, !generalSettings.get(generalChunkSetting));
+                openChunkGeneralSettings(player, territoryData);
+            });
+            gui.addItem(guiItem);
+        }
+
+
+        gui.setItem(3,1, IGUI.createBackArrow(player, p -> openChunkSettings(player, territoryData)));
+        gui.open(player);
+    }
+
     public static void openTownChunkMobSettings(Player player, int page){
         Gui gui = IGUI.createChestGui(Lang.HEADER_MOB_SETTINGS.get(page + 1),6);
 

@@ -1,5 +1,6 @@
 package org.leralix.tan.commands.debugsubcommand;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -31,13 +32,13 @@ public class SaveData extends SubCommand {
     public String getSyntax() {
         return "/tandebug saveall";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
+    public List<String> getTabCompleteSuggestions(CommandSender commandSender, String lowerCase, String[] args){
         return Collections.emptyList();
     }
     @Override
-    public void perform(Player player, String[] args) {
+    public void perform(CommandSender commandSender, String[] args) {
         TownDataStorage.saveStats();
         PlayerDataStorage.saveStats();
-        player.sendMessage(TanChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
+        commandSender.sendMessage(TanChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
 }

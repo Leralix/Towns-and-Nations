@@ -41,7 +41,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Main Towns and Nations class, used to load the plugin and to manage the plugin.
@@ -53,7 +52,6 @@ public final class TownsAndNations extends JavaPlugin {
      * Singleton instance of the plugin.
      */
     private static TownsAndNations plugin;
-    Logger logger;
     /**
      * User agent used to access the GitHub API.
      */
@@ -105,15 +103,14 @@ public final class TownsAndNations extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         plugin = this;
-        logger = this.getLogger();
         getLogger().log(Level.INFO, "\u001B[33m----------------Towns & Nations------------------\u001B[0m");
         getLogger().log(Level.INFO,"To report a bug or request a feature, please ask on my discord server: https://discord.gg/Q8gZSFUuzb");
 
-        logger.log(Level.INFO,"[TaN] Loading Plugin");
+        getLogger().log(Level.INFO,"[TaN] Loading Plugin");
 
         checkForUpdate();
 
-        logger.log(Level.INFO,"[TaN] -Loading Lang");
+        getLogger().log(Level.INFO,"[TaN] -Loading Lang");
 
         ConfigUtil.saveAndUpdateResource(this, "lang.yml");
         ConfigUtil.addCustomConfig(this, "lang.yml", ConfigTag.TAN_LANG);
@@ -122,24 +119,24 @@ public final class TownsAndNations extends JavaPlugin {
 
         Lang.loadTranslations(lang);
         DynamicLang.loadTranslations(lang);
-        TownsAndNations.getPlugin().getPluginLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
+        getLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
 
 
 
-        logger.log(Level.INFO, "[TaN] -Loading Configs");
+        getLogger().log(Level.INFO, "[TaN] -Loading Configs");
         ConfigUtil.saveAndUpdateResource(this, "config.yml");
         ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.TAN);
         ConfigUtil.saveAndUpdateResource(this, "townUpgrades.yml");
         ConfigUtil.addCustomConfig(this, "townUpgrades.yml", ConfigTag.TAN_UPGRADE);
 
 
-        logger.log(Level.INFO, "[TaN] -Loading Database");
+        getLogger().log(Level.INFO, "[TaN] -Loading Database");
         loadDB();
 
-        logger.log(Level.INFO, "[TaN] -Loading Economy");
+        getLogger().log(Level.INFO, "[TaN] -Loading Economy");
         setupEconomy();
 
-        logger.log(Level.INFO, "[TaN] -Loading Storage");
+        getLogger().log(Level.INFO, "[TaN] -Loading Storage");
 
         UpgradeStorage.init();
         MobChunkSpawnStorage.init();
@@ -152,7 +149,7 @@ public final class TownsAndNations extends JavaPlugin {
 
 
 
-        logger.log(Level.INFO,"[TaN] -Loading Local data");
+        getLogger().log(Level.INFO,"[TaN] -Loading Local data");
 
         RegionDataStorage.loadStats();
         PlayerDataStorage.loadStats();
@@ -163,11 +160,11 @@ public final class TownsAndNations extends JavaPlugin {
         NewsletterStorage.load();
 
 
-        logger.log(Level.INFO,"[TaN] -Loading blocks data");
+        getLogger().log(Level.INFO,"[TaN] -Loading blocks data");
         CustomNBT.setBlocsData();
 
 
-        logger.log(Level.INFO,"[TaN] -Loading commands");
+        getLogger().log(Level.INFO,"[TaN] -Loading commands");
         SaveStats.startSchedule();
         DailyTasks.scheduleMidnightTask();
 
@@ -179,11 +176,11 @@ public final class TownsAndNations extends JavaPlugin {
 
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            logger.log(Level.INFO,"[TaN] -Loading PlaceholderAPI");
+            getLogger().log(Level.INFO,"[TaN] -Loading PlaceholderAPI");
             new PlaceHolderAPI().register();
         }
 
-        logger.log(Level.INFO,"[TaN] Plugin loaded successfully");
+        getLogger().log(Level.INFO,"[TaN] Plugin loaded successfully");
 
         api = new TanApi();
 
@@ -198,7 +195,7 @@ public final class TownsAndNations extends JavaPlugin {
         try {
             databaseHandler.connect();
         } catch (SQLException e) {
-            throw new RuntimeException("Error while loading DB",e);
+            getLogger().log(Level.SEVERE,"[TaN] Error while connecting to the database");
         }
     }
 
@@ -207,7 +204,7 @@ public final class TownsAndNations extends JavaPlugin {
      */
     private void setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            logger.log(Level.INFO,"[TaN] -Vault is not detected. Running standalone economy");
+            getLogger().log(Level.INFO,"[TaN] -Vault is not detected. Running standalone economy");
             EconomyUtil.setEconomy(new TanEconomyStandalone());
             return;
         }
@@ -221,12 +218,12 @@ public final class TownsAndNations extends JavaPlugin {
     @Override
     public void onDisable() {
         if(System.currentTimeMillis() - dateOfStart < 30000){
-            logger.info("[TaN] Not saving data because plugin was closed less than 30s after launch");
-            logger.info("[TaN] Plugin disabled");
+            getLogger().info("[TaN] Not saving data because plugin was closed less than 30s after launch");
+            getLogger().info("[TaN] Plugin disabled");
             return;
         }
 
-        logger.info("[TaN] Savings Data");
+        getLogger().info("[TaN] Savings Data");
 
 
         RegionDataStorage.saveStats();
@@ -244,7 +241,7 @@ public final class TownsAndNations extends JavaPlugin {
             Thread.currentThread().interrupt();
         }
 
-        logger.info("[TaN] Plugin disabled");
+        getLogger().info("[TaN] Plugin disabled");
     }
 
     /**
@@ -271,15 +268,6 @@ public final class TownsAndNations extends JavaPlugin {
     public static TownsAndNations getPlugin() {
         return plugin;
     }
-
-    /**
-     * Get the plugin Logger
-     * @return the plugin logger
-     */
-    public Logger getPluginLogger() {
-        return logger;
-    }
-
 
     /**
      * Check GitHub and notify admins if a new version of Towns and Nations is available.
@@ -310,16 +298,16 @@ public final class TownsAndNations extends JavaPlugin {
 
                 latestVersion = extractVersionFromResponse(response.toString());
                 if (CURRENT_VERSION.isOlderThan(latestVersion)) {
-                    getPluginLogger().log(Level.INFO,"[TaN] A new version is available : {0}", latestVersion);
+                    getLogger().log(Level.INFO,"[TaN] A new version is available : {0}", latestVersion);
                 } else {
-                    getPluginLogger().info("[TaN] Towns and Nation is up to date: "+ CURRENT_VERSION);
+                    getLogger().info("[TaN] Towns and Nation is up to date: "+ CURRENT_VERSION);
                 }
             } else {
-                getPluginLogger().info("[TaN] An error occurred while trying to accesses github API.");
-                getPluginLogger().info("[TaN] Error log : " + con.getInputStream());
+                getLogger().info("[TaN] An error occurred while trying to accesses github API.");
+                getLogger().info("[TaN] Error log : " + con.getInputStream());
             }
         } catch (Exception e) {
-            getPluginLogger().warning("[TaN] An error occurred while trying to check for updates.");
+            getLogger().warning("[TaN] An error occurred while trying to check for updates.");
         }
     }
 

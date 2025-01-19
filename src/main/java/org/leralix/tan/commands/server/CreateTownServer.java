@@ -2,6 +2,7 @@ package org.leralix.tan.commands.server;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -10,7 +11,7 @@ import org.leralix.tan.listeners.chat.events.CreateTown;
 import java.util.Collections;
 import java.util.List;
 
-class CreateTownServer extends ServerSubCommand {
+class CreateTownServer extends SubCommand {
 
 
     @Override
@@ -34,12 +35,8 @@ class CreateTownServer extends ServerSubCommand {
     }
 
     @Override
-    public List<String> getTabCompleteSuggestions(Player player, String currentMessage, String[] args) {
+    public List<String> getTabCompleteSuggestions(CommandSender player, String currentMessage, String[] args) {
         return Collections.emptyList();
-    }
-
-    @Override
-    public void perform(Player player, String[] args) {
     }
 
     @Override

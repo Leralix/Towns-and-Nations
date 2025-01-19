@@ -4,7 +4,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.Location;
-import org.leralix.lib.data.position.Vector3D;
+import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.TownsAndNations;
 

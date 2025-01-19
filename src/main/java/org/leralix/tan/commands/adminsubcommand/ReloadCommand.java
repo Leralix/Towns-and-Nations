@@ -1,6 +1,6 @@
 package org.leralix.tan.commands.adminsubcommand;
 
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.lib.utils.config.ConfigTag;
@@ -32,11 +32,11 @@ public class ReloadCommand extends SubCommand {
     }
 
     @Override
-    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
+    public List<String> getTabCompleteSuggestions(CommandSender player, String lowerCase, String[] args){
         return Collections.emptyList();
     }
     @Override
-    public void perform(Player player, String[] args){
+    public void perform(CommandSender player, String[] args){
         if (args.length == 1){
             Plugin plugin = TownsAndNations.getPlugin();
             ConfigUtil.addCustomConfig(plugin,"config.yml", ConfigTag.TAN);

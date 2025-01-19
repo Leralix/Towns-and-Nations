@@ -13,7 +13,6 @@ public class DebugCommandManager extends CommandManager {
 
         addSubCommand(new SkipDay());
         addSubCommand(new PlaySound());
-        addSubCommand(new ActionBarCommand());
         addSubCommand(new MainHelpCommand(this));
         addSubCommand(new SendReport());
     }

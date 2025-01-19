@@ -2,7 +2,7 @@ package org.leralix.tan.commands.playersubcommand;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.leralix.lib.commands.SubCommand;
+import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -15,7 +15,7 @@ import org.leralix.tan.lang.Lang;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InvitePlayerCommand extends SubCommand {
+public class InvitePlayerCommand extends PlayerSubCommand {
     @Override
     public String getName() {
         return "invite";

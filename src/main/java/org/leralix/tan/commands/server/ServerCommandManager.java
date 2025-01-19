@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.commands.CommandManager;
+import org.leralix.lib.commands.SubCommand;
 
 public class ServerCommandManager extends CommandManager {
 
@@ -17,14 +18,14 @@ public class ServerCommandManager extends CommandManager {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length > 0){
-            ServerSubCommand subCommand = (ServerSubCommand) subCommands.get(args[0]);
+            SubCommand subCommand = subCommands.get(args[0]);
             if(subCommand != null) {
                 subCommand.perform(sender, args);
                 return true;
             }
         }
 
-        return true;
+        return false;
     }
 
 

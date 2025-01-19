@@ -1,5 +1,6 @@
 package org.leralix.tan.commands.debugsubcommand;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.utils.ArchiveUtil;
@@ -31,17 +32,17 @@ public class SendReport extends SubCommand {
     public String getSyntax() {
         return "/tandebug report";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
+    public List<String> getTabCompleteSuggestions(CommandSender commandSender, String lowerCase, String[] args){
         return Collections.emptyList();
     }
     @Override
-    public void perform(Player player, String[] args) {
+    public void perform(CommandSender commandSender, String[] args) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
         LocalDateTime now = LocalDateTime.now();
 
-        String reportName = "Report_of_" + player.getName() + "_at_" + dtf.format(now);
+        String reportName = "Report_of_" + commandSender.getName() + "_at_" + dtf.format(now);
         ArchiveUtil.archiveFiles("reports", reportName);
-        player.sendMessage(Lang.DEBUG_REPORT_CREATED.get());
+        commandSender.sendMessage(Lang.DEBUG_REPORT_CREATED.get());
     }
 }
 

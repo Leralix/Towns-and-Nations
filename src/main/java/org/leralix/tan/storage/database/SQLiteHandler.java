@@ -68,7 +68,7 @@ public class SQLiteHandler extends DatabaseHandler {
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            TownsAndNations.getPlugin().getLogger().severe("Error while adding transaction history");
         }
     }
 
@@ -104,7 +104,7 @@ public class SQLiteHandler extends DatabaseHandler {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            TownsAndNations.getPlugin().getLogger().severe("Error while getting transaction history");
         }
         return new ArrayList<>(groupedByDate.values());
     }
@@ -121,10 +121,8 @@ public class SQLiteHandler extends DatabaseHandler {
         try (PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL)) {
             preparedStatement.setInt(1, nbDays);
             preparedStatement.setString(1, type.toString());
-            int rowsAffected = preparedStatement.executeUpdate();
-            //TownsAndNations.getPlugin().getLogger().info(Lang.DATABASE_SUCCESSFULLY_DELETED_OLD_ROWS.get(rowsAffected));
         } catch (SQLException e) {
-            e.printStackTrace();
+            TownsAndNations.getPlugin().getLogger().severe("Error while deleting old history");
         }
     }
 
@@ -141,7 +139,7 @@ public class SQLiteHandler extends DatabaseHandler {
             )
             """);
         } catch (SQLException e) {
-            e.printStackTrace();
+            TownsAndNations.getPlugin().getLogger().severe("Error while creating history table");
         }
     }
 }

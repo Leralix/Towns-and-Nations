@@ -2,6 +2,7 @@ package org.leralix.tan.commands.server;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -9,7 +10,7 @@ import org.leralix.tan.dataclass.territory.TownData;
 import java.util.Collections;
 import java.util.List;
 
-class QuitTownServer extends ServerSubCommand {
+class QuitTownServer extends SubCommand {
 
 
     @Override
@@ -33,12 +34,8 @@ class QuitTownServer extends ServerSubCommand {
     }
 
     @Override
-    public List<String> getTabCompleteSuggestions(Player player, String currentMessage, String[] args) {
+    public List<String> getTabCompleteSuggestions(CommandSender commandSender, String currentMessage, String[] args) {
         return Collections.emptyList();
-    }
-
-    @Override
-    public void perform(Player player, String[] args) {
     }
 
     @Override

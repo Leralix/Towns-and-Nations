@@ -178,7 +178,7 @@ public class NewClaimedChunkStorage {
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                TownsAndNations.getPlugin().getLogger().severe("Error while loading claimed chunks stats");
             }
         }
     }
@@ -193,12 +193,12 @@ public class NewClaimedChunkStorage {
                 file.createNewFile();
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            TownsAndNations.getPlugin().getLogger().severe("Error while creating claimed chunks file");
         }
         try (FileWriter writer = new FileWriter(file, false);){
             gson.toJson(claimedChunksMap, writer);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            TownsAndNations.getPlugin().getLogger().severe("Error while storing claimed chunks in file");
         }
     }
 

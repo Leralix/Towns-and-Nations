@@ -1,6 +1,7 @@
 package org.leralix.tan.commands.adminsubcommand;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.economy.EconomyUtil;
@@ -33,22 +34,17 @@ public class SetMoney extends SubCommand {
     public String getSyntax() {
         return "/tanadmin setmoney <player> <amount>";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
+    public List<String> getTabCompleteSuggestions(CommandSender player, String lowerCase, String[] args){
         return payPlayerSuggestion(args);
     }
 
-
-
     @Override
-    public void perform(Player player, String[] args) {
-
-
-
+    public void perform(CommandSender player, String[] args) {
         if (args.length < 3) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
             player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         } else if (args.length == 3) {
-            PlayerData target = PlayerDataStorage.get(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
+            PlayerData target = PlayerDataStorage.get(Bukkit.getOfflinePlayer(args[1]));
             double amount;
             try {
                 amount = Double.parseDouble(args[2]);

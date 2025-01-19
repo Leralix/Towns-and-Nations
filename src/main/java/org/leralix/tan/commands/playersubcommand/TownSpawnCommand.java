@@ -1,7 +1,7 @@
 package org.leralix.tan.commands.playersubcommand;
 
 import org.bukkit.entity.Player;
-import org.leralix.lib.commands.SubCommand;
+import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.storage.TeleportationRegister;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -13,7 +13,7 @@ import org.leralix.tan.lang.Lang;
 import java.util.Collections;
 import java.util.List;
 
-public class TownSpawnCommand extends SubCommand {
+public class TownSpawnCommand extends PlayerSubCommand {
     @Override
     public String getName() {
         return "spawn";

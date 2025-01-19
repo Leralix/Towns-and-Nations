@@ -1,7 +1,7 @@
 package org.leralix.tan.commands.playersubcommand;
 
 import org.bukkit.entity.Player;
-import org.leralix.lib.commands.SubCommand;
+import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -13,7 +13,7 @@ import org.leralix.tan.lang.Lang;
 import java.util.Collections;
 import java.util.List;
 
-public class SetTownSpawnCommand extends SubCommand {
+public class SetTownSpawnCommand extends PlayerSubCommand {
     @Override
     public String getName() {
         return "setspawn";

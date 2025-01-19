@@ -1,5 +1,6 @@
 package org.leralix.tan.storage;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.FileUtil;
@@ -107,7 +108,7 @@ public class SudoPlayerStorage {
         }
     }
 
-    public static void swap(Player player, Player target) {
+    public static void swap(CommandSender player, Player target) {
         if(sudoPlayersID.contains(target.getUniqueId().toString())){
             removeSudoPlayer(target);
             player.sendMessage(TanChatUtils.getTANString() + Lang.SUDO_PLAYER_REMOVED.get(target.getName()));

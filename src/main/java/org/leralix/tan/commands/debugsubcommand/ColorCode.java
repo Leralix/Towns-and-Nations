@@ -1,11 +1,13 @@
 package org.leralix.tan.commands.debugsubcommand;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.lang.Lang;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ColorCode extends SubCommand {
@@ -29,19 +31,19 @@ public class ColorCode extends SubCommand {
     public String getSyntax() {
         return "/tandebug colorcode";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
-        return new ArrayList<>();
+    public List<String> getTabCompleteSuggestions(CommandSender commandSender, String lowerCase, String[] args){
+        return Collections.emptyList();
     }
     @Override
-    public void perform(Player player, String[] args) {
-        player.sendMessage(ChatColor.translateAlternateColorCodes('§', "Player:§3 test"));
-        player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Money:§6 50✦"));
-        player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Town:§9 my town"));
-        player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Region:§b my region"));
-        player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Kingdom:§5 my kingdom"));
-        player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Chunks:§2 47/50♦"));
-        player.sendMessage(ChatColor.translateAlternateColorCodes('§',"Number of Player:§9 6♣"));
-        player.sendMessage(ChatColor.translateAlternateColorCodes('§',"other:§e status"));
+    public void perform(CommandSender commandSender, String[] args) {
+        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('§', "Player:§3 test"));
+        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('§',"Money:§6 50✦"));
+        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('§',"Town:§9 my town"));
+        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('§',"Region:§b my region"));
+        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('§',"Kingdom:§5 my kingdom"));
+        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('§',"Chunks:§2 47/50♦"));
+        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('§',"Number of Player:§9 6♣"));
+        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('§',"other:§e status"));
 
     }
 

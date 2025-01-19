@@ -29,7 +29,7 @@ public class FileUtil {
             try {
                 archiveFile.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                TownsAndNations.getPlugin().getLogger().severe("Could not create history file!");
                 return;
             }
         }
@@ -39,7 +39,7 @@ public class FileUtil {
             bw.write( "[" + LocalDate.now() + "] " + lineToAdd);
             bw.newLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            TownsAndNations.getPlugin().getLogger().severe("Could not create history file!");
         }
     }
 }

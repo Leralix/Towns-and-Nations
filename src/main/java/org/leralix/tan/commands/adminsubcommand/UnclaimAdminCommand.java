@@ -2,7 +2,7 @@ package org.leralix.tan.commands.adminsubcommand;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-import org.leralix.lib.commands.SubCommand;
+import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.dataclass.territory.RegionData;
@@ -12,9 +12,10 @@ import org.leralix.tan.dataclass.chunk.RegionClaimedChunk;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.lang.Lang;
 
+import java.util.Collections;
 import java.util.List;
 
-public class UnclaimAdminCommand extends SubCommand {
+public class UnclaimAdminCommand extends PlayerSubCommand {
     @Override
     public String getName() {
         return "unclaim";
@@ -33,7 +34,7 @@ public class UnclaimAdminCommand extends SubCommand {
         return "/tanadmin unclaim";
     }
     public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
-        return null;
+        return Collections.emptyList();
     }
     @Override
     public void perform(Player player, String[] args){
@@ -51,31 +52,25 @@ public class UnclaimAdminCommand extends SubCommand {
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunk);
 
         if(claimedChunk instanceof TownClaimedChunk townClaimedChunk){
-            UnclaimChunkTown(player, chunk, townClaimedChunk);
+            unclaimChunkTown(player, chunk, townClaimedChunk);
         }
         else if (claimedChunk instanceof RegionClaimedChunk regionClaimedChunk){
-            UnclaimChunkRegion(player, chunk, regionClaimedChunk);
+            unclaimChunkRegion(player, chunk, regionClaimedChunk);
         }
-
-
     }
 
-    private void UnclaimChunkTown(Player player, Chunk chunk, TownClaimedChunk claimedChunk) {
-
+    private void unclaimChunkTown(Player player, Chunk chunk, TownClaimedChunk claimedChunk) {
         TownData townData = claimedChunk.getTown();
         NewClaimedChunkStorage.unclaimChunk(chunk);
 
-        player.sendMessage(TanChatUtils.getTANString() + Lang.DEBUG_UNCLAIMED_CHUNK_SUCCESS_TOWN.get(townData.getName(),
-                townData.getNumberOfClaimedChunk(),townData.getLevel().getChunkCap()));
+        player.sendMessage(TanChatUtils.getTANString() + Lang.DEBUG_UNCLAIMED_CHUNK_SUCCESS_TOWN.get(townData.getName(), townData.getNumberOfClaimedChunk(),townData.getLevel().getChunkCap()));
     }
 
-    private void UnclaimChunkRegion(Player player, Chunk chunk, RegionClaimedChunk regionClaimedChunk) {
+    private void unclaimChunkRegion(Player player, Chunk chunk, RegionClaimedChunk regionClaimedChunk) {
         RegionData regionData = regionClaimedChunk.getRegion();
-
         NewClaimedChunkStorage.unclaimChunk(chunk);
 
-        player.sendMessage(TanChatUtils.getTANString() + Lang.DEBUG_UNCLAIMED_CHUNK_SUCCESS_REGION.get(regionData.getName(),
-                regionData.getNumberOfClaimedChunk()));
+        player.sendMessage(TanChatUtils.getTANString() + Lang.DEBUG_UNCLAIMED_CHUNK_SUCCESS_REGION.get(regionData.getName(), regionData.getNumberOfClaimedChunk()));
 
     }
 }

@@ -1,7 +1,7 @@
 package org.leralix.tan.commands.playersubcommand;
 
 import org.bukkit.entity.Player;
-import org.leralix.lib.commands.SubCommand;
+import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
@@ -15,7 +15,7 @@ import org.leralix.tan.lang.Lang;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JoinTownCommand extends SubCommand {
+public class JoinTownCommand extends PlayerSubCommand {
     @Override
     public String getName() {
         return "join";

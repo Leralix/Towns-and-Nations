@@ -2,7 +2,7 @@ package org.leralix.tan.commands.playersubcommand;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-import org.leralix.lib.commands.SubCommand;
+import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
@@ -13,7 +13,7 @@ import org.leralix.tan.lang.Lang;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClaimCommand extends SubCommand {
+public class ClaimCommand extends PlayerSubCommand {
     @Override
     public String getName() {
         return "claim";

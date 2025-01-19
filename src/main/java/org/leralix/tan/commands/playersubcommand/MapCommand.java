@@ -5,7 +5,8 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-import org.leralix.lib.commands.SubCommand;
+import org.leralix.lib.commands.PlayerSubCommand;
+import org.leralix.lib.position.CardinalPoint;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -16,7 +17,7 @@ import org.leralix.tan.enums.ClaimType;
 
 import java.util.*;
 
-public class MapCommand extends SubCommand {
+public class MapCommand extends PlayerSubCommand {
 
     @Override
     public String getName() {
@@ -57,39 +58,65 @@ public class MapCommand extends SubCommand {
     public static void openMap(Player player, MapSettings settings) {
         Chunk currentChunk = player.getLocation().getChunk();
         int radius = 4;
-        Map<Integer,TextComponent> text = new HashMap<>();
+        Map<Integer, TextComponent> text = new HashMap<>();
         TextComponent claimType = new TextComponent(Lang.MAP_CLAIM_TYPE.get());
         claimType.setHoverEvent(null);
         claimType.setColor(net.md_5.bungee.api.ChatColor.GRAY);
         text.put(-4, claimType);
         TextComponent typeButton = settings.getMapTypeButton();
-        text.put(-3,typeButton);
+        text.put(-3, typeButton);
         TextComponent actionButton = settings.getClaimTypeButton();
-        text.put(-2,actionButton);
+        text.put(-2, actionButton);
+        float yaw = player.getLocation().getYaw();
 
+        yaw = (yaw < 0) ? yaw + 360 : yaw;
+
+        CardinalPoint cardinalPoint = CardinalPoint.getCardinalPoint(yaw);
+
+        // Envoi de l'en-tête
         player.sendMessage("╭─────────⟢⟐⟣─────────╮");
         for (int dz = -radius; dz <= radius; dz++) {
             ComponentBuilder newLine = new ComponentBuilder();
             newLine.append("   ");
             for (int dx = -radius; dx <= radius; dx++) {
-                Chunk chunk = player.getWorld().getChunkAt(currentChunk.getX() + dx, currentChunk.getZ() + dz);
+                int chunkX = currentChunk.getX();
+                int chunkZ = currentChunk.getZ();
 
+                switch (cardinalPoint) {
+                    case NORTH:
+                        chunkX += dx;
+                        chunkZ -= dz;
+                        break;
+                    case SOUTH:
+                        chunkX += dx;
+                        chunkZ += dz;
+                        break;
+                    case EAST:
+                        chunkX += dz;
+                        chunkZ += dx;
+                        break;
+                    case WEST:
+                        chunkX -= dz;
+                        chunkZ += dx;
+                        break;
+                }
+
+                Chunk chunk = player.getWorld().getChunkAt(chunkX, chunkZ);
                 ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunk);
                 TextComponent icon = claimedChunk.getMapIcon(player);
                 ClaimAction claimAction = settings.getClaimActionType();
                 ClaimType mapType = settings.getClaimType();
                 icon.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tan " + claimAction.toString().toLowerCase() + " " + mapType.toString().toLowerCase() + " " + chunk.getX() + " " + chunk.getZ()));
-
                 newLine.append(icon);
             }
-            if(text.containsKey(dz)){
+            if (text.containsKey(dz)) {
                 newLine.append(text.get(dz));
             }
-
             player.spigot().sendMessage(newLine.create());
         }
         player.sendMessage("╰─────────⟢⟐⟣─────────╯");
     }
+
 
 
 }

@@ -1,6 +1,6 @@
 package org.leralix.tan.commands.debugsubcommand;
 
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.utils.ArchiveUtil;
 import org.leralix.tan.utils.TanChatUtils;
@@ -30,14 +30,13 @@ public class CreateBackup extends SubCommand {
     public String getSyntax() {
         return "/tandebug createBackup";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
+    public List<String> getTabCompleteSuggestions(CommandSender commandSender, String lowerCase, String[] args){
         return new ArrayList<>();
     }
     @Override
-    public void perform(Player player, String[] args) {
-
+    public void perform(CommandSender commandSender, String[] args) {
         ArchiveUtil.archiveFiles();
-        player.sendMessage(TanChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
+        commandSender.sendMessage(TanChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
 
 }

@@ -29,7 +29,7 @@ public class EnumMapDeserializer<E extends Enum<E>, V> implements JsonDeserializ
             try {
                 enumValue = Enum.valueOf(enumClass, key);
             } catch (IllegalArgumentException e) {
-                TownsAndNations.getPlugin().getPluginLogger().warning("Invalid key (probably older version) deleted: " + key);
+                TownsAndNations.getPlugin().getLogger().warning("Invalid key (probably older version) deleted: " + key);
                 continue;
             }
 

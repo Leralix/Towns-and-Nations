@@ -1,6 +1,7 @@
 package org.leralix.tan.commands.adminsubcommand;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.storage.SudoPlayerStorage;
@@ -31,7 +32,7 @@ public class SudoPlayer extends SubCommand {
     public String getSyntax() {
         return "/tanadmin sudo <optional - player> ";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
+    public List<String> getTabCompleteSuggestions(CommandSender player, String lowerCase, String[] args){
 
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
@@ -42,27 +43,31 @@ public class SudoPlayer extends SubCommand {
         return suggestions;
     }
     @Override
-    public void perform(Player player, String[] args) {
+    public void perform(CommandSender commandSender, String[] args) {
 
         if (args.length == 1) {
-            SudoPlayerStorage.swap(player);
+            if (commandSender instanceof Player player) {
+                SudoPlayerStorage.swap(player);
+            }
         }
         else if (args.length == 2) {
             Player target = Bukkit.getPlayer(args[1]);
             if (target == null) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_FOUND.get());
+                commandSender.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_FOUND.get());
                 return;
             }
-            if(target.getUniqueId().equals(player.getUniqueId())){
-                SudoPlayerStorage.swap(player);
+            if (commandSender instanceof Player player) {
+                if(target.getUniqueId().equals(player.getUniqueId())){
+                    SudoPlayerStorage.swap(player);
+                }
             }
             else {
-                SudoPlayerStorage.swap(player, target);
+                SudoPlayerStorage.swap(commandSender, target);
             }
         }
         else {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+            commandSender.sendMessage(TanChatUtils.getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
+            commandSender.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
     }
 }

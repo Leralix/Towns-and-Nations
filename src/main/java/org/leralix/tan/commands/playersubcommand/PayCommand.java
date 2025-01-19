@@ -3,7 +3,7 @@ package org.leralix.tan.commands.playersubcommand;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.leralix.lib.commands.SubCommand;
+import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
@@ -16,7 +16,7 @@ import org.leralix.tan.enums.TownRelation;
 import java.util.List;
 
 
-public class PayCommand extends SubCommand {
+public class PayCommand extends PlayerSubCommand {
     @Override
     public String getName() {
         return "pay";

@@ -1,10 +1,11 @@
 package org.leralix.tan.commands.debugsubcommand;
 
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.lang.Lang;
 
+import java.util.Collections;
 import java.util.List;
 
 public class SkipDay extends SubCommand {
@@ -28,11 +29,11 @@ public class SkipDay extends SubCommand {
     public String getSyntax() {
         return "/tandebug skipday";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
-        return null;
+    public List<String> getTabCompleteSuggestions(CommandSender commandSender, String lowerCase, String[] args){
+        return Collections.emptyList();
     }
     @Override
-    public void perform(Player player, String[] args) {
+    public void perform(CommandSender commandSender, String[] args) {
         DailyTasks.executeMidnightTasks();
     }
 }

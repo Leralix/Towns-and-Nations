@@ -22,7 +22,7 @@ public class EnumMapKeyValueDeserializer<K extends Enum<K>, V extends Enum<V>> i
     public Map<K, V> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         Map<K, V> resultMap = new HashMap<>();
         JsonObject jsonObject = json.getAsJsonObject();
-        Logger logger = TownsAndNations.getPlugin().getPluginLogger();
+        Logger logger = TownsAndNations.getPlugin().getLogger();
 
         for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
             String keyString = entry.getKey();

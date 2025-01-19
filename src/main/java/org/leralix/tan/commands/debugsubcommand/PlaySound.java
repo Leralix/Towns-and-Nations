@@ -1,7 +1,7 @@
 package org.leralix.tan.commands.debugsubcommand;
 
 import org.bukkit.entity.Player;
-import org.leralix.lib.commands.SubCommand;
+import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class PlaySound extends SubCommand {
+public class PlaySound extends PlayerSubCommand {
 
     @Override
     public String getName() {
@@ -80,11 +80,5 @@ public class PlaySound extends SubCommand {
         else if (args[1].equalsIgnoreCase("minorbad")) {
             SoundUtil.playSound(player, SoundEnum.MINOR_BAD);
         }
-
-
-
-
-
-
     }
 }
