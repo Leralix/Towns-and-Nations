@@ -14,7 +14,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.ChunkPermissionType;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
 
 public class WildernessChunk extends ClaimedChunk2 {
 
@@ -82,6 +82,11 @@ public class WildernessChunk extends ClaimedChunk2 {
 
     @Override
     public boolean canFireGrief() {
+        return true;
+    }
+
+    @Override
+    public boolean canPVPHappen() {
         return true;
     }
 }

@@ -13,7 +13,7 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
-import org.leralix.tan.enums.ChunkPermissionType;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.enums.TownRelation;
 
@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TownDataStorage {
+    private static final String ERROR_MESSAGE = "Error while creating town storage";
 
     private TownDataStorage() {
         throw new IllegalStateException("Utility class");
@@ -91,7 +92,8 @@ public class TownDataStorage {
         try {
             reader = new FileReader(file);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);
+            return;
         }
 
 
@@ -124,18 +126,23 @@ public class TownDataStorage {
 
 
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Towns.json");
-        file.getParentFile().mkdirs();
+
+        if(file.getParentFile().mkdirs())
+
+
         try {
-            if (!file.exists()) {
+            if (!file.exists()){
                 file.createNewFile();
             }
+
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);
+            return;
         }
         try (Writer writer = new FileWriter(file, false)) {
             gson.toJson(townDataMap, writer);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);
         }
 
     }

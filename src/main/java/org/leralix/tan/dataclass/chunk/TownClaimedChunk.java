@@ -19,6 +19,7 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.dataclass.wars.GriefAllowed;
 import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -26,7 +27,7 @@ import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.ChunkPermissionType;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
 
 public class TownClaimedChunk extends ClaimedChunk2{
     public TownClaimedChunk(Chunk chunk, String owner) {
@@ -167,14 +168,21 @@ public class TownClaimedChunk extends ClaimedChunk2{
     public boolean canExplosionGrief() {
         String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.TAN).getString("explosionGrief", "ALWAYS");
         GriefAllowed griefAllowed =  GriefAllowed.valueOf(fireGrief);
-        return griefAllowed.canGrief(getTown());
+        return griefAllowed.canGrief(getTown(), GeneralChunkSetting.TNT_GRIEF);
     }
 
     @Override
     public boolean canFireGrief() {
         String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.TAN).getString("fireGrief", "ALWAYS");
         GriefAllowed griefAllowed = GriefAllowed.valueOf(fireGrief);
-        return griefAllowed.canGrief(getTown());
+        return griefAllowed.canGrief(getTown(), GeneralChunkSetting.FIRE_GRIEF);
+    }
+
+    @Override
+    public boolean canPVPHappen() {
+        String pvpEnabled = ConfigUtil.getCustomConfig(ConfigTag.TAN).getString("pvpEnabledInClaimedChunks", "ALWAYS");
+        GriefAllowed griefAllowed = GriefAllowed.valueOf(pvpEnabled);
+        return griefAllowed.canGrief(getTown(), GeneralChunkSetting.ENABLE_PVP);
     }
 
 

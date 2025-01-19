@@ -1,8 +1,8 @@
 package org.leralix.tan.dataclass;
 
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
-import org.leralix.tan.enums.ChunkPermissionType;
-import org.leralix.tan.enums.GeneralChunkSetting;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.enums.MobChunkSpawnEnum;
 
 import java.util.EnumMap;

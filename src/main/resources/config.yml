@@ -189,16 +189,19 @@ MaximumTimeBeforeAttack: 4320 #72 hours
 warScoreMultiplier : 0.70
 
 ########################
-## Fire and explosion ##
+##  General settings  ##
 ########################
 
-#Enable fire and explosion grief in claimed chunk
-#Always - Always allow fire and explosion grief
-#WarOnly - Allow fire and explosion grief only during a war
-#Never - Never allow fire and explosion grief
-#[ALWAYS, WAR_ONLY, NEVER]
-fireGrief: "NEVER" #grief and spread of fire
-explosionGrief: "NEVER"
+#General settings in claimed chunks
+# Always                 | Always allowed
+# Player choice          | Allow territories to choose
+# Player choice and War  | Allow territories to choose and is automatically enabled during a war
+# WarOnly                | Allow only during a war
+# Never                  | Never allowed
+# [ALWAYS, WAR_ONLY, PLAYER_CHOICE_AND_WAR, PLAYER_CHOICE, NEVER]
+fireGrief: "PLAYER_CHOICE_AND_WAR" #burning and spreading
+explosionGrief: "PLAYER_CHOICE_AND_WAR"
+pvpEnabledInClaimedChunks: "ALWAYS"
 
 ########################
 ##  RARES RESSOURCES  ##

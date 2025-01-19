@@ -26,7 +26,7 @@ import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.storage.SudoPlayerStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.enums.ChunkPermissionType;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
 
 public class ChunkListener implements Listener {
 
@@ -239,19 +239,22 @@ public class ChunkListener implements Listener {
             ) {
                 if(!canPlayerDoAction(loc, player, ChunkPermissionType.ATTACK_PASSIVE_MOB)){
                     event.setCancelled(true);
-                };
+                }
             }
 
             else if(entity instanceof ItemFrame) {
                 if(!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_ITEM_FRAME)){
                     event.setCancelled(true);
-                };
+                }
             }
 
             else if(entity instanceof EnderCrystal){
                 if(!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)){
                     event.setCancelled(true);
-                };
+                }
+            }
+            else if(entity instanceof Player player2 && !NewClaimedChunkStorage.get(player2.getLocation().getChunk()).canPVPHappen()) {
+                event.setCancelled(true);
             }
         }
 
@@ -310,6 +313,9 @@ public class ChunkListener implements Listener {
                     if(!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)){
                         event.setCancelled(true);
                     }
+                }
+                else if(entity instanceof Player player2 && !NewClaimedChunkStorage.get(player2.getLocation().getChunk()).canPVPHappen()) {
+                    event.setCancelled(true);
                 }
             }
         }
@@ -478,7 +484,6 @@ public class ChunkListener implements Listener {
             }
         }
     }
-
 
     private boolean canPlayerDoAction(Location location, Player player, ChunkPermissionType permissionType){
 

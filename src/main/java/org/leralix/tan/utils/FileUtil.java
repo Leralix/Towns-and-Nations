@@ -14,6 +14,7 @@ import java.time.LocalDate;
  * This static class manage the archive txt for admins.
  */
 public class FileUtil {
+    private static final String ERROR_MESSAGE = "Could not create history file!";
     private FileUtil() {
         throw new IllegalStateException("Utility class");
     }
@@ -28,9 +29,11 @@ public class FileUtil {
 
         if (!archiveFile.exists()) {
             try {
-                archiveFile.createNewFile();
+                if(!archiveFile.createNewFile()){
+                    TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);
+                }
             } catch (IOException e) {
-                TownsAndNations.getPlugin().getLogger().severe("Could not create history file!");
+                TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);
                 return;
             }
         }
@@ -40,7 +43,7 @@ public class FileUtil {
             bw.write( "[" + LocalDate.now() + "] " + lineToAdd);
             bw.newLine();
         } catch (IOException e) {
-            TownsAndNations.getPlugin().getLogger().severe("Could not create history file!");
+            TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);
         }
     }
 }

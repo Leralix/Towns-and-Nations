@@ -10,15 +10,16 @@ import org.leralix.tan.dataclass.PlayerData;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.sql.*;
 import java.util.*;
 
 public class PlayerDataStorage {
+    private static final String ERROR_MESSAGE = "Error while creating player storage";
 
-    private static ArrayList<PlayerData> stats = new ArrayList<>();
     private static Map<String, PlayerData> playerStorage = new HashMap<>();
 
-    private static Connection connection;
+    private PlayerDataStorage() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static PlayerData createPlayerDataClass(Player p) {
         PlayerData playerData = new PlayerData(p);
@@ -65,57 +66,7 @@ public class PlayerDataStorage {
     public static Collection<PlayerData> getLists() {
         return playerStorage.values();
     }
-    public static Collection<PlayerData> getOldLists() {
-        return stats;
-    }
 
-    public static void loadOldStats(){
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Stats.json");
-        if (file.exists()){
-            Reader reader;
-            try {
-                reader = new FileReader(file);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            PlayerData[] n = gson.fromJson(reader, PlayerData[].class);
-            stats = new ArrayList<>(Arrays.asList(n));
-
-        }
-
-    }
-    public static void saveOldStats() {
-
-        Gson gson = new Gson();
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Stats.json");
-        file.getParentFile().mkdir();
-
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        Writer writer;
-        try {
-            writer = new FileWriter(file, false);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        gson.toJson(stats, writer);
-        try {
-            writer.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            writer.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
     public static void loadStats(){
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -125,7 +76,8 @@ public class PlayerDataStorage {
             try {
                 reader = new FileReader(file);
             } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
+                TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);
+                return;
             }
             Type type = new TypeToken<HashMap<String, PlayerData>>() {}.getType();
             playerStorage = gson.fromJson(reader, type);
@@ -139,27 +91,31 @@ public class PlayerDataStorage {
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Players.json");
         file.getParentFile().mkdir();
 
+
         try {
-            file.createNewFile();
+             file.createNewFile();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);
+            return;
         }
         Writer writer;
         try {
             writer = new FileWriter(file, false);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);
+            return;
         }
         gson.toJson(playerStorage, writer);
         try {
             writer.flush();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);
+            return;
         }
         try {
             writer.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);
         }
 
     }

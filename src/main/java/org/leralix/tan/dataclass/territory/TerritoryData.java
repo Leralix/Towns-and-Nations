@@ -30,7 +30,7 @@ import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.enums.ChunkPermissionType;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.PlayerGUI;
@@ -47,6 +47,9 @@ import org.leralix.tan.utils.*;
 
 import java.util.*;
 import java.util.function.Consumer;
+
+import static org.leralix.lib.data.SoundEnum.ADD;
+import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
 public abstract class TerritoryData {
 
@@ -654,11 +657,11 @@ public abstract class TerritoryData {
         return doesPlayerHavePermission(PlayerDataStorage.get(player), townRolePermission);
     }
     public boolean doesPlayerHavePermission(PlayerData playerData, RolePermission townRolePermission) {
-        //Player is not in the territory, he has no permission
+
         if(!this.isPlayerIn(playerData)){
-            return false; //Later implement
+            return false;
         }
-        //Leader have all rights
+
         if(isLeader(playerData))
             return true;
 

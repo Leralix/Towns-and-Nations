@@ -39,6 +39,8 @@ import org.leralix.tan.dataclass.wars.wargoals.LiberateWarGoal;
 import org.leralix.tan.dataclass.wars.wargoals.SubjugateWarGoal;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.*;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
@@ -2339,14 +2341,17 @@ public class PlayerGUI implements IGUI {
         Map<GeneralChunkSetting, Boolean> generalSettings = territoryData.getChunkSettings().getChunkSetting();
         
         for(GeneralChunkSetting generalChunkSetting : GeneralChunkSetting.values()){
-            
+
+
             GuiItem guiItem = ItemBuilder.from(generalChunkSetting.getIcon(generalSettings.get(generalChunkSetting))).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_CLAIM_SETTINGS)){
                     player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                    SoundUtil.playSound(player, NOT_ALLOWED);
                     return;
                 }
                 generalSettings.put(generalChunkSetting, !generalSettings.get(generalChunkSetting));
+                SoundUtil.playSound(player, ADD);
                 openChunkGeneralSettings(player, territoryData);
             });
             gui.addItem(guiItem);

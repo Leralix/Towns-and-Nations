@@ -190,14 +190,11 @@ public class NewClaimedChunkStorage {
     public static void save() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Claimed Chunks.json");
-        if(!file.getParentFile().mkdirs()){
-            TownsAndNations.getPlugin().getLogger().severe("Error while creating claimed chunks file directory");
-        }
+        file.getParentFile().mkdirs();
         try {
-            if (!file.exists() && !file.createNewFile()){
-                TownsAndNations.getPlugin().getLogger().severe("Error while creating claimed chunks file");
+            if (!file.exists()){
+                file.createNewFile();
             }
-
         } catch (IOException e) {
             TownsAndNations.getPlugin().getLogger().severe("Error while creating claimed chunks file");
         }

@@ -12,7 +12,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.TerritoryUtil;
-import org.leralix.tan.enums.ChunkPermissionType;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
 
 import java.util.Objects;
@@ -102,6 +102,7 @@ public abstract class ClaimedChunk2 {
 
     public abstract boolean canExplosionGrief();
     public abstract boolean canFireGrief();
+    public abstract boolean canPVPHappen();
     public Chunk getChunk() {
         World world = Bukkit.getWorld(UUID.fromString(this.worldUUID));
         if(world == null) {
@@ -109,6 +110,7 @@ public abstract class ClaimedChunk2 {
         }
         return world.getChunkAt(x, z);
     }
+
 
 
 }

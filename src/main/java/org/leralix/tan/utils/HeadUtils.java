@@ -121,13 +121,13 @@ public class HeadUtils {
     }
 
     public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull String url, String... lore) {
-        return makeSkull(name,getProfile(createURL(url)),Arrays.asList(lore));
+        return makeSkull(name,getProfile(createURL(url)),List.of(lore));
     }
     public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull String url, List<String> lore) {
         return makeSkull(name,getProfile(createURL(url)),lore);
     }
     public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull URL url, String... lore) {
-        return makeSkull(name,getProfile(url),Arrays.asList(lore));
+        return makeSkull(name,getProfile(url),List.of(lore));
     }
     public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull URL url, List<String> lore) {
         return makeSkull(name,getProfile(url),lore);
@@ -206,7 +206,7 @@ public class HeadUtils {
      * @return                      The {@link ItemStack} with custom texture.
      */
     public static @NotNull ItemStack makeSkullB64(final @NotNull String name, final @NotNull String base64EncodedString, String... loreLines) {
-        List<String> lore = Arrays.asList(loreLines);
+        List<String> lore = List.of(loreLines);
         return makeSkullB64(name,base64EncodedString,lore);
     }
     /**
@@ -221,7 +221,7 @@ public class HeadUtils {
      * @return                      The {@link ItemStack} with custom texture.
      */
     public static @NotNull ItemStack makeSkullB64(final @NotNull String name, final @NotNull String base64EncodedString, List<String> lore, String... loreLines) {
-        List<String> lore2 = Arrays.asList(loreLines);
+        List<String> lore2 = List.of(loreLines);
         lore.addAll(lore2);
         return makeSkullB64(name,base64EncodedString,lore);
     }
@@ -276,7 +276,7 @@ public class HeadUtils {
      * @return              The ItemStack displaying the town
      */
     public static ItemStack createCustomItemStack(Material itemMaterial, String itemName, String... loreLines){
-        List<String> lore = Arrays.asList(loreLines);
+        List<String> lore = List.of(loreLines);
         return createCustomItemStack(itemMaterial,itemName, lore);
     }
     /**
@@ -288,7 +288,7 @@ public class HeadUtils {
      * @return              The ItemStack displaying the town.
      */
     public static ItemStack createCustomItemStack(Material itemMaterial, String itemName, List<String> lore, String... loreLines){
-        List<String> lore2 = Arrays.asList(loreLines);
+        List<String> lore2 = List.of(loreLines);
         lore.addAll(lore2);
         return createCustomItemStack(itemMaterial,itemName, lore2);
     }
@@ -322,7 +322,7 @@ public class HeadUtils {
      * @return              The ItemStack displaying the town.
      */
     public static ItemStack createCustomItemStack(ItemStack item, String itemName, String... lore){
-        return createCustomItemStack(item, itemName, Arrays.asList(lore));
+        return createCustomItemStack(item, itemName, List.of(lore));
     }
     /**
      * Set the lore of an {@link ItemStack}
@@ -342,7 +342,7 @@ public class HeadUtils {
      * @param loreLines The lore to set
      */
     public static void setLore(ItemStack itemStack, String... loreLines) {
-        List<String> lore = Arrays.asList(loreLines);
+        List<String> lore = List.of(loreLines);
         setLore(itemStack,lore);
     }
     /**
@@ -352,7 +352,7 @@ public class HeadUtils {
      * @param loreLines Additional lore
      */
     public static void setLore(ItemStack itemStack, List<String> lore, String... loreLines) {
-        List<String> lore2 = Arrays.asList(loreLines);
+        List<String> lore2 = List.of(loreLines);
         lore.addAll(lore2);
         setLore(itemStack,lore);
     }
@@ -368,7 +368,7 @@ public class HeadUtils {
             if(lore == null){
                 lore = new ArrayList<>();
             }
-            lore.addAll(Arrays.asList(loreLines));
+            lore.addAll(List.of(loreLines));
             itemMeta.setLore(lore);
         }
         itemStack.setItemMeta(itemMeta);

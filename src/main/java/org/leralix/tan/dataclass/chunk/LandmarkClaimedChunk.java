@@ -16,7 +16,7 @@ import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.ChunkPermissionType;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
 
 public class LandmarkClaimedChunk extends ClaimedChunk2{
     public LandmarkClaimedChunk(Chunk chunk, String owner) {
@@ -101,5 +101,10 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
     @Override
     public boolean canFireGrief() {
         return false;
+    }
+
+    @Override
+    public boolean canPVPHappen() {
+        return true;
     }
 }

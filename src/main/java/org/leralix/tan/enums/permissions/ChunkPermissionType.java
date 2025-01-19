@@ -1,4 +1,4 @@
-package org.leralix.tan.enums;
+package org.leralix.tan.enums.permissions;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
