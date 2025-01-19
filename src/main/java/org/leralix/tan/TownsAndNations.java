@@ -3,11 +3,11 @@ package org.leralix.tan;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.lib.data.PluginVersion;
-import org.leralix.tan.bstat.Metrics;
 import org.leralix.tan.commands.adminsubcommand.AdminCommandManager;
 import org.leralix.tan.commands.debugsubcommand.DebugCommandManager;
 import org.leralix.tan.commands.playersubcommand.PlayerCommandManager;

@@ -15,6 +15,9 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 public class NewClaimedChunkStorage {
+    private NewClaimedChunkStorage() {
+        throw new IllegalStateException("Utility class");
+    }
 
     private static final Map<String, ClaimedChunk2> claimedChunksMap = new HashMap<>();
 
@@ -77,8 +80,8 @@ public class NewClaimedChunkStorage {
         if(cChunk instanceof TownClaimedChunk){
             return cChunk.getOwnerID().equals(townID);
         }
-        else if(cChunk instanceof RegionClaimedChunk){
-            return ((RegionClaimedChunk) cChunk).getRegion().isTownInRegion(TownDataStorage.get(townID));
+        else if(cChunk instanceof RegionClaimedChunk regionClaimedChunk){
+            return regionClaimedChunk.getRegion().isTownInRegion(TownDataStorage.get(townID));
         }
         return false;
     }
@@ -187,11 +190,14 @@ public class NewClaimedChunkStorage {
     public static void save() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Claimed Chunks.json");
-        file.getParentFile().mkdirs();
+        if(!file.getParentFile().mkdirs()){
+            TownsAndNations.getPlugin().getLogger().severe("Error while creating claimed chunks file directory");
+        }
         try {
-            if (!file.exists()) {
-                file.createNewFile();
+            if (!file.exists() && !file.createNewFile()){
+                TownsAndNations.getPlugin().getLogger().severe("Error while creating claimed chunks file");
             }
+
         } catch (IOException e) {
             TownsAndNations.getPlugin().getLogger().severe("Error while creating claimed chunks file");
         }
