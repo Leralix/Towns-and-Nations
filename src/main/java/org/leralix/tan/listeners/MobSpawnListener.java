@@ -11,7 +11,7 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 public class MobSpawnListener implements Listener {
 
     @EventHandler
-    public void EntitySpawn(EntitySpawnEvent e){
+    public void entitySpawn(EntitySpawnEvent e){
         Chunk currentChunk = e.getEntity().getLocation().getChunk();
         if(!NewClaimedChunkStorage.isChunkClaimed(currentChunk)){
             return;

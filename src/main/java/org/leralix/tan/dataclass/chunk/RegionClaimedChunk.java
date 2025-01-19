@@ -121,7 +121,7 @@ public class RegionClaimedChunk extends ClaimedChunk2{
         if(territoryData.canConquerChunk(this))
             return true;
 
-        if(territoryData.haveOverlord() && territoryData.getOverlord().getID().equals(getOwnerID())){
+        if(getRegion().getSubjects().contains(territoryData)){
             return true; // if the town is part of this specific region they can claim
         }
 
@@ -132,11 +132,6 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     @Override
     public boolean isClaimed() {
         return true;
-    }
-
-    @Override
-    public boolean canBeOverClaimed(TerritoryData territoryData) {
-        return getRegion().getSubjects().contains(territoryData);
     }
 
     @Override

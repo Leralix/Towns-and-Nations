@@ -10,7 +10,7 @@ import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 public class ChatScopeListener implements Listener {
 
     @EventHandler
-    public void OnPlayerChat(AsyncPlayerChatEvent event){
+    public void onPlayerChat(AsyncPlayerChatEvent event){
 
         Player player = event.getPlayer();
         String playerUUID = player.getUniqueId().toString();

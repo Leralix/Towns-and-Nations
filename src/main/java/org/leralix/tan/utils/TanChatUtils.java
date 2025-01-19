@@ -1,12 +1,15 @@
 package org.leralix.tan.utils;
 
-import org.leralix.lib.utils.ChatUtils;
 import org.leralix.tan.lang.Lang;
 
 /**
  * This class is used for chat related utilities.
  */
-public class TanChatUtils extends ChatUtils {
+public class TanChatUtils {
+
+    private TanChatUtils() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * This method send the prefix for every chat message in the plugin.

@@ -15,6 +15,7 @@ import java.time.LocalDate;
  */
 public class FileUtil {
     private FileUtil() {
+        throw new IllegalStateException("Utility class");
     }
     public static void addLineToHistory(final String lineToAdd) {
 

@@ -164,11 +164,6 @@ public class TownClaimedChunk extends ClaimedChunk2{
     }
 
     @Override
-    public boolean canBeOverClaimed(TerritoryData territoryData) {
-        return false;
-    }
-
-    @Override
     public boolean canExplosionGrief() {
         String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.TAN).getString("explosionGrief", "ALWAYS");
         GriefAllowed griefAllowed =  GriefAllowed.valueOf(fireGrief);

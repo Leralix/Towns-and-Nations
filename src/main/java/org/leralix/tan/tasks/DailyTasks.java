@@ -22,6 +22,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class DailyTasks {
+    private DailyTasks() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static void scheduleMidnightTask() {
         new BukkitRunnable() {

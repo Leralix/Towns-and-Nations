@@ -2,7 +2,6 @@ package org.leralix.tan.commands.adminsubcommand;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.storage.stored.PlayerDataStorage;

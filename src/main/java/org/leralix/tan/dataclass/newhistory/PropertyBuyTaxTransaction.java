@@ -2,8 +2,6 @@ package org.leralix.tan.dataclass.newhistory;
 
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.utils.StringUtil;
-import org.leralix.tan.dataclass.newhistory.TransactionHistory;
-import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
 

@@ -1,6 +1,7 @@
 package org.leralix.tan.dataclass.chunk;
 
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
@@ -39,7 +40,7 @@ public class WildernessChunk extends ClaimedChunk2 {
 
     @Override
     public void playerEnterClaimedArea(Player player) {
-        //TODO : add wilderness enter message in PlayerEnterChunkListener
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.WILDERNESS.get()));
     }
 
     @Override
@@ -71,11 +72,6 @@ public class WildernessChunk extends ClaimedChunk2 {
 
     @Override
     public boolean isClaimed() {
-        return false;
-    }
-
-    @Override
-    public boolean canBeOverClaimed(TerritoryData territoryData) {
         return false;
     }
 

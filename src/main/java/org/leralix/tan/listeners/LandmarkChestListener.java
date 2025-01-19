@@ -10,12 +10,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.MetadataValue;
 import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.storage.stored.LandmarkStorage;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 
@@ -25,9 +21,10 @@ public class LandmarkChestListener implements Listener {
         Player player = event.getPlayer();
         Block clickedBlock = event.getClickedBlock();
 
-        if (clickedBlock != null && (event.getAction() == Action.RIGHT_CLICK_BLOCK)){
-            if (clickedBlock.getType() == Material.CHEST) {
-                if(clickedBlock.hasMetadata("LandmarkChest")){
+        if (clickedBlock != null &&
+                (event.getAction() == Action.RIGHT_CLICK_BLOCK) &&
+                clickedBlock.getType() == Material.CHEST &&
+                clickedBlock.hasMetadata("LandmarkChest")){
                     event.setCancelled(true);
                     PlayerData playerData = PlayerDataStorage.get(player);
                     for (MetadataValue value : clickedBlock.getMetadata("LandmarkChest")) {
@@ -40,8 +37,8 @@ public class LandmarkChestListener implements Listener {
                         PlayerGUI.dispatchLandmarkGui(player, landmark);
                     }
                 }
-            }
-        }
+
+
     }
 
 }

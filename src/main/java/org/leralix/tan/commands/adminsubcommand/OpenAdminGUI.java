@@ -3,7 +3,6 @@ package org.leralix.tan.commands.adminsubcommand;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
-import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.lang.Lang;
 

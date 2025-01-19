@@ -21,6 +21,14 @@ import java.util.regex.Pattern;
 
 public class PlaceHolderAPI extends PlaceholderExpansion {
 
+    private static final String TRUE = "TRUE";
+    private static final String FALSE = "FALSE";
+    private static final String INVALID_VALUE = "Invalid value";
+    private static final String INVALID_ID = "Invalid id";
+    private static final String INVALID_NAME = "Invalid name";
+    private static final String INVALID_TERRITORY = "Invalid territory";
+    private static final String INVALID_PLAER_NAME = "Invalid player name";
+
     @Override
     @NotNull
     public String getAuthor() {
@@ -101,53 +109,53 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
         }
         else if (params.startsWith("server_get_first_territory_id_with_name_")){
             String name = extractValues(params)[0];
-            if(name == null) return "Invalid name";
+            if(name == null) return INVALID_NAME;
             TerritoryData territoryData = getTerritoryByName(name);
-            if(territoryData == null) return "Not found";
+            if(territoryData == null) return INVALID_TERRITORY;
             return territoryData.getID();
         }
         else if(params.startsWith("territory_with_id_{") && params.endsWith("}_exist")){
             String[] values = extractValues(params);
-            if(values.length == 0) return "Invalid values";
+            if(values.length == 0) return INVALID_VALUE;
             String id = values[0];
-            if(id == null) return "Invalid id";
-            return TownDataStorage.get(id) != null || RegionDataStorage.get(id) != null ? "TRUE" : "FALSE";
+            if(id == null) return INVALID_ID;
+            return TownDataStorage.get(id) != null || RegionDataStorage.get(id) != null ? TRUE : FALSE;
         }
         else if(params.startsWith("territory_with_name_{") && params.endsWith("}_exist")){
             String[] values = extractValues(params);
-            if(values.length == 0) return "Invalid values";
+            if(values.length == 0) return INVALID_VALUE;
             String name = values[0];
-            if(name == null) return "Invalid name";
-            return getTerritoryByName(name) != null ? "TRUE" : "FALSE";
+            if(name == null) return INVALID_NAME;
+            return getTerritoryByName(name) != null ? TRUE : FALSE;
         }
         else if(params.startsWith("territory_with_id_{") && params.endsWith("}_leader_name")){
             String[] values = extractValues(params);
-            if(values.length == 0) return "Invalid values";
+            if(values.length == 0) return INVALID_VALUE;
             String id = values[0];
-            if(id == null) return "Invalid id";
+            if(id == null) return INVALID_ID;
             TerritoryData territoryData = TownDataStorage.get(id);
             if(territoryData == null) territoryData = RegionDataStorage.get(id);
-            if (territoryData == null) return "Invalid territory";
+            if (territoryData == null) return INVALID_TERRITORY;
 
             return territoryData.getLeaderData().getOfflinePlayer().getName();
         }
         else if(params.startsWith("territory_with_name_{") && params.endsWith("}_leader_name")){
             String[] values = extractValues(params);
-            if(values.length == 0) return "Invalid values";
+            if(values.length == 0) return INVALID_VALUE;
             String name = values[0];
-            if(name == null) return "Invalid id";
+            if(name == null) return INVALID_ID;
             TerritoryData territoryData = getTerritoryByName(name);
-            if (territoryData == null) return "Invalid territory";
+            if (territoryData == null) return INVALID_TERRITORY;
             return territoryData.getLeaderData().getOfflinePlayer().getName();
         }
         else if(params.startsWith("player_{") && params.endsWith("_have_town")){
             String[] values = extractValues(params);
-            if(values.length == 0) return "Invalid values";
+            if(values.length == 0) return INVALID_VALUE;
             String playerName = values[0];
-            if(playerName == null) return "Invalid player name";
+            if(playerName == null) return INVALID_PLAER_NAME;
             PlayerData playerData1 = PlayerDataStorage.get(playerName);
-            if(playerData1 == null) return "Invalid player";
-            return playerData1.haveTown() ? "TRUE" : "FALSE";
+            if(playerData1 == null) return INVALID_NAME;
+            return playerData1.haveTown() ? TRUE : FALSE;
         }
 
         return null;

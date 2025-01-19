@@ -21,6 +21,10 @@ import org.leralix.tan.TownsAndNations;
  * This class is used to add custom NBT tags to items
  */
 public class CustomNBT {
+
+    private CustomNBT() {
+        throw new IllegalStateException("Utility class");
+    }
     /** Add a custom String tag to an item
      *
      * @param item      {@link ItemStack} to add the tag to.

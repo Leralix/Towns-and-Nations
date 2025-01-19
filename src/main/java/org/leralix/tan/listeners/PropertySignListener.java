@@ -26,8 +26,10 @@ public class PropertySignListener implements Listener {
         Player player = event.getPlayer();
         Block clickedBlock = event.getClickedBlock();
 
-        if (clickedBlock != null && (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK)) {
-            if (clickedBlock.getType() == Material.OAK_SIGN || clickedBlock.getType() == Material.OAK_WALL_SIGN) {
+        if (clickedBlock != null &&
+                (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK) &&
+                (clickedBlock.getType() == Material.OAK_SIGN || clickedBlock.getType() == Material.OAK_WALL_SIGN)) {
+
                 Sign sign = (Sign) clickedBlock.getState();
                 if (sign.hasMetadata("propertySign")) {
                     event.setCancelled(true);
@@ -37,15 +39,10 @@ public class PropertySignListener implements Listener {
                         PropertyData propertyData = TownDataStorage.get(ids[0]).getProperty(ids[1]);
                         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
-
                             if(playerEmbargoWithTown(player, clickedBlock)){
                                 player.sendMessage(Lang.NO_TRADE_ALLOWED_EMBARGO.get());
                                 return;
                             }
-
-
-
-
 
                             if(propertyData.getOwnerID().equals(player.getUniqueId().toString())){
                                 PlayerGUI.openPropertyManagerMenu(player, propertyData);
@@ -65,18 +62,14 @@ public class PropertySignListener implements Listener {
                     }
                 }
             }
-        }
+
     }
 
     private boolean playerEmbargoWithTown(Player player, Block clickedBlock) {
         ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.get(clickedBlock.getChunk());
         PlayerData playerData = PlayerDataStorage.get(player);
-        if(claimedChunk2 != null &&
-                playerData.haveTown() &&
-                claimedChunk2 instanceof TownClaimedChunk townClaimedChunk){
-
+        if(playerData.haveTown() && claimedChunk2 instanceof TownClaimedChunk townClaimedChunk){
             TownRelation townRelation = townClaimedChunk.getTown().getRelationWith(playerData.getTown());
-
             return townRelation == TownRelation.EMBARGO || townRelation == TownRelation.WAR;
         }
         return false;

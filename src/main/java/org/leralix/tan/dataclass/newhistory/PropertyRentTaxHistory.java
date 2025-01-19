@@ -11,9 +11,6 @@ public class PropertyRentTaxHistory extends TransactionHistory {
     public PropertyRentTaxHistory(String date, String territoryID, String propertyID,double amount) {
         super(date, territoryID, propertyID, amount);
     }
-    public PropertyRentTaxHistory(TerritoryData territoryData, PropertyData propertyData, double amount) {
-        super(territoryData.getID(), propertyData.getPropertyID(), amount);
-    }
 
 
     @Override

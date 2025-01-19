@@ -1,7 +1,6 @@
 package org.leralix.tan.commands.debugsubcommand;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.utils.ArchiveUtil;
 import org.leralix.tan.lang.Lang;

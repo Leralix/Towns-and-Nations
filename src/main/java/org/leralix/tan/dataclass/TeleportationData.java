@@ -3,7 +3,7 @@ package org.leralix.tan.dataclass;
 public class TeleportationData {
 
     private final TeleportationPosition teleportationPosition;
-    private Boolean isCancelled;
+    private boolean isCancelled;
 
     public TeleportationData(TeleportationPosition teleportationPosition){
         this.teleportationPosition = teleportationPosition;
@@ -14,7 +14,7 @@ public class TeleportationData {
         return teleportationPosition;
     }
 
-    public Boolean isCancelled() {
+    public boolean isCancelled() {
         return isCancelled;
     }
     public void setCancelled(Boolean bool){

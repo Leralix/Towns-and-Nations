@@ -65,9 +65,9 @@ public class NewsletterStorage {
         if (category == null)
             return;
         category.removeIf(newsletter ->
-            newsletter instanceof PlayerJoinRequestNL &&
-                    ((PlayerJoinRequestNL) newsletter).getPlayerID().equals(playerID) &&
-                    ((PlayerJoinRequestNL) newsletter).getTownID().equals(townID)
+            newsletter instanceof PlayerJoinRequestNL playerJoinRequestNL &&
+                    playerJoinRequestNL.getPlayerID().equals(playerID) &&
+                    playerJoinRequestNL.getTownID().equals(townID)
         );
     }
 
@@ -94,7 +94,7 @@ public class NewsletterStorage {
                 Type type = new TypeToken<EnumMap<NewsletterType, List<Newsletter>>>() {}.getType();
                 categories = gson.fromJson(reader, type);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                TownsAndNations.getPlugin().getLogger().warning("Error while loading Newsletter file");
             }
         }
         if (categories == null) {
@@ -114,14 +114,14 @@ public class NewsletterStorage {
         try {
             file.createNewFile();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            TownsAndNations.getPlugin().getLogger().warning("Error while creating Newsletter file");
         }
 
         try (Writer writer = new FileWriter(file, false)) {
             Type type = new TypeToken<Map<NewsletterType, List<Newsletter>>>() {}.getType();
             gson.toJson(categories, type, writer); // Spécifiez le type ici
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            TownsAndNations.getPlugin().getLogger().warning("Error while saving Newsletter file");
         }
 
     }

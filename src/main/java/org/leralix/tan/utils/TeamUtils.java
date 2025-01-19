@@ -91,7 +91,10 @@ public class TeamUtils {
             TeamUtils.setIndividualScoreBoard(player);
             playerTeam = scoreboard.getTeam(relation.getName().toLowerCase());
         }
+        if(playerTeam == null)
+            return;
         playerTeam.addEntry(playerToAdd.getName());
+
     }
 
 }

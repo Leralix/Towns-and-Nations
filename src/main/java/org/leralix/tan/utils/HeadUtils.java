@@ -24,6 +24,9 @@ import java.util.*;
  * The class used to manage every head related commands
  */
 public class HeadUtils {
+    private HeadUtils() {
+        throw new IllegalStateException("Utility class");
+    }
     /**
      * Return the player head with information on balance, town name and rank name
      * @param offlinePlayer The offline player to copy the head
@@ -73,7 +76,7 @@ public class HeadUtils {
      * @return              The head of the player as an {@link ItemStack}.
      */
     public static @NotNull ItemStack getPlayerHead(String headName, OfflinePlayer offlinePlayer,String... loreLines){
-        List<String> lore = Arrays.asList(loreLines);
+        List<String> lore = List.of(loreLines);
         return getPlayerHead(headName,offlinePlayer,lore);
     }
     /**
@@ -83,7 +86,7 @@ public class HeadUtils {
      * @return              The head of the player as an {@link ItemStack}.
      */
     public static @NotNull ItemStack getPlayerHead(OfflinePlayer offlinePlayer,String... loreLines){
-        List<String> lore = Arrays.asList(loreLines);
+        List<String> lore = List.of(loreLines);
         return getPlayerHead(offlinePlayer.getName(),offlinePlayer,lore);
     }
     /**
@@ -155,7 +158,8 @@ public class HeadUtils {
     }
 
 
-    public static URL getUrlFromBase64(String base64){
+    @NotNull
+    public static URL getUrlFromBase64(@NotNull String base64){
         var decoded = new String(Base64.getDecoder().decode(base64));
         JsonParser parser = new JsonParser();
         var json = parser.parse(decoded).getAsJsonObject();
@@ -169,7 +173,11 @@ public class HeadUtils {
         try {
             return new URL(url);
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            try {
+                return new URL("http://textures.minecraft.net/texture/e7f9c6fef2ad96b3a5465642ba954671be1c4543e2e25e56aef0a47d5f1f");
+            } catch (MalformedURLException e2) {
+                throw new IllegalArgumentException("Invalid URL: " + url);
+            }
         }
     }
 

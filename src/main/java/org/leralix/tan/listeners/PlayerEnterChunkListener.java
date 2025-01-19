@@ -1,7 +1,5 @@
 package org.leralix.tan.listeners;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,6 +33,10 @@ public class PlayerEnterChunkListener implements Listener {
 
         Player player = e.getPlayer();
 
+
+
+
+
         //If both chunks are not claimed, no need to display anything
         if(!NewClaimedChunkStorage.isChunkClaimed(currentChunk) &&
                 !NewClaimedChunkStorage.isChunkClaimed(nextChunk)){
@@ -50,25 +52,17 @@ public class PlayerEnterChunkListener implements Listener {
         ClaimedChunk2 nextClaimedChunk = NewClaimedChunkStorage.get(nextChunk);
 
         //Both chunks have the same owner, no need to change
-        if(equalsWithNulls(currentClaimedChunk,nextClaimedChunk)){
+        if(sameOwner(currentClaimedChunk,nextClaimedChunk)){
             return;
         }
 
-        //Three case: Into wilderness, into town, into region
-        if(nextClaimedChunk instanceof WildernessChunk){
-            //If auto claim is on, claim the chunk
-            if(PlayerAutoClaimStorage.containsPlayer(e.getPlayer())){
-                autoClaimChunk(e, nextChunk, player);
-            }
-            //Else send message player enter wilderness
-            else
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.WILDERNESS.get()));
+        nextClaimedChunk.playerEnterClaimedArea(player);
 
-        }
-        else {
-            nextClaimedChunk.playerEnterClaimedArea(player);
-        }
 
+        if(nextClaimedChunk instanceof WildernessChunk &&
+                PlayerAutoClaimStorage.containsPlayer(e.getPlayer())){
+            autoClaimChunk(e, nextChunk, player);
+        }
     }
 
     private void autoClaimChunk(final @NotNull PlayerMoveEvent e, final @NotNull Chunk nextChunk, final @NotNull Player player) {
@@ -91,9 +85,8 @@ public class PlayerEnterChunkListener implements Listener {
         }
     }
 
-    public static boolean equalsWithNulls(final ClaimedChunk2 a,final ClaimedChunk2 b) {
+    public static boolean sameOwner(final ClaimedChunk2 a, final ClaimedChunk2 b) {
         if (a==b) return true;
-        if ((a==null)||(b==null)) return false;
         return a.getOwnerID().equals(b.getOwnerID());
     }
 

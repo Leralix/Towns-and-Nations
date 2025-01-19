@@ -17,6 +17,9 @@ import java.util.zip.ZipOutputStream;
  * Archived files are stored in the archive folder.
  */
 public class ArchiveUtil {
+    private ArchiveUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
 
     public static void archiveFiles(){

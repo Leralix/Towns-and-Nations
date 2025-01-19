@@ -853,7 +853,7 @@ public class PlayerGUI implements IGUI {
         else {
             int x = territoryStronghold.getClaimedChunk().getX() * 16 + 8;
             int z = territoryStronghold.getClaimedChunk().getZ() * 16 + 8;
-            strongholdItem = HeadUtils.createCustomItemStack(Material.IRON_BLOCK, Lang.GUI_STRONGHOLD.get(), Lang.GUI_STRONGHOLD_LOCATION.get(), Lang.GUI_LEFT_CLICK_TO_SET_STRONGHOLD.get(x,z));
+            strongholdItem = HeadUtils.createCustomItemStack(Material.IRON_BLOCK, Lang.GUI_STRONGHOLD.get(), Lang.GUI_STRONGHOLD_LOCATION.get(x,z), Lang.GUI_LEFT_CLICK_TO_SET_STRONGHOLD.get(x,z));
         }
 
         GuiItem strongHoldIcon = ItemBuilder.from(strongholdItem).asGuiItem(event -> {

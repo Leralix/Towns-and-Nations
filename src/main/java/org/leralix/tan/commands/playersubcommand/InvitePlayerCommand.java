@@ -3,6 +3,7 @@ package org.leralix.tan.commands.playersubcommand;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
+import org.leralix.lib.utils.ChatUtils;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -92,7 +93,7 @@ public class InvitePlayerCommand extends PlayerSubCommand {
             player.sendMessage(TanChatUtils.getTANString() + Lang.INVITATION_SENT_SUCCESS.get(invite.getName()));
 
             invite.sendMessage(TanChatUtils.getTANString() + Lang.INVITATION_RECEIVED_1.get(player.getName(),town.getName()));
-            TanChatUtils.sendClickableCommand(invite,  TanChatUtils.getTANString() + Lang.INVITATION_RECEIVED_2.get(),"tan join "  + town.getID());
+            ChatUtils.sendClickableCommand(invite,  TanChatUtils.getTANString() + Lang.INVITATION_RECEIVED_2.get(),"tan join "  + town.getID());
 
         }else {
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());

@@ -18,18 +18,14 @@ public class SpawnListener implements Listener {
 
     @EventHandler
     public void onPlayerHit(EntityDamageByEntityEvent event) {
-        if(event.getEntity() instanceof Player player) {
-            if(TeleportationRegister.isPlayerRegistered(player.getUniqueId().toString()) &&
-                    !TeleportationRegister.getTeleportationData(player).isCancelled()) {
+        if(event.getEntity() instanceof Player player &&
+                TeleportationRegister.isPlayerRegistered(player.getUniqueId().toString()) &&
+                !TeleportationRegister.getTeleportationData(player).isCancelled() &&
+                ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("cancelTeleportOnDamage", true)) {
 
-                if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("cancelTeleportOnDamage", true)) {
-                    PlayerData playerData = PlayerDataStorage.get(player.getUniqueId().toString());
-                    TeleportationRegister.getTeleportationData(playerData).setCancelled(true);
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.TELEPORTATION_CANCELLED.get());
-                }
-
-
-            }
+            PlayerData playerData = PlayerDataStorage.get(player.getUniqueId().toString());
+            TeleportationRegister.getTeleportationData(playerData).setCancelled(true);
+            player.sendMessage(TanChatUtils.getTANString() + Lang.TELEPORTATION_CANCELLED.get());
         }
     }
 

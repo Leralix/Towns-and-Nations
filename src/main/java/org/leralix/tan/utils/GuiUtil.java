@@ -22,6 +22,10 @@ import java.util.function.Consumer;
 
 public class GuiUtil {
 
+    private GuiUtil() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * Create the town upgrade resume {@link GuiItem}. This gui is used to summarise
      * every upgrade rewards the town currently have.
@@ -113,7 +117,7 @@ public class GuiUtil {
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0="
         );
 
-        GuiItem _previous = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
+        GuiItem previousButton = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
             event.setCancelled(true);
             if(page == 0){
                 return;
@@ -121,7 +125,7 @@ public class GuiUtil {
             previousPageAction.accept(player);
         });
 
-        GuiItem _next = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
+        GuiItem nextButton = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
             event.setCancelled(true);
             if(lastPage) {
                 return;
@@ -137,8 +141,8 @@ public class GuiUtil {
         gui.setItem(lastRow,4, panel);
         gui.setItem(lastRow,5, panel);
         gui.setItem(lastRow,6, panel);
-        gui.setItem(lastRow,7, _previous);
-        gui.setItem(lastRow,8, _next);
+        gui.setItem(lastRow,7, previousButton);
+        gui.setItem(lastRow,8, nextButton);
         gui.setItem(lastRow,9, panel);
     }
 }
