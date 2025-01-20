@@ -10,8 +10,6 @@ public class AdminCommandManager extends CommandManager {
         addSubCommand(new SetMoney());
 
         addSubCommand(new ReloadCommand());
-        addSubCommand(new UnclaimAdminCommand());
-        addSubCommand(new OpenAdminGUI());
         addSubCommand(new SudoPlayer());
         addSubCommand(new MainHelpCommand(this));
     }

@@ -204,98 +204,6 @@ explosionGrief: "PLAYER_CHOICE_AND_WAR"
 pvpEnabledInClaimedChunks: "ALWAYS"
 
 ########################
-##  RARES RESSOURCES  ##
-########################
-
-#ENABLE RARE RESSOURCES SPAWN
-RARE_RESOURCES_SPAWN: true
-
-#Allow players to sell rare ressources directly through /tan sell
-AllowSellRareRessourcesByCommand: true
-
-#The probability of obtaining a rare Stone. (trigger by breaking a block)
-# (20 = 20% drop chance when breaking this block without a silk touch pick)
-rareStone:
-  GOLD_ORE: 35
-  DEEPSLATE_GOLD_ORE: 35
-  DIAMOND_ORE: 30
-  DEEPSLATE_DIAMOND_ORE: 30
-  EMERALD_ORE: 50
-  DEEPSLATE_EMERALD_ORE: 50
-  REDSTONE_ORE: 15
-  DEEPSLATE_REDSTONE_ORE: 15
-  LAPIS_ORE: 25
-  DEEPSLATE_LAPIS_ORE: 25
-
-rareStoneValue: 5
-
-
-#The probability of obtaining rare Wood. (trigger when breaking a block)
-rareWood:
-  ACACIA_LOG: 3
-  BIRCH_LOG: 3
-  DARK_OAK_LOG: 3
-  JUNGLE_LOG: 3
-  OAK_LOG: 3
-  SPRUCE_LOG: 3
-
-rareWoodValue: 3
-
-#The probability of obtaining rare Crops. (trigger when breaking a FULLY GROWN crop only)
-rareCrops:
-  WHEAT: 4
-  CARROTS: 3
-  POTATOES: 3
-  BEETROOTS: 3
-  PUMPKIN: 0
-  MELON: 0
-
-rareCropsValue: 3
-
-
-#The probability of obtaining souls. (trigger when killing a mob)
-rareSoul:
-  ZOMBIE: 5
-  CREEPER: 15
-  SKELETON: 5
-  SPIDER: 5
-  ENDERMAN: 100
-  WITCH: 10
-  PIGLIN: 5
-  PIGLIN_BRUTE: 5
-  ZOMBIFIED_PIGLIN: 0
-  HUSK: 15
-  STRAY: 15
-
-  CAVE_SPIDER: 5
-  DROWNED: 5
-  BLAZE: 5
-  GHAST: 75
-
-rareSoulValue: 15
-
-#The probability of obtaining rare fishes. (trigger when fishing. hook must be in water)
-
-rareFish:
-  SALMON: 4
-  COD: 4
-  PUFFERFISH: 8
-  TROPICAL_FISH: 12
-
-rareFishValue: 20
-
-#If needed, you can add custom rare ressources for now they could only work with the /tan sell command
-# example:
-# - item: "DIAMOND" <- The item name
-#   customTextureID: 1 <- Only if you need to specify a custom texture ID
-#   value: 1 <- The value of the item
-customRareItems:
-  - item: "DIAMOND"
-    value: 1
-
-
-
-########################
 ##    TELEPORTATION   ##
 ########################
 
@@ -384,7 +292,7 @@ TimeBeforeClearingNewsletter: 7
 ########################
 
 #EXPERIMENTAL FEATURE
-#As of 0.12.0, only tax history is stored in the database
+#As of 0.12.0+, only tax history is stored in the database
 
 #Database type (only sqlite for now)
 #If other db are needed, please ask in the discord
