@@ -5,12 +5,13 @@ plugins {
 
 tasks.shadowJar {
     archiveClassifier.set('')
+    relocate("dev.triumphteam.gui", "dev.triumphteam.gui")
     relocate 'net.objecthunter.exp4j', 'org.leralix.tan.libs.exp4j'
     relocate 'org.bstats', 'org.leralix.tan.bstat'
 }
 
 group = 'org.tan'
-version = '0.12.5'
+version = '0.13.0'
 
 compileJava.options.encoding = 'UTF-8'
 
@@ -64,6 +65,7 @@ dependencies {
     compileOnly 'me.clip:placeholderapi:2.11.5'
     implementation 'org.bstats:bstats-bukkit:3.1.0'
     implementation 'net.objecthunter:exp4j:0.4.8'
+    implementation("dev.triumphteam:triumph-gui:+")
 }
 
 def targetJavaVersion = 17

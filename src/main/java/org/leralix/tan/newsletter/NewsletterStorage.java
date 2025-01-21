@@ -3,7 +3,7 @@ package org.leralix.tan.newsletter;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.leralix.lib.gui
+import dev.triumphteam.gui
 .guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
@@ -128,7 +128,7 @@ public class NewsletterStorage {
 
 
     public static void clearOldNewsletters() {
-        int nbDays = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("TimeBeforeClearingNewsletter");
+        int nbDays = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingNewsletter");
         long currentTime = System.currentTimeMillis() - 1000L * 60 * 60 * 24 * nbDays; // 1 week
         for(List<Newsletter> category : categories.values()) {
             category.removeIf(newsletter -> newsletter.getDate() < currentTime);

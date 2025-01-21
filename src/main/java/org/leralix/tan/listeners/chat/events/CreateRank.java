@@ -20,7 +20,7 @@ public class CreateRank extends ChatListenerEvent {
     }
     @Override
     public void execute(Player player, String message) {
-        int maxNameSize = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("RankNameSize");
+        int maxNameSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RankNameSize");
 
         if(message.length() > maxNameSize){
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxNameSize));

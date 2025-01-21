@@ -21,7 +21,7 @@ public class SpawnListener implements Listener {
         if(event.getEntity() instanceof Player player &&
                 TeleportationRegister.isPlayerRegistered(player.getUniqueId().toString()) &&
                 !TeleportationRegister.getTeleportationData(player).isCancelled() &&
-                ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("cancelTeleportOnDamage", true)) {
+                ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnDamage", true)) {
 
             PlayerData playerData = PlayerDataStorage.get(player.getUniqueId().toString());
             TeleportationRegister.getTeleportationData(playerData).setCancelled(true);
@@ -40,13 +40,13 @@ public class SpawnListener implements Listener {
 
             //If player moves only his head
             if(locationFrom.getBlockX() == locationTo.getBlockX() && locationFrom.getBlockZ() == locationTo.getBlockZ()) {
-                if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("cancelTeleportOnMoveHead", false)) {
+                if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnMoveHead", false)) {
                     cancelTeleportation(player);
                 }
             }
             else{
                 //If player moves to a different position
-                if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("cancelTeleportOnMovePosition", true)) {
+                if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnMovePosition", true)) {
                     cancelTeleportation(player);
                 }
             }

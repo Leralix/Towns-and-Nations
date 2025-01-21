@@ -1,8 +1,8 @@
 package org.leralix.tan.dataclass.territory;
 
-import org.leralix.lib.gui
+import dev.triumphteam.gui
 .builder.item.ItemBuilder;
-import org.leralix.lib.gui
+import dev.triumphteam.gui
 .guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -202,7 +202,7 @@ public class RegionData extends TerritoryData {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return Optional.empty();
         }
-        int cost = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("CostOfRegionChunk",5);
+        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfRegionChunk",5);
 
         if(regionData.getBalance() < cost){
             player.sendMessage(TanChatUtils.getTANString() + Lang.REGION_NOT_ENOUGH_MONEY_EXTENDED.get(cost - regionData.getBalance()));
@@ -303,7 +303,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     public double getChunkUpkeepCost() {
-        return ConfigUtil.getCustomConfig(ConfigTag.TAN).getDouble("RegionChunkUpkeepCost",0);
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("RegionChunkUpkeepCost",0);
     }
 
     public boolean isPlayerInRegion(PlayerData playerData) {

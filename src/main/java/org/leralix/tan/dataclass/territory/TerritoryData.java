@@ -1,6 +1,8 @@
 package org.leralix.tan.dataclass.territory;
 
 
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.HumanEntity;
@@ -8,8 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.gui.builder.item.ItemBuilder;
-import org.leralix.lib.gui.guis.GuiItem;
 import org.leralix.lib.utils.RandomUtil;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
@@ -47,9 +47,6 @@ import org.leralix.tan.utils.*;
 
 import java.util.*;
 import java.util.function.Consumer;
-
-import static org.leralix.lib.data.SoundEnum.ADD;
-import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
 public abstract class TerritoryData {
 
@@ -612,7 +609,7 @@ public abstract class TerritoryData {
     }
 
     public boolean isRankNameUsed(String message) {
-        if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("AllowNameDuplication",false))
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",false))
             return false;
 
         for (RankData rank : getAllRanks()) {
@@ -750,9 +747,9 @@ public abstract class TerritoryData {
     }
 
     private void deletePortionOfChunk() {
-        int minNbOfUnclaimedChunk = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("minimumNumberOfChunksUnclaimed",5);
+        int minNbOfUnclaimedChunk = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("minimumNumberOfChunksUnclaimed",5);
         int nbOfUnclaimedChunk = 0;
-        double minPercentageOfChunkToKeep = ConfigUtil.getCustomConfig(ConfigTag.TAN).getDouble("percentageOfChunksUnclaimed",10) / 100;
+        double minPercentageOfChunkToKeep = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("percentageOfChunksUnclaimed",10) / 100;
 
 
         Collection<ClaimedChunk2> allChunkFrom = NewClaimedChunkStorage.getAllChunkFrom(this);

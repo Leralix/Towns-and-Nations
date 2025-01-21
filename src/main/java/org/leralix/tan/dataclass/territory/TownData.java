@@ -7,8 +7,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
-import org.leralix.lib.gui.builder.item.ItemBuilder;
-import org.leralix.lib.gui.guis.GuiItem;
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.GuiItem;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
@@ -66,7 +66,7 @@ public class TownData extends TerritoryData {
         this.isRecruiting = false;
         this.balance = 0.0;
         this.townDefaultRankID = 0;
-        int prefixSize = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("prefixSize",3);
+        int prefixSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize",3);
         this.townTag = townName.length() >= prefixSize ? townName.substring(0, prefixSize).toUpperCase() : townName.toUpperCase();
         super.color = StringUtil.randomColor();
 
@@ -352,7 +352,7 @@ public class TownData extends TerritoryData {
 
     @Override
     public double getChunkUpkeepCost() {
-        return ConfigUtil.getCustomConfig(ConfigTag.TAN).getDouble("TownChunkUpkeepCost",0);
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("TownChunkUpkeepCost",0);
     }
 
 
@@ -419,7 +419,7 @@ public class TownData extends TerritoryData {
         }
 
 
-        int cost = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("CostOfTownChunk",0);
+        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfTownChunk",0);
         if(getBalance() < cost){
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(cost - getBalance()));
             return Optional.empty();
@@ -432,7 +432,7 @@ public class TownData extends TerritoryData {
 
         if(getNumberOfClaimedChunk() != 0 &&
                 !NewClaimedChunkStorage.isAdjacentChunkClaimedBySameTown(chunk,getID()) &&
-                !ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("TownAllowNonAdjacentChunks",false)) {
+                !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("TownAllowNonAdjacentChunks",false)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
             return Optional.empty();
         }

@@ -32,8 +32,8 @@ public class DailyTasks {
             public void run() {
                 Calendar calendar = new GregorianCalendar();
 
-                int minute = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("taxHourTime",0);
-                int hour = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("taxMinuteTime",0);
+                int minute = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("taxHourTime",0);
+                int hour = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("taxMinuteTime",0);
 
                 if (calendar.get(Calendar.HOUR_OF_DAY) == hour && calendar.get(Calendar.MINUTE) == minute) {
                     executeMidnightTasks();
@@ -78,11 +78,11 @@ public class DailyTasks {
 
 
     public static void clearOldTaxes() {
-        int timeBeforeClearingDonation = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("NumberOfDonationBeforeClearing",90);
-        int timeBeforeClearingHistory = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("TimeBeforeClearingTaxHistory",90);
-        int timeBeforeClearingSalary = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("TimeBeforeClearingSalaryHistory",90);
-        int timeBeforeClearingMisc = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("NumberOfMiscPurchaseBeforeClearing",90);
-        int timeBeforeClearingChunk = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("TimeBeforeClearingChunkHistory",90);
+        int timeBeforeClearingDonation = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("NumberOfDonationBeforeClearing",90);
+        int timeBeforeClearingHistory = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingTaxHistory",90);
+        int timeBeforeClearingSalary = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingSalaryHistory",90);
+        int timeBeforeClearingMisc = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("NumberOfMiscPurchaseBeforeClearing",90);
+        int timeBeforeClearingChunk = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingChunkHistory",90);
 
         DatabaseHandler databaseHandler = TownsAndNations.getPlugin().getDatabaseHandler();
         databaseHandler.deleteOldHistory(timeBeforeClearingDonation, TransactionHistoryEnum.DONATION);

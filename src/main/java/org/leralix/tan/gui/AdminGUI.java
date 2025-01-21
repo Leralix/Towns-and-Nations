@@ -1,10 +1,10 @@
 package org.leralix.tan.gui;
 
-import org.leralix.lib.gui
+import dev.triumphteam.gui
 .builder.item.ItemBuilder;
-import org.leralix.lib.gui
+import dev.triumphteam.gui
 .guis.Gui;
-import org.leralix.lib.gui
+import dev.triumphteam.gui
 .guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

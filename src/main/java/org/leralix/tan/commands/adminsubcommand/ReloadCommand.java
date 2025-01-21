@@ -39,8 +39,8 @@ public class ReloadCommand extends SubCommand {
     public void perform(CommandSender player, String[] args){
         if (args.length == 1){
             Plugin plugin = TownsAndNations.getPlugin();
-            ConfigUtil.addCustomConfig(plugin,"config.yml", ConfigTag.TAN);
-            ConfigUtil.addCustomConfig(plugin,"townUpgrades.yml", ConfigTag.TAN_UPGRADE);
+            ConfigUtil.addCustomConfig(plugin,"config.yml", ConfigTag.MAIN);
+            ConfigUtil.addCustomConfig(plugin,"townUpgrades.yml", ConfigTag.UPGRADE);
             player.sendMessage(TanChatUtils.getTANString() + Lang.RELOAD_SUCCESS.get());
         }else{
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());

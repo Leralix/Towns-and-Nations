@@ -35,7 +35,7 @@ public class TanEconomyVault extends TanEconomyStandalone implements Economy {
 
     @Override
     public int fractionalDigits() {
-        return ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("DecimalDigits");
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("DecimalDigits");
     }
 
     @Override
@@ -45,12 +45,12 @@ public class TanEconomyVault extends TanEconomyStandalone implements Economy {
 
     @Override
     public String currencyNamePlural() {
-        return ConfigUtil.getCustomConfig(ConfigTag.TAN).getString("moneyIcon");
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("moneyIcon");
     }
 
     @Override
     public String currencyNameSingular() {
-        return ConfigUtil.getCustomConfig(ConfigTag.TAN).getString("moneyIcon");
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("moneyIcon");
     }
 
     @Override

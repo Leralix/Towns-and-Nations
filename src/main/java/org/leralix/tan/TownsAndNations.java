@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.lib.data.PluginVersion;
 import org.leralix.tan.commands.adminsubcommand.AdminCommandManager;
@@ -34,6 +35,7 @@ import org.leralix.tan.api.PlaceHolderAPI;
 import org.leralix.tan.api.TanApi;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.HeadUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -66,7 +68,7 @@ public final class TownsAndNations extends JavaPlugin {
      * Used to check if the plugin is up-to-date to the latest version. Also
      * used to check if the plugin has just been updated and config file needs an update
      */
-    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,12,4);
+    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,13,0);
     private static final PluginVersion MINIMUM_SUPPORTING_DYNMAP = new PluginVersion(0,10,1);
 
     /**
@@ -113,21 +115,19 @@ public final class TownsAndNations extends JavaPlugin {
         getLogger().log(Level.INFO,"[TaN] -Loading Lang");
 
         ConfigUtil.saveAndUpdateResource(this, "lang.yml");
-        ConfigUtil.addCustomConfig(this, "lang.yml", ConfigTag.TAN_LANG);
-        String lang = ConfigUtil.getCustomConfig(ConfigTag.TAN_LANG).getString("language");
+        ConfigUtil.addCustomConfig(this, "lang.yml", ConfigTag.LANG);
+        String lang = ConfigUtil.getCustomConfig(ConfigTag.LANG).getString("language");
 
 
         Lang.loadTranslations(lang);
         DynamicLang.loadTranslations(lang);
         getLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
 
-
-
         getLogger().log(Level.INFO, "[TaN] -Loading Configs");
         ConfigUtil.saveAndUpdateResource(this, "config.yml");
-        ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.TAN);
+        ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.MAIN);
         ConfigUtil.saveAndUpdateResource(this, "townUpgrades.yml");
-        ConfigUtil.addCustomConfig(this, "townUpgrades.yml", ConfigTag.TAN_UPGRADE);
+        ConfigUtil.addCustomConfig(this, "townUpgrades.yml", ConfigTag.UPGRADE);
 
 
         getLogger().log(Level.INFO, "[TaN] -Loading Database");
@@ -143,7 +143,7 @@ public final class TownsAndNations extends JavaPlugin {
         CustomItemManager.loadCustomItems();
         ClaimBlacklistStorage.init();
 
-        FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.TAN);
+        FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         allowColorCodes = mainConfig.getBoolean("EnablePlayerColorCode", false);
         allowTownTag = mainConfig.getBoolean("EnablePlayerPrefix",false);
 
@@ -189,7 +189,7 @@ public final class TownsAndNations extends JavaPlugin {
     }
 
     private void loadDB() {
-        String dbName = ConfigUtil.getCustomConfig(ConfigTag.TAN).getString("dbType", "sqlite");
+        String dbName = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("dbType", "sqlite");
         if(dbName.equalsIgnoreCase("sqlite"))
             databaseHandler = new SQLiteHandler(getDataFolder().getAbsolutePath() + "/database/main.db");
         try {

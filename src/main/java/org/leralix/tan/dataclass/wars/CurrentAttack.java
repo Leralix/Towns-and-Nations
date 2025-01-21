@@ -47,7 +47,7 @@ public class CurrentAttack {
         this.attackers = attackers;
         this.defenders = defenders;
         this.originalTitle = "War start";
-        long warDuration = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("WarDuration");
+        long warDuration = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("WarDuration");
         this.remainingTime = warDuration * 60 * 20;
         this.warGoal = warGoal;
 
@@ -128,7 +128,7 @@ public class CurrentAttack {
         if(nbAttackers == 0){
             return;
         }
-        double multiplier = ConfigUtil.getCustomConfig(ConfigTag.TAN).getDouble("warScoreMultiplier");
+        double multiplier = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("warScoreMultiplier");
         int deltaScore = (int) (multiplier / nbAttackers * 500);
         addScore(-deltaScore);
         sendChatMessage("Attacking player killed !");
@@ -139,7 +139,7 @@ public class CurrentAttack {
         if (nbDefenders == 0) {
             return;
         }
-        double multiplier = ConfigUtil.getCustomConfig(ConfigTag.TAN).getDouble("warScoreMultiplier");
+        double multiplier = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("warScoreMultiplier");
         int deltaScore = (int) (multiplier / nbDefenders * 500);
         addScore(deltaScore);
         sendChatMessage("Defensive player killed!");

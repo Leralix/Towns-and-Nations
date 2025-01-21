@@ -17,8 +17,8 @@ public class CreateAttackData {
 
     public CreateAttackData(TerritoryData mainAttacker, TerritoryData mainDefender){
 
-        minTime = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("MinimumTimeBeforeAttack",120);
-        maxTime = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("MaximumTimeBeforeAttack",4320);
+        minTime = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MinimumTimeBeforeAttack",120);
+        maxTime = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MaximumTimeBeforeAttack",4320);
         minTime = minTime * 60 * 20;
         maxTime = maxTime * 60 * 20;
 

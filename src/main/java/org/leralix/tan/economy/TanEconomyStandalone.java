@@ -27,6 +27,6 @@ public class TanEconomyStandalone extends AbstractTanEcon{
 
     @Override
     public String getMoneyIcon() {
-        return ConfigUtil.getCustomConfig(ConfigTag.TAN).getString("moneyIcon");
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("moneyIcon");
     }
 }

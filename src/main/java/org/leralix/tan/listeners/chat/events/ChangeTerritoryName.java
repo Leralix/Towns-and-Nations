@@ -26,7 +26,7 @@ public class ChangeTerritoryName extends ChatListenerEvent {
     @Override
     public void execute(Player player, String message) {
 
-        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("TownNameSize");
+        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownNameSize");
 
         if(message.length() > maxSize){
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));

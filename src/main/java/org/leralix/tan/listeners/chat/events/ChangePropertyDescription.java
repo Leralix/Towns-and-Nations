@@ -23,7 +23,7 @@ public class ChangePropertyDescription extends ChatListenerEvent {
     @Override
     public void execute(Player player, String message) {
 
-        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("PropertyDescSize");
+        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("PropertyDescSize");
 
         if(message.length() > maxSize){
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));

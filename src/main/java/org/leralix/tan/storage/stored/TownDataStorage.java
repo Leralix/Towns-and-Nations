@@ -150,7 +150,7 @@ public class TownDataStorage {
 
 
     public static boolean isNameUsed(String townName){
-        if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("AllowNameDuplication",true))
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",true))
             return false;
         
         for (TownData town : townDataMap.values()){

@@ -18,7 +18,7 @@ public class VaultManager {
         Logger logger = Bukkit.getLogger();
 
 
-        if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("UseTanEconomy",true)){
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("UseTanEconomy",true)){
             TanEconomyVault tanEconomyVault = new TanEconomyVault();
             EconomyUtil.setEconomy(tanEconomyVault);
             Bukkit.getServicesManager().register(Economy.class, tanEconomyVault, TownsAndNations.getPlugin(), ServicePriority.Normal);

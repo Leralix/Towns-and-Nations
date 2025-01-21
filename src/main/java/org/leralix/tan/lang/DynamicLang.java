@@ -27,7 +27,7 @@ public class DynamicLang {
 
         File file = new File(SpecificLangFolder, "upgrades.yml");
 
-        boolean replace = ConfigUtil.getCustomConfig(ConfigTag.TAN_LANG).getBoolean("autoUpdateLangFiles",true);
+        boolean replace = ConfigUtil.getCustomConfig(ConfigTag.LANG).getBoolean("autoUpdateLangFiles",true);
         if(!file.exists() || replace) {
             TownsAndNations.getPlugin().saveResource("lang/" + fileTag + "/upgrades.yml", true);
         }

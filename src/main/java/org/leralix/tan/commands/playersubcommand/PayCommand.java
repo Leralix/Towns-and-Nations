@@ -76,7 +76,7 @@ public class PayCommand extends PlayerSubCommand {
             player.sendMessage(TanChatUtils.getTANString() + Lang.INTERACTION_TOO_FAR_ERROR.get());
             return;
         }
-        if(senderLocation.distance(receiverLocation) > ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("maxPayDistance")){
+        if(senderLocation.distance(receiverLocation) > ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("maxPayDistance")){
             player.sendMessage(TanChatUtils.getTANString() + Lang.INTERACTION_TOO_FAR_ERROR.get());
             return;
         }

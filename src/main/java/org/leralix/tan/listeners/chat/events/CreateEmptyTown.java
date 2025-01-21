@@ -17,7 +17,7 @@ import org.leralix.tan.lang.Lang;
 public class CreateEmptyTown extends ChatListenerEvent {
     @Override
     public void execute(Player player, String townName) {
-        FileConfiguration config =  ConfigUtil.getCustomConfig(ConfigTag.TAN);
+        FileConfiguration config =  ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         int maxSize = config.getInt("TownNameSize");
 
         if(townName.length() > maxSize){

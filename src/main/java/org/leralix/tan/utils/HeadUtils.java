@@ -137,7 +137,6 @@ public class HeadUtils {
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         meta.setOwnerProfile(profile);
-        skull.setItemMeta(meta);
 
         meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + name);
         if(lore != null)

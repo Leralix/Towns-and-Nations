@@ -57,7 +57,7 @@ class CreateTownServer extends SubCommand {
             commandSender.sendMessage("Player not found");
             return;
         }
-        boolean allowDuplicate = ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("AllowNameDuplication",false);
+        boolean allowDuplicate = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",false);
         if(!allowDuplicate && TownDataStorage.isNameUsed(townName)){
             commandSender.sendMessage("Name duplicates are not allowed");
             return;

@@ -16,7 +16,7 @@ public class UpgradeStorage {
     private static final HashMap<String, TownUpgrade> UpgradeMap = new HashMap<>();
 
     public static void init() {
-        FileConfiguration upgradeConfig = ConfigUtil.getCustomConfig(ConfigTag.TAN_UPGRADE);
+        FileConfiguration upgradeConfig = ConfigUtil.getCustomConfig(ConfigTag.UPGRADE);
         ConfigurationSection upgradesSection = upgradeConfig.getConfigurationSection("upgrades");
 
         if (upgradesSection != null) {

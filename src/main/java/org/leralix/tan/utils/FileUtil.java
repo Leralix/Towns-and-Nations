@@ -20,7 +20,7 @@ public class FileUtil {
     }
     public static void addLineToHistory(final String lineToAdd) {
 
-        if(!ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("archiveHistory",true)) {
+        if(!ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("archiveHistory",true)) {
             return;
         }
 

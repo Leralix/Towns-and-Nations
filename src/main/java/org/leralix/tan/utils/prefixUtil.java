@@ -15,7 +15,7 @@ public class prefixUtil {
      * @param player The player to add the prefix to
      */
     public static void addPrefix(Player player){
-        if(!ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("EnableTownPrefix",true)){
+        if(!ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableTownPrefix",true)){
             return;
         }
         PlayerData playerData = PlayerDataStorage.get(player);

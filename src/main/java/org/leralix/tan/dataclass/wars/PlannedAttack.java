@@ -45,7 +45,7 @@ public class PlannedAttack {
         this.mainAttackerID = createAttackData.getMainAttacker().getID();
         this.mainDefenderID = createAttackData.getMainDefender().getID();
 
-        this.isAdminApproved = !ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("AdminApproval",false);
+        this.isAdminApproved = !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AdminApproval",false);
 
         this.attackersID = new ArrayList<>();
         this.attackersID.add(mainAttackerID);
@@ -53,7 +53,7 @@ public class PlannedAttack {
         this.defendersID.add(mainDefenderID);
 
         this.startTime = (long) (new Date().getTime() * 0.02 + startTime);
-        this.endTime = this.startTime + ConfigUtil.getCustomConfig(ConfigTag.TAN).getLong("WarDuration") * 1200;
+        this.endTime = this.startTime + ConfigUtil.getCustomConfig(ConfigTag.MAIN).getLong("WarDuration") * 1200;
 
         createAttackData.getMainDefender().addPlannedAttack(this);
         createAttackData.getMainAttacker().addPlannedAttack(this);

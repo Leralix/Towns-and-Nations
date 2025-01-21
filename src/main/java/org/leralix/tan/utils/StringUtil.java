@@ -68,7 +68,7 @@ public class StringUtil {
     }
 
     public static double handleDigits(double amount) {
-        double digitVal = Math.pow(10,ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("DecimalDigits",2));
+        double digitVal = Math.pow(10,ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("DecimalDigits",2));
         double value = Math.round(amount * digitVal) / digitVal;
         return value;
     }

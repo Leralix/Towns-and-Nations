@@ -40,13 +40,13 @@ public class RegionDataStorage {
             return;
         }
 
-        int cost = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("regionCost");
+        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
         if(town.getBalance() < cost){
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
             return;
         }
 
-        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("RegionNameSize");
+        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RegionNameSize");
         if(regionName.length() > maxSize){
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
             return;
@@ -104,7 +104,7 @@ public class RegionDataStorage {
     }
 
     public static boolean isNameUsed(String name){
-        if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("AllowNameDuplication",true))
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",true))
             return false;
 
         for (RegionData region : regionStorage.values()){

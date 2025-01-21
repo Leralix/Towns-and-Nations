@@ -1,8 +1,8 @@
 package org.leralix.tan.dataclass;
 
-import org.leralix.lib.gui
+import dev.triumphteam.gui
 .builder.item.ItemBuilder;
-import org.leralix.lib.gui
+import dev.triumphteam.gui
 .guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

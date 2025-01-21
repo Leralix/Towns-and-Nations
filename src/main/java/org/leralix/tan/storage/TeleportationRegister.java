@@ -53,7 +53,7 @@ public class TeleportationRegister {
     }
 
     public static void teleportToTownSpawn(PlayerData playerData, TownData townData){
-        int secondBeforeTeleport = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("timeBeforeTeleport", 5);
+        int secondBeforeTeleport = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("timeBeforeTeleport", 5);
 
         Player player = Bukkit.getPlayer(playerData.getUUID());
         if(player == null)
@@ -64,7 +64,7 @@ public class TeleportationRegister {
             return;
         }
         if(secondBeforeTeleport > 0) {
-            if (ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("cancelTeleportOnMovePosition", true)) {
+            if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnMovePosition", true)) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.TELEPORTATION_IN_X_SECONDS_NOT_MOVE.get(secondBeforeTeleport));
             } else {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.TELEPORTATION_IN_X_SECONDS.get(secondBeforeTeleport));

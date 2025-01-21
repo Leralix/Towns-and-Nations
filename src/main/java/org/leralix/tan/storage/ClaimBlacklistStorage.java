@@ -20,7 +20,7 @@ public class ClaimBlacklistStorage {
 
     public static void init() {
         blacklist = new ArrayList<>();
-        FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.TAN);
+        FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         for (Object item : config.getList("claimBlacklist", Collections.emptyList())){
             if (item instanceof Map<?, ?> map) {
                 String name = (String) map.get("name");

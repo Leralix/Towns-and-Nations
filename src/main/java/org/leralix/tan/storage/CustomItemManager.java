@@ -14,7 +14,7 @@ public class CustomItemManager {
     private static final HashMap<String, Integer> customItemsMap = new HashMap<>();
 
     public static void loadCustomItems() {
-        List<Map<?, ?>> customItemsList = ConfigUtil.getCustomConfig(ConfigTag.TAN).getMapList("customRareItems");
+        List<Map<?, ?>> customItemsList = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getMapList("customRareItems");
 
         for (Map<?, ?> itemConfig : customItemsList) {
             String itemName = (String) itemConfig.get("item");

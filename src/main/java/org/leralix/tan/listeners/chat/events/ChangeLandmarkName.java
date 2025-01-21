@@ -19,7 +19,7 @@ public class ChangeLandmarkName extends ChatListenerEvent {
 
     @Override
     public void execute(Player player, String message) {
-        int nameMaxSize = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("landmarkNameMaxSize",25);
+        int nameMaxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("landmarkNameMaxSize",25);
         if(message.length() >= nameMaxSize){
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(nameMaxSize));
             return;

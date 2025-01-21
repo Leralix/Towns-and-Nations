@@ -109,7 +109,7 @@ public class PropertyData {
     public void allocateRenter(Player renter){
         rentingPlayerID = renter.getUniqueId().toString();
         this.isForRent = false;
-        if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("payRentAtStart", false))
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("payRentAtStart", false))
             payRent();
         this.updateSign();
         getAllowedPlayersID().clear();

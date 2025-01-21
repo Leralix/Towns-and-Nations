@@ -137,21 +137,21 @@ public class RegionClaimedChunk extends ClaimedChunk2{
 
     @Override
     public boolean canExplosionGrief() {
-        String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.TAN).getString("explosionGrief", "ALWAYS");
+        String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("explosionGrief", "ALWAYS");
         GriefAllowed griefAllowed =  GriefAllowed.valueOf(fireGrief);
         return griefAllowed.canGrief(getRegion(), GeneralChunkSetting.TNT_GRIEF);
     }
 
     @Override
     public boolean canFireGrief() {
-        String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.TAN).getString("fireGrief", "ALWAYS");
+        String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("fireGrief", "ALWAYS");
         GriefAllowed griefAllowed =  GriefAllowed.valueOf(fireGrief);
         return griefAllowed.canGrief(getRegion(), GeneralChunkSetting.FIRE_GRIEF);
     }
 
     @Override
     public boolean canPVPHappen() {
-        String pvpEnabled = ConfigUtil.getCustomConfig(ConfigTag.TAN).getString("pvpEnabledInClaimedChunks", "ALWAYS");
+        String pvpEnabled = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("pvpEnabledInClaimedChunks", "ALWAYS");
         GriefAllowed griefAllowed = GriefAllowed.valueOf(pvpEnabled);
         return griefAllowed.canGrief(getRegion(), GeneralChunkSetting.ENABLE_PVP);
     }

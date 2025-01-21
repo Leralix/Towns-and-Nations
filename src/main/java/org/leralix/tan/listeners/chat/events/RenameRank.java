@@ -24,7 +24,7 @@ public class RenameRank extends ChatListenerEvent {
 
     @Override
     public void execute(Player player, String message) {
-        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("RankNameSize");
+        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RankNameSize");
 
         if(message.length() > maxSize){
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));

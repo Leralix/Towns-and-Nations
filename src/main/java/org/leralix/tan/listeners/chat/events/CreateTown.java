@@ -36,7 +36,7 @@ public class CreateTown extends ChatListenerEvent {
             return;
         }
 
-        FileConfiguration config =  ConfigUtil.getCustomConfig(ConfigTag.TAN);
+        FileConfiguration config =  ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         int maxSize = config.getInt("TownNameSize");
 
         if(message.length() > maxSize){

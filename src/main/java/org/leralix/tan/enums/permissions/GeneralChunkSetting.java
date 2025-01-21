@@ -24,7 +24,7 @@ public enum GeneralChunkSetting {
     GeneralChunkSetting(Material icon, String name, String configPath) {
         this.material = icon;
         this.name = name;
-        this.setting = GriefAllowed.valueOf(ConfigUtil.getCustomConfig(ConfigTag.TAN).getString(configPath,"ALWAYS"));
+        this.setting = GriefAllowed.valueOf(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString(configPath,"ALWAYS"));
     }
 
     public ItemStack getIcon(Boolean isEnabled) {

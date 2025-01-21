@@ -1,5 +1,8 @@
 package org.leralix.tan.gui;
 
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.Gui;
+import dev.triumphteam.gui.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -12,9 +15,6 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.lib.gui.builder.item.ItemBuilder;
-import org.leralix.lib.gui.guis.Gui;
-import org.leralix.lib.gui.guis.GuiItem;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -109,12 +109,12 @@ public class PlayerGUI implements IGUI {
         int slotTown = 6;
         int slotPlayer = 8;
 
-        if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("EnableKingdom",true) &&
-                ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("EnableRegion",true)) {
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableKingdom",true) &&
+                ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableRegion",true)) {
             gui.setItem(2, slotKingdom, kingdomGui);
         }
 
-        if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("EnableRegion",true)){
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableRegion",true)){
             gui.setItem(2,slotRegion,regionGui);
         }
         else {
@@ -577,7 +577,7 @@ public class PlayerGUI implements IGUI {
         Gui gui = IGUI.createChestGui(Lang.HEADER_NO_TOWN_MENU.get(), 3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
-        int townPrice = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("townCost", 1000);
+        int townPrice = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("townCost", 1000);
 
         ItemStack createTown = HeadUtils.createCustomItemStack(Material.GRASS_BLOCK,
                 Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.get(),
@@ -1350,7 +1350,7 @@ public class PlayerGUI implements IGUI {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
-            if(territoryData.getNumberOfRank() >= ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("townMaxRank",8)){
+            if(territoryData.getNumberOfRank() >= ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("townMaxRank",8)){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_RANK_CAP_REACHED.get());
                 return;
             }
@@ -1795,7 +1795,7 @@ public class PlayerGUI implements IGUI {
         });
         GuiItem nextButton = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
             event.setCancelled(true);
-            int townMaxLevel = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("TownMaxLevel",10);
+            int townMaxLevel = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownMaxLevel",10);
             if(level < (townMaxLevel - 7))
                 openTownLevel(player,level + 1);
         });
@@ -1815,7 +1815,7 @@ public class PlayerGUI implements IGUI {
         Gui gui = IGUI.createChestGui(Lang.HEADER_SETTINGS.get(),4);
 
         PlayerData playerData = PlayerDataStorage.get(player);
-        int changeTownNameCost = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("ChangeTownNameCost");
+        int changeTownNameCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("ChangeTownNameCost");
 
 
         ItemStack townIcon = townData.getIconWithInformations();
@@ -1978,7 +1978,7 @@ public class PlayerGUI implements IGUI {
         gui.setItem(2,7, toggleApplicationButton);
         gui.setItem(2,8, changeTownButton);
 
-        if(ConfigUtil.getCustomConfig(ConfigTag.TAN).getBoolean("EnablePlayerPrefix",false))
+        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnablePlayerPrefix",false))
             gui.setItem(3,7, changeTagButton);
         gui.setItem(3,8, changeChunkColorButton);
 
@@ -2578,7 +2578,7 @@ public class PlayerGUI implements IGUI {
         Gui gui = IGUI.createChestGui(Lang.HEADER_NO_REGION.get(),3);
 
 
-        int regionCost = ConfigUtil.getCustomConfig(ConfigTag.TAN).getInt("regionCost");
+        int regionCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
 
         ItemStack createRegion = HeadUtils.createCustomItemStack(Material.STONE_BRICKS,
                 Lang.GUI_REGION_CREATE.get(),

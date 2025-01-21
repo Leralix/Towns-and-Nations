@@ -33,7 +33,7 @@ public class PlayerData {
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
         this.storedName = player.getName();
-        this.Balance = ConfigUtil.getCustomConfig(ConfigTag.TAN).getDouble("StartingMoney");
+        this.Balance = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("StartingMoney");
         this.TownId = null;
         this.townRankID = null;
         this.regionRankID = null;
