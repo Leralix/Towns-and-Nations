@@ -9,7 +9,6 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
-import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -378,20 +377,6 @@ public class TownData extends TerritoryData {
 
     public TeleportationPosition getSpawn(){
         return this.teleportationPosition;
-    }
-
-    public boolean teleportPlayerToSpawn(PlayerData playerData){
-        return teleportPlayerToSpawn(playerData.getPlayer());
-    }
-
-    public boolean teleportPlayerToSpawn(Player player){
-        if(isSpawnLocked()){
-            return false;
-        }
-        if(this.teleportationPosition == null)
-            return false;
-        this.teleportationPosition.teleport(player);
-        return true;
     }
 
     public boolean isSpawnLocked(){

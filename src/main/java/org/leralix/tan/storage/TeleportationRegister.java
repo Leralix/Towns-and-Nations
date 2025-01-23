@@ -20,6 +20,10 @@ import java.util.HashMap;
  * This class is used to register players that are teleporting to a location.
  */
 public class TeleportationRegister {
+
+    private TeleportationRegister() {
+        throw new IllegalStateException("Utility class");
+    }
     /**
      * This HashMap contains the player's ID and the TeleportationData object.
      */

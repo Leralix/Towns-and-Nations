@@ -1,31 +1,32 @@
 package org.leralix.tan.dataclass;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.leralix.lib.position.Vector3DWithOrientation;
 
-import java.util.UUID;
 
 public class TeleportationPosition {
 
-    private final int x;
-    private final int y;
-    private final int z;
-    private final String world;
-    private final float pitch;
-    private final float yaw;
+    /**
+     * Legacy code, to be removed in the future. TODO remove in v1.0
+     */
+    private int x;
+    private int y;
+    private int z;
+    private String world;
+    private float pitch;
+    private float yaw;
+    private Vector3DWithOrientation position;
 
     public TeleportationPosition(Location location){
-        this.x = location.getBlockX();
-        this.y = location.getBlockY();
-        this.z = location.getBlockZ();
-        this.world = location.getWorld().getUID().toString();
-        this.pitch = location.getPitch();
-        this.yaw = location.getYaw();
+        position = new Vector3DWithOrientation(location);
     }
 
     public void teleport(Player player){
-        player.teleport(new Location(Bukkit.getWorld(UUID.fromString(world)), x, y, z, yaw, pitch));
+        if(position == null){
+            position = new Vector3DWithOrientation(new Location(player.getWorld(), x, y, z, yaw, pitch));
+        }
+        player.teleport(position.getLocation());
     }
 
 
