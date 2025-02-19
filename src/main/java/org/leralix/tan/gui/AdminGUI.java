@@ -1,11 +1,8 @@
 package org.leralix.tan.gui;
 
-import dev.triumphteam.gui
-.builder.item.ItemBuilder;
-import dev.triumphteam.gui
-.guis.Gui;
-import dev.triumphteam.gui
-.guis.GuiItem;
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.Gui;
+import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;

@@ -11,7 +11,6 @@ import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.TownRelation;
 
 import java.util.List;
 
@@ -65,8 +64,7 @@ public class PayCommand extends PlayerSubCommand {
         }
         PlayerData receiverData = PlayerDataStorage.get(receiver);
         PlayerData senderData = PlayerDataStorage.get(player);
-        if(receiverData.haveTown() && senderData.haveTown() && (receiverData.getTown().getRelationWith(senderData.getTown()) == TownRelation.EMBARGO ||
-                receiverData.getTown().getRelationWith(senderData.getTown()) == TownRelation.WAR)){
+        if(receiverData.haveTown() && senderData.haveTown() && receiverData.getTown().canTradeWith(senderData.getTown())){
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_PAY_AT_EMBARGO_ERROR.get());
             return;
         }

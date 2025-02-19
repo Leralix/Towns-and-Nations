@@ -816,4 +816,7 @@ public abstract class TerritoryData {
         getChunkSettings().nextPermission(type);
     }
 
+    public boolean canTradeWith(TownData town) {
+        return getRelationWith(town) != TownRelation.EMBARGO && getRelationWith(town) != TownRelation.WAR;
+    }
 }

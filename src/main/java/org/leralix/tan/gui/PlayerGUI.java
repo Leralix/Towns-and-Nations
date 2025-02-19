@@ -762,7 +762,7 @@ public class PlayerGUI implements IGUI {
         });
         GuiItem relationButton = ItemBuilder.from(diplomacy).asGuiItem(event -> {
             event.setCancelled(true);
-            openRelations(player, townData, p -> dispatchPlayerTown(player));
+            openRelations(player, townData);
         });
         GuiItem levelButton = ItemBuilder.from(level).asGuiItem(event -> {
             event.setCancelled(true);
@@ -782,7 +782,7 @@ public class PlayerGUI implements IGUI {
         });
         GuiItem warButton = ItemBuilder.from(war).asGuiItem(event -> {
             event.setCancelled(true);
-            openWarMenu(player, townData, p -> dispatchPlayerTown(player), 0);
+            openWarMenu(player, townData, 0);
         });
         GuiItem hierarchyButton = ItemBuilder.from(hierarchy).asGuiItem(event -> {
             event.setCancelled(true);
@@ -832,7 +832,7 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
     }
 
-    private static void openWarMenu(Player player, TerritoryData territory, Consumer<Player> exit, int page) {
+    private static void openWarMenu(Player player, TerritoryData territory, int page) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_WARS_MENU.get(page + 1),6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
@@ -842,7 +842,7 @@ public class PlayerGUI implements IGUI {
             GuiItem attackButton = ItemBuilder.from(attackIcon).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(event.isLeftClick()){
-                    openSpecificPlannedAttackMenu(player, territory, plannedAttack, exit, page);
+                    openSpecificPlannedAttackMenu(player, territory, plannedAttack, 0);
                 }
             });
             guiItems.add(attackButton);
@@ -882,16 +882,17 @@ public class PlayerGUI implements IGUI {
             }
         });
 
-        GuiUtil.createIterator(gui, guiItems, page, player, exit,
-                p -> openWarMenu(player, territory, exit,page + 1),
-                p -> openWarMenu(player, territory, exit,page - 1));
+        GuiUtil.createIterator(gui, guiItems, page, player,
+                p -> openSingleRelation(player, territory, TownRelation.WAR, 0),
+                p -> openWarMenu(player, territory, page + 1),
+                p -> openWarMenu(player, territory, page - 1));
 
         gui.setItem(6, 5, strongHoldIcon);
 
         gui.open(player);
     }
 
-    private static void openSpecificPlannedAttackMenu(Player player, TerritoryData territory, PlannedAttack plannedAttack, Consumer<Player> exit, int page) {
+    private static void openSpecificPlannedAttackMenu(Player player, TerritoryData territory, PlannedAttack plannedAttack, int page) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_WAR_MANAGER.get(), 3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
@@ -916,13 +917,13 @@ public class PlayerGUI implements IGUI {
             GuiItem cancelButton = ItemBuilder.from(cancelAttack).asGuiItem(event -> {
                 plannedAttack.remove();
                 territory.broadCastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(plannedAttack.getMainDefender().getName()),MINOR_GOOD);
-                openWarMenu(player, territory, exit, page);
+                openWarMenu(player, territory, page);
             });
 
             GuiItem renameButton = ItemBuilder.from(renameAttack).asGuiItem(event -> {
                 event.setCancelled(true);
                 player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
-                PlayerChatListenerStorage.register(player, new ChangeAttackName(plannedAttack, p -> openSpecificPlannedAttackMenu(player, territory, plannedAttack, exit, page)));
+                PlayerChatListenerStorage.register(player, new ChangeAttackName(plannedAttack, p -> openSpecificPlannedAttackMenu(player, territory, plannedAttack, page)));
             });
 
             gui.setItem(2,6, renameButton);
@@ -937,7 +938,7 @@ public class PlayerGUI implements IGUI {
 
             GuiItem submitToRequestButton = ItemBuilder.from(submitToRequests).asGuiItem(event -> {
                 plannedAttack.defenderSurrendered();
-                openWarMenu(player, territory, exit, page);
+                openWarMenu(player, territory, page);
             });
             gui.setItem(2,7,submitToRequestButton);
 
@@ -949,7 +950,7 @@ public class PlayerGUI implements IGUI {
             GuiItem quitButton = ItemBuilder.from(quitWar).asGuiItem(event -> {
                 plannedAttack.removeBelligerent(territory);
                 territory.broadCastMessageWithSound(Lang.TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE.get(plannedAttack.getMainDefender().getName()),MINOR_GOOD);
-                openWarMenu(player, territory, exit, page);
+                openWarMenu(player, territory, page);
             });
             gui.setItem(2,7, quitButton);
         }
@@ -965,23 +966,23 @@ public class PlayerGUI implements IGUI {
 
             GuiItem joinAttackerButton = ItemBuilder.from(joinAttacker).asGuiItem(event -> {
                 plannedAttack.addAttacker(territory);
-                openSpecificPlannedAttackMenu(player, territory, plannedAttack, exit, page);
+                openSpecificPlannedAttackMenu(player, territory, plannedAttack, page);
             });
 
             GuiItem joinDefenderButton = ItemBuilder.from(joinDefender).asGuiItem(event -> {
                 plannedAttack.addDefender(territory);
-                openSpecificPlannedAttackMenu(player, territory, plannedAttack, exit, page);
+                openSpecificPlannedAttackMenu(player, territory, plannedAttack, page);
             });
             gui.setItem(2,6, joinAttackerButton);
             gui.setItem(2,8, joinDefenderButton);
         }
 
-        gui.setItem(3,1, IGUI.createBackArrow(player, p -> openWarMenu(player, territory, exit, page)));
+        gui.setItem(3,1, IGUI.createBackArrow(player, p -> openWarMenu(player, territory, page)));
         gui.open(player);
 
     }
 
-    public static void openStartWarSettings(Player player, Consumer<Player> exit, CreateAttackData createAttackData) {
+    public static void openStartWarSettings(Player player, CreateAttackData createAttackData) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_CREATE_WAR_MANAGER.get(createAttackData.getMainDefender().getName()),3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
@@ -1016,7 +1017,7 @@ public class PlayerGUI implements IGUI {
             else if(event.isLeftClick()){
                 createAttackData.addDeltaDateTime(1200);
             }
-            openStartWarSettings(player, exit, createAttackData);
+            openStartWarSettings(player, createAttackData);
         });
 
         GuiItem removeTimeButton = ItemBuilder.from(removeTIme).asGuiItem(event -> {
@@ -1032,13 +1033,13 @@ public class PlayerGUI implements IGUI {
 
             if(createAttackData.getDeltaDateTime() < 0)
                 createAttackData.setDeltaDateTime(0);
-            openStartWarSettings(player, exit, createAttackData);
+            openStartWarSettings(player, createAttackData);
         });
 
         GuiItem timeInfo = ItemBuilder.from(time).asGuiItem(event -> event.setCancelled(true));
 
         GuiItem wargoalButton = ItemBuilder.from(wargoal).asGuiItem(event -> {
-            openSelectWarGoalMenu(player, exit,  createAttackData);
+            openSelectWarGoalMenu(player, createAttackData);
             event.setCancelled(true);
         });
 
@@ -1051,7 +1052,7 @@ public class PlayerGUI implements IGUI {
             }
 
             PlannedAttackStorage.newWar(createAttackData);
-            openWarMenu(player, mainAttacker, exit, 0);
+            openWarMenu(player, mainAttacker, 0);
 
             player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.get(mainDefender.getName()));
             mainAttacker.broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(mainAttacker.getName(), mainDefender.getName()), WAR);
@@ -1066,9 +1067,9 @@ public class PlayerGUI implements IGUI {
         gui.setItem(2,6,wargoalButton);
 
         gui.setItem(2,8,confirmButton);
-        gui.setItem(3,1, IGUI.createBackArrow(player, e -> openSingleRelation(player, mainAttacker, TownRelation.WAR,0, exit)));
+        gui.setItem(3,1, IGUI.createBackArrow(player, e -> openSingleRelation(player, mainAttacker, TownRelation.WAR,0)));
 
-        createAttackData.getWargoal().addExtraOptions(gui, player, createAttackData,exit);
+        createAttackData.getWargoal().addExtraOptions(gui, player, createAttackData);
 
         gui.open(player);
 
@@ -1089,18 +1090,18 @@ public class PlayerGUI implements IGUI {
             GuiItem territoryButton = ItemBuilder.from(territoryIcon).asGuiItem(event -> {
                 event.setCancelled(true);
                 liberateWarGoal.setTerritoryToLiberate(territoryData);
-                openStartWarSettings(player, exit, createAttackData);
+                openStartWarSettings(player, createAttackData);
             });
 
             gui.addItem(territoryButton);
         }
 
-        gui.setItem(6,1, IGUI.createBackArrow(player, e -> openStartWarSettings(player, exit, createAttackData)));
+        gui.setItem(6,1, IGUI.createBackArrow(player, e -> openStartWarSettings(player, createAttackData)));
         gui.open(player);
 
     }
 
-    private static void openSelectWarGoalMenu(Player player, Consumer<Player> exit, CreateAttackData createAttackData) {
+    private static void openSelectWarGoalMenu(Player player, CreateAttackData createAttackData) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_SELECT_WARGOAL.get(), 3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
@@ -1130,7 +1131,7 @@ public class PlayerGUI implements IGUI {
         GuiItem conquerButton = ItemBuilder.from(conquer).asGuiItem(event -> {
             event.setCancelled(true);
             createAttackData.setWarGoal(new ConquerWarGoal(createAttackData.getMainAttacker().getID(), createAttackData.getMainDefender().getID()));
-            openStartWarSettings(player, exit, createAttackData);
+            openStartWarSettings(player, createAttackData);
         });
 
         GuiItem subjugateButton = ItemBuilder.from(subjugate).asGuiItem(event -> {
@@ -1140,7 +1141,7 @@ public class PlayerGUI implements IGUI {
                 return;
             }
             createAttackData.setWarGoal(new SubjugateWarGoal(createAttackData));
-            openStartWarSettings(player, exit, createAttackData);
+            openStartWarSettings(player, createAttackData);
         });
 
         GuiItem liberateButton = ItemBuilder.from(liberate).asGuiItem(event -> {
@@ -1151,14 +1152,14 @@ public class PlayerGUI implements IGUI {
                 return;
             }
             createAttackData.setWarGoal(new LiberateWarGoal());
-            openStartWarSettings(player, exit, createAttackData);
+            openStartWarSettings(player, createAttackData);
         });
 
         gui.setItem(2,3,conquerButton);
         gui.setItem(2,5,subjugateButton);
         gui.setItem(2,7,liberateButton);
 
-        gui.setItem(3,1, IGUI.createBackArrow(player, e -> openStartWarSettings(player, exit, createAttackData)));
+        gui.setItem(3,1, IGUI.createBackArrow(player, e -> openStartWarSettings(player, createAttackData)));
 
         gui.open(player);
     }
@@ -2020,7 +2021,7 @@ public class PlayerGUI implements IGUI {
 
         gui.open(player);
     }
-    public static void openRelations(Player player, TerritoryData territory, Consumer<Player> exitMenu) {
+    public static void openRelations(Player player, TerritoryData territory) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_RELATIONS.get(territory.getName()),3);
 
         ItemStack war = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
@@ -2042,21 +2043,21 @@ public class PlayerGUI implements IGUI {
 
         GuiItem warButton = ItemBuilder.from(war).asGuiItem(event -> {
             event.setCancelled(true);
-            openSingleRelation(player,territory, TownRelation.WAR,0, exitMenu);
+            openSingleRelation(player,territory, TownRelation.WAR,0);
         });
         GuiItem embargoButton = ItemBuilder.from(embargo).asGuiItem(event -> {
             event.setCancelled(true);
-            openSingleRelation(player,territory, TownRelation.EMBARGO,0, exitMenu);
+            openSingleRelation(player,territory, TownRelation.EMBARGO,0);
 
         });
         GuiItem napButton = ItemBuilder.from(nap).asGuiItem(event -> {
             event.setCancelled(true);
-            openSingleRelation(player,territory, TownRelation.NON_AGGRESSION,0, exitMenu);
+            openSingleRelation(player,territory, TownRelation.NON_AGGRESSION,0);
 
         });
         GuiItem allianceButton = ItemBuilder.from(alliance).asGuiItem(event -> {
             event.setCancelled(true);
-            openSingleRelation(player,territory, TownRelation.ALLIANCE,0, exitMenu);
+            openSingleRelation(player,territory, TownRelation.ALLIANCE,0);
         });
         GuiItem proposalsButton = ItemBuilder.from(diplomacyProposal).asGuiItem(event -> {
             event.setCancelled(true);
@@ -2065,7 +2066,7 @@ public class PlayerGUI implements IGUI {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
-            openProposalMenu(player, territory, 0, exitMenu);
+            openProposalMenu(player, territory, 0);
         });
 
         GuiItem panel = ItemBuilder.from(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
@@ -2088,7 +2089,7 @@ public class PlayerGUI implements IGUI {
         gui.setItem(17, proposalsButton);
 
 
-        gui.setItem(3,1, IGUI.createBackArrow(player,exitMenu));
+        gui.setItem(3,1, IGUI.createBackArrow(player,p -> territory.openMainMenu(player)));
 
         gui.setItem(19, panel);
         gui.setItem(20, panel);
@@ -2102,24 +2103,24 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
     }
 
-    public static void openProposalMenu(Player player, TerritoryData territoryData, int page, Consumer<Player> exitMenu){
+    public static void openProposalMenu(Player player, TerritoryData territoryData, int page){
 
         Gui gui = IGUI.createChestGui(Lang.HEADER_RELATIONS.get(territoryData.getName()),6);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
         for(DiplomacyProposal diplomacyProposal : territoryData.getAllDiplomacyProposal()){
-            guiItems.add(diplomacyProposal.createGuiItem(player, territoryData, page, exitMenu));
+            guiItems.add(diplomacyProposal.createGuiItem(player, territoryData, page));
         }
 
-        GuiUtil.createIterator(gui, guiItems, page, player, p -> openRelations(player, territoryData, exitMenu),
-                p -> openProposalMenu(player, territoryData, page - 1, exitMenu),
-                p -> openProposalMenu(player, territoryData, page + 1, exitMenu));
+        GuiUtil.createIterator(gui, guiItems, page, player, p -> openRelations(player, territoryData),
+                p -> openProposalMenu(player, territoryData, page - 1),
+                p -> openProposalMenu(player, territoryData, page + 1));
 
         gui.open(player);
     }
 
-    public static void openSingleRelation(Player player, TerritoryData mainTerritory, TownRelation relation, int page, Consumer<Player> doubleExit) {
+    public static void openSingleRelation(Player player, TerritoryData mainTerritory, TownRelation relation, int page) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_RELATION_WITH.get(relation.getName(), page + 1), 6);
 
         PlayerData playerStat = PlayerDataStorage.get(player);
@@ -2154,7 +2155,7 @@ public class PlayerGUI implements IGUI {
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
-                    openStartWarSettings(player, doubleExit, new CreateAttackData(mainTerritory, territoryData));
+                    openStartWarSettings(player, new CreateAttackData(mainTerritory, territoryData));
                 }
             });
             guiItems.add(townButton);
@@ -2175,7 +2176,7 @@ public class PlayerGUI implements IGUI {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
-            openTownRelationAdd(player,mainTerritory,relation, 0, doubleExit);
+            openTownRelationAdd(player,mainTerritory,relation, 0);
         });
         GuiItem removeRelation = ItemBuilder.from(removeTownButton).asGuiItem(event -> {
             event.setCancelled(true);
@@ -2183,12 +2184,12 @@ public class PlayerGUI implements IGUI {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
-            openTownRelationRemove(player,mainTerritory, relation, 0, doubleExit);
+            openTownRelationRemove(player,mainTerritory, relation, 0);
         });
 
-        GuiUtil.createIterator(gui, guiItems, page, player, p -> openRelations(player, mainTerritory, doubleExit),
-                p -> openSingleRelation(player, mainTerritory, relation, page - 1, doubleExit),
-                p -> openSingleRelation(player, mainTerritory, relation,page - 1, doubleExit));
+        GuiUtil.createIterator(gui, guiItems, page, player, p -> openRelations(player, mainTerritory),
+                p -> openSingleRelation(player, mainTerritory, relation, page - 1),
+                p -> openSingleRelation(player, mainTerritory, relation,page - 1));
 
         gui.setItem(6,4, addRelation);
         gui.setItem(6,5, removeRelation);
@@ -2196,7 +2197,7 @@ public class PlayerGUI implements IGUI {
 
         gui.open(player);
     }
-    public static void openTownRelationAdd(Player player, TerritoryData territory, TownRelation wantedRelation, int page, Consumer<Player> exit) {
+    public static void openTownRelationAdd(Player player, TerritoryData territory, TownRelation wantedRelation, int page) {
         int nRows = 6;
         Gui gui = IGUI.createChestGui(Lang.HEADER_SELECT_ADD_TERRITORY_RELATION.get(wantedRelation.getName()),nRows);
 
@@ -2233,7 +2234,7 @@ public class PlayerGUI implements IGUI {
                 else{
                     territory.setRelation(otherTerritory,wantedRelation);
                 }
-                openSingleRelation(player,territory, wantedRelation,0,exit);
+                openSingleRelation(player,territory, wantedRelation,0);
 
             });
             guiItems.add(iconGui);
@@ -2241,16 +2242,16 @@ public class PlayerGUI implements IGUI {
 
 
 
-        GuiUtil.createIterator(gui, guiItems, 0, player, p -> openSingleRelation(player, territory, wantedRelation,0, exit),
-                p -> openTownRelationAdd(player, territory, wantedRelation,page - 1, exit),
-                p -> openTownRelationAdd(player, territory, wantedRelation,page + 1, exit),
+        GuiUtil.createIterator(gui, guiItems, 0, player, p -> openSingleRelation(player, territory, wantedRelation,0),
+                p -> openTownRelationAdd(player, territory, wantedRelation,page - 1),
+                p -> openTownRelationAdd(player, territory, wantedRelation,page + 1),
                 decorativeGlass);
 
 
         gui.open(player);
     }
 
-    public static void openTownRelationRemove(Player player, TerritoryData territory, TownRelation wantedRelation, int page, Consumer<Player> exit) {
+    public static void openTownRelationRemove(Player player, TerritoryData territory, TownRelation wantedRelation, int page) {
         int nRows = 6;
         Gui gui = IGUI.createChestGui(Lang.HEADER_SELECT_REMOVE_TERRITORY_RELATION.get(wantedRelation.getName()),nRows);
 
@@ -2274,14 +2275,14 @@ public class PlayerGUI implements IGUI {
                     player.sendMessage(TanChatUtils.getTANString() + Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(otherTerritory.getName()));
                     SoundUtil.playSound(player, MINOR_GOOD);
                 }
-                openSingleRelation(player,territory,wantedRelation,0, exit);
+                openSingleRelation(player,territory,wantedRelation,0);
             });
             guiItems.add(townGui);
         }
 
-        GuiUtil.createIterator(gui, guiItems, 0, player, p -> openSingleRelation(player, territory, wantedRelation,0, exit),
-                p -> openTownRelationRemove(player, territory, wantedRelation,page - 1, exit),
-                p -> openTownRelationRemove(player, territory, wantedRelation,page + 1, exit),
+        GuiUtil.createIterator(gui, guiItems, 0, player, p -> openSingleRelation(player, territory, wantedRelation,0),
+                p -> openTownRelationRemove(player, territory, wantedRelation,page - 1),
+                p -> openTownRelationRemove(player, territory, wantedRelation,page + 1),
                 decorativeGlass);
 
 
@@ -2709,7 +2710,7 @@ public class PlayerGUI implements IGUI {
         });
         GuiItem diplomacyButton = ItemBuilder.from(diplomacy).asGuiItem(event -> {
             event.setCancelled(true);
-            openRelations(player, regionData, p -> openRegionMenu(player));
+            openRelations(player, regionData);
         });
         GuiItem settingsButton = ItemBuilder.from(settingIcon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -2721,7 +2722,7 @@ public class PlayerGUI implements IGUI {
         });
         GuiItem warIcon = ItemBuilder.from(war).asGuiItem(event -> {
             event.setCancelled(true);
-            openWarMenu(player, regionData, p -> dispatchPlayerRegion(player), 0);
+            openWarMenu(player, regionData, 0);
         });
 
 

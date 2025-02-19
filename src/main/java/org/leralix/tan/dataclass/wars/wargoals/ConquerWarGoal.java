@@ -36,7 +36,7 @@ public class ConquerWarGoal extends WarGoal {
 
 
     @Override
-    public void addExtraOptions(Gui gui, Player player, CreateAttackData createAttackData, Consumer<Player> exit) {
+    public void addExtraOptions(Gui gui, Player player, CreateAttackData createAttackData) {
 
         ItemStack removeChunk = HeadUtils.makeSkullB64(Lang.GUI_CONQUER_REMOVE_CHUNK.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=",
                 Lang.GUI_DECREASE_1_DESC.get(),
@@ -55,7 +55,7 @@ public class ConquerWarGoal extends WarGoal {
             } else if(event.isLeftClick()){
                 numberOfChunks += 1;
             }
-            openStartWarSettings(player, exit, createAttackData);
+            openStartWarSettings(player, createAttackData);
         });
 
         GuiItem chunkInfoGui = ItemBuilder.from(chunkInfo).asGuiItem(event -> event.setCancelled(true));
@@ -71,7 +71,7 @@ public class ConquerWarGoal extends WarGoal {
             if(numberOfChunks < 1){
                 numberOfChunks = 1;
             }
-            openStartWarSettings(player, exit, createAttackData);
+            openStartWarSettings(player, createAttackData);
         });
 
         gui.setItem(3, 5, removeChunkGui);

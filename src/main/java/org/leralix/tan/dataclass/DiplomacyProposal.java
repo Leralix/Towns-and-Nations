@@ -10,8 +10,6 @@ import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 
-import java.util.function.Consumer;
-
 public class DiplomacyProposal {
 
     private final String askingTerritoryID;
@@ -24,7 +22,7 @@ public class DiplomacyProposal {
         this.relationProposal = relationProposal;
     }
 
-    public GuiItem createGuiItem(Player player, TerritoryData territoryData, int page, Consumer<Player> exitMenu) {
+    public GuiItem createGuiItem(Player player, TerritoryData territoryData, int page) {
 
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         TerritoryData askingTerritory = TerritoryUtil.getTerritory(askingTerritoryID);
@@ -47,7 +45,7 @@ public class DiplomacyProposal {
                 askingTerritory.setRelation(receivingTerritory, relationProposal);
                 receivingTerritory.removeDiplomaticProposal(askingTerritoryID);
             }
-            PlayerGUI.openProposalMenu(player, territoryData, page, exitMenu);
+            PlayerGUI.openProposalMenu(player, territoryData, page);
         });
 
 

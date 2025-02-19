@@ -27,7 +27,7 @@ public abstract class WarGoal {
 
     public abstract String getDisplayName();
 
-    public abstract void addExtraOptions(Gui gui, Player player, CreateAttackData createAttackData, Consumer<Player> exit);
+    public abstract void addExtraOptions(Gui gui, Player player, CreateAttackData createAttackData);
 
     public abstract void applyWarGoal();
 

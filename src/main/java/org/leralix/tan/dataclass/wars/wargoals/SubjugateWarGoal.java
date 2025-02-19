@@ -35,7 +35,7 @@ public class SubjugateWarGoal extends WarGoal {
     }
 
     @Override
-    public void addExtraOptions(Gui gui, Player player, CreateAttackData createAttackData, Consumer<Player> exit) {
+    public void addExtraOptions(Gui gui, Player player, CreateAttackData createAttackData) {
         //Subjugate war goal does not have any extra options
     }
 

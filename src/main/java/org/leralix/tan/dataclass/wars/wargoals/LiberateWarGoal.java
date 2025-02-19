@@ -31,7 +31,7 @@ public class LiberateWarGoal extends WarGoal {
     }
 
     @Override
-    public void addExtraOptions(Gui gui, Player player, CreateAttackData createAttackData, Consumer<Player> exit) {
+    public void addExtraOptions(Gui gui, Player player, CreateAttackData createAttackData) {
 
         GuiItem selectedTerritoryGui;
         if(territoryToLiberate == null){
