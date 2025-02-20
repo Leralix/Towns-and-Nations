@@ -31,7 +31,6 @@ public class DiplomacyProposal {
             receivingTerritory.removeDiplomaticProposal(askingTerritoryID);
             return null;
         }
-
         TownRelation currentRelation = askingTerritory.getRelationWith(receivingTerritory);
 
         ItemStack diplomaticItem = HeadUtils.makeSkullURL(Lang.DIPLOMATIC_RELATION.get(askingTerritory.getColoredName()),"https://textures.minecraft.net/texture/1818d1cc53c275c294f5dfb559174dd931fc516a85af61a1de256aed8bca5e7",

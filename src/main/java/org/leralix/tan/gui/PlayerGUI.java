@@ -1075,7 +1075,7 @@ public class PlayerGUI implements IGUI {
 
     }
 
-    public static void openSelecteTerritoryToLiberate(Player player, CreateAttackData createAttackData, LiberateWarGoal liberateWarGoal, Consumer<Player> exit) {
+    public static void openSelecteTerritoryToLiberate(Player player, CreateAttackData createAttackData, LiberateWarGoal liberateWarGoal) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_CREATE_WAR_MANAGER.get(createAttackData.getMainDefender().getName()),6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
@@ -2216,6 +2216,11 @@ public class PlayerGUI implements IGUI {
             TerritoryData otherTerritory = TerritoryUtil.getTerritory(otherTownUUID);
             ItemStack icon = otherTerritory.getIconWithInformationAndRelation(territory);
 
+            TownRelation actualRelation = territory.getRelationWith(otherTerritory);
+            if(!actualRelation.canBeChanged()){
+                continue;
+            }
+
             GuiItem iconGui = ItemBuilder.from(icon).asGuiItem(event -> {
                 event.setCancelled(true);
 
@@ -2224,7 +2229,9 @@ public class PlayerGUI implements IGUI {
                     return;
                 }
 
-                TownRelation actualRelation = territory.getRelationWith(otherTerritory);
+
+
+
 
                 if(wantedRelation.isSuperiorTo(actualRelation)){
                     otherTerritory.receiveDiplomaticProposal(territory, wantedRelation);

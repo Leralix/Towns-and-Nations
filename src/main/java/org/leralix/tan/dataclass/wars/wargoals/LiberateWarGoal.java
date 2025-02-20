@@ -39,7 +39,7 @@ public class LiberateWarGoal extends WarGoal {
                     Lang.LEFT_CLICK_TO_SELECT.get());
 
             selectedTerritoryGui = ItemBuilder.from(selectTerritory).asGuiItem(event -> {
-                PlayerGUI.openSelecteTerritoryToLiberate(player, createAttackData,this, exit);
+                PlayerGUI.openSelecteTerritoryToLiberate(player, createAttackData,this);
                 event.setCancelled(true);
             });
         }
@@ -48,7 +48,7 @@ public class LiberateWarGoal extends WarGoal {
                     Lang.GUI_SELECTED_TERRITORY_TO_LIBERATE.get(territoryToLiberate.getName()),
                     Lang.LEFT_CLICK_TO_SELECT.get());
             selectedTerritoryGui = ItemBuilder.from(selectedTerritory).asGuiItem(event -> {
-                PlayerGUI.openSelecteTerritoryToLiberate(player, createAttackData,this, exit);
+                PlayerGUI.openSelecteTerritoryToLiberate(player, createAttackData,this);
                 event.setCancelled(true);
             });
         }

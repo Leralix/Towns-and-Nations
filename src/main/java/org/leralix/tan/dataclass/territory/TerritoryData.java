@@ -231,11 +231,6 @@ public abstract class TerritoryData {
         return getRelationWith(territoryData.getID());
     }
     public TownRelation getRelationWith(String territoryID){
-        TownRelation relation = getRelations().getRelationWith(territoryID);
-
-        if(relation != TownRelation.NEUTRAL)
-            return relation;
-
         if(getID().equals(territoryID))
             return TownRelation.SELF;
 
@@ -244,8 +239,8 @@ public abstract class TerritoryData {
 
         if(getVassalsID().contains(territoryID))
             return TownRelation.VASSAL;
-        
-        return TownRelation.NEUTRAL;
+
+        return getRelations().getRelationWith(territoryID);
     }
     @SuppressWarnings("unused")
     public long getDateTimeCreated(){

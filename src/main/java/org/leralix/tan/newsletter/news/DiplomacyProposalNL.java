@@ -47,7 +47,7 @@ public class DiplomacyProposalNL extends Newsletter {
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);
             if(event.isLeftClick())
-                PlayerGUI.openProposalMenu(player, receivingTerritory, 0, p -> receivingTerritory.openMainMenu(player));
+                PlayerGUI.openProposalMenu(player, receivingTerritory, 0);
             if(event.isRightClick()){
                 markAsRead(player);
                 onClick.accept(player);
