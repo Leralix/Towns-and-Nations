@@ -34,6 +34,7 @@ import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.dataclass.wars.WarRole;
+import org.leralix.tan.dataclass.wars.wargoals.CaptureLandmarkWarGoal;
 import org.leralix.tan.dataclass.wars.wargoals.ConquerWarGoal;
 import org.leralix.tan.dataclass.wars.wargoals.LiberateWarGoal;
 import org.leralix.tan.dataclass.wars.wargoals.SubjugateWarGoal;
@@ -1098,7 +1099,32 @@ public class PlayerGUI implements IGUI {
 
         gui.setItem(6,1, IGUI.createBackArrow(player, e -> openStartWarSettings(player, createAttackData)));
         gui.open(player);
+    }
 
+    public static void openSelecteLandmarkToCapture(Player player, CreateAttackData createAttackData, CaptureLandmarkWarGoal captureLandmarkWarGoal, int page) {
+        Gui gui = IGUI.createChestGui(Lang.HEADER_CREATE_WAR_MANAGER.get(createAttackData.getMainDefender().getName()),6);
+
+        TownData defendingTerritory = (TownData) createAttackData.getMainDefender();
+
+         List<GuiItem> landmarkButtons = new ArrayList<>();
+         for(Landmark ownedLandmark : defendingTerritory.getOwnedLandmarks()){
+            ItemStack landmarkIcon = ownedLandmark.getIcon();
+            HeadUtils.addLore(landmarkIcon, "", Lang.LEFT_CLICK_TO_SELECT.get());
+
+            GuiItem landmarkButton = ItemBuilder.from(landmarkIcon).asGuiItem(event -> {
+                event.setCancelled(true);
+                captureLandmarkWarGoal.setLandmarkToCapture(ownedLandmark);
+                openStartWarSettings(player, createAttackData);
+            });
+            landmarkButtons.add(landmarkButton);
+         }
+
+         GuiUtil.createIterator(gui, landmarkButtons, page, player,
+                 p -> openStartWarSettings(player, createAttackData),
+                 p -> openSelecteLandmarkToCapture(player, createAttackData, captureLandmarkWarGoal, page + 1),
+                 p -> openSelecteLandmarkToCapture(player, createAttackData, captureLandmarkWarGoal, page - 1));
+
+         gui.open(player);
     }
 
     private static void openSelectWarGoalMenu(Player player, CreateAttackData createAttackData) {
@@ -1107,10 +1133,15 @@ public class PlayerGUI implements IGUI {
 
         boolean canBeSubjugated = createAttackData.canBeSubjugated();
         boolean canBeLiberated = !(createAttackData.getMainDefender() instanceof TownData);
+        boolean canCaptureLandmark = createAttackData.getMainAttacker() instanceof TownData && createAttackData.getMainDefender() instanceof TownData;
 
         ItemStack conquer = HeadUtils.createCustomItemStack(Material.IRON_SWORD, Lang.CONQUER_WAR_GOAL.get(),
                 Lang.CONQUER_WAR_GOAL_DESC.get(),
                 Lang.LEFT_CLICK_TO_SELECT.get());
+
+        ItemStack captureLandmark = HeadUtils.createCustomItemStack(Material.DIAMOND, Lang.CAPTURE_LANDMARK_WAR_GOAL.get(),
+                Lang.CAPTURE_LANDMARK_WAR_GOAL_DESC.get());
+
         ItemStack subjugate = HeadUtils.createCustomItemStack(Material.CHAIN, Lang.SUBJUGATE_WAR_GOAL.get(),
                 Lang.GUI_WARGOAL_SUBJUGATE_WAR_GOAL_RESULT.get(createAttackData.getMainDefender().getName(), createAttackData.getMainAttacker().getName()));
 
@@ -1131,6 +1162,16 @@ public class PlayerGUI implements IGUI {
         GuiItem conquerButton = ItemBuilder.from(conquer).asGuiItem(event -> {
             event.setCancelled(true);
             createAttackData.setWarGoal(new ConquerWarGoal(createAttackData.getMainAttacker().getID(), createAttackData.getMainDefender().getID()));
+            openStartWarSettings(player, createAttackData);
+        });
+
+        GuiItem captureLandmarkButton = ItemBuilder.from(captureLandmark).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(!canCaptureLandmark){
+                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_WARGOAL_CAPTURE_LANDMARK_CANNOT_BE_USED.get());
+                return;
+            }
+            createAttackData.setWarGoal(new CaptureLandmarkWarGoal(createAttackData.getMainAttacker().getID(), createAttackData.getMainDefender().getID()));
             openStartWarSettings(player, createAttackData);
         });
 
@@ -1155,9 +1196,10 @@ public class PlayerGUI implements IGUI {
             openStartWarSettings(player, createAttackData);
         });
 
-        gui.setItem(2,3,conquerButton);
-        gui.setItem(2,5,subjugateButton);
-        gui.setItem(2,7,liberateButton);
+        gui.setItem(2,2,conquerButton);
+        gui.setItem(2,4,captureLandmarkButton);
+        gui.setItem(2,6,subjugateButton);
+        gui.setItem(2,8,liberateButton);
 
         gui.setItem(3,1, IGUI.createBackArrow(player, e -> openStartWarSettings(player, createAttackData)));
 
@@ -1170,7 +1212,7 @@ public class PlayerGUI implements IGUI {
 
         ArrayList<GuiItem> landmarkGui = new ArrayList<>();
 
-        for(String landmarkID : townData.getOwnedLandmarks()){
+        for(String landmarkID : townData.getOwnedLandmarksID()){
             Landmark landmarkData = LandmarkStorage.get(landmarkID);
 
             GuiItem landmarkButton = ItemBuilder.from(landmarkData.getIcon()).asGuiItem(event -> event.setCancelled(true));
@@ -3335,6 +3377,7 @@ public class PlayerGUI implements IGUI {
 
         gui.open(player);
     }
+
 
 
 }

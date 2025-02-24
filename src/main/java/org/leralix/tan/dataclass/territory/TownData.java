@@ -687,25 +687,33 @@ public class TownData extends TerritoryData {
         return this.UuidLeader == null;
     }
 
-    public Collection<String> getOwnedLandmarks() {
+    public Collection<String> getOwnedLandmarksID() {
         if(ownedLandmarks == null)
             ownedLandmarks = new ArrayList<>();
         return ownedLandmarks;
     }
 
+    public Collection<Landmark> getOwnedLandmarks() {
+        Collection<Landmark> res = new ArrayList<>();
+        for(String landmarkID : getOwnedLandmarksID()){
+            res.add(LandmarkStorage.get(landmarkID));
+        }
+        return res;
+    }
+
     public int getNumberOfOwnedLandmarks() {
-        return getOwnedLandmarks().size();
+        return getOwnedLandmarksID().size();
     }
 
     public void addLandmark(String landmarkID){
-        getOwnedLandmarks().add(landmarkID);
+        getOwnedLandmarksID().add(landmarkID);
     }
     public void addLandmark(Landmark landmark){
         addLandmark(landmark.getID());
         landmark.setOwnerID(this);
     }
     public void removeLandmark(String landmarkID){
-        getOwnedLandmarks().remove(landmarkID);
+        getOwnedLandmarksID().remove(landmarkID);
     }
     public void removeLandmark(Landmark landmark){
         removeLandmark(landmark.getID());
@@ -713,7 +721,7 @@ public class TownData extends TerritoryData {
     }
 
     public boolean ownLandmark(Landmark landmark) {
-        return getOwnedLandmarks().contains(landmark.getID());
+        return getOwnedLandmarksID().contains(landmark.getID());
     }
 
     public boolean canClaimMoreLandmarks() {
@@ -732,7 +740,7 @@ public class TownData extends TerritoryData {
 
 
     public void removeAllLandmark() {
-        for(String landmarkID : getOwnedLandmarks()){
+        for(String landmarkID : getOwnedLandmarksID()){
             Landmark landmark = LandmarkStorage.get(landmarkID);
             landmark.clearOwner();
         }

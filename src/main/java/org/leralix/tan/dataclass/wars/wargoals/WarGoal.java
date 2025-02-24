@@ -1,7 +1,6 @@
 package org.leralix.tan.dataclass.wars.wargoals;
 
-import dev.triumphteam.gui
-.guis.Gui;
+import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,7 +12,6 @@ import org.leralix.tan.lang.Lang;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 public abstract class WarGoal {
 
