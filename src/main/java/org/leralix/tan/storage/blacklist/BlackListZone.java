@@ -1,17 +1,17 @@
-package org.leralix.tan.storage;
+package org.leralix.tan.storage.blacklist;
 
 import org.bukkit.Chunk;
 
 import java.util.List;
 
-public class BlacklistInstance {
+public class BlackListZone implements IBlackList{
     String worldName;
     int xMin;
     int zMin;
     int xMax;
     int zMax;
 
-    public BlacklistInstance(String name, List<Integer> coordinates) {
+    public BlackListZone(String name, List<Integer> coordinates) {
         worldName = name;
 
         int x1 = coordinates.get(0);

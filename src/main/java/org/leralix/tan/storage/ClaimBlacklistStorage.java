@@ -4,6 +4,9 @@ import org.bukkit.Chunk;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.storage.blacklist.BlackListWorld;
+import org.leralix.tan.storage.blacklist.BlackListZone;
+import org.leralix.tan.storage.blacklist.IBlackList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +19,7 @@ public class ClaimBlacklistStorage {
         throw new IllegalStateException("Utility class");
     }
 
-    private static List<BlacklistInstance> blacklist;
+    private static List<IBlackList> blacklist;
 
     public static void init() {
         blacklist = new ArrayList<>();
@@ -25,15 +28,25 @@ public class ClaimBlacklistStorage {
             if (item instanceof Map<?, ?> map) {
                 String name = (String) map.get("name");
                 List<Integer> coordinates = (List<Integer>) map.get("coordinate");
-                if (name != null && coordinates != null && coordinates.size() == 4) {
-                    blacklist.add(new BlacklistInstance(name, coordinates));
+
+                if(name == null) {
+                    continue;
+                }
+
+                if(coordinates == null) {
+                    blacklist.add(new BlackListWorld(name));
+                    continue;
+                }
+
+                if (coordinates.size() == 4) {
+                    blacklist.add(new BlackListZone(name, coordinates));
                 }
             }
         }
     }
 
     public static boolean cannotBeClaimed(Chunk chunk) {
-        for(BlacklistInstance instance : blacklist) {
+        for(IBlackList instance : blacklist) {
             if(instance.isChunkInArea(chunk)) {
                 return true;
             }

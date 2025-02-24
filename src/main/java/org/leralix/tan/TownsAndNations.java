@@ -39,6 +39,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -121,7 +123,10 @@ public final class TownsAndNations extends JavaPlugin {
         getLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
 
         getLogger().log(Level.INFO, "[TaN] -Loading Configs");
-        ConfigUtil.saveAndUpdateResource(this, "config.yml");
+        List<String> blackList = new ArrayList<>();
+        blackList.add("claimBlacklist");
+
+        ConfigUtil.saveAndUpdateResource(this, "config.yml", blackList);
         ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.MAIN);
         ConfigUtil.saveAndUpdateResource(this, "townUpgrades.yml");
         ConfigUtil.addCustomConfig(this, "townUpgrades.yml", ConfigTag.UPGRADE);

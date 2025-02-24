@@ -234,14 +234,13 @@ landmarkNameMaxSize: 25
 
 #List of every claim that cannot be claimed
 #The list represent a square area defined by 2 points
-#syntax (recommenced): "["<world_name>","<x1>","<z1>","<x2>","<z2>"]"
+# name : <world name>                | name of the world
+# coordinate : [x1, z1, x2, z2]      | coordinate of the 2 points defining the area. Leave empty to disable the whole world
 
 #Example:
 #claimBlacklist:
 #  - name : "world"
 #    coordinate : [0,0,10,10]
-#  - name: "world_nether"
-#    coordinate: [-50,20,100,100 ]
 
 claimBlacklist:
   - name : "world"
