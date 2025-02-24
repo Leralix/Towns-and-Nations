@@ -453,7 +453,7 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public void removeVassal(String townID) {
+    public void removeVassal(String vassalID) {
         //Town have no vassals
     }
 

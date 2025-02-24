@@ -297,8 +297,16 @@ public class RegionData extends TerritoryData {
         return townsInRegion.contains(townData.getID());
     }
 
-    public void removeVassal(String townID) {
-        townsInRegion.remove(townID);
+    public void removeVassal(String vassalID) {
+        TownData town = TownDataStorage.get(vassalID);
+        townsInRegion.remove(vassalID);
+
+
+        for(RankData rank : getRanks().values()){
+            for(String playerID : town.getPlayerIDList()){
+                rank.removePlayer(playerID);
+            }
+        }
     }
 
     @Override

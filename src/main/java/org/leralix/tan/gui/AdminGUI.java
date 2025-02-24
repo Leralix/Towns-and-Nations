@@ -461,7 +461,6 @@ public class AdminGUI implements IGUI{
             guiItems.add(ItemBuilder.from(potentialOverlordIcon).asGuiItem(event -> {
                 event.setCancelled(true);
                 territoryData.setOverlord(potentialOverlord);
-                potentialOverlord.addVassal(territoryData);
                 openSpecificTerritoryMenu(player, territoryData);
             }));
         }

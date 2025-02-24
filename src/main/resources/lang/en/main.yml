@@ -10,6 +10,7 @@ language:
   TOWN_NO_REGION: "§cYour town does not belongs to a region"
   PLAYER_NOT_LEADER_OF_REGION: "§cYou need to be the leader of the region to execute this action"
   LEADER_CANNOT_QUIT_TOWN: "§cThe leader cannot quit a territory"
+  TOWN_ALREADY_HAVE_OVERLORD: "§cThis town already have an overlord"
   PLAYER_NO_PERMISSION: "§cYou do not have permission to execute this command"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cYou do not have permission to perform this action on a rank higher or equal to you"
   PLAYER_ACTION_NO_PERMISSION: "§cYou do not have permission to perform this action"

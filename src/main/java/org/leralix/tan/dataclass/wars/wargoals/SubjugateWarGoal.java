@@ -47,11 +47,9 @@ public class SubjugateWarGoal extends WarGoal {
             return;
 
         if(territoryData.haveOverlord()){
-            territoryData.getOverlord().removeVassal(territoryData);
             territoryData.removeOverlord();
         }
         territoryData.setOverlord(newOverlord);
-        newOverlord.addVassal(territoryData);
     }
 
     @Override

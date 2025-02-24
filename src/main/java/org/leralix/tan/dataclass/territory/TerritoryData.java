@@ -335,8 +335,8 @@ public abstract class TerritoryData {
 
 
 
-    public abstract void removeOverlordPrivate();
     public void setOverlord(TerritoryData overlord){
+        overlord.addVassal(this);
         getOverlordsProposals().remove(overlord.getID());
         broadCastMessageWithSound(TanChatUtils.getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), overlord.getColoredName()), SoundEnum.GOOD);
         this.overlordID = overlord.getID();
@@ -347,21 +347,24 @@ public abstract class TerritoryData {
     }
 
     public void removeOverlord(){
-        this.overlordID = null;
+        getOverlord().removeVassal(this);
         removeOverlordPrivate();
+        this.overlordID = null;
     }
+    public abstract void removeOverlordPrivate();
 
 
-    public void addVassal(TerritoryData vassal){
+    private void addVassal(TerritoryData vassal){
         NewsletterStorage.removeVassalisationProposal(this, vassal);
         broadCastMessageWithSound(TanChatUtils.getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(vassal.getColoredName(), getColoredName()), SoundEnum.GOOD);
         addVassalPrivate(vassal);
     }
     protected abstract void addVassalPrivate (TerritoryData vassal);
-    public void removeVassal(TerritoryData territoryToRemove){
-        removeVassal(territoryToRemove.getID());
+
+    private void removeVassal(TerritoryData vassal){
+        removeVassal(vassal.getID());
     }
-    public abstract void removeVassal(String townID);
+    public abstract void removeVassal(String vassalID);
 
     public abstract boolean isCapital();
 
@@ -558,6 +561,12 @@ public abstract class TerritoryData {
             GuiItem acceptInvitation = ItemBuilder.from(territoryItem).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(event.isLeftClick()){
+                    if(haveOverlord()){
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_ALREADY_HAVE_OVERLORD.get());
+                        SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                        return;
+                    }
+
                     setOverlord(proposalOverlord);
                     proposalOverlord.addVassal(this);
                     broadCastMessageWithSound(TanChatUtils.getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), proposalOverlord.getName()), SoundEnum.GOOD);

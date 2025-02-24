@@ -2826,20 +2826,19 @@ public class PlayerGUI implements IGUI {
         Gui gui = IGUI.createChestGui(Lang.HEADER_VASSALS.get(page + 1), 6);
 
         List<GuiItem> guiItems = new ArrayList<>();
-        for (TerritoryData townData : territoryData.getVassals()){
-            ItemStack townIcon = townData.getIconWithInformationAndRelation(territoryData);
+        for (TerritoryData territoryVassal : territoryData.getVassals()){
+            ItemStack townIcon = territoryVassal.getIconWithInformationAndRelation(territoryData);
             HeadUtils.addLore(townIcon, Lang.GUI_REGION_INVITE_TOWN_DESC1.get());
 
             GuiItem townButton = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
 
-                if(townData.isCapitalOf(territoryData)){
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.CANT_KICK_REGIONAL_CAPITAL.get(townData.getName()));
+                if(territoryVassal.isCapitalOf(territoryData)){
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.CANT_KICK_REGIONAL_CAPITAL.get(territoryVassal.getName()));
                     return;
                 }
-                territoryData.broadCastMessageWithSound(Lang.GUI_REGION_KICK_TOWN_BROADCAST.get(townData.getName()), BAD);
-                townData.removeOverlord();
-                territoryData.removeVassal(townData);
+                territoryData.broadCastMessageWithSound(Lang.GUI_REGION_KICK_TOWN_BROADCAST.get(territoryVassal.getName()), BAD);
+                territoryVassal.removeOverlord();
                 player.closeInventory();
             });
             guiItems.add(townButton);
@@ -3226,7 +3225,6 @@ public class PlayerGUI implements IGUI {
                     }
 
                     openConfirmMenu(player, Lang.GUI_CONFIRM_DECLARE_INDEPENDENCE.get(territoryData.getColoredName(), overlord.getColoredName()), confirm -> {
-                        overlordData.removeVassal(territoryData);
                         territoryData.removeOverlord();
                         territoryData.broadCastMessageWithSound(Lang.TOWN_BROADCAST_TOWN_LEFT_REGION.get(territoryData.getName(), overlordData.getName()), BAD);
                         overlordData.broadCastMessage(Lang.REGION_BROADCAST_TOWN_LEFT_REGION.get(territoryData.getName()));
