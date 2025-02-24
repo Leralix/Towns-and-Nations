@@ -23,6 +23,7 @@ public class MapCommand extends PlayerSubCommand {
     public String getName() {
         return "map";
     }
+
     @Override
     public String getDescription() {
         return Lang.MAP_COMMAND_DESC.get();

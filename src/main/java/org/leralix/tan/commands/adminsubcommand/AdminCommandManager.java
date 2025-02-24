@@ -6,6 +6,7 @@ import org.leralix.lib.commands.MainHelpCommand;
 public class AdminCommandManager extends CommandManager {
 
     public AdminCommandManager(){
+        super("tan.admin.commands");
         addSubCommand(new AddMoney());
         addSubCommand(new SetMoney());
 

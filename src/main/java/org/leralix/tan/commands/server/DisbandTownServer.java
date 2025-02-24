@@ -3,6 +3,7 @@ package org.leralix.tan.commands.server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -20,7 +21,7 @@ class DisbandTownServer extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "";
+        return Lang.DISBAND_TOWN_SERVER_DESC.get();
     }
 
     @Override

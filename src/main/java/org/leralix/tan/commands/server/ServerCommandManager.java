@@ -9,10 +9,12 @@ import org.leralix.lib.commands.SubCommand;
 public class ServerCommandManager extends CommandManager {
 
     public ServerCommandManager(){
+        super("tan.server");
         addSubCommand(new CreateTownServer());
         addSubCommand(new ApplyTownServer());
         addSubCommand(new QuitTownServer());
         addSubCommand(new DisbandTownServer());
+        addSubCommand(new OpenGuiServer());
     }
 
     @Override
@@ -24,7 +26,6 @@ public class ServerCommandManager extends CommandManager {
                 return true;
             }
         }
-
         return false;
     }
 

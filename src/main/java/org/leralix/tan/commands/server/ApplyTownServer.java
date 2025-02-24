@@ -3,6 +3,7 @@ package org.leralix.tan.commands.server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.dataclass.PlayerData;
@@ -19,7 +20,7 @@ public class ApplyTownServer extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "";
+        return Lang.APPLY_TOWN_SERVER_DESC.get();
     }
 
     @Override
@@ -40,23 +41,23 @@ public class ApplyTownServer extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         if(args.length < 3){
-            commandSender.sendMessage("Invalid arguments");
+            commandSender.sendMessage(Lang.INVALID_ARGUMENTS.get());
             return;
         }
         String townID = args[1];
         String playerName = args[2];
         Player p = commandSender.getServer().getPlayer(playerName);
         if(p == null){
-            commandSender.sendMessage("Player not found");
+            commandSender.sendMessage(Lang.PLAYER_NOT_FOUND.get());
             return;
         }
         if(townID == null){
-            commandSender.sendMessage("Town ID not found");
+            commandSender.sendMessage(Lang.TOWN_NOT_FOUND.get());
             return;
         }
         PlayerData playerData = PlayerDataStorage.get(p.getUniqueId().toString());
         if(playerData.haveTown()){
-            commandSender.sendMessage("Player already have a town");
+            commandSender.sendMessage(Lang.PLAYER_ALREADY_HAVE_TOWN.get());
             return;
         }
         TownData townData = TownDataStorage.get(townID);

@@ -6,6 +6,7 @@ import org.leralix.lib.commands.MainHelpCommand;
 public class PlayerCommandManager extends CommandManager {
 
     public PlayerCommandManager(){
+        super("tan.base.commands");
         addSubCommand(new InvitePlayerCommand());
         addSubCommand(new JoinTownCommand());
         addSubCommand(new ClaimCommand());

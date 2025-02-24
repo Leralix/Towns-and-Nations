@@ -3,6 +3,7 @@ package org.leralix.tan.commands.server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -21,7 +22,7 @@ class CreateTownServer extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "";
+        return Lang.CREATE_TOWN_SERVER_DESC.get();
     }
 
     @Override
@@ -42,7 +43,7 @@ class CreateTownServer extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         if(args.length < 3){
-            commandSender.sendMessage("Invalid arguments");
+            commandSender.sendMessage(Lang.INVALID_ARGUMENTS.get());
             return;
         }
 
@@ -54,12 +55,12 @@ class CreateTownServer extends SubCommand {
 
         Player p = commandSender.getServer().getPlayer(args[1]);
         if(p == null){
-            commandSender.sendMessage("Player not found");
+            commandSender.sendMessage(Lang.PLAYER_NOT_FOUND.get());
             return;
         }
         boolean allowDuplicate = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",false);
         if(!allowDuplicate && TownDataStorage.isNameUsed(townName)){
-            commandSender.sendMessage("Name duplicates are not allowed");
+            commandSender.sendMessage(Lang.NAME_ALREADY_USED.get());
             return;
         }
         new CreateTown(0).createTown(p, townName);
