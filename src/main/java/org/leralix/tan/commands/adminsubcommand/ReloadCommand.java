@@ -6,6 +6,9 @@ import org.leralix.lib.commands.SubCommand;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.storage.ClaimBlacklistStorage;
+import org.leralix.tan.storage.MobChunkSpawnStorage;
+import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.lang.Lang;
 
@@ -41,6 +44,11 @@ public class ReloadCommand extends SubCommand {
             Plugin plugin = TownsAndNations.getPlugin();
             ConfigUtil.addCustomConfig(plugin,"config.yml", ConfigTag.MAIN);
             ConfigUtil.addCustomConfig(plugin,"townUpgrades.yml", ConfigTag.UPGRADE);
+
+            UpgradeStorage.init();
+            MobChunkSpawnStorage.init();
+            ClaimBlacklistStorage.init();
+
             player.sendMessage(TanChatUtils.getTANString() + Lang.RELOAD_SUCCESS.get());
         }else{
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());

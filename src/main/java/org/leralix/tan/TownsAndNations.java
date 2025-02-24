@@ -6,7 +6,6 @@ import com.google.gson.JsonParser;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.lib.data.PluginVersion;
 import org.leralix.tan.commands.adminsubcommand.AdminCommandManager;
@@ -20,7 +19,6 @@ import org.leralix.tan.listeners.*;
 import org.leralix.tan.listeners.chat.ChatListener;
 import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
-import org.leralix.tan.storage.CustomItemManager;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.database.SQLiteHandler;
@@ -35,7 +33,6 @@ import org.leralix.tan.api.PlaceHolderAPI;
 import org.leralix.tan.api.TanApi;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.HeadUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -140,7 +137,6 @@ public final class TownsAndNations extends JavaPlugin {
 
         UpgradeStorage.init();
         MobChunkSpawnStorage.init();
-        CustomItemManager.loadCustomItems();
         ClaimBlacklistStorage.init();
 
         FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
