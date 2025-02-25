@@ -28,8 +28,8 @@ public class TownUpgrade {
     private final int row;
     private final int maxLevel;
     private final List<Integer> cost;
-    private final HashMap<String, Integer> prerequisites;
-    private final HashMap<String, Integer> benefits;
+    private final Map<String, Integer> prerequisites;
+    private final Map<String, Integer> benefits;
 
 
 
@@ -40,8 +40,8 @@ public class TownUpgrade {
         this.materialCode = materialCode;
         this.maxLevel = maxLevel;
         this.cost = cost;
-        this.prerequisites = new HashMap<>(prerequisites);
-        this.benefits = new HashMap<>(benefits);
+        this.prerequisites = prerequisites;
+        this.benefits = benefits;
     }
 
 
@@ -169,6 +169,7 @@ public class TownUpgrade {
             if(!isPrerequisiteMet(townLevel)){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.get());
                 SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                return;
             }
             townData.upgradeTown(player,this,townUpgradeLevel);
             PlayerGUI.openTownLevel(player,page);

@@ -42,9 +42,11 @@ public class Level {
     public int getPlayerCap() {
         return getTotalBenefits().get("PLAYER_CAP");
     }
+
     public int getChunkCap() {
         return getTotalBenefits().get("CHUNK_CAP");
     }
+
     public int getPropertyCap() {
         Integer propertyCap = getTotalBenefits().get("PROPERTY_CAP");
         if (propertyCap == null) {
@@ -53,19 +55,13 @@ public class Level {
         return propertyCap;
     }
 
-
     public boolean isTownSpawnUnlocked() {
         return getTotalBenefits().get("TOWN_SPAWN_UNLOCKED") > 1;
     }
 
-
-
-
     public int getMoneyRequiredForLevelUp() {
         return getRequiredMoney(getTownLevel());
     }
-
-
 
     private int getRequiredMoney(int level) {
         FileConfiguration fg = ConfigUtil.getCustomConfig(ConfigTag.UPGRADE);
