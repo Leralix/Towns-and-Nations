@@ -1817,8 +1817,9 @@ public class PlayerGUI implements IGUI {
 
         for(TownUpgrade townUpgrade : UpgradeStorage.getUpgrades()){
             GuiItem guiButton = townUpgrade.createGuiItem(player, townData, level);
-            if(level + 1 <= townUpgrade.getCol() && townUpgrade.getCol() <= level + 7)
+            if(level + 1 <= townUpgrade.getCol() && townUpgrade.getCol() <= level + 7){
                 gui.setItem(townUpgrade.getRow(),townUpgrade.getCol() + (1 - level),guiButton);
+            }
         }
 
         ItemStack nextPageButton = HeadUtils.makeSkullB64(

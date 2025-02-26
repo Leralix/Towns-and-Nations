@@ -21,7 +21,7 @@ class DisbandTownServer extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.DISBAND_TOWN_SERVER_DESC.get();
+            return Lang.DISBAND_TOWN_SERVER_DESC.get();
     }
 
     @Override
@@ -31,7 +31,7 @@ class DisbandTownServer extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/tanserver disbandtown   <player_username>";
+        return "/tanserver disbandtown <player_username>";
     }
 
     @Override

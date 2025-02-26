@@ -7,6 +7,7 @@ public class AdminCommandManager extends CommandManager {
 
     public AdminCommandManager(){
         super("tan.admin.commands");
+        addSubCommand(new OpenAdminGUI());
         addSubCommand(new AddMoney());
         addSubCommand(new SetMoney());
 
