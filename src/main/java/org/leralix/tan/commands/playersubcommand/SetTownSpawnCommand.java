@@ -2,7 +2,10 @@ package org.leralix.tan.commands.playersubcommand;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
@@ -23,8 +26,8 @@ public class SetTownSpawnCommand extends PlayerSubCommand {
     public String getDescription() {
         return Lang.SET_SPAWN_COMMAND_DESC.get();
     }
-    public int getArguments(){ return 1;}
 
+    public int getArguments(){ return 1;}
 
     @Override
     public String getSyntax() {
@@ -62,6 +65,12 @@ public class SetTownSpawnCommand extends PlayerSubCommand {
         //Spawn Unlocked
         if(townData.isSpawnLocked()){
             player.sendMessage(TanChatUtils.getTANString() + Lang.SPAWN_NOT_UNLOCKED.get());
+            return;
+        }
+
+        ClaimedChunk2 currentChunk = NewClaimedChunkStorage.get(player.getLocation().getChunk());
+        if(!(currentChunk instanceof TownClaimedChunk townChunk && townChunk.getTown().equals(townData))){
+            player.sendMessage(TanChatUtils.getTANString() + Lang.SPAWN_NEED_TO_BE_IN_CHUNK.get());
             return;
         }
 

@@ -224,6 +224,7 @@ language:
   SPAWN_TELEPORTED: "Teleported to the town spawn"
   SPAWN_NOT_SET: "§cThe town spawn is not set"
   SPAWN_NOT_UNLOCKED: "§cThe town spawn is not unlocked"
+  SPAWN_NEED_TO_BE_IN_CHUNK: "§cYou need to be in a claimed chunk to set the spawn"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Neutral"
