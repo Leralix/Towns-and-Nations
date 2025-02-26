@@ -15,10 +15,18 @@ public class ChatListener implements Listener {
         Player player = event.getPlayer();
         ChatListenerEvent chatListenerEvent = PlayerChatListenerStorage.getPlayer(player);
 
+        String message = event.getMessage();
+
+        if(PlayerSelectPropertyPositionStorage.contains(player) || message.equalsIgnoreCase(Lang.CANCEL_WORD.get())){
+            player.sendMessage(TanChatUtils.getTANString() + Lang.CANCELLED_ACTION.get());
+            PlayerSelectPropertyPositionStorage.removePlayer(player);
+            event.setCancelled(true);
+            return;
+        }
+
         if(chatListenerEvent == null)
             return;
 
-        String message = event.getMessage();
         event.setCancelled(true);
 
         if (message.equalsIgnoreCase(Lang.CANCEL_WORD.get())) {
