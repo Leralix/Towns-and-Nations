@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -29,6 +31,7 @@ public class PlayerData {
     private Integer regionRankID;
     private List<String> propertiesListID;
     private List<String> attackInvolvedIn;
+    private LangType lang;
 
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
@@ -276,5 +279,15 @@ public class PlayerData {
 
     public OfflinePlayer getOfflinePlayer() {
         return Bukkit.getServer().getOfflinePlayer(getUUID());
+    }
+
+    public LangType getLang() {
+        if(lang == null)
+            return Lang.getBaseLang();
+        return lang;
+    }
+
+    public void setLang(LangType lang) {
+        this.lang = lang;
     }
 }

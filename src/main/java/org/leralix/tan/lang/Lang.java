@@ -5,10 +5,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.economy.EconomyUtil;
 
 import java.io.File;
 import java.util.EnumMap;
+
 public enum Lang {
     WELCOME,
     LANGUAGE_SUCCESSFULLY_LOADED,
@@ -527,6 +529,7 @@ public enum Lang {
     GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER,
     TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN,
     WARNING_OTHER_TOWN_HAS_BEEN_DELETED,
+    GUI_SELECTED_LANGUAGE_IS,
     ITEM_RARE_STONE,
     ITEM_RARE_WOOD,
     ITEM_RARE_CROP,
@@ -922,9 +925,17 @@ public enum Lang {
     CHUNK_IS_BLACKLISTED;
 
 
-    private static final EnumMap<Lang, String> translations = new EnumMap<>(Lang.class);
+    private static LangType baseLang;
+
+    private static final EnumMap<LangType ,EnumMap<Lang, String>> translations = new EnumMap<>(LangType.class);
+
+
+    static final String MESSAGE_NOT_FOUND_FOR = "Message not found for ";
+    static final String IN_THIS_LANGUAGE_FILE = " in this language file.";
 
     public static void loadTranslations(String fileTag) {
+
+        baseLang = LangType.fromCode(fileTag);
 
         File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
 
@@ -932,34 +943,52 @@ public enum Lang {
             langFolder.mkdir();
         }
 
-        File specificLangFolder = new File(langFolder, fileTag);
-        if(!specificLangFolder.exists()) {
-            specificLangFolder.mkdir();
-        }
+        for(LangType langType : LangType.values()) {
 
-        File file = new File(specificLangFolder, "main.yml");
-
-        boolean replace = ConfigUtil.getCustomConfig(ConfigTag.LANG).getBoolean("autoUpdateLangFiles",true);
-
-
-        if(!file.exists() || replace) {
-            TownsAndNations.getPlugin().saveResource("lang/" + fileTag + "/main.yml", true);
-        }
-
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        for (Lang key : Lang.values()) {
-            String message = config.getString("language." + key.name());
-            if (message != null) {
-                translations.put(key, message);
+            File specificLangFolder = new File(langFolder, langType.getCode());
+            if(!specificLangFolder.exists()) {
+                specificLangFolder.mkdir();
             }
+
+            File file = new File(specificLangFolder, "main.yml");
+
+            boolean replace = ConfigUtil.getCustomConfig(ConfigTag.LANG).getBoolean("autoUpdateLangFiles",true);
+
+
+            if(!file.exists() || replace) {
+                TownsAndNations.getPlugin().saveResource("lang/" + langType.getCode() + "/main.yml", true);
+            }
+
+            YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+
+            EnumMap<Lang, String> specificTranslation = new EnumMap<>(Lang.class);
+
+            for (Lang key : Lang.values()) {
+                String message = config.getString("language." + key.name());
+                if (message != null) {
+                    specificTranslation.put(key, message);
+                }
+            }
+
+            translations.put(langType, specificTranslation);
         }
     }
-    static final String MESSAGE_NOT_FOUND_FOR = "Message not found for ";
-    static final String IN_THIS_LANGUAGE_FILE = " in this language file.";
+
+    public static LangType getBaseLang() {
+        return baseLang;
+    }
 
 
     public String get() {
-        String translation = translations.get(this);
+        return get(baseLang);
+    }
+
+    public String get(PlayerData playerData){
+        return get(playerData.getLang());
+    }
+
+    private String get(LangType lang) {
+        String translation = translations.get(lang).get(this);
         if (translation != null) {
             replaceCommonPlaceholders(translation);
             return ChatColor.translateAlternateColorCodes('§', translation);
@@ -968,7 +997,7 @@ public enum Lang {
     }
 
     public String get(Object... placeholders) {
-        String translation = translations.get(this);
+        String translation = translations.get(baseLang).get(this);
         if (translation != null) {
             translation = ChatColor.translateAlternateColorCodes('§', translation);
             for (int i = 0; i < placeholders.length; i++) {
@@ -998,7 +1027,7 @@ public enum Lang {
 
 
     public String getWithoutPlaceholder() {
-        String translation = translations.get(this);
+        String translation = translations.get(baseLang).get(this);
         if (translation != null) {
             return ChatColor.translateAlternateColorCodes('§', translation);
         }

@@ -79,6 +79,7 @@ public abstract class TerritoryData {
 
         this.customIcon = new PlayerHeadIcon(ownerID);
 
+        this.baseTax = 1.0;
         this.propertyRentTax = 0.1;
         this.propertyBuyTax = 0.1;
         ranks = new HashMap<>();
@@ -336,9 +337,10 @@ public abstract class TerritoryData {
 
 
     public void setOverlord(TerritoryData overlord){
-        overlord.addVassal(this);
         getOverlordsProposals().remove(overlord.getID());
         broadCastMessageWithSound(TanChatUtils.getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), overlord.getColoredName()), SoundEnum.GOOD);
+
+        overlord.addVassal(this);
         this.overlordID = overlord.getID();
     }
 
@@ -356,7 +358,7 @@ public abstract class TerritoryData {
 
     private void addVassal(TerritoryData vassal){
         NewsletterStorage.removeVassalisationProposal(this, vassal);
-        broadCastMessageWithSound(TanChatUtils.getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(vassal.getColoredName(), getColoredName()), SoundEnum.GOOD);
+
         addVassalPrivate(vassal);
     }
     protected abstract void addVassalPrivate (TerritoryData vassal);
@@ -455,8 +457,6 @@ public abstract class TerritoryData {
 
         castActionToAllPlayers(HumanEntity::closeInventory);
 
-        if(haveOverlord())
-            getOverlord().removeVassal(this);
 
         for(TerritoryData territory : getVassals()){
             territory.removeOverlord();
@@ -568,7 +568,6 @@ public abstract class TerritoryData {
                     }
 
                     setOverlord(proposalOverlord);
-                    proposalOverlord.addVassal(this);
                     broadCastMessageWithSound(TanChatUtils.getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), proposalOverlord.getName()), SoundEnum.GOOD);
                     PlayerGUI.openHierarchyMenu(player, this);
                 }

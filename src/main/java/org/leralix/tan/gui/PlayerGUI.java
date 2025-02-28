@@ -44,6 +44,7 @@ import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.*;
 import org.leralix.tan.newsletter.NewsletterScope;
@@ -150,25 +151,37 @@ public class PlayerGUI implements IGUI {
         Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_PROFILE.get(),3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
+        LangType lang = PlayerDataStorage.get(player).getLang();
+
         ItemStack playerHead = HeadUtils.getPlayerHead(Lang.GUI_YOUR_PROFILE.get(),player);
         ItemStack treasuryIcon = HeadUtils.createCustomItemStack(Material.GOLD_NUGGET, Lang.GUI_YOUR_BALANCE.get(),Lang.GUI_YOUR_BALANCE_DESC1.get(StringUtil.formatMoney(EconomyUtil.getBalance(player))));
         ItemStack propertiesIcon = HeadUtils.createCustomItemStack(Material.OAK_HANGING_SIGN, Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(),Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get());
         ItemStack newsletterIcon = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK, Lang.GUI_PLAYER_NEWSLETTER.get(),Lang.GUI_PLAYER_NEWSLETTER_DESC1.get());
+        ItemStack languageIcon = HeadUtils.createCustomItemStack(lang.getIcon(), Lang.GUI_SELECTED_LANGUAGE_IS.get(lang.getName()),Lang.GUI_LEFT_CLICK_TO_INTERACT.get());
 
         GuiItem playerGui = ItemBuilder.from(playerHead).asGuiItem();
+
         GuiItem treasuryGui = ItemBuilder.from(treasuryIcon).asGuiItem();
         GuiItem propertiesGui = ItemBuilder.from(propertiesIcon).asGuiItem(event -> openPlayerPropertiesMenu(player, 0));
         GuiItem newsletterGui = ItemBuilder.from(newsletterIcon).asGuiItem(event -> openNewsletter(player,0, NewsletterScope.SHOW_ONLY_UNREAD));
+        GuiItem languageGui = ItemBuilder.from(languageIcon).asGuiItem(event -> openLanguageMenu(player));
 
         gui.setItem(1,5, playerGui);
         gui.setItem(2,2, treasuryGui);
         gui.setItem(2,4, propertiesGui);
         gui.setItem(2,6, newsletterGui);
+        gui.setItem(2,8, languageGui);
+
+
 
 
         gui.setItem(18, IGUI.createBackArrow(player, p -> openMainMenu(player)));
 
         gui.open(player);
+    }
+
+    private static void openLanguageMenu(Player player) {
+
     }
 
     public static void openNewsletter(Player player, int page, NewsletterScope scope){

@@ -56,10 +56,9 @@ public class RegionData extends TerritoryData {
         this.capitalID = ownerTown.getID();
         this.regionDateTimeCreated = new Date().getTime();
         this.nationID = null;
-        Double taxRate = 1.0;
+
         this.balance = 0.0;
         this.townsInRegion = new ArrayList<>();
-        this.townsInRegion.add(ownerTown.getID());
         super.color = StringUtil.randomColor();
     }
 

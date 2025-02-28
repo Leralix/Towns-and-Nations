@@ -66,6 +66,7 @@ public class RegionDataStorage {
 
         RegionData newRegion = new RegionData(regionID, regionName, playerID);
         regionStorage.put(regionID, newRegion);
+
         town.setOverlord(newRegion);
         town.removeFromBalance(cost);
         FileUtil.addLineToHistory(Lang.HISTORY_REGION_CREATED.get(player.getName(),regionName));
