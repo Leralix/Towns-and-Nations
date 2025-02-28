@@ -232,6 +232,7 @@ public enum Lang {
     GUI_TOWN_TREASURY_ICON_DESC1,
     GUI_TOWN_MEMBERS_ICON,
     GUI_TOWN_MEMBERS_ICON_DESC1,
+    GUI_LANGUAGE_CHANGED,
     GUI_CLAIM_ICON,
     GUI_CLAIM_ICON_DESC1,
     GUI_BROWSE_TERRITORY_ICON,
@@ -659,6 +660,7 @@ public enum Lang {
     GUI_PLAYER_NEW_PROPERTY,
     HEADER_MAIN_MENU,
     HEADER_PLAYER_PROFILE,
+    HEADER_SELECT_LANGUAGE,
     HEADER_NEWSLETTER,
     HEADER_PLAYER_PROPERTIES,
     HEADER_PLAYER_SPECIFIC_PROPERTY,
@@ -997,7 +999,15 @@ public enum Lang {
     }
 
     public String get(Object... placeholders) {
-        String translation = translations.get(baseLang).get(this);
+        return get(baseLang, placeholders);
+    }
+
+    public String get(PlayerData playerData, Object... placeholders) {
+        return get(playerData.getLang(), placeholders);
+    }
+
+    public String get(LangType lang, Object... placeholders) {
+        String translation = translations.get(lang).get(this);
         if (translation != null) {
             translation = ChatColor.translateAlternateColorCodes('§', translation);
             for (int i = 0; i < placeholders.length; i++) {

@@ -164,7 +164,7 @@ public class PlayerGUI implements IGUI {
         GuiItem treasuryGui = ItemBuilder.from(treasuryIcon).asGuiItem();
         GuiItem propertiesGui = ItemBuilder.from(propertiesIcon).asGuiItem(event -> openPlayerPropertiesMenu(player, 0));
         GuiItem newsletterGui = ItemBuilder.from(newsletterIcon).asGuiItem(event -> openNewsletter(player,0, NewsletterScope.SHOW_ONLY_UNREAD));
-        GuiItem languageGui = ItemBuilder.from(languageIcon).asGuiItem(event -> openLanguageMenu(player));
+        GuiItem languageGui = ItemBuilder.from(languageIcon).asGuiItem(event -> openLanguageMenu(player, 0));
 
         gui.setItem(1,5, playerGui);
         gui.setItem(2,2, treasuryGui);
@@ -180,8 +180,29 @@ public class PlayerGUI implements IGUI {
         gui.open(player);
     }
 
-    private static void openLanguageMenu(Player player) {
+    private static void openLanguageMenu(Player player, int page) {
+        Gui gui = IGUI.createChestGui(Lang.HEADER_SELECT_LANGUAGE.get(),3);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
+        ArrayList<GuiItem> guiItems = new ArrayList<>();
+        for(LangType lang : LangType.values()){
+            ItemStack langIcon = lang.getIcon();
+            GuiItem langGui = ItemBuilder.from(langIcon).asGuiItem(event -> {
+                PlayerData playerData = PlayerDataStorage.get(player);
+                playerData.setLang(lang);
+                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_LANGUAGE_CHANGED.get(playerData, lang.getName()));
+                openPlayerProfileMenu(player);
+            });
+            guiItems.add(langGui);
+        }
+
+        GuiUtil.createIterator(gui, guiItems, page, player,
+                p -> openPlayerProfileMenu(player),
+                p -> openLanguageMenu(player, page + 1),
+                p -> openLanguageMenu(player, page - 1)
+        );
+
+        gui.open(player);
     }
 
     public static void openNewsletter(Player player, int page, NewsletterScope scope){

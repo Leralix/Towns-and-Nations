@@ -289,6 +289,7 @@ language:
   ##menu headers
   HEADER_MAIN_MENU: "Main menu"
   HEADER_PLAYER_PROFILE: "Profile"
+  HEADER_SELECT_LANGUAGE: "Select language"
   HEADER_NEWSLETTER: "Newsletter"
   HEADER_PLAYER_PROPERTIES: "Properties"
   HEADER_PLAYER_SPECIFIC_PROPERTY: "Property : {0}"
@@ -366,6 +367,7 @@ language:
   GUI_TOWN_TREASURY_ICON_DESC1: "§fManage taxes and town treasury"
   GUI_TOWN_MEMBERS_ICON: "§aMembers"
   GUI_TOWN_MEMBERS_ICON_DESC1: "§fManage members, roles and applications"
+  GUI_LANGUAGE_CHANGED: "§aLanguage changed to: {0}"
   GUI_CLAIM_ICON: "§aLand"
   GUI_CLAIM_ICON_DESC1: "§fManage town territory authorizations"
   GUI_BROWSE_TERRITORY_ICON: "Browse all territory"
