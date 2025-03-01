@@ -67,7 +67,7 @@ public final class TownsAndNations extends JavaPlugin {
      * Used to check if the plugin is up-to-date to the latest version. Also
      * used to check if the plugin has just been updated and config file needs an update
      */
-    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,13,0);
+    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,13,2);
     private static final PluginVersion MINIMUM_SUPPORTING_DYNMAP = new PluginVersion(0,10,1);
 
     /**
@@ -109,7 +109,6 @@ public final class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO,"[TaN] Loading Plugin");
 
-        checkForUpdate();
 
         getLogger().log(Level.INFO,"[TaN] -Loading Lang");
 
@@ -180,6 +179,9 @@ public final class TownsAndNations extends JavaPlugin {
             getLogger().log(Level.INFO,"[TaN] -Loading PlaceholderAPI");
             new PlaceHolderAPI().register();
         }
+
+        checkForUpdate();
+
 
         getLogger().log(Level.INFO,"[TaN] Plugin loaded successfully");
 
