@@ -986,6 +986,9 @@ public enum Lang {
     }
 
     public String get(PlayerData playerData){
+        if(playerData == null) {
+            return get(baseLang);
+        }
         return get(playerData.getLang());
     }
 

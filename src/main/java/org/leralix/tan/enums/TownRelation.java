@@ -17,9 +17,9 @@ public enum TownRelation {
     private final int rank;
     private final String name;
     private final ChatColor color;
-    private final Boolean canBeChanged;
+    private final boolean canBeChanged;
 
-    TownRelation(int rank, String name, ChatColor color, Boolean canBeChanged) {
+    TownRelation(int rank, String name, ChatColor color, boolean canBeChanged) {
         this.rank = rank;
         this.name = name;
         this.color = color;
@@ -35,7 +35,7 @@ public enum TownRelation {
     public String getColoredName() {
         return color + name;
     }
-    public Boolean canBeChanged() {
+    public boolean canBeChanged() {
         return canBeChanged;
     }
 

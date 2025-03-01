@@ -9,6 +9,8 @@ language:
   PLAYER_NO_REGION: "§cYou do not have a region"
   TOWN_NO_REGION: "§c당신의 마을은 지역에 속해 있지 않습니다"
   PLAYER_NOT_LEADER_OF_REGION: "§c이 작업을 수행하려면 지역의 리더여야 합니다"
+  LEADER_CANNOT_QUIT_TOWN: "§cThe leader cannot quit a territory"
+  TOWN_ALREADY_HAVE_OVERLORD: "§cThis town already have an overlord"
   PLAYER_NO_PERMISSION: "§c이 명령을 실행할 권한이 없습니다"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§c당신보다 높은 등급 또는 동일한 등급에 대해 이 작업을 수행할 권한이 없습니다"
   PLAYER_ACTION_NO_PERMISSION: "§c이 작업을 수행할 권한이 없습니다"
@@ -34,7 +36,10 @@ language:
   CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§cThis chunk does not belong to {0}"
   CANNOT_DELETE_TERRITORY_IF_CAPITAL: "§cThis territory cannot be deleted because it is the leader of {0}"
   ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT: "§cYou cannot interact with thispermission because your rank does not have it"
+  TOWN_NOT_FOUND: "§cTown not found"
   TERRITORY_NOT_FOUND: "§cTerritory not found"
+  INVALID_ARGUMENTS: "§cInvalid arguments"
+  PLAYER_ALREADY_HAVE_TOWN: "§cThis player already have a town"
   #Common uses
   DISPLAY_COORDINATES: "§f좌표: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
@@ -179,6 +184,17 @@ language:
   #SUDO command
   SUDO_PLAYER_ADDED: "§3{0}§f가 이제 sudo 모드에 있습니다"
   SUDO_PLAYER_REMOVED: "§3{0}§f가 sudo 모드에서 해제되었습니다"
+  #Server commands
+  ##ApplyTown
+  APPLY_TOWN_SERVER_DESC: "Force a player to apply to a town"
+  ##CreateTown
+  CREATE_TOWN_SERVER_DESC: "§aCreate a town"
+  ##DisbandTown
+  DISBAND_TOWN_SERVER_DESC: "§cDisband a town"
+  ##OpenGui
+  OPEN_GUI_SERVER_DESC: "Open the GUI of a player"
+  ##QuitTown
+  QUIT_TOWN_SERVER_DESC: "§cQuit a town"
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§c이 작업을 수행할 충분한 돈이 없습니다"
   LEADER_NOT_ONLINE: "§c마을 리더가 온라인 상태가 아닙니다"
@@ -208,6 +224,7 @@ language:
   SPAWN_TELEPORTED: "마을 스폰 지점으로 텔레포트되었습니다"
   SPAWN_NOT_SET: "§c마을 스폰 지점이 설정되지 않았습니다"
   SPAWN_NOT_UNLOCKED: "§c마을 스폰 지점이 잠금 해제되지 않았습니다"
+  SPAWN_NEED_TO_BE_IN_CHUNK: "§cYou need to be in a claimed chunk to set the spawn"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "중립"
@@ -232,6 +249,7 @@ language:
   LEFT_CLICK_TO_MODIFY: "§fLeft click to modify"
   LEFT_CLICK_TO_ACCEPT: "§fLeft click to accept"
   RIGHT_CLICK_TO_REFUSE: "§fRight click to refuse"
+  CANNOT_BE_MODIFIED: "§cThis cannot be modified"
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§e개발 중입니다"
   GUI_BACK_ARROW: "돌아가기"
@@ -271,6 +289,7 @@ language:
   ##menu headers
   HEADER_MAIN_MENU: "Main menu"
   HEADER_PLAYER_PROFILE: "Profile"
+  HEADER_SELECT_LANGUAGE: "Select language"
   HEADER_NEWSLETTER: "Newsletter"
   HEADER_PLAYER_PROPERTIES: "Properties"
   HEADER_PLAYER_SPECIFIC_PROPERTY: "Property : {0}"
@@ -348,6 +367,7 @@ language:
   GUI_TOWN_TREASURY_ICON_DESC1: "§f세금 및 마을 재정을 관리하세요"
   GUI_TOWN_MEMBERS_ICON: "§a멤버"
   GUI_TOWN_MEMBERS_ICON_DESC1: "§f멤버, 역할 및 지원을 관리하세요"
+  GUI_LANGUAGE_CHANGED: "§aLanguage changed to: {0}"
   GUI_CLAIM_ICON: "§a영토"
   GUI_CLAIM_ICON_DESC1: "§f마을 영토 권한을 관리하세요"
   GUI_BROWSE_TERRITORY_ICON: "Browse all territory"
@@ -770,8 +790,9 @@ language:
   CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§c리더가 아니면 마을을 삭제할 수 없습니다"
   CHAT_PLAYER_LEFT_THE_TOWN: "§f마을을 떠났습니다"
   CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§f마을이 성공적으로 삭제되었습니다"
-  CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED: "§f지역이 성공적으로 삭제되었으며, 지역 비용이 환불되었습니다"
+  CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED: "§fRegion successfully deleted"
   WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cThe town {0}§c, with which you had a relation: {1}§c has been deleted"
+  GUI_SELECTED_LANGUAGE_IS: "§fSelected language is §9{0}"
   #Custom Item
   ITEM_RARE_STONE: "§3희귀 돌"
   ITEM_RARE_WOOD: "§3희귀 나무"
@@ -871,6 +892,12 @@ language:
   GUI_CONQUER_REMOVE_CHUNK: "§aDecrease the number of chunk"
   GUI_CONQUER_CHUNK_INFO: "§fCurrent number of chunk: §2{0}"
   GUI_CONQUER_CHUNK_CURRENT_DESC: "§fConquer §2{0}§f chunks"
+  CAPTURE_LANDMARK_WAR_GOAL: "§aCapture landmark"
+  GUI_SELECT_LANDMARK_TO_CAPTURE: "§aSelect the landmark to capture"
+  GUI_SELECTED_LANDMARK_TO_CAPTURE: "§fSelected landmark: §6{0}"
+  CAPTURE_LANDMARK_WAR_GOAL_DESC: "§fCapture a specific landmark from the enemy"
+  GUI_CAPTURE_LANDMARK_CURRENT_DESC: "§fCapture the landmark §6{0}"
+  GUI_WARGOAL_CAPTURE_LANDMARK_CANNOT_BE_USED: "§cOnly towns can capture landmarks"
   SUBJUGATE_WAR_GOAL: "§aSubjugate"
   SUBJUGATE_WAR_GOAL_DESC: "§fSubjugate the territory and make it a vassal"
   GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED: "§cYou cannot subjugate a territory of same or higher rank"
@@ -884,8 +911,10 @@ language:
   GUI_WARGOAL_NOT_COMPLETED: "§cYou need to complete the war goal"
   WARGOAL_SUBJUGATE_SUCCESS: "{0}§f has been subjugated to {1}"
   WARGOAL_LIBERATE_SUCCESS: "{0}§f has been liberated from {1}"
-  WARGOAL_CONQUER_SUCCESS_WINNING_SIDE: "§fYou can now claim {0}§f chunks from {1}"
-  WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE: "{0}§f can now claim {1}§f chunks from {2}"
+  WARGOAL_CONQUER_SUCCESS_WINNING_SIDE: "§aYou can now claim {0}§a chunks from {1}"
+  WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE: "{0}§c can now claim {1}§c chunks from {2}"
+  WARGOAL_CAPTURE_LANDMARK_SUCCESS_WINNING_SIDE: "§aYou have captured the landmark {0}"
+  WARGOAL_CAPTURE_LANDMARK_SUCCESS_LOOSING_SIDE: "{0}§c has captured the landmark {1}"
   GUI_CANCEL_ATTACK: "§cCancel attack"
   GUI_RENAME_ATTACK: "§aRename attack"
   GUI_QUIT_WAR: "§aLeave the attack"

@@ -9,6 +9,8 @@ language:
   PLAYER_NO_REGION: "§cYou do not have a region"
   TOWN_NO_REGION: "§cTu pueblo no pertenece a una región"
   PLAYER_NOT_LEADER_OF_REGION: "§cTienes que ser lider de la región para ejecutar esta acción"
+  LEADER_CANNOT_QUIT_TOWN: "§cThe leader cannot quit a territory"
+  TOWN_ALREADY_HAVE_OVERLORD: "§cThis town already have an overlord"
   PLAYER_NO_PERMISSION: "§cNo tienes permiso para ejecutar este comando"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cNo puedes ejecutar esta acción a rangos superiores o iguales al tuyo"
   PLAYER_ACTION_NO_PERMISSION: "§cNo tienes permisos para ejecutar esta acción"
@@ -34,7 +36,10 @@ language:
   CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§cThis chunk does not belong to {0}"
   CANNOT_DELETE_TERRITORY_IF_CAPITAL: "§cThis territory cannot be deleted because it is the leader of {0}"
   ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT: "§cYou cannot interact with thispermission because your rank does not have it"
+  TOWN_NOT_FOUND: "§cTown not found"
   TERRITORY_NOT_FOUND: "§cTerritory not found"
+  INVALID_ARGUMENTS: "§cInvalid arguments"
+  PLAYER_ALREADY_HAVE_TOWN: "§cThis player already have a town"
   #Common uses
   DISPLAY_COORDINATES: "§fCoordenadas: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
@@ -179,6 +184,17 @@ language:
   #SUDO command
   SUDO_PLAYER_ADDED: "§3{0}§f esta ahora en modo sudo"
   SUDO_PLAYER_REMOVED: "§3{0}§f ya no esta en modo sudo"
+  #Server commands
+  ##ApplyTown
+  APPLY_TOWN_SERVER_DESC: "Force a player to apply to a town"
+  ##CreateTown
+  CREATE_TOWN_SERVER_DESC: "§aCreate a town"
+  ##DisbandTown
+  DISBAND_TOWN_SERVER_DESC: "§cDisband a town"
+  ##OpenGui
+  OPEN_GUI_SERVER_DESC: "Open the GUI of a player"
+  ##QuitTown
+  QUIT_TOWN_SERVER_DESC: "§cQuit a town"
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cNo tienes suficiente dinero para hacer esto"
   LEADER_NOT_ONLINE: "§cEl alcalde de tu pueblo no esta online"
@@ -208,6 +224,7 @@ language:
   SPAWN_TELEPORTED: "Teletransportado al punto de aparición del pueblo"
   SPAWN_NOT_SET: "§cEl punto de aparición del pueblo no ha sido definido"
   SPAWN_NOT_UNLOCKED: "§cEl punto de aparición del pueblo no esta desbloqueado"
+  SPAWN_NEED_TO_BE_IN_CHUNK: "§cYou need to be in a claimed chunk to set the spawn"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Neutral"
@@ -232,6 +249,7 @@ language:
   LEFT_CLICK_TO_MODIFY: "§fClick izquierdo para modificar"
   LEFT_CLICK_TO_ACCEPT: "§fLeft click to accept"
   RIGHT_CLICK_TO_REFUSE: "§fRight click to refuse"
+  CANNOT_BE_MODIFIED: "§cThis cannot be modified"
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§eAún en desarrollo"
   GUI_BACK_ARROW: "Regresar"
@@ -271,6 +289,7 @@ language:
   ##menu headers
   HEADER_MAIN_MENU: "Main menu"
   HEADER_PLAYER_PROFILE: "Profile"
+  HEADER_SELECT_LANGUAGE: "Select language"
   HEADER_NEWSLETTER: "Newsletter"
   HEADER_PLAYER_PROPERTIES: "Properties"
   HEADER_PLAYER_SPECIFIC_PROPERTY: "Property : {0}"
@@ -348,6 +367,7 @@ language:
   GUI_TOWN_TREASURY_ICON_DESC1: "§fAdministra los impuestos y fondos del pueblo"
   GUI_TOWN_MEMBERS_ICON: "§aMiembros"
   GUI_TOWN_MEMBERS_ICON_DESC1: "§fAdministrar miembros, puestos y aplicaciones"
+  GUI_LANGUAGE_CHANGED: "§aLanguage changed to: {0}"
   GUI_CLAIM_ICON: "§aTierra"
   GUI_CLAIM_ICON_DESC1: "§fAdministra las autorizaciones sobre el territorio del pueblo"
   GUI_BROWSE_TERRITORY_ICON: "Browse all territory"
@@ -770,8 +790,9 @@ language:
   CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§cNo puedes eliminar el pueblo si no eres el alcalde"
   CHAT_PLAYER_LEFT_THE_TOWN: "§fHas abandonado el pueblo"
   CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fPueblo eliminado exitosamente"
-  CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED: "§fRegión eliminada exitosamente, precio de creación reembolsado"
+  CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED: "§fRegion successfully deleted"
   WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cEl pueblo {0}§c, con el que tenias la relación: {1}§c ha sido eliminado"
+  GUI_SELECTED_LANGUAGE_IS: "§fSelected language is §9{0}"
   #Custom Item
   ITEM_RARE_STONE: "§3Piedra rara"
   ITEM_RARE_WOOD: "§3Madera rara"
@@ -871,6 +892,12 @@ language:
   GUI_CONQUER_REMOVE_CHUNK: "§aDisminuye el número de chunks"
   GUI_CONQUER_CHUNK_INFO: "§fNúmero de chunks actual: §2{0}"
   GUI_CONQUER_CHUNK_CURRENT_DESC: "§fConquista §2{0}§f chunks"
+  CAPTURE_LANDMARK_WAR_GOAL: "§aCapture landmark"
+  GUI_SELECT_LANDMARK_TO_CAPTURE: "§aSelect the landmark to capture"
+  GUI_SELECTED_LANDMARK_TO_CAPTURE: "§fSelected landmark: §6{0}"
+  CAPTURE_LANDMARK_WAR_GOAL_DESC: "§fCapture a specific landmark from the enemy"
+  GUI_CAPTURE_LANDMARK_CURRENT_DESC: "§fCapture the landmark §6{0}"
+  GUI_WARGOAL_CAPTURE_LANDMARK_CANNOT_BE_USED: "§cOnly towns can capture landmarks"
   SUBJUGATE_WAR_GOAL: "§aSubyugar"
   SUBJUGATE_WAR_GOAL_DESC: "§fSubyuga el territorio y conviertelo en servicial"
   GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED: "§cNo puedes subyugar un territorio del mismo rango o mayor"
@@ -884,8 +911,10 @@ language:
   GUI_WARGOAL_NOT_COMPLETED: "§cDebes de completar el objetivo de guerra"
   WARGOAL_SUBJUGATE_SUCCESS: "{0}§f ha sido subyugado por {1}"
   WARGOAL_LIBERATE_SUCCESS: "{0}§f ha sido liberado de {1}"
-  WARGOAL_CONQUER_SUCCESS_WINNING_SIDE: "§fAhora puedes reclamar {0}§f chunks de {1}"
-  WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE: "{0}§f puede reclamar {1}§f chunks de {2}"
+  WARGOAL_CONQUER_SUCCESS_WINNING_SIDE: "§aYou can now claim {0}§a chunks from {1}"
+  WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE: "{0}§c can now claim {1}§c chunks from {2}"
+  WARGOAL_CAPTURE_LANDMARK_SUCCESS_WINNING_SIDE: "§aYou have captured the landmark {0}"
+  WARGOAL_CAPTURE_LANDMARK_SUCCESS_LOOSING_SIDE: "{0}§c has captured the landmark {1}"
   GUI_CANCEL_ATTACK: "§cCancelar ataque"
   GUI_RENAME_ATTACK: "§aRename attack"
   GUI_QUIT_WAR: "§aAbandonar ataque"

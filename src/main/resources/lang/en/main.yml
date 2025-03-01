@@ -915,7 +915,6 @@ language:
   WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE: "{0}§c can now claim {1}§c chunks from {2}"
   WARGOAL_CAPTURE_LANDMARK_SUCCESS_WINNING_SIDE: "§aYou have captured the landmark {0}"
   WARGOAL_CAPTURE_LANDMARK_SUCCESS_LOOSING_SIDE: "{0}§c has captured the landmark {1}"
-
   GUI_CANCEL_ATTACK: "§cCancel attack"
   GUI_RENAME_ATTACK: "§aRename attack"
   GUI_QUIT_WAR: "§aLeave the attack"

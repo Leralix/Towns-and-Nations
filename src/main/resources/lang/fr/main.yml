@@ -9,6 +9,8 @@ language:
   PLAYER_NO_REGION: "§cVous n'avez pas de région"
   TOWN_NO_REGION: "§cVotre ville ne fait pas partie d'une région"
   PLAYER_NOT_LEADER_OF_REGION: "§cVous devez être le chef de la région pour effectuer cette action"
+  LEADER_CANNOT_QUIT_TOWN: "§cLe chef ne peut pas quitter un territoire"
+  TOWN_ALREADY_HAVE_OVERLORD: "§cCette ville a déjà un Suzerain"
   PLAYER_NO_PERMISSION: "§cVous n'avez pas la permission d'exécuter cette commande"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cVous n'avez pas la permission d'effectuer cette action sur un rang égal ou supérieur au vôtre"
   PLAYER_ACTION_NO_PERMISSION: "§cVous n'avez pas la permission de réaliser cette action"
@@ -34,7 +36,10 @@ language:
   CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§cCe chunk n'appartient pas à {0}"
   CANNOT_DELETE_TERRITORY_IF_CAPITAL: "§cCe territoire ne peut pas être supprimé car il est la capitale de {0}"
   ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT: "§cVous ne pouvez pas interagir avec cette permission car votre rang ne l'a pas"
+  TOWN_NOT_FOUND: "§cVille introuvable"
   TERRITORY_NOT_FOUND: "§cTerritoire introuvable"
+  INVALID_ARGUMENTS: "§cArguments invalides"
+  PLAYER_ALREADY_HAVE_TOWN: "§cCe joueur a déjà une ville"
   #Common uses
   DISPLAY_COORDINATES: "§fCoordonnées : §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
@@ -179,6 +184,17 @@ language:
   #SUDO command
   SUDO_PLAYER_ADDED: "§3{0}§f est dorénavant en mode administrateur"
   SUDO_PLAYER_REMOVED: "§3{0}§f n'est plus en mode administrateur"
+  #Server commands
+  ##ApplyTown
+  APPLY_TOWN_SERVER_DESC: "Forcer un joueur à postuler à une ville"
+  ##CreateTown
+  CREATE_TOWN_SERVER_DESC: "§aCréer une nouvelle ville"
+  ##DisbandTown
+  DISBAND_TOWN_SERVER_DESC: "§aDissoudre la ville"
+  ##OpenGui
+  OPEN_GUI_SERVER_DESC: "Ouvrir le menu d'un joueur"
+  ##QuitTown
+  QUIT_TOWN_SERVER_DESC: "§cQuitter une ville"
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cVous n'avez pas assez d'argent pour réaliser cette action"
   LEADER_NOT_ONLINE: "§cLe chef de la ville n'est pas en ligne"
@@ -208,6 +224,7 @@ language:
   SPAWN_TELEPORTED: "Téléportation au spawn de la ville"
   SPAWN_NOT_SET: "§cLe spawn de ville n'a pas été défini"
   SPAWN_NOT_UNLOCKED: "§cLe spawn de ville n'est pas débloqué"
+  SPAWN_NEED_TO_BE_IN_CHUNK: "§cVous devez être dans un chunk revendiqué par votre ville pour définir les limites d'une propriété"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Neutre"
@@ -232,6 +249,7 @@ language:
   LEFT_CLICK_TO_MODIFY: "§fClic gauche pour modifier"
   LEFT_CLICK_TO_ACCEPT: "§fClic gauche pour accepter"
   RIGHT_CLICK_TO_REFUSE: "§fClic droit pour refuser"
+  CANNOT_BE_MODIFIED: "§cCeci ne peut pas être modifié"
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§eEn développement..."
   GUI_BACK_ARROW: "Retour"
@@ -271,6 +289,7 @@ language:
   ##menu headers
   HEADER_MAIN_MENU: "Menu principal"
   HEADER_PLAYER_PROFILE: "Profil"
+  HEADER_SELECT_LANGUAGE: "Sélectionner une langue"
   HEADER_NEWSLETTER: "Newsletter"
   HEADER_PLAYER_PROPERTIES: "Propriétés"
   HEADER_PLAYER_SPECIFIC_PROPERTY: "Propriété : {0}"
@@ -348,6 +367,7 @@ language:
   GUI_TOWN_TREASURY_ICON_DESC1: "§fGérer les taxes et le budget"
   GUI_TOWN_MEMBERS_ICON: "§aMembres"
   GUI_TOWN_MEMBERS_ICON_DESC1: "§fGérer les membres, les rôles et les candidatures"
+  GUI_LANGUAGE_CHANGED: "§aLangue changée en : {0}"
   GUI_CLAIM_ICON: "§aTerritoire"
   GUI_CLAIM_ICON_DESC1: "§fGérer les autorisations au sein de la ville"
   GUI_BROWSE_TERRITORY_ICON: "Parcourir tous les territoires"
@@ -770,8 +790,9 @@ language:
   CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§fVous ne pouvez pas dissoudre une ville dont vous n'êtes pas chef"
   CHAT_PLAYER_LEFT_THE_TOWN: "§fVous avez quitté la ville"
   CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fVille supprimée avec succès"
-  CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED: "§fRégion supprimée, le coût de sa création vous a été remboursé"
+  CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED: "§fVille supprimée avec succès"
   WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cLa ville {0}§c, avec laquelle vous aviez une relation : {1}§c à été supprimée"
+  GUI_SELECTED_LANGUAGE_IS: "§fLa langue sélectionnée est §9{0}"
   #Custom Item
   ITEM_RARE_STONE: "§3Pierre précieuse"
   ITEM_RARE_WOOD: "§3Bois précieux"
@@ -871,6 +892,12 @@ language:
   GUI_CONQUER_REMOVE_CHUNK: "§aDiminuer le nombre de chunk"
   GUI_CONQUER_CHUNK_INFO: "§fNombre actuel de chunks : §2{0}"
   GUI_CONQUER_CHUNK_CURRENT_DESC: "§fConquérir §2{0}§f chunks"
+  CAPTURE_LANDMARK_WAR_GOAL: "§aCapturer un point d'intérêt"
+  GUI_SELECT_LANDMARK_TO_CAPTURE: "§aSélectionnez le point d'intérêt à capturer"
+  GUI_SELECTED_LANDMARK_TO_CAPTURE: "§fLa langue sélectionnée est §6{0}"
+  CAPTURE_LANDMARK_WAR_GOAL_DESC: "§fCapturer un point d'intérêt spécifique de l'ennemi"
+  GUI_CAPTURE_LANDMARK_CURRENT_DESC: "§fCapture le point d'intérêt §6{0}"
+  GUI_WARGOAL_CAPTURE_LANDMARK_CANNOT_BE_USED: "§cSeules les villes peuvent capturer des points d'intérêt"
   SUBJUGATE_WAR_GOAL: "§aSubjuguer"
   SUBJUGATE_WAR_GOAL_DESC: "§fSubjuger le territoire et en faire un vassal"
   GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED: "§cVous ne pouvez pas subjuguer un territoire de rang égal ou supérieur"
@@ -884,8 +911,10 @@ language:
   GUI_WARGOAL_NOT_COMPLETED: "§fVous devez sélectionner un but de guerre"
   WARGOAL_SUBJUGATE_SUCCESS: "f{0} sera subjugué à {1}"
   WARGOAL_LIBERATE_SUCCESS: "f{0} sera libéré de {1}"
-  WARGOAL_CONQUER_SUCCESS_WINNING_SIDE: "§fVous pouvez revendiquer {0}§f chunks de {1}"
-  WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE: "{0}§f peut maintenant revendiquer {1}§f chunks de {2}"
+  WARGOAL_CONQUER_SUCCESS_WINNING_SIDE: "§aVous pouvez revendiquer {0}§a chunks de {1}"
+  WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE: "{0}§c peut maintenant revendiquer {1}§c chunks de {2}"
+  WARGOAL_CAPTURE_LANDMARK_SUCCESS_WINNING_SIDE: "§aVous avez capturé le point d'intérêt {0}"
+  WARGOAL_CAPTURE_LANDMARK_SUCCESS_LOOSING_SIDE: "{0}§c a capturé le point de d'intérêt {1}"
   GUI_CANCEL_ATTACK: "§cAnnuler l'attaque"
   GUI_RENAME_ATTACK: "§aRenommer l'attaque"
   GUI_QUIT_WAR: "§aQuitter l'attaque"

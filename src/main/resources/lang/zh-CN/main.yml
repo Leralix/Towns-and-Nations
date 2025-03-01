@@ -9,6 +9,8 @@ language:
   PLAYER_NO_REGION: "§cYou do not have a region"
   TOWN_NO_REGION: "§c你的城镇不属于任何联盟"
   PLAYER_NOT_LEADER_OF_REGION: "§c你需要是该联盟的领导才能执行此操作"
+  LEADER_CANNOT_QUIT_TOWN: "§cThe leader cannot quit a territory"
+  TOWN_ALREADY_HAVE_OVERLORD: "§cThis town already have an overlord"
   PLAYER_NO_PERMISSION: "§c你没有权限执行此命令"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§c你没有权限对排名高于或等于你的人执行此操作"
   PLAYER_ACTION_NO_PERMISSION: "§c你没有权限执行此操作"
@@ -34,7 +36,10 @@ language:
   CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§cThis chunk does not belong to {0}"
   CANNOT_DELETE_TERRITORY_IF_CAPITAL: "§cThis territory cannot be deleted because it is the leader of {0}"
   ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT: "§cYou cannot interact with thispermission because your rank does not have it"
+  TOWN_NOT_FOUND: "§cTown not found"
   TERRITORY_NOT_FOUND: "§cTerritory not found"
+  INVALID_ARGUMENTS: "§cInvalid arguments"
+  PLAYER_ALREADY_HAVE_TOWN: "§cThis player already have a town"
   #Common uses
   DISPLAY_COORDINATES: "§f坐标: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
@@ -179,6 +184,17 @@ language:
   #SUDO command
   SUDO_PLAYER_ADDED: "§3{0}§f 进入管理员模式"
   SUDO_PLAYER_REMOVED: "§3{0}§f 推出了管理员模式"
+  #Server commands
+  ##ApplyTown
+  APPLY_TOWN_SERVER_DESC: "Force a player to apply to a town"
+  ##CreateTown
+  CREATE_TOWN_SERVER_DESC: "§aCreate a town"
+  ##DisbandTown
+  DISBAND_TOWN_SERVER_DESC: "§cDisband a town"
+  ##OpenGui
+  OPEN_GUI_SERVER_DESC: "Open the GUI of a player"
+  ##QuitTown
+  QUIT_TOWN_SERVER_DESC: "§cQuit a town"
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cYou do not have enough money to perform this action"
   LEADER_NOT_ONLINE: "§cThe town leader is not online"
@@ -208,6 +224,7 @@ language:
   SPAWN_TELEPORTED: "已传送至城镇传送点"
   SPAWN_NOT_SET: "§c此城镇还未设置传送点"
   SPAWN_NOT_UNLOCKED: "§c此城镇还未解锁传送点功能"
+  SPAWN_NEED_TO_BE_IN_CHUNK: "§cYou need to be in a claimed chunk to set the spawn"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "普通"
@@ -232,6 +249,7 @@ language:
   LEFT_CLICK_TO_MODIFY: "§f左键点击修改"
   LEFT_CLICK_TO_ACCEPT: "§f左键点击接受"
   RIGHT_CLICK_TO_REFUSE: "§f右键点击拒绝"
+  CANNOT_BE_MODIFIED: "§cThis cannot be modified"
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§e开发中"
   GUI_BACK_ARROW: "返回"
@@ -271,6 +289,7 @@ language:
   ##menu headers
   HEADER_MAIN_MENU: "Main menu"
   HEADER_PLAYER_PROFILE: "Profile"
+  HEADER_SELECT_LANGUAGE: "Select language"
   HEADER_NEWSLETTER: "Newsletter"
   HEADER_PLAYER_PROPERTIES: "Properties"
   HEADER_PLAYER_SPECIFIC_PROPERTY: "Property : {0}"
@@ -348,6 +367,7 @@ language:
   GUI_TOWN_TREASURY_ICON_DESC1: "§f管理税收和城镇国库"
   GUI_TOWN_MEMBERS_ICON: "§a成员"
   GUI_TOWN_MEMBERS_ICON_DESC1: "§f管理成员、角色和申请"
+  GUI_LANGUAGE_CHANGED: "§aLanguage changed to: {0}"
   GUI_CLAIM_ICON: "§a领土"
   GUI_CLAIM_ICON_DESC1: "§f管理城镇领土授权"
   GUI_BROWSE_TERRITORY_ICON: "Browse all territory"
@@ -770,8 +790,9 @@ language:
   CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§c如果您不是领导者，您无法解散城镇"
   CHAT_PLAYER_LEFT_THE_TOWN: "§f您离开了城镇"
   CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§f城镇已成功删除"
-  CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED: "§f联盟已成功删除，联盟费用已退还"
+  CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED: "§fRegion successfully deleted"
   WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§c与您有关联的城镇 {0}§c 已被删除: {1}§c"
+  GUI_SELECTED_LANGUAGE_IS: "§fSelected language is §9{0}"
   #Custom Item
   ITEM_RARE_STONE: "§3稀有石头"
   ITEM_RARE_WOOD: "§3稀有木材"
@@ -871,6 +892,12 @@ language:
   GUI_CONQUER_REMOVE_CHUNK: "§a减少块的数量"
   GUI_CONQUER_CHUNK_INFO: "§f当前块的数量：§2{0}"
   GUI_CONQUER_CHUNK_CURRENT_DESC: "§f征服 §2{0}§f 块"
+  CAPTURE_LANDMARK_WAR_GOAL: "§aCapture landmark"
+  GUI_SELECT_LANDMARK_TO_CAPTURE: "§aSelect the landmark to capture"
+  GUI_SELECTED_LANDMARK_TO_CAPTURE: "§fSelected landmark: §6{0}"
+  CAPTURE_LANDMARK_WAR_GOAL_DESC: "§fCapture a specific landmark from the enemy"
+  GUI_CAPTURE_LANDMARK_CURRENT_DESC: "§fCapture the landmark §6{0}"
+  GUI_WARGOAL_CAPTURE_LANDMARK_CANNOT_BE_USED: "§cOnly towns can capture landmarks"
   SUBJUGATE_WAR_GOAL: "§a征服"
   SUBJUGATE_WAR_GOAL_DESC: "§f征服领土并使其成为附属国"
   GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED: "§c您不能征服同级或更高级的领土"
@@ -884,8 +911,10 @@ language:
   GUI_WARGOAL_NOT_COMPLETED: "§c您需要完成战争目标"
   WARGOAL_SUBJUGATE_SUCCESS: "{0}§f 已被征服为 {1}"
   WARGOAL_LIBERATE_SUCCESS: "{0}§f 已从 {1} 解放"
-  WARGOAL_CONQUER_SUCCESS_WINNING_SIDE: "§f您现在可以从 {1} 申领 {0}§f 块"
-  WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE: "{0}§f 现在可以从 {2} 申领 {1}§f 块"
+  WARGOAL_CONQUER_SUCCESS_WINNING_SIDE: "§aYou can now claim {0}§a chunks from {1}"
+  WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE: "{0}§c can now claim {1}§c chunks from {2}"
+  WARGOAL_CAPTURE_LANDMARK_SUCCESS_WINNING_SIDE: "§aYou have captured the landmark {0}"
+  WARGOAL_CAPTURE_LANDMARK_SUCCESS_LOOSING_SIDE: "{0}§c has captured the landmark {1}"
   GUI_CANCEL_ATTACK: "§c取消攻击"
   GUI_RENAME_ATTACK: "§a重命名攻击"
   GUI_QUIT_WAR: "§a离开攻击"

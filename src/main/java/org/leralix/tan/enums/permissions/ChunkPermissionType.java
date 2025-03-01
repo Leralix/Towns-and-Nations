@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.HeadUtils;
 
 public enum ChunkPermissionType {
@@ -34,17 +35,17 @@ public enum ChunkPermissionType {
         this.label = label;
     }
 
-    public String getLabel(){
-        return label.get();
+    public String getLabel(LangType langType) {
+        return label.get(langType);
     }
 
-    public ItemStack getIcon(RelationPermission permission) {
+    public ItemStack getIcon(RelationPermission permission, LangType langType) {
         return HeadUtils.createCustomItemStack(
                 material,
-                label.get(),
-                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.get(permission.getColoredName()),
-                Lang.GUI_LEFT_CLICK_TO_INTERACT.get(),
-                Lang.GUI_RIGHT_CLICK_TO_MANAGE_SPECIFIC_PLAYER.get()
+                label.get(langType),
+                Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.get(langType, permission.getColoredName()),
+                Lang.GUI_LEFT_CLICK_TO_INTERACT.get(langType),
+                Lang.GUI_RIGHT_CLICK_TO_MANAGE_SPECIFIC_PLAYER.get(langType)
         );
     }
 }

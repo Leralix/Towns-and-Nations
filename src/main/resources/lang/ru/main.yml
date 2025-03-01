@@ -9,6 +9,8 @@ language:
   PLAYER_NO_REGION: "§cУ вас нет региона"
   TOWN_NO_REGION: "§cВаш город не относится к какому-либо региону"
   PLAYER_NOT_LEADER_OF_REGION: "§cВам нужно быть главой региона, чтобы выполнить это действие"
+  LEADER_CANNOT_QUIT_TOWN: "§cThe leader cannot quit a territory"
+  TOWN_ALREADY_HAVE_OVERLORD: "§cThis town already have an overlord"
   PLAYER_NO_PERMISSION: "§cУ вас нет разрешения на выполнение этой команды"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cУ вас нет разрешения на выполнение этого действия над более высоким или равным вашему рангом"
   PLAYER_ACTION_NO_PERMISSION: "§cУ вас нет разрешения на выполнение этой команды"
@@ -34,7 +36,10 @@ language:
   CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§cЭтот чанк не принадлежит {0}"
   CANNOT_DELETE_TERRITORY_IF_CAPITAL: "§cЭта территория не может быть удалена, поскольку она является главной в {0}"
   ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT: "§cYou cannot interact with thispermission because your rank does not have it"
+  TOWN_NOT_FOUND: "§cTown not found"
   TERRITORY_NOT_FOUND: "§cTerritory not found"
+  INVALID_ARGUMENTS: "§cInvalid arguments"
+  PLAYER_ALREADY_HAVE_TOWN: "§cThis player already have a town"
   #Common uses
   DISPLAY_COORDINATES: "§fКоординаты: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
@@ -179,6 +184,17 @@ language:
   #SUDO command
   SUDO_PLAYER_ADDED: "§3{0}§f в режиме суперпользователя"
   SUDO_PLAYER_REMOVED: "§3{0}§f больше не в режиме суперпользователя"
+  #Server commands
+  ##ApplyTown
+  APPLY_TOWN_SERVER_DESC: "Force a player to apply to a town"
+  ##CreateTown
+  CREATE_TOWN_SERVER_DESC: "§aCreate a town"
+  ##DisbandTown
+  DISBAND_TOWN_SERVER_DESC: "§cDisband a town"
+  ##OpenGui
+  OPEN_GUI_SERVER_DESC: "Open the GUI of a player"
+  ##QuitTown
+  QUIT_TOWN_SERVER_DESC: "§cQuit a town"
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cУ вас недостаточно денег для этого действия"
   LEADER_NOT_ONLINE: "§cВладелец города не в сети"
@@ -208,6 +224,7 @@ language:
   SPAWN_TELEPORTED: "Телепортирован в точку появления города"
   SPAWN_NOT_SET: "§cТочка появления города не установлена"
   SPAWN_NOT_UNLOCKED: "§cТочка появления города не разблокирована"
+  SPAWN_NEED_TO_BE_IN_CHUNK: "§cYou need to be in a claimed chunk to set the spawn"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Нейтрально"
@@ -232,6 +249,7 @@ language:
   LEFT_CLICK_TO_MODIFY: "§fНажмите ЛКМ для модификации"
   LEFT_CLICK_TO_ACCEPT: "§fНажмите ЛКМ, чтобы принять"
   RIGHT_CLICK_TO_REFUSE: "§fНажмите ПКМ, чтобы отказаться"
+  CANNOT_BE_MODIFIED: "§cThis cannot be modified"
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§eВ разработке"
   GUI_BACK_ARROW: "Назад"
@@ -271,6 +289,7 @@ language:
   ##menu headers
   HEADER_MAIN_MENU: "Основное меню"
   HEADER_PLAYER_PROFILE: "Профиль"
+  HEADER_SELECT_LANGUAGE: "Select language"
   HEADER_NEWSLETTER: "Новостная газета"
   HEADER_PLAYER_PROPERTIES: "Собственности"
   HEADER_PLAYER_SPECIFIC_PROPERTY: "Собственность: {0}"
@@ -348,6 +367,7 @@ language:
   GUI_TOWN_TREASURY_ICON_DESC1: "§fУправление налогами и казной города"
   GUI_TOWN_MEMBERS_ICON: "§aУчастники"
   GUI_TOWN_MEMBERS_ICON_DESC1: "§fУправление участниками, ролями и заявками"
+  GUI_LANGUAGE_CHANGED: "§aLanguage changed to: {0}"
   GUI_CLAIM_ICON: "§aТерритория"
   GUI_CLAIM_ICON_DESC1: "§fУправление территорией города и авторизацией"
   GUI_BROWSE_TERRITORY_ICON: "Просмотр всей территории"
@@ -770,8 +790,9 @@ language:
   CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§cТолько глава может удалить город"
   CHAT_PLAYER_LEFT_THE_TOWN: "§fВы покинули город"
   CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fГород удалён"
-  CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED: "§fРегион удалён, стоимость региона возвращена"
+  CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED: "§fRegion successfully deleted"
   WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cГород {0}§c, с которым у вас были какие-либо отношения: {1}§c был удалён"
+  GUI_SELECTED_LANGUAGE_IS: "§fSelected language is §9{0}"
   #Custom Item
   ITEM_RARE_STONE: "§3Редкий кристалл"
   ITEM_RARE_WOOD: "§3Редкая древесина"
@@ -871,6 +892,12 @@ language:
   GUI_CONQUER_REMOVE_CHUNK: "§aУменьшить количество чанков"
   GUI_CONQUER_CHUNK_INFO: "§fТекущее количество чанков: §2{0}"
   GUI_CONQUER_CHUNK_CURRENT_DESC: "§fЗахвачено §2{0}§f чанков"
+  CAPTURE_LANDMARK_WAR_GOAL: "§aCapture landmark"
+  GUI_SELECT_LANDMARK_TO_CAPTURE: "§aSelect the landmark to capture"
+  GUI_SELECTED_LANDMARK_TO_CAPTURE: "§fSelected landmark: §6{0}"
+  CAPTURE_LANDMARK_WAR_GOAL_DESC: "§fCapture a specific landmark from the enemy"
+  GUI_CAPTURE_LANDMARK_CURRENT_DESC: "§fCapture the landmark §6{0}"
+  GUI_WARGOAL_CAPTURE_LANDMARK_CANNOT_BE_USED: "§cOnly towns can capture landmarks"
   SUBJUGATE_WAR_GOAL: "§aПодчинить"
   SUBJUGATE_WAR_GOAL_DESC: "§fПодчинить себе территорию и сделать ее вассальной"
   GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED: "§cВы не можете подчинить себе территорию такого же или более высокого ранга"
@@ -884,8 +911,10 @@ language:
   GUI_WARGOAL_NOT_COMPLETED: "§cВам необходимо выполнить цель войны"
   WARGOAL_SUBJUGATE_SUCCESS: "{0}§f подчинился {1}"
   WARGOAL_LIBERATE_SUCCESS: "{0}§f освобождён от {1}"
-  WARGOAL_CONQUER_SUCCESS_WINNING_SIDE: "§fТеперь вы можете захватить {0}§f чанков от {1}"
-  WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE: "{0}§f захватил {1}§f чанков от {2}"
+  WARGOAL_CONQUER_SUCCESS_WINNING_SIDE: "§aYou can now claim {0}§a chunks from {1}"
+  WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE: "{0}§c can now claim {1}§c chunks from {2}"
+  WARGOAL_CAPTURE_LANDMARK_SUCCESS_WINNING_SIDE: "§aYou have captured the landmark {0}"
+  WARGOAL_CAPTURE_LANDMARK_SUCCESS_LOOSING_SIDE: "{0}§c has captured the landmark {1}"
   GUI_CANCEL_ATTACK: "§cОтменить атаку"
   GUI_RENAME_ATTACK: "§aПереименовать атаку"
   GUI_QUIT_WAR: "§aПокинуть атаку"

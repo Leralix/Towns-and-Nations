@@ -1,29 +1,30 @@
 package org.leralix.tan.newsletter;
 
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 
 public enum NewsletterScope {
-    SHOW_ALL(Lang.NEWSLETTER_SHOW_ALL.get()),
-    SHOW_ONLY_UNREAD(Lang.NEWSLETTER_SHOW_ONLY_UNREAD.get());
+    SHOW_ALL(Lang.NEWSLETTER_SHOW_ALL),
+    SHOW_ONLY_UNREAD(Lang.NEWSLETTER_SHOW_ONLY_UNREAD);
 
-    private final String name;
+    private final Lang name;
     private NewsletterScope nextScope;
 
-    NewsletterScope(String name) {
+    NewsletterScope(Lang name) {
         this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public NewsletterScope getNextScope() {
-        return nextScope;
     }
 
     static {
         SHOW_ALL.nextScope = SHOW_ONLY_UNREAD;
         SHOW_ONLY_UNREAD.nextScope = SHOW_ALL;
+    }
+
+    public String getName(LangType langType) {
+        return name.get(langType);
+    }
+
+    public NewsletterScope getNextScope() {
+        return nextScope;
     }
 
 
