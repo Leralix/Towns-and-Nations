@@ -605,7 +605,9 @@ language:
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cInvalid color format"
   GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY: "§fModify town color: §9{0}§f -> §9{1}"
   #Select language
+  HELP_US_TRANSLATE: "§fHelp us translate the plugin in your language"
   PERCENT_COMPLETED: "§6{0}%§f completed"
+  CLICK_HERE_TO_OPEN_BROWSER: "§fClick here to open crowdin on your browser"
   #Region GUI
   GUI_REGION_CREATE: "§aCreate a region"
   GUI_REGION_CREATE_DESC1: "§fCost: §6{0}{MONEY_CHAR}"

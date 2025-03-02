@@ -459,7 +459,9 @@ public enum Lang {
     GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS,
     GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR,
     GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY,
+    HELP_US_TRANSLATE,
     PERCENT_COMPLETED,
+    CLICK_HERE_TO_OPEN_BROWSER,
     ADMIN_GUI_REGION_DESC,
     ADMIN_GUI_TOWN_DESC,
     ADMIN_GUI_PLAYER_DESC,
@@ -1012,6 +1014,9 @@ public enum Lang {
     }
 
     public String get(PlayerData playerData, Object... placeholders) {
+        if(playerData == null) {
+            return get(chosenLang, placeholders);
+        }
         return get(playerData.getLang(), placeholders);
     }
 
@@ -1026,7 +1031,7 @@ public enum Lang {
             translation = replaceCommonPlaceholders(translation);
             return translation;
         }
-        return MESSAGE_NOT_FOUND_FOR + this.name() + IN_THIS_LANGUAGE_FILE;
+        return get(LangType.ENGLISH, placeholders);
     }
 
     private String replaceCommonPlaceholders(String translation) {

@@ -4,6 +4,7 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -185,6 +186,16 @@ public class PlayerGUI implements IGUI {
         Gui gui = IGUI.createChestGui(Lang.HEADER_SELECT_LANGUAGE.get(player),3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
+        ItemStack helpTranslate = HeadUtils.makeSkullURL(Lang.HELP_US_TRANSLATE.get(playerData), "https://textures.minecraft.net/texture/b04831f7a7d8f624c9633996e3798edad49a5d9bcd18ecf75bfae66be48a0a6b",
+                Lang.GUI_LEFT_CLICK_TO_INTERACT.get(playerData));
+
+        GuiItem helpTranslateGui = ItemBuilder.from(helpTranslate).asGuiItem(event -> {
+            TextComponent textComponent = new TextComponent(TanChatUtils.getTANString() + Lang.CLICK_HERE_TO_OPEN_BROWSER.get(playerData));
+            textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://crowdin.com/project/town-and-nation"));
+            player.spigot().sendMessage(textComponent);
+            player.closeInventory();
+        });
+
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for(LangType lang : LangType.values()){
             ItemStack langIcon = lang.getIcon();
@@ -202,6 +213,7 @@ public class PlayerGUI implements IGUI {
                 p -> openLanguageMenu(player, page - 1)
         );
 
+        gui.setItem(3, 6, helpTranslateGui);
         gui.open(player);
     }
 
