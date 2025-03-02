@@ -604,6 +604,8 @@ language:
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§fColor successfully changed"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cInvalid color format"
   GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY: "§fModify town color: §9{0}§f -> §9{1}"
+  #Select language
+  PERCENT_COMPLETED: "§6{0}%§f completed"
   #Region GUI
   GUI_REGION_CREATE: "§aCreate a region"
   GUI_REGION_CREATE_DESC1: "§fCost: §6{0}{MONEY_CHAR}"

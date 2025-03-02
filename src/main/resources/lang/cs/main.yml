@@ -9,8 +9,6 @@ language:
   PLAYER_NO_REGION: "§cNemáte region"
   TOWN_NO_REGION: "§cVaše město nepatří do žádného regionu"
   PLAYER_NOT_LEADER_OF_REGION: "§cPro tuto akci musíte být vůdcem regionu"
-  LEADER_CANNOT_QUIT_TOWN: "§cThe leader cannot quit a territory"
-  TOWN_ALREADY_HAVE_OVERLORD: "§cThis town already have an overlord"
   PLAYER_NO_PERMISSION: "§cNemáte oprávnění k provedení tohoto příkazu"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cNemáte oprávnění provést tuto akci na hráči s vyšším nebo stejným hodnocením"
   PLAYER_ACTION_NO_PERMISSION: "§cNemáte oprávnění k provedení této akce"
@@ -36,10 +34,7 @@ language:
   CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§cTento chunk nepatří k {0}"
   CANNOT_DELETE_TERRITORY_IF_CAPITAL: "§cToto území nelze odstranit, protože je vůdcem {0}"
   ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT: "§cS tímto oprávněním nemůžete pracovat, protože není součástí vaší hodnosti"
-  TOWN_NOT_FOUND: "§cTown not found"
   TERRITORY_NOT_FOUND: "§cÚzemí nebylo nalezeno"
-  INVALID_ARGUMENTS: "§cInvalid arguments"
-  PLAYER_ALREADY_HAVE_TOWN: "§cThis player already have a town"
   #Common uses
   DISPLAY_COORDINATES: "§fSouřadnice: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
@@ -184,17 +179,6 @@ language:
   #SUDO command
   SUDO_PLAYER_ADDED: "§3{0}§f je nyní v sudo režimu"
   SUDO_PLAYER_REMOVED: "§3{0}§f byl odebrán ze sudo režimu"
-  #Server commands
-  ##ApplyTown
-  APPLY_TOWN_SERVER_DESC: "Force a player to apply to a town"
-  ##CreateTown
-  CREATE_TOWN_SERVER_DESC: "§aCreate a town"
-  ##DisbandTown
-  DISBAND_TOWN_SERVER_DESC: "§cDisband a town"
-  ##OpenGui
-  OPEN_GUI_SERVER_DESC: "Open the GUI of a player"
-  ##QuitTown
-  QUIT_TOWN_SERVER_DESC: "§cQuit a town"
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cNemáte dostatek peněz na provedení této akce"
   LEADER_NOT_ONLINE: "§cVůdce města není online"
@@ -224,7 +208,6 @@ language:
   SPAWN_TELEPORTED: "Teleportováno na městský spawn"
   SPAWN_NOT_SET: "§cMěstský spawn nebyl nastaven"
   SPAWN_NOT_UNLOCKED: "§cMěstský spawn není odemčen"
-  SPAWN_NEED_TO_BE_IN_CHUNK: "§cYou need to be in a claimed chunk to set the spawn"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Neutrální"
@@ -249,7 +232,6 @@ language:
   LEFT_CLICK_TO_MODIFY: "§fLevým klikem upravit"
   LEFT_CLICK_TO_ACCEPT: "§fLevým klikem přijmout"
   RIGHT_CLICK_TO_REFUSE: "§fPravým klikem odmítnout"
-  CANNOT_BE_MODIFIED: "§cThis cannot be modified"
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§eStále ve vývoji"
   GUI_BACK_ARROW: "Zpět"
@@ -289,7 +271,6 @@ language:
   ##menu headers
   HEADER_MAIN_MENU: "Hlavní menu"
   HEADER_PLAYER_PROFILE: "Profil"
-  HEADER_SELECT_LANGUAGE: "Select language"
   HEADER_NEWSLETTER: "Novinky"
   HEADER_PLAYER_PROPERTIES: "Vlastnosti"
   HEADER_PLAYER_SPECIFIC_PROPERTY: "Vlastnost: {0}"
@@ -367,7 +348,6 @@ language:
   GUI_TOWN_TREASURY_ICON_DESC1: "§fSpravujte daně a kasu města"
   GUI_TOWN_MEMBERS_ICON: "§aČlenové"
   GUI_TOWN_MEMBERS_ICON_DESC1: "§fSpravujte členy, role a žádosti"
-  GUI_LANGUAGE_CHANGED: "§aLanguage changed to: {0}"
   GUI_CLAIM_ICON: "§aÚzemí"
   GUI_CLAIM_ICON_DESC1: "§fSpravujte oprávnění k území města"
   GUI_BROWSE_TERRITORY_ICON: "Procházet všechny území"
@@ -790,9 +770,7 @@ language:
   CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§cNemůžete smazat město, pokud nejste vůdce"
   CHAT_PLAYER_LEFT_THE_TOWN: "§fOpustili jste město"
   CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED: "§fMěsto úspěšně smazáno"
-  CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED: "§fRegion successfully deleted"
   WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cMěsto {0}§c, se kterým jste měli vztah: {1}§c bylo smazáno"
-  GUI_SELECTED_LANGUAGE_IS: "§fSelected language is §9{0}"
   #Custom Item
   ITEM_RARE_STONE: "§3Vzácný kámen"
   ITEM_RARE_WOOD: "§3Vzácné dřevo"
@@ -892,12 +870,6 @@ language:
   GUI_CONQUER_REMOVE_CHUNK: "§aSnížit počet chunků"
   GUI_CONQUER_CHUNK_INFO: "§fAktuální počet chunků: §2{0}"
   GUI_CONQUER_CHUNK_CURRENT_DESC: "§fDobýt §2{0}§f chunků"
-  CAPTURE_LANDMARK_WAR_GOAL: "§aCapture landmark"
-  GUI_SELECT_LANDMARK_TO_CAPTURE: "§aSelect the landmark to capture"
-  GUI_SELECTED_LANDMARK_TO_CAPTURE: "§fSelected landmark: §6{0}"
-  CAPTURE_LANDMARK_WAR_GOAL_DESC: "§fCapture a specific landmark from the enemy"
-  GUI_CAPTURE_LANDMARK_CURRENT_DESC: "§fCapture the landmark §6{0}"
-  GUI_WARGOAL_CAPTURE_LANDMARK_CANNOT_BE_USED: "§cOnly towns can capture landmarks"
   SUBJUGATE_WAR_GOAL: "§aPodrobení"
   SUBJUGATE_WAR_GOAL_DESC: "§fPodrobit si území a učinit z něj vazala"
   GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED: "§cNemůžete podrobit území stejné nebo vyšší hodnosti"
@@ -911,10 +883,6 @@ language:
   GUI_WARGOAL_NOT_COMPLETED: "§cMusíte dokončit cíl války"
   WARGOAL_SUBJUGATE_SUCCESS: "{0}§f bylo podrobeno {1}"
   WARGOAL_LIBERATE_SUCCESS: "{0}§f bylo osvobozeno od {1}"
-  WARGOAL_CONQUER_SUCCESS_WINNING_SIDE: "§aYou can now claim {0}§a chunks from {1}"
-  WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE: "{0}§c can now claim {1}§c chunks from {2}"
-  WARGOAL_CAPTURE_LANDMARK_SUCCESS_WINNING_SIDE: "§aYou have captured the landmark {0}"
-  WARGOAL_CAPTURE_LANDMARK_SUCCESS_LOOSING_SIDE: "{0}§c has captured the landmark {1}"
   GUI_CANCEL_ATTACK: "§cZrušit útok"
   GUI_RENAME_ATTACK: "§aPřejmenovat útok"
   GUI_QUIT_WAR: "§aOpustit útok"

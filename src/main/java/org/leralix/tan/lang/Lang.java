@@ -459,6 +459,7 @@ public enum Lang {
     GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS,
     GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR,
     GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY,
+    PERCENT_COMPLETED,
     ADMIN_GUI_REGION_DESC,
     ADMIN_GUI_TOWN_DESC,
     ADMIN_GUI_PLAYER_DESC,
@@ -927,9 +928,10 @@ public enum Lang {
     CHUNK_IS_BLACKLISTED;
 
 
-    private static LangType baseLang;
+    private static LangType chosenLang;
 
     private static final EnumMap<LangType ,EnumMap<Lang, String>> translations = new EnumMap<>(LangType.class);
+    private static final EnumMap<LangType , Integer> completedLang = new EnumMap<>(LangType.class);
 
 
     static final String MESSAGE_NOT_FOUND_FOR = "Message not found for ";
@@ -937,13 +939,15 @@ public enum Lang {
 
     public static void loadTranslations(String fileTag) {
 
-        baseLang = LangType.fromCode(fileTag);
+        chosenLang = LangType.fromCode(fileTag);
 
         File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
 
         if (!langFolder.exists()) {
             langFolder.mkdir();
         }
+
+        boolean replace = ConfigUtil.getCustomConfig(ConfigTag.LANG).getBoolean("autoUpdateLangFiles",true);
 
         for(LangType langType : LangType.values()) {
 
@@ -954,8 +958,6 @@ public enum Lang {
 
             File file = new File(specificLangFolder, "main.yml");
 
-            boolean replace = ConfigUtil.getCustomConfig(ConfigTag.LANG).getBoolean("autoUpdateLangFiles",true);
-
 
             if(!file.exists() || replace) {
                 TownsAndNations.getPlugin().saveResource("lang/" + langType.getCode() + "/main.yml", true);
@@ -964,30 +966,34 @@ public enum Lang {
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
             EnumMap<Lang, String> specificTranslation = new EnumMap<>(Lang.class);
-
+            int numberOfTranslation = 0;
             for (Lang key : Lang.values()) {
                 String message = config.getString("language." + key.name());
                 if (message != null) {
                     specificTranslation.put(key, message);
+                    numberOfTranslation++;
                 }
             }
-
+            completedLang.put(langType, numberOfTranslation);
             translations.put(langType, specificTranslation);
         }
     }
 
-    public static LangType getBaseLang() {
-        return baseLang;
+    public static LangType getChosenLang() {
+        return chosenLang;
     }
 
+    public static int getCompletionPercentage(LangType langType) {
+        return (int) ((double) completedLang.get(langType) / Lang.values().length * 100);
+    }
 
     public String get() {
-        return get(baseLang);
+        return get(chosenLang);
     }
 
     public String get(PlayerData playerData){
         if(playerData == null) {
-            return get(baseLang);
+            return get(chosenLang);
         }
         return get(playerData.getLang());
     }
@@ -998,11 +1004,11 @@ public enum Lang {
             replaceCommonPlaceholders(translation);
             return ChatColor.translateAlternateColorCodes('§', translation);
         }
-        return MESSAGE_NOT_FOUND_FOR + this.name() + IN_THIS_LANGUAGE_FILE;
+        return get(LangType.ENGLISH);
     }
 
     public String get(Object... placeholders) {
-        return get(baseLang, placeholders);
+        return get(chosenLang, placeholders);
     }
 
     public String get(PlayerData playerData, Object... placeholders) {
@@ -1040,7 +1046,7 @@ public enum Lang {
 
 
     public String getWithoutPlaceholder() {
-        String translation = translations.get(baseLang).get(this);
+        String translation = translations.get(chosenLang).get(this);
         if (translation != null) {
             return ChatColor.translateAlternateColorCodes('§', translation);
         }
