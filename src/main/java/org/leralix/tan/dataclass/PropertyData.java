@@ -16,6 +16,7 @@ import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.newhistory.PropertyBuyTaxTransaction;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
@@ -181,28 +182,28 @@ public class PropertyData {
     }
 
 
-    public ItemStack getIcon() {
+    public ItemStack getIcon(LangType langType) {
         ItemStack property = HeadUtils.makeSkullB64(getName(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzhkYTZmY2M1Y2YzMWM2ZjcyYTAzNGI2MjBhODM3ZjlkMWM5ZWVkMzY3MTE4MmI2OTQ4OTY4N2FkYmNkOGZiIn19fQ==");
         ItemMeta meta = property.getItemMeta();
 
         if (meta != null) {
             List<String> lore = new ArrayList<>();
 
-            lore.add(Lang.GUI_PROPERTY_DESCRIPTION.get(getDescription()));
-            lore.add(Lang.GUI_PROPERTY_STRUCTURE_OWNER.get(getTerritory().getName()));
+            lore.add(Lang.GUI_PROPERTY_DESCRIPTION.get(langType, getDescription()));
+            lore.add(Lang.GUI_PROPERTY_STRUCTURE_OWNER.get(langType, getTerritory().getName()));
 
-            lore.add(Lang.GUI_PROPERTY_OWNER.get(getOwner().getName()));
+            lore.add(Lang.GUI_PROPERTY_OWNER.get(langType, getOwner().getName()));
             if(isForSale())
-                lore.add(Lang.GUI_PROPERTY_FOR_SALE.get(String.valueOf(salePrice)));
+                lore.add(Lang.GUI_PROPERTY_FOR_SALE.get(langType, String.valueOf(salePrice)));
             else if(isRented())
-                lore.add(Lang.GUI_PROPERTY_RENTED_BY.get(getRenter().getName(), String.valueOf(rentPrice)));
+                lore.add(Lang.GUI_PROPERTY_RENTED_BY.get(langType, getRenter().getName(), String.valueOf(rentPrice)));
             else if(isForRent())
-                lore.add(Lang.GUI_PROPERTY_FOR_RENT.get(String.valueOf(rentPrice)));
+                lore.add(Lang.GUI_PROPERTY_FOR_RENT.get(langType, String.valueOf(rentPrice)));
             else{
-                lore.add(Lang.GUI_PROPERTY_NOT_FOR_SALE.get());
+                lore.add(Lang.GUI_PROPERTY_NOT_FOR_SALE.get(langType));
             }
 
-            lore.add(Lang.CLICK_TO_OPEN_PROPERTY_MENU.get());
+            lore.add(Lang.CLICK_TO_OPEN_PROPERTY_MENU.get(langType));
             meta.setLore(lore);
             property.setItemMeta(meta);
         }

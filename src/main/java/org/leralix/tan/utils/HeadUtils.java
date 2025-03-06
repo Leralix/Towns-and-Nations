@@ -11,9 +11,11 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 
 import java.net.MalformedURLException;
@@ -34,6 +36,7 @@ public class HeadUtils {
      */
     public static @NotNull ItemStack getPlayerHeadInformation(final @NotNull OfflinePlayer offlinePlayer){
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+        PlayerData playerData = PlayerDataStorage.get(offlinePlayer);
         SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
 
         if(skullMeta == null){
@@ -45,7 +48,7 @@ public class HeadUtils {
 
         head.setItemMeta(skullMeta);
 
-        setLore(head, Lang.GUI_PLAYER_PROFILE_DESC1.get(StringUtil.formatMoney(EconomyUtil.getBalance(offlinePlayer))));
+        setLore(head, Lang.GUI_PLAYER_PROFILE_DESC1.get(playerData, StringUtil.formatMoney(EconomyUtil.getBalance(offlinePlayer))));
         return head;
     }
     /**

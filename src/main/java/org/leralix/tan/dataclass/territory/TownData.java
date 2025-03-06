@@ -23,6 +23,7 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.newsletter.news.PlayerJoinRequestNL;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
@@ -154,7 +155,7 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public ItemStack getIconWithInformations(){
+    public ItemStack getIconWithInformations(LangType langType){
         ItemStack icon = getIcon();
 
         ItemMeta meta = icon.getItemMeta();
@@ -162,11 +163,11 @@ public class TownData extends TerritoryData {
             meta.setDisplayName(ChatColor.GREEN + getName());
 
             List<String> lore = new ArrayList<>();
-            lore.add(Lang.GUI_TOWN_INFO_DESC0.get(getDescription()));
-            lore.add(Lang.GUI_TOWN_INFO_DESC1.get(getLeaderName()));
-            lore.add(Lang.GUI_TOWN_INFO_DESC2.get(getPlayerIDList().size()));
-            lore.add(Lang.GUI_TOWN_INFO_DESC3.get(getNumberOfClaimedChunk()));
-            lore.add(haveOverlord()? Lang.GUI_TOWN_INFO_DESC5_REGION.get(getOverlord().getName()): Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get());
+            lore.add(Lang.GUI_TOWN_INFO_DESC0.get(langType, getDescription()));
+            lore.add(Lang.GUI_TOWN_INFO_DESC1.get(langType, getLeaderName()));
+            lore.add(Lang.GUI_TOWN_INFO_DESC2.get(langType, getPlayerIDList().size()));
+            lore.add(Lang.GUI_TOWN_INFO_DESC3.get(langType, getNumberOfClaimedChunk()));
+            lore.add(haveOverlord()? Lang.GUI_TOWN_INFO_DESC5_REGION.get(langType, getOverlord().getName()): Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get(langType));
 
             meta.setLore(lore);
             icon.setItemMeta(meta);

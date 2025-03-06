@@ -360,9 +360,10 @@ public class AdminGUI implements IGUI{
 
     public static void openAdminBrowseTown(Player player, int page){
         Gui gui = IGUI.createChestGui(Lang.HEADER_ADMIN_TOWN_MENU.get(),6);
+        PlayerData playerData = PlayerDataStorage.get(player);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for (TownData townData : TownDataStorage.getTownMap().values()) {
-            ItemStack townIcon = townData.getIconWithInformations();
+            ItemStack townIcon = townData.getIconWithInformations(playerData.getLang());
             HeadUtils.addLore(townIcon,
                     "",
                     Lang.ADMIN_GUI_LEFT_CLICK_TO_MANAGE_TOWN.get()
@@ -393,9 +394,6 @@ public class AdminGUI implements IGUI{
 
         gui.setItem(6,5 , createTownGui);
         gui.open(player);
-
-
-
     }
 
     public static void openSpecificTownMenu(Player player, @NotNull TownData townData) {
@@ -451,11 +449,11 @@ public class AdminGUI implements IGUI{
         Gui gui = IGUI.createChestGui(Lang.HEADER_ADMIN_CHANGE_OVERLORD.get(territoryData.getName()),6);
 
         Collection<RegionData> territoryDataList = RegionDataStorage.getAll();
-
+        PlayerData playerData = PlayerDataStorage.get(player);
         List<GuiItem> guiItems = new ArrayList<>();
 
         for(TerritoryData potentialOverlord : territoryDataList){
-            ItemStack potentialOverlordIcon =  potentialOverlord.getIconWithInformations();
+            ItemStack potentialOverlordIcon =  potentialOverlord.getIconWithInformations(playerData.getLang());
             HeadUtils.addLore(potentialOverlordIcon, Lang.LEFT_CLICK_TO_SELECT.get());
 
             guiItems.add(ItemBuilder.from(potentialOverlordIcon).asGuiItem(event -> {
@@ -578,7 +576,7 @@ public class AdminGUI implements IGUI{
 
 
         for (TownData townData : TownDataStorage.getTownMap().values()) {
-            ItemStack townIcon = townData.getIconWithInformations();
+            ItemStack townIcon = townData.getIconWithInformations(playerData.getLang());
             HeadUtils.addLore(townIcon,
                     "",
                     Lang.ADMIN_GUI_LEFT_CLICK_TO_MANAGE_TOWN.get()

@@ -35,6 +35,7 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.newsletter.news.DiplomacyProposalNL;
@@ -265,9 +266,9 @@ public abstract class TerritoryData {
     public abstract boolean haveNoLeader();
 
     protected abstract ItemStack getIconWithName();
-    public abstract ItemStack getIconWithInformations();
-    public ItemStack getIconWithInformationAndRelation(TerritoryData territoryData){
-        ItemStack icon = getIconWithInformations();
+    public abstract ItemStack getIconWithInformations(LangType langType);
+    public ItemStack getIconWithInformationAndRelation(TerritoryData territoryData, LangType langType){
+        ItemStack icon = getIconWithInformations(langType);
 
         ItemMeta meta = icon.getItemMeta();
         if(meta != null){
@@ -552,11 +553,13 @@ public abstract class TerritoryData {
 
     public List<GuiItem> getAllSubjugationProposals(Player player, int page){
         ArrayList<GuiItem> proposals = new ArrayList<>();
+        PlayerData playerData = PlayerDataStorage.get(player);
+
         for(String proposalID : getOverlordsProposals()) {
             TerritoryData proposalOverlord = TerritoryUtil.getTerritory(proposalID);
             if (proposalOverlord == null)
                 continue;
-            ItemStack territoryItem = proposalOverlord.getIconWithInformations();
+            ItemStack territoryItem = proposalOverlord.getIconWithInformations(playerData.getLang());
             HeadUtils.addLore(territoryItem, Lang.LEFT_CLICK_TO_ACCEPT.get(), Lang.RIGHT_CLICK_TO_REFUSE.get());
             GuiItem acceptInvitation = ItemBuilder.from(territoryItem).asGuiItem(event -> {
                 event.setCancelled(true);

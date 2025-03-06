@@ -26,6 +26,7 @@ import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -141,7 +142,7 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public ItemStack getIconWithInformations() {
+    public ItemStack getIconWithInformations(LangType langType) {
         ItemStack icon = getIcon();
 
         ItemMeta meta = icon.getItemMeta();
@@ -149,11 +150,11 @@ public class RegionData extends TerritoryData {
             meta.setDisplayName(ChatColor.AQUA + getName());
 
             List<String> lore = new ArrayList<>();
-            lore.add(Lang.GUI_REGION_INFO_DESC0.get(getDescription()));
-            lore.add(Lang.GUI_REGION_INFO_DESC1.get(getCapital().getName()));
-            lore.add(Lang.GUI_REGION_INFO_DESC2.get(getNumberOfTownsIn()));
-            lore.add(Lang.GUI_REGION_INFO_DESC3.get(getTotalPlayerCount()));
-            lore.add(Lang.GUI_REGION_INFO_DESC5.get(getNumberOfClaimedChunk()));
+            lore.add(Lang.GUI_REGION_INFO_DESC0.get(langType, getDescription()));
+            lore.add(Lang.GUI_REGION_INFO_DESC1.get(langType, getCapital().getName()));
+            lore.add(Lang.GUI_REGION_INFO_DESC2.get(langType, getNumberOfTownsIn()));
+            lore.add(Lang.GUI_REGION_INFO_DESC3.get(langType, getTotalPlayerCount()));
+            lore.add(Lang.GUI_REGION_INFO_DESC5.get(langType, getNumberOfClaimedChunk()));
 
             meta.setLore(lore);
             icon.setItemMeta(meta);

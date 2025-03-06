@@ -83,10 +83,12 @@ public class PlayerGUI implements IGUI {
         }
 
         ItemStack kingdomIcon = HeadUtils.makeSkullB64(Lang.GUI_KINGDOM_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=",
-                Lang.GUI_KINGDOM_ICON_DESC1.get());
+                Lang.GUI_KINGDOM_ICON_DESC1.get(playerData));
         ItemStack regionIcon = HeadUtils.makeSkullB64(Lang.GUI_REGION_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
+
         if(playerHaveRegion) {
-            HeadUtils.addLore(regionIcon, Lang.GUI_REGION_ICON_DESC1_REGION.get(playerData, region.getColoredName()), Lang.GUI_REGION_ICON_DESC2_REGION.get(region.getRank(player).getColoredName()));
+            HeadUtils.addLore(regionIcon, Lang.GUI_REGION_ICON_DESC1_REGION.get(playerData, region.getColoredName()),
+                    Lang.GUI_REGION_ICON_DESC2_REGION.get(playerData, region.getRank(player).getColoredName()));
         }
         else {
             HeadUtils.addLore(regionIcon, Lang.GUI_REGION_ICON_DESC1_NO_REGION.get(playerData));
@@ -94,7 +96,8 @@ public class PlayerGUI implements IGUI {
 
         ItemStack townIcon = HeadUtils.makeSkullB64(Lang.GUI_TOWN_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
         if(playerHaveTown) {
-            HeadUtils.addLore(townIcon, Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(playerData, town.getColoredName()), Lang.GUI_TOWN_ICON_DESC2_HAVE_TOWN.get(town.getRank(player).getColoredName()));
+            HeadUtils.addLore(townIcon, Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(playerData,
+                    town.getColoredName()), Lang.GUI_TOWN_ICON_DESC2_HAVE_TOWN.get(playerData, town.getRank(player).getColoredName()));
         }
         else {
             HeadUtils.addLore(townIcon, Lang.GUI_TOWN_ICON_DESC1_NO_TOWN.get(playerData));
@@ -245,7 +248,7 @@ public class PlayerGUI implements IGUI {
 
         List<GuiItem> guiItems = new ArrayList<>();
         for (PropertyData propertyData : playerData.getProperties()){
-            ItemStack property = propertyData.getIcon();
+            ItemStack property = propertyData.getIcon(playerData.getLang());
             GuiItem propertyGui = ItemBuilder.from(property).asGuiItem(event -> openPropertyManagerMenu(player, propertyData));
             guiItems.add(propertyGui);
         }
@@ -293,7 +296,7 @@ public class PlayerGUI implements IGUI {
         Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(playerData, propertyData.getName()), 4);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
-        ItemStack propertyIcon = propertyData.getIcon();
+        ItemStack propertyIcon = propertyData.getIcon(playerData.getLang());
 
         ItemStack stopRentingProperty = HeadUtils.createCustomItemStack(Material.BARRIER,
                 Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY.get(playerData),
@@ -381,7 +384,7 @@ public class PlayerGUI implements IGUI {
         ItemStack playerList = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,Lang.GUI_PROPERTY_PLAYER_LIST.get(playerData),
                 Lang.GUI_PROPERTY_PLAYER_LIST_DESC1.get(playerData));
 
-        GuiItem propertyIcon = ItemBuilder.from(propertyData.getIcon()).asGuiItem();
+        GuiItem propertyIcon = ItemBuilder.from(propertyData.getIcon(playerData.getLang())).asGuiItem();
 
         GuiItem changeNameButton = ItemBuilder.from(changeName).asGuiItem(event -> {
             player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(playerData));
@@ -560,7 +563,7 @@ public class PlayerGUI implements IGUI {
         Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(playerData, propertyData.getName()),3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
-        ItemStack propertyIcon = propertyData.getIcon();
+        ItemStack propertyIcon = propertyData.getIcon(playerData.getLang());
 
 
         if(propertyData.isForRent()){
@@ -667,7 +670,7 @@ public class PlayerGUI implements IGUI {
         ArrayList<GuiItem> townItemStacks = new ArrayList<>();
 
         for(TownData specificTownData : TownDataStorage.getTownMap().values()){
-            ItemStack townIcon = specificTownData.getIconWithInformations();
+            ItemStack townIcon = specificTownData.getIconWithInformations(playerData.getLang());
             HeadUtils.addLore(townIcon,
                     "",
                     (specificTownData.isRecruiting()) ? Lang.GUI_TOWN_INFO_IS_RECRUITING.get(playerData) : Lang.GUI_TOWN_INFO_IS_NOT_RECRUITING.get(playerData),
@@ -727,7 +730,7 @@ public class PlayerGUI implements IGUI {
             }
         });
 
-        ItemStack townIcon = townData.getIconWithInformations();
+        ItemStack townIcon = townData.getIconWithInformations(playerData.getLang());
         HeadUtils.addLore(townIcon,
                 Lang.GUI_TOWN_INFO_CHANGE_ICON.get(playerData),
                 Lang.RIGHT_CLICK_TO_SELECT_MEMBER_HEAD.get(playerData)
@@ -1133,7 +1136,7 @@ public class PlayerGUI implements IGUI {
             if(territoryData.isCapital()){
                 continue;
             }
-            ItemStack territoryIcon = territoryData.getIconWithInformations();
+            ItemStack territoryIcon = territoryData.getIconWithInformations(playerData.getLang());
             HeadUtils.addLore(territoryIcon, "", Lang.LEFT_CLICK_TO_SELECT.get(playerData));
 
             GuiItem territoryButton = ItemBuilder.from(territoryIcon).asGuiItem(event -> {
@@ -1296,7 +1299,7 @@ public class PlayerGUI implements IGUI {
         ArrayList<GuiItem> townGuiItems = new ArrayList<>();
 
         for(TerritoryData specificTerritoryData : territoryList){
-            ItemStack territoryIcon = specificTerritoryData.getIconWithInformationAndRelation(territoryData);
+            ItemStack territoryIcon = specificTerritoryData.getIconWithInformationAndRelation(territoryData, playerData.getLang());
             GuiItem territoryGUI = ItemBuilder.from(territoryIcon).asGuiItem(event -> event.setCancelled(true));
 
             townGuiItems.add(territoryGUI);
@@ -1914,7 +1917,7 @@ public class PlayerGUI implements IGUI {
         int changeTownNameCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("ChangeTownNameCost");
 
 
-        ItemStack townIcon = townData.getIconWithInformations();
+        ItemStack townIcon = townData.getIconWithInformations(playerData.getLang());
         ItemStack leaveTown = HeadUtils.createCustomItemStack(Material.BARRIER,
                 Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN.get(playerData),
                 Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1.get(playerData, townData.getName()),
@@ -2203,7 +2206,7 @@ public class PlayerGUI implements IGUI {
         for(String territoryID : mainTerritory.getRelations().getTerritoriesIDWithRelation(relation)){
 
             TerritoryData territoryData = TerritoryUtil.getTerritory(territoryID);
-            ItemStack icon = territoryData.getIconWithInformationAndRelation(mainTerritory);
+            ItemStack icon = territoryData.getIconWithInformationAndRelation(mainTerritory, playerData.getLang());
 
             if (relation == TownRelation.WAR) {
                 ItemMeta meta = icon.getItemMeta();
@@ -2288,7 +2291,7 @@ public class PlayerGUI implements IGUI {
 
         for(String otherTownUUID : territories){
             TerritoryData otherTerritory = TerritoryUtil.getTerritory(otherTownUUID);
-            ItemStack icon = otherTerritory.getIconWithInformationAndRelation(territory);
+            ItemStack icon = otherTerritory.getIconWithInformationAndRelation(territory, playerData.getLang());
 
             TownRelation actualRelation = territory.getRelationWith(otherTerritory);
 
@@ -2340,7 +2343,7 @@ public class PlayerGUI implements IGUI {
 
         for(String otherTownUUID : relationListID){
             TerritoryData otherTerritory = TerritoryUtil.getTerritory(otherTownUUID);
-            ItemStack townIcon = otherTerritory.getIconWithInformationAndRelation(territory);
+            ItemStack townIcon = otherTerritory.getIconWithInformationAndRelation(territory, playerData.getLang());
 
             GuiItem townGui = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
@@ -2509,7 +2512,7 @@ public class PlayerGUI implements IGUI {
         TownData townData = TownDataStorage.get(playerData);
 
         for (PropertyData townProperty : townData.getPropertyDataList()){
-            ItemStack property = townProperty.getIcon();
+            ItemStack property = townProperty.getIcon(playerData.getLang());
 
             GuiItem propertyButton = ItemBuilder.from(property).asGuiItem(event -> {
                 event.setCancelled(true);
@@ -2823,7 +2826,7 @@ public class PlayerGUI implements IGUI {
         List<GuiItem> guiList = new ArrayList<>();
 
         for (TerritoryData townData : territoryData.getVassals()){
-            ItemStack townIcon = townData.getIconWithInformations();
+            ItemStack townIcon = townData.getIconWithInformations(playerData.getLang());
             GuiItem townInfo = ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
             guiList.add(townInfo);
         }
@@ -2868,7 +2871,7 @@ public class PlayerGUI implements IGUI {
             if(territoryData.isVassal(potentialVassal) || potentialVassal.containsVassalisationProposal(territoryData))
                 continue;
 
-            ItemStack territoryIcon = potentialVassal.getIconWithInformationAndRelation(territoryData);
+            ItemStack territoryIcon = potentialVassal.getIconWithInformationAndRelation(territoryData, playerData.getLang());
             HeadUtils.addLore(territoryIcon, Lang.GUI_REGION_INVITE_TOWN_DESC1.get(playerData));
 
             GuiItem townButton = ItemBuilder.from(territoryIcon).asGuiItem(event -> {
@@ -2892,7 +2895,7 @@ public class PlayerGUI implements IGUI {
 
         List<GuiItem> guiItems = new ArrayList<>();
         for (TerritoryData territoryVassal : territoryData.getVassals()){
-            ItemStack townIcon = territoryVassal.getIconWithInformationAndRelation(territoryData);
+            ItemStack townIcon = territoryVassal.getIconWithInformationAndRelation(territoryData, playerData.getLang());
             HeadUtils.addLore(townIcon, Lang.GUI_REGION_INVITE_TOWN_DESC1.get(playerData));
 
             GuiItem townButton = ItemBuilder.from(townIcon).asGuiItem(event -> {
