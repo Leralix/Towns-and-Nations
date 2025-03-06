@@ -33,6 +33,7 @@ public enum LangType {
     RUSSIAN("ru", "https://textures.minecraft.net/texture/16eafef980d6117dabe8982ac4b4509887e2c4621f6a8fe5c9b735a83d775ad"),
     SERBIAN("sr", "https://textures.minecraft.net/texture/76461165e48b86c56bb98f48b201aef05a30c914e90f4515f05219c6827e7e1d"),
     SWEDISH("sv-SE", "https://textures.minecraft.net/texture/1b85f8114dea93cdee01ab8fe5cfca09c984c2459776bf626e349503702f21eb"),
+    THAI("th", "http://textures.minecraft.net/texture/b15be3cdc1af14ca15155517110ba326d9945007a889e6681999c37d07bd65f5"),
     TURKISH("tr", "https://textures.minecraft.net/texture/9852b9aba3482348514c1034d0affe73545c9de679ae4647f99562b5e5f47d09"),
     UKRAINIAN("uk", "https://textures.minecraft.net/texture/28b9f52e36aa5c7caaa1e7f26ea97e28f635e8eac9aef74cec97f465f5a6b51"),
     CHINESE_SIMPLIFIED("zh-CN", "https://textures.minecraft.net/texture/7f9bc035cdc80f1ab5e1198f29f3ad3fdd2b42d9a69aeb64de990681800b98dc"),
