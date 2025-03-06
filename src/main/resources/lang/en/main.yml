@@ -9,7 +9,7 @@ language:
   PLAYER_NO_REGION: "§cYou do not have a region"
   TOWN_NO_REGION: "§cYour town does not belongs to a region"
   PLAYER_NOT_LEADER_OF_REGION: "§cYou need to be the leader of the region to execute this action"
-  LEADER_CANNOT_QUIT_TOWN: "§cThe leader cannot quit a territory"
+  LEADER_CANNOT_QUIT_TOWN: "§cThe leader cannot quit a town"
   TOWN_ALREADY_HAVE_OVERLORD: "§cThis town already have an overlord"
   PLAYER_NO_PERMISSION: "§cYou do not have permission to execute this command"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cYou do not have permission to perform this action on a rank higher or equal to you"
@@ -39,7 +39,7 @@ language:
   TOWN_NOT_FOUND: "§cTown not found"
   TERRITORY_NOT_FOUND: "§cTerritory not found"
   INVALID_ARGUMENTS: "§cInvalid arguments"
-  PLAYER_ALREADY_HAVE_TOWN: "§cThis player already have a town"
+  PLAYER_ALREADY_HAVE_TOWN: "§cThis player already has a town"
   #Common uses
   DISPLAY_COORDINATES: "§fCoordinates: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
@@ -371,7 +371,6 @@ language:
   GUI_CLAIM_ICON: "§aLand"
   GUI_CLAIM_ICON_DESC1: "§fManage town territory authorizations"
   GUI_BROWSE_TERRITORY_ICON: "Browse all territory"
-  GUI_BROWSE_TERRITORY_ICON_DESC1: "Get information on all existing territories"
   GUI_RELATION_ICON: "§aDiplomacy"
   GUI_RELATION_ICON_DESC1: "§fManage foreign diplomacy/policy"
   GUI_TOWN_LEVEL_ICON: "§aTown level"
@@ -607,7 +606,7 @@ language:
   #Select language
   HELP_US_TRANSLATE: "§fHelp us translate the plugin in your language"
   PERCENT_COMPLETED: "§6{0}%§f completed"
-  CLICK_HERE_TO_OPEN_BROWSER: "§fClick here to open crowdin on your browser"
+  CLICK_HERE_TO_OPEN_BROWSER: "§fClick here to open crowdin in your browser"
   #Region GUI
   GUI_REGION_CREATE: "§aCreate a region"
   GUI_REGION_CREATE_DESC1: "§fCost: §6{0}{MONEY_CHAR}"

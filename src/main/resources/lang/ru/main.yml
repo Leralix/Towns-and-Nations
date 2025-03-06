@@ -371,7 +371,6 @@ language:
   GUI_CLAIM_ICON: "§aТерритория"
   GUI_CLAIM_ICON_DESC1: "§fУправление территорией города и авторизацией"
   GUI_BROWSE_TERRITORY_ICON: "Просмотр всей территории"
-  GUI_BROWSE_TERRITORY_ICON_DESC1: "Получить информацию о всех существующих территориях"
   GUI_RELATION_ICON: "§aДипломатия"
   GUI_RELATION_ICON_DESC1: "§fУправление внешней дипломатией/политикой"
   GUI_TOWN_LEVEL_ICON: "§aУровень города"
@@ -604,6 +603,10 @@ language:
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§fЦвет успешно изменён"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cНеверный цветовой формат"
   GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY: "§fИзменён цвет города: §9{0}§f -> §9{1}"
+  #Select language
+  HELP_US_TRANSLATE: "§fПомогите нам перевести плагин на ваш язык"
+  PERCENT_COMPLETED: "§6{0}%§f выполнено"
+  CLICK_HERE_TO_OPEN_BROWSER: "§fНажмите здесь, чтобы открыть crowdin в браузере"
   #Region GUI
   GUI_REGION_CREATE: "§aСоздать регион"
   GUI_REGION_CREATE_DESC1: "§fЦена: §6{0}{MONEY_CHAR}"
@@ -759,11 +762,11 @@ language:
   SELL_PROPERTY: "§aПродать собственность"
   RENT_PROPERTY: "§aСдать собственность в аренду"
   #Hierarchy gui
-  OVERLORD_GUI: "§aSСюзерен"
+  OVERLORD_GUI: "§aСюзерен"
   CANNOT_HAVE_OVERLORD: "§fУ этой территории не может быть сюзерена"
   NO_OVERLORD: "§cНет сюзерена"
   GUI_OVERLORD_INFO: "§fТекущий сюзерен: §3{0}"
-  GUI_OVERLORD_DECLARE_INDEPENDENCE: "§aОтказаться от должности сюзерена"
+  GUI_OVERLORD_DECLARE_INDEPENDENCE: "§aОтказаться от сюзерена"
   GUI_OVERLORD_DECLARE_INDEPENDENCE_DESC1: "§fНажмите ЛКМ, чтобы объявить о независимости"
   GUI_CONFIRM_DECLARE_INDEPENDENCE: "{0}§f провозгласил независимость от {1}"
   TERRITORY_NO_OVERLORD: "§cУ этой территории нет сюзерена"

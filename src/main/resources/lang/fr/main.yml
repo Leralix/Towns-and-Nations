@@ -371,7 +371,7 @@ language:
   GUI_CLAIM_ICON: "§aTerritoire"
   GUI_CLAIM_ICON_DESC1: "§fGérer les autorisations au sein de la ville"
   GUI_BROWSE_TERRITORY_ICON: "Parcourir tous les territoires"
-  GUI_BROWSE_TERRITORY_ICON_DESC1: "Obtenir des informations sur tous les territoires existants"
+  GUI_BROWSE_TERRITORY_ICON_DESC1: "§fObtenir des informations sur les territoires existants"
   GUI_RELATION_ICON: "§aDiplomatie"
   GUI_RELATION_ICON_DESC1: "§fGérer les relations avec les autres villes"
   GUI_TOWN_LEVEL_ICON: "§aNiveau de la ville"
@@ -604,6 +604,10 @@ language:
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§fLa couleur a été modifiée avec succès"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cLe code couleur saisi ne suit pas le format attendu (0xRRVVBB)"
   GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY: "§fModification du code couleur : §9{0}§f -> §9{1}"
+  #Select language
+  HELP_US_TRANSLATE: "§fAidez-nous à traduire le plugin dans votre langue"
+  PERCENT_COMPLETED: "§6{0}%§f terminé"
+  CLICK_HERE_TO_OPEN_BROWSER: "§fCliquez ici pour ouvrir crowdin sur votre navigateur"
   #Region GUI
   GUI_REGION_CREATE: "§aCréer une région"
   GUI_REGION_CREATE_DESC1: "§fCout : §6{0}{MONEY_CHAR}"
