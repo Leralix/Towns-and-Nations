@@ -1006,6 +1006,9 @@ public enum Lang {
             replaceCommonPlaceholders(translation);
             return ChatColor.translateAlternateColorCodes('§', translation);
         }
+        if(lang == LangType.ENGLISH) {
+            return MESSAGE_NOT_FOUND_FOR + this.name() + IN_THIS_LANGUAGE_FILE;
+        }
         return get(LangType.ENGLISH);
     }
 
