@@ -3,7 +3,6 @@ package org.leralix.tan.storage.stored;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.internal.bind.DateTypeAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
@@ -123,7 +122,6 @@ public class RegionDataStorage {
         }
 
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Date.class, new DateTypeAdapter())
                 .registerTypeAdapter(new TypeToken<Map<TownRelation, List<String>>>() {}.getType(),new EnumMapDeserializer<>(TownRelation.class, new TypeToken<List<String>>(){}.getType()))
                 .registerTypeAdapter(CustomIcon.class, new IconAdapter())
                 .create();
