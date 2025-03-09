@@ -1,68 +1,94 @@
 plugins {
     id 'java'
-    id ("io.github.goooler.shadow") version "8.1.8"
+    id "com.github.johnrengelman.shadow" version "7.1.1"
 }
 
-subprojects {
-    group = 'org.tan'
-    version = '0.13.3'
+tasks.shadowJar {
+    archiveClassifier.set('')
+    relocate("dev.triumphteam.gui", "dev.triumphteam.gui")
+    relocate 'net.objecthunter.exp4j', 'org.leralix.tan.libs.exp4j'
+    relocate 'org.bstats', 'org.leralix.tan.bstat'
+}
 
-    apply plugin: 'java'
+group = 'org.tan'
+version = '0.13.3'
 
-    compileJava.options.encoding = 'UTF-8'
-    tasks.withType(JavaCompile).configureEach {
-        options.encoding = 'UTF-8'
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "spigot-repo"
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
     }
-
-    repositories {
-        mavenCentral()
-        maven { url = "https://repo.extendedclip.com/content/repositories/placeholderapi/" }
-        maven { url = "https://oss.sonatype.org/content/groups/public/" }
-        maven { url = "https://libraries.minecraft.net/" }
-        maven {
-            name = 'vault'
-            url = "https://jitpack.io"
-        }
-        maven { url = uri("${rootDir}/../SphereLib/build/repo") }
+    maven {
+        name = "placeholderapi"
+        url = "https://repo.extendedclip.com/content/repositories/placeholderapi/"
     }
-
-    dependencies {
-        compileOnly 'org.leralix:SphereLib:+'
-        compileOnly 'com.mojang:authlib:4.0.43'
-        compileOnly 'net.luckperms:api:5.4'
-        compileOnly "com.github.MilkBowl:VaultAPI:1.7"
-        compileOnly 'me.clip:placeholderapi:2.11.5'
-        implementation 'org.bstats:bstats-bukkit:3.1.0'
-        implementation 'net.objecthunter:exp4j:0.4.8'
-        implementation("dev.triumphteam:triumph-gui:+")
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
     }
-    def targetJavaVersion = 17
-    project(":paper") {
-        targetJavaVersion = 21
+    maven {
+        name = "placeholderapi"
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
     }
-
-    java {
-        def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-        sourceCompatibility = javaVersion
-        targetCompatibility = javaVersion
-        if (JavaVersion.current() < javaVersion) {
-            toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-        }
+    maven {
+        name = 'minecraft-repo'
+        url = 'https://libraries.minecraft.net/'
     }
-
-    tasks.withType(JavaCompile).configureEach {
-        if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-            options.release = targetJavaVersion
-        }
+    maven {
+        url 'https://repo.dmulloy2.net/repository/public/'
     }
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = "local"
+        url = uri("${rootDir}/../SphereLib/build/repo")
+    }
+    maven { url 'https://jitpack.io' } //Vault
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/central' }
+}
 
-    processResources {
-        def props = [version: version]
-        inputs.properties props
-        filteringCharset 'UTF-8'
-        filesMatching('plugin.yml') {
-            expand props
-        }
+dependencies {
+    compileOnly 'org.leralix:SphereLib:+'
+    compileOnly 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'
+    compileOnly 'com.mojang:authlib:4.0.43'
+    compileOnly 'net.luckperms:api:5.4'
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
+    compileOnly 'me.clip:placeholderapi:2.11.5'
+    implementation 'org.bstats:bstats-bukkit:3.1.0'
+    implementation 'net.objecthunter:exp4j:0.4.8'
+    implementation("dev.triumphteam:triumph-gui:+")
+}
+
+def targetJavaVersion = 17
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
 }
 
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
