@@ -49,9 +49,9 @@ public class ReloadCommand extends SubCommand {
             MobChunkSpawnStorage.init();
             ClaimBlacklistStorage.init();
 
-            player.sendMessage(TanChatUtils.getTANString() + Lang.RELOAD_SUCCESS.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.RELOAD_SUCCESS.get(player));
         }else{
-            player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get(player));
             player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
     }

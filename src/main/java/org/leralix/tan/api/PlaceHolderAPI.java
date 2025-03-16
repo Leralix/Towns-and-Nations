@@ -21,13 +21,13 @@ import java.util.regex.Pattern;
 
 public class PlaceHolderAPI extends PlaceholderExpansion {
 
-    private static final String TRUE = "TRUE";
-    private static final String FALSE = "FALSE";
-    private static final String INVALID_VALUE = "Invalid value";
-    private static final String INVALID_ID = "Invalid id";
-    private static final String INVALID_NAME = "Invalid name";
-    private static final String INVALID_TERRITORY = "Invalid territory";
-    private static final String INVALID_PLAER_NAME = "Invalid player name";
+    private static final Lang TRUE = Lang.TRUE;
+    private static final Lang FALSE = Lang.FALSE;
+    private static final Lang INVALID_VALUE = Lang.INVALID_VALUE;
+    private static final Lang INVALID_ID = Lang.INVALID_ID;
+    private static final Lang INVALID_NAME = Lang.INVALID_NAME;
+    private static final Lang INVALID_TERRITORY = Lang.INVALID_TERRITORY;
+    private static final Lang INVALID_PLAYER_NAME = Lang.INVALID_PLAYER_NAME;
 
     @Override
     @NotNull
@@ -70,92 +70,92 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
             return StringUtil.formatMoney(EconomyUtil.getBalance(player)) + moneyChar;
         }
         if (params.equalsIgnoreCase("player_town_name")) {
-            return playerData.haveTown() ? playerData.getTown().getName() : Lang.NO_TOWN.get();
+            return playerData.haveTown() ? playerData.getTown().getName() : Lang.NO_TOWN.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_town_resident_quantity")) {
-            return playerData.haveTown() ? Integer.toString(playerData.getTown().getPlayerIDList().size()) : Lang.NO_TOWN.get();
+            return playerData.haveTown() ? Integer.toString(playerData.getTown().getPlayerIDList().size()) : Lang.NO_TOWN.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_town_chunk_actual_quantity")) {
-            return playerData.haveTown() ? Integer.toString(playerData.getTown().getNumberOfClaimedChunk()) : Lang.NO_TOWN.get();
+            return playerData.haveTown() ? Integer.toString(playerData.getTown().getNumberOfClaimedChunk()) : Lang.NO_TOWN.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_town_chunk_max_quantity")) {
-            return playerData.haveTown() ? Integer.toString(playerData.getTown().getLevel().getChunkCap()) : Lang.NO_TOWN.get();
+            return playerData.haveTown() ? Integer.toString(playerData.getTown().getLevel().getChunkCap()) : Lang.NO_TOWN.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_town_chunk_remaining_quantity")) {
-            if(!playerData.haveTown()) return Lang.NO_TOWN.get();
+            if(!playerData.haveTown()) return Lang.NO_TOWN.get(playerData);
             int remaining = playerData.getTown().getLevel().getChunkCap() - playerData.getTown().getNumberOfClaimedChunk();
             return Integer.toString(remaining);
         }
         else if (params.equalsIgnoreCase("player_town_balance")) {
-            return playerData.haveTown() ? Double.toString(playerData.getTown().getBalance()) : Lang.NO_TOWN.get();
+            return playerData.haveTown() ? Double.toString(playerData.getTown().getBalance()) : Lang.NO_TOWN.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_town_rank_name")) {
-            return playerData.haveTown() ? playerData.getTownRank().getName() : Lang.NO_TOWN.get();
+            return playerData.haveTown() ? playerData.getTownRank().getName() : Lang.NO_TOWN.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_town_rank_colored_name")) {
-            return playerData.haveTown() ? playerData.getTownRank().getColoredName() : Lang.NO_TOWN.get();
+            return playerData.haveTown() ? playerData.getTownRank().getColoredName() : Lang.NO_TOWN.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_region_name")) {
-            return playerData.haveRegion() ? playerData.getRegion().getName() : Lang.NO_REGION.get();
+            return playerData.haveRegion() ? playerData.getRegion().getName() : Lang.NO_REGION.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_region_resident_quantity")) {
-            return playerData.haveRegion() ? Integer.toString(playerData.getRegion().getTotalPlayerCount()) : Lang.NO_REGION.get();
+            return playerData.haveRegion() ? Integer.toString(playerData.getRegion().getTotalPlayerCount()) : Lang.NO_REGION.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_region_chunk_actual_quantity")) {
-            return playerData.haveRegion() ? Integer.toString(playerData.getRegion().getNumberOfClaimedChunk()) : Lang.NO_REGION.get();
+            return playerData.haveRegion() ? Integer.toString(playerData.getRegion().getNumberOfClaimedChunk()) : Lang.NO_REGION.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_region_balance")) {
-            return playerData.haveRegion() ? Double.toString(playerData.getRegion().getBalance()) : Lang.NO_REGION.get();
+            return playerData.haveRegion() ? Double.toString(playerData.getRegion().getBalance()) : Lang.NO_REGION.get(playerData);
         }
         else if (params.startsWith("server_get_first_territory_id_with_name_")){
             String name = extractValues(params)[0];
-            if(name == null) return INVALID_NAME;
+            if(name == null) return INVALID_NAME.get(playerData);
             TerritoryData territoryData = getTerritoryByName(name);
-            if(territoryData == null) return INVALID_TERRITORY;
+            if(territoryData == null) return INVALID_TERRITORY.get(playerData);
             return territoryData.getID();
         }
         else if(params.startsWith("territory_with_id_{") && params.endsWith("}_exist")){
             String[] values = extractValues(params);
-            if(values.length == 0) return INVALID_VALUE;
+            if(values.length == 0) return INVALID_VALUE.get(playerData);
             String id = values[0];
-            if(id == null) return INVALID_ID;
-            return TownDataStorage.get(id) != null || RegionDataStorage.get(id) != null ? TRUE : FALSE;
+            if(id == null) return INVALID_ID.get(playerData);
+            return TownDataStorage.get(id) != null || RegionDataStorage.get(id) != null ? TRUE.get(playerData) : FALSE.get(playerData);
         }
         else if(params.startsWith("territory_with_name_{") && params.endsWith("}_exist")){
             String[] values = extractValues(params);
-            if(values.length == 0) return INVALID_VALUE;
+            if(values.length == 0) return INVALID_VALUE.get(playerData);
             String name = values[0];
-            if(name == null) return INVALID_NAME;
-            return getTerritoryByName(name) != null ? TRUE : FALSE;
+            if(name == null) return INVALID_NAME.get(playerData);
+            return getTerritoryByName(name) != null ? TRUE.get(playerData) : FALSE.get(playerData);
         }
         else if(params.startsWith("territory_with_id_{") && params.endsWith("}_leader_name")){
             String[] values = extractValues(params);
-            if(values.length == 0) return INVALID_VALUE;
+            if(values.length == 0) return INVALID_VALUE.get(playerData);
             String id = values[0];
-            if(id == null) return INVALID_ID;
+            if(id == null) return INVALID_ID.get(playerData);
             TerritoryData territoryData = TownDataStorage.get(id);
             if(territoryData == null) territoryData = RegionDataStorage.get(id);
-            if (territoryData == null) return INVALID_TERRITORY;
+            if (territoryData == null) return INVALID_TERRITORY.get(playerData);
 
             return territoryData.getLeaderData().getOfflinePlayer().getName();
         }
         else if(params.startsWith("territory_with_name_{") && params.endsWith("}_leader_name")){
             String[] values = extractValues(params);
-            if(values.length == 0) return INVALID_VALUE;
+            if(values.length == 0) return INVALID_VALUE.get(playerData);
             String name = values[0];
-            if(name == null) return INVALID_ID;
+            if(name == null) return INVALID_ID.get(playerData);
             TerritoryData territoryData = getTerritoryByName(name);
-            if (territoryData == null) return INVALID_TERRITORY;
+            if (territoryData == null) return INVALID_TERRITORY.get(playerData);
             return territoryData.getLeaderData().getOfflinePlayer().getName();
         }
         else if(params.startsWith("player_{") && params.endsWith("_have_town")){
             String[] values = extractValues(params);
-            if(values.length == 0) return INVALID_VALUE;
+            if(values.length == 0) return INVALID_VALUE.get(playerData);
             String playerName = values[0];
-            if(playerName == null) return INVALID_PLAER_NAME;
+            if(playerName == null) return INVALID_PLAYER_NAME.get(playerData);
             PlayerData playerData1 = PlayerDataStorage.get(playerName);
-            if(playerData1 == null) return INVALID_NAME;
-            return playerData1.haveTown() ? TRUE : FALSE;
+            if(playerData1 == null) return INVALID_NAME.get(playerData);
+            return playerData1.haveTown() ? TRUE.get(playerData) : FALSE.get(playerData);
         }
 
         return null;

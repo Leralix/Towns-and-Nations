@@ -43,7 +43,7 @@ public class AutoClaimCommand extends PlayerSubCommand {
     public void perform(Player player, String[] args){
 
         if (args.length != 2) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(player, getSyntax()));
             return;
         }
 
@@ -52,17 +52,17 @@ public class AutoClaimCommand extends PlayerSubCommand {
         switch (message) {
             case "town" -> {
                 PlayerAutoClaimStorage.addPlayer(player, ChunkType.TOWN);
-                player.sendMessage(TanChatUtils.getTANString() + Lang.AUTO_CLAIM_ON_FOR.get(ChunkType.TOWN.getName()));
+                player.sendMessage(TanChatUtils.getTANString() + Lang.AUTO_CLAIM_ON_FOR.get(player, ChunkType.TOWN.getName()));
             }
             case "region" -> {
                 PlayerAutoClaimStorage.addPlayer(player, ChunkType.REGION);
-                player.sendMessage(TanChatUtils.getTANString() + Lang.AUTO_CLAIM_ON_FOR.get(ChunkType.REGION.getName()));
+                player.sendMessage(TanChatUtils.getTANString() + Lang.AUTO_CLAIM_ON_FOR.get(player, ChunkType.REGION.getName()));
             }
             case "stop" -> {
                 PlayerAutoClaimStorage.removePlayer(player);
-                player.sendMessage(TanChatUtils.getTANString() + Lang.AUTO_CLAIM_OFF.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.AUTO_CLAIM_OFF.get(player));
             }
-            default -> player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+            default -> player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(player, getSyntax()));
         }
     }
 }

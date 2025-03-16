@@ -2,11 +2,13 @@ package org.leralix.tan.lang;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 import java.io.File;
 import java.util.EnumMap;
@@ -97,6 +99,9 @@ public enum Lang {
     CHAT_CHANGED,
     TOWN_CHAT_ALREADY_IN_CHAT,
     CHAT_SCOPE_NOT_FOUND,
+    CITY_SCOPE,
+    REGION_SCOPE,
+    ALLIANCE_SCOPE,
     ADD_MONEY_COMMAND_SUCCESS,
     SET_MONEY_COMMAND_SUCCESS,
     TOWN_GUI_COMMAND_DESC,
@@ -647,6 +652,13 @@ public enum Lang {
     TOWN_NOT_FOUND,
     INVALID_ARGUMENTS,
     PLAYER_ALREADY_HAVE_TOWN,
+    TRUE,
+    FALSE,
+    INVALID_VALUE,
+    INVALID_ID,
+    INVALID_NAME,
+    INVALID_TERRITORY,
+    INVALID_PLAYER_NAME,
     DISPLAY_COORDINATES,
     GUI_BASIC_NAME,
     CURRENT_STATE,
@@ -993,6 +1005,11 @@ public enum Lang {
         return get(chosenLang);
     }
 
+    public String get(Player player){
+        return get(PlayerDataStorage.get(player));
+    }
+
+
     public String get(PlayerData playerData){
         if(playerData == null) {
             return get(chosenLang);
@@ -1014,6 +1031,10 @@ public enum Lang {
 
     public String get(Object... placeholders) {
         return get(chosenLang, placeholders);
+    }
+
+    public String get(Player player, Object... placeholders) {
+        return get(PlayerDataStorage.get(player), placeholders);
     }
 
     public String get(PlayerData playerData, Object... placeholders) {

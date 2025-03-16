@@ -333,6 +333,9 @@ public class TownData extends TerritoryData {
 
         for(PlayerData playerData : getPlayerDataList()){
             OfflinePlayer offlinePlayer = playerData.getOfflinePlayer();
+            if(playerData.getRankID(this) == -1){
+                playerData.setTownRankID(getDefaultRankID());
+            }
 
             if (!playerData.getTownRank().isPayingTaxes()) continue;
             double tax = getTax();

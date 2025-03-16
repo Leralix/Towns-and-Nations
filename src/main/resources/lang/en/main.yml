@@ -40,6 +40,14 @@ language:
   TERRITORY_NOT_FOUND: "§cTerritory not found"
   INVALID_ARGUMENTS: "§cInvalid arguments"
   PLAYER_ALREADY_HAVE_TOWN: "§cThis player already has a town"
+  #Placeholder API
+  TRUE: "true"
+  FALSE: "false"
+  INVALID_VALUE: "Invalid value"
+  INVALID_ID: "Invalid ID"
+  INVALID_NAME: "Invalid name"
+  INVALID_TERRITORY: "Invalid territory"
+  INVALID_PLAYER_NAME: "Invalid player name"
   #Common uses
   DISPLAY_COORDINATES: "§fCoordinates: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
@@ -135,6 +143,9 @@ language:
   CHAT_CHANGED: "§fChat is now set to: §e{0}"
   TOWN_CHAT_ALREADY_IN_CHAT: "§cYou are already sending message in the chat: {0}"
   CHAT_SCOPE_NOT_FOUND: "§cUnfounded chat scope"
+  CITY_SCOPE: "town"
+  REGION_SCOPE: "region"
+  ALLIANCE_SCOPE: "alliance"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Added §6+{0}{MONEY_CHAR}§f to §3{1}"
   SET_MONEY_COMMAND_SUCCESS: "Successfully set the balance of §3{0}§f to §6{1}{MONEY_CHAR}"
@@ -960,7 +971,6 @@ language:
   DIPLOMATIC_RELATION: "§fProposal by : {0}"
   DIPLOMATIC_RELATION_DESC1: "§fChange the relation to : {0}"
   DIPLOMATIC_RELATION_DESC2: "§fCurrent relation : {0}"
-  ##Newsletter
   ##Newsletter
   #Greeting
   NEWSLETTER_GREETING: "§fYou have §b{0}§f unread news"

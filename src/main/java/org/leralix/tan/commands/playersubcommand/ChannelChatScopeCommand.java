@@ -57,12 +57,15 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
             }
             if(channelName.equalsIgnoreCase("global")){
                 LocalChatStorage.removePlayerChatScope(player);
+                player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_CHANGED.get(player, channelName));
                 return;
             }
+            ChatScope scope = LocalChatStorage.getPlayerChatScope(player);
+
             if(channelName.equalsIgnoreCase("town")){
 
-                if(LocalChatStorage.getPlayerChatScope(player) == ChatScope.CITY){
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_CHAT_ALREADY_IN_CHAT.get(ChatScope.CITY));
+                if(scope == ChatScope.CITY){
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_CHAT_ALREADY_IN_CHAT.get(ChatScope.CITY.getName()));
                     return;
                 }
 
@@ -72,8 +75,8 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
             }
             if(channelName.equalsIgnoreCase("alliance")){
 
-                if(LocalChatStorage.getPlayerChatScope(player) == ChatScope.ALLIANCE){
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_CHAT_ALREADY_IN_CHAT.get(ChatScope.ALLIANCE));
+                if(scope == ChatScope.ALLIANCE){
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_CHAT_ALREADY_IN_CHAT.get(ChatScope.ALLIANCE.getName()));
                     return;
                 }
 
@@ -83,8 +86,8 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
             }
             if(channelName.equalsIgnoreCase("region")){
 
-                if(LocalChatStorage.getPlayerChatScope(player) == ChatScope.REGION){
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_CHAT_ALREADY_IN_CHAT.get(ChatScope.REGION));
+                if(scope == ChatScope.REGION){
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_CHAT_ALREADY_IN_CHAT.get(ChatScope.REGION.getName()));
                     return;
                 }
 
