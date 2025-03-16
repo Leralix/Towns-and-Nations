@@ -20,6 +20,9 @@ public class LocalChatStorage {
     }
 
     public static ChatScope getPlayerChatScope(String uuid){
+        if(!playerChatScope.containsKey(uuid)){
+            return ChatScope.GLOBAL;
+        }
         return playerChatScope.get(uuid);
     }
 

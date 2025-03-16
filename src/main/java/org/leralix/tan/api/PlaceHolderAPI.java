@@ -1,7 +1,9 @@
 package org.leralix.tan.api;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
@@ -9,6 +11,7 @@ import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.storage.LocalChatStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -156,6 +159,16 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
             PlayerData playerData1 = PlayerDataStorage.get(playerName);
             if(playerData1 == null) return INVALID_NAME.get(playerData);
             return playerData1.haveTown() ? TRUE.get(playerData) : FALSE.get(playerData);
+        }
+        else if(params.equals("chat_mode")){
+            return LocalChatStorage.getPlayerChatScope(player.getUniqueId().toString()).getName();
+        }
+        else if(params.startsWith("chat_mode_{") && params.endsWith("}")){
+            String[] values = extractValues(params);
+            OfflinePlayer playerSelected = Bukkit.getOfflinePlayer(values[0]);
+            if(!playerSelected.isOnline())
+                return INVALID_PLAYER_NAME.get(playerData);
+            return LocalChatStorage.getPlayerChatScope(playerSelected.getUniqueId().toString()).getName();
         }
 
         return null;

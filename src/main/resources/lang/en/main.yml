@@ -146,6 +146,7 @@ language:
   CITY_SCOPE: "town"
   REGION_SCOPE: "region"
   ALLIANCE_SCOPE: "alliance"
+  GLOBAL_SCOPE: "global"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Added §6+{0}{MONEY_CHAR}§f to §3{1}"
   SET_MONEY_COMMAND_SUCCESS: "Successfully set the balance of §3{0}§f to §6{1}{MONEY_CHAR}"
