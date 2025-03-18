@@ -188,6 +188,10 @@ MaximumTimeBeforeAttack: 4320 #72 hours
 #The lower the multiplier, the longer the war will last.
 warScoreMultiplier : 0.70
 
+# Set the number of chunks to conquer
+# 0 - unlimited, but no more than what the defender owns
+MaximumChunkConquer: 0
+
 ########################
 ##  General settings  ##
 ########################

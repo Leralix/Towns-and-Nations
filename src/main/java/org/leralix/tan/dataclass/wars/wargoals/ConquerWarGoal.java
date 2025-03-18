@@ -1,5 +1,6 @@
 package org.leralix.tan.dataclass.wars.wargoals;
 
+
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -8,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
@@ -45,10 +48,18 @@ public class ConquerWarGoal extends WarGoal {
         GuiItem addChunkGui = ItemBuilder.from(addChunk).asGuiItem(event -> {
             event.setCancelled(true);
             SoundUtil.playSound(player, SoundEnum.ADD);
-            if(event.isShiftClick()){
-                numberOfChunks += 10;
-            } else if(event.isLeftClick()){
-                numberOfChunks += 1;
+
+            int MaximumChunkConquer = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MaximumChunkConquer", 0);
+            int chunkLimit = createAttackData.getMainDefender().getNumberOfClaimedChunk();
+
+            if (numberOfChunks >= chunkLimit || (MaximumChunkConquer > 0 && numberOfChunks >= MaximumChunkConquer)) {
+                SoundUtil.playSound(player, SoundEnum.BAD);
+            } else {
+                if (event.isShiftClick()) {
+                    numberOfChunks += 10;
+                } else if (event.isLeftClick()) {
+                    numberOfChunks += 1;
+                }
             }
             openStartWarSettings(player, createAttackData);
         });
