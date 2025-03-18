@@ -51,14 +51,21 @@ public class ConquerWarGoal extends WarGoal {
 
             int MaximumChunkConquer = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MaximumChunkConquer", 0);
             int chunkLimit = createAttackData.getMainDefender().getNumberOfClaimedChunk();
+            if (MaximumChunkConquer > 0 && chunkLimit > MaximumChunkConquer) {
+                chunkLimit = MaximumChunkConquer;
+            }
+            int addNumberOfChunks = 0;
+            if (event.isShiftClick()) {
+                addNumberOfChunks = 10;
+            } else if (event.isLeftClick()) {
+                addNumberOfChunks = 1;
+            }
 
-            if (numberOfChunks >= chunkLimit || (MaximumChunkConquer > 0 && numberOfChunks >= MaximumChunkConquer)) {
-                SoundUtil.playSound(player, SoundEnum.BAD);
-            } else {
-                if (event.isShiftClick()) {
-                    numberOfChunks += 10;
-                } else if (event.isLeftClick()) {
-                    numberOfChunks += 1;
+            if (addNumberOfChunks > 0) {
+                if (numberOfChunks + addNumberOfChunks >= chunkLimit) {
+                    numberOfChunks = chunkLimit;
+                } else {
+                    numberOfChunks += addNumberOfChunks;
                 }
             }
             openStartWarSettings(player, createAttackData);
