@@ -80,6 +80,10 @@ public class PlayerData {
         return this.TownId != null;
     }
 
+    public boolean isTownOverlord() {
+        return TownDataStorage.get(this).isLeader(this.UUID);
+    }
+
     public RankData getTownRank() {
         return getTown().getRank(getTownRankID());
     }
