@@ -11,7 +11,7 @@ tasks.shadowJar {
 }
 
 group = 'org.tan'
-version = '0.13.5-SNAPSHOT'
+version = '0.13.5'
 
 compileJava.options.encoding = 'UTF-8'
 
@@ -51,6 +51,10 @@ repositories {
         name = "local"
         url = uri("${rootDir}/../SphereLib/build/repo")
     }
+    maven {
+        name = "local"
+        url = uri("${rootDir}/../TanApi/build/repo")
+    }
     maven { url 'https://jitpack.io' } //Vault
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://oss.sonatype.org/content/repositories/central' }
@@ -63,6 +67,7 @@ dependencies {
     compileOnly 'net.luckperms:api:5.4'
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     compileOnly 'me.clip:placeholderapi:2.11.5'
+    implementation 'org.leralix:TanApi:+'
     implementation 'org.bstats:bstats-bukkit:3.1.0'
     implementation 'net.objecthunter:exp4j:0.4.8'
     implementation("dev.triumphteam:triumph-gui:+")
@@ -92,3 +97,4 @@ processResources {
         expand props
     }
 }
+
