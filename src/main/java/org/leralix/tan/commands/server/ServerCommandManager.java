@@ -15,6 +15,7 @@ public class ServerCommandManager extends CommandManager {
         addSubCommand(new QuitTownServer());
         addSubCommand(new DisbandTownServer());
         addSubCommand(new OpenGuiServer());
+        addSubCommand(new LandmarkUpdateServer());
     }
 
     @Override
