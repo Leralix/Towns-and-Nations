@@ -73,22 +73,37 @@ public class PlayerData {
     public String getTownId(){
         return this.TownId;
     }
+
     public TownData getTown(){
-        return TownDataStorage.get(this);
+        return TownDataStorage.get(this.TownId);
     }
+
     public boolean haveTown(){
         return this.TownId != null;
     }
 
+    public boolean isTownOverlord() {
+        if(!haveTown())
+            return false;
+        return getTown().isLeader(this.UUID);
+    }
+
     public RankData getTownRank() {
+        if(!haveTown())
+            return null;
         return getTown().getRank(getTownRankID());
     }
+
     public RankData getRegionRank() {
+        if(!haveRegion())
+            return null;
         return getRegion().getRank(getRegionRankID());
     }
+
     public void addToBalance(double amount) {
         this.Balance = this.Balance + amount;
     }
+
     public void removeFromBalance(double amount) {
         this.Balance = this.Balance - amount;
     }
@@ -118,6 +133,7 @@ public class PlayerData {
     public void setTownRankID(int townRankID) {
         this.townRankID = townRankID;
     }
+
     public int getTownRankID(){
         return this.townRankID;
     }

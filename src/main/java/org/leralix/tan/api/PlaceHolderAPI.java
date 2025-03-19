@@ -151,14 +151,25 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
             if (territoryData == null) return INVALID_TERRITORY.get(playerData);
             return territoryData.getLeaderData().getOfflinePlayer().getName();
         }
-        else if(params.startsWith("player_{") && params.endsWith("_have_town")){
+        else if(params.startsWith("player_{") && params.endsWith("}_have_town")){
             String[] values = extractValues(params);
             if(values.length == 0) return INVALID_VALUE.get(playerData);
             String playerName = values[0];
             if(playerName == null) return INVALID_PLAYER_NAME.get(playerData);
-            PlayerData playerData1 = PlayerDataStorage.get(playerName);
+            OfflinePlayer playerSelected = Bukkit.getOfflinePlayer(playerName);
+            PlayerData playerData1 = PlayerDataStorage.get(playerSelected);
             if(playerData1 == null) return INVALID_NAME.get(playerData);
             return playerData1.haveTown() ? TRUE.get(playerData) : FALSE.get(playerData);
+        }
+        else if(params.startsWith("player_{") && params.endsWith("}_is_town_overlord")){
+            String[] values = extractValues(params);
+            if(values.length == 0) return INVALID_VALUE.get(playerData);
+            String playerName = values[0];
+            if(playerName == null) return INVALID_PLAYER_NAME.get(playerData);
+            OfflinePlayer playerSelected = Bukkit.getOfflinePlayer(playerName);
+            PlayerData playerData1 = PlayerDataStorage.get(playerSelected);
+            if(playerData1 == null) return INVALID_NAME.get(playerData);
+            return playerData1.isTownOverlord() ? TRUE.get(playerData) : FALSE.get(playerData);
         }
         else if(params.equals("chat_mode")){
             return LocalChatStorage.getPlayerChatScope(player.getUniqueId().toString()).getName();
