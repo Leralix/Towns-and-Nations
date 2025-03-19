@@ -56,7 +56,7 @@ public class DailyTasks {
         updatePlayerUsernames();
 
         NewsletterStorage.clearOldNewsletters();
-        LandmarkStorage.generateAllRessources();
+        LandmarkStorage.generateAllResources();
         ArchiveUtil.archiveFiles();
     }
 

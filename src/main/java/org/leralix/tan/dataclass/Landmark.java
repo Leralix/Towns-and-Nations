@@ -88,13 +88,13 @@ public class Landmark {
         return Material.valueOf(materialName);
     }
     @SuppressWarnings("unused")
-    public ItemStack getRessources(){
+    public ItemStack getResources(){
         ItemStack ressourcesItemStack = new ItemStack(getRessourceMaterial());
         ressourcesItemStack.setAmount(amount);
         return ressourcesItemStack;
     }
 
-    public void generateRessources(){
+    public void generateResources(){
         if(!hasOwner())
             return;
         if(storedDays > 7)
