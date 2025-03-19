@@ -9,10 +9,10 @@ import org.leralix.tan.storage.stored.LandmarkStorage;
 import java.util.Collections;
 import java.util.List;
 
-public class LandmarkUpdateServer extends SubCommand {
+public class LandmarkSetStoredLimitServer extends SubCommand {
     @Override
     public String getName() {
-        return "landmarkUpdate";
+        return "landmarkSetStoredLimit";
     }
 
     @Override
@@ -22,12 +22,12 @@ public class LandmarkUpdateServer extends SubCommand {
 
     @Override
     public int getArguments() {
-        return 2;
+        return 3;
     }
 
     @Override
     public String getSyntax() {
-        return "/tanserver landmarkUpdate <id?>";
+        return "/tanserver landmarkSetStoredLimit <id> <value>";
     }
 
     @Override
@@ -40,13 +40,22 @@ public class LandmarkUpdateServer extends SubCommand {
 
     @Override
     public void perform(CommandSender commandSender, String[] args) {
-        if (args.length < 2) {
-            LandmarkStorage.generateAllResources();
-            commandSender.sendMessage(Lang.ALL_LANDMARK_UPDATED.get());
+        if (args.length < 3) {
+            commandSender.sendMessage(Lang.INVALID_ARGUMENTS.get());
         } else {
             Landmark landmark = LandmarkStorage.get(args[1]);
-            landmark.generateResources();
-            commandSender.sendMessage(Lang.LANDMARK_UPDATED.get(landmark.getName(), landmark.getID()));
+            if(landmark == null){
+                commandSender.sendMessage(Lang.LANDMARK_NOT_FOUND.get());
+                return;
+            }
+            String value = args[2];
+            if(value == null){
+                commandSender.sendMessage(Lang.INVALID_ARGUMENTS.get());
+                return;
+            }
+
+            landmark.setStoredLimit(Integer.parseInt(value));
+            commandSender.sendMessage(Lang.LANDMARK_STORED_UPDATED.get(landmark.getName(), landmark.getID(), value));
         }
     }
 }

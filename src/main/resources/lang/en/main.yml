@@ -42,6 +42,8 @@ language:
   PLAYER_ALREADY_HAVE_TOWN: "§cThis player already has a town"
   ALL_LANDMARK_UPDATED: "§fAll landmarks updated."
   LANDMARK_UPDATED: "{0} ({1})§f has been updated."
+  LANDMARK_STORED_UPDATED: "{0} ({1})§f has been set limit to §e{2}"
+  LANDMARK_NOT_FOUND: "§cLandmark not found"
   #Placeholder API
   TRUE: "true"
   FALSE: "false"

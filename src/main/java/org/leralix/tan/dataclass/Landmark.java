@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.position.Vector3D;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -29,6 +31,7 @@ public class Landmark {
     private int amount;
     private String ownerID;
     private int storedDays;
+    private int storedLimit;
 
     public Landmark(String id, Vector3D position){
         this.ID = id;
@@ -37,6 +40,7 @@ public class Landmark {
         this.materialName = "DIAMOND";
         this.amount = 2;
         this.storedDays = 0;
+        this.storedLimit = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("storedLimit",7);
         spawnChest();
     }
 
@@ -97,10 +101,13 @@ public class Landmark {
     public void generateResources(){
         if(!hasOwner())
             return;
-        if(storedDays > 7)
+        if(storedDays >= storedLimit)
             return;
         storedDays++;
+    }
 
+    public void setStoredLimit(int limit){
+        storedLimit = limit;
     }
 
     public boolean hasOwner() {
