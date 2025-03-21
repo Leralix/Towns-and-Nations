@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id "com.github.johnrengelman.shadow" version "7.1.1"
+    id "com.gradleup.shadow" version "8.3.6"
 }
 
 tasks.shadowJar {
@@ -66,7 +66,7 @@ dependencies {
     implementation("dev.triumphteam:triumph-gui:+")
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 21
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
