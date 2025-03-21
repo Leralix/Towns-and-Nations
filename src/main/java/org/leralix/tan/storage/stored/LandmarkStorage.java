@@ -46,9 +46,9 @@ public class LandmarkStorage {
         return landMarkMap.values();
     }
 
-    public static void generateAllRessources(){
+    public static void generateAllResources(){
         for (Landmark landmark : getList()){
-            landmark.generateRessources();
+            landmark.generateResources();
         }
     }
 

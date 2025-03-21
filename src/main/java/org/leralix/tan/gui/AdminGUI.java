@@ -186,7 +186,7 @@ public class AdminGUI implements IGUI{
                 Lang.ADMIN_GUI_DELETE_LANDMARK.get(),
                 Lang.ADMIN_GUI_DELETE_LANDMARK_DESC1.get());
 
-        ItemStack setReward = HeadUtils.createCustomItemStack(landmark.getRessources(),
+        ItemStack setReward = HeadUtils.createCustomItemStack(landmark.getResources(),
                 Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(),
                 Lang.SPECIFIC_LANDMARK_ICON_SWITCH_REWARD.get());
 

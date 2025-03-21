@@ -40,6 +40,10 @@ language:
   TERRITORY_NOT_FOUND: "§cTerritory not found"
   INVALID_ARGUMENTS: "§cInvalid arguments"
   PLAYER_ALREADY_HAVE_TOWN: "§cThis player already has a town"
+  ALL_LANDMARK_UPDATED: "§fAll landmarks updated."
+  LANDMARK_UPDATED: "{0} ({1})§f has been updated."
+  LANDMARK_STORED_UPDATED: "{0} ({1})§f has been set limit to §e{2}"
+  LANDMARK_NOT_FOUND: "§cLandmark not found"
   #Placeholder API
   TRUE: "true"
   FALSE: "false"
@@ -207,6 +211,8 @@ language:
   OPEN_GUI_SERVER_DESC: "Open the GUI of a player"
   ##QuitTown
   QUIT_TOWN_SERVER_DESC: "§cQuit a town"
+  ## Update landmark storage
+  LANDMARK_UPDATE_SERVER_DESC: "Update landmark storage"
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cYou do not have enough money to perform this action"
   LEADER_NOT_ONLINE: "§cThe town leader is not online"

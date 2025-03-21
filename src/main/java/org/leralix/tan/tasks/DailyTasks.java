@@ -56,7 +56,9 @@ public class DailyTasks {
         updatePlayerUsernames();
 
         NewsletterStorage.clearOldNewsletters();
-        LandmarkStorage.generateAllRessources();
+        if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("enableMidnightGenerateResource", true)) {
+            LandmarkStorage.generateAllResources();
+        }
         ArchiveUtil.archiveFiles();
     }
 

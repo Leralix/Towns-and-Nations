@@ -232,6 +232,12 @@ cancelTeleportOnDamage: true
 #Max size of a landmark name
 landmarkNameMaxSize: 25
 
+# The default value is the maximum amount of resources to store. (amount * storedLimit)
+storedLimit: 7
+
+# Midnight generate resource
+enableMidnightGenerateResource: true
+
 ########################
 ##       Claims       ##
 ########################
