@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ApplyTownServer extends SubCommand {
+
     @Override
     public String getName() {
         return "applytown";
@@ -55,8 +56,8 @@ public class ApplyTownServer extends SubCommand {
             commandSender.sendMessage(Lang.TOWN_NOT_FOUND.get());
             return;
         }
-        PlayerData playerData = PlayerDataStorage.get(p.getUniqueId().toString());
-        if(playerData.haveTown()){
+        PlayerData playerData = PlayerDataStorage.getInstance().get(p.getUniqueId().toString());
+        if(playerData.hasTown()){
             commandSender.sendMessage(Lang.PLAYER_ALREADY_HAVE_TOWN.get());
             return;
         }

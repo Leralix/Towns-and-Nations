@@ -103,7 +103,7 @@ public class MapCommand extends PlayerSubCommand {
                 }
 
                 Chunk chunk = player.getWorld().getChunkAt(chunkX, chunkZ);
-                ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunk);
+                ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
                 TextComponent icon = claimedChunk.getMapIcon(player);
                 ClaimAction claimAction = settings.getClaimActionType();
                 ClaimType mapType = settings.getClaimType();

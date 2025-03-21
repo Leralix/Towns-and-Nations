@@ -42,9 +42,9 @@ public class LocalChatStorage {
     }
 
     public static void broadcastInScope(Player player, String message){
-        PlayerData playerData = PlayerDataStorage.get(player);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
-        if(!playerData.haveTown()){
+        if(!playerData.hasTown()){
             return;
         }
 

@@ -7,45 +7,55 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
+import org.tan.api.getters.TanPlayerManager;
 
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
 
-public class PlayerDataStorage {
+public class PlayerDataStorage implements TanPlayerManager {
+
     private static final String ERROR_MESSAGE = "Error while creating player storage";
 
     private static Map<String, PlayerData> playerStorage = new HashMap<>();
 
+    private static PlayerDataStorage instance;
+
+
     private PlayerDataStorage() {
-        throw new IllegalStateException("Utility class");
+        loadStats();
     }
 
-    public static PlayerData createPlayerDataClass(Player p) {
+    public static synchronized PlayerDataStorage getInstance() {
+        if (instance == null) {
+            instance = new PlayerDataStorage();
+        }
+        return instance;
+    }
+
+
+    private PlayerData createPlayerDataClass(Player p) {
         PlayerData playerData = new PlayerData(p);
         return createPlayerDataClass(playerData);
     }
-    public static PlayerData createPlayerDataClass(PlayerData p) {
+    private PlayerData createPlayerDataClass(PlayerData p) {
         playerStorage.put(p.getID(), p);
         saveStats();
         return p;
     }
 
-    public static void deleteData(String playerID) {
-        playerStorage.remove(playerID);
-        saveStats();
+    public PlayerData get(OfflinePlayer player) {
+        return get(player.getUniqueId().toString());
+    }
+    public PlayerData get(Player player) {
+        return get(player.getUniqueId().toString());
     }
 
-    public static PlayerData get(OfflinePlayer player) {
-        return get(player.getUniqueId().toString());
+    public PlayerData get(UUID playerID) {
+        return get(playerID.toString());
     }
-    public static PlayerData get(Player player) {
-        return get(player.getUniqueId().toString());
-    }
-    public static PlayerData get(UUID player) {
-        return get(player.toString());
-    }
-    public static PlayerData get(String id){
+
+    public PlayerData get(String id){
 
         if(id == null)
             return null;
@@ -62,12 +72,11 @@ public class PlayerDataStorage {
     }
 
 
-
-    public static Collection<PlayerData> getLists() {
+    public Collection<PlayerData> getAll() {
         return playerStorage.values();
     }
 
-    public static void loadStats(){
+    public void loadStats(){
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Players.json");
@@ -85,7 +94,7 @@ public class PlayerDataStorage {
         }
 
     }
-    public static void saveStats() {
+    public void saveStats() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Players.json");

@@ -33,10 +33,11 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.*;
+import org.tan.api.interfaces.TanRegion;
 
 import java.util.*;
 
-public class RegionData extends TerritoryData {
+public class RegionData extends TerritoryData implements TanRegion {
 
     private final String regionId;
     private final String regionName;
@@ -49,7 +50,7 @@ public class RegionData extends TerritoryData {
 
     public RegionData(String id, String name, String ownerID) {
         super(id, name, ownerID);
-        PlayerData owner = PlayerDataStorage.get(ownerID);
+        PlayerData owner = PlayerDataStorage.getInstance().get(ownerID);
         TownData ownerTown = TownDataStorage.get(owner);
 
         this.regionId = id;
@@ -94,7 +95,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     public PlayerData getLeaderData(){
-        return PlayerDataStorage.get(getLeaderID());
+        return PlayerDataStorage.getInstance().get(getLeaderID());
     }
     @Override
     public void setLeaderID(String newLeaderID){
@@ -122,7 +123,7 @@ public class RegionData extends TerritoryData {
     public Collection<PlayerData> getPlayerDataList(){
         ArrayList<PlayerData> playerDataList = new ArrayList<>();
         for (String playerID : getPlayerIDList()){
-            playerDataList.add(PlayerDataStorage.get(playerID));
+            playerDataList.add(PlayerDataStorage.getInstance().get(playerID));
         }
         return playerDataList;
     }
@@ -188,7 +189,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     public Optional<ClaimedChunk2> claimChunkInternal(Player player, Chunk chunk) {
-        PlayerData playerData = PlayerDataStorage.get(player);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         TownData townData = TownDataStorage.get(player);
         RegionData regionData = townData.getRegion(); //TODO : Does regionData is usefull ?
 
@@ -209,15 +210,15 @@ public class RegionData extends TerritoryData {
             return Optional.empty();
         }
 
-        ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.get(chunk);
+        ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
         if(!currentClaimedChunk.canTerritoryClaim(player, regionData)){
             return Optional.empty();
         }
 
         regionData.removeFromBalance(cost);
-        NewClaimedChunkStorage.claimRegionChunk(chunk, regionData.getID());
+        NewClaimedChunkStorage.getInstance().claimRegionChunk(chunk, regionData.getID());
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_CLAIMED_SUCCESS_REGION.get());
-        return Optional.of(NewClaimedChunkStorage.get(chunk));
+        return Optional.of(NewClaimedChunkStorage.getInstance().get(chunk));
     }
 
     public boolean hasNation() {
@@ -325,7 +326,7 @@ public class RegionData extends TerritoryData {
 
     public Collection<RegionClaimedChunk> getClaims() {
         Collection<RegionClaimedChunk> res = new ArrayList<>();
-        for(ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getClaimedChunksMap().values()){
+        for(ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getInstance().getClaimedChunksMap().values()){
             if(claimedChunk instanceof RegionClaimedChunk regionClaimedChunk && regionClaimedChunk.getOwnerID().equals(getID())){
                 res.add(regionClaimedChunk);
             }
@@ -382,7 +383,7 @@ public class RegionData extends TerritoryData {
     @Override
     public void delete(){
         super.delete();
-        broadCastMessageWithSound(Lang.BROADCAST_PLAYER_REGION_DELETED.get(getLeaderData().getName(), getColoredName()), SoundEnum.BAD);
+        broadCastMessageWithSound(Lang.BROADCAST_PLAYER_REGION_DELETED.get(getLeaderData().getNameStored(), getColoredName()), SoundEnum.BAD);
         TeamUtils.updateAllScoreboardColor();
         RegionDataStorage.deleteRegion(this);
     }
@@ -435,7 +436,7 @@ public class RegionData extends TerritoryData {
         List<GuiItem> res = new ArrayList<>();
         for (String playerUUID: getOrderedPlayerIDList()) {
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
-            PlayerData playerIterateData = PlayerDataStorage.get(playerUUID);
+            PlayerData playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
                     Lang.GUI_TOWN_MEMBER_DESC1.get(playerIterateData.getRegionRank().getColoredName()));
 

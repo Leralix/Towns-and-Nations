@@ -17,13 +17,16 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.dataclass.territory.RegionData;
+import org.tan.api.interfaces.TanPlayer;
+import org.tan.api.interfaces.TanProperty;
 
 import java.util.*;
 
 
-public class PlayerData {
+public class PlayerData implements TanPlayer {
 
     private final String UUID;
+    private final UUID uuid;
     private String storedName;
     private Double Balance;
     private String TownId;
@@ -35,6 +38,7 @@ public class PlayerData {
 
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
+        this.uuid = player.getUniqueId();
         this.storedName = player.getName();
         this.Balance = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("StartingMoney");
         this.TownId = null;
@@ -48,7 +52,7 @@ public class PlayerData {
         return UUID;
     }
 
-    public String getName(){
+    public String getNameStored(){
         if(storedName == null){
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(java.util.UUID.fromString(UUID));
             storedName = offlinePlayer.getName();
@@ -58,6 +62,11 @@ public class PlayerData {
         }
         return storedName;
     }
+
+    public void setNameStored(String name){
+        this.storedName = name;
+    }
+
     public void clearName(){
         this.storedName = null;
     }
@@ -78,24 +87,24 @@ public class PlayerData {
         return TownDataStorage.get(this.TownId);
     }
 
-    public boolean haveTown(){
+    public boolean hasTown(){
         return this.TownId != null;
     }
 
     public boolean isTownOverlord() {
-        if(!haveTown())
+        if(!hasTown())
             return false;
         return getTown().isLeader(this.UUID);
     }
 
     public RankData getTownRank() {
-        if(!haveTown())
+        if(!hasTown())
             return null;
         return getTown().getRank(getTownRankID());
     }
 
     public RankData getRegionRank() {
-        if(!haveRegion())
+        if(!hasRegion())
             return null;
         return getRegion().getRank(getRegionRankID());
     }
@@ -114,16 +123,31 @@ public class PlayerData {
         this.regionRankID = null;
     }
 
-    public boolean haveRegion(){
-        if(!this.haveTown()){
+    public boolean hasRegion(){
+        if(!this.hasTown()){
             return false;
         }
         return getTown().haveOverlord();
     }
     public RegionData getRegion(){
-        if(!haveRegion())
+        if(!hasRegion())
             return null;
         return getTown().getRegion();
+    }
+
+    @Override
+    public Collection<TanProperty> getPropertiesOwned() {
+        return List.of();
+    }
+
+    @Override
+    public Collection<TanProperty> getPropertiesRented() {
+        return List.of();
+    }
+
+    @Override
+    public Collection<TanProperty> getPropertiesForSale() {
+        return List.of();
     }
 
     public UUID getUUID() {
@@ -245,8 +269,8 @@ public class PlayerData {
     }
 
     public TownRelation getRelationWithPlayer(Player playerToAdd) {
-        PlayerData otherPlayer = PlayerDataStorage.get(playerToAdd);
-        if(!haveTown() || !otherPlayer.haveTown())
+        PlayerData otherPlayer = PlayerDataStorage.getInstance().get(playerToAdd);
+        if(!hasTown() || !otherPlayer.hasTown())
             return null;
 
         TownData playerTown = TownDataStorage.get(this);
@@ -284,10 +308,10 @@ public class PlayerData {
 
     public List<TerritoryData> getAllTerritoriesPlayerIsIn() {
         List<TerritoryData> territories = new ArrayList<>();
-        if(haveTown()){
+        if(hasTown()){
             territories.add(getTown());
         }
-        if(haveRegion()){
+        if(hasRegion()){
             territories.add(getRegion());
         }
         return territories;

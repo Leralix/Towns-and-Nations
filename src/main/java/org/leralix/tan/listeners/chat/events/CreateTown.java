@@ -54,7 +54,7 @@ public class CreateTown extends ChatListenerEvent {
     }
 
     public void createTown(Player player, String message) {
-        PlayerData playerData = PlayerDataStorage.get(player);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         TownData newTown = TownDataStorage.newTown(message, player);
         EconomyUtil.removeFromBalance(player,cost);
         playerData.joinTown(newTown);

@@ -26,13 +26,14 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.tan.api.interfaces.TanProperty;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class PropertyData {
+public class PropertyData implements TanProperty {
     private final String ID;
     private String owningPlayerID;
     private String rentingPlayerID;
@@ -68,10 +69,10 @@ public class PropertyData {
     }
 
 
-    public Vector3D getP1(){
+    public Vector3D getFirstCorner(){
         return this.p1;
     }
-    public Vector3D getP2(){
+    public Vector3D getSecondCorner(){
         return this.p2;
     }
 
@@ -104,7 +105,7 @@ public class PropertyData {
         return owningPlayerID;
     }
     public PlayerData getOwner() {
-        return PlayerDataStorage.get(owningPlayerID);
+        return PlayerDataStorage.getInstance().get(owningPlayerID);
     }
 
     public void allocateRenter(Player renter){
@@ -122,7 +123,7 @@ public class PropertyData {
         return isForRent;
     }
     public PlayerData getRenter(){
-        return PlayerDataStorage.get(rentingPlayerID);
+        return PlayerDataStorage.getInstance().get(rentingPlayerID);
     }
     public String getRenterID(){
         return rentingPlayerID;
@@ -192,11 +193,11 @@ public class PropertyData {
             lore.add(Lang.GUI_PROPERTY_DESCRIPTION.get(langType, getDescription()));
             lore.add(Lang.GUI_PROPERTY_STRUCTURE_OWNER.get(langType, getTerritory().getName()));
 
-            lore.add(Lang.GUI_PROPERTY_OWNER.get(langType, getOwner().getName()));
+            lore.add(Lang.GUI_PROPERTY_OWNER.get(langType, getOwner().getNameStored()));
             if(isForSale())
                 lore.add(Lang.GUI_PROPERTY_FOR_SALE.get(langType, String.valueOf(salePrice)));
             else if(isRented())
-                lore.add(Lang.GUI_PROPERTY_RENTED_BY.get(langType, getRenter().getName(), String.valueOf(rentPrice)));
+                lore.add(Lang.GUI_PROPERTY_RENTED_BY.get(langType, getRenter().getNameStored(), String.valueOf(rentPrice)));
             else if(isForRent())
                 lore.add(Lang.GUI_PROPERTY_FOR_RENT.get(langType, String.valueOf(rentPrice)));
             else{
@@ -211,7 +212,7 @@ public class PropertyData {
         return property;
     }
 
-    public double getBuyingPrice() {
+    public double getSalePrice() {
         return this.salePrice;
     }
 
@@ -246,7 +247,7 @@ public class PropertyData {
     }
 
     public void showBox(Player player) {
-        ParticleUtils.showBox(TownsAndNations.getPlugin(), player,this.getP1(),this.getP2(), 10);
+        ParticleUtils.showBox(TownsAndNations.getPlugin(), player,this.getFirstCorner(),this.getSecondCorner(), 10);
     }
     public void updateSign(){
         World world = Bukkit.getWorld(signLocation.getWorldID());
@@ -273,17 +274,17 @@ public class PropertyData {
         String[] lines = new String[4];
 
         lines[0] = Lang.SIGN_NAME.get(this.getName());
-        lines[1] = Lang.SIGN_PLAYER.get(PlayerDataStorage.get(this.getOwnerID()).getName());
+        lines[1] = Lang.SIGN_PLAYER.get(PlayerDataStorage.getInstance().get(this.getOwnerID()).getNameStored());
 
         if(this.isForSale) {
             lines[2] = Lang.SIGN_FOR_SALE.get();
-            lines[3] = Lang.SIGN_SALE_PRICE.get(this.getBuyingPrice());
+            lines[3] = Lang.SIGN_SALE_PRICE.get(this.getSalePrice());
         } else if(this.isForRent) {
             lines[2] = Lang.SIGN_RENT.get();
             lines[3] = Lang.SIGN_RENT_PRICE.get(this.getRentPrice());
         } else if(this.isRented()) {
             lines[2] = Lang.SIGN_RENTED_BY.get();
-            lines[3] = this.getRenter().getName();
+            lines[3] = this.getRenter().getNameStored();
         } else {
             lines[2] = Lang.SIGN_NOT_FOR_SALE.get();
             lines[3] = "";
@@ -309,7 +310,7 @@ public class PropertyData {
 
 
     public void delete() {
-        PlayerData owner = PlayerDataStorage.get(owningPlayerID);
+        PlayerData owner = PlayerDataStorage.getInstance().get(owningPlayerID);
         TownData town = getTerritory();
         expelRenter(false);
         removeSign();
@@ -346,10 +347,10 @@ public class PropertyData {
         OfflinePlayer exOwnerOffline = Bukkit.getOfflinePlayer(UUID.fromString(owningPlayerID));
 
         if(exOwner != null){
-            exOwner.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_SOLD_EX_OWNER.get(getName(),player.getName(), getBuyingPrice()));
+            exOwner.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_SOLD_EX_OWNER.get(getName(),player.getName(), getSalePrice()));
             SoundUtil.playSound(exOwner, SoundEnum.GOOD);
         }
-        player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_SOLD_NEW_OWNER.get(getName(), getBuyingPrice()));
+        player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_SOLD_NEW_OWNER.get(getName(), getSalePrice()));
         SoundUtil.playSound(player, SoundEnum.GOOD);
 
         TownData town = getTerritory();
@@ -360,8 +361,8 @@ public class PropertyData {
         EconomyUtil.addFromBalance(exOwnerOffline, salePrice - tax);
         town.addToBalance(tax);
 
-        PlayerData exOwnerData = PlayerDataStorage.get(owningPlayerID);
-        PlayerData newOwnerData = PlayerDataStorage.get(player.getUniqueId().toString());
+        PlayerData exOwnerData = PlayerDataStorage.getInstance().get(owningPlayerID);
+        PlayerData newOwnerData = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
 
         exOwnerData.removeProperty(this);
         newOwnerData.addProperty(this);
@@ -390,16 +391,16 @@ public class PropertyData {
 
     public String getDenyMessage() {
         if(isRented())
-            return Lang.PROPERTY_RENTED_BY.get(getRenter().getName());
+            return Lang.PROPERTY_RENTED_BY.get(getRenter().getNameStored());
         else
-            return Lang.PROPERTY_BELONGS_TO.get(getOwner().getName());
+            return Lang.PROPERTY_BELONGS_TO.get(getOwner().getNameStored());
 
     }
 
     public void expelRenter(boolean rentBack) {
         if(!isRented())
             return;
-        PlayerData renter = PlayerDataStorage.get(rentingPlayerID);
+        PlayerData renter = PlayerDataStorage.getInstance().get(rentingPlayerID);
         renter.removeProperty(this);
         this.rentingPlayerID = null;
         if(rentBack)

@@ -9,17 +9,28 @@ import org.leralix.tan.dataclass.chunk.*;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.TownsAndNations;
+import org.tan.api.getters.TanTerritoryManager;
 
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
 
 public class NewClaimedChunkStorage {
+
+    private final Map<String, ClaimedChunk2> claimedChunksMap = new HashMap<>();
+
+    private static NewClaimedChunkStorage instance;
+
     private NewClaimedChunkStorage() {
-        throw new IllegalStateException("Utility class");
+        loadStats();
     }
 
-    private static final Map<String, ClaimedChunk2> claimedChunksMap = new HashMap<>();
+    public static synchronized NewClaimedChunkStorage getInstance() {
+        if (instance == null) {
+            instance = new NewClaimedChunkStorage();
+        }
+        return instance;
+    }
 
     private static String getChunkKey(Chunk chunk) {
         return getChunkKey(chunk.getX(),chunk.getZ(),chunk.getWorld().getUID().toString());
@@ -32,26 +43,26 @@ public class NewClaimedChunkStorage {
     }
 
 
-    public static Map<String, ClaimedChunk2> getClaimedChunksMap() {
+    public Map<String, ClaimedChunk2> getClaimedChunksMap() {
         return claimedChunksMap;
     }
 
-    public static boolean isChunkClaimed(Chunk chunk) {
+    public boolean isChunkClaimed(Chunk chunk) {
         return claimedChunksMap.containsKey(getChunkKey(chunk));
     }
 
-    public static String getChunkOwnerID(Chunk chunk) {
+    public String getChunkOwnerID(Chunk chunk) {
         ClaimedChunk2 claimedChunk = claimedChunksMap.get(getChunkKey(chunk));
         return claimedChunk != null ? claimedChunk.getOwnerID() : null;
     }
 
-    public static TownData getChunkOwnerTown(Chunk chunk) {
-        if (!NewClaimedChunkStorage.isChunkClaimed(chunk))
+    public TownData getChunkOwnerTown(Chunk chunk) {
+        if (!isChunkClaimed(chunk))
             return null;
-        return TownDataStorage.get(NewClaimedChunkStorage.getChunkOwnerID(chunk));
+        return TownDataStorage.get(getChunkOwnerID(chunk));
     }
 
-    public static Collection<ClaimedChunk2> getAllChunkFrom(TerritoryData territoryData){
+    public Collection<ClaimedChunk2> getAllChunkFrom(TerritoryData territoryData){
         List<ClaimedChunk2> chunks = new ArrayList<>();
         for(ClaimedChunk2 chunk : claimedChunksMap.values()){
             if(chunk.getOwnerID().equals(territoryData.getID())){
@@ -61,7 +72,7 @@ public class NewClaimedChunkStorage {
         return Collections.unmodifiableCollection(chunks);
     }
 
-    public static String getChunkOwnerName(Chunk chunk) {
+    public String getChunkOwnerName(Chunk chunk) {
 
         ClaimedChunk2 claimedChunk = claimedChunksMap.get(getChunkKey(chunk));
 
@@ -74,7 +85,7 @@ public class NewClaimedChunkStorage {
         return null;
     }
 
-    public static boolean isOwner(Chunk chunk, String townID) {
+    public boolean isOwner(Chunk chunk, String townID) {
 
         ClaimedChunk2 cChunk = claimedChunksMap.get(getChunkKey(chunk));
         if(cChunk instanceof TownClaimedChunk){
@@ -86,20 +97,20 @@ public class NewClaimedChunkStorage {
         return false;
     }
 
-    public static void claimTownChunk(Chunk chunk, String ownerID) {
+    public void claimTownChunk(Chunk chunk, String ownerID) {
         claimedChunksMap.put(getChunkKey(chunk), new TownClaimedChunk(chunk, ownerID));
         save();
     }
-    public static void claimRegionChunk(Chunk chunk, String ownerID){
+    public void claimRegionChunk(Chunk chunk, String ownerID){
         claimedChunksMap.put(getChunkKey(chunk), new RegionClaimedChunk(chunk, ownerID));
         save();
     }
-    public static void claimLandmarkChunk(Chunk chunk, String ownerID){
+    public void claimLandmarkChunk(Chunk chunk, String ownerID){
         claimedChunksMap.put(getChunkKey(chunk), new LandmarkClaimedChunk(chunk, ownerID));
         save();
     }
 
-    public static boolean isAdjacentChunkClaimedBySameTown(Chunk chunk, String townID) {
+    public boolean isAdjacentChunkClaimedBySameTown(Chunk chunk, String townID) {
 
         List<String> adjacentChunkKeys = Arrays.asList(
                 getChunkKey(chunk.getX() + 1, chunk.getZ(), chunk.getWorld().getUID().toString()),
@@ -117,20 +128,20 @@ public class NewClaimedChunkStorage {
         return false;
     }
 
-    public static void unclaimChunk(ClaimedChunk2 claimedChunk) {
+    public void unclaimChunk(ClaimedChunk2 claimedChunk) {
         claimedChunksMap.remove(getChunkKey(claimedChunk));
         save();
     }
-    public static void unclaimChunk(Chunk chunk) {
+    public void unclaimChunk(Chunk chunk) {
         claimedChunksMap.remove(getChunkKey(chunk));
         save();
     }
 
-    public static void unclaimAllChunksFromTerritory(TerritoryData territoryData){
+    public void unclaimAllChunksFromTerritory(TerritoryData territoryData){
         unclaimAllChunkFromID(territoryData.getID());
     }
 
-    public static void unclaimAllChunkFromID(String id) {
+    public void unclaimAllChunkFromID(String id) {
         Iterator<Map.Entry<String, ClaimedChunk2>> iterator = claimedChunksMap.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, ClaimedChunk2> entry = iterator.next();
@@ -142,8 +153,7 @@ public class NewClaimedChunkStorage {
     }
 
 
-
-    public static ClaimedChunk2 get(Chunk chunk) {
+    public ClaimedChunk2 get(Chunk chunk) {
         ClaimedChunk2 claimedChunk = claimedChunksMap.get(getChunkKey(chunk));
         if (claimedChunk == null) {
             return new WildernessChunk(chunk);
@@ -151,7 +161,7 @@ public class NewClaimedChunkStorage {
         return claimedChunk;
     }
 
-    public static void loadStats() {
+    public void loadStats() {
         Gson gson = new Gson();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Claimed Chunks.json");
         if (file.exists()) {
@@ -187,7 +197,7 @@ public class NewClaimedChunkStorage {
     }
 
 
-    public static void save() {
+    public void save() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Claimed Chunks.json");
         file.getParentFile().mkdirs();

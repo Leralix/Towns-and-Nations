@@ -30,7 +30,7 @@ public class LandmarkStorage {
         Landmark landmark = new Landmark(landmarkID,vector3D);
         landMarkMap.put(landmarkID, landmark);
         newLandmarkID++;
-        NewClaimedChunkStorage.claimLandmarkChunk(position.getChunk(), landmarkID);
+        NewClaimedChunkStorage.getInstance().claimLandmarkChunk(position.getChunk(), landmarkID);
         save();
     }
 
