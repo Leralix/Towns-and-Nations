@@ -52,7 +52,7 @@ class QuitTownServer extends SubCommand {
             commandSender.sendMessage(Lang.PLAYER_NOT_FOUND.get());
             return;
         }
-        PlayerData playerData = PlayerDataStorage.get(p);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(p);
         TownData townData = playerData.getTown();
         if(townData == null){
             commandSender.sendMessage(Lang.PLAYER_NO_TOWN.get());

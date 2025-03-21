@@ -161,7 +161,7 @@ public class AdminGUI implements IGUI{
             event.setCancelled(true);
 
 
-            ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(player.getLocation().getBlock().getChunk());
+            ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(player.getLocation().getBlock().getChunk());
 
             if (claimedChunk instanceof LandmarkClaimedChunk) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.ADMIN_CHUNK_ALREADY_LANDMARK.get());
@@ -267,7 +267,7 @@ public class AdminGUI implements IGUI{
 
         ItemStack changeTownLeader = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,
                 Lang.ADMIN_GUI_CHANGE_REGION_LEADER.get(),
-                Lang.ADMIN_GUI_CHANGE_REGION_LEADER_DESC1.get(regionData.getLeaderData().getName(),regionData.getCapital().getName()));
+                Lang.ADMIN_GUI_CHANGE_REGION_LEADER_DESC1.get(regionData.getLeaderData().getNameStored(),regionData.getCapital().getName()));
         GuiItem changeTownLeaderGui = ItemBuilder.from(changeTownLeader).asGuiItem(event -> {
             event.setCancelled(true);
             openRegionDebugChangeOwnershipPlayerSelect(player, regionData,0);
@@ -323,12 +323,12 @@ public class AdminGUI implements IGUI{
 
     private static void openRegionDebugChangeOwnershipPlayerSelect(Player player, RegionData regionData, int page) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_ADMIN_CHANGE_REGION_LEADER.get(regionData.getName()), 6);
-        PlayerData playerData = PlayerDataStorage.get(player);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for(String playerID : regionData.getPlayerIDList()){
 
-            PlayerData iteratePlayerData = PlayerDataStorage.get(playerID);
+            PlayerData iteratePlayerData = PlayerDataStorage.getInstance().get(playerID);
             ItemStack switchPlayerIcon = HeadUtils.getPlayerHead(Bukkit.getOfflinePlayer(UUID.fromString(playerID)));
 
             GuiItem switchPlayerGui = ItemBuilder.from(switchPlayerIcon).asGuiItem(event -> {
@@ -336,7 +336,7 @@ public class AdminGUI implements IGUI{
                 FileUtil.addLineToHistory(Lang.HISTORY_REGION_CAPITAL_CHANGED.get(player.getName(), regionData.getCapital().getName(), playerData.getTown().getName() ));
                 regionData.setLeaderID(iteratePlayerData.getID());
 
-                regionData.broadCastMessageWithSound(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST.get(iteratePlayerData.getName()),GOOD);
+                regionData.broadCastMessageWithSound(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST.get(iteratePlayerData.getNameStored()),GOOD);
 
                 if(!regionData.getCapital().getID().equals(iteratePlayerData.getTown().getID())){
                     regionData.broadCastMessage(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST.get(iteratePlayerData.getTown().getName()));
@@ -360,7 +360,7 @@ public class AdminGUI implements IGUI{
 
     public static void openAdminBrowseTown(Player player, int page){
         Gui gui = IGUI.createChestGui(Lang.HEADER_ADMIN_TOWN_MENU.get(),6);
-        PlayerData playerData = PlayerDataStorage.get(player);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for (TownData townData : TownDataStorage.getTownMap().values()) {
             ItemStack townIcon = townData.getIconWithInformations(playerData.getLang());
@@ -449,7 +449,7 @@ public class AdminGUI implements IGUI{
         Gui gui = IGUI.createChestGui(Lang.HEADER_ADMIN_CHANGE_OVERLORD.get(territoryData.getName()),6);
 
         Collection<RegionData> territoryDataList = RegionDataStorage.getAll();
-        PlayerData playerData = PlayerDataStorage.get(player);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         List<GuiItem> guiItems = new ArrayList<>();
 
         for(TerritoryData potentialOverlord : territoryDataList){
@@ -505,7 +505,7 @@ public class AdminGUI implements IGUI{
         Gui gui = IGUI.createChestGui(Lang.HEADER_ADMIN_PLAYER_MENU.get(),6);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (PlayerData playerData : PlayerDataStorage.getLists()) {
+        for (PlayerData playerData : PlayerDataStorage.getInstance().getAll()) {
 
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerData.getID()));
             ItemStack playerHead = HeadUtils.getPlayerHeadInformation(offlinePlayer);
@@ -527,7 +527,7 @@ public class AdminGUI implements IGUI{
 
         ItemStack playerHead = HeadUtils.getPlayerHeadInformation(Bukkit.getOfflinePlayer(UUID.fromString(playerData.getID())));
 
-        if(playerData.haveTown()){
+        if(playerData.hasTown()){
             ItemStack removePlayerTown = HeadUtils.createCustomItemStack(Material.SPRUCE_DOOR,
                     Lang.ADMIN_GUI_TOWN_PLAYER_TOWN.get(playerData.getTown().getName()),
                     Lang.ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1.get(),
@@ -544,7 +544,7 @@ public class AdminGUI implements IGUI{
                 }
                 townData.removePlayer(playerData);
 
-                player.sendMessage(TanChatUtils.getTANString() + Lang.ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS.get(playerData.getName(),townData.getName()));
+                player.sendMessage(TanChatUtils.getTANString() + Lang.ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS.get(playerData.getNameStored(),townData.getName()));
                 openSpecificPlayerMenu(player, playerData);
             });
             gui.setItem(2,2, removePlayerTownGui);

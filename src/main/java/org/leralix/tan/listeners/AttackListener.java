@@ -14,6 +14,6 @@ public class AttackListener implements Listener {
     public void onPlayerKilled(PlayerDeathEvent e) {
         Player killed = e.getEntity();
         Player killer = e.getEntity().getKiller();
-        PlayerDataStorage.get(killed).notifyDeath(killer);
+        PlayerDataStorage.getInstance().get(killed).notifyDeath(killer);
     }
 }

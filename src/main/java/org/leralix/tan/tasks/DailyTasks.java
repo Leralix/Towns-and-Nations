@@ -61,7 +61,7 @@ public class DailyTasks {
     }
 
     private static void updatePlayerUsernames() {
-        for(PlayerData player : PlayerDataStorage.getLists()){
+        for(PlayerData player : PlayerDataStorage.getInstance().getAll()){
             player.clearName();
         }
     }

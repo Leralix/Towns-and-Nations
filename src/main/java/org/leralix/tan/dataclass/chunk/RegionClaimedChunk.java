@@ -40,12 +40,12 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     }
     @Override
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
-        PlayerData playerData = PlayerDataStorage.get(player);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
         //Location is in a property and players owns or rent it
         RegionData ownerRegion = getRegion();
         //Chunk is claimed yet player have no town
-        if(!playerData.haveTown()){
+        if(!playerData.hasTown()){
             playerCantPerformAction(player);
             return false;
         }
@@ -70,13 +70,13 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     }
 
     public void unclaimChunk(Player player){
-        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
-        if(!playerStat.haveTown()){
+        PlayerData playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        if(!playerStat.hasTown()){
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
             return;
         }
 
-        if(!playerStat.haveRegion()){
+        if(!playerStat.hasRegion()){
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NO_REGION.get());
             return;
         }
@@ -92,7 +92,7 @@ public class RegionClaimedChunk extends ClaimedChunk2{
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return;
         }
-        NewClaimedChunkStorage.unclaimChunk(this);
+        NewClaimedChunkStorage.getInstance().unclaimChunk(this);
         player.sendMessage(TanChatUtils.getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_REGION.get(regionData.getNumberOfClaimedChunk()));
     }
 

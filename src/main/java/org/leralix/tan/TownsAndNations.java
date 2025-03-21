@@ -30,7 +30,6 @@ import org.leralix.tan.utils.CustomNBT;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.api.PlaceHolderAPI;
-import org.leralix.tan.api.TanApi;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 
@@ -75,10 +74,7 @@ public final class TownsAndNations extends JavaPlugin {
      * Used to check if the plugin is up-to-date to the latest version.
      */
     private PluginVersion latestVersion;
-    /**
-     * Class used to access the API of the plugin.
-     */
-    private TanApi api;
+
     /**
      * If enabled, current player usernames will be from the color of the relation.
      * This option cannot be enabled with allowTownTag.
@@ -99,6 +95,8 @@ public final class TownsAndNations extends JavaPlugin {
      * Database handler used to access the database.
      */
     private DatabaseHandler databaseHandler;
+
+    PlayerDataStorage playerDataStorage;
 
     @Override
     public void onEnable() {
@@ -152,8 +150,8 @@ public final class TownsAndNations extends JavaPlugin {
         getLogger().log(Level.INFO,"[TaN] -Loading Local data");
 
         RegionDataStorage.loadStats();
-        PlayerDataStorage.loadStats();
-        NewClaimedChunkStorage.loadStats();
+        this.playerDataStorage = PlayerDataStorage.getInstance();
+        NewClaimedChunkStorage.getInstance().loadStats();
         TownDataStorage.loadStats();
         LandmarkStorage.load();
         PlannedAttackStorage.load();
@@ -185,9 +183,10 @@ public final class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO,"[TaN] Plugin loaded successfully");
 
-        api = new TanApi();
+
 
         new Metrics(this, 20527);
+
         getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
     }
 
@@ -231,8 +230,8 @@ public final class TownsAndNations extends JavaPlugin {
 
         RegionDataStorage.saveStats();
         TownDataStorage.saveStats();
-        PlayerDataStorage.saveStats();
-        NewClaimedChunkStorage.save();
+        playerDataStorage.saveStats();
+        NewClaimedChunkStorage.getInstance().save();
         LandmarkStorage.save();
         PlannedAttackStorage.save();
         NewsletterStorage.save();
@@ -348,13 +347,7 @@ public final class TownsAndNations extends JavaPlugin {
     public PluginVersion getCurrentVersion() {
         return CURRENT_VERSION;
     }
-    /**
-     * Get the API of the plugin
-     * @return the API of the plugin
-     */
-    public TanApi getAPI() {
-        return api;
-    }
+
 
     /**
      * Check if the color code is enabled

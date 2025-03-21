@@ -44,8 +44,8 @@ public class TownSpawnCommand extends PlayerSubCommand {
         }
 
         //No town
-        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
-        if(!playerStat.haveTown()){
+        PlayerData playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        if(!playerStat.hasTown()){
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
             return;
         }

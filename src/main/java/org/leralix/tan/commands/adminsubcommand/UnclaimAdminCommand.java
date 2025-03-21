@@ -44,12 +44,12 @@ public class UnclaimAdminCommand extends PlayerSubCommand {
         }
 
         Chunk chunk = player.getLocation().getChunk();
-        if(!NewClaimedChunkStorage.isChunkClaimed(chunk)) {
+        if(!NewClaimedChunkStorage.getInstance().isChunkClaimed(chunk)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED.get());
             return;
         }
 
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunk);
+        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
 
         if(claimedChunk instanceof TownClaimedChunk townClaimedChunk){
             unclaimChunkTown(player, chunk, townClaimedChunk);
@@ -61,14 +61,14 @@ public class UnclaimAdminCommand extends PlayerSubCommand {
 
     private void unclaimChunkTown(Player player, Chunk chunk, TownClaimedChunk claimedChunk) {
         TownData townData = claimedChunk.getTown();
-        NewClaimedChunkStorage.unclaimChunk(chunk);
+        NewClaimedChunkStorage.getInstance().unclaimChunk(chunk);
 
         player.sendMessage(TanChatUtils.getTANString() + Lang.DEBUG_UNCLAIMED_CHUNK_SUCCESS_TOWN.get(townData.getName(), townData.getNumberOfClaimedChunk(),townData.getLevel().getChunkCap()));
     }
 
     private void unclaimChunkRegion(Player player, Chunk chunk, RegionClaimedChunk regionClaimedChunk) {
         RegionData regionData = regionClaimedChunk.getRegion();
-        NewClaimedChunkStorage.unclaimChunk(chunk);
+        NewClaimedChunkStorage.getInstance().unclaimChunk(chunk);
 
         player.sendMessage(TanChatUtils.getTANString() + Lang.DEBUG_UNCLAIMED_CHUNK_SUCCESS_REGION.get(regionData.getName(), regionData.getNumberOfClaimedChunk()));
 

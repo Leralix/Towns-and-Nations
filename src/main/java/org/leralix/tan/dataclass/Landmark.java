@@ -142,7 +142,7 @@ public class Landmark {
         dispawnChest();
         if(hasOwner())
             getOwner().removeLandmark(getID());
-        NewClaimedChunkStorage.unclaimChunk(position.getLocation().getChunk());
+        NewClaimedChunkStorage.getInstance().unclaimChunk(position.getLocation().getChunk());
         LandmarkStorage.getLandMarkMap().remove(getID());
 
     }

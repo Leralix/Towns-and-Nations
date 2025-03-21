@@ -13,10 +13,10 @@ public class MobSpawnListener implements Listener {
     @EventHandler
     public void entitySpawn(EntitySpawnEvent e){
         Chunk currentChunk = e.getEntity().getLocation().getChunk();
-        if(!NewClaimedChunkStorage.isChunkClaimed(currentChunk)){
+        if(!NewClaimedChunkStorage.getInstance().isChunkClaimed(currentChunk)){
             return;
         }
-        ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.get(currentChunk);
+        ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(currentChunk);
         EntityType entityType = e.getEntity().getType();
 
         if(!claimedChunk2.canEntitySpawn(entityType)){

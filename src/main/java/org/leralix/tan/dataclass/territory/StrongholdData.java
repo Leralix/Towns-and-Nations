@@ -83,7 +83,7 @@ public class StrongholdData {
         List<PlayerData> players = new ArrayList<>();
         for(Entity entity : getClaimedChunk().getEntities()){
             if(entity instanceof Player player){
-                players.add(PlayerDataStorage.get(player));
+                players.add(PlayerDataStorage.getInstance().get(player));
             }
         }
         return players;

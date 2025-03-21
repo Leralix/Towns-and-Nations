@@ -16,8 +16,8 @@ public class SaveStats {
             public void run() {
                 RegionDataStorage.saveStats();
                 TownDataStorage.saveStats();
-                PlayerDataStorage.saveStats();
-                NewClaimedChunkStorage.save();
+                PlayerDataStorage.getInstance().saveStats();
+                NewClaimedChunkStorage.getInstance().save();
                 LandmarkStorage.save();
                 PlannedAttackStorage.save();
             }

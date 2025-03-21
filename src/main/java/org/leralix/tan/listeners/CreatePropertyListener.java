@@ -32,19 +32,19 @@ public class CreatePropertyListener implements Listener {
             return;
 
         Chunk blocChunk = block.getChunk();
-        if (!NewClaimedChunkStorage.isChunkClaimed(blocChunk)){
+        if (!NewClaimedChunkStorage.getInstance().isChunkClaimed(blocChunk)){
             player.sendMessage(TanChatUtils.getTANString() + Lang.POSITION_NEED_TO_BE_IN_CLAIMED_CHUNK.get());
             return;
 
         }
 
-        PlayerData playerData = PlayerDataStorage.get(player);
-        if (!playerData.haveTown()){
+        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+        if (!playerData.hasTown()){
             PlayerSelectPropertyPositionStorage.removePlayer(player);
             return;
         }
 
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(blocChunk);
+        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(blocChunk);
         if (!claimedChunk.getOwnerID().equals(playerData.getTownId())){
             player.sendMessage(TanChatUtils.getTANString() + Lang.POSITION_NEED_TO_BE_IN_PLAYER_TOWN.get());
             return;

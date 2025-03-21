@@ -38,8 +38,8 @@ public class PlayerEnterChunkListener implements Listener {
 
 
         //If both chunks are not claimed, no need to display anything
-        if(!NewClaimedChunkStorage.isChunkClaimed(currentChunk) &&
-                !NewClaimedChunkStorage.isChunkClaimed(nextChunk)){
+        if(!NewClaimedChunkStorage.getInstance().isChunkClaimed(currentChunk) &&
+                !NewClaimedChunkStorage.getInstance().isChunkClaimed(nextChunk)){
 
             if(PlayerAutoClaimStorage.containsPlayer(e.getPlayer())){
                 autoClaimChunk(e, nextChunk, player);
@@ -48,8 +48,8 @@ public class PlayerEnterChunkListener implements Listener {
         }
 
 
-        ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.get(currentChunk);
-        ClaimedChunk2 nextClaimedChunk = NewClaimedChunkStorage.get(nextChunk);
+        ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.getInstance().get(currentChunk);
+        ClaimedChunk2 nextClaimedChunk = NewClaimedChunkStorage.getInstance().get(nextChunk);
 
         //Both chunks have the same owner, no need to change
         if(sameOwner(currentClaimedChunk,nextClaimedChunk)){
@@ -67,17 +67,17 @@ public class PlayerEnterChunkListener implements Listener {
 
     private void autoClaimChunk(final @NotNull PlayerMoveEvent e, final @NotNull Chunk nextChunk, final @NotNull Player player) {
         ChunkType chunkType = PlayerAutoClaimStorage.getChunkType(e.getPlayer());
-        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
+        PlayerData playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
 
         if(chunkType == ChunkType.TOWN) {
-            if (!playerStat.haveTown()) {
+            if (!playerStat.hasTown()) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
                 return;
             }
             playerStat.getTown().claimChunk(player, nextChunk);
         }
         if(chunkType == ChunkType.REGION) {
-            if(!playerStat.haveRegion()){
+            if(!playerStat.hasRegion()){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_REGION.get());
                 return;
             }

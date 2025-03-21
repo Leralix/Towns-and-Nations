@@ -59,10 +59,10 @@ public class PlayerSelectPropertyPositionStorage {
 
     public static void addPoint(Player player, Block block, BlockFace blockFace){
         String playerID = player.getUniqueId().toString();
-        PlayerData playerData = PlayerDataStorage.get(playerID);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(playerID);
         TownData playerTown = playerData.getTown();
 
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(block.getChunk());
+        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(block.getChunk());
         if(claimedChunk == null){
             player.sendMessage(Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get());
         }
