@@ -436,7 +436,7 @@ public abstract class TerritoryData {
         if(getNumberOfClaimedChunk() == 0)
             return null;
         if(stronghold == null){
-            ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getAllChunkFrom(this).iterator().next();
+            ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().getAllChunkFrom(this).iterator().next();
             stronghold = new StrongholdData(claimedChunk2);
         }
         return stronghold;
@@ -454,7 +454,7 @@ public abstract class TerritoryData {
     }
 
     public void delete(){
-        NewClaimedChunkStorage.unclaimAllChunksFromTerritory(this); //Unclaim all chunk from town
+        NewClaimedChunkStorage.getInstance().unclaimAllChunksFromTerritory(this); //Unclaim all chunk from town
 
         castActionToAllPlayers(HumanEntity::closeInventory);
 
@@ -553,7 +553,7 @@ public abstract class TerritoryData {
 
     public List<GuiItem> getAllSubjugationProposals(Player player, int page){
         ArrayList<GuiItem> proposals = new ArrayList<>();
-        PlayerData playerData = PlayerDataStorage.get(player);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
         for(String proposalID : getOverlordsProposals()) {
             TerritoryData proposalOverlord = TerritoryUtil.getTerritory(proposalID);
@@ -608,7 +608,7 @@ public abstract class TerritoryData {
     }
     public abstract RankData getRank(PlayerData playerData);
     public RankData getRank(Player player){
-        return getRank(PlayerDataStorage.get(player));
+        return getRank(PlayerDataStorage.getInstance().get(player));
     }
     public int getNumberOfRank(){
         return getRanks().size();
@@ -657,7 +657,7 @@ public abstract class TerritoryData {
 
 
     public boolean doesPlayerHavePermission(Player player, RolePermission townRolePermission) {
-        return doesPlayerHavePermission(PlayerDataStorage.get(player), townRolePermission);
+        return doesPlayerHavePermission(PlayerDataStorage.getInstance().get(player), townRolePermission);
     }
     public boolean doesPlayerHavePermission(PlayerData playerData, RolePermission townRolePermission) {
 
@@ -694,7 +694,7 @@ public abstract class TerritoryData {
     protected abstract void addSpecificTaxes(Budget budget);
 
     public int getNumberOfClaimedChunk(){
-        return NewClaimedChunkStorage.getAllChunkFrom(this).size();
+        return NewClaimedChunkStorage.getInstance().getAllChunkFrom(this).size();
     }
 
     public abstract double getChunkUpkeepCost();
@@ -729,7 +729,7 @@ public abstract class TerritoryData {
             }
             removeFromBalance(costOfSalary);
             for(String playerId : playerIdList){
-                PlayerData playerData = PlayerDataStorage.get(playerId);
+                PlayerData playerData = PlayerDataStorage.getInstance().get(playerId);
                 EconomyUtil.addFromBalance(playerData, rankSalary);
                 TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SalaryPaymentHistory(this, String.valueOf(rank.getID()), costOfSalary));
             }
@@ -758,16 +758,16 @@ public abstract class TerritoryData {
         double minPercentageOfChunkToKeep = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("percentageOfChunksUnclaimed",10) / 100;
 
 
-        Collection<ClaimedChunk2> allChunkFrom = NewClaimedChunkStorage.getAllChunkFrom(this);
+        Collection<ClaimedChunk2> allChunkFrom = NewClaimedChunkStorage.getInstance().getAllChunkFrom(this);
         for(ClaimedChunk2 claimedChunk2 : allChunkFrom){
             if(RandomUtil.getRandom().nextDouble() < minPercentageOfChunkToKeep){
-                NewClaimedChunkStorage.unclaimChunk(claimedChunk2);
+                NewClaimedChunkStorage.getInstance().unclaimChunk(claimedChunk2);
                 nbOfUnclaimedChunk++;
             }
         }
         if(nbOfUnclaimedChunk < minNbOfUnclaimedChunk){
             for(ClaimedChunk2 claimedChunk2 : allChunkFrom){
-                NewClaimedChunkStorage.unclaimChunk(claimedChunk2);
+                NewClaimedChunkStorage.getInstance().unclaimChunk(claimedChunk2);
                 nbOfUnclaimedChunk++;
                 if(nbOfUnclaimedChunk >= minNbOfUnclaimedChunk)
                     break;

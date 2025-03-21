@@ -51,7 +51,7 @@ class DisbandTownServer extends SubCommand {
             commandSender.sendMessage("Player not found");
             return;
         }
-        PlayerData playerData = PlayerDataStorage.get(p);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(p);
         TownData townData = playerData.getTown();
         if(townData == null){
             commandSender.sendMessage("Player does not have a town");

@@ -253,7 +253,7 @@ public class ChunkListener implements Listener {
                     event.setCancelled(true);
                 }
             }
-            else if(entity instanceof Player player2 && !NewClaimedChunkStorage.get(player2.getLocation().getChunk()).canPVPHappen()) {
+            else if(entity instanceof Player player2 && !NewClaimedChunkStorage.getInstance().get(player2.getLocation().getChunk()).canPVPHappen()) {
                 event.setCancelled(true);
             }
         }
@@ -314,7 +314,7 @@ public class ChunkListener implements Listener {
                         event.setCancelled(true);
                     }
                 }
-                else if(entity instanceof Player player2 && !NewClaimedChunkStorage.get(player2.getLocation().getChunk()).canPVPHappen()) {
+                else if(entity instanceof Player player2 && !NewClaimedChunkStorage.getInstance().get(player2.getLocation().getChunk()).canPVPHappen()) {
                     event.setCancelled(true);
                 }
             }
@@ -462,14 +462,14 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onExplosion(EntityExplodeEvent event){
-        event.blockList().removeIf(block -> !NewClaimedChunkStorage.get(block.getChunk()).canExplosionGrief());
+        event.blockList().removeIf(block -> !NewClaimedChunkStorage.getInstance().get(block.getChunk()).canExplosionGrief());
     }
 
     @EventHandler
     public void onBurning(BlockBurnEvent event){
         Chunk chunk = event.getBlock().getChunk();
 
-        if(!NewClaimedChunkStorage.get(chunk).canFireGrief()){
+        if(!NewClaimedChunkStorage.getInstance().get(chunk).canFireGrief()){
             event.setCancelled(true);
         }
     }
@@ -479,7 +479,7 @@ public class ChunkListener implements Listener {
 
         if(event.getSource().getType() == Material.FIRE){
             Chunk chunk = event.getBlock().getChunk();
-            if(!NewClaimedChunkStorage.get(chunk).canFireGrief()){
+            if(!NewClaimedChunkStorage.getInstance().get(chunk).canFireGrief()){
                 event.setCancelled(true);
             }
         }
@@ -491,8 +491,8 @@ public class ChunkListener implements Listener {
         if(SudoPlayerStorage.isSudoPlayer(player))
             return true;
 
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(location.getChunk());
-        PlayerData playerData = PlayerDataStorage.get(player);
+        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
+        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
         if(playerData.isAtWarWith(claimedChunk.getOwner()))
             return true;

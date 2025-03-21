@@ -72,7 +72,7 @@ public class TownDataStorage {
         return get(playerData.getTownId());
     }
     public static TownData get(Player player){
-        return get(PlayerDataStorage.get(player).getTownId());
+        return get(PlayerDataStorage.getInstance().get(player).getTownId());
     }
     public static TownData get(String townId) {
         return townDataMap.get(townId);

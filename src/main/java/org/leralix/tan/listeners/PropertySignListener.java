@@ -66,9 +66,9 @@ public class PropertySignListener implements Listener {
     }
 
     private boolean playerEmbargoWithTown(Player player, Block clickedBlock) {
-        ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.get(clickedBlock.getChunk());
-        PlayerData playerData = PlayerDataStorage.get(player);
-        if(playerData.haveTown() && claimedChunk2 instanceof TownClaimedChunk townClaimedChunk){
+        ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(clickedBlock.getChunk());
+        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+        if(playerData.hasTown() && claimedChunk2 instanceof TownClaimedChunk townClaimedChunk){
             TownRelation townRelation = townClaimedChunk.getTown().getRelationWith(playerData.getTown());
             return townRelation == TownRelation.EMBARGO || townRelation == TownRelation.WAR;
         }

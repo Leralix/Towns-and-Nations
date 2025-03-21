@@ -1012,7 +1012,7 @@ public enum Lang {
     }
 
     public String get(Player player){
-        return get(PlayerDataStorage.get(player));
+        return get(PlayerDataStorage.getInstance().get(player));
     }
 
 
@@ -1040,7 +1040,7 @@ public enum Lang {
     }
 
     public String get(Player player, Object... placeholders) {
-        return get(PlayerDataStorage.get(player), placeholders);
+        return get(PlayerDataStorage.getInstance().get(player), placeholders);
     }
 
     public String get(PlayerData playerData, Object... placeholders) {

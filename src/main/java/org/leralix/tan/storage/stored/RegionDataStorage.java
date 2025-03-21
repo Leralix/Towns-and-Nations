@@ -71,7 +71,7 @@ public class RegionDataStorage {
         FileUtil.addLineToHistory(Lang.HISTORY_REGION_CREATED.get(player.getName(),regionName));
     }
     public static RegionData get(Player player){
-        return get(PlayerDataStorage.get(player));
+        return get(PlayerDataStorage.getInstance().get(player));
     }
     public static RegionData get(PlayerData playerData){
         TownData town = TownDataStorage.get(playerData);

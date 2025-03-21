@@ -18,7 +18,7 @@ public class prefixUtil {
         if(!ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableTownPrefix",true)){
             return;
         }
-        PlayerData playerData = PlayerDataStorage.get(player);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
         if (playerData.getTown() != null){
             String prefix = playerData.getTown().getColoredTag() + " ";

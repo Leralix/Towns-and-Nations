@@ -61,7 +61,7 @@ public class DiplomacyProposalNL extends Newsletter {
         if(isRead(player) && scope == NewsletterScope.SHOW_ONLY_UNREAD)
             return false;
         TerritoryData territoryData = TerritoryUtil.getTerritory(receivingTerritoryID);
-        PlayerData playerData = PlayerDataStorage.get(player);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         if(territoryData == null)
             return false;
         if(!territoryData.isPlayerIn(playerData))

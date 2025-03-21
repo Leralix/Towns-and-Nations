@@ -26,11 +26,11 @@ public class LandmarkChestListener implements Listener {
                 clickedBlock.getType() == Material.CHEST &&
                 clickedBlock.hasMetadata("LandmarkChest")){
                     event.setCancelled(true);
-                    PlayerData playerData = PlayerDataStorage.get(player);
+                    PlayerData playerData = PlayerDataStorage.getInstance().get(player);
                     for (MetadataValue value : clickedBlock.getMetadata("LandmarkChest")) {
                         String customData = value.asString();
                         Landmark landmark = LandmarkStorage.get(customData);
-                        if(!playerData.haveTown()){
+                        if(!playerData.hasTown()){
                             player.sendMessage(Lang.PLAYER_NO_TOWN.get());
                             return;
                         }

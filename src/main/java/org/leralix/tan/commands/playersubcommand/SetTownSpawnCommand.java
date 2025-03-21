@@ -47,8 +47,8 @@ public class SetTownSpawnCommand extends PlayerSubCommand {
         }
 
         //No town
-        PlayerData playerStat = PlayerDataStorage.get(player.getUniqueId().toString());
-        if(!playerStat.haveTown()){
+        PlayerData playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        if(!playerStat.hasTown()){
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
             return;
         }
@@ -68,7 +68,7 @@ public class SetTownSpawnCommand extends PlayerSubCommand {
             return;
         }
 
-        ClaimedChunk2 currentChunk = NewClaimedChunkStorage.get(player.getLocation().getChunk());
+        ClaimedChunk2 currentChunk = NewClaimedChunkStorage.getInstance().get(player.getLocation().getChunk());
         if(!(currentChunk instanceof TownClaimedChunk townChunk && townChunk.getTown().equals(townData))){
             player.sendMessage(TanChatUtils.getTANString() + Lang.SPAWN_NEED_TO_BE_IN_CHUNK.get());
             return;

@@ -62,9 +62,9 @@ public class PayCommand extends PlayerSubCommand {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PAY_SELF_ERROR.get());
             return;
         }
-        PlayerData receiverData = PlayerDataStorage.get(receiver);
-        PlayerData senderData = PlayerDataStorage.get(player);
-        if(receiverData.haveTown() && senderData.haveTown() && receiverData.getTown().canTradeWith(senderData.getTown())){
+        PlayerData receiverData = PlayerDataStorage.getInstance().get(receiver);
+        PlayerData senderData = PlayerDataStorage.getInstance().get(player);
+        if(receiverData.hasTown() && senderData.hasTown() && receiverData.getTown().canTradeWith(senderData.getTown())){
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_PAY_AT_EMBARGO_ERROR.get());
             return;
         }

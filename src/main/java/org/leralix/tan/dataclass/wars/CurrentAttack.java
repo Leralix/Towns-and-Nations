@@ -111,7 +111,7 @@ public class CurrentAttack {
             }
             else {
                 Location playerLocation = playerData.getPlayer().getLocation();
-                ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(playerLocation.getChunk());
+                ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(playerLocation.getChunk());
                 if (defenders.contains(claimedChunk.getOwner())) {
                     attackingLoss();
                 }

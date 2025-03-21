@@ -80,7 +80,7 @@ public class TanEconomyVault extends TanEconomyStandalone implements Economy {
 
     @Override
     public double getBalance(OfflinePlayer offlinePlayer) {
-        return super.getBalance(PlayerDataStorage.get(offlinePlayer));
+        return super.getBalance(PlayerDataStorage.getInstance().get(offlinePlayer));
     }
 
     @Override
@@ -123,9 +123,9 @@ public class TanEconomyVault extends TanEconomyStandalone implements Economy {
         if(v < 0)
             return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Cannot withdraw negative funds");
         if(!has(offlinePlayer, v))
-            return new EconomyResponse(v, PlayerDataStorage.get(offlinePlayer).getBalance(), EconomyResponse.ResponseType.FAILURE, "Player does not have enough money");
+            return new EconomyResponse(v, PlayerDataStorage.getInstance().get(offlinePlayer).getBalance(), EconomyResponse.ResponseType.FAILURE, "Player does not have enough money");
 
-        PlayerData playerData = PlayerDataStorage.get(offlinePlayer);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(offlinePlayer);
         playerData.removeFromBalance((int) v);
         return new EconomyResponse(v, playerData.getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
     }
@@ -147,7 +147,7 @@ public class TanEconomyVault extends TanEconomyStandalone implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, double v) {
-        PlayerData playerData = PlayerDataStorage.get(offlinePlayer);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(offlinePlayer);
         playerData.addToBalance((int) v);
         return new EconomyResponse(v, playerData.getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
     }

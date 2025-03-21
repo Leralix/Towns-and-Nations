@@ -53,11 +53,11 @@ public class UnclaimCommand extends PlayerSubCommand {
             chunk = player.getLocation().getWorld().getChunkAt(x, y);
         }
 
-        if(!NewClaimedChunkStorage.isChunkClaimed(chunk)){
+        if(!NewClaimedChunkStorage.getInstance().isChunkClaimed(chunk)){
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_CLAIMED.get());
             return;
         }
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(chunk);
+        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
         claimedChunk.unclaimChunk(player);
         if(args.length == 4){
             MapCommand.openMap(player, new MapSettings(args[0], args[1]));

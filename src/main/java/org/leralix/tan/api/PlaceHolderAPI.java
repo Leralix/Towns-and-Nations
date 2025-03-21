@@ -3,7 +3,6 @@ package org.leralix.tan.api;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
@@ -17,6 +16,7 @@ import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.StringUtil;
 import org.leralix.tan.lang.Lang;
+import org.tan.api.getters.TanPlayerManager;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -31,6 +31,8 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
     private static final Lang INVALID_NAME = Lang.INVALID_NAME;
     private static final Lang INVALID_TERRITORY = Lang.INVALID_TERRITORY;
     private static final Lang INVALID_PLAYER_NAME = Lang.INVALID_PLAYER_NAME;
+
+    PlayerDataStorage playerManager = PlayerDataStorage.getInstance();
 
     @Override
     @NotNull
@@ -62,7 +64,7 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String params) {
-        PlayerData playerData = PlayerDataStorage.get(player.getUniqueId());
+        PlayerData playerData = playerManager.get(player.getUniqueId());
 
         if (playerData == null) {
             return "Data not found"; // Gérer le cas où les données du joueur ne sont pas trouvées
@@ -73,42 +75,42 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
             return StringUtil.formatMoney(EconomyUtil.getBalance(player)) + moneyChar;
         }
         if (params.equalsIgnoreCase("player_town_name")) {
-            return playerData.haveTown() ? playerData.getTown().getName() : Lang.NO_TOWN.get(playerData);
+            return playerData.hasTown() ? playerData.getTown().getName() : Lang.NO_TOWN.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_town_resident_quantity")) {
-            return playerData.haveTown() ? Integer.toString(playerData.getTown().getPlayerIDList().size()) : Lang.NO_TOWN.get(playerData);
+            return playerData.hasTown() ? Integer.toString(playerData.getTown().getPlayerIDList().size()) : Lang.NO_TOWN.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_town_chunk_actual_quantity")) {
-            return playerData.haveTown() ? Integer.toString(playerData.getTown().getNumberOfClaimedChunk()) : Lang.NO_TOWN.get(playerData);
+            return playerData.hasTown() ? Integer.toString(playerData.getTown().getNumberOfClaimedChunk()) : Lang.NO_TOWN.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_town_chunk_max_quantity")) {
-            return playerData.haveTown() ? Integer.toString(playerData.getTown().getLevel().getChunkCap()) : Lang.NO_TOWN.get(playerData);
+            return playerData.hasTown() ? Integer.toString(playerData.getTown().getLevel().getChunkCap()) : Lang.NO_TOWN.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_town_chunk_remaining_quantity")) {
-            if(!playerData.haveTown()) return Lang.NO_TOWN.get(playerData);
+            if(!playerData.hasTown()) return Lang.NO_TOWN.get(playerData);
             int remaining = playerData.getTown().getLevel().getChunkCap() - playerData.getTown().getNumberOfClaimedChunk();
             return Integer.toString(remaining);
         }
         else if (params.equalsIgnoreCase("player_town_balance")) {
-            return playerData.haveTown() ? Double.toString(playerData.getTown().getBalance()) : Lang.NO_TOWN.get(playerData);
+            return playerData.hasTown() ? Double.toString(playerData.getTown().getBalance()) : Lang.NO_TOWN.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_town_rank_name")) {
-            return playerData.haveTown() ? playerData.getTownRank().getName() : Lang.NO_TOWN.get(playerData);
+            return playerData.hasTown() ? playerData.getTownRank().getName() : Lang.NO_TOWN.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_town_rank_colored_name")) {
-            return playerData.haveTown() ? playerData.getTownRank().getColoredName() : Lang.NO_TOWN.get(playerData);
+            return playerData.hasTown() ? playerData.getTownRank().getColoredName() : Lang.NO_TOWN.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_region_name")) {
-            return playerData.haveRegion() ? playerData.getRegion().getName() : Lang.NO_REGION.get(playerData);
+            return playerData.hasRegion() ? playerData.getRegion().getName() : Lang.NO_REGION.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_region_resident_quantity")) {
-            return playerData.haveRegion() ? Integer.toString(playerData.getRegion().getTotalPlayerCount()) : Lang.NO_REGION.get(playerData);
+            return playerData.hasRegion() ? Integer.toString(playerData.getRegion().getTotalPlayerCount()) : Lang.NO_REGION.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_region_chunk_actual_quantity")) {
-            return playerData.haveRegion() ? Integer.toString(playerData.getRegion().getNumberOfClaimedChunk()) : Lang.NO_REGION.get(playerData);
+            return playerData.hasRegion() ? Integer.toString(playerData.getRegion().getNumberOfClaimedChunk()) : Lang.NO_REGION.get(playerData);
         }
         else if (params.equalsIgnoreCase("player_region_balance")) {
-            return playerData.haveRegion() ? Double.toString(playerData.getRegion().getBalance()) : Lang.NO_REGION.get(playerData);
+            return playerData.hasRegion() ? Double.toString(playerData.getRegion().getBalance()) : Lang.NO_REGION.get(playerData);
         }
         else if (params.startsWith("server_get_first_territory_id_with_name_")){
             String name = extractValues(params)[0];
@@ -157,9 +159,9 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
             String playerName = values[0];
             if(playerName == null) return INVALID_PLAYER_NAME.get(playerData);
             OfflinePlayer playerSelected = Bukkit.getOfflinePlayer(playerName);
-            PlayerData playerData1 = PlayerDataStorage.get(playerSelected);
+            PlayerData playerData1 = playerManager.get(playerSelected);
             if(playerData1 == null) return INVALID_NAME.get(playerData);
-            return playerData1.haveTown() ? TRUE.get(playerData) : FALSE.get(playerData);
+            return playerData1.hasTown() ? TRUE.get(playerData) : FALSE.get(playerData);
         }
         else if(params.startsWith("player_{") && params.endsWith("}_is_town_overlord")){
             String[] values = extractValues(params);
@@ -167,7 +169,7 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
             String playerName = values[0];
             if(playerName == null) return INVALID_PLAYER_NAME.get(playerData);
             OfflinePlayer playerSelected = Bukkit.getOfflinePlayer(playerName);
-            PlayerData playerData1 = PlayerDataStorage.get(playerSelected);
+            PlayerData playerData1 = playerManager.get(playerSelected);
             if(playerData1 == null) return INVALID_NAME.get(playerData);
             return playerData1.isTownOverlord() ? TRUE.get(playerData) : FALSE.get(playerData);
         }

@@ -32,11 +32,12 @@ import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.StringUtil;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.TeamUtils;
+import org.tan.api.interfaces.TanTown;
 
 import java.util.*;
 
 
-public class TownData extends TerritoryData {
+public class TownData extends TerritoryData implements TanTown {
 
     private final String TownId;
     private String TownName;
@@ -99,7 +100,7 @@ public class TownData extends TerritoryData {
     }
 
     public void addPlayer(String playerDataID){
-        PlayerData playerData = PlayerDataStorage.get(playerDataID);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(playerDataID);
         addPlayer(playerData);
     }
 
@@ -111,7 +112,7 @@ public class TownData extends TerritoryData {
         Player playerIterateOnline = playerData.getPlayer();
         if(playerIterateOnline != null)
             playerIterateOnline.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(getColoredName()));
-        broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerData.getName()), SoundEnum.MINOR_GOOD);
+        broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerData.getNameStored()), SoundEnum.MINOR_GOOD);
 
         for (TownData allTown : TownDataStorage.getTownMap().values()){
             allTown.removePlayerJoinRequest(playerData.getID());
@@ -137,7 +138,7 @@ public class TownData extends TerritoryData {
     public Collection<PlayerData> getPlayerDataList(){
         ArrayList<PlayerData> playerDataList = new ArrayList<>();
         for (String playerID : getPlayerIDList()){
-            playerDataList.add(PlayerDataStorage.get(playerID));
+            playerDataList.add(PlayerDataStorage.getInstance().get(playerID));
         }
         return playerDataList;
     }
@@ -206,7 +207,7 @@ public class TownData extends TerritoryData {
 
     @Override
     public PlayerData getLeaderData() {
-        return PlayerDataStorage.get(this.UuidLeader);
+        return PlayerDataStorage.getInstance().get(this.UuidLeader);
     }
 
     @Override
@@ -389,7 +390,7 @@ public class TownData extends TerritoryData {
 
     @Override
     public Optional<ClaimedChunk2> claimChunkInternal(Player player, Chunk chunk) {
-        PlayerData playerData = PlayerDataStorage.get(player.getUniqueId().toString());
+        PlayerData playerData = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
 
 
         if(ClaimBlacklistStorage.cannotBeClaimed(chunk)){
@@ -414,26 +415,26 @@ public class TownData extends TerritoryData {
             return Optional.empty();
         }
 
-        ClaimedChunk2 chunkData = NewClaimedChunkStorage.get(chunk);
+        ClaimedChunk2 chunkData = NewClaimedChunkStorage.getInstance().get(chunk);
         if(!chunkData.canTerritoryClaim(player,this)){
             return Optional.empty();
         }
 
         if(getNumberOfClaimedChunk() != 0 &&
-                !NewClaimedChunkStorage.isAdjacentChunkClaimedBySameTown(chunk,getID()) &&
+                !NewClaimedChunkStorage.getInstance().isAdjacentChunkClaimedBySameTown(chunk,getID()) &&
                 !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("TownAllowNonAdjacentChunks",false)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
             return Optional.empty();
         }
 
-        NewClaimedChunkStorage.unclaimChunk(chunk);
-        NewClaimedChunkStorage.claimTownChunk(chunk,getID());
+        NewClaimedChunkStorage.getInstance().unclaimChunk(chunk);
+        NewClaimedChunkStorage.getInstance().claimTownChunk(chunk,getID());
 
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.get(
                 getNumberOfClaimedChunk(),
                 getLevel().getChunkCap())
         );
-        return Optional.of(NewClaimedChunkStorage.get(chunk));
+        return Optional.of(NewClaimedChunkStorage.getInstance().get(chunk));
     }
 
     public RegionData getRegion(){
@@ -500,7 +501,7 @@ public class TownData extends TerritoryData {
         List<GuiItem> res = new ArrayList<>();
         for (String playerUUID: getOrderedPlayerIDList()) {
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
-            PlayerData playerIterateData = PlayerDataStorage.get(playerUUID);
+            PlayerData playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
                     Lang.GUI_TOWN_MEMBER_DESC1.get(playerIterateData.getTownRank().getColoredName()),
                     Lang.GUI_TOWN_MEMBER_DESC2.get(StringUtil.formatMoney(EconomyUtil.getBalance(playerIterate))),
@@ -510,7 +511,7 @@ public class TownData extends TerritoryData {
                 event.setCancelled(true);
                 if(event.getClick() == ClickType.RIGHT){
 
-                    PlayerData kickedPlayerData = PlayerDataStorage.get(playerIterate);
+                    PlayerData kickedPlayerData = PlayerDataStorage.getInstance().get(playerIterate);
                     TownData townData = TownDataStorage.get(playerData);
 
 
@@ -617,7 +618,7 @@ public class TownData extends TerritoryData {
     @SuppressWarnings("unused") //API
     public Collection<TownClaimedChunk> getClaims(){
         Collection<TownClaimedChunk> res = new ArrayList<>();
-        for(ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getClaimedChunksMap().values()){
+        for(ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getInstance().getClaimedChunksMap().values()){
             if(claimedChunk instanceof TownClaimedChunk townClaimedChunk && townClaimedChunk.getOwnerID().equals(getID())){
                     res.add(townClaimedChunk);
                 }
@@ -629,7 +630,7 @@ public class TownData extends TerritoryData {
 
 
     public void kickPlayer(OfflinePlayer kickedPlayer) {
-        PlayerData kickedPlayerData = PlayerDataStorage.get(kickedPlayer);
+        PlayerData kickedPlayerData = PlayerDataStorage.getInstance().get(kickedPlayer);
 
         removePlayer(kickedPlayerData);
         broadCastMessageWithSound(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.get(kickedPlayer.getName()), SoundEnum.BAD);
@@ -642,7 +643,7 @@ public class TownData extends TerritoryData {
 
 
     public void upgradeTown(Player player) {
-        PlayerData playerData = PlayerDataStorage.get(player);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         Level townLevel = this.getLevel();
         if(!doesPlayerHavePermission(playerData, RolePermission.UPGRADE_TOWN)){
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
@@ -661,7 +662,7 @@ public class TownData extends TerritoryData {
         player.sendMessage(TanChatUtils.getTANString() + Lang.BASIC_LEVEL_UP.get());
     }
     public void upgradeTown(Player player, TownUpgrade townUpgrade, int townUpgradeLevel){
-        PlayerData playerData = PlayerDataStorage.get(player);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
         if(!doesPlayerHavePermission(playerData, RolePermission.UPGRADE_TOWN)){
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
@@ -757,7 +758,7 @@ public class TownData extends TerritoryData {
         removeAllLandmark(); //Remove all Landmark from the deleted town
         removeAllProperty(); //Remove all Property from the deleted town
         for(String playerID : getPlayerIDList()){ //Kick all Players from the deleted town
-            removePlayer(PlayerDataStorage.get(playerID));
+            removePlayer(PlayerDataStorage.getInstance().get(playerID));
         }
         TeamUtils.updateAllScoreboardColor();
         TownDataStorage.deleteTown(this);

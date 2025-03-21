@@ -43,7 +43,7 @@ public class SetMoney extends SubCommand {
             player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
             player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         } else if (args.length == 3) {
-            PlayerData target = PlayerDataStorage.get(Bukkit.getOfflinePlayer(args[1]));
+            PlayerData target = PlayerDataStorage.getInstance().get(Bukkit.getOfflinePlayer(args[1]));
             double amount;
             try {
                 amount = Double.parseDouble(args[2]);
@@ -54,8 +54,8 @@ public class SetMoney extends SubCommand {
 
             EconomyUtil.setBalance(target, amount);
             target.setBalance(amount);
-            player.sendMessage(TanChatUtils.getTANString() + Lang.SET_MONEY_COMMAND_SUCCESS.get(amount,target.getName()));
-            FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_SET_MONEY.get(player.getName(),amount,target.getName()));
+            player.sendMessage(TanChatUtils.getTANString() + Lang.SET_MONEY_COMMAND_SUCCESS.get(amount,target.getNameStored()));
+            FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_SET_MONEY.get(player.getName(),amount,target.getNameStored()));
 
         } else {
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());

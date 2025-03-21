@@ -69,7 +69,7 @@ public class JoinTownCommand extends PlayerSubCommand {
             }
 
             TownData townData = TownDataStorage.get(townID);
-            PlayerData playerData = PlayerDataStorage.get(player);
+            PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
             if(townData.isFull()){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.INVITATION_TOWN_FULL.get());

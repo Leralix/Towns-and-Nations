@@ -36,7 +36,7 @@ public class HeadUtils {
      */
     public static @NotNull ItemStack getPlayerHeadInformation(final @NotNull OfflinePlayer offlinePlayer){
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-        PlayerData playerData = PlayerDataStorage.get(offlinePlayer);
+        PlayerData playerData = PlayerDataStorage.getInstance().get(offlinePlayer);
         SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
 
         if(skullMeta == null){
