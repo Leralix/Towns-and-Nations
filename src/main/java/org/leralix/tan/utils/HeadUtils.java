@@ -233,7 +233,7 @@ public class HeadUtils {
      * @return              The ItemStack displaying the town
      */
     public static ItemStack getRegionIcon(String regionID){
-        return getRegionIcon(RegionDataStorage.get(regionID));
+        return getRegionIcon(RegionDataStorage.getInstance().get(regionID));
     }
     /**
      * Create a player head displaying a town with his information

@@ -16,15 +16,30 @@ import java.util.Map;
 
 public class LandmarkStorage {
 
-    private static Map<String, Landmark> landMarkMap = new HashMap<>();
-    private static int newLandmarkID = 1;
+    private Map<String, Landmark> landMarkMap;
+    private int newLandmarkID;
 
 
-    public static Landmark get(String landmarkID){
+    private static LandmarkStorage instance;
+
+    private LandmarkStorage() {
+        landMarkMap = new HashMap<>();
+        newLandmarkID = 1;
+        load();
+    }
+
+    public static LandmarkStorage getInstance(){
+        if(instance == null) {
+            instance = new LandmarkStorage();
+        }
+        return instance;
+    }
+
+    public Landmark get(String landmarkID){
         return landMarkMap.get(landmarkID);
     }
 
-    public static void addLandmark(Location position){
+    public void addLandmark(Location position){
         Vector3D vector3D = new Vector3D(position);
         String landmarkID = "L" + newLandmarkID;
         Landmark landmark = new Landmark(landmarkID,vector3D);
@@ -34,25 +49,25 @@ public class LandmarkStorage {
         save();
     }
 
-    public static boolean vectorAlreadyFilled(Vector3D vector3D){
-        for(Landmark landmark : getList()){
+    public boolean vectorAlreadyFilled(Vector3D vector3D){
+        for(Landmark landmark : getAll()){
             if(landmark.getPosition().equals(vector3D))
                 return true;
         }
         return false;
     }
 
-    public static Collection<Landmark> getList(){
+    public Collection<Landmark> getAll(){
         return landMarkMap.values();
     }
 
-    public static void generateAllRessources(){
-        for (Landmark landmark : getList()){
+    public void generateAllRessources(){
+        for (Landmark landmark : getAll()){
             landmark.generateRessources();
         }
     }
 
-    public static void load(){
+    public void load(){
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Landmarks.json");
@@ -76,7 +91,7 @@ public class LandmarkStorage {
         }
     }
 
-    public static void save() {
+    public void save() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Landmarks.json");
@@ -107,7 +122,7 @@ public class LandmarkStorage {
 
     }
 
-    public static Map<String, Landmark> getLandMarkMap() {
+    public Map<String, Landmark> getLandMarkMap() {
         return landMarkMap;
     }
 

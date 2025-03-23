@@ -50,7 +50,7 @@ public class TownSpawnCommand extends PlayerSubCommand {
             return;
         }
 
-        TownData townData = TownDataStorage.get(player);
+        TownData townData = TownDataStorage.getInstance().get(player);
         //Spawn Unlocked
         if(townData.isSpawnLocked()){
             player.sendMessage(TanChatUtils.getTANString() + Lang.SPAWN_NOT_UNLOCKED.get());

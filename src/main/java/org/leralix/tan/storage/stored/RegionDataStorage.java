@@ -28,11 +28,21 @@ public class RegionDataStorage {
 
     private static int nextID = 1;
     private static LinkedHashMap<String, RegionData> regionStorage = new LinkedHashMap<>();
+    private static RegionDataStorage instance;
 
+    public static RegionDataStorage getInstance() {
+        if(instance == null)
+            instance = new RegionDataStorage();
+        return instance;
+    }
 
-    public static void createNewRegion(Player player, String regionName){
+    private RegionDataStorage() {
+        loadStats();
+    }
 
-        TownData town = TownDataStorage.get(player);
+    public void createNewRegion(Player player, String regionName){
+
+        TownData town = TownDataStorage.getInstance().get(player);
 
         if(!town.isLeader(player)){
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get());
@@ -70,40 +80,40 @@ public class RegionDataStorage {
         town.removeFromBalance(cost);
         FileUtil.addLineToHistory(Lang.HISTORY_REGION_CREATED.get(player.getName(),regionName));
     }
-    public static RegionData get(Player player){
+    public RegionData get(Player player){
         return get(PlayerDataStorage.getInstance().get(player));
     }
-    public static RegionData get(PlayerData playerData){
-        TownData town = TownDataStorage.get(playerData);
+    public RegionData get(PlayerData playerData){
+        TownData town = TownDataStorage.getInstance().get(playerData);
         if(town == null)
             return null;
         return town.getRegion();
     }
-    public static RegionData get(String regionID){
+    public RegionData get(String regionID){
         if(!regionStorage.containsKey(regionID))
             return null;
         return regionStorage.get(regionID);
     }
 
-    public static int getNumberOfRegion(){
+    public int getNumberOfRegion(){
         return regionStorage.size();
     }
 
 
-    public static Map<String, RegionData> getRegionStorage(){
+    public Map<String, RegionData> getRegionStorage(){
         return regionStorage;
     }
 
-    public static Collection<RegionData> getAll(){
+    public Collection<RegionData> getAll(){
         return regionStorage.values();
     }
 
-    public static void deleteRegion(RegionData region){
+    public void deleteRegion(RegionData region){
         regionStorage.remove(region.getID());
         saveStats();
     }
 
-    public static boolean isNameUsed(String name){
+    public boolean isNameUsed(String name){
         if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",true))
             return false;
 
@@ -114,7 +124,7 @@ public class RegionDataStorage {
         return false;
     }
 
-    public static void loadStats() {
+    public void loadStats() {
 
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Regions.json");
         if (!file.exists()){
@@ -145,7 +155,7 @@ public class RegionDataStorage {
         nextID = id+1;
     }
 
-    public static void saveStats() {
+    public void saveStats() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting()
                 .registerTypeAdapter(CustomIcon.class, new IconAdapter())

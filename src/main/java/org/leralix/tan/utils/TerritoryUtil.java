@@ -13,10 +13,10 @@ public class TerritoryUtil {
 
 
         if(id.startsWith("T")) {
-            return TownDataStorage.get(id);
+            return TownDataStorage.getInstance().get(id);
         }
         if(id.startsWith("R")) {
-            return RegionDataStorage.get(id);
+            return RegionDataStorage.getInstance().get(id);
         }
         return null;
     }

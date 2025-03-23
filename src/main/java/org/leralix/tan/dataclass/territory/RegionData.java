@@ -51,7 +51,7 @@ public class RegionData extends TerritoryData implements TanRegion {
     public RegionData(String id, String name, String ownerID) {
         super(id, name, ownerID);
         PlayerData owner = PlayerDataStorage.getInstance().get(ownerID);
-        TownData ownerTown = TownDataStorage.get(owner);
+        TownData ownerTown = TownDataStorage.getInstance().get(owner);
 
         this.regionId = id;
         this.regionName = name;
@@ -190,7 +190,7 @@ public class RegionData extends TerritoryData implements TanRegion {
     @Override
     public Optional<ClaimedChunk2> claimChunkInternal(Player player, Chunk chunk) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        TownData townData = TownDataStorage.get(player);
+        TownData townData = TownDataStorage.getInstance().get(player);
         RegionData regionData = townData.getRegion(); //TODO : Does regionData is usefull ?
 
         if(ClaimBlacklistStorage.cannotBeClaimed(chunk)){
@@ -299,7 +299,7 @@ public class RegionData extends TerritoryData implements TanRegion {
     }
 
     public void removeVassal(String vassalID) {
-        TownData town = TownDataStorage.get(vassalID);
+        TownData town = TownDataStorage.getInstance().get(vassalID);
         townsInRegion.remove(vassalID);
 
 
@@ -330,10 +330,8 @@ public class RegionData extends TerritoryData implements TanRegion {
             if(claimedChunk instanceof RegionClaimedChunk regionClaimedChunk && regionClaimedChunk.getOwnerID().equals(getID())){
                 res.add(regionClaimedChunk);
             }
-
         }
         return res;
-
     }
 
 
@@ -385,7 +383,7 @@ public class RegionData extends TerritoryData implements TanRegion {
         super.delete();
         broadCastMessageWithSound(Lang.BROADCAST_PLAYER_REGION_DELETED.get(getLeaderData().getNameStored(), getColoredName()), SoundEnum.BAD);
         TeamUtils.updateAllScoreboardColor();
-        RegionDataStorage.deleteRegion(this);
+        RegionDataStorage.getInstance().deleteRegion(this);
     }
 
     @Override
@@ -422,7 +420,7 @@ public class RegionData extends TerritoryData implements TanRegion {
 
     @Override
     public Collection<TerritoryData> getPotentialVassals() {
-        return new ArrayList<>(TownDataStorage.getTownMap().values());
+        return new ArrayList<>(TownDataStorage.getInstance().getTownMap().values());
     }
 
 

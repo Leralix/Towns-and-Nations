@@ -51,13 +51,13 @@ public class Landmark {
         this.name = newName;
     }
 
-    public void setOwnerID(TownData newOwner){
+    public void setOwner(TownData newOwner){
         setOwnerID(newOwner.getID());
     }
-    public void setOwnerID(String newOwnerID){
+    private void setOwnerID(String newOwnerID){
         this.ownerID = newOwnerID;
     }
-    public void clearOwner() {
+    public void removeOwnership() {
         this.ownerID = null;
     }
     public String getOwnerID() {
@@ -95,7 +95,7 @@ public class Landmark {
     }
 
     public void generateRessources(){
-        if(!hasOwner())
+        if(!isOwned())
             return;
         if(storedDays > 7)
             return;
@@ -103,18 +103,18 @@ public class Landmark {
 
     }
 
-    public boolean hasOwner() {
+    public boolean isOwned() {
         if(ownerID == null)
             return false;
         if(TerritoryUtil.getTerritory(ownerID) == null){
-            clearOwner();
+            removeOwnership();
             return false;
         }
         return true;
     }
 
     private TownData getOwner(){
-        return TownDataStorage.get(ownerID);
+        return TownDataStorage.getInstance().get(ownerID);
     }
 
 
@@ -127,7 +127,7 @@ public class Landmark {
             List<String> description = new ArrayList<>();
             description.add(Lang.DISPLAY_COORDINATES.get(position.getX(), position.getY(), position.getZ()));
             description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(amount, material.name().toLowerCase()));
-            if(hasOwner())
+            if(isOwned())
                 description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_OWNER.get(getOwner().getName()));
             else
                 description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER.get());
@@ -140,10 +140,10 @@ public class Landmark {
 
     public void deleteLandmark(){
         dispawnChest();
-        if(hasOwner())
+        if(isOwned())
             getOwner().removeLandmark(getID());
         NewClaimedChunkStorage.getInstance().unclaimChunk(position.getLocation().getChunk());
-        LandmarkStorage.getLandMarkMap().remove(getID());
+        LandmarkStorage.getInstance().getLandMarkMap().remove(getID());
 
     }
 
@@ -164,7 +164,7 @@ public class Landmark {
     public void setReward(ItemStack itemOnCursor) {
         this.amount = itemOnCursor.getAmount();
         this.materialName = itemOnCursor.getType().name();
-        LandmarkStorage.save();
+        LandmarkStorage.getInstance().save();
     }
 
     public Location getLocation() {

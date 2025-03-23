@@ -27,7 +27,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
         super(x,z,worldUUID,ownerID);
     }
     public String getName(){
-        return TownDataStorage.get(getOwnerID()).getName();
+        return TownDataStorage.getInstance().get(getOwnerID()).getName();
     }
 
     @Override
@@ -55,7 +55,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
 
 
     public Landmark getLandMark(){
-        return LandmarkStorage.get(ownerID);
+        return LandmarkStorage.getInstance().get(ownerID);
     }
     public void unclaimChunk(Player player){
         player.sendMessage(TanChatUtils.getTANString() + Lang.CANNOT_UNCLAIM_LANDMARK_CHUNK.get());

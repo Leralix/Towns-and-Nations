@@ -124,7 +124,7 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
             if(values.length == 0) return INVALID_VALUE.get(playerData);
             String id = values[0];
             if(id == null) return INVALID_ID.get(playerData);
-            return TownDataStorage.get(id) != null || RegionDataStorage.get(id) != null ? TRUE.get(playerData) : FALSE.get(playerData);
+            return TownDataStorage.getInstance().get(id) != null || RegionDataStorage.getInstance().get(id) != null ? TRUE.get(playerData) : FALSE.get(playerData);
         }
         else if(params.startsWith("territory_with_name_{") && params.endsWith("}_exist")){
             String[] values = extractValues(params);
@@ -138,8 +138,8 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
             if(values.length == 0) return INVALID_VALUE.get(playerData);
             String id = values[0];
             if(id == null) return INVALID_ID.get(playerData);
-            TerritoryData territoryData = TownDataStorage.get(id);
-            if(territoryData == null) territoryData = RegionDataStorage.get(id);
+            TerritoryData territoryData = TownDataStorage.getInstance().get(id);
+            if(territoryData == null) territoryData = RegionDataStorage.getInstance().get(id);
             if (territoryData == null) return INVALID_TERRITORY.get(playerData);
 
             return territoryData.getLeaderData().getOfflinePlayer().getName();
@@ -188,12 +188,12 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
     }
 
     private TerritoryData getTerritoryByName(String name) {
-        for(TownData townData : TownDataStorage.getAll()){
+        for(TownData townData : TownDataStorage.getInstance().getAll()){
             if(townData.getName().equalsIgnoreCase(name)){
                 return townData;
             }
         }
-        for(RegionData regionData : RegionDataStorage.getAll()){
+        for(RegionData regionData : RegionDataStorage.getInstance().getAll()){
             if(regionData.getName().equalsIgnoreCase(name)){
                 return regionData;
             }

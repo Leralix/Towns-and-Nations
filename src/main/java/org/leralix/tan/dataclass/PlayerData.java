@@ -17,16 +17,13 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.dataclass.territory.RegionData;
-import org.tan.api.interfaces.TanPlayer;
-import org.tan.api.interfaces.TanProperty;
 
 import java.util.*;
 
 
-public class PlayerData implements TanPlayer {
+public class PlayerData {
 
     private final String UUID;
-    private final UUID uuid;
     private String storedName;
     private Double Balance;
     private String TownId;
@@ -38,7 +35,6 @@ public class PlayerData implements TanPlayer {
 
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
-        this.uuid = player.getUniqueId();
         this.storedName = player.getName();
         this.Balance = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("StartingMoney");
         this.TownId = null;
@@ -52,22 +48,22 @@ public class PlayerData implements TanPlayer {
         return UUID;
     }
 
-    public String getNameStored(){
-        if(storedName == null){
+    public String getNameStored() {
+        if (storedName == null) {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(java.util.UUID.fromString(UUID));
             storedName = offlinePlayer.getName();
-            if(storedName == null){
+            if (storedName == null) {
                 storedName = "Unknown name";
             }
         }
         return storedName;
     }
 
-    public void setNameStored(String name){
+    public void setNameStored(String name) {
         this.storedName = name;
     }
 
-    public void clearName(){
+    public void clearName() {
         this.storedName = null;
     }
 
@@ -79,32 +75,32 @@ public class PlayerData implements TanPlayer {
         this.Balance = balance;
     }
 
-    public String getTownId(){
+    public String getTownId() {
         return this.TownId;
     }
 
-    public TownData getTown(){
-        return TownDataStorage.get(this.TownId);
+    public TownData getTown() {
+        return TownDataStorage.getInstance().get(this.TownId);
     }
 
-    public boolean hasTown(){
+    public boolean hasTown() {
         return this.TownId != null;
     }
 
     public boolean isTownOverlord() {
-        if(!hasTown())
+        if (!hasTown())
             return false;
         return getTown().isLeader(this.UUID);
     }
 
     public RankData getTownRank() {
-        if(!hasTown())
+        if (!hasTown())
             return null;
         return getTown().getRank(getTownRankID());
     }
 
     public RankData getRegionRank() {
-        if(!hasRegion())
+        if (!hasRegion())
             return null;
         return getRegion().getRank(getRegionRankID());
     }
@@ -117,37 +113,23 @@ public class PlayerData implements TanPlayer {
         this.Balance = this.Balance - amount;
     }
 
-    public void leaveTown(){
+    public void leaveTown() {
         this.TownId = null;
         this.townRankID = null;
         this.regionRankID = null;
     }
 
-    public boolean hasRegion(){
-        if(!this.hasTown()){
+    public boolean hasRegion() {
+        if (!this.hasTown()) {
             return false;
         }
         return getTown().haveOverlord();
     }
-    public RegionData getRegion(){
-        if(!hasRegion())
+
+    public RegionData getRegion() {
+        if (!hasRegion())
             return null;
         return getTown().getRegion();
-    }
-
-    @Override
-    public Collection<TanProperty> getPropertiesOwned() {
-        return List.of();
-    }
-
-    @Override
-    public Collection<TanProperty> getPropertiesRented() {
-        return List.of();
-    }
-
-    @Override
-    public Collection<TanProperty> getPropertiesForSale() {
-        return List.of();
     }
 
     public UUID getUUID() {
@@ -158,41 +140,42 @@ public class PlayerData implements TanPlayer {
         this.townRankID = townRankID;
     }
 
-    public int getTownRankID(){
+    public int getTownRankID() {
         return this.townRankID;
     }
 
-    public void joinTown(TownData townData){
+    public void joinTown(TownData townData) {
         this.TownId = townData.getID();
         this.townRankID = townData.getDefaultRankID();
 
         //remove all invitation
-        for (TownData otherTown : TownDataStorage.getTownMap().values()) {
-            if(otherTown == TownDataStorage.get(townData.getID())){
+        for (TownData otherTown : TownDataStorage.getInstance().getTownMap().values()) {
+            if (otherTown == TownDataStorage.getInstance().get(townData.getID())) {
                 continue;
             }
-            TownInviteDataStorage.removeInvitation(UUID,otherTown.getID());
+            TownInviteDataStorage.removeInvitation(UUID, otherTown.getID());
         }
     }
 
-    public List<String> getPropertiesListID(){
-        if(this.propertiesListID == null)
+    public List<String> getPropertiesListID() {
+        if (this.propertiesListID == null)
             this.propertiesListID = new ArrayList<>();
         return propertiesListID;
     }
-    public void addProperty(PropertyData propertyData){
+
+    public void addProperty(PropertyData propertyData) {
         getPropertiesListID().add(propertyData.getTotalID());
     }
 
-    public List<PropertyData> getProperties(){
+    public List<PropertyData> getProperties() {
         List<PropertyData> propertyDataList = new ArrayList<>();
 
-        for(String propertyID : getPropertiesListID()){
+        for (String propertyID : getPropertiesListID()) {
             String[] parts = propertyID.split("_");
             String tID = parts[0];
             String pID = parts[1];
 
-            PropertyData nextProperty = TownDataStorage.get(tID).getProperty(pID);
+            PropertyData nextProperty = TownDataStorage.getInstance().get(tID).getProperty(pID);
 
             propertyDataList.add(nextProperty);
         }
@@ -208,13 +191,13 @@ public class PlayerData implements TanPlayer {
         return Bukkit.getPlayer(getUUID());
     }
 
-    public List<String> getAttackInvolvedIn(){
-        if(attackInvolvedIn == null)
+    public List<String> getAttackInvolvedIn() {
+        if (attackInvolvedIn == null)
             attackInvolvedIn = new ArrayList<>();
         return attackInvolvedIn;
     }
 
-    public void notifyDeath(Player killer){
+    public void notifyDeath(Player killer) {
         Iterator<String> iterator = getAttackInvolvedIn().iterator();
         while (iterator.hasNext()) {
             String attackID = iterator.next();
@@ -227,8 +210,8 @@ public class PlayerData implements TanPlayer {
         }
     }
 
-    public void addWar(CurrentAttack currentAttacks){
-        if(getAttackInvolvedIn().contains(currentAttacks.getId())){
+    public void addWar(CurrentAttack currentAttacks) {
+        if (getAttackInvolvedIn().contains(currentAttacks.getId())) {
             return;
         }
         getAttackInvolvedIn().add(currentAttacks.getId());
@@ -247,39 +230,39 @@ public class PlayerData implements TanPlayer {
         }
     }
 
-    public boolean isAtWarWith(TerritoryData territoryData){
-        if(territoryData == null){
+    public boolean isAtWarWith(TerritoryData territoryData) {
+        if (territoryData == null) {
             return false;
         }
-        for(String attackID : getAttackInvolvedIn()){
+        for (String attackID : getAttackInvolvedIn()) {
             CurrentAttack currentAttack = CurrentAttacksStorage.get(attackID);
-            if(currentAttack == null){
+            if (currentAttack == null) {
                 getAttackInvolvedIn().remove(attackID);
                 continue;
             }
-            if(currentAttack.getDefenders().contains(territoryData)){
+            if (currentAttack.getDefenders().contains(territoryData)) {
                 return true;
             }
         }
         return false;
     }
 
-    public void removeWar(@NotNull CurrentAttack currentAttacks){
+    public void removeWar(@NotNull CurrentAttack currentAttacks) {
         getAttackInvolvedIn().remove(currentAttacks.getId());
     }
 
     public TownRelation getRelationWithPlayer(Player playerToAdd) {
         PlayerData otherPlayer = PlayerDataStorage.getInstance().get(playerToAdd);
-        if(!hasTown() || !otherPlayer.hasTown())
+        if (!hasTown() || !otherPlayer.hasTown())
             return null;
 
-        TownData playerTown = TownDataStorage.get(this);
-        TownData otherPlayerTown = TownDataStorage.get(playerToAdd);
+        TownData playerTown = TownDataStorage.getInstance().get(this);
+        TownData otherPlayerTown = TownDataStorage.getInstance().get(playerToAdd);
 
         TownRelation currentRelation = playerTown.getRelationWith(otherPlayerTown);
 
         //If no relation, check if maybe they are from the same region TODO implement this inside TownData#getRelationWith()
-        if(currentRelation == null && playerTown.haveOverlord() && otherPlayerTown.haveOverlord()){
+        if (currentRelation == null && playerTown.haveOverlord() && otherPlayerTown.haveOverlord()) {
             currentRelation = playerTown.getOverlord().getRelationWith(otherPlayerTown.getOverlord());
         }
 
@@ -287,7 +270,7 @@ public class PlayerData implements TanPlayer {
     }
 
     public int getRegionRankID() {
-        if(regionRankID == null)
+        if (regionRankID == null)
             regionRankID = getRegion().getDefaultRankID();
         return regionRankID;
     }
@@ -297,10 +280,9 @@ public class PlayerData implements TanPlayer {
     }
 
     public int getRankID(TerritoryData territoryData) {
-        if(territoryData instanceof TownData){
+        if (territoryData instanceof TownData) {
             return getTownRankID();
-        }
-        else if(territoryData instanceof RegionData){
+        } else if (territoryData instanceof RegionData) {
             return getRegionRankID();
         }
         return -1;
@@ -308,10 +290,10 @@ public class PlayerData implements TanPlayer {
 
     public List<TerritoryData> getAllTerritoriesPlayerIsIn() {
         List<TerritoryData> territories = new ArrayList<>();
-        if(hasTown()){
+        if (hasTown()) {
             territories.add(getTown());
         }
-        if(hasRegion()){
+        if (hasRegion()) {
             territories.add(getRegion());
         }
         return territories;
@@ -322,7 +304,7 @@ public class PlayerData implements TanPlayer {
     }
 
     public LangType getLang() {
-        if(lang == null)
+        if (lang == null)
             return Lang.getChosenLang();
         return lang;
     }

@@ -59,7 +59,7 @@ class CreateTownServer extends SubCommand {
             return;
         }
         boolean allowDuplicate = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",false);
-        if(!allowDuplicate && TownDataStorage.isNameUsed(townName)){
+        if(!allowDuplicate && TownDataStorage.getInstance().isNameUsed(townName)){
             commandSender.sendMessage(Lang.NAME_ALREADY_USED.get());
             return;
         }

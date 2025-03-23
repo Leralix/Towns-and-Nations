@@ -14,11 +14,11 @@ public class SaveStats {
         new BukkitRunnable() {
             @Override
             public void run() {
-                RegionDataStorage.saveStats();
-                TownDataStorage.saveStats();
+                RegionDataStorage.getInstance().saveStats();
+                TownDataStorage.getInstance().saveStats();
                 PlayerDataStorage.getInstance().saveStats();
                 NewClaimedChunkStorage.getInstance().save();
-                LandmarkStorage.save();
+                LandmarkStorage.getInstance().save();
                 PlannedAttackStorage.save();
             }
         }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L);

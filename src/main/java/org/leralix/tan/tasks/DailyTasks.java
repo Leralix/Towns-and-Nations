@@ -45,10 +45,10 @@ public class DailyTasks {
     public static void executeMidnightTasks() {
         propertyRent();
 
-        for(TownData town : TownDataStorage.getTownMap().values()){
+        for(TownData town : TownDataStorage.getInstance().getTownMap().values()){
             town.executeTasks();
         }
-        for(RegionData regionData : RegionDataStorage.getAll()){
+        for(RegionData regionData : RegionDataStorage.getInstance().getAll()){
             regionData.executeTasks();
         }
 
@@ -56,7 +56,7 @@ public class DailyTasks {
         updatePlayerUsernames();
 
         NewsletterStorage.clearOldNewsletters();
-        LandmarkStorage.generateAllRessources();
+        LandmarkStorage.getInstance().generateAllRessources();
         ArchiveUtil.archiveFiles();
     }
 
@@ -67,7 +67,7 @@ public class DailyTasks {
     }
 
     private static void propertyRent() {
-        for (TownData town : TownDataStorage.getTownMap().values()) {
+        for (TownData town : TownDataStorage.getInstance().getTownMap().values()) {
             for (PropertyData property : town.getPropertyDataList()) {
                 if (property.isRented()) {
                     property.payRent();

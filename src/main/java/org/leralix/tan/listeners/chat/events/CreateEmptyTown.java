@@ -25,12 +25,12 @@ public class CreateEmptyTown extends ChatListenerEvent {
             return;
         }
 
-        if(TownDataStorage.isNameUsed(townName)){
+        if(TownDataStorage.getInstance().isNameUsed(townName)){
             player.sendMessage(TanChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
             return;
         }
 
-        TownDataStorage.newTown(townName);
+        TownDataStorage.getInstance().newTown(townName);
         Bukkit.broadcastMessage(TanChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(),townName));
         SoundUtil.playSound(player, SoundEnum.LEVEL_UP);
         PlayerChatListenerStorage.removePlayer(player);

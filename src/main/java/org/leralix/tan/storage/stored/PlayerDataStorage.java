@@ -13,7 +13,7 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
 
-public class PlayerDataStorage implements TanPlayerManager {
+public class PlayerDataStorage {
 
     private static final String ERROR_MESSAGE = "Error while creating player storage";
 

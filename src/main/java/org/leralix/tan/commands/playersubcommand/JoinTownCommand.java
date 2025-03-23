@@ -68,7 +68,7 @@ public class JoinTownCommand extends PlayerSubCommand {
                 return;
             }
 
-            TownData townData = TownDataStorage.get(townID);
+            TownData townData = TownDataStorage.getInstance().get(townID);
             PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
             if(townData.isFull()){

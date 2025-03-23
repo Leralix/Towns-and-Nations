@@ -50,7 +50,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
         } else if (args.length == 2){
 
             String channelName = args[1];
-            TownData town = TownDataStorage.get(player);
+            TownData town = TownDataStorage.getInstance().get(player);
             if(town == null){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
                 return;

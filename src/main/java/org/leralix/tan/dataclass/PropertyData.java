@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class PropertyData implements TanProperty {
+public class PropertyData {
     private final String ID;
     private String owningPlayerID;
     private String rentingPlayerID;
@@ -84,7 +84,7 @@ public class PropertyData implements TanProperty {
         return parts[0];
     }
     public TownData getTerritory(){
-        return TownDataStorage.get(getOwningStructureID());
+        return TownDataStorage.getInstance().get(getOwningStructureID());
     }
 
     public String getPropertyID(){

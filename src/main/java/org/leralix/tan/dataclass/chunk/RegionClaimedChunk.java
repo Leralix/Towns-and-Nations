@@ -66,7 +66,7 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     }
 
     public RegionData getRegion() {
-        return RegionDataStorage.get(getOwnerID());
+        return RegionDataStorage.getInstance().get(getOwnerID());
     }
 
     public void unclaimChunk(Player player){

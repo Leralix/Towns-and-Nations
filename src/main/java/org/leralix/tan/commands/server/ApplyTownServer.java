@@ -61,7 +61,7 @@ public class ApplyTownServer extends SubCommand {
             commandSender.sendMessage(Lang.PLAYER_ALREADY_HAVE_TOWN.get());
             return;
         }
-        TownData townData = TownDataStorage.get(townID);
+        TownData townData = TownDataStorage.getInstance().get(townID);
         townData.addPlayerJoinRequest(p);
     }
 }
