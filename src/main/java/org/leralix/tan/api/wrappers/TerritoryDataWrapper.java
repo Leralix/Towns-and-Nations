@@ -2,11 +2,15 @@ package org.leralix.tan.api.wrappers;
 
 import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.tan.api.interfaces.TanClaimedChunk;
 import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.TanTerritory;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 public class TerritoryDataWrapper implements TanTerritory {
@@ -80,6 +84,11 @@ public class TerritoryDataWrapper implements TanTerritory {
     }
 
     @Override
+    public int getNumberOfClaimedChunk() {
+        return getClaimedChunks().size();
+    }
+
+    @Override
     public Collection<TanPlayer> getMembers() {
         return territoryData.getPlayerDataList().stream()
                 .map(PlayerDataWrapper::of)
@@ -91,5 +100,21 @@ public class TerritoryDataWrapper implements TanTerritory {
         return territoryData.getVassals().stream()
                 .map(TerritoryDataWrapper::of)
                 .toList();
+    }
+
+    @Override
+    public boolean haveOverlord() {
+        return territoryData.haveOverlord();
+    }
+
+    @Override
+    public TanTerritory getOverlord() {
+        return  TerritoryDataWrapper.of(territoryData.getOverlord());
+    }
+
+    @Override
+    public Collection<TanClaimedChunk> getClaimedChunks() {
+        return NewClaimedChunkStorage.getInstance().getAllChunkFrom(territoryData).stream()
+                .map(p -> (TanClaimedChunk) p).toList();
     }
 }

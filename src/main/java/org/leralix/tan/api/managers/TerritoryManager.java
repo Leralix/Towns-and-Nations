@@ -1,5 +1,6 @@
 package org.leralix.tan.api.managers;
 
+import org.leralix.tan.api.wrappers.RegionDataWrapper;
 import org.leralix.tan.api.wrappers.TownDataWrapper;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -54,7 +55,8 @@ public class TerritoryManager implements TanTerritoryManager {
 
     @Override
     public Optional<TanRegion> getRegion(UUID uuid) {
-        return Optional.ofNullable(regionDataStorageInstance.get(uuid.toString()));
+        RegionDataWrapper regionDataWrapper = RegionDataWrapper.of(regionDataStorageInstance.get(uuid.toString()));
+        return Optional.ofNullable(regionDataWrapper);
     }
 
     @Override

@@ -23,6 +23,11 @@ public class TownDataWrapper extends TerritoryDataWrapper implements TanTown {
     }
 
     @Override
+    public int getLevel() {
+        return townData.getLevel().getTownLevel();
+    }
+
+    @Override
     public Collection<TanProperty> getProperties() {
         return townData.getPropertyDataMap().values().stream()
                 .map(PropertyDataWrapper::of)

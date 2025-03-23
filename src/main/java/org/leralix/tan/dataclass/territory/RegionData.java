@@ -37,7 +37,7 @@ import org.tan.api.interfaces.TanRegion;
 
 import java.util.*;
 
-public class RegionData extends TerritoryData implements TanRegion {
+public class RegionData extends TerritoryData {
 
     private final String regionId;
     private final String regionName;
