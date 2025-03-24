@@ -54,16 +54,16 @@ public abstract class TerritoryData {
     private String id;
     private String name;
     private String description;
-    String overlordID;
+    protected String overlordID;
     private Long dateTimeCreated;
     private CustomIcon customIcon;
     private RelationData relations;
     private Double baseTax;
     private double propertyRentTax;
     private double propertyBuyTax;
-    Integer color;
-    private Integer defaultRankID;
-    private Map<Integer, RankData> ranks;
+    protected Integer color;
+    protected Integer defaultRankID;
+    protected Map<Integer, RankData> ranks;
     private Collection<String> attackIncomingList;
     private Collection<String> currentAttackList;
     private HashMap<String, Integer> availableClaims;
@@ -119,6 +119,10 @@ public abstract class TerritoryData {
 
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get(this.getName(),newName));
         SoundUtil.playSound(player, SoundEnum.GOOD);
+        rename(newName);
+    }
+
+    public void rename(String newName){
         this.name = newName;
     }
 
@@ -245,7 +249,7 @@ public abstract class TerritoryData {
         return getRelations().getRelationWith(territoryID);
     }
     @SuppressWarnings("unused")
-    public long getDateTimeCreated(){
+    public long getCreationDate(){
         if(dateTimeCreated == null){
             dateTimeCreated = getOldDateTime();
         }
@@ -588,8 +592,13 @@ public abstract class TerritoryData {
 
     protected Map<Integer, RankData> getRanks(){
         if(ranks == null) {
-            ranks = new HashMap<>();
-            registerNewRank("default");
+            if(this instanceof TownData townData){
+                ranks = townData.getOldRank();
+            }
+            else {
+                ranks = new HashMap<>();
+                registerNewRank("default");
+            }
         }
         return ranks;
     }

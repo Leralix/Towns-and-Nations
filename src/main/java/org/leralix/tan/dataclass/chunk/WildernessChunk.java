@@ -16,6 +16,8 @@ import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 
+import java.util.Optional;
+
 public class WildernessChunk extends ClaimedChunk2 {
 
 
@@ -66,7 +68,7 @@ public class WildernessChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public boolean canTerritoryClaim(Player player, TerritoryData townData) {
+    public boolean canTerritoryClaim(Optional<Player> player, TerritoryData townData) {
         return true;
     }
 

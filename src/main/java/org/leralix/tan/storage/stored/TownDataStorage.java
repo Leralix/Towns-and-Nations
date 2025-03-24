@@ -26,15 +26,22 @@ import java.util.Map;
 
 public class TownDataStorage {
     private static final String ERROR_MESSAGE = "Error while creating town storage";
+    private static TownDataStorage instance;
+    private LinkedHashMap<String, TownData> townDataMap = new LinkedHashMap<>();
+    private int newTownId = 1;
 
-    private TownDataStorage() {
-        throw new IllegalStateException("Utility class");
+    protected TownDataStorage() {
+        loadStats();
     }
 
-    private static LinkedHashMap<String, TownData> townDataMap = new LinkedHashMap<>();
-    private static int newTownId = 1;
+    public static synchronized TownDataStorage getInstance() {
+        if (instance == null) {
+            instance = new TownDataStorage();
+        }
+        return instance;
+    }
 
-    public static TownData newTown(String townName, Player player){
+    public TownData newTown(String townName, Player player){
         String townId = "T"+newTownId;
         String playerID = player.getUniqueId().toString();
         newTownId++;
@@ -47,7 +54,7 @@ public class TownDataStorage {
         return newTown;
     }
 
-    public static void newTown(String townName){
+    public void newTown(String townName){
         String townId = "T"+newTownId;
         newTownId++;
 
@@ -58,32 +65,32 @@ public class TownDataStorage {
     }
 
 
-    public static void deleteTown(TownData townData) {
+    public void deleteTown(TownData townData) {
         townDataMap.remove(townData.getID());
         saveStats();
     }
 
-    public static Map<String, TownData> getTownMap() {
+    public Map<String, TownData> getTownMap() {
         return townDataMap;
     }
 
 
-    public static TownData get(PlayerData playerData){
+    public TownData get(PlayerData playerData){
         return get(playerData.getTownId());
     }
-    public static TownData get(Player player){
+    public TownData get(Player player){
         return get(PlayerDataStorage.getInstance().get(player).getTownId());
     }
-    public static TownData get(String townId) {
+    public TownData get(String townId) {
         return townDataMap.get(townId);
     }
 
 
-    public static int getNumberOfTown() {
+    public int getNumberOfTown() {
         return townDataMap.size();
     }
 
-    public static void loadStats() {
+    private void loadStats() {
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Towns.json");
         if (!file.exists())
             return;
@@ -118,7 +125,7 @@ public class TownDataStorage {
     }
 
 
-    public static void saveStats() {
+    public void saveStats() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting()
                 .registerTypeAdapter(CustomIcon.class, new IconAdapter())
@@ -149,7 +156,7 @@ public class TownDataStorage {
 
 
 
-    public static boolean isNameUsed(String townName){
+    public boolean isNameUsed(String townName){
         if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",true))
             return false;
         
@@ -160,8 +167,9 @@ public class TownDataStorage {
         return false;
     }
 
-    public static Collection<TownData> getAll(){
+    public Collection<TownData> getAll(){
         return getTownMap().values();
     }
+
 
 }

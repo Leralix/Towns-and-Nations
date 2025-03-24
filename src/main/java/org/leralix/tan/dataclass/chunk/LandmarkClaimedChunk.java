@@ -18,6 +18,9 @@ import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 
+import javax.annotation.Nullable;
+import java.util.Optional;
+
 public class LandmarkClaimedChunk extends ClaimedChunk2{
     public LandmarkClaimedChunk(Chunk chunk, String owner) {
         super(chunk, owner);
@@ -27,7 +30,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
         super(x,z,worldUUID,ownerID);
     }
     public String getName(){
-        return TownDataStorage.get(getOwnerID()).getName();
+        return TownDataStorage.getInstance().get(getOwnerID()).getName();
     }
 
     @Override
@@ -55,7 +58,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
 
 
     public Landmark getLandMark(){
-        return LandmarkStorage.get(ownerID);
+        return LandmarkStorage.getInstance().get(ownerID);
     }
     public void unclaimChunk(Player player){
         player.sendMessage(TanChatUtils.getTANString() + Lang.CANNOT_UNCLAIM_LANDMARK_CHUNK.get());
@@ -83,8 +86,8 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
     }
 
     @Override
-    public boolean canTerritoryClaim(Player player, TerritoryData townData) {
-        player.sendMessage(TanChatUtils.getTANString() + Lang.CANNOT_CLAIM_LANDMARK.get());
+    public boolean canTerritoryClaim(Optional<Player> player, TerritoryData townData) {
+        player.ifPresent(p -> p.sendMessage(TanChatUtils.getTANString() + Lang.CANNOT_CLAIM_LANDMARK.get()));
         return false;
     }
 

@@ -123,7 +123,7 @@ public class AdminGUI implements IGUI{
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
-        for(Landmark landmark : LandmarkStorage.getList()){
+        for(Landmark landmark : LandmarkStorage.getInstance().getAll()){
             ItemStack icon = landmark.getIcon();
             HeadUtils.addLore(icon,
                     "",
@@ -167,7 +167,7 @@ public class AdminGUI implements IGUI{
                 player.sendMessage(TanChatUtils.getTANString() + Lang.ADMIN_CHUNK_ALREADY_LANDMARK.get());
                 return;
             }
-            LandmarkStorage.addLandmark(player.getLocation());
+            LandmarkStorage.getInstance().addLandmark(player.getLocation());
             openLandmarks(player,page);
         });
         gui.setItem(6, 4, createLandmarkGui);
@@ -232,7 +232,7 @@ public class AdminGUI implements IGUI{
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
-        for (RegionData regionData : RegionDataStorage.getAll()){
+        for (RegionData regionData : RegionDataStorage.getInstance().getAll()){
 
             ItemStack regionIcon = HeadUtils.getRegionIcon(regionData);
             HeadUtils.addLore(regionIcon, Lang.ADMIN_GUI_REGION_DESC.get());
@@ -362,7 +362,7 @@ public class AdminGUI implements IGUI{
         Gui gui = IGUI.createChestGui(Lang.HEADER_ADMIN_TOWN_MENU.get(),6);
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (TownData townData : TownDataStorage.getTownMap().values()) {
+        for (TownData townData : TownDataStorage.getInstance().getTownMap().values()) {
             ItemStack townIcon = townData.getIconWithInformations(playerData.getLang());
             HeadUtils.addLore(townIcon,
                     "",
@@ -448,7 +448,7 @@ public class AdminGUI implements IGUI{
     private static void openChooseNewOverlord(Player player, TerritoryData territoryData, int page) {
         Gui gui = IGUI.createChestGui(Lang.HEADER_ADMIN_CHANGE_OVERLORD.get(territoryData.getName()),6);
 
-        Collection<RegionData> territoryDataList = RegionDataStorage.getAll();
+        Collection<RegionData> territoryDataList = RegionDataStorage.getInstance().getAll();
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         List<GuiItem> guiItems = new ArrayList<>();
 
@@ -575,7 +575,7 @@ public class AdminGUI implements IGUI{
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
 
-        for (TownData townData : TownDataStorage.getTownMap().values()) {
+        for (TownData townData : TownDataStorage.getInstance().getTownMap().values()) {
             ItemStack townIcon = townData.getIconWithInformations(playerData.getLang());
             HeadUtils.addLore(townIcon,
                     "",

@@ -37,7 +37,7 @@ public class SaveData extends SubCommand {
     }
     @Override
     public void perform(CommandSender commandSender, String[] args) {
-        TownDataStorage.saveStats();
+        TownDataStorage.getInstance().saveStats();
         PlayerDataStorage.getInstance().saveStats();
         commandSender.sendMessage(TanChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }

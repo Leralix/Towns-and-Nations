@@ -36,7 +36,7 @@ public class PropertySignListener implements Listener {
                     for (MetadataValue value : sign.getMetadata("propertySign")) {
                         String customData = value.asString();
                         String[] ids = customData.split("_");
-                        PropertyData propertyData = TownDataStorage.get(ids[0]).getProperty(ids[1]);
+                        PropertyData propertyData = TownDataStorage.getInstance().get(ids[0]).getProperty(ids[1]);
                         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
                             if(playerEmbargoWithTown(player, clickedBlock)){

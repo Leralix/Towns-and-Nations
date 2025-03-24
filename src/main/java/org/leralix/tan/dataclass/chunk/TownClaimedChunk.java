@@ -29,18 +29,23 @@ import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 
+import java.util.Optional;
+
 public class TownClaimedChunk extends ClaimedChunk2{
     public TownClaimedChunk(Chunk chunk, String owner) {
         super(chunk, owner);
     }
+
     public TownClaimedChunk(int x, int z, String worldUUID, String ownerID) {
         super(x,z,worldUUID,ownerID);
     }
+
     public String getName(){
         return getTown().getName();
     }
+
     public TownData getTown(){
-        return TownDataStorage.get(ownerID);
+        return TownDataStorage.getInstance().get(ownerID);
     }
 
     @Override
@@ -117,7 +122,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
         TownData townTo = getTown();
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.PLAYER_ENTER_TOWN_CHUNK.get(townTo.getName())));
 
-        TownData playerTown = TownDataStorage.get(player);
+        TownData playerTown = TownDataStorage.getInstance().get(player);
         if(playerTown == null){
             return;
         }
@@ -126,7 +131,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
         if(relation == TownRelation.WAR && ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("notifyEnemyEnterTown",true)){
             SoundUtil.playSound(player, SoundEnum.BAD);
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ENTER_TOWN_AT_WAR.get());
-            townTo.broadCastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.get(player).getName(),player.getName()), SoundEnum.BAD);
+            townTo.broadCastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.getInstance().get(player).getName(),player.getName()), SoundEnum.BAD);
         }
     }
 
@@ -151,11 +156,10 @@ public class TownClaimedChunk extends ClaimedChunk2{
     }
 
     @Override
-    public boolean canTerritoryClaim(Player player, TerritoryData territoryData) {
+    public boolean canTerritoryClaim(Optional<Player> player, TerritoryData territoryData) {
         if(territoryData.canConquerChunk(this))
             return true;
-
-        player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName()));
+        player.ifPresent(p -> p.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName())));
         return false;
     }
 

@@ -76,7 +76,7 @@ public class PlayerGUI implements IGUI {
         boolean playerHaveTown = playerData.hasTown();
         boolean playerHaveRegion = playerData.hasRegion();
 
-        TownData town = TownDataStorage.get(playerData);
+        TownData town = TownDataStorage.getInstance().get(playerData);
         RegionData region = null;
         if(playerHaveRegion){
             region = town.getRegion();
@@ -630,7 +630,7 @@ public class PlayerGUI implements IGUI {
                 Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.get(playerData, townPrice));
         ItemStack browse = HeadUtils.createCustomItemStack(Material.ANVIL,
                 Lang.GUI_NO_TOWN_JOIN_A_TOWN.get(playerData),
-                Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(playerData, TownDataStorage.getNumberOfTown()));
+                Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(playerData, TownDataStorage.getInstance().getNumberOfTown()));
 
         GuiItem createButton = ItemBuilder.from(createTown).asGuiItem(event -> {
             event.setCancelled(true);
@@ -669,7 +669,7 @@ public class PlayerGUI implements IGUI {
 
         ArrayList<GuiItem> townItemStacks = new ArrayList<>();
 
-        for(TownData specificTownData : TownDataStorage.getTownMap().values()){
+        for(TownData specificTownData : TownDataStorage.getInstance().getTownMap().values()){
             ItemStack townIcon = specificTownData.getIconWithInformations(playerData.getLang());
             HeadUtils.addLore(townIcon,
                     "",
@@ -721,7 +721,7 @@ public class PlayerGUI implements IGUI {
     public static void openTownMenu(Player player) {
         int nRows = 4;
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        TownData townData = TownDataStorage.get(playerData);
+        TownData townData = TownDataStorage.getInstance().get(playerData);
 
         Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_MENU.get(playerData, townData.getName()),nRows);
         gui.setDefaultClickAction(event -> {
@@ -1269,7 +1269,7 @@ public class PlayerGUI implements IGUI {
         ArrayList<GuiItem> landmarkGui = new ArrayList<>();
 
         for(String landmarkID : townData.getOwnedLandmarksID()){
-            Landmark landmarkData = LandmarkStorage.get(landmarkID);
+            Landmark landmarkData = LandmarkStorage.getInstance().get(landmarkID);
 
             GuiItem landmarkButton = ItemBuilder.from(landmarkData.getIcon()).asGuiItem(event -> event.setCancelled(true));
             landmarkGui.add(landmarkButton);
@@ -1292,9 +1292,9 @@ public class PlayerGUI implements IGUI {
         List<TerritoryData> territoryList = new ArrayList<>();
 
         if(scope == BrowseScope.ALL || scope == BrowseScope.TOWNS)
-            territoryList.addAll(TownDataStorage.getAll());
+            territoryList.addAll(TownDataStorage.getInstance().getAll());
         if(scope == BrowseScope.ALL || scope == BrowseScope.REGIONS)
-            territoryList.addAll(RegionDataStorage.getAll());
+            territoryList.addAll(RegionDataStorage.getInstance().getAll());
 
         ArrayList<GuiItem> townGuiItems = new ArrayList<>();
 
@@ -1813,7 +1813,7 @@ public class PlayerGUI implements IGUI {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_UPGRADE.get(playerData, level + 1),6);
 
-        TownData townData = TownDataStorage.get(player);
+        TownData townData = TownDataStorage.getInstance().get(player);
         Level townLevel = townData.getLevel();
 
         ItemStack whitePanel = HeadUtils.createCustomItemStack(Material.WHITE_STAINED_GLASS_PANE,"");
@@ -2283,8 +2283,8 @@ public class PlayerGUI implements IGUI {
         List<GuiItem> guiItems = new ArrayList<>();
 
         List<String> territories = new ArrayList<>();
-        territories.addAll(TownDataStorage.getTownMap().keySet());
-        territories.addAll(RegionDataStorage.getRegionStorage().keySet());
+        territories.addAll(TownDataStorage.getInstance().getTownMap().keySet());
+        territories.addAll(RegionDataStorage.getInstance().getRegionStorage().keySet());
 
         territories.removeAll(relationListID); //Territory already have this relation
         territories.remove(territory.getID()); //Remove itself
@@ -2445,7 +2445,7 @@ public class PlayerGUI implements IGUI {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         Gui gui = IGUI.createChestGui(Lang.HEADER_MOB_SETTINGS.get(playerData, page + 1),6);
 
-        TownData townData = TownDataStorage.get(player);
+        TownData townData = TownDataStorage.getInstance().get(player);
         ClaimedChunkSettings chunkSettings = townData.getChunkSettings();
 
         ArrayList<GuiItem> guiLists = new ArrayList<>();
@@ -2509,7 +2509,7 @@ public class PlayerGUI implements IGUI {
         Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_PROPERTIES.get(playerData), 6);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
-        TownData townData = TownDataStorage.get(playerData);
+        TownData townData = TownDataStorage.getInstance().get(playerData);
 
         for (PropertyData townProperty : townData.getPropertyDataList()){
             ItemStack property = townProperty.getIcon(playerData.getLang());
@@ -2668,7 +2668,7 @@ public class PlayerGUI implements IGUI {
 
         ItemStack browseRegion = HeadUtils.createCustomItemStack(Material.BOOK,
                 Lang.GUI_REGION_BROWSE.get(playerData),
-                Lang.GUI_REGION_BROWSE_DESC1.get(playerData, RegionDataStorage.getNumberOfRegion()),
+                Lang.GUI_REGION_BROWSE_DESC1.get(playerData, RegionDataStorage.getInstance().getNumberOfRegion()),
                 Lang.GUI_REGION_BROWSE_DESC2.get(playerData)
         );
 
@@ -2685,7 +2685,7 @@ public class PlayerGUI implements IGUI {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get(playerData));
                 return;
             }
-            double townMoney = TownDataStorage.get(player).getBalance();
+            double townMoney = TownDataStorage.getInstance().get(player).getBalance();
             if (townMoney < regionCost) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(playerData, regionCost - townMoney));
             }
@@ -2923,7 +2923,7 @@ public class PlayerGUI implements IGUI {
         Gui gui = IGUI.createChestGui(Lang.HEADER_SETTINGS.get(playerData), 3);
 
         PlayerData playerStat = PlayerDataStorage.getInstance().get(player);
-        TownData playerTown = TownDataStorage.get(playerStat);
+        TownData playerTown = TownDataStorage.getInstance().get(playerStat);
         RegionData playerRegion = playerTown.getRegion();
 
         ItemStack regionIcon = HeadUtils.getRegionIcon(playerRegion);
@@ -3082,9 +3082,9 @@ public class PlayerGUI implements IGUI {
 
     public static void dispatchLandmarkGui(Player player, Landmark landmark){
 
-        TownData townData = TownDataStorage.get(player);
+        TownData townData = TownDataStorage.getInstance().get(player);
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        if(!landmark.hasOwner()){
+        if(!landmark.isOwned()){
             openLandmarkNoOwner(player,landmark);
             return;
         }
@@ -3092,7 +3092,7 @@ public class PlayerGUI implements IGUI {
             openPlayerOwnLandmark(player,landmark);
             return;
         }
-        TownData owner = TownDataStorage.get(landmark.getOwnerID());
+        TownData owner = TownDataStorage.getInstance().get(landmark.getOwnerID());
         player.sendMessage(TanChatUtils.getTANString() + Lang.LANDMARK_ALREADY_CLAIMED.get(playerData, owner.getName()));
         SoundUtil.playSound(player, MINOR_BAD);
 
@@ -3104,7 +3104,7 @@ public class PlayerGUI implements IGUI {
 
         GuiItem landmarkIcon = ItemBuilder.from(landmark.getIcon()).asGuiItem(event -> event.setCancelled(true));
 
-        TownData playerTown = TownDataStorage.get(player);
+        TownData playerTown = TownDataStorage.getInstance().get(player);
 
         ItemStack claimLandmark = HeadUtils.makeSkullB64(
                 Lang.GUI_TOWN_RELATION_ADD_TOWN.get(playerData),
@@ -3145,7 +3145,7 @@ public class PlayerGUI implements IGUI {
     }
 
     private static void openPlayerOwnLandmark(Player player, Landmark landmark) {
-        TownData townData = TownDataStorage.get(landmark.getOwnerID());
+        TownData townData = TownDataStorage.getInstance().get(landmark.getOwnerID());
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         Gui gui = IGUI.createChestGui(Lang.HEADER_LANDMARK_CLAIMED.get(playerData, townData.getName()), 3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
@@ -3176,7 +3176,7 @@ public class PlayerGUI implements IGUI {
         GuiItem removeTownButton = ItemBuilder.from(removeTown).asGuiItem(event -> {
             event.setCancelled(true);
             townData.removeLandmark(landmark);
-            TownData playerTown = TownDataStorage.get(player);
+            TownData playerTown = TownDataStorage.getInstance().get(player);
             playerTown.broadCastMessageWithSound(Lang.GUI_LANDMARK_REMOVED.get(playerData),BAD);
             dispatchLandmarkGui(player,landmark);
         });

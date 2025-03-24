@@ -25,6 +25,8 @@ import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 
+import java.util.Optional;
+
 public class RegionClaimedChunk extends ClaimedChunk2{
 
 
@@ -66,7 +68,7 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     }
 
     public RegionData getRegion() {
-        return RegionDataStorage.get(getOwnerID());
+        return RegionDataStorage.getInstance().get(getOwnerID());
     }
 
     public void unclaimChunk(Player player){
@@ -118,15 +120,14 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     }
 
     @Override
-    public boolean canTerritoryClaim(Player player, TerritoryData territoryData) {
+    public boolean canTerritoryClaim(Optional<Player> player, TerritoryData territoryData) {
         if(territoryData.canConquerChunk(this))
             return true;
 
         if(getRegion().getSubjects().contains(territoryData)){
-            return true; // if the town is part of this specific region they can claim
+            return true; // if the town is part of this specific region, they can claim
         }
-
-        player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName()));
+        player.ifPresent( p -> p.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName())));
         return false;
     }
 

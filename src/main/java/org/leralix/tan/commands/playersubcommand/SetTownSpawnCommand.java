@@ -54,7 +54,7 @@ public class SetTownSpawnCommand extends PlayerSubCommand {
         }
 
         //No permission
-        TownData townData = TownDataStorage.get(player);
+        TownData townData = TownDataStorage.getInstance().get(player);
 
         if(!townData.doesPlayerHavePermission(playerStat, RolePermission.TOWN_ADMINISTRATOR)){
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());

@@ -51,14 +51,14 @@ public class ClaimCommand extends PlayerSubCommand {
         TerritoryData territoryData;
 
         if(args[1].equals("town")){
-            territoryData = TownDataStorage.get(player);
+            territoryData = TownDataStorage.getInstance().get(player);
             if(territoryData == null){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
                 return;
             }
         }
         else if(args[1].equals("region")){
-            territoryData = RegionDataStorage.get(player);
+            territoryData = RegionDataStorage.getInstance().get(player);
             if(territoryData == null){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NO_REGION.get());
                 return;

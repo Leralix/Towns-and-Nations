@@ -16,6 +16,7 @@ import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 public abstract class ClaimedChunk2 {
@@ -96,7 +97,7 @@ public abstract class ClaimedChunk2 {
 
     public abstract TextComponent getMapIcon(PlayerData playerData);
 
-    public abstract boolean canTerritoryClaim(Player player, TerritoryData territoryData);
+    public abstract boolean canTerritoryClaim(Optional<Player> player, TerritoryData territoryData);
 
 
     public abstract boolean isClaimed();

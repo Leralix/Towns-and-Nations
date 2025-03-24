@@ -8,6 +8,6 @@ public class CreateRegion extends ChatListenerEvent {
 
     @Override
     public void execute(Player player, String message) {
-        RegionDataStorage.createNewRegion(player, message);
+        RegionDataStorage.getInstance().createNewRegion(player, message);
     }
 }

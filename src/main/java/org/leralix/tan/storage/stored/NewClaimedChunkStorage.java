@@ -59,7 +59,7 @@ public class NewClaimedChunkStorage {
     public TownData getChunkOwnerTown(Chunk chunk) {
         if (!isChunkClaimed(chunk))
             return null;
-        return TownDataStorage.get(getChunkOwnerID(chunk));
+        return TownDataStorage.getInstance().get(getChunkOwnerID(chunk));
     }
 
     public Collection<ClaimedChunk2> getAllChunkFrom(TerritoryData territoryData){
@@ -77,10 +77,10 @@ public class NewClaimedChunkStorage {
         ClaimedChunk2 claimedChunk = claimedChunksMap.get(getChunkKey(chunk));
 
         if(claimedChunk instanceof TownClaimedChunk){
-            return TownDataStorage.get(claimedChunk.getOwnerID()).getName();
+            return TownDataStorage.getInstance().get(claimedChunk.getOwnerID()).getName();
         }
         else if(claimedChunk instanceof RegionClaimedChunk){
-            return RegionDataStorage.get(claimedChunk.getOwnerID()).getName();
+            return RegionDataStorage.getInstance().get(claimedChunk.getOwnerID()).getName();
         }
         return null;
     }
@@ -92,7 +92,7 @@ public class NewClaimedChunkStorage {
             return cChunk.getOwnerID().equals(townID);
         }
         else if(cChunk instanceof RegionClaimedChunk regionClaimedChunk){
-            return regionClaimedChunk.getRegion().isTownInRegion(TownDataStorage.get(townID));
+            return regionClaimedChunk.getRegion().isTownInRegion(TownDataStorage.getInstance().get(townID));
         }
         return false;
     }
@@ -161,7 +161,7 @@ public class NewClaimedChunkStorage {
         return claimedChunk;
     }
 
-    public void loadStats() {
+    private void loadStats() {
         Gson gson = new Gson();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Claimed Chunks.json");
         if (file.exists()) {

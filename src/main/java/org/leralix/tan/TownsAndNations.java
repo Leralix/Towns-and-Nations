@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.lib.data.PluginVersion;
+import org.leralix.tan.api.InternalAPI;
 import org.leralix.tan.commands.adminsubcommand.AdminCommandManager;
 import org.leralix.tan.commands.debugsubcommand.DebugCommandManager;
 import org.leralix.tan.commands.playersubcommand.PlayerCommandManager;
@@ -32,6 +33,7 @@ import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.api.PlaceHolderAPI;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
+import org.tan.api.TanAPI;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -66,8 +68,8 @@ public final class TownsAndNations extends JavaPlugin {
      * Used to check if the plugin is up-to-date to the latest version. Also
      * used to check if the plugin has just been updated and config file needs an update
      */
-    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,13,4);
-    private static final PluginVersion MINIMUM_SUPPORTING_DYNMAP = new PluginVersion(0,10,1);
+    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,14,0);
+    private static final PluginVersion MINIMUM_SUPPORTING_DYNMAP = new PluginVersion(0,11,0);
 
     /**
      * Latest version of the plugin from GitHub.
@@ -149,11 +151,11 @@ public final class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO,"[TaN] -Loading Local data");
 
-        RegionDataStorage.loadStats();
+        RegionDataStorage.getInstance().loadStats();
         this.playerDataStorage = PlayerDataStorage.getInstance();
-        NewClaimedChunkStorage.getInstance().loadStats();
-        TownDataStorage.loadStats();
-        LandmarkStorage.load();
+        NewClaimedChunkStorage.getInstance();
+        TownDataStorage.getInstance();
+        LandmarkStorage.getInstance().load();
         PlannedAttackStorage.load();
         NewsletterStorage.load();
 
@@ -180,13 +182,12 @@ public final class TownsAndNations extends JavaPlugin {
 
         checkForUpdate();
 
+        getLogger().log(Level.INFO,"[TaN] -Registering API");
 
-        getLogger().log(Level.INFO,"[TaN] Plugin loaded successfully");
-
-
-
+        TanAPI.register(new InternalAPI(CURRENT_VERSION,MINIMUM_SUPPORTING_DYNMAP));
         new Metrics(this, 20527);
 
+        getLogger().log(Level.INFO,"[TaN] Plugin loaded successfully");
         getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
     }
 
@@ -228,11 +229,11 @@ public final class TownsAndNations extends JavaPlugin {
         getLogger().info("[TaN] Savings Data");
 
 
-        RegionDataStorage.saveStats();
-        TownDataStorage.saveStats();
+        RegionDataStorage.getInstance().saveStats();
+        TownDataStorage.getInstance().saveStats();
         playerDataStorage.saveStats();
         NewClaimedChunkStorage.getInstance().save();
-        LandmarkStorage.save();
+        LandmarkStorage.getInstance().save();
         PlannedAttackStorage.save();
         NewsletterStorage.save();
 

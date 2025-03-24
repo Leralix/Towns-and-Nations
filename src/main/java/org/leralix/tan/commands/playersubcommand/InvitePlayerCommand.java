@@ -52,7 +52,7 @@ public class InvitePlayerCommand extends PlayerSubCommand {
         }else if(args.length == 2){
 
             PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-            TownData townData = TownDataStorage.get(player);
+            TownData townData = TownDataStorage.getInstance().get(player);
 
             if(townData == null){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
@@ -70,7 +70,7 @@ public class InvitePlayerCommand extends PlayerSubCommand {
             }
 
 
-            TownData town = TownDataStorage.get(player);
+            TownData town = TownDataStorage.getInstance().get(player);
             if(town.isFull()){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.INVITATION_TOWN_FULL.get());
                 return;

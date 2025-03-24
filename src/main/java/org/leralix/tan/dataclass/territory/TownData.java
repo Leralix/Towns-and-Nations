@@ -32,24 +32,25 @@ import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.StringUtil;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.TeamUtils;
-import org.tan.api.interfaces.TanTown;
 
 import java.util.*;
 
 
-public class TownData extends TerritoryData implements TanTown {
+public class TownData extends TerritoryData {
 
     private final String TownId;
     private String TownName;
     private String UuidLeader;
-    private Integer townDefaultRankID;
+    @Deprecated(since = "0.14.0", forRemoval = true)
+    private Integer townDefaultRankID; //TODO : remove before v1.0.0
     private Long townDateTimeCreated;
     private boolean isRecruiting;
     private Double balance;
     private Integer chunkColor;
     private String townTag;
     private Level townLevel = new Level();
-    private final HashSet<String> townPlayerListId = new HashSet<>();
+    @Deprecated(since = "0.14.0", forRemoval = true)
+    private final HashSet<String> townPlayerListId = new HashSet<>(); //TODO : remove before v1.0.0
     private Map<Integer, RankData> newRanks = new HashMap<>();
     private Collection<String> ownedLandmarks = new ArrayList<>();
     private HashSet<String> PlayerJoinRequestSet = new HashSet<>();
@@ -66,7 +67,6 @@ public class TownData extends TerritoryData implements TanTown {
         this.townDateTimeCreated = new Date().getTime();
         this.isRecruiting = false;
         this.balance = 0.0;
-        this.townDefaultRankID = 0;
         int prefixSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize",3);
         this.townTag = townName.length() >= prefixSize ? townName.substring(0, prefixSize).toUpperCase() : townName.toUpperCase();
         super.color = StringUtil.randomColor();
@@ -76,11 +76,10 @@ public class TownData extends TerritoryData implements TanTown {
             addPlayer(leaderID);
     }
 
-    @Override //because old code was not using the centralised attribute
-    protected Map<Integer, RankData> getRanks(){
+    //because old code was not using the centralized attribute
+    protected Map<Integer, RankData> getOldRank(){
         if(newRanks == null)
             newRanks = new HashMap<>();
-
         return newRanks;
     }
 
@@ -114,19 +113,19 @@ public class TownData extends TerritoryData implements TanTown {
             playerIterateOnline.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(getColoredName()));
         broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerData.getNameStored()), SoundEnum.MINOR_GOOD);
 
-        for (TownData allTown : TownDataStorage.getTownMap().values()){
+        for (TownData allTown : TownDataStorage.getInstance().getTownMap().values()){
             allTown.removePlayerJoinRequest(playerData.getID());
         }
 
         TeamUtils.updateAllScoreboardColor();
-        TownDataStorage.saveStats();
+        TownDataStorage.getInstance().saveStats();
     }
 
     public void removePlayer(PlayerData playerData){
         getRank(playerData).removePlayer(playerData);
         townPlayerListId.remove(playerData.getID());
         playerData.leaveTown();
-        TownDataStorage.saveStats();
+        TownDataStorage.getInstance().saveStats();
     }
 
     @Override
@@ -416,7 +415,7 @@ public class TownData extends TerritoryData implements TanTown {
         }
 
         ClaimedChunk2 chunkData = NewClaimedChunkStorage.getInstance().get(chunk);
-        if(!chunkData.canTerritoryClaim(player,this)){
+        if(!chunkData.canTerritoryClaim(Optional.of(player),this)){
             return Optional.empty();
         }
 
@@ -438,7 +437,7 @@ public class TownData extends TerritoryData implements TanTown {
     }
 
     public RegionData getRegion(){
-        return RegionDataStorage.get(this.overlordID);
+        return RegionDataStorage.getInstance().get(this.overlordID);
     }
 
 
@@ -488,11 +487,14 @@ public class TownData extends TerritoryData implements TanTown {
 
     @Override
     public void setDefaultRank(int rankID){
+        this.defaultRankID = rankID;
         this.townDefaultRankID = rankID;
     }
     @Override
     public int getDefaultRankID() {
-        return this.townDefaultRankID;
+        if(this.defaultRankID == null)
+            this.defaultRankID = townDefaultRankID;
+        return defaultRankID;
     }
 
     @Override
@@ -512,7 +514,7 @@ public class TownData extends TerritoryData implements TanTown {
                 if(event.getClick() == ClickType.RIGHT){
 
                     PlayerData kickedPlayerData = PlayerDataStorage.getInstance().get(playerIterate);
-                    TownData townData = TownDataStorage.get(playerData);
+                    TownData townData = TownDataStorage.getInstance().get(playerData);
 
 
                     if(!doesPlayerHavePermission(playerData, RolePermission.KICK_PLAYER)){
@@ -701,7 +703,7 @@ public class TownData extends TerritoryData implements TanTown {
     public Collection<Landmark> getOwnedLandmarks() {
         Collection<Landmark> res = new ArrayList<>();
         for(String landmarkID : getOwnedLandmarksID()){
-            res.add(LandmarkStorage.get(landmarkID));
+            res.add(LandmarkStorage.getInstance().get(landmarkID));
         }
         return res;
     }
@@ -715,14 +717,14 @@ public class TownData extends TerritoryData implements TanTown {
     }
     public void addLandmark(Landmark landmark){
         addLandmark(landmark.getID());
-        landmark.setOwnerID(this);
+        landmark.setOwner(this);
     }
     public void removeLandmark(String landmarkID){
         getOwnedLandmarksID().remove(landmarkID);
     }
     public void removeLandmark(Landmark landmark){
         removeLandmark(landmark.getID());
-        landmark.clearOwner();
+        landmark.removeOwnership();
     }
 
     public boolean ownLandmark(Landmark landmark) {
@@ -746,8 +748,8 @@ public class TownData extends TerritoryData implements TanTown {
 
     public void removeAllLandmark() {
         for(String landmarkID : getOwnedLandmarksID()){
-            Landmark landmark = LandmarkStorage.get(landmarkID);
-            landmark.clearOwner();
+            Landmark landmark = LandmarkStorage.getInstance().get(landmarkID);
+            landmark.removeOwnership();
         }
     }
 
@@ -761,7 +763,7 @@ public class TownData extends TerritoryData implements TanTown {
             removePlayer(PlayerDataStorage.getInstance().get(playerID));
         }
         TeamUtils.updateAllScoreboardColor();
-        TownDataStorage.deleteTown(this);
+        TownDataStorage.getInstance().deleteTown(this);
     }
 
     private void removeAllProperty() {

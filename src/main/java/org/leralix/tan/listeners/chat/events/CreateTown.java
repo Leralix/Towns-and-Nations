@@ -44,7 +44,7 @@ public class CreateTown extends ChatListenerEvent {
             return;
         }
 
-        if(TownDataStorage.isNameUsed(message)){
+        if(TownDataStorage.getInstance().isNameUsed(message)){
             player.sendMessage(TanChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
             return;
         }
@@ -55,7 +55,7 @@ public class CreateTown extends ChatListenerEvent {
 
     public void createTown(Player player, String message) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        TownData newTown = TownDataStorage.newTown(message, player);
+        TownData newTown = TownDataStorage.getInstance().newTown(message, player);
         EconomyUtil.removeFromBalance(player,cost);
         playerData.joinTown(newTown);
 
