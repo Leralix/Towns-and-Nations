@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.TerritoryUtil;
 import org.tan.api.interfaces.TanLandmark;
 import org.tan.api.interfaces.TanTerritory;
 
@@ -25,6 +26,10 @@ public class LandmarkDataWrapper implements TanLandmark {
         return new LandmarkDataWrapper(landmark);
     }
 
+    @Override
+    public String getID() {
+        return landmark.getID();
+    }
 
     @Override
     public String getName() {
@@ -48,14 +53,29 @@ public class LandmarkDataWrapper implements TanLandmark {
     }
 
     @Override
+    public int getQuantity() {
+        return landmark.getRessources().getAmount();
+    }
+
+    @Override
     public void setItem(ItemStack itemStack) {
         itemStack.setAmount(landmark.getRessources().getAmount());
         landmark.setReward(itemStack);
     }
 
     @Override
+    public ItemStack getItem() {
+        return landmark.getRessources();
+    }
+
+    @Override
     public boolean isOwned() {
         return landmark.isOwned();
+    }
+
+    @Override
+    public TanTerritory getOwner() {
+        return TerritoryDataWrapper.of(TerritoryUtil.getTerritory(landmark.getOwnerID()));
     }
 
     @Override

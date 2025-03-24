@@ -10,6 +10,7 @@ import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.TanTerritory;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,8 +30,8 @@ public class TerritoryDataWrapper implements TanTerritory {
     }
 
     @Override
-    public UUID getUUID() {
-        return UUID.fromString(territoryData.getID());
+    public String getID() {
+        return territoryData.getID();
     }
 
     @Override
@@ -115,6 +116,7 @@ public class TerritoryDataWrapper implements TanTerritory {
     @Override
     public Collection<TanClaimedChunk> getClaimedChunks() {
         return NewClaimedChunkStorage.getInstance().getAllChunkFrom(territoryData).stream()
-                .map(p -> (TanClaimedChunk) p).toList();
+                .map(ClaimedChunkWrapper::of)
+                .toList();
     }
 }

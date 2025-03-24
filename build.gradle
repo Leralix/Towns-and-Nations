@@ -60,7 +60,7 @@ dependencies {
     compileOnly 'net.luckperms:api:5.4'
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     compileOnly 'me.clip:placeholderapi:2.11.5'
-    implementation 'io.github.leralix:tan-api:0.1.14'
+    implementation 'io.github.leralix:tan-api:0.1.16'
     implementation 'org.bstats:bstats-bukkit:3.1.0'
     implementation 'net.objecthunter:exp4j:0.4.8'
     implementation("dev.triumphteam:triumph-gui:+")

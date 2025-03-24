@@ -7,6 +7,7 @@ import org.tan.api.interfaces.TanRegion;
 import org.tan.api.interfaces.TanTown;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,51 +28,54 @@ public class PlayerDataWrapper implements TanPlayer {
 
     @Override
     public String getNameStored() {
-        return null;
+        return playerData.getNameStored();
     }
 
     @Override
     public void setNameStored(String s) {
-
+        playerData.setNameStored(s);
     }
 
     @Override
     public UUID getUUID() {
-        return null;
+        return playerData.getUUID();
     }
 
     @Override
     public boolean hasTown() {
-        return false;
+        return playerData.hasTown();
     }
 
     @Override
     public Optional<TanTown> getTown() {
-        return Optional.empty();
+        return Optional.ofNullable(TownDataWrapper.of(playerData.getTown()));
     }
 
     @Override
     public boolean hasRegion() {
-        return false;
+        return playerData.hasRegion();
     }
 
     @Override
     public TanRegion getRegion() {
-        return null;
+        return RegionDataWrapper.of(playerData.getRegion());
     }
 
     @Override
     public Collection<TanProperty> getPropertiesOwned() {
-        return null;
+        return playerData.getProperties().stream()
+                .map(PropertyDataWrapper::of)
+                .map(p -> (TanProperty) p)
+                .toList();
     }
 
     @Override
     public Collection<TanProperty> getPropertiesRented() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public Collection<TanProperty> getPropertiesForSale() {
-        return null;
+        return Collections.emptyList();
     }
 }

@@ -38,34 +38,40 @@ public class TerritoryManager implements TanTerritoryManager {
 
 
     @Override
-    public Optional<TanTown> getTown(UUID uuid) {
-        TownDataWrapper townDataWrapper = TownDataWrapper.of(townDataStorageInstance.get(uuid.toString()));
+    public Optional<TanTown> getTown(String uuid) {
+        TownDataWrapper townDataWrapper = TownDataWrapper.of(townDataStorageInstance.get(uuid));
         return Optional.ofNullable(townDataWrapper);
     }
 
     @Override
-    public Optional<TanTown> getTown(String s) {
+    public Optional<TanTown> getTownByName(String s) {
         return Optional.empty();
     }
 
     @Override
     public Collection<TanTown> getTowns() {
-        return townDataStorageInstance.getAll().stream().map(TanTown.class::cast).toList();
+        return townDataStorageInstance.getAll().stream()
+                .map(TownDataWrapper::of)
+                .map(t -> (TanTown) t)
+                .toList();
     }
 
     @Override
-    public Optional<TanRegion> getRegion(UUID uuid) {
-        RegionDataWrapper regionDataWrapper = RegionDataWrapper.of(regionDataStorageInstance.get(uuid.toString()));
+    public Optional<TanRegion> getRegion(String uuid) {
+        RegionDataWrapper regionDataWrapper = RegionDataWrapper.of(regionDataStorageInstance.get(uuid));
         return Optional.ofNullable(regionDataWrapper);
     }
 
     @Override
-    public Optional<TanRegion> getRegion(String s) {
+    public Optional<TanRegion> getRegionByName(String s) {
         return Optional.empty();
     }
 
     @Override
     public Collection<TanRegion> getRegions() {
-        return regionDataStorageInstance.getAll().stream().map(TanRegion.class::cast).toList();
+        return regionDataStorageInstance.getAll().stream()
+                .map(RegionDataWrapper::of)
+                .map(TanRegion.class::cast)
+                .toList();
     }
 }
