@@ -1,7 +1,9 @@
 package org.leralix.tan.api.wrappers;
 
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.utils.TerritoryUtil;
 import org.tan.api.interfaces.TanClaimedChunk;
 import org.tan.api.interfaces.TanRegion;
 import org.tan.api.interfaces.TanTerritory;
@@ -66,6 +68,10 @@ public class ClaimedChunkWrapper implements TanClaimedChunk {
 
     @Override
     public boolean canClaim(TanTerritory tanTerritory) {
+        TerritoryData territoryData = TerritoryUtil.getTerritory(tanTerritory.getID());
+        if(territoryData != null){
+            return claimedChunk.canTerritoryClaim(null, territoryData);
+        }
         return false;
     }
 

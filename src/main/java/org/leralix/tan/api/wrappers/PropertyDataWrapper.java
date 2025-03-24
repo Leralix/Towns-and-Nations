@@ -21,53 +21,56 @@ public class PropertyDataWrapper implements TanProperty {
         return new PropertyDataWrapper(propertyData);
     }
 
+    public String getID(){
+        return propertyData.getPropertyID();
+    }
     @Override
     public String getName() {
-        return null;
+        return propertyData.getName();
     }
 
     @Override
     public Vector3D getFirstCorner() {
-        return null;
+        return propertyData.getFirstCorner();
     }
 
     @Override
     public Vector3D getSecondCorner() {
-        return null;
+        return propertyData.getSecondCorner();
     }
 
     @Override
     public TanPlayer getOwner() {
-        return null;
+        return PlayerDataWrapper.of(propertyData.getOwner());
     }
 
     @Override
     public boolean isForSale() {
-        return false;
+        return propertyData.isForSale();
     }
 
     @Override
     public boolean isForRent() {
-        return false;
+        return propertyData.isForRent();
     }
 
     @Override
     public boolean isRented() {
-        return false;
+        return propertyData.isRented();
     }
 
     @Override
     public Optional<TanPlayer> getRenter() {
-        return Optional.empty();
+        return Optional.ofNullable(PlayerDataWrapper.of(propertyData.getRenter()));
     }
 
     @Override
     public double getRentPrice() {
-        return 0;
+        return propertyData.getRentPrice();
     }
 
     @Override
     public double getSalePrice() {
-        return 0;
+        return propertyData.getSalePrice();
     }
 }
