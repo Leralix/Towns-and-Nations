@@ -7,6 +7,8 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.tan.api.getters.TanPlayerManager;
 import org.tan.api.interfaces.TanPlayer;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,5 +38,12 @@ public class PlayerManager implements TanPlayerManager {
     @Override
     public TanPlayer get(OfflinePlayer offlinePlayer) {
         return PlayerDataWrapper.of(playerDataStorage.get(offlinePlayer));
+    }
+
+    @Override
+    public Collection<TanPlayer> getAll() {
+        return playerDataStorage.getAll().stream()
+                .map(PlayerDataWrapper::of)
+                .toList();
     }
 }
