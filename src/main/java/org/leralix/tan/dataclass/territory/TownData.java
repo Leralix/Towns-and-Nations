@@ -49,7 +49,8 @@ public class TownData extends TerritoryData {
     private Integer chunkColor;
     private String townTag;
     private Level townLevel = new Level();
-    private final HashSet<String> townPlayerListId = new HashSet<>();
+    @Deprecated(since = "0.14.0", forRemoval = true)
+    private final HashSet<String> townPlayerListId = new HashSet<>(); //TODO : remove before v1.0.0
     private Map<Integer, RankData> newRanks = new HashMap<>();
     private Collection<String> ownedLandmarks = new ArrayList<>();
     private HashSet<String> PlayerJoinRequestSet = new HashSet<>();
@@ -75,11 +76,10 @@ public class TownData extends TerritoryData {
             addPlayer(leaderID);
     }
 
-    @Override //because old code was not using the centralised attribute
-    protected Map<Integer, RankData> getRanks(){
+    //because old code was not using the centralized attribute
+    protected Map<Integer, RankData> getOldRank(){
         if(newRanks == null)
             newRanks = new HashMap<>();
-
         return newRanks;
     }
 
@@ -415,7 +415,7 @@ public class TownData extends TerritoryData {
         }
 
         ClaimedChunk2 chunkData = NewClaimedChunkStorage.getInstance().get(chunk);
-        if(!chunkData.canTerritoryClaim(player,this)){
+        if(!chunkData.canTerritoryClaim(Optional.of(player),this)){
             return Optional.empty();
         }
 

@@ -33,7 +33,6 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.*;
-import org.tan.api.interfaces.TanRegion;
 
 import java.util.*;
 

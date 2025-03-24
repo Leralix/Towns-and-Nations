@@ -63,7 +63,7 @@ public abstract class TerritoryData {
     private double propertyBuyTax;
     protected Integer color;
     protected Integer defaultRankID;
-    private Map<Integer, RankData> ranks;
+    protected Map<Integer, RankData> ranks;
     private Collection<String> attackIncomingList;
     private Collection<String> currentAttackList;
     private HashMap<String, Integer> availableClaims;
@@ -592,8 +592,13 @@ public abstract class TerritoryData {
 
     protected Map<Integer, RankData> getRanks(){
         if(ranks == null) {
-            ranks = new HashMap<>();
-            registerNewRank("default");
+            if(this instanceof TownData townData){
+                ranks = townData.getOldRank();
+            }
+            else {
+                ranks = new HashMap<>();
+                registerNewRank("default");
+            }
         }
         return ranks;
     }
