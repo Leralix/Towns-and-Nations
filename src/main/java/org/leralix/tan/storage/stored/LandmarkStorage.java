@@ -61,10 +61,9 @@ public class LandmarkStorage {
         return landMarkMap.values();
     }
 
-    public void generateAllRessources(){
-        for (Landmark landmark : getAll()){
-            landmark.generateRessources();
-        }
+    public void generateAllResources(){
+        for (Landmark landmark : getList()){
+            landmark.generateResources();
     }
 
     public void load(){

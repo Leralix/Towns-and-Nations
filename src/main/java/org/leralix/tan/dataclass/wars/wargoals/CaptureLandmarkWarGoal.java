@@ -72,12 +72,12 @@ public class CaptureLandmarkWarGoal extends WarGoal {
 
     @Override
     public void applyWarGoal() {
-        TownData attackingTerritory = (TownData) TerritoryUtil.getTerritory(attackingTerritoryID);
-        if(attackingTerritory != null)
-            attackingTerritory.addLandmark(landmarkToCapture);
         TownData defendingTerritory = (TownData) TerritoryUtil.getTerritory(defendingTerritoryID);
         if(defendingTerritory != null)
             defendingTerritory.removeLandmark(landmarkToCapture);
+        TownData attackingTerritory = (TownData) TerritoryUtil.getTerritory(attackingTerritoryID);
+        if(attackingTerritory != null)
+            attackingTerritory.addLandmark(landmarkToCapture);
 
     }
 

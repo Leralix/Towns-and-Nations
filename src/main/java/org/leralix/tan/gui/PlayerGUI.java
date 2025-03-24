@@ -2418,7 +2418,7 @@ public class PlayerGUI implements IGUI {
         Gui gui = IGUI.createChestGui(Lang.HEADER_CHUNK_GENERAL_SETTINGS.get(playerData),3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
         Map<GeneralChunkSetting, Boolean> generalSettings = territoryData.getChunkSettings().getChunkSetting();
-        
+
         for(GeneralChunkSetting generalChunkSetting : GeneralChunkSetting.values()){
 
 
@@ -3148,6 +3148,7 @@ public class PlayerGUI implements IGUI {
         TownData townData = TownDataStorage.getInstance().get(landmark.getOwnerID());
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         Gui gui = IGUI.createChestGui(Lang.HEADER_LANDMARK_CLAIMED.get(playerData, townData.getName()), 3);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         int quantity = landmark.computeStoredReward(townData);
 
