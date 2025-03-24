@@ -33,18 +33,19 @@ public class LandmarkUpdateServer extends SubCommand {
     @Override
     public List<String> getTabCompleteSuggestions(CommandSender commandSender, String s, String[] args) {
         if (args.length == 2) {
-            return LandmarkStorage.getList().stream().map(Landmark::getID).toList();
+            return LandmarkStorage.getInstance().getAll().stream().map(Landmark::getID).toList();
         }
         return Collections.emptyList();
     }
 
     @Override
     public void perform(CommandSender commandSender, String[] args) {
+        LandmarkStorage instance = LandmarkStorage.getInstance();
         if (args.length < 2) {
-            LandmarkStorage.generateAllResources();
+            instance.generateAllResources();
             commandSender.sendMessage(Lang.ALL_LANDMARK_UPDATED.get());
         } else {
-            Landmark landmark = LandmarkStorage.get(args[1]);
+            Landmark landmark = instance.get(args[1]);
             landmark.generateResources();
             commandSender.sendMessage(Lang.LANDMARK_UPDATED.get(landmark.getName(), landmark.getID()));
         }

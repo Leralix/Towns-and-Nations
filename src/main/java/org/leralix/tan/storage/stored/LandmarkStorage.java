@@ -62,8 +62,9 @@ public class LandmarkStorage {
     }
 
     public void generateAllResources(){
-        for (Landmark landmark : getList()){
+        for (Landmark landmark : getAll()) {
             landmark.generateResources();
+        }
     }
 
     public void load(){

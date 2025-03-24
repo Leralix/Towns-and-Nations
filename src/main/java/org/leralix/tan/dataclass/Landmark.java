@@ -105,7 +105,7 @@ public class Landmark {
         return getResources(); // tanmap fix
     }
 
-    public void generateRessources(){
+    public void generateResources(){
         if(!isOwned())
             return;
         if(storedDays >= storedLimit)

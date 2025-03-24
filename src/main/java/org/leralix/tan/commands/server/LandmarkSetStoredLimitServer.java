@@ -33,7 +33,7 @@ public class LandmarkSetStoredLimitServer extends SubCommand {
     @Override
     public List<String> getTabCompleteSuggestions(CommandSender commandSender, String s, String[] args) {
         if (args.length == 2) {
-            return LandmarkStorage.getList().stream().map(Landmark::getID).toList();
+            return LandmarkStorage.getInstance().getAll().stream().map(Landmark::getID).toList();
         }
         return Collections.emptyList();
     }
@@ -43,7 +43,7 @@ public class LandmarkSetStoredLimitServer extends SubCommand {
         if (args.length < 3) {
             commandSender.sendMessage(Lang.INVALID_ARGUMENTS.get());
         } else {
-            Landmark landmark = LandmarkStorage.get(args[1]);
+            Landmark landmark = LandmarkStorage.getInstance().get(args[1]);
             if(landmark == null){
                 commandSender.sendMessage(Lang.LANDMARK_NOT_FOUND.get());
                 return;
