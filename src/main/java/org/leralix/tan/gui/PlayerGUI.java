@@ -2511,7 +2511,7 @@ public class PlayerGUI implements IGUI {
 
         TownData townData = TownDataStorage.getInstance().get(playerData);
 
-        for (PropertyData townProperty : townData.getPropertyDataList()){
+        for (PropertyData townProperty : townData.getProperties()){
             ItemStack property = townProperty.getIcon(playerData.getLang());
 
             GuiItem propertyButton = ItemBuilder.from(property).asGuiItem(event -> {

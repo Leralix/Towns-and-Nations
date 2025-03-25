@@ -1,15 +1,15 @@
 package org.leralix.tan.api.wrappers;
 
 import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.PropertyData;
+import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.storage.stored.TownDataStorage;
 import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.TanProperty;
 import org.tan.api.interfaces.TanRegion;
 import org.tan.api.interfaces.TanTown;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerDataWrapper implements TanPlayer {
 
@@ -71,11 +71,33 @@ public class PlayerDataWrapper implements TanPlayer {
 
     @Override
     public Collection<TanProperty> getPropertiesRented() {
-        return Collections.emptyList();
+        List<TanProperty> properties = new ArrayList<>();
+
+        for(TownData town : TownDataStorage.getInstance().getAll()){
+            for(PropertyData property : town.getProperties()){
+                PlayerData renter = property.getRenter();
+                if(renter == null){
+                    continue;
+                }
+                if(getUUID().equals(renter.getUUID())){
+                    properties.add(PropertyDataWrapper.of(property));
+                }
+            }
+        }
+        return properties;
     }
 
     @Override
     public Collection<TanProperty> getPropertiesForSale() {
-        return Collections.emptyList();
+        List<TanProperty> properties = new ArrayList<>();
+        for(TownData town : TownDataStorage.getInstance().getAll()){
+            for(PropertyData property : town.getProperties()){
+                PlayerData owner = property.getOwner();
+                if(getUUID().equals(owner.getUUID()) && property.isForSale()){
+                    properties.add(PropertyDataWrapper.of(property));
+                }
+            }
+        }
+        return properties;
     }
 }

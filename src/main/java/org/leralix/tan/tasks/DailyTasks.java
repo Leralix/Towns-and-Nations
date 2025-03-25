@@ -70,7 +70,7 @@ public class DailyTasks {
 
     private static void propertyRent() {
         for (TownData town : TownDataStorage.getInstance().getTownMap().values()) {
-            for (PropertyData property : town.getPropertyDataList()) {
+            for (PropertyData property : town.getProperties()) {
                 if (property.isRented()) {
                     property.payRent();
                 }

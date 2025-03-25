@@ -92,17 +92,10 @@ public class Landmark {
         return Material.valueOf(materialName);
     }
 
-    @SuppressWarnings("unused")
     public ItemStack getResources(){
         ItemStack ressourcesItemStack = new ItemStack(getRessourceMaterial());
         ressourcesItemStack.setAmount(amount);
         return ressourcesItemStack;
-    }
-
-    @SuppressWarnings("unused")
-    @Deprecated
-    public ItemStack getRessources() {
-        return getResources(); // tanmap fix
     }
 
     public void generateResources(){

@@ -47,25 +47,25 @@ public class LandmarkDataWrapper implements TanLandmark {
 
     @Override
     public void setQuantity(int i) {
-        ItemStack reward = landmark.getRessources();
+        ItemStack reward = landmark.getResources();
         reward.setAmount(i);
         landmark.setReward(reward);
     }
 
     @Override
     public int getQuantity() {
-        return landmark.getRessources().getAmount();
+        return landmark.getResources().getAmount();
     }
 
     @Override
     public void setItem(ItemStack itemStack) {
-        itemStack.setAmount(landmark.getRessources().getAmount());
+        itemStack.setAmount(landmark.getResources().getAmount());
         landmark.setReward(itemStack);
     }
 
     @Override
     public ItemStack getItem() {
-        return landmark.getRessources();
+        return landmark.getResources();
     }
 
     @Override

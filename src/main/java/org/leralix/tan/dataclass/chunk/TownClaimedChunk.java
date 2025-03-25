@@ -107,7 +107,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
             return;
         }
 
-        for(PropertyData propertyData : getTown().getPropertyDataList()){
+        for(PropertyData propertyData : getTown().getProperties()){
             if(propertyData.isInChunk(this)){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_IN_CHUNK.get(propertyData.getName()));
                 return;

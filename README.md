@@ -10,10 +10,18 @@
 
 Towns and Nations is a Minecraft plugin designed to provide players with an immersive role-playing experience. It enables the creation of towns, management of land claims, establishment of alliances, and the orchestration of wars and betrayals. Towns and Nations is currently in development, primarily for the Arcadia Minecraft server (French server).
 
-
 For updates, discussions, or to join our growing community, please visit our Discord server.
 https://discord.gg/Q8gZSFUuzb
 
 Spigot page : https://www.spigotmc.org/resources/towns-nations.114019/
 
 Dynmap, Squaremap and Bluemap support : https://github.com/Leralix/Towns-and-Nations-Dynmap
+
+API :
+
+[![api-javadoc](https://javadoc.io/badge2/io.github.leralix/tan-api/javadoc.svg)](https://javadoc.io/doc/io.github.leralix/tan-api)
+
+Since v0.15.0 towns and nations provide an API. This API allows simple checks and interactions with the plugin. 
+An installation guide can be found on GitBook: https://arcadia-9.gitbook.io/towns-and-nations/developpers/api
+
+

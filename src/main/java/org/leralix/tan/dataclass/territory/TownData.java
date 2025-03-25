@@ -566,7 +566,7 @@ public class TownData extends TerritoryData {
             this.propertyDataMap = new HashMap<>();
         return this.propertyDataMap;
     }
-    public Collection<PropertyData> getPropertyDataList(){
+    public Collection<PropertyData> getProperties(){
         return getPropertyDataMap().values();
     }
 
@@ -592,7 +592,7 @@ public class TownData extends TerritoryData {
     }
 
     public PropertyData getProperty(Location location) {
-        for(PropertyData propertyData : getPropertyDataList()){
+        for(PropertyData propertyData : getProperties()){
             if(propertyData.containsLocation(location)){
                 return propertyData;
             }
@@ -767,7 +767,7 @@ public class TownData extends TerritoryData {
     }
 
     private void removeAllProperty() {
-        for(PropertyData propertyData : getPropertyDataList()){
+        for(PropertyData propertyData : getProperties()){
             propertyData.delete();
         }
     }
