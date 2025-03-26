@@ -38,7 +38,9 @@ import java.util.*;
 
 public class TownData extends TerritoryData {
 
+    @Deprecated(since = "0.14.0", forRemoval = true)
     private final String TownId;
+    @Deprecated(since = "0.14.0", forRemoval = true)
     private String TownName;
     private String UuidLeader;
     @Deprecated(since = "0.14.0", forRemoval = true)
@@ -77,7 +79,8 @@ public class TownData extends TerritoryData {
     }
 
     //because old code was not using the centralized attribute
-    protected Map<Integer, RankData> getOldRank(){
+    @Deprecated(since = "0.15.0", forRemoval = true)
+    protected Map<Integer, RankData> getOldRanks(){
         if(newRanks == null)
             newRanks = new HashMap<>();
         return newRanks;
