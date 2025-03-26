@@ -591,7 +591,7 @@ public abstract class TerritoryData {
     }
 
     protected Map<Integer, RankData> getRanks(){
-        if(ranks.isEmpty()) {
+        if(ranks == null || ranks.isEmpty()) {
             if(this instanceof TownData townData){
                 ranks = townData.getOldRanks();
             }

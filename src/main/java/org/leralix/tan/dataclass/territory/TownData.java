@@ -336,11 +336,14 @@ public class TownData extends TerritoryData {
 
         for(PlayerData playerData : getPlayerDataList()){
             OfflinePlayer offlinePlayer = playerData.getOfflinePlayer();
-            if(playerData.getRankID(this) == -1){
-                playerData.setTownRankID(getDefaultRankID());
+            if(playerData.getTownRankID() == null){
+                getTownDefaultRank().addPlayer(playerData);
+                playerData.joinTown(this);
             }
 
-            if (!playerData.getTownRank().isPayingTaxes()) continue;
+            if (!getRank(playerData).isPayingTaxes())
+                continue;
+
             double tax = getTax();
 
             if(EconomyUtil.getBalance(offlinePlayer) > tax){
@@ -489,14 +492,11 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public void setDefaultRank(int rankID){
-        this.defaultRankID = rankID;
-        this.townDefaultRankID = rankID;
-    }
-    @Override
     public int getDefaultRankID() {
         if(this.defaultRankID == null)
             this.defaultRankID = townDefaultRankID;
+        if(this.defaultRankID == null)
+            this.defaultRankID = getRanks().values().iterator().next().getID();
         return defaultRankID;
     }
 
