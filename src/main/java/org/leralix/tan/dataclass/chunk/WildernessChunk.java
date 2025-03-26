@@ -60,7 +60,7 @@ public class WildernessChunk extends ClaimedChunk2 {
     public TextComponent getMapIcon(PlayerData playerData) {
 
         if(ClaimBlacklistStorage.cannotBeClaimed(this)){
-            TextComponent textComponent = new TextComponent("✖️");
+            TextComponent textComponent = new TextComponent("✖");
             textComponent.setColor(ChatColor.RED);
             textComponent.setHoverEvent(new HoverEvent(
                 HoverEvent.Action.SHOW_TEXT,
