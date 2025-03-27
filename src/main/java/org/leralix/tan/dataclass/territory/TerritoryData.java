@@ -84,7 +84,8 @@ public abstract class TerritoryData {
         this.propertyRentTax = 0.1;
         this.propertyBuyTax = 0.1;
         ranks = new HashMap<>();
-        registerNewRank("default");
+        RankData defaultRank = registerNewRank("default");
+        setDefaultRank(defaultRank);
 
         attackIncomingList = new ArrayList<>();
         currentAttackList = new ArrayList<>();
@@ -659,6 +660,9 @@ public abstract class TerritoryData {
         return defaultRankID;
     }
 
+    public void setDefaultRank(RankData rank) {
+        setDefaultRank(rank.getID());
+    }
     public void setDefaultRank(int rankID) {
         this.defaultRankID = rankID;
     }
