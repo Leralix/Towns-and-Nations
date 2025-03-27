@@ -344,7 +344,7 @@ public abstract class TerritoryData {
 
     public void setOverlord(TerritoryData overlord){
         getOverlordsProposals().remove(overlord.getID());
-        broadCastMessageWithSound(TanChatUtils.getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), overlord.getColoredName()), SoundEnum.GOOD);
+        broadCastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), overlord.getColoredName()), SoundEnum.GOOD);
 
         overlord.addVassal(this);
         this.overlordID = overlord.getID();
@@ -576,7 +576,7 @@ public abstract class TerritoryData {
                     }
 
                     setOverlord(proposalOverlord);
-                    broadCastMessageWithSound(TanChatUtils.getTANString() + Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), proposalOverlord.getName()), SoundEnum.GOOD);
+                    broadCastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), proposalOverlord.getName()), SoundEnum.GOOD);
                     PlayerGUI.openHierarchyMenu(player, this);
                 }
                 if(event.isRightClick()){
