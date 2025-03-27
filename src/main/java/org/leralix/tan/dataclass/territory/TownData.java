@@ -39,21 +39,28 @@ import java.util.*;
 public class TownData extends TerritoryData {
 
     @Deprecated(since = "0.14.0", forRemoval = true)
-    private final String TownId;
+    private String TownId;
     @Deprecated(since = "0.14.0", forRemoval = true)
-    private String TownName;
     private String UuidLeader;
     @Deprecated(since = "0.14.0", forRemoval = true)
     private Integer townDefaultRankID; //TODO : remove before v1.0.0
+    @Deprecated(since = "0.14.0", forRemoval = true)
     private Long townDateTimeCreated;
-    private boolean isRecruiting;
-    private Double balance;
+    @Deprecated(since = "0.14.0", forRemoval = true)
     private Integer chunkColor;
-    private String townTag;
-    private Level townLevel = new Level();
+    @Deprecated(since = "0.14.0", forRemoval = true)
+    private String TownName;
     @Deprecated(since = "0.14.0", forRemoval = true)
     private final HashSet<String> townPlayerListId = new HashSet<>(); //TODO : remove before v1.0.0
+    @Deprecated(since = "0.14.0", forRemoval = true)
     private Map<Integer, RankData> newRanks = new HashMap<>();
+    @Deprecated(since = "0.14.0", forRemoval = true) //Transition has not yet been implemented. Do not remove balance before create a safe version to transfer the data to parent class
+    private Double balance;
+
+    //This is all that should be kept after the transition to the parent class
+    private String townTag;
+    private boolean isRecruiting;
+    private Level townLevel = new Level();
     private Collection<String> ownedLandmarks = new ArrayList<>();
     private HashSet<String> PlayerJoinRequestSet = new HashSet<>();
     private Map<String, PropertyData> propertyDataMap;
@@ -63,10 +70,8 @@ public class TownData extends TerritoryData {
     //First time creating a town
     public TownData(String townId, String townName, String leaderID){
         super(townId, townName, leaderID);
-        this.TownId = townId;
-        this.UuidLeader = leaderID;
-        this.TownName = townName;
-        this.townDateTimeCreated = new Date().getTime();
+
+
         this.isRecruiting = false;
         this.balance = 0.0;
         int prefixSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize",3);
