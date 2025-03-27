@@ -1,5 +1,6 @@
 package org.leralix.tan.dataclass;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.leralix.lib.position.Vector3DWithOrientation;
@@ -24,7 +25,7 @@ public class TeleportationPosition {
 
     public void teleport(Player player){
         if(position == null){
-            position = new Vector3DWithOrientation(new Location(player.getWorld(), x, y, z, yaw, pitch));
+            position = new Vector3DWithOrientation(new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch));
         }
         player.teleport(position.getLocation());
     }

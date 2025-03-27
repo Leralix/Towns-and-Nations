@@ -355,6 +355,7 @@ public class PropertyData {
 
         TownData town = getTerritory();
         double tax = salePrice * getTerritory().getTaxOnBuyingProperty();
+
         TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PropertyBuyTaxTransaction(town, this, tax));
 
         EconomyUtil.removeFromBalance(player, salePrice);

@@ -140,7 +140,7 @@ public class PlayerData {
         this.townRankID = townRankID;
     }
 
-    public int getTownRankID() {
+    public Integer getTownRankID() {
         return this.townRankID;
     }
 

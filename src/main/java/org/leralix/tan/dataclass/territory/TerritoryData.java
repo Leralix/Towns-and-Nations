@@ -591,9 +591,9 @@ public abstract class TerritoryData {
     }
 
     protected Map<Integer, RankData> getRanks(){
-        if(ranks == null) {
+        if(ranks == null || ranks.isEmpty()) {
             if(this instanceof TownData townData){
-                ranks = townData.getOldRank();
+                ranks = townData.getOldRanks();
             }
             else {
                 ranks = new HashMap<>();
@@ -616,6 +616,7 @@ public abstract class TerritoryData {
         return getRanks().get(rankID);
     }
     public abstract RankData getRank(PlayerData playerData);
+
     public RankData getRank(Player player){
         return getRank(PlayerDataStorage.getInstance().get(player));
     }
