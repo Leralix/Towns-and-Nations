@@ -770,8 +770,11 @@ public class TownData extends TerritoryData {
     }
 
     private void removeAllProperty() {
-        for(PropertyData propertyData : getProperties()){
+        Iterator<PropertyData> iterator = getProperties().iterator();
+        while (iterator.hasNext()) {
+            PropertyData propertyData = iterator.next();
             propertyData.delete();
+            iterator.remove();
         }
     }
 
