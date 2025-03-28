@@ -15,6 +15,7 @@ import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.storage.ClaimBlacklistStorage;
 
 import java.util.Optional;
 
@@ -57,6 +58,18 @@ public class WildernessChunk extends ClaimedChunk2 {
 
     @Override
     public TextComponent getMapIcon(PlayerData playerData) {
+
+        if(ClaimBlacklistStorage.cannotBeClaimed(this)){
+            TextComponent textComponent = new TextComponent("✖");
+            textComponent.setColor(ChatColor.RED);
+            textComponent.setHoverEvent(new HoverEvent(
+                HoverEvent.Action.SHOW_TEXT,
+                new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
+                        Lang.WILDERNESS.get() + "\n" +
+                        Lang.CHUNK_IS_BLACKLISTED.get())));
+            return textComponent;
+        }
+
         TextComponent textComponent = new TextComponent("⬜");
         textComponent.setColor(ChatColor.WHITE);
         textComponent.setHoverEvent(new HoverEvent(

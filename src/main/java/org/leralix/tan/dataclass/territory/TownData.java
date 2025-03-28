@@ -38,20 +38,29 @@ import java.util.*;
 
 public class TownData extends TerritoryData {
 
-    private final String TownId;
-    private String TownName;
+    @Deprecated(since = "0.14.0", forRemoval = true)
+    private String TownId;
+    @Deprecated(since = "0.14.0", forRemoval = true)
     private String UuidLeader;
     @Deprecated(since = "0.14.0", forRemoval = true)
     private Integer townDefaultRankID; //TODO : remove before v1.0.0
+    @Deprecated(since = "0.14.0", forRemoval = true)
     private Long townDateTimeCreated;
-    private boolean isRecruiting;
-    private Double balance;
+    @Deprecated(since = "0.14.0", forRemoval = true)
     private Integer chunkColor;
-    private String townTag;
-    private Level townLevel = new Level();
+    @Deprecated(since = "0.14.0", forRemoval = true)
+    private String TownName;
     @Deprecated(since = "0.14.0", forRemoval = true)
     private final HashSet<String> townPlayerListId = new HashSet<>(); //TODO : remove before v1.0.0
+    @Deprecated(since = "0.14.0", forRemoval = true)
     private Map<Integer, RankData> newRanks = new HashMap<>();
+    @Deprecated(since = "0.14.0", forRemoval = true) //Transition has not yet been implemented. Do not remove balance before create a safe version to transfer the data to parent class
+    private Double balance;
+
+    //This is all that should be kept after the transition to the parent class
+    private String townTag;
+    private boolean isRecruiting;
+    private Level townLevel = new Level();
     private Collection<String> ownedLandmarks = new ArrayList<>();
     private HashSet<String> PlayerJoinRequestSet = new HashSet<>();
     private Map<String, PropertyData> propertyDataMap;
@@ -61,23 +70,21 @@ public class TownData extends TerritoryData {
     //First time creating a town
     public TownData(String townId, String townName, String leaderID){
         super(townId, townName, leaderID);
-        this.TownId = townId;
-        this.UuidLeader = leaderID;
-        this.TownName = townName;
-        this.townDateTimeCreated = new Date().getTime();
+
+
         this.isRecruiting = false;
         this.balance = 0.0;
         int prefixSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize",3);
         this.townTag = townName.length() >= prefixSize ? townName.substring(0, prefixSize).toUpperCase() : townName.toUpperCase();
         super.color = StringUtil.randomColor();
 
-        this.setDefaultRank(super.getDefaultRankID());
         if(leaderID != null)
             addPlayer(leaderID);
     }
 
     //because old code was not using the centralized attribute
-    protected Map<Integer, RankData> getOldRank(){
+    @Deprecated(since = "0.15.0", forRemoval = true)
+    protected Map<Integer, RankData> getOldRanks(){
         if(newRanks == null)
             newRanks = new HashMap<>();
         return newRanks;
@@ -175,9 +182,6 @@ public class TownData extends TerritoryData {
         return icon;
     }
 
-    //////////////////////////////////////
-    //          ITerritoryData          //
-    //////////////////////////////////////
 
     @Override
     public String getOldID() {
@@ -221,13 +225,6 @@ public class TownData extends TerritoryData {
     }
 
 
-
-
-
-    //////////////////////////////////////
-    //              IMoney              //
-    //////////////////////////////////////
-
     @Override
     public double getBalance(){
         return StringUtil.handleDigits(balance);
@@ -243,10 +240,6 @@ public class TownData extends TerritoryData {
     public void removeFromBalance(double balance){
         this.balance -= balance;
     }
-
-    //////////////////////////////////////
-    //            IBroadcast            //
-    //////////////////////////////////////
 
     @Override
     public void broadCastMessage(String message){
@@ -333,11 +326,14 @@ public class TownData extends TerritoryData {
 
         for(PlayerData playerData : getPlayerDataList()){
             OfflinePlayer offlinePlayer = playerData.getOfflinePlayer();
-            if(playerData.getRankID(this) == -1){
-                playerData.setTownRankID(getDefaultRankID());
+            if(playerData.getTownRankID() == null){
+                getTownDefaultRank().addPlayer(playerData);
+                playerData.joinTown(this);
             }
 
-            if (!playerData.getTownRank().isPayingTaxes()) continue;
+            if (!getRank(playerData).isPayingTaxes())
+                continue;
+
             double tax = getTax();
 
             if(EconomyUtil.getBalance(offlinePlayer) > tax){
@@ -352,16 +348,10 @@ public class TownData extends TerritoryData {
     }
 
 
-
     @Override
     public double getChunkUpkeepCost() {
         return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("TownChunkUpkeepCost",0);
     }
-
-
-    //////////////////////////////////////
-    //           IChunkColor            //
-    //////////////////////////////////////
 
     @Override
     public int getChildColorCode() {
@@ -369,7 +359,6 @@ public class TownData extends TerritoryData {
             this.chunkColor = 0xff0000;
         return chunkColor;
     }
-
 
     public void setSpawn(Location location){
         this.teleportationPosition = new TeleportationPosition(location);
@@ -486,14 +475,11 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public void setDefaultRank(int rankID){
-        this.defaultRankID = rankID;
-        this.townDefaultRankID = rankID;
-    }
-    @Override
     public int getDefaultRankID() {
         if(this.defaultRankID == null)
             this.defaultRankID = townDefaultRankID;
+        if(this.defaultRankID == null)
+            this.defaultRankID = getRanks().values().iterator().next().getID();
         return defaultRankID;
     }
 
@@ -767,8 +753,11 @@ public class TownData extends TerritoryData {
     }
 
     private void removeAllProperty() {
-        for(PropertyData propertyData : getProperties()){
+        Iterator<PropertyData> iterator = getProperties().iterator();
+        while (iterator.hasNext()) {
+            PropertyData propertyData = iterator.next();
             propertyData.delete();
+            iterator.remove();
         }
     }
 

@@ -1,5 +1,6 @@
 package org.leralix.tan.storage.database;
 
+import org.bukkit.Bukkit;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.newhistory.TransactionHistory;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
@@ -54,23 +55,25 @@ public class SQLiteHandler extends DatabaseHandler {
 
     @Override
     public void addTransactionHistory(TransactionHistory transactionHistory) {
-        checkIfHistoryDbExists();
-        String insertSQL = """
-        INSERT INTO territoryTransactionHistory (date, type, territoryDataID, transactionParty, amount)
-        VALUES (?, ?, ?, ?, ?)
-    """;
+        Bukkit.getScheduler().runTaskAsynchronously(TownsAndNations.getPlugin(), () -> {
+            checkIfHistoryDbExists();
+            String insertSQL = """
+                INSERT INTO territoryTransactionHistory (date, type, territoryDataID, transactionParty, amount)
+                VALUES (?, ?, ?, ?, ?)
+            """;
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
-            preparedStatement.setString(1, transactionHistory.getDate());
-            preparedStatement.setString(2, transactionHistory.getType().toString());
-            preparedStatement.setString(3, transactionHistory.getTerritoryDataID());
-            preparedStatement.setString(4, transactionHistory.getTransactionParty());
-            preparedStatement.setDouble(5, transactionHistory.getAmount());
+            try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+                preparedStatement.setString(1, transactionHistory.getDate());
+                preparedStatement.setString(2, transactionHistory.getType().toString());
+                preparedStatement.setString(3, transactionHistory.getTerritoryDataID());
+                preparedStatement.setString(4, transactionHistory.getTransactionParty());
+                preparedStatement.setDouble(5, transactionHistory.getAmount());
 
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            TownsAndNations.getPlugin().getLogger().severe("Error while adding transaction history");
-        }
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                TownsAndNations.getPlugin().getLogger().severe("Error while adding transaction history");
+            }
+        });
     }
 
     @Override

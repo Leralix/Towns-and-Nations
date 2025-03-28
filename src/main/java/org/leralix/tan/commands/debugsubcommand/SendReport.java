@@ -1,12 +1,23 @@
 package org.leralix.tan.commands.debugsubcommand;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 import org.leralix.lib.commands.SubCommand;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.utils.ArchiveUtil;
 import org.leralix.tan.lang.Lang;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,12 +47,7 @@ public class SendReport extends SubCommand {
     }
     @Override
     public void perform(CommandSender commandSender, String[] args) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
-        LocalDateTime now = LocalDateTime.now();
-
-        String reportName = "Report_of_" + commandSender.getName() + "_at_" + dtf.format(now);
-        ArchiveUtil.archiveFiles("reports", reportName);
-        commandSender.sendMessage(Lang.DEBUG_REPORT_CREATED.get());
+        ArchiveUtil.sendReport(commandSender);
     }
 }
 

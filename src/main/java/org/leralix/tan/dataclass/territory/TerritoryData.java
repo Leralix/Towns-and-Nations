@@ -84,7 +84,8 @@ public abstract class TerritoryData {
         this.propertyRentTax = 0.1;
         this.propertyBuyTax = 0.1;
         ranks = new HashMap<>();
-        registerNewRank("default");
+        RankData defaultRank = registerNewRank("default");
+        setDefaultRank(defaultRank);
 
         attackIncomingList = new ArrayList<>();
         currentAttackList = new ArrayList<>();
@@ -591,9 +592,9 @@ public abstract class TerritoryData {
     }
 
     protected Map<Integer, RankData> getRanks(){
-        if(ranks == null) {
+        if(ranks == null || ranks.isEmpty()) {
             if(this instanceof TownData townData){
-                ranks = townData.getOldRank();
+                ranks = townData.getOldRanks();
             }
             else {
                 ranks = new HashMap<>();
@@ -616,6 +617,7 @@ public abstract class TerritoryData {
         return getRanks().get(rankID);
     }
     public abstract RankData getRank(PlayerData playerData);
+
     public RankData getRank(Player player){
         return getRank(PlayerDataStorage.getInstance().get(player));
     }
@@ -658,6 +660,9 @@ public abstract class TerritoryData {
         return defaultRankID;
     }
 
+    public void setDefaultRank(RankData rank) {
+        setDefaultRank(rank.getID());
+    }
     public void setDefaultRank(int rankID) {
         this.defaultRankID = rankID;
     }
