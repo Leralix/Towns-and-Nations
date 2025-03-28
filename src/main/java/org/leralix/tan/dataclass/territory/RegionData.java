@@ -63,10 +63,6 @@ public class RegionData extends TerritoryData {
         super.color = StringUtil.randomColor();
     }
 
-    //////////////////////////////////////
-    //          ITerritoryData          //
-    //////////////////////////////////////
-
     @Override
     public String getOldID() {
         return regionId;
@@ -170,7 +166,6 @@ public class RegionData extends TerritoryData {
         return count;
     }
 
-
     @Override
     public String getCapitalID() {
         return capitalID;
@@ -248,7 +243,6 @@ public class RegionData extends TerritoryData {
         return townsInRegion.size();
     }
 
-
     @Override
     public void addVassalPrivate(TerritoryData vassal) {
         addSubject(vassal.getID());
@@ -275,7 +269,6 @@ public class RegionData extends TerritoryData {
     public void removeOverlordPrivate() {
         // Kingdoms are not implemented yet
     }
-
 
     @Override
     protected void collectTaxes() {

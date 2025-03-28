@@ -182,9 +182,6 @@ public class TownData extends TerritoryData {
         return icon;
     }
 
-    //////////////////////////////////////
-    //          ITerritoryData          //
-    //////////////////////////////////////
 
     @Override
     public String getOldID() {
@@ -228,13 +225,6 @@ public class TownData extends TerritoryData {
     }
 
 
-
-
-
-    //////////////////////////////////////
-    //              IMoney              //
-    //////////////////////////////////////
-
     @Override
     public double getBalance(){
         return StringUtil.handleDigits(balance);
@@ -250,10 +240,6 @@ public class TownData extends TerritoryData {
     public void removeFromBalance(double balance){
         this.balance -= balance;
     }
-
-    //////////////////////////////////////
-    //            IBroadcast            //
-    //////////////////////////////////////
 
     @Override
     public void broadCastMessage(String message){
@@ -362,16 +348,10 @@ public class TownData extends TerritoryData {
     }
 
 
-
     @Override
     public double getChunkUpkeepCost() {
         return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("TownChunkUpkeepCost",0);
     }
-
-
-    //////////////////////////////////////
-    //           IChunkColor            //
-    //////////////////////////////////////
 
     @Override
     public int getChildColorCode() {
@@ -379,7 +359,6 @@ public class TownData extends TerritoryData {
             this.chunkColor = 0xff0000;
         return chunkColor;
     }
-
 
     public void setSpawn(Location location){
         this.teleportationPosition = new TeleportationPosition(location);
