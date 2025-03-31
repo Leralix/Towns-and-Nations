@@ -122,12 +122,16 @@ public final class TownsAndNations extends JavaPlugin {
         getLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
 
         getLogger().log(Level.INFO, "[TaN] -Loading Configs");
-        List<String> blackList = new ArrayList<>();
-        blackList.add("claimBlacklist");
 
-        ConfigUtil.saveAndUpdateResource(this, "config.yml", blackList);
+        List<String> mainBlackList = new ArrayList<>();
+        mainBlackList.add("claimBlacklist");
+        ConfigUtil.saveAndUpdateResource(this, "config.yml", mainBlackList);
         ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.MAIN);
         ConfigUtil.saveAndUpdateResource(this, "townUpgrades.yml");
+
+        List<String> upgradeBlackList = new ArrayList<>();
+        upgradeBlackList.add("upgrades");
+        ConfigUtil.saveAndUpdateResource(this, "townUpgrades.yml", upgradeBlackList);
         ConfigUtil.addCustomConfig(this, "townUpgrades.yml", ConfigTag.UPGRADE);
 
 
