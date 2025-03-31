@@ -60,7 +60,6 @@ public class RegionData extends TerritoryData {
 
         this.balance = 0.0;
         this.townsInRegion = new ArrayList<>();
-        super.color = StringUtil.randomColor();
     }
 
     @Override

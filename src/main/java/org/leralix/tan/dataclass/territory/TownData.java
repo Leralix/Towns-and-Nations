@@ -76,7 +76,6 @@ public class TownData extends TerritoryData {
         this.balance = 0.0;
         int prefixSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize",3);
         this.townTag = townName.length() >= prefixSize ? townName.substring(0, prefixSize).toUpperCase() : townName.toUpperCase();
-        super.color = StringUtil.randomColor();
 
         if(leaderID != null)
             addPlayer(leaderID);

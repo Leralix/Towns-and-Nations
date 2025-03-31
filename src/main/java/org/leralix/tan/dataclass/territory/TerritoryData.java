@@ -92,6 +92,8 @@ public abstract class TerritoryData {
         availableClaims = new HashMap<>();
         diplomacyProposals = new HashMap<>();
         overlordsProposals = new ArrayList<>();
+
+        color = StringUtil.randomColor();
     }
 
     protected abstract String getOldID();
