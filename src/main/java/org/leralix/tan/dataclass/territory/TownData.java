@@ -128,6 +128,10 @@ public class TownData extends TerritoryData {
         TownDataStorage.getInstance().saveStats();
     }
 
+    public void removePlayer(String playerDataID){
+        removePlayer(PlayerDataStorage.getInstance().get(playerDataID));
+    }
+
     public void removePlayer(PlayerData playerData){
         getRank(playerData).removePlayer(playerData);
         townPlayerListId.remove(playerData.getID());
@@ -745,9 +749,12 @@ public class TownData extends TerritoryData {
         broadCastMessageWithSound(Lang.BROADCAST_PLAYER_TOWN_DELETED.get(getLeaderName(), getColoredName()), SoundEnum.BAD);
         removeAllLandmark(); //Remove all Landmark from the deleted town
         removeAllProperty(); //Remove all Property from the deleted town
-        for(String playerID : getPlayerIDList()){ //Kick all Players from the deleted town
-            removePlayer(PlayerDataStorage.getInstance().get(playerID));
+
+        List<String> playersToRemove = new ArrayList<>(getPlayerIDList());
+        for (String playerID : playersToRemove) {
+            removePlayer(playerID); // Modification sécurisée après la boucle
         }
+
         TeamUtils.updateAllScoreboardColor();
         TownDataStorage.getInstance().deleteTown(this);
     }
