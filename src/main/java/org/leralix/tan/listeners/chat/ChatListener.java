@@ -17,7 +17,7 @@ public class ChatListener implements Listener {
 
         String message = event.getMessage();
 
-        if(PlayerSelectPropertyPositionStorage.contains(player) || message.equalsIgnoreCase(Lang.CANCEL_WORD.get())){
+        if(PlayerSelectPropertyPositionStorage.contains(player) &&   message.equalsIgnoreCase(Lang.CANCEL_WORD.get())){
             player.sendMessage(TanChatUtils.getTANString() + Lang.CANCELLED_ACTION.get());
             PlayerSelectPropertyPositionStorage.removePlayer(player);
             event.setCancelled(true);
