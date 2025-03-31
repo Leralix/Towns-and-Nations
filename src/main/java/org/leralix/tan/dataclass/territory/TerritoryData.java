@@ -83,6 +83,7 @@ public abstract class TerritoryData {
         this.baseTax = 1.0;
         this.propertyRentTax = 0.1;
         this.propertyBuyTax = 0.1;
+
         ranks = new HashMap<>();
         RankData defaultRank = registerNewRank("default");
         setDefaultRank(defaultRank);
@@ -388,7 +389,7 @@ public abstract class TerritoryData {
 
     public int getChunkColorCode(){
         if(color == null)
-            return getChildColorCode();
+            color = StringUtil.randomColor();
         return color;
     }
 
@@ -594,13 +595,12 @@ public abstract class TerritoryData {
     }
 
     protected Map<Integer, RankData> getRanks(){
-        if(ranks == null || ranks.isEmpty()) {
+        if(ranks == null) {
             if(this instanceof TownData townData){
                 ranks = townData.getOldRanks();
             }
             else {
                 ranks = new HashMap<>();
-                registerNewRank("default");
             }
         }
         return ranks;

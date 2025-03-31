@@ -41,23 +41,21 @@ public class TownData extends TerritoryData {
     @Deprecated(since = "0.14.0", forRemoval = true)
     private String TownId;
     @Deprecated(since = "0.14.0", forRemoval = true)
-    private String UuidLeader;
-    @Deprecated(since = "0.14.0", forRemoval = true)
     private Integer townDefaultRankID; //TODO : remove before v1.0.0
     @Deprecated(since = "0.14.0", forRemoval = true)
     private Long townDateTimeCreated;
     @Deprecated(since = "0.14.0", forRemoval = true)
     private Integer chunkColor;
-    @Deprecated(since = "0.14.0", forRemoval = true)
+    @Deprecated(since = "0.14.0", forRemoval = true)//TODO : remove before v1.0.0
     private String TownName;
     @Deprecated(since = "0.14.0", forRemoval = true)
-    private final HashSet<String> townPlayerListId = new HashSet<>(); //TODO : remove before v1.0.0
-    @Deprecated(since = "0.14.0", forRemoval = true)
     private Map<Integer, RankData> newRanks = new HashMap<>();
-    @Deprecated(since = "0.14.0", forRemoval = true) //Transition has not yet been implemented. Do not remove balance before create a safe version to transfer the data to parent class
+
+    @Deprecated(since = "0.14.0") //Transition has not yet been implemented. Do not remove balance before create a safe version to transfer the data to parent class
     private Double balance;
 
     //This is all that should be kept after the transition to the parent class
+    private String UuidLeader;
     private String townTag;
     private boolean isRecruiting;
     private Level townLevel = new Level();
@@ -65,20 +63,23 @@ public class TownData extends TerritoryData {
     private HashSet<String> PlayerJoinRequestSet = new HashSet<>();
     private Map<String, PropertyData> propertyDataMap;
     private TeleportationPosition teleportationPosition;
-
+    private final HashSet<String> townPlayerListId = new HashSet<>();
 
     //First time creating a town
     public TownData(String townId, String townName, String leaderID){
         super(townId, townName, leaderID);
 
+        this.UuidLeader = leaderID;
 
         this.isRecruiting = false;
         this.balance = 0.0;
         int prefixSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize",3);
         this.townTag = townName.length() >= prefixSize ? townName.substring(0, prefixSize).toUpperCase() : townName.toUpperCase();
 
-        if(leaderID != null)
+
+        if(leaderID != null) {
             addPlayer(leaderID);
+        }
     }
 
     //because old code was not using the centralized attribute
@@ -204,6 +205,8 @@ public class TownData extends TerritoryData {
 
     @Override
     public String getLeaderID() {
+        if(this.UuidLeader == null)
+            return townPlayerListId.iterator().next(); //If the leader is null, the first player in the list is the leader
         return this.UuidLeader;
     }
 
@@ -354,8 +357,6 @@ public class TownData extends TerritoryData {
 
     @Override
     public int getChildColorCode() {
-        if(this.chunkColor == null)
-            this.chunkColor = 0xff0000;
         return chunkColor;
     }
 
