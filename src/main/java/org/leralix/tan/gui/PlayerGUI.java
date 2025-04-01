@@ -2408,7 +2408,7 @@ public class PlayerGUI implements IGUI {
         gui.setItem(2,7, mobChunkButton);
 
 
-        gui.setItem(3,1, IGUI.createBackArrow(player, p -> dispatchPlayerTown(player)));
+        gui.setItem(3,1, IGUI.createBackArrow(player, territoryData::openMainMenu));
 
         gui.open(player);
     }
