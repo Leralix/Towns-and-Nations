@@ -1,7 +1,6 @@
-package org.leralix.tan.commands.debugsubcommand;
+package org.leralix.tan.commands.debug;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;

@@ -1,4 +1,4 @@
-package org.leralix.tan.commands.playersubcommand;
+package org.leralix.tan.commands.player;
 
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;

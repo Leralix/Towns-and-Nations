@@ -1,4 +1,4 @@
-package org.leralix.tan.commands.adminsubcommand;
+package org.leralix.tan.commands.admin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -45,20 +45,24 @@ public class AddMoney extends SubCommand {
         }
         else if (args.length == 3) {
             PlayerData target = PlayerDataStorage.getInstance().get(Bukkit.getServer().getOfflinePlayer(args[1]));
-            double amount;
-            try {
-                amount = Double.parseDouble(args[2]);
-            } catch (NumberFormatException e) {
-                commandSender.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
-                return;
-            }
-            EconomyUtil.addFromBalance(target, amount);
-            commandSender.sendMessage(TanChatUtils.getTANString() + Lang.ADD_MONEY_COMMAND_SUCCESS.get(amount,target.getNameStored()));
-            FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_GIVE_MONEY.get(commandSender.getName(),amount,target.getNameStored()));
+            addMoney(commandSender, args, target);
         }
         else{
             commandSender.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
             commandSender.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
+    }
+
+    static void addMoney(CommandSender commandSender, String[] args, PlayerData target) {
+        double amount;
+        try {
+            amount = Double.parseDouble(args[2]);
+        } catch (NumberFormatException e) {
+            commandSender.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
+            return;
+        }
+        EconomyUtil.addFromBalance(target, amount);
+        commandSender.sendMessage(TanChatUtils.getTANString() + Lang.ADD_MONEY_COMMAND_SUCCESS.get(amount, target.getNameStored()));
+        FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_GIVE_MONEY.get(commandSender.getName(),amount, target.getNameStored()));
     }
 }

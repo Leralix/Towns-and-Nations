@@ -1,23 +1,24 @@
-package org.leralix.tan.commands.debugsubcommand;
+package org.leralix.tan.commands.debug;
 
 import org.bukkit.command.CommandSender;
 import org.leralix.lib.commands.SubCommand;
-import org.leralix.tan.tasks.DailyTasks;
+import org.leralix.tan.utils.ArchiveUtil;
+import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.lang.Lang;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
-public class SkipDay extends SubCommand {
+public class CreateBackup extends SubCommand {
 
     @Override
     public String getName() {
-        return "skipday";
+        return "createBackup";
     }
 
     @Override
     public String getDescription() {
-        return Lang.DEBUG_SKIP_DAY.get();
+        return Lang.DEBUG_CREATE_BACKUP.get();
     }
 
     @Override
@@ -27,14 +28,15 @@ public class SkipDay extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/tandebug skipday";
+        return "/tandebug createBackup";
     }
     public List<String> getTabCompleteSuggestions(CommandSender commandSender, String lowerCase, String[] args){
-        return Collections.emptyList();
+        return new ArrayList<>();
     }
     @Override
     public void perform(CommandSender commandSender, String[] args) {
-        DailyTasks.executeMidnightTasks();
+        ArchiveUtil.archiveFiles();
+        commandSender.sendMessage(TanChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
-}
 
+}

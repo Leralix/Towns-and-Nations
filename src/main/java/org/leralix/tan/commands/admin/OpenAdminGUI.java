@@ -1,48 +1,52 @@
-package org.leralix.tan.commands.playersubcommand;
+package org.leralix.tan.commands.admin;
+
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.newsletter.NewsletterScope;
 
 import java.util.Collections;
 import java.util.List;
 
-public class OpenNewsletterCommand extends PlayerSubCommand {
+import static org.leralix.tan.gui.AdminGUI.openMainMenu;
 
+
+public class OpenAdminGUI extends PlayerSubCommand {
     @Override
     public String getName() {
-        return "newsletter";
+        return "gui";
     }
+
 
     @Override
     public String getDescription() {
-        return Lang.OPEN_NEWSLETTER_DESC.get();
+        return Lang.ADMIN_OPEN_GUI.get();
     }
-    public int getArguments(){ return 1;}
+    public int getArguments(){ return 2;}
 
 
     @Override
     public String getSyntax() {
-        return "/tan newsletter";
+        return "/tanadmin gui";
     }
+
     @Override
     public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
         return Collections.emptyList();
     }
-
     @Override
     public void perform(Player player, String[] args){
-
-        if (args.length != 1) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
-            return;
+        if (args.length == 1){
+            openMainMenu(player);
+        }else if(args.length > 1){
+            player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get(player));
+            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(player, getSyntax()));
         }
-        PlayerGUI.openNewsletter(player,0, NewsletterScope.SHOW_ONLY_UNREAD);
 
     }
 
-
 }
+
+
+

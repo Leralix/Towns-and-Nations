@@ -1,4 +1,4 @@
-package org.leralix.tan.commands.debugsubcommand;
+package org.leralix.tan.commands.debug;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

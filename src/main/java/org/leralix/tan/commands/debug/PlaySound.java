@@ -1,4 +1,4 @@
-package org.leralix.tan.commands.debugsubcommand;
+package org.leralix.tan.commands.debug;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;

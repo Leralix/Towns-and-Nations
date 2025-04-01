@@ -1,4 +1,4 @@
-package org.leralix.tan.commands.playersubcommand;
+package org.leralix.tan.commands.player;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
