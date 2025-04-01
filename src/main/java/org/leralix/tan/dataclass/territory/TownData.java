@@ -51,7 +51,8 @@ public class TownData extends TerritoryData {
     @Deprecated(since = "0.14.0", forRemoval = true)
     private Map<Integer, RankData> newRanks = new HashMap<>();
 
-    @Deprecated(since = "0.14.0") //Transition has not yet been implemented. Do not remove balance before create a safe version to transfer the data to parent class
+    @Deprecated(since = "0.14.0")
+    //Transition has not yet been implemented. Do not remove balance before create a safe version to transfer the data to parent class
     private Double balance;
 
     //This is all that should be kept after the transition to the parent class
@@ -66,26 +67,26 @@ public class TownData extends TerritoryData {
     private final HashSet<String> townPlayerListId = new HashSet<>();
 
     //First time creating a town
-    public TownData(String townId, String townName, String leaderID){
+    public TownData(String townId, String townName, String leaderID) {
         super(townId, townName, leaderID);
 
         this.UuidLeader = leaderID;
 
         this.isRecruiting = false;
         this.balance = 0.0;
-        int prefixSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize",3);
+        int prefixSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize", 3);
         this.townTag = townName.length() >= prefixSize ? townName.substring(0, prefixSize).toUpperCase() : townName.toUpperCase();
 
 
-        if(leaderID != null) {
+        if (leaderID != null) {
             addPlayer(leaderID);
         }
     }
 
     //because old code was not using the centralized attribute
     @Deprecated(since = "0.15.0", forRemoval = true)
-    protected Map<Integer, RankData> getOldRanks(){
-        if(newRanks == null)
+    protected Map<Integer, RankData> getOldRanks() {
+        if (newRanks == null)
             newRanks = new HashMap<>();
         return newRanks;
     }
@@ -96,7 +97,7 @@ public class TownData extends TerritoryData {
     }
 
     public String getLeaderName() {
-        if(this.UuidLeader == null)
+        if (this.UuidLeader == null)
             return Lang.NO_LEADER.get();
         return Bukkit.getOfflinePlayer(UUID.fromString(this.UuidLeader)).getName();
     }
@@ -105,22 +106,22 @@ public class TownData extends TerritoryData {
         return townLevel;
     }
 
-    public void addPlayer(String playerDataID){
+    public void addPlayer(String playerDataID) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(playerDataID);
         addPlayer(playerData);
     }
 
-    public void addPlayer(PlayerData playerData){
+    public void addPlayer(PlayerData playerData) {
         townPlayerListId.add(playerData.getID());
         getTownDefaultRank().addPlayer(playerData);
         playerData.joinTown(this);
 
         Player playerIterateOnline = playerData.getPlayer();
-        if(playerIterateOnline != null)
+        if (playerIterateOnline != null)
             playerIterateOnline.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(getColoredName()));
         broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerData.getNameStored()), SoundEnum.MINOR_GOOD);
 
-        for (TownData allTown : TownDataStorage.getInstance().getTownMap().values()){
+        for (TownData allTown : TownDataStorage.getInstance().getTownMap().values()) {
             allTown.removePlayerJoinRequest(playerData.getID());
         }
 
@@ -128,11 +129,11 @@ public class TownData extends TerritoryData {
         TownDataStorage.getInstance().saveStats();
     }
 
-    public void removePlayer(String playerDataID){
+    public void removePlayer(String playerDataID) {
         removePlayer(PlayerDataStorage.getInstance().get(playerDataID));
     }
 
-    public void removePlayer(PlayerData playerData){
+    public void removePlayer(PlayerData playerData) {
         getRank(playerData).removePlayer(playerData);
         townPlayerListId.remove(playerData.getID());
         playerData.leaveTown();
@@ -140,25 +141,25 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public Collection<String> getPlayerIDList(){
+    public Collection<String> getPlayerIDList() {
         return townPlayerListId;
     }
 
     @Override
-    public Collection<PlayerData> getPlayerDataList(){
+    public Collection<PlayerData> getPlayerDataList() {
         ArrayList<PlayerData> playerDataList = new ArrayList<>();
-        for (String playerID : getPlayerIDList()){
+        for (String playerID : getPlayerIDList()) {
             playerDataList.add(PlayerDataStorage.getInstance().get(playerID));
         }
         return playerDataList;
     }
 
     @Override
-    public ItemStack getIconWithName(){
+    public ItemStack getIconWithName() {
         ItemStack itemStack = getIcon();
 
         ItemMeta meta = itemStack.getItemMeta();
-        if(meta != null){
+        if (meta != null) {
             meta.setDisplayName(ChatColor.GREEN + getName());
             itemStack.setItemMeta(meta);
         }
@@ -166,11 +167,11 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public ItemStack getIconWithInformations(LangType langType){
+    public ItemStack getIconWithInformations(LangType langType) {
         ItemStack icon = getIcon();
 
         ItemMeta meta = icon.getItemMeta();
-        if(meta != null){
+        if (meta != null) {
             meta.setDisplayName(ChatColor.GREEN + getName());
 
             List<String> lore = new ArrayList<>();
@@ -178,7 +179,7 @@ public class TownData extends TerritoryData {
             lore.add(Lang.GUI_TOWN_INFO_DESC1.get(langType, getLeaderName()));
             lore.add(Lang.GUI_TOWN_INFO_DESC2.get(langType, getPlayerIDList().size()));
             lore.add(Lang.GUI_TOWN_INFO_DESC3.get(langType, getNumberOfClaimedChunk()));
-            lore.add(haveOverlord()? Lang.GUI_TOWN_INFO_DESC5_REGION.get(langType, getOverlord().getName()): Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get(langType));
+            lore.add(haveOverlord() ? Lang.GUI_TOWN_INFO_DESC5_REGION.get(langType, getOverlord().getName()) : Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get(langType));
 
             meta.setLore(lore);
             icon.setItemMeta(meta);
@@ -193,7 +194,7 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public String getOldName(){
+    public String getOldName() {
         return this.TownName;
     }
 
@@ -209,7 +210,7 @@ public class TownData extends TerritoryData {
 
     @Override
     public String getLeaderID() {
-        if(this.UuidLeader == null)
+        if (this.UuidLeader == null)
             return townPlayerListId.iterator().next(); //If the leader is null, the first player in the list is the leader
         return this.UuidLeader;
     }
@@ -226,43 +227,44 @@ public class TownData extends TerritoryData {
 
 
     @Override
-    public boolean isLeader(String leaderID){
+    public boolean isLeader(String leaderID) {
         return getLeaderID().equals(leaderID);
     }
 
 
     @Override
-    public double getBalance(){
+    public double getBalance() {
         return StringUtil.handleDigits(balance);
     }
 
 
-
     @Override
-    public void addToBalance(double balance){
+    public void addToBalance(double balance) {
         this.balance += balance;
     }
+
     @Override
-    public void removeFromBalance(double balance){
+    public void removeFromBalance(double balance) {
         this.balance -= balance;
     }
 
     @Override
-    public void broadCastMessage(String message){
-        for (String playerId : townPlayerListId){
+    public void broadCastMessage(String message) {
+        for (String playerId : townPlayerListId) {
             Player player = Bukkit.getServer().getPlayer(UUID.fromString(playerId));
             if (player != null && player.isOnline()) {
                 player.sendMessage(message);
             }
         }
     }
+
     @Override
-    public void broadCastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix){
-        for (String playerId : townPlayerListId){
+    public void broadCastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix) {
+        for (String playerId : townPlayerListId) {
             Player player = Bukkit.getServer().getPlayer(UUID.fromString(playerId));
             if (player != null && player.isOnline()) {
                 SoundUtil.playSound(player, soundEnum);
-                if(addPrefix)
+                if (addPrefix)
                     player.sendMessage(TanChatUtils.getTANString() + message);
                 else
                     player.sendMessage(message);
@@ -271,23 +273,24 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public void broadCastMessageWithSound(String message, SoundEnum soundEnum){
+    public void broadCastMessageWithSound(String message, SoundEnum soundEnum) {
         broadCastMessageWithSound(message, soundEnum, true);
     }
 
-    public RankData getTownDefaultRank(){
+    public RankData getTownDefaultRank() {
         return getRank(getDefaultRankID());
     }
 
     @Override
-    public int getNumberOfRank(){
+    public int getNumberOfRank() {
         return newRanks.size();
     }
 
-    public boolean isFull(){
+    public boolean isFull() {
         return this.townPlayerListId.size() >= this.townLevel.getPlayerCap();
     }
-    public boolean canClaimMoreChunk(){
+
+    public boolean canClaimMoreChunk() {
         return this.getNumberOfClaimedChunk() < this.townLevel.getChunkCap();
     }
 
@@ -304,9 +307,11 @@ public class TownData extends TerritoryData {
     public void removePlayerJoinRequest(String playerUUID) {
         PlayerJoinRequestSet.remove(playerUUID);
     }
+
     public void removePlayerJoinRequest(Player player) {
         removePlayerJoinRequest(player.getUniqueId().toString());
     }
+
     public boolean isPlayerAlreadyRequested(String playerUUID) {
         return PlayerJoinRequestSet.contains(playerUUID);
     }
@@ -315,7 +320,7 @@ public class TownData extends TerritoryData {
         return isPlayerAlreadyRequested(player.getUniqueId().toString());
     }
 
-    public Set<String> getPlayerJoinRequestSet(){
+    public Set<String> getPlayerJoinRequestSet() {
         return this.PlayerJoinRequestSet;
     }
 
@@ -330,9 +335,9 @@ public class TownData extends TerritoryData {
     @Override
     protected void collectTaxes() {
 
-        for(PlayerData playerData : getPlayerDataList()){
+        for (PlayerData playerData : getPlayerDataList()) {
             OfflinePlayer offlinePlayer = playerData.getOfflinePlayer();
-            if(playerData.getTownRankID() == null){
+            if (playerData.getTownRankID() == null) {
                 getTownDefaultRank().addPlayer(playerData);
                 playerData.joinTown(this);
             }
@@ -342,13 +347,12 @@ public class TownData extends TerritoryData {
 
             double tax = getTax();
 
-            if(EconomyUtil.getBalance(offlinePlayer) > tax){
-                EconomyUtil.removeFromBalance(offlinePlayer,tax);
+            if (EconomyUtil.getBalance(offlinePlayer) > tax) {
+                EconomyUtil.removeFromBalance(offlinePlayer, tax);
                 addToBalance(tax);
-                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerTaxHistory(this,playerData,tax));
-            }
-            else{
-                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerTaxHistory(this,playerData,-1));
+                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerTaxHistory(this, playerData, tax));
+            } else {
+                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerTaxHistory(this, playerData, -1));
             }
         }
     }
@@ -356,7 +360,7 @@ public class TownData extends TerritoryData {
 
     @Override
     public double getChunkUpkeepCost() {
-        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("TownChunkUpkeepCost",0);
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("TownChunkUpkeepCost", 0);
     }
 
     @Override
@@ -364,19 +368,19 @@ public class TownData extends TerritoryData {
         return chunkColor;
     }
 
-    public void setSpawn(Location location){
+    public void setSpawn(Location location) {
         this.teleportationPosition = new TeleportationPosition(location);
     }
 
-    public boolean isSpawnSet(){
+    public boolean isSpawnSet() {
         return this.teleportationPosition != null;
     }
 
-    public TeleportationPosition getSpawn(){
+    public TeleportationPosition getSpawn() {
         return this.teleportationPosition;
     }
 
-    public boolean isSpawnLocked(){
+    public boolean isSpawnLocked() {
         return this.townLevel.getBenefitsLevel("UNLOCK_TOWN_SPAWN") <= 0;
     }
 
@@ -385,42 +389,43 @@ public class TownData extends TerritoryData {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
 
 
-        if(ClaimBlacklistStorage.cannotBeClaimed(chunk)){
+        if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
             return Optional.empty();
         }
 
-        if(!doesPlayerHavePermission(playerData, RolePermission.CLAIM_CHUNK)){
+        if (!doesPlayerHavePermission(playerData, RolePermission.CLAIM_CHUNK)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             return Optional.empty();
         }
 
-        if(!canClaimMoreChunk()){
+        if (!canClaimMoreChunk()) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.MAX_CHUNK_LIMIT_REACHED.get());
             return Optional.empty();
         }
 
 
-        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfTownChunk",0);
-        if(getBalance() < cost){
+        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfTownChunk", 0);
+        if (getBalance() < cost) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(cost - getBalance()));
             return Optional.empty();
         }
 
         ClaimedChunk2 chunkData = NewClaimedChunkStorage.getInstance().get(chunk);
-        if(!chunkData.canTerritoryClaim(Optional.of(player),this)){
+        if (!chunkData.canTerritoryClaim(Optional.of(player), this)) {
             return Optional.empty();
         }
 
-        if(getNumberOfClaimedChunk() != 0 &&
-                !NewClaimedChunkStorage.getInstance().isAdjacentChunkClaimedBySameTown(chunk,getID()) &&
-                !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("TownAllowNonAdjacentChunks",false)) {
+        if (getNumberOfClaimedChunk() != 0 &&
+                !NewClaimedChunkStorage.getInstance().isAdjacentChunkClaimedBySameTown(chunk, getID()) &&
+                !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("TownAllowNonAdjacentChunks", false)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
             return Optional.empty();
         }
 
+        removeFromBalance(cost);
         NewClaimedChunkStorage.getInstance().unclaimChunk(chunk);
-        NewClaimedChunkStorage.getInstance().claimTownChunk(chunk,getID());
+        NewClaimedChunkStorage.getInstance().claimTownChunk(chunk, getID());
 
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.get(
                 getNumberOfClaimedChunk(),
@@ -429,7 +434,7 @@ public class TownData extends TerritoryData {
         return Optional.of(NewClaimedChunkStorage.getInstance().get(chunk));
     }
 
-    public RegionData getRegion(){
+    public RegionData getRegion() {
         return RegionDataStorage.getInstance().get(this.overlordID);
     }
 
@@ -440,10 +445,11 @@ public class TownData extends TerritoryData {
     }
 
     public void removeOverlordPrivate() {
-        for(PlayerData playerData : getPlayerDataList()){
+        for (PlayerData playerData : getPlayerDataList()) {
             playerData.setRegionRankID(null);
         }
     }
+
     @Override
     public void addVassalPrivate(TerritoryData vassal) {
         //town have no vassals
@@ -457,7 +463,7 @@ public class TownData extends TerritoryData {
 
     @Override
     public boolean isCapital() {
-        if(!haveOverlord())
+        if (!haveOverlord())
             return false;
         return getOverlord().getCapital().getID().equals(getID());
     }
@@ -469,20 +475,20 @@ public class TownData extends TerritoryData {
 
 
     public boolean isRegionalCapital() {
-        if(!haveOverlord())
+        if (!haveOverlord())
             return false;
         return getOverlord().getCapitalID().equals(getID());
     }
 
-    public boolean haveRelationWith(TownData otherTown){
+    public boolean haveRelationWith(TownData otherTown) {
         return this.getRelationWith(otherTown) != null;
     }
 
     @Override
     public int getDefaultRankID() {
-        if(this.defaultRankID == null)
+        if (this.defaultRankID == null)
             this.defaultRankID = townDefaultRankID;
-        if(this.defaultRankID == null)
+        if (this.defaultRankID == null)
             this.defaultRankID = getRanks().values().iterator().next().getID();
         return defaultRankID;
     }
@@ -491,7 +497,7 @@ public class TownData extends TerritoryData {
     public List<GuiItem> getOrderedMemberList(PlayerData playerData) {
         Player player = playerData.getPlayer();
         List<GuiItem> res = new ArrayList<>();
-        for (String playerUUID: getOrderedPlayerIDList()) {
+        for (String playerUUID : getOrderedPlayerIDList()) {
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
             PlayerData playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
@@ -501,25 +507,25 @@ public class TownData extends TerritoryData {
 
             GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
-                if(event.getClick() == ClickType.RIGHT){
+                if (event.getClick() == ClickType.RIGHT) {
 
                     PlayerData kickedPlayerData = PlayerDataStorage.getInstance().get(playerIterate);
                     TownData townData = TownDataStorage.getInstance().get(playerData);
 
 
-                    if(!doesPlayerHavePermission(playerData, RolePermission.KICK_PLAYER)){
+                    if (!doesPlayerHavePermission(playerData, RolePermission.KICK_PLAYER)) {
                         player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                         return;
                     }
-                    if(townData.getRank(kickedPlayerData).isSuperiorTo(townData.getRank(playerData))){
+                    if (townData.getRank(kickedPlayerData).isSuperiorTo(townData.getRank(playerData))) {
                         player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
                         return;
                     }
-                    if(isLeader(kickedPlayerData)){
+                    if (isLeader(kickedPlayerData)) {
                         player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get());
                         return;
                     }
-                    if(playerData.getID().equals(kickedPlayerData.getID())){
+                    if (playerData.getID().equals(kickedPlayerData.getID())) {
                         player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_YOURSELF.get());
                         return;
                     }
@@ -545,45 +551,46 @@ public class TownData extends TerritoryData {
     @Override
     protected void addSpecificTaxes(Budget budget) {
         budget.addProfitLine(new PlayerTaxLine(this));
-        if(haveOverlord())
+        if (haveOverlord())
             budget.addProfitLine(new OverlordTaxLine(this));
         budget.addProfitLine(new PropertyRentTax(this));
         budget.addProfitLine(new PropertySellTax(this));
     }
 
-    public Map<String, PropertyData> getPropertyDataMap(){
-        if(this.propertyDataMap == null)
+    public Map<String, PropertyData> getPropertyDataMap() {
+        if (this.propertyDataMap == null)
             this.propertyDataMap = new HashMap<>();
         return this.propertyDataMap;
     }
-    public Collection<PropertyData> getProperties(){
+
+    public Collection<PropertyData> getProperties() {
         return getPropertyDataMap().values();
     }
 
-    public String nextPropertyID(){
-        if(getPropertyDataMap().isEmpty())
+    public String nextPropertyID() {
+        if (getPropertyDataMap().isEmpty())
             return "P0";
         int size = getPropertyDataMap().size();
         int lastID = Integer.parseInt(getPropertyDataMap().values().stream().toList().get(size - 1).getTotalID().split("P")[1]);
         return "P" + (lastID + 1);
     }
 
-    public PropertyData registerNewProperty(Vector3D p1, Vector3D p2, PlayerData owner){
+    public PropertyData registerNewProperty(Vector3D p1, Vector3D p2, PlayerData owner) {
         String propertyID = nextPropertyID();
         String id = this.getID() + "_" + propertyID;
-        PropertyData newProperty = new PropertyData(id,p1,p2,owner);
+        PropertyData newProperty = new PropertyData(id, p1, p2, owner);
         this.propertyDataMap.put(propertyID, newProperty);
         owner.addProperty(newProperty);
         return newProperty;
     }
 
-    public PropertyData getProperty(String id){
+    public PropertyData getProperty(String id) {
         return getPropertyDataMap().get(id);
     }
 
     public PropertyData getProperty(Location location) {
-        for(PropertyData propertyData : getProperties()){
-            if(propertyData.containsLocation(location)){
+        for (PropertyData propertyData : getProperties()) {
+            if (propertyData.containsLocation(location)) {
                 return propertyData;
             }
         }
@@ -595,10 +602,11 @@ public class TownData extends TerritoryData {
     }
 
     public String getTownTag() {
-        if(this.townTag == null)
-            setTownTag(this.TownName.substring(0,3).toUpperCase());
+        if (this.townTag == null)
+            setTownTag(this.TownName.substring(0, 3).toUpperCase());
         return this.townTag;
     }
+
     public void setTownTag(String townTag) {
         this.townTag = townTag;
     }
@@ -608,17 +616,16 @@ public class TownData extends TerritoryData {
     }
 
     @SuppressWarnings("unused") //API
-    public Collection<TownClaimedChunk> getClaims(){
+    public Collection<TownClaimedChunk> getClaims() {
         Collection<TownClaimedChunk> res = new ArrayList<>();
-        for(ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getInstance().getClaimedChunksMap().values()){
-            if(claimedChunk instanceof TownClaimedChunk townClaimedChunk && townClaimedChunk.getOwnerID().equals(getID())){
-                    res.add(townClaimedChunk);
-                }
+        for (ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getInstance().getClaimedChunksMap().values()) {
+            if (claimedChunk instanceof TownClaimedChunk townClaimedChunk && townClaimedChunk.getOwnerID().equals(getID())) {
+                res.add(townClaimedChunk);
+            }
 
         }
         return res;
     }
-
 
 
     public void kickPlayer(OfflinePlayer kickedPlayer) {
@@ -627,56 +634,56 @@ public class TownData extends TerritoryData {
         removePlayer(kickedPlayerData);
         broadCastMessageWithSound(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.get(kickedPlayer.getName()), SoundEnum.BAD);
 
-        if(kickedPlayer.isOnline())
+        if (kickedPlayer.isOnline())
             kickedPlayer.getPlayer().sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get());
 
     }
 
 
-
     public void upgradeTown(Player player) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         Level townLevel = this.getLevel();
-        if(!doesPlayerHavePermission(playerData, RolePermission.UPGRADE_TOWN)){
+        if (!doesPlayerHavePermission(playerData, RolePermission.UPGRADE_TOWN)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-            SoundUtil.playSound(player,SoundEnum.NOT_ALLOWED);
+            SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             return;
         }
-        if(this.getBalance() < townLevel.getMoneyRequiredForLevelUp()) {
+        if (this.getBalance() < townLevel.getMoneyRequiredForLevelUp()) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
-            SoundUtil.playSound(player,SoundEnum.NOT_ALLOWED);
+            SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             return;
         }
 
         removeFromBalance(townLevel.getMoneyRequiredForLevelUp());
         townLevel.townLevelUp();
-        SoundUtil.playSound(player,SoundEnum.LEVEL_UP);
+        SoundUtil.playSound(player, SoundEnum.LEVEL_UP);
         player.sendMessage(TanChatUtils.getTANString() + Lang.BASIC_LEVEL_UP.get());
     }
-    public void upgradeTown(Player player, TownUpgrade townUpgrade, int townUpgradeLevel){
+
+    public void upgradeTown(Player player, TownUpgrade townUpgrade, int townUpgradeLevel) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
-        if(!doesPlayerHavePermission(playerData, RolePermission.UPGRADE_TOWN)){
+        if (!doesPlayerHavePermission(playerData, RolePermission.UPGRADE_TOWN)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-            SoundUtil.playSound(player,SoundEnum.NOT_ALLOWED);
+            SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             return;
         }
         int cost = townUpgrade.getCost(townLevel.getUpgradeLevel(townUpgrade.getName()));
-        if(this.getBalance() < cost ) {
+        if (this.getBalance() < cost) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(cost - this.getBalance()));
-            SoundUtil.playSound(player,SoundEnum.NOT_ALLOWED);
+            SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             return;
         }
         Level level = this.getLevel();
-        if(level.getUpgradeLevel(townUpgrade.getName()) >= townUpgrade.getMaxLevel()){
+        if (level.getUpgradeLevel(townUpgrade.getName()) >= townUpgrade.getMaxLevel()) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_UPGRADE_MAX_LEVEL.get());
-            SoundUtil.playSound(player,SoundEnum.NOT_ALLOWED);
+            SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             return;
         }
 
         removeFromBalance(townUpgrade.getCost(townUpgradeLevel));
         level.levelUp(townUpgrade);
-        SoundUtil.playSound(player,SoundEnum.LEVEL_UP);
+        SoundUtil.playSound(player, SoundEnum.LEVEL_UP);
         player.sendMessage(TanChatUtils.getTANString() + Lang.BASIC_LEVEL_UP.get());
     }
 
@@ -685,14 +692,14 @@ public class TownData extends TerritoryData {
     }
 
     public Collection<String> getOwnedLandmarksID() {
-        if(ownedLandmarks == null)
+        if (ownedLandmarks == null)
             ownedLandmarks = new ArrayList<>();
         return ownedLandmarks;
     }
 
     public Collection<Landmark> getOwnedLandmarks() {
         Collection<Landmark> res = new ArrayList<>();
-        for(String landmarkID : getOwnedLandmarksID()){
+        for (String landmarkID : getOwnedLandmarksID()) {
             res.add(LandmarkStorage.getInstance().get(landmarkID));
         }
         return res;
@@ -702,17 +709,20 @@ public class TownData extends TerritoryData {
         return getOwnedLandmarksID().size();
     }
 
-    public void addLandmark(String landmarkID){
+    public void addLandmark(String landmarkID) {
         getOwnedLandmarksID().add(landmarkID);
     }
-    public void addLandmark(Landmark landmark){
+
+    public void addLandmark(Landmark landmark) {
         addLandmark(landmark.getID());
         landmark.setOwner(this);
     }
-    public void removeLandmark(String landmarkID){
+
+    public void removeLandmark(String landmarkID) {
         getOwnedLandmarksID().remove(landmarkID);
     }
-    public void removeLandmark(Landmark landmark){
+
+    public void removeLandmark(Landmark landmark) {
         removeLandmark(landmark.getID());
         landmark.removeOwnership();
     }
@@ -728,8 +738,8 @@ public class TownData extends TerritoryData {
 
     @Override
     public boolean atWarWith(String territoryID) {
-        for(PlannedAttack plannedAttack : getAttacksInvolved()) {
-            if(plannedAttack.getMainDefender().getID().equals(territoryID))
+        for (PlannedAttack plannedAttack : getAttacksInvolved()) {
+            if (plannedAttack.getMainDefender().getID().equals(territoryID))
                 return true;
         }
         return false;
@@ -737,14 +747,14 @@ public class TownData extends TerritoryData {
 
 
     public void removeAllLandmark() {
-        for(String landmarkID : getOwnedLandmarksID()){
+        for (String landmarkID : getOwnedLandmarksID()) {
             Landmark landmark = LandmarkStorage.getInstance().get(landmarkID);
             landmark.removeOwnership();
         }
     }
 
     @Override
-    public void delete(){
+    public void delete() {
         super.delete();
         broadCastMessageWithSound(Lang.BROADCAST_PLAYER_TOWN_DELETED.get(getLeaderName(), getColoredName()), SoundEnum.BAD);
         removeAllLandmark(); //Remove all Landmark from the deleted town
@@ -795,12 +805,12 @@ public class TownData extends TerritoryData {
 
     @Override
     public boolean isCapitalOf(String territoryID) {
-        if(!haveOverlord())
+        if (!haveOverlord())
             return false;
         return getOverlord().getCapitalID().equals(getID());
     }
 
-    protected long getOldDateTime(){
+    protected long getOldDateTime() {
         return townDateTimeCreated;
     }
 }

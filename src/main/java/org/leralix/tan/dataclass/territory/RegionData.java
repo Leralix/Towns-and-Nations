@@ -1,9 +1,7 @@
 package org.leralix.tan.dataclass.territory;
 
-import dev.triumphteam.gui
-.builder.item.ItemBuilder;
-import dev.triumphteam.gui
-.guis.GuiItem;
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -80,19 +78,21 @@ public class RegionData extends TerritoryData {
     public String getColoredName() {
         return "§b" + getName();
     }
+
     @Override
-    public String getLeaderID(){
-        if(leaderID == null)
+    public String getLeaderID() {
+        if (leaderID == null)
             leaderID = getCapital().getLeaderID();
         return leaderID;
     }
 
     @Override
-    public PlayerData getLeaderData(){
+    public PlayerData getLeaderData() {
         return PlayerDataStorage.getInstance().get(getLeaderID());
     }
+
     @Override
-    public void setLeaderID(String newLeaderID){
+    public void setLeaderID(String newLeaderID) {
         this.leaderID = newLeaderID;
     }
 
@@ -102,21 +102,19 @@ public class RegionData extends TerritoryData {
     }
 
 
-
-
     @Override
-    public Collection<String> getPlayerIDList(){
+    public Collection<String> getPlayerIDList() {
         ArrayList<String> playerList = new ArrayList<>();
-        for (TerritoryData townData : getSubjects()){
+        for (TerritoryData townData : getSubjects()) {
             playerList.addAll(townData.getPlayerIDList());
         }
         return playerList;
     }
 
     @Override
-    public Collection<PlayerData> getPlayerDataList(){
+    public Collection<PlayerData> getPlayerDataList() {
         ArrayList<PlayerData> playerDataList = new ArrayList<>();
-        for (String playerID : getPlayerIDList()){
+        for (String playerID : getPlayerIDList()) {
             playerDataList.add(PlayerDataStorage.getInstance().get(playerID));
         }
         return playerDataList;
@@ -128,7 +126,7 @@ public class RegionData extends TerritoryData {
         ItemStack icon = getIcon();
 
         ItemMeta meta = icon.getItemMeta();
-        if(meta != null){
+        if (meta != null) {
             meta.setDisplayName(ChatColor.AQUA + getName());
             icon.setItemMeta(meta);
         }
@@ -141,7 +139,7 @@ public class RegionData extends TerritoryData {
         ItemStack icon = getIcon();
 
         ItemMeta meta = icon.getItemMeta();
-        if(meta != null){
+        if (meta != null) {
             meta.setDisplayName(ChatColor.AQUA + getName());
 
             List<String> lore = new ArrayList<>();
@@ -159,7 +157,7 @@ public class RegionData extends TerritoryData {
 
     public int getTotalPlayerCount() {
         int count = 0;
-        for (TerritoryData town : getSubjects()){
+        for (TerritoryData town : getSubjects()) {
             count += town.getPlayerIDList().size();
         }
         return count;
@@ -186,25 +184,25 @@ public class RegionData extends TerritoryData {
         TownData townData = TownDataStorage.getInstance().get(player);
         RegionData regionData = townData.getRegion(); //TODO : Does regionData is usefull ?
 
-        if(ClaimBlacklistStorage.cannotBeClaimed(chunk)){
+        if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
             return Optional.empty();
         }
 
 
-        if(!regionData.doesPlayerHavePermission(playerData, RolePermission.CLAIM_CHUNK)){
+        if (!regionData.doesPlayerHavePermission(playerData, RolePermission.CLAIM_CHUNK)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return Optional.empty();
         }
-        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfRegionChunk",5);
+        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfRegionChunk", 5);
 
-        if(regionData.getBalance() < cost){
+        if (regionData.getBalance() < cost) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.REGION_NOT_ENOUGH_MONEY_EXTENDED.get(cost - regionData.getBalance()));
             return Optional.empty();
         }
 
         ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
-        if(!currentClaimedChunk.canTerritoryClaim(Optional.of(player), regionData)){
+        if (!currentClaimedChunk.canTerritoryClaim(Optional.of(player), regionData)) {
             return Optional.empty();
         }
 
@@ -233,7 +231,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     public boolean isCapital() {
-        if(!hasNation())
+        if (!hasNation())
             return false;
         return getOverlord().isCapital();
     }
@@ -255,6 +253,7 @@ public class RegionData extends TerritoryData {
     public void setCapital(TownData town) {
         setCapital(town.getID());
     }
+
     public void setCapital(String townID) {
         this.capitalID = townID;
     }
@@ -271,16 +270,15 @@ public class RegionData extends TerritoryData {
 
     @Override
     protected void collectTaxes() {
-        for(TerritoryData town : getVassals()){
-            if(town == null) continue;
+        for (TerritoryData town : getVassals()) {
+            if (town == null) continue;
             double tax = getTax();
-            if(town.getBalance() < tax){
-                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SubjectTaxHistory(this,town,-1));
-            }
-            else {
+            if (town.getBalance() < tax) {
+                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SubjectTaxHistory(this, town, -1));
+            } else {
                 town.removeFromBalance(tax);
                 addToBalance(tax);
-                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SubjectTaxHistory(this,town,tax));
+                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SubjectTaxHistory(this, town, tax));
             }
         }
     }
@@ -294,8 +292,8 @@ public class RegionData extends TerritoryData {
         townsInRegion.remove(vassalID);
 
 
-        for(RankData rank : getRanks().values()){
-            for(String playerID : town.getPlayerIDList()){
+        for (RankData rank : getRanks().values()) {
+            for (String playerID : town.getPlayerIDList()) {
                 rank.removePlayer(playerID);
             }
         }
@@ -303,12 +301,12 @@ public class RegionData extends TerritoryData {
 
     @Override
     public double getChunkUpkeepCost() {
-        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("RegionChunkUpkeepCost",0);
+        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("RegionChunkUpkeepCost", 0);
     }
 
     public boolean isPlayerInRegion(PlayerData playerData) {
-        for (TerritoryData town : getSubjects()){
-            if(town.isPlayerIn(playerData))
+        for (TerritoryData town : getSubjects()) {
+            if (town.isPlayerIn(playerData))
                 return true;
         }
         return false;
@@ -317,8 +315,8 @@ public class RegionData extends TerritoryData {
 
     public Collection<RegionClaimedChunk> getClaims() {
         Collection<RegionClaimedChunk> res = new ArrayList<>();
-        for(ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getInstance().getClaimedChunksMap().values()){
-            if(claimedChunk instanceof RegionClaimedChunk regionClaimedChunk && regionClaimedChunk.getOwnerID().equals(getID())){
+        for (ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getInstance().getClaimedChunksMap().values()) {
+            if (claimedChunk instanceof RegionClaimedChunk regionClaimedChunk && regionClaimedChunk.getOwnerID().equals(getID())) {
                 res.add(regionClaimedChunk);
             }
         }
@@ -338,19 +336,19 @@ public class RegionData extends TerritoryData {
 
     @Override
     public void broadCastMessage(String message) {
-        for(TerritoryData townData : getSubjects())
+        for (TerritoryData townData : getSubjects())
             townData.broadCastMessage(message);
     }
 
     @Override
     public void broadCastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix) {
-        for(TerritoryData townData : getSubjects())
+        for (TerritoryData townData : getSubjects())
             townData.broadCastMessageWithSound(message, soundEnum, addPrefix);
     }
 
     @Override
     public void broadCastMessageWithSound(String message, SoundEnum soundEnum) {
-        for(TerritoryData townData : getSubjects())
+        for (TerritoryData townData : getSubjects())
             townData.broadCastMessageWithSound(message, soundEnum);
     }
 
@@ -362,15 +360,15 @@ public class RegionData extends TerritoryData {
 
     @Override
     public boolean atWarWith(String territoryID) {
-        for(PlannedAttack plannedAttack : getAttacksInvolved()) {
-            if(plannedAttack.getMainDefender().getID().equals(territoryID))
+        for (PlannedAttack plannedAttack : getAttacksInvolved()) {
+            if (plannedAttack.getMainDefender().getID().equals(territoryID))
                 return true;
         }
         return false;
     }
 
     @Override
-    public void delete(){
+    public void delete() {
         super.delete();
         broadCastMessageWithSound(Lang.BROADCAST_PLAYER_REGION_DELETED.get(getLeaderData().getNameStored(), getColoredName()), SoundEnum.BAD);
         TeamUtils.updateAllScoreboardColor();
@@ -404,7 +402,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     public boolean isCapitalOf(String territoryID) {
-        if(!hasNation())
+        if (!hasNation())
             return false;
         return getOverlord().getCapitalID().equals(territoryID);
     }
@@ -423,7 +421,7 @@ public class RegionData extends TerritoryData {
     @Override
     public List<GuiItem> getOrderedMemberList(PlayerData playerData) {
         List<GuiItem> res = new ArrayList<>();
-        for (String playerUUID: getOrderedPlayerIDList()) {
+        for (String playerUUID : getOrderedPlayerIDList()) {
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
             PlayerData playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
@@ -445,7 +443,7 @@ public class RegionData extends TerritoryData {
         budget.addProfitLine(new SubjectTaxLine(this));
     }
 
-    protected long getOldDateTime(){
+    protected long getOldDateTime() {
         return regionDateTimeCreated;
     }
 }
