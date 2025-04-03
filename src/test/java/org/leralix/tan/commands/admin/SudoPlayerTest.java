@@ -4,7 +4,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.factory.Factory;
 import org.leralix.tan.storage.SudoPlayerStorage;
 import org.mockito.Mockito;
@@ -29,6 +28,16 @@ public class SudoPlayerTest {
 
         SudoPlayer sudoPlayer = new SudoPlayer();
         sudoPlayer.perform(player, new String[]{"sudo"});
+
+        assertTrue(SudoPlayerStorage.isSudoPlayer(player));
+    }
+
+    @Test
+    void useOnItself() {
+        Player player = Factory.getRandomPlayer();
+
+        SudoPlayer sudoPlayer = new SudoPlayer();
+        sudoPlayer.perform(player, new String[]{"sudo", player.getName()});
 
         assertTrue(SudoPlayerStorage.isSudoPlayer(player));
     }

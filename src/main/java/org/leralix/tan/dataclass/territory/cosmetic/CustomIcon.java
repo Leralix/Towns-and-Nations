@@ -4,7 +4,9 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class CustomIcon {
+import javax.swing.*;
+
+public class CustomIcon implements ICustomIcon {
 
     String materialTypeName;
     Integer customModelData;

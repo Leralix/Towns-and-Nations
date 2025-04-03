@@ -22,6 +22,7 @@ import org.leralix.tan.dataclass.newhistory.MiscellaneousHistory;
 import org.leralix.tan.dataclass.newhistory.PlayerDonationHistory;
 import org.leralix.tan.dataclass.newhistory.SalaryPaymentHistory;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
+import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.ChunkUpkeepLine;
@@ -56,7 +57,7 @@ public abstract class TerritoryData {
     private String description;
     protected String overlordID;
     private Long dateTimeCreated;
-    private CustomIcon customIcon;
+    private ICustomIcon customIcon;
     private RelationData relations;
     private Double baseTax;
     private double propertyRentTax;
@@ -157,7 +158,7 @@ public abstract class TerritoryData {
         }
         return customIcon.getIcon();
     }
-    public void setIcon(CustomIcon icon){
+    public void setIcon(ICustomIcon icon){
         this.customIcon = icon;
     }
     public abstract Collection<String> getPlayerIDList();

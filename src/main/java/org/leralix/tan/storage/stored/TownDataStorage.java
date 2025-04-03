@@ -4,6 +4,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -54,7 +55,7 @@ public class TownDataStorage {
         return newTown;
     }
 
-    public void newTown(String townName){
+    public TownData newTown(String townName){
         String townId = "T"+newTownId;
         newTownId++;
 
@@ -62,6 +63,7 @@ public class TownDataStorage {
 
         townDataMap.put(townId,newTown);
         saveStats();
+        return newTown;
     }
 
 
@@ -108,7 +110,7 @@ public class TownDataStorage {
             .registerTypeAdapter(new TypeToken<Map<ChunkPermissionType, RelationPermission>>() {}.getType(), new EnumMapKeyValueDeserializer<>(ChunkPermissionType.class, RelationPermission.class))
             .registerTypeAdapter(new TypeToken<Map<TownRelation, List<String>>>() {}.getType(),new EnumMapDeserializer<>(TownRelation.class, new TypeToken<List<String>>(){}.getType()))
             .registerTypeAdapter(new TypeToken<List<RelationPermission>>() {}.getType(),new EnumMapDeserializer<>(RelationPermission.class, new TypeToken<List<String>>(){}.getType()))
-            .registerTypeAdapter(CustomIcon.class, new IconAdapter())
+            .registerTypeAdapter(ICustomIcon.class, new IconAdapter())
             .create();
 
         Type type = new TypeToken<LinkedHashMap<String, TownData>>() {}.getType();
@@ -128,7 +130,7 @@ public class TownDataStorage {
     public void saveStats() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting()
-                .registerTypeAdapter(CustomIcon.class, new IconAdapter())
+                .registerTypeAdapter(ICustomIcon.class, new IconAdapter())
                 .create();
 
 

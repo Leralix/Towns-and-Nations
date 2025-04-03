@@ -44,7 +44,7 @@ public class Level {
     }
 
     public int getChunkCap() {
-        return getTotalBenefits().get("CHUNK_CAP");
+        return getBenefitsLevel("CHUNK_CAP");
     }
 
     public int getPropertyCap() {
@@ -115,7 +115,8 @@ public class Level {
     }
 
     public int getBenefitsLevel(String benefitName) {
-        return getTotalBenefits().get(benefitName);
+        Map<String, Integer> benefits = this.getTotalBenefits();
+        return benefits.getOrDefault(benefitName,0);
     }
 
 }
