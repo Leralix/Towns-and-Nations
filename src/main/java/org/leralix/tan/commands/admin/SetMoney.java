@@ -44,22 +44,26 @@ public class SetMoney extends SubCommand {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         } else if (args.length == 3) {
             PlayerData target = PlayerDataStorage.getInstance().get(Bukkit.getOfflinePlayer(args[1]));
-            double amount;
-            try {
-                amount = Double.parseDouble(args[2]);
-            } catch (NumberFormatException e) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
-                return;
-            }
-
-            EconomyUtil.setBalance(target, amount);
-            target.setBalance(amount);
-            player.sendMessage(TanChatUtils.getTANString() + Lang.SET_MONEY_COMMAND_SUCCESS.get(amount,target.getNameStored()));
-            FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_SET_MONEY.get(player.getName(),amount,target.getNameStored()));
+            setMoney(player, args, target);
 
         } else {
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
             player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
+    }
+
+    static void setMoney(CommandSender player, String[] args, PlayerData target) {
+        double amount;
+        try {
+            amount = Double.parseDouble(args[2]);
+        } catch (NumberFormatException e) {
+            player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
+            return;
+        }
+
+        EconomyUtil.setBalance(target, amount);
+        target.setBalance(amount);
+        player.sendMessage(TanChatUtils.getTANString() + Lang.SET_MONEY_COMMAND_SUCCESS.get(amount, target.getNameStored()));
+        FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_SET_MONEY.get(player.getName(),amount, target.getNameStored()));
     }
 }

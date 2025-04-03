@@ -957,11 +957,13 @@ public enum Lang {
     static final String MESSAGE_NOT_FOUND_FOR = "Message not found for ";
     static final String IN_THIS_LANGUAGE_FILE = " in this language file.";
 
-    public static void loadTranslations(String fileTag) {
+    public static void loadTranslations(File langFolder, String fileTag) {
+        loadTranslations(langFolder, fileTag, true);
+    }
+
+        public static void loadTranslations(File langFolder, String fileTag, boolean saveFile) {
 
         chosenLang = LangType.fromCode(fileTag);
-
-        File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
 
         if (!langFolder.exists()) {
             langFolder.mkdir();
@@ -979,7 +981,7 @@ public enum Lang {
             File file = new File(specificLangFolder, "main.yml");
 
 
-            if(!file.exists() || replace) {
+            if((!file.exists() || replace) && saveFile) {
                 TownsAndNations.getPlugin().saveResource("lang/" + langType.getCode() + "/main.yml", true);
             }
 

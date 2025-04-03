@@ -1,4 +1,4 @@
-package org.leralix.tan.commands.playersubcommand;
+package org.leralix.tan.commands.player;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;

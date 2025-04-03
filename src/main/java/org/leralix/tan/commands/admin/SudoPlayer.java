@@ -56,14 +56,12 @@ public class SudoPlayer extends SubCommand {
                 commandSender.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_FOUND.get());
                 return;
             }
-            if (commandSender instanceof Player player) {
-                if(target.getUniqueId().equals(player.getUniqueId())){
-                    SudoPlayerStorage.swap(player);
-                }
+            if (commandSender instanceof Player player && target.getUniqueId().equals(player.getUniqueId())){
+                SudoPlayerStorage.swap(player);
+                return;
             }
-            else {
-                SudoPlayerStorage.swap(commandSender, target);
-            }
+            SudoPlayerStorage.swap(commandSender, target);
+
         }
         else {
             commandSender.sendMessage(TanChatUtils.getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());

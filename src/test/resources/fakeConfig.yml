@@ -1,0 +1,417 @@
+#  _____                            ___       _   _       _   _
+# |_   ______      ___ __  ___     ( _ )     | \ | | __ _| |_(_) ___  _ __  ___
+#   | |/ _ \ \ /\ / | '_ \/ __|    / _ \/\   |  \| |/ _` | __| |/ _ \| '_ \/ __|
+#   | | (_) \ V  V /| | | \__ \   | (_>  <   | |\  | (_| | |_| | (_) | | | \__ \
+#   |_|\___/ \_/\_/ |_| |_|___/    \___/\/   |_| \_|\__,_|\__|_|\___/|_| |_|___/
+#
+
+
+########################
+##      General       ##
+########################
+
+#Allow name duplication (for ranks, towns, regions and kingdoms)
+AllowNameDuplication: true
+
+#Remove all villager interactions except the one from the plugin (usefull to prevent duplication of items)
+removeAllVillagerInteractions: false
+
+#Time of the day when taxes are collected (default is midnight in 0:00)
+taxHourTime: 0 #0-23
+taxMinuteTime: 0 #0-59
+
+########################
+##      Players       ##
+########################
+
+#IMPORTANT !! Enable the player color code.
+#Enabling the color code will create a separate scoreboard for each player, thus BREAKING THE VANILLA SCOREBOARD
+#Only enable this if you are not using any other scoreboard plugin
+EnablePlayerColorCode: false
+
+#If the player color code is enable, you can add a 3 character prefix to the player name from their town
+EnablePlayerPrefix: false
+
+#Enable prefix for town
+EnableTownPrefix: true
+
+#Enable the version check
+CheckForUpdate: true
+
+#If prefix enabled:
+##Prefix Size (recommended 3)
+prefixSize: 3
+
+########################
+##      Economy       ##
+########################
+
+#Use TownsAndNations economy for vault
+#If set to false, plugin will use the economy plugin linked to vault
+#If no other economy plugin are provided by vault, the plugin will use its own economy system without linking to vault
+UseTanEconomy: true
+
+#If TownsAndNations economy is used, set the currency symbol
+moneyIcon: "✦"
+
+#If TownsAndNations economy is used, set the number of digits (0,1,2,3...)
+DecimalDigits: 2
+
+#Max distance between 2 players to be able to trade (/tan pay)
+maxPayDistance: 15
+
+#The amount of money a player starts with (only works if no external economy plugin is used)
+StartingMoney: 100.0
+
+########################
+##      Kingdoms      ##
+########################
+
+#Enable Kingdoms
+EnableKingdom: true
+
+
+########################
+##       Regions      ##
+########################
+
+#Enable Region (will automatically disable Kingdoms)
+EnableRegion: true
+
+#The cost of creating a Region
+regionCost: 7500
+
+#The max size of names
+TownNameSize: 45
+TownDescSize: 55
+
+#Cost of renaming a region:
+ChangeRegionNameCost: 100
+
+#The cost of a region claim
+CostOfRegionChunk: 5
+
+#The upkeep cost of a region claim
+RegionChunkUpkeepCost: 0.1
+
+#Allow non-adjacent chunks to be claimed
+RegionAllowNonAdjacentChunks: false
+
+#Notify if a player from an enemy territory enters
+notifyEnemyEnterRegion: true
+
+#Enable explosion grief in region claimed chunks (creeper explosion, tnt explosion, etc)
+#Explosion will still damage players
+EnableExplosionGriefInRegion: false
+
+########################
+##       Towns        ##
+########################
+
+#The cost of creating a town
+townCost: 1000
+
+#The max size of names
+RegionNameSize: 45
+RegionDescSize: 55
+
+#Cost of renaming a town:
+ChangeTownNameCost: 100
+
+#The cost of a town claim
+CostOfTownChunk: 0
+
+#The upkeep cost of a town claim
+TownChunkUpkeepCost: 0.0
+
+#Allow non-adjacent chunks to be claimed
+TownAllowNonAdjacentChunks: false
+
+#Notify if a player from an enemy town enters
+notifyEnemyEnterTown: true
+
+#Town max level
+TownMaxLevel: 10
+
+#Enable explosion grief in town claimed chunks (creeper explosion, tnt explosion, etc)
+#Explosion will still damage players
+EnableExplosionGriefInTown: false
+
+########################
+##     Properties     ##
+########################
+
+#Define the maximum range at which a player can be from a town spawn to be considered in the town
+maxPropertyMargin: 3
+#When a player rent a property, make the player pay the rent one extra time at start
+payRentAtStart: true
+
+#The max size of names
+PropertyNameSize: 16
+PropertyDescSize: 40
+
+#Max size of a property (length x width x height)
+MaxPropertySize: 50000
+
+
+########################
+##       Ranks        ##
+########################
+
+#The max number of rank a town can create
+townMaxRank: 9
+
+RankNameSize: 25
+
+########################
+##        Wars        ##
+########################
+
+#Enable war
+EnableWar: true
+
+#Admin need to approve every war. Admins need to use /tan admin gui to approve or deny a war
+AdminApproval: false
+
+#The duration of a war in minutes
+WarDuration: 30
+
+#The minimum time before starting a war in minutes
+MinimumTimeBeforeAttack: 120 #2 hours
+#The maximum time before starting a war in minutes
+MaximumTimeBeforeAttack: 4320 #72 hours
+
+#War works on a scale between 0 and 100 and start at 50.
+#When a player is killed, it shifts the balance toward the killer team.
+#This score determines the percentage of progress needed to win, based on the number of connected players on the enemy team.
+#If the multiplier is 0.5, a player killed will give 0.5 * (50 / enemyTeamSize) points to the killer team.
+#The lower the multiplier, the longer the war will last.
+warScoreMultiplier : 0.70
+
+# Set the number of chunks to conquer
+# 0 - unlimited, but no more than what the defender owns
+MaximumChunkConquer: 0
+
+########################
+##  General settings  ##
+########################
+
+#General settings in claimed chunks
+# Always                 | Always allowed
+# Player choice          | Allow territories to choose
+# Player choice and War  | Allow territories to choose and is automatically enabled during a war
+# WarOnly                | Allow only during a war
+# Never                  | Never allowed
+# [ALWAYS, WAR_ONLY, PLAYER_CHOICE_AND_WAR, PLAYER_CHOICE, NEVER]
+fireGrief: "PLAYER_CHOICE_AND_WAR" #burning and spreading
+explosionGrief: "PLAYER_CHOICE_AND_WAR"
+pvpEnabledInClaimedChunks: "ALWAYS"
+
+########################
+##    TELEPORTATION   ##
+########################
+
+##Teleportation
+#Time before a teleportation (in seconds). 0 or negative value will result in an instant teleportation
+timeBeforeTeleport: 5
+
+#Cancel teleportation if player move head
+cancelTeleportOnMoveHead: false
+
+#Cancel teleportation if player move position
+cancelTeleportOnMovePosition: true
+
+#Cancel teleportation if player take damage
+cancelTeleportOnDamage: true
+
+
+########################
+##      Landmarks     ##
+########################
+
+#Max size of a landmark name
+landmarkNameMaxSize: 25
+
+# The default value is the maximum amount of resources to store. (amount * storedLimit)
+storedLimit: 7
+
+# Midnight generate resource
+enableMidnightGenerateResource: true
+
+########################
+##       Claims       ##
+########################
+
+#List of every claim that cannot be claimed
+#The list represent a square area defined by 2 points
+# name : <world name>                | name of the world
+# coordinate : [x1, z1, x2, z2]      | coordinate of the 2 points defining the area. Leave empty to disable the whole world
+
+#Example:
+#claimBlacklist:
+#  - name : "world"
+#    coordinate : [0,0,10,10]
+
+claimBlacklist:
+  - name : "world"
+    coordinate : [0,0,1,1]
+
+#If a town cannot pay the territory upkeep, % of chunks that will be unclaimed
+percentageOfChunksUnclaimed: 15.0
+
+#Minimum number of chunks that will be unclaimed if a town cannot pay the territory upkeep
+minimumNumberOfChunksUnclaimed: 5
+
+
+########################
+##     Wilderness     ##
+########################
+
+#Set rules for player on wilderness chunks (unclaimed)
+wildernessRules:
+  INTERACT_CHEST : true
+  INTERACT_DOOR: true
+  BREAK_BLOCK: true
+  PLACE_BLOCK: true
+  ATTACK_PASSIVE_MOB: true
+  INTERACT_BUTTON: true
+  INTERACT_REDSTONE: true
+  INTERACT_FURNACE: true
+  INTERACT_ITEM_FRAME: true
+  INTERACT_ARMOR_STAND: true
+  INTERACT_DECORATIVE_BLOCK: true
+  INTERACT_MUSIC_BLOCK: true
+  USE_LEAD: true
+  USE_SHEARS: true
+  INTERACT_BOAT: true
+  INTERACT_MINECART: true
+  USE_BONE_MEAL: true
+  INTERACT_BERRIES: true
+
+
+########################
+##     Newsletter     ##
+########################
+#Time before old newsletter are deleted in days (will be deleted at midnight)
+TimeBeforeClearingNewsletter: 7
+
+
+########################
+##       Database     ##
+########################
+
+#EXPERIMENTAL FEATURE
+#As of 0.12.0+, only tax history is stored in the database
+
+#Database type (only sqlite for now)
+#If other db are needed, please ask in the discord
+dbType: "sqlite"
+
+EnableCrossServer: false
+SQL:
+  #ip of the mysql server
+  address: jdbc:mysql://localhost:3306/minecraft
+  #username of the database
+  username: root
+  #password of the database
+  password: password
+
+
+########################
+##       Storage      ##
+########################
+
+#Archive major event into a txt file
+archiveHistory: true
+
+
+#Time before history is cleared in days (can be set to -1 to disable)
+#The more history kept the more storage is used and some action may take longer
+TimeBeforeClearingTaxHistory: 90
+TimeBeforeClearingChunkHistory: 90
+TimeBeforeClearingSalaryHistory: 90
+NumberOfDonationBeforeClearing: 90
+NumberOfMiscPurchaseBeforeClearing: 90
+
+
+#Write the type of mobs you want a town to be able to cancel the spawn of.
+#If you want the removal option to be free, write 0, else write the cost of the removal
+#If you do not want some mobs to be removed, write -1 or any other negative number
+CancelMobSpawnInTown:
+  AXOLOTL: 0
+  BAT: 50
+  BEE: 0
+  BLAZE: 0
+  CAMEL: 0
+  CAT: 0
+  CAVE_SPIDER: 500
+  CHICKEN: 0
+  COD: 0
+  COW: 0
+  CREEPER: 1000
+  DOLPHIN: 0
+  DONKEY: 0
+  DROWNED: 500
+  ENDERMAN: 1000
+  ENDERMITE: 0
+  EVOKER: 0
+  FOX: 0
+  FROG: 0
+  GHAST: 1000
+  GLOW_SQUID: 0
+  GOAT: 0
+  GUARDIAN: 0
+  HOGLIN: 0
+  HORSE: 0
+  HUSK: 500
+  IRON_GOLEM: 0
+  LLAMA: 0
+  MAGMA_CUBE: 0
+  MOOSHROOM: 0
+  MULE: 0
+  OCELOT: 0
+  PANDA: 0
+  PARROT: 0
+  PHANTOM: 0
+  PIG: 0
+  PIGLIN: 0
+  PIGLIN_BRUTE: 0
+  PILLAGER: 0
+  POLAR_BEAR: 0
+  PUFFERFISH: 0
+  RABBIT: 0
+  RAVAGER: 0
+  SALMON: 0
+  SHEEP: 0
+  SHULKER: 0
+  SILVERFISH: 0
+  SKELETON: 1000
+  SKELETON_HORSE: 0
+  SLIME: 0
+  SNOWMAN: 0
+  SPIDER: 500
+  SQUID: 0
+  STRAY: 500
+  STRIDER: 0
+  TRADER_LLAMA: 0
+  TROPICAL_FISH: 0
+  TURTLE: 0
+  VEX: 0
+  VILLAGER: 0
+  VINDICATOR: 0
+  WANDERING_TRADER: 0
+  WITCH: 0
+  WITHER: 0
+  WITHER_SKELETON: 0
+  WOLF: 0
+  ZOGLIN: 0
+  ZOMBIE: 1000
+  ZOMBIE_HORSE: 0
+  ZOMBIE_VILLAGER: 0
+
+
+
+
+
+
+
