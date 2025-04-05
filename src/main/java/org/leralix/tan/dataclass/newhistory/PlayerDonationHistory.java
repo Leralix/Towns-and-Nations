@@ -15,8 +15,9 @@ public class PlayerDonationHistory extends TransactionHistory {
     public PlayerDonationHistory(String date, String territoryDataID, String playerID, double amount) {
         super(date, territoryDataID, playerID, amount);
     }
+
     public PlayerDonationHistory(TerritoryData territoryData, Player player, double amount) {
-        super(territoryData.getID(),player.getUniqueId().toString(),amount);
+        super(territoryData.getID(), player.getUniqueId().toString(), amount);
     }
 
 

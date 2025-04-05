@@ -10,8 +10,9 @@ public class SubjectTaxHistory extends TransactionHistory {
     public SubjectTaxHistory(String date, String territoryDataID, String playerID, double amount) {
         super(date, territoryDataID, playerID, amount);
     }
+
     public SubjectTaxHistory(TerritoryData territoryData, TerritoryData subject, double amount) {
-        super(territoryData.getID(),subject.getID(),amount);
+        super(territoryData.getID(), subject.getID(), amount);
     }
 
     @Override
@@ -22,7 +23,7 @@ public class SubjectTaxHistory extends TransactionHistory {
     @Override
     public String addLoreLine() {
         TerritoryData vassal = TerritoryUtil.getTerritory(getTransactionParty());
-        if(getAmount() > 0) {
+        if (getAmount() > 0) {
             return Lang.TAX_PAYMENT_HISTORY_LORE.get(vassal.getColoredName(), getAmount());
         } else {
             return Lang.TAX_PAYMENT_HISTORY_LORE_NOT_ENOUGH_MONEY.get(vassal.getColoredName());

@@ -8,7 +8,7 @@ import org.leralix.tan.lang.Lang;
 
 public class PropertyRentTaxHistory extends TransactionHistory {
 
-    public PropertyRentTaxHistory(String date, String territoryID, String propertyID,double amount) {
+    public PropertyRentTaxHistory(String date, String territoryID, String propertyID, double amount) {
         super(date, territoryID, propertyID, amount);
     }
 
@@ -18,11 +18,11 @@ public class PropertyRentTaxHistory extends TransactionHistory {
         return TransactionHistoryEnum.PROPERTY_RENT_TAX;
     }
 
-        @Override
-        public String addLoreLine() {
-            TownData territoryData = (TownData) getTerritoryData();
-            PropertyData propertyData = territoryData.getProperty(getTransactionParty());
-            return Lang.PROPERTY_RENT_LINE.get(territoryData.getName(), propertyData.getName(), StringUtil.getColoredMoney(-getAmount()));
-        }
+    @Override
+    public String addLoreLine() {
+        TownData territoryData = (TownData) getTerritoryData();
+        PropertyData propertyData = territoryData.getProperty(getTransactionParty());
+        return Lang.PROPERTY_RENT_LINE.get(territoryData.getName(), propertyData.getName(), StringUtil.getColoredMoney(-getAmount()));
+    }
 
 }

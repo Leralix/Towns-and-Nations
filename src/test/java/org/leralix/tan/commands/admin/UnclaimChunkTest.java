@@ -2,19 +2,12 @@ package org.leralix.tan.commands.admin;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.leralix.tan.dataclass.Level;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.factory.Factory;
-import org.leralix.tan.storage.SudoPlayerStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.mockito.Mockito;
@@ -28,7 +21,6 @@ import static org.mockito.Mockito.when;
 
 public class UnclaimChunkTest {
 
-    public static CommandSender sender;
     public static Chunk chunkPosition;
     public static Chunk otherChunkPosition;
     public static World world;

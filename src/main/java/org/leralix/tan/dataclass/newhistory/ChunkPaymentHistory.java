@@ -9,6 +9,7 @@ public class ChunkPaymentHistory extends TransactionHistory {
     public ChunkPaymentHistory(String date, String territoryID, double amount) {
         super(date, territoryID, null, amount);
     }
+
     public ChunkPaymentHistory(TerritoryData territoryData, double amount) {
         super(territoryData.getID(), null, amount);
     }
@@ -19,8 +20,8 @@ public class ChunkPaymentHistory extends TransactionHistory {
         return TransactionHistoryEnum.CHUNK_SPENDING;
     }
 
-        @Override
-        public String addLoreLine() {
-            return Lang.CHUNK_PAYMENT_HISTORY_LORE.get(StringUtil.getColoredMoney(-getAmount()));
-        }
+    @Override
+    public String addLoreLine() {
+        return Lang.CHUNK_PAYMENT_HISTORY_LORE.get(StringUtil.getColoredMoney(-getAmount()));
     }
+}

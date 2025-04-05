@@ -18,25 +18,25 @@ import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class LandmarkClaimedChunk extends ClaimedChunk2{
+public class LandmarkClaimedChunk extends ClaimedChunk2 {
     public LandmarkClaimedChunk(Chunk chunk, String owner) {
         super(chunk, owner);
     }
 
     public LandmarkClaimedChunk(int x, int z, String worldUUID, String ownerID) {
-        super(x,z,worldUUID,ownerID);
+        super(x, z, worldUUID, ownerID);
     }
-    public String getName(){
+
+    public String getName() {
         return TownDataStorage.getInstance().get(getOwnerID()).getName();
     }
 
     @Override
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
 
-        if(permissionType == ChunkPermissionType.INTERACT_CHEST ||
+        if (permissionType == ChunkPermissionType.INTERACT_CHEST ||
                 permissionType == ChunkPermissionType.INTERACT_DOOR ||
                 permissionType == ChunkPermissionType.ATTACK_PASSIVE_MOB ||
                 permissionType == ChunkPermissionType.INTERACT_BUTTON ||
@@ -47,7 +47,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
                 permissionType == ChunkPermissionType.INTERACT_DECORATIVE_BLOCK ||
                 permissionType == ChunkPermissionType.INTERACT_MUSIC_BLOCK ||
                 permissionType == ChunkPermissionType.USE_LEAD ||
-                permissionType == ChunkPermissionType.USE_SHEARS){
+                permissionType == ChunkPermissionType.USE_SHEARS) {
             return true;
         }
 
@@ -57,20 +57,21 @@ public class LandmarkClaimedChunk extends ClaimedChunk2{
     }
 
 
-    public Landmark getLandMark(){
+    public Landmark getLandMark() {
         return LandmarkStorage.getInstance().get(ownerID);
     }
-    public void unclaimChunk(Player player){
+
+    public void unclaimChunk(Player player) {
         player.sendMessage(TanChatUtils.getTANString() + Lang.CANNOT_UNCLAIM_LANDMARK_CHUNK.get());
     }
 
-    public void playerEnterClaimedArea(Player player){
+    public void playerEnterClaimedArea(Player player) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.PLAYER_ENTER_LANDMARK_CHUNK.get()));
     }
 
     @Override
     public boolean canEntitySpawn(EntityType entityType) {
-       return true;
+        return true;
     }
 
     @Override

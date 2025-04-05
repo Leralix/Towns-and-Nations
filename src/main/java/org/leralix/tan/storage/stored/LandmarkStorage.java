@@ -35,6 +35,10 @@ public class LandmarkStorage {
         return instance;
     }
 
+    public static void setInstance(LandmarkStorage mockLandmarkStorage) {
+        instance = mockLandmarkStorage;
+    }
+
     public Landmark get(String landmarkID){
         return landMarkMap.get(landmarkID);
     }

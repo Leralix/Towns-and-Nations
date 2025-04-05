@@ -27,19 +27,21 @@ import org.leralix.tan.enums.permissions.ChunkPermissionType;
 
 import java.util.Optional;
 
-public class RegionClaimedChunk extends ClaimedChunk2{
+public class RegionClaimedChunk extends ClaimedChunk2 {
 
 
     public RegionClaimedChunk(Chunk chunk, String owner) {
         super(chunk, owner);
     }
+
     public RegionClaimedChunk(int x, int z, String worldUUID, String ownerID) {
-        super(x,z,worldUUID,ownerID);
+        super(x, z, worldUUID, ownerID);
     }
 
-    public String getName(){
+    public String getName() {
         return getOwner().getName();
     }
+
     @Override
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
@@ -47,20 +49,20 @@ public class RegionClaimedChunk extends ClaimedChunk2{
         //Location is in a property and players owns or rent it
         RegionData ownerRegion = getRegion();
         //Chunk is claimed yet player have no town
-        if(!playerData.hasTown()){
+        if (!playerData.hasTown()) {
             playerCantPerformAction(player);
             return false;
         }
 
         //Player is at war with the region
-        for(CurrentAttack currentAttacks : ownerRegion.getCurrentAttacks()) {
+        for (CurrentAttack currentAttacks : ownerRegion.getCurrentAttacks()) {
             if (currentAttacks.containsPlayer(playerData))
                 return true;
         }
 
         //Player have the right to do the action
         ChunkPermission chunkPermission = ownerRegion.getPermission(permissionType);
-        if(chunkPermission.isAllowed(ownerRegion, playerData))
+        if (chunkPermission.isAllowed(ownerRegion, playerData))
             return true;
 
         playerCantPerformAction(player);
@@ -71,26 +73,26 @@ public class RegionClaimedChunk extends ClaimedChunk2{
         return RegionDataStorage.getInstance().get(getOwnerID());
     }
 
-    public void unclaimChunk(Player player){
+    public void unclaimChunk(Player player) {
         PlayerData playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
-        if(!playerStat.hasTown()){
+        if (!playerStat.hasTown()) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
             return;
         }
 
-        if(!playerStat.hasRegion()){
+        if (!playerStat.hasRegion()) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NO_REGION.get());
             return;
         }
 
         RegionData regionData = playerStat.getRegion();
 
-        if(!regionData.equals(getRegion())){
+        if (!regionData.equals(getRegion())) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_REGION.get(getRegion().getName()));
             return;
         }
 
-        if(!regionData.doesPlayerHavePermission(playerStat, RolePermission.UNCLAIM_CHUNK)){
+        if (!regionData.doesPlayerHavePermission(playerStat, RolePermission.UNCLAIM_CHUNK)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return;
         }
@@ -98,7 +100,7 @@ public class RegionClaimedChunk extends ClaimedChunk2{
         player.sendMessage(TanChatUtils.getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_REGION.get(regionData.getNumberOfClaimedChunk()));
     }
 
-    public void playerEnterClaimedArea(Player player){
+    public void playerEnterClaimedArea(Player player) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.PLAYER_ENTER_REGION_CHUNK.get(getRegion().getName())));
     }
 
@@ -112,22 +114,22 @@ public class RegionClaimedChunk extends ClaimedChunk2{
         TextComponent textComponent = new TextComponent("⬛");
         textComponent.setColor(getRegion().getChunkColor());
         textComponent.setHoverEvent(new HoverEvent(
-            HoverEvent.Action.SHOW_TEXT,
-            new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
-                    getRegion().getColoredName() + "\n" +
-                    Lang.LEFT_CLICK_TO_CLAIM.get())));
+                HoverEvent.Action.SHOW_TEXT,
+                new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
+                        getRegion().getColoredName() + "\n" +
+                        Lang.LEFT_CLICK_TO_CLAIM.get())));
         return textComponent;
     }
 
     @Override
     public boolean canTerritoryClaim(Optional<Player> player, TerritoryData territoryData) {
-        if(territoryData.canConquerChunk(this))
+        if (territoryData.canConquerChunk(this))
             return true;
 
-        if(getRegion().getSubjects().contains(territoryData)){
+        if (getRegion().getSubjects().contains(territoryData)) {
             return true; // if the town is part of this specific region, they can claim
         }
-        player.ifPresent( p -> p.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName())));
+        player.ifPresent(p -> p.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName())));
         return false;
     }
 
@@ -139,14 +141,14 @@ public class RegionClaimedChunk extends ClaimedChunk2{
     @Override
     public boolean canExplosionGrief() {
         String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("explosionGrief", "ALWAYS");
-        GriefAllowed griefAllowed =  GriefAllowed.valueOf(fireGrief);
+        GriefAllowed griefAllowed = GriefAllowed.valueOf(fireGrief);
         return griefAllowed.canGrief(getRegion(), GeneralChunkSetting.TNT_GRIEF);
     }
 
     @Override
     public boolean canFireGrief() {
         String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("fireGrief", "ALWAYS");
-        GriefAllowed griefAllowed =  GriefAllowed.valueOf(fireGrief);
+        GriefAllowed griefAllowed = GriefAllowed.valueOf(fireGrief);
         return griefAllowed.canGrief(getRegion(), GeneralChunkSetting.FIRE_GRIEF);
     }
 
