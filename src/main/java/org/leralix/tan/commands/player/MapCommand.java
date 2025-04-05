@@ -70,9 +70,8 @@ public class MapCommand extends PlayerSubCommand {
         text.put(-2, actionButton);
         float yaw = player.getLocation().getYaw();
 
-        yaw = (yaw < 0) ? yaw + 360 : yaw;
-
         CardinalPoint cardinalPoint = CardinalPoint.getCardinalPoint(yaw);
+        System.out.println("Cardinal Point: " + cardinalPoint);
 
         // Envoi de l'en-tête
         player.sendMessage("╭─────────⟢⟐⟣─────────╮");
@@ -86,19 +85,19 @@ public class MapCommand extends PlayerSubCommand {
                 switch (cardinalPoint) {
                     case NORTH:
                         chunkX += dx;
-                        chunkZ -= dz;
-                        break;
-                    case SOUTH:
-                        chunkX += dx;
                         chunkZ += dz;
                         break;
+                    case SOUTH:
+                        chunkX -= dx;
+                        chunkZ -= dz;
+                        break;
                     case EAST:
-                        chunkX += dz;
+                        chunkX -= dz;
                         chunkZ += dx;
                         break;
                     case WEST:
-                        chunkX -= dz;
-                        chunkZ += dx;
+                        chunkX += dz;
+                        chunkZ -= dx;
                         break;
                 }
 
