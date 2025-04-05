@@ -349,8 +349,8 @@ public abstract class TerritoryData {
         getOverlordsProposals().remove(overlord.getID());
         broadCastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), overlord.getColoredName()), SoundEnum.GOOD);
 
-        overlord.addVassal(this);
         this.overlordID = overlord.getID();
+        overlord.addVassal(this);
     }
 
     public TerritoryData getOverlord(){
@@ -365,17 +365,16 @@ public abstract class TerritoryData {
     public abstract void removeOverlordPrivate();
 
 
-    private void addVassal(TerritoryData vassal){
+    public void addVassal(TerritoryData vassal){
         NewsletterStorage.removeVassalisationProposal(this, vassal);
-
         addVassalPrivate(vassal);
     }
     protected abstract void addVassalPrivate (TerritoryData vassal);
 
-    private void removeVassal(TerritoryData vassal){
+    protected void removeVassal(TerritoryData vassal){
         removeVassal(vassal.getID());
     }
-    public abstract void removeVassal(String vassalID);
+    protected abstract void removeVassal(String vassalID);
 
     public abstract boolean isCapital();
 

@@ -66,21 +66,28 @@ public class TownData extends TerritoryData {
     private TeleportationPosition teleportationPosition;
     private final HashSet<String> townPlayerListId = new HashSet<>();
 
-    //First time creating a town
-    public TownData(String townId, String townName, String leaderID) {
-        super(townId, townName, leaderID);
 
-        this.UuidLeader = leaderID;
+    public TownData(String townId, String townName) {
+        super(townId, townName, null);
+
+        this.isRecruiting = false;
+        this.balance = 0.0;
+        int prefixSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize", 3);
+        this.townTag = townName.length() >= prefixSize ? townName.substring(0, prefixSize).toUpperCase() : townName.toUpperCase();
+    }
+
+    public TownData(String townId, String townName, PlayerData leader) {
+        super(townId, townName, leader.getID());
+
+        this.UuidLeader = leader.getID();
 
         this.isRecruiting = false;
         this.balance = 0.0;
         int prefixSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize", 3);
         this.townTag = townName.length() >= prefixSize ? townName.substring(0, prefixSize).toUpperCase() : townName.toUpperCase();
 
+        addPlayer(leader);
 
-        if (leaderID != null) {
-            addPlayer(leaderID);
-        }
     }
 
     //because old code was not using the centralized attribute
@@ -119,7 +126,6 @@ public class TownData extends TerritoryData {
         Player playerIterateOnline = playerData.getPlayer();
         if (playerIterateOnline != null)
             playerIterateOnline.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(getColoredName()));
-        broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerData.getNameStored()), SoundEnum.MINOR_GOOD);
 
         for (TownData allTown : TownDataStorage.getInstance().getTownMap().values()) {
             allTown.removePlayerJoinRequest(playerData.getID());
@@ -261,7 +267,7 @@ public class TownData extends TerritoryData {
     @Override
     public void broadCastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix) {
         for (String playerId : townPlayerListId) {
-            Player player = Bukkit.getServer().getPlayer(UUID.fromString(playerId));
+            Player player = Bukkit.getPlayer(UUID.fromString(playerId));
             if (player != null && player.isOnline()) {
                 SoundUtil.playSound(player, soundEnum);
                 if (addPrefix)
@@ -451,12 +457,12 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public void addVassalPrivate(TerritoryData vassal) {
+    protected void addVassalPrivate(TerritoryData vassal) {
         //town have no vassals
     }
 
     @Override
-    public void removeVassal(String vassalID) {
+    protected void removeVassal(String vassalID) {
         //Town have no vassals
     }
 

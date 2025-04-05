@@ -16,6 +16,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -1394,6 +1395,7 @@ public class PlayerGUI implements IGUI {
                         return;
                     }
                     townData.addPlayer(playerIterateData);
+                    townData.broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerData.getNameStored()), SoundEnum.MINOR_GOOD);
                 }
                 else if(event.isRightClick()){
                     if(!townData.doesPlayerHavePermission(playerStat, RolePermission.INVITE_PLAYER)){
@@ -2692,8 +2694,8 @@ public class PlayerGUI implements IGUI {
             else {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(playerData));
                 player.closeInventory();
-
-                PlayerChatListenerStorage.register(player, new CreateRegion());
+                int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
+                PlayerChatListenerStorage.register(player, new CreateRegion(cost));
             }
         });
 

@@ -4,6 +4,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.lib.utils.config.ConfigTag;
@@ -42,12 +43,10 @@ public class TownDataStorage {
         return instance;
     }
 
-    public TownData newTown(String townName, Player player){
-        String townId = "T"+newTownId;
-        String playerID = player.getUniqueId().toString();
-        newTownId++;
+    public TownData newTown(String townName, PlayerData playerData){
+        String townId = getNextTownID();
 
-        TownData newTown = new TownData(townId, townName, playerID);
+        TownData newTown = new TownData(townId, townName, playerData);
 
 
         townDataMap.put(townId,newTown);
@@ -55,11 +54,16 @@ public class TownDataStorage {
         return newTown;
     }
 
-    public TownData newTown(String townName){
+    private @NotNull String getNextTownID() {
         String townId = "T"+newTownId;
         newTownId++;
+        return townId;
+    }
 
-        TownData newTown = new TownData(townId, townName, null);
+    public TownData newTown(String townName){
+        String townId = getNextTownID();
+
+        TownData newTown = new TownData(townId, townName);
 
         townDataMap.put(townId,newTown);
         saveStats();

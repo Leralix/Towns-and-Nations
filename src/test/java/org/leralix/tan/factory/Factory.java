@@ -10,6 +10,7 @@ import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.economy.TanEconomyStandalone;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
@@ -61,7 +62,7 @@ public class Factory {
 
 
     public static PlayerData getRandomPlayerData() {
-        return new PlayerData(getRandomPlayer());
+        return PlayerDataStorage.getInstance().register(getRandomPlayer());
     }
 
     public static @NotNull Player getRandomPlayer() {

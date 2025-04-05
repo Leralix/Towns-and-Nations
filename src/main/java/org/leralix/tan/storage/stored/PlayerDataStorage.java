@@ -7,7 +7,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
-import org.tan.api.getters.TanPlayerManager;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -34,11 +33,11 @@ public class PlayerDataStorage {
     }
 
 
-    private PlayerData createPlayerDataClass(Player p) {
+    public PlayerData register(Player p) {
         PlayerData playerData = new PlayerData(p);
-        return createPlayerDataClass(playerData);
+        return register(playerData);
     }
-    private PlayerData createPlayerDataClass(PlayerData p) {
+    PlayerData register(PlayerData p) {
         playerStorage.put(p.getID(), p);
         saveStats();
         return p;
@@ -66,7 +65,7 @@ public class PlayerDataStorage {
 
         Player newPlayer = TownsAndNations.getPlugin().getServer().getPlayer(UUID.fromString(id));
         if(newPlayer != null){
-            return createPlayerDataClass(newPlayer);
+            return register(newPlayer);
         }
         return null;
     }

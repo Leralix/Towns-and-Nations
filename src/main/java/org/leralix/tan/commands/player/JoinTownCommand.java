@@ -77,6 +77,7 @@ public class JoinTownCommand extends PlayerSubCommand {
             }
 
             townData.addPlayer(playerData);
+            townData.broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerData.getNameStored()), SoundEnum.MINOR_GOOD);
             TownInviteDataStorage.removeInvitation(player,townData.getID());
         }
         else{

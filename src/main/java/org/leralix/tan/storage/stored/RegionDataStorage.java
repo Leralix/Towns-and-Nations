@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.utils.TanChatUtils;
@@ -27,8 +28,8 @@ import java.util.*;
 
 public class RegionDataStorage {
 
-    private static int nextID = 1;
-    private static LinkedHashMap<String, RegionData> regionStorage = new LinkedHashMap<>();
+    private int nextID = 1;
+    private LinkedHashMap<String, RegionData> regionStorage = new LinkedHashMap<>();
     private static RegionDataStorage instance;
 
     public static RegionDataStorage getInstance() {
@@ -41,45 +42,26 @@ public class RegionDataStorage {
         loadStats();
     }
 
-    public void createNewRegion(Player player, String regionName){
+    public RegionData createNewRegion(TownData capital, String regionName){
 
-        TownData town = TownDataStorage.getInstance().get(player);
+        PlayerData newLeader = capital.getLeaderData();
 
-        if(!town.isLeader(player)){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get());
-            return;
-        }
+        String regionID = generateNextID();
 
-        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
-        if(town.getBalance() < cost){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
-            return;
-        }
-
-        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RegionNameSize");
-        if(regionName.length() > maxSize){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
-            return;
-        }
-
-        if(isNameUsed(regionName)){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
-            return;
-        }
-
-        Bukkit.broadcastMessage(TanChatUtils.getTANString() + Lang.REGION_CREATE_SUCCESS_BROADCAST.get(town.getColoredName(),regionName));
-
-        String regionID = "R"+nextID;
-        String playerID = player.getUniqueId().toString();
-        nextID++;
-
-        RegionData newRegion = new RegionData(regionID, regionName, playerID);
+        RegionData newRegion = new RegionData(regionID, regionName, newLeader.getID());
         regionStorage.put(regionID, newRegion);
+        capital.setOverlord(newRegion);
 
-        town.setOverlord(newRegion);
-        town.removeFromBalance(cost);
-        FileUtil.addLineToHistory(Lang.HISTORY_REGION_CREATED.get(player.getName(),regionName));
+        FileUtil.addLineToHistory(Lang.HISTORY_REGION_CREATED.get(newLeader.getNameStored(),regionName));
+        return newRegion;
     }
+
+    private @NotNull String generateNextID() {
+        String regionID = "R"+nextID;
+        nextID++;
+        return regionID;
+    }
+
     public RegionData get(Player player){
         return get(PlayerDataStorage.getInstance().get(player));
     }
