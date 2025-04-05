@@ -116,7 +116,6 @@ public abstract class TerritoryData {
             return;
         }
 
-        PlayerChatListenerStorage.removePlayer(player);
         TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new MiscellaneousHistory(this, cost));
 
         removeFromBalance(cost);
