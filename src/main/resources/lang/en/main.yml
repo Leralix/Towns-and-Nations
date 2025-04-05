@@ -100,9 +100,9 @@ language:
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "You cancelled your application"
   PLAYER_TOWN_NOT_RECRUITING: "§cThis town is not recruiting"
   #BROADCAST
-  TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the town: §9{1}"
+  TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the town: {1}"
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c has left the town !"
-  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the region: §b{1}"
+  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the region: {1}"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fThe town §9{0}§f has been kicked from the region"
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "Claim a chunk"

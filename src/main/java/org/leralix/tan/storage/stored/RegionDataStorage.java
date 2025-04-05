@@ -67,8 +67,8 @@ public class RegionDataStorage {
             return;
         }
 
-        Bukkit.broadcastMessage(TanChatUtils.getTANString() + Lang.REGION_CREATE_SUCCESS_BROADCAST.get(town.getName(),regionName));
         PlayerChatListenerStorage.removePlayer(player);
+        Bukkit.broadcastMessage(TanChatUtils.getTANString() + Lang.REGION_CREATE_SUCCESS_BROADCAST.get(town.getColoredName(),regionName));
 
         String regionID = "R"+nextID;
         String playerID = player.getUniqueId().toString();

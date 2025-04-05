@@ -60,10 +60,10 @@ public class CreateTown extends ChatListenerEvent {
         playerData.joinTown(newTown);
 
 
-        Bukkit.broadcastMessage(TanChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(), message));
+        Bukkit.broadcastMessage(TanChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(), newTown.getColoredName()));
         SoundUtil.playSound(player, SoundEnum.LEVEL_UP);
         PlayerChatListenerStorage.removePlayer(player);
-        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_CREATED.get(player.getName(), message));
+        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_CREATED.get(player.getName(), newTown.getName()));
 
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> TeamUtils.setIndividualScoreBoard(player));
     }
