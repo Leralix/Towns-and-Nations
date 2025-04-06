@@ -20,13 +20,14 @@ public class PlannedAttackStorage {
     private static Map<String, PlannedAttack> warDataMapWithWarKey = new HashMap<>();
 
 
-    public static void newWar(CreateAttackData createAttackData){
+    public static PlannedAttack newWar(CreateAttackData createAttackData){
 
         String newID = getNewID();
         long deltaDateTime = createAttackData.getDeltaDateTime();
         PlannedAttack plannedAttack = new PlannedAttack(newID, createAttackData, deltaDateTime);
         add(plannedAttack);
         save();
+        return plannedAttack;
     }
 
     private static void add(PlannedAttack plannedAttack) {

@@ -1217,7 +1217,7 @@ public class PlayerGUI implements IGUI {
 
         GuiItem conquerButton = ItemBuilder.from(conquer).asGuiItem(event -> {
             event.setCancelled(true);
-            createAttackData.setWarGoal(new ConquerWarGoal(createAttackData.getMainAttacker().getID(), createAttackData.getMainDefender().getID()));
+            createAttackData.setWarGoal(new ConquerWarGoal(createAttackData.getMainAttacker(), createAttackData.getMainDefender()));
             openStartWarSettings(player, createAttackData);
         });
 

@@ -2,6 +2,7 @@ package org.leralix.tan.factory;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -57,6 +58,9 @@ public class Factory {
         MockedStatic<Bukkit> bukkitInstance = Mockito.mockStatic(Bukkit.class);
         bukkitInstance.when(() -> Bukkit.getPlayer(anyString()))
                 .thenAnswer(invocation -> Factory.getRandomPlayer(invocation.getArgument(0)));
+
+        BukkitScheduler bukkitScheduler = Mockito.mock(BukkitScheduler.class);
+        bukkitInstance.when(Bukkit::getScheduler).thenAnswer(invocation -> bukkitScheduler);
     }
 
 

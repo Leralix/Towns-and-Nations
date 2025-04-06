@@ -26,6 +26,10 @@ public class ConquerWarGoal extends WarGoal {
 
     int numberOfChunks;
 
+    public ConquerWarGoal(TerritoryData attackingTerritory, TerritoryData defendingTerritory) {
+        this(attackingTerritory.getID(), defendingTerritory.getID());
+    }
+
     public ConquerWarGoal(String attackingTerritoryID, String defendingTerritoryID){
         numberOfChunks = 1;
         this.attackingTerritoryID = attackingTerritoryID;
