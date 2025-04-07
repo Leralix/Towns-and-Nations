@@ -7,6 +7,7 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.leralix.lib.SphereLib;
 import org.leralix.lib.data.PluginVersion;
 import org.leralix.tan.api.InternalAPI;
 import org.leralix.tan.commands.admin.AdminCommandManager;
@@ -71,6 +72,7 @@ public final class TownsAndNations extends JavaPlugin {
      */
     private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,14,0);
     private static final PluginVersion MINIMUM_SUPPORTING_DYNMAP = new PluginVersion(0,11,0);
+    private static final PluginVersion MINIMUM_SUPPORTING_SPHERELIB = new PluginVersion(0,4,3);
 
     /**
      * Latest version of the plugin from GitHub.
@@ -109,6 +111,14 @@ public final class TownsAndNations extends JavaPlugin {
         getLogger().log(Level.INFO,"To report a bug or request a feature, please ask on my discord server: https://discord.gg/Q8gZSFUuzb");
 
         getLogger().log(Level.INFO,"[TaN] Loading Plugin");
+
+        if(SphereLib.getPluginVersion().isOlderThan(MINIMUM_SUPPORTING_SPHERELIB)) {
+            getLogger().log(Level.SEVERE,"[TaN] You need to update SphereLib to use this version of Towns and Nations");
+            getLogger().log(Level.SEVERE,"[TaN] Please update SphereLib to version " + MINIMUM_SUPPORTING_SPHERELIB + " or higher");
+            getLogger().log(Level.SEVERE,"[TaN] Disabling plugin");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
 
 
         getLogger().log(Level.INFO,"[TaN] -Loading Lang");

@@ -14,9 +14,10 @@ import java.util.function.Consumer;
 
 public class ChangeTerritoryName extends ChatListenerEvent {
 
-    private TerritoryData territoryToRename;
-    int cost;
-    private Consumer<Player> guiCallback;
+    private final TerritoryData territoryToRename;
+    private final int cost;
+    private final Consumer<Player> guiCallback;
+
     public ChangeTerritoryName(@NotNull TerritoryData territoryToRename, int cost, Consumer<Player> guiCallback) {
         this.territoryToRename = territoryToRename;
         this.cost = cost;

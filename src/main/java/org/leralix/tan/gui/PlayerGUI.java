@@ -405,7 +405,7 @@ public class PlayerGUI implements IGUI {
         GuiItem isForSaleButton = ItemBuilder.from(isForSale).asGuiItem(event -> {
             if(event.getClick() == ClickType.RIGHT){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(playerData));
-                PlayerChatListenerStorage.register(player, new ChangePropertySalePrice(propertyData));
+                PlayerChatListenerStorage.register(player, new ChangePropertySalePrice(propertyData, p -> openPropertyManagerMenu(player, propertyData)));
                 player.closeInventory();
             }
             else if (event.getClick() == ClickType.LEFT){

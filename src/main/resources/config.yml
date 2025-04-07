@@ -75,7 +75,7 @@ EnableKingdom: true
 ##       Regions      ##
 ########################
 
-#Enable Region (will automatically disable Kingdoms)
+#Enable Region (will automatically disable Kingdoms if set to false)
 EnableRegion: true
 
 #The cost of creating a Region

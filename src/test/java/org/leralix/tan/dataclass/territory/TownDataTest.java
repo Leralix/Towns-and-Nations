@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.RankData;
-import org.leralix.tan.factory.Factory;
+import org.leralix.tan.factory.AbstractionFactory;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,13 +13,13 @@ class TownDataTest {
 
     @BeforeAll
     static void setUp() {
-        Factory.initializeConfigs();
+        AbstractionFactory.initializeConfigs();
     }
 
 
     @Test
     void createTown(){
-        PlayerData playerData = Factory.getRandomPlayerData();
+        PlayerData playerData = AbstractionFactory.getRandomPlayerData();
         TownData townData = new TownData("T1", "testTown", playerData);
 
         assertEquals("T1", townData.getID());
@@ -32,7 +32,7 @@ class TownDataTest {
 
     @Test
     void testAddRank(){
-        PlayerData playerData = Factory.getRandomPlayerData();
+        PlayerData playerData = AbstractionFactory.getRandomPlayerData();
         TownData townData = TownDataStorage.getInstance().newTown("testTown", playerData);
 
         assertEquals(townData.getTownDefaultRank(), playerData.getTownRank());

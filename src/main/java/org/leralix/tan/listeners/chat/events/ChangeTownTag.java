@@ -13,8 +13,9 @@ import java.util.function.Consumer;
 
 public class ChangeTownTag extends ChatListenerEvent {
 
-    private TownData townData;
-    private Consumer<Player> guiCallback;
+    private final TownData townData;
+    private final Consumer<Player> guiCallback;
+
     public ChangeTownTag(TownData townData, Consumer<Player> guiCallback) {
         this.townData = townData;
         this.guiCallback = guiCallback;

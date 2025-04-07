@@ -3,7 +3,7 @@ package org.leralix.tan.dataclass.territory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.factory.Factory;
+import org.leralix.tan.factory.AbstractionFactory;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
@@ -13,12 +13,12 @@ class RegionDataTest {
 
     @BeforeAll
     static void setUp() {
-        Factory.initializeConfigs();
+        AbstractionFactory.initializeConfigs();
     }
 
     @Test
     void testCreation(){
-        PlayerData playerData = Factory.getRandomPlayerData();
+        PlayerData playerData = AbstractionFactory.getRandomPlayerData();
 
         TownData townData = TownDataStorage.getInstance().newTown("testTown", playerData);
 
@@ -32,11 +32,12 @@ class RegionDataTest {
         assertEquals("testRegion", regionData.getName());
         assertEquals(1, regionData.getHierarchyRank());
         assertEquals(1, regionData.getSubjects().size());
+        assertEquals(playerData, regionData.getLeaderData());
     }
 
     @Test
     void testAddVassal(){
-        PlayerData playerData = Factory.getRandomPlayerData();
+        PlayerData playerData = AbstractionFactory.getRandomPlayerData();
         TownData townData = TownDataStorage.getInstance().newTown("FirstTown", playerData);
         RegionData regionData = RegionDataStorage.getInstance().createNewRegion(townData, "testRegion");
         TownData newTown = TownDataStorage.getInstance().newTown("secondTown");
@@ -51,8 +52,8 @@ class RegionDataTest {
 
     @Test
     void getAllPlayer(){
-        PlayerData playerData1 = Factory.getRandomPlayerData();
-        PlayerData playerData2 = Factory.getRandomPlayerData();
+        PlayerData playerData1 = AbstractionFactory.getRandomPlayerData();
+        PlayerData playerData2 = AbstractionFactory.getRandomPlayerData();
 
         TownData town1 = TownDataStorage.getInstance().newTown("testTown", playerData1);
         TownData town2 = TownDataStorage.getInstance().newTown("testTown", playerData2);
@@ -65,5 +66,7 @@ class RegionDataTest {
         assertTrue(regionData.getPlayerDataList().contains(playerData1));
         assertTrue(regionData.getPlayerDataList().contains(playerData2));
     }
+
+
 
 }

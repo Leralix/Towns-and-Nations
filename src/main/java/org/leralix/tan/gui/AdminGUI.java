@@ -193,7 +193,7 @@ public class AdminGUI implements IGUI{
         GuiItem changeLandmarkNameGui = ItemBuilder.from(changeLandmarkName).asGuiItem(event -> {
             event.setCancelled(true);
             player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
-            PlayerChatListenerStorage.register(player, new ChangeLandmarkName(landmark));
+            PlayerChatListenerStorage.register(player, new ChangeLandmarkName(landmark, p -> openSpecificLandmarkMenu(player, landmark)));
         });
 
         GuiItem deleteLandmarkGui = ItemBuilder.from(deleteLandmark).asGuiItem(event -> {

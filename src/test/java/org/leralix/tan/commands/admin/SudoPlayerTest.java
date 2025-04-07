@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.leralix.tan.factory.Factory;
+import org.leralix.tan.factory.AbstractionFactory;
 import org.leralix.tan.storage.SudoPlayerStorage;
 import org.mockito.Mockito;
 
@@ -19,12 +19,12 @@ public class SudoPlayerTest {
     @BeforeAll
     static void initialise(){
         sender = Mockito.mock(CommandSender.class);
-        Factory.initializeConfigs();
+        AbstractionFactory.initializeConfigs();
     }
 
     @Test
     void standardUse() {
-        Player player = Factory.getRandomPlayer();
+        Player player = AbstractionFactory.getRandomPlayer();
 
         SudoPlayer sudoPlayer = new SudoPlayer();
         sudoPlayer.perform(player, new String[]{"sudo"});
@@ -34,7 +34,7 @@ public class SudoPlayerTest {
 
     @Test
     void useOnItself() {
-        Player player = Factory.getRandomPlayer();
+        Player player = AbstractionFactory.getRandomPlayer();
 
         SudoPlayer sudoPlayer = new SudoPlayer();
         sudoPlayer.perform(player, new String[]{"sudo", player.getName()});
@@ -44,8 +44,8 @@ public class SudoPlayerTest {
 
     @Test
     void OtherPlayerUser() {
-        Player player = Factory.getRandomPlayer();
-        Player playerToGiveSudo = Factory.getRandomPlayer();
+        Player player = AbstractionFactory.getRandomPlayer();
+        Player playerToGiveSudo = AbstractionFactory.getRandomPlayer();
 
         SudoPlayer sudoPlayer = new SudoPlayer();
         sudoPlayer.perform(player, new String[]{"sudo", playerToGiveSudo.getName()});

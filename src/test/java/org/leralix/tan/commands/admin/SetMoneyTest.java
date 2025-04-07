@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.factory.Factory;
+import org.leralix.tan.factory.AbstractionFactory;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,12 +18,12 @@ public class SetMoneyTest {
     @BeforeAll
     static void initialise(){
         sender = Mockito.mock(CommandSender.class);
-        Factory.initializeConfigs();
+        AbstractionFactory.initializeConfigs();
     }
 
     @Test
     void standardUse() {
-        PlayerData fakePlayer = Factory.getRandomPlayerData();
+        PlayerData fakePlayer = AbstractionFactory.getRandomPlayerData();
 
         SetMoney.setMoney(sender, new String[]{"setmoney", "FakePlayer", "10"}, fakePlayer);
 
@@ -32,7 +32,7 @@ public class SetMoneyTest {
 
     @Test
     void negativeValue() {
-        PlayerData fakePlayer = Factory.getRandomPlayerData();
+        PlayerData fakePlayer = AbstractionFactory.getRandomPlayerData();
 
         SetMoney.setMoney(sender, new String[]{"addmoney", "FakePlayer", "-500"}, fakePlayer);
 
@@ -42,7 +42,7 @@ public class SetMoneyTest {
 
     @Test
     void wrongValue() {
-        PlayerData fakePlayer = Factory.getRandomPlayerData();
+        PlayerData fakePlayer = AbstractionFactory.getRandomPlayerData();
 
         SetMoney.setMoney(sender, new String[]{"addmoney", "FakePlayer", "50€"}, fakePlayer);
 

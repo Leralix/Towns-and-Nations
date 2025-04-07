@@ -59,35 +59,36 @@ public class TownData extends TerritoryData {
     private String UuidLeader;
     private String townTag;
     private boolean isRecruiting;
-    private Level townLevel = new Level();
-    private Collection<String> ownedLandmarks = new ArrayList<>();
-    private HashSet<String> PlayerJoinRequestSet = new HashSet<>();
+    private Level townLevel;
+    private Collection<String> ownedLandmarks;
+    private HashSet<String> PlayerJoinRequestSet;
     private Map<String, PropertyData> propertyDataMap;
     private TeleportationPosition teleportationPosition;
-    private final HashSet<String> townPlayerListId = new HashSet<>();
+    private final HashSet<String> townPlayerListId;
 
 
     public TownData(String townId, String townName) {
-        super(townId, townName, null);
-
-        this.isRecruiting = false;
-        this.balance = 0.0;
-        int prefixSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize", 3);
-        this.townTag = townName.length() >= prefixSize ? townName.substring(0, prefixSize).toUpperCase() : townName.toUpperCase();
+        this(townId, townName, null); // Appelle le constructeur principal
     }
 
     public TownData(String townId, String townName, PlayerData leader) {
-        super(townId, townName, leader.getID());
-
-        this.UuidLeader = leader.getID();
-
+        super(townId, townName, leader != null ? leader.getID() : null);
+        this.townLevel = new Level();
+        this.ownedLandmarks = new ArrayList<>();
+        this.PlayerJoinRequestSet = new HashSet<>();
+        this.townPlayerListId = new HashSet<>();
         this.isRecruiting = false;
         this.balance = 0.0;
+
+        if (leader != null) {
+            this.UuidLeader = leader.getID();
+            addPlayer(leader);
+        }
+
         int prefixSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize", 3);
-        this.townTag = townName.length() >= prefixSize ? townName.substring(0, prefixSize).toUpperCase() : townName.toUpperCase();
-
-        addPlayer(leader);
-
+        this.townTag = townName.length() >= prefixSize
+                ? townName.substring(0, prefixSize).toUpperCase()
+                : townName.toUpperCase();
     }
 
     //because old code was not using the centralized attribute

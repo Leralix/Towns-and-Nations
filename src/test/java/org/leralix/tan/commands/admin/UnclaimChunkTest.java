@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.factory.Factory;
+import org.leralix.tan.factory.AbstractionFactory;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.mockito.Mockito;
@@ -28,7 +28,7 @@ public class UnclaimChunkTest {
 
     @BeforeAll
     static void initialise(){
-        Factory.initializeConfigs();
+        AbstractionFactory.initializeConfigs();
 
         townData = TownDataStorage.getInstance().newTown("Cool town");
 
@@ -48,7 +48,7 @@ public class UnclaimChunkTest {
 
         when(world.getChunkAt(any(Location.class))).thenReturn(chunkPosition);
 
-        Factory.initializeConfigs();
+        AbstractionFactory.initializeConfigs();
 
         assertFalse(NewClaimedChunkStorage.getInstance().isChunkClaimed(chunkPosition));
         NewClaimedChunkStorage.getInstance().claimTownChunk(chunkPosition, townData.getID());
@@ -57,7 +57,7 @@ public class UnclaimChunkTest {
 
     @Test
     void standardUse() {
-        Player player = Factory.getRandomPlayer();
+        Player player = AbstractionFactory.getRandomPlayer();
         when(player.getLocation()).thenReturn(new Location(world, 0, 0, 0));
 
         UnclaimAdminCommand unclaim = new UnclaimAdminCommand();
@@ -70,7 +70,7 @@ public class UnclaimChunkTest {
     void playerOnAnotherChunk() {
         NewClaimedChunkStorage.getInstance().claimTownChunk(chunkPosition, townData.getID());
 
-        Player player = Factory.getRandomPlayer();
+        Player player = AbstractionFactory.getRandomPlayer();
         when(player.getLocation()).thenReturn(new Location(world, 0, 0, 0));
         when(world.getChunkAt(any(Location.class))).thenReturn(otherChunkPosition);
 

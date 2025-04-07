@@ -3,6 +3,7 @@ package org.leralix.tan.storage.stored;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
@@ -63,7 +64,7 @@ public class PlayerDataStorage {
         if(res != null)
             return res;
 
-        Player newPlayer = TownsAndNations.getPlugin().getServer().getPlayer(UUID.fromString(id));
+        Player newPlayer = Bukkit.getPlayer(UUID.fromString(id));
         if(newPlayer != null){
             return register(newPlayer);
         }
