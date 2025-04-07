@@ -177,7 +177,7 @@ public class RegionData extends TerritoryData {
     public Optional<ClaimedChunk2> claimChunkInternal(Player player, Chunk chunk) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         TownData townData = TownDataStorage.getInstance().get(player);
-        RegionData regionData = townData.getRegion(); //TODO : Does regionData is usefull ?
+        RegionData regionData = townData.getRegion(); //TODO : Does regionData is usefull ? We are inside a region
 
         if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());

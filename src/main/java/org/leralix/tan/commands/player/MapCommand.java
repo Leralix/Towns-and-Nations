@@ -71,7 +71,6 @@ public class MapCommand extends PlayerSubCommand {
         float yaw = player.getLocation().getYaw();
 
         CardinalPoint cardinalPoint = CardinalPoint.getCardinalPoint(yaw);
-        System.out.println("Cardinal Point: " + cardinalPoint);
 
         // Envoi de l'en-tête
         player.sendMessage("╭─────────⟢⟐⟣─────────╮");

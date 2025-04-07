@@ -10,7 +10,6 @@ import org.tan.api.interfaces.TanTown;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Placeholder for TanTerritoryManager <br>
@@ -30,7 +29,7 @@ public class TerritoryManager implements TanTerritoryManager {
     }
 
     public static TerritoryManager getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new TerritoryManager();
         }
         return instance;
