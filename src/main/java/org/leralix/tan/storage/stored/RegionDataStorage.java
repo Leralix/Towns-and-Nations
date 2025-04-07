@@ -96,9 +96,6 @@ public class RegionDataStorage {
     }
 
     public boolean isNameUsed(String name){
-        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",true))
-            return false;
-
         for (RegionData region : regionStorage.values()){
             if(region.getName().equalsIgnoreCase(name))
                 return true;

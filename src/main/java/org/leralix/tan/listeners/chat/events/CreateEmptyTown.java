@@ -15,7 +15,16 @@ import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.lang.Lang;
 
+import java.util.function.Consumer;
+
 public class CreateEmptyTown extends ChatListenerEvent {
+
+    private final Consumer<Player> guiCallback;
+
+    public CreateEmptyTown(Consumer<Player> guiCallback) {
+        this.guiCallback = guiCallback;
+    }
+
     @Override
     public void execute(Player player, String townName) {
         FileConfiguration config =  ConfigUtil.getCustomConfig(ConfigTag.MAIN);
@@ -36,5 +45,6 @@ public class CreateEmptyTown extends ChatListenerEvent {
         SoundUtil.playSound(player, SoundEnum.LEVEL_UP);
         PlayerChatListenerStorage.removePlayer(player);
         FileUtil.addLineToHistory(Lang.HISTORY_TOWN_CREATED.get(player.getName(),newTown.getName()));
+        openGui(guiCallback, player);
     }
 }

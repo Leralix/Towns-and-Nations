@@ -34,6 +34,5 @@ public class ChangeTownTag extends ChatListenerEvent {
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
         PlayerChatListenerStorage.removePlayer(player);
         openGui(guiCallback, player);
-
     }
 }

@@ -1456,7 +1456,7 @@ public class PlayerGUI implements IGUI {
                 return;
             }
             player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(playerData));
-            PlayerChatListenerStorage.register(player, new CreateRank(territoryData));
+            PlayerChatListenerStorage.register(player, new CreateRank(territoryData, p -> openTerritoryRanks(player, territoryData)));
         });
 
         GuiItem decorativePanel = ItemBuilder.from(HeadUtils.createCustomItemStack(Material.GRAY_STAINED_GLASS_PANE, "")).asGuiItem(event -> event.setCancelled(true));

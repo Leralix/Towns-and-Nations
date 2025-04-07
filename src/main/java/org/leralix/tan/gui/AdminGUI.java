@@ -388,7 +388,7 @@ public class AdminGUI implements IGUI{
         GuiItem createTownGui = ItemBuilder.from(createTown).asGuiItem(event -> {
             event.setCancelled(true);
             player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
-            PlayerChatListenerStorage.register(player, new CreateEmptyTown());
+            PlayerChatListenerStorage.register(player, new CreateEmptyTown(p -> openAdminBrowseTown(player, 0)));
         });
 
 

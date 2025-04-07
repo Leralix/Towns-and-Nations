@@ -8,6 +8,7 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -48,7 +49,7 @@ public class CreateTown extends ChatListenerEvent {
             player.sendMessage(TanChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
             return;
         }
-
+        PlayerChatListenerStorage.removePlayer(player);
         createTown(player, message);
 
     }
@@ -57,14 +58,14 @@ public class CreateTown extends ChatListenerEvent {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         TownData newTown = TownDataStorage.getInstance().newTown(message, playerData);
         EconomyUtil.removeFromBalance(player,cost);
-        playerData.joinTown(newTown);
 
 
         Bukkit.broadcastMessage(TanChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(), newTown.getColoredName()));
         SoundUtil.playSound(player, SoundEnum.LEVEL_UP);
-        PlayerChatListenerStorage.removePlayer(player);
         FileUtil.addLineToHistory(Lang.HISTORY_TOWN_CREATED.get(player.getName(), newTown.getName()));
 
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> TeamUtils.setIndividualScoreBoard(player));
+
+        openGui(p -> PlayerGUI.dispatchPlayerRegion(player), player);
     }
 }

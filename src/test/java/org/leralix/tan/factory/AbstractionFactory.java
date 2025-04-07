@@ -16,12 +16,11 @@ import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.economy.TanEconomyStandalone;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import javax.swing.text.Position;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +34,7 @@ public class AbstractionFactory {
 
     private static boolean isTanMockOn = false;
     private static final Map<String , Player> bukkitPlayerList = new HashMap<>();
+    private static final Map<UUID , String> bukkitPlayerListByUUID = new HashMap<>();
     private static final Map<UUID , World> worldList = new HashMap<>();
     private static final Map<Vector2D, Chunk> chunkList = new HashMap<>();
 
@@ -60,15 +60,22 @@ public class AbstractionFactory {
     private static void initialisePluginMock(ClassLoader classLoader) {
         TownsAndNations plugin = Mockito.mock(TownsAndNations.class);
         when(plugin.getDataFolder()).thenReturn(new File(classLoader.getResource("created").getFile()));
+        when(plugin.getDatabaseHandler()).thenReturn(Mockito.mock(DatabaseHandler.class));
+        when(plugin.getDataFolder()).thenReturn(new File(classLoader.getResource("created").getFile()));
+
         MockedStatic<TownsAndNations> pluginInstance = Mockito.mockStatic(TownsAndNations.class);
         pluginInstance.when(TownsAndNations::getPlugin).thenReturn(plugin);
 
         MockedStatic<Bukkit> bukkitInstance = Mockito.mockStatic(Bukkit.class);
         bukkitInstance.when(() -> Bukkit.getPlayer(anyString()))
-                .thenAnswer(invocation -> AbstractionFactory.getRandomPlayer(invocation.getArgument(0)));
+                .thenAnswer(invocation -> AbstractionFactory.getRandomPlayer((String) invocation.getArgument(0)));
+
+        bukkitInstance.when(() -> Bukkit.getPlayer(any(UUID.class)))
+                .thenAnswer( invocation -> AbstractionFactory.getRandomPlayer((UUID) invocation.getArgument(0)));
 
         BukkitScheduler bukkitScheduler = Mockito.mock(BukkitScheduler.class);
         bukkitInstance.when(Bukkit::getScheduler).thenAnswer(invocation -> bukkitScheduler);
+
 
         World world = Mockito.mock(World.class);
         when(world.getName()).thenReturn("world");
@@ -84,6 +91,7 @@ public class AbstractionFactory {
 
 
 
+
     public static PlayerData getRandomPlayerData() {
         return PlayerDataStorage.getInstance().register(getRandomPlayer());
     }
@@ -94,11 +102,15 @@ public class AbstractionFactory {
         when(player.getUniqueId()).thenReturn(uuid);
         when(player.getName()).thenReturn(uuid.toString());
         bukkitPlayerList.put(uuid.toString(), player);
+        bukkitPlayerListByUUID.put(uuid, uuid.toString());
         return player;
     }
 
     public static @NotNull Player getRandomPlayer(String playerName) {
         return bukkitPlayerList.get(playerName);
+    }
+    public static Player getRandomPlayer(UUID playerUUID) {
+        return getRandomPlayer(bukkitPlayerListByUUID.get(playerUUID));
     }
 
     public static World createWorld(String worldName, UUID worldUUID) {

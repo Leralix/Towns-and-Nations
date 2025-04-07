@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
@@ -57,5 +58,7 @@ public class CreateRegion extends ChatListenerEvent {
         RegionDataStorage.getInstance().createNewRegion(capital, regionName);
         Bukkit.broadcastMessage(TanChatUtils.getTANString() + Lang.REGION_CREATE_SUCCESS_BROADCAST.get(capital.getColoredName(),regionName));
         PlayerChatListenerStorage.removePlayer(player);
+
+        openGui(p -> PlayerGUI.dispatchPlayerRegion(player), player);
     }
 }

@@ -163,9 +163,6 @@ public class TownDataStorage {
 
 
     public boolean isNameUsed(String townName){
-        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",true))
-            return false;
-        
         for (TownData town : townDataMap.values()){
             if(townName.equals(town.getName()))
                 return true;

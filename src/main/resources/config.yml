@@ -10,9 +10,6 @@
 ##      General       ##
 ########################
 
-#Allow name duplication (for ranks, towns, regions and kingdoms)
-AllowNameDuplication: true
-
 #Remove all villager interactions except the one from the plugin (usefull to prevent duplication of items)
 removeAllVillagerInteractions: false
 
