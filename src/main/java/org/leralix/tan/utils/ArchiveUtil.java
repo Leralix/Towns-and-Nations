@@ -146,7 +146,7 @@ public class ArchiveUtil {
                 writer.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            TownsAndNations.getPlugin().getLogger().severe( "Error while creating plugin list file : " + e.getMessage());
         }
         return pluginListFile;
     }
