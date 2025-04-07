@@ -111,7 +111,7 @@ public abstract class TerritoryData {
         return name;
     }
     public void rename(Player player, int cost, String newName){
-        if(getBalance() <= cost){
+        if(getBalance() < cost){
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
             return;
         }
