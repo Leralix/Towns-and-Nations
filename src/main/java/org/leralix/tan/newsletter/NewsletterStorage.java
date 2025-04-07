@@ -31,7 +31,7 @@ public class NewsletterStorage {
         throw new IllegalStateException("Utility class");
     }
 
-    static Map<NewsletterType,List<Newsletter>> categories = new EnumMap<>(NewsletterType.class);;
+    static Map<NewsletterType,List<Newsletter>> categories = new EnumMap<>(NewsletterType.class);
 
     public static List<GuiItem> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onclick){
         List<GuiItem> newsletters = new ArrayList<>();
