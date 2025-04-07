@@ -131,7 +131,7 @@ public class PlannedAttack {
         Collection<TerritoryData> territoryData = getAttackingTerritories();
         territoryData.addAll(getDefendingTerritories());
         for(TerritoryData territory : territoryData){
-            territory.broadCastMessageWithSound(message, soundEnum);
+            territory.broadcastMessageWithSound(message, soundEnum);
         }
     }
 

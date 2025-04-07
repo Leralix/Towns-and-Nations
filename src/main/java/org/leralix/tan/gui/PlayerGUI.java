@@ -967,7 +967,7 @@ public class PlayerGUI implements IGUI {
             ItemStack renameAttack = HeadUtils.createCustomItemStack(Material.NAME_TAG, Lang.GUI_RENAME_ATTACK.get(playerData), Lang.GUI_GENERIC_CLICK_TO_RENAME.get(playerData));
             GuiItem cancelButton = ItemBuilder.from(cancelAttack).asGuiItem(event -> {
                 plannedAttack.remove();
-                territory.broadCastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(playerData, plannedAttack.getMainDefender().getName()),MINOR_GOOD);
+                territory.broadcastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(playerData, plannedAttack.getMainDefender().getName()),MINOR_GOOD);
                 openWarMenu(player, territory, page);
             });
 
@@ -1000,7 +1000,7 @@ public class PlayerGUI implements IGUI {
 
             GuiItem quitButton = ItemBuilder.from(quitWar).asGuiItem(event -> {
                 plannedAttack.removeBelligerent(territory);
-                territory.broadCastMessageWithSound(Lang.TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE.get(playerData, plannedAttack.getMainDefender().getName()),MINOR_GOOD);
+                territory.broadcastMessageWithSound(Lang.TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE.get(playerData, plannedAttack.getMainDefender().getName()),MINOR_GOOD);
                 openWarMenu(player, territory, page);
             });
             gui.setItem(2,7, quitButton);
@@ -1107,8 +1107,8 @@ public class PlayerGUI implements IGUI {
             openWarMenu(player, mainAttacker, 0);
 
             player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_ATTACK_TOWN_EXECUTED.get(playerData, mainDefender.getName()));
-            mainAttacker.broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(playerData, mainAttacker.getName(), mainDefender.getName()), WAR);
-            mainDefender.broadCastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(playerData, mainAttacker.getName(), mainDefender.getName()), WAR);
+            mainAttacker.broadcastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(playerData, mainAttacker.getName(), mainDefender.getName()), WAR);
+            mainDefender.broadcastMessageWithSound(Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(playerData, mainAttacker.getName(), mainDefender.getName()), WAR);
         });
 
 
@@ -1395,7 +1395,7 @@ public class PlayerGUI implements IGUI {
                         return;
                     }
                     townData.addPlayer(playerIterateData);
-                    townData.broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerData.getNameStored()), SoundEnum.MINOR_GOOD);
+                    townData.broadcastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerData.getNameStored()), SoundEnum.MINOR_GOOD);
                 }
                 else if(event.isRightClick()){
                     if(!townData.doesPlayerHavePermission(playerStat, RolePermission.INVITE_PLAYER)){
@@ -1976,7 +1976,7 @@ public class PlayerGUI implements IGUI {
                 player.closeInventory();
                 townData.removePlayer(playerData);
                 player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_PLAYER_LEFT_THE_TOWN.get(playerData));
-                townData.broadCastMessageWithSound(Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(playerData, playerData.getNameStored()), BAD);
+                townData.broadcastMessageWithSound(Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(playerData, playerData.getNameStored()), BAD);
             }, remove -> openTownSettings(player, townData));
         });
         GuiItem deleteButton = ItemBuilder.from(deleteTown).asGuiItem(event -> {
@@ -2907,7 +2907,7 @@ public class PlayerGUI implements IGUI {
                     player.sendMessage(TanChatUtils.getTANString() + Lang.CANT_KICK_REGIONAL_CAPITAL.get(playerData, territoryVassal.getName()));
                     return;
                 }
-                territoryData.broadCastMessageWithSound(Lang.GUI_REGION_KICK_TOWN_BROADCAST.get(playerData, territoryVassal.getName()), BAD);
+                territoryData.broadcastMessageWithSound(Lang.GUI_REGION_KICK_TOWN_BROADCAST.get(playerData, territoryVassal.getName()), BAD);
                 territoryVassal.removeOverlord();
                 player.closeInventory();
             });
@@ -3061,7 +3061,7 @@ public class PlayerGUI implements IGUI {
                     FileUtil.addLineToHistory(Lang.HISTORY_REGION_CAPITAL_CHANGED.get(playerData, player.getName(), regionData.getCapital().getName(), playerData.getTown().getName()));
                     regionData.setLeaderID(iteratePlayerData.getID());
 
-                    regionData.broadCastMessageWithSound(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST.get(playerData, iteratePlayerData.getNameStored()),GOOD);
+                    regionData.broadcastMessageWithSound(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST.get(playerData, iteratePlayerData.getNameStored()),GOOD);
 
                     if(!regionData.getCapital().getID().equals(iteratePlayerData.getTown().getID())){
                         regionData.broadCastMessage(TanChatUtils.getTANString() + Lang.GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST.get(playerData, iteratePlayerData.getTown().getName()));
@@ -3123,7 +3123,7 @@ public class PlayerGUI implements IGUI {
             }
 
             playerTown.addLandmark(landmark);
-            playerTown.broadCastMessageWithSound(Lang.GUI_LANDMARK_CLAIMED.get(playerData),GOOD);
+            playerTown.broadcastMessageWithSound(Lang.GUI_LANDMARK_CLAIMED.get(playerData),GOOD);
             dispatchLandmarkGui(player, landmark);
         });
 
@@ -3179,7 +3179,7 @@ public class PlayerGUI implements IGUI {
             event.setCancelled(true);
             townData.removeLandmark(landmark);
             TownData playerTown = TownDataStorage.getInstance().get(player);
-            playerTown.broadCastMessageWithSound(Lang.GUI_LANDMARK_REMOVED.get(playerData),BAD);
+            playerTown.broadcastMessageWithSound(Lang.GUI_LANDMARK_REMOVED.get(playerData),BAD);
             dispatchLandmarkGui(player,landmark);
         });
 
@@ -3282,7 +3282,7 @@ public class PlayerGUI implements IGUI {
 
                     openConfirmMenu(player, Lang.GUI_CONFIRM_DECLARE_INDEPENDENCE.get(playerData, territoryData.getColoredName(), overlord.getColoredName()), confirm -> {
                         territoryData.removeOverlord();
-                        territoryData.broadCastMessageWithSound(Lang.TOWN_BROADCAST_TOWN_LEFT_REGION.get(playerData, territoryData.getName(), overlordData.getName()), BAD);
+                        territoryData.broadcastMessageWithSound(Lang.TOWN_BROADCAST_TOWN_LEFT_REGION.get(playerData, territoryData.getName(), overlordData.getName()), BAD);
                         overlordData.broadCastMessage(Lang.REGION_BROADCAST_TOWN_LEFT_REGION.get(playerData, territoryData.getName()));
 
                         player.closeInventory();

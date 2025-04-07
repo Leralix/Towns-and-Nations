@@ -194,12 +194,12 @@ public abstract class TerritoryData {
     public void setRelation(TerritoryData otherTerritory, TownRelation relation){
         TownRelation actualRelation = getRelationWith(otherTerritory);
         if(relation.isSuperiorTo(actualRelation)){
-            broadCastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(getColoredName(), otherTerritory.getColoredName(),relation.getColoredName()), SoundEnum.GOOD);
-            otherTerritory.broadCastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(otherTerritory.getColoredName(), getColoredName(),relation.getColoredName()), SoundEnum.GOOD);
+            broadcastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(getColoredName(), otherTerritory.getColoredName(),relation.getColoredName()), SoundEnum.GOOD);
+            otherTerritory.broadcastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(otherTerritory.getColoredName(), getColoredName(),relation.getColoredName()), SoundEnum.GOOD);
         }
         else{
-            broadCastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(getColoredName(), otherTerritory.getColoredName(),relation.getColoredName()), SoundEnum.BAD);
-            otherTerritory.broadCastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(otherTerritory.getColoredName(), getColoredName(),relation.getColoredName()), SoundEnum.BAD);
+            broadcastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(getColoredName(), otherTerritory.getColoredName(),relation.getColoredName()), SoundEnum.BAD);
+            otherTerritory.broadcastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(otherTerritory.getColoredName(), getColoredName(),relation.getColoredName()), SoundEnum.BAD);
         }
 
         this.getRelations().setRelation(relation,otherTerritory);
@@ -266,9 +266,9 @@ public abstract class TerritoryData {
 
     public abstract void broadCastMessage(String message);
 
-    public abstract void broadCastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix);
+    public abstract void broadcastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix);
 
-    public abstract void broadCastMessageWithSound(String message, SoundEnum soundEnum);
+    public abstract void broadcastMessageWithSound(String message, SoundEnum soundEnum);
     public abstract boolean haveNoLeader();
 
     protected abstract ItemStack getIconWithName();
@@ -345,7 +345,7 @@ public abstract class TerritoryData {
 
     public void setOverlord(TerritoryData overlord){
         getOverlordsProposals().remove(overlord.getID());
-        broadCastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), overlord.getColoredName()), SoundEnum.GOOD);
+        broadcastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), overlord.getColoredName()), SoundEnum.GOOD);
 
         this.overlordID = overlord.getID();
         overlord.addVassal(this);
@@ -538,7 +538,7 @@ public abstract class TerritoryData {
 
     public void addVassalisationProposal(TerritoryData proposal){
         getOverlordsProposals().add(proposal.getID());
-        broadCastMessageWithSound(Lang.REGION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getColoredName(), getColoredName()), SoundEnum.MINOR_GOOD);
+        broadcastMessageWithSound(Lang.REGION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getColoredName(), getColoredName()), SoundEnum.MINOR_GOOD);
         NewsletterStorage.registerNewsletter(new JoinRegionProposalNL(proposal, this));
     }
 
@@ -574,7 +574,7 @@ public abstract class TerritoryData {
                     }
 
                     setOverlord(proposalOverlord);
-                    broadCastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), proposalOverlord.getName()), SoundEnum.GOOD);
+                    broadcastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), proposalOverlord.getName()), SoundEnum.GOOD);
                     PlayerGUI.openHierarchyMenu(player, this);
                 }
                 if(event.isRightClick()){

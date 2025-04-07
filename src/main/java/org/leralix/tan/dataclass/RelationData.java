@@ -86,7 +86,7 @@ public class RelationData {
                     continue;
 
                 otherTerritoryData.getRelations().removeAllRelationWith(territoryData.getID());
-                otherTerritoryData.broadCastMessageWithSound(
+                otherTerritoryData.broadcastMessageWithSound(
                         TanChatUtils.getTANString() + Lang.WARNING_OTHER_TOWN_HAS_BEEN_DELETED.get(territoryData.getColoredName(),relation.getColoredName()),
                         SoundEnum.MINOR_BAD
                 );

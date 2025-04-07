@@ -332,15 +332,15 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public void broadCastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix) {
+    public void broadcastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix) {
         for (TerritoryData townData : getSubjects())
-            townData.broadCastMessageWithSound(message, soundEnum, addPrefix);
+            townData.broadcastMessageWithSound(message, soundEnum, addPrefix);
     }
 
     @Override
-    public void broadCastMessageWithSound(String message, SoundEnum soundEnum) {
+    public void broadcastMessageWithSound(String message, SoundEnum soundEnum) {
         for (TerritoryData townData : getSubjects())
-            townData.broadCastMessageWithSound(message, soundEnum);
+            townData.broadcastMessageWithSound(message, soundEnum);
     }
 
     @Override
@@ -361,7 +361,7 @@ public class RegionData extends TerritoryData {
     @Override
     public void delete() {
         super.delete();
-        broadCastMessageWithSound(Lang.BROADCAST_PLAYER_REGION_DELETED.get(getLeaderData().getNameStored(), getColoredName()), SoundEnum.BAD);
+        broadcastMessageWithSound(Lang.BROADCAST_PLAYER_REGION_DELETED.get(getLeaderData().getNameStored(), getColoredName()), SoundEnum.BAD);
         TeamUtils.updateAllScoreboardColor();
         RegionDataStorage.getInstance().deleteRegion(this);
     }

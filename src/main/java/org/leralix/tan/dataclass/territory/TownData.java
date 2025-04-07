@@ -266,7 +266,7 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public void broadCastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix) {
+    public void broadcastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix) {
         for (String playerId : townPlayerListId) {
             Player player = Bukkit.getPlayer(UUID.fromString(playerId));
             if (player != null && player.isOnline()) {
@@ -280,8 +280,8 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public void broadCastMessageWithSound(String message, SoundEnum soundEnum) {
-        broadCastMessageWithSound(message, soundEnum, true);
+    public void broadcastMessageWithSound(String message, SoundEnum soundEnum) {
+        broadcastMessageWithSound(message, soundEnum, true);
     }
 
     public RankData getTownDefaultRank() {
@@ -634,7 +634,7 @@ public class TownData extends TerritoryData {
         PlayerData kickedPlayerData = PlayerDataStorage.getInstance().get(kickedPlayer);
 
         removePlayer(kickedPlayerData);
-        broadCastMessageWithSound(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.get(kickedPlayer.getName()), SoundEnum.BAD);
+        broadcastMessageWithSound(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.get(kickedPlayer.getName()), SoundEnum.BAD);
 
         if (kickedPlayer.isOnline())
             kickedPlayer.getPlayer().sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get());
@@ -758,7 +758,7 @@ public class TownData extends TerritoryData {
     @Override
     public void delete() {
         super.delete();
-        broadCastMessageWithSound(Lang.BROADCAST_PLAYER_TOWN_DELETED.get(getLeaderName(), getColoredName()), SoundEnum.BAD);
+        broadcastMessageWithSound(Lang.BROADCAST_PLAYER_TOWN_DELETED.get(getLeaderName(), getColoredName()), SoundEnum.BAD);
         removeAllLandmark(); //Remove all Landmark from the deleted town
         removeAllProperty(); //Remove all Property from the deleted town
 
