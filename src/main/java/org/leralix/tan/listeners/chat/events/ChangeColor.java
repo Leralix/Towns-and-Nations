@@ -20,12 +20,12 @@ public class ChangeColor extends ChatListenerEvent {
 
     @Override
     public void execute(Player player, String message) {
-        PlayerChatListenerStorage.removePlayer(player);
-
         if(!StringUtil.isValidColorCode(message)){
             player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR.get());
             return;
         }
+
+        PlayerChatListenerStorage.removePlayer(player);
         territoryData.setChunkColor(StringUtil.hexColorToInt(message));
         player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS.get());
         openGui(guiCallback,player);

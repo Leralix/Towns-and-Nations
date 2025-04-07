@@ -1,0 +1,19 @@
+##Help us translate the plugin in your language! Reach us on our discord !
+##Language available:
+##- en: English (Leralix, iii_coke_iii, arocles)
+##- fr: French (Leralix)
+##- zh-CN: Simplified Chinese (cool chengge)
+##- no: Norwegian (Senator)
+##- ko: Korean (don_key_don)
+##- ru: Russian (micro_comrade)
+##- pl : Polish (szkogis)
+##- es-ES: Spanish (eloy999tc)
+##- pt-BR: Portuguese (whattahell)
+##- cz: Czech (arocles)
+
+## Thanks to all the translators!
+language: en
+
+#Auto Update lang files
+#If false, the plugin will not update the lang files automatically at start. Watch out for new translations in the updates
+autoUpdateLangFiles: false

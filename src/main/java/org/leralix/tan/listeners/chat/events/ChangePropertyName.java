@@ -12,8 +12,8 @@ import org.leralix.tan.lang.Lang;
 import java.util.function.Consumer;
 
 public class ChangePropertyName extends ChatListenerEvent {
-    PropertyData propertyToRename;
-    Consumer<Player> guiCallback;
+    private final PropertyData propertyToRename;
+    private final Consumer<Player> guiCallback;
 
     public ChangePropertyName(PropertyData propertyData, Consumer<Player> guiCallback) {
         this.propertyToRename = propertyData;

@@ -54,7 +54,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'io.github.leralix:sphere-lib:0.4.0'
+    compileOnly 'io.github.leralix:sphere-lib:0.4.3'
     compileOnly 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'
     compileOnly 'com.mojang:authlib:4.0.43'
     compileOnly 'net.luckperms:api:5.4'
@@ -64,6 +64,17 @@ dependencies {
     implementation 'org.bstats:bstats-bukkit:3.1.0'
     implementation 'net.objecthunter:exp4j:0.4.8'
     implementation("dev.triumphteam:triumph-gui:+")
+
+    testImplementation 'io.github.leralix:sphere-lib:0.4.3'
+    testImplementation 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    testImplementation 'org.mockito:mockito-core:5.7.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.7.0'
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }
 
 def targetJavaVersion = 17

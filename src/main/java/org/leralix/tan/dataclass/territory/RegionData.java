@@ -48,7 +48,7 @@ public class RegionData extends TerritoryData {
     public RegionData(String id, String name, String ownerID) {
         super(id, name, ownerID);
         PlayerData owner = PlayerDataStorage.getInstance().get(ownerID);
-        TownData ownerTown = TownDataStorage.getInstance().get(owner);
+        TownData ownerTown = owner.getTown();
 
         this.regionId = id;
         this.regionName = name;
@@ -169,11 +169,6 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public int getChildColorCode() {
-        return 0;
-    }
-
-    @Override
     public boolean haveOverlord() {
         return nationID != null;
     }
@@ -241,12 +236,8 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public void addVassalPrivate(TerritoryData vassal) {
-        addSubject(vassal.getID());
-    }
-
-    public void addSubject(String townID) {
-        townsInRegion.add(townID);
+    protected void addVassalPrivate(TerritoryData vassal) {
+        townsInRegion.add(vassal.getID());
     }
 
 
@@ -287,7 +278,7 @@ public class RegionData extends TerritoryData {
         return townsInRegion.contains(townData.getID());
     }
 
-    public void removeVassal(String vassalID) {
+    protected void removeVassal(String vassalID) {
         TownData town = TownDataStorage.getInstance().get(vassalID);
         townsInRegion.remove(vassalID);
 

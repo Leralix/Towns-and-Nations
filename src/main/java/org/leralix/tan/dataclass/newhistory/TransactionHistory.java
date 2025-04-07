@@ -15,12 +15,13 @@ public abstract class TransactionHistory implements Comparable<TransactionHistor
     private final double amount;
 
 
-    protected TransactionHistory(String date, String territoryDataID, String transactionParty,  double amount) {
+    protected TransactionHistory(String date, String territoryDataID, String transactionParty, double amount) {
         this.date = date;
         this.territoryDataID = territoryDataID;
         this.transactionParty = transactionParty;
         this.amount = amount;
     }
+
     protected TransactionHistory(String territoryDataID, String transactionParty, double amount) {
         this.date = dateToString(LocalDate.now());
         this.territoryDataID = territoryDataID;
@@ -44,7 +45,7 @@ public abstract class TransactionHistory implements Comparable<TransactionHistor
 
     @Override
     public int compareTo(@NotNull TransactionHistory o) {
-        return Long.compare(dateToLong(this.date),dateToLong(o.date));
+        return Long.compare(dateToLong(this.date), dateToLong(o.date));
     }
 
     public String getDate() {

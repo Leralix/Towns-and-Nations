@@ -16,6 +16,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -404,7 +405,7 @@ public class PlayerGUI implements IGUI {
         GuiItem isForSaleButton = ItemBuilder.from(isForSale).asGuiItem(event -> {
             if(event.getClick() == ClickType.RIGHT){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(playerData));
-                PlayerChatListenerStorage.register(player, new ChangePropertySalePrice(propertyData));
+                PlayerChatListenerStorage.register(player, new ChangePropertySalePrice(propertyData, p -> openPropertyManagerMenu(player, propertyData)));
                 player.closeInventory();
             }
             else if (event.getClick() == ClickType.LEFT){
@@ -1216,7 +1217,7 @@ public class PlayerGUI implements IGUI {
 
         GuiItem conquerButton = ItemBuilder.from(conquer).asGuiItem(event -> {
             event.setCancelled(true);
-            createAttackData.setWarGoal(new ConquerWarGoal(createAttackData.getMainAttacker().getID(), createAttackData.getMainDefender().getID()));
+            createAttackData.setWarGoal(new ConquerWarGoal(createAttackData.getMainAttacker(), createAttackData.getMainDefender()));
             openStartWarSettings(player, createAttackData);
         });
 
@@ -1394,6 +1395,7 @@ public class PlayerGUI implements IGUI {
                         return;
                     }
                     townData.addPlayer(playerIterateData);
+                    townData.broadCastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerData.getNameStored()), SoundEnum.MINOR_GOOD);
                 }
                 else if(event.isRightClick()){
                     if(!townData.doesPlayerHavePermission(playerStat, RolePermission.INVITE_PLAYER)){
@@ -1454,7 +1456,7 @@ public class PlayerGUI implements IGUI {
                 return;
             }
             player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(playerData));
-            PlayerChatListenerStorage.register(player, new CreateRank(territoryData));
+            PlayerChatListenerStorage.register(player, new CreateRank(territoryData, p -> openTerritoryRanks(player, territoryData)));
         });
 
         GuiItem decorativePanel = ItemBuilder.from(HeadUtils.createCustomItemStack(Material.GRAY_STAINED_GLASS_PANE, "")).asGuiItem(event -> event.setCancelled(true));
@@ -2692,8 +2694,8 @@ public class PlayerGUI implements IGUI {
             else {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(playerData));
                 player.closeInventory();
-
-                PlayerChatListenerStorage.register(player, new CreateRegion());
+                int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
+                PlayerChatListenerStorage.register(player, new CreateRegion(cost));
             }
         });
 

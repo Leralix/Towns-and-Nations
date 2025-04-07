@@ -31,7 +31,7 @@ public class NewsletterStorage {
         throw new IllegalStateException("Utility class");
     }
 
-    static Map<NewsletterType,List<Newsletter>> categories;
+    static Map<NewsletterType,List<Newsletter>> categories = new EnumMap<>(NewsletterType.class);
 
     public static List<GuiItem> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onclick){
         List<GuiItem> newsletters = new ArrayList<>();
@@ -91,14 +91,12 @@ public class NewsletterStorage {
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Newsletter.json");
         if (file.exists()) {
             try (Reader reader = new FileReader(file)) {
-                Type type = new TypeToken<EnumMap<NewsletterType, List<Newsletter>>>() {}.getType();
+                Type type = new TypeToken<EnumMap<NewsletterType, List<Newsletter>>>() {
+                }.getType();
                 categories = gson.fromJson(reader, type);
             } catch (IOException e) {
                 TownsAndNations.getPlugin().getLogger().warning("Error while loading Newsletter file");
             }
-        }
-        if (categories == null) {
-            categories = new EnumMap<>(NewsletterType.class);
         }
     }
 

@@ -3,11 +3,11 @@ package org.leralix.tan.storage.stored;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
-import org.tan.api.getters.TanPlayerManager;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -34,11 +34,11 @@ public class PlayerDataStorage {
     }
 
 
-    private PlayerData createPlayerDataClass(Player p) {
+    public PlayerData register(Player p) {
         PlayerData playerData = new PlayerData(p);
-        return createPlayerDataClass(playerData);
+        return register(playerData);
     }
-    private PlayerData createPlayerDataClass(PlayerData p) {
+    PlayerData register(PlayerData p) {
         playerStorage.put(p.getID(), p);
         saveStats();
         return p;
@@ -64,9 +64,9 @@ public class PlayerDataStorage {
         if(res != null)
             return res;
 
-        Player newPlayer = TownsAndNations.getPlugin().getServer().getPlayer(UUID.fromString(id));
+        Player newPlayer = Bukkit.getPlayer(UUID.fromString(id));
         if(newPlayer != null){
-            return createPlayerDataClass(newPlayer);
+            return register(newPlayer);
         }
         return null;
     }

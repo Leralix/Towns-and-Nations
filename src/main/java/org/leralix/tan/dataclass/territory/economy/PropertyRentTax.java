@@ -1,11 +1,8 @@
 package org.leralix.tan.dataclass.territory.economy;
 
-import dev.triumphteam.gui
-.builder.item.ItemBuilder;
-import dev.triumphteam.gui
-.guis.Gui;
-import dev.triumphteam.gui
-.guis.GuiItem;
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.Gui;
+import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
@@ -26,13 +23,13 @@ import org.leralix.tan.listeners.chat.events.RateType;
 import org.leralix.tan.listeners.chat.events.SetSpecificRate;
 
 
-public class PropertyRentTax extends ProfitLine{
+public class PropertyRentTax extends ProfitLine {
 
     double taxes = 0;
 
-    public PropertyRentTax(TownData townData){
+    public PropertyRentTax(TownData townData) {
         super(townData);
-        for(PropertyData propertyData : townData.getProperties()){
+        for (PropertyData propertyData : townData.getProperties()) {
             taxes += propertyData.getRentPrice() * townData.getTaxOnRentingProperty() / 100;
         }
     }
@@ -52,13 +49,13 @@ public class PropertyRentTax extends ProfitLine{
 
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
-        ItemStack lowerTax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_LOWER_TAX.get(),"https://textures.minecraft.net/texture/a9dbed522e8de1a681dddd37854ee4267efc48b59917f9a9acb420d6fdb9",
+        ItemStack lowerTax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_LOWER_TAX.get(), "https://textures.minecraft.net/texture/a9dbed522e8de1a681dddd37854ee4267efc48b59917f9a9acb420d6fdb9",
                 Lang.GUI_DECREASE_1PERCENT_DESC.get(),
                 Lang.GUI_DECREASE_10PERCENT_DESC.get());
-        ItemStack increaseTax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_INCREASE_TAX.get(),"https://textures.minecraft.net/texture/bf6b85f626444dbd5bddf7a521fe52748fe43564e03fbd35b6b5e797de942d",
+        ItemStack increaseTax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_INCREASE_TAX.get(), "https://textures.minecraft.net/texture/bf6b85f626444dbd5bddf7a521fe52748fe43564e03fbd35b6b5e797de942d",
                 Lang.GUI_INCREASE_1PERCENT_DESC.get(),
                 Lang.GUI_INCREASE_10PERCENT_DESC.get());
-        ItemStack tax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_RENT_PROPERTY_TAX.get(),"https://textures.minecraft.net/texture/e19997593f2c592b9fbd4f15ead1673b76f519d7ab3efa15edd19448d1a20bfc",
+        ItemStack tax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_RENT_PROPERTY_TAX.get(), "https://textures.minecraft.net/texture/e19997593f2c592b9fbd4f15ead1673b76f519d7ab3efa15edd19448d1a20bfc",
                 Lang.GUI_TREASURY_PROPERTY_RENT_TAX_DESC1.get(String.format("%.2f", territoryData.getTaxOnRentingProperty() * 100)),
                 Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get(),
                 Lang.RIGHT_CLICK_TO_SET_TAX.get());
@@ -66,7 +63,7 @@ public class PropertyRentTax extends ProfitLine{
 
         GuiItem lowerTaxButton = ItemBuilder.from(lowerTax).asGuiItem(event -> {
             event.setCancelled(true);
-            if(!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)) {
+            if (!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
@@ -74,7 +71,7 @@ public class PropertyRentTax extends ProfitLine{
             double currentTax = territoryData.getTaxOnRentingProperty();
             double amountToRemove = event.isShiftClick() ? 0.1 : 0.01;
 
-            if(currentTax - amountToRemove < 0){
+            if (currentTax - amountToRemove < 0) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS_PERCENT.get());
                 return;
             }
@@ -85,19 +82,18 @@ public class PropertyRentTax extends ProfitLine{
         });
         GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
             event.setCancelled(true);
-            if(event.isLeftClick()){
+            if (event.isLeftClick()) {
                 PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.PROPERTY_RENT_TAX);
-            }
-            else if(event.isRightClick()){
+            } else if (event.isRightClick()) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_SET_TAX_IN_CHAT.get());
                 PlayerChatListenerStorage.register(player, new SetSpecificRate(territoryData, RateType.RENT));
                 player.closeInventory();
-            }        
+            }
         });
         GuiItem increaseTaxButton = ItemBuilder.from(increaseTax).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if(!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)){
+            if (!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
@@ -105,7 +101,7 @@ public class PropertyRentTax extends ProfitLine{
             double currentTax = territoryData.getTaxOnRentingProperty();
             double amountToAdd = event.isShiftClick() ? 0.1 : 0.01;
 
-            if(currentTax + amountToAdd > 1){
+            if (currentTax + amountToAdd > 1) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TREASURY_CANT_TAX_MORE_PERCENT.get());
                 return;
             }

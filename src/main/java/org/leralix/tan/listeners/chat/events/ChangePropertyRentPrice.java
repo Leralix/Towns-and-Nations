@@ -12,8 +12,8 @@ import java.util.function.Consumer;
 
 public class ChangePropertyRentPrice extends ChatListenerEvent {
 
-    PropertyData propertyData;
-    Consumer<Player> guiCallback;
+    private final PropertyData propertyData;
+    private final Consumer<Player> guiCallback;
 
     public ChangePropertyRentPrice(@NotNull PropertyData propertyData, Consumer<Player> guiCallback) {
         this.propertyData = propertyData;
@@ -35,5 +35,6 @@ public class ChangePropertyRentPrice extends ChatListenerEvent {
         }
 
         propertyData.setRentPrice(amount);
+        openGui(guiCallback, player);
     }
 }

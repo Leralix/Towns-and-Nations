@@ -31,20 +31,20 @@ import org.leralix.tan.enums.permissions.ChunkPermissionType;
 
 import java.util.Optional;
 
-public class TownClaimedChunk extends ClaimedChunk2{
+public class TownClaimedChunk extends ClaimedChunk2 {
     public TownClaimedChunk(Chunk chunk, String owner) {
         super(chunk, owner);
     }
 
     public TownClaimedChunk(int x, int z, String worldUUID, String ownerID) {
-        super(x,z,worldUUID,ownerID);
+        super(x, z, worldUUID, ownerID);
     }
 
-    public String getName(){
+    public String getName() {
         return getTown().getName();
     }
 
-    public TownData getTown(){
+    public TownData getTown() {
         return TownDataStorage.getInstance().get(ownerID);
     }
 
@@ -55,30 +55,29 @@ public class TownClaimedChunk extends ClaimedChunk2{
         //Location is in a property and players owns or rent it
         TownData ownerTown = getTown();
         PropertyData property = ownerTown.getProperty(location);
-        if(property != null){
-            if(property.isPlayerAllowed(playerData)){
+        if (property != null) {
+            if (property.isPlayerAllowed(playerData)) {
                 return true;
-            }
-            else {
+            } else {
                 player.sendMessage(TanChatUtils.getTANString() + property.getDenyMessage());
                 return false;
             }
         }
 
         //Chunk is claimed yet player have no town
-        if(!playerData.hasTown()){
+        if (!playerData.hasTown()) {
             playerCantPerformAction(player);
             return false;
         }
 
         //Player is at war with the town
-        for(CurrentAttack currentAttacks : ownerTown.getCurrentAttacks()) {
+        for (CurrentAttack currentAttacks : ownerTown.getCurrentAttacks()) {
             if (currentAttacks.containsPlayer(playerData))
                 return true;
         }
 
         ChunkPermission chunkPermission = ownerTown.getPermission(permissionType);
-        if(chunkPermission.isAllowed(ownerTown, playerData))
+        if (chunkPermission.isAllowed(ownerTown, playerData))
             return true;
 
         playerCantPerformAction(player);
@@ -86,58 +85,58 @@ public class TownClaimedChunk extends ClaimedChunk2{
     }
 
 
-    public void unclaimChunk(Player player){
+    public void unclaimChunk(Player player) {
         PlayerData playerStat = PlayerDataStorage.getInstance().get(player);
         TownData playerTown = playerStat.getTown();
 
-        if(playerTown == null){
+        if (playerTown == null) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
             return;
         }
 
-        if(!playerTown.doesPlayerHavePermission(playerStat, RolePermission.UNCLAIM_CHUNK)){
+        if (!playerTown.doesPlayerHavePermission(playerStat, RolePermission.UNCLAIM_CHUNK)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             return;
         }
 
 
-        if(!getOwner().equals(playerTown)){
+        if (!getOwner().equals(playerTown)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_TOWN.get(getOwner().getName()));
             return;
         }
 
-        for(PropertyData propertyData : getTown().getProperties()){
-            if(propertyData.isInChunk(this)){
+        for (PropertyData propertyData : getTown().getProperties()) {
+            if (propertyData.isInChunk(this)) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_IN_CHUNK.get(propertyData.getName()));
                 return;
             }
         }
 
-        player.sendMessage(TanChatUtils.getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_TOWN.get(playerTown.getNumberOfClaimedChunk(),playerTown.getLevel().getChunkCap()));
+        player.sendMessage(TanChatUtils.getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_TOWN.get(playerTown.getNumberOfClaimedChunk(), playerTown.getLevel().getChunkCap()));
         NewClaimedChunkStorage.getInstance().unclaimChunk(this);
     }
 
-    public void playerEnterClaimedArea(Player player){
+    public void playerEnterClaimedArea(Player player) {
         TownData townTo = getTown();
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.PLAYER_ENTER_TOWN_CHUNK.get(townTo.getName())));
 
         TownData playerTown = TownDataStorage.getInstance().get(player);
-        if(playerTown == null){
+        if (playerTown == null) {
             return;
         }
         TownRelation relation = playerTown.getRelationWith(townTo);
 
-        if(relation == TownRelation.WAR && ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("notifyEnemyEnterTown",true)){
+        if (relation == TownRelation.WAR && ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("notifyEnemyEnterTown", true)) {
             SoundUtil.playSound(player, SoundEnum.BAD);
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ENTER_TOWN_AT_WAR.get());
-            townTo.broadCastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.getInstance().get(player).getName(),player.getName()), SoundEnum.BAD);
+            townTo.broadCastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.getInstance().get(player).getName(), player.getName()), SoundEnum.BAD);
         }
     }
 
     @Override
     public boolean canEntitySpawn(EntityType entityType) {
-       return getTown().getChunkSettings().getSpawnControl(entityType.toString()).canSpawn();
+        return getTown().getChunkSettings().getSpawnControl(entityType.toString()).canSpawn();
     }
 
     @Override
@@ -146,10 +145,10 @@ public class TownClaimedChunk extends ClaimedChunk2{
         TextComponent textComponent = new TextComponent("⬛");
         textComponent.setColor(getTown().getChunkColor());
         textComponent.setHoverEvent(new HoverEvent(
-            HoverEvent.Action.SHOW_TEXT,
-            new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
-                    getTown().getColoredName() + "\n" +
-                    Lang.LEFT_CLICK_TO_CLAIM.get())));
+                HoverEvent.Action.SHOW_TEXT,
+                new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
+                        getTown().getColoredName() + "\n" +
+                        Lang.LEFT_CLICK_TO_CLAIM.get())));
         return textComponent;
 
 
@@ -157,7 +156,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
 
     @Override
     public boolean canTerritoryClaim(Optional<Player> player, TerritoryData territoryData) {
-        if(territoryData.canConquerChunk(this))
+        if (territoryData.canConquerChunk(this))
             return true;
         player.ifPresent(p -> p.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName())));
         return false;
@@ -171,7 +170,7 @@ public class TownClaimedChunk extends ClaimedChunk2{
     @Override
     public boolean canExplosionGrief() {
         String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("explosionGrief", "ALWAYS");
-        GriefAllowed griefAllowed =  GriefAllowed.valueOf(fireGrief);
+        GriefAllowed griefAllowed = GriefAllowed.valueOf(fireGrief);
         return griefAllowed.canGrief(getTown(), GeneralChunkSetting.TNT_GRIEF);
     }
 

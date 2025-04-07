@@ -32,7 +32,8 @@ public abstract class ClaimedChunk2 {
         this.worldUUID = chunk.getWorld().getUID().toString();
         this.ownerID = owner;
     }
-    protected ClaimedChunk2(int x, int z, String worldUUID , String owner) {
+
+    protected ClaimedChunk2(int x, int z, String worldUUID, String owner) {
         this.x = x;
         this.z = z;
         this.worldUUID = worldUUID;
@@ -69,7 +70,7 @@ public abstract class ClaimedChunk2 {
 
     public abstract boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location);
 
-    void playerCantPerformAction(Player player){
+    void playerCantPerformAction(Player player) {
         player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_ACTION_NO_PERMISSION.get(player));
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_BELONGS_TO.get(player, getOwner().getName()));
     }
@@ -87,7 +88,7 @@ public abstract class ClaimedChunk2 {
     }
 
     public TerritoryData getOwner() {
-        if(ownerID == null) return null;
+        if (ownerID == null) return null;
         return TerritoryUtil.getTerritory(ownerID);
     }
 
@@ -103,16 +104,18 @@ public abstract class ClaimedChunk2 {
     public abstract boolean isClaimed();
 
     public abstract boolean canExplosionGrief();
+
     public abstract boolean canFireGrief();
+
     public abstract boolean canPVPHappen();
+
     public Chunk getChunk() {
         World world = Bukkit.getWorld(UUID.fromString(this.worldUUID));
-        if(world == null) {
+        if (world == null) {
             return null;
         }
         return world.getChunkAt(x, z);
     }
-
 
 
 }

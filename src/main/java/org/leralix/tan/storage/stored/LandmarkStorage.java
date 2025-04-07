@@ -35,11 +35,15 @@ public class LandmarkStorage {
         return instance;
     }
 
+    public static void setInstance(LandmarkStorage mockLandmarkStorage) {
+        instance = mockLandmarkStorage;
+    }
+
     public Landmark get(String landmarkID){
         return landMarkMap.get(landmarkID);
     }
 
-    public void addLandmark(Location position){
+    public Landmark addLandmark(Location position){
         Vector3D vector3D = new Vector3D(position);
         String landmarkID = "L" + newLandmarkID;
         Landmark landmark = new Landmark(landmarkID,vector3D);
@@ -47,6 +51,7 @@ public class LandmarkStorage {
         newLandmarkID++;
         NewClaimedChunkStorage.getInstance().claimLandmarkChunk(position.getChunk(), landmarkID);
         save();
+        return landmark;
     }
 
     public boolean vectorAlreadyFilled(Vector3D vector3D){

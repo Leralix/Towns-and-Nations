@@ -1,6 +1,5 @@
 package org.leralix.tan.listeners.chat.events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -9,15 +8,19 @@ import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 
+import java.util.function.Consumer;
+
 public class CreateRank extends ChatListenerEvent {
-    TerritoryData territoryData;
-    public CreateRank(TerritoryData townData){
+    private final TerritoryData territoryData;
+    private final Consumer<Player> guiCallback;
+
+    public CreateRank(TerritoryData townData, Consumer<Player> guiCallback) {
         this.territoryData = townData;
+        this.guiCallback = guiCallback;
     }
+
     @Override
     public void execute(Player player, String message) {
         int maxNameSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RankNameSize");
@@ -32,7 +35,7 @@ public class CreateRank extends ChatListenerEvent {
         }
 
         PlayerChatListenerStorage.removePlayer(player);
-        RankData newRank = territoryData.registerNewRank(message);
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> PlayerGUI.openRankManager(player, territoryData, newRank));
+        territoryData.registerNewRank(message);
+        openGui(guiCallback, player);
     }
 }

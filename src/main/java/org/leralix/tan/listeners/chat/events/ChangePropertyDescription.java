@@ -13,8 +13,9 @@ import org.leralix.tan.lang.Lang;
 import java.util.function.Consumer;
 
 public class ChangePropertyDescription extends ChatListenerEvent {
-    private PropertyData propertyData;
-    private Consumer<Player> guiCallback;
+    private final PropertyData propertyData;
+    private final Consumer<Player> guiCallback;
+
     public ChangePropertyDescription(@NotNull PropertyData propertyData, Consumer<Player> guiCallback) {
         this.propertyData = propertyData;
         this.guiCallback = guiCallback;
@@ -33,6 +34,6 @@ public class ChangePropertyDescription extends ChatListenerEvent {
 
         propertyData.setDescription(message);
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
-
+        openGui(guiCallback,player);
     }
 }

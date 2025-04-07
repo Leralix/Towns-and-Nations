@@ -13,8 +13,9 @@ import java.util.function.Consumer;
 
 public class ChangeTownTag extends ChatListenerEvent {
 
-    private TownData townData;
-    private Consumer<Player> guiCallback;
+    private final TownData townData;
+    private final Consumer<Player> guiCallback;
+
     public ChangeTownTag(TownData townData, Consumer<Player> guiCallback) {
         this.townData = townData;
         this.guiCallback = guiCallback;
@@ -33,6 +34,5 @@ public class ChangeTownTag extends ChatListenerEvent {
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
         PlayerChatListenerStorage.removePlayer(player);
         openGui(guiCallback, player);
-
     }
 }

@@ -7,10 +7,16 @@ import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.lang.Lang;
 
+import java.util.function.Consumer;
+
 public class ChangePropertySalePrice extends ChatListenerEvent {
-    PropertyData propertyData;
-    public ChangePropertySalePrice(@NotNull PropertyData propertyData) {
+
+    private final PropertyData propertyData;
+    private final Consumer<Player> guiCallback;
+
+    public ChangePropertySalePrice(@NotNull PropertyData propertyData, Consumer<Player> guiCallback) {
         this.propertyData = propertyData;
+        this.guiCallback = guiCallback;
     }
 
     @Override
@@ -26,5 +32,6 @@ public class ChangePropertySalePrice extends ChatListenerEvent {
             return;
         }
         propertyData.setSalePrice(amount);
+        openGui(guiCallback, player);
     }
 }

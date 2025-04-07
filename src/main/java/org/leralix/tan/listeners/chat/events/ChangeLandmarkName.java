@@ -11,10 +11,15 @@ import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 
+import java.util.function.Consumer;
+
 public class ChangeLandmarkName extends ChatListenerEvent {
-    Landmark landmark;
-    public ChangeLandmarkName(Landmark landmark) {
+    private final Landmark landmark;
+    private final Consumer<Player> guiCallback;
+
+    public ChangeLandmarkName(Landmark landmark, Consumer<Player> guiCallback) {
         this.landmark = landmark;
+        this.guiCallback = guiCallback;
     }
 
     @Override
@@ -28,5 +33,6 @@ public class ChangeLandmarkName extends ChatListenerEvent {
         landmark.setName(message);
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
         SoundUtil.playSound(player, SoundEnum.MINOR_LEVEL_UP);
+        openGui(guiCallback,player);
     }
 }

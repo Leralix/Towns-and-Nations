@@ -1,7 +1,6 @@
 package org.leralix.tan.dataclass.territory.economy;
 
-import dev.triumphteam.gui
-.guis.Gui;
+import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.utils.StringUtil;
@@ -11,10 +10,10 @@ public class OverlordTaxLine extends ProfitLine {
 
     double tax;
 
-    public OverlordTaxLine(TerritoryData territoryData){
+    public OverlordTaxLine(TerritoryData territoryData) {
         super(territoryData);
         TerritoryData overlordData = territoryData.getOverlord();
-        if(overlordData == null)
+        if (overlordData == null)
             return;
         tax = -overlordData.getTax();
     }

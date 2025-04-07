@@ -4,6 +4,8 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -41,12 +43,10 @@ public class TownDataStorage {
         return instance;
     }
 
-    public TownData newTown(String townName, Player player){
-        String townId = "T"+newTownId;
-        String playerID = player.getUniqueId().toString();
-        newTownId++;
+    public TownData newTown(String townName, PlayerData playerData){
+        String townId = getNextTownID();
 
-        TownData newTown = new TownData(townId, townName, playerID);
+        TownData newTown = new TownData(townId, townName, playerData);
 
 
         townDataMap.put(townId,newTown);
@@ -54,14 +54,20 @@ public class TownDataStorage {
         return newTown;
     }
 
-    public void newTown(String townName){
+    private @NotNull String getNextTownID() {
         String townId = "T"+newTownId;
         newTownId++;
+        return townId;
+    }
 
-        TownData newTown = new TownData(townId, townName, null);
+    public TownData newTown(String townName){
+        String townId = getNextTownID();
+
+        TownData newTown = new TownData(townId, townName);
 
         townDataMap.put(townId,newTown);
         saveStats();
+        return newTown;
     }
 
 
@@ -108,7 +114,7 @@ public class TownDataStorage {
             .registerTypeAdapter(new TypeToken<Map<ChunkPermissionType, RelationPermission>>() {}.getType(), new EnumMapKeyValueDeserializer<>(ChunkPermissionType.class, RelationPermission.class))
             .registerTypeAdapter(new TypeToken<Map<TownRelation, List<String>>>() {}.getType(),new EnumMapDeserializer<>(TownRelation.class, new TypeToken<List<String>>(){}.getType()))
             .registerTypeAdapter(new TypeToken<List<RelationPermission>>() {}.getType(),new EnumMapDeserializer<>(RelationPermission.class, new TypeToken<List<String>>(){}.getType()))
-            .registerTypeAdapter(CustomIcon.class, new IconAdapter())
+            .registerTypeAdapter(ICustomIcon.class, new IconAdapter())
             .create();
 
         Type type = new TypeToken<LinkedHashMap<String, TownData>>() {}.getType();
@@ -128,7 +134,7 @@ public class TownDataStorage {
     public void saveStats() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting()
-                .registerTypeAdapter(CustomIcon.class, new IconAdapter())
+                .registerTypeAdapter(ICustomIcon.class, new IconAdapter())
                 .create();
 
 
@@ -157,9 +163,6 @@ public class TownDataStorage {
 
 
     public boolean isNameUsed(String townName){
-        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",true))
-            return false;
-        
         for (TownData town : townDataMap.values()){
             if(townName.equals(town.getName()))
                 return true;

@@ -8,15 +8,15 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.UUID;
 
-public class PlayerHeadIcon extends CustomIcon {
+public class PlayerHeadIcon implements ICustomIcon {
     private final String playerUUID;
     public PlayerHeadIcon(String playerID) {
-        super(new ItemStack(Material.PLAYER_HEAD));
         this.playerUUID = playerID;
     }
     
-    @Override
     public ItemStack getIcon() {
+        if(playerUUID == null) return new ItemStack(Material.SKELETON_SKULL);
+
         ItemStack icon = new ItemStack(Material.PLAYER_HEAD);
 
         SkullMeta skullMeta = (SkullMeta) icon.getItemMeta();

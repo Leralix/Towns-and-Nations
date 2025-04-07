@@ -21,7 +21,7 @@ import org.leralix.tan.dataclass.newhistory.ChunkPaymentHistory;
 import org.leralix.tan.dataclass.newhistory.MiscellaneousHistory;
 import org.leralix.tan.dataclass.newhistory.PlayerDonationHistory;
 import org.leralix.tan.dataclass.newhistory.SalaryPaymentHistory;
-import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
+import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.ChunkUpkeepLine;
@@ -36,7 +36,6 @@ import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.newsletter.news.DiplomacyProposalNL;
 import org.leralix.tan.newsletter.news.JoinRegionProposalNL;
@@ -56,7 +55,7 @@ public abstract class TerritoryData {
     private String description;
     protected String overlordID;
     private Long dateTimeCreated;
-    private CustomIcon customIcon;
+    private ICustomIcon customIcon;
     private RelationData relations;
     private Double baseTax;
     private double propertyRentTax;
@@ -110,12 +109,11 @@ public abstract class TerritoryData {
         return name;
     }
     public void rename(Player player, int cost, String newName){
-        if(getBalance() <= cost){
+        if(getBalance() < cost){
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
             return;
         }
 
-        PlayerChatListenerStorage.removePlayer(player);
         TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new MiscellaneousHistory(this, cost));
 
         removeFromBalance(cost);
@@ -157,7 +155,7 @@ public abstract class TerritoryData {
         }
         return customIcon.getIcon();
     }
-    public void setIcon(CustomIcon icon){
+    public void setIcon(ICustomIcon icon){
         this.customIcon = icon;
     }
     public abstract Collection<String> getPlayerIDList();
@@ -349,8 +347,8 @@ public abstract class TerritoryData {
         getOverlordsProposals().remove(overlord.getID());
         broadCastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), overlord.getColoredName()), SoundEnum.GOOD);
 
-        overlord.addVassal(this);
         this.overlordID = overlord.getID();
+        overlord.addVassal(this);
     }
 
     public TerritoryData getOverlord(){
@@ -365,27 +363,24 @@ public abstract class TerritoryData {
     public abstract void removeOverlordPrivate();
 
 
-    private void addVassal(TerritoryData vassal){
+    public void addVassal(TerritoryData vassal){
         NewsletterStorage.removeVassalisationProposal(this, vassal);
-
         addVassalPrivate(vassal);
     }
     protected abstract void addVassalPrivate (TerritoryData vassal);
 
-    private void removeVassal(TerritoryData vassal){
+    protected void removeVassal(TerritoryData vassal){
         removeVassal(vassal.getID());
     }
-    public abstract void removeVassal(String vassalID);
+    protected abstract void removeVassal(String vassalID);
 
     public abstract boolean isCapital();
 
     public TerritoryData getCapital(){
         return TerritoryUtil.getTerritory(getCapitalID());
     }
+
     public abstract String getCapitalID();
-
-
-    public abstract int getChildColorCode();
 
     public int getChunkColorCode(){
         if(color == null)
