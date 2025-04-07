@@ -369,11 +369,6 @@ public class TownData extends TerritoryData {
         return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("TownChunkUpkeepCost", 0);
     }
 
-    @Override
-    public int getChildColorCode() {
-        return chunkColor;
-    }
-
     public void setSpawn(Location location) {
         this.teleportationPosition = new TeleportationPosition(location);
     }

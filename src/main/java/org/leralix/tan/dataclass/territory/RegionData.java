@@ -169,11 +169,6 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public int getChildColorCode() {
-        return 0;
-    }
-
-    @Override
     public boolean haveOverlord() {
         return nationID != null;
     }

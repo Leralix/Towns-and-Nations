@@ -384,7 +384,7 @@ public abstract class TerritoryData {
     public abstract String getCapitalID();
 
 
-    public abstract int getChildColorCode();
+    public abstract String getCapitalID();
 
     public int getChunkColorCode(){
         if(color == null)
