@@ -8,12 +8,12 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.lang.Lang;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -130,7 +130,12 @@ public class ArchiveUtil {
         ArchiveUtil.archiveFiles(fileCollections, "reports", reportName);
         commandSender.sendMessage(Lang.DEBUG_REPORT_CREATED.get());
 
-        pluginListFile.delete();
+        try {
+            Files.delete(pluginListFile.toPath());
+        }
+        catch (IOException e) {
+            TownsAndNations.getPlugin().getLogger().severe("Error while deleting plugin list file : " + e.getMessage());
+        }
     }
 
     private static @NotNull File getPluginNameFile() {
