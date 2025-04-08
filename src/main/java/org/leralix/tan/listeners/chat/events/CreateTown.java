@@ -66,6 +66,6 @@ public class CreateTown extends ChatListenerEvent {
 
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> TeamUtils.setIndividualScoreBoard(player));
 
-        openGui(p -> PlayerGUI.dispatchPlayerRegion(player), player);
+        openGui(p -> PlayerGUI.dispatchPlayerTown(player), player);
     }
 }
