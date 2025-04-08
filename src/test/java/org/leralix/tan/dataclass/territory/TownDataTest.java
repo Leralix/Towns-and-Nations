@@ -31,7 +31,7 @@ class TownDataTest {
     }
 
     @Test
-    void testAddRank(){
+    void addRank(){
         PlayerData playerData = AbstractionFactory.getRandomPlayerData();
         TownData townData = TownDataStorage.getInstance().newTown("testTown", playerData);
 
@@ -47,5 +47,30 @@ class TownDataTest {
         assertEquals(1, newRank.getNumberOfPlayer());
         assertEquals(2, townData.getRanks().size());
         assertEquals(newRank, playerData.getTownRank());
+    }
+
+    @Test
+    void deleteTownWithPlayers(){
+        PlayerData playerData = AbstractionFactory.getRandomPlayerData();
+        PlayerData otherPlayerData = AbstractionFactory.getRandomPlayerData();
+        TownData townData = TownDataStorage.getInstance().newTown("testTown", playerData);
+
+        assertEquals(1, townData.getPlayerIDList().size());
+        assertEquals(townData.getID(), playerData.getTownId());
+        assertTrue(townData.getTownDefaultRank().getPlayersID().contains(playerData.getID()));
+
+        townData.addPlayer(otherPlayerData);
+
+        assertEquals(2, townData.getPlayerIDList().size());
+        assertEquals(townData.getID(), otherPlayerData.getTownId());
+        assertTrue(townData.getTownDefaultRank().getPlayersID().contains(otherPlayerData.getID()));
+
+        townData.delete();
+        TownData otherTownData = TownDataStorage.getInstance().newTown("townToShowPlayerRank");
+
+        assertNull(otherPlayerData.getTownId());
+        assertNull(playerData.getTownId());
+        assertNull(playerData.getRankID(otherTownData));
+        assertNull(otherPlayerData.getRankID(otherTownData));
     }
 }

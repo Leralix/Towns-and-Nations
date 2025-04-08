@@ -73,6 +73,9 @@ public class AbstractionFactory {
         bukkitInstance.when(() -> Bukkit.getPlayer(any(UUID.class)))
                 .thenAnswer( invocation -> AbstractionFactory.getRandomPlayer((UUID) invocation.getArgument(0)));
 
+        bukkitInstance.when(() -> Bukkit.getOfflinePlayer(any(UUID.class)))
+                .thenAnswer( invocation -> AbstractionFactory.getRandomPlayer((UUID) invocation.getArgument(0)));
+
         BukkitScheduler bukkitScheduler = Mockito.mock(BukkitScheduler.class);
         bukkitInstance.when(Bukkit::getScheduler).thenAnswer(invocation -> bukkitScheduler);
 
