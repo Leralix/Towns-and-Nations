@@ -953,6 +953,7 @@ public enum Lang {
     private static final EnumMap<LangType ,EnumMap<Lang, String>> translations = new EnumMap<>(LangType.class);
     private static final EnumMap<LangType , Integer> completedLang = new EnumMap<>(LangType.class);
 
+    private static boolean showCurrency = true;
 
     static final String MESSAGE_NOT_FOUND_FOR = "Message not found for ";
     static final String IN_THIS_LANGUAGE_FILE = " in this language file.";
@@ -1068,15 +1069,24 @@ public enum Lang {
 
     private String replaceCommonPlaceholders(String translation) {
 
-        if(translation.contains("{MONEY_CHAR}")) {
-            String moneyChar = EconomyUtil.getMoneyIcon();
-            if(moneyChar == null) {
-                moneyChar = "$";
+        final String MONEY_CHAR = "{MONEY_CHAR}";
+        final String CANCEL = "{CANCEL}";
+
+
+        if(translation.contains(MONEY_CHAR)) {
+            if(showCurrency) {
+                String moneyChar = EconomyUtil.getMoneyIcon();
+                if(moneyChar == null) {
+                    moneyChar = "$";
+                }
+                translation = translation.replace(MONEY_CHAR, moneyChar);
             }
-            translation = translation.replace("{MONEY_CHAR}", moneyChar);
+            else {
+                translation = translation.replace(MONEY_CHAR, "");
+            }
         }
-        if(translation.contains("{CANCEL}")) {
-            translation = translation.replace("{CANCEL}", Lang.CANCEL_WORD.get());
+        if(translation.contains(CANCEL)) {
+            translation = translation.replace(CANCEL, Lang.CANCEL_WORD.get());
         }
         return translation;
     }
@@ -1088,5 +1098,9 @@ public enum Lang {
             return ChatColor.translateAlternateColorCodes('§', translation);
         }
         return MESSAGE_NOT_FOUND_FOR + this.name() + IN_THIS_LANGUAGE_FILE;
+    }
+
+    public static void shouldShowCurrency(boolean show) {
+        showCurrency = show;
     }
 }

@@ -51,6 +51,9 @@ UseTanEconomy: true
 #If TownsAndNations economy is used, set the currency symbol
 moneyIcon: "✦"
 
+#Show currency symbol in menus and messages
+showCurrency: true
+
 #If TownsAndNations economy is used, set the number of digits (0,1,2,3...)
 DecimalDigits: 2
 

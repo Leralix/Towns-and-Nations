@@ -138,6 +138,7 @@ public final class TownsAndNations extends JavaPlugin {
         mainBlackList.add("claimBlacklist");
         ConfigUtil.saveAndUpdateResource(this, "config.yml", mainBlackList);
         ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.MAIN);
+        Lang.shouldShowCurrency(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("showCurrency", true));
 
         List<String> upgradeBlackList = new ArrayList<>();
         upgradeBlackList.add("upgrades");
