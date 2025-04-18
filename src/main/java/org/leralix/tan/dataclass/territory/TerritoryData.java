@@ -597,6 +597,8 @@ public abstract class TerritoryData {
             else {
                 ranks = new HashMap<>();
             }
+        } else if (ranks.isEmpty() && this instanceof TownData townData) {
+            ranks = townData.getOldRanks();
         }
         return ranks;
     }
