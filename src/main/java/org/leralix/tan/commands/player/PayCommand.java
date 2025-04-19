@@ -64,7 +64,7 @@ public class PayCommand extends PlayerSubCommand {
         }
         PlayerData receiverData = PlayerDataStorage.getInstance().get(receiver);
         PlayerData senderData = PlayerDataStorage.getInstance().get(player);
-        if(receiverData.hasTown() && senderData.hasTown() && receiverData.getTown().canTradeWith(senderData.getTown())){
+        if(receiverData.hasTown() && senderData.hasTown() && !receiverData.getTown().canTradeWith(senderData.getTown())){
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_PAY_AT_EMBARGO_ERROR.get());
             return;
         }
