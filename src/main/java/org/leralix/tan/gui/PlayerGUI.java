@@ -1588,16 +1588,17 @@ public class PlayerGUI implements IGUI {
             if(rankData.getNumberOfPlayer() != 0){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY.get(playerData));
                 SoundUtil.playSound(player, NOT_ALLOWED);
+                return;
             }
-            else if(territoryData.getDefaultRankID() == rankData.getID()){
+            if(territoryData.getDefaultRankID() == rankData.getID()){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_DEFAULT.get(playerData));
                 SoundUtil.playSound(player, NOT_ALLOWED);
+                return;
             }
-            else{
-                territoryData.removeRank(rankData.getID());
-                openTerritoryRanks(player, territoryData);
-                SoundUtil.playSound(player, MINOR_GOOD);
-            }
+            territoryData.removeRank(rankData.getID());
+            openTerritoryRanks(player, territoryData);
+            SoundUtil.playSound(player, MINOR_GOOD);
+
         });
 
         GuiItem lowerSalaryButton = ItemBuilder.from(lowerSalary).asGuiItem(event -> {

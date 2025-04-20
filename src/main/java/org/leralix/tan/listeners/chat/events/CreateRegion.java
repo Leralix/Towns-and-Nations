@@ -55,7 +55,7 @@ public class CreateRegion extends ChatListenerEvent {
 
     private void createRegion(Player player, String regionName, TownData capital) {
         capital.removeFromBalance(cost);
-        RegionDataStorage.getInstance().createNewRegion(capital, regionName);
+        RegionDataStorage.getInstance().createNewRegion(regionName, capital);
         Bukkit.broadcastMessage(TanChatUtils.getTANString() + Lang.REGION_CREATE_SUCCESS_BROADCAST.get(capital.getColoredName(),regionName));
         PlayerChatListenerStorage.removePlayer(player);
 

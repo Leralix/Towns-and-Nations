@@ -113,12 +113,6 @@ public class PlayerData {
         this.Balance = this.Balance - amount;
     }
 
-    public void leaveTown() {
-        this.TownId = null;
-        this.townRankID = null;
-        this.regionRankID = null;
-    }
-
     public boolean hasRegion() {
         if (!this.hasTown()) {
             return false;
@@ -136,25 +130,22 @@ public class PlayerData {
         return java.util.UUID.fromString(UUID);
     }
 
+    public void joinTown(TownData townData) {
+        this.TownId = townData.getID();
+        setTownRankID(townData.getDefaultRankID());
+    }
+
+    public void leaveTown() {
+        this.TownId = null;
+        this.townRankID = null;
+    }
+
     public void setTownRankID(int townRankID) {
         this.townRankID = townRankID;
     }
 
     public Integer getTownRankID() {
         return this.townRankID;
-    }
-
-    public void joinTown(TownData townData) {
-        this.TownId = townData.getID();
-        this.townRankID = townData.getDefaultRankID();
-
-        //remove all invitation
-        for (TownData otherTown : TownDataStorage.getInstance().getTownMap().values()) {
-            if (otherTown == TownDataStorage.getInstance().get(townData.getID())) {
-                continue;
-            }
-            TownInviteDataStorage.removeInvitation(UUID, otherTown.getID());
-        }
     }
 
     public List<String> getPropertiesListID() {
@@ -269,7 +260,10 @@ public class PlayerData {
         return currentRelation;
     }
 
-    public int getRegionRankID() {
+    public Integer getRegionRankID() {
+        if(!hasRegion()){
+            return null;
+        }
         if (regionRankID == null)
             regionRankID = getRegion().getDefaultRankID();
         return regionRankID;
@@ -311,5 +305,22 @@ public class PlayerData {
 
     public void setLang(LangType lang) {
         this.lang = lang;
+    }
+
+    public void clearAllTownApplications() {
+        TownInviteDataStorage.removeInvitation(UUID); //Remove town invitation
+        for (TownData allTown : TownDataStorage.getInstance().getTownMap().values()) {
+            allTown.removePlayerJoinRequest(UUID); //Remove applications
+        }
+    }
+
+    public void setRankID(TerritoryData territoryData, Integer defaultRankID) {
+        if(territoryData instanceof TownData){
+            setTownRankID(defaultRankID);
+        }
+        if(territoryData instanceof RegionData){
+            setRegionRankID(defaultRankID);
+        }
+
     }
 }

@@ -115,8 +115,7 @@ public class TownData extends TerritoryData {
     }
 
     public void addPlayer(String playerDataID) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(playerDataID);
-        addPlayer(playerData);
+        addPlayer(PlayerDataStorage.getInstance().get(playerDataID));
     }
 
     public void addPlayer(PlayerData playerData) {
@@ -124,12 +123,14 @@ public class TownData extends TerritoryData {
         getTownDefaultRank().addPlayer(playerData);
         playerData.joinTown(this);
 
-        Player playerIterateOnline = playerData.getPlayer();
-        if (playerIterateOnline != null)
-            playerIterateOnline.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(getColoredName()));
+        Player newMember = playerData.getPlayer();
+        if (newMember != null)
+            newMember.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(getColoredName()));
 
-        for (TownData allTown : TownDataStorage.getInstance().getTownMap().values()) {
-            allTown.removePlayerJoinRequest(playerData.getID());
+        playerData.clearAllTownApplications();
+
+        for(TerritoryData overlords : getOverlords()){
+            overlords.registerPlayer(playerData);
         }
 
         TeamUtils.updateAllScoreboardColor();
@@ -141,6 +142,10 @@ public class TownData extends TerritoryData {
     }
 
     public void removePlayer(PlayerData playerData) {
+        for(TerritoryData overlords : getOverlords()){
+            overlords.unregisterPlayer(playerData);
+        }
+
         getRank(playerData).removePlayer(playerData);
         townPlayerListId.remove(playerData.getID());
         playerData.leaveTown();
@@ -244,6 +249,21 @@ public class TownData extends TerritoryData {
         return StringUtil.handleDigits(balance);
     }
 
+    @Override
+    protected Collection<TerritoryData> getOverlords() {
+        List<TerritoryData> overlords = new ArrayList<>();
+
+        if(haveOverlord()){
+            RegionData regionData = getRegion();
+            overlords.add(regionData);
+            if(regionData.haveOverlord()){
+                overlords.add(regionData.getOverlord());
+            }
+        }
+
+        return overlords;
+    }
+
 
     @Override
     public void addToBalance(double balance) {
@@ -344,8 +364,7 @@ public class TownData extends TerritoryData {
 
         for (PlayerData playerData : getPlayerDataList()) {
             OfflinePlayer offlinePlayer = playerData.getOfflinePlayer();
-            if (playerData.getTownRankID() == null) {
-                getTownDefaultRank().addPlayer(playerData);
+            if (playerData.getTownRankID() == null) { //TODO : Remove in v0.15.0, used to fixed missing rank application
                 playerData.joinTown(this);
             }
 
@@ -546,8 +565,8 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    protected void specificSetPlayerRank(PlayerData playerStat, int rankID) {
-        playerStat.setTownRankID(rankID);
+    protected void specificSetPlayerRank(PlayerData playerData, int rankID) {
+        playerData.setTownRankID(rankID);
     }
 
     @Override

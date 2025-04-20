@@ -216,6 +216,16 @@ public class RegionData extends TerritoryData {
         return null;
     }
 
+    @Override
+    protected Collection<TerritoryData> getOverlords() {
+        List<TerritoryData> overlords = new ArrayList<>();
+
+        if(hasNation()){
+            // TODO : Add Nations
+        }
+        return overlords;
+    }
+
     public List<TerritoryData> getSubjects() {
         List<TerritoryData> towns = new ArrayList<>();
         for (String townID : townsInRegion) {
@@ -406,6 +416,9 @@ public class RegionData extends TerritoryData {
 
     @Override
     public RankData getRank(PlayerData playerData) {
+        if(!playerData.hasRegion()){
+            return null;
+        }
         return getRank(playerData.getRegionRankID());
     }
 

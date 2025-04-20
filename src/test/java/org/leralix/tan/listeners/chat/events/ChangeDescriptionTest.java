@@ -44,7 +44,7 @@ class ChangeDescriptionTest {
     @Test
     void nominalCaseRegion() {
 
-        RegionData regionData = RegionDataStorage.getInstance().createNewRegion(townData, "nation 1");
+        RegionData regionData = RegionDataStorage.getInstance().createNewRegion("nation 1", townData);
         ChangeDescription changeDescription = new ChangeDescription(regionData, null);
         String description = "new description 2";
 

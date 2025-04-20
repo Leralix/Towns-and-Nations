@@ -3,24 +3,18 @@ package org.leralix.tan.storage.stored;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
-import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.FileUtil;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.storage.typeadapter.IconAdapter;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -42,17 +36,17 @@ public class RegionDataStorage {
         loadStats();
     }
 
-    public RegionData createNewRegion(TownData capital, String regionName){
+    public RegionData createNewRegion(String name, TownData capital){
 
         PlayerData newLeader = capital.getLeaderData();
 
         String regionID = generateNextID();
 
-        RegionData newRegion = new RegionData(regionID, regionName, newLeader.getID());
+        RegionData newRegion = new RegionData(regionID, name, newLeader.getID());
         regionStorage.put(regionID, newRegion);
         capital.setOverlord(newRegion);
 
-        FileUtil.addLineToHistory(Lang.HISTORY_REGION_CREATED.get(newLeader.getNameStored(),regionName));
+        FileUtil.addLineToHistory(Lang.HISTORY_REGION_CREATED.get(newLeader.getNameStored(), name));
         return newRegion;
     }
 

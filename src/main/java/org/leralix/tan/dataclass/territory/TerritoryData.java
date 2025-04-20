@@ -355,6 +355,11 @@ public abstract class TerritoryData {
         return TerritoryUtil.getTerritory(overlordID);
     }
 
+    /**
+     * @return All potential overlords of this territory (Kingdom and region)
+     */
+    protected abstract Collection<TerritoryData> getOverlords();
+
     public void removeOverlord(){
         getOverlord().removeVassal(this);
         removeOverlordPrivate();
@@ -837,5 +842,19 @@ public abstract class TerritoryData {
 
     public boolean canTradeWith(TownData town) {
         return getRelationWith(town) != TownRelation.EMBARGO && getRelationWith(town) != TownRelation.WAR;
+    }
+
+    protected RankData getDefaultRank() {
+        return getRank(getDefaultRankID());
+    }
+
+    protected void registerPlayer(PlayerData playerData) {
+        getDefaultRank().addPlayer(playerData);
+        playerData.setRankID(this, getDefaultRankID());
+    }
+
+    protected void unregisterPlayer(PlayerData playerData) {
+        getRank(playerData).removePlayer(playerData);
+        playerData.setRankID(this, null);
     }
 }

@@ -22,13 +22,8 @@ public class TownInviteDataStorage {
     }
 
 
-    public static void removeInvitation(String playerUUID,String townId){
-        if(townInviteList.containsKey(playerUUID)){
-            townInviteList.get(playerUUID).remove(townId);
-        }
-    }
-    public static void removeInvitation(Player player, String townId){
-        removeInvitation(player.getUniqueId().toString(),townId);
+    public static void removeInvitation(String playerUUID){
+        townInviteList.remove(playerUUID);
     }
 
     public static boolean isInvited(String playerUUID,String townID){

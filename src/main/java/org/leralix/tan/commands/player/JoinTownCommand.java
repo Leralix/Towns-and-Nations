@@ -78,7 +78,6 @@ public class JoinTownCommand extends PlayerSubCommand {
 
             townData.addPlayer(playerData);
             townData.broadcastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerData.getNameStored()), SoundEnum.MINOR_GOOD);
-            TownInviteDataStorage.removeInvitation(player,townData.getID());
         }
         else{
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
