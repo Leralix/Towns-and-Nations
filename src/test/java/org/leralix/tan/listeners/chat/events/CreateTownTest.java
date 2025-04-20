@@ -23,7 +23,7 @@ class CreateTownTest {
         PlayerData playerData = AbstractionFactory.getRandomPlayerData();
 
         CreateTown createTown = new CreateTown(10);
-        createTown.execute(playerData.getPlayer(), "super name");
+        createTown.execute(playerData.getPlayer(), "town-A");
 
         assertTrue(playerData.hasTown());
         TownData town = playerData.getTown();

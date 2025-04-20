@@ -21,9 +21,9 @@ class CreateRegionTest {
     @Test
     void nominalCase(){
         var playerData = AbstractionFactory.getRandomPlayerData();
-        var townData = TownDataStorage.getInstance().newTown("Town", playerData);
+        var townData = TownDataStorage.getInstance().newTown("Town-B", playerData);
         townData.addToBalance(50);
-        String regionName = "Region";
+        String regionName = "Region-B";
 
         CreateRegion createRegion = new CreateRegion(25);
         createRegion.execute(playerData.getPlayer(), regionName);
