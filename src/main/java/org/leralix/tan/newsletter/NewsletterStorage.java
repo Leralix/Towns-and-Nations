@@ -33,12 +33,19 @@ public class NewsletterStorage {
 
     static Map<NewsletterType,List<Newsletter>> categories = new EnumMap<>(NewsletterType.class);
 
+    private static List<Newsletter> getNewsletterForScope(Player player, NewsletterScope scope){
+        List<Newsletter> newsletters = new ArrayList<>();
+        for(List<Newsletter> category : categories.values()) {
+            newsletters.addAll(category);
+        }
+        return newsletters;
+    }
+
     public static List<GuiItem> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onclick){
         List<GuiItem> newsletters = new ArrayList<>();
-        for(List<Newsletter> category : categories.values()) {
-            for(Newsletter newsletter : category) {
-                if(newsletter.shouldShowToPlayer(player, scope))
-                    newsletters.add(newsletter.createGuiItem(player, onclick));
+        for(Newsletter newsletter : getNewsletterForScope(player, scope)) {
+            if(newsletter.shouldShowToPlayer(player, scope)) {
+                newsletters.add(newsletter.createGuiItem(player, onclick));
             }
         }
         return newsletters;
@@ -142,5 +149,11 @@ public class NewsletterStorage {
                         proposalNL.getProposingTerritoryID().equals(proposer.getID()) &&
                         proposalNL.getReceivingTerritoryID().equals(receiver.getID())
         );
+    }
+
+    public static void markAllAsReadForPlayer(Player player, NewsletterScope scope) {
+        for(Newsletter newsletter : getNewsletterForScope(player, scope)){
+            newsletter.markAsRead(player);
+        }
     }
 }

@@ -234,10 +234,17 @@ public class PlayerGUI implements IGUI {
                 p -> openNewsletter(player, page - 1,scope)
         );
 
-        ItemStack checkScope = HeadUtils.createCustomItemStack(Material.NAME_TAG,scope.getName(playerData.getLang()),
+        ItemStack changeScope = HeadUtils.createCustomItemStack(Material.NAME_TAG,scope.getName(playerData.getLang()),
                 Lang.GUI_GENERIC_CLICK_TO_SWITCH_SCOPE.get(playerData));
-        GuiItem checkScopeGui = ItemBuilder.from(checkScope).asGuiItem(event -> openNewsletter(player,0,scope.getNextScope()));
+        GuiItem checkScopeGui = ItemBuilder.from(changeScope).asGuiItem(event -> openNewsletter(player,0,scope.getNextScope()));
 
+        ItemStack markAllAsRead = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK,
+                Lang.MARK_ALL_AS_READ.get(playerData),
+                Lang.LEFT_CLICK_TO_SELECT.get(playerData));
+
+        GuiItem markAllAsReadButton = ItemBuilder.from(markAllAsRead).asGuiItem(event -> NewsletterStorage.markAllAsReadForPlayer(player, scope));
+
+        gui.setItem(6,4,markAllAsReadButton);
         gui.setItem(6,5,checkScopeGui);
         gui.open(player);
     }
