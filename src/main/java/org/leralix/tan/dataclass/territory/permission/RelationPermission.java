@@ -4,12 +4,14 @@ import org.bukkit.ChatColor;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.lang.Lang;
 
 public enum RelationPermission {
 
-    TOWN("Town", ChatColor.GREEN),
-    ALLIANCE("Alliance", ChatColor.BLUE),
-    FOREIGN("Foreign", ChatColor.GRAY);
+    TOWN(Lang.TOWN_PERMISSION.get(), ChatColor.GREEN),
+    ALLIANCE(Lang.ALLIANCE_PERMISSION.get(), ChatColor.BLUE),
+    FOREIGN(Lang.EVERYONE_PERMISSION.get(), ChatColor.WHITE),
+    SELECTED_ONLY(Lang.EVERYONE_PERMISSION.get(), ChatColor.GRAY);
 
     private final String name;
     private final ChatColor color;
@@ -23,7 +25,8 @@ public enum RelationPermission {
     static {
         TOWN.next = ALLIANCE;
         ALLIANCE.next = FOREIGN;
-        FOREIGN.next = TOWN;
+        FOREIGN.next = SELECTED_ONLY;
+        SELECTED_ONLY.next = TOWN;
     }
 
     public String getName() {
@@ -60,6 +63,9 @@ public enum RelationPermission {
             }
             case FOREIGN -> {
                 return true;
+            }
+            case SELECTED_ONLY -> {
+                return false;
             }
         }
         return false;

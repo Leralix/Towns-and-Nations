@@ -158,6 +158,7 @@ language:
   TOWN_GUI_COMMAND_DESC: "Open the town and nation GUI"
   #Newsletter command
   OPEN_NEWSLETTER_DESC: "Get the latest news"
+  MARK_ALL_AS_READ: "Mark all as read"
   #Pay command
   PAY_COMMAND_DESC: "Give money to another player"
   PAY_MINIMUM_REQUIRED: "§cYou need to send a least 1{MONEY_CHAR}"
@@ -244,7 +245,6 @@ language:
   SPAWN_NOT_UNLOCKED: "§cThe town spawn is not unlocked"
   SPAWN_NEED_TO_BE_IN_CHUNK: "§cYou need to be in a claimed chunk to set the spawn"
   #Town Relations
-  ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Neutral"
   RELATION_CITY_NAME: "Town"
   RELATION_OVERLORD_NAME: "Overlord"
@@ -253,6 +253,11 @@ language:
   RELATION_NON_AGGRESSION_NAME: "Non-aggression"
   RELATION_EMBARGO_NAME: "Embargo"
   RELATION_HOSTILE_NAME: "Hostile"
+  #Chunk interaction permissions
+  TOWN_PERMISSION : "Town"
+  ALLIANCE_PERMISSION : "Alliance"
+  EVERYONE_PERMISSION : "Everyone"
+  SELECTED_ONLY_PERMISSION : "Selected only"
   #GUI generic
   GUI_GENERIC_CLICK_TO_OPEN: "§fLeft click to open"
   GUI_GENERIC_CLICK_TO_OPEN_HISTORY: "§fLeft click to open the history"
