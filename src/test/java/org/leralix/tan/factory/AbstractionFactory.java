@@ -54,7 +54,7 @@ public class AbstractionFactory {
 
         Lang.loadTranslations(new File(classLoader.getResource("lang").getFile()), "en", false);
 
-        EconomyUtil.setEconomy(new TanEconomyStandalone());
+        EconomyUtil.register(new TanEconomyStandalone());
     }
 
     private static void initialisePluginMock(ClassLoader classLoader) {

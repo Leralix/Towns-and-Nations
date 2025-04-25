@@ -14,8 +14,12 @@ public class EconomyUtil {
 
     private static AbstractTanEcon econ;
 
-    public static void setEconomy(AbstractTanEcon newEcon) {
+    public static void register(AbstractTanEcon newEcon) {
         econ = newEcon;
+    }
+
+    public static boolean isStandalone(){
+        return econ instanceof TanEconomyStandalone;
     }
 
     /**

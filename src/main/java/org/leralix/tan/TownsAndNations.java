@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.lib.SphereLib;
 import org.leralix.lib.data.PluginVersion;
@@ -223,7 +224,7 @@ public final class TownsAndNations extends JavaPlugin {
     private void setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             getLogger().log(Level.INFO,"[TaN] -Vault is not detected. Running standalone economy");
-            EconomyUtil.setEconomy(new TanEconomyStandalone());
+            EconomyUtil.register(new TanEconomyStandalone());
             return;
         }
         VaultManager.setupVault();
@@ -265,17 +266,19 @@ public final class TownsAndNations extends JavaPlugin {
      * Enable every event listener of the plugin.
      */
     private void enableEventList() {
-        getServer().getPluginManager().registerEvents(new ChatListener(), this);
-        getServer().getPluginManager().registerEvents(new ChunkListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerEnterChunkListener(), this);
-        getServer().getPluginManager().registerEvents(new ChatScopeListener(), this);
-        getServer().getPluginManager().registerEvents(new MobSpawnListener(), this);
-        getServer().getPluginManager().registerEvents(new SpawnListener(), this);
-        getServer().getPluginManager().registerEvents(new CreatePropertyListener(),this);
-        getServer().getPluginManager().registerEvents(new PropertySignListener(),this);
-        getServer().getPluginManager().registerEvents(new LandmarkChestListener(),this);
-        getServer().getPluginManager().registerEvents(new AttackListener(),this);
+        PluginManager pluginManager = getServer().getPluginManager();
+        pluginManager.registerEvents(new ChatListener(), this);
+        pluginManager.registerEvents(new ChunkListener(), this);
+        pluginManager.registerEvents(new PlayerJoinListener(), this);
+        pluginManager.registerEvents(new PlayerEnterChunkListener(), this);
+        pluginManager.registerEvents(new ChatScopeListener(), this);
+        pluginManager.registerEvents(new MobSpawnListener(), this);
+        pluginManager.registerEvents(new SpawnListener(), this);
+        pluginManager.registerEvents(new CreatePropertyListener(),this);
+        pluginManager.registerEvents(new PropertySignListener(),this);
+        pluginManager.registerEvents(new LandmarkChestListener(),this);
+        pluginManager.registerEvents(new AttackListener(),this);
+        pluginManager.registerEvents(new EconomyInitialiser(), this);
     }
 
     /**
