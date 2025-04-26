@@ -11,7 +11,7 @@ public enum RelationPermission {
     TOWN(Lang.TOWN_PERMISSION.get(), ChatColor.GREEN),
     ALLIANCE(Lang.ALLIANCE_PERMISSION.get(), ChatColor.BLUE),
     FOREIGN(Lang.EVERYONE_PERMISSION.get(), ChatColor.WHITE),
-    SELECTED_ONLY(Lang.EVERYONE_PERMISSION.get(), ChatColor.GRAY);
+    SELECTED_ONLY(Lang.SELECTED_ONLY_PERMISSION.get(), ChatColor.GRAY);
 
     private final String name;
     private final ChatColor color;
