@@ -138,10 +138,25 @@ TownMaxLevel: 10
 EnableExplosionGriefInTown: false
 
 ########################
+##      Relations     ##
+########################
+
+#Enable PVP between player whose towns share a certain relation
+#Default if missing : true
+disablePvpWhenRelationIs :
+  SELF : false #Players of the same town
+  ALLIANCE : false
+  NON_AGGRESSION : false
+  NEUTRAL : true
+  EMBARGO : true
+  WAR : true
+
+
+########################
 ##     Properties     ##
 ########################
 
-#Define the maximum range at which a player can be from a town spawn to be considered in the town
+#Define the maximum range at which the property sign can be from the closest block of the property
 maxPropertyMargin: 3
 #When a player rent a property, make the player pay the rent one extra time at start
 payRentAtStart: true

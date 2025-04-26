@@ -21,12 +21,19 @@ import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.FurnaceInventory;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.RelationData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.storage.PvpSettings;
 import org.leralix.tan.storage.SudoPlayerStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.storage.stored.TownDataStorage;
 
 public class ChunkListener implements Listener {
 
@@ -253,14 +260,14 @@ public class ChunkListener implements Listener {
                     event.setCancelled(true);
                 }
             }
-            else if(entity instanceof Player player2 && !NewClaimedChunkStorage.getInstance().get(player2.getLocation().getChunk()).canPVPHappen()) {
+            else if(entity instanceof Player player2 && !canPvpHappen(player, player2)) {
                 event.setCancelled(true);
             }
         }
 
-        if(event.getDamager() instanceof Projectile) {
+        if(event.getDamager() instanceof Projectile projectile) {
 
-            if(((Projectile) event.getDamager()).getShooter() instanceof Player player){
+            if(projectile.getShooter() instanceof Player player){
                 Entity entity = event.getEntity();
                 Location loc = entity.getLocation();
 
@@ -314,11 +321,25 @@ public class ChunkListener implements Listener {
                         event.setCancelled(true);
                     }
                 }
-                else if(entity instanceof Player player2 && !NewClaimedChunkStorage.getInstance().get(player2.getLocation().getChunk()).canPVPHappen()) {
+                else if(entity instanceof Player player2 && !canPvpHappen(player, player2)) {
                     event.setCancelled(true);
                 }
             }
         }
+    }
+
+    private boolean canPvpHappen(Player player1, Player player2) {
+        if(!NewClaimedChunkStorage.getInstance().get(player2.getLocation().getChunk()).canPVPHappen()){
+            return false;
+        }
+        TownData townPlayer1 = TownDataStorage.getInstance().get(player1);
+        TownData townPlayer2 = TownDataStorage.getInstance().get(player2);
+
+        if(townPlayer1 == null || townPlayer2 == null){
+            return true;
+        }
+        TownRelation relation = townPlayer1.getRelationWith(townPlayer2);
+        return PvpSettings.canPvpHappenWithRelation(relation);
     }
 
     @EventHandler
