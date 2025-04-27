@@ -33,7 +33,7 @@ public class NewsletterStorage {
 
     static Map<NewsletterType,List<Newsletter>> categories = new EnumMap<>(NewsletterType.class);
 
-    private static List<Newsletter> getNewsletterForScope(Player player, NewsletterScope scope){
+    private static List<Newsletter> getNewsletters(){
         List<Newsletter> newsletters = new ArrayList<>();
         for(List<Newsletter> category : categories.values()) {
             newsletters.addAll(category);
@@ -43,11 +43,12 @@ public class NewsletterStorage {
 
     public static List<GuiItem> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onclick){
         List<GuiItem> newsletters = new ArrayList<>();
-        for(Newsletter newsletter : getNewsletterForScope(player, scope)) {
+        for(Newsletter newsletter : getNewsletters()) {
             if(newsletter.shouldShowToPlayer(player, scope)) {
                 newsletters.add(newsletter.createGuiItem(player, onclick));
             }
         }
+        newsletters.remove(null);
         return newsletters;
     }
 
@@ -152,7 +153,7 @@ public class NewsletterStorage {
     }
 
     public static void markAllAsReadForPlayer(Player player, NewsletterScope scope) {
-        for(Newsletter newsletter : getNewsletterForScope(player, scope)){
+        for(Newsletter newsletter : getNewsletters()){
             newsletter.markAsRead(player);
         }
     }
