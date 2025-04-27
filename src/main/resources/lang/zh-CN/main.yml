@@ -751,7 +751,6 @@ language:
   DIPLOMATIC_RELATION_DESC1: "§f将关系更改为：{0}"
   DIPLOMATIC_RELATION_DESC2: "§f当前关系：{0}"
   ##Newsletter
-  ##Newsletter
   #Greeting
   NEWSLETTER_GREETING: "§f你有 §b{0}§f 条未读消息"
   CLICK_TO_OPEN_NEWSLETTER: "[点击打开 信箱]"

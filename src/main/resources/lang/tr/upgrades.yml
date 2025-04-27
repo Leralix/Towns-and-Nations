@@ -1,0 +1,23 @@
+##Ugrades
+#Names
+CITY_HALL: "Belediye binası"
+BARRACKS: "Kışla"
+ADMINISTRATION: "İdare"
+WATCHTOWER: "Gözetleme kulesi"
+PORTAL: "Portal"
+GUARDS: "Muhafızlar"
+COUNCIL_CHAMBER: "Meclis"
+NOTARY_HOUSE: "Noterlik"
+EXTRACTION_TEAM: "Kurtarma ekibi"
+BETTER_TOOLS: "Daha iyi araçlar"
+#Prerequisites
+TOWN_LEVEL: "Kasaba seviyesi"
+#Benefits
+PLAYER_CAP: "Oyuncu kapasitesi"
+CHUNK_CAP: "Arazi kapasitesi"
+PROPERTY_CAP: "Mülk kapasitesi"
+UNLOCK_TOWN_SPAWN: "Şehir doğum noktasını aç"
+UNLOCK_MOB_BAN: "Yaratık yasaklamayı aç"
+UNLOCK_REGION_CREATION: "Bölge oluşturmayı aç"
+MAX_LANDMARKS: "Bölge bayrağını aç"
+LANDMARK_BONUS: "% Anıt ödülleri"

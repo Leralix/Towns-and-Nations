@@ -6,7 +6,6 @@ language:
   PLAYER_NO_REGION: "§cคุณไม่มีภูมิภาค"
   TOWN_NO_REGION: "§cเมืองของคุณไม่ได้อยู่ในภูมิภาค"
   PLAYER_NOT_LEADER_OF_REGION: "§cคุณต้องเป็นผู้นำของภูมิภาคเพื่อดำเนินการนี้"
-  LEADER_CANNOT_QUIT_TOWN: "§cผู้นำไม่สามารถออกจากเมืองได้"
   TOWN_ALREADY_HAVE_OVERLORD: "§cเมืองนี้มีผู้ปกครองอยู่แล้ว"
   PLAYER_NO_PERMISSION: "§cคุณไม่มีสิทธิ์ในการใช้คำสั่งนี้"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cคุณไม่มีสิทธิ์ในการดำเนินการนี้กับตำแหน่งที่สูงกว่าหรือเท่ากัน"
@@ -36,7 +35,6 @@ language:
   TOWN_NOT_FOUND: "§cไม่พบเมือง"
   TERRITORY_NOT_FOUND: "§cไม่พบอาณาเขต"
   INVALID_ARGUMENTS: "§cอาร์กิวเมนต์ไม่ถูกต้อง"
-  PLAYER_ALREADY_HAVE_TOWN: "§cผู้เล่นนี้มีเมืองอยู่แล้ว"
   #Common uses
   DISPLAY_COORDINATES: "§fพิกัด: §d[{0}, {1}, {2}]"
   CURRENT_STATE: "§fสถานะปัจจุบัน: §a{0}"
@@ -81,8 +79,8 @@ language:
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "คุณได้ยกเลิกคำขอของคุณ"
   PLAYER_TOWN_NOT_RECRUITING: "§cเมืองนี้ไม่รับสมัคร"
   #BROADCAST
-  TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f สร้างเมืองสำเร็จ: §9{1}"
-  TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c ได้ออกจากเมือง!"
+  TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f สร้างภูมิภาคสำเร็จ: §9b{1}"
+  TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c ได้ออกจากเมือง!PROPERTY_TAX_LINE"
   REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f สร้างภูมิภาคสำเร็จ: §b{1}"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fเมือง §9{0}§f ถูกไล่ออกจากภูมิภาค"
   #Claim chunk command
@@ -363,7 +361,6 @@ language:
   GUI_CLAIM_ICON: "§aที่ดิน"
   GUI_CLAIM_ICON_DESC1: "§fจัดการสิทธิ์อาณาเขตเมือง"
   GUI_BROWSE_TERRITORY_ICON: "ดูอาณาเขตทั้งหมด"
-  GUI_BROWSE_TERRITORY_ICON_DESC1: "รับข้อมูลเกี่ยวกับอาณาเขตทั้งหมดที่มีอยู่"
   GUI_RELATION_ICON: "§aการทูต"
   GUI_RELATION_ICON_DESC1: "§fจัดการนโยบายต่างประเทศ"
   GUI_TOWN_LEVEL_ICON: "§aระดับเมือง"
@@ -380,7 +377,6 @@ language:
   GUI_TREASURY_STORAGE: "§aคลังสมบัติ"
   GUI_TREASURY_STORAGE_DESC1: "§fคลังสมบัติปัจจุบัน: §6{0}{MONEY_CHAR}"
   TOTAL_ESTIMATED_EVOLUTION: "§fการเปลี่ยนแปลงโดยประมาณ: §6{0}"
-  PROPERTY_TAX_LINE: "§f -จากค่าเช่าทรัพย์สิน : {0}"
   PLAYER_TAX_LINE: "§f -จากภาษี: {0}"
   PLAYER_TAX_MISSING_LINE: "§f -จากภาษี : {0} §7(ขาด {1}{MONEY_CHAR})"
   VASSAL_TAX_LINE: "§f -จากภาษีเมืองบริวาร: {0}"
@@ -591,7 +587,6 @@ language:
   #Select language
   HELP_US_TRANSLATE: "§fช่วยเราแปลปลั๊กอินเป็นภาษาของคุณ"
   PERCENT_COMPLETED: "§6{0}%§f เสร็จสิ้น"
-  CLICK_HERE_TO_OPEN_BROWSER: "§fคลิกที่นี่เพื่อเปิด Crowdin ในเบราว์เซอร์ของคุณ"
   #Region GUI
   GUI_REGION_CREATE: "§aสร้างภูมิภาค"
   GUI_REGION_CREATE_DESC1: "§fค่าใช้จ่าย: §6{0}{MONEY_CHAR}"
@@ -790,13 +785,13 @@ language:
   RARE_ITEM_WRONG_ITEM: "ชาวบ้านนี้รับซื้อเฉพาะ §e{0}"
   RARE_ITEM_SELLING_SUCCESS: "ขาย §e{0}x {1}§f สำเร็จ ได้รับ §6+{2}{MONEY_CHAR}"
   #Chunk interactions
-  WILDERNESS: "§fป่า"
+  WILDERNESS: "§fเข้าสู่พื้นที่ป่า"
   PLAYER_ENTER_TOWN_CHUNK: "§fเข้าสู่ : §9{0}"
   PLAYER_ENTER_REGION_CHUNK: "§fเข้าสู่ : §b{0}"
   PLAYER_ENTER_LANDMARK_CHUNK: "§fเข้าสู่ : §6สถานที่สำคัญ"
   CHUNK_ENTER_TOWN_AT_WAR: "§cคุณกำลังทำสงครามกับเมืองนี้ ผู้เล่นถูกแจ้งเตือนว่าคุณข้ามพรมแดน"
   CHUNK_INTRUSION_ALERT: "§cศัตรูจากเมือง {0} เข้ามาในพรมแดนของคุณ: {1}"
-  WILDERNESS_NO_PERMISSION: "§cคุณไม่มีสิทธิ์ดำเนินการนี้ในป่า"
+  WILDERNESS_NO_PERMISSION: "§cคุณไม่มีสิทธิ์ดำเนินการนี้ในพื้นที่ป่า"
   #History
   HISTORY_TOWN_CREATED: "{0} สร้างเมือง §9{1}"
   HISTORY_TOWN_DELETED: "{0} ยุบเมือง §9{1}"
@@ -928,7 +923,6 @@ language:
   DIPLOMATIC_RELATION: "§fข้อเสนอโดย : {0}"
   DIPLOMATIC_RELATION_DESC1: "§fเปลี่ยนความสัมพันธ์เป็น : {0}"
   DIPLOMATIC_RELATION_DESC2: "§fความสัมพันธ์ปัจจุบัน : {0}"
-  ##Newsletter
   ##Newsletter
   #Greeting
   NEWSLETTER_GREETING: "§fคุณมี §b{0}§f ข่าวสารที่ยังไม่ได้อ่าน"

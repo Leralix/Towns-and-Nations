@@ -40,6 +40,18 @@ language:
   TERRITORY_NOT_FOUND: "§cÚzemí nebylo nalezeno"
   INVALID_ARGUMENTS: "§cNeplatné argumenty"
   PLAYER_ALREADY_HAVE_TOWN: "§cTento hráč již má město"
+  ALL_LANDMARK_UPDATED: "§fVšechny mezníky zaktualizovány."
+  LANDMARK_UPDATED: "{0} ({1})§f byl aktualizován."
+  LANDMARK_STORED_UPDATED: "{0} ({1})§f byl nastaven limit na §e{2}"
+  LANDMARK_NOT_FOUND: "§cMezník nebyl nalezen"
+  #Placeholder API
+  TRUE: "pravda"
+  FALSE: "nepravda"
+  INVALID_VALUE: "Neplatná hodnota"
+  INVALID_ID: "Chybné ID"
+  INVALID_NAME: "Neplatný název"
+  INVALID_TERRITORY: "Neplatné území"
+  INVALID_PLAYER_NAME: "Neplatné jméno hráče"
   #Common uses
   DISPLAY_COORDINATES: "§fSouřadnice: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
@@ -135,6 +147,10 @@ language:
   CHAT_CHANGED: "§fChat je nyní nastaven na: §e{0}"
   TOWN_CHAT_ALREADY_IN_CHAT: "§cJiž posíláte zprávy do chatu: {0}"
   CHAT_SCOPE_NOT_FOUND: "§cNenalezen rozsah chatu"
+  CITY_SCOPE: "město"
+  REGION_SCOPE: "region"
+  ALLIANCE_SCOPE: "aliance"
+  GLOBAL_SCOPE: "globálně"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Přidáno §6+{0}{MONEY_CHAR}§f k §3{1}"
   SET_MONEY_COMMAND_SUCCESS: "Úspěšně nastaven zůstatek hráče §3{0}§f na §6{1}{MONEY_CHAR}"
@@ -195,6 +211,8 @@ language:
   OPEN_GUI_SERVER_DESC: "Otevřít GUI rozhraní hráče"
   ##QuitTown
   QUIT_TOWN_SERVER_DESC: "§cOpustit město"
+  ## Update landmark storage
+  LANDMARK_UPDATE_SERVER_DESC: "Aktualizovat úložiště mezníků"
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cNemáte dostatek peněz na provedení této akce"
   LEADER_NOT_ONLINE: "§cVůdce města není online"
@@ -387,7 +405,7 @@ language:
   GUI_TREASURY_STORAGE: "§aKasa"
   GUI_TREASURY_STORAGE_DESC1: "§fAktuální kasa: §6{0}{MONEY_CHAR}"
   TOTAL_ESTIMATED_EVOLUTION: "§fPředpokládaný vývoj: §6{0}"
-  PROPERTY_TAX_LINE: "§f - Z pronájmu nemovitostí : {0}"
+  PROPERTY_TAX_LINE: "§f -Z pronájmu nemovitostí : {0}"
   PLAYER_TAX_LINE: "§f - Z daní: {0}"
   PLAYER_TAX_MISSING_LINE: "§f - Z daní: {0} §7(chybí {1}{MONEY_CHAR})"
   VASSAL_TAX_LINE: "§f - Z vazalských daní: {0}"
@@ -606,7 +624,7 @@ language:
   #Select language
   HELP_US_TRANSLATE: "§fPomozte nám přeložit plugin do vašeho jazyka"
   PERCENT_COMPLETED: "§6{0}%§f dokončeno"
-  CLICK_HERE_TO_OPEN_BROWSER: "§fKlikněte zde pro otevření stránky crowdin v prohlížeči"
+  CLICK_HERE_TO_OPEN_BROWSER: "§fKlikněte zde pro otevření stránky Crowdin v prohlížeči"
   #Region GUI
   GUI_REGION_CREATE: "§aVytvořit region"
   GUI_REGION_CREATE_DESC1: "§fCena: §6{0}{MONEY_CHAR}"
@@ -960,7 +978,6 @@ language:
   DIPLOMATIC_RELATION: "§fNávrh od: {0}"
   DIPLOMATIC_RELATION_DESC1: "§fZměnit vztah na: {0}"
   DIPLOMATIC_RELATION_DESC2: "§fAktuální vztah: {0}"
-  ##Newsletter
   ##Newsletter
   #Greeting
   NEWSLETTER_GREETING: "§fMáte §b{0}§f nepřečtených zpráv"

@@ -729,7 +729,6 @@ language:
   DIPLOMATIC_RELATION_DESC1: "§fMudar a relação para : {0}"
   DIPLOMATIC_RELATION_DESC2: "§fRelação atual : {0}"
   ##Newsletter
-  ##Newsletter
   #Greeting
   NEWSLETTER_GREETING: "§fVocê tem §b{0}§f notícias não lidas"
   CLICK_TO_OPEN_NEWSLETTER: "[Clique para abrir seu boletim informativo]"

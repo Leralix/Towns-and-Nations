@@ -9,7 +9,7 @@ language:
   PLAYER_NO_REGION: "§cVous n'avez pas de région"
   TOWN_NO_REGION: "§cVotre ville ne fait pas partie d'une région"
   PLAYER_NOT_LEADER_OF_REGION: "§cVous devez être le chef de la région pour effectuer cette action"
-  LEADER_CANNOT_QUIT_TOWN: "§cLe chef ne peut pas quitter un territoire"
+  LEADER_CANNOT_QUIT_TOWN: "§cLe chef ne peut pas quitter une ville"
   TOWN_ALREADY_HAVE_OVERLORD: "§cCette ville a déjà un Suzerain"
   PLAYER_NO_PERMISSION: "§cVous n'avez pas la permission d'exécuter cette commande"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cVous n'avez pas la permission d'effectuer cette action sur un rang égal ou supérieur au vôtre"
@@ -40,6 +40,18 @@ language:
   TERRITORY_NOT_FOUND: "§cTerritoire introuvable"
   INVALID_ARGUMENTS: "§cArguments invalides"
   PLAYER_ALREADY_HAVE_TOWN: "§cCe joueur a déjà une ville"
+  ALL_LANDMARK_UPDATED: "§fTous les points d'intérêt ont été mis à jour."
+  LANDMARK_UPDATED: "{0} ({1})§f a été mis à jour."
+  LANDMARK_STORED_UPDATED: "{0} ({1})§f a été fixé à §e{2}"
+  LANDMARK_NOT_FOUND: "§cPoint d'intérêt introuvable"
+  #Placeholder API
+  TRUE: "true"
+  FALSE: "false"
+  INVALID_VALUE: "Valeur non valide"
+  INVALID_ID: "ID non valide"
+  INVALID_NAME: "Nom invalide"
+  INVALID_TERRITORY: "Territoire invalide"
+  INVALID_PLAYER_NAME: "Nom de joueur invalide"
   #Common uses
   DISPLAY_COORDINATES: "§fCoordonnées : §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
@@ -135,6 +147,10 @@ language:
   CHAT_CHANGED: "§fVotre tchat est dorénavant sur le canal : §e{0}"
   TOWN_CHAT_ALREADY_IN_CHAT: "§cVous envoyez déjà un message sur le canal : {0}"
   CHAT_SCOPE_NOT_FOUND: "§cLe canal renseigné n'existe pas"
+  CITY_SCOPE: "ville"
+  REGION_SCOPE: "région"
+  ALLIANCE_SCOPE: "alliance"
+  GLOBAL_SCOPE: "global"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Ajout de §6+{0}{MONEY_CHAR}§f à §3{1}"
   SET_MONEY_COMMAND_SUCCESS: "L'argent de §3{0}§f a été fixé à §6{1}{MONEY_CHAR}"
@@ -195,6 +211,8 @@ language:
   OPEN_GUI_SERVER_DESC: "Ouvrir le menu d'un joueur"
   ##QuitTown
   QUIT_TOWN_SERVER_DESC: "§cQuitter une ville"
+  ## Update landmark storage
+  LANDMARK_UPDATE_SERVER_DESC: "Mettre à jour le stockage des points d'intérêt"
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cVous n'avez pas assez d'argent pour réaliser cette action"
   LEADER_NOT_ONLINE: "§cLe chef de la ville n'est pas en ligne"
@@ -276,7 +294,7 @@ language:
   GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fVille actuelle : {0}"
   GUI_TOWN_ICON_DESC2_HAVE_TOWN: "§fRang: {0}"
   #Player
-  GUI_PLAYER_PROFILE_DESC1: "§fVotre argent : §6{0}{MONEY_CHAR}"
+  GUI_PLAYER_PROFILE_DESC1: "§Votre argent : §6{0}{MONEY_CHAR}"
   GUI_YOUR_PROFILE: "§aVotre profil"
   GUI_YOUR_BALANCE: "§aVotre solde"
   GUI_YOUR_BALANCE_DESC1: "§fSolde actuel : §e{0}✦"
@@ -371,7 +389,6 @@ language:
   GUI_CLAIM_ICON: "§aTerritoire"
   GUI_CLAIM_ICON_DESC1: "§fGérer les autorisations au sein de la ville"
   GUI_BROWSE_TERRITORY_ICON: "Parcourir tous les territoires"
-  GUI_BROWSE_TERRITORY_ICON_DESC1: "§fObtenir des informations sur les territoires existants"
   GUI_RELATION_ICON: "§aDiplomatie"
   GUI_RELATION_ICON_DESC1: "§fGérer les relations avec les autres villes"
   GUI_TOWN_LEVEL_ICON: "§aNiveau de la ville"
@@ -620,7 +637,7 @@ language:
   GUI_REGION_INFO_DESC1: "§fCapitale régionale : §3{0}"
   GUI_REGION_INFO_DESC2: "§fNombre de villes : §2{0}"
   GUI_REGION_INFO_DESC3: "§fJoueurs totaux : §9{0}♣"
-  GUI_REGION_INFO_DESC4: "§fVotre argent : §6{0}{MONEY_CHAR}"
+  GUI_REGION_INFO_DESC4: "§Votre argent : §6{0}{MONEY_CHAR}"
   GUI_REGION_INFO_DESC5: "§fNombre de chunks régionaux : §2{0}♦"
   GUI_REGION_TOWN_LIST: "§aListe des villes"
   GUI_REGION_TOWN_LIST_DESC1: "§fClic gauche pour consulter les villes"
@@ -961,7 +978,6 @@ language:
   DIPLOMATIC_RELATION: "§fProposition de : {0}"
   DIPLOMATIC_RELATION_DESC1: "§fEtablir la relation : {0}"
   DIPLOMATIC_RELATION_DESC2: "§f Relation actuelle : {0}"
-  ##Newsletter
   ##Newsletter
   #Greeting
   NEWSLETTER_GREETING: "§fVous avez §b{0}§f nouvelles non lues"
