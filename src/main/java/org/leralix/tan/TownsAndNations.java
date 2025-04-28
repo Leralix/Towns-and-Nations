@@ -24,6 +24,7 @@ import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.PvpSettings;
+import org.leralix.tan.storage.WildernessRules;
 import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.database.SQLiteHandler;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
@@ -138,6 +139,7 @@ public final class TownsAndNations extends JavaPlugin {
 
         List<String> mainBlackList = new ArrayList<>();
         mainBlackList.add("claimBlacklist");
+        mainBlackList.add("wildernessRules");
         ConfigUtil.saveAndUpdateResource(this, "config.yml", mainBlackList);
         ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.MAIN);
         Lang.shouldShowCurrency(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("showCurrency", true));
@@ -160,6 +162,7 @@ public final class TownsAndNations extends JavaPlugin {
         MobChunkSpawnStorage.init();
         ClaimBlacklistStorage.init();
         PvpSettings.init();
+        WildernessRules.getInstance();
 
         FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         allowColorCodes = mainConfig.getBoolean("EnablePlayerColorCode", false);

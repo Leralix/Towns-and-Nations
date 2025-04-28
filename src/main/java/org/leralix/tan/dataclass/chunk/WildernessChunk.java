@@ -7,6 +7,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
@@ -16,6 +17,7 @@ import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
+import org.leralix.tan.storage.WildernessRules;
 
 import java.util.Optional;
 
@@ -28,12 +30,14 @@ public class WildernessChunk extends ClaimedChunk2 {
 
     @Override
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
-        if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("wildernessRules." + permissionType, true))
+
+        World world = location.getWorld();
+
+        if(WildernessRules.getInstance().canPlayerDoInWilderness(world, permissionType)){
             return true;
-        else {
-            player.sendMessage(Lang.WILDERNESS_NO_PERMISSION.get());
-            return false;
         }
+        player.sendMessage(Lang.WILDERNESS_NO_PERMISSION.get());
+        return false;
     }
 
     @Override

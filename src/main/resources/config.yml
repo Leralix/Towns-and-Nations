@@ -283,25 +283,32 @@ minimumNumberOfChunksUnclaimed: 5
 ########################
 
 #Set rules for player on wilderness chunks (unclaimed)
+# basic: only break and place blocks
+# if an interaction is not listed, it will be set to true
+
 wildernessRules:
-  INTERACT_CHEST : true
-  INTERACT_DOOR: true
-  BREAK_BLOCK: true
-  PLACE_BLOCK: true
-  ATTACK_PASSIVE_MOB: true
-  INTERACT_BUTTON: true
-  INTERACT_REDSTONE: true
-  INTERACT_FURNACE: true
-  INTERACT_ITEM_FRAME: true
-  INTERACT_ARMOR_STAND: true
-  INTERACT_DECORATIVE_BLOCK: true
-  INTERACT_MUSIC_BLOCK: true
-  USE_LEAD: true
-  USE_SHEARS: true
-  INTERACT_BOAT: true
-  INTERACT_MINECART: true
-  USE_BONE_MEAL: true
-  INTERACT_BERRIES: true
+  default:
+    INTERACT_CHEST: true
+    INTERACT_DOOR: true
+    BREAK_BLOCK: true
+    PLACE_BLOCK: true
+    ATTACK_PASSIVE_MOB: true
+    INTERACT_BUTTON: true
+    INTERACT_REDSTONE: true
+    INTERACT_FURNACE: true
+    INTERACT_ITEM_FRAME: true
+    INTERACT_ARMOR_STAND: true
+    INTERACT_DECORATIVE_BLOCK: true
+    INTERACT_MUSIC_BLOCK: true
+    USE_LEAD: true
+    USE_SHEARS: true
+    INTERACT_BOAT: true
+    INTERACT_MINECART: true
+    USE_BONE_MEAL: true
+    INTERACT_BERRIES: true
+  world_nether :
+    INTERACT_CHEST: true
+    #add other rules here
 
 
 ########################
