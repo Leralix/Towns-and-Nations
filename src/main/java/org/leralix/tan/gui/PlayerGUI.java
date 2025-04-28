@@ -940,7 +940,7 @@ public class PlayerGUI implements IGUI {
         });
 
         GuiUtil.createIterator(gui, guiItems, page, player,
-                p -> openSingleRelation(player, territory, TownRelation.WAR, 0),
+                p -> territory.openMainMenu (player),
                 p -> openWarMenu(player, territory, page + 1),
                 p -> openWarMenu(player, territory, page - 1));
 
