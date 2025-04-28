@@ -121,7 +121,7 @@ public class ArchiveUtil {
 
         Collection<File> fileCollections = new ArrayList<>(getAllStorageFiles());
 
-        fileCollections.add(new File(TownsAndNations.getPlugin().getDataFolder(), "main.yml"));
+        fileCollections.add(new File(TownsAndNations.getPlugin().getDataFolder(), "config.yml"));
         fileCollections.add(new File(TownsAndNations.getPlugin().getDataFolder(), "townUpgrades.yml"));
 
         File pluginListFile = getPluginNameFile();
