@@ -144,9 +144,9 @@ EnableExplosionGriefInTown: false
 #Enable PVP between player whose towns share a certain relation
 #Default if missing : true
 disablePvpWhenRelationIs :
-  SELF : false #Players of the same town
-  ALLIANCE : false
-  NON_AGGRESSION : false
+  SELF : true #Players of the same town
+  ALLIANCE : true
+  NON_AGGRESSION : true
   NEUTRAL : true
   EMBARGO : true
   WAR : true
