@@ -6,6 +6,7 @@ import org.leralix.lib.commands.SubCommand;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.PvpSettings;
@@ -14,6 +15,7 @@ import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.lang.Lang;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,6 +48,12 @@ public class ReloadCommand extends SubCommand {
             Plugin plugin = TownsAndNations.getPlugin();
             ConfigUtil.addCustomConfig(plugin,"config.yml", ConfigTag.MAIN);
             ConfigUtil.addCustomConfig(plugin,"townUpgrades.yml", ConfigTag.UPGRADE);
+            ConfigUtil.addCustomConfig(plugin, "lang.yml", ConfigTag.LANG);
+            String lang = ConfigUtil.getCustomConfig(ConfigTag.LANG).getString("language");
+
+            File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
+            Lang.loadTranslations(langFolder, lang);
+            DynamicLang.loadTranslations(lang);
 
             UpgradeStorage.init();
             MobChunkSpawnStorage.init();
@@ -54,6 +62,7 @@ public class ReloadCommand extends SubCommand {
             WildernessRules.getInstance().init();
 
             player.sendMessage(TanChatUtils.getTANString() + Lang.RELOAD_SUCCESS.get(player));
+            player.sendMessage(TanChatUtils.getTANString() + Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
         }else{
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get(player));
             player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
