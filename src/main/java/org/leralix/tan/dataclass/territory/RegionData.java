@@ -55,11 +55,9 @@ public class RegionData extends TerritoryData {
     private Double balance;
 
 
-    public RegionData(String id, String name, String ownerID) {
-        super(id, name, ownerID);
-        PlayerData owner = PlayerDataStorage.getInstance().get(ownerID);
+    public RegionData(String id, String name, PlayerData owner) {
+        super(id, name, owner);
         TownData ownerTown = owner.getTown();
-
 
         this.capitalID = ownerTown.getID();
         this.nationID = null;

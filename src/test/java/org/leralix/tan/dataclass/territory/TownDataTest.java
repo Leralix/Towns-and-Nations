@@ -1,5 +1,6 @@
 package org.leralix.tan.dataclass.territory;
 
+import org.bukkit.Material;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.dataclass.PlayerData;
@@ -72,5 +73,15 @@ class TownDataTest {
         assertNull(playerData.getTownId());
         assertNull(playerData.getRankID(otherTownData));
         assertNull(otherPlayerData.getRankID(otherTownData));
+    }
+
+    @Test
+    void createGhostTown(){
+        TownData townData = TownDataStorage.getInstance().newTown("ghost town");
+
+        assertEquals(0, townData.getPlayerDataList().size());
+        assertEquals(0, townData.getBalance());
+        assertEquals(0, townData.getDefaultRank().getNumberOfPlayer());
+        assertEquals(Material.SKELETON_SKULL, townData.getIcon().getType());
     }
 }

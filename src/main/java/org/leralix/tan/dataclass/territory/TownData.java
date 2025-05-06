@@ -71,7 +71,7 @@ public class TownData extends TerritoryData {
     }
 
     public TownData(String townId, String townName, PlayerData leader) {
-        super(townId, townName, leader != null ? leader.getID() : null);
+        super(townId, townName, leader);
         this.townLevel = new Level();
         this.ownedLandmarks = new ArrayList<>();
         this.PlayerJoinRequestSet = new HashSet<>();

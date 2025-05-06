@@ -42,7 +42,7 @@ public class RegionDataStorage {
 
         String regionID = generateNextID();
 
-        RegionData newRegion = new RegionData(regionID, name, newLeader.getID());
+        RegionData newRegion = new RegionData(regionID, name, newLeader);
         regionStorage.put(regionID, newRegion);
         capital.setOverlord(newRegion);
 

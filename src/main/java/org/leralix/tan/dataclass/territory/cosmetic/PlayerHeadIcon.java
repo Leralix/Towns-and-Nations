@@ -5,11 +5,21 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.leralix.tan.dataclass.PlayerData;
 
 import java.util.UUID;
 
 public class PlayerHeadIcon implements ICustomIcon {
     private final String playerUUID;
+
+    public PlayerHeadIcon(PlayerData player) {
+        if(player == null) {
+           this.playerUUID = null;
+        } else {
+            this.playerUUID = player.getID();
+        }
+    }
+
     public PlayerHeadIcon(String playerID) {
         this.playerUUID = playerID;
     }

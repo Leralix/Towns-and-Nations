@@ -72,13 +72,13 @@ public abstract class TerritoryData {
     private ClaimedChunkSettings chunkSettings;
     private StrongholdData stronghold;
 
-    protected TerritoryData(String id, String name, String ownerID){
+    protected TerritoryData(String id, String name, PlayerData owner){
         this.id = id;
         this.name = name;
         this.description = Lang.DEFAULT_DESCRIPTION.get();
         this.dateTimeCreated = new Date().getTime();
 
-        this.customIcon = new PlayerHeadIcon(ownerID);
+        this.customIcon = new PlayerHeadIcon(owner);
 
         this.treasury = 0.0;
         this.baseTax = 1.0;
