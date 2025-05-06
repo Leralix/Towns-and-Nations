@@ -807,6 +807,7 @@ language:
   PROPERTY_SALE_LINE: "§f[{0}§f - {1}§f] §6+{2}"
   #Chat Information
   CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cYou cannot leave a town if you are the leader, you need to disband it or transfer ownership to someone else"
+  CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER: "§cYou cannot leave a town if you are the leader of the region, you need to disband it or transfer ownership to someone else"
   NOT_TOWN_LEADER_ERROR: "§cYou need to be the leader of the town to execute this action"
   CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§cYou cannot delete a town if you are not the leader"
   CHAT_PLAYER_LEFT_THE_TOWN: "§fYou left the town"

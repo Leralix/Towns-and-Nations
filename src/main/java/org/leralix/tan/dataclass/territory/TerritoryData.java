@@ -54,6 +54,7 @@ public abstract class TerritoryData {
     private String name;
     private String description;
     protected String overlordID;
+    private Double treasury;
     private Long dateTimeCreated;
     private ICustomIcon customIcon;
     private RelationData relations;
@@ -79,6 +80,7 @@ public abstract class TerritoryData {
 
         this.customIcon = new PlayerHeadIcon(ownerID);
 
+        this.treasury = 0.0;
         this.baseTax = 1.0;
         this.propertyRentTax = 0.1;
         this.propertyBuyTax = 0.1;
@@ -260,10 +262,6 @@ public abstract class TerritoryData {
 
     protected abstract long getOldDateTime();
 
-    public abstract void addToBalance(double balance);
-
-    public abstract void removeFromBalance(double balance);
-
     public abstract void broadCastMessage(String message);
 
     public abstract void broadcastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix);
@@ -339,8 +337,22 @@ public abstract class TerritoryData {
     public abstract boolean atWarWith(String territoryID);
 
 
-    public abstract double getBalance();
 
+    public double getBalance(){
+        if(treasury == null)
+            treasury = getOldBalance();
+        return treasury;
+    }
+
+    public void addToBalance(double balance) {
+        this.treasury += balance;
+    }
+
+    public void removeFromBalance(double balance) {
+        this.treasury -= balance;
+    }
+
+    protected abstract double getOldBalance();
 
 
     public void setOverlord(TerritoryData overlord){

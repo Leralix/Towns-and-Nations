@@ -51,8 +51,7 @@ public class TownData extends TerritoryData {
     @Deprecated(since = "0.14.0", forRemoval = true)
     private Map<Integer, RankData> newRanks = new HashMap<>();
 
-    @Deprecated(since = "0.14.0")
-    //Transition has not yet been implemented. Do not remove balance before create a safe version to transfer the data to parent class
+    @Deprecated(since = "0.14.4", forRemoval = true)
     private Double balance;
 
     //This is all that should be kept after the transition to the parent class
@@ -78,7 +77,6 @@ public class TownData extends TerritoryData {
         this.PlayerJoinRequestSet = new HashSet<>();
         this.townPlayerListId = new HashSet<>();
         this.isRecruiting = false;
-        this.balance = 0.0;
 
         if (leader != null) {
             this.UuidLeader = leader.getID();
@@ -245,7 +243,7 @@ public class TownData extends TerritoryData {
 
 
     @Override
-    public double getBalance() {
+    public double getOldBalance() {
         return StringUtil.handleDigits(balance);
     }
 
@@ -264,16 +262,6 @@ public class TownData extends TerritoryData {
         return overlords;
     }
 
-
-    @Override
-    public void addToBalance(double balance) {
-        this.balance += balance;
-    }
-
-    @Override
-    public void removeFromBalance(double balance) {
-        this.balance -= balance;
-    }
 
     @Override
     public void broadCastMessage(String message) {

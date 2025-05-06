@@ -36,27 +36,34 @@ import java.util.*;
 
 public class RegionData extends TerritoryData {
 
-    private final String regionId;
-    private final String regionName;
+
     private String leaderID;
     private String capitalID;
     private String nationID;
-    private final Long regionDateTimeCreated;
-    private Double balance;
     private final List<String> townsInRegion;
+
+    @Deprecated(since = "0.14.4", forRemoval = true)
+    private String regionId;
+
+    @Deprecated(since = "0.14.4", forRemoval = true)
+    private String regionName;
+
+    @Deprecated(since = "0.14.4", forRemoval = true)
+    private Long regionDateTimeCreated;
+
+    @Deprecated(since = "0.14.4", forRemoval = true)
+    private Double balance;
+
 
     public RegionData(String id, String name, String ownerID) {
         super(id, name, ownerID);
         PlayerData owner = PlayerDataStorage.getInstance().get(ownerID);
         TownData ownerTown = owner.getTown();
 
-        this.regionId = id;
-        this.regionName = name;
+
         this.capitalID = ownerTown.getID();
-        this.regionDateTimeCreated = new Date().getTime();
         this.nationID = null;
 
-        this.balance = 0.0;
         this.townsInRegion = new ArrayList<>();
     }
 
@@ -259,8 +266,8 @@ public class RegionData extends TerritoryData {
         this.capitalID = townID;
     }
 
-
-    public double getBalance() {
+    @Override
+    public double getOldBalance() {
         return StringUtil.handleDigits(balance);
     }
 
@@ -322,17 +329,6 @@ public class RegionData extends TerritoryData {
             }
         }
         return res;
-    }
-
-
-    @Override
-    public void addToBalance(double balance) {
-        this.balance += balance;
-    }
-
-    @Override
-    public void removeFromBalance(double balance) {
-        this.balance -= balance;
     }
 
     @Override
