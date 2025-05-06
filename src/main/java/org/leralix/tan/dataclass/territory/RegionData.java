@@ -181,8 +181,6 @@ public class RegionData extends TerritoryData {
     @Override
     public Optional<ClaimedChunk2> claimChunkInternal(Player player, Chunk chunk) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        TownData townData = TownDataStorage.getInstance().get(player);
-        RegionData regionData = townData.getRegion(); //TODO : Does regionData is usefull ? We are inside a region
 
         if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
@@ -190,24 +188,24 @@ public class RegionData extends TerritoryData {
         }
 
 
-        if (!regionData.doesPlayerHavePermission(playerData, RolePermission.CLAIM_CHUNK)) {
+        if (!doesPlayerHavePermission(playerData, RolePermission.CLAIM_CHUNK)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return Optional.empty();
         }
         int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfRegionChunk", 5);
 
-        if (regionData.getBalance() < cost) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.REGION_NOT_ENOUGH_MONEY_EXTENDED.get(cost - regionData.getBalance()));
+        if (getBalance() < cost) {
+            player.sendMessage(TanChatUtils.getTANString() + Lang.REGION_NOT_ENOUGH_MONEY_EXTENDED.get(cost - getBalance()));
             return Optional.empty();
         }
 
         ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
-        if (!currentClaimedChunk.canTerritoryClaim(Optional.of(player), regionData)) {
+        if (!currentClaimedChunk.canTerritoryClaim(Optional.of(player), this)) {
             return Optional.empty();
         }
 
-        regionData.removeFromBalance(cost);
-        NewClaimedChunkStorage.getInstance().claimRegionChunk(chunk, regionData.getID());
+        removeFromBalance(cost);
+        NewClaimedChunkStorage.getInstance().claimRegionChunk(chunk, getID());
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_CLAIMED_SUCCESS_REGION.get());
         return Optional.of(NewClaimedChunkStorage.getInstance().get(chunk));
     }

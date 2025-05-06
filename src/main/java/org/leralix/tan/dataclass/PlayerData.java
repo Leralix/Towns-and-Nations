@@ -250,14 +250,7 @@ public class PlayerData {
         TownData playerTown = TownDataStorage.getInstance().get(this);
         TownData otherPlayerTown = TownDataStorage.getInstance().get(playerToAdd);
 
-        TownRelation currentRelation = playerTown.getRelationWith(otherPlayerTown);
-
-        //If no relation, check if maybe they are from the same region TODO implement this inside TownData#getRelationWith()
-        if (currentRelation == null && playerTown.haveOverlord() && otherPlayerTown.haveOverlord()) {
-            currentRelation = playerTown.getOverlord().getRelationWith(otherPlayerTown.getOverlord());
-        }
-
-        return currentRelation;
+        return playerTown.getRelationWith(otherPlayerTown);
     }
 
     public Integer getRegionRankID() {

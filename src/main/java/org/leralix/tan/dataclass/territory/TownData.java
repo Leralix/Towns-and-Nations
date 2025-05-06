@@ -41,12 +41,12 @@ public class TownData extends TerritoryData {
     @Deprecated(since = "0.14.0", forRemoval = true)
     private String TownId;
     @Deprecated(since = "0.14.0", forRemoval = true)
-    private Integer townDefaultRankID; //TODO : remove before v1.0.0
+    private Integer townDefaultRankID;
     @Deprecated(since = "0.14.0", forRemoval = true)
     private Long townDateTimeCreated;
     @Deprecated(since = "0.14.0", forRemoval = true)
     private Integer chunkColor;
-    @Deprecated(since = "0.14.0", forRemoval = true)//TODO : remove before v1.0.0
+    @Deprecated(since = "0.14.0", forRemoval = true)
     private String TownName;
     @Deprecated(since = "0.14.0", forRemoval = true)
     private Map<Integer, RankData> newRanks = new HashMap<>();
