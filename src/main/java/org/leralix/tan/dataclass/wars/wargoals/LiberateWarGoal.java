@@ -15,8 +15,6 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 
-import java.util.function.Consumer;
-
 public class LiberateWarGoal extends WarGoal {
 
     TerritoryData territoryToLiberate;

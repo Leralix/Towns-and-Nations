@@ -45,9 +45,6 @@ public class WildernessRules {
 
             registerWorld(config, worldName);
         }
-
-        System.out.println(rules);
-
     }
 
     private void registerWorld(ConfigurationSection config, String worldName) {

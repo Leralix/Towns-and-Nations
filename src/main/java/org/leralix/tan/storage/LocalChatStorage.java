@@ -1,6 +1,11 @@
 package org.leralix.tan.storage;
 
 import org.bukkit.entity.Player;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.utils.TerritoryUtil;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.dataclass.PlayerData;
@@ -11,6 +16,8 @@ import org.leralix.tan.enums.ChatScope;
 import org.leralix.tan.enums.TownRelation;
 
 import java.util.HashMap;
+
+import static org.leralix.tan.utils.TanChatUtils.getTANString;
 
 public class LocalChatStorage {
     private static final HashMap<String, ChatScope> playerChatScope = new HashMap<>();
@@ -49,25 +56,46 @@ public class LocalChatStorage {
         }
 
         ChatScope scope = getPlayerChatScope(player);
+        boolean sendLogsToConsole = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("sendPrivateMessagesToConsole", false);
 
         if(scope == ChatScope.CITY){
             TownData townData = playerData.getTown();
-            if(townData != null)
-                townData.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.get(townData.getName(),player.getName(),message));
+
+            String messageFormat = Lang.CHAT_SCOPE_TOWN_MESSAGE.get(townData.getName(),player.getName(),message);
+
+            townData.broadCastMessage(messageFormat);
+            if(sendLogsToConsole)
+                TownsAndNations.getPlugin().getLogger().info(messageFormat);
+
         }
 
         else if(scope == ChatScope.REGION){
+
+            if(!playerData.hasRegion()){
+                player.sendMessage(getTANString() + Lang.NO_REGION.get());
+                SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                return;
+            }
+
             RegionData regionData = playerData.getRegion();
-            if(regionData != null)
-                regionData.broadCastMessage(Lang.CHAT_SCOPE_REGION_MESSAGE.get(regionData.getName(),player.getName(),message));
+
+            String messageFormat = Lang.CHAT_SCOPE_REGION_MESSAGE.get(regionData.getName(),player.getName(),message);
+
+            regionData.broadCastMessage(messageFormat);
+            if(sendLogsToConsole)
+                TownsAndNations.getPlugin().getLogger().info(messageFormat);
         }
 
         else if(scope == ChatScope.ALLIANCE){
             TownData playerTown = playerData.getTown();
 
-            playerTown.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.get(playerTown.getName(),player.getName(),message));
+            String messageFormat = Lang.CHAT_SCOPE_TOWN_MESSAGE.get(playerTown.getName(),player.getName(),message);
+
+            playerTown.broadCastMessage(messageFormat);
             playerTown.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE).forEach(territoryID -> TerritoryUtil.getTerritory(territoryID).broadCastMessage(Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.get(playerTown.getName(),player.getName(),message)));
 
+            if(sendLogsToConsole)
+                TownsAndNations.getPlugin().getLogger().info(messageFormat);
         }
 
     }

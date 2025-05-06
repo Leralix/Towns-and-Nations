@@ -277,6 +277,12 @@ percentageOfChunksUnclaimed: 15.0
 #Minimum number of chunks that will be unclaimed if a town cannot pay the territory upkeep
 minimumNumberOfChunksUnclaimed: 5
 
+########################
+##  Private channels  ##
+########################
+
+#Enable logger in the console of private messages between players (alliance, region and towns)
+sendPrivateMessagesToConsole: false
 
 ########################
 ##     Wilderness     ##
