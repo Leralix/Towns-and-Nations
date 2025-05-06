@@ -1967,16 +1967,25 @@ public class PlayerGUI implements IGUI {
 
         GuiItem leaveTownButton = ItemBuilder.from(leaveTown).asGuiItem(event -> {
             event.setCancelled(true);
+
+            if(!player.hasPermission("tan.base.town.quit")){
+                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get());
+                SoundUtil.playSound(player, NOT_ALLOWED);
+                return;
+            }
+
             if (townData.isLeader(playerData)){
                 SoundUtil.playSound(player, NOT_ALLOWED);
                 player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.get(playerData));
                 return;
             }
 
-            if(!player.hasPermission("tan.base.town.quit")){
-                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get());
-                SoundUtil.playSound(player, NOT_ALLOWED);
-                return;
+            if(townData.haveOverlord()){
+                RegionData regionData = townData.getRegion();
+                if(regionData.isLeader(playerData)){
+                    SoundUtil.playSound(player, NOT_ALLOWED);
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER.get(playerData));
+                }
             }
 
             openConfirmMenu(player, Lang.GUI_CONFIRM_PLAYER_LEAVE_TOWN.get(playerData, playerData.getNameStored()), confirm -> {
