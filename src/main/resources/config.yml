@@ -10,8 +10,6 @@
 ##      General       ##
 ########################
 
-#Remove all villager interactions except the one from the plugin (usefull to prevent duplication of items)
-removeAllVillagerInteractions: false
 
 #Time of the day when taxes are collected (default is midnight in 0:00)
 taxHourTime: 0 #0-23
