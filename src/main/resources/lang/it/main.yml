@@ -6,8 +6,11 @@ language:
   NEWSLETTER_STRING: "§6[TaN - Notiziario]§f "
   #Common errors
   PLAYER_NO_TOWN: "§cNon fai parte di una città"
+  PLAYER_NO_REGION: "§cNon fai parte di una regione"
   TOWN_NO_REGION: "§cLa tua città non appartiene a una regione"
   PLAYER_NOT_LEADER_OF_REGION: "§cDevi essere il leader della regione per eseguire quest'azione"
+  LEADER_CANNOT_QUIT_TOWN: "§cIl leader non può lasciare la città"
+  TOWN_ALREADY_HAVE_OVERLORD: "§cQuesta città ha già un leader"
   PLAYER_NO_PERMISSION: "§cNon hai il permesso di eseguire questo comando"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cNon hai il permesso di eseguire quest'azione su un tuo superiore o pari"
   PLAYER_ACTION_NO_PERMISSION: "§cNon hai il permesso di eseguire quest'azione"
@@ -29,9 +32,33 @@ language:
   PLAYER_PROPERTY_TOO_BIG: "§cLa proprietà è troppo grande. La dimensione massima è di {0} blocchi"
   POSITION_NOT_IN_CLAIMED_CHUNK: "§cLa posizione deve essere in un chunk reclamato"
   LANDMARK_ALREADY_CLAIMED: "§cQuesto punto di riferimento è già reclamato da §9{0}"
+  INTERACTION_TOO_FAR_ERROR: "§cSei troppo lontano per compiere questa azione"
+  CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§cQuest'area non appartiene a {0}"
+  CANNOT_DELETE_TERRITORY_IF_CAPITAL: "§cQuesto territorio non può essere cancellato, è la capitale di {0}"
+  ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT: "§cNon puoi cambiare questo permesso con il tuo rango"
+  TOWN_NOT_FOUND: "§cCittà non trovata"
+  TERRITORY_NOT_FOUND: "§cTerritorio non trovato"
+  INVALID_ARGUMENTS: "§cArgomenti inseriti non validi"
+  PLAYER_ALREADY_HAVE_TOWN: "§cIl giocatore fa già parte di una città"
+  LANDMARK_UPDATED: "{0} ({1})§f è stato aggiornato"
+  LANDMARK_STORED_UPDATED: "{0} ({1})§f è stato impostato un limite a §e{2}"
+  LANDMARK_NOT_FOUND: "§cLuogo d'interessa non trovato"
+  #Placeholder API
+  TRUE: "vero"
+  FALSE: "falso"
+  INVALID_VALUE: "Valore non valido"
+  INVALID_ID: "Identificativo non valido"
+  INVALID_NAME: "Nome non valido"
+  INVALID_TERRITORY: "Territorio non valido"
+  INVALID_PLAYER_NAME: "Nome giocatore non valido"
   #Common uses
   DISPLAY_COORDINATES: "§fCoordinate: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: ""
+  CURRENT_STATE: "§fStato attuale: §a{0}"
+  ENABLED: "§aAttivato"
+  DISABLED: "§cdisattivato"
+  #Common default messages
+  DEFAULT_DESCRIPTION: "Descrizione predefinita"
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: ""
   CHAT_SCOPE_REGION_MESSAGE: ""
@@ -39,6 +66,13 @@ language:
   #Update needed
   NEW_VERSION_AVAILABLE: "§cÈ disponibile una nuova versione: §f{0}"
   NEW_VERSION_AVAILABLE_2: "§cScaricala su Spigot o GitHub"
+  #Database
+  DATABASE_SUCCESSFULLY_DELETED_OLD_ROWS: "{0} vecchie righe della cronologia sono state eliminate con successo"
+  #Help command
+  HELP_DESC: "Mostra una lista che spiega tutti i comandi"
+  CLICK_TO_GO_NEXT_PAGE: "§fClicca per andare alla pagina successiva"
+  CLICK_TO_GO_PREVIOUS_PAGE: "§fClicca per andare alla pagina precedente"
+  PAGE_NUMBER: "§fPagina {0}/{1}"
   #Level up
   BASIC_LEVEL_UP: "§aAvanzamento di livello!"
   #Teleportation
@@ -54,6 +88,149 @@ language:
   SYNTAX_ERROR: "§cSintassi non corretta"
   SYNTAX_ERROR_AMOUNT: "§cSintassi non corretta per la quantità"
   CORRECT_SYNTAX_INFO: "§cSintassi corretta: {0}"
+  MESSAGE_TOO_LONG: "§cIl messaggio è troppo lungo: {0} max"
+  CANCELLED_ACTION: "§cAzione annullata"
+  #Cancel
+  CANCEL_WORD: "Annulla" #The cancel word can be modified
+  WRITE_CANCEL_TO_CANCEL: "§fScrivi §c{0}§f nella chat per annullare"
+  #Ask to join a town
+  PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f ha chiesto di entrare nella città. Puoi trovare la domanda nel menu membri"
+  PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Hai chiesto con successo di unirti alla città: §9{0}§f. Clicca col tasto destro sulla città per annullare"
+  PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Hai annullato la tua domanda"
+  PLAYER_TOWN_NOT_RECRUITING: "§cQuesta città non sta reclutando"
+  #BROADCAST
+  TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f ha creato con successo la città: §9{1}"
+  TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c ha lasciato la città!"
+  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f ha creato con successo la regione: §b{1}"
+  GUI_REGION_KICK_TOWN_BROADCAST: "§fLa città §9{0}§f è stata espulsa dalla regione"
+  #Claim chunk command
+  CLAIM_CHUNK_COMMAND_DESC: "Reclama quest'area"
+  CHUNK_ALREADY_CLAIMED_WARNING: "§cQuest'area è già reclamata da: §9{0}"
+  CANNOT_CLAIM_LANDMARK: "§cNon puoi reclamare un luogo d'interesse"
+  MAX_CHUNK_LIMIT_REACHED: "§cHai raggiunto il numero massimo di aree reclamabili, potenzia la tua città per reclamarne di più"
+  CHUNK_NOT_ADJACENT: "§cQuest'area non confina con la tua città"
+  CHUNK_CLAIMED_SUCCESS_REGION: "§cArea regionale reclamata"
+  CHUNK_CLAIMED_SUCCESS: "§cArea reclamata! Possiedi: §2{0}/{1}♦)"
+  REGION_CHUNK_CLAIMED_SUCCESS: "§cArea regionale reclamata"
+  #Sell rare item command
+  SELL_RARE_ITEM_COMMAND_DESC: "Vendi oggetti rari nella mano del giocatore"
+  NO_ITEM_IN_HAND: "§cDevi avere un oggetto raro in mano"
+  NOT_RARE_ITEM_IN_HAND: "§cQuesto oggetto non è raro"
+  #CustomVillager
+  CUSTOM_VILLAGER_CREATED_SUCCESS: "Villager creato"
+  #Invite player to town command
+  TOWN_INVITE_COMMAND_DESC: "Invita un giocatore nella città"
+  INVITATION_TOWN_FULL: "§cLa città ha raggiunto la piena capacità, migliorala per ottenerne di più"
+  INVITATION_SENT_SUCCESS: "Invito inviato a §e{0}"
+  INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN: "§3{0}§f è già nella tua città"
+  INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN: "§3{0}§f ha già una città: §9{1}"
+  INVITATION_RECEIVED_1: "Sei stato invitato da §3{0}§f nella città: §9{1}"
+  INVITATION_RECEIVED_2: "§l§2[clicca qui per accettare]"
+  #Accept the town invitation
+  TOWN_ACCEPT_INVITE_DESC: "Unisciti a una città che ti ha invitato"
+  TOWN_INVITATION_NO_INVITATION: "§aNon hai nessun invito in sospeso"
+  TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fSei ora un membro della città: {0}"
+  TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§c ha lasciato la città!"
+  #Relation diplomatique
+  DIPLOMATIC_INVITATION_SENT_SUCCESS: "Proposta inviata a {0}"
+  VASSALISATION_PROPOSAL_SENT_SUCCESS: "Proposta di vassalizzazione inviata a {0}"
+  ACCEPTED_VASSALISATION_PROPOSAL_ALL: "{0}§f si è unito alla regione {1}"
+  #Diplomatic relation confirmation
+  REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f ha invitato la tua città {1}§f ad unirsi alla loro regione"
+  #Autoclaim command
+  TOWN_AUTO_CLAIM_DESC: "Attiva reclamo automato delle aree"
+  AUTO_CLAIM_ON_FOR: "§fIl reclamo automatico è ora attivo per le aree di tipo: §9{0}"
+  AUTO_CLAIM_OFF: "§fIl reclamo automatico è ora disabilitato"
+  #Chance chat
+  TOWN_CHAT_COMMAND_DESC: "Cambia distanza della chat"
+  CHAT_CHANGED: "§fLa chat è ora impostata a: §e{0}"
+  TOWN_CHAT_ALREADY_IN_CHAT: "§cStai già inviando un messaggio nella chat: {0}"
+  CHAT_SCOPE_NOT_FOUND: "§cAmbito di chat non trovato"
+  CITY_SCOPE: "città"
+  REGION_SCOPE: "regione"
+  ALLIANCE_SCOPE: "alleanza"
+  GLOBAL_SCOPE: "globale"
+  ###Admins commands
+  ADD_MONEY_COMMAND_SUCCESS: "Aggiunto §6+{0}{MONEY_CHAR}§f a §3{1}"
+  SET_MONEY_COMMAND_SUCCESS: "Impostato con successo il saldo di §3{0}§f a §6{1}{MONEY_CHAR}"
+  #Town and Nation GUI
+  TOWN_GUI_COMMAND_DESC: "Apri la GUI della città e della nazione"
+  #Newsletter command
+  OPEN_NEWSLETTER_DESC: "Ricevi le ultime notizie"
+  #Pay command
+  PAY_COMMAND_DESC: "Dai denaro ad un altro giocatore"
+  PAY_MINIMUM_REQUIRED: "§cDevi inviare almeno 1{MONEY_CHAR}"
+  PAY_CONFIRMED_SENDER: "Invio di §6{0}{MONEY_CHAR}§f a §3{1}"
+  PAY_CONFIRMED_RECEIVER: "Ricevendo §6+{0}{MONEY_CHAR}§f da §3{1}"
+  PAY_SELF_ERROR: "§cNon puoi inviare denaro a te stesso"
+  #Balance command
+  BAL_COMMAND_DESC: "Vedi il tuo saldo"
+  BAL_AMOUNT: "Il tuo saldo: §6{0}{MONEY_CHAR}"
+  #Unclaim command
+  UNCLAIM_CHUNK_COMMAND_DESC: "Abbandona quest'area"
+  UNCLAIMED_CHUNK_SUCCESS_TOWN: "§cArea abbandonata! Possiedi: §2{0}/{1}♦"
+  UNCLAIMED_CHUNK_SUCCESS_REGION: "§cArea abbandonata! Possiedi: §2{0}/♦"
+  DEBUG_UNCLAIMED_CHUNK_SUCCESS_TOWN: "§cArea abbandonata! Possiedi: §2{0}/{1}♦"
+  DEBUG_UNCLAIMED_CHUNK_SUCCESS_REGION: "§cArea abbandonata! Possiedi: §9{0}/{1}♦"
+  UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cQuest'area è reclamata da un'altra città: §e{0}"
+  UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§cQuest'area è reclamata da un'altra regione: §b{0}"
+  PROPERTY_IN_CHUNK: "§cQuest'area contiene una proprietà §f({0})"
+  #Map command
+  MAP_COMMAND_DESC: "Apri la mappa delle aree intorno al giocatore"
+  #Debug commands
+  COMMAND_GENERIC_SUCCESS: "§aComando eseguito con successo"
+  ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED: "§cQuest'area non è reclamata"
+  ##Admin commands
+  ADMIN_ADD_MONEY_TO_PLAYER: "Aggiungi denaro a un giocatore"
+  ADMIN_SET_PLAYER_MONEY_BALANCE: "Imposta il saldo del giocatore"
+  ADMIN_SPAWN_CUSTOM_VILLAGER: "Genera un villager personalizzato"
+  ADMIN_SPAWN_RARE_ITEM: "Genera un oggetto raro"
+  ADMIN_UNCLAIM_DESC: "Elimina qualsiasi area"
+  ADMIN_OPEN_GUI: "Apri interfaccia admin"
+  ADMIN_RELOAD_COMMAND: "Ricarica il plugin"
+  ADMIN_SUDO_COMMAND: "Permette al giocatore di aggirare la protezione delle aree"
+  ##Debug commands
+  DEBUG_SAVE_ALL_DATA: "Salva tutte le statistiche"
+  DEBUG_CREATE_BACKUP: "Crea un backup dei dati del plugin."
+  DEBUG_GET_COLOR_CODE: "Ottieni un esempio del codice colore del plugin"
+  DEBUG_SKIP_DAY: "Raccogli ogni tassa e stipendio per un giorno"
+  DEBUG_SEND_REPORT: "Crea un report da inviare allo sviluppatore per il debug"
+  DEBUG_REPORT_CREATED: "Il report è stato creato. Puoi trovarlo in /plugins/TownsAndNations/reports"
+  #SUDO command
+  SUDO_PLAYER_ADDED: "§3{0}§f è ora in modalità sudo"
+  SUDO_PLAYER_REMOVED: "§3{0}§f è stato rimosso dalla modalità sudo"
+  #Server commands
+  ##ApplyTown
+  APPLY_TOWN_SERVER_DESC: "Forza un giocatore ad applicarsi a una città"
+  ##CreateTown
+  CREATE_TOWN_SERVER_DESC: "§aCrea una città"
+  ##DisbandTown
+  DISBAND_TOWN_SERVER_DESC: "§cElimina una città"
+  ##OpenGui
+  OPEN_GUI_SERVER_DESC: "Apri la GUI di un giocatore"
+  ##QuitTown
+  QUIT_TOWN_SERVER_DESC: "§cEsci da una città"
+  ## Update landmark storage
+  LANDMARK_UPDATE_SERVER_DESC: "Aggiorna memoria luoghi d'interesse"
+  #Chat commands
+  PLAYER_NOT_ENOUGH_MONEY: "§cNon hai abbastanza soldi per eseguire quest'azione"
+  LEADER_NOT_ONLINE: "§cIl capo città non è online"
+  PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cNon hai abbastanza soldi. Hai bisogno di {0} in più"
+  PLAYER_PAY_AT_EMBARGO_ERROR: "§cNon puoi pagare un giocatore in una città sotto embargo o in guerra con la tua città"
+  TOWN_NOT_ENOUGH_MONEY: "§cLa città non ha abbastanza denaro per eseguire questa azione"
+  TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cLa città non ha abbastanza soldi per eseguire questa azione. Ha bisogno di {0}{MONEY_CHAR} più"
+  REGION_NOT_ENOUGH_MONEY_EXTENDED: "§cLa regione non ha abbastanza soldi per eseguire questa azione. Ha bisogno di {0}{MONEY_CHAR} più"
+  NAME_ALREADY_USED: "§cQuesto nome è già utilizzato"
+  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Scrivi il nome della città nella chat."
+  PLAYER_WRITE_QUANTITY_IN_CHAT: "Scrivi la quantità nella chat"
+  TOWN_RETRIEVE_MONEY_SUCCESS: "§aHai preso §6{0}{MONEY_CHAR}§a dalla città"
+  TOWN_SET_TAX_SUCCESS: "§aHai impostato con successo le tasse a §6{0}{MONEY_CHAR}"
+  TOWN_SET_RATE_SUCCESS: "§aHai impostato con successo il tasso di cambio a §6{0}"
+  PLAYER_SEND_MONEY_SUCCESS: "§fHai inviato §6{0}{MONEY_CHAR}§f a §{1}"
+  PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY: "Click destro su 2 blocchi per creare la tua proprietà privata"
+  PLAYER_FIRST_POINT_SET: "Primo punto impostato a §9{0}"
+  PLAYER_SECOND_POINT_SET: "Secondo punto impostato a §9{0}"
+  PLAYER_PLACE_SIGN: "Fare clic con il tasto destro per posizionare un cartello sul blocco"
   LEFT_CLICK_TO_SELECT: "§fClick sinistro per selezionare"
 
 

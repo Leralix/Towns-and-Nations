@@ -19,14 +19,14 @@ public class TeleportationPosition {
     private String world;
     private float pitch;
     private float yaw;
-    private Vector3DWithOrientation position;
+    private Vector3DWithOrientation position; //TODO : Add final to this variable
 
     public TeleportationPosition(Location location){
         position = new Vector3DWithOrientation(location);
     }
 
     public void teleport(Player player){
-        if(position == null){
+        if(position == null){ //TODO remove this legacy code
             position = new Vector3DWithOrientation(new Location(Bukkit.getWorld(UUID.fromString(world)), x, y, z, yaw, pitch));
         }
         player.teleport(position.getLocation());

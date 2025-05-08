@@ -33,6 +33,11 @@ public class WildernessRules {
         ConfigurationSection config = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getConfigurationSection("wildernessRules");
 
         if(config == null) {
+            EnumMap<ChunkPermissionType, Boolean> defaultRules = new EnumMap<>(ChunkPermissionType.class);
+            for(ChunkPermissionType permissionType : ChunkPermissionType.values()) {
+                defaultRules.put(permissionType, true);
+            }
+            rules.put("default", defaultRules);
             return;
         }
 
