@@ -98,10 +98,6 @@ RegionAllowNonAdjacentChunks: false
 #Notify if a player from an enemy territory enters
 notifyEnemyEnterRegion: true
 
-#Enable explosion grief in region claimed chunks (creeper explosion, tnt explosion, etc)
-#Explosion will still damage players
-EnableExplosionGriefInRegion: false
-
 ########################
 ##       Towns        ##
 ########################
@@ -130,10 +126,6 @@ notifyEnemyEnterTown: true
 
 #Town max level
 TownMaxLevel: 10
-
-#Enable explosion grief in town claimed chunks (creeper explosion, tnt explosion, etc)
-#Explosion will still damage players
-EnableExplosionGriefInTown: false
 
 ########################
 ##      Relations     ##
