@@ -1,5 +1,6 @@
 package org.leralix.tan.dataclass.chunk;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
@@ -100,8 +102,18 @@ public class RegionClaimedChunk extends ClaimedChunk2 {
         player.sendMessage(TanChatUtils.getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_REGION.get(regionData.getNumberOfClaimedChunk()));
     }
 
-    public void playerEnterClaimedArea(Player player) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.PLAYER_ENTER_REGION_CHUNK.get(getRegion().getName())));
+    public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
+        RegionData regionData = getRegion();
+
+        TextComponent name = displayTerritoryColor ? regionData.getCustomColoredName() : new TextComponent(regionData.getBaseColoredName());
+        String message = Lang.PLAYER_ENTER_TERRITORY_CHUNK.get(name.toLegacyText());
+        player.sendTitle("", message, 5, 40, 20);
+
+        TextComponent textComponent = new TextComponent(regionData.getDescription());
+        textComponent.setColor(ChatColor.GRAY);
+        textComponent.setItalic(true);
+
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, textComponent);
     }
 
     @Override
@@ -116,7 +128,7 @@ public class RegionClaimedChunk extends ClaimedChunk2 {
         textComponent.setHoverEvent(new HoverEvent(
                 HoverEvent.Action.SHOW_TEXT,
                 new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
-                        getRegion().getColoredName() + "\n" +
+                        getRegion().getBaseColoredName() + "\n" +
                         Lang.LEFT_CLICK_TO_CLAIM.get())));
         return textComponent;
     }
@@ -129,7 +141,7 @@ public class RegionClaimedChunk extends ClaimedChunk2 {
         if (getRegion().getSubjects().contains(territoryData)) {
             return true; // if the town is part of this specific region, they can claim
         }
-        player.ifPresent(p -> p.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName())));
+        player.ifPresent(p -> p.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getBaseColoredName())));
         return false;
     }
 

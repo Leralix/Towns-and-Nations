@@ -1,5 +1,6 @@
 package org.leralix.tan.dataclass.chunk;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -117,9 +118,19 @@ public class TownClaimedChunk extends ClaimedChunk2 {
         NewClaimedChunkStorage.getInstance().unclaimChunk(this);
     }
 
-    public void playerEnterClaimedArea(Player player) {
+    public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
         TownData townTo = getTown();
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.PLAYER_ENTER_TOWN_CHUNK.get(townTo.getName())));
+
+        TextComponent name = displayTerritoryColor ? townTo.getCustomColoredName() : new TextComponent(townTo.getBaseColoredName());
+        String message = Lang.PLAYER_ENTER_TERRITORY_CHUNK.get(name.toLegacyText());
+        player.sendTitle("", message, 5, 40, 20);
+
+        TextComponent textComponent = new TextComponent(townTo.getDescription());
+        textComponent.setColor(ChatColor.GRAY);
+        textComponent.setItalic(true);
+
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, textComponent);
+
 
         TownData playerTown = TownDataStorage.getInstance().get(player);
         if (playerTown == null) {
@@ -147,7 +158,7 @@ public class TownClaimedChunk extends ClaimedChunk2 {
         textComponent.setHoverEvent(new HoverEvent(
                 HoverEvent.Action.SHOW_TEXT,
                 new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
-                        getTown().getColoredName() + "\n" +
+                        getTown().getBaseColoredName() + "\n" +
                         Lang.LEFT_CLICK_TO_CLAIM.get())));
         return textComponent;
 
@@ -158,7 +169,7 @@ public class TownClaimedChunk extends ClaimedChunk2 {
     public boolean canTerritoryClaim(Optional<Player> player, TerritoryData territoryData) {
         if (territoryData.canConquerChunk(this))
             return true;
-        player.ifPresent(p -> p.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName())));
+        player.ifPresent(p -> p.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getBaseColoredName())));
         return false;
     }
 

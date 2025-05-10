@@ -65,7 +65,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
         player.sendMessage(TanChatUtils.getTANString() + Lang.CANNOT_UNCLAIM_LANDMARK_CHUNK.get());
     }
 
-    public void playerEnterClaimedArea(Player player) {
+    public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.PLAYER_ENTER_LANDMARK_CHUNK.get()));
     }
 

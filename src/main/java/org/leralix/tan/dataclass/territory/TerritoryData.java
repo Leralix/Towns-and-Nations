@@ -4,6 +4,7 @@ package org.leralix.tan.dataclass.territory;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -131,7 +132,14 @@ public abstract class TerritoryData {
     }
 
     public abstract int getHierarchyRank();
-    public abstract String getColoredName();
+
+    public abstract String getBaseColoredName();
+
+    public TextComponent getCustomColoredName(){
+        TextComponent coloredName = new TextComponent(getName());
+        coloredName.setColor(getChunkColor());
+        return coloredName;
+    }
     public abstract String getLeaderID();
     public abstract PlayerData getLeaderData();
     public abstract void setLeaderID(String leaderID);
@@ -196,12 +204,12 @@ public abstract class TerritoryData {
     public void setRelation(TerritoryData otherTerritory, TownRelation relation){
         TownRelation actualRelation = getRelationWith(otherTerritory);
         if(relation.isSuperiorTo(actualRelation)){
-            broadcastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(getColoredName(), otherTerritory.getColoredName(),relation.getColoredName()), SoundEnum.GOOD);
-            otherTerritory.broadcastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(otherTerritory.getColoredName(), getColoredName(),relation.getColoredName()), SoundEnum.GOOD);
+            broadcastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(getBaseColoredName(), otherTerritory.getBaseColoredName(),relation.getColoredName()), SoundEnum.GOOD);
+            otherTerritory.broadcastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(otherTerritory.getBaseColoredName(), getBaseColoredName(),relation.getColoredName()), SoundEnum.GOOD);
         }
         else{
-            broadcastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(getColoredName(), otherTerritory.getColoredName(),relation.getColoredName()), SoundEnum.BAD);
-            otherTerritory.broadcastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(otherTerritory.getColoredName(), getColoredName(),relation.getColoredName()), SoundEnum.BAD);
+            broadcastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(getBaseColoredName(), otherTerritory.getBaseColoredName(),relation.getColoredName()), SoundEnum.BAD);
+            otherTerritory.broadcastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(otherTerritory.getBaseColoredName(), getBaseColoredName(),relation.getColoredName()), SoundEnum.BAD);
         }
 
         this.getRelations().setRelation(relation,otherTerritory);
@@ -357,7 +365,7 @@ public abstract class TerritoryData {
 
     public void setOverlord(TerritoryData overlord){
         getOverlordsProposals().remove(overlord.getID());
-        broadcastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), overlord.getColoredName()), SoundEnum.GOOD);
+        broadcastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getBaseColoredName(), overlord.getBaseColoredName()), SoundEnum.GOOD);
 
         this.overlordID = overlord.getID();
         overlord.addVassal(this);
@@ -512,7 +520,7 @@ public abstract class TerritoryData {
         addToBalance(amount);
 
         TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerDonationHistory(this, player, amount));
-        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_SUCCESS.get(amount, getColoredName()));
+        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_SUCCESS.get(amount, getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_LEVEL_UP);
     }
 
@@ -555,7 +563,7 @@ public abstract class TerritoryData {
 
     public void addVassalisationProposal(TerritoryData proposal){
         getOverlordsProposals().add(proposal.getID());
-        broadcastMessageWithSound(Lang.REGION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getColoredName(), getColoredName()), SoundEnum.MINOR_GOOD);
+        broadcastMessageWithSound(Lang.REGION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getBaseColoredName(), getBaseColoredName()), SoundEnum.MINOR_GOOD);
         NewsletterStorage.registerNewsletter(new JoinRegionProposalNL(proposal, this));
     }
 
@@ -591,7 +599,7 @@ public abstract class TerritoryData {
                     }
 
                     setOverlord(proposalOverlord);
-                    broadcastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), proposalOverlord.getName()), SoundEnum.GOOD);
+                    broadcastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getBaseColoredName(), proposalOverlord.getName()), SoundEnum.GOOD);
                     PlayerGUI.openHierarchyMenu(player, this);
                 }
                 if(event.isRightClick()){
@@ -869,4 +877,6 @@ public abstract class TerritoryData {
         getRank(playerData).removePlayer(playerData);
         playerData.setRankID(this, null);
     }
+
+
 }

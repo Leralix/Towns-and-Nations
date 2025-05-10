@@ -40,8 +40,8 @@ public class DiplomacyProposalNL extends Newsletter {
             return null;
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.PAPER,
-                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL.get(proposingTerritory.getColoredName()),
-                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1.get(receivingTerritory.getColoredName(), wantedRelation.getColoredName()),
+                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL.get(proposingTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1.get(receivingTerritory.getBaseColoredName(), wantedRelation.getColoredName()),
                 Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC2.get(),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
         return ItemBuilder.from(icon).asGuiItem(event -> {

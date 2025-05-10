@@ -201,6 +201,11 @@ MaximumChunkConquer: 0
 ##  General settings  ##
 ########################
 
+#Entering claim message
+#Should a territory name be shown with its own color (true) or the default hierarchy color (false) when a
+#player enter claimed chunks.
+displayTerritoryNameWithOwnColor: false
+
 #General settings in claimed chunks
 # Always                 | Always allowed
 # Player choice          | Allow territories to choose

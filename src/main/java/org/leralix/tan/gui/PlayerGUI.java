@@ -88,7 +88,7 @@ public class PlayerGUI implements IGUI {
         ItemStack regionIcon = HeadUtils.makeSkullB64(Lang.GUI_REGION_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
 
         if(playerHaveRegion) {
-            HeadUtils.addLore(regionIcon, Lang.GUI_REGION_ICON_DESC1_REGION.get(playerData, region.getColoredName()),
+            HeadUtils.addLore(regionIcon, Lang.GUI_REGION_ICON_DESC1_REGION.get(playerData, region.getBaseColoredName()),
                     Lang.GUI_REGION_ICON_DESC2_REGION.get(playerData, region.getRank(player).getColoredName()));
         }
         else {
@@ -98,7 +98,7 @@ public class PlayerGUI implements IGUI {
         ItemStack townIcon = HeadUtils.makeSkullB64(Lang.GUI_TOWN_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
         if(playerHaveTown) {
             HeadUtils.addLore(townIcon, Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(playerData,
-                    town.getColoredName()), Lang.GUI_TOWN_ICON_DESC2_HAVE_TOWN.get(playerData, town.getRank(player).getColoredName()));
+                    town.getBaseColoredName()), Lang.GUI_TOWN_ICON_DESC2_HAVE_TOWN.get(playerData, town.getRank(player).getColoredName()));
         }
         else {
             HeadUtils.addLore(townIcon, Lang.GUI_TOWN_ICON_DESC1_NO_TOWN.get(playerData));
@@ -1016,11 +1016,11 @@ public class PlayerGUI implements IGUI {
         else if(territoryRole == WarRole.NEUTRAL){
             ItemStack joinAttacker = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
                     Lang.GUI_JOIN_ATTACKING_SIDE.get(playerData),
-                    Lang.GUI_JOIN_ATTACKING_SIDE_DESC1.get(playerData, territory.getColoredName()),
+                    Lang.GUI_JOIN_ATTACKING_SIDE_DESC1.get(playerData, territory.getBaseColoredName()),
                     Lang.GUI_WAR_GOAL_INFO.get(playerData, plannedAttack.getWarGoal().getDisplayName()));
             ItemStack joinDefender = HeadUtils.createCustomItemStack(Material.SHIELD,
                     Lang.GUI_JOIN_DEFENDING_SIDE.get(playerData),
-                    Lang.GUI_JOIN_DEFENDING_SIDE_DESC1.get(playerData, territory.getColoredName()));
+                    Lang.GUI_JOIN_DEFENDING_SIDE_DESC1.get(playerData, territory.getBaseColoredName()));
 
             GuiItem joinAttackerButton = ItemBuilder.from(joinAttacker).asGuiItem(event -> {
                 plannedAttack.addAttacker(territory);
@@ -1058,7 +1058,7 @@ public class PlayerGUI implements IGUI {
                 Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(playerData),
                 Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get(playerData));
         ItemStack confirm = HeadUtils.makeSkullB64(Lang.GUI_CONFIRM_ATTACK.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDMxMmNhNDYzMmRlZjVmZmFmMmViMGQ5ZDdjYzdiNTVhNTBjNGUzOTIwZDkwMzcyYWFiMTQwNzgxZjVkZmJjNCJ9fX0=",
-                Lang.GUI_CONFIRM_ATTACK_DESC1.get(playerData, mainDefender.getColoredName()));
+                Lang.GUI_CONFIRM_ATTACK_DESC1.get(playerData, mainDefender.getBaseColoredName()));
 
         if(!createAttackData.getWargoal().isCompleted()){
             HeadUtils.addLore(confirm, Lang.GUI_WARGOAL_NOT_COMPLETED.get(playerData));
@@ -1955,7 +1955,7 @@ public class PlayerGUI implements IGUI {
         ItemStack changeChunkColor = HeadUtils.createCustomItemStack(Material.PURPLE_WOOL,
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR.get(playerData),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(playerData),
-                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(playerData, new TextComponent(townData.getChunkColor() + townData.getChunkColorInHex()).getText()),
+                Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(playerData, townData.getChunkColor() + townData.getChunkColorInHex()),
                 Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3.get(playerData));
 
         ItemStack changeTag = HeadUtils.createCustomItemStack(Material.FLOWER_BANNER_PATTERN,
@@ -2003,7 +2003,7 @@ public class PlayerGUI implements IGUI {
                 return;
             }
             if(townData.isCapital()){
-                player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(playerData, townData.getOverlord().getColoredName()));
+                player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(playerData, townData.getOverlord().getBaseColoredName()));
                 return;
             }
 
@@ -2989,7 +2989,7 @@ public class PlayerGUI implements IGUI {
                 return;
             }
             if(playerRegion.isCapital()){
-                player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(playerData, playerRegion.getOverlord().getColoredName()));
+                player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(playerData, playerRegion.getOverlord().getBaseColoredName()));
                 return;
             }
 
@@ -3293,11 +3293,11 @@ public class PlayerGUI implements IGUI {
                     TerritoryData overlordData = territoryData.getOverlord();
 
                     if (territoryData.isCapital()){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_CAPITAL.get(playerData, territoryData.getColoredName()));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_CAPITAL.get(playerData, territoryData.getBaseColoredName()));
                         return;
                     }
 
-                    openConfirmMenu(player, Lang.GUI_CONFIRM_DECLARE_INDEPENDENCE.get(playerData, territoryData.getColoredName(), overlord.getColoredName()), confirm -> {
+                    openConfirmMenu(player, Lang.GUI_CONFIRM_DECLARE_INDEPENDENCE.get(playerData, territoryData.getBaseColoredName(), overlord.getBaseColoredName()), confirm -> {
                         territoryData.removeOverlord();
                         territoryData.broadcastMessageWithSound(Lang.TOWN_BROADCAST_TOWN_LEFT_REGION.get(playerData, territoryData.getName(), overlordData.getName()), BAD);
                         overlordData.broadCastMessage(Lang.REGION_BROADCAST_TOWN_LEFT_REGION.get(playerData, territoryData.getName()));
@@ -3342,7 +3342,7 @@ public class PlayerGUI implements IGUI {
         GuiItem vassalInfo;
         if(territoryData.canHaveVassals()){
             ItemStack vassalIcon = HeadUtils.createCustomItemStack(Material.GOLDEN_SWORD, Lang.VASSAL_GUI.get(playerData),
-                    Lang.VASSAL_GUI_DESC1.get(playerData, territoryData.getColoredName(), territoryData.getVassalCount()));
+                    Lang.VASSAL_GUI_DESC1.get(playerData, territoryData.getBaseColoredName(), territoryData.getVassalCount()));
 
             ItemStack vassals = HeadUtils.makeSkullB64(Lang.GUI_REGION_TOWN_LIST.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
                     Lang.GUI_REGION_TOWN_LIST_DESC1.get(playerData));

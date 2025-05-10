@@ -6,8 +6,6 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -16,8 +14,6 @@ import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
-
-import static org.leralix.tan.gui.PlayerGUI.openStartWarSettings;
 
 public class CaptureLandmarkWarGoal extends WarGoal {
 
@@ -109,7 +105,7 @@ public class CaptureLandmarkWarGoal extends WarGoal {
         TerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
         if (attackingTerritory == null || defendingTerritory == null)
             return;
-        player.sendMessage(Lang.WARGOAL_CAPTURE_LANDMARK_SUCCESS_LOOSING_SIDE.get(attackingTerritory.getColoredName(), landmarkToCapture.getName()));
+        player.sendMessage(Lang.WARGOAL_CAPTURE_LANDMARK_SUCCESS_LOOSING_SIDE.get(attackingTerritory.getBaseColoredName(), landmarkToCapture.getName()));
     }
 
     public void setLandmarkToCapture(Landmark ownedLandmark) {

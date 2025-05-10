@@ -133,7 +133,7 @@ public class ConquerWarGoal extends WarGoal {
         if (attackingTerritory == null || defendingTerritory == null)
             return;
 
-        player.sendMessage(Lang.WARGOAL_CONQUER_SUCCESS_WINNING_SIDE.get(numberOfChunks, defendingTerritory.getColoredName()));
+        player.sendMessage(Lang.WARGOAL_CONQUER_SUCCESS_WINNING_SIDE.get(numberOfChunks, defendingTerritory.getBaseColoredName()));
     }
 
     @Override
@@ -143,7 +143,7 @@ public class ConquerWarGoal extends WarGoal {
         TerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
         if (attackingTerritory == null || defendingTerritory == null)
             return;
-        player.sendMessage(Lang.WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE.get(attackingTerritory.getColoredName(), numberOfChunks, defendingTerritory.getColoredName()));
+        player.sendMessage(Lang.WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE.get(attackingTerritory.getBaseColoredName(), numberOfChunks, defendingTerritory.getBaseColoredName()));
     }
 
 }

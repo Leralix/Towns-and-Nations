@@ -80,7 +80,7 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public String getColoredName() {
+    public String getBaseColoredName() {
         return "§b" + getName();
     }
 
@@ -363,7 +363,7 @@ public class RegionData extends TerritoryData {
     @Override
     public void delete() {
         super.delete();
-        broadcastMessageWithSound(Lang.BROADCAST_PLAYER_REGION_DELETED.get(getLeaderData().getNameStored(), getColoredName()), SoundEnum.BAD);
+        broadcastMessageWithSound(Lang.BROADCAST_PLAYER_REGION_DELETED.get(getLeaderData().getNameStored(), getBaseColoredName()), SoundEnum.BAD);
         TeamUtils.updateAllScoreboardColor();
         RegionDataStorage.getInstance().deleteRegion(this);
     }

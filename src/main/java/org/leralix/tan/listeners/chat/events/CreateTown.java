@@ -60,7 +60,7 @@ public class CreateTown extends ChatListenerEvent {
         EconomyUtil.removeFromBalance(player,cost);
 
 
-        Bukkit.broadcastMessage(TanChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(), newTown.getColoredName()));
+        Bukkit.broadcastMessage(TanChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(), newTown.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.LEVEL_UP);
         FileUtil.addLineToHistory(Lang.HISTORY_TOWN_CREATED.get(player.getName(), newTown.getName()));
 

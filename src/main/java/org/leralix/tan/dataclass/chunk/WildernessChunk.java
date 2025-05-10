@@ -12,8 +12,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
@@ -46,7 +44,7 @@ public class WildernessChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public void playerEnterClaimedArea(Player player) {
+    public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.WILDERNESS.get()));
     }
 

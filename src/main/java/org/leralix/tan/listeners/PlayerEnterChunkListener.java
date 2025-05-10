@@ -6,6 +6,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.WildernessChunk;
@@ -17,6 +19,12 @@ import org.leralix.tan.enums.ChunkType;
 import org.leralix.tan.lang.Lang;
 
 public class PlayerEnterChunkListener implements Listener {
+
+    private final boolean displayTerritoryNamewithColor;
+
+    public PlayerEnterChunkListener(){
+        displayTerritoryNamewithColor = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("displayTerritoryNameWithOwnColor");
+    }
 
     @EventHandler
     public void playerMoveEvent(final @NotNull PlayerMoveEvent e){
@@ -56,7 +64,7 @@ public class PlayerEnterChunkListener implements Listener {
             return;
         }
 
-        nextClaimedChunk.playerEnterClaimedArea(player);
+        nextClaimedChunk.playerEnterClaimedArea(player, displayTerritoryNamewithColor);
 
 
         if(nextClaimedChunk instanceof WildernessChunk &&

@@ -42,7 +42,7 @@ public class JoinRegionProposalNL extends Newsletter {
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
                 Lang.NEWSLETTER_JOIN_REGION_PROPOSAL.get(),
-                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(proposingTerritory.getColoredName(), receivingTerritory.getColoredName()),
+                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(proposingTerritory.getBaseColoredName(), receivingTerritory.getBaseColoredName()),
                 Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2.get(),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
 

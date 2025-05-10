@@ -123,7 +123,7 @@ public class TownData extends TerritoryData {
 
         Player newMember = playerData.getPlayer();
         if (newMember != null)
-            newMember.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(getColoredName()));
+            newMember.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(getBaseColoredName()));
 
         playerData.clearAllTownApplications();
 
@@ -214,7 +214,7 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public String getColoredName() {
+    public String getBaseColoredName() {
         return "§9" + getName();
     }
 
@@ -765,7 +765,7 @@ public class TownData extends TerritoryData {
     @Override
     public void delete() {
         super.delete();
-        broadcastMessageWithSound(Lang.BROADCAST_PLAYER_TOWN_DELETED.get(getLeaderName(), getColoredName()), SoundEnum.BAD);
+        broadcastMessageWithSound(Lang.BROADCAST_PLAYER_TOWN_DELETED.get(getLeaderName(), getBaseColoredName()), SoundEnum.BAD);
         removeAllLandmark(); //Remove all Landmark from the deleted town
         removeAllProperty(); //Remove all Property from the deleted town
 

@@ -839,8 +839,7 @@ language:
   RARE_ITEM_SELLING_SUCCESS: "Successfully sold §e{0}x {1}§f for §6+{2}{MONEY_CHAR}"
   #Chunk interactions
   WILDERNESS: "§fWilderness"
-  PLAYER_ENTER_TOWN_CHUNK: "§fEntering : §9{0}"
-  PLAYER_ENTER_REGION_CHUNK: "§fEntering : §b{0}"
+  PLAYER_ENTER_TERRITORY_CHUNK: "§fEntering : {0}"
   PLAYER_ENTER_LANDMARK_CHUNK: "§fEntering : §6Landmark"
   CHUNK_ENTER_TOWN_AT_WAR: "§cYou are at war with this town. Players have been alerted that you crossed the border"
   CHUNK_INTRUSION_ALERT: "§cAn enemy from the town {0} has entered your borders: {1}"

@@ -277,7 +277,7 @@ public class PlannedAttack {
     }
 
     public void defenderSurrendered() {
-        broadCastMessageWithSound(Lang.DEFENSIVE_SIDE_HAS_SURRENDER.get(getMainDefender().getColoredName(), getMainAttacker().getColoredName()), SoundEnum.WAR);
+        broadCastMessageWithSound(Lang.DEFENSIVE_SIDE_HAS_SURRENDER.get(getMainDefender().getBaseColoredName(), getMainAttacker().getBaseColoredName()), SoundEnum.WAR);
         getWarGoal().applyWarGoal();
         remove();
     }
@@ -289,7 +289,7 @@ public class PlannedAttack {
         itemMeta.setDisplayName(Lang.GUI_ATTACKING_SIDE_ICON.get());
         lore.add(Lang.GUI_ATTACKING_SIDE_ICON_DESC1.get());
         for(TerritoryData territoryData : getAttackingTerritories()){
-            lore.add(Lang.GUI_ICON_LIST.get(territoryData.getColoredName()));
+            lore.add(Lang.GUI_ICON_LIST.get(territoryData.getBaseColoredName()));
         }
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
@@ -303,7 +303,7 @@ public class PlannedAttack {
         itemMeta.setDisplayName(Lang.GUI_DEFENDING_SIDE_ICON.get());
         lore.add(Lang.GUI_DEFENDING_SIDE_ICON_DESC1.get());
         for(TerritoryData territoryData : getDefendingTerritories()){
-            lore.add(Lang.GUI_ICON_LIST.get(territoryData.getColoredName()));
+            lore.add(Lang.GUI_ICON_LIST.get(territoryData.getBaseColoredName()));
         }
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);

@@ -68,7 +68,7 @@ public class SubjugateWarGoal extends WarGoal {
         TerritoryData winningTerritory = TerritoryUtil.getTerritory(newOverlordID);
         if(loosingTerritory == null || winningTerritory == null)
             return;
-        player.sendMessage(Lang.WARGOAL_SUBJUGATE_SUCCESS.get(loosingTerritory.getColoredName(), winningTerritory.getColoredName()));
+        player.sendMessage(Lang.WARGOAL_SUBJUGATE_SUCCESS.get(loosingTerritory.getBaseColoredName(), winningTerritory.getBaseColoredName()));
     }
 
     @Override

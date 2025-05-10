@@ -77,7 +77,7 @@ public abstract class ClaimedChunk2 {
 
     public abstract void unclaimChunk(Player player);
 
-    public abstract void playerEnterClaimedArea(Player player);
+    public abstract void playerEnterClaimedArea(Player player, boolean displayTerritoryColor);
 
     public abstract String getName();
 
