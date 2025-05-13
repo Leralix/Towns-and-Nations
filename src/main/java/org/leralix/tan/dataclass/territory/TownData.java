@@ -312,7 +312,7 @@ public class TownData extends TerritoryData {
 
     public void addPlayerJoinRequest(Player player) {
         addPlayerJoinRequest(player.getUniqueId().toString());
-        NewsletterStorage.registerNewsletter(new PlayerJoinRequestNL(player, this));
+        NewsletterStorage.register(new PlayerJoinRequestNL(player, this));
     }
 
     public void addPlayerJoinRequest(String playerUUID) {

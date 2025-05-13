@@ -141,6 +141,54 @@ disablePvpWhenRelationIs :
   EMBARGO : true
   WAR : true
 
+########################
+##       Events       ##
+########################
+
+#List of every event that can happen and who should be notified
+# BROADCAST: ALL | CONCERNED | NONE
+# NEWSLETTER: ALL | CONCERNED | NONE
+# ALL: All players (connected for broadcast)
+# CONCERNED: Only the players involved by the event (members of the town/region, players in the same alliance, etc.)
+# NONE: No one will be notified
+events:
+  TOWN_CREATION :
+    BROADCAST : "ALL"
+    NEWSLETTER : "ALL"
+  TOWN_DELETION:
+    BROADCAST: "ALL"
+    NEWSLETTER: "ALL"
+  PLAYER_APPLICATION :
+    BROADCAST : "CONCERNED"
+    NEWSLETTER : "CONCERNED"
+  PLAYER_JOIN_TOWN :
+    BROADCAST : "CONCERNED"
+    NEWSLETTER : "CONCERNED"
+  REGION_CREATION :
+    BROADCAST : "ALL"
+    NEWSLETTER : "ALL"
+  REGION_DISBAND:
+    BROADCAST: "ALL"
+    NEWSLETTER: "ALL"
+  TOWN_JOIN_REGION_PROPOSAL:
+    BROADCAST: "CONCERNED"
+    NEWSLETTER: "CONCERNED"
+  TOWN_JOIN_REGION_ACCEPTED :
+    BROADCAST : "CONCERNED"
+    NEWSLETTER : "CONCERNED"
+  TOWN_LEAVE_REGION :
+    BROADCAST : "CONCERNED"
+    NEWSLETTER : "CONCERNED"
+  DIPLOMACY_PROPOSAL :
+    BROADCAST : "CONCERNED"
+    NEWSLETTER : "CONCERNED"
+  DIPLOMACY_ACCEPT:
+    BROADCAST : "ALL"
+    NEWSLETTER : "ALL"
+  ATTACK_DECLARED :
+    BROADCAST : "ALL"
+    NEWSLETTER : "ALL"
+
 
 ########################
 ##     Properties     ##

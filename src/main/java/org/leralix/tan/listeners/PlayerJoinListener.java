@@ -39,7 +39,7 @@ public class PlayerJoinListener implements Listener {
             player.sendMessage(TanChatUtils.getTANString() + Lang.NEW_VERSION_AVAILABLE_2.get());
         }
 
-        int nbNewsletterForPlayer = NewsletterStorage.getNbUnreadNewsletterForPlayer(playerData);
+        int nbNewsletterForPlayer = NewsletterStorage.getNbUnreadNewsletterForPlayer(player);
         if (nbNewsletterForPlayer > 0) {
             player.sendMessage(Lang.NEWSLETTER_STRING.get() + Lang.NEWSLETTER_GREETING.get(nbNewsletterForPlayer));
             TextComponent message = new TextComponent(Lang.CLICK_TO_OPEN_NEWSLETTER.get());

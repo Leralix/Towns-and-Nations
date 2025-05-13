@@ -1002,6 +1002,10 @@ language:
   NEWSLETTER_SUBJUGATE_PROPOSAL: "§fSubjugate proposal from {0}"
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC1: "§f{0}§f asked {1}§f for its vassalage"
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§fLeft click to access the proposal"
+  #Newsletter Broadcast
+  DIPLOMACY_PROPOSAL_NEWSLETTER: "{0}§f has proposed to change the relation with {1}§f to : {2}"
+  JOIN_REGION_PROPOSAL_NEWSLETTER: "{0}§f has proposed to join the region {1}"
+  PLAYER_APPLICATION_NEWSLETTER : "§a{0}§f has applied to join the town {1}"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cYou cannot claim this chunk"
 

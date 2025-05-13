@@ -233,7 +233,7 @@ public abstract class TerritoryData {
     }
     private void addDiplomaticProposal(TerritoryData proposingTerritory, TownRelation wantedRelation){
         getDiplomacyProposals().put(proposingTerritory.getID(), new DiplomacyProposal(proposingTerritory.getID(), getID(), wantedRelation));
-        NewsletterStorage.registerNewsletter(new DiplomacyProposalNL(proposingTerritory.getID(), getID(), wantedRelation));
+        NewsletterStorage.register(new DiplomacyProposalNL(proposingTerritory.getID(), getID(), wantedRelation));
     }
 
     public void receiveDiplomaticProposal(TerritoryData proposingTerritory, TownRelation wantedRelation) {
@@ -564,7 +564,7 @@ public abstract class TerritoryData {
     public void addVassalisationProposal(TerritoryData proposal){
         getOverlordsProposals().add(proposal.getID());
         broadcastMessageWithSound(Lang.REGION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getBaseColoredName(), getBaseColoredName()), SoundEnum.MINOR_GOOD);
-        NewsletterStorage.registerNewsletter(new JoinRegionProposalNL(proposal, this));
+        NewsletterStorage.register(new JoinRegionProposalNL(proposal, this));
     }
 
     public void removeVassalisationProposal(TerritoryData proposal){

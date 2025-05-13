@@ -2329,7 +2329,6 @@ public class PlayerGUI implements IGUI {
                 if(wantedRelation.isSuperiorTo(actualRelation)){
                     otherTerritory.receiveDiplomaticProposal(territory, wantedRelation);
                     player.sendMessage(TanChatUtils.getTANString() + Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(playerData, otherTerritory.getName()));
-                    SoundUtil.playSound(player, MINOR_GOOD);
                 }
                 else{
                     territory.setRelation(otherTerritory,wantedRelation);

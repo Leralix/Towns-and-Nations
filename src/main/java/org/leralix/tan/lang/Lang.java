@@ -950,6 +950,9 @@ public enum Lang {
     NEWSLETTER_SUBJUGATE_PROPOSAL,
     NEWSLETTER_SUBJUGATE_PROPOSAL_DESC1,
     NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2,
+    DIPLOMACY_PROPOSAL_NEWSLETTER,
+    JOIN_REGION_PROPOSAL_NEWSLETTER,
+    PLAYER_APPLICATION_NEWSLETTER,
     CHUNK_IS_BLACKLISTED;
 
 
@@ -1068,6 +1071,9 @@ public enum Lang {
             }
             translation = replaceCommonPlaceholders(translation);
             return translation;
+        }
+        if(lang == LangType.ENGLISH) {
+            return MESSAGE_NOT_FOUND_FOR + this.name() + IN_THIS_LANGUAGE_FILE;
         }
         return get(LangType.ENGLISH, placeholders);
     }

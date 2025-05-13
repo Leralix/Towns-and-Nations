@@ -23,7 +23,7 @@ public abstract class Newsletter {
 
     public abstract GuiItem createGuiItem(Player player, Consumer<Player> onClick);
 
-    public abstract boolean shouldShowToPlayer(Player player, NewsletterScope scope);
+    public abstract boolean shouldShowToPlayer(Player player);
 
     public long getDate() {
         return date;
@@ -34,9 +34,11 @@ public abstract class Newsletter {
     public void markAsRead(Player player){
         markAsRead(player.getUniqueId().toString());
     }
+
     public void markAsRead(PlayerData playerData){
         markAsRead(playerData.getID());
     }
+
     public void markAsRead(String playerID){
         if(playerMarkAsRead == null) playerMarkAsRead = new ArrayList<>();
         playerMarkAsRead.add(playerID);
@@ -45,15 +47,15 @@ public abstract class Newsletter {
     public boolean isRead(Player player){
         return isRead(player.getUniqueId().toString());
     }
+
     public boolean isRead(PlayerData playerData){
         return isRead(playerData.getID());
     }
+
     public boolean isRead(String playerID){
         if(playerMarkAsRead == null) playerMarkAsRead = new ArrayList<>();
         return playerMarkAsRead.contains(playerID);
     }
 
-
-
-
+    public abstract void broadcast(Player player);
 }

@@ -8,9 +8,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.newsletter.NewsletterScope;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.gui.PlayerGUI;
@@ -20,6 +24,8 @@ import org.leralix.tan.newsletter.NewsletterType;
 
 import java.util.UUID;
 import java.util.function.Consumer;
+
+import static org.leralix.tan.utils.TanChatUtils.getTANString;
 
 public class PlayerJoinRequestNL extends Newsletter {
 
@@ -34,7 +40,19 @@ public class PlayerJoinRequestNL extends Newsletter {
 
     @Override
     public NewsletterType getType() {
-        return NewsletterType.PLAYER_TOWN_JOIN_REQUEST;
+        return NewsletterType.PLAYER_APPLICATION;
+    }
+
+    @Override
+    public void broadcast(Player player) {
+        PlayerData playerData = PlayerDataStorage.getInstance().get(playerID);
+        if(playerData == null)
+            return;
+        TownData townData = TownDataStorage.getInstance().get(townID);
+        if(townData == null)
+            return;
+        player.sendMessage(getTANString() + Lang.PLAYER_APPLICATION_NEWSLETTER.get(playerData.getNameStored(), townData.getBaseColoredName()));
+        SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
     }
 
     @Override
@@ -60,9 +78,7 @@ public class PlayerJoinRequestNL extends Newsletter {
     }
 
     @Override
-    public boolean shouldShowToPlayer(Player player, NewsletterScope scope) {
-        if(isRead(player) && scope == NewsletterScope.SHOW_ONLY_UNREAD)
-            return false;
+    public boolean shouldShowToPlayer(Player player) {
         TownData townData = getTownData();
         if(townData == null) {
             NewsletterStorage.removePlayerJoinRequest(this);

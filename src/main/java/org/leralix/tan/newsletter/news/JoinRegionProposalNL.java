@@ -7,6 +7,8 @@ import dev.triumphteam.gui
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.newsletter.NewsletterScope;
@@ -18,6 +20,8 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.newsletter.NewsletterType;
 
 import java.util.function.Consumer;
+
+import static org.leralix.tan.utils.TanChatUtils.getTANString;
 
 public class JoinRegionProposalNL extends Newsletter {
     String proposingTerritoryID;
@@ -60,9 +64,7 @@ public class JoinRegionProposalNL extends Newsletter {
     }
 
     @Override
-    public boolean shouldShowToPlayer(Player player, NewsletterScope scope) {
-        if(isRead(player) && scope == NewsletterScope.SHOW_ONLY_UNREAD)
-            return false;
+    public boolean shouldShowToPlayer(Player player) {
         TerritoryData territoryData = TerritoryUtil.getTerritory(receivingTerritoryID);
         if(territoryData == null)
             return false;
@@ -75,12 +77,25 @@ public class JoinRegionProposalNL extends Newsletter {
 
     @Override
     public NewsletterType getType() {
-        return NewsletterType.JOIN_REGION_PROPOSAL;
+        return NewsletterType.TOWN_JOIN_REGION_PROPOSAL;
+    }
+
+    @Override
+    public void broadcast(Player player) {
+        TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
+        if(proposingTerritory == null)
+            return;
+        TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
+        if(receivingTerritory == null)
+            return;
+        player.sendMessage(getTANString() + Lang.JOIN_REGION_PROPOSAL_NEWSLETTER.get(proposingTerritory.getCustomColoredName(), receivingTerritory.getCustomColoredName()));
+        SoundUtil.playSound(player, SoundEnum.MINOR_BAD);
     }
 
     public String getProposingTerritoryID() {
         return proposingTerritoryID;
     }
+
     public String getReceivingTerritoryID() {
         return receivingTerritoryID;
     }

@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.triumphteam.gui
 .guis.GuiItem;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -33,6 +34,23 @@ public class NewsletterStorage {
 
     static Map<NewsletterType,List<Newsletter>> categories = new EnumMap<>(NewsletterType.class);
 
+    public static void register(Newsletter newsletter) {
+
+        EventScope scope = newsletter.getType().getBroadcastGlobal();
+        if(scope != EventScope.NONE){
+            for(Player player : Bukkit.getOnlinePlayers()){
+                if(scope == EventScope.ALL || newsletter.shouldShowToPlayer(player)){
+                    newsletter.broadcast(player);
+                }
+            }
+        }
+
+        if(!categories.containsKey(newsletter.getType()))
+            categories.put(newsletter.getType(), new ArrayList<>());
+        categories.get(newsletter.getType()).add(newsletter);
+        save();
+    }
+
     private static List<Newsletter> getNewsletters(){
         List<Newsletter> newsletters = new ArrayList<>();
         for(List<Newsletter> category : categories.values()) {
@@ -44,19 +62,14 @@ public class NewsletterStorage {
     public static List<GuiItem> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onclick){
         List<GuiItem> newsletters = new ArrayList<>();
         for(Newsletter newsletter : getNewsletters()) {
-            if(newsletter.shouldShowToPlayer(player, scope)) {
-                newsletters.add(newsletter.createGuiItem(player, onclick));
+            if(newsletter.getType().getNewsletterScope() == EventScope.ALL || newsletter.shouldShowToPlayer(player)){
+                if(scope == NewsletterScope.SHOW_ALL || !newsletter.isRead(player)){
+                    newsletters.add(newsletter.createGuiItem(player, onclick));
+                }
             }
         }
         newsletters.remove(null);
         return newsletters;
-    }
-
-    public static void registerNewsletter(Newsletter newsletter) {
-        if(!categories.containsKey(newsletter.getType()))
-            categories.put(newsletter.getType(), new ArrayList<>());
-        categories.get(newsletter.getType()).add(newsletter);
-        save();
     }
 
     public static void removePlayerJoinRequest(PlayerJoinRequestNL playerJoinRequestNL) {
@@ -69,7 +82,7 @@ public class NewsletterStorage {
         removePlayerJoinRequest(player.getUniqueId().toString(), townData.getID());
     }
     public static void removePlayerJoinRequest(String playerID, String townID) {
-        List<Newsletter> category = categories.get(NewsletterType.PLAYER_TOWN_JOIN_REQUEST);
+        List<Newsletter> category = categories.get(NewsletterType.PLAYER_APPLICATION);
         if (category == null)
             return;
         category.removeIf(newsletter ->
@@ -79,16 +92,35 @@ public class NewsletterStorage {
         );
     }
 
-    public static int getNbUnreadNewsletterForPlayer(PlayerData playerData){
-        int count = 0;
-        for(List<Newsletter> category : categories.values()) {
-            for(Newsletter newsletter : category) {
-                if(newsletter.shouldShowToPlayer(playerData.getPlayer(), NewsletterScope.SHOW_ONLY_UNREAD))
-                    count++;
-            }
-        }
-        return count;
+    public static int getNbUnreadNewsletterForPlayer(Player player){
+        return getNewsletterForPlayer(player, NewsletterScope.SHOW_ONLY_UNREAD, null).size();
     }
+
+    public static void clearOldNewsletters() {
+        int nbDays = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingNewsletter");
+        long currentTime = System.currentTimeMillis() - 1000L * 60 * 60 * 24 * nbDays; // 1 week
+        for(List<Newsletter> category : categories.values()) {
+            category.removeIf(newsletter -> newsletter.getDate() < currentTime);
+        }
+    }
+
+    public static void removeVassalisationProposal(TerritoryData proposer, TerritoryData receiver) {
+        List<Newsletter> category = categories.get(NewsletterType.TOWN_JOIN_REGION_PROPOSAL);
+        if (category == null)
+            return;
+        category.removeIf(newsletter ->
+                newsletter instanceof JoinRegionProposalNL proposalNL &&
+                        proposalNL.getProposingTerritoryID().equals(proposer.getID()) &&
+                        proposalNL.getReceivingTerritoryID().equals(receiver.getID())
+        );
+    }
+
+    public static void markAllAsReadForPlayer(Player player, NewsletterScope scope) {
+        for(Newsletter newsletter : getNewsletters()){
+            newsletter.markAsRead(player);
+        }
+    }
+
 
     public static void load() {
         Gson gson = new GsonBuilder()
@@ -130,31 +162,5 @@ public class NewsletterStorage {
             TownsAndNations.getPlugin().getLogger().warning("Error while saving Newsletter file");
         }
 
-    }
-
-
-    public static void clearOldNewsletters() {
-        int nbDays = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingNewsletter");
-        long currentTime = System.currentTimeMillis() - 1000L * 60 * 60 * 24 * nbDays; // 1 week
-        for(List<Newsletter> category : categories.values()) {
-            category.removeIf(newsletter -> newsletter.getDate() < currentTime);
-        }
-    }
-
-    public static void removeVassalisationProposal(TerritoryData proposer, TerritoryData receiver) {
-        List<Newsletter> category = categories.get(NewsletterType.JOIN_REGION_PROPOSAL);
-        if (category == null)
-            return;
-        category.removeIf(newsletter ->
-                newsletter instanceof JoinRegionProposalNL proposalNL &&
-                        proposalNL.getProposingTerritoryID().equals(proposer.getID()) &&
-                        proposalNL.getReceivingTerritoryID().equals(receiver.getID())
-        );
-    }
-
-    public static void markAllAsReadForPlayer(Player player, NewsletterScope scope) {
-        for(Newsletter newsletter : getNewsletters()){
-            newsletter.markAsRead(player);
-        }
     }
 }

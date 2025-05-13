@@ -21,6 +21,7 @@ import org.leralix.tan.economy.VaultManager;
 import org.leralix.tan.listeners.*;
 import org.leralix.tan.listeners.chat.ChatListener;
 import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.newsletter.NewsletterType;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.PvpSettings;
@@ -163,6 +164,7 @@ public final class TownsAndNations extends JavaPlugin {
         ClaimBlacklistStorage.init();
         PvpSettings.init();
         WildernessRules.getInstance();
+        NewsletterType.init();
 
         FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         allowColorCodes = mainConfig.getBoolean("EnablePlayerColorCode", false);
