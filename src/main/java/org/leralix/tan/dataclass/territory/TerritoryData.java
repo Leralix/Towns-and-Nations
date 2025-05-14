@@ -38,8 +38,10 @@ import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.newsletter.NewsletterStorage;
-import org.leralix.tan.newsletter.news.DiplomacyProposalNL;
-import org.leralix.tan.newsletter.news.JoinRegionProposalNL;
+import org.leralix.tan.newsletter.news.DiplomacyAcceptedNews;
+import org.leralix.tan.newsletter.news.DiplomacyProposalNews;
+import org.leralix.tan.newsletter.news.TownJoinRegionProposalNews;
+import org.leralix.tan.newsletter.news.TownJoinRegionAcceptedNewsletter;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
@@ -168,10 +170,17 @@ public abstract class TerritoryData {
     public void setIcon(ICustomIcon icon){
         this.customIcon = icon;
     }
+
     public abstract Collection<String> getPlayerIDList();
+
     public boolean isPlayerIn(PlayerData playerData){
         return isPlayerIn(playerData.getID());
     }
+
+    public boolean isPlayerIn(Player player){
+        return isPlayerIn(player.getUniqueId().toString());
+    }
+
     public boolean isPlayerIn(String playerID){
         return getPlayerIDList().contains(playerID);
     }
@@ -203,17 +212,11 @@ public abstract class TerritoryData {
 
     public void setRelation(TerritoryData otherTerritory, TownRelation relation){
         TownRelation actualRelation = getRelationWith(otherTerritory);
-        if(relation.isSuperiorTo(actualRelation)){
-            broadcastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(getBaseColoredName(), otherTerritory.getBaseColoredName(),relation.getColoredName()), SoundEnum.GOOD);
-            otherTerritory.broadcastMessageWithSound(Lang.BROADCAST_RELATION_IMPROVE.get(otherTerritory.getBaseColoredName(), getBaseColoredName(),relation.getColoredName()), SoundEnum.GOOD);
-        }
-        else{
-            broadcastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(getBaseColoredName(), otherTerritory.getBaseColoredName(),relation.getColoredName()), SoundEnum.BAD);
-            otherTerritory.broadcastMessageWithSound(Lang.BROADCAST_RELATION_WORSEN.get(otherTerritory.getBaseColoredName(), getBaseColoredName(),relation.getColoredName()), SoundEnum.BAD);
-        }
 
         this.getRelations().setRelation(relation,otherTerritory);
         otherTerritory.getRelations().setRelation(relation,this);
+
+        NewsletterStorage.register(new DiplomacyAcceptedNews(getID(), otherTerritory.getID(), relation, !actualRelation.isSuperiorTo(relation)));
 
         TeamUtils.updateAllScoreboardColor();
     }
@@ -233,7 +236,7 @@ public abstract class TerritoryData {
     }
     private void addDiplomaticProposal(TerritoryData proposingTerritory, TownRelation wantedRelation){
         getDiplomacyProposals().put(proposingTerritory.getID(), new DiplomacyProposal(proposingTerritory.getID(), getID(), wantedRelation));
-        NewsletterStorage.register(new DiplomacyProposalNL(proposingTerritory.getID(), getID(), wantedRelation));
+        NewsletterStorage.register(new DiplomacyProposalNews(proposingTerritory.getID(), getID(), wantedRelation));
     }
 
     public void receiveDiplomaticProposal(TerritoryData proposingTerritory, TownRelation wantedRelation) {
@@ -389,6 +392,8 @@ public abstract class TerritoryData {
 
 
     public void addVassal(TerritoryData vassal){
+
+        NewsletterStorage.register(new TownJoinRegionAcceptedNewsletter(this, vassal));
         NewsletterStorage.removeVassalisationProposal(this, vassal);
         addVassalPrivate(vassal);
     }
@@ -564,7 +569,7 @@ public abstract class TerritoryData {
     public void addVassalisationProposal(TerritoryData proposal){
         getOverlordsProposals().add(proposal.getID());
         broadcastMessageWithSound(Lang.REGION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getBaseColoredName(), getBaseColoredName()), SoundEnum.MINOR_GOOD);
-        NewsletterStorage.register(new JoinRegionProposalNL(proposal, this));
+        NewsletterStorage.register(new TownJoinRegionProposalNews(proposal, this));
     }
 
     public void removeVassalisationProposal(TerritoryData proposal){

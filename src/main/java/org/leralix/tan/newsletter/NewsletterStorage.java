@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.newsletter.news.JoinRegionProposalNL;
+import org.leralix.tan.newsletter.news.TownJoinRegionProposalNews;
 import org.leralix.tan.newsletter.news.Newsletter;
-import org.leralix.tan.newsletter.news.PlayerJoinRequestNL;
+import org.leralix.tan.newsletter.news.PlayerJoinRequestNews;
 import org.leralix.tan.storage.typeadapter.NewsletterAdapter;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -72,8 +72,8 @@ public class NewsletterStorage {
         return newsletters;
     }
 
-    public static void removePlayerJoinRequest(PlayerJoinRequestNL playerJoinRequestNL) {
-        removePlayerJoinRequest(playerJoinRequestNL.getPlayerID(), playerJoinRequestNL.getTownID());
+    public static void removePlayerJoinRequest(PlayerJoinRequestNews playerJoinRequestNews) {
+        removePlayerJoinRequest(playerJoinRequestNews.getPlayerID(), playerJoinRequestNews.getTownID());
     }
     public static void removePlayerJoinRequest(PlayerData playerData, TownData townData) {
         removePlayerJoinRequest(playerData.getID(), townData.getID());
@@ -86,9 +86,9 @@ public class NewsletterStorage {
         if (category == null)
             return;
         category.removeIf(newsletter ->
-            newsletter instanceof PlayerJoinRequestNL playerJoinRequestNL &&
-                    playerJoinRequestNL.getPlayerID().equals(playerID) &&
-                    playerJoinRequestNL.getTownID().equals(townID)
+            newsletter instanceof PlayerJoinRequestNews playerJoinRequestNews &&
+                    playerJoinRequestNews.getPlayerID().equals(playerID) &&
+                    playerJoinRequestNews.getTownID().equals(townID)
         );
     }
 
@@ -109,7 +109,7 @@ public class NewsletterStorage {
         if (category == null)
             return;
         category.removeIf(newsletter ->
-                newsletter instanceof JoinRegionProposalNL proposalNL &&
+                newsletter instanceof TownJoinRegionProposalNews proposalNL &&
                         proposalNL.getProposingTerritoryID().equals(proposer.getID()) &&
                         proposalNL.getReceivingTerritoryID().equals(receiver.getID())
         );

@@ -11,6 +11,8 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
+import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.newsletter.news.TownCreatedNews;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
@@ -59,10 +61,8 @@ public class CreateTown extends ChatListenerEvent {
         TownData newTown = TownDataStorage.getInstance().newTown(message, playerData);
         EconomyUtil.removeFromBalance(player,cost);
 
-
-        Bukkit.broadcastMessage(TanChatUtils.getTANString() + Lang.TOWN_CREATE_SUCCESS_BROADCAST.get(player.getName(), newTown.getBaseColoredName()));
-        SoundUtil.playSound(player, SoundEnum.LEVEL_UP);
-        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_CREATED.get(player.getName(), newTown.getName()));
+        NewsletterStorage.register(new TownCreatedNews(newTown, player));
+        FileUtil.addLineToHistory(Lang.TOWN_CREATED_NEWSLETTER.get(player.getName(), newTown.getName()));
 
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> TeamUtils.setIndividualScoreBoard(player));
 

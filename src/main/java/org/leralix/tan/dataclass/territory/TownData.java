@@ -25,7 +25,9 @@ import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.newsletter.NewsletterStorage;
-import org.leralix.tan.newsletter.news.PlayerJoinRequestNL;
+import org.leralix.tan.newsletter.news.PlayerJoinRequestNews;
+import org.leralix.tan.newsletter.news.PlayerJoinTownNews;
+import org.leralix.tan.newsletter.news.TownDeletedNews;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.HeadUtils;
@@ -131,6 +133,7 @@ public class TownData extends TerritoryData {
             overlords.registerPlayer(playerData);
         }
 
+        NewsletterStorage.register(new PlayerJoinTownNews(playerData, this));
         TeamUtils.updateAllScoreboardColor();
         TownDataStorage.getInstance().saveStats();
     }
@@ -312,7 +315,7 @@ public class TownData extends TerritoryData {
 
     public void addPlayerJoinRequest(Player player) {
         addPlayerJoinRequest(player.getUniqueId().toString());
-        NewsletterStorage.register(new PlayerJoinRequestNL(player, this));
+        NewsletterStorage.register(new PlayerJoinRequestNews(player, this));
     }
 
     public void addPlayerJoinRequest(String playerUUID) {
@@ -765,9 +768,11 @@ public class TownData extends TerritoryData {
     @Override
     public void delete() {
         super.delete();
-        broadcastMessageWithSound(Lang.BROADCAST_PLAYER_TOWN_DELETED.get(getLeaderName(), getBaseColoredName()), SoundEnum.BAD);
         removeAllLandmark(); //Remove all Landmark from the deleted town
         removeAllProperty(); //Remove all Property from the deleted town
+
+        NewsletterStorage.register(new TownDeletedNews(getLeaderName(), getBaseColoredName()));
+
 
         List<String> playersToRemove = new ArrayList<>(getPlayerIDList());
         for (String playerID : playersToRemove) {
@@ -776,6 +781,8 @@ public class TownData extends TerritoryData {
 
         TeamUtils.updateAllScoreboardColor();
         TownDataStorage.getInstance().deleteTown(this);
+
+
     }
 
     private void removeAllProperty() {

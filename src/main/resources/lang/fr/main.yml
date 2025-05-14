@@ -93,7 +93,7 @@ language:
   CANCELLED_ACTION: "§cAction annulée"
   #Cancel
   CANCEL_WORD: "annuler" #The cancel word can be modified
-  WRITE_CANCEL_TO_CANCEL: "§Tapez \" §c{0}§f \" dans le tchat pour annuler"
+  WRITE_CANCEL_TO_CANCEL: "§fTapez \" §c{0}§f \" dans le tchat pour annuler"
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f demande à rejoindre votre ville. Vous pouvez retrouver la demande dans le menu des membres"
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Vous avez demandé à rejoindre §9{0}§f. Faites un clic droit sur cette ville pour annuler votre demande"
@@ -227,7 +227,7 @@ language:
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aVous avez retiré §6{0}{MONEY_CHAR}§a de la ville"
   TOWN_SET_TAX_SUCCESS: "§aVous avez correctement défini la taxe à §6{0}{MONEY_CHAR}"
   TOWN_SET_RATE_SUCCESS: "§aVous avez défini avec succès le taux à §6{0}%"
-  PLAYER_SEND_MONEY_SUCCESS: "§Envoi de §6{0}{MONEY_CHAR}§f à §{1}"
+  PLAYER_SEND_MONEY_SUCCESS: "§fEnvoi de §6{0}{MONEY_CHAR}§f à §{1}"
   PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY: "Faites un clic droit sur les 2 coins opposés de votre future propriété pour la créer"
   PLAYER_FIRST_POINT_SET: "Premier point défini en §9{0}"
   PLAYER_SECOND_POINT_SET: "Second point défini en §9{0}"

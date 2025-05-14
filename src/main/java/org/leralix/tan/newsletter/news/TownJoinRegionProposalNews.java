@@ -11,7 +11,6 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.newsletter.NewsletterScope;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
@@ -23,15 +22,15 @@ import java.util.function.Consumer;
 
 import static org.leralix.tan.utils.TanChatUtils.getTANString;
 
-public class JoinRegionProposalNL extends Newsletter {
+public class TownJoinRegionProposalNews extends Newsletter {
     String proposingTerritoryID;
     String receivingTerritoryID;
 
-    public JoinRegionProposalNL(TerritoryData proposingTerritory, TerritoryData receivingTerritory) {
+    public TownJoinRegionProposalNews(TerritoryData proposingTerritory, TerritoryData receivingTerritory) {
         this(proposingTerritory.getID(), receivingTerritory.getID());
     }
 
-    public JoinRegionProposalNL(String proposingTerritoryID, String receivingTerritoryID) {
+    public TownJoinRegionProposalNews(String proposingTerritoryID, String receivingTerritoryID) {
         super();
         this.proposingTerritoryID = proposingTerritoryID;
         this.receivingTerritoryID = receivingTerritoryID;
@@ -88,7 +87,7 @@ public class JoinRegionProposalNL extends Newsletter {
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         if(receivingTerritory == null)
             return;
-        player.sendMessage(getTANString() + Lang.JOIN_REGION_PROPOSAL_NEWSLETTER.get(proposingTerritory.getCustomColoredName(), receivingTerritory.getCustomColoredName()));
+        player.sendMessage(getTANString() + Lang.TOWN_JOIN_REGION_PROPOSAL_NEWSLETTER.get(proposingTerritory.getCustomColoredName(), receivingTerritory.getCustomColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_BAD);
     }
 

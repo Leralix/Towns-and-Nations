@@ -25,6 +25,10 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.newsletter.news.RegionDeletedNews;
+import org.leralix.tan.newsletter.news.TownDeletedNews;
+import org.leralix.tan.newsletter.news.TownLeaveRegionNewsletter;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -292,9 +296,11 @@ public class RegionData extends TerritoryData {
     }
 
     protected void removeVassal(String vassalID) {
+
+        NewsletterStorage.register(new TownLeaveRegionNewsletter(getID(), vassalID));
+
         TownData town = TownDataStorage.getInstance().get(vassalID);
         townsInRegion.remove(vassalID);
-
 
         for (RankData rank : getRanks().values()) {
             for (String playerID : town.getPlayerIDList()) {
@@ -363,7 +369,8 @@ public class RegionData extends TerritoryData {
     @Override
     public void delete() {
         super.delete();
-        broadcastMessageWithSound(Lang.BROADCAST_PLAYER_REGION_DELETED.get(getLeaderData().getNameStored(), getBaseColoredName()), SoundEnum.BAD);
+        NewsletterStorage.register(new RegionDeletedNews(getLeaderData().getNameStored(), this));
+
         TeamUtils.updateAllScoreboardColor();
         RegionDataStorage.getInstance().deleteRegion(this);
     }

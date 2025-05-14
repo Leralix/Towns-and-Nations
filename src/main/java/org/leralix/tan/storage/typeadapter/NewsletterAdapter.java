@@ -5,10 +5,10 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.google.gson.JsonParseException;
-import org.leralix.tan.newsletter.news.DiplomacyProposalNL;
-import org.leralix.tan.newsletter.news.JoinRegionProposalNL;
+import org.leralix.tan.newsletter.news.DiplomacyProposalNews;
+import org.leralix.tan.newsletter.news.TownJoinRegionProposalNews;
 import org.leralix.tan.newsletter.news.Newsletter;
-import org.leralix.tan.newsletter.news.PlayerJoinRequestNL;
+import org.leralix.tan.newsletter.news.PlayerJoinRequestNews;
 
 import java.io.IOException;
 
@@ -47,11 +47,11 @@ public class NewsletterAdapter extends TypeAdapter<Newsletter> {
     private Class<? extends Newsletter> getClassForType(String type) {
         switch (type) {
             case "PlayerJoinRequestNL":
-                return PlayerJoinRequestNL.class;
+                return PlayerJoinRequestNews.class;
             case "DiplomacyProposalNL":
-                return DiplomacyProposalNL.class;
+                return DiplomacyProposalNews.class;
             case "JoinRegionProposalNL":
-                return JoinRegionProposalNL.class;
+                return TownJoinRegionProposalNews.class;
             default:
                 throw new JsonParseException("Unknown type: " + type);
         }

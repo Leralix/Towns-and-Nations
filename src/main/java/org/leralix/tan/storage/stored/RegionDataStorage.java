@@ -6,6 +6,8 @@ import com.google.gson.GsonBuilder;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
+import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.newsletter.news.RegionDeletedNews;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.utils.FileUtil;
 import org.leralix.tan.TownsAndNations;

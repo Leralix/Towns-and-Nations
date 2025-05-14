@@ -100,9 +100,7 @@ language:
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "You cancelled your application"
   PLAYER_TOWN_NOT_RECRUITING: "§cThis town is not recruiting"
   #BROADCAST
-  TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the town: §9{1}"
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c has left the town !"
-  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f has successfully created the region: §b{1}"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fThe town §9{0}§f has been kicked from the region"
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "Claim a chunk"
@@ -845,10 +843,6 @@ language:
   CHUNK_INTRUSION_ALERT: "§cAn enemy from the town {0} has entered your borders: {1}"
   WILDERNESS_NO_PERMISSION: "§cYou do not have permission to do this action in the wilderness"
   #History
-  HISTORY_TOWN_CREATED: "{0} has created the town §9{1}"
-  HISTORY_TOWN_DELETED: "{0} has deleted the town §9{1}"
-  HISTORY_REGION_CREATED: "{0} has created the region §9{1}"
-  HISTORY_REGION_DELETED: "{0} has deleted the region §9{1}"
   HISTORY_TOWN_LEADER_CHANGED: "{0} has changed the town leader from {1} to {2}"
   HISTORY_REGION_CAPITAL_CHANGED: "{0} has changed the regional capital from {1} to {2}"
   HISTORY_TOWN_NAME_CHANGED: "{0} has changed the town name from {1} to {2}"
@@ -968,9 +962,6 @@ language:
   GUI_DEFENDING_SIDE_ICON: "§aAttackers"
   GUI_DEFENDING_SIDE_ICON_DESC1: "§fList of every defenders :"
   GUI_ICON_LIST: "§f- {0}"
-  #Broadcast
-  BROADCAST_PLAYER_TOWN_DELETED: "§3{0}§f has deleted the town {1}"
-  BROADCAST_PLAYER_REGION_DELETED: "§3{0}§f has deleted the region {1}"
   #Map
   MAP_CLAIM_TYPE: "    Type of claims : "
   MAP_TOWN: "    §9[Town]"
@@ -1003,9 +994,20 @@ language:
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC1: "§f{0}§f asked {1}§f for its vassalage"
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§fLeft click to access the proposal"
   #Newsletter Broadcast
-  DIPLOMACY_PROPOSAL_NEWSLETTER: "{0}§f has proposed to change the relation with {1}§f to : {2}"
+  TOWN_CREATED_NEWSLETTER: "§e{0}§f has created the town {1}"
+  TOWN_DELETED_NEWSLETTER: "§e{0} has deleted the town {1}"
+  PLAYER_APPLICATION_NEWSLETTER: "§e{0}§f has applied to join the town {1}"
+  PLAYER_JOINED_TOWN_NEWSLETTER: "§e{0}§f has joined the town {1}"
+  REGION_CREATED_NEWSLETTER: "§e{0}§f has created the region: {1}"
+  REGION_DELETED_NEWSLETTER: "§e{0}§f has deleted the region {1}"
+
+  TOWN_JOIN_REGION_PROPOSAL_NEWSLETTER: "§e{0}§f has proposed to join the region {1}"
+  TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER: "§e{0}§f has accepted the proposal to join the region {1}"
+  TOWN_LEAVE_REGION_NEWSLETTER: "§e{0}§f has left the region {1}"
+  DIPLOMACY_PROPOSAL_NEWSLETTER: "§e{0}§f has proposed to change the relation with {1}§f to : {2}"
+  DIPLOMACY_ACCEPT_NEWSLETTER: "§e{0}§f has accepted the proposal to change the relation with {1}§f to : {2}"
+
   JOIN_REGION_PROPOSAL_NEWSLETTER: "{0}§f has proposed to join the region {1}"
-  PLAYER_APPLICATION_NEWSLETTER : "§a{0}§f has applied to join the town {1}"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cYou cannot claim this chunk"
 

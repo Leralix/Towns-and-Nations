@@ -25,12 +25,12 @@ import java.util.function.Consumer;
 import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
 import static org.leralix.tan.utils.TanChatUtils.getTANString;
 
-public class DiplomacyProposalNL extends Newsletter {
+public class DiplomacyProposalNews extends Newsletter {
     String proposingTerritoryID;
     String receivingTerritoryID;
     TownRelation wantedRelation;
 
-    public DiplomacyProposalNL(String proposingTerritoryID, String receivingTerritoryID, TownRelation wantedRelation) {
+    public DiplomacyProposalNews(String proposingTerritoryID, String receivingTerritoryID, TownRelation wantedRelation) {
         super();
         this.proposingTerritoryID = proposingTerritoryID;
         this.receivingTerritoryID = receivingTerritoryID;
