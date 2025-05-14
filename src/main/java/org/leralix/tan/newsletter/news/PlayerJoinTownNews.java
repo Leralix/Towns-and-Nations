@@ -59,13 +59,12 @@ public class PlayerJoinTownNews extends Newsletter {
 
     @Override
     public boolean shouldShowToPlayer(Player player) {
-        TownData townData = getTownData();
+        TownData townData = TownDataStorage.getInstance().get(townID);
+        if(townData == null)
+            return false;
         return townData.doesPlayerHavePermission(player, RolePermission.INVITE_PLAYER);
     }
 
-    protected TownData getTownData(){
-        return TownDataStorage.getInstance().get(townID);
-    }
 
     public String getPlayerID() {
         return playerID;

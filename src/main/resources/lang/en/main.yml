@@ -995,7 +995,7 @@ language:
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§fLeft click to access the proposal"
   #Newsletter Broadcast
   TOWN_CREATED_NEWSLETTER: "§e{0}§f has created the town {1}"
-  TOWN_DELETED_NEWSLETTER: "§e{0} has deleted the town {1}"
+  TOWN_DELETED_NEWSLETTER: "§e{0}§f has deleted the town {1}"
   PLAYER_APPLICATION_NEWSLETTER: "§e{0}§f has applied to join the town {1}"
   PLAYER_JOINED_TOWN_NEWSLETTER: "§e{0}§f has joined the town {1}"
   REGION_CREATED_NEWSLETTER: "§e{0}§f has created the region: {1}"

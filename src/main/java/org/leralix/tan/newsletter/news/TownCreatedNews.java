@@ -26,8 +26,8 @@ public class TownCreatedNews extends Newsletter {
 
     public TownCreatedNews(String townID, String playerID) {
         super();
-        this.playerID = townID;
-        this.townID = playerID;
+        this.townID = townID;
+        this.playerID = playerID;
     }
 
     @Override

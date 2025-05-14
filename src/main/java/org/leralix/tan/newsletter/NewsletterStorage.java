@@ -20,10 +20,7 @@ import org.leralix.tan.TownsAndNations;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class NewsletterStorage {
@@ -68,7 +65,9 @@ public class NewsletterStorage {
                 }
             }
         }
-        newsletters.remove(null);
+        System.out.println(newsletters);
+        newsletters.removeAll(Collections.singleton(null));
+        System.out.println(newsletters);
         return newsletters;
     }
 
