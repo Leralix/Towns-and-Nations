@@ -369,7 +369,7 @@ public class RegionData extends TerritoryData {
     @Override
     public void delete() {
         super.delete();
-        NewsletterStorage.register(new RegionDeletedNews(getLeaderData().getNameStored(), this));
+        NewsletterStorage.register(new RegionDeletedNews(getLeaderData().getID(), this));
 
         TeamUtils.updateAllScoreboardColor();
         RegionDataStorage.getInstance().deleteRegion(this);

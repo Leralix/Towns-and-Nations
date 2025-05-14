@@ -7,7 +7,7 @@ import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import java.util.function.Consumer;
 
 public class ChangeAttackName extends ChatListenerEvent {
-    private PlannedAttack plannedAttack;
+    private final PlannedAttack plannedAttack;
     Consumer<Player> guiCallback;
     public ChangeAttackName(PlannedAttack plannedAttack, Consumer<Player> guiCallback) {
         this.plannedAttack = plannedAttack;

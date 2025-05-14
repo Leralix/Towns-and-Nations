@@ -48,7 +48,7 @@ public class RegionDataStorage {
         regionStorage.put(regionID, newRegion);
         capital.setOverlord(newRegion);
 
-        FileUtil.addLineToHistory(Lang.HISTORY_REGION_CREATED.get(newLeader.getNameStored(), name));
+        FileUtil.addLineToHistory(Lang.REGION_CREATED_NEWSLETTER.get(newLeader.getNameStored(), name));
         return newRegion;
     }
 

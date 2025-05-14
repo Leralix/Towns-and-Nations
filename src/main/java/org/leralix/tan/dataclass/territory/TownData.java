@@ -771,7 +771,7 @@ public class TownData extends TerritoryData {
         removeAllLandmark(); //Remove all Landmark from the deleted town
         removeAllProperty(); //Remove all Property from the deleted town
 
-        NewsletterStorage.register(new TownDeletedNews(getLeaderName(), getBaseColoredName()));
+        NewsletterStorage.register(new TownDeletedNews(getLeaderData().getID(), getBaseColoredName()));
 
 
         List<String> playersToRemove = new ArrayList<>(getPlayerIDList());

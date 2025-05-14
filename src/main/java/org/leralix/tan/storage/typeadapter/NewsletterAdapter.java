@@ -45,16 +45,12 @@ public class NewsletterAdapter extends TypeAdapter<Newsletter> {
     }
 
     private Class<? extends Newsletter> getClassForType(String type) {
-        switch (type) {
-            case "PlayerJoinRequestNL":
-                return PlayerJoinRequestNews.class;
-            case "DiplomacyProposalNL":
-                return DiplomacyProposalNews.class;
-            case "JoinRegionProposalNL":
-                return TownJoinRegionProposalNews.class;
-            default:
-                throw new JsonParseException("Unknown type: " + type);
-        }
+        return switch (type) {
+            case "PlayerJoinRequestNL" -> PlayerJoinRequestNews.class;
+            case "DiplomacyProposalNL" -> DiplomacyProposalNews.class;
+            case "JoinRegionProposalNL" -> TownJoinRegionProposalNews.class;
+            default -> null;
+        };
     }
 
 }

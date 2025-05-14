@@ -2014,7 +2014,7 @@ public class PlayerGUI implements IGUI {
             }
 
             openConfirmMenu(player, Lang.GUI_CONFIRM_PLAYER_DELETE_TOWN.get(playerData, townData.getName()), confirm -> {
-                FileUtil.addLineToHistory(Lang.HISTORY_TOWN_DELETED.get(playerData, player.getName(),townData.getName()));
+                FileUtil.addLineToHistory(Lang.TOWN_DELETED_NEWSLETTER.get(playerData, player.getName(),townData.getName()));
                 townData.delete();
                 player.closeInventory();
                 SoundUtil.playSound(player,GOOD);
@@ -2999,7 +2999,7 @@ public class PlayerGUI implements IGUI {
             }
 
             openConfirmMenu(player, Lang.GUI_CONFIRM_DELETE_REGION.get(playerData, playerRegion.getName()), confirm -> {
-                FileUtil.addLineToHistory(Lang.HISTORY_REGION_DELETED.get(playerData, player.getName(),playerRegion.getName()));
+                FileUtil.addLineToHistory(Lang.REGION_DELETED_NEWSLETTER.get(playerData, player.getName(),playerRegion.getName()));
                 playerRegion.delete();
                 SoundUtil.playSound(player, GOOD);
                 player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED.get(playerData));

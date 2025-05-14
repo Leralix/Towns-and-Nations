@@ -54,7 +54,9 @@ public class TownJoinRegionAcceptedNewsletter extends Newsletter {
         if (receivingTerritory == null)
             return;
 
-        player.sendMessage(getTANString() + Lang.TOWN_JOIN_REGION_PROPOSAL_NEWSLETTER.get(proposingTerritory.getCustomColoredName(), receivingTerritory.getCustomColoredName()));
+        player.sendMessage(getTANString() + Lang.TOWN_JOIN_REGION_PROPOSAL_NEWSLETTER.get(
+                proposingTerritory.getCustomColoredName().toLegacyText(),
+                receivingTerritory.getCustomColoredName().toLegacyText()));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
     }
 }

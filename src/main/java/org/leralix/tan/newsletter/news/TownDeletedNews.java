@@ -15,13 +15,13 @@ import static org.leralix.tan.utils.TanChatUtils.getTANString;
 
 public class TownDeletedNews extends Newsletter {
 
-    private final String oldTownName;
     private final String playerID;
+    private final String oldTownName;
 
-    public TownDeletedNews(String townID, String playerID) {
+    public TownDeletedNews(String playerID, String townID) {
         super();
-        this.oldTownName = townID;
         this.playerID = playerID;
+        this.oldTownName = townID;
     }
 
     @Override

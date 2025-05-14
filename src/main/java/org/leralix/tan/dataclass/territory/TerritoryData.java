@@ -216,7 +216,7 @@ public abstract class TerritoryData {
         this.getRelations().setRelation(relation,otherTerritory);
         otherTerritory.getRelations().setRelation(relation,this);
 
-        NewsletterStorage.register(new DiplomacyAcceptedNews(getID(), otherTerritory.getID(), relation, !actualRelation.isSuperiorTo(relation)));
+        NewsletterStorage.register(new DiplomacyAcceptedNews(getID(), otherTerritory.getID(), relation, actualRelation.isSuperiorTo(relation)));
 
         TeamUtils.updateAllScoreboardColor();
     }
@@ -393,7 +393,7 @@ public abstract class TerritoryData {
 
     public void addVassal(TerritoryData vassal){
 
-        NewsletterStorage.register(new TownJoinRegionAcceptedNewsletter(this, vassal));
+        NewsletterStorage.register(new TownJoinRegionAcceptedNewsletter(getID(), vassal.getID()));
         NewsletterStorage.removeVassalisationProposal(this, vassal);
         addVassalPrivate(vassal);
     }

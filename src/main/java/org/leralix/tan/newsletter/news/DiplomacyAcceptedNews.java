@@ -47,11 +47,11 @@ public class DiplomacyAcceptedNews extends Newsletter {
             return;
 
         if(isRelationWorse){
-            player.sendMessage(getTANString() + Lang.BROADCAST_RELATION_WORSEN.get(proposingTerritory.getCustomColoredName(), receivingTerritory.getCustomColoredName(), wantedRelation.getColoredName()));
+            player.sendMessage(getTANString() + Lang.BROADCAST_RELATION_WORSEN.get(proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName()));
             SoundUtil.playSound(player, SoundEnum.BAD);
         }
         else{
-            player.sendMessage(getTANString() + Lang.BROADCAST_RELATION_IMPROVE.get(proposingTerritory.getCustomColoredName(), receivingTerritory.getCustomColoredName(), wantedRelation.getColoredName()));
+            player.sendMessage(getTANString() + Lang.BROADCAST_RELATION_IMPROVE.get(proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName()));
             SoundUtil.playSound(player, SoundEnum.GOOD);
        }
     }

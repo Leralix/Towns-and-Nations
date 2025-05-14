@@ -87,7 +87,7 @@ public class TownJoinRegionProposalNews extends Newsletter {
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         if(receivingTerritory == null)
             return;
-        player.sendMessage(getTANString() + Lang.TOWN_JOIN_REGION_PROPOSAL_NEWSLETTER.get(proposingTerritory.getCustomColoredName(), receivingTerritory.getCustomColoredName()));
+        player.sendMessage(getTANString() + Lang.TOWN_JOIN_REGION_PROPOSAL_NEWSLETTER.get(proposingTerritory.getBaseColoredName(), receivingTerritory.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_BAD);
     }
 

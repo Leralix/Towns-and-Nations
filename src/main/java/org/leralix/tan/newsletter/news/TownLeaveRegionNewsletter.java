@@ -54,7 +54,7 @@ public class TownLeaveRegionNewsletter extends Newsletter {
         if (region == null)
             return;
 
-        player.sendMessage(getTANString() + Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(leavingTown.getCustomColoredName(), region.getCustomColoredName()));
+        player.sendMessage(getTANString() + Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(leavingTown.getBaseColoredName(), region.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
     }
 }

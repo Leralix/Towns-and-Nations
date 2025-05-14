@@ -304,7 +304,7 @@ public class AdminGUI implements IGUI{
         GuiItem deleteRegionGui = ItemBuilder.from(deleteRegion).asGuiItem(event -> {
             event.setCancelled(true);
 
-            FileUtil.addLineToHistory(Lang.HISTORY_REGION_DELETED.get(player.getName(),territoryData.getName()));
+            FileUtil.addLineToHistory(Lang.REGION_DELETED_NEWSLETTER.get(player.getName(),territoryData.getName()));
 
             if(territoryData.isCapital()){
                 player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(territoryData.getOverlord().getBaseColoredName()));
