@@ -2018,7 +2018,6 @@ public class PlayerGUI implements IGUI {
                 townData.delete();
                 player.closeInventory();
                 SoundUtil.playSound(player,GOOD);
-                player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get(playerData));
             }, remove -> openTownSettings(player, townData));
 
 
@@ -3002,7 +3001,6 @@ public class PlayerGUI implements IGUI {
                 FileUtil.addLineToHistory(Lang.REGION_DELETED_NEWSLETTER.get(playerData, player.getName(),playerRegion.getName()));
                 playerRegion.delete();
                 SoundUtil.playSound(player, GOOD);
-                player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_PLAYER_REGION_SUCCESSFULLY_DELETED.get(playerData));
                 openMainMenu(player);
             }, remove -> openRegionSettings(player));
         });

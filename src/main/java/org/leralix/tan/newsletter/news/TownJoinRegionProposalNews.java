@@ -11,6 +11,7 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
@@ -46,6 +47,28 @@ public class TownJoinRegionProposalNews extends Newsletter {
         ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
                 Lang.NEWSLETTER_JOIN_REGION_PROPOSAL.get(),
                 Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(proposingTerritory.getBaseColoredName(), receivingTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+
+
+        return ItemBuilder.from(icon).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(event.isRightClick()){
+                markAsRead(player);
+                onClick.accept(player);
+            }
+        });
+    }
+
+    @Override
+    public GuiItem createConcernedGuiItem(Player player, Consumer<Player> onClick) {
+        TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
+        TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
+        if(proposingTerritory == null || receivingTerritory == null)
+            return null;
+
+        ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
+                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL.get(),
+                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(proposingTerritory.getBaseColoredName(), receivingTerritory.getBaseColoredName()),
                 Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2.get(),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
 
@@ -59,7 +82,6 @@ public class TownJoinRegionProposalNews extends Newsletter {
                 onClick.accept(player);
             }
         });
-
     }
 
     @Override
@@ -70,8 +92,7 @@ public class TownJoinRegionProposalNews extends Newsletter {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         if(!territoryData.isPlayerIn(playerData))
             return false;
-        //TODO check if player have right to accept relation (need to add role in territory) Right now only leader can see newsletter
-        return territoryData.isLeader(playerData);
+        return territoryData.doesPlayerHavePermission(playerData, RolePermission.TOWN_ADMINISTRATOR);
     }
 
     @Override

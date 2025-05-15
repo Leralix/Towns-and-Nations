@@ -3,7 +3,6 @@ package org.leralix.tan.newsletter.news;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.newsletter.NewsletterScope;
 import org.leralix.tan.newsletter.NewsletterType;
 
 import java.util.ArrayList;
@@ -22,6 +21,8 @@ public abstract class Newsletter {
     }
 
     public abstract GuiItem createGuiItem(Player player, Consumer<Player> onClick);
+
+    public abstract GuiItem createConcernedGuiItem(Player player, Consumer<Player> onClick);
 
     public abstract boolean shouldShowToPlayer(Player player);
 
@@ -58,4 +59,6 @@ public abstract class Newsletter {
     }
 
     public abstract void broadcast(Player player);
+
+
 }

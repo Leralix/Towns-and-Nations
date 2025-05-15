@@ -1,12 +1,16 @@
 package org.leralix.tan.newsletter.news;
 
+import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.newsletter.NewsletterType;
+import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
 
 import java.util.function.Consumer;
@@ -26,7 +30,28 @@ public class TownLeaveRegionNewsletter extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
-        return null;
+        TerritoryData leavingTown = TerritoryUtil.getTerritory(leavingTownID);
+        TerritoryData region = TerritoryUtil.getTerritory(regionID);
+        if(leavingTown == null || region == null)
+            return null;
+
+        ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
+                Lang.TOWN_LEAVE_REGION_NEWSLETTER_TITLE.get(),
+                Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(leavingTown.getBaseColoredName(), region.getBaseColoredName()),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+
+        return ItemBuilder.from(icon).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(event.isRightClick()){
+                markAsRead(player);
+                onClick.accept(player);
+            }
+        });
+    }
+
+    @Override
+    public GuiItem createConcernedGuiItem(Player player, Consumer<Player> onClick) {
+        return createGuiItem(player, onClick);
     }
 
     @Override

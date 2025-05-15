@@ -1,6 +1,7 @@
 package org.leralix.tan.newsletter.news;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -54,7 +55,28 @@ public class PlayerJoinTownNews extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
-        return null;
+        PlayerData playerData = PlayerDataStorage.getInstance().get(playerID);
+        if(playerData == null)
+            return null;
+        TownData townData = TownDataStorage.getInstance().get(townID);
+        if(townData == null)
+            return null;
+
+        ItemStack itemStack = HeadUtils.makeSkullURL(Lang.PLAYER_JOINED_TOWN_NEWSLETTER_TITLE.get(), "http://textures.minecraft.net/texture/16338322d26c6a7c08fb9fd22959a136728fa2d4dccd22b1563eb1bbaa1d5471",
+                Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(playerData.getNameStored(), townData.getCustomColoredName().toLegacyText()));
+
+        return ItemBuilder.from(itemStack).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(event.isRightClick()){
+                markAsRead(player);
+                onClick.accept(player);
+            }
+        });
+    }
+
+    @Override
+    public GuiItem createConcernedGuiItem(Player player, Consumer<Player> onClick) {
+        return createGuiItem(player, onClick);
     }
 
     @Override

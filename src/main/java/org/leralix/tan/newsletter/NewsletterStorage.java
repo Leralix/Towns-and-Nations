@@ -1,8 +1,5 @@
 package org.leralix.tan.newsletter;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import dev.triumphteam.gui
 .guis.GuiItem;
 import org.bukkit.Bukkit;
@@ -13,13 +10,9 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.newsletter.news.TownJoinRegionProposalNews;
 import org.leralix.tan.newsletter.news.Newsletter;
 import org.leralix.tan.newsletter.news.PlayerJoinRequestNews;
-import org.leralix.tan.storage.typeadapter.NewsletterAdapter;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.TownsAndNations;
 
-import java.io.*;
-import java.lang.reflect.Type;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -36,8 +29,12 @@ public class NewsletterStorage {
         EventScope scope = newsletter.getType().getBroadcastGlobal();
         if(scope != EventScope.NONE){
             for(Player player : Bukkit.getOnlinePlayers()){
-                if(scope == EventScope.ALL || newsletter.shouldShowToPlayer(player)){
-                    newsletter.broadcast(player);
+                try {
+                    if(scope == EventScope.ALL || newsletter.shouldShowToPlayer(player)){
+                        newsletter.broadcast(player);
+                    }
+                } catch (Exception e) {
+                    Bukkit.getLogger().warning("Error while delivering newsletter to " + player.getName() + ": " + e.getMessage());
                 }
             }
         }
@@ -45,7 +42,6 @@ public class NewsletterStorage {
         if(!categories.containsKey(newsletter.getType()))
             categories.put(newsletter.getType(), new ArrayList<>());
         categories.get(newsletter.getType()).add(newsletter);
-        save();
     }
 
     private static List<Newsletter> getNewsletters(){
@@ -53,21 +49,34 @@ public class NewsletterStorage {
         for(List<Newsletter> category : categories.values()) {
             newsletters.addAll(category);
         }
+        newsletters.sort(Comparator.comparingLong(Newsletter::getDate).reversed());
         return newsletters;
     }
 
-    public static List<GuiItem> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onclick){
+    public static List<GuiItem> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onClick){
         List<GuiItem> newsletters = new ArrayList<>();
+
+
         for(Newsletter newsletter : getNewsletters()) {
-            if(newsletter.getType().getNewsletterScope() == EventScope.ALL || newsletter.shouldShowToPlayer(player)){
+
+            EventScope eventScope = newsletter.getType().getNewsletterScope();
+
+            if(eventScope == EventScope.NONE){
+                continue;
+            }
+
+            if(eventScope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(player)){
                 if(scope == NewsletterScope.SHOW_ALL || !newsletter.isRead(player)){
-                    newsletters.add(newsletter.createGuiItem(player, onclick));
+                    newsletters.add(newsletter.createConcernedGuiItem(player, onClick));
+                    continue;
                 }
             }
+            if(eventScope == EventScope.ALL){
+                newsletters.add(newsletter.createGuiItem(player, onClick));
+            }
         }
-        System.out.println(newsletters);
         newsletters.removeAll(Collections.singleton(null));
-        System.out.println(newsletters);
+
         return newsletters;
     }
 
@@ -120,46 +129,11 @@ public class NewsletterStorage {
         }
     }
 
-
     public static void load() {
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Newsletter.class, new NewsletterAdapter())
-                .setPrettyPrinting()
-                .create();
 
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Newsletter.json");
-        if (file.exists()) {
-            try (Reader reader = new FileReader(file)) {
-                Type type = new TypeToken<EnumMap<NewsletterType, List<Newsletter>>>() {
-                }.getType();
-                categories = gson.fromJson(reader, type);
-            } catch (IOException e) {
-                TownsAndNations.getPlugin().getLogger().warning("Error while loading Newsletter file");
-            }
-        }
     }
 
     public static void save() {
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Newsletter.class, new NewsletterAdapter())
-                .setPrettyPrinting()
-                .create();
-
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Newsletter.json");
-        file.getParentFile().mkdir();
-
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-            TownsAndNations.getPlugin().getLogger().warning("Error while creating Newsletter file");
-        }
-
-        try (Writer writer = new FileWriter(file, false)) {
-            Type type = new TypeToken<Map<NewsletterType, List<Newsletter>>>() {}.getType();
-            gson.toJson(categories, type, writer); // Spécifiez le type ici
-        } catch (IOException e) {
-            TownsAndNations.getPlugin().getLogger().warning("Error while saving Newsletter file");
-        }
 
     }
 }

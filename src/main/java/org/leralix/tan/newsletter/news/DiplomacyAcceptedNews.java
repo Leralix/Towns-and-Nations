@@ -1,7 +1,9 @@
 package org.leralix.tan.newsletter.news;
 
+import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PlayerData;
@@ -10,6 +12,7 @@ import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.newsletter.NewsletterType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
 
 import java.util.function.Consumer;
@@ -58,7 +61,30 @@ public class DiplomacyAcceptedNews extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
-        return null;
+
+        TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
+        if(proposingTerritory == null)
+            return null;
+        TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
+        if(receivingTerritory == null)
+            return null;
+
+        ItemStack itemStack = HeadUtils.makeSkullURL(Lang.DIPLOMACY_ACCEPT_NEWSLETTER_TITLE.get(), "http://textures.minecraft.net/texture/b62c08805bd9c957da3450554a09e994042f54695db855c1c2cb47ef442e1bf6",
+                Lang.BROADCAST_RELATION_WORSEN.get(proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName()),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+
+        return ItemBuilder.from(itemStack).asGuiItem(e -> {
+            e.setCancelled(true);
+            if(e.isRightClick()){
+                markAsRead(player);
+                onClick.accept(player);
+            }
+        });
+    }
+
+    @Override
+    public GuiItem createConcernedGuiItem(Player player, Consumer<Player> onClick) {
+        return createGuiItem(player, onClick);
     }
 
     @Override

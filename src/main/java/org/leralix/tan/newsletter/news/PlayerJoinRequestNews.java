@@ -56,6 +56,23 @@ public class PlayerJoinRequestNews extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
+
+        ItemStack itemStack = HeadUtils.getPlayerHead(Lang.NEWSLETTER_PLAYER_APPLICATION.get(offlinePlayer.getName()), offlinePlayer,
+                Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(offlinePlayer.getName(), TownDataStorage.getInstance().get(townID).getBaseColoredName()),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+
+        return ItemBuilder.from(itemStack).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(event.isRightClick()){
+                markAsRead(player);
+                onClick.accept(player);
+            }
+        });
+    }
+
+    @Override
+    public GuiItem createConcernedGuiItem(Player player, Consumer<Player> onClick) {
 
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
 

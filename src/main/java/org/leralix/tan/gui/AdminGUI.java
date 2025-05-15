@@ -312,7 +312,6 @@ public class AdminGUI implements IGUI{
             }
             territoryData.delete();
 
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_PLAYER_TOWN_SUCCESSFULLY_DELETED.get());
             player.closeInventory();
         });
 

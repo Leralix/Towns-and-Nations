@@ -65,19 +65,38 @@ public class DiplomacyProposalNews extends Newsletter {
         ItemStack icon = HeadUtils.createCustomItemStack(Material.PAPER,
                 Lang.NEWSLETTER_DIPLOMACY_PROPOSAL.get(proposingTerritory.getBaseColoredName()),
                 Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1.get(receivingTerritory.getBaseColoredName(), wantedRelation.getColoredName()),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+
+        return ItemBuilder.from(icon).asGuiItem(event -> {
+            event.setCancelled(true);
+            if(event.isRightClick()){
+                markAsRead(player);
+                onClick.accept(player);
+            }
+        });
+    }
+
+    @Override
+    public GuiItem createConcernedGuiItem(Player player, Consumer<Player> onClick) {
+        TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
+        TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
+        if(proposingTerritory == null || receivingTerritory == null)
+            return null;
+
+        ItemStack icon = HeadUtils.createCustomItemStack(Material.PAPER,
+                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL.get(proposingTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1.get(receivingTerritory.getBaseColoredName(), wantedRelation.getColoredName()),
                 Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC2.get(),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);
             if(event.isLeftClick()){
-
-                if(receivingTerritory.doesPlayerHavePermission(player, RolePermission.MANAGE_TAXES)){
+                if(receivingTerritory.doesPlayerHavePermission(player, RolePermission.MANAGE_TOWN_RELATION)){
                     player.sendMessage(Lang.PLAYER_NO_PERMISSION.get());
                     SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                     return;
                 }
                 PlayerGUI.openProposalMenu(player, receivingTerritory, 0);
-
             }
             if(event.isRightClick()){
                 markAsRead(player);
