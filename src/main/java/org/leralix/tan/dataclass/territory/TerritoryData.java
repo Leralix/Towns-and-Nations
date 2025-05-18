@@ -37,7 +37,7 @@ import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.newsletter.news.DiplomacyAcceptedNews;
 import org.leralix.tan.newsletter.news.DiplomacyProposalNews;
 import org.leralix.tan.newsletter.news.TownJoinRegionProposalNews;

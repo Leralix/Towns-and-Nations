@@ -1,10 +1,7 @@
 package org.leralix.tan.newsletter.news;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
@@ -12,9 +9,7 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
-import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.newsletter.NewsletterStorage;
 import org.leralix.tan.newsletter.NewsletterType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -36,9 +31,15 @@ public class PlayerJoinTownNews extends Newsletter {
         townID = townData.getID();
     }
 
+    public PlayerJoinTownNews(UUID id, long date, String playerID, String townID) {
+        super(id, date);
+        this.playerID = playerID;
+        this.townID = townID;
+    }
+
     @Override
     public NewsletterType getType() {
-        return NewsletterType.PLAYER_APPLICATION;
+        return NewsletterType.PLAYER_JOIN_TOWN;
     }
 
     @Override
@@ -63,7 +64,8 @@ public class PlayerJoinTownNews extends Newsletter {
             return null;
 
         ItemStack itemStack = HeadUtils.makeSkullURL(Lang.PLAYER_JOINED_TOWN_NEWSLETTER_TITLE.get(), "http://textures.minecraft.net/texture/16338322d26c6a7c08fb9fd22959a136728fa2d4dccd22b1563eb1bbaa1d5471",
-                Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(playerData.getNameStored(), townData.getCustomColoredName().toLegacyText()));
+                Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(playerData.getNameStored(), townData.getCustomColoredName().toLegacyText()),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
 
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);

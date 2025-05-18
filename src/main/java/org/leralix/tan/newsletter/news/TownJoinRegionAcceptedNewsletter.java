@@ -37,9 +37,8 @@ public class TownJoinRegionAcceptedNewsletter extends Newsletter {
             return null;
 
         ItemStack itemStack = HeadUtils.makeSkullB64(Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER_TITLE.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
-                Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER.get(
-                        town.getCustomColoredName().toLegacyText(),
-                        region.getCustomColoredName().toLegacyText())
+                Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER.get(town.getCustomColoredName().toLegacyText(), region.getCustomColoredName().toLegacyText(),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get())
         );
 
 
@@ -70,7 +69,7 @@ public class TownJoinRegionAcceptedNewsletter extends Newsletter {
 
     @Override
     public NewsletterType getType() {
-        return NewsletterType.TOWN_JOIN_REGION_ACCEPTED;
+        return NewsletterType.TERRITORY_VASSAL_ACCEPTED;
     }
 
     @Override

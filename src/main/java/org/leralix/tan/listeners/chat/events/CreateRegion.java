@@ -1,6 +1,5 @@
 package org.leralix.tan.listeners.chat.events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -10,7 +9,7 @@ import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.newsletter.news.RegionCreationNews;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;

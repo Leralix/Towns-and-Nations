@@ -24,7 +24,7 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.newsletter.news.PlayerJoinRequestNews;
 import org.leralix.tan.newsletter.news.PlayerJoinTownNews;
 import org.leralix.tan.newsletter.news.TownDeletedNews;

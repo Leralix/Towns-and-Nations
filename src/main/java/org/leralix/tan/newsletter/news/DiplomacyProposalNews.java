@@ -1,9 +1,7 @@
 package org.leralix.tan.newsletter.news;
 
-import dev.triumphteam.gui
-.builder.item.ItemBuilder;
-import dev.triumphteam.gui
-.guis.GuiItem;
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -20,6 +18,7 @@ import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.newsletter.NewsletterType;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
@@ -37,9 +36,28 @@ public class DiplomacyProposalNews extends Newsletter {
         this.wantedRelation = wantedRelation;
     }
 
+    public DiplomacyProposalNews(UUID id, long date, String proposingTerritoryID, String receivingTerritoryID, TownRelation wantedRelation) {
+        super(id, date);
+        this.proposingTerritoryID = proposingTerritoryID;
+        this.receivingTerritoryID = receivingTerritoryID;
+        this.wantedRelation = wantedRelation;
+    }
+
     @Override
     public NewsletterType getType() {
         return NewsletterType.DIPLOMACY_PROPOSAL;
+    }
+
+    public String getProposingTerritoryID() {
+        return proposingTerritoryID;
+    }
+
+    public String getReceivingTerritoryID() {
+        return receivingTerritoryID;
+    }
+
+    public TownRelation getWantedRelation() {
+        return wantedRelation;
     }
 
     @Override

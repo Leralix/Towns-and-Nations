@@ -1,17 +1,20 @@
-package org.leralix.tan.newsletter;
+package org.leralix.tan.newsletter.storage;
 
 import dev.triumphteam.gui
 .guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.newsletter.news.TownJoinRegionProposalNews;
+import org.leralix.tan.newsletter.EventScope;
+import org.leralix.tan.newsletter.NewsletterScope;
 import org.leralix.tan.newsletter.news.Newsletter;
 import org.leralix.tan.newsletter.news.PlayerJoinRequestNews;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.storage.database.DatabaseHandler;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -22,7 +25,18 @@ public class NewsletterStorage {
         throw new IllegalStateException("Utility class");
     }
 
-    static Map<NewsletterType,List<Newsletter>> categories = new EnumMap<>(NewsletterType.class);
+    private static NewsletterDAO newsletterDAO;
+
+    public static void init() {
+
+        DatabaseHandler databaseHandler = TownsAndNations.getPlugin().getDatabaseHandler();
+
+        newsletterDAO = new NewsletterDAO(databaseHandler.getConnection());
+    }
+
+    public static NewsletterDAO getNewsletterDAO() {
+        return newsletterDAO;
+    }
 
     public static void register(Newsletter newsletter) {
 
@@ -39,18 +53,15 @@ public class NewsletterStorage {
             }
         }
 
-        if(!categories.containsKey(newsletter.getType()))
-            categories.put(newsletter.getType(), new ArrayList<>());
-        categories.get(newsletter.getType()).add(newsletter);
+        try {
+            newsletterDAO.save(newsletter);
+        } catch (Exception e) {
+            Bukkit.getLogger().warning("Error while saving newsletter: " + e.getMessage());
+        }
     }
 
     private static List<Newsletter> getNewsletters(){
-        List<Newsletter> newsletters = new ArrayList<>();
-        for(List<Newsletter> category : categories.values()) {
-            newsletters.addAll(category);
-        }
-        newsletters.sort(Comparator.comparingLong(Newsletter::getDate).reversed());
-        return newsletters;
+        return newsletterDAO.getNewsletters();
     }
 
     public static List<GuiItem> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onClick){
@@ -66,13 +77,24 @@ public class NewsletterStorage {
             }
 
             if(eventScope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(player)){
-                if(scope == NewsletterScope.SHOW_ALL || !newsletter.isRead(player)){
-                    newsletters.add(newsletter.createConcernedGuiItem(player, onClick));
+                if(scope == NewsletterScope.SHOW_ALL){
+                    newsletters.add(newsletter.createGuiItem(player, onClick));
+                    continue;
+                }
+                if(scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)){
+                    newsletters.add(newsletter.createGuiItem(player, onClick));
                     continue;
                 }
             }
             if(eventScope == EventScope.ALL){
-                newsletters.add(newsletter.createGuiItem(player, onClick));
+                if(scope == NewsletterScope.SHOW_ALL){
+                    newsletters.add(newsletter.createGuiItem(player, onClick));
+                    continue;
+                }
+                if(scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)){
+                    newsletters.add(newsletter.createGuiItem(player, onClick));
+                    continue;
+                }
             }
         }
         newsletters.removeAll(Collections.singleton(null));
@@ -90,14 +112,7 @@ public class NewsletterStorage {
         removePlayerJoinRequest(player.getUniqueId().toString(), townData.getID());
     }
     public static void removePlayerJoinRequest(String playerID, String townID) {
-        List<Newsletter> category = categories.get(NewsletterType.PLAYER_APPLICATION);
-        if (category == null)
-            return;
-        category.removeIf(newsletter ->
-            newsletter instanceof PlayerJoinRequestNews playerJoinRequestNews &&
-                    playerJoinRequestNews.getPlayerID().equals(playerID) &&
-                    playerJoinRequestNews.getTownID().equals(townID)
-        );
+
     }
 
     public static int getNbUnreadNewsletterForPlayer(Player player){
@@ -107,20 +122,11 @@ public class NewsletterStorage {
     public static void clearOldNewsletters() {
         int nbDays = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingNewsletter");
         long currentTime = System.currentTimeMillis() - 1000L * 60 * 60 * 24 * nbDays; // 1 week
-        for(List<Newsletter> category : categories.values()) {
-            category.removeIf(newsletter -> newsletter.getDate() < currentTime);
-        }
+
     }
 
     public static void removeVassalisationProposal(TerritoryData proposer, TerritoryData receiver) {
-        List<Newsletter> category = categories.get(NewsletterType.TOWN_JOIN_REGION_PROPOSAL);
-        if (category == null)
-            return;
-        category.removeIf(newsletter ->
-                newsletter instanceof TownJoinRegionProposalNews proposalNL &&
-                        proposalNL.getProposingTerritoryID().equals(proposer.getID()) &&
-                        proposalNL.getReceivingTerritoryID().equals(receiver.getID())
-        );
+
     }
 
     public static void markAllAsReadForPlayer(Player player, NewsletterScope scope) {
@@ -129,11 +135,4 @@ public class NewsletterStorage {
         }
     }
 
-    public static void load() {
-
-    }
-
-    public static void save() {
-
-    }
 }

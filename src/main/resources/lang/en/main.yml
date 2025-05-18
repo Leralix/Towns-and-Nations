@@ -387,6 +387,7 @@ language:
   GUI_CLAIM_ICON: "§aLand"
   GUI_CLAIM_ICON_DESC1: "§fManage town territory authorizations"
   GUI_BROWSE_TERRITORY_ICON: "Browse all territory"
+  GUI_BROWSE_TERRITORY_ICON_DESC1: "§fBrowse all territory"
   GUI_RELATION_ICON: "§aDiplomacy"
   GUI_RELATION_ICON_DESC1: "§fManage foreign diplomacy/policy"
   GUI_TOWN_LEVEL_ICON: "§aTown level"

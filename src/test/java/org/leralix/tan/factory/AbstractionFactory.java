@@ -17,6 +17,7 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.economy.TanEconomyStandalone;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.database.DatabaseHandler;
+import org.leralix.tan.storage.database.SQLiteHandler;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -25,9 +26,11 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class AbstractionFactory {
@@ -63,6 +66,15 @@ public class AbstractionFactory {
         when(plugin.getDatabaseHandler()).thenReturn(Mockito.mock(DatabaseHandler.class));
         when(plugin.getDataFolder()).thenReturn(new File(classLoader.getResource("created").getFile()));
 
+        SQLiteHandler sqliteHandler = new SQLiteHandler("src/test/resources/database/main.db");
+        try {
+            sqliteHandler.connect();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        when(plugin.getDatabaseHandler()).thenReturn(sqliteHandler);
+
         MockedStatic<TownsAndNations> pluginInstance = Mockito.mockStatic(TownsAndNations.class);
         pluginInstance.when(TownsAndNations::getPlugin).thenReturn(plugin);
 
@@ -75,6 +87,9 @@ public class AbstractionFactory {
 
         bukkitInstance.when(() -> Bukkit.getOfflinePlayer(any(UUID.class)))
                 .thenAnswer( invocation -> AbstractionFactory.getRandomPlayer((UUID) invocation.getArgument(0)));
+
+
+        bukkitInstance.when(() -> Bukkit.getLogger()).thenReturn(mock(Logger.class));
 
         BukkitScheduler bukkitScheduler = Mockito.mock(BukkitScheduler.class);
         bukkitInstance.when(Bukkit::getScheduler).thenAnswer(invocation -> bukkitScheduler);

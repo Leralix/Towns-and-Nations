@@ -27,4 +27,8 @@ public abstract class DatabaseHandler {
     public abstract void disconnect() throws SQLException;
     public abstract void initialize() throws SQLException;
 
+    public Connection getConnection() {
+        return connection;
+    }
+
 }

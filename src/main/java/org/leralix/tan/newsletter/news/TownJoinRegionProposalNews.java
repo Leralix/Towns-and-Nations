@@ -97,7 +97,7 @@ public class TownJoinRegionProposalNews extends Newsletter {
 
     @Override
     public NewsletterType getType() {
-        return NewsletterType.TOWN_JOIN_REGION_PROPOSAL;
+        return NewsletterType.TERRITORY_VASSAL_PROPOSAL;
     }
 
     @Override

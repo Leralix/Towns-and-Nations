@@ -13,7 +13,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.utils.ArchiveUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;

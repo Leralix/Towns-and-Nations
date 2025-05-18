@@ -14,6 +14,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.utils.HeadUtils;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.leralix.tan.utils.TanChatUtils.getTANString;
@@ -29,9 +30,23 @@ public class RegionCreationNews extends Newsletter {
         regionID = regionData.getID();
     }
 
+    public RegionCreationNews(UUID id, long date, String playerID, String regionID) {
+        super(id, date);
+        this.playerID = playerID;
+        this.regionID = regionID;
+    }
+
     @Override
     public NewsletterType getType() {
-        return NewsletterType.REGION_CREATION;
+        return NewsletterType.REGION_CREATED;
+    }
+
+    public String getPlayerID() {
+        return playerID;
+    }
+
+    public String getRegionID() {
+        return regionID;
     }
 
     @Override
@@ -57,7 +72,8 @@ public class RegionCreationNews extends Newsletter {
             return null;
 
         ItemStack itemStack = HeadUtils.makeSkullB64(Lang.REGION_CREATED_NEWSLETTER_TITLE.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=",
-                Lang.REGION_CREATED_NEWSLETTER.get(playerData.getNameStored(), regionData.getBaseColoredName()));
+                Lang.REGION_CREATED_NEWSLETTER.get(playerData.getNameStored(), regionData.getBaseColoredName()),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
 
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);

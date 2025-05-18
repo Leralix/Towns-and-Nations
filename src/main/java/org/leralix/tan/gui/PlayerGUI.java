@@ -50,7 +50,7 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.*;
 import org.leralix.tan.newsletter.NewsletterScope;
-import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.PlayerSelectPropertyPositionStorage;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
@@ -242,7 +242,10 @@ public class PlayerGUI implements IGUI {
                 Lang.MARK_ALL_AS_READ.get(playerData),
                 Lang.LEFT_CLICK_TO_SELECT.get(playerData));
 
-        GuiItem markAllAsReadButton = ItemBuilder.from(markAllAsRead).asGuiItem(event -> NewsletterStorage.markAllAsReadForPlayer(player, scope));
+        GuiItem markAllAsReadButton = ItemBuilder.from(markAllAsRead).asGuiItem(event -> {
+            NewsletterStorage.markAllAsReadForPlayer(player, scope);
+            openNewsletter(player, page, scope);
+        });
 
         gui.setItem(6,4,markAllAsReadButton);
         gui.setItem(6,5,checkScopeGui);

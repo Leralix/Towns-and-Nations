@@ -14,7 +14,7 @@ import org.leralix.tan.utils.TeamUtils;
 import org.leralix.tan.utils.prefixUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.newsletter.storage.NewsletterStorage;
 
 
 public class PlayerJoinListener implements Listener {

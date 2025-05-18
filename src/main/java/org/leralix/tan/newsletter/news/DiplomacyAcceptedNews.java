@@ -15,6 +15,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
@@ -26,6 +27,14 @@ public class DiplomacyAcceptedNews extends Newsletter {
     private final TownRelation wantedRelation;
     private final boolean isRelationWorse;
 
+    public DiplomacyAcceptedNews(UUID id, long date, String proposingTerritoryID, String receivingTerritoryID, TownRelation wantedRelation, boolean isRelationWorse) {
+        super(id, date);
+        this.proposingTerritoryID = proposingTerritoryID;
+        this.receivingTerritoryID = receivingTerritoryID;
+        this.wantedRelation = wantedRelation;
+        this.isRelationWorse = isRelationWorse;
+    }
+
     public DiplomacyAcceptedNews(String proposingTerritoryID, String receivingTerritoryID, TownRelation wantedRelation, boolean isRelationWorse) {
         super();
         this.proposingTerritoryID = proposingTerritoryID;
@@ -36,7 +45,23 @@ public class DiplomacyAcceptedNews extends Newsletter {
 
     @Override
     public NewsletterType getType() {
-        return NewsletterType.DIPLOMACY_PROPOSAL;
+        return NewsletterType.DIPLOMACY_ACCEPTED;
+    }
+
+    public String getProposingTerritoryID() {
+        return proposingTerritoryID;
+    }
+
+    public String getReceivingTerritoryID() {
+        return receivingTerritoryID;
+    }
+
+    public TownRelation getWantedRelation() {
+        return wantedRelation;
+    }
+
+    public boolean isRelationWorse() {
+        return isRelationWorse;
     }
 
     @Override

@@ -1,12 +1,11 @@
 package org.leralix.tan.listeners.chat.events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.newsletter.NewsletterStorage;
+import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.newsletter.news.TownCreatedNews;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
