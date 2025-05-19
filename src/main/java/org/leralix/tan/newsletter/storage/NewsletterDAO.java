@@ -1,5 +1,6 @@
 package org.leralix.tan.newsletter.storage;
 
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.newsletter.NewsletterType;
 import org.leralix.tan.newsletter.news.Newsletter;
 
@@ -98,23 +99,6 @@ public class NewsletterDAO {
     }
 
 
-    public Newsletter load(UUID id) throws SQLException {
-        String sql = "SELECT * FROM newsletter WHERE id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setObject(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (!rs.next()) return null;
-                NewsletterType type = NewsletterType.valueOf(rs.getString("type"));
-                LocalDateTime dateCreated = rs.getTimestamp("date_created").toLocalDateTime();
-
-                NewsletterSubDAO<?> subDAO = subDaos.get(type);
-                if (subDAO == null) throw new IllegalStateException("No DAO for type " + type);
-
-                return subDAO.load(id, dateCreated.toInstant(ZoneOffset.UTC).toEpochMilli());
-            }
-        }
-    }
-
     public void markAsRead(UUID newsletterId, UUID playerId) {
 
         try {
@@ -125,7 +109,7 @@ public class NewsletterDAO {
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to create newsletter_read table", e);
+            throw new RuntimeException("Failed to add entry in newsletter_read table", e);
         }
     }
 
@@ -158,6 +142,14 @@ public class NewsletterDAO {
                 while (rs.next()) {
                     UUID id = UUID.fromString(rs.getString("id"));
                     LocalDateTime createdAt = rs.getTimestamp("date_created").toLocalDateTime();
+
+                    String typeName = rs.getString("type");
+                    if(!NewsletterType.isValidEnumValue(typeName)) {
+                        TownsAndNations.getPlugin().getLogger().severe("Invalid newsletter type: " + typeName);
+                        removeNewsletter(id);
+                        continue;
+                    }
+
                     NewsletterType type = NewsletterType.valueOf(rs.getString("type"));
 
                     NewsletterSubDAO<?> subDAO = subDaos.get(type);
@@ -178,5 +170,15 @@ public class NewsletterDAO {
         }
 
         return newsletters;
+    }
+
+    private void removeNewsletter(UUID id) {
+        String sql = "DELETE FROM newsletter WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setObject(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to remove newsletter", e);
+        }
     }
 }

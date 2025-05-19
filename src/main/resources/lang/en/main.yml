@@ -156,6 +156,7 @@ language:
   TOWN_GUI_COMMAND_DESC: "Open the town and nation GUI"
   #Newsletter command
   OPEN_NEWSLETTER_DESC: "Get the latest news"
+  MARK_ALL_AS_READ: "§fMark all as read"
   #Pay command
   PAY_COMMAND_DESC: "Give money to another player"
   PAY_MINIMUM_REQUIRED: "§cYou need to send a least 1{MONEY_CHAR}"

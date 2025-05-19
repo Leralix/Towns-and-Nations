@@ -44,4 +44,14 @@ public enum NewsletterType {
     public EventScope getBroadcastGlobal() {
         return broadcast;
     }
+
+    public static boolean isValidEnumValue(String value) {
+        for (NewsletterType type : NewsletterType.values()) {
+            if (type.name().equalsIgnoreCase(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

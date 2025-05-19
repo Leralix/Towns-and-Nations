@@ -13,25 +13,40 @@ import org.leralix.tan.newsletter.NewsletterType;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.leralix.tan.utils.TanChatUtils.getTANString;
 
-public class TownLeaveRegionNewsletter extends Newsletter {
+public class TerritoryIndependentNews extends Newsletter {
 
-    private final String leavingTownID;
-    private final String regionID;
+    private final String formerMasterID;
+    private final String independentTerritoryID;
 
-    public TownLeaveRegionNewsletter(String regionID, String leavingTownID) {
+    public TerritoryIndependentNews(String independentTerritoryID, String formerMasterID) {
         super();
-        this.regionID = regionID;
-        this.leavingTownID = leavingTownID;
+        this.independentTerritoryID = independentTerritoryID;
+        this.formerMasterID = formerMasterID;
+    }
+
+    public TerritoryIndependentNews(UUID id, long date, String independentTerritoryID, String formerMasterID) {
+        super(id, date);
+        this.independentTerritoryID = independentTerritoryID;
+        this.formerMasterID = formerMasterID;
+    }
+
+    public String getFormerMasterID() {
+        return formerMasterID;
+    }
+
+    public String getIndependentTerritoryID() {
+        return independentTerritoryID;
     }
 
     @Override
     public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
-        TerritoryData leavingTown = TerritoryUtil.getTerritory(leavingTownID);
-        TerritoryData region = TerritoryUtil.getTerritory(regionID);
+        TerritoryData leavingTown = TerritoryUtil.getTerritory(formerMasterID);
+        TerritoryData region = TerritoryUtil.getTerritory(independentTerritoryID);
         if(leavingTown == null || region == null)
             return null;
 
@@ -56,10 +71,10 @@ public class TownLeaveRegionNewsletter extends Newsletter {
 
     @Override
     public boolean shouldShowToPlayer(Player player) {
-        TerritoryData leavingTown = TerritoryUtil.getTerritory(leavingTownID);
+        TerritoryData leavingTown = TerritoryUtil.getTerritory(formerMasterID);
         if (leavingTown == null)
             return false;
-        TerritoryData region = TerritoryUtil.getTerritory(regionID);
+        TerritoryData region = TerritoryUtil.getTerritory(independentTerritoryID);
         if (region == null)
             return false;
         return leavingTown.isPlayerIn(player) || region.isPlayerIn(player);
@@ -72,10 +87,10 @@ public class TownLeaveRegionNewsletter extends Newsletter {
 
     @Override
     public void broadcast(Player player) {
-        TerritoryData leavingTown = TerritoryUtil.getTerritory(leavingTownID);
+        TerritoryData leavingTown = TerritoryUtil.getTerritory(formerMasterID);
         if (leavingTown == null)
             return;
-        TerritoryData region = TerritoryUtil.getTerritory(regionID);
+        TerritoryData region = TerritoryUtil.getTerritory(independentTerritoryID);
         if (region == null)
             return;
 

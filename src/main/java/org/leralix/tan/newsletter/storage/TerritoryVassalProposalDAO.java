@@ -15,7 +15,7 @@ public class TerritoryVassalProposalDAO extends NewsletterSubDAO<TerritoryVassal
 
     @Override
     protected void createTableIfNotExists() {
-        String sql = "CREATE TABLE IF NOT EXISTS territory_vassal_accepted_newsletter (" +
+        String sql = "CREATE TABLE IF NOT EXISTS territory_vassal_proposal_newsletter (" +
                 "id UUID PRIMARY KEY, " +
                 "proposingTerritoryID VARCHAR(36) NOT NULL, " +
                 "receivingTerritoryID VARCHAR(36) NOT NULL" +
@@ -30,7 +30,7 @@ public class TerritoryVassalProposalDAO extends NewsletterSubDAO<TerritoryVassal
 
     @Override
     public void save(TerritoryVassalProposalNews newsletter) {
-        String sql = "INSERT INTO territory_vassal_accepted_newsletter (id, proposingTerritoryID, receivingTerritoryID) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO territory_vassal_proposal_newsletter (id, proposingTerritoryID, receivingTerritoryID) VALUES (?, ?, ?)";
 
         try (var ps = connection.prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
@@ -45,7 +45,7 @@ public class TerritoryVassalProposalDAO extends NewsletterSubDAO<TerritoryVassal
 
     @Override
     public TerritoryVassalProposalNews load(UUID id, long date) {
-        String sql = "SELECT proposingTerritoryID, receivingTerritoryID,FROM territory_vassal_accepted_newsletter WHERE id = ?";
+        String sql = "SELECT proposingTerritoryID, receivingTerritoryID,FROM territory_vassal_proposal_newsletter WHERE id = ?";
         try (var ps = connection.prepareStatement(sql)) {
             ps.setObject(1, id);
             var rs = ps.executeQuery();

@@ -33,7 +33,7 @@ public class DiplomacyProposalDAO extends NewsletterSubDAO<DiplomacyProposalNews
 
     @Override
     public void save(DiplomacyProposalNews newsletter) {
-        String sql = "INSERT INTO diplomacy_accepted_newsletter (id, proposingTerritoryID, receivingTerritoryID, wantedRelation) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO diplomacy_proposal_newsletter (id, proposingTerritoryID, receivingTerritoryID, wantedRelation) VALUES (?, ?, ?, ?)";
 
         try (var ps = connection.prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
@@ -49,7 +49,7 @@ public class DiplomacyProposalDAO extends NewsletterSubDAO<DiplomacyProposalNews
 
     @Override
     public DiplomacyProposalNews load(UUID id, long date) {
-        String sql = "SELECT proposingTerritoryID, receivingTerritoryID, wantedRelation FROM player_application_newsletter WHERE id = ?";
+        String sql = "SELECT proposingTerritoryID, receivingTerritoryID, wantedRelation FROM diplomacy_proposal_newsletter WHERE id = ?";
         try (var ps = connection.prepareStatement(sql)) {
             ps.setObject(1, id);
             var rs = ps.executeQuery();
