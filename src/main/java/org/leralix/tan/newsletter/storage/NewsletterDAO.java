@@ -36,6 +36,11 @@ public class NewsletterDAO {
         subDaos.put(NewsletterType.DIPLOMACY_ACCEPTED, new DiplomacyAcceptedDAO(connection));
         subDaos.put(NewsletterType.DIPLOMACY_PROPOSAL, new DiplomacyProposalDAO(connection));
 
+        subDaos.put(NewsletterType.ATTACK_DECLARED, new AttackDeclaredDAO(connection));
+        subDaos.put(NewsletterType.ATTACK_WON_BY_ATTACKER, new AttackWonByAttackerDAO(connection));
+        subDaos.put(NewsletterType.ATTACK_WON_BY_DEFENDER, new AttackWonByDefenderDAO(connection));
+        subDaos.put(NewsletterType.ATTACK_CANCELLED, new AttackCancelledDAO(connection));
+
 
 
     }

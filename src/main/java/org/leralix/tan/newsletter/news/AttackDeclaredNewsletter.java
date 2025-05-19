@@ -13,6 +13,7 @@ import org.leralix.tan.newsletter.NewsletterType;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.leralix.tan.utils.TanChatUtils.getTANString;
@@ -26,6 +27,20 @@ public class AttackDeclaredNewsletter extends Newsletter {
         super();
         this.defendingTerritoryID = defendingTerritoryID;
         this.attackingTerritoryID = attackingTerritoryID;
+    }
+
+    public AttackDeclaredNewsletter(UUID id, long date, String attackingTerritoryID, String defendingTerritoryID) {
+        super(id, date);
+        this.attackingTerritoryID = attackingTerritoryID;
+        this.defendingTerritoryID = defendingTerritoryID;
+    }
+
+    public String getAttackingTerritoryID() {
+        return attackingTerritoryID;
+    }
+
+    public String getDefendingTerritoryID() {
+        return defendingTerritoryID;
     }
 
     @Override
