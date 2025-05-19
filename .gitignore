@@ -83,3 +83,4 @@ nb-configuration.xml
 ## OS X
 ##############################
 .DS_Store
+src/test/resources/database/main.db
