@@ -67,7 +67,7 @@ public class TownLeaveRegionNewsletter extends Newsletter {
 
     @Override
     public NewsletterType getType() {
-        return NewsletterType.TERRITORY_NOW_INDEPENDENT;
+        return NewsletterType.TERRITORY_VASSAL_INDEPENDENT;
     }
 
     @Override

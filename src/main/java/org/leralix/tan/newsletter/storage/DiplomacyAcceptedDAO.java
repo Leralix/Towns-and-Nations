@@ -7,21 +7,20 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class DiplomacyAcceptedDAO implements NewsletterSubDAO<DiplomacyAcceptedNews> {
+public class DiplomacyAcceptedDAO extends NewsletterSubDAO<DiplomacyAcceptedNews> {
 
-    private final Connection connection;
 
     public DiplomacyAcceptedDAO(Connection connection) {
-        this.connection = connection;
-        createTableIfNotExists();
+        super(connection);
     }
 
-    private void createTableIfNotExists() {
+    @Override
+    protected void createTableIfNotExists() {
         String sql = "CREATE TABLE IF NOT EXISTS diplomacy_accepted_newsletter (" +
                 "id UUID PRIMARY KEY, " +
                 "proposingTerritoryID VARCHAR(36) NOT NULL, " +
-                "receivingTerritoryID VARCHAR(36) NOT NULL" +
-                "wantedRelation VARCHAR(36) NOT NULL" +
+                "receivingTerritoryID VARCHAR(36) NOT NULL, " +
+                "wantedRelation VARCHAR(36) NOT NULL, " +
                 "isWorseRelation BOOLEAN NOT NULL" +
                 ")";
 

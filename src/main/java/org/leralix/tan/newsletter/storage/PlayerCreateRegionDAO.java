@@ -7,16 +7,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class PlayerCreateRegionDAO implements NewsletterSubDAO<RegionCreationNews> {
-
-    private final Connection connection;
+public class PlayerCreateRegionDAO extends NewsletterSubDAO<RegionCreationNews> {
 
     public PlayerCreateRegionDAO(Connection connection) {
-        this.connection = connection;
-        createTableIfNotExists();
+        super(connection);
     }
 
-    private void createTableIfNotExists() {
+    @Override
+    protected void createTableIfNotExists() {
         String sql = "CREATE TABLE IF NOT EXISTS player_create_region_newsletter (" +
                 "id UUID PRIMARY KEY, " +
                 "playerID VARCHAR(36) NOT NULL, " +

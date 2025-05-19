@@ -6,16 +6,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class PlayerCreateTownDAO implements NewsletterSubDAO<TownCreatedNews> {
-
-    private final Connection connection;
+public class PlayerCreateTownDAO extends NewsletterSubDAO<TownCreatedNews> {
 
     public PlayerCreateTownDAO(Connection connection) {
-        this.connection = connection;
-        createTableIfNotExists();
+        super(connection);
     }
 
-    private void createTableIfNotExists() {
+    @Override
+    protected void createTableIfNotExists() {
         String sql = "CREATE TABLE IF NOT EXISTS player_create_town_newsletter (" +
                 "id UUID PRIMARY KEY, " +
                 "playerID VARCHAR(36) NOT NULL, " +

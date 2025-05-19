@@ -28,8 +28,16 @@ public class NewsletterDAO {
         subDaos.put(NewsletterType.REGION_CREATED, new PlayerCreateRegionDAO(connection));
         subDaos.put(NewsletterType.REGION_DELETED, new PlayerDeleteRegionDAO(connection));
 
+        subDaos.put(NewsletterType.TERRITORY_VASSAL_PROPOSAL, new TerritoryVassalProposalDAO(connection));
+        subDaos.put(NewsletterType.TERRITORY_VASSAL_ACCEPTED, new TerritoryVassalAcceptedDAO(connection));
+        subDaos.put(NewsletterType.TERRITORY_VASSAL_FORCED, new TerritoryVassalForcedDAO(connection));
+        subDaos.put(NewsletterType.TERRITORY_VASSAL_INDEPENDENT, new TerritoryVassalIndependentDAO(connection));
+
         subDaos.put(NewsletterType.DIPLOMACY_ACCEPTED, new DiplomacyAcceptedDAO(connection));
         subDaos.put(NewsletterType.DIPLOMACY_PROPOSAL, new DiplomacyProposalDAO(connection));
+
+
+
     }
 
     private void createTableIfNotExists() {

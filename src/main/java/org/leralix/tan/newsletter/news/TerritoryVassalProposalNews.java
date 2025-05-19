@@ -19,20 +19,27 @@ import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.newsletter.NewsletterType;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.leralix.tan.utils.TanChatUtils.getTANString;
 
-public class TownJoinRegionProposalNews extends Newsletter {
+public class TerritoryVassalProposalNews extends Newsletter {
     String proposingTerritoryID;
     String receivingTerritoryID;
 
-    public TownJoinRegionProposalNews(TerritoryData proposingTerritory, TerritoryData receivingTerritory) {
+    public TerritoryVassalProposalNews(TerritoryData proposingTerritory, TerritoryData receivingTerritory) {
         this(proposingTerritory.getID(), receivingTerritory.getID());
     }
 
-    public TownJoinRegionProposalNews(String proposingTerritoryID, String receivingTerritoryID) {
+    public TerritoryVassalProposalNews(String proposingTerritoryID, String receivingTerritoryID) {
         super();
+        this.proposingTerritoryID = proposingTerritoryID;
+        this.receivingTerritoryID = receivingTerritoryID;
+    }
+
+    public TerritoryVassalProposalNews(UUID id, long date, String proposingTerritoryID, String receivingTerritoryID) {
+        super(id, date);
         this.proposingTerritoryID = proposingTerritoryID;
         this.receivingTerritoryID = receivingTerritoryID;
     }

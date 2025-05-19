@@ -4,9 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.google.gson.JsonParseException;
 import org.leralix.tan.newsletter.news.DiplomacyProposalNews;
-import org.leralix.tan.newsletter.news.TownJoinRegionProposalNews;
+import org.leralix.tan.newsletter.news.TerritoryVassalProposalNews;
 import org.leralix.tan.newsletter.news.Newsletter;
 import org.leralix.tan.newsletter.news.PlayerJoinRequestNews;
 
@@ -48,7 +47,7 @@ public class NewsletterAdapter extends TypeAdapter<Newsletter> {
         return switch (type) {
             case "PlayerJoinRequestNL" -> PlayerJoinRequestNews.class;
             case "DiplomacyProposalNL" -> DiplomacyProposalNews.class;
-            case "JoinRegionProposalNL" -> TownJoinRegionProposalNews.class;
+            case "JoinRegionProposalNL" -> TerritoryVassalProposalNews.class;
             default -> null;
         };
     }

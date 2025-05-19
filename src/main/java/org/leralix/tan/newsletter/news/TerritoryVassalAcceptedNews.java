@@ -12,19 +12,26 @@ import org.leralix.tan.newsletter.NewsletterType;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.leralix.tan.utils.TanChatUtils.getTANString;
 
-public class TownJoinRegionAcceptedNewsletter extends Newsletter {
+public class TerritoryVassalAcceptedNews extends Newsletter {
 
     private final String regionID;
     private final String townID;
 
-    public TownJoinRegionAcceptedNewsletter(String regionID, String townID) {
+    public TerritoryVassalAcceptedNews(String regionID, String townID) {
         super();
         this.regionID = regionID;
         this.townID = townID;
+    }
+
+    public TerritoryVassalAcceptedNews(UUID id, long date, String proposingTerritoryID, String receivingTerritoryID) {
+        super(id, date);
+        this.regionID = proposingTerritoryID;
+        this.townID = receivingTerritoryID;
     }
 
     @Override
@@ -85,5 +92,13 @@ public class TownJoinRegionAcceptedNewsletter extends Newsletter {
                 proposingTerritory.getCustomColoredName().toLegacyText(),
                 receivingTerritory.getCustomColoredName().toLegacyText()));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
+    }
+
+    public String getProposingTerritoryID() {
+        return regionID;
+    }
+
+    public String getReceivingTerritoryID() {
+        return townID;
     }
 }

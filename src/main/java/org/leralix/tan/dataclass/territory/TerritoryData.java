@@ -40,8 +40,8 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.newsletter.news.DiplomacyAcceptedNews;
 import org.leralix.tan.newsletter.news.DiplomacyProposalNews;
-import org.leralix.tan.newsletter.news.TownJoinRegionProposalNews;
-import org.leralix.tan.newsletter.news.TownJoinRegionAcceptedNewsletter;
+import org.leralix.tan.newsletter.news.TerritoryVassalProposalNews;
+import org.leralix.tan.newsletter.news.TerritoryVassalAcceptedNews;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
@@ -393,7 +393,7 @@ public abstract class TerritoryData {
 
     public void addVassal(TerritoryData vassal){
 
-        NewsletterStorage.register(new TownJoinRegionAcceptedNewsletter(getID(), vassal.getID()));
+        NewsletterStorage.register(new TerritoryVassalAcceptedNews(getID(), vassal.getID()));
         NewsletterStorage.removeVassalisationProposal(this, vassal);
         addVassalPrivate(vassal);
     }
@@ -569,7 +569,7 @@ public abstract class TerritoryData {
     public void addVassalisationProposal(TerritoryData proposal){
         getOverlordsProposals().add(proposal.getID());
         broadcastMessageWithSound(Lang.REGION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getBaseColoredName(), getBaseColoredName()), SoundEnum.MINOR_GOOD);
-        NewsletterStorage.register(new TownJoinRegionProposalNews(proposal, this));
+        NewsletterStorage.register(new TerritoryVassalProposalNews(proposal, this));
     }
 
     public void removeVassalisationProposal(TerritoryData proposal){

@@ -2,12 +2,21 @@ package org.leralix.tan.newsletter.storage;
 
 import org.leralix.tan.newsletter.news.Newsletter;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public interface NewsletterSubDAO<T extends Newsletter> {
+public abstract class NewsletterSubDAO<T extends Newsletter> {
 
-    void save(T newsletter) throws SQLException;
+    protected Connection connection;
 
-    T load(UUID id, long date) throws SQLException;
+    public NewsletterSubDAO(Connection connection) {
+        this.connection = connection;
+        createTableIfNotExists();
+    }
+    protected abstract void createTableIfNotExists();
+
+    public abstract void save(T newsletter) throws SQLException;
+
+    public abstract T load(UUID id, long date) throws SQLException;
 }

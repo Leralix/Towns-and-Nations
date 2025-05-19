@@ -1,27 +1,24 @@
 package org.leralix.tan.newsletter.storage;
 
-import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.newsletter.news.DiplomacyAcceptedNews;
-import org.leralix.tan.newsletter.news.DiplomacyProposalNews;
+import org.leralix.tan.newsletter.news.TerritoryVassalProposalNews;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class DiplomacyProposalDAO extends NewsletterSubDAO<DiplomacyProposalNews> {
+public class TerritoryVassalProposalDAO extends NewsletterSubDAO<TerritoryVassalProposalNews> {
 
 
-    public DiplomacyProposalDAO(Connection connection) {
+    public TerritoryVassalProposalDAO(Connection connection) {
         super(connection);
     }
 
     @Override
     protected void createTableIfNotExists() {
-        String sql = "CREATE TABLE IF NOT EXISTS diplomacy_proposal_newsletter (" +
+        String sql = "CREATE TABLE IF NOT EXISTS territory_vassal_accepted_newsletter (" +
                 "id UUID PRIMARY KEY, " +
                 "proposingTerritoryID VARCHAR(36) NOT NULL, " +
-                "receivingTerritoryID VARCHAR(36) NOT NULL, " +
-                "wantedRelation VARCHAR(36) NOT NULL" +
+                "receivingTerritoryID VARCHAR(36) NOT NULL" +
                 ")";
 
         try (var ps = connection.prepareStatement(sql)) {
@@ -32,14 +29,13 @@ public class DiplomacyProposalDAO extends NewsletterSubDAO<DiplomacyProposalNews
     }
 
     @Override
-    public void save(DiplomacyProposalNews newsletter) {
-        String sql = "INSERT INTO diplomacy_accepted_newsletter (id, proposingTerritoryID, receivingTerritoryID, wantedRelation) VALUES (?, ?, ?, ?)";
+    public void save(TerritoryVassalProposalNews newsletter) {
+        String sql = "INSERT INTO territory_vassal_accepted_newsletter (id, proposingTerritoryID, receivingTerritoryID) VALUES (?, ?, ?)";
 
         try (var ps = connection.prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getProposingTerritoryID());
             ps.setString(3, newsletter.getReceivingTerritoryID());
-            ps.setString(4, newsletter.getWantedRelation().toString());
             ps.executeUpdate();
         }
         catch (SQLException e) {
@@ -48,16 +44,15 @@ public class DiplomacyProposalDAO extends NewsletterSubDAO<DiplomacyProposalNews
     }
 
     @Override
-    public DiplomacyProposalNews load(UUID id, long date) {
-        String sql = "SELECT proposingTerritoryID, receivingTerritoryID, wantedRelation FROM player_application_newsletter WHERE id = ?";
+    public TerritoryVassalProposalNews load(UUID id, long date) {
+        String sql = "SELECT proposingTerritoryID, receivingTerritoryID,FROM territory_vassal_accepted_newsletter WHERE id = ?";
         try (var ps = connection.prepareStatement(sql)) {
             ps.setObject(1, id);
             var rs = ps.executeQuery();
             if (rs.next()) {
-                String proposingTerritoryID = rs.getString("playerID");
-                String receivingTerritoryID = rs.getString("townID");
-                TownRelation wantedRelation = TownRelation.valueOf(rs.getString("wantedRelation"));
-                return new DiplomacyProposalNews(id, date, proposingTerritoryID, receivingTerritoryID, wantedRelation);
+                String proposingTerritoryID = rs.getString("proposingTerritoryID");
+                String receivingTerritoryID = rs.getString("receivingTerritoryID");
+                return new TerritoryVassalProposalNews(id, date, proposingTerritoryID, receivingTerritoryID);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Failed to load player application newsletter", e);

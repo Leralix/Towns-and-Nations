@@ -986,6 +986,7 @@ language:
   NEWSLETTER_JOIN_REGION_PROPOSAL: "§fJoin region proposal"
   NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1: "{0}§f has asked {1}§f to join its region"
   NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2: "§fLeft click to open the proposal"
+
   NEWSLETTER_SHOW_ALL: "§fShow all news"
   NEWSLETTER_SHOW_ONLY_UNREAD: "§fShow only unread news"
   NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ: "§fRight click to mark as read"
@@ -1013,7 +1014,16 @@ language:
   DIPLOMACY_PROPOSAL_NEWSLETTER: "§e{0}§f has proposed to change the relation with {1}§f to : {2}"
   DIPLOMACY_ACCEPT_NEWSLETTER_TITLE: "Diplomacy proposal accepted"
   DIPLOMACY_ACCEPT_NEWSLETTER: "§e{0}§f has accepted the proposal to change the relation with {1}§f to : {2}"
-
+  FORCED_VASSALAGE_TITLE: "Forced vassalage"
+  FORCED_VASSALAGE: "{0}§f has been forced to be a vassal of {1}"
+  ATTACK_DECLARED_TITLE : "Attack declared"
+  ATTACK_DECLARED : "§fAn attack has been declared by {0} against {1}"
+  ATTACK_WON_BY_ATTACKER_TITLE : "Attackers won"
+  ATTACK_WON_BY_ATTACKER : "§fThe battle between {0} and {1} has been won by {2}"
+  ATTACK_WON_BY_DEFENDER_TITLE : "Defenders won"
+  ATTACK_WON_BY_DEFENDER : "§fThe battle between {0} and {1} has been won by {2}"
+  ATTACK_CANCELLED_TITLE : "Attack cancelled"
+  ATTACK_CANCELLED : "{0}§f has cancelled their attack on {1}"
   JOIN_REGION_PROPOSAL_NEWSLETTER: "{0}§f has proposed to join the region {1}"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cYou cannot claim this chunk"
