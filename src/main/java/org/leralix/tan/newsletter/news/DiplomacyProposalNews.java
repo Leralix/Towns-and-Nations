@@ -74,6 +74,11 @@ public class DiplomacyProposalNews extends Newsletter {
     }
 
     @Override
+    public void broadcastConcerned(Player player) {
+        broadcast(player);
+    }
+
+    @Override
     public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);

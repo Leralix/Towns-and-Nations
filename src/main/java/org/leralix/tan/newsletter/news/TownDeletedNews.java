@@ -86,4 +86,9 @@ public class TownDeletedNews extends Newsletter {
         player.sendMessage(getTANString() + Lang.TOWN_DELETED_NEWSLETTER.get(playerData.getNameStored(), oldTownName));
         SoundUtil.playSound(player, SoundEnum.BAD);
     }
+
+    @Override
+    public void broadcastConcerned(Player player) {
+        broadcast(player);
+    }
 }

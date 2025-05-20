@@ -99,4 +99,9 @@ public class TownCreatedNews extends Newsletter {
         player.sendMessage(getTANString() + Lang.TOWN_CREATED_NEWSLETTER.get(playerData.getNameStored(), townData.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.GOOD);
     }
+
+    @Override
+    public void broadcastConcerned(Player player) {
+        broadcast(player);
+    }
 }

@@ -95,4 +95,9 @@ public class AttackCancelledByDefenderNewsletter extends Newsletter {
         player.sendMessage(getTANString() + Lang.ATTACK_CANCELLED.get(attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
     }
+
+    @Override
+    public void broadcastConcerned(Player player) {
+        broadcast(player);
+    }
 }

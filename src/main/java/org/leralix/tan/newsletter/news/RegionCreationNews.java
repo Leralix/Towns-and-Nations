@@ -62,6 +62,11 @@ public class RegionCreationNews extends Newsletter {
     }
 
     @Override
+    public void broadcastConcerned(Player player) {
+        broadcast(player);
+    }
+
+    @Override
     public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
 
         PlayerData playerData = PlayerDataStorage.getInstance().get(playerID);

@@ -101,4 +101,9 @@ public class TerritoryVassalAcceptedNews extends Newsletter {
     public String getReceivingTerritoryID() {
         return townID;
     }
+
+    @Override
+    public void broadcastConcerned(Player player) {
+        broadcast(player);
+    }
 }

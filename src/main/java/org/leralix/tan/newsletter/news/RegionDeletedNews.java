@@ -51,16 +51,21 @@ public class RegionDeletedNews extends Newsletter {
     @Override
     public void broadcast(Player player) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(playerID);
-        if(playerData == null)
+        if (playerData == null)
             return;
         player.sendMessage(getTANString() + Lang.REGION_DELETED_NEWSLETTER.get(playerData.getNameStored(), regionName));
         SoundUtil.playSound(player, SoundEnum.GOOD);
     }
 
     @Override
+    public void broadcastConcerned(Player player) {
+        broadcast(player);
+    }
+
+    @Override
     public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(playerID);
-        if(playerData == null)
+        if (playerData == null)
             return null;
         ItemStack itemStack = HeadUtils.makeSkullB64(Lang.REGION_DELETED_NEWSLETTER_TITLE.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=",
                 Lang.REGION_DELETED_NEWSLETTER.get(playerData.getNameStored(), regionName),
@@ -68,7 +73,7 @@ public class RegionDeletedNews extends Newsletter {
 
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);
-            if(event.isRightClick()){
+            if (event.isRightClick()) {
                 markAsRead(player);
                 onClick.accept(player);
             }

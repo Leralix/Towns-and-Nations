@@ -46,6 +46,18 @@ public class PlayerJoinRequestNews extends Newsletter {
         return NewsletterType.PLAYER_APPLICATION;
     }
 
+    private TownData getTownData(){
+        return TownDataStorage.getInstance().get(townID);
+    }
+
+    public String getPlayerID() {
+        return playerID;
+    }
+
+    public String getTownID() {
+        return townID;
+    }
+
     @Override
     public void broadcast(Player player) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(playerID);
@@ -103,15 +115,8 @@ public class PlayerJoinRequestNews extends Newsletter {
         return townData.isPlayerIn(player);
     }
 
-    private TownData getTownData(){
-        return TownDataStorage.getInstance().get(townID);
-    }
-
-    public String getPlayerID() {
-        return playerID;
-    }
-
-    public String getTownID() {
-        return townID;
+    @Override
+    public void broadcastConcerned(Player player) {
+        broadcast(player);
     }
 }

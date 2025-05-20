@@ -123,4 +123,9 @@ public class DiplomacyAcceptedNews extends Newsletter {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         return receivingTerritory.isPlayerIn(playerData) || proposingTerritory.isPlayerIn(playerData);
     }
+
+    @Override
+    public void broadcastConcerned(Player player) {
+        broadcast(player);
+    }
 }

@@ -106,4 +106,9 @@ public class TerritoryVassalForcedNews extends Newsletter {
     public String getForcedTerritoryID() {
         return forcedTerritoryID;
     }
+
+    @Override
+    public void broadcastConcerned(Player player) {
+        broadcast(player);
+    }
 }

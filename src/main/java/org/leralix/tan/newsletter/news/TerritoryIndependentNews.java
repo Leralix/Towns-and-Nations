@@ -47,7 +47,7 @@ public class TerritoryIndependentNews extends Newsletter {
     public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
         TerritoryData leavingTown = TerritoryUtil.getTerritory(formerMasterID);
         TerritoryData region = TerritoryUtil.getTerritory(independentTerritoryID);
-        if(leavingTown == null || region == null)
+        if (leavingTown == null || region == null)
             return null;
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
@@ -57,7 +57,7 @@ public class TerritoryIndependentNews extends Newsletter {
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);
-            if(event.isRightClick()){
+            if (event.isRightClick()) {
                 markAsRead(player);
                 onClick.accept(player);
             }
@@ -96,5 +96,10 @@ public class TerritoryIndependentNews extends Newsletter {
 
         player.sendMessage(getTANString() + Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(leavingTown.getBaseColoredName(), region.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
+    }
+
+    @Override
+    public void broadcastConcerned(Player player) {
+        broadcast(player);
     }
 }

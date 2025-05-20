@@ -95,4 +95,9 @@ public class AttackWonByDefenderNewsletter extends Newsletter {
         player.sendMessage(getTANString() + Lang.ATTACK_WON_BY_ATTACKER.get(attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
     }
+
+    @Override
+    public void broadcastConcerned(Player player) {
+        broadcast(player);
+    }
 }

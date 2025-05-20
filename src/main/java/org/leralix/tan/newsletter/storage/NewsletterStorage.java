@@ -44,11 +44,15 @@ public class NewsletterStorage {
         if(scope != EventScope.NONE){
             for(Player player : Bukkit.getOnlinePlayers()){
                 try {
-                    if(scope == EventScope.ALL || newsletter.shouldShowToPlayer(player)){
+                    if(scope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(player)){
+                        newsletter.broadcastConcerned(player);
+                    }
+                    else if(scope == EventScope.ALL){
                         newsletter.broadcast(player);
                     }
                 } catch (Exception e) {
                     Bukkit.getLogger().warning("Error while delivering newsletter to " + player.getName() + ": " + e.getMessage());
+                    break;
                 }
             }
         }
@@ -78,7 +82,7 @@ public class NewsletterStorage {
 
             if(eventScope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(player)){
                 if(scope == NewsletterScope.SHOW_ALL){
-                    newsletters.add(newsletter.createGuiItem(player, onClick));
+                    newsletters.add(newsletter.createConcernedGuiItem(player, onClick));
                     continue;
                 }
                 if(scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)){

@@ -95,4 +95,9 @@ public class AttackDeclaredNewsletter extends Newsletter {
         player.sendMessage(getTANString() + Lang.ATTACK_DECLARED.get(attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
     }
+
+    @Override
+    public void broadcastConcerned(Player player) {
+        broadcast(player);
+    }
 }
