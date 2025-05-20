@@ -384,21 +384,9 @@ TimeBeforeClearingNewsletter: 7
 ########################
 
 #EXPERIMENTAL FEATURE
-#As of 0.12.0+, only tax history is stored in the database
-
-#Database type (only sqlite for now)
-#If other db are needed, please ask in the discord
-dbType: "sqlite"
-
-EnableCrossServer: false
-SQL:
-  #ip of the mysql server
-  address: jdbc:mysql://localhost:3306/minecraft
-  #username of the database
-  username: root
-  #password of the database
-  password: password
-
+#As of 0.14.4+, tax history and newsletter are stored in the database
+#A full support for databases is not yet available
+#Database url cannot be configured
 
 ########################
 ##       Storage      ##
