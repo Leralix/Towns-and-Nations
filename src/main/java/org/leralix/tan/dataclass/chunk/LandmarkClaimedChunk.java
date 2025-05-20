@@ -80,7 +80,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
         textComponent.setColor(ChatColor.GOLD);
         textComponent.setHoverEvent(new HoverEvent(
                 HoverEvent.Action.SHOW_TEXT,
-                new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
+                new Text("x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
                         ChatColor.GOLD + getLandMark().getName() + "\n" +
                         Lang.LEFT_CLICK_TO_CLAIM.get())));
         return textComponent;

@@ -157,7 +157,7 @@ public class TownClaimedChunk extends ClaimedChunk2 {
         textComponent.setColor(getTown().getChunkColor());
         textComponent.setHoverEvent(new HoverEvent(
                 HoverEvent.Action.SHOW_TEXT,
-                new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
+                new Text("x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
                         getTown().getBaseColoredName() + "\n" +
                         Lang.LEFT_CLICK_TO_CLAIM.get())));
         return textComponent;

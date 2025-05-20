@@ -60,8 +60,16 @@ public abstract class ClaimedChunk2 {
         return this.x;
     }
 
+    public int getMiddleX() {
+        return this.x * 16 + 8;
+    }
+
     public int getZ() {
         return this.z;
+    }
+
+    public int getMiddleZ() {
+        return this.z * 16 + 8;
     }
 
     public String getWorldUUID() {

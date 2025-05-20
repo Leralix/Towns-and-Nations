@@ -127,7 +127,7 @@ public class RegionClaimedChunk extends ClaimedChunk2 {
         textComponent.setColor(getRegion().getChunkColor());
         textComponent.setHoverEvent(new HoverEvent(
                 HoverEvent.Action.SHOW_TEXT,
-                new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
+                new Text("x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
                         getRegion().getBaseColoredName() + "\n" +
                         Lang.LEFT_CLICK_TO_CLAIM.get())));
         return textComponent;

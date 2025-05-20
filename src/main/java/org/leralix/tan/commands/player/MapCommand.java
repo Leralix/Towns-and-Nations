@@ -2,7 +2,9 @@ package org.leralix.tan.commands.player;
 
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
@@ -62,6 +64,7 @@ public class MapCommand extends PlayerSubCommand {
         Map<Integer, TextComponent> text = new HashMap<>();
         TextComponent claimType = new TextComponent(Lang.MAP_CLAIM_TYPE.get());
         claimType.setHoverEvent(null);
+        claimType.setClickEvent(null);
         claimType.setColor(net.md_5.bungee.api.ChatColor.GRAY);
         text.put(-4, claimType);
         TextComponent typeButton = settings.getMapTypeButton();
@@ -75,47 +78,35 @@ public class MapCommand extends PlayerSubCommand {
         // Envoi de l'en-tête
         player.sendMessage("╭─────────⟢⟐⟣─────────╮");
         for (int dz = -radius; dz <= radius; dz++) {
-            ComponentBuilder newLine = new ComponentBuilder();
-            newLine.append("   ");
+            TextComponent newLine = new TextComponent();
+            newLine.addExtra("   ");
             for (int dx = -radius; dx <= radius; dx++) {
                 int chunkX = currentChunk.getX();
                 int chunkZ = currentChunk.getZ();
 
-                switch (cardinalPoint) {
-                    case NORTH:
-                        chunkX += dx;
-                        chunkZ += dz;
-                        break;
-                    case SOUTH:
-                        chunkX -= dx;
-                        chunkZ -= dz;
-                        break;
-                    case EAST:
-                        chunkX -= dz;
-                        chunkZ += dx;
-                        break;
-                    case WEST:
-                        chunkX += dz;
-                        chunkZ -= dx;
-                        break;
-                }
+
+                chunkX += dx;
+                chunkZ += dz;
 
                 Chunk chunk = player.getWorld().getChunkAt(chunkX, chunkZ);
                 ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
                 TextComponent icon = claimedChunk.getMapIcon(player);
+
+                if(dx == 0 && dz == 0){
+                    icon.setText("🌑"); // For some reason, the only round emoji with the same size as ⬛ is this emoji
+                }
+
                 ClaimAction claimAction = settings.getClaimActionType();
                 ClaimType mapType = settings.getClaimType();
                 icon.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tan " + claimAction.toString().toLowerCase() + " " + mapType.toString().toLowerCase() + " " + chunk.getX() + " " + chunk.getZ()));
-                newLine.append(icon);
+                newLine.addExtra(icon);
             }
             if (text.containsKey(dz)) {
-                newLine.append(text.get(dz));
+                newLine.addExtra(text.get(dz));
             }
-            player.spigot().sendMessage(newLine.create());
+            player.spigot().sendMessage(newLine);
         }
         player.sendMessage("╰─────────⟢⟐⟣─────────╯");
     }
-
-
 
 }

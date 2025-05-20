@@ -66,7 +66,7 @@ public class WildernessChunk extends ClaimedChunk2 {
             textComponent.setColor(ChatColor.RED);
             textComponent.setHoverEvent(new HoverEvent(
                     HoverEvent.Action.SHOW_TEXT,
-                    new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
+                    new Text("x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
                             Lang.WILDERNESS.get() + "\n" +
                             Lang.CHUNK_IS_BLACKLISTED.get())));
             return textComponent;
@@ -76,7 +76,7 @@ public class WildernessChunk extends ClaimedChunk2 {
         textComponent.setColor(ChatColor.WHITE);
         textComponent.setHoverEvent(new HoverEvent(
                 HoverEvent.Action.SHOW_TEXT,
-                new Text("x : " + super.getX() + " z : " + super.getZ() + "\n" +
+                new Text("x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
                         Lang.WILDERNESS.get() + "\n" +
                         Lang.LEFT_CLICK_TO_CLAIM.get())));
         return textComponent;
