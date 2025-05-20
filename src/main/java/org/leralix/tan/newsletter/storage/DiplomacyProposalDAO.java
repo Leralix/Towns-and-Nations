@@ -54,8 +54,8 @@ public class DiplomacyProposalDAO extends NewsletterSubDAO<DiplomacyProposalNews
             ps.setObject(1, id);
             var rs = ps.executeQuery();
             if (rs.next()) {
-                String proposingTerritoryID = rs.getString("playerID");
-                String receivingTerritoryID = rs.getString("townID");
+                String proposingTerritoryID = rs.getString("proposingTerritoryID");
+                String receivingTerritoryID = rs.getString("receivingTerritoryID");
                 TownRelation wantedRelation = TownRelation.valueOf(rs.getString("wantedRelation"));
                 return new DiplomacyProposalNews(id, date, proposingTerritoryID, receivingTerritoryID, wantedRelation);
             }
