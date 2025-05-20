@@ -183,6 +183,13 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
                 return INVALID_PLAYER_NAME.get(playerData);
             return LocalChatStorage.getPlayerChatScope(playerSelected.getUniqueId().toString()).getName();
         }
+        else if(params.startsWith("player_bigger_overlord_name")){
+            if(playerData.hasRegion())
+                return playerData.getRegion().getName();
+            if(playerData.hasTown())
+                return playerData.getTown().getName();
+            return Lang.NO_TOWN.get(playerData);
+        }
 
         return null;
     }
