@@ -35,7 +35,7 @@ import java.util.*;
 import static org.leralix.lib.data.SoundEnum.GOOD;
 
 
-public class AdminGUI implements IGUI{
+public class AdminGUI{
 
     private AdminGUI() {
         throw new IllegalStateException("Utility class");

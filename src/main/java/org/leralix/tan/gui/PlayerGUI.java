@@ -62,7 +62,7 @@ import java.util.function.Consumer;
 
 import static org.leralix.lib.data.SoundEnum.*;
 
-public class PlayerGUI implements IGUI {
+public class PlayerGUI {
 
     private PlayerGUI() {
         throw new IllegalStateException("Utility class");

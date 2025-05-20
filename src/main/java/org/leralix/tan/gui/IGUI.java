@@ -18,17 +18,17 @@ import org.leralix.tan.lang.Lang;
 
 import java.util.function.Consumer;
 
-public interface IGUI {
+public class IGUI {
 
 
-    static Gui createChestGui(String name, int nRow) {
+    public static Gui createChestGui(String name, int nRow) {
         return Gui.gui()
                 .title(Component.text(name))
                 .type(GuiType.CHEST)
                 .rows(nRow)
                 .create();
     }
-    static GuiItem createBackArrow(Player player, Consumer<Player> openMenuAction) {
+    public static GuiItem createBackArrow(Player player, Consumer<Player> openMenuAction) {
         ItemStack getBackArrow = HeadUtils.createCustomItemStack(Material.ARROW, Lang.GUI_BACK_ARROW.get());
         return ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
@@ -36,7 +36,7 @@ public interface IGUI {
         });
     }
 
-    static GuiItem getUnnamedItem(Material material) {
+    public static GuiItem getUnnamedItem(Material material) {
         ItemStack item = new ItemStack(material);
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setDisplayName("");
