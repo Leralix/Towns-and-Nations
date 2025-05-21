@@ -45,7 +45,7 @@ public class TerritoryVassalProposalDAO extends NewsletterSubDAO<TerritoryVassal
 
     @Override
     public TerritoryVassalProposalNews load(UUID id, long date) {
-        String sql = "SELECT proposingTerritoryID, receivingTerritoryID,FROM territory_vassal_proposal_newsletter WHERE id = ?";
+        String sql = "SELECT proposingTerritoryID, receivingTerritoryID FROM territory_vassal_proposal_newsletter WHERE id = ?";
         try (var ps = connection.prepareStatement(sql)) {
             ps.setObject(1, id);
             var rs = ps.executeQuery();
