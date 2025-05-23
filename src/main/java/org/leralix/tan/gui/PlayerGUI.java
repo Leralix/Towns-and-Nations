@@ -71,7 +71,7 @@ public class PlayerGUI {
     public static void openMainMenu(Player player){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
-        Gui gui = IGUI.createChestGui(Lang.HEADER_MAIN_MENU.get(player),3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_MAIN_MENU.get(player),3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         boolean playerHaveTown = playerData.hasTown();
@@ -133,7 +133,7 @@ public class PlayerGUI {
         gui.setItem(2,slotTown,townGui);
         gui.setItem(2,slotPlayer,playerGui);
         gui.setItem(2,slotPlayer,playerGui);
-        gui.setItem(3,1, IGUI.createBackArrow(player, p -> player.closeInventory()));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> player.closeInventory()));
 
         gui.open(player);
     }
@@ -156,7 +156,7 @@ public class PlayerGUI {
     public static void openPlayerProfileMenu(Player player){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
-        Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_PROFILE.get(playerData),3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_PLAYER_PROFILE.get(playerData),3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         LangType lang = playerData.getLang();
@@ -180,14 +180,14 @@ public class PlayerGUI {
         gui.setItem(2,6, newsletterGui);
         gui.setItem(2,8, languageGui);
 
-        gui.setItem(18, IGUI.createBackArrow(player, p -> openMainMenu(player)));
+        gui.setItem(18, GuiUtil.createBackArrow(player, p -> openMainMenu(player)));
 
         gui.open(player);
     }
 
     private static void openLanguageMenu(Player player, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_SELECT_LANGUAGE.get(player),3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_SELECT_LANGUAGE.get(player),3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ItemStack helpTranslate = HeadUtils.makeSkullURL(Lang.HELP_US_TRANSLATE.get(playerData), "https://textures.minecraft.net/texture/b04831f7a7d8f624c9633996e3798edad49a5d9bcd18ecf75bfae66be48a0a6b",
@@ -223,7 +223,7 @@ public class PlayerGUI {
 
     public static void openNewsletter(Player player, int page, NewsletterScope scope){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_NEWSLETTER.get(playerData),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_NEWSLETTER.get(playerData),6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ArrayList<GuiItem> guiItems = new ArrayList<>(NewsletterStorage.getNewsletterForPlayer(player, scope, p -> openNewsletter(player, page, scope) ));
@@ -254,7 +254,7 @@ public class PlayerGUI {
     public static void openPlayerPropertiesMenu(Player player, int page){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
-        Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_PROPERTIES.get(playerData),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_PLAYER_PROPERTIES.get(playerData),6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         List<GuiItem> guiItems = new ArrayList<>();
@@ -304,7 +304,7 @@ public class PlayerGUI {
     }
     public static void openPropertyManagerRentMenu(Player player, PropertyData propertyData) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(playerData, propertyData.getName()), 4);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(playerData, propertyData.getName()), 4);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ItemStack propertyIcon = propertyData.getIcon(playerData.getLang());
@@ -334,14 +334,14 @@ public class PlayerGUI {
         gui.setItem(1,5,propertyButton);
         gui.setItem(2,7,stopRentingButton);
 
-        gui.setItem(4,1, IGUI.createBackArrow(player, p -> player.closeInventory()));
+        gui.setItem(4,1, GuiUtil.createBackArrow(player, p -> player.closeInventory()));
 
 
         gui.open(player);
     }
     public static void openPropertyManagerMenu(Player player, @NotNull PropertyData propertyData){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(playerData, propertyData.getName()),4);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(playerData, propertyData.getName()),4);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ItemStack changeName = HeadUtils.createCustomItemStack(
@@ -488,13 +488,13 @@ public class PlayerGUI {
 
 
 
-        gui.setItem(4,1, IGUI.createBackArrow(player, p -> openPlayerPropertiesMenu(player, 0)));
+        gui.setItem(4,1, GuiUtil.createBackArrow(player, p -> openPlayerPropertiesMenu(player, 0)));
         gui.open(player);
     }
     private static void openPlayerPropertyPlayerList(Player player, PropertyData propertyData, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         int nRows = 4;
-        Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(playerData, propertyData.getName()),nRows);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(playerData, propertyData.getName()),nRows);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         boolean canKick = propertyData.canPlayerManageInvites(playerData.getID());
@@ -540,7 +540,7 @@ public class PlayerGUI {
     }
     private static void openPlayerPropertyAddPlayer(Player player, PropertyData propertyData, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(playerData, propertyData.getName()),3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(playerData, propertyData.getName()),3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
@@ -571,7 +571,7 @@ public class PlayerGUI {
     }
     public static void openPropertyBuyMenu(Player player, @NotNull PropertyData propertyData) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(playerData, propertyData.getName()),3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(playerData, propertyData.getName()),3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ItemStack propertyIcon = propertyData.getIcon(playerData.getLang());
@@ -624,14 +624,14 @@ public class PlayerGUI {
         GuiItem propertyIconButton = ItemBuilder.from(propertyIcon).asGuiItem(event -> event.setCancelled(true));
 
         gui.setItem(1,5, propertyIconButton);
-        gui.setItem(3,1, IGUI.createBackArrow(player, p -> player.closeInventory()));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> player.closeInventory()));
 
         gui.open(player);
 
     }
     public static void openNoTownMenu(Player player){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_NO_TOWN_MENU.get(playerData), 3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_NO_TOWN_MENU.get(playerData), 3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         int townPrice = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("townCost", 1000);
@@ -669,13 +669,13 @@ public class PlayerGUI {
 
         gui.setItem(11, createButton);
         gui.setItem(15, browseButton);
-        gui.setItem(18, IGUI.createBackArrow(player, p -> openMainMenu(player)));
+        gui.setItem(18, GuiUtil.createBackArrow(player, p -> openMainMenu(player)));
 
         gui.open(player);
     }
     public static void openSearchTownMenu(Player player, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_LIST.get(playerData, page + 1),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_LIST.get(playerData, page + 1),6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ArrayList<GuiItem> townItemStacks = new ArrayList<>();
@@ -734,7 +734,7 @@ public class PlayerGUI {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         TownData townData = TownDataStorage.getInstance().get(playerData);
 
-        Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_MENU.get(playerData, townData.getName()),nRows);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_MENU.get(playerData, townData.getName()),nRows);
         gui.setDefaultClickAction(event -> {
             if(!(event.getSlotType() == InventoryType.SlotType.CONTAINER || event.getSlotType() == InventoryType.SlotType.QUICKBAR)){
                 event.setCancelled(true);
@@ -861,14 +861,14 @@ public class PlayerGUI {
         gui.setItem(3,4, warButton);
         gui.setItem(3,5, hierarchyButton);
 
-        gui.setItem(nRows,1, IGUI.createBackArrow(player, p -> openMainMenu(player)));
+        gui.setItem(nRows,1, GuiUtil.createBackArrow(player, p -> openMainMenu(player)));
 
         gui.open(player);
     }
 
     private static void openSelectHeadTerritoryMenu(Player player, TerritoryData territoryData, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_SELECT_ICON.get(playerData) + (page + 1),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_SELECT_ICON.get(playerData) + (page + 1),6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
@@ -893,7 +893,7 @@ public class PlayerGUI {
 
     private static void openWarMenu(Player player, TerritoryData territory, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_WARS_MENU.get(playerData, page + 1),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_WARS_MENU.get(playerData, page + 1),6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
@@ -954,7 +954,7 @@ public class PlayerGUI {
 
     private static void openSpecificPlannedAttackMenu(Player player, TerritoryData territory, PlannedAttack plannedAttack, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_WAR_MANAGER.get(playerData), 3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_WAR_MANAGER.get(playerData), 3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         GuiItem attackIcon = ItemBuilder.from(plannedAttack.getIcon(territory)).asGuiItem();
@@ -1038,14 +1038,14 @@ public class PlayerGUI {
             gui.setItem(2,8, joinDefenderButton);
         }
 
-        gui.setItem(3,1, IGUI.createBackArrow(player, p -> openWarMenu(player, territory, page)));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> openWarMenu(player, territory, page)));
         gui.open(player);
 
     }
 
     public static void openStartWarSettings(Player player, CreateAttackData createAttackData) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_CREATE_WAR_MANAGER.get(playerData, createAttackData.getMainDefender().getName()),3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_CREATE_WAR_MANAGER.get(playerData, createAttackData.getMainDefender().getName()),3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         TerritoryData mainAttacker = createAttackData.getMainAttacker();
@@ -1129,7 +1129,7 @@ public class PlayerGUI {
         gui.setItem(2,6,wargoalButton);
 
         gui.setItem(2,8,confirmButton);
-        gui.setItem(3,1, IGUI.createBackArrow(player, e -> openSingleRelation(player, mainAttacker, TownRelation.WAR,0)));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, e -> openSingleRelation(player, mainAttacker, TownRelation.WAR,0)));
 
         createAttackData.getWargoal().addExtraOptions(gui, player, createAttackData);
 
@@ -1139,7 +1139,7 @@ public class PlayerGUI {
 
     public static void openSelecteTerritoryToLiberate(Player player, CreateAttackData createAttackData, LiberateWarGoal liberateWarGoal) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_CREATE_WAR_MANAGER.get(playerData, createAttackData.getMainDefender().getName()),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_CREATE_WAR_MANAGER.get(playerData, createAttackData.getMainDefender().getName()),6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         TerritoryData territoryToAttack = createAttackData.getMainDefender();
@@ -1159,13 +1159,13 @@ public class PlayerGUI {
             gui.addItem(territoryButton);
         }
 
-        gui.setItem(6,1, IGUI.createBackArrow(player, e -> openStartWarSettings(player, createAttackData)));
+        gui.setItem(6,1, GuiUtil.createBackArrow(player, e -> openStartWarSettings(player, createAttackData)));
         gui.open(player);
     }
 
     public static void openSelecteLandmarkToCapture(Player player, CreateAttackData createAttackData, CaptureLandmarkWarGoal captureLandmarkWarGoal, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_CREATE_WAR_MANAGER.get(playerData, createAttackData.getMainDefender().getName()),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_CREATE_WAR_MANAGER.get(playerData, createAttackData.getMainDefender().getName()),6);
 
         TownData defendingTerritory = (TownData) createAttackData.getMainDefender();
 
@@ -1192,7 +1192,7 @@ public class PlayerGUI {
 
     private static void openSelectWarGoalMenu(Player player, CreateAttackData createAttackData) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_SELECT_WARGOAL.get(playerData), 3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_SELECT_WARGOAL.get(playerData), 3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         boolean canBeSubjugated = createAttackData.canBeSubjugated();
@@ -1267,14 +1267,14 @@ public class PlayerGUI {
         gui.setItem(2,6,subjugateButton);
         gui.setItem(2,8,liberateButton);
 
-        gui.setItem(3,1, IGUI.createBackArrow(player, e -> openStartWarSettings(player, createAttackData)));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, e -> openStartWarSettings(player, createAttackData)));
 
         gui.open(player);
     }
 
     private static void openOwnedLandmark(Player player, TownData townData, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_OWNED_LANDMARK.get(playerData, page + 1),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_OWNED_LANDMARK.get(playerData, page + 1),6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ArrayList<GuiItem> landmarkGui = new ArrayList<>();
@@ -1297,7 +1297,7 @@ public class PlayerGUI {
 
     public static void browseTerritory(Player player, TerritoryData territoryData, BrowseScope scope, Consumer<Player> exitMenu, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_TERRITORY_LIST.get(playerData, page + 1),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TERRITORY_LIST.get(playerData, page + 1),6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         List<TerritoryData> territoryList = new ArrayList<>();
@@ -1336,7 +1336,7 @@ public class PlayerGUI {
 
     public static void openMemberList(Player player, TerritoryData territoryData, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_MEMBERS.get(playerData),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_MEMBERS.get(playerData),6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         List<GuiItem> guiItems = territoryData.getOrderedMemberList(playerData);
@@ -1377,7 +1377,7 @@ public class PlayerGUI {
     }
     public static void openTownApplications(Player player, TownData townData, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_APPLICATIONS.get(playerData),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_APPLICATIONS.get(playerData),6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         PlayerData playerStat = PlayerDataStorage.getInstance().get(player);
@@ -1432,7 +1432,7 @@ public class PlayerGUI {
     public static void openTerritoryRanks(Player player, TerritoryData territoryData) {
         int row = 3;
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_TERRITORY_RANKS.get(playerData),row);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TERRITORY_RANKS.get(playerData),row);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         for (RankData rank: territoryData.getAllRanksSorted()) {
@@ -1472,7 +1472,7 @@ public class PlayerGUI {
         GuiItem decorativePanel = ItemBuilder.from(HeadUtils.createCustomItemStack(Material.GRAY_STAINED_GLASS_PANE, "")).asGuiItem(event -> event.setCancelled(true));
 
         gui.getFiller().fillBottom(decorativePanel);
-        gui.setItem(row,1, IGUI.createBackArrow(player, p -> openMemberList(player, territoryData)));
+        gui.setItem(row,1, GuiUtil.createBackArrow(player, p -> openMemberList(player, territoryData)));
         gui.setItem(row,3, createNewButton);
 
         gui.open(player);
@@ -1480,7 +1480,7 @@ public class PlayerGUI {
     }
     public static void openRankManager(Player player, TerritoryData territoryData, RankData rankData) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_TERRITORY_SPECIFIC_RANK.get(playerData, rankData.getName()),4);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TERRITORY_SPECIFIC_RANK.get(playerData, rankData.getName()),4);
 
         boolean isDefaultRank = Objects.equals(rankData.getID(), territoryData.getDefaultRankID());
 
@@ -1656,14 +1656,14 @@ public class PlayerGUI {
         gui.setItem(2,7, salaryButton);
         gui.setItem(2,8, increaseSalaryButton);
 
-        gui.setItem(4,1, IGUI.createBackArrow(player, p -> openTerritoryRanks(player, territoryData)));
+        gui.setItem(4,1, GuiUtil.createBackArrow(player, p -> openTerritoryRanks(player, territoryData)));
 
         gui.open(player);
 
     }
     public static void openTownRankManagerAddPlayer(Player player, TerritoryData territoryData, RankData wantedRank, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_RANK_ADD_PLAYER.get(playerData, wantedRank.getName()),3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_RANK_ADD_PLAYER.get(playerData, wantedRank.getName()),3);
 
         List<GuiItem> guiItems = new ArrayList<>();
 
@@ -1698,7 +1698,7 @@ public class PlayerGUI {
     }
     public static void openRankManagerPermissions(Player player, TerritoryData territoryData, RankData rankData) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_RANK_PERMISSIONS.get(playerData),3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_RANK_PERMISSIONS.get(playerData),3);
 
         for(RolePermission townRolePermission : RolePermission.values()){
             if(townRolePermission.isForTerritory(territoryData)){
@@ -1707,13 +1707,13 @@ public class PlayerGUI {
             }
         }
 
-        gui.setItem(3,1, IGUI.createBackArrow(player, p -> openRankManager(player, territoryData, rankData)));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> openRankManager(player, territoryData, rankData)));
         gui.open(player);
 
     }
     public static void openTreasury(Player player, TerritoryData territoryData) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_ECONOMY.get(playerData),5);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_ECONOMY.get(playerData),5);
 
         Budget budget = territoryData.getBudget();
 
@@ -1791,7 +1791,7 @@ public class PlayerGUI {
 
         gui.setItem(3,4, retrieveButton);
 
-        gui.setItem(5,1, IGUI.createBackArrow(player, p -> territoryData.openMainMenu(player)));
+        gui.setItem(5,1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player)));
 
         gui.open(player);
 
@@ -1801,7 +1801,7 @@ public class PlayerGUI {
     }
     public static void openTownEconomicsHistory(Player player, TerritoryData territoryData, TransactionHistoryEnum transactionHistoryEnum, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_HISTORY.get(playerData),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_HISTORY.get(playerData),6);
         List<GuiItem> guiItems = new ArrayList<>();
 
         for(List<TransactionHistory> transactionHistory : TownsAndNations.getPlugin().getDatabaseHandler().getTransactionHistory(territoryData, transactionHistoryEnum)){
@@ -1824,7 +1824,7 @@ public class PlayerGUI {
     }
     public static void openTownLevel(Player player, int level){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_UPGRADE.get(playerData, level + 1),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_UPGRADE.get(playerData, level + 1),6);
 
         TownData townData = TownDataStorage.getInstance().get(player);
         Level townLevel = townData.getLevel();
@@ -1916,7 +1916,7 @@ public class PlayerGUI {
 
 
 
-        gui.setItem(6,1, IGUI.createBackArrow(player, p -> dispatchPlayerTown(player)));
+        gui.setItem(6,1, GuiUtil.createBackArrow(player, p -> dispatchPlayerTown(player)));
         gui.setItem(6,7, previousButton);
         gui.setItem(6,8, nextButton);
 
@@ -1925,7 +1925,7 @@ public class PlayerGUI {
     }
     public static void openTownSettings(Player player, TownData townData) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_SETTINGS.get(playerData   ),4);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_SETTINGS.get(playerData   ),4);
 
         int changeTownNameCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("ChangeTownNameCost");
 
@@ -2098,12 +2098,12 @@ public class PlayerGUI {
             gui.setItem(3,7, changeTagButton);
         gui.setItem(3,8, changeChunkColorButton);
 
-        gui.setItem(4,1, IGUI.createBackArrow(player, p -> dispatchPlayerTown(player)));
+        gui.setItem(4,1, GuiUtil.createBackArrow(player, p -> dispatchPlayerTown(player)));
         gui.open(player);
     }
     public static void openTownChangeOwnershipPlayerSelect(Player player, TownData townData, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_CHANGE_OWNERSHIP.get(playerData),3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_CHANGE_OWNERSHIP.get(playerData),3);
 
         List<GuiItem> guiItems = new ArrayList<>();
         for (String playerUUID : townData.getPlayerIDList()){
@@ -2139,7 +2139,7 @@ public class PlayerGUI {
     }
     public static void openRelations(Player player, TerritoryData territory) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_RELATIONS.get(playerData, territory.getName()),3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_RELATIONS.get(playerData, territory.getName()),3);
 
         ItemStack war = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
                 Lang.GUI_TOWN_RELATION_HOSTILE.get(playerData),
@@ -2196,13 +2196,13 @@ public class PlayerGUI {
         gui.setItem(15, allianceButton);
         gui.setItem(17, proposalsButton);
 
-        gui.setItem(3,1, IGUI.createBackArrow(player,p -> territory.openMainMenu(player)));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player,p -> territory.openMainMenu(player)));
         gui.open(player);
     }
 
     public static void openProposalMenu(Player player, TerritoryData territoryData, int page){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_RELATIONS.get(playerData, territoryData.getName()),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_RELATIONS.get(playerData, territoryData.getName()),6);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
@@ -2219,7 +2219,7 @@ public class PlayerGUI {
 
     public static void openSingleRelation(Player player, TerritoryData mainTerritory, TownRelation relation, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_RELATION_WITH.get(playerData, relation.getName(), page + 1), 6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_RELATION_WITH.get(playerData, relation.getName(), page + 1), 6);
 
         PlayerData playerStat = PlayerDataStorage.getInstance().get(player);
 
@@ -2297,7 +2297,7 @@ public class PlayerGUI {
     }
     public static void openTownRelationAdd(Player player, TerritoryData territory, TownRelation wantedRelation, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_SELECT_ADD_TERRITORY_RELATION.get(playerData, wantedRelation.getName()), 6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_SELECT_ADD_TERRITORY_RELATION.get(playerData, wantedRelation.getName()), 6);
 
         List<String> relationListID = territory.getRelations().getTerritoriesIDWithRelation(wantedRelation);
         ItemStack decorativeGlass = HeadUtils.createCustomItemStack(Material.GREEN_STAINED_GLASS_PANE,"");
@@ -2354,7 +2354,7 @@ public class PlayerGUI {
 
     public static void openTownRelationRemove(Player player, TerritoryData territory, TownRelation wantedRelation, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_SELECT_REMOVE_TERRITORY_RELATION.get(playerData, wantedRelation.getName()),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_SELECT_REMOVE_TERRITORY_RELATION.get(playerData, wantedRelation.getName()),6);
 
         List<String> relationListID = territory.getRelations().getTerritoriesIDWithRelation(wantedRelation);
         ItemStack decorativeGlass = HeadUtils.createCustomItemStack(Material.RED_STAINED_GLASS_PANE,"");
@@ -2393,7 +2393,7 @@ public class PlayerGUI {
 
     public static void openChunkSettings(Player player, TerritoryData territoryData) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_TOWN_MENU.get(playerData, territoryData.getName()),3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_MENU.get(playerData, territoryData.getName()),3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ItemStack playerChunkIcon = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,
@@ -2428,14 +2428,14 @@ public class PlayerGUI {
         gui.setItem(2,7, mobChunkButton);
 
 
-        gui.setItem(3,1, IGUI.createBackArrow(player, territoryData::openMainMenu));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, territoryData::openMainMenu));
 
         gui.open(player);
     }
 
     private static void openChunkGeneralSettings(Player player, TerritoryData territoryData) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_CHUNK_GENERAL_SETTINGS.get(playerData),3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_CHUNK_GENERAL_SETTINGS.get(playerData),3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
         Map<GeneralChunkSetting, Boolean> generalSettings = territoryData.getChunkSettings().getChunkSetting();
 
@@ -2457,13 +2457,13 @@ public class PlayerGUI {
         }
 
 
-        gui.setItem(3,1, IGUI.createBackArrow(player, p -> openChunkSettings(player, territoryData)));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> openChunkSettings(player, territoryData)));
         gui.open(player);
     }
 
     public static void openTownChunkMobSettings(Player player, int page){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_MOB_SETTINGS.get(playerData, page + 1),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_MOB_SETTINGS.get(playerData, page + 1),6);
 
         TownData townData = TownDataStorage.getInstance().get(player);
         ClaimedChunkSettings chunkSettings = townData.getChunkSettings();
@@ -2526,7 +2526,7 @@ public class PlayerGUI {
     }
     public static void openTownPropertiesMenu(Player player, int page){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_PLAYER_PROPERTIES.get(playerData), 6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_PLAYER_PROPERTIES.get(playerData), 6);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
         TownData townData = TownDataStorage.getInstance().get(playerData);
@@ -2559,7 +2559,7 @@ public class PlayerGUI {
     }
     public static void openChunkPlayerSettings(Player player, TerritoryData territoryData){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_CHUNK_PERMISSION.get(playerData),4);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_CHUNK_PERMISSION.get(playerData),4);
 
         for(ChunkPermissionType type : ChunkPermissionType.values()){
             RelationPermission permission = territoryData.getPermission(type).getOverallPermission();
@@ -2580,13 +2580,13 @@ public class PlayerGUI {
                 });
             gui.addItem(guiItem);
         }
-        gui.setItem(27, IGUI.createBackArrow(player, p -> openChunkSettings(player, territoryData)));
+        gui.setItem(27, GuiUtil.createBackArrow(player, p -> openChunkSettings(player, territoryData)));
         gui.open(player);
     }
 
     private static void openPlayerListForChunkPermission(Player player, TerritoryData territoryData, ChunkPermissionType type, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(type.getLabel(playerData.getLang()),6);
+        Gui gui = GuiUtil.createChestGui(type.getLabel(playerData.getLang()),6);
 
         PlayerData playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
         List<GuiItem> guiItems = new ArrayList<>();
@@ -2635,7 +2635,7 @@ public class PlayerGUI {
 
     private static void openAddPlayerForChunkPermission(Player player, TerritoryData territoryData, ChunkPermissionType type, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_AUTHORIZE_PLAYER.get(playerData),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_AUTHORIZE_PLAYER.get(playerData),6);
 
         PlayerData playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
 
@@ -2675,7 +2675,7 @@ public class PlayerGUI {
 
     public static void openNoRegionMenu(Player player){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_NO_REGION.get(playerData),3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_NO_REGION.get(playerData),3);
 
 
         int regionCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
@@ -2724,7 +2724,7 @@ public class PlayerGUI {
 
         gui.setItem(2,4, createRegionButton);
         gui.setItem(2,6, browseRegionButton);
-        gui.setItem(3,1, IGUI.createBackArrow(player, p -> openMainMenu(player)));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> openMainMenu(player)));
 
         gui.open(player);
     }
@@ -2732,7 +2732,7 @@ public class PlayerGUI {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         RegionData regionData = playerData.getRegion();
 
-        Gui gui = IGUI.createChestGui(Lang.HEADER_REGION_MENU.get(playerData, regionData.getName()),3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_REGION_MENU.get(playerData, regionData.getName()),3);
 
 
         ItemStack regionIcon = HeadUtils.getRegionIcon(regionData);
@@ -2834,14 +2834,14 @@ public class PlayerGUI {
         gui.setItem(3,2, claimButton);
 
 
-        gui.setItem(3,1, IGUI.createBackArrow(player, p -> openMainMenu(player)));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> openMainMenu(player)));
 
         gui.open(player);
     }
 
     private static void openVassalsList(Player player, TerritoryData territoryData, int page){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_VASSALS.get(playerData, page + 1),6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_VASSALS.get(playerData, page + 1),6);
 
         List<GuiItem> guiList = new ArrayList<>();
 
@@ -2883,7 +2883,7 @@ public class PlayerGUI {
     }
     private static void openAddVassal(Player player, TerritoryData territoryData, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_VASSALS.get(playerData, page + 1), 6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_VASSALS.get(playerData, page + 1), 6);
 
         List<GuiItem> guiItems = new ArrayList<>();
 
@@ -2911,7 +2911,7 @@ public class PlayerGUI {
 
     private static void openRemoveVassal(Player player, TerritoryData territoryData, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_VASSALS.get(playerData, page + 1), 6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_VASSALS.get(playerData, page + 1), 6);
 
         List<GuiItem> guiItems = new ArrayList<>();
         for (TerritoryData territoryVassal : territoryData.getVassals()){
@@ -2940,7 +2940,7 @@ public class PlayerGUI {
     }
     private static void openRegionSettings(Player player) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_SETTINGS.get(playerData), 3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_SETTINGS.get(playerData), 3);
 
         PlayerData playerStat = PlayerDataStorage.getInstance().get(player);
         TownData playerTown = TownDataStorage.getInstance().get(playerStat);
@@ -3055,14 +3055,14 @@ public class PlayerGUI {
         gui.setItem(2,8,changeChunkColorButton);
 
 
-        gui.setItem(3,1, IGUI.createBackArrow(player, p -> openRegionMenu(player)));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> openRegionMenu(player)));
 
         gui.open(player);
     }
 
     public static void openRegionChangeOwnership(Player player, int page){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_CHANGE_OWNERSHIP.get(playerData), 6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_CHANGE_OWNERSHIP.get(playerData), 6);
         RegionData regionData = playerData.getRegion();
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
@@ -3119,7 +3119,7 @@ public class PlayerGUI {
 
     private static void openLandmarkNoOwner(Player player, Landmark landmark) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_LANDMARK_UNCLAIMED.get(playerData), 3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_LANDMARK_UNCLAIMED.get(playerData), 3);
 
         GuiItem landmarkIcon = ItemBuilder.from(landmark.getIcon()).asGuiItem(event -> event.setCancelled(true));
 
@@ -3150,7 +3150,7 @@ public class PlayerGUI {
         gui.setItem(1,5,landmarkIcon);
         gui.setItem(2,5, claimLandmarkGui);
 
-        gui.setItem(3,1, IGUI.createBackArrow(player,Player::closeInventory));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player,Player::closeInventory));
         gui.setItem(3,2,panelGui);
         gui.setItem(3,3,panelGui);
         gui.setItem(3,4,panelGui);
@@ -3166,7 +3166,7 @@ public class PlayerGUI {
     private static void openPlayerOwnLandmark(Player player, Landmark landmark) {
         TownData townData = TownDataStorage.getInstance().get(landmark.getOwnerID());
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_LANDMARK_CLAIMED.get(playerData, townData.getName()), 3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_LANDMARK_CLAIMED.get(playerData, townData.getName()), 3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         int quantity = landmark.computeStoredReward(townData);
@@ -3225,13 +3225,13 @@ public class PlayerGUI {
         gui.setItem(2,8,removeTownButton);
         gui.setItem(2,9,panelIcon);
 
-        gui.setItem(3,1, IGUI.createBackArrow(player, Player::closeInventory));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, Player::closeInventory));
         gui.open(player);
     }
 
     public static void openConfirmMenu(Player player, String confirmLore, Consumer<Void> confirmAction, Consumer<Void> returnAction) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_CONFIRMATION.get(playerData), 3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_CONFIRMATION.get(playerData), 3);
 
         ItemStack confirm = HeadUtils.makeSkullB64(Lang.GENERIC_CONFIRM_ACTION.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDMxMmNhNDYzMmRlZjVmZmFmMmViMGQ5ZDdjYzdiNTVhNTBjNGUzOTIwZDkwMzcyYWFiMTQwNzgxZjVkZmJjNCJ9fX0=",
                 confirmLore);
@@ -3257,9 +3257,9 @@ public class PlayerGUI {
 
     public static void openHierarchyMenu(Player player, TerritoryData territoryData) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = IGUI.createChestGui(Lang.HEADER_HIERARCHY.get(playerData), 3);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_HIERARCHY.get(playerData), 3);
 
-        GuiItem decorativeGlass = IGUI.getUnnamedItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
+        GuiItem decorativeGlass = GuiUtil.getUnnamedItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
 
         GuiItem overlordInfo;
         if(territoryData.canHaveOverlord()){
@@ -3372,12 +3372,12 @@ public class PlayerGUI {
         gui.setItem(2,1, decorativeGlass);
         gui.setItem(2,9, decorativeGlass);
 
-        gui.setItem(3,1, IGUI.createBackArrow(player, p -> territoryData.openMainMenu(player)));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player)));
         gui.open(player);
     }
 
     public static void openChooseOverlordMenu(Player player, TerritoryData territoryData, int page) {
-        Gui gui = IGUI.createChestGui("Choose Overlord", 6);
+        Gui gui = GuiUtil.createChestGui("Choose Overlord", 6);
 
         List<GuiItem> guiItems = territoryData.getAllSubjugationProposals(player, page);
 

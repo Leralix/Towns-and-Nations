@@ -2,10 +2,12 @@ package org.leralix.tan.utils;
 
 import dev.triumphteam.gui
 .builder.item.ItemBuilder;
+import dev.triumphteam.gui.components.GuiType;
 import dev.triumphteam.gui
 .guis.Gui;
 import dev.triumphteam.gui
 .guis.GuiItem;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,7 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.gui.IGUI;
+import org.leralix.tan.gui.GuiUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
@@ -60,8 +62,29 @@ public class GuiUtil {
         return ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
     }
 
+    public static Gui createChestGui(String name, int nRow) {
+        return Gui.gui()
+                .title(Component.text(name))
+                .type(GuiType.CHEST)
+                .rows(nRow)
+                .create();
+    }
+    public static GuiItem createBackArrow(Player player, Consumer<Player> openMenuAction) {
+        ItemStack getBackArrow = HeadUtils.createCustomItemStack(Material.ARROW, Lang.GUI_BACK_ARROW.get());
+        return ItemBuilder.from(getBackArrow).asGuiItem(event -> {
+            event.setCancelled(true);
+            openMenuAction.accept(player);
+        });
+    }
 
-
+    public static GuiItem getUnnamedItem(Material material) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName("");
+        item.setItemMeta(itemMeta);
+        return ItemBuilder.from(item).asGuiItem(event -> event.setCancelled(true));
+    }
+    
     public static void createIterator(Gui gui, List<GuiItem> guItems, int page,
                                       Player player, Consumer<Player> backArrowAction,
                                       Consumer<Player> nextPageAction, Consumer<Player> previousPageAction) {
@@ -137,7 +160,7 @@ public class GuiUtil {
 
         int lastRow = gui.getRows();
 
-        gui.setItem(lastRow,1, IGUI.createBackArrow(player, backArrowAction));
+        gui.setItem(lastRow,1, GuiUtil.createBackArrow(player, backArrowAction));
         gui.setItem(lastRow,2, panel);
         gui.setItem(lastRow,3, panel);
         gui.setItem(lastRow,4, panel);
