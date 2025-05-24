@@ -35,6 +35,7 @@ public class ChangePropertyRentPrice extends ChatListenerEvent {
         }
 
         propertyData.setRentPrice(amount);
+        PlayerChatListenerStorage.removePlayer(player);
         openGui(guiCallback, player);
     }
 }
