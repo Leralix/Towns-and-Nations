@@ -884,4 +884,12 @@ public abstract class TerritoryData {
     }
 
 
+    public String getColoredName() {
+        if(Constants.displayTerritoryColor()){
+            return getCustomColoredName().getText();
+        }
+        else {
+            return getBaseColoredName();
+        }
+    }
 }

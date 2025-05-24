@@ -15,7 +15,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.gui.GuiUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 

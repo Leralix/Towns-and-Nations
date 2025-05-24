@@ -6,37 +6,40 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class IconBuilder {
 
-    private Lang name;
-    private final List<Lang> description = new ArrayList<>();
+    private String name;
+    private final List<String> description;
     private Consumer<InventoryClickEvent> action;
 
-    public IconBuilder setName(Lang name) {
+    public IconBuilder(){
+        this.description = new ArrayList<>();
+    }
+
+    public IconBuilder setName(String name) {
         this.name = name;
         return this;
     }
 
-    public IconBuilder setDescription(List<Lang> description) {
+    public IconBuilder setDescription(String... descriptions) {
+        this.description.clear();
+        this.description.addAll(List.of(descriptions));
+        return this;
+    }
+
+    public IconBuilder setDescription(Collection<String> description) {
         this.description.clear();
         this.description.addAll(description);
         return this;
     }
 
-    public IconBuilder addDescription(Lang line) {
-        this.description.add(line);
-        return this;
-    }
-
-    public IconBuilder addAction(Consumer<InventoryClickEvent> action) {
+    public IconBuilder setAction(Consumer<InventoryClickEvent> action) {
         this.action = action;
         return this;
     }
@@ -47,11 +50,9 @@ public abstract class IconBuilder {
         ItemStack item = getItemStack(player);
         ItemMeta meta = item.getItemMeta();
 
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-
         if (meta != null) {
-            meta.setDisplayName(name.get(playerData));
-            meta.setLore(description.stream().map(lang -> lang.get(playerData)).toList());
+            meta.setDisplayName(name);
+            meta.setLore(description);
             item.setItemMeta(meta);
         }
         return ItemBuilder.from(item).asGuiItem(event -> action.accept(event));

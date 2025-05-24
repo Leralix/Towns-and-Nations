@@ -18,14 +18,13 @@ public class IconManager {
 
     Map<IconKey, IconBuilder> iconMap;
 
-
     private IconManager(){
         this.iconMap = new EnumMap<>(IconKey.class);
 
         Plugin plugin = TownsAndNations.getPlugin();
 
-        ConfigUtil.saveAndUpdateResource(plugin, "heads.yml");
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "heads.yml"));
+        ConfigUtil.saveAndUpdateResource(plugin, "menu/icons.yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "menu/icons.yml"));
 
 
         for (String key : config.getKeys(false)) {
@@ -35,13 +34,20 @@ public class IconManager {
 
                 IconBuilder iconBuilder = chooseIconBuilderType(value);
 
-                iconMap.put(iconKey, value);
+                iconMap.put(iconKey, iconBuilder);
             } catch (IllegalArgumentException e) {
                 plugin.getLogger().warning("Clé inconnue dans le fichier config.yml : " + key);
             }
         }
-
     }
+
+    public static IconManager getInstance(){
+        if(instance == null){
+            instance = new IconManager();
+        }
+        return instance;
+    }
+
 
     private IconBuilder chooseIconBuilderType(String value) {
 
@@ -55,11 +61,8 @@ public class IconManager {
     }
 
 
-    public static IconManager getInstance(){
-        if(instance == null){
-            instance = new IconManager();
-        }
-        return instance;
+    public IconBuilder get(IconKey key){
+        return iconMap.get(key);
     }
 
 }

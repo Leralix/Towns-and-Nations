@@ -18,6 +18,7 @@ import org.leralix.tan.commands.server.ServerCommandManager;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.economy.TanEconomyStandalone;
 import org.leralix.tan.economy.VaultManager;
+import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.listeners.*;
 import org.leralix.tan.listeners.chat.ChatListener;
 import org.leralix.tan.newsletter.storage.NewsletterStorage;
@@ -32,6 +33,7 @@ import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
+import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.CustomNBT;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -165,6 +167,8 @@ public final class TownsAndNations extends JavaPlugin {
         PvpSettings.init();
         WildernessRules.getInstance();
         NewsletterType.init();
+        IconManager.getInstance();
+        Constants.init();
 
         FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         allowColorCodes = mainConfig.getBoolean("EnablePlayerColorCode", false);

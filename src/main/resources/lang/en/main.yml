@@ -293,6 +293,7 @@ language:
   GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fCurrent town: {0}"
   GUI_TOWN_ICON_DESC2_HAVE_TOWN: "§fTown rank: {0}"
   #Player
+  GUI_PLAYER_PROFILE_HEADER : "§a{0}"
   GUI_PLAYER_PROFILE_DESC1: "§fBalance : §6{0}{MONEY_CHAR}"
   GUI_YOUR_PROFILE: "§aYour profile"
   GUI_YOUR_BALANCE: "§aYour Balance"

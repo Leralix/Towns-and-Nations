@@ -2,6 +2,7 @@ package org.leralix.tan.commands.player;
 
 
 import org.leralix.lib.commands.PlayerSubCommand;
+import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
@@ -49,9 +50,8 @@ public class OpenGuiCommand extends PlayerSubCommand {
     }
 
     private void getOpeningGui(Player player) {
-        PlayerGUI.openMainMenu(player);
+        new MainMenu(player).open();
     }
-
 
 
 }
