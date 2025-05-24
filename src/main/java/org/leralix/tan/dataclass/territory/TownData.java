@@ -21,7 +21,7 @@ import org.leralix.tan.dataclass.territory.economy.*;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
-import org.leralix.tan.gui.PlayerGUI;
+import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.newsletter.storage.NewsletterStorage;

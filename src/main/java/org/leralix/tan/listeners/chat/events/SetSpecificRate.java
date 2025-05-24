@@ -9,7 +9,7 @@ import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.gui.PlayerGUI;
+import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 
 public class SetSpecificRate extends ChatListenerEvent {

@@ -9,7 +9,7 @@ import org.leralix.tan.lang.Lang;
 import java.util.Collections;
 import java.util.List;
 
-import static org.leralix.tan.gui.AdminGUI.openMainMenu;
+import static org.leralix.tan.gui.legacy.AdminGUI.openMainMenu;
 
 
 public class OpenAdminGUI extends PlayerSubCommand {

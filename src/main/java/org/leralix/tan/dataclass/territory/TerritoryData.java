@@ -6,6 +6,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
+import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -22,6 +23,7 @@ import org.leralix.tan.dataclass.newhistory.ChunkPaymentHistory;
 import org.leralix.tan.dataclass.newhistory.MiscellaneousHistory;
 import org.leralix.tan.dataclass.newhistory.PlayerDonationHistory;
 import org.leralix.tan.dataclass.newhistory.SalaryPaymentHistory;
+import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
 import org.leralix.tan.dataclass.territory.economy.Budget;
@@ -34,7 +36,7 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.gui.PlayerGUI;
+import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.newsletter.storage.NewsletterStorage;
@@ -163,7 +165,12 @@ public abstract class TerritoryData {
     }
     public ItemStack getIcon(){
         if(this.customIcon == null){
-            customIcon = new PlayerHeadIcon(getLeaderID());
+            if(haveNoLeader()){
+                customIcon = new CustomIcon(new ItemStack(Material.BARRIER));
+            }
+            else {
+                customIcon = new PlayerHeadIcon(getLeaderID());
+            }
         }
         return customIcon.getIcon();
     }

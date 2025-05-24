@@ -6,12 +6,17 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.gui.BasicGui;
-import org.leralix.tan.gui.PlayerGUI;
+import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.GuiUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainMenu extends BasicGui {
 
@@ -19,11 +24,18 @@ public class MainMenu extends BasicGui {
         super(player, Lang.HEADER_MAIN_MENU, 3);
     }
 
+    @Override
     public void open() {
 
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        gui.setItem(2, 2, getNationButton(playerData));
-        gui.setItem(2, 4, getRegionButton(playerData));
+
+        if(Constants.enableRegion()){
+            if(Constants.enableNation()){
+                gui.setItem(2, 2, getNationButton(playerData));
+            }
+            gui.setItem(2, 4, getRegionButton(playerData));
+        }
+
         gui.setItem(2, 6, getTownButton(playerData));
         gui.setItem(2, 8, getPlayerButton(playerData));
 
@@ -45,13 +57,23 @@ public class MainMenu extends BasicGui {
 
     private GuiItem getRegionButton(PlayerData playerData) {
 
-        String description = playerData.hasRegion() ?
-                Lang.GUI_REGION_ICON_DESC1_REGION.get(playerData.getRegion().getColoredName()) :
-                Lang.GUI_REGION_ICON_DESC1_NO_REGION.get(playerData);
+        List<String> description = new ArrayList<>();
+
+        if(playerData.hasRegion()){
+            RegionData regionData = playerData.getRegion();
+            description.add(Lang.GUI_REGION_ICON_DESC1_REGION.get(playerData, regionData.getColoredName()));
+            description.add(Lang.GUI_REGION_ICON_DESC2_REGION.get(playerData, regionData.getRank(playerData).getColoredName()));
+        }
+        else {
+            description.add(Lang.GUI_REGION_ICON_DESC1_NO_REGION.get(playerData));
+        }
+        description.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData));
+
 
         return iconManager.get(IconKey.REGION_BASE_ICON)
                 .setName(Lang.GUI_REGION_ICON.get(playerData))
-                .setDescription(description)
+                .setDescription(
+                        description)
                 .setAction(action -> {
                     if (playerData.hasRegion()) {
                         PlayerGUI.dispatchPlayerRegion(player);
@@ -69,7 +91,9 @@ public class MainMenu extends BasicGui {
 
         return iconManager.get(IconKey.TOWN_BASE_ICON)
                 .setName(Lang.GUI_TOWN_ICON.get(playerData))
-                .setDescription(description)
+                .setDescription(
+                        description,
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData))
                 .setAction(action -> {
                     if (playerData.hasRegion()) {
                         PlayerGUI.dispatchPlayerTown(player);
@@ -82,8 +106,10 @@ public class MainMenu extends BasicGui {
 
     private GuiItem getPlayerButton(PlayerData playerData) {
         return iconManager.get(IconKey.PLAYER_BASE_ICON)
-                .setName(Lang.GUI_PLAYER_PROFILE_HEADER.get(playerData, player.getName()))
-                .setDescription(Lang.GUI_PLAYER_PROFILE_DESC1.get(playerData, playerData.getBalance()))
+                .setName(Lang.GUI_PLAYER_ICON.get(playerData, player.getName()))
+                .setDescription(
+                        Lang.GUI_PLAYER_PROFILE_DESC1.get(playerData, playerData.getBalance()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData))
                 .setAction(action -> PlayerGUI.openPlayerProfileMenu(player))
                 .asGuiItem(player);
     }

@@ -5,8 +5,10 @@
 # 4. town head : "TOWN_HEAD"
 # 5. region head : "REGION_HEAD"
 
+#Main menu
 NATION_BASE_ICON : "https://textures.minecraft.net/texture/c69196b330c6b8962f23ad5627fb6ecce472eaf5c9d44f791f6709c7d0f4dece"
 REGION_BASE_ICON : "https://textures.minecraft.net/texture/49c1832e4ef5c4ad9c519d194b1985030d257914334aaf2745c9dfd611d6d61d"
 TOWN_BASE_ICON : "https://textures.minecraft.net/texture/63d02cdc075bb1cc5f6fe3c7711ae4977e38b910d50ed6023df73913e5e7fcff"
 PLAYER_BASE_ICON : "PLAYER_HEAD"
+#Player menu
 

@@ -1,4 +1,4 @@
-package org.leralix.tan.gui;
+package org.leralix.tan.gui.legacy;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;

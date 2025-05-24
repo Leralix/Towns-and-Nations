@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.gui.PlayerGUI;
+import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 
 public class LiberateWarGoal extends WarGoal {

@@ -19,10 +19,16 @@ public class CustomIcon implements ICustomIcon {
     }
 
     public ItemStack getIcon() {
-        ItemStack icon = new ItemStack(Material.getMaterial(materialTypeName));
+
+        Material material = Material.getMaterial(materialTypeName);
+        if(material == null){
+            material = Material.BARRIER;
+        }
+
+        ItemStack icon = new ItemStack(material);
         if(icon.getType() == Material.AIR){
             materialTypeName = Material.COBBLESTONE.name();
-            icon = new ItemStack(Material.getMaterial(materialTypeName));
+            icon = new ItemStack(material);
         }
 
 

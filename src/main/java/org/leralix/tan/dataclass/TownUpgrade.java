@@ -12,12 +12,11 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.gui.PlayerGUI;
+import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

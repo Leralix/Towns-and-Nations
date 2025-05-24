@@ -252,8 +252,11 @@ language:
   RELATION_NON_AGGRESSION_NAME: "Non-aggression"
   RELATION_EMBARGO_NAME: "Embargo"
   RELATION_HOSTILE_NAME: "Hostile"
+
+  ##GUI
   #GUI generic
-  GUI_GENERIC_CLICK_TO_OPEN: "§fLeft click to open"
+  GUI_GENERIC_CLICK_TO_OPEN: "§8▶ Click to open"
+
   GUI_GENERIC_CLICK_TO_OPEN_HISTORY: "§fLeft click to open the history"
   GUI_GENERIC_CLICK_TO_DELETE: "§fClick to delete"
   GUI_GENERIC_CLICK_TO_RENAME: "§fClick to rename"
@@ -267,6 +270,22 @@ language:
   LEFT_CLICK_TO_ACCEPT: "§fLeft click to accept"
   RIGHT_CLICK_TO_REFUSE: "§fRight click to refuse"
   CANNOT_BE_MODIFIED: "§cThis cannot be modified"
+
+
+  #Main menu
+  GUI_KINGDOM_ICON: "§aKingdom"
+  GUI_KINGDOM_ICON_DESC1: "§fIn development"
+  GUI_REGION_ICON: "§aRegion"
+  GUI_REGION_ICON_DESC1_REGION: "§fCurrent region: {0}"
+  GUI_REGION_ICON_DESC2_REGION: "§fRegion rank: {0}"
+  GUI_REGION_ICON_DESC1_NO_REGION: "§fCreate or look at regions"
+  GUI_TOWN_ICON: "§aTown"
+  GUI_TOWN_ICON_DESC1_NO_TOWN: "§fJoin or create your own town"
+  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fCurrent town: {0}"
+  GUI_TOWN_ICON_DESC2_HAVE_TOWN: "§fTown rank: {0}"
+  GUI_PLAYER_ICON: "§aYour profile"
+
+
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§eStill in development"
   GUI_BACK_ARROW: "Return"
@@ -282,18 +301,7 @@ language:
   GUI_INCREASE_10PERCENT_DESC: "§fShift + click : §a+10%"
   GUI_DECREASE_1PERCENT_DESC: "§fClick : §c-1%"
   GUI_DECREASE_10PERCENT_DESC: "§fShift + click : §c-10%"
-  GUI_KINGDOM_ICON: "§aKingdom"
-  GUI_KINGDOM_ICON_DESC1: "§fIn development"
-  GUI_REGION_ICON: "§aRegion"
-  GUI_REGION_ICON_DESC1_REGION: "§fCurrent region: {0}"
-  GUI_REGION_ICON_DESC2_REGION: "§fRegion rank: {0}"
-  GUI_REGION_ICON_DESC1_NO_REGION: "§fCreate or look at regions"
-  GUI_TOWN_ICON: "§aTown"
-  GUI_TOWN_ICON_DESC1_NO_TOWN: "§fJoin or create your own town"
-  GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fCurrent town: {0}"
-  GUI_TOWN_ICON_DESC2_HAVE_TOWN: "§fTown rank: {0}"
   #Player
-  GUI_PLAYER_PROFILE_HEADER : "§a{0}"
   GUI_PLAYER_PROFILE_DESC1: "§fBalance : §6{0}{MONEY_CHAR}"
   GUI_YOUR_PROFILE: "§aYour profile"
   GUI_YOUR_BALANCE: "§aYour Balance"
