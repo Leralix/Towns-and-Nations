@@ -64,6 +64,9 @@ public class IconManager {
                 return new ItemIconBuillder(Material.BARRIER); // Default fallback material
             }
         }
+        if(value.equals("TOWN_HEAD")){
+            return new TownIconBuilder();
+        }
         if(value.equals("PLAYER_LANGUAGE_HEAD")){
             return new PlayerLanguageIconBuilder();
         }

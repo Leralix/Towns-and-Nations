@@ -4,6 +4,7 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -17,9 +18,11 @@ public abstract class IconBuilder {
     private String name;
     private final List<String> description;
     private Consumer<InventoryClickEvent> action;
+    private boolean hideItemFlags;
 
     public IconBuilder(){
         this.description = new ArrayList<>();
+        hideItemFlags = false;
     }
 
     public IconBuilder setName(String name) {
@@ -44,6 +47,11 @@ public abstract class IconBuilder {
         return this;
     }
 
+    public IconBuilder setHideItemFlags(boolean hideItemFlags) {
+        this.hideItemFlags = hideItemFlags;
+        return this;
+    }
+
     protected abstract ItemStack getItemStack(Player player);
 
     public GuiItem asGuiItem(Player player) {
@@ -53,6 +61,14 @@ public abstract class IconBuilder {
         if (meta != null) {
             meta.setDisplayName(name);
             meta.setLore(description);
+            if(hideItemFlags) {
+                meta.getItemFlags().add(ItemFlag.HIDE_ATTRIBUTES);
+                meta.getItemFlags().add(ItemFlag.HIDE_ENCHANTS);
+                meta.getItemFlags().add(ItemFlag.HIDE_UNBREAKABLE);
+                meta.getItemFlags().add(ItemFlag.HIDE_PLACED_ON);
+                meta.getItemFlags().add(ItemFlag.HIDE_POTION_EFFECTS);
+                meta.getItemFlags().add(ItemFlag.HIDE_DYE);
+            }
             item.setItemMeta(meta);
         }
         return ItemBuilder.from(item).asGuiItem(event -> action.accept(event));

@@ -256,6 +256,8 @@ language:
   ##GUI
   #GUI generic
   GUI_GENERIC_CLICK_TO_OPEN: "§7▶ Click to open"
+  GUI_GENERIC_CLICK_TO_PROCEED: "§7▶ Click to proceed"
+
 
   GUI_GENERIC_CLICK_TO_OPEN_HISTORY: "§fLeft click to open the history"
   GUI_GENERIC_CLICK_TO_DELETE: "§fClick to delete"
@@ -288,13 +290,32 @@ language:
   GUI_PLAYER_ICON: "§a{0}"
   GUI_YOUR_BALANCE: "§aYour Balance"
   GUI_YOUR_BALANCE_DESC1: "§fBalance : §6{0}{MONEY_CHAR}"
-  GUI_PLAYER_MANAGE_PROPERTIES: "Manage properties"
+  GUI_PLAYER_MANAGE_PROPERTIES: "§aProperties"
   GUI_PLAYER_MANAGE_PROPERTIES_DESC1: "§fCreate, delete or manage your properties"
   GUI_PLAYER_NEWSLETTER: "§aNewsletter"
   GUI_PLAYER_NEWSLETTER_DESC1: "§fYou have §e{0}§f unread news"
   GUI_LANGUAGE_BUTTON: "§aLanguage"
   GUI_LANGUAGE_BUTTON_DESC1: "§fServer default language: §e{0}"
   GUI_LANGUAGE_BUTTON_DESC2: "§fYour language: §e{0}"
+  #Town menu - no town
+  GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCreate a new town"
+  GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fCost : §6{0}{MONEY_CHAR}"
+  GUI_NO_TOWN_JOIN_A_TOWN: "§aJoin a town"
+  GUI_NO_TOWN_JOIN_A_TOWN_DESC1: "§fThere are currently §e{0}§f towns in total"
+  #Town menu - have town
+  GUI_TOWN_NAME: "§a{0}"
+  GUI_TOWN_INFO_CHANGE_ICON: "§7▶ Drag and drop an item to change the town's icon"
+  RIGHT_CLICK_TO_SELECT_MEMBER_HEAD: "§7▶ Right click to select a member as icon"
+  GUI_TOWN_TREASURY_ICON: "§aTreasury"
+  GUI_TOWN_TREASURY_ICON_DESC1: "§fManage taxes and town treasury"
+  GUI_TOWN_MEMBERS_ICON: "§aMembers"
+  GUI_TOWN_MEMBERS_ICON_DESC1: "§fManage members roles and applications"
+  GUI_CLAIM_ICON: "§aLand"
+  GUI_CLAIM_ICON_DESC1: "§fManage town territory authorizations"
+  GUI_BROWSE_TERRITORY_ICON: "Browse all territory"
+  GUI_BROWSE_TERRITORY_ICON_DESC1: "§fBrowse all territory"
+  GUI_RELATION_ICON: "§aDiplomacy"
+  GUI_RELATION_ICON_DESC1: "§fManage foreign diplomacy/policy"
 
   GUI_PLAYER_NEW_PROPERTY: "Create a new property"
 
@@ -371,10 +392,6 @@ language:
   HEADER_ADMIN_CHANGE_TOWN_LEADER: "Change {0} leader - Admin"
   HEADER_ADMIN_PLAYER_MENU: "Players - Admin"
   HEADER_ADMIN_SET_PLAYER_TOWN: "Set {0} town - Admin"
-  GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCreate a new town"
-  GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fCost : §6{0}{MONEY_CHAR}"
-  GUI_NO_TOWN_JOIN_A_TOWN: "§aJoin a town"
-  GUI_NO_TOWN_JOIN_A_TOWN_DESC1: "§fThere are currently §e{0}§f towns in total"
   GUI_TOWN_INFO_DESC0: "§7§o\"{0}\"" #town's quote
   GUI_TOWN_INFO_DESC1: "§fLeader: §3{0}"
   GUI_TOWN_INFO_DESC2: "§fMembers: §9{0}♣"
@@ -390,19 +407,11 @@ language:
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC1: "§fApplication date: {0}"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fLeft click to§a accept"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§fRight click to§c refuse"
-  GUI_TOWN_INFO_CHANGE_ICON: "§7-Drag and drop an item to change the town's icon"
-  RIGHT_CLICK_TO_SELECT_MEMBER_HEAD: "§7-Right click to select a member as icon"
-  GUI_TOWN_TREASURY_ICON: "§aTreasury"
-  GUI_TOWN_TREASURY_ICON_DESC1: "§fManage taxes and town treasury"
-  GUI_TOWN_MEMBERS_ICON: "§aMembers"
-  GUI_TOWN_MEMBERS_ICON_DESC1: "§fManage members, roles and applications"
+
   GUI_LANGUAGE_CHANGED: "§aLanguage changed to: {0}"
-  GUI_CLAIM_ICON: "§aLand"
-  GUI_CLAIM_ICON_DESC1: "§fManage town territory authorizations"
-  GUI_BROWSE_TERRITORY_ICON: "Browse all territory"
-  GUI_BROWSE_TERRITORY_ICON_DESC1: "§fBrowse all territory"
-  GUI_RELATION_ICON: "§aDiplomacy"
-  GUI_RELATION_ICON_DESC1: "§fManage foreign diplomacy/policy"
+
+
+
   GUI_TOWN_LEVEL_ICON: "§aTown level"
   GUI_TOWN_LEVEL_ICON_DESC1: "§fUpgrade the town"
   GUI_TOWN_SETTINGS_ICON: "§aSettings"

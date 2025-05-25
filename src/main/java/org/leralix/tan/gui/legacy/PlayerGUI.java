@@ -45,6 +45,7 @@ import org.leralix.tan.enums.*;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.gui.user.MainMenu;
+import org.leralix.tan.gui.user.NoTownMenu;
 import org.leralix.tan.gui.user.PlayerMenu;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
@@ -83,7 +84,7 @@ public class PlayerGUI {
             openTownMenu(player);
         }
         else{
-            openNoTownMenu(player);
+            new NoTownMenu(player).open();
         }
     }
 
@@ -122,7 +123,6 @@ public class PlayerGUI {
         gui.setItem(3, 6, helpTranslateGui);
         gui.open(player);
     }
-
     public static void openNewsletter(Player player, int page, NewsletterScope scope){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_NEWSLETTER.get(playerData),6);
@@ -153,6 +153,7 @@ public class PlayerGUI {
         gui.setItem(6,5,checkScopeGui);
         gui.open(player);
     }
+
     public static void openPlayerPropertiesMenu(Player player, int page){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
@@ -531,50 +532,7 @@ public class PlayerGUI {
         gui.open(player);
 
     }
-    public static void openNoTownMenu(Player player){
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_NO_TOWN_MENU.get(playerData), 3);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
-        int townPrice = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("townCost", 1000);
-
-        ItemStack createTown = HeadUtils.createCustomItemStack(Material.GRASS_BLOCK,
-                Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.get(playerData),
-                Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.get(playerData, townPrice));
-        ItemStack browse = HeadUtils.createCustomItemStack(Material.ANVIL,
-                Lang.GUI_NO_TOWN_JOIN_A_TOWN.get(playerData),
-                Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(playerData, TownDataStorage.getInstance().getNumberOfTown()));
-
-        GuiItem createButton = ItemBuilder.from(createTown).asGuiItem(event -> {
-            event.setCancelled(true);
-
-            if(!player.hasPermission("tan.base.town.create")){
-                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(playerData));
-                SoundUtil.playSound(player, NOT_ALLOWED);
-                return;
-            }
-
-            double playerMoney = EconomyUtil.getBalance(player);
-            if (playerMoney < townPrice) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(playerData, townPrice - playerMoney));
-            }
-            else {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get(playerData));
-                PlayerChatListenerStorage.register(player, new CreateTown(townPrice));
-            }
-        });
-
-        GuiItem browseButton = ItemBuilder.from(browse).asGuiItem(event -> {
-            event.setCancelled(true);
-            openSearchTownMenu(player,0);
-        });
-
-        gui.setItem(11, createButton);
-        gui.setItem(15, browseButton);
-        gui.setItem(18, GuiUtil.createBackArrow(player, p -> new MainMenu(player).open()));
-
-        gui.open(player);
-    }
     public static void openSearchTownMenu(Player player, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_LIST.get(playerData, page + 1),6);
@@ -624,7 +582,7 @@ public class PlayerGUI {
             townItemStacks.add(townButton);
         }
 
-        GuiUtil.createIterator(gui, townItemStacks, page, player, p -> openNoTownMenu(player),
+        GuiUtil.createIterator(gui, townItemStacks, page, player, p -> new NoTownMenu(player).open(),
                 p -> openSearchTownMenu(player, page + 1),
                 p -> openSearchTownMenu(player, page - 1));
 
@@ -768,7 +726,7 @@ public class PlayerGUI {
         gui.open(player);
     }
 
-    private static void openSelectHeadTerritoryMenu(Player player, TerritoryData territoryData, int page) {
+    public static void openSelectHeadTerritoryMenu(Player player, TerritoryData territoryData, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_SELECT_ICON.get(playerData) + (page + 1),6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));

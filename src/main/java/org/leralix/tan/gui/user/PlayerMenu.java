@@ -12,11 +12,10 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.newsletter.NewsletterScope;
 import org.leralix.tan.newsletter.storage.NewsletterStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.GuiUtil;
 
 public class PlayerMenu extends BasicGui {
 
-    private PlayerData playerData;
 
     public PlayerMenu(Player player) {
         super(player, Lang.HEADER_PLAYER_PROFILE, 3);
@@ -25,12 +24,13 @@ public class PlayerMenu extends BasicGui {
     @Override
     public void open(){
 
-        playerData = PlayerDataStorage.getInstance().get(player);
         gui.setItem(1, 5, getPlayerHeadIcon());
         gui.setItem(2, 2, getBalanceButton());
         gui.setItem(2, 4, getPropertyButton());
         gui.setItem(2, 6, getNewsletterButton());
         gui.setItem(2, 8, getLanguageButton());
+
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> new MainMenu(p).open()));
 
         gui.open(player);
     }
@@ -55,9 +55,7 @@ public class PlayerMenu extends BasicGui {
                         Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get(playerData),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
                 )
-                .setAction(event -> {
-                    PlayerGUI.openPlayerPropertiesMenu(player, 0);
-                })
+                .setAction(event -> PlayerGUI.openPlayerPropertiesMenu(player, 0))
                 .asGuiItem(player);
     }
 

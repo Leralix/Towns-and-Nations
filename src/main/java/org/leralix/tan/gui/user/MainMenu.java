@@ -27,8 +27,6 @@ public class MainMenu extends BasicGui {
     @Override
     public void open() {
 
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-
         if(Constants.enableRegion()){
             if(Constants.enableNation()){
                 gui.setItem(2, 2, getNationButton(playerData));
@@ -75,11 +73,7 @@ public class MainMenu extends BasicGui {
                 .setDescription(
                         description)
                 .setAction(action -> {
-                    if (playerData.hasRegion()) {
-                        PlayerGUI.dispatchPlayerRegion(player);
-                    } else {
-                        PlayerGUI.openNoRegionMenu(player);
-                    }
+                    PlayerGUI.dispatchPlayerRegion(player);
                 })
                 .asGuiItem(player);
     }
@@ -95,11 +89,7 @@ public class MainMenu extends BasicGui {
                         description,
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData))
                 .setAction(action -> {
-                    if (playerData.hasTown()) {
-                        PlayerGUI.dispatchPlayerTown(player);
-                    } else {
-                        PlayerGUI.openNoTownMenu(player);
-                    }
+                    PlayerGUI.dispatchPlayerTown(player);
                 })
                 .asGuiItem(player);
     }
