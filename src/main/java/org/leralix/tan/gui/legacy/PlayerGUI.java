@@ -44,6 +44,8 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.*;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
+import org.leralix.tan.gui.user.MainMenu;
+import org.leralix.tan.gui.user.PlayerMenu;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -68,75 +70,6 @@ public class PlayerGUI {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void openMainMenu(Player player){
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_MAIN_MENU.get(player),3);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
-
-        boolean playerHaveTown = playerData.hasTown();
-        boolean playerHaveRegion = playerData.hasRegion();
-
-        TownData town = TownDataStorage.getInstance().get(playerData);
-        RegionData region = null;
-        if(playerHaveRegion){
-            region = town.getRegion();
-        }
-
-        ItemStack kingdomIcon = HeadUtils.makeSkullB64(Lang.GUI_KINGDOM_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5MTk2YjMzMGM2Yjg5NjJmMjNhZDU2MjdmYjZlY2NlNDcyZWFmNWM5ZDQ0Zjc5MWY2NzA5YzdkMGY0ZGVjZSJ9fX0=",
-                Lang.GUI_KINGDOM_ICON_DESC1.get(playerData));
-        ItemStack regionIcon = HeadUtils.makeSkullB64(Lang.GUI_REGION_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
-
-        if(playerHaveRegion) {
-            HeadUtils.addLore(regionIcon, Lang.GUI_REGION_ICON_DESC1_REGION.get(playerData, region.getBaseColoredName()),
-                    Lang.GUI_REGION_ICON_DESC2_REGION.get(playerData, region.getRank(player).getColoredName()));
-        }
-        else {
-            HeadUtils.addLore(regionIcon, Lang.GUI_REGION_ICON_DESC1_NO_REGION.get(playerData));
-        }
-
-        ItemStack townIcon = HeadUtils.makeSkullB64(Lang.GUI_TOWN_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=");
-        if(playerHaveTown) {
-            HeadUtils.addLore(townIcon, Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(playerData,
-                    town.getBaseColoredName()), Lang.GUI_TOWN_ICON_DESC2_HAVE_TOWN.get(playerData, town.getRank(player).getColoredName()));
-        }
-        else {
-            HeadUtils.addLore(townIcon, Lang.GUI_TOWN_ICON_DESC1_NO_TOWN.get(playerData));
-        }
-
-        ItemStack profileIcon = HeadUtils.getPlayerHeadInformation(player);
-
-        GuiItem kingdomGui = ItemBuilder.from(kingdomIcon).asGuiItem(event -> player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_WARNING_STILL_IN_DEV.get(playerData)));
-        GuiItem regionGui = ItemBuilder.from(regionIcon).asGuiItem(event -> dispatchPlayerRegion(player));
-        GuiItem townGui = ItemBuilder.from(townIcon).asGuiItem(event -> dispatchPlayerTown(player));
-        GuiItem playerGui = ItemBuilder.from(profileIcon).asGuiItem(event -> openPlayerProfileMenu(player));
-
-
-        int slotKingdom = 2;
-        int slotRegion = 4;
-        int slotTown = 6;
-        int slotPlayer = 8;
-
-        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableKingdom",true) &&
-                ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableRegion",true)) {
-            gui.setItem(2, slotKingdom, kingdomGui);
-        }
-
-        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableRegion",true)){
-            gui.setItem(2,slotRegion,regionGui);
-        }
-        else {
-            slotTown = 4;
-            slotPlayer = 6;
-        }
-
-        gui.setItem(2,slotTown,townGui);
-        gui.setItem(2,slotPlayer,playerGui);
-        gui.setItem(2,slotPlayer,playerGui);
-        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> player.closeInventory()));
-
-        gui.open(player);
-    }
     public static void dispatchPlayerRegion(Player player) {
         if(PlayerDataStorage.getInstance().get(player).hasRegion()) {
             openRegionMenu(player);
@@ -153,39 +86,8 @@ public class PlayerGUI {
             openNoTownMenu(player);
         }
     }
-    public static void openPlayerProfileMenu(Player player){
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_PLAYER_PROFILE.get(playerData),3);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
-
-        LangType lang = playerData.getLang();
-
-        ItemStack playerHead = HeadUtils.getPlayerHead(Lang.GUI_YOUR_PROFILE.get(),player);
-        ItemStack treasuryIcon = HeadUtils.createCustomItemStack(Material.GOLD_NUGGET, Lang.GUI_YOUR_BALANCE.get(playerData),Lang.GUI_YOUR_BALANCE_DESC1.get(playerData, StringUtil.formatMoney(EconomyUtil.getBalance(player))));
-        ItemStack propertiesIcon = HeadUtils.createCustomItemStack(Material.OAK_HANGING_SIGN, Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(playerData),Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get(playerData));
-        ItemStack newsletterIcon = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK, Lang.GUI_PLAYER_NEWSLETTER.get(playerData),Lang.GUI_PLAYER_NEWSLETTER_DESC1.get(playerData));
-        ItemStack languageIcon = HeadUtils.createCustomItemStack(lang.getIcon(), Lang.GUI_SELECTED_LANGUAGE_IS.get(playerData, lang.getName()),Lang.GUI_LEFT_CLICK_TO_INTERACT.get(playerData));
-
-        GuiItem playerGui = ItemBuilder.from(playerHead).asGuiItem();
-
-        GuiItem treasuryGui = ItemBuilder.from(treasuryIcon).asGuiItem();
-        GuiItem propertiesGui = ItemBuilder.from(propertiesIcon).asGuiItem(event -> openPlayerPropertiesMenu(player, 0));
-        GuiItem newsletterGui = ItemBuilder.from(newsletterIcon).asGuiItem(event -> openNewsletter(player,0, NewsletterScope.SHOW_ONLY_UNREAD));
-        GuiItem languageGui = ItemBuilder.from(languageIcon).asGuiItem(event -> openLanguageMenu(player, 0));
-
-        gui.setItem(1,5, playerGui);
-        gui.setItem(2,2, treasuryGui);
-        gui.setItem(2,4, propertiesGui);
-        gui.setItem(2,6, newsletterGui);
-        gui.setItem(2,8, languageGui);
-
-        gui.setItem(18, GuiUtil.createBackArrow(player, p -> openMainMenu(player)));
-
-        gui.open(player);
-    }
-
-    private static void openLanguageMenu(Player player, int page) {
+    public static void openLanguageMenu(Player player, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_SELECT_LANGUAGE.get(player),3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
@@ -206,13 +108,13 @@ public class PlayerGUI {
             GuiItem langGui = ItemBuilder.from(langIcon).asGuiItem(event -> {
                 playerData.setLang(lang);
                 player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_LANGUAGE_CHANGED.get(playerData, lang.getName()));
-                openPlayerProfileMenu(player);
+                new PlayerMenu(player).open();
             });
             guiItems.add(langGui);
         }
 
         GuiUtil.createIterator(gui, guiItems, page, player,
-                p -> openPlayerProfileMenu(player),
+                p -> new PlayerMenu(player).open(),
                 p -> openLanguageMenu(player, page + 1),
                 p -> openLanguageMenu(player, page - 1)
         );
@@ -229,7 +131,7 @@ public class PlayerGUI {
         ArrayList<GuiItem> guiItems = new ArrayList<>(NewsletterStorage.getNewsletterForPlayer(player, scope, p -> openNewsletter(player, page, scope) ));
 
         GuiUtil.createIterator(gui, guiItems, 0, player,
-                p -> openPlayerProfileMenu(player),
+                p -> new PlayerMenu(player).open(),
                 p -> openNewsletter(player, page + 1,scope),
                 p -> openNewsletter(player, page - 1,scope)
         );
@@ -269,7 +171,7 @@ public class PlayerGUI {
         );
 
         GuiUtil.createIterator(gui, guiItems, page, player,
-                p -> openPlayerProfileMenu(player),
+                p -> new PlayerMenu(player).open(),
                 p -> openPlayerPropertiesMenu(player, page + 1),
                 p -> openPlayerPropertiesMenu(player, page - 1)
         );
@@ -669,7 +571,7 @@ public class PlayerGUI {
 
         gui.setItem(11, createButton);
         gui.setItem(15, browseButton);
-        gui.setItem(18, GuiUtil.createBackArrow(player, p -> openMainMenu(player)));
+        gui.setItem(18, GuiUtil.createBackArrow(player, p -> new MainMenu(player).open()));
 
         gui.open(player);
     }
@@ -861,7 +763,7 @@ public class PlayerGUI {
         gui.setItem(3,4, warButton);
         gui.setItem(3,5, hierarchyButton);
 
-        gui.setItem(nRows,1, GuiUtil.createBackArrow(player, p -> openMainMenu(player)));
+        gui.setItem(nRows,1, GuiUtil.createBackArrow(player, p -> new MainMenu(player).open()));
 
         gui.open(player);
     }
@@ -2724,7 +2626,7 @@ public class PlayerGUI {
 
         gui.setItem(2,4, createRegionButton);
         gui.setItem(2,6, browseRegionButton);
-        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> openMainMenu(player)));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> new MainMenu(player).open()));
 
         gui.open(player);
     }
@@ -2834,7 +2736,7 @@ public class PlayerGUI {
         gui.setItem(3,2, claimButton);
 
 
-        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> openMainMenu(player)));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> new MainMenu(player).open()));
 
         gui.open(player);
     }
@@ -3004,7 +2906,7 @@ public class PlayerGUI {
                 FileUtil.addLineToHistory(Lang.REGION_DELETED_NEWSLETTER.get(playerData, player.getName(),playerRegion.getName()));
                 playerRegion.delete();
                 SoundUtil.playSound(player, GOOD);
-                openMainMenu(player);
+                new MainMenu(player).open();
             }, remove -> openRegionSettings(player));
         });
 

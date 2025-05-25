@@ -1,9 +1,12 @@
-# All type of possible icons are listed here.
-# 1. URL: starts with http
-# 2. Base64 texture:
-# 3. Player own head: "PLAYER_HEAD"
-# 4. town head : "TOWN_HEAD"
-# 5. region head : "REGION_HEAD"
+# All types of possible icons are listed here.
+# 1. URL: starts with "http"
+# 2. Base64 texture: starts with "Base64:"
+# 3. Item: starts with "minecraft:"
+# 4. Player's head: "PLAYER_HEAD"
+# 5. Player's town head: "TOWN_HEAD"
+# 6. Player's region head: "REGION_HEAD"
+# 8. Player's used language: "PLAYER_LANGUAGE_HEAD"
+# 9. Remove icon: "NO_ICON" (removing a button may break some functionalities, use with caution)
 
 #Main menu
 NATION_BASE_ICON : "https://textures.minecraft.net/texture/c69196b330c6b8962f23ad5627fb6ecce472eaf5c9d44f791f6709c7d0f4dece"
@@ -11,4 +14,9 @@ REGION_BASE_ICON : "https://textures.minecraft.net/texture/49c1832e4ef5c4ad9c519
 TOWN_BASE_ICON : "https://textures.minecraft.net/texture/63d02cdc075bb1cc5f6fe3c7711ae4977e38b910d50ed6023df73913e5e7fcff"
 PLAYER_BASE_ICON : "PLAYER_HEAD"
 #Player menu
+PLAYER_HEAD_ICON : "PLAYER_HEAD"
+PLAYER_BALANCE_ICON : "minecraft:GOLD_INGOT"
+PLAYER_PROPERTY_ICON : "minecraft:OAK_SIGN"
+NEWSLETTER_ICON : "minecraft:WRITABLE_BOOK"
+LANGUAGE_ICON : "PLAYER_LANGUAGE_HEAD"
 

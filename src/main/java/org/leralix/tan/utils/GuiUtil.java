@@ -30,7 +30,7 @@ public class GuiUtil {
     }
 
     /**
-     * Create the town upgrade resume {@link GuiItem}. This gui is used to summarise
+     * Create the town upgrade resume {@link GuiItem}. This gui is used to summarize
      * every upgrade rewards the town currently have.
      * @param townData  The town on which the upgrade should be shown
      * @return          The {@link GuiItem} displaying the town current benefices

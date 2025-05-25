@@ -95,7 +95,7 @@ public class MainMenu extends BasicGui {
                         description,
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData))
                 .setAction(action -> {
-                    if (playerData.hasRegion()) {
+                    if (playerData.hasTown()) {
                         PlayerGUI.dispatchPlayerTown(player);
                     } else {
                         PlayerGUI.openNoTownMenu(player);
@@ -106,11 +106,9 @@ public class MainMenu extends BasicGui {
 
     private GuiItem getPlayerButton(PlayerData playerData) {
         return iconManager.get(IconKey.PLAYER_BASE_ICON)
-                .setName(Lang.GUI_PLAYER_ICON.get(playerData, player.getName()))
-                .setDescription(
-                        Lang.GUI_PLAYER_PROFILE_DESC1.get(playerData, playerData.getBalance()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData))
-                .setAction(action -> PlayerGUI.openPlayerProfileMenu(player))
+                .setName(Lang.GUI_PLAYER_MENU_ICON.get(playerData, player.getName()))
+                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData))
+                .setAction(action -> new PlayerMenu(player).open())
                 .asGuiItem(player);
     }
 

@@ -218,8 +218,8 @@ public enum Lang {
     GUI_TOWN_ICON_DESC1_HAVE_TOWN,
     GUI_TOWN_ICON_DESC2_HAVE_TOWN,
     GUI_TOWN_ICON_DESC1_NO_TOWN,
+    GUI_PLAYER_MENU_ICON,
     GUI_PLAYER_ICON,
-    GUI_PLAYER_PROFILE_DESC1,
     GUI_YOUR_PROFILE,
     GUI_YOUR_BALANCE,
     GUI_YOUR_BALANCE_DESC1,
@@ -227,6 +227,9 @@ public enum Lang {
     GUI_PLAYER_MANAGE_PROPERTIES_DESC1,
     GUI_PLAYER_NEWSLETTER,
     GUI_PLAYER_NEWSLETTER_DESC1,
+    GUI_LANGUAGE_BUTTON,
+    GUI_LANGUAGE_BUTTON_DESC1,
+    GUI_LANGUAGE_BUTTON_DESC2,
     GUI_NO_TOWN_CREATE_NEW_TOWN,
     GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1,
     GUI_NO_TOWN_JOIN_A_TOWN,
@@ -544,7 +547,6 @@ public enum Lang {
     GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER,
     TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN,
     WARNING_OTHER_TOWN_HAS_BEEN_DELETED,
-    GUI_SELECTED_LANGUAGE_IS,
     ITEM_RARE_STONE,
     ITEM_RARE_WOOD,
     ITEM_RARE_CROP,
@@ -982,7 +984,7 @@ public enum Lang {
     CHUNK_IS_BLACKLISTED;
 
 
-    private static LangType chosenLang;
+    private static LangType serverLang;
 
     private static final EnumMap<LangType ,EnumMap<Lang, String>> translations = new EnumMap<>(LangType.class);
     private static final EnumMap<LangType , Integer> completedLang = new EnumMap<>(LangType.class);
@@ -996,15 +998,13 @@ public enum Lang {
         loadTranslations(langFolder, fileTag, true);
     }
 
-        public static void loadTranslations(File langFolder, String fileTag, boolean saveFile) {
+    public static void loadTranslations(File langFolder, String fileTag, boolean saveFile) {
 
-        chosenLang = LangType.fromCode(fileTag);
+        serverLang = LangType.fromCode(fileTag);
 
         if (!langFolder.exists()) {
             langFolder.mkdir();
         }
-
-        boolean replace = ConfigUtil.getCustomConfig(ConfigTag.LANG).getBoolean("autoUpdateLangFiles",true);
 
         for(LangType langType : LangType.values()) {
 
@@ -1016,9 +1016,7 @@ public enum Lang {
             File file = new File(specificLangFolder, "main.yml");
 
 
-            if((!file.exists() || replace) && saveFile) {
-                TownsAndNations.getPlugin().saveResource("lang/" + langType.getCode() + "/main.yml", true);
-            }
+            ConfigUtil.saveAndUpdateResource(TownsAndNations.getPlugin(), "lang/" + langType.getCode() + "/main.yml");
 
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
@@ -1036,8 +1034,8 @@ public enum Lang {
         }
     }
 
-    public static LangType getChosenLang() {
-        return chosenLang;
+    public static LangType getServerLang() {
+        return serverLang;
     }
 
     public static int getCompletionPercentage(LangType langType) {
@@ -1045,7 +1043,7 @@ public enum Lang {
     }
 
     public String get() {
-        return get(chosenLang);
+        return get(serverLang);
     }
 
     public String get(Player player){
@@ -1055,7 +1053,7 @@ public enum Lang {
 
     public String get(PlayerData playerData){
         if(playerData == null) {
-            return get(chosenLang);
+            return get(serverLang);
         }
         return get(playerData.getLang());
     }
@@ -1073,7 +1071,7 @@ public enum Lang {
     }
 
     public String get(Object... placeholders) {
-        return get(chosenLang, placeholders);
+        return get(serverLang, placeholders);
     }
 
     public String get(Player player, Object... placeholders) {
@@ -1082,7 +1080,7 @@ public enum Lang {
 
     public String get(PlayerData playerData, Object... placeholders) {
         if(playerData == null) {
-            return get(chosenLang, placeholders);
+            return get(serverLang, placeholders);
         }
         return get(playerData.getLang(), placeholders);
     }
@@ -1130,7 +1128,7 @@ public enum Lang {
 
 
     public String getWithoutPlaceholder() {
-        String translation = translations.get(chosenLang).get(this);
+        String translation = translations.get(serverLang).get(this);
         if (translation != null) {
             return ChatColor.translateAlternateColorCodes('§', translation);
         }

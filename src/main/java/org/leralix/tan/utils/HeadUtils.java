@@ -48,7 +48,7 @@ public class HeadUtils {
 
         head.setItemMeta(skullMeta);
 
-        setLore(head, Lang.GUI_PLAYER_PROFILE_DESC1.get(playerData, StringUtil.formatMoney(EconomyUtil.getBalance(offlinePlayer))));
+        setLore(head, Lang.GUI_YOUR_BALANCE_DESC1.get(playerData, StringUtil.formatMoney(EconomyUtil.getBalance(offlinePlayer))));
         return head;
     }
     /**

@@ -28,8 +28,6 @@ public class UrlHeadIconBuilder extends IconBuilder{
         return createSkull(playerProfile);
     }
 
-
-
     private URL getUrl() {
         try {
             return new URL(headUrl);

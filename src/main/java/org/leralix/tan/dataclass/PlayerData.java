@@ -292,7 +292,7 @@ public class PlayerData {
 
     public LangType getLang() {
         if (lang == null)
-            return Lang.getChosenLang();
+            return Lang.getServerLang();
         return lang;
     }
 

@@ -1,12 +1,11 @@
 package org.leralix.tan.gui.cosmetic;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.gui.cosmetic.type.IconBuilder;
-import org.leralix.tan.gui.cosmetic.type.PlayerHeadIconBuilder;
-import org.leralix.tan.gui.cosmetic.type.UrlHeadIconBuilder;
+import org.leralix.tan.gui.cosmetic.type.*;
 
 import java.io.File;
 import java.util.EnumMap;
@@ -56,6 +55,17 @@ public class IconManager {
         }
         if(value.equals("PLAYER_HEAD")){
             return new PlayerHeadIconBuilder();
+        }
+        if(value.startsWith("minecraft:")){
+            try {
+                return new ItemIconBuillder(Material.valueOf(value.replace("minecraft:", "")));
+            } catch (IllegalArgumentException e) {
+                TownsAndNations.getPlugin().getLogger().warning("Invalid material in config: " + value);
+                return new ItemIconBuillder(Material.BARRIER); // Default fallback material
+            }
+        }
+        if(value.equals("PLAYER_LANGUAGE_HEAD")){
+            return new PlayerLanguageIconBuilder();
         }
         return new UrlHeadIconBuilder(""); //Malformed url will display default head
     }

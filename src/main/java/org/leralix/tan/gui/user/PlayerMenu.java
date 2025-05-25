@@ -1,23 +1,97 @@
 package org.leralix.tan.gui.user;
 
+import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.BasicGui;
+import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.cosmetic.IconManager;
+import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
+import org.leralix.tan.newsletter.NewsletterScope;
+import org.leralix.tan.newsletter.storage.NewsletterStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 public class PlayerMenu extends BasicGui {
 
-    protected PlayerMenu(Player player) {
+    private PlayerData playerData;
+
+    public PlayerMenu(Player player) {
         super(player, Lang.HEADER_PLAYER_PROFILE, 3);
     }
 
     @Override
     public void open(){
 
-
-
+        playerData = PlayerDataStorage.getInstance().get(player);
+        gui.setItem(1, 5, getPlayerHeadIcon());
+        gui.setItem(2, 2, getBalanceButton());
+        gui.setItem(2, 4, getPropertyButton());
+        gui.setItem(2, 6, getNewsletterButton());
+        gui.setItem(2, 8, getLanguageButton());
 
         gui.open(player);
     }
+
+    private GuiItem getPlayerHeadIcon() {
+        return IconManager.getInstance().get(IconKey.PLAYER_HEAD_ICON)
+                .setName(Lang.GUI_PLAYER_ICON.get(playerData, player.getName()))
+                .asGuiItem(player);
+    }
+
+    private GuiItem getBalanceButton() {
+        return IconManager.getInstance().get(IconKey.PLAYER_BALANCE_ICON)
+                .setName(Lang.GUI_YOUR_BALANCE.get(playerData, player.getName()))
+                .setDescription(Lang.GUI_YOUR_BALANCE_DESC1.get(playerData, EconomyUtil.getBalance(player)))
+                .asGuiItem(player);
+    }
+
+    private GuiItem getPropertyButton() {
+        return IconManager.getInstance().get(IconKey.PLAYER_PROPERTY_ICON)
+                .setName(Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(playerData))
+                .setDescription(
+                        Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get(playerData),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                )
+                .setAction(event -> {
+                    PlayerGUI.openPlayerPropertiesMenu(player, 0);
+                })
+                .asGuiItem(player);
+    }
+
+    private GuiItem getNewsletterButton() {
+        return IconManager.getInstance().get(IconKey.NEWSLETTER_ICON)
+                .setName(Lang.GUI_PLAYER_NEWSLETTER.get(playerData))
+                .setDescription(
+                        Lang.GUI_PLAYER_NEWSLETTER_DESC1.get(playerData, NewsletterStorage.getNbUnreadNewsletterForPlayer(player)),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                )
+                .setAction(event -> PlayerGUI.openNewsletter(player, 0, NewsletterScope.SHOW_ONLY_UNREAD))
+                .asGuiItem(player);
+    }
+
+
+
+    private GuiItem getLanguageButton() {
+
+        LangType serverLang = Lang.getServerLang();
+        LangType playerLang = playerData.getLang();
+
+        return IconManager.getInstance().get(IconKey.LANGUAGE_ICON)
+                .setName(Lang.GUI_LANGUAGE_BUTTON.get(playerData))
+                .setDescription(
+                        Lang.GUI_LANGUAGE_BUTTON_DESC1.get(playerData, serverLang.getName()),
+                        Lang.GUI_LANGUAGE_BUTTON_DESC2.get(playerData, playerLang.getName()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                )
+                .setAction(event -> PlayerGUI.openLanguageMenu(player, 0))
+                .asGuiItem(player);
+    }
+
+
+
 
 
 }
