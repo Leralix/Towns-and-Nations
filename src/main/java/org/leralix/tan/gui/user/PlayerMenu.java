@@ -2,7 +2,6 @@ package org.leralix.tan.gui.user;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -69,8 +68,6 @@ public class PlayerMenu extends BasicGui {
                 .setAction(event -> PlayerGUI.openNewsletter(player, 0, NewsletterScope.SHOW_ONLY_UNREAD))
                 .asGuiItem(player);
     }
-
-
 
     private GuiItem getLanguageButton() {
 

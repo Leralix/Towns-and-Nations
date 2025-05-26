@@ -16,6 +16,8 @@ import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.GuiUtil;
 import org.leralix.tan.utils.TanChatUtils;
 
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ public class TownMenu extends BasicGui {
     TownData townData;
 
     public TownMenu(Player player) {
-        super(player, Lang.HEADER_TOWN_MENU, 4);
+        super(player, Lang.HEADER_TOWN_MENU.get(PlayerDataStorage.getInstance().get(player).getTown().getName()), 4);
 
         gui.setDefaultClickAction(event -> {
             if(event.getSlotType() == InventoryType.SlotType.CONTAINER || event.getSlotType() == InventoryType.SlotType.QUICKBAR){
@@ -56,8 +58,9 @@ public class TownMenu extends BasicGui {
         gui.setItem(3, 4, getAttackButton());
         gui.setItem(3, 5, getHierarchyButton());
 
+        gui.setItem(4, 1, GuiUtil.createBackArrow(player, p -> new MainMenu(p).open()));
 
-
+        gui.open(player);
     }
 
     private GuiItem getTownIcon() {
@@ -104,7 +107,10 @@ public class TownMenu extends BasicGui {
     private GuiItem getTownTreasuryButton() {
         return IconManager.getInstance().get(IconKey.TOWN_TREASURY_ICON)
                 .setName(Lang.GUI_TOWN_TREASURY_ICON.get(playerData.getLang()))
-                .setDescription(Lang.GUI_TOWN_TREASURY_ICON_DESC1.get(playerData.getLang()))
+                .setDescription(
+                        Lang.GUI_TOWN_TREASURY_ICON_DESC1.get(playerData.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                )
                 .setAction(event -> PlayerGUI.openTreasury(player, townData))
                 .asGuiItem(player);
     }
@@ -112,7 +118,9 @@ public class TownMenu extends BasicGui {
     private GuiItem getMemberButton() {
         return IconManager.getInstance().get(IconKey.TOWN_MEMBER_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_ICON.get(playerData.getLang()))
-                .setDescription(Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get(playerData.getLang()))
+                .setDescription(Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get(playerData.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                )
                 .setAction(event -> PlayerGUI.openMemberList(player, townData))
                 .asGuiItem(player);
     }
@@ -120,7 +128,10 @@ public class TownMenu extends BasicGui {
     private GuiItem getLandButton() {
         return IconManager.getInstance().get(IconKey.TOWN_LAND_ICON)
                 .setName(Lang.GUI_CLAIM_ICON.get(playerData.getLang()))
-                .setDescription(Lang.GUI_CLAIM_ICON_DESC1.get(playerData.getLang()))
+                .setDescription(
+                        Lang.GUI_CLAIM_ICON_DESC1.get(playerData.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                )
                 .setAction(event -> PlayerGUI.openChunkSettings(player, townData))
                 .asGuiItem(player);
     }
@@ -128,7 +139,10 @@ public class TownMenu extends BasicGui {
     private GuiItem getBrowseButton() {
         return IconManager.getInstance().get(IconKey.TOWN_BROWSE_ICON)
                 .setName(Lang.GUI_BROWSE_TERRITORY_ICON.get(playerData.getLang()))
-                .setDescription(Lang.GUI_BROWSE_TERRITORY_ICON_DESC1.get(playerData.getLang()))
+                .setDescription(
+                        Lang.GUI_BROWSE_TERRITORY_ICON_DESC1.get(playerData.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                )
                 .setAction(event -> PlayerGUI.browseTerritory(player, townData, BrowseScope.TOWNS, p -> new TownMenu(player).open(), 0))
                 .asGuiItem(player);
     }
@@ -136,7 +150,10 @@ public class TownMenu extends BasicGui {
     private GuiItem getDiplomacyButton() {
         return IconManager.getInstance().get(IconKey.TOWN_DIPLOMACY_ICON)
                 .setName(Lang.GUI_RELATION_ICON.get(playerData.getLang()))
-                .setDescription(Lang.GUI_RELATION_ICON_DESC1.get(playerData.getLang()))
+                .setDescription(
+                        Lang.GUI_RELATION_ICON_DESC1.get(playerData.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                )
                 .setAction(event -> PlayerGUI.openRelations(player, townData))
                 .asGuiItem(player);
     }
@@ -144,7 +161,10 @@ public class TownMenu extends BasicGui {
     private GuiItem getLevelButton() {
         return IconManager.getInstance().get(IconKey.TOWN_LEVEL_ICON)
                 .setName(Lang.GUI_TOWN_LEVEL_ICON.get(playerData.getLang()))
-                .setDescription(Lang.GUI_TOWN_LEVEL_ICON_DESC1.get(playerData.getLang()))
+                .setDescription(
+                        Lang.GUI_TOWN_LEVEL_ICON_DESC1.get(playerData.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                )
                 .setAction(event -> PlayerGUI.openTownLevel(player, 0))
                 .asGuiItem(player);
     }
@@ -152,7 +172,10 @@ public class TownMenu extends BasicGui {
     private GuiItem getSettingsButton() {
         return IconManager.getInstance().get(IconKey.TOWN_SETTINGS_ICON)
                 .setName(Lang.GUI_TOWN_SETTINGS_ICON.get(playerData.getLang()))
-                .setDescription(Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get(playerData.getLang()))
+                .setDescription(
+                        Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get(playerData.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                )
                 .setAction(event -> PlayerGUI.openTownSettings(player, townData))
                 .asGuiItem(player);
     }
@@ -160,7 +183,10 @@ public class TownMenu extends BasicGui {
     private GuiItem getPropertiesButton() {
         return IconManager.getInstance().get(IconKey.TOWN_PROPERTIES_ICON)
                 .setName(Lang.GUI_TOWN_PROPERTIES_ICON.get(playerData.getLang()))
-                .setDescription(Lang.GUI_TOWN_PROPERTIES_ICON_DESC1.get(playerData.getLang()))
+                .setDescription(
+                        Lang.GUI_TOWN_PROPERTIES_ICON_DESC1.get(playerData.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                )
                 .setAction(event -> PlayerGUI.openTownPropertiesMenu(player, 0))
                 .asGuiItem(player);
     }
@@ -168,7 +194,10 @@ public class TownMenu extends BasicGui {
     private GuiItem getLandmarksButton() {
         return IconManager.getInstance().get(IconKey.TOWN_LANDMARKS_ICON)
                 .setName(Lang.ADMIN_GUI_LANDMARK_ICON.get(playerData.getLang()))
-                .setDescription(Lang.ADMIN_GUI_LANDMARK_DESC1.get(playerData.getLang()))
+                .setDescription(
+                        Lang.ADMIN_GUI_LANDMARK_DESC1.get(playerData.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                )
                 .setAction(event -> PlayerGUI.openOwnedLandmark(player, townData, 0))
                 .asGuiItem(player);
     }
@@ -176,7 +205,10 @@ public class TownMenu extends BasicGui {
     private GuiItem getAttackButton() {
         return IconManager.getInstance().get(IconKey.TOWN_WAR_ICON)
                 .setName(Lang.GUI_ATTACK_ICON.get(playerData.getLang()))
-                .setDescription(Lang.GUI_ATTACK_ICON_DESC1.get(playerData.getLang()))
+                .setDescription(
+                        Lang.GUI_ATTACK_ICON_DESC1.get(playerData.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                )
                 .setAction(event -> PlayerGUI.openWarMenu(player, townData, 0))
                 .asGuiItem(player);
     }
@@ -184,7 +216,10 @@ public class TownMenu extends BasicGui {
     private GuiItem getHierarchyButton() {
         return IconManager.getInstance().get(IconKey.TOWN_HIERARCHY_ICON)
                 .setName(Lang.GUI_HIERARCHY_MENU.get(playerData.getLang()))
-                .setDescription(Lang.GUI_HIERARCHY_MENU_DESC1.get(playerData.getLang()))
+                .setDescription(
+                        Lang.GUI_HIERARCHY_MENU_DESC1.get(playerData.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                )
                 .setAction(event -> PlayerGUI.openHierarchyMenu(player, townData))
                 .asGuiItem(player);
     }

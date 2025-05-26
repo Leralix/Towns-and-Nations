@@ -33,6 +33,6 @@ TOWN_LEVEL_ICON : "https://textures.minecraft.net/texture/fbe529ab6b2ea7c50d9192
 TOWN_SETTINGS_ICON : "https://textures.minecraft.net/texture/95d2cb38458da17fb6cdacf787161602a2493cbf93233636253cff07cd88a9c0"
 TOWN_PROPERTIES_ICON : "minecraft:OAK_SIGN"
 TOWN_LANDMARKS_ICON : "https://textures.minecraft.net/texture/fd761cc16562c88d2fbe40ad38502bc3b4a87859887dbc35f272e30d8070eeec"
-TOWN_WAR_ICON : "https://textures.minecraft.net/texture/fd761cc16562c88d2fbe40ad38502bc3b4a87859887dbc35f272e30d8070eeec"
-TOWN_HIERARCHY_ICON : "minecraft:gold_helmet"
+TOWN_WAR_ICON : "https://textures.minecraft.net/texture/25de4ff8be70eee4d103b1eedf454f0abb9f0568f5f326ecba7cab6a47f9ade4"
+TOWN_HIERARCHY_ICON : "minecraft:golden_helmet"
 

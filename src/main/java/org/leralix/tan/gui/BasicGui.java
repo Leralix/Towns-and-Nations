@@ -16,15 +16,18 @@ public abstract class BasicGui {
     protected final PlayerData playerData;
     protected final IconManager iconManager;
 
-    protected BasicGui(Player player, Lang title, int rows){
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+    protected BasicGui(Player player, Lang title, int rows) {
+        this(player, title.get(PlayerDataStorage.getInstance().get(player)), rows);
+    }
+
+    protected BasicGui(Player player, String title, int rows){
+        this.playerData = PlayerDataStorage.getInstance().get(player);
         this.gui = Gui.gui()
-                .title(Component.text(title.get(playerData)))
+                .title(Component.text(title))
                 .type(GuiType.CHEST)
                 .rows(rows)
                 .create();
         this.player = player;
-        this.playerData = playerData;
         this.iconManager = IconManager.getInstance();
 
         gui.setDefaultClickAction(event -> event.setCancelled(true));
