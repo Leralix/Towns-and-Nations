@@ -5,7 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
@@ -23,13 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
-import static org.leralix.tan.gui.legacy.PlayerGUI.openTownMenu;
 
 public class TownMenu extends BasicGui {
 
     TownData townData;
 
-    protected TownMenu(Player player) {
+    public TownMenu(Player player) {
         super(player, Lang.HEADER_TOWN_MENU, 4);
 
         gui.setDefaultClickAction(event -> {
@@ -53,7 +51,10 @@ public class TownMenu extends BasicGui {
         gui.setItem(2, 7, getLevelButton());
         gui.setItem(2, 8, getSettingsButton());
 
-
+        gui.setItem(3, 2, getPropertiesButton());
+        gui.setItem(3, 3, getLandmarksButton());
+        gui.setItem(3, 4, getAttackButton());
+        gui.setItem(3, 5, getHierarchyButton());
 
 
 
@@ -93,8 +94,8 @@ public class TownMenu extends BasicGui {
                     }
                     else {
                         townData.setIcon(new CustomIcon(itemMaterial));
-                        openTownMenu(player);
                         player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get(langType));
+                        new TownMenu(player).open();
                     }
                 })
                 .asGuiItem(player);
@@ -128,7 +129,7 @@ public class TownMenu extends BasicGui {
         return IconManager.getInstance().get(IconKey.TOWN_BROWSE_ICON)
                 .setName(Lang.GUI_BROWSE_TERRITORY_ICON.get(playerData.getLang()))
                 .setDescription(Lang.GUI_BROWSE_TERRITORY_ICON_DESC1.get(playerData.getLang()))
-                .setAction(event -> PlayerGUI.browseTerritory(player, townData, BrowseScope.TOWNS, p -> openTownMenu(player), 0))
+                .setAction(event -> PlayerGUI.browseTerritory(player, townData, BrowseScope.TOWNS, p -> new TownMenu(player).open(), 0))
                 .asGuiItem(player);
     }
 
@@ -156,8 +157,35 @@ public class TownMenu extends BasicGui {
                 .asGuiItem(player);
     }
 
+    private GuiItem getPropertiesButton() {
+        return IconManager.getInstance().get(IconKey.TOWN_PROPERTIES_ICON)
+                .setName(Lang.GUI_TOWN_PROPERTIES_ICON.get(playerData.getLang()))
+                .setDescription(Lang.GUI_TOWN_PROPERTIES_ICON_DESC1.get(playerData.getLang()))
+                .setAction(event -> PlayerGUI.openTownPropertiesMenu(player, 0))
+                .asGuiItem(player);
+    }
 
+    private GuiItem getLandmarksButton() {
+        return IconManager.getInstance().get(IconKey.TOWN_LANDMARKS_ICON)
+                .setName(Lang.ADMIN_GUI_LANDMARK_ICON.get(playerData.getLang()))
+                .setDescription(Lang.ADMIN_GUI_LANDMARK_DESC1.get(playerData.getLang()))
+                .setAction(event -> PlayerGUI.openOwnedLandmark(player, townData, 0))
+                .asGuiItem(player);
+    }
 
+    private GuiItem getAttackButton() {
+        return IconManager.getInstance().get(IconKey.TOWN_WAR_ICON)
+                .setName(Lang.GUI_ATTACK_ICON.get(playerData.getLang()))
+                .setDescription(Lang.GUI_ATTACK_ICON_DESC1.get(playerData.getLang()))
+                .setAction(event -> PlayerGUI.openWarMenu(player, townData, 0))
+                .asGuiItem(player);
+    }
 
-
+    private GuiItem getHierarchyButton() {
+        return IconManager.getInstance().get(IconKey.TOWN_HIERARCHY_ICON)
+                .setName(Lang.GUI_HIERARCHY_MENU.get(playerData.getLang()))
+                .setDescription(Lang.GUI_HIERARCHY_MENU_DESC1.get(playerData.getLang()))
+                .setAction(event -> PlayerGUI.openHierarchyMenu(player, townData))
+                .asGuiItem(player);
+    }
 }
