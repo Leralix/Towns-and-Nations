@@ -19,6 +19,8 @@ PLAYER_BALANCE_ICON : "minecraft:GOLD_INGOT"
 PLAYER_PROPERTY_ICON : "minecraft:OAK_SIGN"
 NEWSLETTER_ICON : "minecraft:WRITABLE_BOOK"
 LANGUAGE_ICON : "PLAYER_LANGUAGE_HEAD"
+#Language menu
+HELP_TRANSLATION_ICON : "https://textures.minecraft.net/texture/b04831f7a7d8f624c9633996e3798edad49a5d9bcd18ecf75bfae66be48a0a6b"
 #Town menu - Player with no town
 CREATE_TOWN_ICON : "minecraft:GRASS_BLOCK"
 BROWSE_TOWN_ICON : "minecraft:ANVIL"
@@ -35,4 +37,5 @@ TOWN_PROPERTIES_ICON : "minecraft:OAK_SIGN"
 TOWN_LANDMARKS_ICON : "https://textures.minecraft.net/texture/fd761cc16562c88d2fbe40ad38502bc3b4a87859887dbc35f272e30d8070eeec"
 TOWN_WAR_ICON : "https://textures.minecraft.net/texture/25de4ff8be70eee4d103b1eedf454f0abb9f0568f5f326ecba7cab6a47f9ade4"
 TOWN_HIERARCHY_ICON : "minecraft:golden_helmet"
+
 

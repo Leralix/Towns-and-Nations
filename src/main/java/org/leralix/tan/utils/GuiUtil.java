@@ -123,6 +123,9 @@ public class GuiUtil {
             endIndex = startIndex + pageSize;
         }
 
+        for (int i = 0; i < pageSize; i++) {
+            gui.removeItem(i);
+        }
 
         int slot = 0;
 
@@ -159,14 +162,9 @@ public class GuiUtil {
 
         int lastRow = gui.getRows();
 
+        gui.getFiller().fillBottom(panel);
         gui.setItem(lastRow,1, GuiUtil.createBackArrow(player, backArrowAction));
-        gui.setItem(lastRow,2, panel);
-        gui.setItem(lastRow,3, panel);
-        gui.setItem(lastRow,4, panel);
-        gui.setItem(lastRow,5, panel);
-        gui.setItem(lastRow,6, panel);
         gui.setItem(lastRow,7, previousButton);
         gui.setItem(lastRow,8, nextButton);
-        gui.setItem(lastRow,9, panel);
     }
 }

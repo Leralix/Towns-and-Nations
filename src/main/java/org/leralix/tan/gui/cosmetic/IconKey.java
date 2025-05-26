@@ -13,6 +13,8 @@ public enum IconKey {
     NEWSLETTER_ICON,
     LANGUAGE_ICON,
 
+    HELP_TRANSLATION_ICON,
+
     CREATE_TOWN_ICON,
     BROWSE_TOWN_ICON,
 

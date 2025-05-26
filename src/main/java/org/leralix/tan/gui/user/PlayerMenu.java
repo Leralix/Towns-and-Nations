@@ -81,7 +81,7 @@ public class PlayerMenu extends BasicGui {
                         Lang.GUI_LANGUAGE_BUTTON_DESC2.get(playerData, playerLang.getName()),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
                 )
-                .setAction(event -> PlayerGUI.openLanguageMenu(player, 0))
+                .setAction(event -> new LangMenu(player).open())
                 .asGuiItem(player);
     }
 
