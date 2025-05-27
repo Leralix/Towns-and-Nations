@@ -154,9 +154,6 @@ language:
   SET_MONEY_COMMAND_SUCCESS: "Successfully set the balance of §3{0}§f to §6{1}{MONEY_CHAR}"
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Open the town and nation GUI"
-  #Newsletter command
-  OPEN_NEWSLETTER_DESC: "Get the latest news"
-  MARK_ALL_AS_READ: "§fMark all as read"
   #Pay command
   PAY_COMMAND_DESC: "Give money to another player"
   PAY_MINIMUM_REQUIRED: "§cYou need to send a least 1{MONEY_CHAR}"
@@ -257,6 +254,7 @@ language:
   #GUI generic
   GUI_GENERIC_CLICK_TO_OPEN: "§7▶ Click to open"
   GUI_GENERIC_CLICK_TO_PROCEED: "§7▶ Click to proceed"
+  GUI_GENERIC_CLICK_TO_MODIFY: "§7▶ Click to modify"
 
 
   GUI_GENERIC_CLICK_TO_OPEN_HISTORY: "§fLeft click to open the history"
@@ -297,6 +295,13 @@ language:
   GUI_LANGUAGE_BUTTON: "§aLanguage"
   GUI_LANGUAGE_BUTTON_DESC1: "§fServer default language: §e{0}"
   GUI_LANGUAGE_BUTTON_DESC2: "§fYour language: §e{0}"
+  #Newsletter menu
+  OPEN_NEWSLETTER_DESC: "Get the latest news"
+  MARK_ALL_AS_READ: "§aMark all as read"
+  NEWSLETTER_SCOPE_ICON: "§aNewsletter scope"
+  NEWSLETTER_SCOPE_ICON_DESC1: "§fCurrent scope: §e{0}"
+  NEWSLETTER_SHOW_ALL : "§9Show all news"
+  NEWSLETTER_SHOW_ONLY_UNREAD : "§9Show only unread news"
   #Town menu - no town
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCreate a new town"
   GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fCost : §6{0}{MONEY_CHAR}"
@@ -1008,8 +1013,6 @@ language:
   NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1: "{0}§f has asked {1}§f to join its region"
   NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2: "§fLeft click to open the proposal"
 
-  NEWSLETTER_SHOW_ALL: "§fShow all news"
-  NEWSLETTER_SHOW_ONLY_UNREAD: "§fShow only unread news"
   NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ: "§fRight click to mark as read"
   NEWSLETTER_SUBJUGATE_PROPOSAL: "§fSubjugate proposal from {0}"
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC1: "§f{0}§f asked {1}§f for its vassalage"

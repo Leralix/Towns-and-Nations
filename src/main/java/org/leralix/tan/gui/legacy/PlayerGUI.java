@@ -126,37 +126,6 @@ public class PlayerGUI {
         gui.open(player);
     }
 
-    public static void openNewsletter(Player player, int page, NewsletterScope scope){
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_NEWSLETTER.get(playerData),6);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
-
-        ArrayList<GuiItem> guiItems = new ArrayList<>(NewsletterStorage.getNewsletterForPlayer(player, scope, p -> openNewsletter(player, page, scope) ));
-
-        GuiUtil.createIterator(gui, guiItems, 0, player,
-                p -> new PlayerMenu(player).open(),
-                p -> openNewsletter(player, page + 1,scope),
-                p -> openNewsletter(player, page - 1,scope)
-        );
-
-        ItemStack changeScope = HeadUtils.createCustomItemStack(Material.NAME_TAG,scope.getName(playerData.getLang()),
-                Lang.GUI_GENERIC_CLICK_TO_SWITCH_SCOPE.get(playerData));
-        GuiItem checkScopeGui = ItemBuilder.from(changeScope).asGuiItem(event -> openNewsletter(player,0,scope.getNextScope()));
-
-        ItemStack markAllAsRead = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK,
-                Lang.MARK_ALL_AS_READ.get(playerData),
-                Lang.LEFT_CLICK_TO_SELECT.get(playerData));
-
-        GuiItem markAllAsReadButton = ItemBuilder.from(markAllAsRead).asGuiItem(event -> {
-            NewsletterStorage.markAllAsReadForPlayer(player, scope);
-            openNewsletter(player, page, scope);
-        });
-
-        gui.setItem(6,4,markAllAsReadButton);
-        gui.setItem(6,5,checkScopeGui);
-        gui.open(player);
-    }
-
     public static void openPlayerPropertiesMenu(Player player, int page){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 

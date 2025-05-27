@@ -65,7 +65,7 @@ public class PlayerMenu extends BasicGui {
                         Lang.GUI_PLAYER_NEWSLETTER_DESC1.get(playerData, NewsletterStorage.getNbUnreadNewsletterForPlayer(player)),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
                 )
-                .setAction(event -> PlayerGUI.openNewsletter(player, 0, NewsletterScope.SHOW_ONLY_UNREAD))
+                .setAction(event -> new NewsletterMenu(player).open())
                 .asGuiItem(player);
     }
 

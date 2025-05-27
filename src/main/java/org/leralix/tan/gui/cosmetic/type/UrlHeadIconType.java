@@ -1,24 +1,22 @@
 package org.leralix.tan.gui.cosmetic.type;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
-import org.leralix.tan.utils.HeadUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
 
-public class UrlHeadIconBuilder extends IconBuilder{
+public class UrlHeadIconType extends IconType {
 
     private final String headUrl;
 
-    public UrlHeadIconBuilder(String headUrl) {
+    public UrlHeadIconType(String headUrl) {
         this.headUrl = headUrl;
     }
 

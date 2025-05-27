@@ -13,16 +13,18 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
-public abstract class IconBuilder {
+public class IconBuilder {
 
     private String name;
     private final List<String> description;
     private Consumer<InventoryClickEvent> action;
     private boolean hideItemFlags;
+    private final IconType iconType;
 
-    public IconBuilder(){
+    public IconBuilder(IconType iconType){
         this.description = new ArrayList<>();
         hideItemFlags = false;
+        this.iconType = iconType;
     }
 
     public IconBuilder setName(String name) {
@@ -52,10 +54,8 @@ public abstract class IconBuilder {
         return this;
     }
 
-    protected abstract ItemStack getItemStack(Player player);
-
     public GuiItem asGuiItem(Player player) {
-        ItemStack item = getItemStack(player);
+        ItemStack item = iconType.getItemStack(player);
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
@@ -73,4 +73,5 @@ public abstract class IconBuilder {
         }
         return ItemBuilder.from(item).asGuiItem(event -> action.accept(event));
     }
+
 }

@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class ItemIconBuillder extends IconBuilder {
+public class ItemIconBuillder extends IconType {
 
     private final Material material;
 

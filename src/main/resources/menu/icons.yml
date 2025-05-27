@@ -21,6 +21,9 @@ NEWSLETTER_ICON : "minecraft:WRITABLE_BOOK"
 LANGUAGE_ICON : "PLAYER_LANGUAGE_HEAD"
 #Language menu
 HELP_TRANSLATION_ICON : "https://textures.minecraft.net/texture/b04831f7a7d8f624c9633996e3798edad49a5d9bcd18ecf75bfae66be48a0a6b"
+#Newsletter menu
+MARK_ALL_AS_READ_ICON : "minecraft:BOOK"
+CHANGE_NEWSLETTER_SCOPE_ICON : "minecraft:NAME_TAG"
 #Town menu - Player with no town
 CREATE_TOWN_ICON : "minecraft:GRASS_BLOCK"
 BROWSE_TOWN_ICON : "minecraft:ANVIL"

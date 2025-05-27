@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
 
-public class PlayerHeadIconBuilder extends IconBuilder{
+public class PlayerHeadIconType extends IconType {
 
 
 

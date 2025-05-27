@@ -15,7 +15,7 @@ public class IconManager {
 
     private static IconManager instance;
 
-    Map<IconKey, IconBuilder> iconMap;
+    Map<IconKey, IconType> iconMap;
 
     private IconManager(){
         this.iconMap = new EnumMap<>(IconKey.class);
@@ -31,9 +31,9 @@ public class IconManager {
                 IconKey iconKey = IconKey.valueOf(key);
                 String value = config.getString(key);
 
-                IconBuilder iconBuilder = chooseIconBuilderType(value);
+                IconType iconType = chooseIconBuilderType(value);
 
-                iconMap.put(iconKey, iconBuilder);
+                iconMap.put(iconKey, iconType);
             } catch (IllegalArgumentException e) {
                 plugin.getLogger().warning("Clé inconnue dans le fichier config.yml : " + key);
             }
@@ -48,13 +48,13 @@ public class IconManager {
     }
 
 
-    private IconBuilder chooseIconBuilderType(String value) {
+    private IconType chooseIconBuilderType(String value) {
 
         if(value.startsWith("http")){
-            return new UrlHeadIconBuilder(value);
+            return new UrlHeadIconType(value);
         }
         if(value.equals("PLAYER_HEAD")){
-            return new PlayerHeadIconBuilder();
+            return new PlayerHeadIconType();
         }
         if(value.startsWith("minecraft:")){
             try {
@@ -65,17 +65,17 @@ public class IconManager {
             }
         }
         if(value.equals("TOWN_HEAD")){
-            return new TownIconBuilder();
+            return new TownIconType();
         }
         if(value.equals("PLAYER_LANGUAGE_HEAD")){
-            return new PlayerLanguageIconBuilder();
+            return new PlayerLanguageIconType();
         }
-        return new UrlHeadIconBuilder(""); //Malformed url will display default head
+        return new UrlHeadIconType(""); //Malformed url will display default head
     }
 
 
     public IconBuilder get(IconKey key){
-        return iconMap.get(key);
+        return new IconBuilder(iconMap.get(key));
     }
 
 }

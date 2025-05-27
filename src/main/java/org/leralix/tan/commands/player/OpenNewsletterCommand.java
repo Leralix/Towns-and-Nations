@@ -2,6 +2,7 @@ package org.leralix.tan.commands.player;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
+import org.leralix.tan.gui.user.NewsletterMenu;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
@@ -40,7 +41,7 @@ public class OpenNewsletterCommand extends PlayerSubCommand {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
             return;
         }
-        PlayerGUI.openNewsletter(player,0, NewsletterScope.SHOW_ONLY_UNREAD);
+        new NewsletterMenu(player).open();
 
     }
 
