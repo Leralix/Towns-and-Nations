@@ -44,10 +44,7 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.*;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
-import org.leralix.tan.gui.user.MainMenu;
-import org.leralix.tan.gui.user.NoTownMenu;
-import org.leralix.tan.gui.user.PlayerMenu;
-import org.leralix.tan.gui.user.TownMenu;
+import org.leralix.tan.gui.user.*;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -1030,50 +1027,6 @@ public class PlayerGUI {
         gui.open(player);
     }
 
-
-    public static void openMemberList(Player player, TerritoryData territoryData) {
-        openMemberList(player, territoryData, 0);
-    }
-
-    public static void openMemberList(Player player, TerritoryData territoryData, int page) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_MEMBERS.get(playerData),6);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
-
-        List<GuiItem> guiItems = territoryData.getOrderedMemberList(playerData);
-
-        ItemStack manageRanks = HeadUtils.createCustomItemStack(Material.LADDER, Lang.GUI_TOWN_MEMBERS_MANAGE_ROLES.get(playerData));
-
-        GuiItem manageRanksButton = ItemBuilder.from(manageRanks).asGuiItem(event -> {
-            event.setCancelled(true);
-            openTerritoryRanks(player, territoryData);
-        });
-
-        GuiUtil.createIterator(gui, guiItems, page, player,
-                p -> territoryData.openMainMenu(player),
-                p -> openMemberList(player, territoryData, page + 1),
-                p -> openMemberList(player, territoryData, page - 1),
-                Material.LIME_STAINED_GLASS_PANE);
-
-        gui.setItem(6,3, manageRanksButton);
-
-
-        if(territoryData instanceof TownData townData){
-            ItemStack manageApplication = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK,
-                    Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION.get(playerData),
-                    Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(playerData, townData.getPlayerJoinRequestSet().size())
-            );
-            GuiItem mangeApplicationPanel = ItemBuilder.from(manageApplication).asGuiItem(event -> {
-                event.setCancelled(true);
-                openTownApplications(player, townData);
-            });
-            gui.setItem(6,4, mangeApplicationPanel);
-        }
-
-        gui.open(player);
-
-    }
-
     public static void openTownApplications(Player player, TownData townData) {
         openTownApplications(player, townData, 0);
     }
@@ -1108,7 +1061,6 @@ public class PlayerGUI {
                         return;
                     }
                     townData.addPlayer(playerIterateData);
-                    townData.broadcastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerData.getNameStored()), SoundEnum.MINOR_GOOD);
                 }
                 else if(event.isRightClick()){
                     if(!townData.doesPlayerHavePermission(playerStat, RolePermission.INVITE_PLAYER)){
@@ -1124,7 +1076,7 @@ public class PlayerGUI {
         }
 
         GuiUtil.createIterator(gui, guiItems, page, player,
-                p -> openMemberList(player, townData),
+                p -> new TerritoryMemberMenu(player, townData).open(),
                 p -> openTownApplications(player, townData, page + 1),
                 p -> openTownApplications(player, townData, page - 1),
                 Material.LIME_STAINED_GLASS_PANE);
@@ -1176,7 +1128,7 @@ public class PlayerGUI {
         GuiItem decorativePanel = ItemBuilder.from(HeadUtils.createCustomItemStack(Material.GRAY_STAINED_GLASS_PANE, "")).asGuiItem(event -> event.setCancelled(true));
 
         gui.getFiller().fillBottom(decorativePanel);
-        gui.setItem(row,1, GuiUtil.createBackArrow(player, p -> openMemberList(player, territoryData)));
+        gui.setItem(row,1, GuiUtil.createBackArrow(player, p -> new TerritoryMemberMenu(player, territoryData).open()));
         gui.setItem(row,3, createNewButton);
 
         gui.open(player);
@@ -2517,7 +2469,7 @@ public class PlayerGUI {
         });
         GuiItem memberIconButton = ItemBuilder.from(memberIcon).asGuiItem(event -> {
             event.setCancelled(true);
-            openMemberList(player, regionData);
+            new TerritoryMemberMenu(player, regionData).open();
         });
         GuiItem browseButton = ItemBuilder.from(browse).asGuiItem(event -> {
             event.setCancelled(true);

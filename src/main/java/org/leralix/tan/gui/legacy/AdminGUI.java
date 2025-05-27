@@ -583,7 +583,6 @@ public class AdminGUI{
             GuiItem townIterationGui = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
                 townData.addPlayer(playerData);
-                townData.broadcastMessageWithSound(Lang.TOWN_INVITATION_ACCEPTED_TOWN_SIDE.get(playerData.getNameStored()), SoundEnum.MINOR_GOOD);
                 openSpecificPlayerMenu(player, playerData);
             });
             guiItems.add(townIterationGui);

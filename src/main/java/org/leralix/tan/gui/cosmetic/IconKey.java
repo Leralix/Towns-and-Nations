@@ -34,5 +34,8 @@ public enum IconKey {
     TOWN_WAR_ICON,
     TOWN_HIERARCHY_ICON,
 
+    MANAGE_RANKS_ICON,
+    MANAGE_APPLICATIONS_ICON,
+
 
 }

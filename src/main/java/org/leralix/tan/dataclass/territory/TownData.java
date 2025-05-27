@@ -22,6 +22,7 @@ import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.user.TerritoryMemberMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.newsletter.storage.NewsletterStorage;
@@ -129,7 +130,7 @@ public class TownData extends TerritoryData {
 
         playerData.clearAllTownApplications();
 
-        for(TerritoryData overlords : getOverlords()){
+        for (TerritoryData overlords : getOverlords()) {
             overlords.registerPlayer(playerData);
         }
 
@@ -143,7 +144,7 @@ public class TownData extends TerritoryData {
     }
 
     public void removePlayer(PlayerData playerData) {
-        for(TerritoryData overlords : getOverlords()){
+        for (TerritoryData overlords : getOverlords()) {
             overlords.unregisterPlayer(playerData);
         }
 
@@ -254,10 +255,10 @@ public class TownData extends TerritoryData {
     protected Collection<TerritoryData> getOverlords() {
         List<TerritoryData> overlords = new ArrayList<>();
 
-        if(haveOverlord()){
+        if (haveOverlord()) {
             RegionData regionData = getRegion();
             overlords.add(regionData);
-            if(regionData.haveOverlord()){
+            if (regionData.haveOverlord()) {
                 overlords.add(regionData.getOverlord());
             }
         }
@@ -545,9 +546,11 @@ public class TownData extends TerritoryData {
                     PlayerGUI.openConfirmMenu(player, Lang.CONFIRM_PLAYER_KICKED.get(playerIterate.getName()),
                             confirmAction -> {
                                 kickPlayer(playerIterate);
-                                PlayerGUI.openMemberList(player, this);
+                                new TerritoryMemberMenu(player, this).open();
+
                             },
-                            p -> PlayerGUI.openMemberList(player, this));
+                            p -> new TerritoryMemberMenu(player, this).open()
+                    );
                 }
             });
             res.add(playerButton);

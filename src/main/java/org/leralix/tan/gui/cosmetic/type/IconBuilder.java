@@ -2,6 +2,7 @@ package org.leralix.tan.gui.cosmetic.type;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
@@ -24,8 +25,14 @@ public class IconBuilder {
     public IconBuilder(IconType iconType){
         this.description = new ArrayList<>();
         hideItemFlags = false;
-        this.iconType = iconType;
+        if(iconType == null) {
+            this.iconType = new ItemIconBuillder(Material.BARRIER);
+        }
+        else{
+            this.iconType = iconType;
+        }
     }
+
 
     public IconBuilder setName(String name) {
         this.name = name;

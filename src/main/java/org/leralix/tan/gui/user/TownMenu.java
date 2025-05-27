@@ -121,7 +121,7 @@ public class TownMenu extends BasicGui {
                 .setDescription(Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get(playerData.getLang()),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
                 )
-                .setAction(event -> PlayerGUI.openMemberList(player, townData))
+                .setAction(event -> new TerritoryMemberMenu(player, townData).open())
                 .asGuiItem(player);
     }
 

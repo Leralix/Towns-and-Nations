@@ -321,6 +321,10 @@ language:
   GUI_BROWSE_TERRITORY_ICON_DESC1: "§fBrowse all territory"
   GUI_RELATION_ICON: "§aDiplomacy"
   GUI_RELATION_ICON_DESC1: "§fManage foreign diplomacy/policy"
+  #Manage members menu
+  GUI_TOWN_MEMBERS_MANAGE_ROLES: "§aManage ranks"
+  GUI_TOWN_MEMBERS_MANAGE_APPLICATION: "§aManage application"
+  GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1: "§fThere are §e{0}§f applications"
 
   GUI_PLAYER_NEW_PROPERTY: "Create a new property"
 
@@ -549,9 +553,7 @@ language:
   GUI_TOWN_MEMBER_CANT_KICK_YOURSELF: "§cYou cannot kick yourself, you can leave the town from the town settings menu"
   GUI_TOWN_MEMBER_KICKED_SUCCESS: "§a{0}§f has been kicked out of the town"
   GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER: "§cYou have been kicked out of the town"
-  GUI_TOWN_MEMBERS_MANAGE_ROLES: "§aManage ranks"
-  GUI_TOWN_MEMBERS_MANAGE_APPLICATION: "§aManage application"
-  GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1: "§fThere is §e{0}§f applications"
+
   GUI_TOWN_MEMBERS_ADD_NEW_ROLES: "§aCreate a new rank"
   GUI_TOWN_MEMBERS_ADD_NEW_ROLES_DESC1: "§f8 ranks max"
   GUI_TOWN_MEMBERS_ROLE_NAME: "§a{0}"
