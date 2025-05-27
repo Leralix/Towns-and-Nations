@@ -266,13 +266,13 @@ public class PlayerData {
         this.regionRankID = rankID;
     }
 
-    public Integer getRankID(TerritoryData territoryData) {
+    public int getRankID(TerritoryData territoryData) {
         if (territoryData instanceof TownData) {
             return getTownRankID();
         } else if (territoryData instanceof RegionData) {
             return getRegionRankID();
         }
-        return null;
+        return -1;
     }
 
     public List<TerritoryData> getAllTerritoriesPlayerIsIn() {

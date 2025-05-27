@@ -161,12 +161,12 @@ public class PlayerSelectPropertyPositionStorage {
 
 
     static boolean isNearProperty(Location blockLocation,Vector3D p1, Vector3D p2,  int margin) {
-        double minX = Math.min(p1.getX(), p2.getX()) - margin;
-        double minY = Math.min(p1.getY(), p2.getY()) - margin;
-        double minZ = Math.min(p1.getZ(), p2.getZ()) - margin;
-        double maxX = Math.max(p1.getX(), p2.getX()) + margin;
-        double maxY = Math.max(p1.getY(), p2.getY()) + margin;
-        double maxZ = Math.max(p1.getZ(), p2.getZ()) + margin;
+        int  minX = Math.min(p1.getX(), p2.getX()) - margin;
+        int minY = Math.min(p1.getY(), p2.getY()) - margin;
+        int minZ = Math.min(p1.getZ(), p2.getZ()) - margin;
+        int maxX = Math.max(p1.getX(), p2.getX()) + margin;
+        int maxY = Math.max(p1.getY(), p2.getY()) + margin;
+        int maxZ = Math.max(p1.getZ(), p2.getZ()) + margin;
 
         double blockX = blockLocation.getX();
         double blockY = blockLocation.getY();
