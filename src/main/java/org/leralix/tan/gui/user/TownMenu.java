@@ -33,8 +33,8 @@ public class TownMenu extends BasicGui {
         super(player, Lang.HEADER_TOWN_MENU.get(PlayerDataStorage.getInstance().get(player).getTown().getName()), 4);
 
         gui.setDefaultClickAction(event -> {
-            if(event.getSlotType() == InventoryType.SlotType.CONTAINER || event.getSlotType() == InventoryType.SlotType.QUICKBAR){
-                event.setCancelled(false);
+            if(event.getClickedInventory().getType() != InventoryType.PLAYER){
+                event.setCancelled(true);
             }
         });
         townData = playerData.getTown();
@@ -76,7 +76,7 @@ public class TownMenu extends BasicGui {
         lore.add(Lang.GUI_TOWN_INFO_CHANGE_ICON.get(playerData));
         lore.add(Lang.RIGHT_CLICK_TO_SELECT_MEMBER_HEAD.get(playerData));
 
-        return IconManager.getInstance().get(IconKey.TOWN_BASE_ICON)
+        return IconManager.getInstance().get(IconKey.TOWN_ICON)
                 .setName(Lang.GUI_TOWN_NAME.get(langType, townData.getName()))
                 .setDescription(lore)
                 .setAction( action -> {

@@ -39,7 +39,7 @@ TOWN_SETTINGS_ICON : "https://textures.minecraft.net/texture/95d2cb38458da17fb6c
 TOWN_PROPERTIES_ICON : "minecraft:OAK_SIGN"
 TOWN_LANDMARKS_ICON : "https://textures.minecraft.net/texture/fd761cc16562c88d2fbe40ad38502bc3b4a87859887dbc35f272e30d8070eeec"
 TOWN_WAR_ICON : "https://textures.minecraft.net/texture/25de4ff8be70eee4d103b1eedf454f0abb9f0568f5f326ecba7cab6a47f9ade4"
-TOWN_HIERARCHY_ICON : "minecraft:golden_helmet"
+TOWN_HIERARCHY_ICON : "minecraft:GOLDEN_HELMET"
 #Manage members menu
 MANAGE_RANKS_ICON: "minecraft:LADDER"
 MANAGE_APPLICATIONS_ICON: "minecraft:WRITABLE_BOOK"
