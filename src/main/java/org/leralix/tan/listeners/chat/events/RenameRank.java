@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.gui.user.RankManagerMenu;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.utils.TanChatUtils;
@@ -32,7 +33,7 @@ public class RenameRank extends ChatListenerEvent {
         }
 
         rankData.setName(message);
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> PlayerGUI.openRankManager(player, territoryConcerned, rankData));
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> new RankManagerMenu(player, territoryConcerned, rankData).open());
         PlayerChatListenerStorage.removePlayer(player);
     }
 }

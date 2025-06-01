@@ -2,6 +2,7 @@ package org.leralix.tan.gui.cosmetic;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
@@ -76,6 +77,10 @@ public class IconManager {
 
     public IconBuilder get(IconKey key){
         return new IconBuilder(iconMap.get(key));
+    }
+
+    public IconBuilder get(ItemStack icon){
+        return new IconBuilder(new ItemIconType(icon));
     }
 
 }

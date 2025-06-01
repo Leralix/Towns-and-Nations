@@ -31,12 +31,6 @@ public class TownMenu extends BasicGui {
 
     public TownMenu(Player player) {
         super(player, Lang.HEADER_TOWN_MENU.get(PlayerDataStorage.getInstance().get(player).getTown().getName()), 4);
-
-        gui.setDefaultClickAction(event -> {
-            if(event.getClickedInventory().getType() != InventoryType.PLAYER){
-                event.setCancelled(true);
-            }
-        });
         townData = playerData.getTown();
     }
 

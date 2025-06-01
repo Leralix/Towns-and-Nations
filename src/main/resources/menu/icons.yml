@@ -43,5 +43,16 @@ TOWN_HIERARCHY_ICON : "minecraft:GOLDEN_HELMET"
 #Manage members menu
 MANAGE_RANKS_ICON: "minecraft:LADDER"
 MANAGE_APPLICATIONS_ICON: "minecraft:WRITABLE_BOOK"
-
+#Manage ranks menu
+NEW_RANK_ICON: "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1"
+#Modify rank menu
+PLAYER_LIST_ICON: "https://textures.minecraft.net/texture/7b43b23189dcf1326da4253d1d7582ef5ad29f6c27b171feb17e31d084e3a7d"
+MANAGE_PERMISSION_ICON: "minecraft:ANVIL"
+DECREASE_SALARY_ICON: "https://textures.minecraft.net/texture/4e4b8b8d2362c864e062301487d94d3272a6b570afbf80c2c5b148c954579d46"
+CURRENT_SALARY_ICON: "minecraft:GOLD_INGOT"
+INCREASE_SALARY_ICON: "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1"
+RENAME_RANK_ICON: "minecraft:NAME_TAG"
+PAY_TAXES_ICON: "minecraft:GOLD_NUGGET"
+SET_DEFAULT_ROLE_ICON: "minecraft:RED_BED"
+DELETE_RANK_ICON: "minecraft:BARRIER"
 

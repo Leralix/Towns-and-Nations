@@ -4,6 +4,7 @@ import dev.triumphteam.gui.components.GuiType;
 import dev.triumphteam.gui.guis.Gui;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
@@ -30,7 +31,11 @@ public abstract class BasicGui {
         this.player = player;
         this.iconManager = IconManager.getInstance();
 
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
+        gui.setDefaultClickAction(event -> {
+            if(event.getClickedInventory().getType() != InventoryType.PLAYER){
+                event.setCancelled(true);
+            }
+        });
         gui.setDragAction(inventoryDragEvent -> inventoryDragEvent.setCancelled(true));
     }
 

@@ -1,5 +1,6 @@
 package org.leralix.tan.dataclass;
 
+import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -114,12 +115,11 @@ public class RankData {
     public void setSalary(int salary) {
         this.salary = salary;
     }
-    public void addOneFromSalary() {
-        this.salary += 1;
-    }
+
     public void addFromSalary(int amount) {
         this.salary += amount;
     }
+
     public void removeFromSalary(int amount) {
         this.salary -= amount;
     }
@@ -132,6 +132,7 @@ public class RankData {
     public Integer getID() {
         return ID;
     }
+
     public void setID(int id) {
         this.ID = id;
     }

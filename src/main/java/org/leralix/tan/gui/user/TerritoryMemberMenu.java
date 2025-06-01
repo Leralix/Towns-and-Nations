@@ -15,7 +15,7 @@ import java.util.List;
 
 public class TerritoryMemberMenu extends IteratorGUI {
 
-    TerritoryData territoryData;
+    private final TerritoryData territoryData;
 
     public TerritoryMemberMenu(Player player, TerritoryData territoryData) {
         super(player, Lang.HEADER_TOWN_MEMBERS, 6);
@@ -46,7 +46,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
         return IconManager.getInstance().get(IconKey.MANAGE_RANKS_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_MANAGE_ROLES.get(playerData))
                 .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData))
-                .setAction(p -> PlayerGUI.openTerritoryRanks(player, territoryData))
+                .setAction(p -> new TerritoryRanksMenu(player, territoryData).open())
                 .asGuiItem(player);
     }
 

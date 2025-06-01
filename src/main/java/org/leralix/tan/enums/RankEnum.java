@@ -20,13 +20,13 @@ public enum RankEnum {
 
     private final int level;
     private final ChatColor color;
-    private final Material material;
+    private final Material paneColorMaterial;
     private final Material helmetMaterial;
 
-    RankEnum(int level, ChatColor color, Material helmetMaterial, Material colorMaterial) {
+    RankEnum(int level, ChatColor color, Material helmetMaterial, Material paneColorMaterial) {
         this.level = level;
         this.color = color;
-        this.material = colorMaterial;
+        this.paneColorMaterial = paneColorMaterial;
         this.helmetMaterial = helmetMaterial;
     }
 
@@ -60,15 +60,9 @@ public enum RankEnum {
     public ItemStack getBasicRankIcon(){
         return new ItemStack(helmetMaterial);
     }
-    public ItemStack getRankGuiIcon(){
-        return HeadUtils.createCustomItemStack(helmetMaterial,
-                this.getColor() + Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_X.get(getLevel()),
-                Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1.get(),
-                Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2.get());
-    }
 
     public GuiItem getRankColorGuiIcon(){
-        ItemStack itemStack = HeadUtils.createCustomItemStack(material, "");
+        ItemStack itemStack = HeadUtils.createCustomItemStack(paneColorMaterial, "");
         return ItemBuilder.from(itemStack).asGuiItem(e -> e.setCancelled(true));
     }
 
