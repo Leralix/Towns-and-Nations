@@ -55,4 +55,6 @@ RENAME_RANK_ICON: "minecraft:NAME_TAG"
 PAY_TAXES_ICON: "minecraft:GOLD_NUGGET"
 SET_DEFAULT_ROLE_ICON: "minecraft:RED_BED"
 DELETE_RANK_ICON: "minecraft:BARRIER"
+#Browse territory
+CHANGE_SCOPE_ICON: "minecraft:NAME_TAG"
 

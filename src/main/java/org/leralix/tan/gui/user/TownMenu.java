@@ -3,7 +3,6 @@ package org.leralix.tan.gui.user;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -134,10 +133,9 @@ public class TownMenu extends BasicGui {
         return IconManager.getInstance().get(IconKey.TOWN_BROWSE_ICON)
                 .setName(Lang.GUI_BROWSE_TERRITORY_ICON.get(playerData.getLang()))
                 .setDescription(
-                        Lang.GUI_BROWSE_TERRITORY_ICON_DESC1.get(playerData.getLang()),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
                 )
-                .setAction(event -> PlayerGUI.browseTerritory(player, townData, BrowseScope.TOWNS, p -> new TownMenu(player).open(), 0))
+                .setAction(event -> new BrowseTerritoryMenu(player, townData, BrowseScope.TOWNS, p -> new TownMenu(player).open()).open())
                 .asGuiItem(player);
     }
 

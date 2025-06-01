@@ -56,7 +56,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
                 .setDescription(
                         Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(playerData, townData.getPlayerJoinRequestSet().size()),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData))
-                .setAction(p -> PlayerGUI.openTownApplications(player, townData))
+                .setAction(p -> new PlayerApplicationMenu(player, townData).open())
                 .asGuiItem(player);
     }
 }

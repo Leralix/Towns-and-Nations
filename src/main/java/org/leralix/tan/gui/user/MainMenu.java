@@ -79,15 +79,20 @@ public class MainMenu extends BasicGui {
     }
 
     private GuiItem getTownButton(PlayerData playerData) {
-        String description = playerData.hasTown() ?
-                Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(playerData, playerData.getTown().getColoredName()) :
-                Lang.GUI_TOWN_ICON_DESC1_NO_TOWN.get(playerData);
+
+        List<String> description = new ArrayList<>();
+        if(playerData.hasTown()){
+            description.add(Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(playerData, playerData.getTown().getColoredName()));
+            description.add(Lang.GUI_TOWN_ICON_DESC2_HAVE_TOWN.get(playerData, playerData.getTown().getRank(playerData).getColoredName()));
+        }
+        else {
+            description.add(Lang.GUI_TOWN_ICON_DESC1_NO_TOWN.get(playerData));
+        }
+        description.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData));
 
         return iconManager.get(IconKey.TOWN_BASE_ICON)
                 .setName(Lang.GUI_TOWN_ICON.get(playerData))
-                .setDescription(
-                        description,
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData))
+                .setDescription(description)
                 .setAction(action -> {
                     PlayerGUI.dispatchPlayerTown(player);
                 })

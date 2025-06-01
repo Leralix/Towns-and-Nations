@@ -1,17 +1,18 @@
 package org.leralix.tan.enums;
 
+import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.lang.Lang;
 
 public enum BrowseScope {
 
-    ALL(Lang.BROWSE_ALL_NAME.get(), null),
-    TOWNS(Lang.BROWSE_TOWNS_NAME.get(), null),
-    REGIONS( Lang.BROWSE_REGIONS_NAME.get(), null);
+    ALL(Lang.BROWSE_ALL_NAME, null),
+    TOWNS(Lang.BROWSE_TOWNS_NAME, null),
+    REGIONS( Lang.BROWSE_REGIONS_NAME, null);
 
-    private final String name;
+    private final Lang name;
     private BrowseScope nextScope;
 
-    BrowseScope(String name, BrowseScope nextScope) {
+    BrowseScope(Lang name, BrowseScope nextScope) {
         this.name = name;
         this.nextScope = nextScope;
     }
@@ -26,7 +27,7 @@ public enum BrowseScope {
         REGIONS.nextScope = ALL;
     }
 
-    public String getName() {
-        return name;
+    public String getName(PlayerData playerData) {
+        return name.get(playerData);
     }
 }

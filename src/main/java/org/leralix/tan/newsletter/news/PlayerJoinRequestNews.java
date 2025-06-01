@@ -12,6 +12,7 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.gui.user.PlayerApplicationMenu;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.HeadUtils;
@@ -100,7 +101,7 @@ public class PlayerJoinRequestNews extends Newsletter {
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);
             if(event.isLeftClick()){
-                PlayerGUI.openTownApplications(player,getTownData());
+                new PlayerApplicationMenu(player,getTownData()).open();
             }
             if(event.isRightClick()){
                 markAsRead(player);

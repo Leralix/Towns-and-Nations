@@ -957,98 +957,6 @@ public class PlayerGUI {
 
     }
 
-    public static void browseTerritory(Player player, TerritoryData territoryData, BrowseScope scope, Consumer<Player> exitMenu, int page) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TERRITORY_LIST.get(playerData, page + 1),6);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
-
-        List<TerritoryData> territoryList = new ArrayList<>();
-
-        if(scope == BrowseScope.ALL || scope == BrowseScope.TOWNS)
-            territoryList.addAll(TownDataStorage.getInstance().getAll());
-        if(scope == BrowseScope.ALL || scope == BrowseScope.REGIONS)
-            territoryList.addAll(RegionDataStorage.getInstance().getAll());
-
-        ArrayList<GuiItem> townGuiItems = new ArrayList<>();
-
-        for(TerritoryData specificTerritoryData : territoryList){
-            ItemStack territoryIcon = specificTerritoryData.getIconWithInformationAndRelation(territoryData, playerData.getLang());
-            GuiItem territoryGUI = ItemBuilder.from(territoryIcon).asGuiItem(event -> event.setCancelled(true));
-
-            townGuiItems.add(territoryGUI);
-        }
-
-        GuiUtil.createIterator(gui, townGuiItems, page, player, exitMenu,
-                p -> browseTerritory(player, territoryData, scope ,exitMenu, page + 1),
-                p -> browseTerritory(player, territoryData, scope ,exitMenu, page - 1));
-
-
-        ItemStack checkScope = HeadUtils.createCustomItemStack(Material.NAME_TAG,scope.getName(),
-                Lang.GUI_GENERIC_CLICK_TO_SWITCH_SCOPE.get(playerData));
-        GuiItem checkScopeButton = new GuiItem(checkScope, event -> browseTerritory(player, territoryData, scope.getNextScope(), exitMenu, 0));
-
-        gui.setItem(6,5,checkScopeButton);
-        gui.open(player);
-    }
-
-    public static void openTownApplications(Player player, TownData townData) {
-        openTownApplications(player, townData, 0);
-    }
-
-    public static void openTownApplications(Player player, TownData townData, int page) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_APPLICATIONS.get(playerData),6);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
-
-        PlayerData playerStat = PlayerDataStorage.getInstance().get(player);
-        List<GuiItem> guiItems = new ArrayList<>();
-        for (String playerUUID: townData.getPlayerJoinRequestSet()) {
-
-            OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
-            PlayerData playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
-
-            ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
-                    Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC2.get(playerData),
-                    Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC3.get(playerData));
-
-            GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> {
-                event.setCancelled(true);
-                if(event.isLeftClick()){
-                    if(!townData.doesPlayerHavePermission(playerStat, RolePermission.INVITE_PLAYER)){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(playerData));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
-                        return;
-                    }
-                    if(townData.isFull()){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.INVITATION_TOWN_FULL.get(playerData));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
-                        return;
-                    }
-                    townData.addPlayer(playerIterateData);
-                }
-                else if(event.isRightClick()){
-                    if(!townData.doesPlayerHavePermission(playerStat, RolePermission.INVITE_PLAYER)){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(playerData));
-                        return;
-                    }
-                    townData.removePlayerJoinRequest(playerIterateData.getID());
-                }
-                NewsletterStorage.removePlayerJoinRequest(playerIterateData, townData);
-                openTownApplications(player, townData, page);
-            });
-            guiItems.add(playerButton);
-        }
-
-        GuiUtil.createIterator(gui, guiItems, page, player,
-                p -> new TerritoryMemberMenu(player, townData).open(),
-                p -> openTownApplications(player, townData, page + 1),
-                p -> openTownApplications(player, townData, page - 1),
-                Material.LIME_STAINED_GLASS_PANE);
-
-        gui.open(player);
-
-    }
-
     public static void openRankManagerPermissions(Player player, TerritoryData territoryData, RankData rankData) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_RANK_PERMISSIONS.get(playerData),3);
@@ -2082,7 +1990,7 @@ public class PlayerGUI {
 
         GuiItem browseRegionButton = ItemBuilder.from(browseRegion).asGuiItem(event -> {
             event.setCancelled(true);
-            browseTerritory(player, null, BrowseScope.REGIONS,p -> openNoRegionMenu(player), 0);
+            new BrowseTerritoryMenu(player, null, BrowseScope.REGIONS, p -> openNoRegionMenu(player)).open();
         });
 
         gui.setItem(2,4, createRegionButton);
@@ -2118,7 +2026,7 @@ public class PlayerGUI {
         ItemStack manageLaws = HeadUtils.makeSkullURL(Lang.GUI_MANAGE_LAWS.get(playerData) ,"https://textures.minecraft.net/texture/1818d1cc53c275c294f5dfb559174dd931fc516a85af61a1de256aed8bca5e7",
                 Lang.GUI_MANAGE_LAWS_DESC1.get(playerData));
         ItemStack browse = HeadUtils.makeSkullB64(Lang.GUI_BROWSE_TERRITORY_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=",
-                Lang.GUI_BROWSE_TERRITORY_ICON_DESC1.get(playerData));
+                Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData));
         ItemStack diplomacy = HeadUtils.makeSkullB64(Lang.GUI_RELATION_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=",
                 Lang.GUI_RELATION_ICON_DESC1.get(playerData));
         ItemStack settingIcon = HeadUtils.makeSkullB64(Lang.GUI_TOWN_SETTINGS_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkMmNiMzg0NThkYTE3ZmI2Y2RhY2Y3ODcxNjE2MDJhMjQ5M2NiZjkzMjMzNjM2MjUzY2ZmMDdjZDg4YTljMCJ9fX0=",
@@ -2167,7 +2075,7 @@ public class PlayerGUI {
         });
         GuiItem browseButton = ItemBuilder.from(browse).asGuiItem(event -> {
             event.setCancelled(true);
-            browseTerritory(player, regionData, BrowseScope.ALL,p -> openRegionMenu(player), 0);
+            new BrowseTerritoryMenu(player, regionData, BrowseScope.REGIONS,p -> openRegionMenu(player)).open();
         });
         GuiItem diplomacyButton = ItemBuilder.from(diplomacy).asGuiItem(event -> {
             event.setCancelled(true);
