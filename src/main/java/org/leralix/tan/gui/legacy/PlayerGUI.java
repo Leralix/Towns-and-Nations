@@ -20,6 +20,7 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.PlayerPropertyMenu;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -85,58 +86,6 @@ public class PlayerGUI {
         else{
             new NoTownMenu(player).open();
         }
-    }
-
-    public static void openPlayerPropertiesMenu(Player player, int page){
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_PLAYER_PROPERTIES.get(playerData),6);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
-
-        List<GuiItem> guiItems = new ArrayList<>();
-        for (PropertyData propertyData : playerData.getProperties()){
-            ItemStack property = propertyData.getIcon(playerData.getLang());
-            GuiItem propertyGui = ItemBuilder.from(property).asGuiItem(event -> openPropertyManagerMenu(player, propertyData));
-            guiItems.add(propertyGui);
-        }
-
-        ItemStack newProperty = HeadUtils.makeSkullB64(
-                Lang.GUI_PLAYER_NEW_PROPERTY.get(playerData), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19"
-        );
-
-        GuiUtil.createIterator(gui, guiItems, page, player,
-                p -> new PlayerMenu(player).open(),
-                p -> openPlayerPropertiesMenu(player, page + 1),
-                p -> openPlayerPropertiesMenu(player, page - 1)
-        );
-
-        GuiItem newPropertyGui = ItemBuilder.from(newProperty).asGuiItem(event -> {
-
-            TownData playerTown = playerData.getTown();
-            if(!playerTown.doesPlayerHavePermission(playerData, RolePermission.CREATE_PROPERTY)){
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(playerData));
-                SoundUtil.playSound(player, NOT_ALLOWED);
-                return;
-            }
-
-            if(playerTown.getPropertyDataMap().size() >= playerTown.getLevel().getPropertyCap()){
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_PROPERTY_CAP_REACHED.get(playerData));
-                return;
-            }
-
-            if(PlayerSelectPropertyPositionStorage.contains(playerData)){
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_ALREADY_IN_SCOPE.get(playerData));
-                return;
-            }
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY.get(playerData));
-            player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(playerData, Lang.CANCEL_WORD.get(playerData)));
-            PlayerSelectPropertyPositionStorage.addPlayer(playerData);
-            player.closeInventory();
-        });
-
-        gui.setItem(6,3, newPropertyGui);
-
-        gui.open(player);
     }
 
     public static void openPropertyManagerRentMenu(Player player, PropertyData propertyData) {
@@ -282,7 +231,7 @@ public class PlayerGUI {
 
         GuiItem deleteButton = ItemBuilder.from(deleteProperty).asGuiItem(event -> {
             propertyData.delete();
-            openPlayerPropertiesMenu(player, 0);
+            new PlayerPropertyMenu(player).open();
         });
 
         GuiItem openListButton = ItemBuilder.from(playerList).asGuiItem(event -> openPlayerPropertyPlayerList(player, propertyData, 0));
@@ -326,7 +275,7 @@ public class PlayerGUI {
 
 
 
-        gui.setItem(4,1, GuiUtil.createBackArrow(player, p -> openPlayerPropertiesMenu(player, 0)));
+        gui.setItem(4,1, GuiUtil.createBackArrow(player, p -> new PlayerPropertyMenu(player).open()));
         gui.open(player);
     }
 
@@ -1659,7 +1608,6 @@ public class PlayerGUI {
         gui.open(player);
     }
 
-
     public static void openChunkSettings(Player player, TerritoryData territoryData) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_MENU.get(playerData, territoryData.getName()),3);
@@ -1942,7 +1890,6 @@ public class PlayerGUI {
 
         gui.open(player);
     }
-
 
     public static void openNoRegionMenu(Player player){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);

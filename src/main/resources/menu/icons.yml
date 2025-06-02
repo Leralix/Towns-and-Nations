@@ -57,4 +57,6 @@ SET_DEFAULT_ROLE_ICON: "minecraft:RED_BED"
 DELETE_RANK_ICON: "minecraft:BARRIER"
 #Browse territory
 CHANGE_SCOPE_ICON: "minecraft:NAME_TAG"
+#Player properties
+CREATE_NEW_PROPERTY_ICON: "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1"
 

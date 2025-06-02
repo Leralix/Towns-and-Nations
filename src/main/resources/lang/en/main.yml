@@ -327,7 +327,6 @@ language:
   GUI_TOWN_MEMBER_DESC1: "§fRank: §e{0}"
   GUI_TOWN_MEMBER_DESC2: "§fCurrent balance: §6{0}{MONEY_CHAR}"
   GUI_TOWN_MEMBER_DESC3: "§c▶ Right click to kick player"
-
   GUI_TOWN_MEMBERS_MANAGE_ROLES: "§aManage ranks"
   GUI_TOWN_MEMBERS_MANAGE_APPLICATION: "§aManage application"
   GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1: "§fThere are §e{0}§f applications"
@@ -359,10 +358,12 @@ language:
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fPlayers that are invited to the town automatically join the default rank"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2: "§7▶ Left click to mark this role as default"
   GUI_TOWN_MEMBERS_ROLE_DELETE: "§aDelete the rank"
-  #Assign player
 
 
-  GUI_PLAYER_NEW_PROPERTY: "Create a new property"
+  #Property menu
+  GUI_PLAYER_NEW_PROPERTY: "§aCreate a new property"
+  GUI_PROPERTY_CAP_FULL : "§fCurrent properties : §c{0}/{1}"
+  GUI_PROPERTY_CAP : "§fCurrent properties : §a{0}/{1}"
 
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§eStill in development"

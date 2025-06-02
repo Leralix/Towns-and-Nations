@@ -2,6 +2,7 @@ package org.leralix.tan.gui.user;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.leralix.tan.PlayerPropertyMenu;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -54,7 +55,7 @@ public class PlayerMenu extends BasicGui {
                         Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get(playerData),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
                 )
-                .setAction(event -> PlayerGUI.openPlayerPropertiesMenu(player, 0))
+                .setAction(event -> new PlayerPropertyMenu(player).open())
                 .asGuiItem(player);
     }
 

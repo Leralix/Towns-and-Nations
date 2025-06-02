@@ -78,7 +78,12 @@ public class IconBuilder {
             }
             item.setItemMeta(meta);
         }
-        return ItemBuilder.from(item).asGuiItem(event -> action.accept(event));
+        if(action == null){
+            return ItemBuilder.from(item).asGuiItem(event -> event.setCancelled(true));
+        }
+        else {
+            return ItemBuilder.from(item).asGuiItem(event -> action.accept(event));
+        }
     }
 
 }
