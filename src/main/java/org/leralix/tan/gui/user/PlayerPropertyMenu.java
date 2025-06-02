@@ -1,4 +1,4 @@
-package org.leralix.tan;
+package org.leralix.tan.gui.user;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -11,7 +11,6 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
-import org.leralix.tan.gui.user.PlayerMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.PlayerSelectPropertyPositionStorage;
 import org.leralix.tan.utils.GuiUtil;
@@ -93,7 +92,7 @@ public class PlayerPropertyMenu extends IteratorGUI {
         List<GuiItem> guiItems = new ArrayList<>();
         for (PropertyData propertyData : playerData.getProperties()){
             ItemStack property = propertyData.getIcon(playerData.getLang());
-            GuiItem propertyGui = ItemBuilder.from(property).asGuiItem(event -> PlayerGUI.openPropertyManagerMenu(player, propertyData));
+            GuiItem propertyGui = ItemBuilder.from(property).asGuiItem(event -> new PlayerPropertyManager(player, propertyData, p -> open()));
             guiItems.add(propertyGui);
         }
         return guiItems;

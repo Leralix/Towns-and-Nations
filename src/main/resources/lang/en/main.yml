@@ -389,6 +389,7 @@ language:
   HEADER_NEWSLETTER: "Newsletter"
   HEADER_PLAYER_PROPERTIES: "Properties"
   HEADER_PLAYER_SPECIFIC_PROPERTY: "Property : {0}"
+  HEADER_TOWN_SPECIFIC_PROPERTY: "Property : {0}"
   HEADER_NO_TOWN_MENU: "Town"
   HEADER_TOWN_LIST: "Town list | page {0}"
   HEADER_TOWN_MENU: "Town : {0}"

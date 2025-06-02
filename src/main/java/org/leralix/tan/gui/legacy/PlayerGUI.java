@@ -4,23 +4,19 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.PlayerPropertyMenu;
+import org.leralix.tan.gui.user.PlayerPropertyMenu;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -41,20 +37,16 @@ import org.leralix.tan.dataclass.wars.wargoals.CaptureLandmarkWarGoal;
 import org.leralix.tan.dataclass.wars.wargoals.ConquerWarGoal;
 import org.leralix.tan.dataclass.wars.wargoals.LiberateWarGoal;
 import org.leralix.tan.dataclass.wars.wargoals.SubjugateWarGoal;
-import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.*;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.gui.user.*;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.*;
-import org.leralix.tan.newsletter.NewsletterScope;
 import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
-import org.leralix.tan.storage.PlayerSelectPropertyPositionStorage;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.*;
@@ -126,160 +118,8 @@ public class PlayerGUI {
         gui.open(player);
     }
 
-    public static void openPropertyManagerMenu(Player player, @NotNull PropertyData propertyData){
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(playerData, propertyData.getName()),4);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
-        ItemStack changeName = HeadUtils.createCustomItemStack(
-                Material.NAME_TAG,
-                Lang.GUI_PROPERTY_CHANGE_NAME.get(playerData),
-                Lang.GUI_PROPERTY_CHANGE_NAME_DESC1.get(playerData, propertyData.getName())
-        );
-
-        ItemStack changeDescription = HeadUtils.createCustomItemStack(
-                Material.WRITABLE_BOOK,
-                Lang.GUI_PROPERTY_CHANGE_DESCRIPTION.get(playerData),
-                Lang.GUI_PROPERTY_CHANGE_DESCRIPTION_DESC1.get(playerData, propertyData.getDescription())
-        );
-
-        ItemStack isForSale;
-        if(propertyData.isForSale()){
-            isForSale = HeadUtils.makeSkullB64(Lang.SELL_PROPERTY.get(playerData), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2UyYTUzMGY0MjcyNmZhN2EzMWVmYWI4ZTQzZGFkZWUxODg5MzdjZjgyNGFmODhlYThlNGM5M2E0OWM1NzI5NCJ9fX0=");
-        }
-        else{
-            isForSale = HeadUtils.makeSkullB64(Lang.SELL_PROPERTY.get(playerData), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWVmMDcwOGZjZTVmZmFhNjYwOGNiZWQzZTc4ZWQ5NTgwM2Q4YTg5Mzc3ZDFkOTM4Y2UwYmRjNjFiNmRjOWY0ZiJ9fX0=");
-        }
-        HeadUtils.setLore(isForSale,
-                propertyData.isForSale() ? Lang.GUI_PROPERTY_FOR_SALE.get(playerData): Lang.GUI_PROPERTY_NOT_FOR_SALE.get(playerData),
-                Lang.GUI_BUYING_PRICE.get(playerData, propertyData.getSalePrice()),
-                Lang.GUI_TOWN_RATE.get(playerData, String.format("%.2f", propertyData.getTerritory().getTaxOnBuyingProperty()*100)),
-                Lang.GUI_LEFT_CLICK_TO_SWITCH_SALE.get(playerData),
-                Lang.GUI_RIGHT_CLICK_TO_CHANGE_PRICE.get(playerData)
-        );
-
-        ItemStack isForRent;
-        if(propertyData.isForRent()){
-            isForRent = HeadUtils.makeSkullB64(Lang.RENT_PROPERTY.get(playerData), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2UyYTUzMGY0MjcyNmZhN2EzMWVmYWI4ZTQzZGFkZWUxODg5MzdjZjgyNGFmODhlYThlNGM5M2E0OWM1NzI5NCJ9fX0=");
-        }
-        else{
-            isForRent = HeadUtils.makeSkullB64(Lang.RENT_PROPERTY.get(playerData), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWVmMDcwOGZjZTVmZmFhNjYwOGNiZWQzZTc4ZWQ5NTgwM2Q4YTg5Mzc3ZDFkOTM4Y2UwYmRjNjFiNmRjOWY0ZiJ9fX0=");
-        }
-        HeadUtils.setLore(isForRent,
-                propertyData.isForRent() ? Lang.GUI_PROPERTY_FOR_RENT.get(): Lang.GUI_PROPERTY_NOT_FOR_RENT.get(),
-                Lang.GUI_RENTING_PRICE.get(playerData, propertyData.getRentPrice()),
-                Lang.GUI_TOWN_RATE.get(playerData, String.format("%.2f", propertyData.getTerritory().getTaxOnRentingProperty()*100)),
-                Lang.GUI_LEFT_CLICK_TO_SWITCH_SALE.get(playerData),
-                Lang.GUI_RIGHT_CLICK_TO_CHANGE_PRICE.get(playerData)
-        );
-
-        ItemStack drawnBox = HeadUtils.makeSkullB64(Lang.GUI_PROPERTY_DRAWN_BOX.get(playerData), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzc3ZDRhMjA2ZDc3NTdmNDc5ZjMzMmVjMWEyYmJiZWU1N2NlZjk3NTY4ZGQ4OGRmODFmNDg2NGFlZTdkM2Q5OCJ9fX0=",
-                Lang.GUI_PROPERTY_DRAWN_BOX_DESC1.get(playerData));
-
-        ItemStack deleteProperty = HeadUtils.createCustomItemStack(Material.BARRIER,Lang.GUI_PROPERTY_DELETE_PROPERTY.get(playerData),
-                Lang.GUI_PROPERTY_DELETE_PROPERTY_DESC1.get(playerData));
-
-        ItemStack playerList = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,Lang.GUI_PROPERTY_PLAYER_LIST.get(playerData),
-                Lang.GUI_PROPERTY_PLAYER_LIST_DESC1.get(playerData));
-
-        GuiItem propertyIcon = ItemBuilder.from(propertyData.getIcon(playerData.getLang())).asGuiItem();
-
-        GuiItem changeNameButton = ItemBuilder.from(changeName).asGuiItem(event -> {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(playerData));
-            PlayerChatListenerStorage.register(player, new ChangePropertyName(propertyData, p -> openPropertyManagerMenu(player, propertyData)));
-        });
-        GuiItem changeDescButton = ItemBuilder.from(changeDescription).asGuiItem(event -> {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(playerData));
-            PlayerChatListenerStorage.register(player, new ChangePropertyDescription(propertyData, p -> openPropertyManagerMenu(player, propertyData)));
-        });
-
-
-        GuiItem drawBoxButton = ItemBuilder.from(drawnBox).asGuiItem(event -> {
-            player.closeInventory();
-            propertyData.showBox(player);
-        });
-
-        GuiItem isForSaleButton = ItemBuilder.from(isForSale).asGuiItem(event -> {
-            if(event.getClick() == ClickType.RIGHT){
-                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(playerData));
-                PlayerChatListenerStorage.register(player, new ChangePropertySalePrice(propertyData, p -> openPropertyManagerMenu(player, propertyData)));
-                player.closeInventory();
-            }
-            else if (event.getClick() == ClickType.LEFT){
-                if(propertyData.isRented()){
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_ALREADY_RENTED.get(playerData));
-                    return;
-                }
-                propertyData.swapIsForSale();
-                openPropertyManagerMenu(player,propertyData);
-            }
-        });
-        GuiItem isForRentButton = ItemBuilder.from(isForRent).asGuiItem(event -> {
-            if(event.getClick() == ClickType.RIGHT){
-                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(playerData));
-                PlayerChatListenerStorage.register(player, new ChangePropertyRentPrice(propertyData, p -> openPropertyManagerMenu(player, propertyData)));
-            }
-            else if (event.getClick() == ClickType.LEFT){
-                if(propertyData.isRented()){
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_ALREADY_RENTED.get(playerData));
-                    return;
-                }
-                propertyData.swapIsRent();
-                openPropertyManagerMenu(player,propertyData);
-            }
-        });
-
-        GuiItem deleteButton = ItemBuilder.from(deleteProperty).asGuiItem(event -> {
-            propertyData.delete();
-            new PlayerPropertyMenu(player).open();
-        });
-
-        GuiItem openListButton = ItemBuilder.from(playerList).asGuiItem(event -> openPlayerPropertyPlayerList(player, propertyData, 0));
-
-        if(propertyData.isRented()){
-            ItemStack renterIcon = HeadUtils.getPlayerHead(
-                    Lang.GUI_PROPERTY_RENTED_BY.get(playerData, propertyData.getRenter().getNameStored()),
-                    propertyData.getOfflineRenter(),
-                    Lang.GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER.get(playerData));
-            GuiItem renterButton = ItemBuilder.from(renterIcon).asGuiItem(event -> {
-                event.setCancelled(true);
-
-                Player renter = propertyData.getRenterPlayer();
-                propertyData.expelRenter(false);
-
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_RENTER_EXPELLED_OWNER_SIDE.get(playerData));
-                SoundUtil.playSound(player,MINOR_GOOD);
-
-                if(renter != null){
-                    renter.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_RENTER_EXPELLED_RENTER_SIDE.get(playerData, propertyData.getName()));
-                    SoundUtil.playSound(renter,MINOR_BAD);
-                }
-
-                openPropertyManagerMenu(player,propertyData);
-            });
-            gui.setItem(3,7,renterButton);
-        }
-
-
-        gui.setItem(1,5,propertyIcon);
-        gui.setItem(2,2,changeNameButton);
-        gui.setItem(2,3,changeDescButton);
-
-        gui.setItem(2,5,drawBoxButton);
-
-        gui.setItem(2,7,isForSaleButton);
-        gui.setItem(2,8,isForRentButton);
-
-        gui.setItem(3, 2, openListButton);
-        gui.setItem(3,8,deleteButton);
-
-
-
-        gui.setItem(4,1, GuiUtil.createBackArrow(player, p -> new PlayerPropertyMenu(player).open()));
-        gui.open(player);
-    }
-
-    private static void openPlayerPropertyPlayerList(Player player, PropertyData propertyData, int page) {
+    public static void openPlayerPropertyPlayerList(Player player, PropertyData propertyData, int page, Consumer<Player> onClose) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         int nRows = 4;
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(playerData, propertyData.getName()),nRows);
@@ -299,7 +139,7 @@ public class PlayerGUI {
                     return;
                 }
                 propertyData.removeAuthorizedPlayer(playerID);
-                openPlayerPropertyPlayerList(player, propertyData, page);
+                openPlayerPropertyPlayerList(player, propertyData, page, onClose);
 
                 SoundUtil.playSound(player,MINOR_GOOD);
                 player.sendMessage(Lang.PLAYER_REMOVED_FROM_PROPERTY.get(playerData, offlinePlayer.getName()));
@@ -307,9 +147,9 @@ public class PlayerGUI {
             guiItems.add(headGui);
         }
         GuiUtil.createIterator(gui, guiItems, page, player,
-                p -> openPropertyManagerMenu(player, propertyData),
-                p -> openPlayerPropertyPlayerList(player, propertyData, page + 1),
-                p -> openPlayerPropertyPlayerList(player, propertyData, page - 1)
+                onClose,
+                p -> openPlayerPropertyPlayerList(player, propertyData, page + 1, onClose),
+                p -> openPlayerPropertyPlayerList(player, propertyData, page - 1, onClose)
                 );
 
         ItemStack addPlayer = HeadUtils.makeSkullB64(Lang.GUI_PROPERTY_AUTHORIZE_PLAYER.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
@@ -351,7 +191,7 @@ public class PlayerGUI {
         }
 
         GuiUtil.createIterator(gui, guiItems, 0, player,
-                p -> openPlayerPropertyPlayerList(player, propertyData, page),
+                p -> new PlayerPropertyManager(player, propertyData, p1 -> player.closeInventory()),
                 p -> openPlayerPropertyAddPlayer(player, propertyData, page + 1),
                 p -> openPlayerPropertyAddPlayer(player, propertyData, page - 1)
         );
@@ -1608,6 +1448,7 @@ public class PlayerGUI {
         gui.open(player);
     }
 
+
     public static void openChunkSettings(Player player, TerritoryData territoryData) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_MENU.get(playerData, territoryData.getName()),3);
@@ -1764,7 +1605,7 @@ public class PlayerGUI {
                     SoundUtil.playSound(player, NOT_ALLOWED);
                     return;
                 }
-                openPropertyManagerMenu(player,townProperty);
+                new TownPropertyManager(player, townProperty);
             });
             guiItems.add(propertyButton);
         }
@@ -1890,6 +1731,7 @@ public class PlayerGUI {
 
         gui.open(player);
     }
+
 
     public static void openNoRegionMenu(Player player){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);

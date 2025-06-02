@@ -2,15 +2,12 @@ package org.leralix.tan.gui.user;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.PlayerPropertyMenu;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.newsletter.NewsletterScope;
 import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.utils.GuiUtil;
 

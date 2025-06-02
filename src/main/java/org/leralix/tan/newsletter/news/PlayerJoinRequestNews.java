@@ -101,7 +101,7 @@ public class PlayerJoinRequestNews extends Newsletter {
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);
             if(event.isLeftClick()){
-                new PlayerApplicationMenu(player,getTownData()).open();
+                new PlayerApplicationMenu(player, getTownData()).open();
             }
             if(event.isRightClick()){
                 markAsRead(player);

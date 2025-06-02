@@ -7,11 +7,13 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.Directional;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.gui.user.PlayerPropertyManager;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.lib.utils.config.ConfigTag;
@@ -101,7 +103,7 @@ public class PlayerSelectPropertyPositionStorage {
             removePlayer(playerID);
 
             PropertyData property = playerTown.registerNewProperty(vList.get(0),vList.get(1),playerData);
-            PlayerGUI.openPropertyManagerMenu(player,property);
+            new PlayerPropertyManager(player, property, HumanEntity::closeInventory);
 
             createPropertyPanel(player, property, block, blockFace);
             property.updateSign();
