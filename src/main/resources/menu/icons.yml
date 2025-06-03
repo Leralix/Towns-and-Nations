@@ -70,3 +70,11 @@ RENT_PROPERTY_ICON_FOR_RENT: "https://textures.minecraft.net/texture/ce2a530f427
 RENT_PROPERTY_ICON_RENTED: "http://textures.minecraft.net/texture/ce2a530f42726fa7a31efab8e43dadee188937cf824af88ea8e4c93a49c57294"
 AUTHORIZED_PLAYERS_ICON_FOR_RENT: "https://textures.minecraft.net/texture/7b43b23189dcf1326da4253d1d7582ef5ad29f6c27b171feb17e31d084e3a7d"
 DELETE_PROPERTY_ICON: "minecraft:BARRIER"
+#Buy property
+CONFIRM_BUY_PROPERTY_ICON: "https://textures.minecraft.net/texture/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756"
+CANCEL_BUY_PROPERTY_ICON: "https://textures.minecraft.net/texture/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065"
+#Rent property
+CONFIRM_RENT_PROPERTY_ICON: "https://textures.minecraft.net/texture/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756"
+CANCEL_RENT_PROPERTY_ICON: "https://textures.minecraft.net/texture/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065"
+#Renter menu
+STOP_RENTING_PROPERTY_ICON: "minecraft:BARRIER"

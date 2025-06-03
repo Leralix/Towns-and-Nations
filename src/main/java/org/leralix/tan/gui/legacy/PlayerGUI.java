@@ -79,45 +79,6 @@ public class PlayerGUI {
         }
     }
 
-    public static void openPropertyManagerRentMenu(Player player, PropertyData propertyData) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(playerData, propertyData.getName()), 4);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
-
-        ItemStack propertyIcon = propertyData.getIcon(playerData.getLang());
-
-        ItemStack stopRentingProperty = HeadUtils.createCustomItemStack(Material.BARRIER,
-                Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY.get(playerData),
-                Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY_DESC1.get(playerData));
-
-
-        GuiItem propertyButton = ItemBuilder.from(propertyIcon).asGuiItem(event -> event.setCancelled(true));
-
-        GuiItem stopRentingButton = ItemBuilder.from(stopRentingProperty).asGuiItem(event -> {
-            propertyData.expelRenter(true);
-
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_RENTER_LEAVE_RENTER_SIDE.get(playerData, propertyData.getName()));
-            SoundUtil.playSound(player,MINOR_GOOD);
-
-            Player owner = propertyData.getOwnerPlayer();
-            if(owner != null){
-                owner.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_RENTER_LEAVE_OWNER_SIDE.get(playerData, player.getName(), propertyData.getName()));
-                SoundUtil.playSound(owner,MINOR_BAD);
-            }
-
-            player.closeInventory();
-        });
-
-        gui.setItem(1,5,propertyButton);
-        gui.setItem(2,7,stopRentingButton);
-
-        gui.setItem(4,1, GuiUtil.createBackArrow(player, p -> player.closeInventory()));
-
-
-        gui.open(player);
-    }
-
-
     public static void openPlayerPropertyPlayerList(Player player, PropertyData propertyData, int page, Consumer<Player> onClose) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         int nRows = 4;
@@ -196,67 +157,6 @@ public class PlayerGUI {
         );
 
         gui.open(player);
-    }
-
-    public static void openPropertyBuyMenu(Player player, @NotNull PropertyData propertyData) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(playerData, propertyData.getName()),3);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
-
-        ItemStack propertyIcon = propertyData.getIcon(playerData.getLang());
-
-
-        if(propertyData.isForRent()){
-            ItemStack confirmRent = HeadUtils.makeSkullB64(Lang.CONFIRM_RENT.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0=",
-                    Lang.CONFIRM_RENT_DESC1.get(playerData),
-                    Lang.CONFIRM_RENT_DESC2.get(playerData, propertyData.getRentPrice()));
-            ItemStack cancelRent = HeadUtils.makeSkullB64(Lang.CANCEL_RENT.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0=");
-
-
-            GuiItem confirmRentButton = ItemBuilder.from(confirmRent).asGuiItem(event -> {
-                event.setCancelled(true);
-                propertyData.allocateRenter(player);
-                openPropertyManagerRentMenu(player, propertyData);
-            });
-            GuiItem cancelRentIcon = ItemBuilder.from(cancelRent).asGuiItem(event -> {
-                event.setCancelled(true);
-                player.closeInventory();
-            });
-
-            gui.setItem(2,3, confirmRentButton);
-            gui.setItem(2,7, cancelRentIcon);
-
-        }
-        else if (propertyData.isForSale()){
-            ItemStack confirmRent = HeadUtils.makeSkullB64(Lang.CONFIRM_SALE.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0=",
-                    Lang.CONFIRM_SALE_DESC1.get(playerData),
-                    Lang.CONFIRM_SALE_DESC2.get(playerData, propertyData.getSalePrice()));
-            ItemStack cancelRent = HeadUtils.makeSkullB64(Lang.CANCEL_SALE.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjc1NDgzNjJhMjRjMGZhODQ1M2U0ZDkzZTY4YzU5NjlkZGJkZTU3YmY2NjY2YzAzMTljMWVkMWU4NGQ4OTA2NSJ9fX0=");
-
-            GuiItem confirmRentIcon = ItemBuilder.from(confirmRent).asGuiItem(event -> {
-                event.setCancelled(true);
-                propertyData.buyProperty(player);
-            }
-            );
-            GuiItem cancelRentIcon = ItemBuilder.from(cancelRent).asGuiItem(event -> {
-                event.setCancelled(true);
-                player.closeInventory();
-            });
-
-
-            gui.setItem(2,3, confirmRentIcon);
-            gui.setItem(2,7, cancelRentIcon);
-        }
-
-
-
-        GuiItem propertyIconButton = ItemBuilder.from(propertyIcon).asGuiItem(event -> event.setCancelled(true));
-
-        gui.setItem(1,5, propertyIconButton);
-        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> player.closeInventory()));
-
-        gui.open(player);
-
     }
 
     public static void openSearchTownMenu(Player player, int page) {

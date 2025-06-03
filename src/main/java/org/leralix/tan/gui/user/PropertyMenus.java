@@ -26,6 +26,11 @@ public abstract class PropertyMenus extends BasicGui {
 
     protected final PropertyData propertyData;
 
+    protected PropertyMenus(Player player, String title, int rows, PropertyData propertyData) {
+        super(player, title, rows);
+        this.propertyData = propertyData;
+    }
+
     protected PropertyMenus(Player player, Lang title, int rows, PropertyData propertyData) {
         super(player, title, rows);
         this.propertyData = propertyData;
