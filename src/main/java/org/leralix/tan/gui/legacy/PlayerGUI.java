@@ -16,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.gui.user.PlayerPropertyMenu;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -1812,8 +1811,6 @@ public class PlayerGUI {
                 Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get(playerData));
         ItemStack claims = HeadUtils.makeSkullB64(Lang.GUI_CLAIM_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=",
                 Lang.GUI_CLAIM_ICON_DESC1.get(playerData));
-        ItemStack manageLaws = HeadUtils.makeSkullURL(Lang.GUI_MANAGE_LAWS.get(playerData) ,"https://textures.minecraft.net/texture/1818d1cc53c275c294f5dfb559174dd931fc516a85af61a1de256aed8bca5e7",
-                Lang.GUI_MANAGE_LAWS_DESC1.get(playerData));
         ItemStack browse = HeadUtils.makeSkullB64(Lang.GUI_BROWSE_TERRITORY_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=",
                 Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData));
         ItemStack diplomacy = HeadUtils.makeSkullB64(Lang.GUI_RELATION_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=",

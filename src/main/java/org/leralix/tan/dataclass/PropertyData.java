@@ -204,7 +204,7 @@ public class PropertyData {
                 lore.add(Lang.GUI_PROPERTY_NOT_FOR_SALE.get(langType));
             }
 
-            lore.add(Lang.CLICK_TO_OPEN_PROPERTY_MENU.get(langType));
+            lore.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType));
             meta.setLore(lore);
             property.setItemMeta(meta);
         }

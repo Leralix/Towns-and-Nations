@@ -20,13 +20,10 @@ public class TownPropertyManager extends PropertyMenus{
 
         gui.setItem(1, 5, getPropertyIcon());
 
-        gui.setItem(2, 2, getRenameButton());
-        gui.setItem(2, 3, getDescriptionButton());
-        gui.setItem(2, 4, getAuthorizedPlayersButton());
         gui.setItem(2, 5, getBoundariesButton());
         gui.setItem(3, 6, getDeleteButton());
-        gui.setItem(2, 7, forRentButton());
-        gui.setItem(2, 8, forSaleButton());
+        if(propertyData.isRented())
+            gui.setItem(3, 7, getKickRenterButton());
 
 
         gui.open(player);
