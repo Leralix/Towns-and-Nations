@@ -26,6 +26,7 @@ public class NoTownMenu extends BasicGui {
 
     public NoTownMenu(Player player) {
         super(player, Lang.HEADER_NO_TOWN_MENU, 3);
+        open();
     }
 
     @Override
@@ -75,7 +76,7 @@ public class NoTownMenu extends BasicGui {
                         Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(playerData, TownDataStorage.getInstance().getNumberOfTown()),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData))
                 .setAction(event -> {
-                    PlayerGUI.openSearchTownMenu(player,0);
+                    new ApplyToTownMenu(player);
                 })
                 .asGuiItem(player);
     }

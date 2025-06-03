@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -44,7 +43,6 @@ import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.*;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.storage.stored.*;
@@ -75,7 +73,7 @@ public class PlayerGUI {
             new TownMenu(player).open();
         }
         else{
-            new NoTownMenu(player).open();
+            new NoTownMenu(player);
         }
     }
 
@@ -155,63 +153,6 @@ public class PlayerGUI {
                 p -> openPlayerPropertyAddPlayer(player, propertyData, page + 1),
                 p -> openPlayerPropertyAddPlayer(player, propertyData, page - 1)
         );
-
-        gui.open(player);
-    }
-
-    public static void openSearchTownMenu(Player player, int page) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_LIST.get(playerData, page + 1),6);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
-
-        ArrayList<GuiItem> townItemStacks = new ArrayList<>();
-
-        for(TownData specificTownData : TownDataStorage.getInstance().getTownMap().values()){
-            ItemStack townIcon = specificTownData.getIconWithInformations(playerData.getLang());
-            HeadUtils.addLore(townIcon,
-                    "",
-                    (specificTownData.isRecruiting()) ? Lang.GUI_TOWN_INFO_IS_RECRUITING.get(playerData) : Lang.GUI_TOWN_INFO_IS_NOT_RECRUITING.get(playerData),
-                    (specificTownData.isPlayerAlreadyRequested(player)) ? Lang.GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL.get(playerData) : Lang.GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN.get(playerData)
-            );
-            GuiItem townButton = ItemBuilder.from(townIcon).asGuiItem(event -> {
-                event.setCancelled(true);
-
-                if(event.isLeftClick()){
-
-                    if(!player.hasPermission("tan.base.town.join")){
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(playerData));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
-                        return;
-                    }
-                    if(specificTownData.isPlayerAlreadyRequested(player)){
-                        return;
-                    }
-                    if(!specificTownData.isRecruiting()){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_TOWN_NOT_RECRUITING.get(playerData));
-                        return;
-                    }
-                    specificTownData.addPlayerJoinRequest(player);
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(playerData, specificTownData.getName()));
-                    openSearchTownMenu(player,page);
-                }
-                if(event.isRightClick()){
-                    if(!specificTownData.isPlayerAlreadyRequested(player)){
-                        return;
-                    }
-                    specificTownData.removePlayerJoinRequest(player);
-                    NewsletterStorage.removePlayerJoinRequest(player, specificTownData);
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(playerData));
-                    openSearchTownMenu(player,page);
-                }
-
-            });
-            townItemStacks.add(townButton);
-        }
-
-        GuiUtil.createIterator(gui, townItemStacks, page, player, p -> new NoTownMenu(player).open(),
-                p -> openSearchTownMenu(player, page + 1),
-                p -> openSearchTownMenu(player, page - 1));
-
 
         gui.open(player);
     }

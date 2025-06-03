@@ -73,10 +73,16 @@ public class PlayerJoinRequestNews extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
+
+        TownData townData = getTownData();
+        if(townData == null){
+            return null;
+        }
+
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
 
         ItemStack itemStack = HeadUtils.getPlayerHead(Lang.NEWSLETTER_PLAYER_APPLICATION.get(offlinePlayer.getName()), offlinePlayer,
-                Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(offlinePlayer.getName(), TownDataStorage.getInstance().get(townID).getBaseColoredName()),
+                Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(offlinePlayer.getName(), getTownData().getBaseColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
 
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
@@ -113,6 +119,9 @@ public class PlayerJoinRequestNews extends Newsletter {
     @Override
     public boolean shouldShowToPlayer(Player player) {
         TownData townData = getTownData();
+        if(townData == null){
+            return false;
+        }
         return townData.isPlayerIn(player);
     }
 
