@@ -78,3 +78,5 @@ CONFIRM_RENT_PROPERTY_ICON: "https://textures.minecraft.net/texture/a79a5c95ee17
 CANCEL_RENT_PROPERTY_ICON: "https://textures.minecraft.net/texture/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065"
 #Renter menu
 STOP_RENTING_PROPERTY_ICON: "minecraft:BARRIER"
+#War menu
+STRONGHOLD_INFO_ICON: "minecraft:IRON_BLOCK"

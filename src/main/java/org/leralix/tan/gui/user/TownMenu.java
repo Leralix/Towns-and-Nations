@@ -179,7 +179,7 @@ public class TownMenu extends BasicGui {
                         Lang.GUI_TOWN_PROPERTIES_ICON_DESC1.get(playerData.getLang()),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
                 )
-                .setAction(event -> PlayerGUI.openTownPropertiesMenu(player, 0))
+                .setAction(event -> new TownPropertiesMenu(player, townData))
                 .asGuiItem(player);
     }
 
@@ -201,7 +201,7 @@ public class TownMenu extends BasicGui {
                         Lang.GUI_ATTACK_ICON_DESC1.get(playerData.getLang()),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
                 )
-                .setAction(event -> PlayerGUI.openWarMenu(player, townData, 0))
+                .setAction(event -> new WarMenu(player, townData))
                 .asGuiItem(player);
     }
 

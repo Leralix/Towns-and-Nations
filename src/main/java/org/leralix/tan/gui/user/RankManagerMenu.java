@@ -33,6 +33,7 @@ public class RankManagerMenu extends BasicGui {
         super(player, Lang.HEADER_TERRITORY_RANKS.get(player, rankData.getName()), 4);
         this.territoryData = territoryData;
         this.rankData = rankData;
+        open();
     }
 
     @Override
@@ -202,7 +203,7 @@ public class RankManagerMenu extends BasicGui {
         return iconManager.get(IconKey.MANAGE_PERMISSION_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION.get(playerData))
                 .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData))
-                .setAction(event -> PlayerGUI.openRankManagerPermissions(player,territoryData, rankData))
+                .setAction(event -> new ManageRankPermissionMenu(player, territoryData, rankData))
                 .asGuiItem(player);
     }
 

@@ -364,15 +364,12 @@ language:
   GUI_PROPERTY_CHANGE_NAME_DESC1: "§fCurrent name: §9{0}"
   GUI_PROPERTY_CHANGE_DESCRIPTION: "§aChange property description"
   GUI_PROPERTY_CHANGE_DESCRIPTION_DESC1: "§fCurrent description: §7§o\"{0}\""
-
   GUI_PROPERTY_SALE: "§aSelling the property"
   GUI_PROPERTY_FOR_SALE: "§a✔ For sale"
   GUI_PROPERTY_NOT_FOR_SALE: "§c✘ Not for sale"
-
   GUI_PROPERTY_FOR_RENT: "§a✔ For rent"
   GUI_PROPERTY_NOT_FOR_RENT: "§c✘ Not for rent"
   GUI_PROPERTY_RENTED_BY: "§f➥Rented by: §3{0}"
-
   PROPERTY_BELONGS_TO: "§f➥Owned by: §3{0}"
   PROPERTY_RENTED_BY: "§f➥Rented by: §3{0}"
   PROPERTY_NOT_FOR_SALE_OR_RENT: "§cThis property is not available for sale or rent"
@@ -396,6 +393,12 @@ language:
   GUI_PROPERTY_DESCRIPTION: "§7§o\"{0}\""
   GUI_PROPERTY_STRUCTURE_OWNER: "§fCity: §9{0}"
   GUI_PROPERTY_OWNER: "§fOwner: §3{0}"
+  #Stronghold
+  GUI_STRONGHOLD: "§aStronghold"
+  GUI_NO_STRONGHOLD: "§fYou do not have a stronghold because you have no claimed chunks"
+  GUI_STRONGHOLD_LOCATION: "§fLocation: §9x:{0}§f, §9z:{1}"
+
+
   GUI_ATTACK_ADD_TIME: "§aAdd time"
   GUI_ATTACK_REMOVE_TIME: "§aRemove time"
   GUI_LEFT_CLICK_FOR_1_MINUTE: "§fLeft click to add 1 minute"
@@ -819,10 +822,6 @@ language:
   GUI_RIGHT_CLICK_TO_QUIT: "§cRight click to remove the town from the region"
   GUI_LEFT_CLICK_TO_SET_REGION: "§fLeft click to set the region"
   ##Common territory GUI
-  GUI_STRONGHOLD: "Stronghold"
-  GUI_NO_STRONGHOLD: "§fYou do not have a stronghold because you have no claimed chunks"
-  GUI_STRONGHOLD_LOCATION: "§fLocation: §9x:{0}§f, §9z:{1}"
-  GUI_LEFT_CLICK_TO_SET_STRONGHOLD: "§fLeft click to set the position of the stronghold"
   #Hierarchy gui
   OVERLORD_GUI: "§aSuzerain"
   CANNOT_HAVE_OVERLORD: "§fThis territory cannot have an suzerain"

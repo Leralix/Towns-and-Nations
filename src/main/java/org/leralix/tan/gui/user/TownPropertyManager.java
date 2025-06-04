@@ -3,14 +3,16 @@ package org.leralix.tan.gui.user;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PropertyData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.GuiUtil;
 
 public class TownPropertyManager extends PropertyMenus{
 
-    public TownPropertyManager(Player player, PropertyData propertyData) {
+    private final TownData townData;
+    public TownPropertyManager(Player player, PropertyData propertyData, TownData townData) {
         super(player, Lang.HEADER_TOWN_SPECIFIC_PROPERTY, 3, propertyData);
-
+        this.townData = townData;
         open();
     }
 
@@ -21,10 +23,11 @@ public class TownPropertyManager extends PropertyMenus{
         gui.setItem(1, 5, getPropertyIcon());
 
         gui.setItem(2, 5, getBoundariesButton());
-        gui.setItem(3, 6, getDeleteButton());
+        gui.setItem(2, 6, getDeleteButton());
         if(propertyData.isRented())
-            gui.setItem(3, 7, getKickRenterButton());
+            gui.setItem(2, 7, getKickRenterButton());
 
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new TownPropertiesMenu(player, townData)));
 
         gui.open(player);
     }

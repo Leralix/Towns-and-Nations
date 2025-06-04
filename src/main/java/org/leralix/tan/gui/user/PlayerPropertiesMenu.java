@@ -10,7 +10,6 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.PlayerSelectPropertyPositionStorage;
 import org.leralix.tan.utils.GuiUtil;
@@ -21,9 +20,9 @@ import java.util.List;
 
 import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
-public class PlayerPropertyMenu extends IteratorGUI {
+public class PlayerPropertiesMenu extends IteratorGUI {
 
-    public PlayerPropertyMenu(Player player){
+    public PlayerPropertiesMenu(Player player){
         super(player, Lang.HEADER_PLAYER_PROPERTIES, 3);
     }
 

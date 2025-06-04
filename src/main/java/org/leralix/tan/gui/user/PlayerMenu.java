@@ -52,7 +52,7 @@ public class PlayerMenu extends BasicGui {
                         Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get(playerData),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
                 )
-                .setAction(event -> new PlayerPropertyMenu(player).open())
+                .setAction(event -> new PlayerPropertiesMenu(player).open())
                 .asGuiItem(player);
     }
 
