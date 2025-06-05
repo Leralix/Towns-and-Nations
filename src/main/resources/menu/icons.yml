@@ -44,6 +44,21 @@ TERRITORY_HIERARCHY_ICON : "minecraft:GOLDEN_HELMET"
 #Town menu
 TOWN_LANDMARKS_ICON : "https://textures.minecraft.net/texture/fd761cc16562c88d2fbe40ad38502bc3b4a87859887dbc35f272e30d8070eeec"
 TOWN_PROPERTIES_ICON : "minecraft:OAK_SIGN"
+#Settings menu
+TERRITORY_RENAME_ICON : "minecraft:NAME_TAG"
+TERRITORY_DESCRIPTION_ICON : "minecraft:WRITABLE_BOOK"
+TERRITORY_CHANGE_OWNER_ICON : "https://textures.minecraft.net/texture/45587da7fe7336e8ab9f791ea5e2cfc8a827ca959567eb9d53a647babf948d5"
+TERRITORY_CHANGE_COLOR_ICON : "https://textures.minecraft.net/texture/bf9d42b674a920f849107413ba40727eb1551d7d54591f4e1e5cbc6c0287a87"
+#Town settings menu
+TOWN_CHANGE_OWNERSHIP_ICON : "minecraft:LECTERN"
+TOWN_ALLOW_APPLICATION_ICON : "minecraft:WRITABLE_BOOK"
+TOWN_DENY_APPLICATION_ICON : "minecraft:BOOK"
+TOWN_QUIT_TOWN_ICON : "minecraft:OAK_DOOR"
+TOWN_DELETE_TOWN_ICON : "minecraft:BARRIER"
+#Region settings menu
+REGION_CHANGE_OWNERSHIP_ICON : "minecraft:LECTERN"
+REGION_QUIT_REGION_ICON : "minecraft:OAK_DOOR"
+REGION_DELETE_REGION_ICON : "minecraft:BARRIER"
 #Manage members menu
 MANAGE_RANKS_ICON: "minecraft:LADDER"
 MANAGE_APPLICATIONS_ICON: "minecraft:WRITABLE_BOOK"
@@ -67,12 +82,12 @@ CREATE_NEW_PROPERTY_ICON: "https://textures.minecraft.net/texture/5ff31431d64587
 PROPERTY_RENAME_ICON : "minecraft:NAME_TAG"
 PROPERTY_DESCRIPTION_ICON : "minecraft:WRITABLE_BOOK"
 PROPERTY_BOUNDS_ICON : "https://textures.minecraft.net/texture/377d4a206d7757f479f332ec1a2bbbee57cef97568dd88df81f4864aee7d3d98"
-SELL_PROPERTY_ICON_NOT_FOR_SALE : "http://textures.minecraft.net/texture/eef0708fce5ffaa6608cbed3e78ed95803d8a89377d1d938ce0bdc61b6dc9f4f"
+SELL_PROPERTY_ICON_NOT_FOR_SALE : "https://textures.minecraft.net/texture/eef0708fce5ffaa6608cbed3e78ed95803d8a89377d1d938ce0bdc61b6dc9f4f"
 SELL_PROPERTY_ICON_FOR_SALE: "https://textures.minecraft.net/texture/ce2a530f42726fa7a31efab8e43dadee188937cf824af88ea8e4c93a49c57294"
-RENT_PROPERTY_ICON_NOT_FOR_RENT: "http://textures.minecraft.net/texture/eef0708fce5ffaa6608cbed3e78ed95803d8a89377d1d938ce0bdc61b6dc9f4f"
+RENT_PROPERTY_ICON_NOT_FOR_RENT: "https://textures.minecraft.net/texture/eef0708fce5ffaa6608cbed3e78ed95803d8a89377d1d938ce0bdc61b6dc9f4f"
 RENT_PROPERTY_ICON_FOR_RENT: "https://textures.minecraft.net/texture/ce2a530f42726fa7a31efab8e43dadee188937cf824af88ea8e4c93a49c57294"
-RENT_PROPERTY_ICON_RENTED: "http://textures.minecraft.net/texture/ce2a530f42726fa7a31efab8e43dadee188937cf824af88ea8e4c93a49c57294"
-AUTHORIZED_PLAYERS_ICON_FOR_RENT: "https://textures.minecraft.net/texture/7b43b23189dcf1326da4253d1d7582ef5ad29f6c27b171feb17e31d084e3a7d"
+RENT_PROPERTY_ICON_RENTED: "https://textures.minecraft.net/texture/ce2a530f42726fa7a31efab8e43dadee188937cf824af88ea8e4c93a49c57294"
+AUTHORIZED_PLAYERS_ICON: "https://textures.minecraft.net/texture/7b43b23189dcf1326da4253d1d7582ef5ad29f6c27b171feb17e31d084e3a7d"
 DELETE_PROPERTY_ICON: "minecraft:BARRIER"
 #Buy property
 CONFIRM_BUY_PROPERTY_ICON: "https://textures.minecraft.net/texture/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756"

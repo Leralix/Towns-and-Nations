@@ -1,14 +1,14 @@
-package org.leralix.tan.gui.user;
+package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.enums.BrowseScope;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.CreateRegion;
@@ -27,7 +27,6 @@ public class NoRegionMenu extends BasicGui {
         open();
     }
 
-
     @Override
     public void open() {
 
@@ -35,6 +34,7 @@ public class NoRegionMenu extends BasicGui {
         gui.setItem(2, 7, getBrowseRegionsButton());
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new MainMenu(player).open()));
 
+        gui.open(player);
     }
 
     private GuiItem getBrowseRegionsButton() {

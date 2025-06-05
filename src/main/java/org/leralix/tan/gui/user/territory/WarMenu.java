@@ -1,9 +1,8 @@
-package org.leralix.tan.gui.user;
+package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Chunk;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.utils.SoundUtil;
@@ -19,11 +18,9 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.utils.GuiUtil;
-import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TanChatUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;

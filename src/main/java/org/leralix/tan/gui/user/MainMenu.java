@@ -10,8 +10,8 @@ import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.user.player.PlayerMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.GuiUtil;
 
@@ -22,6 +22,7 @@ public class MainMenu extends BasicGui {
 
     public MainMenu(Player player) {
         super(player, Lang.HEADER_MAIN_MENU, 3);
+        open();
     }
 
     @Override
@@ -70,11 +71,8 @@ public class MainMenu extends BasicGui {
 
         return iconManager.get(IconKey.REGION_BASE_ICON)
                 .setName(Lang.GUI_REGION_ICON.get(playerData))
-                .setDescription(
-                        description)
-                .setAction(action -> {
-                    PlayerGUI.dispatchPlayerRegion(player);
-                })
+                .setDescription(description)
+                .setAction(action -> PlayerGUI.dispatchPlayerRegion(player))
                 .asGuiItem(player);
     }
 
@@ -93,9 +91,7 @@ public class MainMenu extends BasicGui {
         return iconManager.get(IconKey.TOWN_BASE_ICON)
                 .setName(Lang.GUI_TOWN_ICON.get(playerData))
                 .setDescription(description)
-                .setAction(action -> {
-                    PlayerGUI.dispatchPlayerTown(player);
-                })
+                .setAction(action -> PlayerGUI.dispatchPlayerTown(player))
                 .asGuiItem(player);
     }
 

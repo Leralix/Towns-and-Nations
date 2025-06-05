@@ -13,12 +13,12 @@ import org.leralix.tan.lang.Lang;
 
 import java.util.function.Consumer;
 
-public class ChangeDescription extends ChatListenerEvent {
+public class ChangeTerritoryDescription extends ChatListenerEvent {
 
     private final TerritoryData territoryData;
     Consumer<Player> guiCallback;
 
-    public ChangeDescription(@NotNull TerritoryData territoryData, Consumer<Player> guiCallback) {
+    public ChangeTerritoryDescription(@NotNull TerritoryData territoryData, Consumer<Player> guiCallback) {
         this.territoryData = territoryData;
         this.guiCallback = guiCallback;
     }

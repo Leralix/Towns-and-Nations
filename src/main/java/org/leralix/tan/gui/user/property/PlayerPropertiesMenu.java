@@ -1,4 +1,4 @@
-package org.leralix.tan.gui.user;
+package org.leralix.tan.gui.user.property;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -10,6 +10,7 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.user.player.PlayerMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.PlayerSelectPropertyPositionStorage;
 import org.leralix.tan.utils.GuiUtil;
@@ -59,7 +60,7 @@ public class PlayerPropertiesMenu extends IteratorGUI {
         }
 
 
-        return iconManager.get(IconKey.PLAYER_PROPERTY_ICON)
+        return iconManager.get(IconKey.CREATE_NEW_PROPERTY_ICON)
                 .setName(Lang.GUI_PLAYER_NEW_PROPERTY.get(playerData))
                 .setDescription(description)
                 .setAction(event -> {

@@ -1,13 +1,12 @@
-package org.leralix.tan.gui.user;
+package org.leralix.tan.gui.user.property;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.user.RenterPropertyMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.GuiUtil;
 

@@ -9,7 +9,7 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.gui.user.TreasuryMenu;
+import org.leralix.tan.gui.user.territory.TreasuryMenu;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.StringUtil;

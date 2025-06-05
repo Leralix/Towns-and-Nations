@@ -13,7 +13,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.gui.user.PlayerPropertyManager;
+import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.lib.utils.config.ConfigTag;
@@ -23,7 +23,6 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 

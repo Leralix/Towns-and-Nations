@@ -1,4 +1,4 @@
-package org.leralix.tan.gui.user;
+package org.leralix.tan.gui.user.player;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;

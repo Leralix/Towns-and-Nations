@@ -1,8 +1,9 @@
-package org.leralix.tan.gui.user;
+package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -39,7 +40,8 @@ public class PlayerApplicationMenu extends IteratorGUI {
         GuiUtil.createIterator(gui, getApplicationList(), page, player,
                 p -> new TerritoryMemberMenu(player, townData).open(),
                 p -> nextPage(),
-                p -> previousPage()
+                p -> previousPage(),
+                Material.LIME_STAINED_GLASS_PANE
         );
         gui.open(player);
     }

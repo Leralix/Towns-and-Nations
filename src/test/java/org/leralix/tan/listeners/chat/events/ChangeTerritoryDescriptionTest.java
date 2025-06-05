@@ -17,7 +17,7 @@ import org.leralix.tan.storage.stored.TownDataStorage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class ChangeDescriptionTest {
+class ChangeTerritoryDescriptionTest {
 
     private static Player player;
     private static TownData townData;
@@ -33,7 +33,7 @@ class ChangeDescriptionTest {
     @Test
     void nominalCaseTown() {
 
-        ChangeDescription changeDescription = new ChangeDescription(townData, null);
+        ChangeTerritoryDescription changeDescription = new ChangeTerritoryDescription(townData, null);
         String description = "new description 1";
 
         changeDescription.execute(player, description);
@@ -45,7 +45,7 @@ class ChangeDescriptionTest {
     void nominalCaseRegion() {
 
         RegionData regionData = RegionDataStorage.getInstance().createNewRegion("nation 1", townData);
-        ChangeDescription changeDescription = new ChangeDescription(regionData, null);
+        ChangeTerritoryDescription changeDescription = new ChangeTerritoryDescription(regionData, null);
         String description = "new description 2";
 
         changeDescription.execute(player, description);
@@ -57,7 +57,7 @@ class ChangeDescriptionTest {
     void nominalCaseTerritory() {
 
         TerritoryData territoryData = townData;
-        ChangeDescription changeDescription = new ChangeDescription(territoryData, null);
+        ChangeTerritoryDescription changeDescription = new ChangeTerritoryDescription(territoryData, null);
         String description = "new description 3";
 
         changeDescription.execute(player, description);
@@ -72,7 +72,7 @@ class ChangeDescriptionTest {
         StringBuilder description = new StringBuilder("a");
         description.append("a".repeat(maxDescriptionLength));
 
-        ChangeDescription changeDescription = new ChangeDescription(townData, null);
+        ChangeTerritoryDescription changeDescription = new ChangeTerritoryDescription(townData, null);
         changeDescription.execute(player, description.toString());
 
         assertNotEquals(description.toString(), townData.getDescription());
@@ -81,7 +81,7 @@ class ChangeDescriptionTest {
     void DescTooShortError() {
 
         String  description = "a";
-        ChangeDescription changeDescription = new ChangeDescription(townData, null);
+        ChangeTerritoryDescription changeDescription = new ChangeTerritoryDescription(townData, null);
         changeDescription.execute(player, description);
 
         assertNotEquals(description, townData.getDescription());

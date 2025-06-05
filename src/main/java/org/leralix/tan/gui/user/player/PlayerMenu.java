@@ -1,4 +1,4 @@
-package org.leralix.tan.gui.user;
+package org.leralix.tan.gui.user.player;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
@@ -6,6 +6,8 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
+import org.leralix.tan.gui.user.MainMenu;
+import org.leralix.tan.gui.user.property.PlayerPropertiesMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.newsletter.storage.NewsletterStorage;
@@ -27,7 +29,7 @@ public class PlayerMenu extends BasicGui {
         gui.setItem(2, 6, getNewsletterButton());
         gui.setItem(2, 8, getLanguageButton());
 
-        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> new MainMenu(p).open()));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, MainMenu::new));
 
         gui.open(player);
     }

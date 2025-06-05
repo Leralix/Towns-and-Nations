@@ -1,20 +1,23 @@
-package org.leralix.tan.gui.user;
+package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
-import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.GuiUtil;
 
 public class RegionMenu extends TerritoryMenu {
 
+    private final RegionData regionData;
 
     public RegionMenu(Player player){
         super(player, Lang.HEADER_REGION_MENU.get(player, PlayerDataStorage.getInstance().get(player).getTown().getName()));
+        this.regionData = playerData.getRegion();
         open();
     }
 
@@ -34,7 +37,7 @@ public class RegionMenu extends TerritoryMenu {
         gui.setItem(3, 2, getAttackButton());
         gui.setItem(3, 3, getHierarchyButton());
 
-        gui.setItem(4, 1, GuiUtil.createBackArrow(player, p -> new MainMenu(p).open()));
+        gui.setItem(4, 1, GuiUtil.createBackArrow(player, MainMenu::new));
 
         gui.open(player);
     }
@@ -46,7 +49,7 @@ public class RegionMenu extends TerritoryMenu {
                         Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get(playerData.getLang()),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
                 )
-                .setAction(event -> PlayerGUI.openRegionSettings(player))
+                .setAction(event -> new RegionSettingsMenu(player, regionData))
                 .asGuiItem(player);
     }
 

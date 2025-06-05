@@ -1,4 +1,4 @@
-package org.leralix.tan.gui.user;
+package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
@@ -7,6 +7,8 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.user.MainMenu;
+import org.leralix.tan.gui.user.property.TownPropertiesMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.GuiUtil;
@@ -23,7 +25,6 @@ public class TownMenu extends TerritoryMenu {
 
     @Override
     public void open() {
-
         gui.setItem(1, 5, getTerritoryInfo());
         gui.getFiller().fillTop(GuiUtil.getUnnamedItem(Material.BLUE_STAINED_GLASS_PANE));
 
@@ -40,7 +41,7 @@ public class TownMenu extends TerritoryMenu {
         gui.setItem(3, 7, getPropertiesButton());
         gui.setItem(3, 8, getLandmarksButton());
 
-        gui.setItem(4, 1, GuiUtil.createBackArrow(player, p -> new MainMenu(p).open()));
+        gui.setItem(4, 1, GuiUtil.createBackArrow(player, MainMenu::new));
 
         gui.open(player);
     }
@@ -65,7 +66,7 @@ public class TownMenu extends TerritoryMenu {
                         Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get(playerData.getLang()),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
                 )
-                .setAction(event -> PlayerGUI.openTownSettings(player, townData))
+                .setAction(event -> new TownSettingsMenu(player, townData))
                 .asGuiItem(player);
     }
 

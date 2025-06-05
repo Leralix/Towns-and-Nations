@@ -49,7 +49,7 @@ public class OpenGuiCommand extends PlayerSubCommand {
     }
 
     private void getOpeningGui(Player player) {
-        new MainMenu(player).open();
+        new MainMenu(player);
     }
 
 

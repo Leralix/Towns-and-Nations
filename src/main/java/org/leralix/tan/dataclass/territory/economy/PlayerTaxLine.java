@@ -13,7 +13,7 @@ import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
-import org.leralix.tan.gui.user.TreasuryMenu;
+import org.leralix.tan.gui.user.territory.TreasuryMenu;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.HeadUtils;

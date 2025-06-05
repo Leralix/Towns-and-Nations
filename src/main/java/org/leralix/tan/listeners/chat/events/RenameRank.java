@@ -4,14 +4,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.gui.user.RankManagerMenu;
+import org.leralix.tan.gui.user.ranks.RankManagerMenu;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 
 public class RenameRank extends ChatListenerEvent {

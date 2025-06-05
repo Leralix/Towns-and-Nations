@@ -1,4 +1,4 @@
-package org.leralix.tan.gui.user;
+package org.leralix.tan.gui.user.player;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
+import org.leralix.tan.gui.user.territory.NoTownMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;

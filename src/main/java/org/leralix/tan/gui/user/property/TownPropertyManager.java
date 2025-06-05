@@ -1,4 +1,4 @@
-package org.leralix.tan.gui.user;
+package org.leralix.tan.gui.user.property;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -7,7 +7,7 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.GuiUtil;
 
-public class TownPropertyManager extends PropertyMenus{
+public class TownPropertyManager extends PropertyMenus {
 
     private final TownData townData;
     public TownPropertyManager(Player player, PropertyData propertyData, TownData townData) {

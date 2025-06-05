@@ -1,4 +1,4 @@
-package org.leralix.tan.gui.user;
+package org.leralix.tan.gui.user.property;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -8,7 +8,7 @@ import org.leralix.tan.utils.GuiUtil;
 
 import java.util.function.Consumer;
 
-public class PlayerPropertyManager extends PropertyMenus{
+public class PlayerPropertyManager extends PropertyMenus {
 
     Consumer<Player> onClose;
 

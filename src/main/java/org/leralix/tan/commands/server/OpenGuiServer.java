@@ -54,7 +54,7 @@ class OpenGuiServer extends SubCommand {
             commandSender.sendMessage(Lang.PLAYER_NOT_FOUND.get());
             return;
         }
-        new MainMenu(player).open();
+        new MainMenu(player);
         commandSender.sendMessage(Lang.COMMAND_GENERIC_SUCCESS.get());
 
     }

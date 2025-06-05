@@ -22,7 +22,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.listeners.chat.events.ChangeDescription;
+import org.leralix.tan.listeners.chat.events.ChangeTerritoryDescription;
 import org.leralix.tan.listeners.chat.events.ChangeLandmarkName;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryName;
 import org.leralix.tan.listeners.chat.events.CreateEmptyTown;
@@ -299,7 +299,7 @@ public class AdminGUI{
         GuiItem changeRegionDescriptionGui = ItemBuilder.from(changeRegionDescription).asGuiItem(event -> {
             event.setCancelled(true);
             player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
-            PlayerChatListenerStorage.register(player, new ChangeDescription(territoryData, p -> openSpecificTerritoryMenu(player, territoryData)));
+            PlayerChatListenerStorage.register(player, new ChangeTerritoryDescription(territoryData, p -> openSpecificTerritoryMenu(player, territoryData)));
         });
         GuiItem deleteRegionGui = ItemBuilder.from(deleteRegion).asGuiItem(event -> {
             event.setCancelled(true);

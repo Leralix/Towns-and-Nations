@@ -1,4 +1,4 @@
-package org.leralix.tan.gui.user;
+package org.leralix.tan.gui.user.property;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -9,6 +9,7 @@ import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
+import org.leralix.tan.gui.user.territory.TownMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.GuiUtil;
 import org.leralix.tan.utils.TanChatUtils;
