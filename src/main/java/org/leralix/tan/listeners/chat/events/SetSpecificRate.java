@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.gui.user.TreasuryMenu;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.utils.TanChatUtils;
@@ -41,6 +42,6 @@ public class SetSpecificRate extends ChatListenerEvent {
             case BUY -> territoryData.setBuyRate(amount/100);
         }
 
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> PlayerGUI.openTreasury(player, territoryData));
+        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> new TreasuryMenu(player, territoryData));
     }
 }

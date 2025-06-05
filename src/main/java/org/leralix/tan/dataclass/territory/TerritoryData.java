@@ -5,6 +5,7 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -898,5 +899,11 @@ public abstract class TerritoryData {
         else {
             return getBaseColoredName();
         }
+    }
+
+    public String getLeaderName() {
+        if (this.haveNoLeader())
+            return Lang.NO_LEADER.get();
+        return getLeaderData().getNameStored();
     }
 }

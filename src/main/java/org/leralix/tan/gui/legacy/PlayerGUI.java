@@ -21,9 +21,7 @@ import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
-import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
@@ -58,16 +56,16 @@ public class PlayerGUI {
 
     public static void dispatchPlayerRegion(Player player) {
         if(PlayerDataStorage.getInstance().get(player).hasRegion()) {
-            openRegionMenu(player);
+            new RegionMenu(player);
         }
         else {
-            openNoRegionMenu(player);
+            new NoRegionMenu(player);
         }
     }
 
     public static void dispatchPlayerTown(Player player){
         if(PlayerDataStorage.getInstance().get(player).hasTown()){
-            new TownMenu(player).open();
+            new TownMenu(player);
         }
         else{
             new NoTownMenu(player);
@@ -168,7 +166,7 @@ public class PlayerGUI {
                 event.setCancelled(true);
                 territoryData.setIcon(new PlayerHeadIcon(offlinePlayer.getUniqueId().toString()));
                 SoundUtil.playSound(player, MINOR_GOOD);
-                new TownMenu(player).open();
+                new TownMenu(player);
             });
             guiItems.add(headGui);
         }
@@ -517,97 +515,10 @@ public class PlayerGUI {
             landmarkGui.add(landmarkButton);
         }
         GuiUtil.createIterator(gui, landmarkGui, page, player,
-                p -> new TownMenu(player).open(),
+                p -> new TownMenu(player),
                 p -> openOwnedLandmark(player, townData, page + 1),
                 p -> openOwnedLandmark(player, townData, page - 1)
         );
-
-        gui.open(player);
-
-    }
-
-
-    public static void openTreasury(Player player, TerritoryData territoryData) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_ECONOMY.get(playerData),5);
-
-        Budget budget = territoryData.getBudget();
-
-        budget.createGui(gui, player);
-
-        List<String> budgetLore = new ArrayList<>();
-        budgetLore.add(Lang.GUI_TREASURY_STORAGE_DESC1.get(playerData, territoryData.getBalance()));
-        budgetLore.addAll(budget.createLore());
-
-        ItemStack budgetIcon = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_STORAGE.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
-                budgetLore);
-        ItemStack miscSpending = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGMzNjA0NTIwOGY5YjVkZGNmOGM0NDMzZTQyNGIxY2ExN2I5NGY2Yjk2MjAyZmIxZTUyNzBlZThkNTM4ODFiMSJ9fX0=",
-                Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get(playerData));
-        ItemStack donation = HeadUtils.createCustomItemStack(Material.DIAMOND,
-                Lang.GUI_TREASURY_DONATION.get(playerData),
-                Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get(playerData));
-        ItemStack donationHistory = HeadUtils.createCustomItemStack(Material.PAPER,
-                Lang.GUI_TREASURY_DONATION_HISTORY.get(playerData),
-                Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get(playerData));
-        ItemStack retrieveMoney = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_RETRIEVE_GOLD.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWE2NDUwMWIxYmE1M2QxZDRlOWY0MDI5MTdiNWJkNDc3MjdiMTY3MDJhY2Y2OTMwZDYxMjFjMDdkYzQyYWUxYSJ9fX0=",
-                Lang.GUI_TREASURY_RETRIEVE_GOLD_DESC1.get(playerData));
-
-
-        GuiItem budgetInfo = ItemBuilder.from(budgetIcon).asGuiItem(event -> event.setCancelled(true));
-
-
-        GuiItem miscSpendingButton = ItemBuilder.from(miscSpending).asGuiItem(event -> {
-            event.setCancelled(true);
-            openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.MISCELLANEOUS);
-        });
-        GuiItem donationButton = ItemBuilder.from(donation).asGuiItem(event -> {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get(playerData));
-            player.closeInventory();
-
-            PlayerChatListenerStorage.register(player, new DonateToTerritory(territoryData));
-            event.setCancelled(true);
-        });
-        GuiItem donationHistoryButton = ItemBuilder.from(donationHistory).asGuiItem(event -> {
-            openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.DONATION);
-            event.setCancelled(true);
-        });
-
-        GuiItem retrieveButton = ItemBuilder.from(retrieveMoney).asGuiItem(event -> {
-            event.setCancelled(true);
-
-            if(!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)){
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(playerData));
-                return;
-            }
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_WRITE_QUANTITY_IN_CHAT.get(playerData));
-            PlayerChatListenerStorage.register(player,new RetrieveMoney(territoryData));
-            player.closeInventory();
-
-        });
-
-        GuiItem panel = ItemBuilder.from(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE)).asGuiItem(event -> event.setCancelled(true));
-
-
-
-        gui.setItem(1,1, panel);
-        gui.setItem(1,2, panel);
-        gui.setItem(1,3, panel);
-        gui.setItem(1,4, panel);
-        gui.setItem(1,5, budgetInfo);
-        gui.setItem(1,6, panel);
-        gui.setItem(1,7, panel);
-        gui.setItem(1,8, panel);
-        gui.setItem(1,9, panel);
-
-
-        gui.setItem(2,8, miscSpendingButton);
-
-        gui.setItem(3,2, donationButton);
-        gui.setItem(3,3, donationHistoryButton);
-
-        gui.setItem(3,4, retrieveButton);
-
-        gui.setItem(5,1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player)));
 
         gui.open(player);
 
@@ -635,7 +546,7 @@ public class PlayerGUI {
         Collections.reverse(guiItems);//newer first
 
         GuiUtil.createIterator(gui, guiItems, page, player,
-                p -> openTreasury(player, territoryData),
+                p -> new TreasuryMenu(player, territoryData),
                 p -> openTownEconomicsHistory(player, territoryData, transactionHistoryEnum, page + 1),
                 p -> openTownEconomicsHistory(player, territoryData, transactionHistoryEnum, page - 1));
 
@@ -1466,172 +1377,6 @@ public class PlayerGUI {
         gui.open(player);
     }
 
-
-    public static void openNoRegionMenu(Player player){
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_NO_REGION.get(playerData),3);
-
-
-        int regionCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
-
-        ItemStack createRegion = HeadUtils.createCustomItemStack(Material.STONE_BRICKS,
-                Lang.GUI_REGION_CREATE.get(playerData),
-                Lang.GUI_REGION_CREATE_DESC1.get(playerData, regionCost),
-                Lang.GUI_REGION_CREATE_DESC2.get(playerData)
-        );
-
-        ItemStack browseRegion = HeadUtils.createCustomItemStack(Material.BOOK,
-                Lang.GUI_REGION_BROWSE.get(playerData),
-                Lang.GUI_REGION_BROWSE_DESC1.get(playerData, RegionDataStorage.getInstance().getNumberOfRegion()),
-                Lang.GUI_REGION_BROWSE_DESC2.get(playerData)
-        );
-
-        GuiItem createRegionButton = ItemBuilder.from(createRegion).asGuiItem(event -> {
-            event.setCancelled(true);
-
-            if(!player.hasPermission("tan.base.region.create")){
-                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(playerData));
-                SoundUtil.playSound(player, NOT_ALLOWED);
-                return;
-            }
-
-            if(!playerData.hasTown()){
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get(playerData));
-                return;
-            }
-            double townMoney = TownDataStorage.getInstance().get(player).getBalance();
-            if (townMoney < regionCost) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(playerData, regionCost - townMoney));
-            }
-            else {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(playerData));
-                player.closeInventory();
-                int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
-                PlayerChatListenerStorage.register(player, new CreateRegion(cost));
-            }
-        });
-
-        GuiItem browseRegionButton = ItemBuilder.from(browseRegion).asGuiItem(event -> {
-            event.setCancelled(true);
-            new BrowseTerritoryMenu(player, null, BrowseScope.REGIONS, p -> openNoRegionMenu(player)).open();
-        });
-
-        gui.setItem(2,4, createRegionButton);
-        gui.setItem(2,6, browseRegionButton);
-        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> new MainMenu(player).open()));
-
-        gui.open(player);
-    }
-
-    private static void openRegionMenu(Player player) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        RegionData regionData = playerData.getRegion();
-
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_REGION_MENU.get(playerData, regionData.getName()),3);
-
-
-        ItemStack regionIcon = HeadUtils.getRegionIcon(regionData);
-        HeadUtils.addLore(regionIcon,
-                Lang.GUI_TOWN_INFO_CHANGE_ICON.get(playerData),
-                Lang.RIGHT_CLICK_TO_SELECT_MEMBER_HEAD.get(playerData)
-        );
-
-        ItemStack treasury = HeadUtils.makeSkullB64(Lang.GUI_TOWN_TREASURY_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVjOWNjY2Y2MWE2ZTYyODRmZTliYmU2NDkxNTViZTRkOWNhOTZmNzhmZmNiMjc5Yjg0ZTE2MTc4ZGFjYjUyMiJ9fX0=",
-                Lang.GUI_TOWN_TREASURY_ICON_DESC1.get(playerData));
-
-        ItemStack hierarchy = HeadUtils.makeSkullB64(Lang.GUI_HIERARCHY_MENU.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
-                Lang.GUI_HIERARCHY_MENU_DESC1.get(playerData));
-
-        ItemStack memberIcon = HeadUtils.makeSkullB64(Lang.GUI_TOWN_MEMBERS_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Q0ZDQ5NmIxZGEwNzUzNmM5NGMxMzEyNGE1ODMzZWJlMGM1MzgyYzhhMzM2YWFkODQ2YzY4MWEyOGQ5MzU2MyJ9fX0=",
-                Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get(playerData));
-        ItemStack claims = HeadUtils.makeSkullB64(Lang.GUI_CLAIM_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=",
-                Lang.GUI_CLAIM_ICON_DESC1.get(playerData));
-        ItemStack browse = HeadUtils.makeSkullB64(Lang.GUI_BROWSE_TERRITORY_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdhMzc0ZTIxYjgxYzBiMjFhYmViOGU5N2UxM2UwNzdkM2VkMWVkNDRmMmU5NTZjNjhmNjNhM2UxOWU4OTlmNiJ9fX0=",
-                Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData));
-        ItemStack diplomacy = HeadUtils.makeSkullB64(Lang.GUI_RELATION_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUwN2Q2ZGU2MzE4MzhlN2E3NTcyMGU1YjM4ZWYxNGQyOTY2ZmRkODQ4NmU3NWQxZjY4MTJlZDk5YmJjYTQ5OSJ9fX0=",
-                Lang.GUI_RELATION_ICON_DESC1.get(playerData));
-        ItemStack settingIcon = HeadUtils.makeSkullB64(Lang.GUI_TOWN_SETTINGS_ICON.get(playerData),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkMmNiMzg0NThkYTE3ZmI2Y2RhY2Y3ODcxNjE2MDJhMjQ5M2NiZjkzMjMzNjM2MjUzY2ZmMDdjZDg4YTljMCJ9fX0=",
-                Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get(playerData));
-        ItemStack war = HeadUtils.makeSkullB64(Lang.GUI_ATTACK_ICON.get(playerData), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjVkZTRmZjhiZTcwZWVlNGQxMDNiMWVlZGY0NTRmMGFiYjlmMDU2OGY1ZjMyNmVjYmE3Y2FiNmE0N2Y5YWRlNCJ9fX0=",
-                Lang.GUI_ATTACK_ICON_DESC1.get(playerData));
-
-
-        GuiItem regionButton = ItemBuilder.from(regionIcon).asGuiItem(event -> {
-            event.setCancelled(true);
-
-            if(!regionData.doesPlayerHavePermission(playerData, RolePermission.TOWN_ADMINISTRATOR))
-                return;
-            if(event.getCursor() == null)
-                return;
-
-            ItemStack itemMaterial = event.getCursor();
-            if(itemMaterial.getType() == Material.AIR ){
-                if(event.isRightClick()){
-                    if(regionData.doesPlayerHavePermission(player, RolePermission.TOWN_ADMINISTRATOR)){
-                        openSelectHeadTerritoryMenu(player, regionData, 0);
-                    }
-                    else{
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(playerData));
-                        SoundUtil.playSound(player,MINOR_BAD);
-                    }
-                }
-            }
-            else {
-                regionData.setIcon(new CustomIcon(itemMaterial));
-                openRegionMenu(player);
-                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get(playerData));
-            }
-        });
-        GuiItem treasuryButton = ItemBuilder.from(treasury).asGuiItem(event -> {
-            event.setCancelled(true);
-            openTreasury(player, regionData);
-        });
-        GuiItem hierarchyButton = ItemBuilder.from(hierarchy).asGuiItem(event -> {
-            event.setCancelled(true);
-            openHierarchyMenu(player, regionData);
-        });
-        GuiItem memberIconButton = ItemBuilder.from(memberIcon).asGuiItem(event -> {
-            event.setCancelled(true);
-            new TerritoryMemberMenu(player, regionData).open();
-        });
-        GuiItem browseButton = ItemBuilder.from(browse).asGuiItem(event -> {
-            event.setCancelled(true);
-            new BrowseTerritoryMenu(player, regionData, BrowseScope.REGIONS,p -> openRegionMenu(player)).open();
-        });
-        GuiItem diplomacyButton = ItemBuilder.from(diplomacy).asGuiItem(event -> {
-            event.setCancelled(true);
-            openRelations(player, regionData);
-        });
-        GuiItem settingsButton = ItemBuilder.from(settingIcon).asGuiItem(event -> {
-            event.setCancelled(true);
-            openRegionSettings(player);
-        });
-        GuiItem claimButton = ItemBuilder.from(claims).asGuiItem(event -> {
-            event.setCancelled(true);
-            openChunkSettings(player, regionData);
-        });
-        GuiItem warIcon = ItemBuilder.from(war).asGuiItem(event -> {
-            event.setCancelled(true);
-            new WarMenu(player, regionData);
-        });
-
-
-        gui.setItem(1,5, regionButton);
-        gui.setItem(2,2, treasuryButton);
-        gui.setItem(2,3, hierarchyButton);
-        gui.setItem(2,4, memberIconButton);
-        gui.setItem(2,5, browseButton);
-        gui.setItem(2,6, warIcon);
-        gui.setItem(2,7, diplomacyButton);
-        gui.setItem(2,8, settingsButton);
-        gui.setItem(3,2, claimButton);
-
-
-        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> new MainMenu(player).open()));
-
-        gui.open(player);
-    }
-
     private static void openVassalsList(Player player, TerritoryData territoryData, int page){
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_VASSALS.get(playerData, page + 1),6);
@@ -1733,7 +1478,7 @@ public class PlayerGUI {
         gui.open(player);
     }
 
-    private static void openRegionSettings(Player player) {
+    public static void openRegionSettings(Player player) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_SETTINGS.get(playerData), 3);
 
@@ -1850,7 +1595,7 @@ public class PlayerGUI {
         gui.setItem(2,8,changeChunkColorButton);
 
 
-        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> openRegionMenu(player)));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> PlayerGUI.dispatchPlayerRegion(player)));
 
         gui.open(player);
     }

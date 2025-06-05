@@ -25,7 +25,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
     @Override
     public void open() {
         GuiUtil.createIterator(gui, getMemberList(), page, player,
-                p -> new TownMenu(player).open(),
+                p -> new TownMenu(player),
                 p -> nextPage(),
                 p -> previousPage()
         );

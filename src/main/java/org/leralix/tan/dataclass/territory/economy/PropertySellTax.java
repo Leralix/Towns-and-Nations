@@ -10,6 +10,7 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.gui.user.TreasuryMenu;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.HeadUtils;
@@ -73,7 +74,7 @@ public class PropertySellTax extends ProfitLine {
 
             territoryData.addToBuyTax(-amountToRemove);
             SoundUtil.playSound(player, SoundEnum.REMOVE);
-            PlayerGUI.openTreasury(player, territoryData);
+            new TreasuryMenu(player, territoryData);
         });
         GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
             event.setCancelled(true);
@@ -104,7 +105,7 @@ public class PropertySellTax extends ProfitLine {
 
             territoryData.addToBuyTax(amountToAdd);
             SoundUtil.playSound(player, SoundEnum.ADD);
-            PlayerGUI.openTreasury(player, territoryData);
+            new TreasuryMenu(player, territoryData);
         });
 
         gui.setItem(4, 6, lowerTaxButton);

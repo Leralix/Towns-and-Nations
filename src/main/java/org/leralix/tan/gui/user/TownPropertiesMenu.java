@@ -10,7 +10,6 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.GuiUtil;
 import org.leralix.tan.utils.TanChatUtils;
 
@@ -34,7 +33,7 @@ public class TownPropertiesMenu extends IteratorGUI {
     public void open() {
 
         GuiUtil.createIterator(gui, getProperties(), page, player,
-                p -> new TownMenu(player).open(),
+                p -> new TownMenu(player),
                 p -> nextPage(),
                 p -> previousPage());
 
@@ -43,7 +42,6 @@ public class TownPropertiesMenu extends IteratorGUI {
 
     private List<GuiItem> getProperties() {
         List<GuiItem> res = new ArrayList<>();
-        TownData townData = TownDataStorage.getInstance().get(playerData);
 
         for (PropertyData townProperty : townData.getProperties()){
             ItemStack property = townProperty.getIcon(playerData.getLang());

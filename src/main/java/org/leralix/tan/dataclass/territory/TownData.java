@@ -105,12 +105,6 @@ public class TownData extends TerritoryData {
         return getRank(playerData.getTownRankID());
     }
 
-    public String getLeaderName() {
-        if (this.UuidLeader == null)
-            return Lang.NO_LEADER.get();
-        return Bukkit.getOfflinePlayer(UUID.fromString(this.UuidLeader)).getName();
-    }
-
     public Level getLevel() {
         return townLevel;
     }
