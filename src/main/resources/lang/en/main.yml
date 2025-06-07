@@ -468,6 +468,11 @@ language:
   GUI_DECREASE_1PERCENT_DESC: "§fClick : §c-1%"
   GUI_DECREASE_10PERCENT_DESC: "§fShift + click : §c-10%"
 
+  #Chunk settings
+  GUI_TOWN_CHUNK_PLAYER: "§aInteractions"
+  CHUNK_GENERAL_SETTINGS: "§aGeneral settings"
+  GUI_TOWN_CHUNK_MOB: "§aMob spawn"
+
   #GUI
   ##menu headers
   HEADER_MAIN_MENU: "Main menu"
@@ -650,12 +655,6 @@ language:
   ENABLE_TNT_GRIEF_SETTING: "§aEnable explosion griefing"
   GUI_RIGHT_CLICK_TO_MANAGE_SPECIFIC_PLAYER: "§fRight click to manage specific player permission"
   GUI_TOWN_CLAIM_SETTINGS_DESC1: "§fCurrent permission: §e{0}"
-  GUI_TOWN_CHUNK_PLAYER: "§aPlayers"
-  GUI_TOWN_CHUNK_PLAYER_DESC1: "§fManage players interactions in claimed chunks"
-  CHUNK_GENERAL_SETTINGS: "§aGeneral settings"
-  CHUNK_GENERAL_SETTINGS_DESC1: "§fManage general chunk settings of the territory"
-  GUI_TOWN_CHUNK_MOB: "§aCreatures"
-  GUI_TOWN_CHUNK_MOB_DESC1: "§fManage mob spawning in the town"
   GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_ACTIVATED: "§fCurrent spawn:§a enabled"
   GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_DEACTIVATED: "§fCurrent spawn:§c disabled"
   GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_LOCKED: "§fCurrent spawn: §cLocked"

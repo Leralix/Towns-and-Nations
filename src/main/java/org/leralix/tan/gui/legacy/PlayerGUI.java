@@ -33,7 +33,6 @@ import org.leralix.tan.dataclass.wars.wargoals.SubjugateWarGoal;
 import org.leralix.tan.enums.*;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
-import org.leralix.tan.gui.user.*;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.gui.user.territory.*;
 import org.leralix.tan.lang.DynamicLang;
@@ -934,49 +933,7 @@ public class PlayerGUI {
     }
 
 
-    public static void openChunkSettings(Player player, TerritoryData territoryData) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_MENU.get(playerData, territoryData.getName()), 3);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
-
-        ItemStack playerChunkIcon = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,
-                Lang.GUI_TOWN_CHUNK_PLAYER.get(playerData),
-                Lang.GUI_TOWN_CHUNK_PLAYER_DESC1.get(playerData)
-        );
-        ItemStack generalChunkSettingsIcon = HeadUtils.makeSkullURL(Lang.CHUNK_GENERAL_SETTINGS.get(playerData), "https://textures.minecraft.net/texture/5f8c703105180d2586d7f96019dac489776ae488dd6ceb981d08fae4325ea4d1",
-                Lang.CHUNK_GENERAL_SETTINGS_DESC1.get(playerData)
-        );
-
-        ItemStack mobChunckIcon = HeadUtils.createCustomItemStack(Material.CREEPER_HEAD,
-                Lang.GUI_TOWN_CHUNK_MOB.get(playerData),
-                Lang.GUI_TOWN_CHUNK_MOB_DESC1.get(playerData)
-        );
-
-        GuiItem playerChunkButton = ItemBuilder.from(playerChunkIcon).asGuiItem(event -> openChunkPlayerSettings(player, territoryData));
-        GuiItem generalChunkSettingsButton = ItemBuilder.from(generalChunkSettingsIcon).asGuiItem(event -> openChunkGeneralSettings(player, territoryData));
-
-        GuiItem mobChunkButton = ItemBuilder.from(mobChunckIcon).asGuiItem(event -> {
-            if (territoryData instanceof TownData townData) {
-                if (townData.getLevel().getBenefitsLevel("UNLOCK_MOB_BAN") >= 1)
-                    openTownChunkMobSettings(player, 0);
-                else {
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_LEVEL.get(playerData, DynamicLang.get("UNLOCK_MOB_BAN")));
-                    SoundUtil.playSound(player, NOT_ALLOWED);
-                }
-            }
-        });
-
-        gui.setItem(2, 3, playerChunkButton);
-        gui.setItem(2, 5, generalChunkSettingsButton);
-        gui.setItem(2, 7, mobChunkButton);
-
-
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, territoryData::openMainMenu));
-
-        gui.open(player);
-    }
-
-    private static void openChunkGeneralSettings(Player player, TerritoryData territoryData) {
+    public static void openChunkGeneralSettings(Player player, TerritoryData territoryData) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_CHUNK_GENERAL_SETTINGS.get(playerData), 3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
@@ -1000,7 +957,7 @@ public class PlayerGUI {
         }
 
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> openChunkSettings(player, territoryData)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new ChunkSettingsMenu(player, territoryData)));
         gui.open(player);
     }
 
@@ -1057,7 +1014,7 @@ public class PlayerGUI {
             guiLists.add(mobItem);
         }
 
-        GuiUtil.createIterator(gui, guiLists, page, player, p -> openChunkSettings(player, townData),
+        GuiUtil.createIterator(gui, guiLists, page, player, p -> new ChunkSettingsMenu(player, townData),
                 p -> openTownChunkMobSettings(player, page + 1),
                 p -> openTownChunkMobSettings(player, page - 1));
 
@@ -1065,33 +1022,7 @@ public class PlayerGUI {
         gui.open(player);
     }
 
-    public static void openChunkPlayerSettings(Player player, TerritoryData territoryData) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_CHUNK_PERMISSION.get(playerData), 4);
-
-        for (ChunkPermissionType type : ChunkPermissionType.values()) {
-            RelationPermission permission = territoryData.getPermission(type).getOverallPermission();
-            ItemStack icon = type.getIcon(permission, playerData.getLang());
-            GuiItem guiItem = ItemBuilder.from(icon).asGuiItem(event -> {
-                event.setCancelled(true);
-                if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_CLAIM_SETTINGS)) {
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(playerData));
-                    return;
-                }
-                if (event.isLeftClick()) {
-                    territoryData.nextPermission(type);
-                    openChunkPlayerSettings(player, territoryData);
-                } else if (event.isRightClick()) {
-                    openPlayerListForChunkPermission(player, territoryData, type, 0);
-                }
-            });
-            gui.addItem(guiItem);
-        }
-        gui.setItem(27, GuiUtil.createBackArrow(player, p -> openChunkSettings(player, territoryData)));
-        gui.open(player);
-    }
-
-    private static void openPlayerListForChunkPermission(Player player, TerritoryData territoryData, ChunkPermissionType type, int page) {
+    public static void openPlayerListForChunkPermission(Player player, TerritoryData territoryData, ChunkPermissionType type, int page) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
         Gui gui = GuiUtil.createChestGui(type.getLabel(playerData.getLang()), 6);
 
@@ -1118,7 +1049,7 @@ public class PlayerGUI {
         }
 
         GuiUtil.createIterator(gui, guiItems, 0, player,
-                p -> openChunkPlayerSettings(player, territoryData),
+                p -> new PlayerChunkSettingsMenu(player, territoryData),
                 p -> openPlayerListForChunkPermission(player, territoryData, type, page + 1),
                 p -> openPlayerListForChunkPermission(player, territoryData, type, page + 1));
 

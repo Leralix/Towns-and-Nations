@@ -100,7 +100,7 @@ public abstract class TerritoryMenu extends BasicGui {
                         Lang.GUI_CLAIM_ICON_DESC1.get(playerData.getLang()),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
                 )
-                .setAction(event -> PlayerGUI.openChunkSettings(player, territoryData))
+                .setAction(event -> new ChunkSettingsMenu(player, territoryData))
                 .asGuiItem(player);
     }
 

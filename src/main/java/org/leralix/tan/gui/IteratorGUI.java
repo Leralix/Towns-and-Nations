@@ -1,6 +1,7 @@
 package org.leralix.tan.gui;
 
 import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.GuiUtil;
@@ -22,8 +23,13 @@ public abstract class IteratorGUI extends BasicGui {
         this.page = 0;
     }
 
+
     protected void iterator(List<GuiItem> itemList, Consumer<Player> onLeave){
-        GuiUtil.createIterator(gui, itemList, page, player, onLeave, p -> previousPage(), p -> nextPage());
+        iterator(itemList, onLeave, Material.GRAY_STAINED_GLASS_PANE);
+    }
+
+    protected void iterator(List<GuiItem> itemList, Consumer<Player> onLeave, Material decorativeMaterial){
+        GuiUtil.createIterator(gui, itemList, page, player, onLeave, p -> previousPage(), p -> nextPage(), decorativeMaterial);
     }
 
     protected void previousPage() {

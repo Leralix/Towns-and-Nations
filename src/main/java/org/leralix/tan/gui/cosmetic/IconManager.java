@@ -54,9 +54,6 @@ public class IconManager {
         if(value.startsWith("http")){
             return new UrlHeadIconType(value);
         }
-        if(value.equals("PLAYER_HEAD")){
-            return new PlayerHeadIconType();
-        }
         if(value.startsWith("minecraft:")){
             try {
                 return new ItemIconBuillder(Material.valueOf(value.replace("minecraft:", "")));
@@ -65,13 +62,12 @@ public class IconManager {
                 return new ItemIconBuillder(Material.BARRIER); // Default fallback material
             }
         }
-        if(value.equals("TOWN_HEAD")){
-            return new TownIconType();
-        }
-        if(value.equals("PLAYER_LANGUAGE_HEAD")){
-            return new PlayerLanguageIconType();
-        }
-        return new UrlHeadIconType(""); //Malformed url will display default head
+        return switch (value) {
+            case "PLAYER_HEAD" -> new PlayerHeadIconType();
+            case "TOWN_HEAD" -> new TownIconType();
+            case "PLAYER_LANGUAGE_HEAD" -> new PlayerLanguageIconType();
+            default -> new UrlHeadIconType("");
+        };
     }
 
 
