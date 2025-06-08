@@ -10,6 +10,7 @@ import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.LocalChatStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
@@ -24,8 +25,8 @@ import java.util.regex.Pattern;
 
 public class PlaceHolderAPI extends PlaceholderExpansion {
 
-    private static final Lang TRUE = Lang.TRUE;
-    private static final Lang FALSE = Lang.FALSE;
+    private static final String TRUE = "TRUE";
+    private static final String FALSE = "FALSE";
     private static final Lang INVALID_VALUE = Lang.INVALID_VALUE;
     private static final Lang INVALID_ID = Lang.INVALID_ID;
     private static final Lang INVALID_NAME = Lang.INVALID_NAME;
@@ -124,14 +125,15 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
             if(values.length == 0) return INVALID_VALUE.get(playerData);
             String id = values[0];
             if(id == null) return INVALID_ID.get(playerData);
-            return TownDataStorage.getInstance().get(id) != null || RegionDataStorage.getInstance().get(id) != null ? TRUE.get(playerData) : FALSE.get(playerData);
+            return TownDataStorage.getInstance().get(id) != null || RegionDataStorage.getInstance().get(id) != null ? TRUE : FALSE;
         }
         else if(params.startsWith("territory_with_name_{") && params.endsWith("}_exist")){
             String[] values = extractValues(params);
             if(values.length == 0) return INVALID_VALUE.get(playerData);
             String name = values[0];
             if(name == null) return INVALID_NAME.get(playerData);
-            return getTerritoryByName(name) != null ? TRUE.get(playerData) : FALSE.get(playerData);
+
+            return getTerritoryByName(name) != null ? TRUE : FALSE;
         }
         else if(params.startsWith("territory_with_id_{") && params.endsWith("}_leader_name")){
             String[] values = extractValues(params);
@@ -161,7 +163,7 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
             OfflinePlayer playerSelected = Bukkit.getOfflinePlayer(playerName);
             PlayerData playerData1 = playerManager.get(playerSelected);
             if(playerData1 == null) return INVALID_NAME.get(playerData);
-            return playerData1.hasTown() ? TRUE.get(playerData) : FALSE.get(playerData);
+            return playerData1.hasTown() ? TRUE: FALSE;
         }
         else if(params.startsWith("player_{") && params.endsWith("}_is_town_overlord")){
             String[] values = extractValues(params);
@@ -171,7 +173,7 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
             OfflinePlayer playerSelected = Bukkit.getOfflinePlayer(playerName);
             PlayerData playerData1 = playerManager.get(playerSelected);
             if(playerData1 == null) return INVALID_NAME.get(playerData);
-            return playerData1.isTownOverlord() ? TRUE.get(playerData) : FALSE.get(playerData);
+            return playerData1.isTownOverlord() ? TRUE: FALSE;
         }
         else if(params.equals("chat_mode")){
             return LocalChatStorage.getPlayerChatScope(player.getUniqueId().toString()).getName();
