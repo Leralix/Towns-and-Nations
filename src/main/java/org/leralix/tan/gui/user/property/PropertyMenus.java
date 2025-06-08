@@ -1,16 +1,11 @@
 package org.leralix.tan.gui.user.property;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
-import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
@@ -21,6 +16,7 @@ import org.leralix.tan.listeners.chat.events.ChangePropertyName;
 import org.leralix.tan.listeners.chat.events.ChangePropertyRentPrice;
 import org.leralix.tan.listeners.chat.events.ChangePropertySalePrice;
 import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.NumberUtil;
 import org.leralix.tan.utils.TanChatUtils;
 
 import static org.leralix.lib.data.SoundEnum.*;
@@ -30,11 +26,6 @@ public abstract class PropertyMenus extends BasicGui {
     protected final PropertyData propertyData;
 
     protected PropertyMenus(Player player, String title, int rows, PropertyData propertyData) {
-        super(player, title, rows);
-        this.propertyData = propertyData;
-    }
-
-    protected PropertyMenus(Player player, Lang title, int rows, PropertyData propertyData) {
         super(player, title, rows);
         this.propertyData = propertyData;
     }
@@ -93,14 +84,14 @@ public abstract class PropertyMenus extends BasicGui {
         Lang name = propertyData.isForSale() ? Lang.GUI_PROPERTY_FOR_SALE : Lang.GUI_PROPERTY_NOT_FOR_SALE;
 
         double price = propertyData.getSalePrice();
-        double taxPrice = price * propertyData.getTerritory().getTaxOnBuyingProperty();
-        double total = price + taxPrice;
+        double taxPrice = NumberUtil.roundWithDigits(price * propertyData.getTown().getTaxOnBuyingProperty());
+        double total = NumberUtil.roundWithDigits(price + taxPrice);
 
         return iconManager.get(iconKey)
                 .setName(name.get(playerData))
                 .setDescription(
                         Lang.GUI_BUYING_PRICE.get(playerData, total, price, taxPrice),
-                        Lang.GUI_TOWN_RATE.get(playerData, String.format("%.2f", propertyData.getTerritory().getTaxOnBuyingProperty() * 100)),
+                        Lang.GUI_TOWN_RATE.get(playerData, String.format("%.2f", propertyData.getTown().getTaxOnBuyingProperty() * 100)),
                         Lang.GUI_LEFT_CLICK_TO_SWITCH_SALE.get(playerData),
                         Lang.GUI_RIGHT_CLICK_TO_CHANGE_PRICE.get(playerData)
                 )
@@ -126,15 +117,15 @@ public abstract class PropertyMenus extends BasicGui {
         IconKey iconKey = propertyData.isForRent() ? IconKey.RENT_PROPERTY_ICON_FOR_RENT : IconKey.RENT_PROPERTY_ICON_NOT_FOR_RENT;
         Lang name = propertyData.isForRent() ? Lang.GUI_PROPERTY_FOR_RENT : Lang.GUI_PROPERTY_NOT_FOR_RENT;
 
-        double price = propertyData.getRentPrice();
-        double taxPrice = price * propertyData.getTerritory().getTaxOnRentingProperty();
-        double total = price + taxPrice;
+        double price = propertyData.getBaseRentPrice();
+        double taxPrice = NumberUtil.roundWithDigits(price * propertyData.getTown().getTaxOnRentingProperty());
+        double total = propertyData.getRentPrice();
 
         return iconManager.get(iconKey)
                 .setName(name.get(playerData))
                 .setDescription(
                         Lang.GUI_RENTING_PRICE.get(playerData, total, price, taxPrice),
-                        Lang.GUI_TOWN_RATE.get(playerData, String.format("%.2f", propertyData.getTerritory().getTaxOnRentingProperty() * 100)),
+                        Lang.GUI_TOWN_RATE.get(playerData, String.format("%.2f", propertyData.getTown().getTaxOnRentingProperty() * 100)),
                         Lang.GUI_LEFT_CLICK_TO_SWITCH_SALE.get(playerData),
                         Lang.GUI_RIGHT_CLICK_TO_CHANGE_PRICE.get(playerData)
                 )
@@ -158,16 +149,14 @@ public abstract class PropertyMenus extends BasicGui {
         return iconManager.get(IconKey.DELETE_PROPERTY_ICON)
                 .setName(Lang.GUI_PROPERTY_DELETE_PROPERTY.get(playerData))
                 .setDescription(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(playerData))
-                .setAction(event -> {
-                    PlayerGUI.openConfirmMenu(player, Lang.GUI_PROPERTY_DELETE_PROPERTY_CONFIRM.get(playerData, propertyData.getName()),
-                            p -> {
-                                propertyData.delete();
-                                player.closeInventory();
-                            },
-                            p -> open()
-                    );
-
-                })
+                .setAction(event ->
+                        PlayerGUI.openConfirmMenu(player, Lang.GUI_PROPERTY_DELETE_PROPERTY_CONFIRM.get(playerData, propertyData.getName()),
+                        p -> {
+                            propertyData.delete();
+                            player.closeInventory();
+                        },
+                        p -> open()
+                ))
                 .asGuiItem(player);
     }
 

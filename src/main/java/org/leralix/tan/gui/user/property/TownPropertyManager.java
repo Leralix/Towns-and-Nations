@@ -11,7 +11,7 @@ public class TownPropertyManager extends PropertyMenus {
 
     private final TownData townData;
     public TownPropertyManager(Player player, PropertyData propertyData, TownData townData) {
-        super(player, Lang.HEADER_TOWN_SPECIFIC_PROPERTY, 3, propertyData);
+        super(player, Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(player, propertyData.getName()), 3, propertyData);
         this.townData = townData;
         open();
     }

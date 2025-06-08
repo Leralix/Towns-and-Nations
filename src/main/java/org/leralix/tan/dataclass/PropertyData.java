@@ -7,7 +7,6 @@ import org.bukkit.block.sign.Side;
 import org.bukkit.block.sign.SignSide;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.ParticleUtils;
@@ -21,8 +20,8 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.NumberUtil;
 import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
@@ -99,7 +98,7 @@ public class PropertyData {
         String[] parts = ID.split("_");
         return parts[0];
     }
-    public TownData getTerritory(){
+    public TownData getTown(){
         return TownDataStorage.getInstance().get(getOwningStructureID());
     }
 
@@ -159,21 +158,22 @@ public class PropertyData {
     public void payRent(){
         OfflinePlayer renter = Bukkit.getOfflinePlayer(UUID.fromString(rentingPlayerID));
         OfflinePlayer owner = Bukkit.getOfflinePlayer(UUID.fromString(owningPlayerID));
-        TerritoryData town = getTerritory();
+        TerritoryData town = getTown();
 
-        double tax = rentPrice * town.getTaxOnRentingProperty();
+        double baseRent = getBaseRentPrice();
+        double rent = getRentPrice();
+        double taxRent = rent - baseRent;
 
 
-        if(EconomyUtil.getBalance(renter) < rentPrice){
+        if(EconomyUtil.getBalance(renter) < rent){
             expelRenter(true);
             return;
         }
 
 
-        EconomyUtil.removeFromBalance(renter, rentPrice);
-        EconomyUtil.addFromBalance(owner, rentPrice - tax);
-        town.addToBalance(tax);
-
+        EconomyUtil.removeFromBalance(renter, rent);
+        EconomyUtil.addFromBalance(owner, baseRent);
+        town.addToBalance(taxRent);
     }
 
     public boolean isOwner(String playerID){
@@ -186,8 +186,23 @@ public class PropertyData {
     public boolean isForSale(){
         return this.isForSale;
     }
-    public double getRentPrice(){
+
+
+    public double getBaseRentPrice(){
         return this.rentPrice;
+    }
+
+    public double getRentPrice(){
+        return NumberUtil.roundWithDigits(getBaseRentPrice() * (1 + getTown().getTaxOnRentingProperty()));
+    }
+
+
+    public double getBaseSalePrice() {
+        return this.salePrice;
+    }
+
+    public double getSalePrice() {
+        return NumberUtil.roundWithDigits(getBaseSalePrice() * (1 + getTown().getTaxOnBuyingProperty()));
     }
 
     public boolean containsLocation(Location location) {
@@ -196,41 +211,11 @@ public class PropertyData {
                 Math.max(p1.getZ(),p2.getZ()) >= location.getZ() && Math.min(p1.getZ(),p2.getZ()) <= location.getZ();
     }
 
-
-    public ItemStack getIcon(LangType langType) {
-        ItemStack property = HeadUtils.makeSkullB64(getName(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzhkYTZmY2M1Y2YzMWM2ZjcyYTAzNGI2MjBhODM3ZjlkMWM5ZWVkMzY3MTE4MmI2OTQ4OTY4N2FkYmNkOGZiIn19fQ==");
-        ItemMeta meta = property.getItemMeta();
-
-        if (meta != null) {
-            List<String> lore = new ArrayList<>();
-
-            lore.add(Lang.GUI_PROPERTY_DESCRIPTION.get(langType, getDescription()));
-            lore.add(Lang.GUI_PROPERTY_STRUCTURE_OWNER.get(langType, getTerritory().getName()));
-
-            lore.add(Lang.GUI_PROPERTY_OWNER.get(langType, getOwner().getNameStored()));
-            if(isForSale())
-                lore.add(Lang.GUI_PROPERTY_FOR_SALE.get(langType, String.valueOf(salePrice)));
-            else if(isRented())
-                lore.add(Lang.GUI_PROPERTY_RENTED_BY.get(langType, getRenter().getNameStored(), String.valueOf(rentPrice)));
-            else if(isForRent())
-                lore.add(Lang.GUI_PROPERTY_FOR_RENT.get(langType, String.valueOf(rentPrice)));
-            else{
-                lore.add(Lang.GUI_PROPERTY_NOT_FOR_SALE.get(langType));
-            }
-
-            lore.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType));
-            meta.setLore(lore);
-            property.setItemMeta(meta);
-        }
-
-        return property;
-    }
-
     public List<String> getBasicDescription(LangType langType){
         List<String> lore = new ArrayList<>();
 
         lore.add(Lang.GUI_PROPERTY_DESCRIPTION.get(langType, getDescription()));
-        lore.add(Lang.GUI_PROPERTY_STRUCTURE_OWNER.get(langType, getTerritory().getName()));
+        lore.add(Lang.GUI_PROPERTY_STRUCTURE_OWNER.get(langType, getTown().getName()));
 
         lore.add(Lang.GUI_PROPERTY_OWNER.get(langType, getOwner().getNameStored()));
         if(isForSale())
@@ -245,10 +230,6 @@ public class PropertyData {
         return lore;
     }
 
-    public double getSalePrice() {
-        return this.salePrice;
-    }
-
     public void swapIsForSale() {
         this.isForSale = !this.isForSale;
         if(this.isForSale)
@@ -260,23 +241,6 @@ public class PropertyData {
         if(this.isForRent)
             this.isForSale = false;
         updateSign();
-    }
-
-    public boolean isNearProperty(Location blockLocation, int margin) {
-        double minX = (double) Math.min(this.p1.getX(), this.p2.getX()) - margin;
-        double minY = (double) Math.min(this.p1.getY(), this.p2.getY()) - margin;
-        double minZ = (double) Math.min(this.p1.getZ(), this.p2.getZ()) - margin;
-        double maxX = (double) Math.max(this.p1.getX(), this.p2.getX()) + margin;
-        double maxY = (double) Math.max(this.p1.getY(), this.p2.getY()) + margin;
-        double maxZ = (double) Math.max(this.p1.getZ(), this.p2.getZ()) + margin;
-
-        double blockX = blockLocation.getX();
-        double blockY = blockLocation.getY();
-        double blockZ = blockLocation.getZ();
-
-        return blockX >= minX && blockX <= maxX &&
-                blockY >= minY && blockY <= maxY &&
-                blockZ >= minZ && blockZ <= maxZ;
     }
 
     public void showBox(Player player) {
@@ -344,7 +308,7 @@ public class PropertyData {
 
     public void delete() {
         PlayerData owner = PlayerDataStorage.getInstance().get(owningPlayerID);
-        TownData town = getTerritory();
+        TownData town = getTown();
         expelRenter(false);
         removeSign();
 
@@ -368,8 +332,9 @@ public class PropertyData {
     public void buyProperty(Player player) {
 
         double playerBalance = EconomyUtil.getBalance(player);
-        if(playerBalance < salePrice){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(salePrice - playerBalance));
+        double cost = getSalePrice();
+        if(playerBalance < cost){
+            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(cost - playerBalance));
             SoundUtil.playSound(player, SoundEnum.MINOR_BAD);
             return;
         }
@@ -384,14 +349,14 @@ public class PropertyData {
         player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_SOLD_NEW_OWNER.get(getName(), getSalePrice()));
         SoundUtil.playSound(player, SoundEnum.GOOD);
 
-        TownData town = getTerritory();
-        double tax = salePrice * getTerritory().getTaxOnBuyingProperty();
+        TownData town = getTown();
+        double townCut = getSalePrice() - getBaseSalePrice();
 
-        TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PropertyBuyTaxTransaction(town, this, tax));
+        TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PropertyBuyTaxTransaction(town, this, townCut));
 
-        EconomyUtil.removeFromBalance(player, salePrice);
-        EconomyUtil.addFromBalance(exOwnerOffline, salePrice - tax);
-        town.addToBalance(tax);
+        EconomyUtil.removeFromBalance(player, getSalePrice());
+        EconomyUtil.addFromBalance(exOwnerOffline, getBaseSalePrice());
+        town.addToBalance(townCut);
 
         PlayerData exOwnerData = PlayerDataStorage.getInstance().get(owningPlayerID);
         PlayerData newOwnerData = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());

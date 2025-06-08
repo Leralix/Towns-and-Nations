@@ -272,7 +272,7 @@ public class PlayerData {
         } else if (territoryData instanceof RegionData) {
             return getRegionRankID();
         }
-        return -1;
+        return null;
     }
 
     public List<TerritoryData> getAllTerritoriesPlayerIsIn() {

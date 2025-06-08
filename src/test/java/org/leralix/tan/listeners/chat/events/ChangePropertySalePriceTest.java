@@ -33,11 +33,11 @@ class ChangePropertySalePriceTest {
                 playerData
         );
 
-        ChangePropertySalePrice changePropertyRentPrice = new ChangePropertySalePrice(propertyData, null);
+        ChangePropertySalePrice changePropertySalePrice = new ChangePropertySalePrice(propertyData, null);
 
-        changePropertyRentPrice.execute(player, "1000");
+        changePropertySalePrice.execute(player, "1000");
 
-        assertEquals(1000, propertyData.getSalePrice());
+        assertEquals(1000, propertyData.getBaseSalePrice());
     }
 
     @Test

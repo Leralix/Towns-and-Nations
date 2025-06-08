@@ -15,6 +15,7 @@ public class Constants {
     private static boolean enableRegion;
     private static int changeTownNameCost;
     private static int changeRegionNameCost;
+    private static int nbDigits;
 
 
     public static void init(){
@@ -26,6 +27,7 @@ public class Constants {
         enableRegion = config.getBoolean("EnableRegion", true);
         changeTownNameCost = config.getInt("changeTownNameCost", 1000);
         changeRegionNameCost = config.getInt("changeRegionNameCost", 1000);
+        nbDigits = config.getInt("DecimalDigits",2);
     }
 
     public static boolean displayTerritoryColor(){
@@ -48,5 +50,9 @@ public class Constants {
             return changeRegionNameCost;
         }
         return changeTownNameCost;
+    }
+
+    public static int getNbDigits(){
+        return nbDigits;
     }
 }

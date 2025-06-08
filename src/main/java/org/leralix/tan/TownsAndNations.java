@@ -40,6 +40,7 @@ import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.api.PlaceHolderAPI;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.NumberUtil;
 import org.tan.api.TanAPI;
 
 import java.io.BufferedReader;
@@ -161,6 +162,7 @@ public final class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO, "[TaN] -Loading Storage");
 
+        Constants.init();
         UpgradeStorage.init();
         MobChunkSpawnStorage.init();
         ClaimBlacklistStorage.init();
@@ -168,7 +170,7 @@ public final class TownsAndNations extends JavaPlugin {
         WildernessRules.getInstance();
         NewsletterType.init();
         IconManager.getInstance();
-        Constants.init();
+        NumberUtil.init();
 
         FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         allowColorCodes = mainConfig.getBoolean("EnablePlayerColorCode", false);
