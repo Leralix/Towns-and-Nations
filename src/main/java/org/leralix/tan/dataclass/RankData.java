@@ -1,6 +1,6 @@
 package org.leralix.tan.dataclass;
 
-import dev.triumphteam.gui.guis.GuiItem;
+// Line removed as it is unused.
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
