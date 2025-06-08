@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
+import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.lang.Lang;
 
@@ -32,6 +33,7 @@ public class ChangePropertySalePrice extends ChatListenerEvent {
             return;
         }
         propertyData.setSalePrice(amount);
+        PlayerChatListenerStorage.removePlayer(player);
         openGui(guiCallback, player);
     }
 }
