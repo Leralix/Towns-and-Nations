@@ -15,6 +15,8 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.newhistory.PropertyBuyTaxTransaction;
+import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
+import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -26,7 +28,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.tan.api.interfaces.TanProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class PropertyData {
     private String owningPlayerID;
     private String rentingPlayerID;
     private List<String> allowedPlayers;
+    private ICustomIcon icon;
     private String name;
     private String description;
     private boolean isForSale;
@@ -54,6 +56,7 @@ public class PropertyData {
         this.p1 = p1;
         this.p2 = p2;
 
+        this.icon = new CustomIcon(new ItemStack(Material.OAK_SIGN));
         this.name = "Unnamed Zone";
         this.description = "No description";
         this.isForSale = false;
@@ -72,6 +75,7 @@ public class PropertyData {
     public Vector3D getFirstCorner(){
         return this.p1;
     }
+
     public Vector3D getSecondCorner(){
         return this.p2;
     }
@@ -79,6 +83,18 @@ public class PropertyData {
     public String getTotalID() {
         return ID;
     }
+
+    public void setIcon(CustomIcon icon){
+        this.icon = icon;
+    }
+
+    public ItemStack getIcon(){
+        if(icon == null){
+            icon = new CustomIcon(new ItemStack(Material.OAK_SIGN));
+        }
+        return icon.getIcon();
+    }
+
     private String getOwningStructureID(){
         String[] parts = ID.split("_");
         return parts[0];
@@ -159,9 +175,7 @@ public class PropertyData {
         town.addToBalance(tax);
 
     }
-    public boolean containsBloc(Block block){
-        return containsLocation(block.getLocation());
-    }
+
     public boolean isOwner(String playerID){
         return playerID.equals(this.owningPlayerID);
     }
@@ -210,6 +224,25 @@ public class PropertyData {
         }
 
         return property;
+    }
+
+    public List<String> getBasicDescription(LangType langType){
+        List<String> lore = new ArrayList<>();
+
+        lore.add(Lang.GUI_PROPERTY_DESCRIPTION.get(langType, getDescription()));
+        lore.add(Lang.GUI_PROPERTY_STRUCTURE_OWNER.get(langType, getTerritory().getName()));
+
+        lore.add(Lang.GUI_PROPERTY_OWNER.get(langType, getOwner().getNameStored()));
+        if(isForSale())
+            lore.add(Lang.GUI_PROPERTY_FOR_SALE.get(langType, String.valueOf(salePrice)));
+        else if(isRented())
+            lore.add(Lang.GUI_PROPERTY_RENTED_BY.get(langType, getRenter().getNameStored(), String.valueOf(rentPrice)));
+        else if(isForRent())
+            lore.add(Lang.GUI_PROPERTY_FOR_RENT.get(langType, String.valueOf(rentPrice)));
+        else{
+            lore.add(Lang.GUI_PROPERTY_NOT_FOR_SALE.get(langType));
+        }
+        return lore;
     }
 
     public double getSalePrice() {
@@ -323,8 +356,6 @@ public class PropertyData {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_DELETED.get());
             SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
         }
-
-
     }
 
     private void removeSign() {

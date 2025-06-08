@@ -91,9 +91,16 @@ public class PlayerPropertiesMenu extends IteratorGUI {
     private List<GuiItem> getProperties() {
         List<GuiItem> guiItems = new ArrayList<>();
         for (PropertyData propertyData : playerData.getProperties()){
-            ItemStack property = propertyData.getIcon(playerData.getLang());
-            GuiItem propertyGui = ItemBuilder.from(property).asGuiItem(event -> new PlayerPropertyManager(player, propertyData, p -> open()));
-            guiItems.add(propertyGui);
+
+            List<String> desc = propertyData.getBasicDescription(playerData.getLang());
+            desc.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData));
+
+
+            guiItems.add(iconManager.get(propertyData.getIcon())
+                    .setName(propertyData.getName())
+                    .setDescription(desc)
+                    .setAction(event -> new PlayerPropertyManager(player, propertyData, p -> open()))
+                    .asGuiItem(player));
         }
         return guiItems;
     }

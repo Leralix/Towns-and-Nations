@@ -400,6 +400,7 @@ language:
   GUI_PROPERTY_DESCRIPTION: "§7§o\"{0}\""
   GUI_PROPERTY_STRUCTURE_OWNER: "§fCity: §9{0}"
   GUI_PROPERTY_OWNER: "§fOwner: §3{0}"
+  GUI_PROPERTY_CHANGE_ICON: "§7▶ Drag and drop an item to change the icon"
 
   #Stronghold
   GUI_STRONGHOLD: "§aStronghold"

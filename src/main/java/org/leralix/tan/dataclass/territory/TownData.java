@@ -624,7 +624,6 @@ public class TownData extends TerritoryData {
         return getChunkColor() + "[" + getTownTag() + "]";
     }
 
-    @SuppressWarnings("unused") //API
     public Collection<TownClaimedChunk> getClaims() {
         Collection<TownClaimedChunk> res = new ArrayList<>();
         for (ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getInstance().getClaimedChunksMap().values()) {

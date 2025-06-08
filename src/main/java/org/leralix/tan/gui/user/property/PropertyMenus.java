@@ -2,11 +2,15 @@ package org.leralix.tan.gui.user.property;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PropertyData;
+import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
+import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
@@ -19,8 +23,7 @@ import org.leralix.tan.listeners.chat.events.ChangePropertySalePrice;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TanChatUtils;
 
-import static org.leralix.lib.data.SoundEnum.MINOR_BAD;
-import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
+import static org.leralix.lib.data.SoundEnum.*;
 
 public abstract class PropertyMenus extends BasicGui {
 
@@ -37,7 +40,10 @@ public abstract class PropertyMenus extends BasicGui {
     }
 
     protected GuiItem getPropertyIcon() {
-        return ItemBuilder.from(propertyData.getIcon(playerData.getLang())).asGuiItem();
+        return iconManager.get(propertyData.getIcon())
+                .setName(propertyData.getName())
+                .setDescription(propertyData.getBasicDescription(playerData.getLang()))
+                .asGuiItem(player);
     }
 
     protected GuiItem getRenameButton() {

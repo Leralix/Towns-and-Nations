@@ -347,8 +347,7 @@ public final class TownsAndNations extends JavaPlugin {
      * @return the {@link PluginVersion Version} of the plugin.
      */
     private PluginVersion extractVersionFromResponse(String response) {
-        JsonParser parser = new JsonParser();
-        JsonObject jsonResponse = parser.parse(response).getAsJsonObject();
+        JsonObject jsonResponse = JsonParser.parseString(response).getAsJsonObject();
         String version = jsonResponse.get("tag_name").getAsString();
         return new PluginVersion(version);
     }

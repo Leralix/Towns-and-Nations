@@ -45,23 +45,28 @@ public class TownPropertiesMenu extends IteratorGUI {
         List<GuiItem> res = new ArrayList<>();
 
         for (PropertyData townProperty : townData.getProperties()){
-            ItemStack property = townProperty.getIcon(playerData.getLang());
 
-            GuiItem propertyButton = ItemBuilder.from(property).asGuiItem(event -> {
-                event.setCancelled(true);
-                if(!playerData.hasTown()){
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get(playerData));
-                    SoundUtil.playSound(player, NOT_ALLOWED);
-                    return;
-                }
-                if(!townData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_PROPERTY)){
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(playerData));
-                    SoundUtil.playSound(player, NOT_ALLOWED);
-                    return;
-                }
-                new TownPropertyManager(player, townProperty, townData);
-            });
-            res.add(propertyButton);
+            List<String> desc = townProperty.getBasicDescription(playerData.getLang());
+            desc.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData));
+
+            res.add(iconManager.get(townProperty.getIcon())
+                    .setName(townProperty.getName())
+                    .setDescription(desc)
+                    .setAction(event -> {
+                        event.setCancelled(true);
+                        if(!playerData.hasTown()){
+                            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get(playerData));
+                            SoundUtil.playSound(player, NOT_ALLOWED);
+                            return;
+                        }
+                        if(!townData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_PROPERTY)){
+                            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(playerData));
+                            SoundUtil.playSound(player, NOT_ALLOWED);
+                            return;
+                        }
+                        new TownPropertyManager(player, townProperty, townData);
+                    })
+                    .asGuiItem(player));
         }
         return res;
     }

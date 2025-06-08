@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFactory;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.position.Vector2D;
@@ -89,7 +90,8 @@ public class AbstractionFactory {
                 .thenAnswer( invocation -> AbstractionFactory.getRandomPlayer((UUID) invocation.getArgument(0)));
 
 
-        bukkitInstance.when(() -> Bukkit.getLogger()).thenReturn(mock(Logger.class));
+        bukkitInstance.when(Bukkit::getLogger).thenReturn(mock(Logger.class));
+        bukkitInstance.when(Bukkit::getItemFactory).thenReturn(mock(ItemFactory.class));
 
         BukkitScheduler bukkitScheduler = Mockito.mock(BukkitScheduler.class);
         bukkitInstance.when(Bukkit::getScheduler).thenAnswer(invocation -> bukkitScheduler);
