@@ -26,7 +26,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
     @Override
     public void open() {
         GuiUtil.createIterator(gui, getMemberList(), page, player,
-                p -> new TownMenu(player),
+                p -> territoryData.openMainMenu(player),
                 p -> nextPage(),
                 p -> previousPage(),
                 Material.LIME_STAINED_GLASS_PANE

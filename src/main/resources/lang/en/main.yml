@@ -45,8 +45,6 @@ language:
   LANDMARK_STORED_UPDATED: "{0} ({1})§f has been set limit to §e{2}"
   LANDMARK_NOT_FOUND: "§cLandmark not found"
   #Placeholder API
-  TRUE: "true"
-  FALSE: "false"
   INVALID_VALUE: "Invalid value"
   INVALID_ID: "Invalid ID"
   INVALID_NAME: "Invalid name"
@@ -255,6 +253,7 @@ language:
   GUI_GENERIC_CLICK_TO_OPEN: "§7▶ Click to open"
   GUI_GENERIC_CLICK_TO_PROCEED: "§7▶ Click to proceed"
   GUI_GENERIC_CLICK_TO_MODIFY: "§7▶ Click to modify"
+  GUI_GENERIC_LEFT_CLICK_TO_MODIFY: "§7▶ Left click to modify"
   GUI_GENERIC_CLICK_TO_CREATE: "§7▶ Click to create"
   GUI_GENERIC_CLICK_TO_ASSIGN: "§7▶ Click to assign"
   GUI_CLICK_TO_SET_AS_DEFAULT: "§7▶ Click to set this role as default"
@@ -306,8 +305,8 @@ language:
   MARK_ALL_AS_READ: "§aMark all as read"
   NEWSLETTER_SCOPE_ICON: "§aNewsletter scope"
   NEWSLETTER_SCOPE_ICON_DESC1: "§fCurrent scope: §e{0}"
-  NEWSLETTER_SHOW_ALL : "§9Show all news"
-  NEWSLETTER_SHOW_ONLY_UNREAD : "§9Show only unread news"
+  NEWSLETTER_SHOW_ALL: "§9Show all news"
+  NEWSLETTER_SHOW_ONLY_UNREAD: "§9Show only unread news"
 
   #Town menu - no town
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCreate a new town"
@@ -357,7 +356,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_SALARY_DESC1: "§fCurrent role salary: §6{0}{MONEY_CHAR}"
   GUI_INCREASE_SALARY: "§aIncrease salary"
   GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME: "§aRename the rank"
-  GUI_TOWN_MEMBERS_ROLE_PAY_TAXES_NAME : "§aTax exemption"
+  GUI_TOWN_MEMBERS_ROLE_PAY_TAXES_NAME: "§aTax exemption"
   GUI_TOWN_MEMBERS_ROLE_PAY_TAXES: "§fThis role §apays taxes"
   GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES: "§fThis rank §cdoes not pay taxes"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT: "§aDefault role"
@@ -449,15 +448,14 @@ language:
 
   #Property menu
   GUI_PLAYER_NEW_PROPERTY: "§aCreate a new property"
-  GUI_PROPERTY_CAP_FULL : "§fCurrent properties : §c{0}/{1}"
-  GUI_PROPERTY_CAP : "§fCurrent properties : §a{0}/{1}"
+  GUI_PROPERTY_CAP_FULL: "§fCurrent properties : §c{0}/{1}"
+  GUI_PROPERTY_CAP: "§fCurrent properties : §a{0}/{1}"
 
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§eStill in development"
   GUI_BACK_ARROW: "Return"
   GUI_NEXT_PAGE: "Next"
   GUI_PREVIOUS_PAGE: "Previous"
-  GUI_LEFT_CLICK_TO_INTERACT: "§eLeft click to interact"
   LEFT_CLICK_TO_CLAIM: "§fLeft click to claim"
   GUI_INCREASE_1_DESC: "§fClick: §a+1"
   GUI_INCREASE_10_DESC: "§fShift + click: §a+10"
@@ -472,6 +470,12 @@ language:
   GUI_TOWN_CHUNK_PLAYER: "§aInteractions"
   CHUNK_GENERAL_SETTINGS: "§aGeneral settings"
   GUI_TOWN_CHUNK_MOB: "§aMob spawn"
+
+  #Player chunk settings
+  GUI_RIGHT_CLICK_TO_ADD_SPECIFIC_PLAYER: "§7▶ Right click to add a specific player"
+
+
+
 
   #GUI
   ##menu headers
@@ -653,7 +657,6 @@ language:
   ENABLE_PVP_SETTING: "§aEnable PVP inside the territory"
   ENABLE_FIRE_GRIEF_SETTING: "§aEnable fire griefing"
   ENABLE_TNT_GRIEF_SETTING: "§aEnable explosion griefing"
-  GUI_RIGHT_CLICK_TO_MANAGE_SPECIFIC_PLAYER: "§fRight click to manage specific player permission"
   GUI_TOWN_CLAIM_SETTINGS_DESC1: "§fCurrent permission: §e{0}"
   GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_ACTIVATED: "§fCurrent spawn:§a enabled"
   GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_DEACTIVATED: "§fCurrent spawn:§c disabled"
@@ -1072,14 +1075,14 @@ language:
   DIPLOMACY_ACCEPT_NEWSLETTER: "§e{0}§f has accepted the proposal to change the relation with {1}§f to : {2}"
   FORCED_VASSALAGE_TITLE: "Forced vassalage"
   FORCED_VASSALAGE: "{0}§f has been forced to be a vassal of {1}"
-  ATTACK_DECLARED_TITLE : "Attack declared"
-  ATTACK_DECLARED : "§fAn attack has been declared by {0} against {1}"
-  ATTACK_WON_BY_ATTACKER_TITLE : "Attackers won"
-  ATTACK_WON_BY_ATTACKER : "§fThe battle between {0} and {1} has been won by {2}"
-  ATTACK_WON_BY_DEFENDER_TITLE : "Defenders won"
-  ATTACK_WON_BY_DEFENDER : "§fThe battle between {0} and {1} has been won by {2}"
-  ATTACK_CANCELLED_TITLE : "Attack cancelled"
-  ATTACK_CANCELLED : "{0}§f has cancelled their attack on {1}"
+  ATTACK_DECLARED_TITLE: "Attack declared"
+  ATTACK_DECLARED: "§fAn attack has been declared by {0} against {1}"
+  ATTACK_WON_BY_ATTACKER_TITLE: "Attackers won"
+  ATTACK_WON_BY_ATTACKER: "§fThe battle between {0} and {1} has been won by {2}"
+  ATTACK_WON_BY_DEFENDER_TITLE: "Defenders won"
+  ATTACK_WON_BY_DEFENDER: "§fThe battle between {0} and {1} has been won by {2}"
+  ATTACK_CANCELLED_TITLE: "Attack cancelled"
+  ATTACK_CANCELLED: "{0}§f has cancelled their attack on {1}"
   JOIN_REGION_PROPOSAL_NEWSLETTER: "{0}§f has proposed to join the region {1}"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cYou cannot claim this chunk"

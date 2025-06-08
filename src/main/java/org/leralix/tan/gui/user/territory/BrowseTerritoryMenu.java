@@ -28,16 +28,13 @@ public class BrowseTerritoryMenu extends IteratorGUI {
         this.territoryData = territoryData;
         this.scope = scope;
         this.exitMenu = exitMenu;
+        open();
     }
-
 
     public void setScope(BrowseScope newScope){
         this.scope = newScope;
         open();
     }
-
-
-
 
     @Override
     public void open() {

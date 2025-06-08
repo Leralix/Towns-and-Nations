@@ -42,22 +42,24 @@ public class ManageRankPermissionMenu extends IteratorGUI {
         List<GuiItem> guiItems = new ArrayList<>();
         for(RolePermission permission : RolePermission.values()){
             if(permission.isForTerritory(territoryData)){
-
-                ItemStack itemStack = HeadUtils.createCustomItemStack(
-                        permission.getMaterial(),
-                        permission.getDescription(),
-                        (rankData.hasPermission(permission)) ? Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() : Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get());
-
-                guiItems.add(ItemBuilder.from(itemStack).asGuiItem(event -> {
-                    event.setCancelled(true);
-                    if(!territoryData.getRank(player).hasPermission(permission) && !territoryData.isLeader(player)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT.get());
-                        SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
-                        return;
-                    }
-                    rankData.switchPermission(permission);
-                    open();
-                }));
+                guiItems.add(iconManager.get(permission.getIconKey())
+                        .setName(permission.getName().get(playerData))
+                        .setDescription(
+                                rankData.hasPermission(permission) ?
+                                        Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get(playerData) :
+                                        Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get(playerData),
+                                Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(playerData))
+                        .setAction(event -> {
+                            event.setCancelled(true);
+                            if(!territoryData.getRank(player).hasPermission(permission) && !territoryData.isLeader(player)) {
+                                player.sendMessage(TanChatUtils.getTANString() + Lang.ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT.get());
+                                SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                                return;
+                            }
+                            rankData.switchPermission(permission);
+                            open();
+                        })
+                        .asGuiItem(player));
             }
         }
         return guiItems;

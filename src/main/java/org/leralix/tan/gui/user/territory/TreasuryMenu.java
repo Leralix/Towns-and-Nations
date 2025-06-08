@@ -26,7 +26,7 @@ public class TreasuryMenu extends BasicGui {
     protected final Budget budget;
 
     public TreasuryMenu(Player player, TerritoryData territoryData){
-        super(player, Lang.HEADER_ECONOMY, 6);
+        super(player, Lang.HEADER_ECONOMY, 5);
         this.territoryData = territoryData;
         this.budget = territoryData.getBudget();
         open();

@@ -4,6 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.user.MainMenu;
@@ -15,9 +16,9 @@ public class RegionMenu extends TerritoryMenu {
 
     private final RegionData regionData;
 
-    public RegionMenu(Player player){
-        super(player, Lang.HEADER_REGION_MENU.get(player, PlayerDataStorage.getInstance().get(player).getTown().getName()));
-        this.regionData = playerData.getRegion();
+    public RegionMenu(Player player, RegionData regionData){
+        super(player, Lang.HEADER_REGION_MENU.get(player, PlayerDataStorage.getInstance().get(player).getRegion().getName()), regionData);
+        this.regionData = regionData;
         open();
     }
 

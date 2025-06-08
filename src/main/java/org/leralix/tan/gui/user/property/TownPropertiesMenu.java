@@ -34,7 +34,7 @@ public class TownPropertiesMenu extends IteratorGUI {
     public void open() {
 
         GuiUtil.createIterator(gui, getProperties(), page, player,
-                p -> new TownMenu(player),
+                p -> new TownMenu(player, townData),
                 p -> nextPage(),
                 p -> previousPage());
 

@@ -22,7 +22,6 @@ import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
-import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.dataclass.wars.WarRole;
@@ -35,7 +34,6 @@ import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.gui.user.territory.*;
-import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.*;
@@ -56,16 +54,18 @@ public class PlayerGUI {
     }
 
     public static void dispatchPlayerRegion(Player player) {
-        if (PlayerDataStorage.getInstance().get(player).hasRegion()) {
-            new RegionMenu(player);
+        RegionData regionData = RegionDataStorage.getInstance().get(player);
+        if (regionData != null) {
+            new RegionMenu(player, regionData);
         } else {
             new NoRegionMenu(player);
         }
     }
 
     public static void dispatchPlayerTown(Player player) {
-        if (PlayerDataStorage.getInstance().get(player).hasTown()) {
-            new TownMenu(player);
+        TownData townData = TownDataStorage.getInstance().get(player);
+        if (townData != null) {
+            new TownMenu(player, townData);
         } else {
             new NoTownMenu(player);
         }
@@ -165,7 +165,7 @@ public class PlayerGUI {
                 event.setCancelled(true);
                 territoryData.setIcon(new PlayerHeadIcon(offlinePlayer.getUniqueId().toString()));
                 SoundUtil.playSound(player, MINOR_GOOD);
-                new TownMenu(player);
+                territoryData.openMainMenu(player);
             });
             guiItems.add(headGui);
         }
@@ -505,7 +505,7 @@ public class PlayerGUI {
             landmarkGui.add(landmarkButton);
         }
         GuiUtil.createIterator(gui, landmarkGui, page, player,
-                p -> new TownMenu(player),
+                p -> new TownMenu(player, townData),
                 p -> openOwnedLandmark(player, townData, page + 1),
                 p -> openOwnedLandmark(player, townData, page - 1)
         );

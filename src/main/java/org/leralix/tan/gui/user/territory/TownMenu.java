@@ -17,9 +17,9 @@ public class TownMenu extends TerritoryMenu {
 
     private final TownData townData;
 
-    public TownMenu(Player player) {
-        super(player, Lang.HEADER_TOWN_MENU.get(PlayerDataStorage.getInstance().get(player).getTown().getName()));
-        townData = playerData.getTown();
+    public TownMenu(Player player, TownData townData) {
+        super(player, Lang.HEADER_TOWN_MENU.get(PlayerDataStorage.getInstance().get(player).getTown().getName()), townData);
+        this.townData = townData;
         open();
     }
 

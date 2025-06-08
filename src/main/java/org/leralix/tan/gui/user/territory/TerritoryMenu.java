@@ -26,9 +26,9 @@ public abstract class TerritoryMenu extends BasicGui {
 
     protected final TerritoryData territoryData;
 
-    protected TerritoryMenu(Player player, String name) {
+    protected TerritoryMenu(Player player, String name, TerritoryData territoryData) {
         super(player, name, 4);
-        territoryData = playerData.getTown();
+        this.territoryData = territoryData;
     }
 
     protected GuiItem getTerritoryInfo() {
