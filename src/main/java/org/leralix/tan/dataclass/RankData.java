@@ -1,6 +1,5 @@
 package org.leralix.tan.dataclass;
 
-import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
