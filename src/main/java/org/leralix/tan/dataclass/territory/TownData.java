@@ -768,6 +768,12 @@ public class TownData extends TerritoryData {
     @Override
     public void delete() {
         super.delete();
+
+        if(haveOverlord()){
+            RegionData regionData = getRegion();
+            regionData.removeVassal(this);
+        }
+
         removeAllLandmark(); //Remove all Landmark from the deleted town
         removeAllProperty(); //Remove all Property from the deleted town
 
