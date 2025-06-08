@@ -28,7 +28,7 @@ public class CustomIcon implements ICustomIcon {
         ItemStack icon = new ItemStack(material);
         if(icon.getType() == Material.AIR){
             materialTypeName = Material.COBBLESTONE.name();
-            icon = new ItemStack(material);
+            icon = new ItemStack(Material.COBBLESTONE);
         }
 
 
