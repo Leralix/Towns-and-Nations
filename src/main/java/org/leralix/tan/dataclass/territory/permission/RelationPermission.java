@@ -1,6 +1,7 @@
 package org.leralix.tan.dataclass.territory.permission;
 
 import org.bukkit.ChatColor;
+import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;

@@ -10,7 +10,7 @@ import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
-import org.leralix.tan.gui.PlayerGUI;
+import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;

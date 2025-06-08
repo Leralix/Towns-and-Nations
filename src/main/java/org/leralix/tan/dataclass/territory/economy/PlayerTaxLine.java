@@ -13,12 +13,13 @@ import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.gui.user.territory.TreasuryMenu;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.StringUtil;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
-import org.leralix.tan.gui.PlayerGUI;
+import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.SetSpecificTax;
@@ -94,7 +95,7 @@ public class PlayerTaxLine extends ProfitLine {
             SoundUtil.playSound(player, SoundEnum.REMOVE);
 
             territoryData.addToTax(-amountToRemove);
-            PlayerGUI.openTreasury(player, territoryData);
+            new TreasuryMenu(player, territoryData);
         });
         GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
             event.setCancelled(true);
@@ -118,7 +119,7 @@ public class PlayerTaxLine extends ProfitLine {
 
             territoryData.addToTax(amountToAdd);
             SoundUtil.playSound(player, SoundEnum.ADD);
-            PlayerGUI.openTreasury(player, territoryData);
+            new TreasuryMenu(player, territoryData);
         });
 
         gui.setItem(2, 2, lowerTaxButton);

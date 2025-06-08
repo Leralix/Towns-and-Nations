@@ -1,7 +1,6 @@
 package org.leralix.tan.newsletter.storage;
 
 import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.newsletter.news.DiplomacyAcceptedNews;
 import org.leralix.tan.newsletter.news.DiplomacyProposalNews;
 
 import java.sql.Connection;

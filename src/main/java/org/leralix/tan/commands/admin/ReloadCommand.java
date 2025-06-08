@@ -12,6 +12,7 @@ import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.PvpSettings;
 import org.leralix.tan.storage.WildernessRules;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
+import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.lang.Lang;
 
@@ -60,6 +61,7 @@ public class ReloadCommand extends SubCommand {
             ClaimBlacklistStorage.init();
             PvpSettings.init();
             WildernessRules.getInstance().init();
+            Constants.init();
 
             player.sendMessage(TanChatUtils.getTANString() + Lang.RELOAD_SUCCESS.get(player));
             player.sendMessage(TanChatUtils.getTANString() + Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());

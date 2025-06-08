@@ -8,7 +8,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.StringUtil;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
-import org.leralix.tan.gui.PlayerGUI;
+import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 
 public class ChunkUpkeepLine extends ProfitLine {

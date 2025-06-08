@@ -81,9 +81,11 @@ public class TownDataStorage {
     public TownData get(PlayerData playerData){
         return get(playerData.getTownId());
     }
+
     public TownData get(Player player){
         return get(PlayerDataStorage.getInstance().get(player).getTownId());
     }
+
     public TownData get(String townId) {
         return townDataMap.get(townId);
     }

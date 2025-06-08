@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;

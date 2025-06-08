@@ -7,11 +7,13 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.Directional;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.lib.utils.config.ConfigTag;
@@ -21,7 +23,6 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.TownsAndNations;
 
@@ -101,7 +102,7 @@ public class PlayerSelectPropertyPositionStorage {
             removePlayer(playerID);
 
             PropertyData property = playerTown.registerNewProperty(vList.get(0),vList.get(1),playerData);
-            PlayerGUI.openPropertyManagerMenu(player,property);
+            new PlayerPropertyManager(player, property, HumanEntity::closeInventory);
 
             createPropertyPanel(player, property, block, blockFace);
             property.updateSign();
@@ -160,8 +161,8 @@ public class PlayerSelectPropertyPositionStorage {
     }
 
 
-    static boolean isNearProperty(Location blockLocation,Vector3D p1, Vector3D p2,  int margin) {
-        int  minX = Math.min(p1.getX(), p2.getX()) - margin;
+    static boolean isNearProperty(Location blockLocation,Vector3D p1, Vector3D p2, int margin) {
+        int minX = Math.min(p1.getX(), p2.getX()) - margin;
         int minY = Math.min(p1.getY(), p2.getY()) - margin;
         int minZ = Math.min(p1.getZ(), p2.getZ()) - margin;
         int maxX = Math.max(p1.getX(), p2.getX()) + margin;

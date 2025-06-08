@@ -3,6 +3,7 @@ package org.leralix.tan.listeners;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,11 +14,13 @@ import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
+import org.leralix.tan.gui.user.property.BuyOrRentPropertyMenu;
+import org.leralix.tan.gui.user.property.PlayerPropertyManager;
+import org.leralix.tan.gui.user.RenterPropertyMenu;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 
 public class PropertySignListener implements Listener {
@@ -45,13 +48,13 @@ public class PropertySignListener implements Listener {
                             }
 
                             if(propertyData.getOwnerID().equals(player.getUniqueId().toString())){
-                                PlayerGUI.openPropertyManagerMenu(player, propertyData);
+                                new PlayerPropertyManager(player, propertyData, HumanEntity::closeInventory);
                             }else if(propertyData.isRented() && propertyData.getRenterID().equals(player.getUniqueId().toString())){
-                                PlayerGUI.openPropertyManagerRentMenu(player, propertyData);
+                                new RenterPropertyMenu(player, propertyData);
                             }
                             else {
                                 if(propertyData.isForRent() || propertyData.isForSale()){
-                                    PlayerGUI.openPropertyBuyMenu(player, propertyData);
+                                    new BuyOrRentPropertyMenu(player, propertyData);
                                 }
                                 else
                                     player.sendMessage(Lang.PROPERTY_NOT_FOR_SALE_OR_RENT.get());

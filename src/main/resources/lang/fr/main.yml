@@ -298,7 +298,7 @@ language:
   GUI_YOUR_PROFILE: "§aVotre profil"
   GUI_YOUR_BALANCE: "§aVotre solde"
   GUI_YOUR_BALANCE_DESC1: "§fSolde actuel : §e{0}✦"
-  GUI_PLAYER_MANAGE_PROPERTIES: "Gestion des propriétés"
+  GUI_PLAYER_MANAGE_PROPERTIES: "§aGestion des propriétés"
   GUI_PLAYER_MANAGE_PROPERTIES_DESC1: "§fCréer, supprimer ou gérer vos propriétés"
   GUI_PLAYER_NEWSLETTER: "§aBoite aux lettres"
   GUI_PLAYER_NEWSLETTER_DESC1: "§fParcourir les dernières informations"

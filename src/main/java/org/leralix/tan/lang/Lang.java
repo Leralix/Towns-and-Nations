@@ -82,11 +82,11 @@ public enum Lang {
     GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1,
     GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION,
     GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME,
+    GUI_TOWN_MEMBERS_ROLE_PAY_TAXES_NAME,
     GUI_TOWN_MEMBERS_ROLE_PAY_TAXES,
     GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES,
     GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1,
     TOWN_INVITATION_ACCEPTED_MEMBER_SIDE,
-    TOWN_INVITATION_ACCEPTED_TOWN_SIDE,
     DIPLOMATIC_INVITATION_SENT_SUCCESS,
     VASSALISATION_PROPOSAL_SENT_SUCCESS,
     ACCEPTED_VASSALISATION_PROPOSAL_ALL,
@@ -107,6 +107,10 @@ public enum Lang {
     TOWN_GUI_COMMAND_DESC,
     OPEN_NEWSLETTER_DESC,
     MARK_ALL_AS_READ,
+    NEWSLETTER_SCOPE_ICON,
+    NEWSLETTER_SCOPE_ICON_DESC1,
+    NEWSLETTER_SHOW_ALL,
+    NEWSLETTER_SHOW_ONLY_UNREAD,
     PAY_COMMAND_DESC,
     PAY_MINIMUM_REQUIRED,
     PAY_CONFIRMED_SENDER,
@@ -187,18 +191,22 @@ public enum Lang {
     EVERYONE_PERMISSION,
     SELECTED_ONLY_PERMISSION,
     GUI_GENERIC_CLICK_TO_OPEN,
+    GUI_GENERIC_CLICK_TO_PROCEED,
+    GUI_GENERIC_CLICK_TO_MODIFY,
+    GUI_GENERIC_LEFT_CLICK_TO_MODIFY,
+    GUI_GENERIC_CLICK_TO_CREATE,
     GUI_GENERIC_CLICK_TO_OPEN_HISTORY,
     GUI_GENERIC_CLICK_TO_DELETE,
     GUI_GENERIC_CLICK_TO_RENAME,
     GUI_GENERIC_RIGHT_CLICK_TO_DELETE,
     GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT,
     GUI_GENERIC_CLICK_TO_SWITCH_SCOPE,
+    GUI_GENERIC_CLICK_TO_SHOW,
     GUI_GENERIC_ADD_BUTTON,
     GUI_WARNING_STILL_IN_DEV,
     GUI_BACK_ARROW,
     GUI_NEXT_PAGE,
     GUI_PREVIOUS_PAGE,
-    GUI_LEFT_CLICK_TO_INTERACT,
     LEFT_CLICK_TO_CLAIM,
     GUI_INCREASE_1_DESC,
     GUI_INCREASE_10_DESC,
@@ -218,7 +226,8 @@ public enum Lang {
     GUI_TOWN_ICON_DESC1_HAVE_TOWN,
     GUI_TOWN_ICON_DESC2_HAVE_TOWN,
     GUI_TOWN_ICON_DESC1_NO_TOWN,
-    GUI_PLAYER_PROFILE_DESC1,
+    GUI_PLAYER_MENU_ICON,
+    GUI_PLAYER_ICON,
     GUI_YOUR_PROFILE,
     GUI_YOUR_BALANCE,
     GUI_YOUR_BALANCE_DESC1,
@@ -226,10 +235,14 @@ public enum Lang {
     GUI_PLAYER_MANAGE_PROPERTIES_DESC1,
     GUI_PLAYER_NEWSLETTER,
     GUI_PLAYER_NEWSLETTER_DESC1,
+    GUI_LANGUAGE_BUTTON,
+    GUI_LANGUAGE_BUTTON_DESC1,
+    GUI_LANGUAGE_BUTTON_DESC2,
     GUI_NO_TOWN_CREATE_NEW_TOWN,
     GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1,
     GUI_NO_TOWN_JOIN_A_TOWN,
     GUI_NO_TOWN_JOIN_A_TOWN_DESC1,
+    GUI_TOWN_NAME,
     GUI_TOWN_INFO_DESC0,
     GUI_TOWN_INFO_DESC1,
     GUI_TOWN_INFO_DESC2,
@@ -247,7 +260,6 @@ public enum Lang {
     GUI_CLAIM_ICON,
     GUI_CLAIM_ICON_DESC1,
     GUI_BROWSE_TERRITORY_ICON,
-    GUI_BROWSE_TERRITORY_ICON_DESC1,
     GUI_RELATION_ICON,
     GUI_RELATION_ICON_DESC1,
     GUI_TOWN_LEVEL_ICON,
@@ -387,15 +399,13 @@ public enum Lang {
     ENABLE_TNT_GRIEF_SETTING,
     GUI_TOWN_CLAIM_SETTINGS_DESC1,
     GUI_TOWN_CHUNK_PLAYER,
-    GUI_TOWN_CHUNK_PLAYER_DESC1,
     CHUNK_GENERAL_SETTINGS,
-    CHUNK_GENERAL_SETTINGS_DESC1,
     GUI_TOWN_CHUNK_MOB,
-    GUI_TOWN_CHUNK_MOB_DESC1,
     GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_ACTIVATED,
     GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_DEACTIVATED,
     GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_LOCKED,
     GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_LOCKED2,
+    GUI_RIGHT_CLICK_TO_ADD_SPECIFIC_PLAYER,
     CHAT_CANT_LEAVE_TOWN_IF_LEADER,
     CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER,
     CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER,
@@ -406,6 +416,7 @@ public enum Lang {
     GUI_TOWN_MEMBERS_MANAGE_ROLES,
     GUI_TOWN_MEMBERS_MANAGE_APPLICATION,
     GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1,
+    GUI_RANK_NUMBER_PLAYER_WITH_ROLE,
     GUI_TOWN_MEMBERS_ADD_NEW_ROLES,
     GUI_TOWN_MEMBERS_ADD_NEW_ROLES_DESC1,
     GUI_TOWN_MEMBERS_ROLE_NAME,
@@ -518,8 +529,6 @@ public enum Lang {
     GUI_STRONGHOLD,
     GUI_NO_STRONGHOLD,
     GUI_STRONGHOLD_LOCATION,
-    GUI_LEFT_CLICK_TO_SET_STRONGHOLD,
-
     TOWN_RANK_CAP_REACHED,
     GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TAXES,
     GUI_TOWN_MEMBERS_ROLE_PRIORITY_PROMOTE_RANK_PLAYER,
@@ -543,7 +552,6 @@ public enum Lang {
     GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER,
     TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN,
     WARNING_OTHER_TOWN_HAS_BEEN_DELETED,
-    GUI_SELECTED_LANGUAGE_IS,
     ITEM_RARE_STONE,
     ITEM_RARE_WOOD,
     ITEM_RARE_CROP,
@@ -672,14 +680,16 @@ public enum Lang {
     LEFT_CLICK_TO_ACCEPT,
     RIGHT_CLICK_TO_REFUSE,
     CANNOT_BE_MODIFIED,
-    GUI_RIGHT_CLICK_TO_MANAGE_SPECIFIC_PLAYER,
     GUI_PLAYER_NEW_PROPERTY,
+    GUI_PROPERTY_CAP_FULL,
+    GUI_PROPERTY_CAP,
     HEADER_MAIN_MENU,
     HEADER_PLAYER_PROFILE,
     HEADER_SELECT_LANGUAGE,
     HEADER_NEWSLETTER,
     HEADER_PLAYER_PROPERTIES,
     HEADER_PLAYER_SPECIFIC_PROPERTY,
+    HEADER_TOWN_SPECIFIC_PROPERTY,
     HEADER_NO_TOWN_MENU,
     HEADER_TOWN_LIST,
     HEADER_TOWN_MENU,
@@ -741,9 +751,8 @@ public enum Lang {
     PROPERTY_RENTED_BY,
     PROPERTY_BELONGS_TO,
     PROPERTY_ALREADY_RENTED,
-    CLICK_TO_OPEN_PROPERTY_MENU,
     GUI_PROPERTY_DELETE_PROPERTY,
-    GUI_PROPERTY_DELETE_PROPERTY_DESC1,
+    GUI_PROPERTY_DELETE_PROPERTY_CONFIRM,
     GUI_PROPERTY_AUTHORIZE_PLAYER,
     PLAYER_REMOVED_FROM_PROPERTY,
     PLAYER_ADDED_TO_PROPERTY,
@@ -760,11 +769,9 @@ public enum Lang {
     PROPERTY_SOLD_NEW_OWNER,
     CONFIRM_RENT,
     CONFIRM_RENT_DESC1,
-    CONFIRM_RENT_DESC2,
     CANCEL_RENT,
     CONFIRM_SALE,
     CONFIRM_SALE_DESC1,
-    CONFIRM_SALE_DESC2,
     CANCEL_SALE,
     GUI_PROPERTY_DRAWN_BOX,
     GUI_PROPERTY_DRAWN_BOX_DESC1,
@@ -899,6 +906,7 @@ public enum Lang {
     GUI_JOIN_DEFENDING_SIDE,
     GUI_JOIN_DEFENDING_SIDE_DESC1,
     GUI_WAR_GOAL_INFO,
+    BROWSE_SCOPE,
     BROWSE_ALL_NAME,
     BROWSE_TOWNS_NAME,
     BROWSE_REGIONS_NAME,
@@ -932,8 +940,6 @@ public enum Lang {
     NEWSLETTER_JOIN_REGION_PROPOSAL,
     NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1,
     NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2,
-    NEWSLETTER_SHOW_ALL,
-    NEWSLETTER_SHOW_ONLY_UNREAD,
     NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ,
     NEWSLETTER_SUBJUGATE_PROPOSAL,
     NEWSLETTER_SUBJUGATE_PROPOSAL_DESC1,
@@ -979,7 +985,7 @@ public enum Lang {
     CHUNK_IS_BLACKLISTED;
 
 
-    private static LangType chosenLang;
+    private static LangType serverLang;
 
     private static final EnumMap<LangType ,EnumMap<Lang, String>> translations = new EnumMap<>(LangType.class);
     private static final EnumMap<LangType , Integer> completedLang = new EnumMap<>(LangType.class);
@@ -993,15 +999,13 @@ public enum Lang {
         loadTranslations(langFolder, fileTag, true);
     }
 
-        public static void loadTranslations(File langFolder, String fileTag, boolean saveFile) {
+    public static void loadTranslations(File langFolder, String fileTag, boolean saveFile) {
 
-        chosenLang = LangType.fromCode(fileTag);
+        serverLang = LangType.fromCode(fileTag);
 
         if (!langFolder.exists()) {
             langFolder.mkdir();
         }
-
-        boolean replace = ConfigUtil.getCustomConfig(ConfigTag.LANG).getBoolean("autoUpdateLangFiles",true);
 
         for(LangType langType : LangType.values()) {
 
@@ -1013,9 +1017,7 @@ public enum Lang {
             File file = new File(specificLangFolder, "main.yml");
 
 
-            if((!file.exists() || replace) && saveFile) {
-                TownsAndNations.getPlugin().saveResource("lang/" + langType.getCode() + "/main.yml", true);
-            }
+            ConfigUtil.saveAndUpdateResource(TownsAndNations.getPlugin(), "lang/" + langType.getCode() + "/main.yml");
 
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
@@ -1033,8 +1035,8 @@ public enum Lang {
         }
     }
 
-    public static LangType getChosenLang() {
-        return chosenLang;
+    public static LangType getServerLang() {
+        return serverLang;
     }
 
     public static int getCompletionPercentage(LangType langType) {
@@ -1042,7 +1044,7 @@ public enum Lang {
     }
 
     public String get() {
-        return get(chosenLang);
+        return get(serverLang);
     }
 
     public String get(Player player){
@@ -1052,7 +1054,7 @@ public enum Lang {
 
     public String get(PlayerData playerData){
         if(playerData == null) {
-            return get(chosenLang);
+            return get(serverLang);
         }
         return get(playerData.getLang());
     }
@@ -1070,7 +1072,7 @@ public enum Lang {
     }
 
     public String get(Object... placeholders) {
-        return get(chosenLang, placeholders);
+        return get(serverLang, placeholders);
     }
 
     public String get(Player player, Object... placeholders) {
@@ -1079,7 +1081,7 @@ public enum Lang {
 
     public String get(PlayerData playerData, Object... placeholders) {
         if(playerData == null) {
-            return get(chosenLang, placeholders);
+            return get(serverLang, placeholders);
         }
         return get(playerData.getLang(), placeholders);
     }
@@ -1127,7 +1129,7 @@ public enum Lang {
 
 
     public String getWithoutPlaceholder() {
-        String translation = translations.get(chosenLang).get(this);
+        String translation = translations.get(serverLang).get(this);
         if (translation != null) {
             return ChatColor.translateAlternateColorCodes('§', translation);
         }

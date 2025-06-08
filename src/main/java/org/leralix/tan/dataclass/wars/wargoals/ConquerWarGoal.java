@@ -17,7 +17,7 @@ import org.leralix.tan.utils.TerritoryUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 
-import static org.leralix.tan.gui.PlayerGUI.openStartWarSettings;
+import static org.leralix.tan.gui.legacy.PlayerGUI.openStartWarSettings;
 
 public class ConquerWarGoal extends WarGoal {
 

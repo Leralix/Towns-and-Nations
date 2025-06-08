@@ -12,10 +12,10 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.gui.user.territory.PlayerApplicationMenu;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.gui.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.newsletter.NewsletterType;
 
@@ -72,10 +72,16 @@ public class PlayerJoinRequestNews extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
+
+        TownData townData = getTownData();
+        if(townData == null){
+            return null;
+        }
+
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
 
         ItemStack itemStack = HeadUtils.getPlayerHead(Lang.NEWSLETTER_PLAYER_APPLICATION.get(offlinePlayer.getName()), offlinePlayer,
-                Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(offlinePlayer.getName(), TownDataStorage.getInstance().get(townID).getBaseColoredName()),
+                Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(offlinePlayer.getName(), getTownData().getBaseColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
 
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
@@ -100,7 +106,7 @@ public class PlayerJoinRequestNews extends Newsletter {
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);
             if(event.isLeftClick()){
-                PlayerGUI.openTownApplications(player,getTownData());
+                new PlayerApplicationMenu(player, getTownData()).open();
             }
             if(event.isRightClick()){
                 markAsRead(player);
@@ -112,6 +118,9 @@ public class PlayerJoinRequestNews extends Newsletter {
     @Override
     public boolean shouldShowToPlayer(Player player) {
         TownData townData = getTownData();
+        if(townData == null){
+            return false;
+        }
         return townData.isPlayerIn(player);
     }
 

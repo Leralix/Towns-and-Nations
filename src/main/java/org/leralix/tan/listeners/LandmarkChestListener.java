@@ -12,7 +12,7 @@ import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.gui.PlayerGUI;
+import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 
 public class LandmarkChestListener implements Listener {

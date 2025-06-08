@@ -58,7 +58,7 @@ public class PlayerDataStorage {
     public PlayerData get(String id){
 
         if(id == null)
-            return null;
+            throw new RuntimeException("Error : Player ID is null when trying to retrieve player data");
 
         PlayerData res = playerStorage.get(id);
         if(res != null)
@@ -68,7 +68,7 @@ public class PlayerDataStorage {
         if(newPlayer != null){
             return register(newPlayer);
         }
-        return null;
+        throw new RuntimeException("Error : Player ID [" + id + "] has not been found" );
     }
 
 

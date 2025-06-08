@@ -1,0 +1,149 @@
+# All types of possible icons are listed here.
+# 1. URL: starts with "http"
+# 2. Base64 texture: starts with "Base64:"
+# 3. Item: starts with "minecraft:"
+# 4. Player's head: "PLAYER_HEAD"
+# 5. Player's town head: "TOWN_HEAD"
+# 6. Player's region head: "REGION_HEAD"
+# 8. Player's used language: "PLAYER_LANGUAGE_HEAD"
+# 9. Remove icon: "NO_ICON" (removing a button may break some functionalities, use with caution)
+
+#Main menu
+NATION_BASE_ICON : "https://textures.minecraft.net/texture/c69196b330c6b8962f23ad5627fb6ecce472eaf5c9d44f791f6709c7d0f4dece"
+REGION_BASE_ICON : "https://textures.minecraft.net/texture/49c1832e4ef5c4ad9c519d194b1985030d257914334aaf2745c9dfd611d6d61d"
+TOWN_BASE_ICON : "https://textures.minecraft.net/texture/63d02cdc075bb1cc5f6fe3c7711ae4977e38b910d50ed6023df73913e5e7fcff"
+PLAYER_BASE_ICON : "PLAYER_HEAD"
+#Player menu
+PLAYER_HEAD_ICON : "PLAYER_HEAD"
+PLAYER_BALANCE_ICON : "minecraft:GOLD_INGOT"
+PLAYER_PROPERTY_ICON : "minecraft:OAK_SIGN"
+NEWSLETTER_ICON : "minecraft:WRITABLE_BOOK"
+LANGUAGE_ICON : "PLAYER_LANGUAGE_HEAD"
+#Language menu
+HELP_TRANSLATION_ICON : "https://textures.minecraft.net/texture/b04831f7a7d8f624c9633996e3798edad49a5d9bcd18ecf75bfae66be48a0a6b"
+#Newsletter menu
+MARK_ALL_AS_READ_ICON : "minecraft:BOOK"
+CHANGE_NEWSLETTER_SCOPE_ICON : "minecraft:NAME_TAG"
+#Town menu - Player with no town
+CREATE_TOWN_ICON : "minecraft:GRASS_BLOCK"
+BROWSE_TOWN_ICON : "minecraft:ANVIL"
+#Region menu - Player with no region
+CREATE_REGION_ICON : "minecraft:STONE_BRICKS"
+BROWSE_REGION_ICON : "minecraft:BOOK"
+#Territory menu (common)
+TERRITORY_ICON : "TOWN_HEAD"
+TERRITORY_TREASURY_ICON : "https://textures.minecraft.net/texture/75c9cccf61a6e6284fe9bbe649155be4d9ca96f78ffcb279b84e16178dacb522"
+TERRITORY_MEMBER_ICON : "https://textures.minecraft.net/texture/7b43b23189dcf1326da4253d1d7582ef5ad29f6c27b171feb17e31d084e3a7d"
+TERRITORY_LAND_ICON : "https://textures.minecraft.net/texture/17980b940af858f910943464ee00359287cb0b5810680b60b89be4210dda0ed1"
+TERRITORY_BROWSE_ICON : "https://textures.minecraft.net/texture/47a374e21b81c0b21abeb8e97e13e077d3ed1ed44f2e956c68f63a3e19e899f6"
+TERRITORY_DIPLOMACY_ICON : "https://textures.minecraft.net/texture/c507d6de631838e7a75720e5b38ef14d2966fdd8486e75d1f6812ed99bbca499"
+TERRITORY_LEVEL_ICON : "https://textures.minecraft.net/texture/fbe529ab6b2ea7c50d9192d89f898fd7da8a9e750d378295df73205e7a7eeae0"
+TERRITORY_SETTINGS_ICON : "https://textures.minecraft.net/texture/95d2cb38458da17fb6cdacf787161602a2493cbf93233636253cff07cd88a9c0"
+TERRITORY_WAR_ICON : "https://textures.minecraft.net/texture/25de4ff8be70eee4d103b1eedf454f0abb9f0568f5f326ecba7cab6a47f9ade4"
+TERRITORY_HIERARCHY_ICON : "minecraft:GOLDEN_HELMET"
+#Town menu
+TOWN_LANDMARKS_ICON : "https://textures.minecraft.net/texture/fd761cc16562c88d2fbe40ad38502bc3b4a87859887dbc35f272e30d8070eeec"
+TOWN_PROPERTIES_ICON : "minecraft:OAK_SIGN"
+#Settings menu
+TERRITORY_RENAME_ICON : "minecraft:NAME_TAG"
+TERRITORY_DESCRIPTION_ICON : "minecraft:WRITABLE_BOOK"
+TERRITORY_CHANGE_OWNER_ICON : "https://textures.minecraft.net/texture/45587da7fe7336e8ab9f791ea5e2cfc8a827ca959567eb9d53a647babf948d5"
+TERRITORY_CHANGE_COLOR_ICON : "https://textures.minecraft.net/texture/bf9d42b674a920f849107413ba40727eb1551d7d54591f4e1e5cbc6c0287a87"
+#Town settings menu
+TOWN_CHANGE_OWNERSHIP_ICON : "minecraft:LECTERN"
+TOWN_ALLOW_APPLICATION_ICON : "minecraft:WRITABLE_BOOK"
+TOWN_DENY_APPLICATION_ICON : "minecraft:BOOK"
+TOWN_QUIT_TOWN_ICON : "minecraft:OAK_DOOR"
+TOWN_DELETE_TOWN_ICON : "minecraft:BARRIER"
+#Region settings menu
+REGION_CHANGE_OWNERSHIP_ICON : "minecraft:LECTERN"
+REGION_QUIT_REGION_ICON : "minecraft:OAK_DOOR"
+REGION_DELETE_REGION_ICON : "minecraft:BARRIER"
+#Manage members menu
+MANAGE_RANKS_ICON: "minecraft:LADDER"
+MANAGE_APPLICATIONS_ICON: "minecraft:WRITABLE_BOOK"
+#Manage ranks menu
+NEW_RANK_ICON: "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1"
+#Modify rank menu
+PLAYER_LIST_ICON: "https://textures.minecraft.net/texture/7b43b23189dcf1326da4253d1d7582ef5ad29f6c27b171feb17e31d084e3a7d"
+MANAGE_PERMISSION_ICON: "minecraft:ANVIL"
+DECREASE_SALARY_ICON: "https://textures.minecraft.net/texture/4e4b8b8d2362c864e062301487d94d3272a6b570afbf80c2c5b148c954579d46"
+CURRENT_SALARY_ICON: "minecraft:GOLD_INGOT"
+INCREASE_SALARY_ICON: "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1"
+RENAME_RANK_ICON: "minecraft:NAME_TAG"
+PAY_TAXES_ICON: "minecraft:GOLD_NUGGET"
+SET_DEFAULT_ROLE_ICON: "minecraft:RED_BED"
+DELETE_RANK_ICON: "minecraft:BARRIER"
+#Browse territory
+CHANGE_SCOPE_ICON: "minecraft:NAME_TAG"
+#Player properties
+CREATE_NEW_PROPERTY_ICON: "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1"
+#Properties menu
+PROPERTY_RENAME_ICON : "minecraft:NAME_TAG"
+PROPERTY_DESCRIPTION_ICON : "minecraft:WRITABLE_BOOK"
+PROPERTY_BOUNDS_ICON : "https://textures.minecraft.net/texture/377d4a206d7757f479f332ec1a2bbbee57cef97568dd88df81f4864aee7d3d98"
+SELL_PROPERTY_ICON_NOT_FOR_SALE : "https://textures.minecraft.net/texture/eef0708fce5ffaa6608cbed3e78ed95803d8a89377d1d938ce0bdc61b6dc9f4f"
+SELL_PROPERTY_ICON_FOR_SALE: "https://textures.minecraft.net/texture/ce2a530f42726fa7a31efab8e43dadee188937cf824af88ea8e4c93a49c57294"
+RENT_PROPERTY_ICON_NOT_FOR_RENT: "https://textures.minecraft.net/texture/eef0708fce5ffaa6608cbed3e78ed95803d8a89377d1d938ce0bdc61b6dc9f4f"
+RENT_PROPERTY_ICON_FOR_RENT: "https://textures.minecraft.net/texture/ce2a530f42726fa7a31efab8e43dadee188937cf824af88ea8e4c93a49c57294"
+RENT_PROPERTY_ICON_RENTED: "https://textures.minecraft.net/texture/ce2a530f42726fa7a31efab8e43dadee188937cf824af88ea8e4c93a49c57294"
+AUTHORIZED_PLAYERS_ICON: "https://textures.minecraft.net/texture/7b43b23189dcf1326da4253d1d7582ef5ad29f6c27b171feb17e31d084e3a7d"
+DELETE_PROPERTY_ICON: "minecraft:BARRIER"
+#Buy property
+CONFIRM_BUY_PROPERTY_ICON: "https://textures.minecraft.net/texture/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756"
+CANCEL_BUY_PROPERTY_ICON: "https://textures.minecraft.net/texture/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065"
+#Rent property
+CONFIRM_RENT_PROPERTY_ICON: "https://textures.minecraft.net/texture/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756"
+CANCEL_RENT_PROPERTY_ICON: "https://textures.minecraft.net/texture/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065"
+#Renter menu
+STOP_RENTING_PROPERTY_ICON: "minecraft:BARRIER"
+#War menu
+STRONGHOLD_INFO_ICON: "minecraft:IRON_BLOCK"
+#Treasury
+BUDGET_ICON: "https://textures.minecraft.net/texture/75c9cccf61a6e6284fe9bbe649155be4d9ca96f78ffcb279b84e16178dacb522"
+MISCELLANEOUS_SPENDING_ICON: "https://textures.minecraft.net/texture/4c36045208f9b5ddcf8c4433e424b1ca17b94f6b96202fb1e5270ee8d53881b1"
+DONATION_ICON: "minecraft:DIAMOND"
+DONATION_HISTORY_ICON: "minecraft:PAPER"
+RETRIEVE_MONEY_ICON: "https://textures.minecraft.net/texture/86bd920b402815ad89018df82977be9f7ea19e799ecf016f7f0da4ab47ca23c5"
+#Chunk settings
+LANDS_PERMISSION_ICON: "minecraft:PLAYER_HEAD"
+GENERAL_SETTINGS_ICON: "https://textures.minecraft.net/texture/5f8c703105180d2586d7f96019dac489776ae488dd6ceb981d08fae4325ea4d1"
+MOBS_SPAWN_SETTINGS_ICON: "minecraft:CREEPER_HEAD"
+#Player chunk settings
+GUI_MANAGE_CHEST_ACCESS_ICON: "minecraft:CHEST"
+GUI_INTERACT_DOORS_ACCESS_ICON: "minecraft:OAK_DOOR"
+GUI_BREAK_BLOC_PERMISSION_ICON: "minecraft:IRON_PICKAXE"
+GUI_BUILD_BLOC_PERMISSION_ICON: "minecraft:BRICKS"
+GUI_ATTACK_PASSIVE_MOBS_ICON: "minecraft:BEEF"
+GUI_PRESS_BUTTON_ICON: "minecraft:STONE_BUTTON"
+GUI_USE_REDSTONE_COMPONENT: "minecraft:REDSTONE"
+GUI_OPEN_FURNANCE_ICON: "minecraft:FURNACE"
+GUI_INTERACT_ITEM_FRAME_ICON: "minecraft:ITEM_FRAME"
+GUI_INTERACT_ARMOR_STAND_ICON: "minecraft:ARMOR_STAND"
+GUI_INTERACT_DECORATIVE_BLOCS_ICON: "minecraft:DECORATIVE"
+GUI_INTERACT_CAULDRON_ICON: "minecraft:CAULDRON"
+GUI_INTERACT_MUSIC_ICON: "minecraft:NOTE_BLOCK"
+GUI_INTERACT_LEAD_ICON: "minecraft:LEAD"
+GUI_INTERACT_SHEARS_ICON: "minecraft:SHEARS"
+GUI_INTERACT_BOATS_ICON: "minecraft:BOAT"
+GUI_INTERACT_MINECART_ICON: "minecraft:MINECART"
+GUI_INTERACT_BONE_MEAL_ICON: "minecraft:BONE_MEAL"
+GUI_INTERACT_GATHER_BERRIES_ICON: "minecraft:SWEET_BERRIES"
+
+#Rank permissions
+
+GUI_MANAGE_TAXES_ICON: "minecraft:GOLD_INGOT"
+GUI_CLAIM_CHUNK_ICON: "minecraft:EMERALD_BLOCK"
+GUI_UNCLAIM_CHUNK_ICON: "minecraft:REDSTONE_BLOCK"
+GUI_UPGRADE_TOWN_ICON: "minecraft:SPECTRAL_ARROW"
+GUI_INVITE_PLAYER_ICON: "https://textures.minecraft.net/texture/7b43b23189dcf1326da4253d1d7582ef5ad29f6c27b171feb17e31d084e3a7d"
+GUI_KICK_PLAYER_ICON: "minecraft:OAK_DOOR"
+GUI_CREATE_RANK_ICON: "minecraft:LADDER"
+GUI_DELETE_RANK_ICON: "minecraft:BARRIER"
+GUI_MANAGE_RANK_ICON: "minecraft:PAPER"
+GUI_MANAGE_CLAIMS_ICON: "minecraft:GRASS_BLOCK"
+GUI_MANAGE_DIPLOMACY_ICON: "minecraft:FLOWER_POT"
+GUI_MANAGE_MOB_SPAWN_ICON: "minecraft:CREEPER_HEAD"
+GUI_CREATE_PROPERTY_ICON: "minecraft:OAK_SIGN"
+GUI_MANAGE_PROPERTY_ICON: "minecraft:WRITABLE_BOOK"
+GUI_ADMINISTRATOR_ICON: "minecraft:DIAMOND"
