@@ -4,6 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
@@ -48,6 +49,12 @@ public abstract class TerritoryMenu extends BasicGui {
                 .setName(Lang.GUI_TOWN_NAME.get(langType, territoryData.getName()))
                 .setDescription(lore)
                 .setAction( action -> {
+
+                    if(action.isRightClick()){
+                        PlayerGUI.openSelectHeadTerritoryMenu(player, territoryData, 0);
+                        return;
+                    }
+
                     if(action.getCursor() == null){
                         return;
                     }
@@ -60,14 +67,10 @@ public abstract class TerritoryMenu extends BasicGui {
                         return;
                     }
                     ItemStack itemMaterial = action.getCursor();
-                    if(itemMaterial.getType() == Material.AIR && action.isRightClick()){
-                        PlayerGUI.openSelectHeadTerritoryMenu(player, territoryData, 0);
-                    }
-                    else {
-                        territoryData.setIcon(new CustomIcon(itemMaterial));
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get(langType));
-                        open();
-                    }
+                    territoryData.setIcon(new CustomIcon(itemMaterial));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get(langType));
+                    SoundUtil.playSound(player, SoundEnum.GOOD);
+                    open();
                 })
                 .asGuiItem(player);
     }

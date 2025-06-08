@@ -51,27 +51,6 @@ public abstract class SettingsMenus extends BasicGui {
         return IconManager.getInstance().get(IconKey.TERRITORY_ICON)
                 .setName(Lang.GUI_TOWN_NAME.get(langType, territoryData.getName()))
                 .setDescription(lore)
-                .setAction(action -> {
-                    if (action.getCursor() == null) {
-                        return;
-                    }
-                    if (action.getCursor().getType() == Material.AIR) {
-                        return;
-                    }
-                    if (!territoryData.doesPlayerHavePermission(playerData, RolePermission.TOWN_ADMINISTRATOR)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(langType));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
-                        return;
-                    }
-                    ItemStack itemMaterial = action.getCursor();
-                    if (itemMaterial.getType() == Material.AIR && action.isRightClick()) {
-                        PlayerGUI.openSelectHeadTerritoryMenu(player, territoryData, 0);
-                    } else {
-                        territoryData.setIcon(new CustomIcon(itemMaterial));
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get(langType));
-                        open();
-                    }
-                })
                 .asGuiItem(player);
     }
 
