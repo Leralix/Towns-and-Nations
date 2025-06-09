@@ -29,6 +29,7 @@ public enum LangType {
     POLISH("pl", "https://textures.minecraft.net/texture/7fa269b8a663f52d6323dcd92edcc83d5f91d508afa819882deda15375f03d"),
     PORTUGUESE("pt-PT", "https://textures.minecraft.net/texture/ebd51f4693af174e6fe1979233d23a40bb987398e3891665fafd2ba567b5a53a"),
     PORTUGUESE_BRAZIL("pt-BR", "https://textures.minecraft.net/texture/9a46475d5dcc815f6c5f2859edbb10611f3e861c0eb14f088161b3c0ccb2b0d9"),
+    VIETNAMESE("vi", "https://textures.minecraft.net/texture/8a57b9d7dd04169478cfdb8d0b6fd0b8c82b6566bb28371ee9a7c7c1671ad0bb"),
     ROMANIAN("ro", "https://textures.minecraft.net/texture/dceb1708d5404ef326103e7b60559c9178f3dce729007ac9a0b498bdebe46107"),
     RUSSIAN("ru", "https://textures.minecraft.net/texture/16eafef980d6117dabe8982ac4b4509887e2c4621f6a8fe5c9b735a83d775ad"),
     SERBIAN("sr", "https://textures.minecraft.net/texture/76461165e48b86c56bb98f48b201aef05a30c914e90f4515f05219c6827e7e1d"),

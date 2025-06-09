@@ -1004,9 +1004,7 @@ public enum Lang {
             langFolder.mkdir();
         }
 
-        //for(LangType langType : LangType.values()) {
-
-            LangType langType = serverLang;
+        for(LangType langType : LangType.values()) {
 
             File specificLangFolder = new File(langFolder, langType.getCode());
             if(!specificLangFolder.exists()) {
@@ -1031,7 +1029,7 @@ public enum Lang {
             }
             completedLang.put(langType, numberOfTranslation);
             translations.put(langType, specificTranslation);
-        //}
+        }
     }
 
     public static LangType getServerLang() {
