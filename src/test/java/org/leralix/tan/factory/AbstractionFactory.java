@@ -56,7 +56,7 @@ public class AbstractionFactory {
         File langConf = new File(classLoader.getResource("fakeLang.yml").getFile());
         ConfigUtil.addCustomConfig(langConf, ConfigTag.LANG);
 
-        Lang.loadTranslations(new File(classLoader.getResource("lang").getFile()), "en", false);
+        Lang.loadTranslations(new File(classLoader.getResource("lang").getFile()), "en");
 
         EconomyUtil.register(new TanEconomyStandalone());
     }

@@ -997,10 +997,6 @@ public enum Lang {
     static final String IN_THIS_LANGUAGE_FILE = " in this language file.";
 
     public static void loadTranslations(File langFolder, String fileTag) {
-        loadTranslations(langFolder, fileTag, true);
-    }
-
-    public static void loadTranslations(File langFolder, String fileTag, boolean saveFile) {
 
         serverLang = LangType.fromCode(fileTag);
 
@@ -1008,7 +1004,9 @@ public enum Lang {
             langFolder.mkdir();
         }
 
-        for(LangType langType : LangType.values()) {
+        //for(LangType langType : LangType.values()) {
+
+            LangType langType = serverLang;
 
             File specificLangFolder = new File(langFolder, langType.getCode());
             if(!specificLangFolder.exists()) {
@@ -1033,7 +1031,7 @@ public enum Lang {
             }
             completedLang.put(langType, numberOfTranslation);
             translations.put(langType, specificTranslation);
-        }
+        //}
     }
 
     public static LangType getServerLang() {

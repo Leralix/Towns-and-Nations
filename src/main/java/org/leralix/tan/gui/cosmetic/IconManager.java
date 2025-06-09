@@ -36,7 +36,7 @@ public class IconManager {
 
                 iconMap.put(iconKey, iconType);
             } catch (IllegalArgumentException e) {
-                plugin.getLogger().warning("Clé inconnue dans le fichier config.yml : " + key);
+                plugin.getLogger().warning("Unkown key : " + key);
             }
         }
     }
