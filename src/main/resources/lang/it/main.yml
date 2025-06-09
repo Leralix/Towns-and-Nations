@@ -44,8 +44,6 @@ language:
   LANDMARK_STORED_UPDATED: "{0} ({1})§f è stato impostato un limite a §e{2}"
   LANDMARK_NOT_FOUND: "§cLuogo d'interessa non trovato"
   #Placeholder API
-  TRUE: "vero"
-  FALSE: "falso"
   INVALID_VALUE: "Valore non valido"
   INVALID_ID: "Identificativo non valido"
   INVALID_NAME: "Nome non valido"
@@ -99,9 +97,7 @@ language:
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Hai annullato la tua domanda"
   PLAYER_TOWN_NOT_RECRUITING: "§cQuesta città non sta reclutando"
   #BROADCAST
-  TOWN_CREATE_SUCCESS_BROADCAST: "§e{0}§f ha creato con successo la città: §9{1}"
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c ha lasciato la città!"
-  REGION_CREATE_SUCCESS_BROADCAST: "§e{0}§f ha creato con successo la regione: §b{1}"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fLa città §9{0}§f è stata espulsa dalla regione"
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "Reclama quest'area"
@@ -155,8 +151,6 @@ language:
   SET_MONEY_COMMAND_SUCCESS: "Impostato con successo il saldo di §3{0}§f a §6{1}{MONEY_CHAR}"
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Apri la GUI della città e della nazione"
-  #Newsletter command
-  OPEN_NEWSLETTER_DESC: "Ricevi le ultime notizie"
   #Pay command
   PAY_COMMAND_DESC: "Dai denaro ad un altro giocatore"
   PAY_MINIMUM_REQUIRED: "§cDevi inviare almeno 1{MONEY_CHAR}"
@@ -232,6 +226,8 @@ language:
   PLAYER_SECOND_POINT_SET: "Secondo punto impostato a §9{0}"
   PLAYER_PLACE_SIGN: "Fare clic con il tasto destro per posizionare un cartello sul blocco"
   LEFT_CLICK_TO_SELECT: "§fClick sinistro per selezionare"
+  #Newsletter menu
+  OPEN_NEWSLETTER_DESC: "Ricevi le ultime notizie"
 
 
 

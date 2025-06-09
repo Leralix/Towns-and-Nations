@@ -247,21 +247,6 @@ language:
   RELATION_NON_AGGRESSION_NAME: "Non-aggression"
   RELATION_EMBARGO_NAME: "Embargo"
   RELATION_HOSTILE_NAME: "Hostile"
-
-  ##GUI
-  #GUI generic
-  GUI_GENERIC_CLICK_TO_OPEN: "§7▶ Click to open"
-  GUI_GENERIC_CLICK_TO_PROCEED: "§7▶ Click to proceed"
-  GUI_GENERIC_CLICK_TO_MODIFY: "§7▶ Click to modify"
-  GUI_GENERIC_LEFT_CLICK_TO_MODIFY: "§7▶ Left click to modify"
-  GUI_GENERIC_CLICK_TO_CREATE: "§7▶ Click to create"
-  GUI_GENERIC_CLICK_TO_ASSIGN: "§7▶ Click to assign"
-  GUI_CLICK_TO_SET_AS_DEFAULT: "§7▶ Click to set this role as default"
-  GUI_GENERIC_CLICK_TO_SWITCH_SCOPE: "§7▶ Click to change scope"
-  GUI_GENERIC_CLICK_TO_SHOW: "§7▶ Click to show"
-  GUI_GENERIC_CLICK_TO_RENAME: "§7▶ Click to rename"
-
-
   GUI_GENERIC_CLICK_TO_OPEN_HISTORY: "§fLeft click to open the history"
   GUI_GENERIC_CLICK_TO_DELETE: "§fClick to delete"
   GUI_GENERIC_RIGHT_CLICK_TO_DELETE: "§fRight click to delete"
@@ -273,8 +258,6 @@ language:
   LEFT_CLICK_TO_ACCEPT: "§fLeft click to accept"
   RIGHT_CLICK_TO_REFUSE: "§fRight click to refuse"
   CANNOT_BE_MODIFIED: "§cThis cannot be modified"
-
-
   #Main menu
   GUI_KINGDOM_ICON: "§aKingdom"
   GUI_KINGDOM_ICON_DESC1: "§fIn development"
@@ -286,108 +269,47 @@ language:
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§fJoin or create your own town"
   GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fCurrent town: {0}"
   GUI_TOWN_ICON_DESC2_HAVE_TOWN: "§fTown rank: {0}"
-  GUI_PLAYER_MENU_ICON: "§aYour profile"
-
-  #Player manu
-  GUI_PLAYER_ICON: "§a{0}"
   GUI_YOUR_BALANCE: "§aYour Balance"
-  GUI_YOUR_BALANCE_DESC1: "§fBalance : §6{0}{MONEY_CHAR}"
-  GUI_PLAYER_MANAGE_PROPERTIES: "§aProperties"
   GUI_PLAYER_MANAGE_PROPERTIES_DESC1: "§fCreate, delete or manage your properties"
   GUI_PLAYER_NEWSLETTER: "§aNewsletter"
-  GUI_PLAYER_NEWSLETTER_DESC1: "§fYou have §e{0}§f unread news"
-  GUI_LANGUAGE_BUTTON: "§aLanguage"
-  GUI_LANGUAGE_BUTTON_DESC1: "§fServer default language: §e{0}"
-  GUI_LANGUAGE_BUTTON_DESC2: "§fYour language: §e{0}"
-
   #Newsletter menu
   OPEN_NEWSLETTER_DESC: "Get the latest news"
-  MARK_ALL_AS_READ: "§aMark all as read"
-  NEWSLETTER_SCOPE_ICON: "§aNewsletter scope"
-  NEWSLETTER_SCOPE_ICON_DESC1: "§fCurrent scope: §e{0}"
-  NEWSLETTER_SHOW_ALL: "§9Show all news"
-  NEWSLETTER_SHOW_ONLY_UNREAD: "§9Show only unread news"
-
   #Town menu - no town
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCreate a new town"
   GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fCost : §6{0}{MONEY_CHAR}"
   GUI_NO_TOWN_JOIN_A_TOWN: "§aJoin a town"
   GUI_NO_TOWN_JOIN_A_TOWN_DESC1: "§fThere are currently §e{0}§f towns in total"
-
-  #Town menu - have town
-  GUI_TOWN_NAME: "§a{0}"
-  GUI_TOWN_INFO_CHANGE_ICON: "§7▶ Drag and drop an item to change the town's icon"
-  RIGHT_CLICK_TO_SELECT_MEMBER_HEAD: "§7▶ Right click to select a member as icon"
   GUI_TOWN_TREASURY_ICON: "§aTreasury"
   GUI_TOWN_TREASURY_ICON_DESC1: "§fManage taxes and town treasury"
   GUI_TOWN_MEMBERS_ICON: "§aMembers"
-  GUI_TOWN_MEMBERS_ICON_DESC1: "§fManage members roles and applications"
   GUI_CLAIM_ICON: "§aLand"
   GUI_CLAIM_ICON_DESC1: "§fManage town territory authorizations"
-  GUI_BROWSE_TERRITORY_ICON: "§eBrowse all territory"
   GUI_RELATION_ICON: "§aDiplomacy"
   GUI_RELATION_ICON_DESC1: "§fManage foreign diplomacy/policy"
-
   #Manage members menu
   GUI_TOWN_MEMBER_DESC1: "§fRank: §e{0}"
   GUI_TOWN_MEMBER_DESC2: "§fCurrent balance: §6{0}{MONEY_CHAR}"
-  GUI_TOWN_MEMBER_DESC3: "§c▶ Right click to kick player"
   GUI_TOWN_MEMBERS_MANAGE_ROLES: "§aManage ranks"
   GUI_TOWN_MEMBERS_MANAGE_APPLICATION: "§aManage application"
-  GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1: "§fThere are §e{0}§f applications"
-
-  #Manage ranks menu
-  GUI_RANK_NUMBER_PLAYER_WITH_ROLE: "§e{0}§f players"
   GUI_TOWN_MEMBERS_ADD_NEW_ROLES: "§aCreate a new rank"
-  GUI_TOWN_MEMBERS_ADD_NEW_ROLES_DESC1: "§e{0}§f ranks max"
-
   #Configure rank menu
   GUI_TOWN_MEMBERS_ROLE_NAME: "§a{0}"
-  GUI_TOWN_MEMBERS_ROLE_NAME_DESC1: "§7▶ Drag and drop an item to change the rank's icon"
-  GUI_TOWN_MEMBERS_ROLE_RANK_UP_INFERIOR_RANK: "§cYou cannot change the level of a rank that is equal to or higher than your own (your current level: {0}§c)."
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1: "§7▶ Left click to increase level"
-  GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2: "§7▶ Right click to lower level"
   GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO: "§aList of players with this role:"
-  GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC: "§f➥ {0}"
-  GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1: "§7▶ Left click to add a player to this rank"
   GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION: "§aManage permissions"
-  GUI_LOWER_SALARY: "§aLower salary"
   GUI_TOWN_MEMBERS_ROLE_SALARY: "§aSalary"
   GUI_TOWN_MEMBERS_ROLE_SALARY_DESC1: "§fCurrent role salary: §6{0}{MONEY_CHAR}"
-  GUI_INCREASE_SALARY: "§aIncrease salary"
   GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME: "§aRename the rank"
-  GUI_TOWN_MEMBERS_ROLE_PAY_TAXES_NAME: "§aTax exemption"
-  GUI_TOWN_MEMBERS_ROLE_PAY_TAXES: "§fThis role §apays taxes"
-  GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES: "§fThis rank §cdoes not pay taxes"
-  GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT: "§aDefault role"
-  GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT: "§fThis rank §ais§f the default role"
-  GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT: "§fThis rank §cis not§f the default role"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fPlayers that are invited to the town automatically join the default rank"
-  GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2: "§7▶ Left click to mark this role as default"
-  GUI_TOWN_MEMBERS_ROLE_DELETE: "§aDelete the rank"
-
   #Properties menu
   GUI_PROPERTY_CHANGE_NAME: "§aChange property name"
   GUI_PROPERTY_CHANGE_NAME_DESC1: "§fCurrent name: §9{0}"
   GUI_PROPERTY_CHANGE_DESCRIPTION: "§aChange property description"
   GUI_PROPERTY_CHANGE_DESCRIPTION_DESC1: "§fCurrent description: §7§o\"{0}\""
-  GUI_PROPERTY_SALE: "§aSelling the property"
-  GUI_PROPERTY_FOR_SALE: "§a✔ For sale"
-  GUI_PROPERTY_NOT_FOR_SALE: "§c✘ Not for sale"
-  GUI_PROPERTY_FOR_RENT: "§a✔ For rent"
-  GUI_PROPERTY_NOT_FOR_RENT: "§c✘ Not for rent"
-  GUI_PROPERTY_RENTED_BY: "§f➥Rented by: §3{0}"
-  PROPERTY_BELONGS_TO: "§f➥Owned by: §3{0}"
-  PROPERTY_RENTED_BY: "§f➥Rented by: §3{0}"
-  PROPERTY_NOT_FOR_SALE_OR_RENT: "§cThis property is not available for sale or rent"
   PROPERTY_ALREADY_RENTED: "§cThis property is already rented"
-  GUI_PROPERTY_DELETE_PROPERTY: "§aDelete"
-  GUI_PROPERTY_DELETE_PROPERTY_CONFIRM: "§fDelete the property : §e{0}"
   GUI_PROPERTY_AUTHORIZE_PLAYER: "§aAuthorize player"
   PLAYER_REMOVED_FROM_PROPERTY: "§c{0} has been removed from the property"
   PLAYER_ADDED_TO_PROPERTY: "§a{0} has been added to the property"
   GUI_PROPERTY_PLAYER_LIST: "§aAuthorized players list"
-  GUI_PROPERTY_PLAYER_LIST_DESC1: "§e{0}§f authorized players"
   GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER: "§cRight click to expel the renter"
   PROPERTY_RENTER_EXPELLED_OWNER_SIDE: "§cThe renter has been expelled"
   PROPERTY_RENTER_EXPELLED_RENTER_SIDE: "§cYou have been expelled from the property: §9{0}"
@@ -400,16 +322,10 @@ language:
   GUI_PROPERTY_DESCRIPTION: "§7§o\"{0}\""
   GUI_PROPERTY_STRUCTURE_OWNER: "§fCity: §9{0}"
   GUI_PROPERTY_OWNER: "§fOwner: §3{0}"
-  GUI_PROPERTY_CHANGE_ICON: "§7▶ Drag and drop an item to change the icon"
-
-  #Stronghold
-  GUI_STRONGHOLD: "§aStronghold"
   GUI_NO_STRONGHOLD: "§fYou do not have a stronghold because you have no claimed chunks"
   GUI_STRONGHOLD_LOCATION: "§fLocation: §9x:{0}§f, §9z:{1}"
-
   #Treasury
   GUI_TREASURY_STORAGE: "§aTreasury"
-  GUI_TREASURY_STORAGE_DESC1: "§fCurrent: §6{0}{MONEY_CHAR}"
   TOTAL_ESTIMATED_EVOLUTION: "§fEstimated evolution: §6{0}"
   PROPERTY_TAX_LINE: "§f -From rented properties : {0}"
   PLAYER_TAX_LINE: "§f -From taxes: {0}"
@@ -419,7 +335,6 @@ language:
   OVERLORD_TAX_LINE: "§f -From overlord taxes: {0}"
   PLAYER_SALARY_LINE: "§f -From salary: {0}"
   TERRITORY_UPKEEP_LINE: "§f -From territory upkeep: {0}"
-
   #Attack GUI
   GUI_ATTACK_ADD_TIME: "§aAdd time"
   GUI_ATTACK_REMOVE_TIME: "§aRemove time"
@@ -428,30 +343,14 @@ language:
   GUI_ATTACK_SET_TO_START_IN: "§aAttack will start in §6{0}"
   GUI_CONFIRM_ATTACK: "§aConfirm attack"
   GUI_CONFIRM_ATTACK_DESC1: "§fConfirm attack on §6{0}"
-
-  #Property GUI
-  GUI_BUYING_PRICE: "§fPrice: §6{0}{MONEY_CHAR} §f(§6{1}{MONEY_CHAR}§8 + {2}{MONEY_CHAR}§f)"
-  GUI_RENTING_PRICE: "§fPrice: §6{0}{MONEY_CHAR}/day §f(§6{1}{MONEY_CHAR}§8 + {2}{MONEY_CHAR}§f)"
   GUI_TOWN_RATE: "§fTown rate: §6{0}%"
-  GUI_LEFT_CLICK_TO_SWITCH_SALE: "§7▶ Left click to allow rent"
-  GUI_LEFT_CLICK_TO_SWITCH_RENT: "§7▶ Left click to allow sale"
-  GUI_RIGHT_CLICK_TO_CHANGE_PRICE: "§7▶ Right click to change the price"
   GUI_PROPERTY_DRAWN_BOX: "§aShow property boundaries"
   GUI_PROPERTY_DRAWN_BOX_DESC1: "§fLeft click to show the property boundaries"
   CONFIRM_RENT: "§aRent property"
-  CONFIRM_RENT_DESC1: "§fPrice : §6{0}{MONEY_CHAR}/day"
   CANCEL_RENT: "§cCancel rent"
-  CONFIRM_SALE: "§aBuy property"
-  CONFIRM_SALE_DESC1: "§fPrice: §6{0}{MONEY_CHAR}"
   CANCEL_SALE: "§cCancel sale"
   SELL_PROPERTY: "§aSell property"
   RENT_PROPERTY: "§aRent property"
-
-  #Property menu
-  GUI_PLAYER_NEW_PROPERTY: "§aCreate a new property"
-  GUI_PROPERTY_CAP_FULL: "§fCurrent properties : §c{0}/{1}"
-  GUI_PROPERTY_CAP: "§fCurrent properties : §a{0}/{1}"
-
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§eStill in development"
   GUI_BACK_ARROW: "Return"
@@ -466,18 +365,7 @@ language:
   GUI_INCREASE_10PERCENT_DESC: "§fShift + click : §a+10%"
   GUI_DECREASE_1PERCENT_DESC: "§fClick : §c-1%"
   GUI_DECREASE_10PERCENT_DESC: "§fShift + click : §c-10%"
-
-  #Chunk settings
-  GUI_TOWN_CHUNK_PLAYER: "§aInteractions"
   CHUNK_GENERAL_SETTINGS: "§aGeneral settings"
-  GUI_TOWN_CHUNK_MOB: "§aMob spawn"
-
-  #Player chunk settings
-  GUI_RIGHT_CLICK_TO_ADD_SPECIFIC_PLAYER: "§7▶ Right click to add a specific player"
-
-
-
-
   #GUI
   ##menu headers
   HEADER_MAIN_MENU: "Main menu"
@@ -486,7 +374,6 @@ language:
   HEADER_NEWSLETTER: "Newsletter"
   HEADER_PLAYER_PROPERTIES: "Properties"
   HEADER_PLAYER_SPECIFIC_PROPERTY: "Property : {0}"
-  HEADER_TOWN_SPECIFIC_PROPERTY: "Property : {0}"
   HEADER_NO_TOWN_MENU: "Town"
   HEADER_TOWN_LIST: "Town list | page {0}"
   HEADER_TOWN_MENU: "Town : {0}"
@@ -551,11 +438,7 @@ language:
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC1: "§fApplication date: {0}"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fLeft click to§a accept"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§fRight click to§c refuse"
-
   GUI_LANGUAGE_CHANGED: "§aLanguage changed to: {0}"
-
-
-
   GUI_TOWN_LEVEL_ICON: "§aTown level"
   GUI_TOWN_LEVEL_ICON_DESC1: "§fUpgrade the town"
   GUI_TOWN_SETTINGS_ICON: "§aSettings"
@@ -567,8 +450,6 @@ language:
   ATTACK_WILL_NOT_TRIGGER_IF_NOT_APPROVED: "§cThe attack will not trigger if not approved"
   GUI_TOWN_PROPERTIES_ICON: "§aTown properties"
   GUI_TOWN_PROPERTIES_ICON_DESC1: "§fManage private properties"
-
-
   GUI_TREASURY_LOWER_TAX: "§aLower the tax"
   GUI_TREASURY_CANT_TAX_LESS: "§cYou cannot tax less that §60{MONEY_CHAR}"
   GUI_TREASURY_CANT_TAX_LESS_PERCENT: "§cYou cannot tax less than :§6 0%"
@@ -667,12 +548,8 @@ language:
   GUI_TOWN_MEMBER_CANT_KICK_YOURSELF: "§cYou cannot kick yourself, you can leave the town from the town settings menu"
   GUI_TOWN_MEMBER_KICKED_SUCCESS: "§a{0}§f has been kicked out of the town"
   GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER: "§cYou have been kicked out of the town"
-
-
-
   GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED: "§cYou need to have an item in your cursor in order to change the icon"
   GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS: "§aSuccessfully changed the icon"
-
   GUI_TOWN_MEMBERS_ROLE_TAXES_DESC1: "§fLeft click to change"
   GUI_TOWN_MEMBERS_ROLE_PRIORITY_X: "Rank {0}"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT: "§cThis rank is already the default rank"
@@ -918,9 +795,7 @@ language:
   SIGN_NAME: "{0}"
   SIGN_PLAYER: "{0}"
   SIGN_FOR_SALE: "For sale"
-  SIGN_SALE_PRICE: "{0}{MONEY_CHAR}"
   SIGN_RENT: "For rent"
-  SIGN_RENT_PRICE: "{0}{MONEY_CHAR}/day"
   SIGN_RENTED_BY: "Rented by:"
   SIGN_NOT_FOR_SALE: "Not for sale"
   #PlaceHolderAPI
@@ -1009,10 +884,6 @@ language:
   GUI_JOIN_DEFENDING_SIDE: "§aJoin the defending side"
   GUI_JOIN_DEFENDING_SIDE_DESC1: "{0}§f joins the defending side against :"
   GUI_WAR_GOAL_INFO: "{0}"
-  BROWSE_SCOPE: "§fScope : {0}"
-  BROWSE_ALL_NAME: "§aAll"
-  BROWSE_TOWNS_NAME: "§9Towns"
-  BROWSE_REGIONS_NAME: "§bRegions"
   MAIN_ATTACKER_NAME: "Main attacker"
   MAIN_DEFENDER_NAME: "Main defender"
   OTHER_ATTACKER_NAME: "Other attackers"
@@ -1048,7 +919,6 @@ language:
   NEWSLETTER_JOIN_REGION_PROPOSAL: "§fJoin region proposal"
   NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1: "{0}§f has asked {1}§f to join its region"
   NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2: "§fLeft click to open the proposal"
-
   NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ: "§fRight click to mark as read"
   NEWSLETTER_SUBJUGATE_PROPOSAL: "§fSubjugate proposal from {0}"
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC1: "§f{0}§f asked {1}§f for its vassalage"
@@ -1079,9 +949,7 @@ language:
   ATTACK_DECLARED_TITLE: "Attack declared"
   ATTACK_DECLARED: "§fAn attack has been declared by {0} against {1}"
   ATTACK_WON_BY_ATTACKER_TITLE: "Attackers won"
-  ATTACK_WON_BY_ATTACKER: "§fThe battle between {0} and {1} has been won by {2}"
   ATTACK_WON_BY_DEFENDER_TITLE: "Defenders won"
-  ATTACK_WON_BY_DEFENDER: "§fThe battle between {0} and {1} has been won by {2}"
   ATTACK_CANCELLED_TITLE: "Attack cancelled"
   ATTACK_CANCELLED: "{0}§f has cancelled their attack on {1}"
   JOIN_REGION_PROPOSAL_NEWSLETTER: "{0}§f has proposed to join the region {1}"

@@ -67,8 +67,6 @@ language:
   SET_MONEY_COMMAND_SUCCESS: "Saldo van §3{0}§fis succesvol gewijzigd naar §6{1}{MONEY_CHAR}"
   #Town and Nation GUI
   TOWN_GUI_COMMAND_DESC: "Open de stad en natie GUI"
-  #Newsletter command
-  OPEN_NEWSLETTER_DESC: "Ontvang het laatste nieuws"
   #Pay command
   PAY_COMMAND_DESC: "Geef geld aan een andere speler"
   PAY_MINIMUM_REQUIRED: "§cU moet minstens 1{MONEY_CHAR} sturen"
@@ -114,6 +112,8 @@ language:
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cU heeft niet genoeg geld om deze actie uit te voeren"
   LEADER_NOT_ONLINE: "§cDe burgermeester is niet online"
+  #Newsletter menu
+  OPEN_NEWSLETTER_DESC: "Ontvang het laatste nieuws"
 
 
 
