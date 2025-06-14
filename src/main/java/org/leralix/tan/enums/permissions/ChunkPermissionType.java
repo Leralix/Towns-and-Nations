@@ -1,11 +1,8 @@
 package org.leralix.tan.enums.permissions;
 
-import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.utils.HeadUtils;
 
 public enum ChunkPermissionType {
     INTERACT_CHEST(IconKey.GUI_MANAGE_CHEST_ACCESS_ICON, Lang.GUI_TOWN_CLAIM_SETTINGS_CHEST),

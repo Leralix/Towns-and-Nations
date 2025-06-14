@@ -1,13 +1,17 @@
 package org.leralix.tan.api.wrappers;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.TerritoryUtil;
-import org.tan.api.interfaces.TanClaimedChunk;
-import org.tan.api.interfaces.TanRegion;
-import org.tan.api.interfaces.TanTerritory;
-import org.tan.api.interfaces.TanTown;
+import org.tan.api.enums.EChunkPermission;
+import org.tan.api.interfaces.*;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -101,5 +105,15 @@ public class ClaimedChunkWrapper implements TanClaimedChunk {
     @Override
     public boolean canPvpHappen() {
         return claimedChunk.canPVPHappen();
+    }
+
+    @Override
+    public boolean canPlayerDoAction(TanPlayer tanPlayer, EChunkPermission permission, Location location) {
+        Player player = Bukkit.getPlayer(tanPlayer.getUUID());
+        if(player == null) {
+            return false; // Player is not online
+        }
+        ChunkPermissionType chunkPermissionType = ChunkPermissionType.valueOf(permission.name());
+        return claimedChunk.canPlayerDo(player, chunkPermissionType, location);
     }
 }

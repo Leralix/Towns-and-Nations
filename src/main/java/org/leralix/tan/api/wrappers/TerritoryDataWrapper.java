@@ -1,10 +1,14 @@
 package org.leralix.tan.api.wrappers;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.tan.api.enums.ETownPermission;
 import org.tan.api.interfaces.TanClaimedChunk;
 import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.TanTerritory;
@@ -111,6 +115,18 @@ public class TerritoryDataWrapper implements TanTerritory {
     @Override
     public TanTerritory getOverlord() {
         return  TerritoryDataWrapper.of(territoryData.getOverlord());
+    }
+
+    @Override
+    public boolean canPlayerDoAction(TanPlayer tanPlayer, ETownPermission permission) {
+
+        Player player = Bukkit.getPlayer(tanPlayer.getUUID());
+        if (player == null) {
+            return false; // Player is not online
+        }
+        RolePermission playerPermission = RolePermission.valueOf(permission.name());
+
+        return territoryData.doesPlayerHavePermission(player, playerPermission);
     }
 
     @Override

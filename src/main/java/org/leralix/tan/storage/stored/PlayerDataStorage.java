@@ -47,6 +47,7 @@ public class PlayerDataStorage {
     public PlayerData get(OfflinePlayer player) {
         return get(player.getUniqueId().toString());
     }
+
     public PlayerData get(Player player) {
         return get(player.getUniqueId().toString());
     }
