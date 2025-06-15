@@ -9,7 +9,9 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.integration.worldguard.WorldGuardManager;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.TerritoryUtil;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
@@ -76,7 +78,20 @@ public abstract class ClaimedChunk2 {
         return this.worldUUID;
     }
 
-    public abstract boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location);
+    public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location){
+
+
+        var worldGuardManager = WorldGuardManager.getInstance();
+        if(worldGuardManager.isEnabled()){
+            if(worldGuardManager.isHandledByWorldGuard(location) && Constants.isWorldGuardEnabledFor(getType())) {
+                return worldGuardManager.isActionAllowed(player, location, permissionType);
+            }
+        }
+
+        return canPlayerDoInternal(player, permissionType, location);
+    }
+
+    protected abstract boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location);
 
     void playerCantPerformAction(Player player) {
         player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_ACTION_NO_PERMISSION.get(player));
@@ -125,5 +140,6 @@ public abstract class ClaimedChunk2 {
         return world.getChunkAt(x, z);
     }
 
+    public abstract ChunkType getType();
 
 }

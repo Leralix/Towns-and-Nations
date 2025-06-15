@@ -44,7 +44,7 @@ public class RegionClaimedChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
+    protected boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
         //Location is in a property and players owns or rent it
@@ -168,6 +168,11 @@ public class RegionClaimedChunk extends ClaimedChunk2 {
         String pvpEnabled = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("pvpEnabledInClaimedChunks", "ALWAYS");
         GriefAllowed griefAllowed = GriefAllowed.valueOf(pvpEnabled);
         return griefAllowed.canGrief(getRegion(), GeneralChunkSetting.ENABLE_PVP);
+    }
+
+    @Override
+    public ChunkType getType() {
+        return ChunkType.REGION;
     }
 
 }

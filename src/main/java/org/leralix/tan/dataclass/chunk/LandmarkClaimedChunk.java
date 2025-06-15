@@ -34,7 +34,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
+    protected boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location) {
 
         if (permissionType == ChunkPermissionType.INTERACT_CHEST ||
                 permissionType == ChunkPermissionType.INTERACT_DOOR ||
@@ -110,5 +110,10 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
     @Override
     public boolean canPVPHappen() {
         return true;
+    }
+
+    @Override
+    public ChunkType getType() {
+        return ChunkType.LANDMARK;
     }
 }

@@ -19,6 +19,7 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.economy.TanEconomyStandalone;
 import org.leralix.tan.economy.VaultManager;
 import org.leralix.tan.gui.cosmetic.IconManager;
+import org.leralix.tan.integration.worldguard.WorldGuardManager;
 import org.leralix.tan.listeners.*;
 import org.leralix.tan.listeners.chat.ChatListener;
 import org.leralix.tan.newsletter.storage.NewsletterStorage;
@@ -203,10 +204,16 @@ public final class TownsAndNations extends JavaPlugin {
         getCommand("tandebug").setExecutor(new DebugCommandManager());
         getCommand("tanserver").setExecutor(new ServerCommandManager());
 
+        getLogger().log(Level.INFO,"[TaN] -Registering Dependencies");
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            getLogger().log(Level.INFO,"[TaN] -Loading PlaceholderAPI");
+            getLogger().log(Level.INFO,"[TaN] -Registering PlaceholderAPI");
             new PlaceHolderAPI().register();
+        }
+
+        if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
+            getLogger().log(Level.INFO,"[TaN] -Registering WorldGuard");
+            WorldGuardManager.getInstance().register();
         }
 
         checkForUpdate();

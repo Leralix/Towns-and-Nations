@@ -389,6 +389,17 @@ TimeBeforeClearingNewsletter: 7
 #Database url cannot be configured
 
 ########################
+##     Extensions     ##
+########################
+
+##WorldGuard
+#Defines which chunk's properties will be override by a zone
+worldguard_override_wilderness : true
+worldguard_override_town : false
+worldguard_override_region : false
+worldguard_override_landmark : false
+
+########################
 ##       Storage      ##
 ########################
 
