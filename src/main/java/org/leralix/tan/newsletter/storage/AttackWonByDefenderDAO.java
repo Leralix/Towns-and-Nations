@@ -18,7 +18,7 @@ public class AttackWonByDefenderDAO extends NewsletterSubDAO<AttackWonByDefender
     @Override
     protected void createTableIfNotExists() {
         String sql = "CREATE TABLE IF NOT EXISTS attack_won_by_defender_newsletter (" +
-                "id UUID PRIMARY KEY, " +
+                "id VARCHAR(36) PRIMARY KEY, " +
                 "attackingTerritoryID VARCHAR(36) NOT NULL, " +
                 "defendingTerritoryID VARCHAR(36) NOT NULL" +
                 ")";

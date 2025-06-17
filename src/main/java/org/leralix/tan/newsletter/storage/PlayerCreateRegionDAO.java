@@ -17,7 +17,7 @@ public class PlayerCreateRegionDAO extends NewsletterSubDAO<RegionCreationNews> 
     @Override
     protected void createTableIfNotExists() {
         String sql = "CREATE TABLE IF NOT EXISTS player_create_region_newsletter (" +
-                "id UUID PRIMARY KEY, " +
+                "id VARCHAR(36) PRIMARY KEY, " +
                 "playerID VARCHAR(36) NOT NULL, " +
                 "regionID VARCHAR(36) NOT NULL" +
                 ")";

@@ -49,7 +49,7 @@ public class NewsletterDAO {
 
     private void createTableIfNotExists() {
         String sql = "CREATE TABLE IF NOT EXISTS newsletter (" +
-                "id UUID PRIMARY KEY, " +
+                "id VARCHAR(36) PRIMARY KEY, " +
                 "type VARCHAR(255) NOT NULL, " +
                 "date_created TIMESTAMP NOT NULL" +
                 ")";
@@ -62,8 +62,8 @@ public class NewsletterDAO {
         }
 
         sql = "CREATE TABLE IF NOT EXISTS newsletter_read (" +
-                "newsletter_id UUID NOT NULL, " +
-                "player_id UUID NOT NULL, " +
+                "newsletter_id VARCHAR(36) NOT NULL, " +
+                "player_id VARCHAR(36) NOT NULL, " +
                 "PRIMARY KEY (newsletter_id, player_id)" +
                 ")";
         try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {

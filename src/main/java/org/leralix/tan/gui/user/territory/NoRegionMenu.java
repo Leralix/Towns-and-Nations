@@ -37,7 +37,7 @@ public class NoRegionMenu extends BasicGui {
         gui.open(player);
     }
 
-    private GuiItem getBrowseRegionsButton() {
+    private GuiItem getCreateRegionButton() {
 
         int regionCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
 
@@ -72,7 +72,7 @@ public class NoRegionMenu extends BasicGui {
                 .asGuiItem(player);
     }
 
-    private GuiItem getCreateRegionButton() {
+    private GuiItem getBrowseRegionsButton() {
         return iconManager.get(IconKey.BROWSE_REGION_ICON)
                 .setName(Lang.GUI_REGION_BROWSE.get(playerData))
                 .setDescription(

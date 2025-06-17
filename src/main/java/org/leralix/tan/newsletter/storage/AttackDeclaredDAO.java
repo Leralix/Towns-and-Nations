@@ -18,7 +18,7 @@ public class AttackDeclaredDAO extends NewsletterSubDAO<AttackDeclaredNewsletter
     @Override
     protected void createTableIfNotExists() {
         String sql = "CREATE TABLE IF NOT EXISTS attack_declared_newsletter (" +
-                "id UUID PRIMARY KEY, " +
+                "id VARCHAR(36) PRIMARY KEY, " +
                 "attackingTerritoryID VARCHAR(36) NOT NULL, " +
                 "defendingTerritoryID VARCHAR(36) NOT NULL" +
                 ")";

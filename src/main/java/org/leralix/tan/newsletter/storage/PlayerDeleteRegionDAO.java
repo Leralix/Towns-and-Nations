@@ -18,7 +18,7 @@ public class PlayerDeleteRegionDAO extends NewsletterSubDAO<RegionDeletedNews> {
     @Override
     protected void createTableIfNotExists() {
         String sql = "CREATE TABLE IF NOT EXISTS player_delete_region_newsletter (" +
-                "id UUID PRIMARY KEY, " +
+                "id VARCHAR(36) PRIMARY KEY, " +
                 "playerID VARCHAR(36) NOT NULL, " +
                 "oldRegionName VARCHAR(36) NOT NULL" +
                 ")";

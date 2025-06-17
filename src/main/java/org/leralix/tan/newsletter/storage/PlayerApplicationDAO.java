@@ -16,7 +16,7 @@ public class PlayerApplicationDAO extends NewsletterSubDAO<PlayerJoinRequestNews
     @Override
     protected void createTableIfNotExists() {
         String sql = "CREATE TABLE IF NOT EXISTS player_application_newsletter (" +
-                "id UUID PRIMARY KEY, " +
+                "id VARCHAR(36) PRIMARY KEY, " +
                 "playerID VARCHAR(36) NOT NULL, " +
                 "townID VARCHAR(36) NOT NULL" +
                 ")";

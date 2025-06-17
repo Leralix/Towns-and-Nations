@@ -17,7 +17,7 @@ public class TerritoryVassalProposalDAO extends NewsletterSubDAO<TerritoryVassal
     @Override
     protected void createTableIfNotExists() {
         String sql = "CREATE TABLE IF NOT EXISTS territory_vassal_proposal_newsletter (" +
-                "id UUID PRIMARY KEY, " +
+                "id VARCHAR(36) PRIMARY KEY, " +
                 "proposingTerritoryID VARCHAR(36) NOT NULL, " +
                 "receivingTerritoryID VARCHAR(36) NOT NULL" +
                 ")";
