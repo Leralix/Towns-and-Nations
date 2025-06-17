@@ -3,6 +3,7 @@ package org.leralix.tan.newsletter.storage;
 import org.leralix.tan.newsletter.news.RegionDeletedNews;
 import org.leralix.tan.newsletter.news.TownDeletedNews;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -10,7 +11,7 @@ import java.util.UUID;
 public class PlayerDeleteRegionDAO extends NewsletterSubDAO<RegionDeletedNews> {
 
 
-    public PlayerDeleteRegionDAO(Connection connection) {
+    public PlayerDeleteRegionDAO(DataSource connection) {
         super(connection);
     }
 
@@ -22,7 +23,7 @@ public class PlayerDeleteRegionDAO extends NewsletterSubDAO<RegionDeletedNews> {
                 "oldRegionName VARCHAR(36) NOT NULL" +
                 ")";
 
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to create player application newsletter table", e);
@@ -33,7 +34,7 @@ public class PlayerDeleteRegionDAO extends NewsletterSubDAO<RegionDeletedNews> {
     public void save(RegionDeletedNews newsletter) {
         String sql = "INSERT INTO player_delete_region_newsletter (id, playerID, oldRegionName) VALUES (?, ?, ?)";
 
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getPlayerID());
             ps.setString(3, newsletter.getRegionName());
@@ -47,7 +48,7 @@ public class PlayerDeleteRegionDAO extends NewsletterSubDAO<RegionDeletedNews> {
     @Override
     public RegionDeletedNews load(UUID id, long date) {
         String sql = "SELECT playerID, oldRegionName FROM player_delete_region_newsletter WHERE id = ?";
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.setObject(1, id);
             var rs = ps.executeQuery();
             if (rs.next()) {

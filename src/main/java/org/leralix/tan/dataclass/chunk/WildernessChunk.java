@@ -83,7 +83,7 @@ public class WildernessChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public boolean canTerritoryClaim(Optional<Player> player, TerritoryData townData) {
+    public boolean canTerritoryClaim(TerritoryData territoryData) {
         return true;
     }
 

@@ -121,8 +121,16 @@ public abstract class ClaimedChunk2 {
 
     public abstract TextComponent getMapIcon(PlayerData playerData);
 
-    public abstract boolean canTerritoryClaim(Optional<Player> player, TerritoryData territoryData);
+    public abstract boolean canTerritoryClaim(TerritoryData territoryData);
 
+    public boolean canTerritoryClaim(Player player, TerritoryData territoryData) {
+        boolean result = canTerritoryClaim(territoryData);
+        if (result) {
+            return true;
+        }
+        player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(player, getOwner().getBaseColoredName()));
+        return false;
+    }
 
     public abstract boolean isClaimed();
 

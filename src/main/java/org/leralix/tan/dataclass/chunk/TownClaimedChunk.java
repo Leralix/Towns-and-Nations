@@ -166,11 +166,8 @@ public class TownClaimedChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public boolean canTerritoryClaim(Optional<Player> player, TerritoryData territoryData) {
-        if (territoryData.canConquerChunk(this))
-            return true;
-        player.ifPresent(p -> p.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getBaseColoredName())));
-        return false;
+    public boolean canTerritoryClaim(TerritoryData territoryData) {
+        return territoryData.canConquerChunk(this);
     }
 
     @Override

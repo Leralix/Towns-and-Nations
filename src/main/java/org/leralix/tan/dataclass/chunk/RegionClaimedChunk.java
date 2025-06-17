@@ -47,9 +47,9 @@ public class RegionClaimedChunk extends ClaimedChunk2 {
     protected boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location) {
         PlayerData playerData = PlayerDataStorage.getInstance().get(player);
 
-        //Location is in a property and players owns or rent it
+        //Location is in a property, and players own or rent it
         RegionData ownerRegion = getRegion();
-        //Chunk is claimed yet player have no town
+        //Chunk is claimed yet player has no town
         if (!playerData.hasTown()) {
             playerCantPerformAction(player);
             return false;
@@ -133,15 +133,12 @@ public class RegionClaimedChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public boolean canTerritoryClaim(Optional<Player> player, TerritoryData territoryData) {
+    public boolean canTerritoryClaim(TerritoryData territoryData) {
         if (territoryData.canConquerChunk(this))
             return true;
 
-        if (getRegion().getSubjects().contains(territoryData)) {
-            return true; // if the town is part of this specific region, they can claim
-        }
-        player.ifPresent(p -> p.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getBaseColoredName())));
-        return false;
+        // if the town is part of this specific region, they can claim
+        return getRegion().getSubjects().contains(territoryData);
     }
 
     @Override

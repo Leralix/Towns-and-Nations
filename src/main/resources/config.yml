@@ -388,12 +388,26 @@ TimeBeforeClearingNewsletter: 7
 #A full support for databases is not yet available
 #Database url cannot be configured
 
+database:
+    #Database type (sqlite or mysql)
+    type: "sqlite"
+    #Database host (if using sqlite, leave empty)
+    host: "localhost"
+    #Database port (if using sqlite, unused)
+    port: 3306
+    #Database name (if using sqlite, unused)
+    name: "towns_and_nations"
+    #Database user (if using sqlite, unused)
+    user: "user"
+    #Database password (if using sqlite, unused)
+    password: "password"
+
 ########################
 ##     Extensions     ##
 ########################
 
 ##WorldGuard
-#Defines which chunk's properties will be override by a zone
+#Defines which chunk's properties will be overridden by a worldguard region
 worldguard_override_wilderness : true
 worldguard_override_town : false
 worldguard_override_region : false

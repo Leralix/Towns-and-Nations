@@ -3,6 +3,7 @@ package org.leralix.tan.newsletter.storage;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.newsletter.news.DiplomacyAcceptedNews;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -10,7 +11,7 @@ import java.util.UUID;
 public class DiplomacyAcceptedDAO extends NewsletterSubDAO<DiplomacyAcceptedNews> {
 
 
-    public DiplomacyAcceptedDAO(Connection connection) {
+    public DiplomacyAcceptedDAO(DataSource connection) {
         super(connection);
     }
 
@@ -24,7 +25,7 @@ public class DiplomacyAcceptedDAO extends NewsletterSubDAO<DiplomacyAcceptedNews
                 "isWorseRelation BOOLEAN NOT NULL" +
                 ")";
 
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to create player diplomacy accepted newsletter table", e);
@@ -35,7 +36,7 @@ public class DiplomacyAcceptedDAO extends NewsletterSubDAO<DiplomacyAcceptedNews
     public void save(DiplomacyAcceptedNews newsletter) {
         String sql = "INSERT INTO diplomacy_accepted_newsletter (id, proposingTerritoryID, receivingTerritoryID, wantedRelation, isWorseRelation) VALUES (?, ?, ?, ?, ?)";
 
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getProposingTerritoryID());
             ps.setString(3, newsletter.getReceivingTerritoryID());
@@ -51,7 +52,7 @@ public class DiplomacyAcceptedDAO extends NewsletterSubDAO<DiplomacyAcceptedNews
     @Override
     public DiplomacyAcceptedNews load(UUID id, long date) {
         String sql = "SELECT proposingTerritoryID, receivingTerritoryID, wantedRelation, isWorseRelation FROM diplomacy_accepted_newsletter WHERE id = ?";
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.setObject(1, id);
             var rs = ps.executeQuery();
             if (rs.next()) {

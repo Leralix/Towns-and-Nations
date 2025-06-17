@@ -3,13 +3,14 @@ package org.leralix.tan.newsletter.storage;
 import org.leralix.tan.newsletter.news.PlayerJoinRequestNews;
 import org.leralix.tan.newsletter.news.PlayerJoinTownNews;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.UUID;
 
 public class PlayerJoinTownDAO extends NewsletterSubDAO<PlayerJoinTownNews> {
 
-    public PlayerJoinTownDAO(Connection connection) {
+    public PlayerJoinTownDAO(DataSource connection) {
         super(connection);
     }
 
@@ -21,7 +22,7 @@ public class PlayerJoinTownDAO extends NewsletterSubDAO<PlayerJoinTownNews> {
                 "townID VARCHAR(36) NOT NULL" +
                 ")";
 
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to create player application newsletter table", e);
@@ -32,7 +33,7 @@ public class PlayerJoinTownDAO extends NewsletterSubDAO<PlayerJoinTownNews> {
     public void save(PlayerJoinTownNews newsletter) {
         String sql = "INSERT INTO player_join_town_newsletter (id, playerID, townID) VALUES (?, ?, ?)";
 
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getPlayerID());
             ps.setString(3, newsletter.getTownID());
@@ -46,7 +47,7 @@ public class PlayerJoinTownDAO extends NewsletterSubDAO<PlayerJoinTownNews> {
     @Override
     public PlayerJoinTownNews load(UUID id, long date) {
         String sql = "SELECT playerID, townID FROM player_join_town_newsletter WHERE id = ?";
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.setObject(1, id);
             var rs = ps.executeQuery();
             if (rs.next()) {

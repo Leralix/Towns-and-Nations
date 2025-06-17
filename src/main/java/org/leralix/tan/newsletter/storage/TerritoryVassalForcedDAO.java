@@ -2,6 +2,7 @@ package org.leralix.tan.newsletter.storage;
 
 import org.leralix.tan.newsletter.news.TerritoryVassalForcedNews;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -9,7 +10,7 @@ import java.util.UUID;
 public class TerritoryVassalForcedDAO extends NewsletterSubDAO<TerritoryVassalForcedNews> {
 
 
-    public TerritoryVassalForcedDAO(Connection connection) {
+    public TerritoryVassalForcedDAO(DataSource connection) {
         super(connection);
     }
 
@@ -21,7 +22,7 @@ public class TerritoryVassalForcedDAO extends NewsletterSubDAO<TerritoryVassalFo
                 "forcedTerritoryID VARCHAR(36) NOT NULL" +
                 ")";
 
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to create player diplomacy accepted newsletter table", e);
@@ -32,7 +33,7 @@ public class TerritoryVassalForcedDAO extends NewsletterSubDAO<TerritoryVassalFo
     public void save(TerritoryVassalForcedNews newsletter) {
         String sql = "INSERT INTO territory_vassal_forced_newsletter (id, proposingTerritoryID, forcedTerritoryID) VALUES (?, ?, ?)";
 
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getProposingTerritoryID());
             ps.setString(3, newsletter.getForcedTerritoryID());
@@ -46,7 +47,7 @@ public class TerritoryVassalForcedDAO extends NewsletterSubDAO<TerritoryVassalFo
     @Override
     public TerritoryVassalForcedNews load(UUID id, long date) {
         String sql = "SELECT proposingTerritoryID, forcedTerritoryID FROM territory_vassal_forced_newsletter WHERE id = ?";
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.setObject(1, id);
             var rs = ps.executeQuery();
             if (rs.next()) {

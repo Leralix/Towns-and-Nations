@@ -3,6 +3,7 @@ package org.leralix.tan.newsletter.storage;
 import org.leralix.tan.newsletter.news.AttackCancelledByDefenderNewsletter;
 import org.leralix.tan.newsletter.news.AttackWonByDefenderNewsletter;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -10,8 +11,8 @@ import java.util.UUID;
 public class AttackCancelledDAO extends NewsletterSubDAO<AttackCancelledByDefenderNewsletter> {
 
 
-    public AttackCancelledDAO(Connection connection) {
-        super(connection);
+    public AttackCancelledDAO(DataSource dataSource) {
+        super(dataSource);
     }
 
     @Override
@@ -22,7 +23,7 @@ public class AttackCancelledDAO extends NewsletterSubDAO<AttackCancelledByDefend
                 "defendingTerritoryID VARCHAR(36) NOT NULL" +
                 ")";
 
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to create player diplomacy accepted newsletter table", e);
@@ -33,7 +34,7 @@ public class AttackCancelledDAO extends NewsletterSubDAO<AttackCancelledByDefend
     public void save(AttackCancelledByDefenderNewsletter newsletter) {
         String sql = "INSERT INTO attack_cancelled_newsletter (id, attackingTerritoryID, defendingTerritoryID) VALUES (?, ?, ?)";
 
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getAttackingTerritoryID());
             ps.setString(3, newsletter.getDefendingTerritoryID());
@@ -47,7 +48,7 @@ public class AttackCancelledDAO extends NewsletterSubDAO<AttackCancelledByDefend
     @Override
     public AttackCancelledByDefenderNewsletter load(UUID id, long date) {
         String sql = "SELECT attackingTerritoryID, defendingTerritoryID,FROM attack_cancelled_newsletter WHERE id = ?";
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.setObject(1, id);
             var rs = ps.executeQuery();
             if (rs.next()) {

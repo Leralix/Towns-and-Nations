@@ -29,6 +29,7 @@ import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.PvpSettings;
 import org.leralix.tan.storage.WildernessRules;
 import org.leralix.tan.storage.database.DatabaseHandler;
+import org.leralix.tan.storage.database.MySqlHandler;
 import org.leralix.tan.storage.database.SQLiteHandler;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.storage.stored.*;
@@ -109,8 +110,6 @@ public final class TownsAndNations extends JavaPlugin {
      */
     private DatabaseHandler databaseHandler;
 
-    PlayerDataStorage playerDataStorage;
-
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -182,7 +181,7 @@ public final class TownsAndNations extends JavaPlugin {
         getLogger().log(Level.INFO,"[TaN] -Loading Local data");
 
         RegionDataStorage.getInstance().loadStats();
-        this.playerDataStorage = PlayerDataStorage.getInstance();
+        PlayerDataStorage.getInstance();
         NewClaimedChunkStorage.getInstance();
         TownDataStorage.getInstance();
         LandmarkStorage.getInstance().load();
@@ -228,12 +227,26 @@ public final class TownsAndNations extends JavaPlugin {
     }
 
     private void loadDB() {
-        String dbName = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("dbType", "sqlite");
-        if(dbName.equalsIgnoreCase("sqlite"))
-            databaseHandler = new SQLiteHandler(getDataFolder().getAbsolutePath() + "/database/main.db");
+
+        var dbConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getConfigurationSection("database");
+
+        String dbName = dbConfig.getString("type", "sqlite");
+        if(dbName.equalsIgnoreCase("sqlite")){
+            String dbPath = getDataFolder().getAbsolutePath() + "/database/main.db";
+            databaseHandler = new SQLiteHandler(dbPath);
+        }
+        if(dbName.equals("mysql")){
+            String host = dbConfig.getString("host", "localhost");
+            int port = dbConfig.getInt("port", 3306);
+            String database = dbConfig.getString("name", "towns_and_nations");
+            String user = dbConfig.getString("user", "root");
+            String password = dbConfig.getString("password", "");
+            databaseHandler = new MySqlHandler(host, port, database, user, password);
+        }
         try {
             databaseHandler.connect();
         } catch (SQLException e) {
+            e.printStackTrace();
             getLogger().log(Level.SEVERE,"[TaN] Error while connecting to the database");
         }
     }
@@ -267,7 +280,7 @@ public final class TownsAndNations extends JavaPlugin {
 
         RegionDataStorage.getInstance().saveStats();
         TownDataStorage.getInstance().saveStats();
-        playerDataStorage.saveStats();
+        PlayerDataStorage.getInstance().saveStats();
         NewClaimedChunkStorage.getInstance().save();
         LandmarkStorage.getInstance().save();
         PlannedAttackStorage.save();

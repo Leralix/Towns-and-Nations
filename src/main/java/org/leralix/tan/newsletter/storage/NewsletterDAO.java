@@ -4,6 +4,7 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.newsletter.NewsletterType;
 import org.leralix.tan.newsletter.news.Newsletter;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.time.Duration;
 import java.time.Instant;
@@ -14,33 +15,33 @@ import java.util.*;
 public class NewsletterDAO {
     private final Map<NewsletterType, NewsletterSubDAO<?>> subDaos;
 
-    private final Connection connection;
+    private final DataSource dataSource;
 
-    public NewsletterDAO(Connection connection) {
+    public NewsletterDAO(DataSource dataSource) {
         this.subDaos = new EnumMap<>(NewsletterType.class);
-        this.connection = connection;
+        this.dataSource = dataSource;
 
         createTableIfNotExists();
 
-        subDaos.put(NewsletterType.TOWN_CREATED, new PlayerCreateTownDAO(connection));
-        subDaos.put(NewsletterType.TOWN_DELETED, new PlayerDeleteTownDAO(connection));
-        subDaos.put(NewsletterType.PLAYER_APPLICATION, new PlayerApplicationDAO(connection));
-        subDaos.put(NewsletterType.PLAYER_JOIN_TOWN, new PlayerJoinTownDAO(connection));
-        subDaos.put(NewsletterType.REGION_CREATED, new PlayerCreateRegionDAO(connection));
-        subDaos.put(NewsletterType.REGION_DELETED, new PlayerDeleteRegionDAO(connection));
+        subDaos.put(NewsletterType.TOWN_CREATED, new PlayerCreateTownDAO(dataSource));
+        subDaos.put(NewsletterType.TOWN_DELETED, new PlayerDeleteTownDAO(dataSource));
+        subDaos.put(NewsletterType.PLAYER_APPLICATION, new PlayerApplicationDAO(dataSource));
+        subDaos.put(NewsletterType.PLAYER_JOIN_TOWN, new PlayerJoinTownDAO(dataSource));
+        subDaos.put(NewsletterType.REGION_CREATED, new PlayerCreateRegionDAO(dataSource));
+        subDaos.put(NewsletterType.REGION_DELETED, new PlayerDeleteRegionDAO(dataSource));
 
-        subDaos.put(NewsletterType.TERRITORY_VASSAL_PROPOSAL, new TerritoryVassalProposalDAO(connection));
-        subDaos.put(NewsletterType.TERRITORY_VASSAL_ACCEPTED, new TerritoryVassalAcceptedDAO(connection));
-        subDaos.put(NewsletterType.TERRITORY_VASSAL_FORCED, new TerritoryVassalForcedDAO(connection));
-        subDaos.put(NewsletterType.TERRITORY_VASSAL_INDEPENDENT, new TerritoryVassalIndependentDAO(connection));
+        subDaos.put(NewsletterType.TERRITORY_VASSAL_PROPOSAL, new TerritoryVassalProposalDAO(dataSource));
+        subDaos.put(NewsletterType.TERRITORY_VASSAL_ACCEPTED, new TerritoryVassalAcceptedDAO(dataSource));
+        subDaos.put(NewsletterType.TERRITORY_VASSAL_FORCED, new TerritoryVassalForcedDAO(dataSource));
+        subDaos.put(NewsletterType.TERRITORY_VASSAL_INDEPENDENT, new TerritoryVassalIndependentDAO(dataSource));
 
-        subDaos.put(NewsletterType.DIPLOMACY_ACCEPTED, new DiplomacyAcceptedDAO(connection));
-        subDaos.put(NewsletterType.DIPLOMACY_PROPOSAL, new DiplomacyProposalDAO(connection));
+        subDaos.put(NewsletterType.DIPLOMACY_ACCEPTED, new DiplomacyAcceptedDAO(dataSource));
+        subDaos.put(NewsletterType.DIPLOMACY_PROPOSAL, new DiplomacyProposalDAO(dataSource));
 
-        subDaos.put(NewsletterType.ATTACK_DECLARED, new AttackDeclaredDAO(connection));
-        subDaos.put(NewsletterType.ATTACK_WON_BY_ATTACKER, new AttackWonByAttackerDAO(connection));
-        subDaos.put(NewsletterType.ATTACK_WON_BY_DEFENDER, new AttackWonByDefenderDAO(connection));
-        subDaos.put(NewsletterType.ATTACK_CANCELLED, new AttackCancelledDAO(connection));
+        subDaos.put(NewsletterType.ATTACK_DECLARED, new AttackDeclaredDAO(dataSource));
+        subDaos.put(NewsletterType.ATTACK_WON_BY_ATTACKER, new AttackWonByAttackerDAO(dataSource));
+        subDaos.put(NewsletterType.ATTACK_WON_BY_DEFENDER, new AttackWonByDefenderDAO(dataSource));
+        subDaos.put(NewsletterType.ATTACK_CANCELLED, new AttackCancelledDAO(dataSource));
 
 
 
@@ -53,7 +54,7 @@ public class NewsletterDAO {
                 "date_created TIMESTAMP NOT NULL" +
                 ")";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.executeUpdate();
         }
         catch (SQLException e) {
@@ -65,7 +66,7 @@ public class NewsletterDAO {
                 "player_id UUID NOT NULL, " +
                 "PRIMARY KEY (newsletter_id, player_id)" +
                 ")";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.executeUpdate();
         }
         catch (SQLException e) {
@@ -78,7 +79,7 @@ public class NewsletterDAO {
     public void save(Newsletter newsletter) throws SQLException {
         String sql = "INSERT INTO newsletter (id, type, date_created) VALUES (?, ?, ?)";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getType().name());
             ps.setTimestamp(3,
@@ -103,7 +104,7 @@ public class NewsletterDAO {
 
         try {
             String sql = "INSERT INTO newsletter_read (newsletter_id, player_id) VALUES (?, ?) ON CONFLICT DO NOTHING";
-            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {
                 ps.setObject(1, newsletterId);
                 ps.setObject(2, playerId);
                 ps.executeUpdate();
@@ -116,7 +117,7 @@ public class NewsletterDAO {
     public boolean hasRead(UUID newsletterId, UUID playerId) {
         try {
             String sql = "SELECT 1 FROM newsletter_read WHERE newsletter_id = ? AND player_id = ?";
-            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {
                 ps.setObject(1, newsletterId);
                 ps.setObject(2, playerId);
                 try (ResultSet rs = ps.executeQuery()) {
@@ -135,7 +136,7 @@ public class NewsletterDAO {
         String sql = "SELECT * FROM newsletter WHERE date_created >= ? ORDER BY date_created DESC";
         List<Newsletter> newsletters = new ArrayList<>();
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.setTimestamp(1, Timestamp.valueOf(cutoff));
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -174,7 +175,7 @@ public class NewsletterDAO {
 
     private void removeNewsletter(UUID id) {
         String sql = "DELETE FROM newsletter WHERE id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.setObject(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {

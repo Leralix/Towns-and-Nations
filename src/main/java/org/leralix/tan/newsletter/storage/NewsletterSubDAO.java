@@ -2,16 +2,17 @@ package org.leralix.tan.newsletter.storage;
 
 import org.leralix.tan.newsletter.news.Newsletter;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.UUID;
 
 public abstract class NewsletterSubDAO<T extends Newsletter> {
 
-    protected Connection connection;
+    protected DataSource dataSource;
 
-    public NewsletterSubDAO(Connection connection) {
-        this.connection = connection;
+    public NewsletterSubDAO(DataSource dataSource) {
+        this.dataSource = dataSource;
         createTableIfNotExists();
     }
     protected abstract void createTableIfNotExists();

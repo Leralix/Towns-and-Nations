@@ -203,7 +203,7 @@ public class RegionData extends TerritoryData {
         }
 
         ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
-        if (!currentClaimedChunk.canTerritoryClaim(Optional.of(player), this)) {
+        if (!currentClaimedChunk.canTerritoryClaim(player, this)) {
             return Optional.empty();
         }
 

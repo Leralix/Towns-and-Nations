@@ -8,6 +8,7 @@ tasks.shadowJar {
     relocate("dev.triumphteam.gui", "dev.triumphteam.gui")
     relocate 'net.objecthunter.exp4j', 'org.leralix.tan.libs.exp4j'
     relocate 'org.bstats', 'org.leralix.tan.bstat'
+    relocate 'com.mysql', 'org.leralix.shadow.mysql'
 }
 
 group = 'org.tan'
@@ -70,6 +71,9 @@ dependencies {
     implementation 'org.bstats:bstats-bukkit:3.1.0'
     implementation 'net.objecthunter:exp4j:0.4.8'
     implementation("dev.triumphteam:triumph-gui:3.1.11")
+    //Database dependencies
+    implementation 'com.mysql:mysql-connector-j:8.4.0'
+    implementation 'org.xerial:sqlite-jdbc:3.43.2.0'
 
     testImplementation 'io.github.leralix:sphere-lib:0.4.3'
     testImplementation 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'

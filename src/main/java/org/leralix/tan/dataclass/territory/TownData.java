@@ -419,7 +419,7 @@ public class TownData extends TerritoryData {
         }
 
         ClaimedChunk2 chunkData = NewClaimedChunkStorage.getInstance().get(chunk);
-        if (!chunkData.canTerritoryClaim(Optional.of(player), this)) {
+        if (!chunkData.canTerritoryClaim(player, this)) {
             return Optional.empty();
         }
 

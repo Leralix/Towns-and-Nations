@@ -3,13 +3,14 @@ package org.leralix.tan.newsletter.storage;
 import org.leralix.tan.newsletter.news.RegionCreationNews;
 import org.leralix.tan.newsletter.news.TownCreatedNews;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.UUID;
 
 public class PlayerCreateRegionDAO extends NewsletterSubDAO<RegionCreationNews> {
 
-    public PlayerCreateRegionDAO(Connection connection) {
+    public PlayerCreateRegionDAO(DataSource connection) {
         super(connection);
     }
 
@@ -21,7 +22,7 @@ public class PlayerCreateRegionDAO extends NewsletterSubDAO<RegionCreationNews> 
                 "regionID VARCHAR(36) NOT NULL" +
                 ")";
 
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to create player application newsletter table", e);
@@ -32,7 +33,7 @@ public class PlayerCreateRegionDAO extends NewsletterSubDAO<RegionCreationNews> 
     public void save(RegionCreationNews newsletter) {
         String sql = "INSERT INTO player_create_region_newsletter (id, playerID, regionID) VALUES (?, ?, ?)";
 
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getPlayerID());
             ps.setString(3, newsletter.getRegionID());
@@ -46,7 +47,7 @@ public class PlayerCreateRegionDAO extends NewsletterSubDAO<RegionCreationNews> 
     @Override
     public RegionCreationNews load(UUID id, long date) {
         String sql = "SELECT playerID, regionID FROM player_create_region_newsletter WHERE id = ?";
-        try (var ps = connection.prepareStatement(sql)) {
+        try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.setObject(1, id);
             var rs = ps.executeQuery();
             if (rs.next()) {

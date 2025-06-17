@@ -31,7 +31,7 @@ public class NewsletterStorage {
 
         DatabaseHandler databaseHandler = TownsAndNations.getPlugin().getDatabaseHandler();
 
-        newsletterDAO = new NewsletterDAO(databaseHandler.getConnection());
+        newsletterDAO = new NewsletterDAO(databaseHandler.getDataSource());
     }
 
     public static NewsletterDAO getNewsletterDAO() {
@@ -125,7 +125,7 @@ public class NewsletterStorage {
 
     public static void clearOldNewsletters() {
         int nbDays = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingNewsletter");
-        long currentTime = System.currentTimeMillis() - 1000L * 60 * 60 * 24 * nbDays; // 1 week
+        long currentTime = System.currentTimeMillis() - 1000L * 60 * 60 * 24 * nbDays;
 
     }
 
