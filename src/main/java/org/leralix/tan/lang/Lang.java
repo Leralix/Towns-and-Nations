@@ -983,7 +983,9 @@ public enum Lang {
     ATTACK_CANCELLED_TITLE,
     ATTACK_CANCELLED,
 
-    CHUNK_IS_BLACKLISTED;
+    CHUNK_IS_BLACKLISTED,
+
+    DATE_AND_TIME_FORMAT;
 
 
     private static LangType serverLang;

@@ -17,6 +17,8 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.timezone.TimeZoneEnum;
+import org.leralix.tan.timezone.TimeZoneManager;
 
 import java.util.*;
 
@@ -32,6 +34,15 @@ public class PlayerData {
     private List<String> propertiesListID;
     private List<String> attackInvolvedIn;
     private LangType lang;
+    private TimeZoneEnum timeZone;
+
+    public TimeZoneEnum getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(TimeZoneEnum timeZone) {
+        this.timeZone = timeZone;
+    }
 
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
@@ -42,6 +53,7 @@ public class PlayerData {
         this.regionRankID = null;
         this.propertiesListID = new ArrayList<>();
         this.attackInvolvedIn = new ArrayList<>();
+        this.timeZone = TimeZoneManager.getInstance().getServerTimeZone();
     }
 
     public String getID() {

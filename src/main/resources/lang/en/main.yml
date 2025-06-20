@@ -1051,6 +1051,9 @@ language:
   JOIN_REGION_PROPOSAL_NEWSLETTER: "{0}§f has proposed to join the region {1}"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cYou cannot claim this chunk"
+  #DateTime format
+  DATE_AND_TIME_FORMAT: "{0}-{1} {3}:{4}"
+
 
 
 
