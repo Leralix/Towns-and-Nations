@@ -2,6 +2,7 @@ package org.leralix.tan.gui.user.player;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -11,6 +12,7 @@ import org.leralix.tan.gui.user.property.PlayerPropertiesMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.newsletter.storage.NewsletterStorage;
+import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.GuiUtil;
 
 public class PlayerMenu extends BasicGui {
@@ -18,18 +20,20 @@ public class PlayerMenu extends BasicGui {
 
     public PlayerMenu(Player player) {
         super(player, Lang.HEADER_PLAYER_PROFILE, 3);
+        open();
     }
 
     @Override
-    public void open(){
+    public void open() {
 
         gui.setItem(1, 5, getPlayerHeadIcon());
         gui.setItem(2, 2, getBalanceButton());
-        gui.setItem(2, 4, getPropertyButton());
-        gui.setItem(2, 6, getNewsletterButton());
+        gui.setItem(2, 3, getPropertyButton());
+        gui.setItem(2, 4, getNewsletterButton());
+        gui.setItem(2, 6, getTimezoneButton());
         gui.setItem(2, 8, getLanguageButton());
 
-        gui.setItem(3,1, GuiUtil.createBackArrow(player, MainMenu::new));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, MainMenu::new));
 
         gui.open(player);
     }
@@ -69,6 +73,21 @@ public class PlayerMenu extends BasicGui {
                 .asGuiItem(player);
     }
 
+    private GuiItem getTimezoneButton() {
+        TimeZoneManager timeZoneManager = TimeZoneManager.getInstance();
+        return iconManager.get(IconKey.TIMEZONE_BUTTON)
+                .setName(Lang.GUI_TIMEZONE_BUTTON.get(playerData))
+                .setDescription(
+                        Lang.GUI_TIMEZONE_BUTTON_SERVER_ZONE.get(playerData,
+                                timeZoneManager.getBaseTimezone().getName(playerData.getLang())),
+                        Lang.GUI_TIMEZONE_BUTTON_PLAYER_ZONE.get(playerData,
+                                playerData.getTimeZone().getName(playerData.getLang())),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                )
+                .setAction(p -> new PlayerSelectTimezoneMenu(player))
+                .asGuiItem(player);
+    }
+
     private GuiItem getLanguageButton() {
 
         LangType serverLang = Lang.getServerLang();
@@ -84,9 +103,6 @@ public class PlayerMenu extends BasicGui {
                 .setAction(event -> new LangMenu(player).open())
                 .asGuiItem(player);
     }
-
-
-
 
 
 }

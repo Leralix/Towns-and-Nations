@@ -37,6 +37,9 @@ public class PlayerData {
     private TimeZoneEnum timeZone;
 
     public TimeZoneEnum getTimeZone() {
+        if(timeZone == null){
+            return TimeZoneManager.getInstance().getBaseTimezone();
+        }
         return timeZone;
     }
 
@@ -53,7 +56,6 @@ public class PlayerData {
         this.regionRankID = null;
         this.propertiesListID = new ArrayList<>();
         this.attackInvolvedIn = new ArrayList<>();
-        this.timeZone = TimeZoneManager.getInstance().getServerTimeZone();
     }
 
     public String getID() {

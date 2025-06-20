@@ -3,6 +3,7 @@ package org.leralix.tan.gui.user;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PlayerData;
@@ -12,6 +13,7 @@ import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.player.PlayerMenu;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.GuiUtil;
 
@@ -28,6 +30,8 @@ public class MainMenu extends BasicGui {
     @Override
     public void open() {
 
+        gui.setItem(1, 5, getTimeIcon());
+
         if(Constants.enableRegion()){
             if(Constants.enableNation()){
                 gui.setItem(2, 2, getNationButton(playerData));
@@ -41,6 +45,24 @@ public class MainMenu extends BasicGui {
         gui.setItem(3,1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory));
 
         gui.open(player);
+    }
+
+    private @NotNull GuiItem getTimeIcon() {
+
+        TimeZoneManager timeManager = TimeZoneManager.getInstance();
+
+        IconKey icon = timeManager.isDayForServer() ?
+                IconKey.TIMEZONE_ICON_DAY :
+                IconKey.TIMEZONE_ICON_NIGHT;
+
+
+        return iconManager.get(icon)
+                .setName(Lang.GUI_SERVER_TIME.get(playerData))
+                .setDescription(
+                        Lang.CURRENT_SERVER_TIME.get(playerData, timeManager.formatDateNowForServer()),
+                        Lang.CURRENT_PLAYER_TIME.get(playerData, timeManager.formatDateNowForPlayer(playerData))
+                        )
+                .asGuiItem(player);
     }
 
     private GuiItem getNationButton(PlayerData playerData) {
@@ -99,7 +121,7 @@ public class MainMenu extends BasicGui {
         return iconManager.get(IconKey.PLAYER_BASE_ICON)
                 .setName(Lang.GUI_PLAYER_MENU_ICON.get(playerData, player.getName()))
                 .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData))
-                .setAction(action -> new PlayerMenu(player).open())
+                .setAction(action -> new PlayerMenu(player))
                 .asGuiItem(player);
     }
 

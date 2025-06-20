@@ -26,7 +26,7 @@ public class NewsletterMenu extends IteratorGUI {
     public void open() {
 
         GuiUtil.createIterator(gui, getNewsletters(), page, player,
-                p -> new PlayerMenu(player).open(),
+                p -> new PlayerMenu(player),
                 p -> nextPage(),
                 p -> previousPage()
         );

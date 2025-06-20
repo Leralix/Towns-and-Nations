@@ -28,7 +28,7 @@ public class LangMenu extends IteratorGUI {
     public void open() {
 
         GuiUtil.createIterator(gui, getLangItems(), page, player,
-                p -> new PlayerMenu(player).open(),
+                p -> new PlayerMenu(player),
                 p -> nextPage(),
                 p -> previousPage()
         );
@@ -45,7 +45,7 @@ public class LangMenu extends IteratorGUI {
             GuiItem langGui = ItemBuilder.from(langIcon).asGuiItem(event -> {
                 playerData.setLang(lang);
                 player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_LANGUAGE_CHANGED.get(playerData, lang.getName()));
-                new PlayerMenu(player).open();
+                new PlayerMenu(player);
             });
             guiItems.add(langGui);
         }

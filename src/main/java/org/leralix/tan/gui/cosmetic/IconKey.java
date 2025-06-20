@@ -2,6 +2,8 @@ package org.leralix.tan.gui.cosmetic;
 
 public enum IconKey {
 
+    TIMEZONE_ICON_DAY,
+    TIMEZONE_ICON_NIGHT,
     NATION_BASE_ICON,
     REGION_BASE_ICON,
     TOWN_BASE_ICON,
@@ -11,6 +13,7 @@ public enum IconKey {
     PLAYER_BALANCE_ICON,
     PLAYER_PROPERTY_ICON,
     NEWSLETTER_ICON,
+    TIMEZONE_BUTTON,
     LANGUAGE_ICON,
 
     HELP_TRANSLATION_ICON,

@@ -9,6 +9,8 @@
 # 9. Remove icon: "NO_ICON" (removing a button may break some functionalities, use with caution)
 
 #Main menu
+TIMEZONE_ICON_DAY: "https://textures.minecraft.net/texture/b4d7651e9deb5c2813820fed311d541119f3155eaab549d3ad52d202bc3f0e7"
+TIMEZONE_ICON_NIGHT: "https://textures.minecraft.net/texture/c00a1a7bb07fdb4e6a86e341816e8843ddaf7cf3713a3666d74b72f98619f063"
 NATION_BASE_ICON : "https://textures.minecraft.net/texture/c69196b330c6b8962f23ad5627fb6ecce472eaf5c9d44f791f6709c7d0f4dece"
 REGION_BASE_ICON : "https://textures.minecraft.net/texture/49c1832e4ef5c4ad9c519d194b1985030d257914334aaf2745c9dfd611d6d61d"
 TOWN_BASE_ICON : "https://textures.minecraft.net/texture/63d02cdc075bb1cc5f6fe3c7711ae4977e38b910d50ed6023df73913e5e7fcff"
@@ -18,6 +20,7 @@ PLAYER_HEAD_ICON : "PLAYER_HEAD"
 PLAYER_BALANCE_ICON : "minecraft:GOLD_INGOT"
 PLAYER_PROPERTY_ICON : "minecraft:OAK_SIGN"
 NEWSLETTER_ICON : "minecraft:WRITABLE_BOOK"
+TIMEZONE_BUTTON : "https://textures.minecraft.net/texture/e4d39b99ffdbd6b5a205dd69b095b5d463c66c1d537e3744eb82a9d5fecc15b9"
 LANGUAGE_ICON : "PLAYER_LANGUAGE_HEAD"
 #Language menu
 HELP_TRANSLATION_ICON : "https://textures.minecraft.net/texture/b04831f7a7d8f624c9633996e3798edad49a5d9bcd18ecf75bfae66be48a0a6b"
