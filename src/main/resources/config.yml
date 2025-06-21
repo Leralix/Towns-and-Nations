@@ -235,6 +235,11 @@ RankNameSize: 25
 #Enable war
 EnableWar: true
 
+#Authorized ranges
+allowedTimeSlotsWar:
+  - "08:00-10:00"
+  - "12:00-20:30"
+
 #Admin need to approve every war. Admins need to use /tan admin gui to approve or deny a war
 AdminApproval: false
 

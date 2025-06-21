@@ -246,7 +246,6 @@ public final class TownsAndNations extends JavaPlugin {
         try {
             databaseHandler.connect();
         } catch (SQLException e) {
-            e.printStackTrace();
             getLogger().log(Level.SEVERE,"[TaN] Error while connecting to the database");
         }
     }
