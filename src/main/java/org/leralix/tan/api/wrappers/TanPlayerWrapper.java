@@ -13,57 +13,57 @@ import java.util.*;
 
 public class TanPlayerWrapper implements TanPlayer {
 
-    private final ITanPlayer ITanPlayer;
+    private final ITanPlayer tanPlayer;
 
-    private TanPlayerWrapper(ITanPlayer ITanPlayer){
-        this.ITanPlayer = ITanPlayer;
+    private TanPlayerWrapper(ITanPlayer tanPlayer){
+        this.tanPlayer = tanPlayer;
     }
 
-    public static TanPlayer of(ITanPlayer ITanPlayer) {
-        if(ITanPlayer == null){
+    public static TanPlayer of(ITanPlayer tanPlayer) {
+        if(tanPlayer == null){
             return null;
         }
-        return new TanPlayerWrapper(ITanPlayer);
+        return new TanPlayerWrapper(tanPlayer);
     }
 
     @Override
     public String getNameStored() {
-        return ITanPlayer.getNameStored();
+        return tanPlayer.getNameStored();
     }
 
     @Override
     public void setNameStored(String s) {
-        ITanPlayer.setNameStored(s);
+        tanPlayer.setNameStored(s);
     }
 
     @Override
     public UUID getUUID() {
-        return ITanPlayer.getUUID();
+        return tanPlayer.getUUID();
     }
 
     @Override
     public boolean hasTown() {
-        return ITanPlayer.hasTown();
+        return tanPlayer.hasTown();
     }
 
     @Override
     public Optional<TanTown> getTown() {
-        return Optional.ofNullable(TownDataWrapper.of(ITanPlayer.getTown()));
+        return Optional.ofNullable(TownDataWrapper.of(tanPlayer.getTown()));
     }
 
     @Override
     public boolean hasRegion() {
-        return ITanPlayer.hasRegion();
+        return tanPlayer.hasRegion();
     }
 
     @Override
     public TanRegion getRegion() {
-        return RegionDataWrapper.of(ITanPlayer.getRegion());
+        return RegionDataWrapper.of(tanPlayer.getRegion());
     }
 
     @Override
     public Collection<TanProperty> getPropertiesOwned() {
-        return ITanPlayer.getProperties().stream()
+        return tanPlayer.getProperties().stream()
                 .map(PropertyDataWrapper::of)
                 .map(p -> (TanProperty) p)
                 .toList();

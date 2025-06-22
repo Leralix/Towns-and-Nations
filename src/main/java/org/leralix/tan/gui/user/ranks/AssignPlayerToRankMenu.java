@@ -54,8 +54,8 @@ public class AssignPlayerToRankMenu extends IteratorGUI {
             GuiItem playerInfo = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
                 RankData otherPlayerActualRank = territoryData.getRank(otherITanPlayer);
-                if(territoryData.getRank(player).getLevel() <= otherPlayerActualRank.getLevel() && !territoryData.isLeader(ITanPlayer)){
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get(ITanPlayer));
+                if(territoryData.getRank(player).getLevel() <= otherPlayerActualRank.getLevel() && !territoryData.isLeader(tanPlayer)){
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get(tanPlayer));
                     return;
                 }
 

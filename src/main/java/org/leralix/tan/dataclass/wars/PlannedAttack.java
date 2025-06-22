@@ -203,11 +203,11 @@ public class PlannedAttack {
         return itemStack;
     }
 
-    public ItemStack getIcon(ITanPlayer ITanPlayer, TerritoryData territoryConcerned){
+    public ItemStack getIcon(ITanPlayer tanPlayer, TerritoryData territoryConcerned){
 
         long startDate = getStartTime() - new Date().getTime() / 50;
         long attackDuration = getEndTime() - getStartTime();
-        String exactTimeStart = TimeZoneManager.getInstance().formatDateForPlayer(ITanPlayer, Instant.ofEpochSecond(getStartTime() / 20));
+        String exactTimeStart = TimeZoneManager.getInstance().formatDateForPlayer(tanPlayer, Instant.ofEpochSecond(getStartTime() / 20));
 
         ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
         ItemMeta itemMeta = itemStack.getItemMeta();

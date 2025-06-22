@@ -74,16 +74,16 @@ public class RankManagerMenu extends BasicGui {
 
 
         return iconManager.get(IconKey.DELETE_RANK_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_DELETE.get(ITanPlayer))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(ITanPlayer))
+                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_DELETE.get(tanPlayer))
+                .setDescription(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer))
                 .setAction(event -> {
                     if(!isEmpty){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY.get(ITanPlayer));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY.get(tanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
                     if(isDefaultRank){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_DEFAULT.get(ITanPlayer));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_DEFAULT.get(tanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
@@ -98,16 +98,16 @@ public class RankManagerMenu extends BasicGui {
         boolean isDefaultRank = Objects.equals(rankData.getID(), territoryData.getDefaultRankID());
 
         List<String> description = new ArrayList<>();
-        description.add(Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1.get(ITanPlayer));
+        description.add(Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1.get(tanPlayer));
         if(isDefaultRank)
-            description.add(Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2.get(ITanPlayer));
+            description.add(Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2.get(tanPlayer));
 
         return iconManager.get(IconKey.SET_DEFAULT_ROLE_ICON)
-                .setName(isDefaultRank ? Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT.get(ITanPlayer) : Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT.get(ITanPlayer))
+                .setName(isDefaultRank ? Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT.get(tanPlayer) : Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT.get(tanPlayer))
                 .setDescription(description)
                 .setAction(event -> {
                     if(isDefaultRank){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT.get(ITanPlayer));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT.get(tanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                     }
                     else{
@@ -121,12 +121,12 @@ public class RankManagerMenu extends BasicGui {
 
     private GuiItem getPayTaxRankButton() {
         return iconManager.get(IconKey.PAY_TAXES_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_PAY_TAXES_NAME.get(ITanPlayer))
+                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_PAY_TAXES_NAME.get(tanPlayer))
                 .setDescription(
                         rankData.isPayingTaxes() ?
-                                Lang.GUI_TOWN_MEMBERS_ROLE_PAY_TAXES.get(ITanPlayer) :
-                                Lang.GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES.get(ITanPlayer),
-                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(ITanPlayer))
+                                Lang.GUI_TOWN_MEMBERS_ROLE_PAY_TAXES.get(tanPlayer) :
+                                Lang.GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES.get(tanPlayer),
+                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(tanPlayer))
                 .setAction(event -> {
                     rankData.swapPayingTaxes();
                     SoundUtil.playSound(player, ADD);
@@ -137,10 +137,10 @@ public class RankManagerMenu extends BasicGui {
 
     private GuiItem getRenameRankButton() {
         return iconManager.get(IconKey.RENAME_RANK_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME.get(ITanPlayer))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(ITanPlayer))
+                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME.get(tanPlayer))
+                .setDescription(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer))
                 .setAction(event -> {
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(ITanPlayer));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new RenameRank(territoryData , rankData));
                     player.closeInventory();
                 })
@@ -149,10 +149,10 @@ public class RankManagerMenu extends BasicGui {
 
     private GuiItem increaseSalaryButton() {
         return iconManager.get(IconKey.INCREASE_SALARY_ICON)
-                .setName(Lang.GUI_LOWER_SALARY.get(ITanPlayer))
+                .setName(Lang.GUI_LOWER_SALARY.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_INCREASE_1_DESC.get(ITanPlayer),
-                        Lang.GUI_INCREASE_10_DESC.get(ITanPlayer)
+                        Lang.GUI_INCREASE_1_DESC.get(tanPlayer),
+                        Lang.GUI_INCREASE_10_DESC.get(tanPlayer)
                 )
                 .setAction(event -> {
                     int amountToAdd = event.isShiftClick() ? 10 : 1;
@@ -166,26 +166,26 @@ public class RankManagerMenu extends BasicGui {
 
     private GuiItem getSalaryIcon() {
         return iconManager.get(IconKey.CURRENT_SALARY_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_SALARY.get(ITanPlayer))
+                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_SALARY.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_DESC1.get(ITanPlayer, rankData.getSalary())
+                        Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_DESC1.get(tanPlayer, rankData.getSalary())
                 )
                 .asGuiItem(player);
     }
 
     private GuiItem lowerSalaryButton() {
         return iconManager.get(IconKey.DECREASE_SALARY_ICON)
-                .setName(Lang.GUI_LOWER_SALARY.get(ITanPlayer))
+                .setName(Lang.GUI_LOWER_SALARY.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_DECREASE_1_DESC.get(ITanPlayer),
-                        Lang.GUI_DECREASE_10_DESC.get(ITanPlayer)
+                        Lang.GUI_DECREASE_1_DESC.get(tanPlayer),
+                        Lang.GUI_DECREASE_10_DESC.get(tanPlayer)
                 )
                 .setAction(event -> {
                     int currentSalary = rankData.getSalary();
                     int amountToRemove = event.isShiftClick() && currentSalary >= 10 ? 10 : 1;
 
                     if (currentSalary <= 0) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER.get(ITanPlayer));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER.get(tanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
@@ -201,8 +201,8 @@ public class RankManagerMenu extends BasicGui {
 
     private GuiItem getManagePermissionIcon() {
         return iconManager.get(IconKey.MANAGE_PERMISSION_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION.get(ITanPlayer))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer))
+                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION.get(tanPlayer))
+                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer))
                 .setAction(event -> new ManageRankPermissionMenu(player, territoryData, rankData))
                 .asGuiItem(player);
     }
@@ -211,10 +211,10 @@ public class RankManagerMenu extends BasicGui {
     private GuiItem getRankLevel() {
         RankEnum rankEnum = rankData.getRankEnum();
         return iconManager.get(rankData.getRankEnum().getBasicRankIcon())
-                .setName(rankEnum.getColor() + Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_X.get(ITanPlayer, rankEnum.getLevel()))
+                .setName(rankEnum.getColor() + Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_X.get(tanPlayer, rankEnum.getLevel()))
                 .setDescription(
-                        Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1.get(ITanPlayer),
-                        Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2.get(ITanPlayer)
+                        Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1.get(tanPlayer),
+                        Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2.get(tanPlayer)
                 )
                 .setAction(event -> {
                     RankData playerRank = territoryData.getRank(player);
@@ -222,7 +222,7 @@ public class RankManagerMenu extends BasicGui {
                     boolean isInferiorOrEquals = playerRank.getRankEnum().getLevel() <= (rankData.getRankEnum().getLevel() + 1);
 
                     if(isInferiorOrEquals && !isLeader){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_RANK_UP_INFERIOR_RANK.get(ITanPlayer, playerRank.getColoredName()));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_RANK_UP_INFERIOR_RANK.get(tanPlayer, playerRank.getColoredName()));
                         return;
                     }
 
@@ -242,17 +242,17 @@ public class RankManagerMenu extends BasicGui {
     private GuiItem getRankIcon() {
 
         return iconManager.get(rankData.getRankIcon())
-                .setName(Lang.GUI_BASIC_NAME.get(ITanPlayer, rankData.getColoredName()))
-                .setDescription(Lang.GUI_TOWN_MEMBERS_ROLE_NAME_DESC1.get(ITanPlayer))
+                .setName(Lang.GUI_BASIC_NAME.get(tanPlayer, rankData.getColoredName()))
+                .setDescription(Lang.GUI_TOWN_MEMBERS_ROLE_NAME_DESC1.get(tanPlayer))
                 .setAction(event -> {
                     ItemStack itemMaterial = event.getCursor();
                     if(itemMaterial.getType() == Material.AIR){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.get(ITanPlayer));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.get(tanPlayer));
                         return;
                     }
                     rankData.setRankIcon(itemMaterial);
                     open();
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get(ITanPlayer));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get(tanPlayer));
                 })
                 .asGuiItem(player);
     }
@@ -262,14 +262,14 @@ public class RankManagerMenu extends BasicGui {
 
         List<String> description = new ArrayList<>();
 
-        for(ITanPlayer ITanPlayer : rankData.getPlayers()){
-            description.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC.get(this.ITanPlayer, ITanPlayer.getNameStored()));
+        for(ITanPlayer tanPlayer : rankData.getPlayers()){
+            description.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC.get(tanPlayer, tanPlayer.getNameStored()));
         }
-        description.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1.get(ITanPlayer));
+        description.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1.get(tanPlayer));
 
 
         return iconManager.get(IconKey.PLAYER_LIST_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO.get(ITanPlayer))
+                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO.get(tanPlayer))
                 .setDescription(description)
                 .setAction(p -> new AssignPlayerToRankMenu(player, territoryData, rankData).open())
                 .asGuiItem(player);

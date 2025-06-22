@@ -62,8 +62,8 @@ public class RegionDataStorage {
     public RegionData get(Player player){
         return get(PlayerDataStorage.getInstance().get(player));
     }
-    public RegionData get(ITanPlayer ITanPlayer){
-        TownData town = TownDataStorage.getInstance().get(ITanPlayer);
+    public RegionData get(ITanPlayer tanPlayer){
+        TownData town = TownDataStorage.getInstance().get(tanPlayer);
         if(town == null)
             return null;
         return town.getRegion();

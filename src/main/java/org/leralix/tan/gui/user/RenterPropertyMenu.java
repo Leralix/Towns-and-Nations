@@ -36,17 +36,17 @@ public class RenterPropertyMenu extends PropertyMenus {
 
     private GuiItem getStopRentPropertyButton() {
         return iconManager.get(IconKey.STOP_RENTING_PROPERTY_ICON)
-                .setName(Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY.get(ITanPlayer))
-                .setDescription(Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY_DESC1.get(ITanPlayer))
+                .setName(Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY.get(tanPlayer))
+                .setDescription(Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY_DESC1.get(tanPlayer))
                 .setAction(action -> {
                     propertyData.expelRenter(true);
 
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_RENTER_LEAVE_RENTER_SIDE.get(ITanPlayer, propertyData.getName()));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_RENTER_LEAVE_RENTER_SIDE.get(tanPlayer, propertyData.getName()));
                     SoundUtil.playSound(player,MINOR_GOOD);
 
                     Player owner = propertyData.getOwnerPlayer();
                     if(owner != null){
-                        owner.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_RENTER_LEAVE_OWNER_SIDE.get(ITanPlayer, player.getName(), propertyData.getName()));
+                        owner.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_RENTER_LEAVE_OWNER_SIDE.get(tanPlayer, player.getName(), propertyData.getName()));
                         SoundUtil.playSound(owner,MINOR_BAD);
                     }
 

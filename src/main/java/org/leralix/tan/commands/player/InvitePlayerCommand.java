@@ -51,14 +51,14 @@ public class InvitePlayerCommand extends PlayerSubCommand {
 
         }else if(args.length == 2){
 
-            ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+            ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
             TownData townData = TownDataStorage.getInstance().get(player);
 
             if(townData == null){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
                 return;
             }
-            if(!townData.doesPlayerHavePermission(ITanPlayer, RolePermission.INVITE_PLAYER)){
+            if(!townData.doesPlayerHavePermission(tanPlayer, RolePermission.INVITE_PLAYER)){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }

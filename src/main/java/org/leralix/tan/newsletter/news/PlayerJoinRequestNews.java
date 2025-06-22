@@ -58,13 +58,13 @@ public class PlayerJoinRequestNews extends Newsletter {
 
     @Override
     public void broadcast(Player player) {
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(playerID);
-        if(ITanPlayer == null)
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        if(tanPlayer == null)
             return;
         TownData townData = TownDataStorage.getInstance().get(townID);
         if(townData == null)
             return;
-        player.sendMessage(getTANString() + Lang.PLAYER_APPLICATION_NEWSLETTER.get(ITanPlayer.getNameStored(), townData.getBaseColoredName()));
+        player.sendMessage(getTANString() + Lang.PLAYER_APPLICATION_NEWSLETTER.get(tanPlayer.getNameStored(), townData.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
     }
 

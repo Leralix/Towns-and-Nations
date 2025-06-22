@@ -40,10 +40,10 @@ public class TownDataStorage {
         return instance;
     }
 
-    public TownData newTown(String townName, ITanPlayer ITanPlayer){
+    public TownData newTown(String townName, ITanPlayer tanPlayer){
         String townId = getNextTownID();
 
-        TownData newTown = new TownData(townId, townName, ITanPlayer);
+        TownData newTown = new TownData(townId, townName, tanPlayer);
 
 
         townDataMap.put(townId,newTown);
@@ -78,8 +78,8 @@ public class TownDataStorage {
     }
 
 
-    public TownData get(ITanPlayer ITanPlayer){
-        return get(ITanPlayer.getTownId());
+    public TownData get(ITanPlayer tanPlayer){
+        return get(tanPlayer.getTownId());
     }
 
     public TownData get(Player player){

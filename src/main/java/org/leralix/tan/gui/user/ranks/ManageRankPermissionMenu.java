@@ -43,12 +43,12 @@ public class ManageRankPermissionMenu extends IteratorGUI {
         for(RolePermission permission : RolePermission.values()){
             if(permission.isForTerritory(territoryData)){
                 guiItems.add(iconManager.get(permission.getIconKey())
-                        .setName(permission.getName().get(ITanPlayer))
+                        .setName(permission.getName().get(tanPlayer))
                         .setDescription(
                                 rankData.hasPermission(permission) ?
-                                        Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get(ITanPlayer) :
-                                        Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get(ITanPlayer),
-                                Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(ITanPlayer))
+                                        Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get(tanPlayer) :
+                                        Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get(tanPlayer),
+                                Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(tanPlayer))
                         .setAction(event -> {
                             event.setCancelled(true);
                             if(!territoryData.getRank(player).hasPermission(permission) && !territoryData.isLeader(player)) {

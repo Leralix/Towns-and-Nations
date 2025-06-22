@@ -37,7 +37,7 @@ public abstract class SettingsMenus extends BasicGui {
 
     protected GuiItem getTerritoryInfo() {
 
-        LangType langType = ITanPlayer.getLang();
+        LangType langType = tanPlayer.getLang();
 
         List<String> lore = new ArrayList<>();
         lore.add(Lang.GUI_TOWN_INFO_DESC0.get(langType, territoryData.getDescription()));
@@ -45,8 +45,8 @@ public abstract class SettingsMenus extends BasicGui {
         lore.add(Lang.GUI_TOWN_INFO_DESC2.get(langType, territoryData.getPlayerIDList().size()));
         lore.add(Lang.GUI_TOWN_INFO_DESC3.get(langType, territoryData.getNumberOfClaimedChunk()));
         lore.add(territoryData.haveOverlord() ? Lang.GUI_TOWN_INFO_DESC5_REGION.get(langType, territoryData.getOverlord().getName()) : Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get(langType));
-        lore.add(Lang.GUI_TOWN_INFO_CHANGE_ICON.get(ITanPlayer));
-        lore.add(Lang.RIGHT_CLICK_TO_SELECT_MEMBER_HEAD.get(ITanPlayer));
+        lore.add(Lang.GUI_TOWN_INFO_CHANGE_ICON.get(tanPlayer));
+        lore.add(Lang.RIGHT_CLICK_TO_SELECT_MEMBER_HEAD.get(tanPlayer));
 
         return IconManager.getInstance().get(IconKey.TERRITORY_ICON)
                 .setName(Lang.GUI_TOWN_NAME.get(langType, territoryData.getName()))
@@ -59,13 +59,13 @@ public abstract class SettingsMenus extends BasicGui {
         int cost = Constants.getChangeTerritoryNameCost(territoryData);
 
         return iconManager.get(IconKey.TERRITORY_RENAME_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN.get(ITanPlayer))
+                .setName(Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1.get(ITanPlayer, territoryData.getName()),
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC2.get(ITanPlayer),
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3.get(ITanPlayer, cost))
+                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1.get(tanPlayer, territoryData.getName()),
+                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC2.get(tanPlayer),
+                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3.get(tanPlayer, cost))
                 .setAction(action -> {
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(ITanPlayer));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangeTerritoryName(territoryData, cost, p -> open()));
                 })
                 .asGuiItem(player);
@@ -73,12 +73,12 @@ public abstract class SettingsMenus extends BasicGui {
 
     protected GuiItem getChangeDescriptionButton() {
         return iconManager.get(IconKey.TERRITORY_DESCRIPTION_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE.get(ITanPlayer))
+                .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1.get(ITanPlayer, territoryData.getDescription())
+                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1.get(tanPlayer, territoryData.getDescription())
                 )
                 .setAction(action -> {
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(ITanPlayer));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangeTerritoryDescription(territoryData, p -> open()));
                 })
                 .asGuiItem(player);
@@ -86,17 +86,17 @@ public abstract class SettingsMenus extends BasicGui {
 
     protected GuiItem getChangeColorButton() {
         return iconManager.get(IconKey.TERRITORY_CHANGE_COLOR_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR.get(ITanPlayer))
+                .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(ITanPlayer),
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(ITanPlayer, territoryData.getChunkColor() + territoryData.getChunkColorInHex()),
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3.get(ITanPlayer)
+                        Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(tanPlayer),
+                        Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(tanPlayer, territoryData.getChunkColor() + territoryData.getChunkColorInHex()),
+                        Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3.get(tanPlayer)
                 )
                 .setAction(action -> {
-                    if (!territoryData.doesPlayerHavePermission(ITanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get(ITanPlayer));
+                    if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
                     } else {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT.get(ITanPlayer));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT.get(tanPlayer));
                         PlayerChatListenerStorage.register(player, new ChangeColor(territoryData, p -> open()));
                     }
 

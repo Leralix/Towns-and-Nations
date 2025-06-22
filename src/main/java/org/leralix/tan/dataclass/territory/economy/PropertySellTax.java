@@ -42,7 +42,7 @@ public class PropertySellTax extends ProfitLine {
     @Override
     public void addItems(Gui gui, Player player) {
 
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         ItemStack lowerTax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_LOWER_TAX.get(), "https://textures.minecraft.net/texture/a9dbed522e8de1a681dddd37854ee4267efc48b59917f9a9acb420d6fdb9",
                 Lang.GUI_DECREASE_1PERCENT_DESC.get(),
@@ -58,7 +58,7 @@ public class PropertySellTax extends ProfitLine {
 
         GuiItem lowerTaxButton = ItemBuilder.from(lowerTax).asGuiItem(event -> {
             event.setCancelled(true);
-            if (!territoryData.doesPlayerHavePermission(ITanPlayer, RolePermission.MANAGE_TAXES)) {
+            if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
@@ -89,7 +89,7 @@ public class PropertySellTax extends ProfitLine {
         GuiItem increaseTaxButton = ItemBuilder.from(increaseTax).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if (!territoryData.doesPlayerHavePermission(ITanPlayer, RolePermission.MANAGE_TAXES)) {
+            if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }

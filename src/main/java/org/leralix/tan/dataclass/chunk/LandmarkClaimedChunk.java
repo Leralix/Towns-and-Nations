@@ -9,14 +9,14 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.permissions.ChunkPermissionType;
 
 public class LandmarkClaimedChunk extends ClaimedChunk2 {
     public LandmarkClaimedChunk(Chunk chunk, String owner) {
@@ -73,7 +73,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public TextComponent getMapIcon(ITanPlayer ITanPlayer) {
+    public TextComponent getMapIcon(ITanPlayer tanPlayer) {
         TextComponent textComponent = new TextComponent("⬛");
         textComponent.setColor(ChatColor.GOLD);
         textComponent.setHoverEvent(new HoverEvent(

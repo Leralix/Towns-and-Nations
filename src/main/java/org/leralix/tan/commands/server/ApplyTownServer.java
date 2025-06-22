@@ -56,8 +56,8 @@ public class ApplyTownServer extends SubCommand {
             commandSender.sendMessage(Lang.TOWN_NOT_FOUND.get());
             return;
         }
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(p.getUniqueId().toString());
-        if(ITanPlayer.hasTown()){
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(p.getUniqueId().toString());
+        if(tanPlayer.hasTown()){
             commandSender.sendMessage(Lang.PLAYER_ALREADY_HAVE_TOWN.get());
             return;
         }

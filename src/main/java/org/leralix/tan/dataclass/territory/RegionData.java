@@ -183,7 +183,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     public Optional<ClaimedChunk2> claimChunkInternal(Player player, Chunk chunk) {
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
@@ -191,7 +191,7 @@ public class RegionData extends TerritoryData {
         }
 
 
-        if (!doesPlayerHavePermission(ITanPlayer, RolePermission.CLAIM_CHUNK)) {
+        if (!doesPlayerHavePermission(tanPlayer, RolePermission.CLAIM_CHUNK)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return Optional.empty();
         }
@@ -313,9 +313,9 @@ public class RegionData extends TerritoryData {
         return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("RegionChunkUpkeepCost", 0);
     }
 
-    public boolean isPlayerInRegion(ITanPlayer ITanPlayer) {
+    public boolean isPlayerInRegion(ITanPlayer tanPlayer) {
         for (TerritoryData town : getSubjects()) {
-            if (town.isPlayerIn(ITanPlayer))
+            if (town.isPlayerIn(tanPlayer))
                 return true;
         }
         return false;
@@ -413,15 +413,15 @@ public class RegionData extends TerritoryData {
 
 
     @Override
-    public RankData getRank(ITanPlayer ITanPlayer) {
-        if(!ITanPlayer.hasRegion()){
+    public RankData getRank(ITanPlayer tanPlayer) {
+        if(!tanPlayer.hasRegion()){
             return null;
         }
-        return getRank(ITanPlayer.getRegionRankID());
+        return getRank(tanPlayer.getRegionRankID());
     }
 
     @Override
-    public List<GuiItem> getOrderedMemberList(ITanPlayer ITanPlayer) {
+    public List<GuiItem> getOrderedMemberList(ITanPlayer tanPlayer) {
         List<GuiItem> res = new ArrayList<>();
         for (String playerUUID : getOrderedPlayerIDList()) {
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));

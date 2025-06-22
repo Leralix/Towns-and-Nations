@@ -43,25 +43,25 @@ public class RegionClaimedChunk extends ClaimedChunk2 {
 
     @Override
     protected boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location) {
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         //Location is in a property, and players own or rent it
         RegionData ownerRegion = getRegion();
         //Chunk is claimed yet player has no town
-        if (!ITanPlayer.hasTown()) {
+        if (!tanPlayer.hasTown()) {
             playerCantPerformAction(player);
             return false;
         }
 
         //Player is at war with the region
         for (CurrentAttack currentAttacks : ownerRegion.getCurrentAttacks()) {
-            if (currentAttacks.containsPlayer(ITanPlayer))
+            if (currentAttacks.containsPlayer(tanPlayer))
                 return true;
         }
 
         //Player have the right to do the action
         ChunkPermission chunkPermission = ownerRegion.getPermission(permissionType);
-        if (chunkPermission.isAllowed(ownerRegion, ITanPlayer))
+        if (chunkPermission.isAllowed(ownerRegion, tanPlayer))
             return true;
 
         playerCantPerformAction(player);
@@ -119,7 +119,7 @@ public class RegionClaimedChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public TextComponent getMapIcon(ITanPlayer ITanPlayer) {
+    public TextComponent getMapIcon(ITanPlayer tanPlayer) {
         TextComponent textComponent = new TextComponent("⬛");
         textComponent.setColor(getRegion().getChunkColor());
         textComponent.setHoverEvent(new HoverEvent(

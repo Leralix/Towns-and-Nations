@@ -101,50 +101,50 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public RankData getRank(ITanPlayer ITanPlayer) {
-        return getRank(ITanPlayer.getTownRankID());
+    public RankData getRank(ITanPlayer tanPlayer) {
+        return getRank(tanPlayer.getTownRankID());
     }
 
     public Level getLevel() {
         return townLevel;
     }
 
-    public void addPlayer(String ITanPlayerID) {
-        addPlayer(PlayerDataStorage.getInstance().get(ITanPlayerID));
+    public void addPlayer(String tanPlayerID) {
+        addPlayer(PlayerDataStorage.getInstance().get(tanPlayerID));
     }
 
-    public void addPlayer(ITanPlayer ITanPlayer) {
-        townPlayerListId.add(ITanPlayer.getID());
-        getTownDefaultRank().addPlayer(ITanPlayer);
-        ITanPlayer.joinTown(this);
+    public void addPlayer(ITanPlayer tanPlayer) {
+        townPlayerListId.add(tanPlayer.getID());
+        getTownDefaultRank().addPlayer(tanPlayer);
+        tanPlayer.joinTown(this);
 
-        Player newMember = ITanPlayer.getPlayer();
+        Player newMember = tanPlayer.getPlayer();
         if (newMember != null)
             newMember.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(getBaseColoredName()));
 
-        ITanPlayer.clearAllTownApplications();
+        tanPlayer.clearAllTownApplications();
 
         for (TerritoryData overlords : getOverlords()) {
-            overlords.registerPlayer(ITanPlayer);
+            overlords.registerPlayer(tanPlayer);
         }
 
-        NewsletterStorage.register(new PlayerJoinTownNews(ITanPlayer, this));
+        NewsletterStorage.register(new PlayerJoinTownNews(tanPlayer, this));
         TeamUtils.updateAllScoreboardColor();
         TownDataStorage.getInstance().saveStats();
     }
 
-    public void removePlayer(String ITanPlayerID) {
-        removePlayer(PlayerDataStorage.getInstance().get(ITanPlayerID));
+    public void removePlayer(String tanPlayerID) {
+        removePlayer(PlayerDataStorage.getInstance().get(tanPlayerID));
     }
 
-    public void removePlayer(ITanPlayer ITanPlayer) {
+    public void removePlayer(ITanPlayer tanPlayer) {
         for (TerritoryData overlords : getOverlords()) {
-            overlords.unregisterPlayer(ITanPlayer);
+            overlords.unregisterPlayer(tanPlayer);
         }
 
-        getRank(ITanPlayer).removePlayer(ITanPlayer);
-        townPlayerListId.remove(ITanPlayer.getID());
-        ITanPlayer.leaveTown();
+        getRank(tanPlayer).removePlayer(tanPlayer);
+        townPlayerListId.remove(tanPlayer.getID());
+        tanPlayer.leaveTown();
         TownDataStorage.getInstance().saveStats();
     }
 
@@ -348,13 +348,13 @@ public class TownData extends TerritoryData {
     @Override
     protected void collectTaxes() {
 
-        for (ITanPlayer ITanPlayer : getITanPlayerList()) {
-            OfflinePlayer offlinePlayer = ITanPlayer.getOfflinePlayer();
-            if (ITanPlayer.getTownRankID() == null) { //TODO : Remove in v0.15.0, used to fixed missing rank application
-                ITanPlayer.joinTown(this);
+        for (ITanPlayer tanPlayer : getITanPlayerList()) {
+            OfflinePlayer offlinePlayer = tanPlayer.getOfflinePlayer();
+            if (tanPlayer.getTownRankID() == null) { //TODO : Remove in v0.15.0, used to fixed missing rank application
+                tanPlayer.joinTown(this);
             }
 
-            if (!getRank(ITanPlayer).isPayingTaxes())
+            if (!getRank(tanPlayer).isPayingTaxes())
                 continue;
 
             double tax = getTax();
@@ -362,9 +362,9 @@ public class TownData extends TerritoryData {
             if (EconomyUtil.getBalance(offlinePlayer) > tax) {
                 EconomyUtil.removeFromBalance(offlinePlayer, tax);
                 addToBalance(tax);
-                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerTaxHistory(this, ITanPlayer, tax));
+                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerTaxHistory(this, tanPlayer, tax));
             } else {
-                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerTaxHistory(this, ITanPlayer, -1));
+                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerTaxHistory(this, tanPlayer, -1));
             }
         }
     }
@@ -393,7 +393,7 @@ public class TownData extends TerritoryData {
 
     @Override
     public Optional<ClaimedChunk2> claimChunkInternal(Player player, Chunk chunk) {
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
 
 
         if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
@@ -401,7 +401,7 @@ public class TownData extends TerritoryData {
             return Optional.empty();
         }
 
-        if (!doesPlayerHavePermission(ITanPlayer, RolePermission.CLAIM_CHUNK)) {
+        if (!doesPlayerHavePermission(tanPlayer, RolePermission.CLAIM_CHUNK)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             return Optional.empty();
         }
@@ -452,8 +452,8 @@ public class TownData extends TerritoryData {
     }
 
     public void removeOverlordPrivate() {
-        for (ITanPlayer ITanPlayer : getITanPlayerList()) {
-            ITanPlayer.setRegionRankID(null);
+        for (ITanPlayer tanPlayer : getITanPlayerList()) {
+            tanPlayer.setRegionRankID(null);
         }
     }
 
@@ -501,8 +501,8 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public List<GuiItem> getOrderedMemberList(ITanPlayer ITanPlayer) {
-        Player player = ITanPlayer.getPlayer();
+    public List<GuiItem> getOrderedMemberList(ITanPlayer tanPlayer) {
+        Player player = tanPlayer.getPlayer();
         List<GuiItem> res = new ArrayList<>();
         for (String playerUUID : getOrderedPlayerIDList()) {
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
@@ -510,29 +510,29 @@ public class TownData extends TerritoryData {
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
                     Lang.GUI_TOWN_MEMBER_DESC1.get(playerIterateData.getTownRank().getColoredName()),
                     Lang.GUI_TOWN_MEMBER_DESC2.get(StringUtil.formatMoney(EconomyUtil.getBalance(playerIterate))),
-                    doesPlayerHavePermission(ITanPlayer, RolePermission.KICK_PLAYER) ? Lang.GUI_TOWN_MEMBER_DESC3.get() : "");
+                    doesPlayerHavePermission(tanPlayer, RolePermission.KICK_PLAYER) ? Lang.GUI_TOWN_MEMBER_DESC3.get() : "");
 
             GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
                 if (event.getClick() == ClickType.RIGHT) {
 
-                    ITanPlayer kickedITanPlayer = PlayerDataStorage.getInstance().get(playerIterate);
-                    TownData townData = TownDataStorage.getInstance().get(ITanPlayer);
+                    ITanPlayer kickedPlayer = PlayerDataStorage.getInstance().get(playerIterate);
+                    TownData townData = TownDataStorage.getInstance().get(tanPlayer);
 
 
-                    if (!doesPlayerHavePermission(ITanPlayer, RolePermission.KICK_PLAYER)) {
+                    if (!doesPlayerHavePermission(tanPlayer, RolePermission.KICK_PLAYER)) {
                         player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                         return;
                     }
-                    if (townData.getRank(kickedITanPlayer).isSuperiorTo(townData.getRank(ITanPlayer))) {
+                    if (townData.getRank(kickedPlayer).isSuperiorTo(townData.getRank(tanPlayer))) {
                         player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get());
                         return;
                     }
-                    if (isLeader(kickedITanPlayer)) {
+                    if (isLeader(kickedPlayer)) {
                         player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get());
                         return;
                     }
-                    if (ITanPlayer.getID().equals(kickedITanPlayer.getID())) {
+                    if (tanPlayer.getID().equals(kickedPlayer.getID())) {
                         player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_YOURSELF.get());
                         return;
                     }
@@ -553,8 +553,8 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    protected void specificSetPlayerRank(ITanPlayer ITanPlayer, int rankID) {
-        ITanPlayer.setTownRankID(rankID);
+    protected void specificSetPlayerRank(ITanPlayer tanPlayer, int rankID) {
+        tanPlayer.setTownRankID(rankID);
     }
 
     @Override
@@ -649,9 +649,9 @@ public class TownData extends TerritoryData {
 
 
     public void upgradeTown(Player player) {
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         Level townLevel = this.getLevel();
-        if (!doesPlayerHavePermission(ITanPlayer, RolePermission.UPGRADE_TOWN)) {
+        if (!doesPlayerHavePermission(tanPlayer, RolePermission.UPGRADE_TOWN)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             return;
@@ -669,9 +669,9 @@ public class TownData extends TerritoryData {
     }
 
     public void upgradeTown(Player player, TownUpgrade townUpgrade, int townUpgradeLevel) {
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
-        if (!doesPlayerHavePermission(ITanPlayer, RolePermission.UPGRADE_TOWN)) {
+        if (!doesPlayerHavePermission(tanPlayer, RolePermission.UPGRADE_TOWN)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             return;

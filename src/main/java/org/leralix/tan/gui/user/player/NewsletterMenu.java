@@ -43,9 +43,9 @@ public class NewsletterMenu extends IteratorGUI {
 
     private GuiItem getMarkAllAsReadButton() {
         return IconManager.getInstance().get(IconKey.MARK_ALL_AS_READ_ICON)
-                .setName(Lang.MARK_ALL_AS_READ.get(ITanPlayer))
+                .setName(Lang.MARK_ALL_AS_READ.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(ITanPlayer)
+                        Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer)
                 )
                 .setAction(event -> {
                     NewsletterStorage.markAllAsReadForPlayer(player, scope);
@@ -56,10 +56,10 @@ public class NewsletterMenu extends IteratorGUI {
 
     private GuiItem getCheckScopeGui() {
         return IconManager.getInstance().get(IconKey.CHANGE_NEWSLETTER_SCOPE_ICON)
-                .setName(Lang.NEWSLETTER_SCOPE_ICON.get(ITanPlayer))
+                .setName(Lang.NEWSLETTER_SCOPE_ICON.get(tanPlayer))
                 .setDescription(
-                        Lang.NEWSLETTER_SCOPE_ICON_DESC1.get(ITanPlayer, scope.getName(ITanPlayer.getLang())),
-                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(ITanPlayer)
+                        Lang.NEWSLETTER_SCOPE_ICON_DESC1.get(tanPlayer, scope.getName(tanPlayer.getLang())),
+                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(tanPlayer)
                 )
                 .setAction(event -> {
                     scope = scope.getNextScope();

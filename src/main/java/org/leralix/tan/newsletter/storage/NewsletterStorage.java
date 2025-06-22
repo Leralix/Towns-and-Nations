@@ -1,9 +1,10 @@
 package org.leralix.tan.newsletter.storage;
 
-import dev.triumphteam.gui
-.guis.GuiItem;
+import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -12,11 +13,11 @@ import org.leralix.tan.newsletter.EventScope;
 import org.leralix.tan.newsletter.NewsletterScope;
 import org.leralix.tan.newsletter.news.Newsletter;
 import org.leralix.tan.newsletter.news.PlayerJoinRequestNews;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.storage.database.DatabaseHandler;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class NewsletterStorage {
@@ -109,8 +110,8 @@ public class NewsletterStorage {
     public static void removePlayerJoinRequest(PlayerJoinRequestNews playerJoinRequestNews) {
         removePlayerJoinRequest(playerJoinRequestNews.getPlayerID(), playerJoinRequestNews.getTownID());
     }
-    public static void removePlayerJoinRequest(ITanPlayer ITanPlayer, TownData townData) {
-        removePlayerJoinRequest(ITanPlayer.getID(), townData.getID());
+    public static void removePlayerJoinRequest(ITanPlayer tanPlayer, TownData townData) {
+        removePlayerJoinRequest(tanPlayer.getID(), townData.getID());
     }
     public static void removePlayerJoinRequest(Player player, TownData townData) {
         removePlayerJoinRequest(player.getUniqueId().toString(), townData.getID());

@@ -52,16 +52,16 @@ class QuitTownServer extends SubCommand {
             commandSender.sendMessage(Lang.PLAYER_NOT_FOUND.get());
             return;
         }
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(p);
-        TownData townData = ITanPlayer.getTown();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(p);
+        TownData townData = tanPlayer.getTown();
         if(townData == null){
             commandSender.sendMessage(Lang.PLAYER_NO_TOWN.get());
             return;
         }
-        if(townData.isLeader(ITanPlayer)){
+        if(townData.isLeader(tanPlayer)){
             commandSender.sendMessage(Lang.LEADER_CANNOT_QUIT_TOWN.get());
             return;
         }
-        townData.removePlayer(ITanPlayer);
+        townData.removePlayer(tanPlayer);
     }
 }

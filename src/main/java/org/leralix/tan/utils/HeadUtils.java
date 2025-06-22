@@ -39,7 +39,7 @@ public class HeadUtils {
      */
     public static @NotNull ItemStack getPlayerHeadInformation(final @NotNull OfflinePlayer offlinePlayer){
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(offlinePlayer);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(offlinePlayer);
         SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
 
         if(skullMeta == null){
@@ -51,7 +51,7 @@ public class HeadUtils {
 
         head.setItemMeta(skullMeta);
 
-        setLore(head, Lang.GUI_YOUR_BALANCE_DESC1.get(ITanPlayer, StringUtil.formatMoney(EconomyUtil.getBalance(offlinePlayer))));
+        setLore(head, Lang.GUI_YOUR_BALANCE_DESC1.get(tanPlayer, StringUtil.formatMoney(EconomyUtil.getBalance(offlinePlayer))));
         return head;
     }
     /**

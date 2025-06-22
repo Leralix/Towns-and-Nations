@@ -49,13 +49,13 @@ public class TownClaimedChunk extends ClaimedChunk2 {
 
     @Override
     protected boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location) {
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         //Location is in a property and players owns or rent it
         TownData ownerTown = getTown();
         PropertyData property = ownerTown.getProperty(location);
         if (property != null) {
-            if (property.isPlayerAllowed(ITanPlayer)) {
+            if (property.isPlayerAllowed(tanPlayer)) {
                 return true;
             } else {
                 player.sendMessage(TanChatUtils.getTANString() + property.getDenyMessage());
@@ -64,19 +64,19 @@ public class TownClaimedChunk extends ClaimedChunk2 {
         }
 
         //Chunk is claimed yet player have no town
-        if (!ITanPlayer.hasTown()) {
+        if (!tanPlayer.hasTown()) {
             playerCantPerformAction(player);
             return false;
         }
 
         //Player is at war with the town
         for (CurrentAttack currentAttacks : ownerTown.getCurrentAttacks()) {
-            if (currentAttacks.containsPlayer(ITanPlayer))
+            if (currentAttacks.containsPlayer(tanPlayer))
                 return true;
         }
 
         ChunkPermission chunkPermission = ownerTown.getPermission(permissionType);
-        if (chunkPermission.isAllowed(ownerTown, ITanPlayer))
+        if (chunkPermission.isAllowed(ownerTown, tanPlayer))
             return true;
 
         playerCantPerformAction(player);
@@ -149,7 +149,7 @@ public class TownClaimedChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public TextComponent getMapIcon(ITanPlayer ITanPlayer) {
+    public TextComponent getMapIcon(ITanPlayer tanPlayer) {
 
         TextComponent textComponent = new TextComponent("⬛");
         textComponent.setColor(getTown().getChunkColor());

@@ -31,12 +31,12 @@ public class TimeZoneManager {
         return TimeZoneEnum.fromOffset(offset.getTotalSeconds() / 3600);
     }
 
-    public String formatDateNowForPlayer(ITanPlayer ITanPlayer){
-        return formatDateForPlayer(ITanPlayer, Instant.now());
+    public String formatDateNowForPlayer(ITanPlayer tanPlayer){
+        return formatDateForPlayer(tanPlayer, Instant.now());
     }
 
-    public String formatDateForPlayer(ITanPlayer ITanPlayer, Instant timestamp) {
-        TimeZoneEnum timeZone = ITanPlayer.getTimeZone();
+    public String formatDateForPlayer(ITanPlayer tanPlayer, Instant timestamp) {
+        TimeZoneEnum timeZone = tanPlayer.getTimeZone();
         return getDate(timestamp, timeZone);
     }
 
@@ -55,7 +55,7 @@ public class TimeZoneManager {
         return formatter.format(zonedDateTime);
     }
 
-    public TimeZoneEnum getServerTimezone() {
+    public TimeZoneEnum getTimezoneEnum() {
         return timeZoneEnum;
     }
 

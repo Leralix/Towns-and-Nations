@@ -14,7 +14,7 @@ public abstract class BasicGui {
 
     protected final Gui gui;
     protected final Player player;
-    protected final ITanPlayer ITanPlayer;
+    protected final ITanPlayer tanPlayer;
     protected final IconManager iconManager;
 
     protected BasicGui(Player player, Lang title, int rows) {
@@ -22,7 +22,7 @@ public abstract class BasicGui {
     }
 
     protected BasicGui(Player player, String title, int rows){
-        this.ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        this.tanPlayer = PlayerDataStorage.getInstance().get(player);
         this.gui = Gui.gui()
                 .title(Component.text(title))
                 .type(GuiType.CHEST)

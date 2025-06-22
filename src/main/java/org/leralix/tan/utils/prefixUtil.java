@@ -18,10 +18,10 @@ public class prefixUtil {
         if(!ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableTownPrefix",true)){
             return;
         }
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
-        if (ITanPlayer.getTown() != null){
-            String prefix = ITanPlayer.getTown().getColoredTag() + " ";
+        if (tanPlayer.getTown() != null){
+            String prefix = tanPlayer.getTown().getColoredTag() + " ";
 
             player.setPlayerListName(prefix + player.getName());
             player.setDisplayName(prefix + player.getName());

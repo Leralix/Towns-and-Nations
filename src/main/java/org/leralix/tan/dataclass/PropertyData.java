@@ -378,12 +378,12 @@ public class PropertyData {
         return allowedPlayers;
     }
 
-    public boolean isPlayerAllowed(ITanPlayer ITanPlayer) {
-        if(getAllowedPlayersID().contains(ITanPlayer.getID()))
+    public boolean isPlayerAllowed(ITanPlayer tanPlayer) {
+        if(getAllowedPlayersID().contains(tanPlayer.getID()))
             return true;
         if(isRented())
-            return ITanPlayer.getID().equals(rentingPlayerID);
-        return isOwner(ITanPlayer.getID());
+            return tanPlayer.getID().equals(rentingPlayerID);
+        return isOwner(tanPlayer.getID());
     }
 
     public String getDenyMessage() {

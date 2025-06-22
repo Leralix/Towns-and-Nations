@@ -6,7 +6,7 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.factory.AbstractionFactory;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DonateToTerritoryTest {
 
@@ -17,39 +17,39 @@ class DonateToTerritoryTest {
 
     @Test
     void nominalCase() {
-        var ITanPlayer = AbstractionFactory.getRandomITanPlayer();
-        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", ITanPlayer);
+        var tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", tanPlayer);
         int amount = 1;
-        ITanPlayer.addToBalance(amount);
+        tanPlayer.addToBalance(amount);
 
         DonateToTerritory donateToTerritory = new DonateToTerritory(townData);
-        donateToTerritory.execute(ITanPlayer.getPlayer(), String.valueOf(amount));
+        donateToTerritory.execute(tanPlayer.getPlayer(), String.valueOf(amount));
 
         assertEquals(amount, townData.getBalance());
     }
 
     @Test
     void notEnoughMoney() {
-        var ITanPlayer = AbstractionFactory.getRandomITanPlayer();
-        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", ITanPlayer);
+        var tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", tanPlayer);
 
-        int amount = (int) (ITanPlayer.getBalance() + 1);
+        int amount = (int) (tanPlayer.getBalance() + 1);
 
         DonateToTerritory donateToTerritory = new DonateToTerritory(townData);
-        donateToTerritory.execute(ITanPlayer.getPlayer(), String.valueOf(amount));
+        donateToTerritory.execute(tanPlayer.getPlayer(), String.valueOf(amount));
 
         assertEquals(0, townData.getBalance());
     }
 
     @Test
     void notANumber() {
-        var ITanPlayer = AbstractionFactory.getRandomITanPlayer();
-        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", ITanPlayer);
+        var tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", tanPlayer);
 
         String amount = "notANumber";
 
         DonateToTerritory donateToTerritory = new DonateToTerritory(townData);
-        donateToTerritory.execute(ITanPlayer.getPlayer(), amount);
+        donateToTerritory.execute(tanPlayer.getPlayer(), amount);
 
         assertEquals(0, townData.getBalance());
     }

@@ -38,11 +38,11 @@ public class ChunkPermission {
     }
 
 
-    public boolean isAllowed(TerritoryData playerTerritory, ITanPlayer ITanPlayer) {
-        if(this.overallPermission.isAllowed(playerTerritory, ITanPlayer)) {
+    public boolean isAllowed(TerritoryData playerTerritory, ITanPlayer tanPlayer) {
+        if(this.overallPermission.isAllowed(playerTerritory, tanPlayer)) {
             return true;
         }
-        return isPlayerAllowed(ITanPlayer.getID());
+        return isPlayerAllowed(tanPlayer.getID());
     }
 
     public Collection<String> getAuthorizedPlayers() {

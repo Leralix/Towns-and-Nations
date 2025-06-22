@@ -20,59 +20,59 @@ class TownDataTest {
 
     @Test
     void createTown(){
-        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
-        TownData townData = new TownData("T1", "testTown", ITanPlayer);
+        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        TownData townData = new TownData("T1", "testTown", tanPlayer);
 
         assertEquals("T1", townData.getID());
         assertEquals("testTown", townData.getName());
-        assertEquals(ITanPlayer, townData.getLeaderData());
+        assertEquals(tanPlayer, townData.getLeaderData());
         assertEquals(0, townData.getBalance());
         assertEquals(0, townData.getHierarchyRank());
-        assertEquals(ITanPlayer.getTownRankID(), townData.getDefaultRankID());
+        assertEquals(tanPlayer.getTownRankID(), townData.getDefaultRankID());
     }
 
     @Test
     void addRank(){
-        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
-        TownData townData = TownDataStorage.getInstance().newTown("testTown", ITanPlayer);
+        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("testTown", tanPlayer);
 
-        assertEquals(townData.getTownDefaultRank(), ITanPlayer.getTownRank());
+        assertEquals(townData.getTownDefaultRank(), tanPlayer.getTownRank());
 
         RankData newRank = townData.registerNewRank("Knight");
         newRank.incrementLevel();
-        townData.setPlayerRank(ITanPlayer, newRank);
+        townData.setPlayerRank(tanPlayer, newRank);
 
         assertEquals(2, newRank.getLevel());
         assertEquals("Knight", newRank.getName());
         assertEquals(0, townData.getTownDefaultRank().getNumberOfPlayer());
         assertEquals(1, newRank.getNumberOfPlayer());
         assertEquals(2, townData.getRanks().size());
-        assertEquals(newRank, ITanPlayer.getTownRank());
+        assertEquals(newRank, tanPlayer.getTownRank());
     }
 
     @Test
     void deleteTownWithPlayers(){
-        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
-        ITanPlayer otherITanPlayer = AbstractionFactory.getRandomITanPlayer();
-        TownData townData = TownDataStorage.getInstance().newTown("testTown", ITanPlayer);
+        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer othertanPlayer = AbstractionFactory.getRandomITanPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("testTown", tanPlayer);
 
         assertEquals(1, townData.getPlayerIDList().size());
-        assertEquals(townData.getID(), ITanPlayer.getTownId());
-        assertTrue(townData.getTownDefaultRank().getPlayersID().contains(ITanPlayer.getID()));
+        assertEquals(townData.getID(), tanPlayer.getTownId());
+        assertTrue(townData.getTownDefaultRank().getPlayersID().contains(tanPlayer.getID()));
 
-        townData.addPlayer(otherITanPlayer);
+        townData.addPlayer(othertanPlayer);
 
         assertEquals(2, townData.getPlayerIDList().size());
-        assertEquals(townData.getID(), otherITanPlayer.getTownId());
-        assertTrue(townData.getTownDefaultRank().getPlayersID().contains(otherITanPlayer.getID()));
+        assertEquals(townData.getID(), othertanPlayer.getTownId());
+        assertTrue(townData.getTownDefaultRank().getPlayersID().contains(othertanPlayer.getID()));
 
         townData.delete();
         TownData otherTownData = TownDataStorage.getInstance().newTown("townToShowPlayerRank");
 
-        assertNull(otherITanPlayer.getTownId());
-        assertNull(ITanPlayer.getTownId());
-        assertNull(ITanPlayer.getRankID(otherTownData));
-        assertNull(otherITanPlayer.getRankID(otherTownData));
+        assertNull(othertanPlayer.getTownId());
+        assertNull(tanPlayer.getTownId());
+        assertNull(tanPlayer.getRankID(otherTownData));
+        assertNull(othertanPlayer.getRankID(otherTownData));
     }
 
     @Test

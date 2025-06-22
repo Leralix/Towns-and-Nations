@@ -41,30 +41,30 @@ public class ChunkSettingsMenu extends BasicGui {
 
     private GuiItem getChunkIcon() {
         return iconManager.get(IconKey.LANDS_PERMISSION_ICON)
-                .setName(Lang.GUI_TOWN_CHUNK_PLAYER.get(ITanPlayer))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer))
+                .setName(Lang.GUI_TOWN_CHUNK_PLAYER.get(tanPlayer))
+                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer))
                 .setAction(event -> new PlayerChunkSettingsMenu(player, territoryData))
                 .asGuiItem(player);
     }
 
     private GuiItem getChunkGeneralSettings(){
         return iconManager.get(IconKey.GENERAL_SETTINGS_ICON)
-                .setName(Lang.CHUNK_GENERAL_SETTINGS.get(ITanPlayer))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer))
+                .setName(Lang.CHUNK_GENERAL_SETTINGS.get(tanPlayer))
+                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer))
                 .setAction(event -> PlayerGUI.openChunkGeneralSettings(player, territoryData))
                 .asGuiItem(player);
     }
 
     private GuiItem getChunkMobSpawnSettings(){
         return iconManager.get(IconKey.MOBS_SPAWN_SETTINGS_ICON)
-                .setName(Lang.GUI_TOWN_CHUNK_MOB.get(ITanPlayer))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer))
+                .setName(Lang.GUI_TOWN_CHUNK_MOB.get(tanPlayer))
+                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer))
                 .setAction(event -> {
                     if (territoryData instanceof TownData townData) {
                         if (townData.getLevel().getBenefitsLevel("UNLOCK_MOB_BAN") >= 1)
                             PlayerGUI.openTownChunkMobSettings(player, 0);
                         else {
-                            player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_LEVEL.get(ITanPlayer, DynamicLang.get("UNLOCK_MOB_BAN")));
+                            player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_LEVEL.get(tanPlayer, DynamicLang.get("UNLOCK_MOB_BAN")));
                             SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                         }
                     }

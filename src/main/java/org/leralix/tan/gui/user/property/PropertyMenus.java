@@ -33,19 +33,19 @@ public abstract class PropertyMenus extends BasicGui {
     protected GuiItem getPropertyIcon() {
         return iconManager.get(propertyData.getIcon())
                 .setName(propertyData.getName())
-                .setDescription(propertyData.getBasicDescription(ITanPlayer.getLang()))
+                .setDescription(propertyData.getBasicDescription(tanPlayer.getLang()))
                 .asGuiItem(player);
     }
 
     protected GuiItem getRenameButton() {
         return iconManager.get(IconKey.PROPERTY_RENAME_ICON)
-                .setName(Lang.GUI_PROPERTY_CHANGE_NAME.get(ITanPlayer))
+                .setName(Lang.GUI_PROPERTY_CHANGE_NAME.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_PROPERTY_CHANGE_NAME_DESC1.get(ITanPlayer, propertyData.getName()),
-                        Lang.GUI_GENERIC_CLICK_TO_RENAME.get(ITanPlayer)
+                        Lang.GUI_PROPERTY_CHANGE_NAME_DESC1.get(tanPlayer, propertyData.getName()),
+                        Lang.GUI_GENERIC_CLICK_TO_RENAME.get(tanPlayer)
                 )
                 .setAction(action -> {
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(ITanPlayer));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangePropertyName(propertyData, p -> open()));
                 })
                 .asGuiItem(player);
@@ -53,13 +53,13 @@ public abstract class PropertyMenus extends BasicGui {
 
     protected GuiItem getDescriptionButton() {
         return iconManager.get(IconKey.PROPERTY_DESCRIPTION_ICON)
-                .setName(Lang.GUI_PROPERTY_CHANGE_DESCRIPTION.get(ITanPlayer))
+                .setName(Lang.GUI_PROPERTY_CHANGE_DESCRIPTION.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_PROPERTY_CHANGE_DESCRIPTION_DESC1.get(ITanPlayer, propertyData.getDescription()),
-                        Lang.GUI_GENERIC_CLICK_TO_RENAME.get(ITanPlayer)
+                        Lang.GUI_PROPERTY_CHANGE_DESCRIPTION_DESC1.get(tanPlayer, propertyData.getDescription()),
+                        Lang.GUI_GENERIC_CLICK_TO_RENAME.get(tanPlayer)
                 )
                 .setAction(action -> {
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(ITanPlayer));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangePropertyDescription(propertyData, p -> open()));
                 })
                 .asGuiItem(player);
@@ -67,9 +67,9 @@ public abstract class PropertyMenus extends BasicGui {
 
     protected GuiItem getBoundariesButton() {
         return iconManager.get(IconKey.PROPERTY_BOUNDS_ICON)
-                .setName(Lang.GUI_PROPERTY_DRAWN_BOX.get(ITanPlayer))
+                .setName(Lang.GUI_PROPERTY_DRAWN_BOX.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_GENERIC_CLICK_TO_SHOW.get(ITanPlayer)
+                        Lang.GUI_GENERIC_CLICK_TO_SHOW.get(tanPlayer)
                 )
                 .setAction(action -> {
                     player.closeInventory();
@@ -88,21 +88,21 @@ public abstract class PropertyMenus extends BasicGui {
         double total = NumberUtil.roundWithDigits(price + taxPrice);
 
         return iconManager.get(iconKey)
-                .setName(name.get(ITanPlayer))
+                .setName(name.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_BUYING_PRICE.get(ITanPlayer, total, price, taxPrice),
-                        Lang.GUI_TOWN_RATE.get(ITanPlayer, String.format("%.2f", propertyData.getTown().getTaxOnBuyingProperty() * 100)),
-                        Lang.GUI_LEFT_CLICK_TO_SWITCH_SALE.get(ITanPlayer),
-                        Lang.GUI_RIGHT_CLICK_TO_CHANGE_PRICE.get(ITanPlayer)
+                        Lang.GUI_BUYING_PRICE.get(tanPlayer, total, price, taxPrice),
+                        Lang.GUI_TOWN_RATE.get(tanPlayer, String.format("%.2f", propertyData.getTown().getTaxOnBuyingProperty() * 100)),
+                        Lang.GUI_LEFT_CLICK_TO_SWITCH_SALE.get(tanPlayer),
+                        Lang.GUI_RIGHT_CLICK_TO_CHANGE_PRICE.get(tanPlayer)
                 )
                 .setAction(event -> {
                     if (event.getClick() == ClickType.RIGHT) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(ITanPlayer));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
                         PlayerChatListenerStorage.register(player, new ChangePropertySalePrice(propertyData, p -> open()));
                         player.closeInventory();
                     } else if (event.getClick() == ClickType.LEFT) {
                         if (propertyData.isRented()) {
-                            player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_ALREADY_RENTED.get(ITanPlayer));
+                            player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_ALREADY_RENTED.get(tanPlayer));
                             return;
                         }
                         propertyData.swapIsForSale();
@@ -122,20 +122,20 @@ public abstract class PropertyMenus extends BasicGui {
         double total = propertyData.getRentPrice();
 
         return iconManager.get(iconKey)
-                .setName(name.get(ITanPlayer))
+                .setName(name.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_RENTING_PRICE.get(ITanPlayer, total, price, taxPrice),
-                        Lang.GUI_TOWN_RATE.get(ITanPlayer, String.format("%.2f", propertyData.getTown().getTaxOnRentingProperty() * 100)),
-                        Lang.GUI_LEFT_CLICK_TO_SWITCH_SALE.get(ITanPlayer),
-                        Lang.GUI_RIGHT_CLICK_TO_CHANGE_PRICE.get(ITanPlayer)
+                        Lang.GUI_RENTING_PRICE.get(tanPlayer, total, price, taxPrice),
+                        Lang.GUI_TOWN_RATE.get(tanPlayer, String.format("%.2f", propertyData.getTown().getTaxOnRentingProperty() * 100)),
+                        Lang.GUI_LEFT_CLICK_TO_SWITCH_SALE.get(tanPlayer),
+                        Lang.GUI_RIGHT_CLICK_TO_CHANGE_PRICE.get(tanPlayer)
                 )
                 .setAction(event -> {
                     if (event.getClick() == ClickType.RIGHT) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(ITanPlayer));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
                         PlayerChatListenerStorage.register(player, new ChangePropertyRentPrice(propertyData, p -> open()));
                     } else if (event.getClick() == ClickType.LEFT) {
                         if (propertyData.isRented()) {
-                            player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_ALREADY_RENTED.get(ITanPlayer));
+                            player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_ALREADY_RENTED.get(tanPlayer));
                             return;
                         }
                         propertyData.swapIsRent();
@@ -147,10 +147,10 @@ public abstract class PropertyMenus extends BasicGui {
 
     protected GuiItem getDeleteButton() {
         return iconManager.get(IconKey.DELETE_PROPERTY_ICON)
-                .setName(Lang.GUI_PROPERTY_DELETE_PROPERTY.get(ITanPlayer))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(ITanPlayer))
+                .setName(Lang.GUI_PROPERTY_DELETE_PROPERTY.get(tanPlayer))
+                .setDescription(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer))
                 .setAction(event ->
-                        PlayerGUI.openConfirmMenu(player, Lang.GUI_PROPERTY_DELETE_PROPERTY_CONFIRM.get(ITanPlayer, propertyData.getName()),
+                        PlayerGUI.openConfirmMenu(player, Lang.GUI_PROPERTY_DELETE_PROPERTY_CONFIRM.get(tanPlayer, propertyData.getName()),
                         p -> {
                             propertyData.delete();
                             player.closeInventory();
@@ -162,9 +162,9 @@ public abstract class PropertyMenus extends BasicGui {
 
     protected GuiItem getAuthorizedPlayersButton() {
         return iconManager.get(IconKey.AUTHORIZED_PLAYERS_ICON)
-                .setName(Lang.GUI_PROPERTY_PLAYER_LIST.get(ITanPlayer))
+                .setName(Lang.GUI_PROPERTY_PLAYER_LIST.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_PROPERTY_PLAYER_LIST_DESC1.get(ITanPlayer, propertyData.getAllowedPlayersID().size()),
+                        Lang.GUI_PROPERTY_PLAYER_LIST_DESC1.get(tanPlayer, propertyData.getAllowedPlayersID().size()),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get()
                 )
                 .setAction(event -> PlayerGUI.openPlayerPropertyPlayerList(player, propertyData, 0, p -> open()))
@@ -173,19 +173,19 @@ public abstract class PropertyMenus extends BasicGui {
 
     protected GuiItem getKickRenterButton() {
         return iconManager.get(new ItemStack(HeadUtils.getPlayerHead(propertyData.getOfflineRenter())))
-                .setName(Lang.GUI_PROPERTY_RENTED_BY.get(ITanPlayer, propertyData.getRenter().getNameStored()))
-                .setDescription(Lang.GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER.get(ITanPlayer))
+                .setName(Lang.GUI_PROPERTY_RENTED_BY.get(tanPlayer, propertyData.getRenter().getNameStored()))
+                .setDescription(Lang.GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER.get(tanPlayer))
                 .setAction(event -> {
                     event.setCancelled(true);
 
                     Player renter = propertyData.getRenterPlayer();
                     propertyData.expelRenter(false);
 
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_RENTER_EXPELLED_OWNER_SIDE.get(ITanPlayer));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_RENTER_EXPELLED_OWNER_SIDE.get(tanPlayer));
                     SoundUtil.playSound(player, MINOR_GOOD);
 
                     if (renter != null) {
-                        renter.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_RENTER_EXPELLED_RENTER_SIDE.get(ITanPlayer, propertyData.getName()));
+                        renter.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_RENTER_EXPELLED_RENTER_SIDE.get(tanPlayer, propertyData.getName()));
                         SoundUtil.playSound(renter, MINOR_BAD);
                     }
                     open();

@@ -118,7 +118,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
     }
 
     private void sendSingleMessage(Player player, String channelName, String[] words) {
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         String message = String.join(" ", Arrays.copyOfRange(words, 2, words.length));
 
         switch (channelName.toLowerCase()) {
@@ -134,12 +134,12 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
                 }
                 return;
             case "alliance":
-                if (!ITanPlayer.hasTown()) {
+                if (!tanPlayer.hasTown()) {
                     player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
                     return;
                 }
 
-                TownData playerTown = ITanPlayer.getTown();
+                TownData playerTown = tanPlayer.getTown();
 
                 playerTown.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE)
                         .forEach(territoryID -> Objects.requireNonNull(TerritoryUtil.getTerritory(territoryID))
@@ -147,22 +147,22 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
                         );
                 return;
             case "region":
-                if (!ITanPlayer.hasRegion()) {
+                if (!tanPlayer.hasRegion()) {
                     player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
                     return;
                 }
 
-                RegionData regionData = ITanPlayer.getRegion();
+                RegionData regionData = tanPlayer.getRegion();
                 if (regionData != null)
                     regionData.broadCastMessage(Lang.CHAT_SCOPE_REGION_MESSAGE.get(regionData.getName(), player.getName(), message));
                 return;
             case "town":
-                if (!ITanPlayer.hasTown()) {
+                if (!tanPlayer.hasTown()) {
                     player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
                     return;
                 }
 
-                TownData townData = ITanPlayer.getTown();
+                TownData townData = tanPlayer.getTown();
                 if (townData != null)
                     townData.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.get(townData.getName(), player.getName(), message));
                 return;

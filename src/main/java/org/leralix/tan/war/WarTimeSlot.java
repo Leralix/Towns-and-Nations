@@ -86,7 +86,7 @@ public class WarTimeSlot {
     }
 
     public boolean canWarBeDeclared(Instant dateTime) {
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(dateTime, TimeZoneManager.getInstance().getServerTimezone().toZoneOffset());
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(dateTime, TimeZoneManager.getInstance().getTimezoneEnum().toZoneOffset());
 
         int currentMinutes = localDateTime.getHour() * 60 + localDateTime.getMinute();
 

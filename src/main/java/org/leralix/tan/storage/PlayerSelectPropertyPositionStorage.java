@@ -37,8 +37,8 @@ public class PlayerSelectPropertyPositionStorage {
     public static boolean contains(Player player){
         return contains(player.getUniqueId().toString());
     }
-    public static boolean contains(ITanPlayer ITanPlayer){
-        return contains(ITanPlayer.getID());
+    public static boolean contains(ITanPlayer tanPlayer){
+        return contains(tanPlayer.getID());
     }
     public static boolean contains(String playerID){
         return playerList.containsKey(playerID);
@@ -47,8 +47,8 @@ public class PlayerSelectPropertyPositionStorage {
         playerList.put(playerID, new ArrayList<>());
     }
 
-    public static void addPlayer(ITanPlayer ITanPlayer){
-        addPlayer(ITanPlayer.getID());
+    public static void addPlayer(ITanPlayer tanPlayer){
+        addPlayer(tanPlayer.getID());
     }
 
     public static void removePlayer(Player player){
@@ -60,8 +60,8 @@ public class PlayerSelectPropertyPositionStorage {
 
     public static void addPoint(Player player, Block block, BlockFace blockFace){
         String playerID = player.getUniqueId().toString();
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(playerID);
-        TownData playerTown = ITanPlayer.getTown();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        TownData playerTown = tanPlayer.getTown();
 
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(block.getChunk());
         if(claimedChunk == null){
@@ -101,7 +101,7 @@ public class PlayerSelectPropertyPositionStorage {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_PROPERTY_CREATED.get());
             removePlayer(playerID);
 
-            PropertyData property = playerTown.registerNewProperty(vList.get(0),vList.get(1),ITanPlayer);
+            PropertyData property = playerTown.registerNewProperty(vList.get(0),vList.get(1),tanPlayer);
             new PlayerPropertyManager(player, property, HumanEntity::closeInventory);
 
             createPropertyPanel(player, property, block, blockFace);

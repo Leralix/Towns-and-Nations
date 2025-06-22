@@ -510,9 +510,9 @@ public class ChunkListener implements Listener {
             return true;
 
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
-        if(ITanPlayer.isAtWarWith(claimedChunk.getOwner()))
+        if(tanPlayer.isAtWarWith(claimedChunk.getOwner()))
             return true;
 
 

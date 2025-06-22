@@ -27,7 +27,7 @@ public enum BrowseScope {
         REGIONS.nextScope = ALL;
     }
 
-    public String getName(ITanPlayer ITanPlayer) {
-        return name.get(ITanPlayer);
+    public String getName(ITanPlayer tanPlayer) {
+        return name.get(tanPlayer);
     }
 }

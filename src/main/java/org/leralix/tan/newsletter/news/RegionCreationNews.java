@@ -51,13 +51,13 @@ public class RegionCreationNews extends Newsletter {
 
     @Override
     public void broadcast(Player player) {
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(playerID);
-        if(ITanPlayer == null)
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        if(tanPlayer == null)
             return;
         RegionData regionData = RegionDataStorage.getInstance().get(regionID);
         if(regionData == null)
             return;
-        player.sendMessage(getTANString() + Lang.REGION_CREATED_NEWSLETTER.get(ITanPlayer.getNameStored(), regionData.getBaseColoredName()));
+        player.sendMessage(getTANString() + Lang.REGION_CREATED_NEWSLETTER.get(tanPlayer.getNameStored(), regionData.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.GOOD);
     }
 
@@ -69,15 +69,15 @@ public class RegionCreationNews extends Newsletter {
     @Override
     public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
 
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(playerID);
-        if(ITanPlayer == null)
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        if(tanPlayer == null)
             return null;
         RegionData regionData = RegionDataStorage.getInstance().get(regionID);
         if(regionData == null)
             return null;
 
         ItemStack itemStack = HeadUtils.makeSkullB64(Lang.REGION_CREATED_NEWSLETTER_TITLE.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=",
-                Lang.REGION_CREATED_NEWSLETTER.get(ITanPlayer.getNameStored(), regionData.getBaseColoredName()),
+                Lang.REGION_CREATED_NEWSLETTER.get(tanPlayer.getNameStored(), regionData.getBaseColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
 
         return ItemBuilder.from(itemStack).asGuiItem(event -> {

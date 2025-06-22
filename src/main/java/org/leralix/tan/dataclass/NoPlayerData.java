@@ -28,12 +28,12 @@ public class NoPlayerData implements ITanPlayer {
 
     @Override
     public void setNameStored(String name) {
-
+        // singleton class, no need to set name
     }
 
     @Override
     public void clearName() {
-
+        // singleton class, no need to set name
     }
 
     @Override
@@ -43,7 +43,7 @@ public class NoPlayerData implements ITanPlayer {
 
     @Override
     public void setBalance(double balance) {
-
+        // singleton class, no need to set name
     }
 
     @Override
@@ -78,12 +78,12 @@ public class NoPlayerData implements ITanPlayer {
 
     @Override
     public void addToBalance(double amount) {
-
+        // singleton class, no need to set name
     }
 
     @Override
     public void removeFromBalance(double amount) {
-
+        // singleton class, no need to set name
     }
 
     @Override
@@ -103,17 +103,17 @@ public class NoPlayerData implements ITanPlayer {
 
     @Override
     public void joinTown(TownData townData) {
-
+        // singleton class, no need to set name
     }
 
     @Override
     public void leaveTown() {
-
+        // singleton class, no need to set name
     }
 
     @Override
     public void setTownRankID(int townRankID) {
-
+        // singleton class, no need to set name
     }
 
     @Override
@@ -128,7 +128,7 @@ public class NoPlayerData implements ITanPlayer {
 
     @Override
     public void addProperty(PropertyData propertyData) {
-
+        // singleton class, no need to set name
     }
 
     @Override
@@ -138,7 +138,7 @@ public class NoPlayerData implements ITanPlayer {
 
     @Override
     public void removeProperty(PropertyData propertyData) {
-
+        // singleton class, no need to set name
     }
 
     @Override
@@ -153,17 +153,17 @@ public class NoPlayerData implements ITanPlayer {
 
     @Override
     public void notifyDeath(Player killer) {
-
+        // singleton class, no need to set name
     }
 
     @Override
     public void addWar(CurrentAttack currentAttacks) {
-
+        // singleton class, no need to set name
     }
 
     @Override
     public void updateCurrentAttack() {
-
+        // singleton class, no need to set name
     }
 
     @Override
@@ -173,7 +173,7 @@ public class NoPlayerData implements ITanPlayer {
 
     @Override
     public void removeWar(@NotNull CurrentAttack currentAttacks) {
-
+        // singleton class, no need to set name
     }
 
     @Override
@@ -188,7 +188,7 @@ public class NoPlayerData implements ITanPlayer {
 
     @Override
     public void setRegionRankID(Integer rankID) {
-
+        // singleton class, no need to set name
     }
 
     @Override
@@ -213,17 +213,17 @@ public class NoPlayerData implements ITanPlayer {
 
     @Override
     public void setLang(LangType lang) {
-
+        // singleton class, no need to set name
     }
 
     @Override
     public void clearAllTownApplications() {
-
+        // singleton class, no need to set name
     }
 
     @Override
     public void setRankID(TerritoryData territoryData, Integer defaultRankID) {
-
+        // singleton class, no need to set name
     }
 
     @Override
@@ -233,6 +233,6 @@ public class NoPlayerData implements ITanPlayer {
 
     @Override
     public void setTimeZone(TimeZoneEnum timeZone) {
-
+        // singleton class, no need to set name
     }
 }

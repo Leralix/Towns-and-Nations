@@ -25,9 +25,9 @@ public class PlayerJoinTownNews extends Newsletter {
     String playerID;
     String townID;
 
-    public PlayerJoinTownNews(ITanPlayer ITanPlayer, TownData townData) {
+    public PlayerJoinTownNews(ITanPlayer tanPlayer, TownData townData) {
         super();
-        playerID = ITanPlayer.getID();
+        playerID = tanPlayer.getID();
         townID = townData.getID();
     }
 
@@ -52,27 +52,27 @@ public class PlayerJoinTownNews extends Newsletter {
 
     @Override
     public void broadcast(Player player) {
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(playerID);
-        if(ITanPlayer == null)
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        if(tanPlayer == null)
             return;
         TownData townData = TownDataStorage.getInstance().get(townID);
         if(townData == null)
             return;
-        player.sendMessage(getTANString() + Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(ITanPlayer.getNameStored(), townData.getBaseColoredName()));
+        player.sendMessage(getTANString() + Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(tanPlayer.getNameStored(), townData.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
     }
 
     @Override
     public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(playerID);
-        if(ITanPlayer == null)
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        if(tanPlayer == null)
             return null;
         TownData townData = TownDataStorage.getInstance().get(townID);
         if(townData == null)
             return null;
 
         ItemStack itemStack = HeadUtils.makeSkullURL(Lang.PLAYER_JOINED_TOWN_NEWSLETTER_TITLE.get(), "http://textures.minecraft.net/texture/16338322d26c6a7c08fb9fd22959a136728fa2d4dccd22b1563eb1bbaa1d5471",
-                Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(ITanPlayer.getNameStored(), townData.getCustomColoredName().toLegacyText()),
+                Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(tanPlayer.getNameStored(), townData.getCustomColoredName().toLegacyText()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
 
         return ItemBuilder.from(itemStack).asGuiItem(event -> {

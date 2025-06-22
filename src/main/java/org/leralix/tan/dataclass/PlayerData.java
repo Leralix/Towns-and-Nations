@@ -325,7 +325,7 @@ public class PlayerData implements ITanPlayer {
 
     public TimeZoneEnum getTimeZone() {
         if(timeZone == null){
-            return TimeZoneManager.getInstance().getServerTimezone();
+            return TimeZoneManager.getInstance().getTimezoneEnum();
         }
         return timeZone;
     }

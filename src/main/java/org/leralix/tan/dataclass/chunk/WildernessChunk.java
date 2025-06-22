@@ -12,12 +12,10 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.WildernessRules;
-
-import java.util.Optional;
 
 public class WildernessChunk extends ClaimedChunk2 {
 
@@ -59,7 +57,7 @@ public class WildernessChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public TextComponent getMapIcon(ITanPlayer ITanPlayer) {
+    public TextComponent getMapIcon(ITanPlayer tanPlayer) {
 
         if (ClaimBlacklistStorage.cannotBeClaimed(this)) {
             TextComponent textComponent = new TextComponent("✖");

@@ -42,8 +42,8 @@ public class StrongholdData {
         Collection<ITanPlayer> players = getPlayersInChunk();
         nbAttackers = 0;
         nbDefenders = 0;
-        for(ITanPlayer ITanPlayer : players){
-            AttackSide playerSide = currentAttack.getSideOfPlayer(ITanPlayer);
+        for(ITanPlayer tanPlayer : players){
+            AttackSide playerSide = currentAttack.getSideOfPlayer(tanPlayer);
             if(playerSide == AttackSide.ATTACKER){
                nbAttackers++;
             }else if(playerSide == AttackSide.DEFENDER) {
@@ -114,8 +114,8 @@ public class StrongholdData {
             message = part1 + part2 + part3;
         }
 
-        for(ITanPlayer ITanPlayer : getPlayersInChunk()){
-            ITanPlayer.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(message));
+        for(ITanPlayer tanPlayer : getPlayersInChunk()){
+            tanPlayer.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(message));
         }
     }
 

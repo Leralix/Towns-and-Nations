@@ -81,8 +81,8 @@ public class TeamUtils {
         if(!PlayerDataStorage.getInstance().get(playerToAdd).hasTown() || !PlayerDataStorage.getInstance().get(player).hasTown())
             return;
 
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
-        TownRelation relation = ITanPlayer.getRelationWithPlayer(playerToAdd);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        TownRelation relation = tanPlayer.getRelationWithPlayer(playerToAdd);
         if(relation == null)
             return;
 

@@ -1079,11 +1079,11 @@ public enum Lang {
     }
 
 
-    public String get(ITanPlayer ITanPlayer){
-        if(ITanPlayer == null) {
+    public String get(ITanPlayer tanPlayer){
+        if(tanPlayer == null) {
             return get(serverLang);
         }
-        return get(ITanPlayer.getLang());
+        return get(tanPlayer.getLang());
     }
 
     private String get(LangType lang) {
@@ -1106,11 +1106,11 @@ public enum Lang {
         return get(PlayerDataStorage.getInstance().get(player), placeholders);
     }
 
-    public String get(ITanPlayer ITanPlayer, Object... placeholders) {
-        if(ITanPlayer == null) {
+    public String get(ITanPlayer tanPlayer, Object... placeholders) {
+        if(tanPlayer == null) {
             return get(serverLang, placeholders);
         }
-        return get(ITanPlayer.getLang(), placeholders);
+        return get(tanPlayer.getLang(), placeholders);
     }
 
     public String get(LangType lang, Object... placeholders) {

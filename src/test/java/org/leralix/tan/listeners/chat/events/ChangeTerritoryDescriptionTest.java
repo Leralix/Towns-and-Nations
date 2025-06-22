@@ -26,8 +26,8 @@ class ChangeTerritoryDescriptionTest {
     static void setUp() {
         AbstractionFactory.initializeConfigs();
         player = AbstractionFactory.getRandomPlayer();
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().register(player);
-        townData = TownDataStorage.getInstance().newTown("town 1", ITanPlayer);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().register(player);
+        townData = TownDataStorage.getInstance().newTown("town 1", tanPlayer);
     }
 
     @Test

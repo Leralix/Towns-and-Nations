@@ -23,11 +23,11 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
 
-        if(ITanPlayer.hasTown()){
-            ITanPlayer.updateCurrentAttack();
+        if(tanPlayer.hasTown()){
+            tanPlayer.updateCurrentAttack();
             if(TownsAndNations.getPlugin().townTagIsEnabled())
                 prefixUtil.addPrefix(player);
         }

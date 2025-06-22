@@ -14,19 +14,19 @@ public class TanEconomyExternal extends AbstractTanEcon {
         this.externalEconomy = externalEconomy;
     }
     @Override
-    public double getBalance(ITanPlayer ITanPlayer) {
-        UUID uuid = UUID.fromString(ITanPlayer.getID());
+    public double getBalance(ITanPlayer tanPlayer) {
+        UUID uuid = UUID.fromString(tanPlayer.getID());
         return externalEconomy.getBalance(Bukkit.getOfflinePlayer(uuid));
     }
 
     @Override
-    public boolean has(ITanPlayer ITanPlayer, double v) {
-        return getBalance(ITanPlayer) > v;
+    public boolean has(ITanPlayer tanPlayer, double v) {
+        return getBalance(tanPlayer) > v;
     }
 
     @Override
-    public void withdrawPlayer(ITanPlayer ITanPlayer, double v) {
-        UUID uuid = UUID.fromString(ITanPlayer.getID());
+    public void withdrawPlayer(ITanPlayer tanPlayer, double v) {
+        UUID uuid = UUID.fromString(tanPlayer.getID());
         externalEconomy.withdrawPlayer(Bukkit.getOfflinePlayer(uuid), v);
     }
 

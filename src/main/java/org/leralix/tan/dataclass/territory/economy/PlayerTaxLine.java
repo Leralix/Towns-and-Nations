@@ -35,9 +35,9 @@ public class PlayerTaxLine extends ProfitLine {
         super(townData);
         double flatTax = townData.getTax();
         for (String playerID : townData.getPlayerIDList()) {
-            ITanPlayer otherITanPlayer = PlayerDataStorage.getInstance().get(playerID);
+            ITanPlayer othertanPlayer = PlayerDataStorage.getInstance().get(playerID);
             OfflinePlayer otherPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
-            if (!otherITanPlayer.getTownRank().isPayingTaxes()) {
+            if (!othertanPlayer.getTownRank().isPayingTaxes()) {
                 continue;
             }
             if (EconomyUtil.getBalance(otherPlayer) < flatTax)
@@ -64,7 +64,7 @@ public class PlayerTaxLine extends ProfitLine {
     @Override
     public void addItems(Gui gui, Player player) {
 
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         ItemStack lowerTax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_LOWER_TAX.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=",
                 Lang.GUI_DECREASE_1_DESC.get(),
@@ -80,7 +80,7 @@ public class PlayerTaxLine extends ProfitLine {
 
         GuiItem lowerTaxButton = ItemBuilder.from(lowerTax).asGuiItem(event -> {
             event.setCancelled(true);
-            if (!territoryData.doesPlayerHavePermission(ITanPlayer, RolePermission.MANAGE_TAXES)) {
+            if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
@@ -110,7 +110,7 @@ public class PlayerTaxLine extends ProfitLine {
         GuiItem increaseTaxButton = ItemBuilder.from(increaseTax).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if (!territoryData.doesPlayerHavePermission(ITanPlayer, RolePermission.MANAGE_TAXES)) {
+            if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }

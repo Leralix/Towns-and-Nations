@@ -2,10 +2,10 @@ package org.leralix.tan.storage;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.utils.FileUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.FileUtil;
+import org.leralix.tan.utils.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +29,10 @@ public class SudoPlayerStorage {
 
     /**
      *  Add a player to the sudo list.
-     * @param ITanPlayer    Player to add to the sudo list.
+     * @param tanPlayer    Player to add to the sudo list.
      */
-    public static void addSudoPlayer(ITanPlayer ITanPlayer){
-        addSudoPlayer(ITanPlayer.getID());
+    public static void addSudoPlayer(ITanPlayer tanPlayer){
+        addSudoPlayer(tanPlayer.getID());
     }
 
     /**

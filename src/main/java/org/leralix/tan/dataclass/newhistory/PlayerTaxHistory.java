@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.utils.StringUtil;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.StringUtil;
 
 import java.util.UUID;
 
@@ -16,8 +16,8 @@ public class PlayerTaxHistory extends TransactionHistory {
         super(date, territoryDataID, playerID, amount);
     }
 
-    public PlayerTaxHistory(TerritoryData territoryData, ITanPlayer ITanPlayer, double amount) {
-        super(territoryData.getID(), ITanPlayer.getID(), amount);
+    public PlayerTaxHistory(TerritoryData territoryData, ITanPlayer tanPlayer, double amount) {
+        super(territoryData.getID(), tanPlayer.getID(), amount);
     }
 
 

@@ -42,8 +42,8 @@ public class PlayerDataStorage {
 
 
     public ITanPlayer register(Player p) {
-        ITanPlayer ITanPlayer = new PlayerData(p);
-        return register(ITanPlayer);
+        ITanPlayer tanPlayer = new PlayerData(p);
+        return register(tanPlayer);
     }
     ITanPlayer register(ITanPlayer p) {
         playerStorage.put(p.getID(), p);

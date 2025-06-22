@@ -54,27 +54,27 @@ public class PlayerApplicationMenu extends IteratorGUI {
             ITanPlayer playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
 
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
-                    Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC2.get(ITanPlayer),
-                    Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC3.get(ITanPlayer));
+                    Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC2.get(tanPlayer),
+                    Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC3.get(tanPlayer));
 
             GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(event.isLeftClick()){
-                    if(!townData.doesPlayerHavePermission(ITanPlayer, RolePermission.INVITE_PLAYER)){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(ITanPlayer));
+                    if(!townData.doesPlayerHavePermission(tanPlayer, RolePermission.INVITE_PLAYER)){
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
                     if(townData.isFull()){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.INVITATION_TOWN_FULL.get(ITanPlayer));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.INVITATION_TOWN_FULL.get(tanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
                     townData.addPlayer(playerIterateData);
                 }
                 else if(event.isRightClick()){
-                    if(!townData.doesPlayerHavePermission(ITanPlayer, RolePermission.KICK_PLAYER)){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(ITanPlayer));
+                    if(!townData.doesPlayerHavePermission(tanPlayer, RolePermission.KICK_PLAYER)){
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                         return;
                     }
                     townData.removePlayerJoinRequest(playerIterateData.getID());

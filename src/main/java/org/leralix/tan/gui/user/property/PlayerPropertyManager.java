@@ -50,7 +50,7 @@ public class PlayerPropertyManager extends PropertyMenus {
 
     @Override
     protected GuiItem getPropertyIcon(){
-        var desc = propertyData.getBasicDescription(ITanPlayer.getLang());
+        var desc = propertyData.getBasicDescription(tanPlayer.getLang());
         desc.add(Lang.GUI_PROPERTY_CHANGE_ICON.get());
 
         return iconManager.get(propertyData.getIcon())

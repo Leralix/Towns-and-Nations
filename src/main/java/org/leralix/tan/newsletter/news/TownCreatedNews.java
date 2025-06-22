@@ -50,8 +50,8 @@ public class TownCreatedNews extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(playerID);
-        if (ITanPlayer == null)
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        if (tanPlayer == null)
             return null;
 
         TownData townData = TownDataStorage.getInstance().get(townID);
@@ -59,7 +59,7 @@ public class TownCreatedNews extends Newsletter {
             return null;
 
         ItemStack itemStack = HeadUtils.makeSkullB64(Lang.TOWN_CREATED_NEWSLETTER_TITLE.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
-                Lang.TOWN_CREATED_NEWSLETTER.get(ITanPlayer.getNameStored(), townData.getBaseColoredName()),
+                Lang.TOWN_CREATED_NEWSLETTER.get(tanPlayer.getNameStored(), townData.getBaseColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
 
 
@@ -89,14 +89,14 @@ public class TownCreatedNews extends Newsletter {
 
     @Override
     public void broadcast(Player player) {
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(playerID);
-        if (ITanPlayer == null)
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        if (tanPlayer == null)
             return;
 
         TownData townData = TownDataStorage.getInstance().get(townID);
         if (townData == null)
             return;
-        player.sendMessage(getTANString() + Lang.TOWN_CREATED_NEWSLETTER.get(ITanPlayer.getNameStored(), townData.getBaseColoredName()));
+        player.sendMessage(getTANString() + Lang.TOWN_CREATED_NEWSLETTER.get(tanPlayer.getNameStored(), townData.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.GOOD);
     }
 

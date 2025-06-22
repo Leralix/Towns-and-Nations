@@ -20,13 +20,13 @@ class CreateTownTest {
     @Test
     void nominalCase() {
 
-        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
 
         CreateTown createTown = new CreateTown(10);
-        createTown.execute(ITanPlayer.getPlayer(), "town-A");
+        createTown.execute(tanPlayer.getPlayer(), "town-A");
 
-        assertTrue(ITanPlayer.hasTown());
-        TownData town = ITanPlayer.getTown();
+        assertTrue(tanPlayer.hasTown());
+        TownData town = tanPlayer.getTown();
         assertEquals(1, town.getAllRanks().size());
         assertEquals(1, town.getTownDefaultRank().getNumberOfPlayer());
         assertEquals(0, town.getBalance());
@@ -36,41 +36,41 @@ class CreateTownTest {
     @Test
     void notEnoughMoney() {
 
-        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
 
-        CreateTown createTown = new CreateTown((int) (ITanPlayer.getBalance() + 1));
-        createTown.execute(ITanPlayer.getPlayer(), "anotherName");
+        CreateTown createTown = new CreateTown((int) (tanPlayer.getBalance() + 1));
+        createTown.execute(tanPlayer.getPlayer(), "anotherName");
 
-        assertFalse(ITanPlayer.hasTown());
+        assertFalse(tanPlayer.hasTown());
     }
 
     @Test
     void nameTooLong() {
 
-        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
 
         int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RegionNameSize");
 
         CreateTown createTown = new CreateTown(0);
-        createTown.execute(ITanPlayer.getPlayer(), "a" + "a".repeat(Math.max(0, maxSize)));
+        createTown.execute(tanPlayer.getPlayer(), "a" + "a".repeat(Math.max(0, maxSize)));
 
-        assertFalse(ITanPlayer.hasTown());
+        assertFalse(tanPlayer.hasTown());
     }
 
     @Test
     void nameAlreadyUsed() {
 
-        ITanPlayer ITanPlayer1 = AbstractionFactory.getRandomITanPlayer();
-        ITanPlayer ITanPlayer2 = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer tanPlayer1 = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer tanPlayer2 = AbstractionFactory.getRandomITanPlayer();
 
         String townName = "townWithDuplicateName";
 
         CreateTown createTown = new CreateTown(0);
-        createTown.execute(ITanPlayer1.getPlayer(), townName);
-        createTown.execute(ITanPlayer2.getPlayer(), townName);
+        createTown.execute(tanPlayer1.getPlayer(), townName);
+        createTown.execute(tanPlayer2.getPlayer(), townName);
 
-        assertTrue(ITanPlayer1.hasTown());
-        assertFalse(ITanPlayer2.hasTown());
+        assertTrue(tanPlayer1.hasTown());
+        assertFalse(tanPlayer2.hasTown());
     }
 
 }

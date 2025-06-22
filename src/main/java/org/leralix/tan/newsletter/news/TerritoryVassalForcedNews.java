@@ -75,11 +75,11 @@ public class TerritoryVassalForcedNews extends Newsletter {
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         if(proposingTerritory == null)
             return false;
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
-        if(!territoryData.isPlayerIn(ITanPlayer))
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        if(!territoryData.isPlayerIn(tanPlayer))
             return false;
-        return territoryData.doesPlayerHavePermission(ITanPlayer, RolePermission.TOWN_ADMINISTRATOR) ||
-                proposingTerritory.doesPlayerHavePermission(ITanPlayer, RolePermission.TOWN_ADMINISTRATOR);
+        return territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR) ||
+                proposingTerritory.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR);
     }
 
     @Override

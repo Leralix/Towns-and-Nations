@@ -6,7 +6,7 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.factory.AbstractionFactory;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CreateRankTest {
 
@@ -17,27 +17,27 @@ class CreateRankTest {
 
     @Test
     void nominalCase() {
-        var ITanPlayer = AbstractionFactory.getRandomITanPlayer();
-        TownData townData = TownDataStorage.getInstance().newTown("TestTown", ITanPlayer);
+        var tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("TestTown", tanPlayer);
 
         assertEquals(1, townData.getAllRanks().size());
 
         CreateRank createRank = new CreateRank(townData, null);
-        createRank.execute(ITanPlayer.getPlayer(), "TestRank");
+        createRank.execute(tanPlayer.getPlayer(), "TestRank");
         assertEquals(2, townData.getAllRanks().size());
     }
 
     @Test
     void duplicateNameAllowed() {
-        var ITanPlayer = AbstractionFactory.getRandomITanPlayer();
-        TownData townData = TownDataStorage.getInstance().newTown("TestTown", ITanPlayer);
+        var tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("TestTown", tanPlayer);
         String newRankName = "TestRank";
 
         assertEquals(1, townData.getAllRanks().size());
         CreateRank createRank = new CreateRank(townData, null);
-        createRank.execute(ITanPlayer.getPlayer(), newRankName);
+        createRank.execute(tanPlayer.getPlayer(), newRankName);
         assertEquals(2, townData.getAllRanks().size());
-        createRank.execute(ITanPlayer.getPlayer(), newRankName);
+        createRank.execute(tanPlayer.getPlayer(), newRankName);
         assertEquals(3, townData.getAllRanks().size());
     }
 

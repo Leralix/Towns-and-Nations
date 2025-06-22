@@ -8,7 +8,8 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.factory.AbstractionFactory;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class ChangeTownTagTest {
 
     @BeforeAll
@@ -19,9 +20,9 @@ class ChangeTownTagTest {
 
     @Test
     void nominalCase() {
-        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
-        Player player = ITanPlayer.getPlayer();
-        TownData townData = TownDataStorage.getInstance().newTown("TestTown", ITanPlayer);
+        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        Player player = tanPlayer.getPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("TestTown", tanPlayer);
 
         String newTag = "TAG";
 
@@ -33,9 +34,9 @@ class ChangeTownTagTest {
 
     @Test
     void wrongSizeCase() {
-        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
-        Player player = ITanPlayer.getPlayer();
-        TownData townData = TownDataStorage.getInstance().newTown("TestTown", ITanPlayer);
+        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        Player player = tanPlayer.getPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("TestTown", tanPlayer);
 
         String newTag = "goofy ahh tag";
 

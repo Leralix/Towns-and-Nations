@@ -131,13 +131,13 @@ public class GuiUtil {
             slot++;
         }
         GuiItem panel = ItemBuilder.from(decorativeGlassPane).asGuiItem(event -> event.setCancelled(true));
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         ItemStack previousPageButton = HeadUtils.makeSkullB64(
-                Lang.GUI_PREVIOUS_PAGE.get(ITanPlayer),
+                Lang.GUI_PREVIOUS_PAGE.get(tanPlayer),
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19"
         );
         ItemStack nextPageButton = HeadUtils.makeSkullB64(
-                Lang.GUI_NEXT_PAGE.get(ITanPlayer),
+                Lang.GUI_NEXT_PAGE.get(tanPlayer),
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0="
         );
 

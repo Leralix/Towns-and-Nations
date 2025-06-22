@@ -125,9 +125,9 @@ public class TanEconomyVault extends TanEconomyStandalone implements Economy {
         if(!has(offlinePlayer, v))
             return new EconomyResponse(v, PlayerDataStorage.getInstance().get(offlinePlayer).getBalance(), EconomyResponse.ResponseType.FAILURE, "Player does not have enough money");
 
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(offlinePlayer);
-        ITanPlayer.removeFromBalance((int) v);
-        return new EconomyResponse(v, ITanPlayer.getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(offlinePlayer);
+        tanPlayer.removeFromBalance((int) v);
+        return new EconomyResponse(v, tanPlayer.getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
     }
 
     @Override
@@ -147,9 +147,9 @@ public class TanEconomyVault extends TanEconomyStandalone implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, double v) {
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(offlinePlayer);
-        ITanPlayer.addToBalance((int) v);
-        return new EconomyResponse(v, ITanPlayer.getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(offlinePlayer);
+        tanPlayer.addToBalance((int) v);
+        return new EconomyResponse(v, tanPlayer.getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
     }
 
     @Override

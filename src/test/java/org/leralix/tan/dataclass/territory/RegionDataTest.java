@@ -19,13 +19,13 @@ class RegionDataTest {
 
     @Test
     void testCreation(){
-        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
 
-        TownData townData = TownDataStorage.getInstance().newTown("testTown", ITanPlayer);
+        TownData townData = TownDataStorage.getInstance().newTown("testTown", tanPlayer);
 
         RegionData regionData = RegionDataStorage.getInstance().createNewRegion("testRegion", townData);
 
-        assertSame(ITanPlayer, regionData.getLeaderData());
+        assertSame(tanPlayer, regionData.getLeaderData());
         assertSame(townData, regionData.getCapital());
         assertSame(townData, regionData.getSubjects().get(0));
 
@@ -33,13 +33,13 @@ class RegionDataTest {
         assertEquals("testRegion", regionData.getName());
         assertEquals(1, regionData.getHierarchyRank());
         assertEquals(1, regionData.getSubjects().size());
-        assertEquals(ITanPlayer, regionData.getLeaderData());
+        assertEquals(tanPlayer, regionData.getLeaderData());
     }
 
     @Test
     void testAddVassal(){
-        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
-        TownData townData = TownDataStorage.getInstance().newTown("FirstTown", ITanPlayer);
+        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("FirstTown", tanPlayer);
         RegionData regionData = RegionDataStorage.getInstance().createNewRegion("testRegion", townData);
         TownData newTown = TownDataStorage.getInstance().newTown("secondTown");
 
@@ -53,22 +53,22 @@ class RegionDataTest {
 
     @Test
     void getAllPlayer(){
-        ITanPlayer ITanPlayer1 = AbstractionFactory.getRandomITanPlayer();
-        ITanPlayer ITanPlayer2 = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer tanPlayer1 = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer tanPlayer2 = AbstractionFactory.getRandomITanPlayer();
 
-        TownData town1 = TownDataStorage.getInstance().newTown("testTown", ITanPlayer1);
-        TownData town2 = TownDataStorage.getInstance().newTown("testTown", ITanPlayer2);
+        TownData town1 = TownDataStorage.getInstance().newTown("testTown", tanPlayer1);
+        TownData town2 = TownDataStorage.getInstance().newTown("testTown", tanPlayer2);
 
         RegionData regionData = RegionDataStorage.getInstance().createNewRegion("testRegion", town1);
 
         town2.setOverlord(regionData);
 
         assertEquals(2, regionData.getSubjects().size());
-        assertTrue(regionData.getITanPlayerList().contains(ITanPlayer1));
-        assertTrue(regionData.getITanPlayerList().contains(ITanPlayer2));
+        assertTrue(regionData.getITanPlayerList().contains(tanPlayer1));
+        assertTrue(regionData.getITanPlayerList().contains(tanPlayer2));
 
-        assertNotNull(regionData.getRank(ITanPlayer1));
-        assertNotNull(regionData.getRank(ITanPlayer2));
+        assertNotNull(regionData.getRank(tanPlayer1));
+        assertNotNull(regionData.getRank(tanPlayer2));
     }
 
     @Test
@@ -79,21 +79,21 @@ class RegionDataTest {
 
         RegionData regionData = RegionDataStorage.getInstance().createNewRegion("region", townData);
 
-        ITanPlayer ITanPlayer3 = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer tanPlayer3 = AbstractionFactory.getRandomITanPlayer();
 
-        townData.addPlayer(ITanPlayer3);
+        townData.addPlayer(tanPlayer3);
 
-        RankData rankData = ITanPlayer3.getRegionRank();
+        RankData rankData = tanPlayer3.getRegionRank();
 
         assertNotNull(rankData);
-        assertNotNull(regionData.getRank(ITanPlayer3));
-        assertTrue(regionData.getRank(ITanPlayer3).getPlayers().contains(ITanPlayer3));
+        assertNotNull(regionData.getRank(tanPlayer3));
+        assertTrue(regionData.getRank(tanPlayer3).getPlayers().contains(tanPlayer3));
 
-        townData.removePlayer(ITanPlayer3);
+        townData.removePlayer(tanPlayer3);
 
-        assertNull(ITanPlayer3.getRegionRank());
-        assertNull(regionData.getRank(ITanPlayer3));
-        assertFalse(rankData.getPlayers().contains(ITanPlayer3));
-        assertNull(ITanPlayer3.getRegionRankID());
+        assertNull(tanPlayer3.getRegionRank());
+        assertNull(regionData.getRank(tanPlayer3));
+        assertFalse(rankData.getPlayers().contains(tanPlayer3));
+        assertNull(tanPlayer3.getRegionRankID());
     }
 }

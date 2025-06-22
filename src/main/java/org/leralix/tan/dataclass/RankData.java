@@ -63,8 +63,8 @@ public class RankData {
     public void addPlayer(String playerUUID){
         this.players.add(playerUUID);
     }
-    public void addPlayer(ITanPlayer ITanPlayer){
-        addPlayer(ITanPlayer.getID());
+    public void addPlayer(ITanPlayer tanPlayer){
+        addPlayer(tanPlayer.getID());
     }
     public void removePlayer(String playerUUID){
         this.players.remove(playerUUID);

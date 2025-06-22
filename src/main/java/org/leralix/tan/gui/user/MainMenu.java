@@ -9,8 +9,8 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.gui.BasicGui;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.user.player.PlayerMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.timezone.TimeZoneManager;
@@ -34,13 +34,13 @@ public class MainMenu extends BasicGui {
 
         if(Constants.enableRegion()){
             if(Constants.enableNation()){
-                gui.setItem(2, 2, getNationButton(ITanPlayer));
+                gui.setItem(2, 2, getNationButton(tanPlayer));
             }
-            gui.setItem(2, 4, getRegionButton(ITanPlayer));
+            gui.setItem(2, 4, getRegionButton(tanPlayer));
         }
 
-        gui.setItem(2, 6, getTownButton(ITanPlayer));
-        gui.setItem(2, 8, getPlayerButton(ITanPlayer));
+        gui.setItem(2, 6, getTownButton(tanPlayer));
+        gui.setItem(2, 8, getPlayerButton(tanPlayer));
 
         gui.setItem(3,1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory));
 
@@ -57,70 +57,70 @@ public class MainMenu extends BasicGui {
 
 
         return iconManager.get(icon)
-                .setName(Lang.GUI_SERVER_TIME.get(ITanPlayer))
+                .setName(Lang.GUI_SERVER_TIME.get(tanPlayer))
                 .setDescription(
-                        Lang.CURRENT_SERVER_TIME.get(ITanPlayer, timeManager.formatDateNowForServer()),
-                        Lang.CURRENT_PLAYER_TIME.get(ITanPlayer, timeManager.formatDateNowForPlayer(ITanPlayer))
+                        Lang.CURRENT_SERVER_TIME.get(tanPlayer, timeManager.formatDateNowForServer()),
+                        Lang.CURRENT_PLAYER_TIME.get(tanPlayer, timeManager.formatDateNowForPlayer(tanPlayer))
                         )
                 .asGuiItem(player);
     }
 
-    private GuiItem getNationButton(ITanPlayer ITanPlayer) {
+    private GuiItem getNationButton(ITanPlayer tanPlayer) {
         return iconManager.get(IconKey.NATION_BASE_ICON)
-                .setName(Lang.GUI_KINGDOM_ICON.get(ITanPlayer))
-                .setDescription(Lang.GUI_WARNING_STILL_IN_DEV.get(ITanPlayer))
+                .setName(Lang.GUI_KINGDOM_ICON.get(tanPlayer))
+                .setDescription(Lang.GUI_WARNING_STILL_IN_DEV.get(tanPlayer))
                 .setAction(action -> {
-                    player.sendMessage(Lang.GUI_WARNING_STILL_IN_DEV.get(ITanPlayer));
+                    player.sendMessage(Lang.GUI_WARNING_STILL_IN_DEV.get(tanPlayer));
                     SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                 })
                 .asGuiItem(player);
     }
 
-    private GuiItem getRegionButton(ITanPlayer ITanPlayer) {
+    private GuiItem getRegionButton(ITanPlayer tanPlayer) {
 
         List<String> description = new ArrayList<>();
 
-        if(ITanPlayer.hasRegion()){
-            RegionData regionData = ITanPlayer.getRegion();
-            description.add(Lang.GUI_REGION_ICON_DESC1_REGION.get(ITanPlayer, regionData.getColoredName()));
-            description.add(Lang.GUI_REGION_ICON_DESC2_REGION.get(ITanPlayer, regionData.getRank(ITanPlayer).getColoredName()));
+        if(tanPlayer.hasRegion()){
+            RegionData regionData = tanPlayer.getRegion();
+            description.add(Lang.GUI_REGION_ICON_DESC1_REGION.get(tanPlayer, regionData.getColoredName()));
+            description.add(Lang.GUI_REGION_ICON_DESC2_REGION.get(tanPlayer, regionData.getRank(tanPlayer).getColoredName()));
         }
         else {
-            description.add(Lang.GUI_REGION_ICON_DESC1_NO_REGION.get(ITanPlayer));
+            description.add(Lang.GUI_REGION_ICON_DESC1_NO_REGION.get(tanPlayer));
         }
-        description.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer));
+        description.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer));
 
 
         return iconManager.get(IconKey.REGION_BASE_ICON)
-                .setName(Lang.GUI_REGION_ICON.get(ITanPlayer))
+                .setName(Lang.GUI_REGION_ICON.get(tanPlayer))
                 .setDescription(description)
                 .setAction(action -> PlayerGUI.dispatchPlayerRegion(player))
                 .asGuiItem(player);
     }
 
-    private GuiItem getTownButton(ITanPlayer ITanPlayer) {
+    private GuiItem getTownButton(ITanPlayer tanPlayer) {
 
         List<String> description = new ArrayList<>();
-        if(ITanPlayer.hasTown()){
-            description.add(Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(ITanPlayer, ITanPlayer.getTown().getColoredName()));
-            description.add(Lang.GUI_TOWN_ICON_DESC2_HAVE_TOWN.get(ITanPlayer, ITanPlayer.getTown().getRank(ITanPlayer).getColoredName()));
+        if(tanPlayer.hasTown()){
+            description.add(Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(tanPlayer, tanPlayer.getTown().getColoredName()));
+            description.add(Lang.GUI_TOWN_ICON_DESC2_HAVE_TOWN.get(tanPlayer, tanPlayer.getTown().getRank(tanPlayer).getColoredName()));
         }
         else {
-            description.add(Lang.GUI_TOWN_ICON_DESC1_NO_TOWN.get(ITanPlayer));
+            description.add(Lang.GUI_TOWN_ICON_DESC1_NO_TOWN.get(tanPlayer));
         }
-        description.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer));
+        description.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer));
 
         return iconManager.get(IconKey.TOWN_BASE_ICON)
-                .setName(Lang.GUI_TOWN_ICON.get(ITanPlayer))
+                .setName(Lang.GUI_TOWN_ICON.get(tanPlayer))
                 .setDescription(description)
                 .setAction(action -> PlayerGUI.dispatchPlayerTown(player))
                 .asGuiItem(player);
     }
 
-    private GuiItem getPlayerButton(ITanPlayer ITanPlayer) {
+    private GuiItem getPlayerButton(ITanPlayer tanPlayer) {
         return iconManager.get(IconKey.PLAYER_BASE_ICON)
-                .setName(Lang.GUI_PLAYER_MENU_ICON.get(ITanPlayer, player.getName()))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer))
+                .setName(Lang.GUI_PLAYER_MENU_ICON.get(tanPlayer, player.getName()))
+                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer))
                 .setAction(action -> new PlayerMenu(player))
                 .asGuiItem(player);
     }

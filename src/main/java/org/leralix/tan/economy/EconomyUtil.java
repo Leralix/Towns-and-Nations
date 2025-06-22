@@ -49,11 +49,11 @@ public class EconomyUtil {
 
     /**
      * Remove the given amount of money to a player balance
-     * @param ITanPlayer        The player whose balance is going to be affected
+     * @param tanPlayer        The player whose balance is going to be affected
      * @param amount            The amount of money to be subtracted
      */
-    public static void removeFromBalance(ITanPlayer ITanPlayer, double amount){
-        econ.withdrawPlayer(ITanPlayer, amount);
+    public static void removeFromBalance(ITanPlayer tanPlayer, double amount){
+        econ.withdrawPlayer(tanPlayer, amount);
     }
     /**
      * Remove the given amount of money to a player balance

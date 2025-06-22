@@ -49,9 +49,9 @@ public class LocalChatStorage {
     }
 
     public static void broadcastInScope(Player player, String message){
-        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
-        if(!ITanPlayer.hasTown()){
+        if(!tanPlayer.hasTown()){
             return;
         }
 
@@ -59,7 +59,7 @@ public class LocalChatStorage {
         boolean sendLogsToConsole = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("sendPrivateMessagesToConsole", false);
 
         if(scope == ChatScope.CITY){
-            TownData townData = ITanPlayer.getTown();
+            TownData townData = tanPlayer.getTown();
 
             String messageFormat = Lang.CHAT_SCOPE_TOWN_MESSAGE.get(townData.getName(),player.getName(),message);
 
@@ -71,13 +71,13 @@ public class LocalChatStorage {
 
         else if(scope == ChatScope.REGION){
 
-            if(!ITanPlayer.hasRegion()){
+            if(!tanPlayer.hasRegion()){
                 player.sendMessage(getTANString() + Lang.NO_REGION.get());
                 SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                 return;
             }
 
-            RegionData regionData = ITanPlayer.getRegion();
+            RegionData regionData = tanPlayer.getRegion();
 
             String messageFormat = Lang.CHAT_SCOPE_REGION_MESSAGE.get(regionData.getName(),player.getName(),message);
 
@@ -87,7 +87,7 @@ public class LocalChatStorage {
         }
 
         else if(scope == ChatScope.ALLIANCE){
-            TownData playerTown = ITanPlayer.getTown();
+            TownData playerTown = tanPlayer.getTown();
 
             String messageFormat = Lang.CHAT_SCOPE_TOWN_MESSAGE.get(playerTown.getName(),player.getName(),message);
 

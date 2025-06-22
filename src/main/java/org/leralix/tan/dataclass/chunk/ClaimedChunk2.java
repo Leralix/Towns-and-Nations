@@ -118,7 +118,7 @@ public abstract class ClaimedChunk2 {
         return getMapIcon(PlayerDataStorage.getInstance().get(player));
     }
 
-    public abstract TextComponent getMapIcon(ITanPlayer ITanPlayer);
+    public abstract TextComponent getMapIcon(ITanPlayer tanPlayer);
 
     public abstract boolean canTerritoryClaim(TerritoryData territoryData);
 

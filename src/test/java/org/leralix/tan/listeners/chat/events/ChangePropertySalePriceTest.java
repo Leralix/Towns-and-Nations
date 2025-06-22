@@ -10,7 +10,7 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.factory.AbstractionFactory;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ChangePropertySalePriceTest {
 
@@ -23,14 +23,14 @@ class ChangePropertySalePriceTest {
     void nominalCase() {
 
         TownData townData = TownDataStorage.getInstance().newTown("town 1");
-        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
-        Player player = ITanPlayer.getPlayer();
+        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        Player player = tanPlayer.getPlayer();
 
 
         PropertyData propertyData = townData.registerNewProperty(
                 new Vector3D(0,0,0,"world"),
                 new Vector3D(3, 3, 3, "world"),
-                ITanPlayer
+                tanPlayer
         );
 
         ChangePropertySalePrice changePropertySalePrice = new ChangePropertySalePrice(propertyData, null);
@@ -43,14 +43,14 @@ class ChangePropertySalePriceTest {
     @Test
     void wrongMessage() {
         TownData townData = TownDataStorage.getInstance().newTown("town 1");
-        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
         Player player = AbstractionFactory.getRandomPlayer();
 
 
         PropertyData propertyData = townData.registerNewProperty(
                 new Vector3D(0,0,0,"world"),
                 new Vector3D(3, 3, 3, "world"),
-                ITanPlayer
+                tanPlayer
         );
 
         ChangePropertySalePrice changePropertyRentPrice = new ChangePropertySalePrice(propertyData, null);

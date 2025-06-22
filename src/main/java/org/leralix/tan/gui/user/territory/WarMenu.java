@@ -39,7 +39,7 @@ public class WarMenu extends IteratorGUI {
     @Override
     public void open() {
 
-        GuiUtil.createIterator(gui, getWars(ITanPlayer), page, player,
+        GuiUtil.createIterator(gui, getWars(tanPlayer), page, player,
                 p -> territoryData.openMainMenu(player),
                 p -> nextPage(),
                 p -> previousPage());
@@ -56,30 +56,30 @@ public class WarMenu extends IteratorGUI {
         List<String> description = new ArrayList<>();
 
         if(territoryStronghold == null){
-            description.add(Lang.GUI_NO_STRONGHOLD.get(ITanPlayer));
+            description.add(Lang.GUI_NO_STRONGHOLD.get(tanPlayer));
         }
         else {
             int x = territoryStronghold.getClaimedChunk().getX() * 16 + 8;
             int z = territoryStronghold.getClaimedChunk().getZ() * 16 + 8;
-            description.add(Lang.GUI_STRONGHOLD_LOCATION.get(ITanPlayer, x,z));
-            description.add(Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(ITanPlayer));
+            description.add(Lang.GUI_STRONGHOLD_LOCATION.get(tanPlayer, x,z));
+            description.add(Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(tanPlayer));
         }
 
 
         return iconManager.get(IconKey.STRONGHOLD_INFO_ICON)
-                .setName(Lang.GUI_STRONGHOLD.get(ITanPlayer))
+                .setName(Lang.GUI_STRONGHOLD.get(tanPlayer))
                 .setDescription(description)
                 .setAction(action -> {
                             if(territoryStronghold != null){
                                 if(!territoryData.doesPlayerHavePermission(player, RolePermission.TOWN_ADMINISTRATOR)){
-                                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(ITanPlayer));
+                                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                                     SoundUtil.playSound(player,NOT_ALLOWED);
                                 }
                                 else{
                                     Chunk playerChunk = player.getLocation().getChunk();
                                     ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(playerChunk);
                                     if(!claimedChunk.getOwnerID().equals(territoryData.getID())){
-                                        player.sendMessage(Lang.CHUNK_DO_NOT_BELONG_TO_TERRITORY.get(ITanPlayer));
+                                        player.sendMessage(Lang.CHUNK_DO_NOT_BELONG_TO_TERRITORY.get(tanPlayer));
                                         SoundUtil.playSound(player,NOT_ALLOWED);
                                         return;
                                     }
@@ -91,10 +91,10 @@ public class WarMenu extends IteratorGUI {
                 .asGuiItem(player);
     }
 
-    private List<GuiItem> getWars(ITanPlayer ITanPlayer) {
+    private List<GuiItem> getWars(ITanPlayer tanPlayer) {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for(PlannedAttack plannedAttack : PlannedAttackStorage.getWars()){
-            ItemStack attackIcon = plannedAttack.getIcon(ITanPlayer, territoryData);
+            ItemStack attackIcon = plannedAttack.getIcon(tanPlayer, territoryData);
             GuiItem attackButton = ItemBuilder.from(attackIcon).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(event.isLeftClick()){

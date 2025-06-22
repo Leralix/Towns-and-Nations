@@ -39,16 +39,16 @@ public class PlayerChunkSettingsMenu extends IteratorGUI {
             RelationPermission permission = territoryData.getPermission(type).getOverallPermission();
 
             GuiItem item = iconManager.get(type.getIconKey())
-                    .setName(type.getName().get(ITanPlayer))
+                    .setName(type.getName().get(tanPlayer))
                     .setDescription(
-                            Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.get(ITanPlayer, permission.getColoredName()),
-                            Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(ITanPlayer),
-                            Lang.GUI_RIGHT_CLICK_TO_ADD_SPECIFIC_PLAYER.get(ITanPlayer)
+                            Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.get(tanPlayer, permission.getColoredName()),
+                            Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(tanPlayer),
+                            Lang.GUI_RIGHT_CLICK_TO_ADD_SPECIFIC_PLAYER.get(tanPlayer)
                     )
                     .setAction(event -> {
                         event.setCancelled(true);
                         if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_CLAIM_SETTINGS)) {
-                            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(ITanPlayer));
+                            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                             return;
                         }
                         if (event.isLeftClick()) {
