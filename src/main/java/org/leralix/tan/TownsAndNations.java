@@ -79,7 +79,7 @@ public final class TownsAndNations extends JavaPlugin {
      * Used to check if the plugin is up-to-date to the latest version. Also
      * used to check if the plugin has just been updated and config file needs an update
      */
-    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,14,5);
+    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,14,6);
     private static final PluginVersion MINIMUM_SUPPORTING_DYNMAP = new PluginVersion(0,11,0);
     private static final PluginVersion MINIMUM_SUPPORTING_SPHERELIB = new PluginVersion(0,4,4);
 
