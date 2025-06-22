@@ -3,7 +3,6 @@ package org.leralix.tan.lang;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
@@ -379,7 +378,6 @@ public enum Lang {
     GUI_TOWN_RELATION_NEUTRAL,
     GUI_TOWN_ATTACK_TOWN_DESC1,
     GUI_TOWN_ATTACK_TOWN_DESC2,
-    GUI_TOWN_ATTACK_TOWN_EXECUTED,
     GUI_TOWN_ATTACK_FINISHED,
     GUI_TOWN_ATTACK_TOWN_INFO,
     GUI_TOWN_CLAIM_SETTINGS_DOOR,
@@ -792,6 +790,8 @@ public enum Lang {
     GUI_LEFT_CLICK_FOR_1_MINUTE,
     GUI_SHIFT_CLICK_FOR_1_HOUR,
     GUI_ATTACK_SET_TO_START_IN,
+    AUTHORIZED_ATTACK_TIME_SLOT_TITLE,
+    AUTHORIZED_ATTACK_TIME_SLOT_SINGLE,
     GUI_CONFIRM_ATTACK,
     GUI_CONFIRM_ATTACK_DESC1,
     SELL_PROPERTY,
@@ -894,6 +894,7 @@ public enum Lang {
     GUI_WARGOAL_LIBERATE_CANNOT_BE_USED,
     GUI_WARGOAL_LIBERATE_WAR_GOAL_RESULT,
     GUI_WARGOAL_NOT_COMPLETED,
+    GUI_WARGOAL_OUTSIDE_AUTHORIZED_SLOTS,
     WARGOAL_SUBJUGATE_SUCCESS,
     WARGOAL_LIBERATE_SUCCESS,
     WARGOAL_CONQUER_SUCCESS_WINNING_SIDE,

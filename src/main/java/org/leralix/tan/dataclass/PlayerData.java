@@ -38,7 +38,7 @@ public class PlayerData {
 
     public TimeZoneEnum getTimeZone() {
         if(timeZone == null){
-            return TimeZoneManager.getInstance().getBaseTimezone();
+            return TimeZoneManager.getInstance().getServerTimezone();
         }
         return timeZone;
     }

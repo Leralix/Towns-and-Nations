@@ -258,8 +258,8 @@ MaximumTimeBeforeAttack: 4320 #72 hours
 #The lower the multiplier, the longer the war will last.
 warScoreMultiplier : 0.70
 
-# Set the number of chunks to conquer
-# 0 - unlimited, but no more than what the defender owns
+# Set the maximum number of chunks a territory can conquer during a war.
+# Set the value to 0 for unlimited chunks (capped by the maximum number of chunks the territory currently own).
 MaximumChunkConquer: 0
 
 ########################

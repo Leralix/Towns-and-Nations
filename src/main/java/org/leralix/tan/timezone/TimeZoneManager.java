@@ -55,7 +55,7 @@ public class TimeZoneManager {
         return formatter.format(zonedDateTime);
     }
 
-    public TimeZoneEnum getBaseTimezone() {
+    public TimeZoneEnum getServerTimezone() {
         return timeZoneEnum;
     }
 

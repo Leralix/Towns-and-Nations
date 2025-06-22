@@ -134,7 +134,6 @@ GUI_INTERACT_BONE_MEAL_ICON: "minecraft:BONE_MEAL"
 GUI_INTERACT_GATHER_BERRIES_ICON: "minecraft:SWEET_BERRIES"
 
 #Rank permissions
-
 GUI_MANAGE_TAXES_ICON: "minecraft:GOLD_INGOT"
 GUI_CLAIM_CHUNK_ICON: "minecraft:EMERALD_BLOCK"
 GUI_UNCLAIM_CHUNK_ICON: "minecraft:REDSTONE_BLOCK"
@@ -150,3 +149,11 @@ GUI_MANAGE_MOB_SPAWN_ICON: "minecraft:CREEPER_HEAD"
 GUI_CREATE_PROPERTY_ICON: "minecraft:OAK_SIGN"
 GUI_MANAGE_PROPERTY_ICON: "minecraft:WRITABLE_BOOK"
 GUI_ADMINISTRATOR_ICON: "minecraft:DIAMOND"
+
+#Wars
+#War settings menu
+REMOVE_WAR_START_TIME_ICON: "https://textures.minecraft.net/texture/da56dab53d4ea1a79a8e5ed6322c2d56cb714dd35edf478763ad1a84a8310"
+ADD_WAR_START_TIME_ICON: "https://textures.minecraft.net/texture/632fff163e235632f4047f4841592d46f85cbbfde89fc3df68771bff69a662"
+WAR_START_TIME_ICON: "https://textures.minecraft.net/texture/e4d39b99ffdbd6b5a205dd69b095b5d463c66c1d537e3744eb82a9d5fecc15b9"
+CONFIRM_WAR_START_ICON: "https://textures.minecraft.net/texture/4312ca4632def5ffaf2eb0d9d7cc7b55a50c4e3920d90372aab140781f5dfbc4"
+CONFIRM_WAR_START_IMPOSSIBLE_ICON: "https://textures.minecraft.net/texture/beb588b21a6f98ad1ff4e085c552dcb050efc9cab427f46048f18fc803475f7"

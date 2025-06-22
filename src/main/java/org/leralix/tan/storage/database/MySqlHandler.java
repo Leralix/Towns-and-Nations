@@ -2,8 +2,7 @@ package org.leralix.tan.storage.database;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
-import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.SQLException;
 
 public class MySqlHandler extends DatabaseHandler {
 
@@ -14,7 +13,6 @@ public class MySqlHandler extends DatabaseHandler {
     private final String password;
 
     public MySqlHandler(String host, int port, String database, String username, String password) {
-        System.out.println("Connecting to MySQL database at " + host + ":" + port + "/" + database);
         this.host = host;
         this.port = port;
         this.databaseName = database;
@@ -26,7 +24,6 @@ public class MySqlHandler extends DatabaseHandler {
     public void connect() throws SQLException {
 
         if (host == null || databaseName == null) {
-            System.out.println("Host, port, database information is required");
             return;
         }
         try {

@@ -6,6 +6,7 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.territory.StrongholdData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -38,7 +39,7 @@ public class WarMenu extends IteratorGUI {
     @Override
     public void open() {
 
-        GuiUtil.createIterator(gui, getWars(), page, player,
+        GuiUtil.createIterator(gui, getWars(playerData), page, player,
                 p -> territoryData.openMainMenu(player),
                 p -> nextPage(),
                 p -> previousPage());
@@ -90,10 +91,10 @@ public class WarMenu extends IteratorGUI {
                 .asGuiItem(player);
     }
 
-    private List<GuiItem> getWars() {
+    private List<GuiItem> getWars(PlayerData playerData) {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for(PlannedAttack plannedAttack : PlannedAttackStorage.getWars()){
-            ItemStack attackIcon = plannedAttack.getIcon(territoryData);
+            ItemStack attackIcon = plannedAttack.getIcon(playerData, territoryData);
             GuiItem attackButton = ItemBuilder.from(attackIcon).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(event.isLeftClick()){

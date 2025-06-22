@@ -2,7 +2,6 @@ package org.leralix.tan.gui.user.player;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -79,7 +78,7 @@ public class PlayerMenu extends BasicGui {
                 .setName(Lang.GUI_TIMEZONE_BUTTON.get(playerData))
                 .setDescription(
                         Lang.GUI_TIMEZONE_BUTTON_SERVER_ZONE.get(playerData,
-                                timeZoneManager.getBaseTimezone().getName(playerData.getLang())),
+                                timeZoneManager.getServerTimezone().getName(playerData.getLang())),
                         Lang.GUI_TIMEZONE_BUTTON_PLAYER_ZONE.get(playerData,
                                 playerData.getTimeZone().getName(playerData.getLang())),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)

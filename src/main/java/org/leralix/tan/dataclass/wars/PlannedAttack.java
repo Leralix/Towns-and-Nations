@@ -8,17 +8,19 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.territory.StrongholdData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
+import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.DateUtil;
 import org.leralix.tan.utils.TerritoryUtil;
-import org.leralix.tan.dataclass.territory.StrongholdData;
-import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.TownsAndNations;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -35,7 +37,7 @@ public class PlannedAttack {
 
     private final long startTime;
     private final long endTime;
-    private WarGoal warGoal;
+    private final WarGoal warGoal;
 
     boolean isAdminApproved;
 
@@ -119,11 +121,11 @@ public class PlannedAttack {
         return attackers;
     }
 
-    public double getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
-    public double getEndTime() {
+    public long getEndTime() {
         return endTime;
     }
 
@@ -171,6 +173,10 @@ public class PlannedAttack {
 
 
     public ItemStack getAdminIcon(){
+
+        long startDate = getStartTime() - new Date().getTime() / 50;
+        long attackDuration = getEndTime() - getStartTime();
+
         ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
         ItemMeta itemMeta = itemStack.getItemMeta();
         if(itemMeta != null){
@@ -181,8 +187,8 @@ public class PlannedAttack {
             lore.add(Lang.ATTACK_ICON_DESC_3.get(getNumberOfAttackers()));
             lore.add(Lang.ATTACK_ICON_DESC_4.get(getNumberOfDefenders()));
             lore.add(Lang.ATTACK_ICON_DESC_5.get(warGoal.getCurrentDesc()));
-            lore.add(Lang.ATTACK_ICON_DESC_6.get(DateUtil.getStringDeltaDateTime((long) (getStartTime() - new Date().getTime() * 0.02))));
-            lore.add(Lang.ATTACK_ICON_DESC_7.get(DateUtil.getStringDeltaDateTime((long) (getEndTime() - getStartTime()))));
+            lore.add(Lang.ATTACK_ICON_DESC_6.get(DateUtil.getDateStringFromTicks(startDate)));
+            lore.add(Lang.ATTACK_ICON_DESC_7.get(DateUtil.getDateStringFromTicks(attackDuration)));
             if(isAdminApproved){
                 lore.add(Lang.ATTACK_ICON_DESC_ADMIN_APPROVED.get());
             }else{
@@ -196,7 +202,13 @@ public class PlannedAttack {
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
-    public ItemStack getIcon(TerritoryData territoryConcerned){
+
+    public ItemStack getIcon(PlayerData playerData, TerritoryData territoryConcerned){
+
+        long startDate = getStartTime() - new Date().getTime() / 50;
+        long attackDuration = getEndTime() - getStartTime();
+        String exactTimeStart = TimeZoneManager.getInstance().formatDateForPlayer(playerData, Instant.ofEpochSecond(getStartTime() / 20));
+
         ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
         ItemMeta itemMeta = itemStack.getItemMeta();
         if(itemMeta != null){
@@ -207,8 +219,8 @@ public class PlannedAttack {
             lore.add(Lang.ATTACK_ICON_DESC_3.get(getNumberOfAttackers()));
             lore.add(Lang.ATTACK_ICON_DESC_4.get(getNumberOfDefenders()));
             lore.add(Lang.ATTACK_ICON_DESC_5.get(warGoal.getCurrentDesc()));
-            lore.add(Lang.ATTACK_ICON_DESC_6.get(DateUtil.getStringDeltaDateTime((long) (getStartTime() - new Date().getTime() * 0.02))));
-            lore.add(Lang.ATTACK_ICON_DESC_7.get(DateUtil.getStringDeltaDateTime((long) (getEndTime() - getStartTime()))));
+            lore.add(Lang.ATTACK_ICON_DESC_6.get(DateUtil.getDateStringFromTicks(startDate), exactTimeStart));
+            lore.add(Lang.ATTACK_ICON_DESC_7.get(DateUtil.getDateStringFromTicks(attackDuration)));
             lore.add(Lang.ATTACK_ICON_DESC_8.get(getTerritoryRole(territoryConcerned).getName()));
 
             lore.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get());

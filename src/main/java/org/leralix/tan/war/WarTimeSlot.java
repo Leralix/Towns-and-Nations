@@ -4,7 +4,11 @@ import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.Range;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
+import org.leralix.tan.timezone.TimeZoneManager;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
@@ -59,16 +63,19 @@ public class WarTimeSlot {
         return instance;
     }
 
-    public List<String> getPrintedTimeSlots()
+    public List<String> getPrintedTimeSlots(LangType langType)
     {
         List<String> printedTime = new ArrayList<>();
 
         for(Range range : timeSlots){
 
-            int hours = range.getMaxVal() / 60;
-            int minutes = range.getMaxVal() % 60;
+            int hour1 = range.getMinVal() / 60;
+            int minute1 = range.getMinVal() % 60;
 
-            printedTime.add(hours + ":" + minutes);
+            int hour2 = range.getMaxVal() / 60;
+            int minute2 = range.getMaxVal() % 60;
+
+            printedTime.add(Lang.AUTHORIZED_ATTACK_TIME_SLOT_SINGLE.get(langType, hour1, minute1, hour2, minute2));
         }
 
         return printedTime;
@@ -78,8 +85,10 @@ public class WarTimeSlot {
         return timeSlots;
     }
 
-    public boolean canWarBeDeclared(LocalDateTime dateTime) {
-        int currentMinutes = dateTime.getHour() * 60 + dateTime.getMinute();
+    public boolean canWarBeDeclared(Instant dateTime) {
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(dateTime, TimeZoneManager.getInstance().getServerTimezone().toZoneOffset());
+
+        int currentMinutes = localDateTime.getHour() * 60 + localDateTime.getMinute();
 
         for (Range range : timeSlots) {
             if (currentMinutes >= range.getMinVal() && currentMinutes < range.getMaxVal()) {

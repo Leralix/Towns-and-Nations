@@ -51,13 +51,11 @@ public class WorldGuardImplementation {
     public boolean isActionAllowed(Player player, Location location, ChunkPermissionType actionType) {
 
         StateFlag flag = getFlagForAction(actionType);
-        System.out.println("flag = " + flag.getName());
         com.sk89q.worldedit.util.Location weLocation = BukkitAdapter.adapt(location);
         LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
 
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
-        System.out.println("Checking if player " + player.getName() + " can perform action " + actionType.getName() + " at location " + location);
         return query.testState(weLocation, localPlayer, flag);
     }
 

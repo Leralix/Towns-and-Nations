@@ -11,13 +11,12 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
+import org.leralix.tan.gui.user.war.CreateWarMenu;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.lang.Lang;
-
-import static org.leralix.tan.gui.legacy.PlayerGUI.openStartWarSettings;
 
 public class ConquerWarGoal extends WarGoal {
 
@@ -55,6 +54,7 @@ public class ConquerWarGoal extends WarGoal {
 
             int MaximumChunkConquer = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MaximumChunkConquer", 0);
             int chunkLimit = createAttackData.getMainDefender().getNumberOfClaimedChunk();
+
             if (MaximumChunkConquer > 0 && chunkLimit > MaximumChunkConquer) {
                 chunkLimit = MaximumChunkConquer;
             }
@@ -72,7 +72,7 @@ public class ConquerWarGoal extends WarGoal {
                     numberOfChunks += addNumberOfChunks;
                 }
             }
-            openStartWarSettings(player, createAttackData);
+            new CreateWarMenu(player, createAttackData);
         });
 
         GuiItem chunkInfoGui = ItemBuilder.from(chunkInfo).asGuiItem(event -> event.setCancelled(true));
@@ -88,7 +88,7 @@ public class ConquerWarGoal extends WarGoal {
             if(numberOfChunks < 1){
                 numberOfChunks = 1;
             }
-            openStartWarSettings(player, createAttackData);
+            new CreateWarMenu(player, createAttackData);
         });
 
         gui.setItem(3, 5, removeChunkGui);
