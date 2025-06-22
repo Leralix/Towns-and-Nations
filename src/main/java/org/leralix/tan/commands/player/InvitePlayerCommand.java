@@ -4,14 +4,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.utils.ChatUtils;
+import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.lang.Lang;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,14 +51,14 @@ public class InvitePlayerCommand extends PlayerSubCommand {
 
         }else if(args.length == 2){
 
-            PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+            ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
             TownData townData = TownDataStorage.getInstance().get(player);
 
             if(townData == null){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
                 return;
             }
-            if(!townData.doesPlayerHavePermission(playerData, RolePermission.INVITE_PLAYER)){
+            if(!townData.doesPlayerHavePermission(ITanPlayer, RolePermission.INVITE_PLAYER)){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
@@ -75,7 +75,7 @@ public class InvitePlayerCommand extends PlayerSubCommand {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.INVITATION_TOWN_FULL.get());
                 return;
             }
-            PlayerData inviteStat = PlayerDataStorage.getInstance().get(invite);
+            ITanPlayer inviteStat = PlayerDataStorage.getInstance().get(invite);
 
             if(inviteStat.getTownId() != null){
                 if(inviteStat.getTownId().equals(town.getID())){

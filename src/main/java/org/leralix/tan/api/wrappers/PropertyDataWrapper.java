@@ -41,7 +41,7 @@ public class PropertyDataWrapper implements TanProperty {
 
     @Override
     public TanPlayer getOwner() {
-        return PlayerDataWrapper.of(propertyData.getOwner());
+        return TanPlayerWrapper.of(propertyData.getOwner());
     }
 
     @Override
@@ -61,7 +61,7 @@ public class PropertyDataWrapper implements TanProperty {
 
     @Override
     public Optional<TanPlayer> getRenter() {
-        return Optional.ofNullable(PlayerDataWrapper.of(propertyData.getRenter()));
+        return Optional.ofNullable(TanPlayerWrapper.of(propertyData.getRenter()));
     }
 
     @Override

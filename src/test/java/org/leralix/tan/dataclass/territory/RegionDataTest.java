@@ -2,7 +2,7 @@ package org.leralix.tan.dataclass.territory;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.factory.AbstractionFactory;
 import org.leralix.tan.storage.stored.RegionDataStorage;
@@ -19,13 +19,13 @@ class RegionDataTest {
 
     @Test
     void testCreation(){
-        PlayerData playerData = AbstractionFactory.getRandomPlayerData();
+        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
 
-        TownData townData = TownDataStorage.getInstance().newTown("testTown", playerData);
+        TownData townData = TownDataStorage.getInstance().newTown("testTown", ITanPlayer);
 
         RegionData regionData = RegionDataStorage.getInstance().createNewRegion("testRegion", townData);
 
-        assertSame(playerData, regionData.getLeaderData());
+        assertSame(ITanPlayer, regionData.getLeaderData());
         assertSame(townData, regionData.getCapital());
         assertSame(townData, regionData.getSubjects().get(0));
 
@@ -33,13 +33,13 @@ class RegionDataTest {
         assertEquals("testRegion", regionData.getName());
         assertEquals(1, regionData.getHierarchyRank());
         assertEquals(1, regionData.getSubjects().size());
-        assertEquals(playerData, regionData.getLeaderData());
+        assertEquals(ITanPlayer, regionData.getLeaderData());
     }
 
     @Test
     void testAddVassal(){
-        PlayerData playerData = AbstractionFactory.getRandomPlayerData();
-        TownData townData = TownDataStorage.getInstance().newTown("FirstTown", playerData);
+        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("FirstTown", ITanPlayer);
         RegionData regionData = RegionDataStorage.getInstance().createNewRegion("testRegion", townData);
         TownData newTown = TownDataStorage.getInstance().newTown("secondTown");
 
@@ -53,47 +53,47 @@ class RegionDataTest {
 
     @Test
     void getAllPlayer(){
-        PlayerData playerData1 = AbstractionFactory.getRandomPlayerData();
-        PlayerData playerData2 = AbstractionFactory.getRandomPlayerData();
+        ITanPlayer ITanPlayer1 = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer ITanPlayer2 = AbstractionFactory.getRandomITanPlayer();
 
-        TownData town1 = TownDataStorage.getInstance().newTown("testTown", playerData1);
-        TownData town2 = TownDataStorage.getInstance().newTown("testTown", playerData2);
+        TownData town1 = TownDataStorage.getInstance().newTown("testTown", ITanPlayer1);
+        TownData town2 = TownDataStorage.getInstance().newTown("testTown", ITanPlayer2);
 
         RegionData regionData = RegionDataStorage.getInstance().createNewRegion("testRegion", town1);
 
         town2.setOverlord(regionData);
 
         assertEquals(2, regionData.getSubjects().size());
-        assertTrue(regionData.getPlayerDataList().contains(playerData1));
-        assertTrue(regionData.getPlayerDataList().contains(playerData2));
+        assertTrue(regionData.getITanPlayerList().contains(ITanPlayer1));
+        assertTrue(regionData.getITanPlayerList().contains(ITanPlayer2));
 
-        assertNotNull(regionData.getRank(playerData1));
-        assertNotNull(regionData.getRank(playerData2));
+        assertNotNull(regionData.getRank(ITanPlayer1));
+        assertNotNull(regionData.getRank(ITanPlayer2));
     }
 
     @Test
     void addPlayerToTownAfterRegionCreation(){
 
-        PlayerData leader = AbstractionFactory.getRandomPlayerData();
+        ITanPlayer leader = AbstractionFactory.getRandomITanPlayer();
         TownData townData = TownDataStorage.getInstance().newTown("town", leader);
 
         RegionData regionData = RegionDataStorage.getInstance().createNewRegion("region", townData);
 
-        PlayerData playerData3 = AbstractionFactory.getRandomPlayerData();
+        ITanPlayer ITanPlayer3 = AbstractionFactory.getRandomITanPlayer();
 
-        townData.addPlayer(playerData3);
+        townData.addPlayer(ITanPlayer3);
 
-        RankData rankData = playerData3.getRegionRank();
+        RankData rankData = ITanPlayer3.getRegionRank();
 
         assertNotNull(rankData);
-        assertNotNull(regionData.getRank(playerData3));
-        assertTrue(regionData.getRank(playerData3).getPlayers().contains(playerData3));
+        assertNotNull(regionData.getRank(ITanPlayer3));
+        assertTrue(regionData.getRank(ITanPlayer3).getPlayers().contains(ITanPlayer3));
 
-        townData.removePlayer(playerData3);
+        townData.removePlayer(ITanPlayer3);
 
-        assertNull(playerData3.getRegionRank());
-        assertNull(regionData.getRank(playerData3));
-        assertFalse(rankData.getPlayers().contains(playerData3));
-        assertNull(playerData3.getRegionRankID());
+        assertNull(ITanPlayer3.getRegionRank());
+        assertNull(regionData.getRank(ITanPlayer3));
+        assertFalse(rankData.getPlayers().contains(ITanPlayer3));
+        assertNull(ITanPlayer3.getRegionRankID());
     }
 }

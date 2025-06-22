@@ -9,7 +9,7 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.StrongholdData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
@@ -89,18 +89,18 @@ public class PlannedAttack {
         this.isAdminApproved = isAdminApproved;
     }
 
-    public Collection<PlayerData> getDefendingPlayers() {
-        Collection<PlayerData> defenders = new ArrayList<>();
+    public Collection<ITanPlayer> getDefendingPlayers() {
+        Collection<ITanPlayer> defenders = new ArrayList<>();
         for(TerritoryData defendingTerritory : getDefendingTerritories()){
-            defenders.addAll(defendingTerritory.getPlayerDataList());
+            defenders.addAll(defendingTerritory.getITanPlayerList());
         }
         return defenders;
     }
 
-    public Collection<PlayerData> getAttackersPlayers() {
-        Collection<PlayerData> defenders = new ArrayList<>();
+    public Collection<ITanPlayer> getAttackersPlayers() {
+        Collection<ITanPlayer> defenders = new ArrayList<>();
         for(TerritoryData attackingTerritory : getAttackingTerritories()){
-            defenders.addAll(attackingTerritory.getPlayerDataList());
+            defenders.addAll(attackingTerritory.getITanPlayerList());
         }
         return defenders;
     }
@@ -203,11 +203,11 @@ public class PlannedAttack {
         return itemStack;
     }
 
-    public ItemStack getIcon(PlayerData playerData, TerritoryData territoryConcerned){
+    public ItemStack getIcon(ITanPlayer ITanPlayer, TerritoryData territoryConcerned){
 
         long startDate = getStartTime() - new Date().getTime() / 50;
         long attackDuration = getEndTime() - getStartTime();
-        String exactTimeStart = TimeZoneManager.getInstance().formatDateForPlayer(playerData, Instant.ofEpochSecond(getStartTime() / 20));
+        String exactTimeStart = TimeZoneManager.getInstance().formatDateForPlayer(ITanPlayer, Instant.ofEpochSecond(getStartTime() / 20));
 
         ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
         ItemMeta itemMeta = itemStack.getItemMeta();

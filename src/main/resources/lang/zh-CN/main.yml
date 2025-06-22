@@ -172,7 +172,6 @@ language:
   LEFT_CLICK_TO_MODIFY: "§f左键点击修改"
   LEFT_CLICK_TO_ACCEPT: "§f左键点击接受"
   RIGHT_CLICK_TO_REFUSE: "§f右键点击拒绝"
-  #Main menu
   GUI_KINGDOM_ICON: "§a王国"
   GUI_KINGDOM_ICON_DESC1: "§f开发中"
   GUI_REGION_ICON: "§a联盟"
@@ -245,8 +244,6 @@ language:
   #Attack GUI
   GUI_ATTACK_ADD_TIME: "§a增加时间"
   GUI_ATTACK_REMOVE_TIME: "§a减少时间"
-  GUI_LEFT_CLICK_FOR_1_MINUTE: "§f左键点击增加 1 分钟"
-  GUI_SHIFT_CLICK_FOR_1_HOUR: "§f按住 Shift + CLICK增加 1 小时"
   GUI_ATTACK_SET_TO_START_IN: "§a攻击将在 §6{0} 后开始"
   GUI_CONFIRM_ATTACK: "§a确认攻击"
   GUI_CONFIRM_ATTACK_DESC1: "§f确认攻击目标 §6{0}"
@@ -343,7 +340,6 @@ language:
   BROADCAST_RELATION_IMPROVE: "§f{0}§f 与 {1}§f 之间的关系已改善至：{2}"
   BROADCAST_RELATION_WORSEN: "§f{0}§f 与 {1}§f 之间的关系已恶化至：{2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§c右键点击以发动攻击"
-  GUI_TOWN_ATTACK_TOWN_EXECUTED: "§c您已对 {0} 发动攻击"
   GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} 已对 {1} 发动攻击！"
   GUI_TOWN_ATTACK_FINISHED: "§c对 {0} 的攻击已结束！"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§a管理门的访问权限"
@@ -610,7 +606,6 @@ language:
   ATTACK_ICON_DESC_3: "§f攻击者数量：§9{0}"
   ATTACK_ICON_DESC_4: "§f防守者数量：§9{0}"
   ATTACK_ICON_DESC_5: "§f战争目标：§a{0}"
-  ATTACK_ICON_DESC_6: "§f战争将在：§6{0} 后开始"
   ATTACK_ICON_DESC_7: "§f战争将持续：§6{0}"
   ATTACK_ICON_DESC_8: "§f领土位置：§a{0}"
   ATTACK_ICON_DESC_ADMIN_APPROVED: "§a此攻击已获得管理员批准"
@@ -704,6 +699,7 @@ language:
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§f左键点击查看 提案"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§c你无法占领此区块"
+
 
 
 

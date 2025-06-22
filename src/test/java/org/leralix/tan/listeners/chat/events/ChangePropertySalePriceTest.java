@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.leralix.lib.position.Vector3D;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.factory.AbstractionFactory;
@@ -23,14 +23,14 @@ class ChangePropertySalePriceTest {
     void nominalCase() {
 
         TownData townData = TownDataStorage.getInstance().newTown("town 1");
-        PlayerData playerData = AbstractionFactory.getRandomPlayerData();
-        Player player = playerData.getPlayer();
+        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
+        Player player = ITanPlayer.getPlayer();
 
 
         PropertyData propertyData = townData.registerNewProperty(
                 new Vector3D(0,0,0,"world"),
                 new Vector3D(3, 3, 3, "world"),
-                playerData
+                ITanPlayer
         );
 
         ChangePropertySalePrice changePropertySalePrice = new ChangePropertySalePrice(propertyData, null);
@@ -43,14 +43,14 @@ class ChangePropertySalePriceTest {
     @Test
     void wrongMessage() {
         TownData townData = TownDataStorage.getInstance().newTown("town 1");
-        PlayerData playerData = AbstractionFactory.getRandomPlayerData();
+        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
         Player player = AbstractionFactory.getRandomPlayer();
 
 
         PropertyData propertyData = townData.registerNewProperty(
                 new Vector3D(0,0,0,"world"),
                 new Vector3D(3, 3, 3, "world"),
-                playerData
+                ITanPlayer
         );
 
         ChangePropertySalePrice changePropertyRentPrice = new ChangePropertySalePrice(propertyData, null);

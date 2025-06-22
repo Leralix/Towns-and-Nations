@@ -42,24 +42,24 @@ public class NoTownMenu extends BasicGui {
         int townPrice = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("townCost", 1000);
 
         return IconManager.getInstance().get(IconKey.CREATE_TOWN_ICON)
-                .setName(Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.get(playerData))
+                .setName(Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.get(ITanPlayer))
                 .setDescription(
-                        Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.get(playerData, townPrice),
-                        Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(playerData))
+                        Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.get(ITanPlayer, townPrice),
+                        Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(ITanPlayer))
                 .setAction( action -> {
                     if(!player.hasPermission("tan.base.town.create")){
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(playerData));
+                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(ITanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
 
                     double playerMoney = EconomyUtil.getBalance(player);
                     if (playerMoney < townPrice) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(playerData, townPrice - playerMoney));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(ITanPlayer, townPrice - playerMoney));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                     }
                     else {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get(playerData));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get(ITanPlayer));
                         PlayerChatListenerStorage.register(player, new CreateTown(townPrice));
                     }
                 })
@@ -69,10 +69,10 @@ public class NoTownMenu extends BasicGui {
     private GuiItem getBrowseTownsButton() {
 
         return IconManager.getInstance().get(IconKey.BROWSE_TOWN_ICON)
-                .setName(Lang.GUI_NO_TOWN_JOIN_A_TOWN.get(playerData))
+                .setName(Lang.GUI_NO_TOWN_JOIN_A_TOWN.get(ITanPlayer))
                 .setDescription(
-                        Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(playerData, TownDataStorage.getInstance().getNumberOfTown()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData))
+                        Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(ITanPlayer, TownDataStorage.getInstance().getNumberOfTown()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer))
                 .setAction(event -> {
                     new ApplyToTownMenu(player);
                 })

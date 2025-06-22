@@ -3,12 +3,12 @@ package org.leralix.tan.commands.admin;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.leralix.lib.commands.SubCommand;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.utils.FileUtil;
-import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.FileUtil;
+import org.leralix.tan.utils.TanChatUtils;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class SetMoney extends SubCommand {
             player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
             player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         } else if (args.length == 3) {
-            PlayerData target = PlayerDataStorage.getInstance().get(Bukkit.getOfflinePlayer(args[1]));
+            ITanPlayer target = PlayerDataStorage.getInstance().get(Bukkit.getOfflinePlayer(args[1]));
             setMoney(player, args, target);
 
         } else {
@@ -52,7 +52,7 @@ public class SetMoney extends SubCommand {
         }
     }
 
-    static void setMoney(CommandSender player, String[] args, PlayerData target) {
+    static void setMoney(CommandSender player, String[] args, ITanPlayer target) {
         double amount;
         try {
             amount = Double.parseDouble(args[2]);

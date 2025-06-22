@@ -31,11 +31,11 @@ public class PlayerSelectTimezoneMenu extends IteratorGUI {
         for(TimeZoneEnum timeZoneEnum : TimeZoneEnum.values()){
             timezones.add(
                     iconManager.get(IconKey.TIMEZONE_BUTTON)
-                            .setName(timeZoneEnum.getName(playerData.getLang()))
+                            .setName(timeZoneEnum.getName(ITanPlayer.getLang()))
                             .setDescription(Lang.GUI_GENERIC_CLICK_TO_MODIFY.get())
                             .setAction(
                                     action -> {
-                                        playerData.setTimeZone(timeZoneEnum);
+                                        ITanPlayer.setTimeZone(timeZoneEnum);
                                         new PlayerMenu(player);
                                     }
                             )

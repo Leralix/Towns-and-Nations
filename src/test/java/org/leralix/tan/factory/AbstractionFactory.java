@@ -13,7 +13,7 @@ import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.economy.TanEconomyStandalone;
 import org.leralix.tan.lang.Lang;
@@ -112,7 +112,7 @@ public class AbstractionFactory {
 
 
 
-    public static PlayerData getRandomPlayerData() {
+    public static ITanPlayer getRandomITanPlayer() {
         return PlayerDataStorage.getInstance().register(getRandomPlayer());
     }
 

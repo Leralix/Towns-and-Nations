@@ -5,7 +5,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
@@ -1079,11 +1079,11 @@ public enum Lang {
     }
 
 
-    public String get(PlayerData playerData){
-        if(playerData == null) {
+    public String get(ITanPlayer ITanPlayer){
+        if(ITanPlayer == null) {
             return get(serverLang);
         }
-        return get(playerData.getLang());
+        return get(ITanPlayer.getLang());
     }
 
     private String get(LangType lang) {
@@ -1106,11 +1106,11 @@ public enum Lang {
         return get(PlayerDataStorage.getInstance().get(player), placeholders);
     }
 
-    public String get(PlayerData playerData, Object... placeholders) {
-        if(playerData == null) {
+    public String get(ITanPlayer ITanPlayer, Object... placeholders) {
+        if(ITanPlayer == null) {
             return get(serverLang, placeholders);
         }
-        return get(playerData.getLang(), placeholders);
+        return get(ITanPlayer.getLang(), placeholders);
     }
 
     public String get(LangType lang, Object... placeholders) {

@@ -2,21 +2,21 @@ package org.leralix.tan.tasks;
 
 
 import org.bukkit.scheduler.BukkitRunnable;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
+import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.utils.ArchiveUtil;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -63,7 +63,7 @@ public class DailyTasks {
     }
 
     private static void updatePlayerUsernames() {
-        for(PlayerData player : PlayerDataStorage.getInstance().getAll()){
+        for(ITanPlayer player : PlayerDataStorage.getInstance().getAll()){
             player.clearName();
         }
     }

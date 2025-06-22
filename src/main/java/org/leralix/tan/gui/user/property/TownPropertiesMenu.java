@@ -46,21 +46,21 @@ public class TownPropertiesMenu extends IteratorGUI {
 
         for (PropertyData townProperty : townData.getProperties()){
 
-            List<String> desc = townProperty.getBasicDescription(playerData.getLang());
-            desc.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData));
+            List<String> desc = townProperty.getBasicDescription(ITanPlayer.getLang());
+            desc.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer));
 
             res.add(iconManager.get(townProperty.getIcon())
                     .setName(townProperty.getName())
                     .setDescription(desc)
                     .setAction(event -> {
                         event.setCancelled(true);
-                        if(!playerData.hasTown()){
-                            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get(playerData));
+                        if(!ITanPlayer.hasTown()){
+                            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get(ITanPlayer));
                             SoundUtil.playSound(player, NOT_ALLOWED);
                             return;
                         }
-                        if(!townData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_PROPERTY)){
-                            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(playerData));
+                        if(!townData.doesPlayerHavePermission(ITanPlayer, RolePermission.MANAGE_PROPERTY)){
+                            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(ITanPlayer));
                             SoundUtil.playSound(player, NOT_ALLOWED);
                             return;
                         }

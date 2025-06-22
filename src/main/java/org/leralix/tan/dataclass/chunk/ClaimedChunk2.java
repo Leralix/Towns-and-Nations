@@ -7,18 +7,17 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.integration.worldguard.WorldGuardManager;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.TerritoryUtil;
-import org.leralix.tan.enums.permissions.ChunkPermissionType;
-import org.leralix.tan.lang.Lang;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 public abstract class ClaimedChunk2 {
@@ -119,7 +118,7 @@ public abstract class ClaimedChunk2 {
         return getMapIcon(PlayerDataStorage.getInstance().get(player));
     }
 
-    public abstract TextComponent getMapIcon(PlayerData playerData);
+    public abstract TextComponent getMapIcon(ITanPlayer ITanPlayer);
 
     public abstract boolean canTerritoryClaim(TerritoryData territoryData);
 

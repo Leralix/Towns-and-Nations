@@ -106,6 +106,7 @@ language:
   CHAT_CHANGED: "§fEl chat ahora esta activado en: §e{0}"
   TOWN_CHAT_ALREADY_IN_CHAT: "§cYa estas mandando mensajes al chat: {0}"
   CHAT_SCOPE_NOT_FOUND: "§cAlcance de chat no encontrado"
+  GLOBAL_SCOPE: "global"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Se han añadido §6+{0}✦§f a §3{1}"
   #Town and Nation GUI
@@ -186,7 +187,6 @@ language:
   LEFT_CLICK_TO_SELECT: "§fClick izquierdo para seleccionar"
   LEFT_CLICK_TO_AUTHORIZE: "§fClick izquierdo para autorizar"
   LEFT_CLICK_TO_MODIFY: "§fClick izquierdo para modificar"
-  #Main menu
   GUI_KINGDOM_ICON: "§aReino"
   GUI_KINGDOM_ICON_DESC1: "§fEn desarrollo"
   GUI_REGION_ICON: "§aRegión"
@@ -248,8 +248,6 @@ language:
   #Attack GUI
   GUI_ATTACK_ADD_TIME: "§aAñadir tiempo de espera"
   GUI_ATTACK_REMOVE_TIME: "§aReducir tiempo de espera"
-  GUI_LEFT_CLICK_FOR_1_MINUTE: "§fClick izquierdo para añadir un minuto"
-  GUI_SHIFT_CLICK_FOR_1_HOUR: "§fShift + Click para añadir una hora"
   GUI_ATTACK_SET_TO_START_IN: "§aEl ataque comenzará en: §6{0}"
   GUI_CONFIRM_ATTACK: "§aConfirmar ataque"
   GUI_CONFIRM_ATTACK_DESC1: "§fConfirmar ataque en §6{0}"
@@ -336,7 +334,6 @@ language:
   GUI_TOWN_RELATION_ADD_TOWN: "§aAñadir pueblo"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aRemover pueblo"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cClick derecho para lanzar un ataque"
-  GUI_TOWN_ATTACK_TOWN_EXECUTED: "§cHas lanzado un ataque contra {0}"
   GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} ha enviado un ataque contra {1} !"
   GUI_TOWN_ATTACK_FINISHED: "§cEl ataque contra {0} ha terminado!"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aAdministrar permisos de puerta"
@@ -577,7 +574,6 @@ language:
   ATTACK_ICON_DESC_3: "§fNúmero de atacantes: §9{0}"
   ATTACK_ICON_DESC_4: "§fNumber of defensores: §9{0}"
   ATTACK_ICON_DESC_5: "§fObjetivo de la guerra: §a{0}"
-  ATTACK_ICON_DESC_6: "§fLa guerra empezará en: §6{0}"
   ATTACK_ICON_DESC_7: "§fLa guerra durará: §6{0}"
   ATTACK_ICON_DESC_8: "§fPosición del territorio: §a{0}"
   ATTACK_ICON_DESC_ADMIN_APPROVED: "§aEste ataque ha sido aprobado por un administrador"
@@ -646,6 +642,7 @@ language:
   MAP_REGION: "    §b[Región]"
   #Reload
   RELOAD_SUCCESS: "§aConfiguración recargada"
+
 
 
 

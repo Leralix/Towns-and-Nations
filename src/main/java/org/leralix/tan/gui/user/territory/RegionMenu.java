@@ -4,7 +4,6 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.user.MainMenu;
@@ -45,10 +44,10 @@ public class RegionMenu extends TerritoryMenu {
 
     private GuiItem getSettingsButton() {
         return IconManager.getInstance().get(IconKey.TERRITORY_SETTINGS_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_ICON.get(playerData.getLang()))
+                .setName(Lang.GUI_TOWN_SETTINGS_ICON.get(ITanPlayer.getLang()))
                 .setDescription(
-                        Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get(playerData.getLang()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                        Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get(ITanPlayer.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer)
                 )
                 .setAction(event -> new RegionSettingsMenu(player, regionData))
                 .asGuiItem(player);

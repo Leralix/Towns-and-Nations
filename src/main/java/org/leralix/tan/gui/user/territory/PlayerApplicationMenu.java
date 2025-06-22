@@ -8,7 +8,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
@@ -51,30 +51,30 @@ public class PlayerApplicationMenu extends IteratorGUI {
         for (String playerUUID: townData.getPlayerJoinRequestSet()) {
 
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
-            PlayerData playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
+            ITanPlayer playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
 
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
-                    Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC2.get(playerData),
-                    Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC3.get(playerData));
+                    Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC2.get(ITanPlayer),
+                    Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC3.get(ITanPlayer));
 
             GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
                 if(event.isLeftClick()){
-                    if(!townData.doesPlayerHavePermission(playerData, RolePermission.INVITE_PLAYER)){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(playerData));
+                    if(!townData.doesPlayerHavePermission(ITanPlayer, RolePermission.INVITE_PLAYER)){
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(ITanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
                     if(townData.isFull()){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.INVITATION_TOWN_FULL.get(playerData));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.INVITATION_TOWN_FULL.get(ITanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
                     townData.addPlayer(playerIterateData);
                 }
                 else if(event.isRightClick()){
-                    if(!townData.doesPlayerHavePermission(playerData, RolePermission.KICK_PLAYER)){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(playerData));
+                    if(!townData.doesPlayerHavePermission(ITanPlayer, RolePermission.KICK_PLAYER)){
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(ITanPlayer));
                         return;
                     }
                     townData.removePlayerJoinRequest(playerIterateData.getID());

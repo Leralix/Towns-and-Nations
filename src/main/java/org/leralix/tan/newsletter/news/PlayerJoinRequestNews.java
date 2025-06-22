@@ -1,23 +1,21 @@
 package org.leralix.tan.newsletter.news;
 
-import dev.triumphteam.gui
-.builder.item.ItemBuilder;
-import dev.triumphteam.gui
-.guis.GuiItem;
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.user.territory.PlayerApplicationMenu;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.newsletter.NewsletterType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.newsletter.NewsletterType;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -60,13 +58,13 @@ public class PlayerJoinRequestNews extends Newsletter {
 
     @Override
     public void broadcast(Player player) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(playerID);
-        if(playerData == null)
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        if(ITanPlayer == null)
             return;
         TownData townData = TownDataStorage.getInstance().get(townID);
         if(townData == null)
             return;
-        player.sendMessage(getTANString() + Lang.PLAYER_APPLICATION_NEWSLETTER.get(playerData.getNameStored(), townData.getBaseColoredName()));
+        player.sendMessage(getTANString() + Lang.PLAYER_APPLICATION_NEWSLETTER.get(ITanPlayer.getNameStored(), townData.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
     }
 

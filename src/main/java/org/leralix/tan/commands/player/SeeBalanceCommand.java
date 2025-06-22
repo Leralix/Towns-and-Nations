@@ -3,9 +3,9 @@ package org.leralix.tan.commands.player;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.lang.Lang;
 
 import java.util.Collections;
 import java.util.List;

@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
@@ -120,8 +120,8 @@ public class DiplomacyAcceptedNews extends Newsletter {
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         if(receivingTerritory == null)
             return false;
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        return receivingTerritory.isPlayerIn(playerData) || proposingTerritory.isPlayerIn(playerData);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        return receivingTerritory.isPlayerIn(ITanPlayer) || proposingTerritory.isPlayerIn(ITanPlayer);
     }
 
     @Override

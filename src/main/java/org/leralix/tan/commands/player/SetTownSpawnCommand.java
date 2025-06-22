@@ -2,16 +2,16 @@ package org.leralix.tan.commands.player;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.lang.Lang;
 
 import java.util.Collections;
 import java.util.List;
@@ -47,7 +47,7 @@ public class SetTownSpawnCommand extends PlayerSubCommand {
         }
 
         //No town
-        PlayerData playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
         if(!playerStat.hasTown()){
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
             return;

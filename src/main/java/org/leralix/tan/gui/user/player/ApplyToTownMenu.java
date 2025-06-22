@@ -44,11 +44,11 @@ public class ApplyToTownMenu extends IteratorGUI {
         ArrayList<GuiItem> towns = new ArrayList<>();
 
         for(TownData specificTownData : TownDataStorage.getInstance().getTownMap().values()){
-            ItemStack townIcon = specificTownData.getIconWithInformations(playerData.getLang());
+            ItemStack townIcon = specificTownData.getIconWithInformations(ITanPlayer.getLang());
             HeadUtils.addLore(townIcon,
                     "",
-                    (specificTownData.isRecruiting()) ? Lang.GUI_TOWN_INFO_IS_RECRUITING.get(playerData) : Lang.GUI_TOWN_INFO_IS_NOT_RECRUITING.get(playerData),
-                    (specificTownData.isPlayerAlreadyRequested(player)) ? Lang.GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL.get(playerData) : Lang.GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN.get(playerData)
+                    (specificTownData.isRecruiting()) ? Lang.GUI_TOWN_INFO_IS_RECRUITING.get(ITanPlayer) : Lang.GUI_TOWN_INFO_IS_NOT_RECRUITING.get(ITanPlayer),
+                    (specificTownData.isPlayerAlreadyRequested(player)) ? Lang.GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL.get(ITanPlayer) : Lang.GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN.get(ITanPlayer)
             );
             GuiItem townButton = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
@@ -56,7 +56,7 @@ public class ApplyToTownMenu extends IteratorGUI {
                 if(event.isLeftClick()){
 
                     if(!player.hasPermission("tan.base.town.join")){
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(playerData));
+                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(ITanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
@@ -64,11 +64,11 @@ public class ApplyToTownMenu extends IteratorGUI {
                         return;
                     }
                     if(!specificTownData.isRecruiting()){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_TOWN_NOT_RECRUITING.get(playerData));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_TOWN_NOT_RECRUITING.get(ITanPlayer));
                         return;
                     }
                     specificTownData.addPlayerJoinRequest(player);
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(playerData, specificTownData.getName()));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(ITanPlayer, specificTownData.getName()));
                     open();
                 }
                 if(event.isRightClick()){
@@ -77,7 +77,7 @@ public class ApplyToTownMenu extends IteratorGUI {
                     }
                     specificTownData.removePlayerJoinRequest(player);
                     NewsletterStorage.removePlayerJoinRequest(player, specificTownData);
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(playerData));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(ITanPlayer));
                     open();
                 }
             });

@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.lang.Lang;
@@ -25,9 +25,9 @@ public class PlayerJoinTownNews extends Newsletter {
     String playerID;
     String townID;
 
-    public PlayerJoinTownNews(PlayerData playerData, TownData townData) {
+    public PlayerJoinTownNews(ITanPlayer ITanPlayer, TownData townData) {
         super();
-        playerID = playerData.getID();
+        playerID = ITanPlayer.getID();
         townID = townData.getID();
     }
 
@@ -52,27 +52,27 @@ public class PlayerJoinTownNews extends Newsletter {
 
     @Override
     public void broadcast(Player player) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(playerID);
-        if(playerData == null)
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        if(ITanPlayer == null)
             return;
         TownData townData = TownDataStorage.getInstance().get(townID);
         if(townData == null)
             return;
-        player.sendMessage(getTANString() + Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(playerData.getNameStored(), townData.getBaseColoredName()));
+        player.sendMessage(getTANString() + Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(ITanPlayer.getNameStored(), townData.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
     }
 
     @Override
     public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(playerID);
-        if(playerData == null)
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        if(ITanPlayer == null)
             return null;
         TownData townData = TownDataStorage.getInstance().get(townID);
         if(townData == null)
             return null;
 
         ItemStack itemStack = HeadUtils.makeSkullURL(Lang.PLAYER_JOINED_TOWN_NEWSLETTER_TITLE.get(), "http://textures.minecraft.net/texture/16338322d26c6a7c08fb9fd22959a136728fa2d4dccd22b1563eb1bbaa1d5471",
-                Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(playerData.getNameStored(), townData.getCustomColoredName().toLegacyText()),
+                Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(ITanPlayer.getNameStored(), townData.getCustomColoredName().toLegacyText()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
 
         return ItemBuilder.from(itemStack).asGuiItem(event -> {

@@ -34,7 +34,7 @@ public abstract class TerritoryMenu extends BasicGui {
 
     protected GuiItem getTerritoryInfo() {
 
-        LangType langType = playerData.getLang();
+        LangType langType = ITanPlayer.getLang();
 
         List<String> lore = new ArrayList<>();
         lore.add(Lang.GUI_TOWN_INFO_DESC0.get(langType, territoryData.getDescription()));
@@ -42,8 +42,8 @@ public abstract class TerritoryMenu extends BasicGui {
         lore.add(Lang.GUI_TOWN_INFO_DESC2.get(langType, territoryData.getPlayerIDList().size()));
         lore.add(Lang.GUI_TOWN_INFO_DESC3.get(langType, territoryData.getNumberOfClaimedChunk()));
         lore.add(territoryData.haveOverlord() ? Lang.GUI_TOWN_INFO_DESC5_REGION.get(langType, territoryData.getOverlord().getName()) : Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get(langType));
-        lore.add(Lang.GUI_TOWN_INFO_CHANGE_ICON.get(playerData));
-        lore.add(Lang.RIGHT_CLICK_TO_SELECT_MEMBER_HEAD.get(playerData));
+        lore.add(Lang.GUI_TOWN_INFO_CHANGE_ICON.get(ITanPlayer));
+        lore.add(Lang.RIGHT_CLICK_TO_SELECT_MEMBER_HEAD.get(ITanPlayer));
 
         return IconManager.getInstance().get(IconKey.TERRITORY_ICON)
                 .setName(Lang.GUI_TOWN_NAME.get(langType, territoryData.getName()))
@@ -61,7 +61,7 @@ public abstract class TerritoryMenu extends BasicGui {
                     if(action.getCursor().getType() == Material.AIR){
                         return;
                     }
-                    if(!territoryData.doesPlayerHavePermission(playerData, RolePermission.TOWN_ADMINISTRATOR)){
+                    if(!territoryData.doesPlayerHavePermission(ITanPlayer, RolePermission.TOWN_ADMINISTRATOR)){
                         player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(langType));
                         SoundUtil.playSound(player,NOT_ALLOWED);
                         return;
@@ -77,10 +77,10 @@ public abstract class TerritoryMenu extends BasicGui {
 
     protected GuiItem getTownTreasuryButton() {
         return IconManager.getInstance().get(IconKey.TERRITORY_TREASURY_ICON)
-                .setName(Lang.GUI_TOWN_TREASURY_ICON.get(playerData.getLang()))
+                .setName(Lang.GUI_TOWN_TREASURY_ICON.get(ITanPlayer.getLang()))
                 .setDescription(
-                        Lang.GUI_TOWN_TREASURY_ICON_DESC1.get(playerData.getLang()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                        Lang.GUI_TOWN_TREASURY_ICON_DESC1.get(ITanPlayer.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer)
                 )
                 .setAction(event -> new TreasuryMenu(player, territoryData))
                 .asGuiItem(player);
@@ -88,9 +88,9 @@ public abstract class TerritoryMenu extends BasicGui {
 
     protected GuiItem getMemberButton() {
         return IconManager.getInstance().get(IconKey.TERRITORY_MEMBER_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_ICON.get(playerData.getLang()))
-                .setDescription(Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get(playerData.getLang()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                .setName(Lang.GUI_TOWN_MEMBERS_ICON.get(ITanPlayer.getLang()))
+                .setDescription(Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get(ITanPlayer.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer)
                 )
                 .setAction(event -> new TerritoryMemberMenu(player, territoryData).open())
                 .asGuiItem(player);
@@ -98,10 +98,10 @@ public abstract class TerritoryMenu extends BasicGui {
 
     protected GuiItem getLandButton() {
         return IconManager.getInstance().get(IconKey.TERRITORY_LAND_ICON)
-                .setName(Lang.GUI_CLAIM_ICON.get(playerData.getLang()))
+                .setName(Lang.GUI_CLAIM_ICON.get(ITanPlayer.getLang()))
                 .setDescription(
-                        Lang.GUI_CLAIM_ICON_DESC1.get(playerData.getLang()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                        Lang.GUI_CLAIM_ICON_DESC1.get(ITanPlayer.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer)
                 )
                 .setAction(event -> new ChunkSettingsMenu(player, territoryData))
                 .asGuiItem(player);
@@ -109,9 +109,9 @@ public abstract class TerritoryMenu extends BasicGui {
 
     protected GuiItem getBrowseButton() {
         return IconManager.getInstance().get(IconKey.TERRITORY_BROWSE_ICON)
-                .setName(Lang.GUI_BROWSE_TERRITORY_ICON.get(playerData.getLang()))
+                .setName(Lang.GUI_BROWSE_TERRITORY_ICON.get(ITanPlayer.getLang()))
                 .setDescription(
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer)
                 )
                 .setAction(event -> new BrowseTerritoryMenu(player, territoryData, BrowseScope.ALL, p -> territoryData.openMainMenu(player)))
                 .asGuiItem(player);
@@ -119,10 +119,10 @@ public abstract class TerritoryMenu extends BasicGui {
 
     protected GuiItem getDiplomacyButton() {
         return IconManager.getInstance().get(IconKey.TERRITORY_DIPLOMACY_ICON)
-                .setName(Lang.GUI_RELATION_ICON.get(playerData.getLang()))
+                .setName(Lang.GUI_RELATION_ICON.get(ITanPlayer.getLang()))
                 .setDescription(
-                        Lang.GUI_RELATION_ICON_DESC1.get(playerData.getLang()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                        Lang.GUI_RELATION_ICON_DESC1.get(ITanPlayer.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer)
                 )
                 .setAction(event -> PlayerGUI.openRelations(player, territoryData))
                 .asGuiItem(player);
@@ -130,10 +130,10 @@ public abstract class TerritoryMenu extends BasicGui {
 
     protected GuiItem getAttackButton() {
         return IconManager.getInstance().get(IconKey.TERRITORY_WAR_ICON)
-                .setName(Lang.GUI_ATTACK_ICON.get(playerData.getLang()))
+                .setName(Lang.GUI_ATTACK_ICON.get(ITanPlayer.getLang()))
                 .setDescription(
-                        Lang.GUI_ATTACK_ICON_DESC1.get(playerData.getLang()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                        Lang.GUI_ATTACK_ICON_DESC1.get(ITanPlayer.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer)
                 )
                 .setAction(event -> new WarMenu(player, territoryData))
                 .asGuiItem(player);
@@ -141,10 +141,10 @@ public abstract class TerritoryMenu extends BasicGui {
 
     protected GuiItem getHierarchyButton() {
         return IconManager.getInstance().get(IconKey.TERRITORY_HIERARCHY_ICON)
-                .setName(Lang.GUI_HIERARCHY_MENU.get(playerData.getLang()))
+                .setName(Lang.GUI_HIERARCHY_MENU.get(ITanPlayer.getLang()))
                 .setDescription(
-                        Lang.GUI_HIERARCHY_MENU_DESC1.get(playerData.getLang()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                        Lang.GUI_HIERARCHY_MENU_DESC1.get(ITanPlayer.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer)
                 )
                 .setAction(event -> PlayerGUI.openHierarchyMenu(player, territoryData))
                 .asGuiItem(player);

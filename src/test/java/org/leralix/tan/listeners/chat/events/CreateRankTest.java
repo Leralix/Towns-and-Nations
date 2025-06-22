@@ -17,27 +17,27 @@ class CreateRankTest {
 
     @Test
     void nominalCase() {
-        var playerData = AbstractionFactory.getRandomPlayerData();
-        TownData townData = TownDataStorage.getInstance().newTown("TestTown", playerData);
+        var ITanPlayer = AbstractionFactory.getRandomITanPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("TestTown", ITanPlayer);
 
         assertEquals(1, townData.getAllRanks().size());
 
         CreateRank createRank = new CreateRank(townData, null);
-        createRank.execute(playerData.getPlayer(), "TestRank");
+        createRank.execute(ITanPlayer.getPlayer(), "TestRank");
         assertEquals(2, townData.getAllRanks().size());
     }
 
     @Test
     void duplicateNameAllowed() {
-        var playerData = AbstractionFactory.getRandomPlayerData();
-        TownData townData = TownDataStorage.getInstance().newTown("TestTown", playerData);
+        var ITanPlayer = AbstractionFactory.getRandomITanPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("TestTown", ITanPlayer);
         String newRankName = "TestRank";
 
         assertEquals(1, townData.getAllRanks().size());
         CreateRank createRank = new CreateRank(townData, null);
-        createRank.execute(playerData.getPlayer(), newRankName);
+        createRank.execute(ITanPlayer.getPlayer(), newRankName);
         assertEquals(2, townData.getAllRanks().size());
-        createRank.execute(playerData.getPlayer(), newRankName);
+        createRank.execute(ITanPlayer.getPlayer(), newRankName);
         assertEquals(3, townData.getAllRanks().size());
     }
 

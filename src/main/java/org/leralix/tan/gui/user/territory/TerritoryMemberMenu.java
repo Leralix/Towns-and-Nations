@@ -40,23 +40,23 @@ public class TerritoryMemberMenu extends IteratorGUI {
     }
 
     private List<GuiItem> getMemberList() {
-        return territoryData.getOrderedMemberList(playerData);
+        return territoryData.getOrderedMemberList(ITanPlayer);
     }
 
     private GuiItem getManageRankButton() {
         return IconManager.getInstance().get(IconKey.MANAGE_RANKS_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_MANAGE_ROLES.get(playerData))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData))
+                .setName(Lang.GUI_TOWN_MEMBERS_MANAGE_ROLES.get(ITanPlayer))
+                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer))
                 .setAction(p -> new TerritoryRanksMenu(player, territoryData).open())
                 .asGuiItem(player);
     }
 
     private GuiItem getManageApplicationsButton(TownData townData) {
         return IconManager.getInstance().get(IconKey.MANAGE_APPLICATIONS_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION.get(playerData))
+                .setName(Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION.get(ITanPlayer))
                 .setDescription(
-                        Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(playerData, townData.getPlayerJoinRequestSet().size()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData))
+                        Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(ITanPlayer, townData.getPlayerJoinRequestSet().size()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer))
                 .setAction(p -> new PlayerApplicationMenu(player, townData).open())
                 .asGuiItem(player);
     }

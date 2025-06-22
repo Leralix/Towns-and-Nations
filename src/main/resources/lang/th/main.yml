@@ -233,7 +233,6 @@ language:
   LEFT_CLICK_TO_ACCEPT: "§fคลิกซ้ายเพื่อยอมรับ"
   RIGHT_CLICK_TO_REFUSE: "§fคลิกขวาเพื่อปฏิเสธ"
   CANNOT_BE_MODIFIED: "§cไม่สามารถแก้ไขได้"
-  #Main menu
   GUI_KINGDOM_ICON: "§aอาณาจักร"
   GUI_KINGDOM_ICON_DESC1: "§fอยู่ในการพัฒนา"
   GUI_REGION_ICON: "§aภูมิภาค"
@@ -309,8 +308,6 @@ language:
   #Attack GUI
   GUI_ATTACK_ADD_TIME: "§aเพิ่มเวลา"
   GUI_ATTACK_REMOVE_TIME: "§aลดเวลา"
-  GUI_LEFT_CLICK_FOR_1_MINUTE: "§fคลิกซ้ายเพื่อเพิ่ม 1 นาที"
-  GUI_SHIFT_CLICK_FOR_1_HOUR: "§fShift + คลิกเพื่อเพิ่ม 1 ชั่วโมง"
   GUI_ATTACK_SET_TO_START_IN: "§aการโจมตีจะเริ่มใน §6{0}"
   GUI_CONFIRM_ATTACK: "§aยืนยันการโจมตี"
   GUI_CONFIRM_ATTACK_DESC1: "§fยืนยันการโจมตี §6{0}"
@@ -478,7 +475,6 @@ language:
   BROADCAST_RELATION_IMPROVE: "§fความสัมพันธ์ระหว่าง {0}§f และ {1}§f ดีขึ้นเป็น: {2}"
   BROADCAST_RELATION_WORSEN: "§fความสัมพันธ์ระหว่าง {0}§f และ {1}§f แย่ลงเป็น: {2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cคลิกขวาเพื่อเริ่มโจมตี"
-  GUI_TOWN_ATTACK_TOWN_EXECUTED: "§cคุณได้โจมตี {0}"
   GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} ได้โจมตี {1} !"
   GUI_TOWN_ATTACK_FINISHED: "§cการโจมตี {0} สิ้นสุดแล้ว!"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aจัดการการเข้าถึงประตู"
@@ -754,7 +750,6 @@ language:
   ATTACK_ICON_DESC_3: "§fจำนวนผู้โจมตี : §9{0}"
   ATTACK_ICON_DESC_4: "§fจำนวนผู้ป้องกัน : §9{0}"
   ATTACK_ICON_DESC_5: "§fเป้าหมายสงคราม : §a{0}"
-  ATTACK_ICON_DESC_6: "§fสงครามจะเริ่มใน : §6{0}"
   ATTACK_ICON_DESC_7: "§fสงครามจะใช้เวลา : §6{0}"
   ATTACK_ICON_DESC_8: "§fตำแหน่งอาณาเขต : §a{0}"
   ATTACK_ICON_DESC_ADMIN_APPROVED: "§aการโจมตีนี้ได้รับการอนุมัติจากผู้ดูแล"
@@ -865,6 +860,7 @@ language:
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§fคลิกซ้ายเพื่อเข้าถึงข้อเสนอ"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cคุณไม่สามารถอ้างสิทธิ์ชังก์นี้ได้"
+
 
 
 

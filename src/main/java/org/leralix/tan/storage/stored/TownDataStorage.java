@@ -5,16 +5,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
+import org.leralix.tan.dataclass.territory.permission.RelationPermission;
+import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.storage.typeadapter.EnumMapKeyValueDeserializer;
 import org.leralix.tan.storage.typeadapter.IconAdapter;
-import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.enums.permissions.ChunkPermissionType;
-import org.leralix.tan.dataclass.territory.permission.RelationPermission;
-import org.leralix.tan.enums.TownRelation;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -40,10 +40,10 @@ public class TownDataStorage {
         return instance;
     }
 
-    public TownData newTown(String townName, PlayerData playerData){
+    public TownData newTown(String townName, ITanPlayer ITanPlayer){
         String townId = getNextTownID();
 
-        TownData newTown = new TownData(townId, townName, playerData);
+        TownData newTown = new TownData(townId, townName, ITanPlayer);
 
 
         townDataMap.put(townId,newTown);
@@ -78,8 +78,8 @@ public class TownDataStorage {
     }
 
 
-    public TownData get(PlayerData playerData){
-        return get(playerData.getTownId());
+    public TownData get(ITanPlayer ITanPlayer){
+        return get(ITanPlayer.getTownId());
     }
 
     public TownData get(Player player){

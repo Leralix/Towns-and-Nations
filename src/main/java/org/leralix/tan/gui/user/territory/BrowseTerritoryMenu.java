@@ -52,8 +52,8 @@ public class BrowseTerritoryMenu extends IteratorGUI {
 
     private GuiItem getScopeButton() {
         return iconManager.get(IconKey.CHANGE_SCOPE_ICON)
-                .setName(Lang.BROWSE_SCOPE.get(playerData, scope.getName(playerData)))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_SWITCH_SCOPE.get(playerData))
+                .setName(Lang.BROWSE_SCOPE.get(ITanPlayer, scope.getName(ITanPlayer)))
+                .setDescription(Lang.GUI_GENERIC_CLICK_TO_SWITCH_SCOPE.get(ITanPlayer))
                 .setAction(p -> setScope(scope.getNextScope()))
                 .asGuiItem(player);
     }
@@ -69,7 +69,7 @@ public class BrowseTerritoryMenu extends IteratorGUI {
         ArrayList<GuiItem> townGuiItems = new ArrayList<>();
 
         for(TerritoryData specificTerritoryData : territoryList){
-            ItemStack territoryIcon = specificTerritoryData.getIconWithInformationAndRelation(territoryData, playerData.getLang());
+            ItemStack territoryIcon = specificTerritoryData.getIconWithInformationAndRelation(territoryData, ITanPlayer.getLang());
             GuiItem territoryGUI = ItemBuilder.from(territoryIcon).asGuiItem();
 
             townGuiItems.add(territoryGUI);

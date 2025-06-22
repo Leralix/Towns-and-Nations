@@ -47,23 +47,23 @@ public class TerritoryRanksMenu extends IteratorGUI {
         int nbRanks = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("townMaxRank",8);
 
         return iconManager.get(IconKey.NEW_RANK_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES.get(playerData))
+                .setName(Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES.get(ITanPlayer))
                 .setDescription(
-                        Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES_DESC1.get(playerData, nbRanks),
-                        Lang.GUI_GENERIC_CLICK_TO_CREATE.get(playerData)
+                        Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES_DESC1.get(ITanPlayer, nbRanks),
+                        Lang.GUI_GENERIC_CLICK_TO_CREATE.get(ITanPlayer)
                 )
                 .setAction( event -> {
                     event.setCancelled(true);
 
-                    if(!territoryData.doesPlayerHavePermission(playerData, RolePermission.CREATE_RANK)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(playerData));
+                    if(!territoryData.doesPlayerHavePermission(ITanPlayer, RolePermission.CREATE_RANK)) {
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(ITanPlayer));
                         return;
                     }
                     if(territoryData.getNumberOfRank() >= nbRanks){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_RANK_CAP_REACHED.get(playerData));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_RANK_CAP_REACHED.get(ITanPlayer));
                         return;
                     }
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(playerData));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(ITanPlayer));
                     PlayerChatListenerStorage.register(player, new CreateRank(territoryData, p -> new TerritoryRanksMenu(player, territoryData).open()));
                 })
                 .asGuiItem(player);
@@ -81,16 +81,16 @@ public class TerritoryRanksMenu extends IteratorGUI {
         return iconManager.get(rank.getRankIcon())
                 .setName(rank.getColoredName())
                 .setDescription(
-                        Lang.GUI_RANK_NUMBER_PLAYER_WITH_ROLE.get(playerData, rank.getNumberOfPlayer()),
+                        Lang.GUI_RANK_NUMBER_PLAYER_WITH_ROLE.get(ITanPlayer, rank.getNumberOfPlayer()),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get()
                 )
                 .setAction(action -> {
-                    if(!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_RANKS)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(playerData));
+                    if(!territoryData.doesPlayerHavePermission(ITanPlayer, RolePermission.MANAGE_RANKS)) {
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(ITanPlayer));
                         return;
                     }
-                    if(territoryData.getRank(playerData).getLevel() <= rank.getLevel() && !territoryData.isLeader(playerData)){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get(playerData));
+                    if(territoryData.getRank(ITanPlayer).getLevel() <= rank.getLevel() && !territoryData.isLeader(ITanPlayer)){
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get(ITanPlayer));
                         return;
                     }
                     new RankManagerMenu(player, territoryData, rank).open();

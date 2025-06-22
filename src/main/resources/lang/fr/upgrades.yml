@@ -1,23 +1,25 @@
-##Ugrades
-#Names
-CITY_HALL: "Hôtel de ville"
-BARRACKS: "Casernes"
-ADMINISTRATION: "Administration"
-WATCHTOWER: "Tour de guet"
-PORTAL: "Téléporteur"
-GUARDS: "Gardes"
-COUNCIL_CHAMBER: "Chambre du conseil"
-NOTARY_HOUSE: "Office notarial"
-EXTRACTION_TEAM: "Equipe d'extraction"
-BETTER_TOOLS: "Outils améliorés"
-#Prerequisites
-TOWN_LEVEL: "Niveau de ville"
-#Benefits
-PLAYER_CAP: "Nombre maximum de joueurs"
-CHUNK_CAP: "Nombre maximum de chunks"
-PROPERTY_CAP: "Nombre maximum de propriétés"
-UNLOCK_TOWN_SPAWN: "Spawn de ville"
-UNLOCK_MOB_BAN: "Débloque le bannissement des créatures"
-UNLOCK_REGION_CREATION: "Débloque la création de région"
-MAX_LANDMARKS: "Débloque le drapeau de région"
-LANDMARK_BONUS: "% de ressources (points d'intérêts)"
+#Upgrades.yml is used to define the names of upgrades and their benefits in the game.
+#To add a name to a new upgrade, add it to the customLang section.
+customLang:
+  #Names
+  CITY_HALL: "Hôtel de ville"
+  BARRACKS: "Casernes"
+  ADMINISTRATION: "Administration"
+  WATCHTOWER: "Tour de guet"
+  PORTAL: "Téléporteur"
+  GUARDS: "Gardes"
+  COUNCIL_CHAMBER: "Chambre du conseil"
+  NOTARY_HOUSE: "Office notarial"
+  EXTRACTION_TEAM: "Equipe d'extraction"
+  BETTER_TOOLS: "Outils améliorés"
+  #Prerequisites
+  TOWN_LEVEL: "Niveau de ville"
+  #Benefits
+  PLAYER_CAP: "Nombre maximum de joueurs"
+  CHUNK_CAP: "Nombre maximum de chunks"
+  PROPERTY_CAP: "Nombre maximum de propriétés"
+  UNLOCK_TOWN_SPAWN: "Spawn de ville"
+  UNLOCK_MOB_BAN: "Débloque le bannissement des créatures"
+  UNLOCK_REGION_CREATION: "Débloque la création de région"
+  MAX_LANDMARKS: "Débloque le drapeau de région"
+  LANDMARK_BONUS: "% de ressources (points d'intérêts)"

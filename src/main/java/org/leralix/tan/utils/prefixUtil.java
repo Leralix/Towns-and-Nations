@@ -1,10 +1,10 @@
 package org.leralix.tan.utils;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 /**
  * Utility class for handling prefix
@@ -18,10 +18,10 @@ public class prefixUtil {
         if(!ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableTownPrefix",true)){
             return;
         }
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
 
-        if (playerData.getTown() != null){
-            String prefix = playerData.getTown().getColoredTag() + " ";
+        if (ITanPlayer.getTown() != null){
+            String prefix = ITanPlayer.getTown().getColoredTag() + " ";
 
             player.setPlayerListName(prefix + player.getName());
             player.setDisplayName(prefix + player.getName());

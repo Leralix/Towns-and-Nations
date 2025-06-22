@@ -2,7 +2,7 @@ package org.leralix.tan.newsletter.news;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.newsletter.NewsletterType;
 import org.leralix.tan.newsletter.storage.NewsletterStorage;
 
@@ -44,8 +44,8 @@ public abstract class Newsletter {
         markAsRead(player.getUniqueId());
     }
 
-    public void markAsRead(PlayerData playerData){
-        markAsRead(UUID.fromString(playerData.getID()));
+    public void markAsRead(ITanPlayer ITanPlayer){
+        markAsRead(UUID.fromString(ITanPlayer.getID()));
     }
 
     public void markAsRead(UUID playerID){

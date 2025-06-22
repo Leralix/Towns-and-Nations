@@ -43,8 +43,8 @@ public class LangMenu extends IteratorGUI {
         for(LangType lang : LangType.values()){
             ItemStack langIcon = lang.getIcon();
             GuiItem langGui = ItemBuilder.from(langIcon).asGuiItem(event -> {
-                playerData.setLang(lang);
-                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_LANGUAGE_CHANGED.get(playerData, lang.getName()));
+                ITanPlayer.setLang(lang);
+                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_LANGUAGE_CHANGED.get(ITanPlayer, lang.getName()));
                 new PlayerMenu(player);
             });
             guiItems.add(langGui);
@@ -56,10 +56,10 @@ public class LangMenu extends IteratorGUI {
 
     private GuiItem getPlayerGUI() {
         return IconManager.getInstance().get(IconKey.HELP_TRANSLATION_ICON)
-                .setName(Lang.HELP_US_TRANSLATE.get(playerData))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData))
+                .setName(Lang.HELP_US_TRANSLATE.get(ITanPlayer))
+                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer))
                 .setAction(event -> {
-                    TextComponent textComponent = new TextComponent(TanChatUtils.getTANString() + Lang.CLICK_HERE_TO_OPEN_BROWSER.get(playerData));
+                    TextComponent textComponent = new TextComponent(TanChatUtils.getTANString() + Lang.CLICK_HERE_TO_OPEN_BROWSER.get(ITanPlayer));
                     textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://crowdin.com/project/town-and-nation"));
                     player.spigot().sendMessage(textComponent);
                     player.closeInventory();

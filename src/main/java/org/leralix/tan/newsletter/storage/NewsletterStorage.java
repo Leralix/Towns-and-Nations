@@ -5,7 +5,7 @@ import dev.triumphteam.gui
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.newsletter.EventScope;
@@ -109,8 +109,8 @@ public class NewsletterStorage {
     public static void removePlayerJoinRequest(PlayerJoinRequestNews playerJoinRequestNews) {
         removePlayerJoinRequest(playerJoinRequestNews.getPlayerID(), playerJoinRequestNews.getTownID());
     }
-    public static void removePlayerJoinRequest(PlayerData playerData, TownData townData) {
-        removePlayerJoinRequest(playerData.getID(), townData.getID());
+    public static void removePlayerJoinRequest(ITanPlayer ITanPlayer, TownData townData) {
+        removePlayerJoinRequest(ITanPlayer.getID(), townData.getID());
     }
     public static void removePlayerJoinRequest(Player player, TownData townData) {
         removePlayerJoinRequest(player.getUniqueId().toString(), townData.getID());

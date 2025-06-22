@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.lang.Lang;
@@ -75,11 +75,11 @@ public class TerritoryVassalForcedNews extends Newsletter {
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         if(proposingTerritory == null)
             return false;
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        if(!territoryData.isPlayerIn(playerData))
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        if(!territoryData.isPlayerIn(ITanPlayer))
             return false;
-        return territoryData.doesPlayerHavePermission(playerData, RolePermission.TOWN_ADMINISTRATOR) ||
-                proposingTerritory.doesPlayerHavePermission(playerData, RolePermission.TOWN_ADMINISTRATOR);
+        return territoryData.doesPlayerHavePermission(ITanPlayer, RolePermission.TOWN_ADMINISTRATOR) ||
+                proposingTerritory.doesPlayerHavePermission(ITanPlayer, RolePermission.TOWN_ADMINISTRATOR);
     }
 
     @Override

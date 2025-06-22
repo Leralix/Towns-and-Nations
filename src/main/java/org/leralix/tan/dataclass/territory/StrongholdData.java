@@ -7,13 +7,13 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.ChunkCoordinates;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.wars.AttackSide;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.ProgressBar;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.lang.Lang;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,11 +39,11 @@ public class StrongholdData {
 
 
     public void updateControl(CurrentAttack currentAttack){
-        Collection<PlayerData> players = getPlayersInChunk();
+        Collection<ITanPlayer> players = getPlayersInChunk();
         nbAttackers = 0;
         nbDefenders = 0;
-        for(PlayerData playerData : players){
-            AttackSide playerSide = currentAttack.getSideOfPlayer(playerData);
+        for(ITanPlayer ITanPlayer : players){
+            AttackSide playerSide = currentAttack.getSideOfPlayer(ITanPlayer);
             if(playerSide == AttackSide.ATTACKER){
                nbAttackers++;
             }else if(playerSide == AttackSide.DEFENDER) {
@@ -78,9 +78,9 @@ public class StrongholdData {
         this.controlledBy = side;
     }
 
-    private Collection<PlayerData> getPlayersInChunk() {
+    private Collection<ITanPlayer> getPlayersInChunk() {
 
-        List<PlayerData> players = new ArrayList<>();
+        List<ITanPlayer> players = new ArrayList<>();
         for(Entity entity : getClaimedChunk().getEntities()){
             if(entity instanceof Player player){
                 players.add(PlayerDataStorage.getInstance().get(player));
@@ -114,8 +114,8 @@ public class StrongholdData {
             message = part1 + part2 + part3;
         }
 
-        for(PlayerData playerData : getPlayersInChunk()){
-            playerData.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(message));
+        for(ITanPlayer ITanPlayer : getPlayersInChunk()){
+            ITanPlayer.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(message));
         }
     }
 

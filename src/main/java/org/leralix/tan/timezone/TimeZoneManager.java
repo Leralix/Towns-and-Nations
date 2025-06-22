@@ -2,7 +2,7 @@ package org.leralix.tan.timezone;
 
 
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -31,12 +31,12 @@ public class TimeZoneManager {
         return TimeZoneEnum.fromOffset(offset.getTotalSeconds() / 3600);
     }
 
-    public String formatDateNowForPlayer(PlayerData playerData){
-        return formatDateForPlayer(playerData, Instant.now());
+    public String formatDateNowForPlayer(ITanPlayer ITanPlayer){
+        return formatDateForPlayer(ITanPlayer, Instant.now());
     }
 
-    public String formatDateForPlayer(PlayerData playerData, Instant timestamp) {
-        TimeZoneEnum timeZone = playerData.getTimeZone();
+    public String formatDateForPlayer(ITanPlayer ITanPlayer, Instant timestamp) {
+        TimeZoneEnum timeZone = ITanPlayer.getTimeZone();
         return getDate(timestamp, timeZone);
     }
 

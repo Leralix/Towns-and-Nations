@@ -50,10 +50,10 @@ public class TownMenu extends TerritoryMenu {
 
     private GuiItem getLevelButton() {
         return IconManager.getInstance().get(IconKey.TERRITORY_LEVEL_ICON)
-                .setName(Lang.GUI_TOWN_LEVEL_ICON.get(playerData.getLang()))
+                .setName(Lang.GUI_TOWN_LEVEL_ICON.get(ITanPlayer.getLang()))
                 .setDescription(
-                        Lang.GUI_TOWN_LEVEL_ICON_DESC1.get(playerData.getLang()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                        Lang.GUI_TOWN_LEVEL_ICON_DESC1.get(ITanPlayer.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer)
                 )
                 .setAction(event -> PlayerGUI.openTownLevel(player, 0))
                 .asGuiItem(player);
@@ -61,10 +61,10 @@ public class TownMenu extends TerritoryMenu {
 
     private GuiItem getSettingsButton() {
         return IconManager.getInstance().get(IconKey.TERRITORY_SETTINGS_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_ICON.get(playerData.getLang()))
+                .setName(Lang.GUI_TOWN_SETTINGS_ICON.get(ITanPlayer.getLang()))
                 .setDescription(
-                        Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get(playerData.getLang()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                        Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get(ITanPlayer.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer)
                 )
                 .setAction(event -> new TownSettingsMenu(player, townData))
                 .asGuiItem(player);
@@ -72,10 +72,10 @@ public class TownMenu extends TerritoryMenu {
 
     private GuiItem getPropertiesButton() {
         return IconManager.getInstance().get(IconKey.TOWN_PROPERTIES_ICON)
-                .setName(Lang.GUI_TOWN_PROPERTIES_ICON.get(playerData.getLang()))
+                .setName(Lang.GUI_TOWN_PROPERTIES_ICON.get(ITanPlayer.getLang()))
                 .setDescription(
-                        Lang.GUI_TOWN_PROPERTIES_ICON_DESC1.get(playerData.getLang()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                        Lang.GUI_TOWN_PROPERTIES_ICON_DESC1.get(ITanPlayer.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer)
                 )
                 .setAction(event -> new TownPropertiesMenu(player, townData))
                 .asGuiItem(player);
@@ -83,10 +83,10 @@ public class TownMenu extends TerritoryMenu {
 
     private GuiItem getLandmarksButton() {
         return IconManager.getInstance().get(IconKey.TOWN_LANDMARKS_ICON)
-                .setName(Lang.ADMIN_GUI_LANDMARK_ICON.get(playerData.getLang()))
+                .setName(Lang.ADMIN_GUI_LANDMARK_ICON.get(ITanPlayer.getLang()))
                 .setDescription(
-                        Lang.ADMIN_GUI_LANDMARK_DESC1.get(playerData.getLang()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                        Lang.ADMIN_GUI_LANDMARK_DESC1.get(ITanPlayer.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer)
                 )
                 .setAction(event -> PlayerGUI.openOwnedLandmark(player, townData, 0))
                 .asGuiItem(player);

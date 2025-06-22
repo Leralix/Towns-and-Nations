@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.ProgressBar;
@@ -58,18 +58,18 @@ public class CurrentAttack {
         this.strongholdListener = new StrongholdListener(this, defenderStronghold);
 
         for(TerritoryData territoryData : this.attackers) {
-            for(PlayerData playerData : territoryData.getPlayerDataList()) {
-                playerData.addWar(this);
-                Player player = playerData.getPlayer();
+            for(ITanPlayer ITanPlayer : territoryData.getITanPlayerList()) {
+                ITanPlayer.addWar(this);
+                Player player = ITanPlayer.getPlayer();
                 if(player != null){
                     bossBar.addPlayer(player);
                 }
             }
         }
         for(TerritoryData territoryData : this.defenders) {
-            for(PlayerData playerData : territoryData.getPlayerDataList()) {
-                playerData.addWar(this);
-                Player player = playerData.getPlayer();
+            for(ITanPlayer ITanPlayer : territoryData.getITanPlayerList()) {
+                ITanPlayer.addWar(this);
+                Player player = ITanPlayer.getPlayer();
                 if(player != null){
                     bossBar.addPlayer(player);
                 }
@@ -102,15 +102,15 @@ public class CurrentAttack {
     }
 
 
-    public void playerKilled(PlayerData playerData, Player killer) {
-        AttackSide attackSide = getSideOfPlayer(playerData);
+    public void playerKilled(ITanPlayer ITanPlayer, Player killer) {
+        AttackSide attackSide = getSideOfPlayer(ITanPlayer);
 
         if(attackSide == AttackSide.ATTACKER){
             if(killer != null){
                 attackingLoss();
             }
             else {
-                Location playerLocation = playerData.getPlayer().getLocation();
+                Location playerLocation = ITanPlayer.getPlayer().getLocation();
                 ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(playerLocation.getChunk());
                 if (defenders.contains(claimedChunk.getOwner())) {
                     attackingLoss();
@@ -185,16 +185,16 @@ public class CurrentAttack {
     private void attackerWin() {
 
         for(TerritoryData territoryData : this.attackers) {
-            for(PlayerData playerData : territoryData.getPlayerDataList()) {
-                Player player = playerData.getPlayer();
+            for(ITanPlayer ITanPlayer : territoryData.getITanPlayerList()) {
+                Player player = ITanPlayer.getPlayer();
                 if(player != null){
                     warGoal.sendAttackSuccessToAttackers(player);
                 }
             }
         }
         for(TerritoryData territoryData : this.defenders) {
-            for(PlayerData playerData : territoryData.getPlayerDataList()) {
-                Player player = playerData.getPlayer();
+            for(ITanPlayer ITanPlayer : territoryData.getITanPlayerList()) {
+                Player player = ITanPlayer.getPlayer();
                 if(player != null){
                     warGoal.sendAttackSuccessToDefenders(player);
                 }
@@ -208,16 +208,16 @@ public class CurrentAttack {
     private void defenderWin(){
 
         for(TerritoryData territoryData : this.attackers) {
-            for(PlayerData playerData : territoryData.getPlayerDataList()) {
-                Player player = playerData.getPlayer();
+            for(ITanPlayer ITanPlayer : territoryData.getITanPlayerList()) {
+                Player player = ITanPlayer.getPlayer();
                 if(player != null){
                     warGoal.sendAttackFailedToDefender(player);
                 }
             }
         }
         for(TerritoryData territoryData : this.defenders) {
-            for(PlayerData playerData : territoryData.getPlayerDataList()) {
-                Player player = playerData.getPlayer();
+            for(ITanPlayer ITanPlayer : territoryData.getITanPlayerList()) {
+                Player player = ITanPlayer.getPlayer();
                 if(player != null) {
                     warGoal.sendAttackFailedToAttacker(player);
                 }
@@ -228,8 +228,8 @@ public class CurrentAttack {
         endWar();
     }
 
-    public void addPlayer(PlayerData playerData) {
-        Player player = playerData.getPlayer();
+    public void addPlayer(ITanPlayer ITanPlayer) {
+        Player player = ITanPlayer.getPlayer();
         if(player != null && remainingTime > 0 && score > 0 && score < MAX_SCORE){
             bossBar.addPlayer(player);
         }
@@ -262,13 +262,13 @@ public class CurrentAttack {
             @Override
             public void run() {
                 for(TerritoryData territoryData : attackers) {
-                    for(PlayerData playerData : territoryData.getPlayerDataList()) {
-                        playerData.removeWar(CurrentAttack.this);
+                    for(ITanPlayer ITanPlayer : territoryData.getITanPlayerList()) {
+                        ITanPlayer.removeWar(CurrentAttack.this);
                     }
                 }
                 for(TerritoryData territoryData : defenders) {
-                    for(PlayerData playerData : territoryData.getPlayerDataList()) {
-                        playerData.removeWar(CurrentAttack.this);
+                    for(ITanPlayer ITanPlayer : territoryData.getITanPlayerList()) {
+                        ITanPlayer.removeWar(CurrentAttack.this);
                     }
                 }
 
@@ -290,14 +290,14 @@ public class CurrentAttack {
         }.runTaskLater(TownsAndNations.getPlugin(),20L * 20); //Still showing the boss bar for 20s
     }
 
-    public boolean containsPlayer(PlayerData playerData) {
+    public boolean containsPlayer(ITanPlayer ITanPlayer) {
         for(TerritoryData territoryData : attackers) {
-            if(territoryData.isPlayerIn(playerData)){
+            if(territoryData.isPlayerIn(ITanPlayer)){
                 return true;
             }
         }
         for(TerritoryData territoryData : defenders) {
-            if(territoryData.isPlayerIn(playerData)){
+            if(territoryData.isPlayerIn(ITanPlayer)){
                 return true;
             }
         }
@@ -316,14 +316,14 @@ public class CurrentAttack {
         setBossBarTitle(controlSide + ChatColor.WHITE + " | " + progressBar);
     }
 
-    public AttackSide getSideOfPlayer(PlayerData playerData) {
+    public AttackSide getSideOfPlayer(ITanPlayer ITanPlayer) {
         for (TerritoryData territoryData : attackers) {
-            if (territoryData.isPlayerIn(playerData)) {
+            if (territoryData.isPlayerIn(ITanPlayer)) {
                 return AttackSide.ATTACKER;
             }
         }
         for (TerritoryData territoryData : defenders) {
-            if (territoryData.isPlayerIn(playerData)){
+            if (territoryData.isPlayerIn(ITanPlayer)){
                 return AttackSide.DEFENDER;
             }
         }
@@ -343,16 +343,16 @@ public class CurrentAttack {
 
     public void sendChatMessage(String message) {
         for(TerritoryData territoryData : attackers) {
-            for(PlayerData playerData : territoryData.getPlayerDataList()) {
-                Player player = playerData.getPlayer();
+            for(ITanPlayer ITanPlayer : territoryData.getITanPlayerList()) {
+                Player player = ITanPlayer.getPlayer();
                 if(player != null){
                     player.spigot().sendMessage(ChatMessageType.CHAT, new TextComponent(message));
                 }
             }
         }
         for (TerritoryData territoryData : defenders) {
-            for (PlayerData playerData : territoryData.getPlayerDataList()) {
-                Player player = playerData.getPlayer();
+            for (ITanPlayer ITanPlayer : territoryData.getITanPlayerList()) {
+                Player player = ITanPlayer.getPlayer();
                 if (player != null) {
                     player.spigot().sendMessage(ChatMessageType.CHAT, new TextComponent(message));
                 }

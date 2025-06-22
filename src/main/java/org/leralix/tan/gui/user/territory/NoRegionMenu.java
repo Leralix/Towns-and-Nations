@@ -42,28 +42,28 @@ public class NoRegionMenu extends BasicGui {
         int regionCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
 
         return iconManager.get(IconKey.CREATE_REGION_ICON)
-                .setName(Lang.GUI_REGION_CREATE.get(playerData))
+                .setName(Lang.GUI_REGION_CREATE.get(ITanPlayer))
                 .setDescription(
-                        Lang.GUI_REGION_CREATE_DESC1.get(playerData, regionCost),
-                        Lang.GUI_REGION_CREATE_DESC2.get(playerData)
+                        Lang.GUI_REGION_CREATE_DESC1.get(ITanPlayer, regionCost),
+                        Lang.GUI_REGION_CREATE_DESC2.get(ITanPlayer)
                 )
                 .setAction(action -> {
                     if(!player.hasPermission("tan.base.region.create")){
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(playerData));
+                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(ITanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
 
-                    if(!playerData.hasTown()){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get(playerData));
+                    if(!ITanPlayer.hasTown()){
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get(ITanPlayer));
                         return;
                     }
                     double townMoney = TownDataStorage.getInstance().get(player).getBalance();
                     if (townMoney < regionCost) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(playerData, regionCost - townMoney));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(ITanPlayer, regionCost - townMoney));
                     }
                     else {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(playerData));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(ITanPlayer));
                         player.closeInventory();
                         int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
                         PlayerChatListenerStorage.register(player, new CreateRegion(cost));
@@ -74,10 +74,10 @@ public class NoRegionMenu extends BasicGui {
 
     private GuiItem getBrowseRegionsButton() {
         return iconManager.get(IconKey.BROWSE_REGION_ICON)
-                .setName(Lang.GUI_REGION_BROWSE.get(playerData))
+                .setName(Lang.GUI_REGION_BROWSE.get(ITanPlayer))
                 .setDescription(
-                        Lang.GUI_REGION_BROWSE_DESC1.get(playerData, RegionDataStorage.getInstance().getNumberOfRegion()),
-                        Lang.GUI_REGION_BROWSE_DESC2.get(playerData)
+                        Lang.GUI_REGION_BROWSE_DESC1.get(ITanPlayer, RegionDataStorage.getInstance().getNumberOfRegion()),
+                        Lang.GUI_REGION_BROWSE_DESC2.get(ITanPlayer)
                 )
                 .setAction(action -> {
                     new BrowseTerritoryMenu(player, null, BrowseScope.REGIONS, p -> open());

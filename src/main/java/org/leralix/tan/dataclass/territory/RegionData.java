@@ -13,7 +13,7 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.RegionClaimedChunk;
@@ -25,9 +25,9 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.newsletter.news.RegionDeletedNews;
 import org.leralix.tan.newsletter.news.TerritoryIndependentNews;
+import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -58,7 +58,7 @@ public class RegionData extends TerritoryData {
     private Double balance;
 
 
-    public RegionData(String id, String name, PlayerData owner) {
+    public RegionData(String id, String name, ITanPlayer owner) {
         super(id, name, owner);
         TownData ownerTown = owner.getTown();
 
@@ -95,7 +95,7 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public PlayerData getLeaderData() {
+    public ITanPlayer getLeaderData() {
         return PlayerDataStorage.getInstance().get(getLeaderID());
     }
 
@@ -120,12 +120,12 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public Collection<PlayerData> getPlayerDataList() {
-        ArrayList<PlayerData> playerDataList = new ArrayList<>();
+    public Collection<ITanPlayer> getITanPlayerList() {
+        ArrayList<ITanPlayer> ITanPlayerList = new ArrayList<>();
         for (String playerID : getPlayerIDList()) {
-            playerDataList.add(PlayerDataStorage.getInstance().get(playerID));
+            ITanPlayerList.add(PlayerDataStorage.getInstance().get(playerID));
         }
-        return playerDataList;
+        return ITanPlayerList;
     }
 
 
@@ -183,7 +183,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     public Optional<ClaimedChunk2> claimChunkInternal(Player player, Chunk chunk) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
 
         if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
@@ -191,7 +191,7 @@ public class RegionData extends TerritoryData {
         }
 
 
-        if (!doesPlayerHavePermission(playerData, RolePermission.CLAIM_CHUNK)) {
+        if (!doesPlayerHavePermission(ITanPlayer, RolePermission.CLAIM_CHUNK)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return Optional.empty();
         }
@@ -313,9 +313,9 @@ public class RegionData extends TerritoryData {
         return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("RegionChunkUpkeepCost", 0);
     }
 
-    public boolean isPlayerInRegion(PlayerData playerData) {
+    public boolean isPlayerInRegion(ITanPlayer ITanPlayer) {
         for (TerritoryData town : getSubjects()) {
-            if (town.isPlayerIn(playerData))
+            if (town.isPlayerIn(ITanPlayer))
                 return true;
         }
         return false;
@@ -413,19 +413,19 @@ public class RegionData extends TerritoryData {
 
 
     @Override
-    public RankData getRank(PlayerData playerData) {
-        if(!playerData.hasRegion()){
+    public RankData getRank(ITanPlayer ITanPlayer) {
+        if(!ITanPlayer.hasRegion()){
             return null;
         }
-        return getRank(playerData.getRegionRankID());
+        return getRank(ITanPlayer.getRegionRankID());
     }
 
     @Override
-    public List<GuiItem> getOrderedMemberList(PlayerData playerData) {
+    public List<GuiItem> getOrderedMemberList(ITanPlayer ITanPlayer) {
         List<GuiItem> res = new ArrayList<>();
         for (String playerUUID : getOrderedPlayerIDList()) {
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
-            PlayerData playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
+            ITanPlayer playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
                     Lang.GUI_TOWN_MEMBER_DESC1.get(playerIterateData.getRegionRank().getColoredName()));
 
@@ -436,7 +436,7 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    protected void specificSetPlayerRank(PlayerData playerStat, int rankID) {
+    protected void specificSetPlayerRank(ITanPlayer playerStat, int rankID) {
         playerStat.setRegionRankID(rankID);
     }
 

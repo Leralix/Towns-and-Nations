@@ -7,19 +7,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
-import org.leralix.tan.gui.user.territory.TreasuryMenu;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.user.territory.TreasuryMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.RateType;
 import org.leralix.tan.listeners.chat.events.SetSpecificRate;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.TanChatUtils;
 
 
 public class PropertySellTax extends ProfitLine {
@@ -42,7 +42,7 @@ public class PropertySellTax extends ProfitLine {
     @Override
     public void addItems(Gui gui, Player player) {
 
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
 
         ItemStack lowerTax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_LOWER_TAX.get(), "https://textures.minecraft.net/texture/a9dbed522e8de1a681dddd37854ee4267efc48b59917f9a9acb420d6fdb9",
                 Lang.GUI_DECREASE_1PERCENT_DESC.get(),
@@ -58,7 +58,7 @@ public class PropertySellTax extends ProfitLine {
 
         GuiItem lowerTaxButton = ItemBuilder.from(lowerTax).asGuiItem(event -> {
             event.setCancelled(true);
-            if (!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)) {
+            if (!territoryData.doesPlayerHavePermission(ITanPlayer, RolePermission.MANAGE_TAXES)) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }
@@ -89,7 +89,7 @@ public class PropertySellTax extends ProfitLine {
         GuiItem increaseTaxButton = ItemBuilder.from(increaseTax).asGuiItem(event -> {
             event.setCancelled(true);
 
-            if (!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)) {
+            if (!territoryData.doesPlayerHavePermission(ITanPlayer, RolePermission.MANAGE_TAXES)) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
                 return;
             }

@@ -33,17 +33,17 @@ import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.newsletter.news.DiplomacyAcceptedNews;
 import org.leralix.tan.newsletter.news.DiplomacyProposalNews;
-import org.leralix.tan.newsletter.news.TerritoryVassalProposalNews;
 import org.leralix.tan.newsletter.news.TerritoryVassalAcceptedNews;
+import org.leralix.tan.newsletter.news.TerritoryVassalProposalNews;
+import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
@@ -77,7 +77,7 @@ public abstract class TerritoryData {
     private ClaimedChunkSettings chunkSettings;
     private StrongholdData stronghold;
 
-    protected TerritoryData(String id, String name, PlayerData owner){
+    protected TerritoryData(String id, String name, ITanPlayer owner){
         this.id = id;
         this.name = name;
         this.description = Lang.DEFAULT_DESCRIPTION.get();
@@ -145,10 +145,10 @@ public abstract class TerritoryData {
         return coloredName;
     }
     public abstract String getLeaderID();
-    public abstract PlayerData getLeaderData();
+    public abstract ITanPlayer getLeaderData();
     public abstract void setLeaderID(String leaderID);
-    public boolean isLeader(PlayerData playerData){
-        return isLeader(playerData.getID());
+    public boolean isLeader(ITanPlayer ITanPlayer){
+        return isLeader(ITanPlayer.getID());
     }
     public abstract boolean isLeader(String playerID);
     public boolean isLeader(Player player){
@@ -180,8 +180,8 @@ public abstract class TerritoryData {
 
     public abstract Collection<String> getPlayerIDList();
 
-    public boolean isPlayerIn(PlayerData playerData){
-        return isPlayerIn(playerData.getID());
+    public boolean isPlayerIn(ITanPlayer ITanPlayer){
+        return isPlayerIn(ITanPlayer.getID());
     }
 
     public boolean isPlayerIn(Player player){
@@ -194,16 +194,16 @@ public abstract class TerritoryData {
 
     public Collection<String> getOrderedPlayerIDList(){
         List<String> sortedList = new ArrayList<>();
-        List<PlayerData> playerDataSorted = getPlayerDataList().stream()
-                .sorted(Comparator.comparingInt(playerData -> -this.getRank(playerData.getRankID(this)).getLevel()))
+        List<ITanPlayer> ITanPlayerSorted = getITanPlayerList().stream()
+                .sorted(Comparator.comparingInt(ITanPlayer -> -this.getRank(ITanPlayer.getRankID(this)).getLevel()))
                 .toList();
 
-        for(PlayerData playerData : playerDataSorted){
-            sortedList.add(playerData.getID());
+        for(ITanPlayer ITanPlayer : ITanPlayerSorted){
+            sortedList.add(ITanPlayer.getID());
         }
         return sortedList;
     }
-    public abstract Collection<PlayerData> getPlayerDataList();
+    public abstract Collection<ITanPlayer> getITanPlayerList();
 
     public ClaimedChunkSettings getChunkSettings(){
         if(chunkSettings == null)
@@ -486,8 +486,8 @@ public abstract class TerritoryData {
 
 
     public void castActionToAllPlayers(Consumer<Player> action){
-        for(PlayerData playerData : getPlayerDataList()){
-            Player player = playerData.getPlayer();
+        for(ITanPlayer ITanPlayer : getITanPlayerList()){
+            Player player = ITanPlayer.getPlayer();
             if(player != null)
                 action.accept(player);
         }
@@ -593,13 +593,13 @@ public abstract class TerritoryData {
 
     public List<GuiItem> getAllSubjugationProposals(Player player, int page){
         ArrayList<GuiItem> proposals = new ArrayList<>();
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
 
         for(String proposalID : getOverlordsProposals()) {
             TerritoryData proposalOverlord = TerritoryUtil.getTerritory(proposalID);
             if (proposalOverlord == null)
                 continue;
-            ItemStack territoryItem = proposalOverlord.getIconWithInformations(playerData.getLang());
+            ItemStack territoryItem = proposalOverlord.getIconWithInformations(ITanPlayer.getLang());
             HeadUtils.addLore(territoryItem, Lang.LEFT_CLICK_TO_ACCEPT.get(), Lang.RIGHT_CLICK_TO_REFUSE.get());
             GuiItem acceptInvitation = ItemBuilder.from(territoryItem).asGuiItem(event -> {
                 event.setCancelled(true);
@@ -652,7 +652,7 @@ public abstract class TerritoryData {
     public RankData getRank(int rankID){
         return getRanks().get(rankID);
     }
-    public abstract RankData getRank(PlayerData playerData);
+    public abstract RankData getRank(ITanPlayer ITanPlayer);
 
     public RankData getRank(Player player){
         return getRank(PlayerDataStorage.getInstance().get(player));
@@ -703,31 +703,31 @@ public abstract class TerritoryData {
         this.defaultRankID = rankID;
     }
 
-    public abstract List<GuiItem> getOrderedMemberList(PlayerData playerData);
+    public abstract List<GuiItem> getOrderedMemberList(ITanPlayer ITanPlayer);
 
 
     public boolean doesPlayerHavePermission(Player player, RolePermission townRolePermission) {
         return doesPlayerHavePermission(PlayerDataStorage.getInstance().get(player), townRolePermission);
     }
-    public boolean doesPlayerHavePermission(PlayerData playerData, RolePermission townRolePermission) {
+    public boolean doesPlayerHavePermission(ITanPlayer ITanPlayer, RolePermission townRolePermission) {
 
-        if(!this.isPlayerIn(playerData)){
+        if(!this.isPlayerIn(ITanPlayer)){
             return false;
         }
 
-        if(isLeader(playerData))
+        if(isLeader(ITanPlayer))
             return true;
 
-        return getRank(playerData).hasPermission(townRolePermission);
+        return getRank(ITanPlayer).hasPermission(townRolePermission);
     }
 
-    public void setPlayerRank(PlayerData playerStat, RankData rankData) {
+    public void setPlayerRank(ITanPlayer playerStat, RankData rankData) {
         getRank(playerStat).removePlayer(playerStat);
         rankData.addPlayer(playerStat);
         specificSetPlayerRank(playerStat, rankData.getID());
     }
 
-    protected abstract void specificSetPlayerRank(PlayerData playerStat, int rankID);
+    protected abstract void specificSetPlayerRank(ITanPlayer playerStat, int rankID);
 
     public Budget getBudget() {
         Budget budget = new Budget();
@@ -779,8 +779,8 @@ public abstract class TerritoryData {
             }
             removeFromBalance(costOfSalary);
             for(String playerId : playerIdList){
-                PlayerData playerData = PlayerDataStorage.getInstance().get(playerId);
-                EconomyUtil.addFromBalance(playerData, rankSalary);
+                ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(playerId);
+                EconomyUtil.addFromBalance(ITanPlayer, rankSalary);
                 TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SalaryPaymentHistory(this, String.valueOf(rank.getID()), costOfSalary));
             }
         }
@@ -880,14 +880,14 @@ public abstract class TerritoryData {
         return getRank(getDefaultRankID());
     }
 
-    protected void registerPlayer(PlayerData playerData) {
-        getDefaultRank().addPlayer(playerData);
-        playerData.setRankID(this, getDefaultRankID());
+    protected void registerPlayer(ITanPlayer ITanPlayer) {
+        getDefaultRank().addPlayer(ITanPlayer);
+        ITanPlayer.setRankID(this, getDefaultRankID());
     }
 
-    protected void unregisterPlayer(PlayerData playerData) {
-        getRank(playerData).removePlayer(playerData);
-        playerData.setRankID(this, null);
+    protected void unregisterPlayer(ITanPlayer ITanPlayer) {
+        getRank(ITanPlayer).removePlayer(ITanPlayer);
+        ITanPlayer.setRankID(this, null);
     }
 
 

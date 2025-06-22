@@ -8,15 +8,15 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.WildernessChunk;
+import org.leralix.tan.enums.ChunkType;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.PlayerAutoClaimStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.enums.ChunkType;
-import org.leralix.tan.lang.Lang;
 
 public class PlayerEnterChunkListener implements Listener {
 
@@ -75,7 +75,7 @@ public class PlayerEnterChunkListener implements Listener {
 
     private void autoClaimChunk(final @NotNull PlayerMoveEvent e, final @NotNull Chunk nextChunk, final @NotNull Player player) {
         ChunkType chunkType = PlayerAutoClaimStorage.getChunkType(e.getPlayer());
-        PlayerData playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
 
         if(chunkType == ChunkType.TOWN) {
             if (!playerStat.hasTown()) {

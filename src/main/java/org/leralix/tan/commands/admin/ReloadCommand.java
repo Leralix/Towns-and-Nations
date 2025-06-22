@@ -7,6 +7,7 @@ import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.lang.DynamicLang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.PvpSettings;
@@ -15,7 +16,6 @@ import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.NumberUtil;
 import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.lang.Lang;
 
 import java.io.File;
 import java.util.Collections;
@@ -55,7 +55,7 @@ public class ReloadCommand extends SubCommand {
 
             File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
             Lang.loadTranslations(langFolder, lang);
-            DynamicLang.loadTranslations(lang);
+            DynamicLang.loadTranslations(langFolder, lang);
 
             Constants.init();
             UpgradeStorage.init();

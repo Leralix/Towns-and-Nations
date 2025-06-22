@@ -3,7 +3,7 @@ package org.leralix.tan.commands.admin;
 import org.bukkit.command.CommandSender;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.factory.AbstractionFactory;
 import org.mockito.Mockito;
 
@@ -23,7 +23,7 @@ public class SetMoneyTest {
 
     @Test
     void standardUse() {
-        PlayerData fakePlayer = AbstractionFactory.getRandomPlayerData();
+        ITanPlayer fakePlayer = AbstractionFactory.getRandomITanPlayer();
 
         SetMoney.setMoney(sender, new String[]{"setmoney", "FakePlayer", "10"}, fakePlayer);
 
@@ -32,7 +32,7 @@ public class SetMoneyTest {
 
     @Test
     void negativeValue() {
-        PlayerData fakePlayer = AbstractionFactory.getRandomPlayerData();
+        ITanPlayer fakePlayer = AbstractionFactory.getRandomITanPlayer();
 
         SetMoney.setMoney(sender, new String[]{"addmoney", "FakePlayer", "-500"}, fakePlayer);
 
@@ -42,7 +42,7 @@ public class SetMoneyTest {
 
     @Test
     void wrongValue() {
-        PlayerData fakePlayer = AbstractionFactory.getRandomPlayerData();
+        ITanPlayer fakePlayer = AbstractionFactory.getRandomITanPlayer();
 
         SetMoney.setMoney(sender, new String[]{"addmoney", "FakePlayer", "50€"}, fakePlayer);
 

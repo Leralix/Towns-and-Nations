@@ -7,14 +7,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.TeamUtils;
 import org.leralix.tan.utils.prefixUtil;
-import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
 
 
 public class PlayerJoinListener implements Listener {
@@ -23,11 +23,11 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
 
 
-        if(playerData.hasTown()){
-            playerData.updateCurrentAttack();
+        if(ITanPlayer.hasTown()){
+            ITanPlayer.updateCurrentAttack();
             if(TownsAndNations.getPlugin().townTagIsEnabled())
                 prefixUtil.addPrefix(player);
         }

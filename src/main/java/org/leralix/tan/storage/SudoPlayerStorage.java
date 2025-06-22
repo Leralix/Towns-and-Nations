@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.FileUtil;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.lang.Lang;
 
 import java.util.ArrayList;
@@ -29,10 +29,10 @@ public class SudoPlayerStorage {
 
     /**
      *  Add a player to the sudo list.
-     * @param playerData    Player to add to the sudo list.
+     * @param ITanPlayer    Player to add to the sudo list.
      */
-    public static void addSudoPlayer(PlayerData playerData){
-        addSudoPlayer(playerData.getID());
+    public static void addSudoPlayer(ITanPlayer ITanPlayer){
+        addSudoPlayer(ITanPlayer.getID());
     }
 
     /**
@@ -47,7 +47,7 @@ public class SudoPlayerStorage {
      * Remove a player from the sudo list.
      * @param player    Player to remove from the sudo list.
      */
-    public static void removeSudoPlayer(PlayerData player){
+    public static void removeSudoPlayer(ITanPlayer player){
         removeSudoPlayer(player.getID());
     }
 
@@ -72,7 +72,7 @@ public class SudoPlayerStorage {
      * @param player    Player to check.
      * @return          True if the player is in the sudo list, false otherwise.
      */
-    public static boolean isSudoPlayer(PlayerData player){
+    public static boolean isSudoPlayer(ITanPlayer player){
         return isSudoPlayer(player.getID());
     }
 

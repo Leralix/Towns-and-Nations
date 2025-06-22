@@ -17,39 +17,39 @@ class DonateToTerritoryTest {
 
     @Test
     void nominalCase() {
-        var playerData = AbstractionFactory.getRandomPlayerData();
-        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", playerData);
+        var ITanPlayer = AbstractionFactory.getRandomITanPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", ITanPlayer);
         int amount = 1;
-        playerData.addToBalance(amount);
+        ITanPlayer.addToBalance(amount);
 
         DonateToTerritory donateToTerritory = new DonateToTerritory(townData);
-        donateToTerritory.execute(playerData.getPlayer(), String.valueOf(amount));
+        donateToTerritory.execute(ITanPlayer.getPlayer(), String.valueOf(amount));
 
         assertEquals(amount, townData.getBalance());
     }
 
     @Test
     void notEnoughMoney() {
-        var playerData = AbstractionFactory.getRandomPlayerData();
-        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", playerData);
+        var ITanPlayer = AbstractionFactory.getRandomITanPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", ITanPlayer);
 
-        int amount = (int) (playerData.getBalance() + 1);
+        int amount = (int) (ITanPlayer.getBalance() + 1);
 
         DonateToTerritory donateToTerritory = new DonateToTerritory(townData);
-        donateToTerritory.execute(playerData.getPlayer(), String.valueOf(amount));
+        donateToTerritory.execute(ITanPlayer.getPlayer(), String.valueOf(amount));
 
         assertEquals(0, townData.getBalance());
     }
 
     @Test
     void notANumber() {
-        var playerData = AbstractionFactory.getRandomPlayerData();
-        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", playerData);
+        var ITanPlayer = AbstractionFactory.getRandomITanPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", ITanPlayer);
 
         String amount = "notANumber";
 
         DonateToTerritory donateToTerritory = new DonateToTerritory(townData);
-        donateToTerritory.execute(playerData.getPlayer(), amount);
+        donateToTerritory.execute(ITanPlayer.getPlayer(), amount);
 
         assertEquals(0, townData.getBalance());
     }

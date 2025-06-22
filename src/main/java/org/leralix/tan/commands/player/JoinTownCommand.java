@@ -4,13 +4,13 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.lang.Lang;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,14 +69,14 @@ public class JoinTownCommand extends PlayerSubCommand {
             }
 
             TownData townData = TownDataStorage.getInstance().get(townID);
-            PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+            ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
 
             if(townData.isFull()){
                 player.sendMessage(TanChatUtils.getTANString() + Lang.INVITATION_TOWN_FULL.get());
                 return;
             }
 
-            townData.addPlayer(playerData);
+            townData.addPlayer(ITanPlayer);
         }
         else{
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());

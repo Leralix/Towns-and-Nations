@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
@@ -14,8 +13,6 @@ import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.TanTerritory;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 public class TerritoryDataWrapper implements TanTerritory {
@@ -60,7 +57,7 @@ public class TerritoryDataWrapper implements TanTerritory {
 
     @Override
     public TanPlayer getOwner() {
-        return PlayerDataWrapper.of(territoryData.getLeaderData());
+        return TanPlayerWrapper.of(territoryData.getLeaderData());
     }
 
     @Override
@@ -95,8 +92,8 @@ public class TerritoryDataWrapper implements TanTerritory {
 
     @Override
     public Collection<TanPlayer> getMembers() {
-        return territoryData.getPlayerDataList().stream()
-                .map(PlayerDataWrapper::of)
+        return territoryData.getITanPlayerList().stream()
+                .map(TanPlayerWrapper::of)
                 .toList();
     }
 

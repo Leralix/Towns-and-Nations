@@ -257,7 +257,6 @@ language:
   LEFT_CLICK_TO_ACCEPT: "§fНажмите ЛКМ, чтобы принять"
   RIGHT_CLICK_TO_REFUSE: "§fНажмите ПКМ, чтобы отказаться"
   CANNOT_BE_MODIFIED: "§cЭто не может быть изменено"
-  #Main menu
   GUI_KINGDOM_ICON: "§aКоролевство"
   GUI_KINGDOM_ICON_DESC1: "§fВ разработке"
   GUI_REGION_ICON: "§aРегион"
@@ -337,8 +336,6 @@ language:
   #Attack GUI
   GUI_ATTACK_ADD_TIME: "§aДобавить время"
   GUI_ATTACK_REMOVE_TIME: "§aУбрать время"
-  GUI_LEFT_CLICK_FOR_1_MINUTE: "§fНажмите ЛКМ, чтобы добавить 1 минуту"
-  GUI_SHIFT_CLICK_FOR_1_HOUR: "§fНажмите Shift и щёлкните, чтобы добавить 1 час"
   GUI_ATTACK_SET_TO_START_IN: "§aАтака начнётся через §6{0}"
   GUI_CONFIRM_ATTACK: "§aПодтвердить атаку"
   GUI_CONFIRM_ATTACK_DESC1: "§fПодтвердить атаку на §6{0}"
@@ -513,7 +510,6 @@ language:
   BROADCAST_RELATION_IMPROVE: "§fСвязи между {0}§f и {1}§f были улучшены до: {2}"
   BROADCAST_RELATION_WORSEN: "§fСвязи между {0}§f и {1}§f были ухудшены до: {2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cПравый клик, чтобы начать атаку"
-  GUI_TOWN_ATTACK_TOWN_EXECUTED: "§cВы начали атаку на {0}"
   GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} начали атаку на {1}!"
   GUI_TOWN_ATTACK_FINISHED: "§cАтака на {0} завершена!"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aУправление доступом к дверям"
@@ -800,7 +796,6 @@ language:
   ATTACK_ICON_DESC_3: "§fКоличество атакующих: §9{0}"
   ATTACK_ICON_DESC_4: "§fКоличество защитников: §9{0}"
   ATTACK_ICON_DESC_5: "§fЦель войны: §a{0}"
-  ATTACK_ICON_DESC_6: "§fВойна начнётся через: §6{0}"
   ATTACK_ICON_DESC_7: "§fВойна будет длиться: §6{0}"
   ATTACK_ICON_DESC_8: "§fТерриториальное положение: §a{0}"
   ATTACK_ICON_DESC_ADMIN_APPROVED: "§aЭта атака была подтверждена администратором"
@@ -916,6 +911,7 @@ language:
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§fНажмите ЛКМ, чтобы принять предложение"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cВы не можете захватить этот чанк"
+
 
 
 

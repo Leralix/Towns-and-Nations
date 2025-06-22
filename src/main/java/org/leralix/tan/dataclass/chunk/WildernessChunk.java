@@ -10,7 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
@@ -59,7 +59,7 @@ public class WildernessChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public TextComponent getMapIcon(PlayerData playerData) {
+    public TextComponent getMapIcon(ITanPlayer ITanPlayer) {
 
         if (ClaimBlacklistStorage.cannotBeClaimed(this)) {
             TextComponent textComponent = new TextComponent("✖");

@@ -7,16 +7,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.TerritoryUtil;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.newsletter.NewsletterType;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.TerritoryUtil;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -134,7 +134,7 @@ public class DiplomacyProposalNews extends Newsletter {
         TerritoryData territoryData = TerritoryUtil.getTerritory(receivingTerritoryID);
         if(territoryData == null)
             return false;
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        return territoryData.isPlayerIn(playerData);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        return territoryData.isPlayerIn(ITanPlayer);
     }
 }

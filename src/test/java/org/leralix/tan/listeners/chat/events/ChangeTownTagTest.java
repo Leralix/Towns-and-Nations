@@ -3,7 +3,7 @@ package org.leralix.tan.listeners.chat.events;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.factory.AbstractionFactory;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -19,9 +19,9 @@ class ChangeTownTagTest {
 
     @Test
     void nominalCase() {
-        PlayerData playerData = AbstractionFactory.getRandomPlayerData();
-        Player player = playerData.getPlayer();
-        TownData townData = TownDataStorage.getInstance().newTown("TestTown", playerData);
+        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
+        Player player = ITanPlayer.getPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("TestTown", ITanPlayer);
 
         String newTag = "TAG";
 
@@ -33,9 +33,9 @@ class ChangeTownTagTest {
 
     @Test
     void wrongSizeCase() {
-        PlayerData playerData = AbstractionFactory.getRandomPlayerData();
-        Player player = playerData.getPlayer();
-        TownData townData = TownDataStorage.getInstance().newTown("TestTown", playerData);
+        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
+        Player player = ITanPlayer.getPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("TestTown", ITanPlayer);
 
         String newTag = "goofy ahh tag";
 

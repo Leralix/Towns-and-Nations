@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -26,8 +26,8 @@ class ChangeTerritoryDescriptionTest {
     static void setUp() {
         AbstractionFactory.initializeConfigs();
         player = AbstractionFactory.getRandomPlayer();
-        PlayerData playerData = PlayerDataStorage.getInstance().register(player);
-        townData = TownDataStorage.getInstance().newTown("town 1", playerData);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().register(player);
+        townData = TownDataStorage.getInstance().newTown("town 1", ITanPlayer);
     }
 
     @Test

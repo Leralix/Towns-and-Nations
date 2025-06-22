@@ -13,24 +13,22 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.dataclass.wars.GriefAllowed;
 import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.permissions.ChunkPermissionType;
-
-import java.util.Optional;
 
 public class TownClaimedChunk extends ClaimedChunk2 {
     public TownClaimedChunk(Chunk chunk, String owner) {
@@ -51,13 +49,13 @@ public class TownClaimedChunk extends ClaimedChunk2 {
 
     @Override
     protected boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
 
         //Location is in a property and players owns or rent it
         TownData ownerTown = getTown();
         PropertyData property = ownerTown.getProperty(location);
         if (property != null) {
-            if (property.isPlayerAllowed(playerData)) {
+            if (property.isPlayerAllowed(ITanPlayer)) {
                 return true;
             } else {
                 player.sendMessage(TanChatUtils.getTANString() + property.getDenyMessage());
@@ -66,19 +64,19 @@ public class TownClaimedChunk extends ClaimedChunk2 {
         }
 
         //Chunk is claimed yet player have no town
-        if (!playerData.hasTown()) {
+        if (!ITanPlayer.hasTown()) {
             playerCantPerformAction(player);
             return false;
         }
 
         //Player is at war with the town
         for (CurrentAttack currentAttacks : ownerTown.getCurrentAttacks()) {
-            if (currentAttacks.containsPlayer(playerData))
+            if (currentAttacks.containsPlayer(ITanPlayer))
                 return true;
         }
 
         ChunkPermission chunkPermission = ownerTown.getPermission(permissionType);
-        if (chunkPermission.isAllowed(ownerTown, playerData))
+        if (chunkPermission.isAllowed(ownerTown, ITanPlayer))
             return true;
 
         playerCantPerformAction(player);
@@ -87,7 +85,7 @@ public class TownClaimedChunk extends ClaimedChunk2 {
 
 
     public void unclaimChunk(Player player) {
-        PlayerData playerStat = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player);
         TownData playerTown = playerStat.getTown();
 
         if (playerTown == null) {
@@ -151,7 +149,7 @@ public class TownClaimedChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public TextComponent getMapIcon(PlayerData playerData) {
+    public TextComponent getMapIcon(ITanPlayer ITanPlayer) {
 
         TextComponent textComponent = new TextComponent("⬛");
         textComponent.setColor(getTown().getChunkColor());

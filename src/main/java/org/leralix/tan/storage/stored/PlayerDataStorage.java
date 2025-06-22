@@ -7,20 +7,26 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.NoPlayerData;
 import org.leralix.tan.dataclass.PlayerData;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class PlayerDataStorage {
 
     private static final String ERROR_MESSAGE = "Error while creating player storage";
 
-    private static Map<String, PlayerData> playerStorage = new HashMap<>();
+    private static Map<String, ITanPlayer> playerStorage = new HashMap<>();
 
     private static PlayerDataStorage instance;
 
+    private static ITanPlayer NO_PLAYER;
 
     private PlayerDataStorage() {
         loadStats();
@@ -29,39 +35,40 @@ public class PlayerDataStorage {
     public static synchronized PlayerDataStorage getInstance() {
         if (instance == null) {
             instance = new PlayerDataStorage();
+            NO_PLAYER = new NoPlayerData();
         }
         return instance;
     }
 
 
-    public PlayerData register(Player p) {
-        PlayerData playerData = new PlayerData(p);
-        return register(playerData);
+    public ITanPlayer register(Player p) {
+        ITanPlayer ITanPlayer = new PlayerData(p);
+        return register(ITanPlayer);
     }
-    PlayerData register(PlayerData p) {
+    ITanPlayer register(ITanPlayer p) {
         playerStorage.put(p.getID(), p);
         saveStats();
         return p;
     }
 
-    public PlayerData get(OfflinePlayer player) {
+    public ITanPlayer get(OfflinePlayer player) {
         return get(player.getUniqueId().toString());
     }
 
-    public PlayerData get(Player player) {
+    public ITanPlayer get(Player player) {
         return get(player.getUniqueId().toString());
     }
 
-    public PlayerData get(UUID playerID) {
+    public ITanPlayer get(UUID playerID) {
         return get(playerID.toString());
     }
 
-    public PlayerData get(String id){
+    public ITanPlayer get(String id){
 
         if(id == null)
-            throw new RuntimeException("Error : Player ID is null when trying to retrieve player data");
+            return NO_PLAYER;
 
-        PlayerData res = playerStorage.get(id);
+        ITanPlayer res = playerStorage.get(id);
         if(res != null)
             return res;
 
@@ -73,7 +80,7 @@ public class PlayerDataStorage {
     }
 
 
-    public Collection<PlayerData> getAll() {
+    public Collection<ITanPlayer> getAll() {
         return playerStorage.values();
     }
 

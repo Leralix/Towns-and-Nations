@@ -2,13 +2,13 @@ package org.leralix.tan.economy;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.dataclass.PlayerData;
 
 
 /**
  * This class handles player money storage.
- * Depending on whether Vault is installed, money can be stored in the {@link PlayerData} class.
+ * Depending on whether Vault is installed, money can be stored in the {@link ITanPlayer} class.
  */
 public class EconomyUtil {
 
@@ -35,7 +35,7 @@ public class EconomyUtil {
      * @param player    The player whose balance is to be retrieved.
      * @return          The player's current balance.
      */
-    public static double getBalance(PlayerData player){
+    public static double getBalance(ITanPlayer player){
         return econ.getBalance(player);
     }
     /**
@@ -49,11 +49,11 @@ public class EconomyUtil {
 
     /**
      * Remove the given amount of money to a player balance
-     * @param playerData        The player whose balance is going to be affected
+     * @param ITanPlayer        The player whose balance is going to be affected
      * @param amount            The amount of money to be subtracted
      */
-    public static void removeFromBalance(PlayerData playerData, double amount){
-        econ.withdrawPlayer(playerData, amount);
+    public static void removeFromBalance(ITanPlayer ITanPlayer, double amount){
+        econ.withdrawPlayer(ITanPlayer, amount);
     }
     /**
      * Remove the given amount of money to a player balance
@@ -77,7 +77,7 @@ public class EconomyUtil {
      * @param player     The player whose balance is going to be affected
      * @param amount     The amount of money to be added
      */
-    public static void addFromBalance(PlayerData player, double amount){
+    public static void addFromBalance(ITanPlayer player, double amount){
         econ.depositPlayer(player, amount);
     }
     /**
@@ -102,7 +102,7 @@ public class EconomyUtil {
     }
 
 
-    public static void setBalance(PlayerData target, double amount) {
+    public static void setBalance(ITanPlayer target, double amount) {
         removeFromBalance(target, getBalance(target));
         addFromBalance(target, amount);
     }

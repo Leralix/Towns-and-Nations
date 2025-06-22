@@ -1,12 +1,15 @@
 package org.leralix.tan.dataclass;
 
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.enums.RolePermission;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.enums.RankEnum;
+import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
 
 public class RankData {
 
@@ -60,13 +63,13 @@ public class RankData {
     public void addPlayer(String playerUUID){
         this.players.add(playerUUID);
     }
-    public void addPlayer(PlayerData playerData){
-        addPlayer(playerData.getID());
+    public void addPlayer(ITanPlayer ITanPlayer){
+        addPlayer(ITanPlayer.getID());
     }
     public void removePlayer(String playerUUID){
         this.players.remove(playerUUID);
     }
-    public void removePlayer(PlayerData player){
+    public void removePlayer(ITanPlayer player){
         removePlayer(player.getID());
     }
 
@@ -74,8 +77,8 @@ public class RankData {
         return this.players;
     }
 
-    public List<PlayerData> getPlayers(){
-        List<PlayerData> playerList = new ArrayList<>();
+    public List<ITanPlayer> getPlayers(){
+        List<ITanPlayer> playerList = new ArrayList<>();
         for(String playerID : this.players){
             playerList.add(PlayerDataStorage.getInstance().get(playerID));
         }

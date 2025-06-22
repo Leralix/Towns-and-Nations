@@ -44,15 +44,15 @@ public class PlayerPropertiesMenu extends IteratorGUI {
     private GuiItem getNewPropertyButton() {
 
         List<String> description = new ArrayList<>();
-        if(playerData.hasTown()){
-            TownData townData = playerData.getTown();
+        if(ITanPlayer.hasTown()){
+            TownData townData = ITanPlayer.getTown();
             int nbProperties = townData.getProperties().size();
             int maxNbProperties = townData.getLevel().getPropertyCap();
             if(nbProperties >= maxNbProperties){
-                description.add(Lang.GUI_PROPERTY_CAP_FULL.get(playerData, nbProperties, maxNbProperties));
+                description.add(Lang.GUI_PROPERTY_CAP_FULL.get(ITanPlayer, nbProperties, maxNbProperties));
             }
             else {
-                description.add(Lang.GUI_PROPERTY_CAP.get(playerData, nbProperties, maxNbProperties));
+                description.add(Lang.GUI_PROPERTY_CAP.get(ITanPlayer, nbProperties, maxNbProperties));
             }
         }
         else {
@@ -61,28 +61,28 @@ public class PlayerPropertiesMenu extends IteratorGUI {
 
 
         return iconManager.get(IconKey.CREATE_NEW_PROPERTY_ICON)
-                .setName(Lang.GUI_PLAYER_NEW_PROPERTY.get(playerData))
+                .setName(Lang.GUI_PLAYER_NEW_PROPERTY.get(ITanPlayer))
                 .setDescription(description)
                 .setAction(event -> {
-                    TownData playerTown = playerData.getTown();
-                    if(!playerTown.doesPlayerHavePermission(playerData, RolePermission.CREATE_PROPERTY)){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(playerData));
+                    TownData playerTown = ITanPlayer.getTown();
+                    if(!playerTown.doesPlayerHavePermission(ITanPlayer, RolePermission.CREATE_PROPERTY)){
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(ITanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
 
                     if(playerTown.getPropertyDataMap().size() >= playerTown.getLevel().getPropertyCap()){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_PROPERTY_CAP_REACHED.get(playerData));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_PROPERTY_CAP_REACHED.get(ITanPlayer));
                         return;
                     }
 
-                    if(PlayerSelectPropertyPositionStorage.contains(playerData)){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_ALREADY_IN_SCOPE.get(playerData));
+                    if(PlayerSelectPropertyPositionStorage.contains(ITanPlayer)){
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_ALREADY_IN_SCOPE.get(ITanPlayer));
                         return;
                     }
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY.get(playerData));
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(playerData, Lang.CANCEL_WORD.get(playerData)));
-                    PlayerSelectPropertyPositionStorage.addPlayer(playerData);
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY.get(ITanPlayer));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(ITanPlayer, Lang.CANCEL_WORD.get(ITanPlayer)));
+                    PlayerSelectPropertyPositionStorage.addPlayer(ITanPlayer);
                     player.closeInventory();
                 })
                 .asGuiItem(player);
@@ -90,10 +90,10 @@ public class PlayerPropertiesMenu extends IteratorGUI {
 
     private List<GuiItem> getProperties() {
         List<GuiItem> guiItems = new ArrayList<>();
-        for (PropertyData propertyData : playerData.getProperties()){
+        for (PropertyData propertyData : ITanPlayer.getProperties()){
 
-            List<String> desc = propertyData.getBasicDescription(playerData.getLang());
-            desc.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData));
+            List<String> desc = propertyData.getBasicDescription(ITanPlayer.getLang());
+            desc.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer));
 
 
             guiItems.add(iconManager.get(propertyData.getIcon())

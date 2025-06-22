@@ -13,24 +13,30 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.Landmark;
-import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.LandmarkClaimedChunk;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.listeners.chat.events.ChangeTerritoryDescription;
 import org.leralix.tan.listeners.chat.events.ChangeLandmarkName;
+import org.leralix.tan.listeners.chat.events.ChangeTerritoryDescription;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryName;
 import org.leralix.tan.listeners.chat.events.CreateEmptyTown;
 import org.leralix.tan.storage.stored.*;
-import org.leralix.tan.utils.*;
-import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.FileUtil;
+import org.leralix.tan.utils.GuiUtil;
+import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.TanChatUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 import static org.leralix.lib.data.SoundEnum.GOOD;
 
@@ -322,24 +328,24 @@ public class AdminGUI{
 
     private static void openRegionDebugChangeOwnershipPlayerSelect(Player player, RegionData regionData, int page) {
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_CHANGE_REGION_LEADER.get(regionData.getName()), 6);
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for(String playerID : regionData.getPlayerIDList()){
 
-            PlayerData iteratePlayerData = PlayerDataStorage.getInstance().get(playerID);
+            ITanPlayer iterateITanPlayer = PlayerDataStorage.getInstance().get(playerID);
             ItemStack switchPlayerIcon = HeadUtils.getPlayerHead(Bukkit.getOfflinePlayer(UUID.fromString(playerID)));
 
             GuiItem switchPlayerGui = ItemBuilder.from(switchPlayerIcon).asGuiItem(event -> {
                 event.setCancelled(true);
-                FileUtil.addLineToHistory(Lang.HISTORY_REGION_CAPITAL_CHANGED.get(player.getName(), regionData.getCapital().getName(), playerData.getTown().getName() ));
-                regionData.setLeaderID(iteratePlayerData.getID());
+                FileUtil.addLineToHistory(Lang.HISTORY_REGION_CAPITAL_CHANGED.get(player.getName(), regionData.getCapital().getName(), ITanPlayer.getTown().getName() ));
+                regionData.setLeaderID(iterateITanPlayer.getID());
 
-                regionData.broadcastMessageWithSound(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST.get(iteratePlayerData.getNameStored()),GOOD);
+                regionData.broadcastMessageWithSound(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST.get(iterateITanPlayer.getNameStored()),GOOD);
 
-                if(!regionData.getCapital().getID().equals(iteratePlayerData.getTown().getID())){
-                    regionData.broadCastMessage(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST.get(iteratePlayerData.getTown().getName()));
-                    regionData.setCapital(iteratePlayerData.getTownId());
+                if(!regionData.getCapital().getID().equals(iterateITanPlayer.getTown().getID())){
+                    regionData.broadCastMessage(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST.get(iterateITanPlayer.getTown().getName()));
+                    regionData.setCapital(iterateITanPlayer.getTownId());
                 }
                 openSpecificRegionMenu(player, regionData);
             });
@@ -359,10 +365,10 @@ public class AdminGUI{
 
     public static void openAdminBrowseTown(Player player, int page){
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_TOWN_MENU.get(),6);
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for (TownData townData : TownDataStorage.getInstance().getTownMap().values()) {
-            ItemStack townIcon = townData.getIconWithInformations(playerData.getLang());
+            ItemStack townIcon = townData.getIconWithInformations(ITanPlayer.getLang());
             HeadUtils.addLore(townIcon,
                     "",
                     Lang.ADMIN_GUI_LEFT_CLICK_TO_MANAGE_TOWN.get()
@@ -448,11 +454,11 @@ public class AdminGUI{
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_CHANGE_OVERLORD.get(territoryData.getName()),6);
 
         Collection<RegionData> territoryDataList = RegionDataStorage.getInstance().getAll();
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
         List<GuiItem> guiItems = new ArrayList<>();
 
         for(TerritoryData potentialOverlord : territoryDataList){
-            ItemStack potentialOverlordIcon =  potentialOverlord.getIconWithInformations(playerData.getLang());
+            ItemStack potentialOverlordIcon =  potentialOverlord.getIconWithInformations(ITanPlayer.getLang());
             HeadUtils.addLore(potentialOverlordIcon, Lang.LEFT_CLICK_TO_SELECT.get());
 
             guiItems.add(ItemBuilder.from(potentialOverlordIcon).asGuiItem(event -> {
@@ -504,14 +510,14 @@ public class AdminGUI{
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_PLAYER_MENU.get(),6);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (PlayerData playerData : PlayerDataStorage.getInstance().getAll()) {
+        for (ITanPlayer ITanPlayer : PlayerDataStorage.getInstance().getAll()) {
 
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerData.getID()));
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(ITanPlayer.getID()));
             ItemStack playerHead = HeadUtils.getPlayerHeadInformation(offlinePlayer);
 
             GuiItem playerHeadGui = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
-                openSpecificPlayerMenu(player, playerData);
+                openSpecificPlayerMenu(player, ITanPlayer);
             });
             guiItems.add(playerHeadGui);
         }
@@ -521,30 +527,30 @@ public class AdminGUI{
         gui.open(player);
     }
 
-    private static void openSpecificPlayerMenu(Player player, PlayerData playerData) {
+    private static void openSpecificPlayerMenu(Player player, ITanPlayer ITanPlayer) {
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_PLAYER_MENU.get(),3);
 
-        ItemStack playerHead = HeadUtils.getPlayerHeadInformation(Bukkit.getOfflinePlayer(UUID.fromString(playerData.getID())));
+        ItemStack playerHead = HeadUtils.getPlayerHeadInformation(Bukkit.getOfflinePlayer(UUID.fromString(ITanPlayer.getID())));
 
-        if(playerData.hasTown()){
+        if(ITanPlayer.hasTown()){
             ItemStack removePlayerTown = HeadUtils.createCustomItemStack(Material.SPRUCE_DOOR,
-                    Lang.ADMIN_GUI_TOWN_PLAYER_TOWN.get(playerData.getTown().getName()),
+                    Lang.ADMIN_GUI_TOWN_PLAYER_TOWN.get(ITanPlayer.getTown().getName()),
                     Lang.ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1.get(),
                     Lang.ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2.get());
 
 
             GuiItem removePlayerTownGui = ItemBuilder.from(removePlayerTown).asGuiItem(event -> {
                 event.setCancelled(true);
-                TownData townData = playerData.getTown();
+                TownData townData = ITanPlayer.getTown();
 
-                if(townData.isLeader(playerData)){
+                if(townData.isLeader(ITanPlayer)){
                     player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get());
                     return;
                 }
-                townData.removePlayer(playerData);
+                townData.removePlayer(ITanPlayer);
 
-                player.sendMessage(TanChatUtils.getTANString() + Lang.ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS.get(playerData.getNameStored(),townData.getName()));
-                openSpecificPlayerMenu(player, playerData);
+                player.sendMessage(TanChatUtils.getTANString() + Lang.ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS.get(ITanPlayer.getNameStored(),townData.getName()));
+                openSpecificPlayerMenu(player, ITanPlayer);
             });
             gui.setItem(2,2, removePlayerTownGui);
         }
@@ -553,7 +559,7 @@ public class AdminGUI{
 
             GuiItem addPlayerTownGui = ItemBuilder.from(addPlayerTown).asGuiItem(event -> {
                 event.setCancelled(true);
-                setPlayerTown(player, playerData, 0);
+                setPlayerTown(player, ITanPlayer, 0);
             });
             gui.setItem(2,2, addPlayerTownGui);
         }
@@ -567,7 +573,7 @@ public class AdminGUI{
         gui.open(player);
     }
 
-    private static void setPlayerTown(Player player, PlayerData playerData, int page) {
+    private static void setPlayerTown(Player player, ITanPlayer ITanPlayer, int page) {
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_SET_PLAYER_TOWN.get(), 6);
 
@@ -575,23 +581,23 @@ public class AdminGUI{
 
 
         for (TownData townData : TownDataStorage.getInstance().getTownMap().values()) {
-            ItemStack townIcon = townData.getIconWithInformations(playerData.getLang());
+            ItemStack townIcon = townData.getIconWithInformations(ITanPlayer.getLang());
             HeadUtils.addLore(townIcon,
                     "",
                     Lang.ADMIN_GUI_LEFT_CLICK_TO_MANAGE_TOWN.get()
             );
             GuiItem townIterationGui = ItemBuilder.from(townIcon).asGuiItem(event -> {
                 event.setCancelled(true);
-                townData.addPlayer(playerData);
-                openSpecificPlayerMenu(player, playerData);
+                townData.addPlayer(ITanPlayer);
+                openSpecificPlayerMenu(player, ITanPlayer);
             });
             guiItems.add(townIterationGui);
         }
 
         GuiUtil.createIterator(gui, guiItems, page, player,
-                p -> openSpecificPlayerMenu(player, playerData),
-                p -> setPlayerTown(player, playerData, page + 1),
-                p -> setPlayerTown(player, playerData, page - 1)
+                p -> openSpecificPlayerMenu(player, ITanPlayer),
+                p -> setPlayerTown(player, ITanPlayer, page + 1),
+                p -> setPlayerTown(player, ITanPlayer, page - 1)
         );
         gui.open(player);
 

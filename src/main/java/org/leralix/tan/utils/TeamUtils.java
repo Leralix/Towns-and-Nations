@@ -5,10 +5,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 /**
  * Utility class for handling teams for scoreboard color coding
@@ -81,8 +81,8 @@ public class TeamUtils {
         if(!PlayerDataStorage.getInstance().get(playerToAdd).hasTown() || !PlayerDataStorage.getInstance().get(player).hasTown())
             return;
 
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        TownRelation relation = playerData.getRelationWithPlayer(playerToAdd);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        TownRelation relation = ITanPlayer.getRelationWithPlayer(playerToAdd);
         if(relation == null)
             return;
 

@@ -189,7 +189,6 @@ language:
   LEFT_CLICK_TO_MODIFY: "§fClique esquerdo para modificar"
   LEFT_CLICK_TO_ACCEPT: "§fClique esquerdo para aceitar"
   RIGHT_CLICK_TO_REFUSE: "§fClique direito para recusar"
-  #Main menu
   GUI_KINGDOM_ICON: "§aReino"
   GUI_KINGDOM_ICON_DESC1: "§fEm desenvolvimento"
   GUI_REGION_ICON: "§aRegião"
@@ -249,8 +248,6 @@ language:
   #Attack GUI
   GUI_ATTACK_ADD_TIME: "§aAdicionar tempo"
   GUI_ATTACK_REMOVE_TIME: "§aRemover tempo"
-  GUI_LEFT_CLICK_FOR_1_MINUTE: "§fClique esquerdo para adicionar 1 minuto"
-  GUI_SHIFT_CLICK_FOR_1_HOUR: "§fShift + clique para adicionar 1 hora"
   GUI_ATTACK_SET_TO_START_IN: "aO ataque começará em §6{0}"
   GUI_CONFIRM_ATTACK: "§aConfirmar ataque"
   GUI_CONFIRM_ATTACK_DESC1: "§fConfirmar ataque em §6{0}"
@@ -341,7 +338,6 @@ language:
   BROADCAST_RELATION_IMPROVE: "§fA relação entre {0}§f e {1}§f melhorou para: {2}"
   BROADCAST_RELATION_WORSEN: "§fA relação entre {0}§f e {1}§f piorou para: {2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cClique com o botão direito para iniciar um ataque"
-  GUI_TOWN_ATTACK_TOWN_EXECUTED: "§cVocê lançou um ataque contra {0}"
   GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} lançou um ataque contra {1}!"
   GUI_TOWN_ATTACK_FINISHED: "§cO ataque contra {0} terminou !"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aGerenciar acesso à porta"
@@ -597,7 +593,6 @@ language:
   ATTACK_ICON_DESC_3: "§fNúmero de atacantes: §9{0}"
   ATTACK_ICON_DESC_4: "§fNúmero de defensores : §9{0}"
   ATTACK_ICON_DESC_5: "§fJustificativa de guerra: §a{0}"
-  ATTACK_ICON_DESC_6: "§fA guerra começará em: §6{0}"
   ATTACK_ICON_DESC_7: "§fA guerra durará: §6{0}"
   ATTACK_ICON_DESC_8: "§fPosição do território: §a{0}"
   ATTACK_ICON_DESC_ADMIN_APPROVED: "§aEste ataque foi aprovado por um admin"
@@ -696,6 +691,7 @@ language:
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§fClique esquerdo para acessar a proposta"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cVocê não pode claimar este chunk"
+
 
 
 

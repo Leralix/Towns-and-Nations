@@ -47,15 +47,15 @@ public class RegionSettingsMenu extends SettingsMenus {
 
     private @NotNull GuiItem getChangeOwnershipButton() {
         return iconManager.get(IconKey.REGION_CHANGE_OWNERSHIP_ICON)
-                .setName(Lang.GUI_REGION_CHANGE_CAPITAL.get(playerData))
+                .setName(Lang.GUI_REGION_CHANGE_CAPITAL.get(ITanPlayer))
                 .setDescription(
-                        Lang.GUI_REGION_CHANGE_CAPITAL_DESC1.get(playerData, regionData.getCapital().getName()),
-                        Lang.GUI_REGION_CHANGE_CAPITAL_DESC2.get(playerData)
+                        Lang.GUI_REGION_CHANGE_CAPITAL_DESC1.get(ITanPlayer, regionData.getCapital().getName()),
+                        Lang.GUI_REGION_CHANGE_CAPITAL_DESC2.get(ITanPlayer)
                 )
                 .setAction(event -> {
                     event.setCancelled(true);
-                    if (!regionData.isLeader(playerData)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(playerData));
+                    if (!regionData.isLeader(ITanPlayer)) {
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(ITanPlayer));
                         return;
                     }
                     PlayerGUI.openRegionChangeOwnership(player, 0);
@@ -65,31 +65,31 @@ public class RegionSettingsMenu extends SettingsMenus {
 
     private GuiItem getDeleteButton() {
         return iconManager.get(IconKey.REGION_DELETE_REGION_ICON)
-                .setName(Lang.GUI_REGION_DELETE.get(playerData))
+                .setName(Lang.GUI_REGION_DELETE.get(ITanPlayer))
                 .setDescription(
-                        Lang.GUI_REGION_DELETE_DESC1.get(playerData, regionData.getName()),
-                        Lang.GUI_REGION_DELETE_DESC2.get(playerData),
-                        Lang.GUI_REGION_DELETE_DESC3.get(playerData)
+                        Lang.GUI_REGION_DELETE_DESC1.get(ITanPlayer, regionData.getName()),
+                        Lang.GUI_REGION_DELETE_DESC2.get(ITanPlayer),
+                        Lang.GUI_REGION_DELETE_DESC3.get(ITanPlayer)
                 )
                 .setAction(event -> {
                     event.setCancelled(true);
-                    if (!regionData.isLeader(playerData)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(playerData));
+                    if (!regionData.isLeader(ITanPlayer)) {
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(ITanPlayer));
                         return;
                     }
                     if (regionData.isCapital()) {
-                        player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(playerData, regionData.getOverlord().getBaseColoredName()));
+                        player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(ITanPlayer, regionData.getOverlord().getBaseColoredName()));
                         return;
                     }
 
                     if (!player.hasPermission("tan.base.region.disband")) {
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(playerData));
+                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(ITanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
 
-                    PlayerGUI.openConfirmMenu(player, Lang.GUI_CONFIRM_DELETE_REGION.get(playerData, regionData.getName()), confirm -> {
-                        FileUtil.addLineToHistory(Lang.REGION_DELETED_NEWSLETTER.get(playerData, player.getName(), regionData.getName()));
+                    PlayerGUI.openConfirmMenu(player, Lang.GUI_CONFIRM_DELETE_REGION.get(ITanPlayer, regionData.getName()), confirm -> {
+                        FileUtil.addLineToHistory(Lang.REGION_DELETED_NEWSLETTER.get(ITanPlayer, player.getName(), regionData.getName()));
                         regionData.delete();
                         SoundUtil.playSound(player, GOOD);
                         new MainMenu(player);

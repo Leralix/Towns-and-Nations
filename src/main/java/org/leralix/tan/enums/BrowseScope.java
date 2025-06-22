@@ -1,6 +1,6 @@
 package org.leralix.tan.enums;
 
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.lang.Lang;
 
 public enum BrowseScope {
@@ -27,7 +27,7 @@ public enum BrowseScope {
         REGIONS.nextScope = ALL;
     }
 
-    public String getName(PlayerData playerData) {
-        return name.get(playerData);
+    public String getName(ITanPlayer ITanPlayer) {
+        return name.get(ITanPlayer);
     }
 }

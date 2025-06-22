@@ -6,13 +6,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.TeleportationRegister;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.lang.Lang;
 
 public class SpawnListener implements Listener {
 
@@ -23,8 +23,8 @@ public class SpawnListener implements Listener {
                 !TeleportationRegister.getTeleportationData(player).isCancelled() &&
                 ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnDamage", true)) {
 
-            PlayerData playerData = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
-            TeleportationRegister.getTeleportationData(playerData).setCancelled(true);
+            ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+            TeleportationRegister.getTeleportationData(ITanPlayer).setCancelled(true);
             player.sendMessage(TanChatUtils.getTANString() + Lang.TELEPORTATION_CANCELLED.get());
         }
     }
@@ -56,8 +56,8 @@ public class SpawnListener implements Listener {
 
 
     public void cancelTeleportation(Player player) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
-        TeleportationRegister.getTeleportationData(playerData).setCancelled(true);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        TeleportationRegister.getTeleportationData(ITanPlayer).setCancelled(true);
         player.sendMessage(TanChatUtils.getTANString() + Lang.TELEPORTATION_CANCELLED.get());
     }
 }

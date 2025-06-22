@@ -10,7 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.Landmark;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -73,7 +73,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public TextComponent getMapIcon(PlayerData playerData) {
+    public TextComponent getMapIcon(ITanPlayer ITanPlayer) {
         TextComponent textComponent = new TextComponent("⬛");
         textComponent.setColor(ChatColor.GOLD);
         textComponent.setHoverEvent(new HoverEvent(

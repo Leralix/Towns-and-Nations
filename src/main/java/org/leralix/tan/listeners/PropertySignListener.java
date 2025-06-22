@@ -10,18 +10,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.MetadataValue;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
+import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.gui.user.RenterPropertyMenu;
 import org.leralix.tan.gui.user.property.BuyOrRentPropertyMenu;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
-import org.leralix.tan.gui.user.RenterPropertyMenu;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.lang.Lang;
 
 public class PropertySignListener implements Listener {
     @EventHandler
@@ -70,9 +70,9 @@ public class PropertySignListener implements Listener {
 
     private boolean playerEmbargoWithTown(Player player, Block clickedBlock) {
         ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(clickedBlock.getChunk());
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        if(playerData.hasTown() && claimedChunk2 instanceof TownClaimedChunk townClaimedChunk){
-            TownRelation townRelation = townClaimedChunk.getTown().getRelationWith(playerData.getTown());
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        if(ITanPlayer.hasTown() && claimedChunk2 instanceof TownClaimedChunk townClaimedChunk){
+            TownRelation townRelation = townClaimedChunk.getTown().getRelationWith(ITanPlayer.getTown());
             return townRelation == TownRelation.EMBARGO || townRelation == TownRelation.WAR;
         }
         return false;

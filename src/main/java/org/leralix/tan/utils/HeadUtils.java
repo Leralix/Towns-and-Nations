@@ -11,16 +11,19 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * The class used to manage every head related commands
@@ -36,7 +39,7 @@ public class HeadUtils {
      */
     public static @NotNull ItemStack getPlayerHeadInformation(final @NotNull OfflinePlayer offlinePlayer){
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-        PlayerData playerData = PlayerDataStorage.getInstance().get(offlinePlayer);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(offlinePlayer);
         SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
 
         if(skullMeta == null){
@@ -48,7 +51,7 @@ public class HeadUtils {
 
         head.setItemMeta(skullMeta);
 
-        setLore(head, Lang.GUI_YOUR_BALANCE_DESC1.get(playerData, StringUtil.formatMoney(EconomyUtil.getBalance(offlinePlayer))));
+        setLore(head, Lang.GUI_YOUR_BALANCE_DESC1.get(ITanPlayer, StringUtil.formatMoney(EconomyUtil.getBalance(offlinePlayer))));
         return head;
     }
     /**

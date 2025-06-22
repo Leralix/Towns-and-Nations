@@ -4,13 +4,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
-import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.TanChatUtils;
 
 import java.util.List;
 
@@ -62,8 +62,8 @@ public class PayCommand extends PlayerSubCommand {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PAY_SELF_ERROR.get());
             return;
         }
-        PlayerData receiverData = PlayerDataStorage.getInstance().get(receiver);
-        PlayerData senderData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer receiverData = PlayerDataStorage.getInstance().get(receiver);
+        ITanPlayer senderData = PlayerDataStorage.getInstance().get(player);
         if(receiverData.hasTown() && senderData.hasTown() && !receiverData.getTown().canTradeWith(senderData.getTown())){
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_PAY_AT_EMBARGO_ERROR.get());
             return;

@@ -11,22 +11,20 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
+import org.leralix.tan.dataclass.wars.GriefAllowed;
 import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.wars.GriefAllowed;
-import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.permissions.ChunkPermissionType;
-
-import java.util.Optional;
 
 public class RegionClaimedChunk extends ClaimedChunk2 {
 
@@ -45,25 +43,25 @@ public class RegionClaimedChunk extends ClaimedChunk2 {
 
     @Override
     protected boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
 
         //Location is in a property, and players own or rent it
         RegionData ownerRegion = getRegion();
         //Chunk is claimed yet player has no town
-        if (!playerData.hasTown()) {
+        if (!ITanPlayer.hasTown()) {
             playerCantPerformAction(player);
             return false;
         }
 
         //Player is at war with the region
         for (CurrentAttack currentAttacks : ownerRegion.getCurrentAttacks()) {
-            if (currentAttacks.containsPlayer(playerData))
+            if (currentAttacks.containsPlayer(ITanPlayer))
                 return true;
         }
 
         //Player have the right to do the action
         ChunkPermission chunkPermission = ownerRegion.getPermission(permissionType);
-        if (chunkPermission.isAllowed(ownerRegion, playerData))
+        if (chunkPermission.isAllowed(ownerRegion, ITanPlayer))
             return true;
 
         playerCantPerformAction(player);
@@ -75,7 +73,7 @@ public class RegionClaimedChunk extends ClaimedChunk2 {
     }
 
     public void unclaimChunk(Player player) {
-        PlayerData playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
         if (!playerStat.hasTown()) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
             return;
@@ -121,7 +119,7 @@ public class RegionClaimedChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public TextComponent getMapIcon(PlayerData playerData) {
+    public TextComponent getMapIcon(ITanPlayer ITanPlayer) {
         TextComponent textComponent = new TextComponent("⬛");
         textComponent.setColor(getRegion().getChunkColor());
         textComponent.setHoverEvent(new HoverEvent(

@@ -2,27 +2,27 @@ package org.leralix.tan.economy;
 
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 
 public class TanEconomyStandalone extends AbstractTanEcon{
     @Override
-    public double getBalance(PlayerData playerData) {
-        return playerData.getBalance();
+    public double getBalance(ITanPlayer ITanPlayer) {
+        return ITanPlayer.getBalance();
     }
 
     @Override
-    public boolean has(PlayerData playerData, double amount) {
-        return getBalance(playerData) > amount;
+    public boolean has(ITanPlayer ITanPlayer, double amount) {
+        return getBalance(ITanPlayer) > amount;
     }
 
     @Override
-    public void withdrawPlayer(PlayerData playerData, double amount) {
-        playerData.removeFromBalance(amount);
+    public void withdrawPlayer(ITanPlayer ITanPlayer, double amount) {
+        ITanPlayer.removeFromBalance(amount);
     }
 
     @Override
-    public void depositPlayer(PlayerData playerData, double amount) {
-        playerData.addToBalance(amount);
+    public void depositPlayer(ITanPlayer ITanPlayer, double amount) {
+        ITanPlayer.addToBalance(amount);
     }
 
     @Override

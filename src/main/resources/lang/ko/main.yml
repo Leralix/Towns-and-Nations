@@ -162,7 +162,6 @@ language:
   RELATION_HOSTILE_NAME: "적대"
   GUI_GENERIC_RIGHT_CLICK_TO_DELETE: "§f우클릭하여 삭제합니다"
   GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT: "§fShift + 클릭하여 텔레포트합니다"
-  #Main menu
   GUI_KINGDOM_ICON: "§a왕국"
   GUI_KINGDOM_ICON_DESC1: "§f개발 중입니다"
   GUI_REGION_ICON: "§a지역"
@@ -216,8 +215,6 @@ language:
   #Attack GUI
   GUI_ATTACK_ADD_TIME: "§a시간 추가"
   GUI_ATTACK_REMOVE_TIME: "§a시간 제거"
-  GUI_LEFT_CLICK_FOR_1_MINUTE: "§f좌클릭하여 1분 추가"
-  GUI_SHIFT_CLICK_FOR_1_HOUR: "§fShift 클릭하여 1시간 추가"
   GUI_ATTACK_SET_TO_START_IN: "§a공격이 §6{0}§f에 시작됩니다"
   GUI_CONFIRM_ATTACK: "§a공격 확인"
   GUI_CONFIRM_ATTACK_DESC1: "§f§6{0}§f에 대한 공격을 확인하세요"
@@ -293,7 +290,6 @@ language:
   GUI_TOWN_RELATION_ADD_TOWN: "§a마을 추가"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§a마을 제거"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§c우클릭하여 공격을 시작하세요"
-  GUI_TOWN_ATTACK_TOWN_EXECUTED: "§c{0}에 대한 공격을 시작했습니다"
   GUI_TOWN_ATTACK_TOWN_INFO: "§c{0}가(이) {1}에 대한 공격을 시작했습니다!"
   GUI_TOWN_ATTACK_FINISHED: "§c{0}에 대한 공격이 종료되었습니다!"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§a문 접근 관리"
@@ -524,6 +520,7 @@ language:
   CONFIRM_PLAYER_KICKED: "§3{0}§f이(가) 마을에서 추방됩니다"
   GUI_CONFIRM_DELETE_REGION: "§f지역 §b{0}§f이(가) 삭제됩니다"
   GUI_CONFIRM_CHANGE_LEADER: "§3{0}§f이(가) 지역의 새로운 리더가 됩니다"
+
 
 
 

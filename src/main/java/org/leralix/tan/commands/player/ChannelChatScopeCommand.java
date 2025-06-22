@@ -2,19 +2,22 @@ package org.leralix.tan.commands.player;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.enums.ChatScope;
 import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.LocalChatStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.ChatScope;
 import org.leralix.tan.utils.TerritoryUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class ChannelChatScopeCommand extends PlayerSubCommand {
     @Override
@@ -115,7 +118,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
     }
 
     private void sendSingleMessage(Player player, String channelName, String[] words) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
         String message = String.join(" ", Arrays.copyOfRange(words, 2, words.length));
 
         switch (channelName.toLowerCase()) {
@@ -131,12 +134,12 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
                 }
                 return;
             case "alliance":
-                if (!playerData.hasTown()) {
+                if (!ITanPlayer.hasTown()) {
                     player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
                     return;
                 }
 
-                TownData playerTown = playerData.getTown();
+                TownData playerTown = ITanPlayer.getTown();
 
                 playerTown.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE)
                         .forEach(territoryID -> Objects.requireNonNull(TerritoryUtil.getTerritory(territoryID))
@@ -144,22 +147,22 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
                         );
                 return;
             case "region":
-                if (!playerData.hasRegion()) {
+                if (!ITanPlayer.hasRegion()) {
                     player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
                     return;
                 }
 
-                RegionData regionData = playerData.getRegion();
+                RegionData regionData = ITanPlayer.getRegion();
                 if (regionData != null)
                     regionData.broadCastMessage(Lang.CHAT_SCOPE_REGION_MESSAGE.get(regionData.getName(), player.getName(), message));
                 return;
             case "town":
-                if (!playerData.hasTown()) {
+                if (!ITanPlayer.hasTown()) {
                     player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
                     return;
                 }
 
-                TownData townData = playerData.getTown();
+                TownData townData = ITanPlayer.getTown();
                 if (townData != null)
                     townData.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.get(townData.getName(), player.getName(), message));
                 return;

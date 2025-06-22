@@ -258,7 +258,6 @@ language:
   LEFT_CLICK_TO_ACCEPT: "§fLinksklick zum Annehmen"
   RIGHT_CLICK_TO_REFUSE: "§fRechtsklick, um abzulehnen"
   CANNOT_BE_MODIFIED: "§cDies kann nicht bearbeitet werden"
-  #Main menu
   GUI_KINGDOM_ICON: "§aKönigreich"
   GUI_KINGDOM_ICON_DESC1: "§fIn Entwicklung"
   GUI_REGION_ICON: "§aRegion"
@@ -338,8 +337,6 @@ language:
   #Attack GUI
   GUI_ATTACK_ADD_TIME: "§aZeit hinzufügen"
   GUI_ATTACK_REMOVE_TIME: "§aZeit entfernen"
-  GUI_LEFT_CLICK_FOR_1_MINUTE: "§fLinksklick, um 1 Minute hinzuzufügen"
-  GUI_SHIFT_CLICK_FOR_1_HOUR: "§fShift + Klick, um 1 Stunde hinzuzufügen"
   GUI_ATTACK_SET_TO_START_IN: "§aDer Angriff startet in §6{0}"
   GUI_CONFIRM_ATTACK: "§aAngriff bestätigen"
   GUI_CONFIRM_ATTACK_DESC1: "§fBestätige den Angriff auf §6{0}"
@@ -515,7 +512,6 @@ language:
   BROADCAST_RELATION_IMPROVE: "§fDie Beziehung zwischen {0}§f und {1}§f hat sich verbessert auf: {2}"
   BROADCAST_RELATION_WORSEN: "§fDie Beziehung zwischen {0}§f und {1}§f hat sich verschlechtert auf: {2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cRechtsklick, um einen Angriff zu starten"
-  GUI_TOWN_ATTACK_TOWN_EXECUTED: "§cDu hast einen Angriff auf {0} gestartet"
   GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} hat einen Angriff auf {1} gestartet!"
   GUI_TOWN_ATTACK_FINISHED: "§cDer Angriff auf {0} ist beendet!"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aTürzugriff verwalten"
@@ -809,7 +805,6 @@ language:
   ATTACK_ICON_DESC_3: "§fAnzahl der Angreifer : §9{0}"
   ATTACK_ICON_DESC_4: "§fAnzahl der Verteidiger : §9{0}"
   ATTACK_ICON_DESC_5: "§fKriegziel : §a{0}"
-  ATTACK_ICON_DESC_6: "§fKrieg beginnt in : §6{0}"
   ATTACK_ICON_DESC_7: "§fKrieg dauert : §6{0}"
   ATTACK_ICON_DESC_8: "§fGebietsposition : §a{0}"
   ATTACK_ICON_DESC_ADMIN_APPROVED: "§aDieser Angriff wurde von einem Admin genehmigt"
@@ -941,6 +936,7 @@ language:
   TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER: ""
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cDu kannst diesen Chunk nicht beanspruchen"
+
 
 
 

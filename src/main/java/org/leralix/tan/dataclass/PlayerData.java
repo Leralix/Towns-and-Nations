@@ -6,26 +6,29 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.dataclass.wars.CurrentAttack;
+import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.dataclass.wars.CurrentAttack;
-import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.timezone.TimeZoneEnum;
 import org.leralix.tan.timezone.TimeZoneManager;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
 
 
-public class PlayerData {
+public class PlayerData implements ITanPlayer {
 
-    private final String UUID;
+    private String UUID;
     private String storedName;
     private Double Balance;
     private String TownId;
@@ -35,17 +38,6 @@ public class PlayerData {
     private List<String> attackInvolvedIn;
     private LangType lang;
     private TimeZoneEnum timeZone;
-
-    public TimeZoneEnum getTimeZone() {
-        if(timeZone == null){
-            return TimeZoneManager.getInstance().getServerTimezone();
-        }
-        return timeZone;
-    }
-
-    public void setTimeZone(TimeZoneEnum timeZone) {
-        this.timeZone = timeZone;
-    }
 
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
@@ -257,7 +249,7 @@ public class PlayerData {
     }
 
     public TownRelation getRelationWithPlayer(Player playerToAdd) {
-        PlayerData otherPlayer = PlayerDataStorage.getInstance().get(playerToAdd);
+        ITanPlayer otherPlayer = PlayerDataStorage.getInstance().get(playerToAdd);
         if (!hasTown() || !otherPlayer.hasTown())
             return null;
 
@@ -330,4 +322,16 @@ public class PlayerData {
         }
 
     }
+
+    public TimeZoneEnum getTimeZone() {
+        if(timeZone == null){
+            return TimeZoneManager.getInstance().getServerTimezone();
+        }
+        return timeZone;
+    }
+
+    public void setTimeZone(TimeZoneEnum timeZone) {
+        this.timeZone = timeZone;
+    }
+
 }

@@ -6,14 +6,14 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.utils.TerritoryUtil;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.ChatScope;
 import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.TerritoryUtil;
 
 import java.util.HashMap;
 
@@ -49,9 +49,9 @@ public class LocalChatStorage {
     }
 
     public static void broadcastInScope(Player player, String message){
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
 
-        if(!playerData.hasTown()){
+        if(!ITanPlayer.hasTown()){
             return;
         }
 
@@ -59,7 +59,7 @@ public class LocalChatStorage {
         boolean sendLogsToConsole = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("sendPrivateMessagesToConsole", false);
 
         if(scope == ChatScope.CITY){
-            TownData townData = playerData.getTown();
+            TownData townData = ITanPlayer.getTown();
 
             String messageFormat = Lang.CHAT_SCOPE_TOWN_MESSAGE.get(townData.getName(),player.getName(),message);
 
@@ -71,13 +71,13 @@ public class LocalChatStorage {
 
         else if(scope == ChatScope.REGION){
 
-            if(!playerData.hasRegion()){
+            if(!ITanPlayer.hasRegion()){
                 player.sendMessage(getTANString() + Lang.NO_REGION.get());
                 SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                 return;
             }
 
-            RegionData regionData = playerData.getRegion();
+            RegionData regionData = ITanPlayer.getRegion();
 
             String messageFormat = Lang.CHAT_SCOPE_REGION_MESSAGE.get(regionData.getName(),player.getName(),message);
 
@@ -87,7 +87,7 @@ public class LocalChatStorage {
         }
 
         else if(scope == ChatScope.ALLIANCE){
-            TownData playerTown = playerData.getTown();
+            TownData playerTown = ITanPlayer.getTown();
 
             String messageFormat = Lang.CHAT_SCOPE_TOWN_MESSAGE.get(playerTown.getName(),player.getName(),message);
 

@@ -3,23 +3,23 @@ package org.leralix.tan.listeners.chat.events;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.gui.legacy.PlayerGUI;
-import org.leralix.tan.listeners.chat.ChatListenerEvent;
-import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
-import org.leralix.tan.newsletter.news.TownCreatedNews;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.utils.FileUtil;
-import org.leralix.tan.utils.TeamUtils;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.listeners.chat.ChatListenerEvent;
+import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
+import org.leralix.tan.newsletter.news.TownCreatedNews;
+import org.leralix.tan.newsletter.storage.NewsletterStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.FileUtil;
+import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.TeamUtils;
 
 public class CreateTown extends ChatListenerEvent {
     int cost;
@@ -55,8 +55,8 @@ public class CreateTown extends ChatListenerEvent {
     }
 
     public void createTown(Player player, String message) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
-        TownData newTown = TownDataStorage.getInstance().newTown(message, playerData);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
+        TownData newTown = TownDataStorage.getInstance().newTown(message, ITanPlayer);
         EconomyUtil.removeFromBalance(player,cost);
 
         NewsletterStorage.register(new TownCreatedNews(newTown, player));

@@ -21,15 +21,15 @@ import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.FurnaceInventory;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.storage.PvpSettings;
 import org.leralix.tan.storage.SudoPlayerStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
 public class ChunkListener implements Listener {
@@ -510,9 +510,9 @@ public class ChunkListener implements Listener {
             return true;
 
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
-        PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
 
-        if(playerData.isAtWarWith(claimedChunk.getOwner()))
+        if(ITanPlayer.isAtWarWith(claimedChunk.getOwner()))
             return true;
 
 

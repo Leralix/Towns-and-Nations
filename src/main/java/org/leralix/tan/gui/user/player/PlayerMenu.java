@@ -39,23 +39,23 @@ public class PlayerMenu extends BasicGui {
 
     private GuiItem getPlayerHeadIcon() {
         return IconManager.getInstance().get(IconKey.PLAYER_HEAD_ICON)
-                .setName(Lang.GUI_PLAYER_ICON.get(playerData, player.getName()))
+                .setName(Lang.GUI_PLAYER_ICON.get(ITanPlayer, player.getName()))
                 .asGuiItem(player);
     }
 
     private GuiItem getBalanceButton() {
         return IconManager.getInstance().get(IconKey.PLAYER_BALANCE_ICON)
-                .setName(Lang.GUI_YOUR_BALANCE.get(playerData, player.getName()))
-                .setDescription(Lang.GUI_YOUR_BALANCE_DESC1.get(playerData, EconomyUtil.getBalance(player)))
+                .setName(Lang.GUI_YOUR_BALANCE.get(ITanPlayer, player.getName()))
+                .setDescription(Lang.GUI_YOUR_BALANCE_DESC1.get(ITanPlayer, EconomyUtil.getBalance(player)))
                 .asGuiItem(player);
     }
 
     private GuiItem getPropertyButton() {
         return IconManager.getInstance().get(IconKey.PLAYER_PROPERTY_ICON)
-                .setName(Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(playerData))
+                .setName(Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(ITanPlayer))
                 .setDescription(
-                        Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get(playerData),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                        Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get(ITanPlayer),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer)
                 )
                 .setAction(event -> new PlayerPropertiesMenu(player).open())
                 .asGuiItem(player);
@@ -63,10 +63,10 @@ public class PlayerMenu extends BasicGui {
 
     private GuiItem getNewsletterButton() {
         return IconManager.getInstance().get(IconKey.NEWSLETTER_ICON)
-                .setName(Lang.GUI_PLAYER_NEWSLETTER.get(playerData))
+                .setName(Lang.GUI_PLAYER_NEWSLETTER.get(ITanPlayer))
                 .setDescription(
-                        Lang.GUI_PLAYER_NEWSLETTER_DESC1.get(playerData, NewsletterStorage.getNbUnreadNewsletterForPlayer(player)),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                        Lang.GUI_PLAYER_NEWSLETTER_DESC1.get(ITanPlayer, NewsletterStorage.getNbUnreadNewsletterForPlayer(player)),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer)
                 )
                 .setAction(event -> new NewsletterMenu(player).open())
                 .asGuiItem(player);
@@ -75,13 +75,13 @@ public class PlayerMenu extends BasicGui {
     private GuiItem getTimezoneButton() {
         TimeZoneManager timeZoneManager = TimeZoneManager.getInstance();
         return iconManager.get(IconKey.TIMEZONE_BUTTON)
-                .setName(Lang.GUI_TIMEZONE_BUTTON.get(playerData))
+                .setName(Lang.GUI_TIMEZONE_BUTTON.get(ITanPlayer))
                 .setDescription(
-                        Lang.GUI_TIMEZONE_BUTTON_SERVER_ZONE.get(playerData,
-                                timeZoneManager.getServerTimezone().getName(playerData.getLang())),
-                        Lang.GUI_TIMEZONE_BUTTON_PLAYER_ZONE.get(playerData,
-                                playerData.getTimeZone().getName(playerData.getLang())),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                        Lang.GUI_TIMEZONE_BUTTON_SERVER_ZONE.get(ITanPlayer,
+                                timeZoneManager.getServerTimezone().getName(ITanPlayer.getLang())),
+                        Lang.GUI_TIMEZONE_BUTTON_PLAYER_ZONE.get(ITanPlayer,
+                                ITanPlayer.getTimeZone().getName(ITanPlayer.getLang())),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer)
                 )
                 .setAction(p -> new PlayerSelectTimezoneMenu(player))
                 .asGuiItem(player);
@@ -90,14 +90,14 @@ public class PlayerMenu extends BasicGui {
     private GuiItem getLanguageButton() {
 
         LangType serverLang = Lang.getServerLang();
-        LangType playerLang = playerData.getLang();
+        LangType playerLang = ITanPlayer.getLang();
 
         return IconManager.getInstance().get(IconKey.LANGUAGE_ICON)
-                .setName(Lang.GUI_LANGUAGE_BUTTON.get(playerData))
+                .setName(Lang.GUI_LANGUAGE_BUTTON.get(ITanPlayer))
                 .setDescription(
-                        Lang.GUI_LANGUAGE_BUTTON_DESC1.get(playerData, serverLang.getName()),
-                        Lang.GUI_LANGUAGE_BUTTON_DESC2.get(playerData, playerLang.getName()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(playerData)
+                        Lang.GUI_LANGUAGE_BUTTON_DESC1.get(ITanPlayer, serverLang.getName()),
+                        Lang.GUI_LANGUAGE_BUTTON_DESC2.get(ITanPlayer, playerLang.getName()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(ITanPlayer)
                 )
                 .setAction(event -> new LangMenu(player).open())
                 .asGuiItem(player);

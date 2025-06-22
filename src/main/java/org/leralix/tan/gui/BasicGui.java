@@ -5,7 +5,7 @@ import dev.triumphteam.gui.guis.Gui;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -14,7 +14,7 @@ public abstract class BasicGui {
 
     protected final Gui gui;
     protected final Player player;
-    protected final PlayerData playerData;
+    protected final ITanPlayer ITanPlayer;
     protected final IconManager iconManager;
 
     protected BasicGui(Player player, Lang title, int rows) {
@@ -22,7 +22,7 @@ public abstract class BasicGui {
     }
 
     protected BasicGui(Player player, String title, int rows){
-        this.playerData = PlayerDataStorage.getInstance().get(player);
+        this.ITanPlayer = PlayerDataStorage.getInstance().get(player);
         this.gui = Gui.gui()
                 .title(Component.text(title))
                 .type(GuiType.CHEST)

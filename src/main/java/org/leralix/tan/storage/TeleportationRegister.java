@@ -8,7 +8,7 @@ import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.TeleportationData;
 import org.leralix.tan.dataclass.TeleportationPosition;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -34,36 +34,36 @@ public class TeleportationRegister {
      * @param player    The player that is teleporting.
      * @param town      The town the player is teleporting to.
      */
-    public static void registerSpawn(PlayerData player, TownData town){
+    public static void registerSpawn(ITanPlayer player, TownData town){
         spawnRegister.put(player.getID(), new TeleportationData(town.getSpawn()));
     }
-    public static void removePlayer(PlayerData player){
+    public static void removePlayer(ITanPlayer player){
         spawnRegister.remove(player.getID());
     }
     public static boolean isPlayerRegistered(String playerID){
         return spawnRegister.containsKey(playerID);
     }
-    public static boolean isPlayerRegistered(PlayerData player){
+    public static boolean isPlayerRegistered(ITanPlayer player){
         return isPlayerRegistered(player.getID());
     }
     public static TeleportationData getTeleportationData(String playerID){
         return spawnRegister.get(playerID);
     }
-    public static TeleportationData getTeleportationData(PlayerData playerData){
-        return getTeleportationData(playerData.getID());
+    public static TeleportationData getTeleportationData(ITanPlayer ITanPlayer){
+        return getTeleportationData(ITanPlayer.getID());
     }
     public static TeleportationData getTeleportationData(Player player){
         return getTeleportationData(player.getUniqueId().toString());
     }
 
-    public static void teleportToTownSpawn(PlayerData playerData, TownData townData){
+    public static void teleportToTownSpawn(ITanPlayer ITanPlayer, TownData townData){
         int secondBeforeTeleport = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("timeBeforeTeleport", 5);
 
-        Player player = Bukkit.getPlayer(playerData.getUUID());
+        Player player = Bukkit.getPlayer(ITanPlayer.getUUID());
         if(player == null)
             return;
 
-        if(isPlayerRegistered(playerData.getID())){
+        if(isPlayerRegistered(ITanPlayer.getID())){
             player.sendMessage(TanChatUtils.getTANString() + Lang.WAIT_BEFORE_ANOTHER_TELEPORTATION.get());
             return;
         }
@@ -74,30 +74,30 @@ public class TeleportationRegister {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.TELEPORTATION_IN_X_SECONDS.get(secondBeforeTeleport));
             }
 
-            registerSpawn(playerData, townData);
+            registerSpawn(ITanPlayer, townData);
         }
         Bukkit.getScheduler().runTaskLater(TownsAndNations.getPlugin(),
-                () -> confirmTeleportation(playerData), secondBeforeTeleport * 20L);
+                () -> confirmTeleportation(ITanPlayer), secondBeforeTeleport * 20L);
     }
-    public static void confirmTeleportation(PlayerData playerData){
+    public static void confirmTeleportation(ITanPlayer ITanPlayer){
 
-        if(!spawnRegister.containsKey(playerData.getID())){
+        if(!spawnRegister.containsKey(ITanPlayer.getID())){
             return;
         }
-        if(spawnRegister.get(playerData.getID()).isCancelled()){
-            removePlayer(playerData);
+        if(spawnRegister.get(ITanPlayer.getID()).isCancelled()){
+            removePlayer(ITanPlayer);
             return;
         }
 
-        TeleportationPosition teleportationPosition = spawnRegister.get(playerData.getID()).getTeleportationPosition();
+        TeleportationPosition teleportationPosition = spawnRegister.get(ITanPlayer.getID()).getTeleportationPosition();
 
-        Player player = Bukkit.getPlayer(playerData.getUUID());
+        Player player = Bukkit.getPlayer(ITanPlayer.getUUID());
         if(player != null){
             teleportationPosition.teleport(player);
             SoundUtil.playSound(player, SoundEnum.MINOR_GOOD );
             player.sendMessage(TanChatUtils.getTANString() + Lang.SPAWN_TELEPORTED.get());
         }
-        removePlayer(playerData);
+        removePlayer(ITanPlayer);
 
 
     }

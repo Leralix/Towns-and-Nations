@@ -52,19 +52,19 @@ public class TreasuryMenu extends BasicGui {
 
     protected GuiItem getBudgetIcon(){
         List<String> description = new ArrayList<>();
-        description.add(Lang.GUI_TREASURY_STORAGE_DESC1.get(playerData, territoryData.getBalance()));
+        description.add(Lang.GUI_TREASURY_STORAGE_DESC1.get(ITanPlayer, territoryData.getBalance()));
         description.addAll(budget.createLore());
 
         return iconManager.get(IconKey.BUDGET_ICON)
-                .setName(Lang.GUI_TREASURY_STORAGE.get(playerData))
+                .setName(Lang.GUI_TREASURY_STORAGE.get(ITanPlayer))
                 .setDescription(description)
                 .asGuiItem(player);
     }
 
     protected GuiItem getMiscSpendingsIcon(){
         return iconManager.get(IconKey.MISCELLANEOUS_SPENDING_ICON)
-                .setName(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(playerData))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get(playerData))
+                .setName(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(ITanPlayer))
+                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get(ITanPlayer))
                 .setAction(action ->
                         PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.MISCELLANEOUS))
                 .asGuiItem(player);
@@ -72,10 +72,10 @@ public class TreasuryMenu extends BasicGui {
 
     protected GuiItem getDonationButton(){
         return iconManager.get(IconKey.DONATION_ICON)
-                .setName(Lang.GUI_TREASURY_DONATION.get(playerData))
-                .setDescription(Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get(playerData))
+                .setName(Lang.GUI_TREASURY_DONATION.get(ITanPlayer))
+                .setDescription(Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get(ITanPlayer))
                 .setAction(action -> {
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get(playerData));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get(ITanPlayer));
                     player.closeInventory();
 
                     PlayerChatListenerStorage.register(player, new DonateToTerritory(territoryData));
@@ -85,8 +85,8 @@ public class TreasuryMenu extends BasicGui {
 
     protected GuiItem getDonationHistoryButton(){
         return iconManager.get(IconKey.DONATION_HISTORY_ICON)
-                .setName(Lang.GUI_TREASURY_DONATION_HISTORY.get(playerData))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get(playerData))
+                .setName(Lang.GUI_TREASURY_DONATION_HISTORY.get(ITanPlayer))
+                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get(ITanPlayer))
                 .setAction(action ->
                         PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.DONATION))
                 .asGuiItem(player);
@@ -94,14 +94,14 @@ public class TreasuryMenu extends BasicGui {
 
     protected GuiItem getRetrieveButton(){
         return iconManager.get(IconKey.RETRIEVE_MONEY_ICON)
-                .setName(Lang.GUI_TREASURY_RETRIEVE_GOLD.get(playerData))
-                .setDescription(Lang.GUI_TREASURY_RETRIEVE_GOLD_DESC1.get(playerData))
+                .setName(Lang.GUI_TREASURY_RETRIEVE_GOLD.get(ITanPlayer))
+                .setDescription(Lang.GUI_TREASURY_RETRIEVE_GOLD_DESC1.get(ITanPlayer))
                 .setAction(action -> {
-                    if(!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(playerData));
+                    if(!territoryData.doesPlayerHavePermission(ITanPlayer, RolePermission.MANAGE_TAXES)){
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(ITanPlayer));
                         return;
                     }
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_WRITE_QUANTITY_IN_CHAT.get(playerData));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_WRITE_QUANTITY_IN_CHAT.get(ITanPlayer));
                     PlayerChatListenerStorage.register(player,new RetrieveMoney(territoryData));
                     player.closeInventory();
                 })

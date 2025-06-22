@@ -167,7 +167,6 @@ language:
   RELATION_HOSTILE_NAME: "Wrogi"
   GUI_GENERIC_RIGHT_CLICK_TO_DELETE: "§fPrawy przycisk myszy, aby usunąć"
   GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT: "§fShift + kliknięcie, aby się teleportować"
-  #Main menu
   GUI_KINGDOM_ICON: "§aKrólestwo"
   GUI_KINGDOM_ICON_DESC1: "§fW rozwoju"
   GUI_REGION_ICON: "§aRegion"
@@ -271,7 +270,6 @@ language:
   GUI_TOWN_RELATION_ADD_TOWN: "§aDodaj miasto"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aUsuń miasto"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cKliknij prawym przyciskiem myszy, aby rozpocząć atak"
-  GUI_TOWN_ATTACK_TOWN_EXECUTED: "§cPrzypuściłeś atak na {0}"
   GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} przypuścili atak na {1} !"
   GUI_TOWN_ATTACK_FINISHED: "§cAtak na {0} zakończył się !"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aZarządzaj dostępem do drzwi"
@@ -460,6 +458,7 @@ language:
   SUBMIT_TO_REQUEST_DESC2: "{0}"
   GUI_WAR_GOAL_INFO: "{0}"
   GUI_ICON_LIST: "§f- {0}"
+
 
 
 

@@ -8,12 +8,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.MetadataValue;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.Landmark;
-import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.storage.stored.LandmarkStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 public class LandmarkChestListener implements Listener {
     @EventHandler
@@ -26,11 +26,11 @@ public class LandmarkChestListener implements Listener {
                 clickedBlock.getType() == Material.CHEST &&
                 clickedBlock.hasMetadata("LandmarkChest")){
                     event.setCancelled(true);
-                    PlayerData playerData = PlayerDataStorage.getInstance().get(player);
+                    ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(player);
                     for (MetadataValue value : clickedBlock.getMetadata("LandmarkChest")) {
                         String customData = value.asString();
                         Landmark landmark = LandmarkStorage.getInstance().get(customData);
-                        if(!playerData.hasTown()){
+                        if(!ITanPlayer.hasTown()){
                             player.sendMessage(Lang.PLAYER_NO_TOWN.get());
                             return;
                         }

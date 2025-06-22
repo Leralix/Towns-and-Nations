@@ -2,7 +2,7 @@ package org.leralix.tan.newsletter.storage;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.factory.AbstractionFactory;
 import org.leralix.tan.newsletter.news.RegionCreationNews;
@@ -36,10 +36,10 @@ class NewsletterStorageTest {
     void testCreateTownNewsletter() {
         NewsletterStorage.init();
 
-        PlayerData playerData = AbstractionFactory.getRandomPlayerData();
-        TownData townData = TownDataStorage.getInstance().newTown("testTown", playerData);
+        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
+        TownData townData = TownDataStorage.getInstance().newTown("testTown", ITanPlayer);
 
-        NewsletterStorage.register(new TownCreatedNews(townData.getID(), playerData.getID()));
+        NewsletterStorage.register(new TownCreatedNews(townData.getID(), ITanPlayer.getID()));
 
     }
 

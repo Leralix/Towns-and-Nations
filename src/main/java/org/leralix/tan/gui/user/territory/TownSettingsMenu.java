@@ -49,10 +49,10 @@ public class TownSettingsMenu extends SettingsMenus {
 
     private GuiItem getQuitButton() {
         return iconManager.get(IconKey.TOWN_QUIT_TOWN_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN.get(playerData))
+                .setName(Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN.get(ITanPlayer))
                 .setDescription(
-                        Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1.get(playerData, townData.getName()),
-                        Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2.get(playerData)
+                        Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1.get(ITanPlayer, townData.getName()),
+                        Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2.get(ITanPlayer)
                 )
                 .setAction(event -> {
                     event.setCancelled(true);
@@ -63,25 +63,25 @@ public class TownSettingsMenu extends SettingsMenus {
                         return;
                     }
 
-                    if (townData.isLeader(playerData)) {
+                    if (townData.isLeader(ITanPlayer)) {
                         SoundUtil.playSound(player, NOT_ALLOWED);
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.get(playerData));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.get(ITanPlayer));
                         return;
                     }
 
                     if (townData.haveOverlord()) {
                         RegionData regionData = townData.getRegion();
-                        if (regionData.isLeader(playerData)) {
+                        if (regionData.isLeader(ITanPlayer)) {
                             SoundUtil.playSound(player, NOT_ALLOWED);
-                            player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER.get(playerData));
+                            player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER.get(ITanPlayer));
                         }
                     }
 
-                    PlayerGUI.openConfirmMenu(player, Lang.GUI_CONFIRM_PLAYER_LEAVE_TOWN.get(playerData, playerData.getNameStored()), confirm -> {
+                    PlayerGUI.openConfirmMenu(player, Lang.GUI_CONFIRM_PLAYER_LEAVE_TOWN.get(ITanPlayer, ITanPlayer.getNameStored()), confirm -> {
                         player.closeInventory();
-                        townData.removePlayer(playerData);
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_PLAYER_LEFT_THE_TOWN.get(playerData));
-                        townData.broadcastMessageWithSound(Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(playerData, playerData.getNameStored()), BAD);
+                        townData.removePlayer(ITanPlayer);
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_PLAYER_LEFT_THE_TOWN.get(ITanPlayer));
+                        townData.broadcastMessageWithSound(Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(ITanPlayer, ITanPlayer.getNameStored()), BAD);
                     }, remove -> open());
                 })
                 .asGuiItem(player);
@@ -90,30 +90,30 @@ public class TownSettingsMenu extends SettingsMenus {
 
     private GuiItem getDeleteButton() {
         return iconManager.get(IconKey.TOWN_DELETE_TOWN_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_DELETE_TOWN.get(playerData))
+                .setName(Lang.GUI_TOWN_SETTINGS_DELETE_TOWN.get(ITanPlayer))
                 .setDescription(
-                        Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1.get(playerData, townData.getName()),
-                        Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2.get(playerData)
+                        Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1.get(ITanPlayer, townData.getName()),
+                        Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2.get(ITanPlayer)
                 )
                 .setAction(event -> {
                     event.setCancelled(true);
-                    if (!townData.isLeader(playerData)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.get(playerData));
+                    if (!townData.isLeader(ITanPlayer)) {
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.get(ITanPlayer));
                         return;
                     }
                     if (townData.isCapital()) {
-                        player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(playerData, townData.getOverlord().getBaseColoredName()));
+                        player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(ITanPlayer, townData.getOverlord().getBaseColoredName()));
                         return;
                     }
 
                     if (!player.hasPermission("tan.base.town.disband")) {
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(playerData));
+                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(ITanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
 
-                    PlayerGUI.openConfirmMenu(player, Lang.GUI_CONFIRM_PLAYER_DELETE_TOWN.get(playerData, townData.getName()), confirm -> {
-                        FileUtil.addLineToHistory(Lang.TOWN_DELETED_NEWSLETTER.get(playerData, player.getName(), townData.getName()));
+                    PlayerGUI.openConfirmMenu(player, Lang.GUI_CONFIRM_PLAYER_DELETE_TOWN.get(ITanPlayer, townData.getName()), confirm -> {
+                        FileUtil.addLineToHistory(Lang.TOWN_DELETED_NEWSLETTER.get(ITanPlayer, player.getName(), townData.getName()));
                         townData.delete();
                         player.closeInventory();
                         SoundUtil.playSound(player, GOOD);
@@ -127,12 +127,12 @@ public class TownSettingsMenu extends SettingsMenus {
     private @NotNull GuiItem getChangeApplicationButton() {
         IconKey iconKey = townData.isRecruiting() ? IconKey.TOWN_ALLOW_APPLICATION_ICON : IconKey.TOWN_DENY_APPLICATION_ICON;
         return iconManager.get(iconKey)
-                .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION.get(playerData))
+                .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION.get(ITanPlayer))
                 .setDescription(
                         townData.isRecruiting() ?
-                                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT.get(playerData) :
-                                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT.get(playerData),
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH.get(playerData)
+                                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT.get(ITanPlayer) :
+                                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT.get(ITanPlayer),
+                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH.get(ITanPlayer)
                 )
                 .setAction(event -> {
                     townData.swapRecruiting();
@@ -143,16 +143,16 @@ public class TownSettingsMenu extends SettingsMenus {
 
     private @NotNull GuiItem getChangeOwnershipButton() {
         return iconManager.get(IconKey.TOWN_CHANGE_OWNERSHIP_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.get(playerData))
+                .setName(Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.get(ITanPlayer))
                 .setDescription(
-                        Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.get(playerData),
-                        Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.get(playerData)
+                        Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.get(ITanPlayer),
+                        Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.get(ITanPlayer)
                 )
                 .setAction(event -> {
-                    if (townData.isLeader(playerData))
+                    if (townData.isLeader(ITanPlayer))
                         PlayerGUI.openTownChangeOwnershipPlayerSelect(player, townData, 0);
                     else
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get(playerData));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get(ITanPlayer));
                 })
                 .asGuiItem(player);
 

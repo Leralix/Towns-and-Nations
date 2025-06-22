@@ -87,10 +87,10 @@ public class CreateWarMenu extends BasicGui {
         IconKey iconKey = isValid ? IconKey.CONFIRM_WAR_START_ICON : IconKey.CONFIRM_WAR_START_IMPOSSIBLE_ICON;
 
         return iconManager.get(iconKey)
-                .setName(Lang.GUI_CONFIRM_ATTACK.get(playerData))
+                .setName(Lang.GUI_CONFIRM_ATTACK.get(ITanPlayer))
                 .setDescription(
                         errorMessages.isEmpty() ?
-                                Collections.singleton(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(playerData))
+                                Collections.singleton(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(ITanPlayer))
                                 : errorMessages
                 )
                 .setAction(event -> {
@@ -104,7 +104,7 @@ public class CreateWarMenu extends BasicGui {
                     PlannedAttackStorage.newWar(attackData);
                     new WarMenu(player, attackingTerritory);
 
-                    String message = Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(playerData, attackingTerritory.getName(), defendingTerritory.getName());
+                    String message = Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(ITanPlayer, attackingTerritory.getName(), defendingTerritory.getName());
                     attackingTerritory.broadcastMessageWithSound(message, WAR);
                     defendingTerritory.broadcastMessageWithSound(message, WAR);
 
@@ -118,12 +118,12 @@ public class CreateWarMenu extends BasicGui {
 
         Instant warStart = Instant.now().plusSeconds(attackData.getDeltaDateTime() / 20);
         if (!WarTimeSlot.getInstance().canWarBeDeclared(warStart)) {
-            errorMessages.add(Lang.GUI_WARGOAL_OUTSIDE_AUTHORIZED_SLOTS.get(playerData));
+            errorMessages.add(Lang.GUI_WARGOAL_OUTSIDE_AUTHORIZED_SLOTS.get(ITanPlayer));
             isValid = false;
         }
 
         if (!attackData.getWargoal().isCompleted()) {
-            errorMessages.add(Lang.GUI_WARGOAL_NOT_COMPLETED.get(playerData));
+            errorMessages.add(Lang.GUI_WARGOAL_NOT_COMPLETED.get(ITanPlayer));
             isValid = false;
         }
         return isValid;
@@ -132,10 +132,10 @@ public class CreateWarMenu extends BasicGui {
 
     private @NotNull GuiItem getAddTimeButton() {
         return iconManager.get(IconKey.ADD_WAR_START_TIME_ICON)
-                .setName(Lang.GUI_ATTACK_ADD_TIME.get(playerData))
+                .setName(Lang.GUI_ATTACK_ADD_TIME.get(ITanPlayer))
                 .setDescription(
-                        Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(playerData),
-                        Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get(playerData)
+                        Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(ITanPlayer),
+                        Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get(ITanPlayer)
                 )
                 .setAction(event -> {
                     event.setCancelled(true);
@@ -156,22 +156,22 @@ public class CreateWarMenu extends BasicGui {
         Instant startTime = Instant.now().plusSeconds(attackData.getDeltaDateTime() / 20);
 
         List<String> availableTimeSlots = new ArrayList<>();
-        availableTimeSlots.add(TimeZoneManager.getInstance().formatDateForPlayer(playerData, startTime));
+        availableTimeSlots.add(TimeZoneManager.getInstance().formatDateForPlayer(ITanPlayer, startTime));
         availableTimeSlots.add(Lang.AUTHORIZED_ATTACK_TIME_SLOT_TITLE.get());
-        availableTimeSlots.addAll(WarTimeSlot.getInstance().getPrintedTimeSlots(playerData.getLang()));
+        availableTimeSlots.addAll(WarTimeSlot.getInstance().getPrintedTimeSlots(ITanPlayer.getLang()));
 
         return IconManager.getInstance().get(IconKey.WAR_START_TIME_ICON)
-                .setName(Lang.GUI_ATTACK_SET_TO_START_IN.get(playerData, DateUtil.getDateStringFromTicks(attackData.getDeltaDateTime())))
+                .setName(Lang.GUI_ATTACK_SET_TO_START_IN.get(ITanPlayer, DateUtil.getDateStringFromTicks(attackData.getDeltaDateTime())))
                 .setDescription(availableTimeSlots)
                 .asGuiItem(player);
     }
 
     private @NotNull GuiItem getRemoveTimeButton() {
         return iconManager.get(IconKey.REMOVE_WAR_START_TIME_ICON)
-                .setName(Lang.GUI_ATTACK_REMOVE_TIME.get(playerData))
+                .setName(Lang.GUI_ATTACK_REMOVE_TIME.get(ITanPlayer))
                 .setDescription(
-                        Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(playerData),
-                        Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get(playerData)
+                        Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(ITanPlayer),
+                        Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get(ITanPlayer)
                 )
                 .setAction(event -> {
                     event.setCancelled(true);

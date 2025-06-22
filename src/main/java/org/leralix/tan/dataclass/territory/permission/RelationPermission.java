@@ -2,7 +2,7 @@ package org.leralix.tan.dataclass.territory.permission;
 
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
@@ -45,18 +45,18 @@ public enum RelationPermission {
     }
 
 
-    public boolean isAllowed(TerritoryData territory, PlayerData playerData) {
+    public boolean isAllowed(TerritoryData territory, ITanPlayer ITanPlayer) {
         switch (this) {
             case TOWN -> {
-                if(territory.isPlayerIn(playerData)){
+                if(territory.isPlayerIn(ITanPlayer)){
                     return true;
                 }
             }
             case ALLIANCE -> {
-                if(territory.isPlayerIn(playerData)){
+                if(territory.isPlayerIn(ITanPlayer)){
                     return true;
                 }
-                for(TerritoryData playerTerritory : playerData.getAllTerritoriesPlayerIsIn()){
+                for(TerritoryData playerTerritory : ITanPlayer.getAllTerritoriesPlayerIsIn()){
                     if(territory.getRelations().getRelationWith(playerTerritory) == TownRelation.ALLIANCE){
                         return true;
                     }

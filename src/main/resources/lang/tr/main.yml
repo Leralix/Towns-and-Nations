@@ -258,7 +258,6 @@ language:
   LEFT_CLICK_TO_ACCEPT: "§fKabul etmek için sol tıkla"
   RIGHT_CLICK_TO_REFUSE: "§fReddetmek için sağ tıkla"
   CANNOT_BE_MODIFIED: "§cBu değiştirilemez"
-  #Main menu
   GUI_KINGDOM_ICON: "§aKrallık"
   GUI_KINGDOM_ICON_DESC1: "§fGeliştirme aşamasında"
   GUI_REGION_ICON: "§aBölge"
@@ -338,8 +337,6 @@ language:
   #Attack GUI
   GUI_ATTACK_ADD_TIME: "§aZaman ekle"
   GUI_ATTACK_REMOVE_TIME: "§aZaman çıkar"
-  GUI_LEFT_CLICK_FOR_1_MINUTE: "§f1 dakika eklemek için sol tıklayın"
-  GUI_SHIFT_CLICK_FOR_1_HOUR: "§fShift + tıklayarak 1 saat ekleyin"
   GUI_ATTACK_SET_TO_START_IN: "§aSaldırı §6{0}§f sonra başlayacak"
   GUI_CONFIRM_ATTACK: "§aSaldırıyı onayla"
   GUI_CONFIRM_ATTACK_DESC1: "§6{0}§f üzerine saldırıyı onaylayın"
@@ -515,7 +512,6 @@ language:
   BROADCAST_RELATION_IMPROVE: "§f{0}§f ile {1}§f arasındaki ilişki geliştirildi: {2}"
   BROADCAST_RELATION_WORSEN: "§f{0}§f ile {1}§f arasındaki ilişki kötüleşti: {2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cSaldırı başlatmak için sağ tıkla"
-  GUI_TOWN_ATTACK_TOWN_EXECUTED: "§c{0} kasabasına saldırı başlattın"
   GUI_TOWN_ATTACK_TOWN_INFO: "§c{0}, {1} kasabasına saldırı başlattı!"
   GUI_TOWN_ATTACK_FINISHED: "§c{0} kasabasına yapılan saldırı sona erdi!"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aKapı erişimini yönet"
@@ -802,7 +798,6 @@ language:
   ATTACK_ICON_DESC_3: "§fSaldıranların sayısı: §9{0}"
   ATTACK_ICON_DESC_4: "§fSavunanların sayısı: §9{0}"
   ATTACK_ICON_DESC_5: "§fSavaşın amacı: §a{0}"
-  ATTACK_ICON_DESC_6: "§fSavaşın başlangıcı: §6{0}"
   ATTACK_ICON_DESC_7: "§fSavaş süresi: §6{0}"
   ATTACK_ICON_DESC_8: "§fBölge konumu: §a{0}"
   ATTACK_ICON_DESC_ADMIN_APPROVED: "§aBu saldırı bir yönetici tarafından onaylandı"
@@ -918,6 +913,7 @@ language:
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§fTeklife erişmek için sol tıklayın"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cBu araziyi claimleyemezsiniz"
+
 
 
 

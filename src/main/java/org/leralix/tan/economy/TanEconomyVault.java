@@ -6,8 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.dataclass.PlayerData;
 
 import java.util.Collections;
 import java.util.List;
@@ -125,9 +125,9 @@ public class TanEconomyVault extends TanEconomyStandalone implements Economy {
         if(!has(offlinePlayer, v))
             return new EconomyResponse(v, PlayerDataStorage.getInstance().get(offlinePlayer).getBalance(), EconomyResponse.ResponseType.FAILURE, "Player does not have enough money");
 
-        PlayerData playerData = PlayerDataStorage.getInstance().get(offlinePlayer);
-        playerData.removeFromBalance((int) v);
-        return new EconomyResponse(v, playerData.getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(offlinePlayer);
+        ITanPlayer.removeFromBalance((int) v);
+        return new EconomyResponse(v, ITanPlayer.getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
     }
 
     @Override
@@ -147,9 +147,9 @@ public class TanEconomyVault extends TanEconomyStandalone implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, double v) {
-        PlayerData playerData = PlayerDataStorage.getInstance().get(offlinePlayer);
-        playerData.addToBalance((int) v);
-        return new EconomyResponse(v, playerData.getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(offlinePlayer);
+        ITanPlayer.addToBalance((int) v);
+        return new EconomyResponse(v, ITanPlayer.getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
     }
 
     @Override

@@ -3,11 +3,11 @@ package org.leralix.tan.commands.server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
+import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.dataclass.PlayerData;
-import org.leralix.tan.dataclass.territory.TownData;
 
 import java.util.Collections;
 import java.util.List;
@@ -56,8 +56,8 @@ public class ApplyTownServer extends SubCommand {
             commandSender.sendMessage(Lang.TOWN_NOT_FOUND.get());
             return;
         }
-        PlayerData playerData = PlayerDataStorage.getInstance().get(p.getUniqueId().toString());
-        if(playerData.hasTown()){
+        ITanPlayer ITanPlayer = PlayerDataStorage.getInstance().get(p.getUniqueId().toString());
+        if(ITanPlayer.hasTown()){
             commandSender.sendMessage(Lang.PLAYER_ALREADY_HAVE_TOWN.get());
             return;
         }

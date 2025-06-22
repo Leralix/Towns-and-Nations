@@ -13,20 +13,20 @@ import org.leralix.lib.utils.ParticleUtils;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.newhistory.PropertyBuyTaxTransaction;
+import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.NumberUtil;
 import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.territory.TownData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ public class PropertyData {
     private final Vector3D p2;
     private Vector3D signLocation;
 
-    public PropertyData(String id, Vector3D p1, Vector3D p2, PlayerData player) {
+    public PropertyData(String id, Vector3D p1, Vector3D p2, ITanPlayer player) {
         this.ID = id;
         this.owningPlayerID = player.getID();
         this.p1 = p1;
@@ -119,7 +119,7 @@ public class PropertyData {
     public String getOwnerID() {
         return owningPlayerID;
     }
-    public PlayerData getOwner() {
+    public ITanPlayer getOwner() {
         return PlayerDataStorage.getInstance().get(owningPlayerID);
     }
 
@@ -137,7 +137,7 @@ public class PropertyData {
     public boolean isForRent(){
         return isForRent;
     }
-    public PlayerData getRenter(){
+    public ITanPlayer getRenter(){
         return PlayerDataStorage.getInstance().get(rentingPlayerID);
     }
     public String getRenterID(){
@@ -307,7 +307,7 @@ public class PropertyData {
 
 
     public void delete() {
-        PlayerData owner = PlayerDataStorage.getInstance().get(owningPlayerID);
+        ITanPlayer owner = PlayerDataStorage.getInstance().get(owningPlayerID);
         TownData town = getTown();
         expelRenter(false);
         removeSign();
@@ -358,8 +358,8 @@ public class PropertyData {
         EconomyUtil.addFromBalance(exOwnerOffline, getBaseSalePrice());
         town.addToBalance(townCut);
 
-        PlayerData exOwnerData = PlayerDataStorage.getInstance().get(owningPlayerID);
-        PlayerData newOwnerData = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        ITanPlayer exOwnerData = PlayerDataStorage.getInstance().get(owningPlayerID);
+        ITanPlayer newOwnerData = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
 
         exOwnerData.removeProperty(this);
         newOwnerData.addProperty(this);
@@ -378,12 +378,12 @@ public class PropertyData {
         return allowedPlayers;
     }
 
-    public boolean isPlayerAllowed(PlayerData playerData) {
-        if(getAllowedPlayersID().contains(playerData.getID()))
+    public boolean isPlayerAllowed(ITanPlayer ITanPlayer) {
+        if(getAllowedPlayersID().contains(ITanPlayer.getID()))
             return true;
         if(isRented())
-            return playerData.getID().equals(rentingPlayerID);
-        return isOwner(playerData.getID());
+            return ITanPlayer.getID().equals(rentingPlayerID);
+        return isOwner(ITanPlayer.getID());
     }
 
     public String getDenyMessage() {
@@ -397,7 +397,7 @@ public class PropertyData {
     public void expelRenter(boolean rentBack) {
         if(!isRented())
             return;
-        PlayerData renter = PlayerDataStorage.getInstance().get(rentingPlayerID);
+        ITanPlayer renter = PlayerDataStorage.getInstance().get(rentingPlayerID);
         renter.removeProperty(this);
         this.rentingPlayerID = null;
         if(rentBack)

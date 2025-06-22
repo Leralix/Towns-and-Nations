@@ -10,7 +10,10 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.lib.SphereLib;
 import org.leralix.lib.data.PluginVersion;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.api.InternalAPI;
+import org.leralix.tan.api.PlaceHolderAPI;
 import org.leralix.tan.commands.admin.AdminCommandManager;
 import org.leralix.tan.commands.debug.DebugCommandManager;
 import org.leralix.tan.commands.player.PlayerCommandManager;
@@ -20,10 +23,12 @@ import org.leralix.tan.economy.TanEconomyStandalone;
 import org.leralix.tan.economy.VaultManager;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.integration.worldguard.WorldGuardManager;
+import org.leralix.tan.lang.DynamicLang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.*;
 import org.leralix.tan.listeners.chat.ChatListener;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.newsletter.NewsletterType;
+import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.PvpSettings;
@@ -37,11 +42,6 @@ import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.CustomNBT;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.api.PlaceHolderAPI;
-import org.leralix.tan.lang.DynamicLang;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.NumberUtil;
 import org.tan.api.TanAPI;
 
@@ -136,7 +136,7 @@ public final class TownsAndNations extends JavaPlugin {
 
         File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
         Lang.loadTranslations(langFolder, lang);
-        DynamicLang.loadTranslations(lang);
+        DynamicLang.loadTranslations(langFolder, lang);
         getLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
 
         getLogger().log(Level.INFO, "[TaN] -Loading Configs");

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.factory.AbstractionFactory;
 
@@ -20,13 +20,13 @@ class CreateTownTest {
     @Test
     void nominalCase() {
 
-        PlayerData playerData = AbstractionFactory.getRandomPlayerData();
+        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
 
         CreateTown createTown = new CreateTown(10);
-        createTown.execute(playerData.getPlayer(), "town-A");
+        createTown.execute(ITanPlayer.getPlayer(), "town-A");
 
-        assertTrue(playerData.hasTown());
-        TownData town = playerData.getTown();
+        assertTrue(ITanPlayer.hasTown());
+        TownData town = ITanPlayer.getTown();
         assertEquals(1, town.getAllRanks().size());
         assertEquals(1, town.getTownDefaultRank().getNumberOfPlayer());
         assertEquals(0, town.getBalance());
@@ -36,41 +36,41 @@ class CreateTownTest {
     @Test
     void notEnoughMoney() {
 
-        PlayerData playerData = AbstractionFactory.getRandomPlayerData();
+        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
 
-        CreateTown createTown = new CreateTown((int) (playerData.getBalance() + 1));
-        createTown.execute(playerData.getPlayer(), "anotherName");
+        CreateTown createTown = new CreateTown((int) (ITanPlayer.getBalance() + 1));
+        createTown.execute(ITanPlayer.getPlayer(), "anotherName");
 
-        assertFalse(playerData.hasTown());
+        assertFalse(ITanPlayer.hasTown());
     }
 
     @Test
     void nameTooLong() {
 
-        PlayerData playerData = AbstractionFactory.getRandomPlayerData();
+        ITanPlayer ITanPlayer = AbstractionFactory.getRandomITanPlayer();
 
         int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RegionNameSize");
 
         CreateTown createTown = new CreateTown(0);
-        createTown.execute(playerData.getPlayer(), "a" + "a".repeat(Math.max(0, maxSize)));
+        createTown.execute(ITanPlayer.getPlayer(), "a" + "a".repeat(Math.max(0, maxSize)));
 
-        assertFalse(playerData.hasTown());
+        assertFalse(ITanPlayer.hasTown());
     }
 
     @Test
     void nameAlreadyUsed() {
 
-        PlayerData playerData1 = AbstractionFactory.getRandomPlayerData();
-        PlayerData playerData2 = AbstractionFactory.getRandomPlayerData();
+        ITanPlayer ITanPlayer1 = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer ITanPlayer2 = AbstractionFactory.getRandomITanPlayer();
 
         String townName = "townWithDuplicateName";
 
         CreateTown createTown = new CreateTown(0);
-        createTown.execute(playerData1.getPlayer(), townName);
-        createTown.execute(playerData2.getPlayer(), townName);
+        createTown.execute(ITanPlayer1.getPlayer(), townName);
+        createTown.execute(ITanPlayer2.getPlayer(), townName);
 
-        assertTrue(playerData1.hasTown());
-        assertFalse(playerData2.hasTown());
+        assertTrue(ITanPlayer1.hasTown());
+        assertFalse(ITanPlayer2.hasTown());
     }
 
 }
