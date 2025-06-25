@@ -1,6 +1,7 @@
 package org.leralix.tan.dataclass;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -10,14 +11,16 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.WildernessChunk;
+import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.CustomNBT;
 import org.leralix.tan.utils.TerritoryUtil;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.TownsAndNations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -178,4 +181,23 @@ public class Landmark {
         return new Location(position.getWorld(), position.getX(), position.getY(), position.getZ());
     }
 
+    public boolean isEncircledBy(TownData playerTown) {
+        Chunk chunk = position.getLocation().getChunk();
+
+        boolean isEncircled = true;
+        for (int x = -1; x <= 1; x++) {
+            for (int z = -1; z <= 1; z++) {
+                if (x == 0 && z == 0) continue; // Skip the center chunk
+                Chunk neighborChunk = chunk.getWorld().getChunkAt(chunk.getX() + x, chunk.getZ() + z);
+                ClaimedChunk2 neighborClaimedChunk = NewClaimedChunkStorage.getInstance().get(neighborChunk);
+                if (neighborClaimedChunk instanceof WildernessChunk
+                        || !neighborClaimedChunk.getOwner().equals(playerTown)) {
+                    isEncircled = false;
+                    break;
+                }
+            }
+            if (!isEncircled) break;
+        }
+        return isEncircled;
+    }
 }

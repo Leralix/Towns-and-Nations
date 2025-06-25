@@ -157,3 +157,8 @@ ADD_WAR_START_TIME_ICON: "https://textures.minecraft.net/texture/632fff163e23563
 WAR_START_TIME_ICON: "https://textures.minecraft.net/texture/e4d39b99ffdbd6b5a205dd69b095b5d463c66c1d537e3744eb82a9d5fecc15b9"
 CONFIRM_WAR_START_ICON: "https://textures.minecraft.net/texture/4312ca4632def5ffaf2eb0d9d7cc7b55a50c4e3920d90372aab140781f5dfbc4"
 CONFIRM_WAR_START_IMPOSSIBLE_ICON: "https://textures.minecraft.net/texture/beb588b21a6f98ad1ff4e085c552dcb050efc9cab427f46048f18fc803475f7"
+
+##Landmarks
+#Confirm claim landmark
+GUI_CONFIRM_CLAIM_LANDMARK_REQUIREMENTS_MET_ICON : "https://textures.minecraft.net/texture/4312ca4632def5ffaf2eb0d9d7cc7b55a50c4e3920d90372aab140781f5dfbc4"
+GUI_CONFIRM_CLAIM_LANDMARK_REQUIREMENTS_UNMET_ICON : "https://textures.minecraft.net/texture/4312ca4632def5ffaf2eb0d9d7cc7b55a50c4e3920d90372aab140781f5dfbc4"

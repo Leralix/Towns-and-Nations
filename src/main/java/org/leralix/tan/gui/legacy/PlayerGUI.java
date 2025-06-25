@@ -34,6 +34,7 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
+import org.leralix.tan.gui.landmark.LandmarkNoOwnerMenu;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.gui.user.territory.*;
 import org.leralix.tan.gui.user.war.CreateWarMenu;
@@ -1169,7 +1170,7 @@ public class PlayerGUI {
         TownData townData = TownDataStorage.getInstance().get(player);
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         if (!landmark.isOwned()) {
-            openLandmarkNoOwner(player, landmark);
+            new LandmarkNoOwnerMenu(player, landmark);
             return;
         }
         if (townData.ownLandmark(landmark)) {
@@ -1180,52 +1181,6 @@ public class PlayerGUI {
         player.sendMessage(TanChatUtils.getTANString() + Lang.LANDMARK_ALREADY_CLAIMED.get(tanPlayer, owner.getName()));
         SoundUtil.playSound(player, MINOR_BAD);
 
-    }
-
-    private static void openLandmarkNoOwner(Player player, Landmark landmark) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_LANDMARK_UNCLAIMED.get(tanPlayer), 3);
-
-        GuiItem landmarkIcon = ItemBuilder.from(landmark.getIcon()).asGuiItem(event -> event.setCancelled(true));
-
-        TownData playerTown = TownDataStorage.getInstance().get(player);
-
-        ItemStack claimLandmark = HeadUtils.makeSkullB64(
-                Lang.GUI_TOWN_RELATION_ADD_TOWN.get(tanPlayer),
-                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19",
-                playerTown.canClaimMoreLandmarks() ? Lang.GUI_LANDMARK_LEFT_CLICK_TO_CLAIM.get(tanPlayer) : Lang.GUI_LANDMARK_TOWN_FULL.get(tanPlayer)
-        );
-
-        GuiItem claimLandmarkGui = ItemBuilder.from(claimLandmark).asGuiItem(event -> {
-            event.setCancelled(true);
-            if (!playerTown.canClaimMoreLandmarks()) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_LANDMARK_TOWN_FULL.get(tanPlayer));
-                SoundUtil.playSound(player, MINOR_BAD);
-                return;
-            }
-
-            playerTown.addLandmark(landmark);
-            playerTown.broadcastMessageWithSound(Lang.GUI_LANDMARK_CLAIMED.get(tanPlayer), GOOD);
-            dispatchLandmarkGui(player, landmark);
-        });
-
-        ItemStack panel = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-        GuiItem panelGui = ItemBuilder.from(panel).asGuiItem(event -> event.setCancelled(true));
-
-        gui.setItem(1, 5, landmarkIcon);
-        gui.setItem(2, 5, claimLandmarkGui);
-
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, Player::closeInventory));
-        gui.setItem(3, 2, panelGui);
-        gui.setItem(3, 3, panelGui);
-        gui.setItem(3, 4, panelGui);
-        gui.setItem(3, 5, panelGui);
-        gui.setItem(3, 6, panelGui);
-        gui.setItem(3, 7, panelGui);
-        gui.setItem(3, 8, panelGui);
-        gui.setItem(3, 9, panelGui);
-
-        gui.open(player);
     }
 
     private static void openPlayerOwnLandmark(Player player, Landmark landmark) {

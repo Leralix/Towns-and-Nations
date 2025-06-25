@@ -4,7 +4,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.chunk.ChunkType;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -22,6 +21,8 @@ public class Constants {
     private static boolean worldGuardOverrideTown;
     private static boolean worldGuardOverrideRegion;
     private static boolean worldGuardOverrideLandmark;
+    private static double claimLandmarkCost;
+    private static boolean landmarkClaimRequiresEncirclement;
 
 
     public static void init(){
@@ -38,6 +39,11 @@ public class Constants {
         worldGuardOverrideTown = config.getBoolean("worldguard_override_town", true);
         worldGuardOverrideRegion = config.getBoolean("worldguard_override_region", true);
         worldGuardOverrideLandmark = config.getBoolean("worldguard_override_landmark", true);
+        claimLandmarkCost = config.getDouble("claimLandmarkCost", 500.0);
+        if(claimLandmarkCost < 0.0){
+            claimLandmarkCost = 0.0;
+        }
+        landmarkClaimRequiresEncirclement = config.getBoolean("landmarkEncircleToCapture", true);
     }
 
     public static boolean displayTerritoryColor(){
@@ -73,5 +79,13 @@ public class Constants {
             case REGION -> worldGuardOverrideRegion;
             case LANDMARK -> worldGuardOverrideLandmark;
         };
+    }
+
+    public static double getClaimLandmarkCost() {
+        return claimLandmarkCost;
+    }
+
+    public static boolean isLandmarkClaimRequiresEncirclement() {
+        return landmarkClaimRequiresEncirclement;
     }
 }

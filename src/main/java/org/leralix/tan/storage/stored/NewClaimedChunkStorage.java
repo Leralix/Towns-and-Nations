@@ -5,13 +5,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import org.bukkit.Chunk;
+import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.chunk.*;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.TownsAndNations;
-import org.tan.api.getters.TanTerritoryManager;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -153,7 +156,7 @@ public class NewClaimedChunkStorage {
     }
 
 
-    public ClaimedChunk2 get(Chunk chunk) {
+    public @NotNull ClaimedChunk2 get(Chunk chunk) {
         ClaimedChunk2 claimedChunk = claimedChunksMap.get(getChunkKey(chunk));
         if (claimedChunk == null) {
             return new WildernessChunk(chunk);
