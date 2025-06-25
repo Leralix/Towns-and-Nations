@@ -98,10 +98,20 @@ public class LandmarkNoOwnerMenu extends BasicGui {
                         return;
                     }
 
-                    playerTown.removeFromBalance(cost);
-                    playerTown.addLandmark(landmark);
-                    playerTown.broadcastMessageWithSound(Lang.GUI_LANDMARK_CLAIMED.get(tanPlayer), GOOD);
-                    PlayerGUI.dispatchLandmarkGui(player, landmark);
+                    double actualBalance = playerTown.getBalance();
+                    double newBalance = actualBalance - cost;
+
+                    PlayerGUI.openConfirmMenu(
+                            player,
+                            Lang.GUI_GENERIC_NEW_BALANCE_MENU.get(tanPlayer, actualBalance, newBalance),
+                            confirm -> {
+                                playerTown.removeFromBalance(cost);
+                                playerTown.addLandmark(landmark);
+                                playerTown.broadcastMessageWithSound(Lang.GUI_LANDMARK_CLAIMED.get(tanPlayer), GOOD);
+                                PlayerGUI.dispatchLandmarkGui(player, landmark);
+                            },
+                            cancel -> open()
+                    );
 
                 })
                 .asGuiItem(player);
