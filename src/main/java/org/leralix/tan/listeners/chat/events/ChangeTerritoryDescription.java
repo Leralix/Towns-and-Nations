@@ -2,14 +2,14 @@ package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.listeners.chat.ChatListenerEvent;
-import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.utils.FileUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.listeners.chat.ChatListenerEvent;
+import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
+import org.leralix.tan.utils.FileUtil;
+import org.leralix.tan.utils.TanChatUtils;
 
 import java.util.function.Consumer;
 

@@ -21,8 +21,10 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.PermissionManager;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.NumberUtil;
@@ -37,7 +39,8 @@ public class PropertyData {
     private final String ID;
     private String owningPlayerID;
     private String rentingPlayerID;
-    private List<String> allowedPlayers;
+    private PermissionManager permissionManager;
+
     private ICustomIcon icon;
     private String name;
     private String description;
@@ -64,18 +67,20 @@ public class PropertyData {
         this.rentingPlayerID = null;
         this.rentPrice = 0;
 
-        this.allowedPlayers = new ArrayList<>();
+        this.permissionManager = new PermissionManager();
+
     }
-    public void setSignLocation(Location loc){
+
+    public void setSignLocation(Location loc) {
         this.signLocation = new Vector3D(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), loc.getBlock().getWorld().getUID().toString());
     }
 
 
-    public Vector3D getFirstCorner(){
+    public Vector3D getFirstCorner() {
         return this.p1;
     }
 
-    public Vector3D getSecondCorner(){
+    public Vector3D getSecondCorner() {
         return this.p2;
     }
 
@@ -83,29 +88,31 @@ public class PropertyData {
         return ID;
     }
 
-    public void setIcon(CustomIcon icon){
+    public void setIcon(CustomIcon icon) {
         this.icon = icon;
     }
 
-    public ItemStack getIcon(){
-        if(icon == null){
+    public ItemStack getIcon() {
+        if (icon == null) {
             icon = new CustomIcon(new ItemStack(Material.OAK_SIGN));
         }
         return icon.getIcon();
     }
 
-    private String getOwningStructureID(){
+    private String getOwningStructureID() {
         String[] parts = ID.split("_");
         return parts[0];
     }
-    public TownData getTown(){
+
+    public TownData getTown() {
         return TownDataStorage.getInstance().get(getOwningStructureID());
     }
 
-    public String getPropertyID(){
+    public String getPropertyID() {
         String[] parts = ID.split("_");
         return parts[1];
     }
+
     public void setName(String name) {
         this.name = name;
 
@@ -116,46 +123,58 @@ public class PropertyData {
         this.description = description;
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), this::updateSign);
     }
+
     public String getOwnerID() {
         return owningPlayerID;
     }
+
     public ITanPlayer getOwner() {
         return PlayerDataStorage.getInstance().get(owningPlayerID);
     }
 
-    public void allocateRenter(Player renter){
+    public void allocateRenter(Player renter) {
         rentingPlayerID = renter.getUniqueId().toString();
         this.isForRent = false;
-        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("payRentAtStart", false))
+        if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("payRentAtStart", false))
             payRent();
         this.updateSign();
-        getAllowedPlayersID().clear();
+        getPermissionManager().clear();
     }
-    public boolean isRented(){
+
+    public boolean isRented() {
         return rentingPlayerID != null;
     }
-    public boolean isForRent(){
+
+    public boolean isForRent() {
         return isForRent;
     }
-    public ITanPlayer getRenter(){
+
+    public ITanPlayer getRenter() {
         return PlayerDataStorage.getInstance().get(rentingPlayerID);
     }
-    public String getRenterID(){
+
+    public String getRenterID() {
         return rentingPlayerID;
     }
-    public Player getRenterPlayer(){
+
+    public Player getRenterPlayer() {
         return Bukkit.getPlayer(UUID.fromString(rentingPlayerID));
     }
-    public OfflinePlayer getOfflineRenter(){
+
+    public OfflinePlayer getOfflineRenter() {
         return Bukkit.getOfflinePlayer(UUID.fromString(rentingPlayerID));
     }
+
     public Player getOwnerPlayer() {
         return Bukkit.getPlayer(UUID.fromString(owningPlayerID));
     }
-    public String getDescription(){
+
+    public String getDescription() {
         return description;
     }
-    public void payRent(){
+
+    public void payRent() {
+
         OfflinePlayer renter = Bukkit.getOfflinePlayer(UUID.fromString(rentingPlayerID));
         OfflinePlayer owner = Bukkit.getOfflinePlayer(UUID.fromString(owningPlayerID));
         TerritoryData town = getTown();
@@ -165,7 +184,7 @@ public class PropertyData {
         double taxRent = rent - baseRent;
 
 
-        if(EconomyUtil.getBalance(renter) < rent){
+        if (EconomyUtil.getBalance(renter) < rent) {
             expelRenter(true);
             return;
         }
@@ -176,26 +195,26 @@ public class PropertyData {
         town.addToBalance(taxRent);
     }
 
-    public boolean isOwner(String playerID){
+    public boolean isOwner(String playerID) {
         return playerID.equals(this.owningPlayerID);
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
-    public boolean isForSale(){
+
+    public boolean isForSale() {
         return this.isForSale;
     }
 
 
-    public double getBaseRentPrice(){
+    public double getBaseRentPrice() {
         return this.rentPrice;
     }
 
-    public double getRentPrice(){
+    public double getRentPrice() {
         return NumberUtil.roundWithDigits(getBaseRentPrice() * (1 + getTown().getTaxOnRentingProperty()));
     }
-
 
     public double getBaseSalePrice() {
         return this.salePrice;
@@ -206,25 +225,25 @@ public class PropertyData {
     }
 
     public boolean containsLocation(Location location) {
-        return Math.max(p1.getX(),p2.getX()) >= location.getX() && Math.min(p1.getX(),p2.getX()) <= location.getX() &&
-                Math.max(p1.getY(),p2.getY()) >= location.getY() && Math.min(p1.getY(),p2.getY()) <= location.getY() &&
-                Math.max(p1.getZ(),p2.getZ()) >= location.getZ() && Math.min(p1.getZ(),p2.getZ()) <= location.getZ();
+        return Math.max(p1.getX(), p2.getX()) >= location.getX() && Math.min(p1.getX(), p2.getX()) <= location.getX() &&
+                Math.max(p1.getY(), p2.getY()) >= location.getY() && Math.min(p1.getY(), p2.getY()) <= location.getY() &&
+                Math.max(p1.getZ(), p2.getZ()) >= location.getZ() && Math.min(p1.getZ(), p2.getZ()) <= location.getZ();
     }
 
-    public List<String> getBasicDescription(LangType langType){
+    public List<String> getBasicDescription(LangType langType) {
         List<String> lore = new ArrayList<>();
 
         lore.add(Lang.GUI_PROPERTY_DESCRIPTION.get(langType, getDescription()));
         lore.add(Lang.GUI_PROPERTY_STRUCTURE_OWNER.get(langType, getTown().getName()));
 
         lore.add(Lang.GUI_PROPERTY_OWNER.get(langType, getOwner().getNameStored()));
-        if(isForSale())
+        if (isForSale())
             lore.add(Lang.GUI_PROPERTY_FOR_SALE.get(langType, String.valueOf(salePrice)));
-        else if(isRented())
+        else if (isRented())
             lore.add(Lang.GUI_PROPERTY_RENTED_BY.get(langType, getRenter().getNameStored(), String.valueOf(rentPrice)));
-        else if(isForRent())
+        else if (isForRent())
             lore.add(Lang.GUI_PROPERTY_FOR_RENT.get(langType, String.valueOf(rentPrice)));
-        else{
+        else {
             lore.add(Lang.GUI_PROPERTY_NOT_FOR_SALE.get(langType));
         }
         return lore;
@@ -232,23 +251,25 @@ public class PropertyData {
 
     public void swapIsForSale() {
         this.isForSale = !this.isForSale;
-        if(this.isForSale)
+        if (this.isForSale)
             this.isForRent = false;
         updateSign();
     }
+
     public void swapIsRent() {
         this.isForRent = !this.isForRent;
-        if(this.isForRent)
+        if (this.isForRent)
             this.isForSale = false;
         updateSign();
     }
 
     public void showBox(Player player) {
-        ParticleUtils.showBox(TownsAndNations.getPlugin(), player,this.getFirstCorner(),this.getSecondCorner(), 10);
+        ParticleUtils.showBox(TownsAndNations.getPlugin(), player, this.getFirstCorner(), this.getSecondCorner(), 10);
     }
-    public void updateSign(){
+
+    public void updateSign() {
         World world = Bukkit.getWorld(signLocation.getWorldID());
-        if(world == null)
+        if (world == null)
             return;
         Block signBlock = world.getBlockAt(signLocation.getX(), signLocation.getY(), signLocation.getZ());
 
@@ -273,13 +294,13 @@ public class PropertyData {
         lines[0] = Lang.SIGN_NAME.get(this.getName());
         lines[1] = Lang.SIGN_PLAYER.get(PlayerDataStorage.getInstance().get(this.getOwnerID()).getNameStored());
 
-        if(this.isForSale) {
+        if (this.isForSale) {
             lines[2] = Lang.SIGN_FOR_SALE.get();
             lines[3] = Lang.SIGN_SALE_PRICE.get(this.getSalePrice());
-        } else if(this.isForRent) {
+        } else if (this.isForRent) {
             lines[2] = Lang.SIGN_RENT.get();
             lines[3] = Lang.SIGN_RENT_PRICE.get(this.getRentPrice());
-        } else if(this.isRented()) {
+        } else if (this.isRented()) {
             lines[2] = Lang.SIGN_RENTED_BY.get();
             lines[3] = this.getRenter().getNameStored();
         } else {
@@ -301,9 +322,14 @@ public class PropertyData {
     }
 
     public Block getSign() {
-        return Bukkit.getWorld(signLocation.getWorldID()).getBlockAt(this.signLocation.getX(), this.signLocation.getY(), this.signLocation.getZ());
-    }
 
+        World world = Bukkit.getWorld(signLocation.getWorldID());
+        if(world == null) {
+            return null;
+        }
+
+        return world.getBlockAt(this.signLocation.getX(), this.signLocation.getY(), this.signLocation.getZ());
+    }
 
 
     public void delete() {
@@ -316,7 +342,7 @@ public class PropertyData {
         town.removeProperty(this);
 
         Player player = Bukkit.getPlayer(UUID.fromString(owningPlayerID));
-        if (player != null){
+        if (player != null) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_DELETED.get());
             SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
         }
@@ -324,6 +350,10 @@ public class PropertyData {
 
     private void removeSign() {
         World world = Bukkit.getWorld(signLocation.getWorldID());
+        if(world == null) {
+            return;
+        }
+
         Block signBlock = world.getBlockAt(signLocation.getX(), signLocation.getY(), signLocation.getZ());
         signBlock.setType(org.bukkit.Material.AIR);
         world.spawnParticle(Particle.BUBBLE_POP, signBlock.getLocation(), 5);
@@ -333,7 +363,7 @@ public class PropertyData {
 
         double playerBalance = EconomyUtil.getBalance(player);
         double cost = getSalePrice();
-        if(playerBalance < cost){
+        if (playerBalance < cost) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(cost - playerBalance));
             SoundUtil.playSound(player, SoundEnum.MINOR_BAD);
             return;
@@ -342,8 +372,8 @@ public class PropertyData {
         Player exOwner = Bukkit.getPlayer(UUID.fromString(owningPlayerID));
         OfflinePlayer exOwnerOffline = Bukkit.getOfflinePlayer(UUID.fromString(owningPlayerID));
 
-        if(exOwner != null){
-            exOwner.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_SOLD_EX_OWNER.get(getName(),player.getName(), getSalePrice()));
+        if (exOwner != null) {
+            exOwner.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_SOLD_EX_OWNER.get(getName(), player.getName(), getSalePrice()));
             SoundUtil.playSound(exOwner, SoundEnum.GOOD);
         }
         player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_SOLD_NEW_OWNER.get(getName(), getSalePrice()));
@@ -369,25 +399,21 @@ public class PropertyData {
 
         this.isForSale = false;
         updateSign();
-        getAllowedPlayersID().clear();
-
-    }
-    public List<String> getAllowedPlayersID(){
-        if(allowedPlayers == null)
-            allowedPlayers = new ArrayList<>();
-        return allowedPlayers;
+        getPermissionManager().clear();
     }
 
-    public boolean isPlayerAllowed(ITanPlayer tanPlayer) {
-        if(getAllowedPlayersID().contains(tanPlayer.getID()))
+    public boolean isPlayerAllowed(ChunkPermissionType action, ITanPlayer tanPlayer) {
+
+        if(getPermissionManager().canPlayerDo(action, tanPlayer)){
             return true;
-        if(isRented())
+        }
+        if (isRented())
             return tanPlayer.getID().equals(rentingPlayerID);
         return isOwner(tanPlayer.getID());
     }
 
     public String getDenyMessage() {
-        if(isRented())
+        if (isRented())
             return Lang.PROPERTY_RENTED_BY.get(getRenter().getNameStored());
         else
             return Lang.PROPERTY_BELONGS_TO.get(getOwner().getNameStored());
@@ -395,42 +421,23 @@ public class PropertyData {
     }
 
     public void expelRenter(boolean rentBack) {
-        if(!isRented())
+        if (!isRented())
             return;
         ITanPlayer renter = PlayerDataStorage.getInstance().get(rentingPlayerID);
         renter.removeProperty(this);
         this.rentingPlayerID = null;
-        if(rentBack)
+        if (rentBack)
             isForRent = true;
         updateSign();
-        getAllowedPlayersID().clear();
+        getPermissionManager().clear();
     }
-
-    public void addAuthorizedPlayer(Player player){
-        addAuthorizedPlayer(player.getUniqueId().toString());
-    }
-    public void addAuthorizedPlayer(String playerID){
-        getAllowedPlayersID().add(playerID);
-    }
-
-    public void removeAuthorizedPlayer(String playerID){
-        getAllowedPlayersID().remove(playerID);
-    }
-
 
     public boolean canPlayerManageInvites(String id) {
-        if(!isRented() && isOwner(id))
+        if (!isRented() && isOwner(id))
             return true;
         return isRented() && Objects.equals(getRenterID(), id);
     }
 
-    public boolean isPlayerAuthorized(Player playerIter) {
-        return isPlayerAuthorized(playerIter.getUniqueId().toString());
-    }
-
-    public boolean isPlayerAuthorized(String playerID) {
-        return getAllowedPlayersID().contains(playerID);
-    }
 
     public boolean isInChunk(ClaimedChunk2 chunk) {
         int minX = Math.min(p1.getX() >> 4, p2.getX() >> 4);
@@ -441,5 +448,12 @@ public class PropertyData {
         int chunkZ = chunk.getZ();
 
         return (chunkX >= minX && chunkX <= maxX && chunkZ >= minZ && chunkZ <= maxZ);
+    }
+
+    public PermissionManager getPermissionManager() {
+        if (permissionManager == null) {
+            permissionManager = new PermissionManager();
+        }
+        return permissionManager;
     }
 }

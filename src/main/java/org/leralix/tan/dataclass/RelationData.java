@@ -1,17 +1,13 @@
 package org.leralix.tan.dataclass;
 
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.TerritoryUtil;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.TownRelation;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RelationData {
 

@@ -55,7 +55,7 @@ public class TownClaimedChunk extends ClaimedChunk2 {
         TownData ownerTown = getTown();
         PropertyData property = ownerTown.getProperty(location);
         if (property != null) {
-            if (property.isPlayerAllowed(tanPlayer)) {
+            if (property.isPlayerAllowed(permissionType, tanPlayer)) {
                 return true;
             } else {
                 player.sendMessage(TanChatUtils.getTANString() + property.getDenyMessage());

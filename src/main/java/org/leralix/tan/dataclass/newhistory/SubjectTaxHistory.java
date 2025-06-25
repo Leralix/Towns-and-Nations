@@ -1,8 +1,8 @@
 package org.leralix.tan.dataclass.newhistory;
 
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.utils.TerritoryUtil;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.TerritoryUtil;
 
 public class SubjectTaxHistory extends TransactionHistory {
 

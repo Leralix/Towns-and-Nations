@@ -5,10 +5,10 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.lang.Lang;
 
 public class RetrieveMoney extends ChatListenerEvent {
     TerritoryData territoryData;

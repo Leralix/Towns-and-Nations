@@ -19,7 +19,8 @@ import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.NumberUtil;
 import org.leralix.tan.utils.TanChatUtils;
 
-import static org.leralix.lib.data.SoundEnum.*;
+import static org.leralix.lib.data.SoundEnum.MINOR_BAD;
+import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
 
 public abstract class PropertyMenus extends BasicGui {
 
@@ -151,12 +152,12 @@ public abstract class PropertyMenus extends BasicGui {
                 .setDescription(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer))
                 .setAction(event ->
                         PlayerGUI.openConfirmMenu(player, Lang.GUI_PROPERTY_DELETE_PROPERTY_CONFIRM.get(tanPlayer, propertyData.getName()),
-                        p -> {
-                            propertyData.delete();
-                            player.closeInventory();
-                        },
-                        p -> open()
-                ))
+                                p -> {
+                                    propertyData.delete();
+                                    player.closeInventory();
+                                },
+                                p -> open()
+                        ))
                 .asGuiItem(player);
     }
 
@@ -164,10 +165,9 @@ public abstract class PropertyMenus extends BasicGui {
         return iconManager.get(IconKey.AUTHORIZED_PLAYERS_ICON)
                 .setName(Lang.GUI_PROPERTY_PLAYER_LIST.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_PROPERTY_PLAYER_LIST_DESC1.get(tanPlayer, propertyData.getAllowedPlayersID().size()),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get()
                 )
-                .setAction(event -> PlayerGUI.openPlayerPropertyPlayerList(player, propertyData, 0, p -> open()))
+                .setAction(event -> new PropertyChunkSettingsMenu(player, propertyData, this))
                 .asGuiItem(player);
     }
 

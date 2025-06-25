@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.utils.SoundUtil;
@@ -35,7 +34,6 @@ import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.gui.landmark.LandmarkNoOwnerMenu;
-import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.gui.user.territory.*;
 import org.leralix.tan.gui.user.war.CreateWarMenu;
 import org.leralix.tan.lang.Lang;
@@ -77,87 +75,6 @@ public class PlayerGUI {
         } else {
             new NoTownMenu(player);
         }
-    }
-
-    //Property not to modify
-    public static void openPlayerPropertyPlayerList(Player player, PropertyData propertyData, int page, Consumer<Player> onClose) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        int nRows = 4;
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(tanPlayer, propertyData.getName()), nRows);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
-
-        boolean canKick = propertyData.canPlayerManageInvites(tanPlayer.getID());
-        ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (String playerID : propertyData.getAllowedPlayersID()) {
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
-
-            ItemStack playerHead = HeadUtils.getPlayerHead(offlinePlayer,
-                    canKick ? Lang.GUI_TOWN_MEMBER_DESC3.get(tanPlayer) : "");
-
-            GuiItem headGui = ItemBuilder.from(playerHead).asGuiItem(event -> {
-                event.setCancelled(true);
-                if (!canKick || event.getClick() != ClickType.RIGHT) {
-                    return;
-                }
-                propertyData.removeAuthorizedPlayer(playerID);
-                openPlayerPropertyPlayerList(player, propertyData, page, onClose);
-
-                SoundUtil.playSound(player, MINOR_GOOD);
-                player.sendMessage(Lang.PLAYER_REMOVED_FROM_PROPERTY.get(tanPlayer, offlinePlayer.getName()));
-            });
-            guiItems.add(headGui);
-        }
-        GuiUtil.createIterator(gui, guiItems, page, player,
-                onClose,
-                p -> openPlayerPropertyPlayerList(player, propertyData, page + 1, onClose),
-                p -> openPlayerPropertyPlayerList(player, propertyData, page - 1, onClose)
-        );
-
-        ItemStack addPlayer = HeadUtils.makeSkullB64(Lang.GUI_PROPERTY_AUTHORIZE_PLAYER.get(tanPlayer), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
-        GuiItem addButton = ItemBuilder.from(addPlayer).asGuiItem(event -> {
-            event.setCancelled(true);
-            if (!propertyData.canPlayerManageInvites(tanPlayer.getID())) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
-                return;
-            }
-            openPlayerPropertyAddPlayer(player, propertyData, 0);
-        });
-        gui.setItem(nRows, 4, addButton);
-
-        gui.open(player);
-
-    }
-
-    private static void openPlayerPropertyAddPlayer(Player player, PropertyData propertyData, int page) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(tanPlayer, propertyData.getName()), 3);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
-
-        ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (Player playerIter : Bukkit.getOnlinePlayers()) {
-            if (playerIter.getUniqueId().equals(player.getUniqueId()) || propertyData.isPlayerAuthorized(playerIter)) {
-                continue;
-            }
-
-            ItemStack playerHead = HeadUtils.getPlayerHead(playerIter);
-            GuiItem headGui = ItemBuilder.from(playerHead).asGuiItem(event -> {
-                event.setCancelled(true);
-                propertyData.addAuthorizedPlayer(playerIter);
-                openPlayerPropertyAddPlayer(player, propertyData, 0);
-                SoundUtil.playSound(player, MINOR_GOOD);
-                player.sendMessage(Lang.PLAYER_ADDED_TO_PROPERTY.get(tanPlayer, playerIter.getName()));
-            });
-            guiItems.add(headGui);
-
-        }
-
-        GuiUtil.createIterator(gui, guiItems, 0, player,
-                p -> new PlayerPropertyManager(player, propertyData, p1 -> player.closeInventory()),
-                p -> openPlayerPropertyAddPlayer(player, propertyData, page + 1),
-                p -> openPlayerPropertyAddPlayer(player, propertyData, page - 1)
-        );
-
-        gui.open(player);
     }
 
     public static void openSelectHeadTerritoryMenu(Player player, TerritoryData territoryData, int page) {
@@ -965,7 +882,7 @@ public class PlayerGUI {
         }
 
         GuiUtil.createIterator(gui, guiItems, 0, player,
-                p -> new PlayerChunkSettingsMenu(player, territoryData),
+                p -> new TerritoryChunkSettingsMenu(player, territoryData),
                 p -> openPlayerListForChunkPermission(player, territoryData, type, page + 1),
                 p -> openPlayerListForChunkPermission(player, territoryData, type, page + 1));
 

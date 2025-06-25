@@ -6,12 +6,12 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.RankData;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.StringUtil;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.StringUtil;
 
 public class SalaryPaymentLine extends ProfitLine {
     double totalSalaries;

@@ -1,42 +1,46 @@
-package org.leralix.tan.gui.user.territory;
+package org.leralix.tan.gui.user.property;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.permission.RelationPermission;
-import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.storage.PermissionManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerChunkSettingsMenu extends IteratorGUI {
+public class PropertyChunkSettingsMenu extends IteratorGUI {
 
-    private final TerritoryData territoryData;
+    private final PropertyData propertyData;
+    private final BasicGui returnMenu;
 
-    public PlayerChunkSettingsMenu(Player player, TerritoryData territoryData) {
+    public PropertyChunkSettingsMenu(Player player, PropertyData propertyData, BasicGui returnGui) {
         super(player, Lang.HEADER_CHUNK_PERMISSION, 4);
-        this.territoryData = territoryData;
+        this.propertyData = propertyData;
+        this.returnMenu = returnGui;
         open();
     }
 
 
     @Override
     public void open() {
-        iterator(getChunkPermission(), p -> new ChunkSettingsMenu(player, territoryData), Material.LIME_STAINED_GLASS_PANE);
+        iterator(getChunkPermission(), p -> returnMenu.open(), Material.LIME_STAINED_GLASS_PANE);
 
         gui.open(player);
     }
 
     private List<GuiItem> getChunkPermission() {
         List<GuiItem> guiItems = new ArrayList<>();
+
+        PermissionManager permissionManager = propertyData.getPermissionManager();
+
         for (ChunkPermissionType type : ChunkPermissionType.values()) {
-            RelationPermission permission = territoryData.getPermission(type).getOverallPermission();
+            RelationPermission permission = permissionManager.get(type).getOverallPermission();
 
             GuiItem item = iconManager.get(type.getIconKey())
                     .setName(type.getName().get(tanPlayer))
@@ -47,15 +51,11 @@ public class PlayerChunkSettingsMenu extends IteratorGUI {
                     )
                     .setAction(event -> {
                         event.setCancelled(true);
-                        if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_CLAIM_SETTINGS)) {
-                            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
-                            return;
-                        }
                         if (event.isLeftClick()) {
-                            territoryData.nextPermission(type);
+                            permissionManager.nextPermission(type);
                             open();
                         } else if (event.isRightClick()) {
-                            PlayerGUI.openPlayerListForChunkPermission(player, territoryData, type, 0);
+                            new BrowsePlayerWithPermissionMenu(player, permissionManager, type, this);
                         }
                     }).asGuiItem(player);
 

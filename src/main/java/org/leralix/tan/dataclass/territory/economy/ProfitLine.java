@@ -1,7 +1,6 @@
 package org.leralix.tan.dataclass.territory.economy;
 
-import dev.triumphteam.gui
-        .guis.Gui;
+import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 

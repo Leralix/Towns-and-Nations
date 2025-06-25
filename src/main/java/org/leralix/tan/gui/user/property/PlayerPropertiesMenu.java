@@ -1,9 +1,8 @@
 package org.leralix.tan.gui.user.property;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -18,8 +17,6 @@ import org.leralix.tan.utils.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
 public class PlayerPropertiesMenu extends IteratorGUI {
 
@@ -67,7 +64,7 @@ public class PlayerPropertiesMenu extends IteratorGUI {
                     TownData playerTown = tanPlayer.getTown();
                     if(!playerTown.doesPlayerHavePermission(tanPlayer, RolePermission.CREATE_PROPERTY)){
                         player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
+                        SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                         return;
                     }
 

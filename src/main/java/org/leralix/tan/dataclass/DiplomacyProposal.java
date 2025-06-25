@@ -3,12 +3,12 @@ package org.leralix.tan.dataclass;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.TerritoryUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.TerritoryUtil;
 
 public class DiplomacyProposal {
 

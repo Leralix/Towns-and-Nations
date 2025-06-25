@@ -45,7 +45,6 @@ public class RegionClaimedChunk extends ClaimedChunk2 {
     protected boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
-        //Location is in a property, and players own or rent it
         RegionData ownerRegion = getRegion();
         //Chunk is claimed yet player has no town
         if (!tanPlayer.hasTown()) {

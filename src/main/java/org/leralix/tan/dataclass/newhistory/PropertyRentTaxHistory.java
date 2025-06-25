@@ -1,10 +1,9 @@
 package org.leralix.tan.dataclass.newhistory;
 
 import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.utils.StringUtil;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.StringUtil;
 
 public class PropertyRentTaxHistory extends TransactionHistory {
 
