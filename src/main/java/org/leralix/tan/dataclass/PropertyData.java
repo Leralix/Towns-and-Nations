@@ -404,7 +404,7 @@ public class PropertyData {
 
     public boolean isPlayerAllowed(ChunkPermissionType action, ITanPlayer tanPlayer) {
 
-        if(getPermissionManager().canPlayerDo(action, tanPlayer)){
+        if(getPermissionManager().canPlayerDo(getTown(), action, tanPlayer)){
             return true;
         }
         if (isRented())

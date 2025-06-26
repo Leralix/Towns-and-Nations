@@ -1,6 +1,7 @@
 package org.leralix.tan.storage;
 
 import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 
@@ -8,7 +9,7 @@ import java.util.EnumMap;
 
 public class PermissionManager {
 
-    private EnumMap<ChunkPermissionType, ChunkPermission> chunkPermissions;
+    private final EnumMap<ChunkPermissionType, ChunkPermission> chunkPermissions;
 
 
     public PermissionManager() {
@@ -23,9 +24,9 @@ public class PermissionManager {
         }
     }
 
-    public boolean canPlayerDo(ChunkPermissionType action, ITanPlayer tanPlayer) {
+    public boolean canPlayerDo(TerritoryData territoryToCheck, ChunkPermissionType action, ITanPlayer tanPlayer) {
         return chunkPermissions.getOrDefault(action, new ChunkPermission())
-                .isAllowed(tanPlayer.getTown(), tanPlayer);
+                .isAllowed(territoryToCheck, tanPlayer);
     }
 
     public ChunkPermission get(ChunkPermissionType type) {

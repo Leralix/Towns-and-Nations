@@ -44,19 +44,19 @@ public enum RelationPermission {
     }
 
 
-    public boolean isAllowed(TerritoryData territory, ITanPlayer tanPlayer) {
+    public boolean isAllowed(TerritoryData territoryToCheck, ITanPlayer tanPlayer) {
         switch (this) {
             case TOWN -> {
-                if(territory.isPlayerIn(tanPlayer)){
+                if(territoryToCheck.isPlayerIn(tanPlayer)){
                     return true;
                 }
             }
             case ALLIANCE -> {
-                if(territory.isPlayerIn(tanPlayer)){
+                if(territoryToCheck.isPlayerIn(tanPlayer)){
                     return true;
                 }
                 for(TerritoryData playerTerritory : tanPlayer.getAllTerritoriesPlayerIsIn()){
-                    if(territory.getRelations().getRelationWith(playerTerritory) == TownRelation.ALLIANCE){
+                    if(territoryToCheck.getRelations().getRelationWith(playerTerritory) == TownRelation.ALLIANCE){
                         return true;
                     }
                 }

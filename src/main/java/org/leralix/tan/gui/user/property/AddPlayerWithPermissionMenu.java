@@ -52,7 +52,8 @@ public class AddPlayerWithPermissionMenu extends IteratorGUI {
 
             ITanPlayer playerToAddData = PlayerDataStorage.getInstance().get(playerToAdd);
             ChunkPermission permission = permissionManager.get(chunkPermission);
-            if (permission.isAllowed(playerToAddData.getTown(), playerToAddData))
+            //Check with town since only town can have territories
+            if (permission.isAllowed(tanPlayer.getTown(), playerToAddData))
                 continue;
 
             ItemStack icon = HeadUtils.getPlayerHead(playerToAdd.getName(), playerToAdd,
