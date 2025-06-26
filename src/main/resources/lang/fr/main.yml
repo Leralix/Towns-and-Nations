@@ -264,6 +264,7 @@ language:
   GUI_GENERIC_RIGHT_CLICK_TO_DELETE: "§fClic droit pour ouvrir"
   GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT: "§fShift + clic pour se téléporter"
   GUI_GENERIC_ADD_BUTTON: "§fAjout"
+  GUI_GENERIC_NEW_BALANCE_MENU: "§fÉvolution du solde : §e{0}{MONEY_CHAR} §f→ §e{1}{MONEY_CHAR}"
   LEFT_CLICK_TO_SELECT: "§fClic gauche pour sélectionner"
   LEFT_CLICK_TO_AUTHORIZE: "§fClic gauche pour autoriser"
   LEFT_CLICK_TO_MODIFY: "§fClic gauche pour modifier"
@@ -380,7 +381,6 @@ language:
   PLAYER_REMOVED_FROM_PROPERTY: "§c{0} a été retiré de la propriété"
   PLAYER_ADDED_TO_PROPERTY: "§a{0} a été ajouté a la propriété"
   GUI_PROPERTY_PLAYER_LIST: "§aListe des joueurs autorisés"
-  GUI_PROPERTY_PLAYER_LIST_DESC1: "§e{0}§f joueurs autorisés"
   GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER: "§cClic droit pour expulser le locataire"
   PROPERTY_RENTER_EXPELLED_OWNER_SIDE: "§cLe locataire a été expulsé"
   PROPERTY_RENTER_EXPELLED_RENTER_SIDE: "§cVous avez été expulsé de la propriété : §9{0}"
@@ -796,8 +796,11 @@ language:
   ADMIN_GUI_WAR_DESC1: "§fClic gauche pour gérer les guerres"
   ADMIN_GUI_CREATE_LANDMARK: "Créer un nouveau point d'intérêt"
   LANDMARK_ALREADY_IN_POSITION: "Un point d'intérêt existe déjà sur ce chunk"
-  GUI_LANDMARK_LEFT_CLICK_TO_CLAIM: "§fClic gauche pour revendiquer ce point d'intérêt"
-  GUI_LANDMARK_TOWN_FULL: "§cLa ville ne peux pas revendiquer plus de points d'intérêt"
+  GUI_LANDMARK_LEFT_CLICK_TO_CLAIM: "§7▶ Cliquez pour revendiquer le point d'intérêt"
+  GUI_LANDMARK_CLAIM_COST: "§fCout : §6{0}{MONEY_CHAR}"
+  GUI_LANDMARK_TOWN_FULL: "§c✘ La ville ne peux pas revendiquer plus de points d'intérêt"
+  GUI_LANDMARK_NOT_ENCIRCLED: "§c✘ Le point de repère n'est pas entouré par votre ville"
+  GUI_LANDMARK_NOT_ENOUGH_MONEY: "§c✘ Vous n'avez pas assez d'argent pour revendiquer ce point de repère"
   GUI_LANDMARK_CLAIMED: "§aUn nouveau point d'intérêt a été revendiqué par votre ville"
   GUI_LANDMARK_REMOVED: "§cUn point d'intérêt a été abandonné par votre ville"
   CANNOT_DO_IN_LANDMARK: "§cVous ne pouvez pas faire cette action sur un point d'intérêt"
@@ -1088,7 +1091,3 @@ language:
   UTC_PLUS_10: "§eUTC+10:00, Sidney"
   UTC_PLUS_11: "§eUTC+11:00, Nouméa"
   UTC_PLUS_12: "§eUTC+12:00, Auckland | Fidji"
-
-
-
-

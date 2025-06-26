@@ -694,8 +694,6 @@ language:
   ADMIN_GUI_WAR_DESC1: "§fНажмите ЛКМ для управления войнами"
   ADMIN_GUI_CREATE_LANDMARK: "Создать новое месторождение"
   LANDMARK_ALREADY_IN_POSITION: "Месторождение уже есть в этом месте"
-  GUI_LANDMARK_LEFT_CLICK_TO_CLAIM: "§fНажмите ЛКМ, чтобы занять месторождение"
-  GUI_LANDMARK_TOWN_FULL: "§cГород не может получить больше достопримечательностей"
   GUI_LANDMARK_CLAIMED: "§aВ вашем городе появилось новое месторождение "
   GUI_LANDMARK_REMOVED: "§cВаш город освободил месторождение"
   CANNOT_DO_IN_LANDMARK: "§cВы не можете сделать это внутри достопримечательности "
@@ -911,7 +909,3 @@ language:
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§fНажмите ЛКМ, чтобы принять предложение"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cВы не можете захватить этот чанк"
-
-
-
-

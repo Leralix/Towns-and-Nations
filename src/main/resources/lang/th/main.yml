@@ -657,8 +657,6 @@ language:
   ADMIN_GUI_WAR_DESC1: "§fคลิกซ้ายเพื่อจัดการสงคราม"
   ADMIN_GUI_CREATE_LANDMARK: "สร้างสถานที่สำคัญใหม่"
   LANDMARK_ALREADY_IN_POSITION: "มีสถานที่สำคัญอยู่ที่ตำแหน่งนี้แล้ว"
-  GUI_LANDMARK_LEFT_CLICK_TO_CLAIM: "§fคลิกซ้ายเพื่ออ้างสิทธิ์สถานที่สำคัญนี้"
-  GUI_LANDMARK_TOWN_FULL: "§cเมืองไม่สามารถอ้างสิทธิ์สถานที่สำคัญเพิ่มได้"
   GUI_LANDMARK_CLAIMED: "§aสถานที่สำคัญใหม่ถูกอ้างสิทธิ์โดยเมืองของคุณ"
   GUI_LANDMARK_REMOVED: "§cสถานที่สำคัญถูกยกเลิกการอ้างสิทธิ์โดยเมืองของคุณ"
   CANNOT_DO_IN_LANDMARK: "§cคุณไม่สามารถดำเนินการนี้ในสถานที่สำคัญได้"
@@ -860,7 +858,3 @@ language:
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§fคลิกซ้ายเพื่อเข้าถึงข้อเสนอ"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cคุณไม่สามารถอ้างสิทธิ์ชังก์นี้ได้"
-
-
-
-

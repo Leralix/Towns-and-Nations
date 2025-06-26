@@ -509,8 +509,6 @@ language:
   ADMIN_GUI_WAR_DESC1: "§fClique esquerdo para gerenciar guerras"
   ADMIN_GUI_CREATE_LANDMARK: "Criar novo ponto de referência"
   LANDMARK_ALREADY_IN_POSITION: "Um ponto de referência já está nessa posição"
-  GUI_LANDMARK_LEFT_CLICK_TO_CLAIM: "§fClique esquerdo para claimar esse ponto de referência"
-  GUI_LANDMARK_TOWN_FULL: "§cA cidade não pode reivindicar mais pontos de referência"
   GUI_LANDMARK_CLAIMED: "§aUm novo ponto de referência foi reivindicado pela sua cidade"
   GUI_LANDMARK_REMOVED: "\n"
   CANNOT_DO_IN_LANDMARK: "§cVocê não pode realizar esta ação em um ponto de referência"
@@ -691,7 +689,3 @@ language:
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§fClique esquerdo para acessar a proposta"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cVocê não pode claimar este chunk"
-
-
-
-

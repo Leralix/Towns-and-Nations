@@ -450,8 +450,6 @@ language:
   ADMIN_GUI_LANDMARK_DESC1: "§f좌클릭하여 랜드마크를 관리하세요"
   ADMIN_GUI_CREATE_LANDMARK: "새 랜드마크 생성"
   LANDMARK_ALREADY_IN_POSITION: "해당 위치에 이미 랜드마크가 있습니다"
-  GUI_LANDMARK_LEFT_CLICK_TO_CLAIM: "§f좌클릭하여 이 랜드마크를 차지하세요"
-  GUI_LANDMARK_TOWN_FULL: "§c마을이 더 이상 랜드마크를 차지할 수 없습니다"
   GUI_LANDMARK_CLAIMED: "§a새 랜드마크가 마을에 의해 차지되었습니다"
   GUI_LANDMARK_REMOVED: "§c마을에서 랜드마크가 포기되었습니다"
   CANNOT_DO_IN_LANDMARK: "§c랜드마크 안에서는 이 작업을 수행할 수 없습니다"
@@ -520,7 +518,3 @@ language:
   CONFIRM_PLAYER_KICKED: "§3{0}§f이(가) 마을에서 추방됩니다"
   GUI_CONFIRM_DELETE_REGION: "§f지역 §b{0}§f이(가) 삭제됩니다"
   GUI_CONFIRM_CHANGE_LEADER: "§3{0}§f이(가) 지역의 새로운 리더가 됩니다"
-
-
-
-

@@ -373,7 +373,6 @@ language:
   PLAYER_REMOVED_FROM_PROPERTY: "§c{0} byl odebrán z nemovitosti"
   PLAYER_ADDED_TO_PROPERTY: "§a{0} byl přidán k nemovitosti"
   GUI_PROPERTY_PLAYER_LIST: "§aSeznam autorizovaných hráčů"
-  GUI_PROPERTY_PLAYER_LIST_DESC1: "§e{0}§f autorizovaní hráči"
   GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER: "§cPravým klikem vyhoďte nájemníka"
   PROPERTY_RENTER_EXPELLED_OWNER_SIDE: "§cNájemník byl vyhozen"
   PROPERTY_RENTER_EXPELLED_RENTER_SIDE: "§cByli jste vyhozeni z nemovitosti: §9{0}"
@@ -784,8 +783,6 @@ language:
   ADMIN_GUI_WAR_DESC1: "§fLevým klikem spravujte války"
   ADMIN_GUI_CREATE_LANDMARK: "Vytvořit nový mezník"
   LANDMARK_ALREADY_IN_POSITION: "Na této pozici již existuje mezník"
-  GUI_LANDMARK_LEFT_CLICK_TO_CLAIM: "§fLevým klikem přivlastněte tento mezník"
-  GUI_LANDMARK_TOWN_FULL: "§cMěsto nemůže přivlastnit více památek"
   GUI_LANDMARK_CLAIMED: "§aNový mezník byl přivlastněn vaším městem"
   GUI_LANDMARK_REMOVED: "§cMezník byl odňat od vašeho města"
   CANNOT_DO_IN_LANDMARK: "§cTuto akci nelze provést v mezníku"
@@ -1046,7 +1043,3 @@ language:
   JOIN_REGION_PROPOSAL_NEWSLETTER: "{0}§f podal návrh připojit se k regionu {1}"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cNemůžete přivlastnit tento chunk"
-
-
-
-

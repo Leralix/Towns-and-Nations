@@ -373,7 +373,6 @@ language:
   PLAYER_REMOVED_FROM_PROPERTY: "§c{0} đã bị xóa khỏi tài sản"
   PLAYER_ADDED_TO_PROPERTY: "§a{0} đã được thêm vào tài sản"
   GUI_PROPERTY_PLAYER_LIST: "§aDanh sách người chơi được ủy quyền"
-  GUI_PROPERTY_PLAYER_LIST_DESC1: "§e{0}§f người chơi được ủy quyền"
   GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER: "§cNhấp chuột phải để trục xuất người thuê"
   PROPERTY_RENTER_EXPELLED_OWNER_SIDE: "§cNgười thuê đã bị trục xuất"
   PROPERTY_RENTER_EXPELLED_RENTER_SIDE: "§cBạn đã bị trục xuất khỏi tài sản: §9{0}"
@@ -784,8 +783,6 @@ language:
   ADMIN_GUI_WAR_DESC1: "§fNhấp chuột trái để quản lý chiến tranh"
   ADMIN_GUI_CREATE_LANDMARK: "Tạo địa danh mới"
   LANDMARK_ALREADY_IN_POSITION: "Một địa danh đã ở vị trí này rồi"
-  GUI_LANDMARK_LEFT_CLICK_TO_CLAIM: "§fNhấp chuột trái để tuyên bố địa danh này"
-  GUI_LANDMARK_TOWN_FULL: "§cThị trấn không thể tuyên bố thêm địa danh"
   GUI_LANDMARK_CLAIMED: "§aĐịa danh mới đã được thị trấn của bạn tuyên bố"
   GUI_LANDMARK_REMOVED: "§cMột địa danh đã bị thị trấn của bạn hủy tuyên bố"
   CANNOT_DO_IN_LANDMARK: "§cBạn không thể thực hiện hành động này trong một địa danh"
@@ -1046,7 +1043,3 @@ language:
   JOIN_REGION_PROPOSAL_NEWSLETTER: "{0}§f đã đề xuất tham gia vùng {1}"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cBạn không thể tuyên bố khối này"
-
-
-
-

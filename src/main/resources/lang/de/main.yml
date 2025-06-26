@@ -696,8 +696,6 @@ language:
   ADMIN_GUI_WAR_DESC1: "§fLinksklick, um Kriege zu verwalten"
   ADMIN_GUI_CREATE_LANDMARK: "Neue Landmarke erstellen"
   LANDMARK_ALREADY_IN_POSITION: "An dieser Position ist bereits eine Landmarke"
-  GUI_LANDMARK_LEFT_CLICK_TO_CLAIM: "§fLinksklick, um diese Landmarke zu beanspruchen"
-  GUI_LANDMARK_TOWN_FULL: "§cDie Stadt kann keine weiteren Landmarken beanspruchen"
   GUI_LANDMARK_CLAIMED: "§aEine neue Landmarke wurde von deiner Stadt beansprucht"
   GUI_LANDMARK_REMOVED: "§cEine Landmarke wurde von deiner Stadt entfernt"
   CANNOT_DO_IN_LANDMARK: "§cDu kannst diese Aktion in einer Landmarke nicht durchführen"
@@ -936,7 +934,3 @@ language:
   TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER: ""
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cDu kannst diesen Chunk nicht beanspruchen"
-
-
-
-

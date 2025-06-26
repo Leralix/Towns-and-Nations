@@ -696,8 +696,6 @@ language:
   ADMIN_GUI_WAR_DESC1: "§fSavaşları yönetmek için sol tıklayın"
   ADMIN_GUI_CREATE_LANDMARK: "Yeni bir anıt oluştur"
   LANDMARK_ALREADY_IN_POSITION: "Bu konumda zaten bir anıt var"
-  GUI_LANDMARK_LEFT_CLICK_TO_CLAIM: "§fBu anıtı claimlemek için sol tıklayın"
-  GUI_LANDMARK_TOWN_FULL: "§cKasaba daha fazla anıt claimleyemez"
   GUI_LANDMARK_CLAIMED: "§aYeni bir anıt kasabanız tarafından claimlendi"
   GUI_LANDMARK_REMOVED: "§cBir anıtın claimi kasabanızdan kaldırıldı"
   CANNOT_DO_IN_LANDMARK: "§cBu işlemi bir anıtta yapamazsınız"
@@ -913,7 +911,3 @@ language:
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§fTeklife erişmek için sol tıklayın"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cBu araziyi claimleyemezsiniz"
-
-
-
-

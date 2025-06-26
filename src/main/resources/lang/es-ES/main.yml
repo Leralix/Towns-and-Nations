@@ -506,8 +506,6 @@ language:
   ADMIN_GUI_WAR_DESC1: "§fClick izquierdo para administrar guerras"
   ADMIN_GUI_CREATE_LANDMARK: "Crear nuevo generador"
   LANDMARK_ALREADY_IN_POSITION: "Ya existe un generador aquí"
-  GUI_LANDMARK_LEFT_CLICK_TO_CLAIM: "§fClick izquierdo para reclamar este generador"
-  GUI_LANDMARK_TOWN_FULL: "§cEl pueblo no puede reclamar más generadores"
   GUI_LANDMARK_CLAIMED: "§aUn nuevo generador ha sido reclamado por tu pueblo"
   GUI_LANDMARK_REMOVED: "§cUn generador ha sido abandonado por tu pueblo"
   CANNOT_DO_IN_LANDMARK: "§cNo puedes hacer esta acción en un generador"
@@ -642,7 +640,3 @@ language:
   MAP_REGION: "    §b[Región]"
   #Reload
   RELOAD_SUCCESS: "§aConfiguración recargada"
-
-
-
-
