@@ -22,12 +22,12 @@ import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.events.newsletter.NewsletterStorage;
+import org.leralix.tan.events.newsletter.news.RegionDeletedNews;
+import org.leralix.tan.events.newsletter.news.TerritoryIndependentNews;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.newsletter.news.RegionDeletedNews;
-import org.leralix.tan.newsletter.news.TerritoryIndependentNews;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -296,7 +296,7 @@ public class RegionData extends TerritoryData {
 
     protected void removeVassal(String vassalID) {
 
-        NewsletterStorage.register(new TerritoryIndependentNews(getID(), vassalID));
+        NewsletterStorage.getInstance().register(new TerritoryIndependentNews(getID(), vassalID));
 
         TownData town = TownDataStorage.getInstance().get(vassalID);
         townsInRegion.remove(vassalID);
@@ -368,7 +368,7 @@ public class RegionData extends TerritoryData {
     @Override
     public void delete() {
         super.delete();
-        NewsletterStorage.register(new RegionDeletedNews(getLeaderData().getID(), this));
+        NewsletterStorage.getInstance().register(new RegionDeletedNews(getLeaderData().getID(), this));
 
         TeamUtils.updateAllScoreboardColor();
         RegionDataStorage.getInstance().deleteRegion(this);

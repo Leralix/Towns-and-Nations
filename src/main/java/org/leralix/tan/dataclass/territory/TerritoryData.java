@@ -36,14 +36,14 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.events.newsletter.NewsletterStorage;
+import org.leralix.tan.events.newsletter.news.DiplomacyAcceptedNews;
+import org.leralix.tan.events.newsletter.news.DiplomacyProposalNews;
+import org.leralix.tan.events.newsletter.news.TerritoryVassalAcceptedNews;
+import org.leralix.tan.events.newsletter.news.TerritoryVassalProposalNews;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.newsletter.news.DiplomacyAcceptedNews;
-import org.leralix.tan.newsletter.news.DiplomacyProposalNews;
-import org.leralix.tan.newsletter.news.TerritoryVassalAcceptedNews;
-import org.leralix.tan.newsletter.news.TerritoryVassalProposalNews;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
@@ -223,7 +223,7 @@ public abstract class TerritoryData {
         this.getRelations().setRelation(relation,otherTerritory);
         otherTerritory.getRelations().setRelation(relation,this);
 
-        NewsletterStorage.register(new DiplomacyAcceptedNews(getID(), otherTerritory.getID(), relation, actualRelation.isSuperiorTo(relation)));
+        NewsletterStorage.getInstance().register(new DiplomacyAcceptedNews(getID(), otherTerritory.getID(), relation, actualRelation.isSuperiorTo(relation)));
 
         TeamUtils.updateAllScoreboardColor();
     }
@@ -243,7 +243,7 @@ public abstract class TerritoryData {
     }
     private void addDiplomaticProposal(TerritoryData proposingTerritory, TownRelation wantedRelation){
         getDiplomacyProposals().put(proposingTerritory.getID(), new DiplomacyProposal(proposingTerritory.getID(), getID(), wantedRelation));
-        NewsletterStorage.register(new DiplomacyProposalNews(proposingTerritory.getID(), getID(), wantedRelation));
+        NewsletterStorage.getInstance().register(new DiplomacyProposalNews(proposingTerritory.getID(), getID(), wantedRelation));
     }
 
     public void receiveDiplomaticProposal(TerritoryData proposingTerritory, TownRelation wantedRelation) {
@@ -400,8 +400,7 @@ public abstract class TerritoryData {
 
     public void addVassal(TerritoryData vassal){
 
-        NewsletterStorage.register(new TerritoryVassalAcceptedNews(getID(), vassal.getID()));
-        NewsletterStorage.removeVassalisationProposal(this, vassal);
+        NewsletterStorage.getInstance().register(new TerritoryVassalAcceptedNews(getID(), vassal.getID()));
         addVassalPrivate(vassal);
     }
     protected abstract void addVassalPrivate (TerritoryData vassal);
@@ -576,7 +575,7 @@ public abstract class TerritoryData {
     public void addVassalisationProposal(TerritoryData proposal){
         getOverlordsProposals().add(proposal.getID());
         broadcastMessageWithSound(Lang.REGION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getBaseColoredName(), getBaseColoredName()), SoundEnum.MINOR_GOOD);
-        NewsletterStorage.register(new TerritoryVassalProposalNews(proposal, this));
+        NewsletterStorage.getInstance().register(new TerritoryVassalProposalNews(proposal, this));
     }
 
     public void removeVassalisationProposal(TerritoryData proposal){

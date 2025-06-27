@@ -5,12 +5,12 @@ import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.events.newsletter.NewsletterStorage;
+import org.leralix.tan.events.newsletter.news.RegionCreationNews;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
-import org.leralix.tan.newsletter.news.RegionCreationNews;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
@@ -60,7 +60,7 @@ public class CreateRegion extends ChatListenerEvent {
         RegionData newRegion = RegionDataStorage.getInstance().createNewRegion(regionName, capital);
         PlayerChatListenerStorage.removePlayer(player);
 
-        NewsletterStorage.register(new RegionCreationNews(player, newRegion));
+        NewsletterStorage.getInstance().register(new RegionCreationNews(player, newRegion));
 
         openGui(p -> PlayerGUI.dispatchPlayerRegion(player), player);
     }

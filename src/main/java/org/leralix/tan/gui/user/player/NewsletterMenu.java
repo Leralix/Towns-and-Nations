@@ -2,13 +2,13 @@ package org.leralix.tan.gui.user.player;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.leralix.tan.events.newsletter.NewsletterScope;
+import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.newsletter.NewsletterScope;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.utils.GuiUtil;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public class NewsletterMenu extends IteratorGUI {
     }
 
     private List<GuiItem> getNewsletters() {
-        return NewsletterStorage.getNewsletterForPlayer(player, scope, p -> open());
+        return NewsletterStorage.getInstance().getNewsletterForPlayer(player, scope, p -> open());
     }
 
     private GuiItem getMarkAllAsReadButton() {
@@ -48,7 +48,7 @@ public class NewsletterMenu extends IteratorGUI {
                         Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer)
                 )
                 .setAction(event -> {
-                    NewsletterStorage.markAllAsReadForPlayer(player, scope);
+                    NewsletterStorage.getInstance().markAllAsReadForPlayer(player, scope);
                     open();
                 })
                 .asGuiItem(player);

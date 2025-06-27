@@ -9,7 +9,6 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.user.territory.NoTownMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.GuiUtil;
 import org.leralix.tan.utils.HeadUtils;
@@ -76,7 +75,6 @@ public class ApplyToTownMenu extends IteratorGUI {
                         return;
                     }
                     specificTownData.removePlayerJoinRequest(player);
-                    NewsletterStorage.removePlayerJoinRequest(player, specificTownData);
                     player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(tanPlayer));
                     open();
                 }

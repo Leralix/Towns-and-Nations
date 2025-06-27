@@ -10,7 +10,7 @@ import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
+import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -55,7 +55,7 @@ public class DailyTasks {
         clearOldTaxes();
         updatePlayerUsernames();
 
-        NewsletterStorage.clearOldNewsletters();
+        NewsletterStorage.getInstance().clearOldNewsletters();
         if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("enableMidnightGenerateResource", true)) {
           LandmarkStorage.getInstance().generateAllResources();
         }

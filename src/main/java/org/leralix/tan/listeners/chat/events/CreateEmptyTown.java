@@ -2,17 +2,17 @@ package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.listeners.chat.ChatListenerEvent;
-import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
-import org.leralix.tan.newsletter.news.TownCreatedNews;
-import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.utils.FileUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.events.newsletter.NewsletterStorage;
+import org.leralix.tan.events.newsletter.news.TownCreatedNews;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.listeners.chat.ChatListenerEvent;
+import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.FileUtil;
+import org.leralix.tan.utils.TanChatUtils;
 
 import java.util.function.Consumer;
 
@@ -42,7 +42,7 @@ public class CreateEmptyTown extends ChatListenerEvent {
         TownData newTown = TownDataStorage.getInstance().newTown(townName);
         PlayerChatListenerStorage.removePlayer(player);
 
-        NewsletterStorage.register(new TownCreatedNews(newTown, player));
+        NewsletterStorage.getInstance().register(new TownCreatedNews(newTown, player));
         FileUtil.addLineToHistory(Lang.TOWN_CREATED_NEWSLETTER.get(player.getName(),newTown.getName()));
 
         openGui(guiCallback, player);

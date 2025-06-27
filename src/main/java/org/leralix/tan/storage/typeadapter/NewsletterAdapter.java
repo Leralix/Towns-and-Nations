@@ -4,10 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import org.leralix.tan.newsletter.news.DiplomacyProposalNews;
-import org.leralix.tan.newsletter.news.TerritoryVassalProposalNews;
-import org.leralix.tan.newsletter.news.Newsletter;
-import org.leralix.tan.newsletter.news.PlayerJoinRequestNews;
+import org.leralix.tan.events.newsletter.news.DiplomacyProposalNews;
+import org.leralix.tan.events.newsletter.news.TerritoryVassalProposalNews;
+import org.leralix.tan.events.newsletter.news.Newsletter;
+import org.leralix.tan.events.newsletter.news.PlayerJoinRequestNews;
 
 import java.io.IOException;
 

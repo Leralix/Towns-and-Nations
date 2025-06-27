@@ -18,6 +18,8 @@ import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.territory.StrongholdData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
+import org.leralix.tan.events.EventManager;
+import org.leralix.tan.events.events.AttackWonByAttackerInternalEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
@@ -34,7 +36,9 @@ public class CurrentAttack {
 
     private static final int MAX_SCORE = 1000;
     private long remainingTime;
+    private final TerritoryData mainAttackingTerritory;
     private final Collection<TerritoryData> attackers;
+    private final TerritoryData mainDefendingTerritory;
     private final Collection<TerritoryData> defenders;
     private BossBar bossBar;
     private String originalTitle;
@@ -42,9 +46,11 @@ public class CurrentAttack {
     private final StrongholdData defenderStronghold;
     StrongholdListener strongholdListener;
 
-    public CurrentAttack(String id, Collection<TerritoryData> attackers, Collection<TerritoryData> defenders, WarGoal warGoal, StrongholdData defenderStronghold) {
+    public CurrentAttack(String id, TerritoryData mainAttackingTerritory, Collection<TerritoryData> attackers, TerritoryData mainDefendingTerritory, Collection<TerritoryData> defenders, WarGoal warGoal, StrongholdData defenderStronghold) {
         this.id = id;
+        this.mainAttackingTerritory = mainAttackingTerritory;
         this.attackers = attackers;
+        this.mainDefendingTerritory = mainDefendingTerritory;
         this.defenders = defenders;
         this.originalTitle = "War start";
         long warDuration = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("WarDuration");
@@ -81,7 +87,9 @@ public class CurrentAttack {
 
     public CurrentAttack(String newID, PlannedAttack plannedAttack) {
         this(newID,
+                plannedAttack.getMainAttacker(),
                 plannedAttack.getAttackingTerritories(),
+                plannedAttack.getMainDefender(),
                 plannedAttack.getDefendingTerritories(),
                 plannedAttack.getWarGoal(),
                 plannedAttack.getDefenderStronghold());
@@ -183,6 +191,10 @@ public class CurrentAttack {
     }
 
     private void attackerWin() {
+
+        EventManager.getInstance().callEvent(new AttackWonByAttackerInternalEvent(mainAttackingTerritory, mainDefendingTerritory));
+
+        //TODO : switch message to the newsletter system (check what should remain and what should be removed)
 
         for(TerritoryData territoryData : this.attackers) {
             for(ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {

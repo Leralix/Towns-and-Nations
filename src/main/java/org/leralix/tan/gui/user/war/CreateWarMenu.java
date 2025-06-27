@@ -9,6 +9,8 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
 import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.events.EventManager;
+import org.leralix.tan.events.events.AttackDeclaredInternalEvent;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
@@ -33,13 +35,13 @@ public class CreateWarMenu extends BasicGui {
 
     private final CreateAttackData attackData;
     private final TerritoryData attackingTerritory;
-    private final TerritoryData defendingTerritory;
+    private final TerritoryData attackedTerritory;
 
-    public CreateWarMenu(Player player, TerritoryData attackingTerritory, TerritoryData defendingTerritory) {
-        super(player, Lang.HEADER_CREATE_WAR_MANAGER.get(player, defendingTerritory.getName()), 3);
-        this.attackData = new CreateAttackData(attackingTerritory, defendingTerritory);
+    public CreateWarMenu(Player player, TerritoryData attackingTerritory, TerritoryData attackedTerritory) {
+        super(player, Lang.HEADER_CREATE_WAR_MANAGER.get(player, attackedTerritory.getName()), 3);
+        this.attackData = new CreateAttackData(attackingTerritory, attackedTerritory);
         this.attackingTerritory = attackingTerritory;
-        this.defendingTerritory = defendingTerritory;
+        this.attackedTerritory = attackedTerritory;
         open();
     }
 
@@ -47,7 +49,7 @@ public class CreateWarMenu extends BasicGui {
         super(player, Lang.HEADER_CREATE_WAR_MANAGER.get(player, attackData.getMainDefender().getName()), 3);
         this.attackData = attackData;
         this.attackingTerritory = attackData.getMainAttacker();
-        this.defendingTerritory = attackData.getMainDefender();
+        this.attackedTerritory = attackData.getMainDefender();
         open();
     }
 
@@ -101,12 +103,18 @@ public class CreateWarMenu extends BasicGui {
                         return;
                     }
 
+                    EventManager.getInstance().callEvent(new AttackDeclaredInternalEvent(attackedTerritory, attackingTerritory));
+
+
+                    //TODO : delete when event system is fully implemented
+                    String message = Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(tanPlayer, attackingTerritory.getName(), attackedTerritory.getName());
+                    attackingTerritory.broadcastMessageWithSound(message, WAR);
+                    attackedTerritory.broadcastMessageWithSound(message, WAR);
+
                     PlannedAttackStorage.newWar(attackData);
                     new WarMenu(player, attackingTerritory);
 
-                    String message = Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(tanPlayer, attackingTerritory.getName(), defendingTerritory.getName());
-                    attackingTerritory.broadcastMessageWithSound(message, WAR);
-                    defendingTerritory.broadcastMessageWithSound(message, WAR);
+
 
                 })
                 .asGuiItem(player);

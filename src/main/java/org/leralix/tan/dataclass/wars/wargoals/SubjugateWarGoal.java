@@ -6,9 +6,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
+import org.leralix.tan.events.newsletter.NewsletterStorage;
+import org.leralix.tan.events.newsletter.news.TerritoryVassalForcedNews;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.newsletter.news.TerritoryVassalForcedNews;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.utils.TerritoryUtil;
 
 public class SubjugateWarGoal extends WarGoal {
@@ -50,7 +50,7 @@ public class SubjugateWarGoal extends WarGoal {
         }
         territoryData.setOverlord(newOverlord);
 
-        NewsletterStorage.register(new TerritoryVassalForcedNews(
+        NewsletterStorage.getInstance().register(new TerritoryVassalForcedNews(
                 territoryData,
                 newOverlord
         ));

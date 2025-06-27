@@ -21,14 +21,15 @@ import org.leralix.tan.commands.server.ServerCommandManager;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.economy.TanEconomyStandalone;
 import org.leralix.tan.economy.VaultManager;
+import org.leralix.tan.events.EventManager;
+import org.leralix.tan.events.newsletter.NewsletterStorage;
+import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.integration.worldguard.WorldGuardManager;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.*;
 import org.leralix.tan.listeners.chat.ChatListener;
-import org.leralix.tan.newsletter.NewsletterType;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.PvpSettings;
@@ -187,7 +188,7 @@ public final class TownsAndNations extends JavaPlugin {
         TownDataStorage.getInstance();
         LandmarkStorage.getInstance().load();
         PlannedAttackStorage.load();
-        NewsletterStorage.init();
+        NewsletterStorage.getInstance();
 
 
         getLogger().log(Level.INFO,"[TaN] -Loading blocks data");
@@ -284,6 +285,7 @@ public final class TownsAndNations extends JavaPlugin {
         NewClaimedChunkStorage.getInstance().save();
         LandmarkStorage.getInstance().save();
         PlannedAttackStorage.save();
+        EventManager.getInstance().registerEvents(NewsletterStorage.getInstance());
 
         try {
             Thread.sleep(50);

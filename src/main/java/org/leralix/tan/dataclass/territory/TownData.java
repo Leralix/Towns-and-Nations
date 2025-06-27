@@ -21,14 +21,14 @@ import org.leralix.tan.dataclass.territory.economy.*;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.events.newsletter.NewsletterStorage;
+import org.leralix.tan.events.newsletter.news.PlayerJoinRequestNews;
+import org.leralix.tan.events.newsletter.news.PlayerJoinTownNews;
+import org.leralix.tan.events.newsletter.news.TownDeletedNews;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.user.territory.TerritoryMemberMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.newsletter.news.PlayerJoinRequestNews;
-import org.leralix.tan.newsletter.news.PlayerJoinTownNews;
-import org.leralix.tan.newsletter.news.TownDeletedNews;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.HeadUtils;
@@ -128,7 +128,7 @@ public class TownData extends TerritoryData {
             overlords.registerPlayer(tanPlayer);
         }
 
-        NewsletterStorage.register(new PlayerJoinTownNews(tanPlayer, this));
+        NewsletterStorage.getInstance().register(new PlayerJoinTownNews(tanPlayer, this));
         TeamUtils.updateAllScoreboardColor();
         TownDataStorage.getInstance().saveStats();
     }
@@ -310,7 +310,7 @@ public class TownData extends TerritoryData {
 
     public void addPlayerJoinRequest(Player player) {
         addPlayerJoinRequest(player.getUniqueId().toString());
-        NewsletterStorage.register(new PlayerJoinRequestNews(player, this));
+        NewsletterStorage.getInstance().register(new PlayerJoinRequestNews(player, this));
     }
 
     public void addPlayerJoinRequest(String playerUUID) {
@@ -773,7 +773,7 @@ public class TownData extends TerritoryData {
         removeAllLandmark(); //Remove all Landmark from the deleted town
         removeAllProperty(); //Remove all Property from the deleted town
 
-        NewsletterStorage.register(new TownDeletedNews(getLeaderData().getID(), getBaseColoredName()));
+        NewsletterStorage.getInstance().register(new TownDeletedNews(getLeaderData().getID(), getBaseColoredName()));
 
 
         List<String> playersToRemove = new ArrayList<>(getPlayerIDList());
