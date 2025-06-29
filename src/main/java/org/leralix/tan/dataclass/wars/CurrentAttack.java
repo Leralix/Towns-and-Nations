@@ -20,6 +20,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.AttackWonByAttackerInternalEvent;
+import org.leralix.tan.events.events.AttackWonByDefenderInternalEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
@@ -192,7 +193,7 @@ public class CurrentAttack {
 
     private void attackerWin() {
 
-        EventManager.getInstance().callEvent(new AttackWonByAttackerInternalEvent(mainAttackingTerritory, mainDefendingTerritory));
+        EventManager.getInstance().callEvent(new AttackWonByAttackerInternalEvent(mainDefendingTerritory, mainAttackingTerritory));
 
         //TODO : switch message to the newsletter system (check what should remain and what should be removed)
 
@@ -218,6 +219,8 @@ public class CurrentAttack {
     }
 
     private void defenderWin(){
+
+        EventManager.getInstance().callEvent(new AttackWonByDefenderInternalEvent(mainDefendingTerritory, mainAttackingTerritory));
 
         for(TerritoryData territoryData : this.attackers) {
             for(ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {

@@ -5,8 +5,8 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.events.newsletter.NewsletterStorage;
-import org.leralix.tan.events.newsletter.news.TownCreatedNews;
+import org.leralix.tan.events.EventManager;
+import org.leralix.tan.events.events.TownCreatedInternalEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
@@ -42,7 +42,7 @@ public class CreateEmptyTown extends ChatListenerEvent {
         TownData newTown = TownDataStorage.getInstance().newTown(townName);
         PlayerChatListenerStorage.removePlayer(player);
 
-        NewsletterStorage.getInstance().register(new TownCreatedNews(newTown, player));
+        EventManager.getInstance().callEvent(new TownCreatedInternalEvent(newTown));
         FileUtil.addLineToHistory(Lang.TOWN_CREATED_NEWSLETTER.get(player.getName(),newTown.getName()));
 
         openGui(guiCallback, player);

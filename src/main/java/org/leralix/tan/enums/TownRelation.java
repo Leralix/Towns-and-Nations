@@ -2,6 +2,7 @@ package org.leralix.tan.enums;
 
 import org.bukkit.ChatColor;
 import org.leralix.tan.lang.Lang;
+import org.tan.api.enums.EDiplomacyState;
 
 public enum TownRelation {
 
@@ -41,5 +42,16 @@ public enum TownRelation {
 
     public boolean isSuperiorTo(TownRelation oldRelation){
         return rank > oldRelation.rank;
+    }
+
+    public EDiplomacyState toAPI() {
+        return switch (this) {
+            case ALLIANCE -> EDiplomacyState.ALLIANCE;
+            case NON_AGGRESSION -> EDiplomacyState.NON_AGGRESSION;
+            case NEUTRAL -> EDiplomacyState.NEUTRAL;
+            case EMBARGO -> EDiplomacyState.EMBARGO;
+            case WAR -> EDiplomacyState.WAR;
+            default -> EDiplomacyState.NEUTRAL; // SELF, OVERLORD, VASSAL
+        };
     }
 }
