@@ -48,7 +48,7 @@ public class NewsletterMenu extends IteratorGUI {
                         Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer)
                 )
                 .setAction(event -> {
-                    NewsletterStorage.getInstance().markAllAsReadForPlayer(player, scope);
+                    NewsletterStorage.getInstance().markAllAsReadForPlayer(player);
                     open();
                 })
                 .asGuiItem(player);

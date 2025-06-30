@@ -7,10 +7,11 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.events.newsletter.NewsletterType;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
+import org.tan.api.interfaces.TanTerritory;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -22,10 +23,10 @@ public class TerritoryVassalAcceptedNews extends Newsletter {
     private final String regionID;
     private final String townID;
 
-    public TerritoryVassalAcceptedNews(String regionID, String townID) {
+    public TerritoryVassalAcceptedNews(TanTerritory regionID, TanTerritory townID) {
         super();
-        this.regionID = regionID;
-        this.townID = townID;
+        this.regionID = regionID.getID();
+        this.townID = townID.getID();
     }
 
     public TerritoryVassalAcceptedNews(UUID id, long date, String proposingTerritoryID, String receivingTerritoryID) {

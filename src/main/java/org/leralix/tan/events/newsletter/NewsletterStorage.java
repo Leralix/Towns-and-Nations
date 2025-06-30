@@ -6,20 +6,15 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.events.InternalEvent;
-import org.leralix.tan.events.TanEventListener;
-import org.leralix.tan.events.events.DefenderAcceptDemandsBeforeWarInternalEvent;
 import org.leralix.tan.events.newsletter.dao.NewsletterDAO;
-import org.leralix.tan.events.newsletter.news.AttackCancelledByDefenderNewsletter;
 import org.leralix.tan.events.newsletter.news.Newsletter;
-import org.tan.api.events.TanListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class NewsletterStorage extends TanEventListener<InternalEvent> implements TanListener {
+public class NewsletterStorage {
 
     private final NewsletterDAO newsletterDAO;
 
@@ -121,19 +116,13 @@ public class NewsletterStorage extends TanEventListener<InternalEvent> implement
 
     }
 
-    public void markAllAsReadForPlayer(Player player, NewsletterScope scope) {
+    public void markAllAsReadForPlayer(Player player) {
         for(Newsletter newsletter : getNewsletters()){
             newsletter.markAsRead(player);
         }
     }
 
 
-    @Override
-    public void onEvent(InternalEvent event) {
 
-        if(event instanceof DefenderAcceptDemandsBeforeWarInternalEvent specificEvent) {
-            register(new AttackCancelledByDefenderNewsletter(specificEvent.getDefenderTerritory(), specificEvent.getAttackerTerritory()));
-        }
 
-    }
 }

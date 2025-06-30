@@ -1,6 +1,7 @@
 package org.leralix.tan.events;
 
 import org.leralix.tan.TownsAndNations;
+import org.tan.api.events.TanEvent;
 import org.tan.api.events.TanListener;
 import org.tan.api.getters.TanEventManager;
 
@@ -31,6 +32,7 @@ public class EventManager implements TanEventManager {
     public void registerEvents(TanListener listenerInstance) {
         for (Method method : listenerInstance.getClass().getDeclaredMethods()) {
             if (!method.isAnnotationPresent(TanListener.EventHandler.class)) continue;
+            System.out.println("Registering method: " + method.getName());
 
             Class<?>[] params = method.getParameterTypes();
             if (params.length != 1) continue;
@@ -40,17 +42,24 @@ public class EventManager implements TanEventManager {
             method.setAccessible(true);
             RegisteredListener registered = new RegisteredListener(listenerInstance, method);
 
-            listeners
-                    .computeIfAbsent(eventType, e -> new ArrayList<>())
+            listeners.computeIfAbsent(eventType, e -> new ArrayList<>())
                     .add(registered);
         }
     }
 
     public <T> void callEvent(T event) {
-        List<RegisteredListener> list = listeners.getOrDefault(event.getClass(), List.of());
+        System.out.println("Calling event: " + event.getClass().getName());
+        System.out.println(listeners);
+        System.out.println(listeners.get(event.getClass()));
 
-        for (RegisteredListener reg : list) {
-            reg.invoke(event);
+        for (Class<?> iface : event.getClass().getInterfaces()) {
+            if (!TanEvent.class.isAssignableFrom(iface)) continue;
+            List<RegisteredListener> list = listeners.get(iface);
+            if (list != null) {
+                for (RegisteredListener reg : list) {
+                    reg.invoke(event);
+                }
+            }
         }
     }
 

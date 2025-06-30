@@ -10,12 +10,13 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
+import org.tan.api.interfaces.TanTerritory;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -26,7 +27,7 @@ public class TerritoryVassalProposalNews extends Newsletter {
     String proposingTerritoryID;
     String receivingTerritoryID;
 
-    public TerritoryVassalProposalNews(TerritoryData proposingTerritory, TerritoryData receivingTerritory) {
+    public TerritoryVassalProposalNews(TanTerritory proposingTerritory, TanTerritory receivingTerritory) {
         this(proposingTerritory.getID(), receivingTerritory.getID());
     }
 

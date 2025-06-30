@@ -9,11 +9,13 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.events.newsletter.NewsletterType;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.HeadUtils;
+import org.tan.api.interfaces.TanPlayer;
+import org.tan.api.interfaces.TanTown;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -25,9 +27,9 @@ public class PlayerJoinTownNews extends Newsletter {
     String playerID;
     String townID;
 
-    public PlayerJoinTownNews(ITanPlayer tanPlayer, TownData townData) {
+    public PlayerJoinTownNews(TanPlayer tanPlayer, TanTown townData) {
         super();
-        playerID = tanPlayer.getID();
+        playerID = tanPlayer.getUUID().toString();
         townID = townData.getID();
     }
 

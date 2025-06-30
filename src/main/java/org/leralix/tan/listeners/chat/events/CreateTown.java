@@ -59,7 +59,8 @@ public class CreateTown extends ChatListenerEvent {
         TownData newTown = TownDataStorage.getInstance().newTown(message, tanPlayer);
         EconomyUtil.removeFromBalance(player,cost);
 
-        EventManager.getInstance().callEvent(new TownCreatedInternalEvent(newTown));
+        ITanPlayer playerData = PlayerDataStorage.getInstance().get(player);
+        EventManager.getInstance().callEvent(new TownCreatedInternalEvent(newTown, playerData));
         FileUtil.addLineToHistory(Lang.TOWN_CREATED_NEWSLETTER.get(player.getName(), newTown.getName()));
 
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> TeamUtils.setIndividualScoreBoard(player));

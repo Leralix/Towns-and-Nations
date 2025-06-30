@@ -7,10 +7,12 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.events.newsletter.NewsletterType;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.HeadUtils;
+import org.tan.api.interfaces.TanPlayer;
+import org.tan.api.interfaces.TanTown;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -22,10 +24,10 @@ public class TownDeletedNews extends Newsletter {
     private final String playerID;
     private final String oldTownName;
 
-    public TownDeletedNews(String playerID, String townID) {
+    public TownDeletedNews(TanTown town, TanPlayer player) {
         super();
-        this.playerID = playerID;
-        this.oldTownName = townID;
+        this.playerID = player.getUUID().toString();
+        this.oldTownName = town.getName();
     }
 
     public TownDeletedNews(UUID id, long date, String playerID, String oldTownName) {

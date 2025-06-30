@@ -8,11 +8,13 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.events.newsletter.NewsletterType;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.utils.HeadUtils;
+import org.tan.api.interfaces.TanPlayer;
+import org.tan.api.interfaces.TanRegion;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -24,9 +26,9 @@ public class RegionCreationNews extends Newsletter {
     private final String playerID;
     private final String regionID;
 
-    public RegionCreationNews(Player player, RegionData regionData) {
+    public RegionCreationNews(TanRegion regionData, TanPlayer player) {
         super();
-        playerID = player.getUniqueId().toString();
+        playerID = player.getUUID().toString();
         regionID = regionData.getID();
     }
 

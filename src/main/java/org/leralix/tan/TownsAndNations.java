@@ -22,6 +22,7 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.economy.TanEconomyStandalone;
 import org.leralix.tan.economy.VaultManager;
 import org.leralix.tan.events.EventManager;
+import org.leralix.tan.events.newsletter.NewsletterEvents;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconManager;
@@ -189,6 +190,7 @@ public final class TownsAndNations extends JavaPlugin {
         LandmarkStorage.getInstance().load();
         PlannedAttackStorage.load();
         NewsletterStorage.getInstance();
+        EventManager.getInstance().registerEvents(new NewsletterEvents());
 
 
         getLogger().log(Level.INFO,"[TaN] -Loading blocks data");
@@ -285,7 +287,6 @@ public final class TownsAndNations extends JavaPlugin {
         NewClaimedChunkStorage.getInstance().save();
         LandmarkStorage.getInstance().save();
         PlannedAttackStorage.save();
-        EventManager.getInstance().registerEvents(NewsletterStorage.getInstance());
 
         try {
             Thread.sleep(50);

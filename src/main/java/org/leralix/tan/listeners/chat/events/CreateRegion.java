@@ -3,6 +3,8 @@ package org.leralix.tan.listeners.chat.events;
 import org.bukkit.entity.Player;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.api.wrappers.TanPlayerWrapper;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.events.EventManager;
@@ -11,6 +13,7 @@ import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
@@ -60,7 +63,8 @@ public class CreateRegion extends ChatListenerEvent {
         RegionData newRegion = RegionDataStorage.getInstance().createNewRegion(regionName, capital);
         PlayerChatListenerStorage.removePlayer(player);
 
-        EventManager.getInstance().callEvent(new RegionCreatedInternalEvent(newRegion));
+        ITanPlayer playerData = PlayerDataStorage.getInstance().get(player);
+        EventManager.getInstance().callEvent(new RegionCreatedInternalEvent(newRegion, TanPlayerWrapper.of(playerData)));
 
         openGui(p -> PlayerGUI.dispatchPlayerRegion(player), player);
     }

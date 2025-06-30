@@ -52,7 +52,7 @@ public abstract class SettingsMenus extends BasicGui {
         int cost = Constants.getChangeTerritoryNameCost(territoryData);
 
         return iconManager.get(IconKey.TERRITORY_RENAME_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN.get(tanPlayer))
+                .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME.get(tanPlayer))
                 .setDescription(
                         Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1.get(tanPlayer, territoryData.getName()),
                         Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC2.get(tanPlayer),

@@ -24,7 +24,6 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.PlayerJoinTownAcceptedInternalEvent;
 import org.leralix.tan.events.events.PlayerJoinTownRequestInternalEvent;
-import org.leralix.tan.events.events.TownDeletedInternalEvent;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.user.territory.TerritoryMemberMenu;
 import org.leralix.tan.lang.Lang;
@@ -773,8 +772,6 @@ public class TownData extends TerritoryData {
 
         removeAllLandmark(); //Remove all Landmark from the deleted town
         removeAllProperty(); //Remove all Property from the deleted town
-
-        EventManager.getInstance().callEvent(new TownDeletedInternalEvent(this));
 
         List<String> playersToRemove = new ArrayList<>(getPlayerIDList());
         for (String playerID : playersToRemove) {

@@ -23,7 +23,6 @@ import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.events.EventManager;
-import org.leralix.tan.events.events.RegionDeletednternalEvent;
 import org.leralix.tan.events.events.TerritoryIndependanceInternalEvent;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
@@ -370,7 +369,6 @@ public class RegionData extends TerritoryData {
     @Override
     public void delete() {
         super.delete();
-        EventManager.getInstance().callEvent(new RegionDeletednternalEvent(this));
 
         TeamUtils.updateAllScoreboardColor();
         RegionDataStorage.getInstance().deleteRegion(this);

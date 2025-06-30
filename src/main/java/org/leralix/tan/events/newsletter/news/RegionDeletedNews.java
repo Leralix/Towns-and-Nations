@@ -7,11 +7,12 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.events.newsletter.NewsletterType;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.HeadUtils;
+import org.tan.api.interfaces.TanPlayer;
+import org.tan.api.interfaces.TanRegion;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -23,10 +24,10 @@ public class RegionDeletedNews extends Newsletter {
     private final String playerID;
     private final String regionName;
 
-    public RegionDeletedNews(String playerID, RegionData regionData) {
+    public RegionDeletedNews(TanRegion regionData, TanPlayer player) {
         super();
-        this.playerID = playerID;
-        this.regionName = regionData.getCustomColoredName().toLegacyText();
+        this.playerID = player.getUUID().toString();
+        this.regionName = regionData.getName();
     }
 
     public RegionDeletedNews(UUID id, long date, String playerID, String oldRegionName) {

@@ -8,10 +8,11 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.events.newsletter.NewsletterType;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
+import org.tan.api.interfaces.TanTerritory;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -23,10 +24,10 @@ public class AttackDeclaredNewsletter extends Newsletter {
     private final String attackingTerritoryID;
     private final String defendingTerritoryID;
 
-    public AttackDeclaredNewsletter(String defendingTerritoryID, String attackingTerritoryID) {
+    public AttackDeclaredNewsletter(TanTerritory defendingTerritoryID, TanTerritory attackingTerritoryID) {
         super();
-        this.defendingTerritoryID = defendingTerritoryID;
-        this.attackingTerritoryID = attackingTerritoryID;
+        this.defendingTerritoryID = defendingTerritoryID.getID();
+        this.attackingTerritoryID = attackingTerritoryID.getID();
     }
 
     public AttackDeclaredNewsletter(UUID id, long date, String attackingTerritoryID, String defendingTerritoryID) {

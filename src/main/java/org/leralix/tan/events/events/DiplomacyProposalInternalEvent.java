@@ -23,14 +23,13 @@ public class DiplomacyProposalInternalEvent extends InternalEvent implements Dip
         this.proposedRelation = proposedRelation;
     }
 
-
     @Override
-    public TanTerritory getDefenderTerritory() {
+    public TanTerritory getProposingTerritory() {
         return TerritoryDataWrapper.of(proposedTerritory);
     }
 
     @Override
-    public TanTerritory getAttackerTerritory() {
+    public TanTerritory getReceivingTerritory() {
         return TerritoryDataWrapper.of(acceptingTerritory);
     }
 
