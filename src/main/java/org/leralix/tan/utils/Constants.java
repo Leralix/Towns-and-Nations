@@ -32,8 +32,8 @@ public class Constants {
         displayTerritoryColor = config.getBoolean("displayTerritoryNameWithOwnColor", false);
         enableNation = config.getBoolean("EnableKingdom",true);
         enableRegion = config.getBoolean("EnableRegion", true);
-        changeTownNameCost = config.getInt("changeTownNameCost", 1000);
-        changeRegionNameCost = config.getInt("changeRegionNameCost", 1000);
+        changeTownNameCost = config.getInt("ChangeTownNameCost", 1000);
+        changeRegionNameCost = config.getInt("ChangeRegionNameCost", 1000);
         nbDigits = config.getInt("DecimalDigits",2);
         worldGuardOverrideWilderness = config.getBoolean("worldguard_override_wilderness", true);
         worldGuardOverrideTown = config.getBoolean("worldguard_override_town", true);
