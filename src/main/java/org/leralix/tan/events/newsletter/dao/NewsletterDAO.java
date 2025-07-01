@@ -5,10 +5,7 @@ import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.events.newsletter.news.Newsletter;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -134,14 +131,11 @@ public class NewsletterDAO {
     }
 
     public List<Newsletter> getNewsletters() {
-        Duration duration = Duration.ofDays(7);
-        LocalDateTime cutoff = LocalDateTime.now().minus(duration);
-        String sql = "SELECT * FROM newsletter WHERE date_created >= ? ORDER BY date_created DESC";
+
+        String sql = "SELECT * FROM newsletter ORDER BY date_created DESC";
         List<Newsletter> newsletters = new ArrayList<>();
 
         try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {
-            ps.setTimestamp(1, Timestamp.valueOf(cutoff));
-
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     UUID id = UUID.fromString(rs.getString("id"));
@@ -183,6 +177,51 @@ public class NewsletterDAO {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to remove newsletter", e);
+        }
+    }
+
+    public void deleteOldNewsletters(int nbDays) {
+        Duration duration = Duration.ofDays(nbDays);
+        LocalDateTime cutoff = LocalDateTime.now().minus(duration);
+
+        try (Connection mainConn = dataSource.getConnection()) {
+
+            String selectSql = "SELECT id FROM newsletter WHERE date_created < ?";
+            try (PreparedStatement ps = mainConn.prepareStatement(selectSql)) {
+                ps.setTimestamp(1, Timestamp.valueOf(cutoff));
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        deleteNewsletter(mainConn,
+                                rs.getString("type"),
+                                rs.getString("id"));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void deleteNewsletter(Connection mainConn, String tableName, String id) {
+
+        // Delete from the specific newsletter table
+        String deleteSpecificSql = "DELETE FROM ? WHERE id = ?";
+        try (PreparedStatement ps = mainConn.prepareStatement(deleteSpecificSql)){
+            ps.setString(0, tableName);
+            ps.setString(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        // Delete from the main newsletter table
+        String deleteSql = "DELETE FROM newsletter WHERE id = ?";
+        try (PreparedStatement ps = mainConn.prepareStatement(deleteSql)) {
+            ps.setString(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

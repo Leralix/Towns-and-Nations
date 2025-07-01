@@ -20,7 +20,7 @@ public class NewsletterStorage {
 
     private static NewsletterStorage instance;
 
-    private NewsletterStorage(){
+    private NewsletterStorage() {
         newsletterDAO = new NewsletterDAO(TownsAndNations.getPlugin().getDatabaseHandler().getDataSource());
     }
 
@@ -39,13 +39,12 @@ public class NewsletterStorage {
     public void register(Newsletter newsletter) {
 
         EventScope scope = newsletter.getType().getBroadcastGlobal();
-        if(scope != EventScope.NONE){
-            for(Player player : Bukkit.getOnlinePlayers()){
+        if (scope != EventScope.NONE) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
                 try {
-                    if(scope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(player)){
+                    if (scope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(player)) {
                         newsletter.broadcastConcerned(player);
-                    }
-                    else if(scope == EventScope.ALL){
+                    } else if (scope == EventScope.ALL) {
                         newsletter.broadcast(player);
                     }
                 } catch (Exception e) {
@@ -62,38 +61,37 @@ public class NewsletterStorage {
         }
     }
 
-    private List<Newsletter> getNewsletters(){
+    private List<Newsletter> getNewsletters() {
         return newsletterDAO.getNewsletters();
     }
 
-    public List<GuiItem> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onClick){
+    public List<GuiItem> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onClick) {
         List<GuiItem> newsletters = new ArrayList<>();
 
-
-        for(Newsletter newsletter : getNewsletters()) {
+        for (Newsletter newsletter : getNewsletters()) {
 
             EventScope eventScope = newsletter.getType().getNewsletterScope();
 
-            if(eventScope == EventScope.NONE){
+            if (eventScope == EventScope.NONE) {
                 continue;
             }
 
-            if(eventScope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(player)){
-                if(scope == NewsletterScope.SHOW_ALL){
+            if (eventScope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(player)) {
+                if (scope == NewsletterScope.SHOW_ALL) {
                     newsletters.add(newsletter.createConcernedGuiItem(player, onClick));
                     continue;
                 }
-                if(scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)){
+                if (scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)) {
                     newsletters.add(newsletter.createGuiItem(player, onClick));
                     continue;
                 }
             }
-            if(eventScope == EventScope.ALL){
-                if(scope == NewsletterScope.SHOW_ALL){
+            if (eventScope == EventScope.ALL) {
+                if (scope == NewsletterScope.SHOW_ALL) {
                     newsletters.add(newsletter.createGuiItem(player, onClick));
                     continue;
                 }
-                if(scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)){
+                if (scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)) {
                     newsletters.add(newsletter.createGuiItem(player, onClick));
                     continue;
                 }
@@ -104,25 +102,21 @@ public class NewsletterStorage {
         return newsletters;
     }
 
-    public int getNbUnreadNewsletterForPlayer(Player player){
+    public int getNbUnreadNewsletterForPlayer(Player player) {
         return getNewsletterForPlayer(player, NewsletterScope.SHOW_ONLY_UNREAD, null).size();
     }
 
     public void clearOldNewsletters() {
         int nbDays = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingNewsletter");
-        long currentTime = System.currentTimeMillis() - 1000L * 60 * 60 * 24 * nbDays;
-
-        //TODO : remove old newsletters from the database
-
+        newsletterDAO.deleteOldNewsletters(nbDays);
     }
 
+
     public void markAllAsReadForPlayer(Player player) {
-        for(Newsletter newsletter : getNewsletters()){
+        for (Newsletter newsletter : getNewsletters()) {
             newsletter.markAsRead(player);
         }
     }
-
-
 
 
 }
