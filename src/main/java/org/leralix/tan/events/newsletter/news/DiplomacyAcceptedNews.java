@@ -9,9 +9,11 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.events.newsletter.NewsletterType;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
 
@@ -85,7 +87,7 @@ public class DiplomacyAcceptedNews extends Newsletter {
     }
 
     @Override
-    public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
+    public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
 
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         if(proposingTerritory == null)
@@ -95,6 +97,7 @@ public class DiplomacyAcceptedNews extends Newsletter {
             return null;
 
         ItemStack itemStack = HeadUtils.makeSkullURL(Lang.DIPLOMACY_ACCEPT_NEWSLETTER_TITLE.get(), "http://textures.minecraft.net/texture/b62c08805bd9c957da3450554a09e994042f54695db855c1c2cb47ef442e1bf6",
+                Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
                 Lang.BROADCAST_RELATION_WORSEN.get(proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
 
@@ -108,8 +111,8 @@ public class DiplomacyAcceptedNews extends Newsletter {
     }
 
     @Override
-    public GuiItem createConcernedGuiItem(Player player, Consumer<Player> onClick) {
-        return createGuiItem(player, onClick);
+    public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+        return createGuiItem(player, lang, onClick);
     }
 
     @Override

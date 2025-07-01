@@ -32,7 +32,6 @@ public class EventManager implements TanEventManager {
     public void registerEvents(TanListener listenerInstance) {
         for (Method method : listenerInstance.getClass().getDeclaredMethods()) {
             if (!method.isAnnotationPresent(TanListener.EventHandler.class)) continue;
-            System.out.println("Registering method: " + method.getName());
 
             Class<?>[] params = method.getParameterTypes();
             if (params.length != 1) continue;
@@ -48,10 +47,6 @@ public class EventManager implements TanEventManager {
     }
 
     public <T> void callEvent(T event) {
-        System.out.println("Calling event: " + event.getClass().getName());
-        System.out.println(listeners);
-        System.out.println(listeners.get(event.getClass()));
-
         for (Class<?> iface : event.getClass().getInterfaces()) {
             if (!TanEvent.class.isAssignableFrom(iface)) continue;
             List<RegisteredListener> list = listeners.get(iface);

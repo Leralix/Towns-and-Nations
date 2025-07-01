@@ -13,8 +13,10 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.user.territory.PlayerApplicationMenu;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.HeadUtils;
 import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.TanTown;
@@ -71,7 +73,7 @@ public class PlayerJoinRequestNews extends Newsletter {
     }
 
     @Override
-    public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
+    public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
 
         TownData townData = getTownData();
         if(townData == null){
@@ -80,7 +82,9 @@ public class PlayerJoinRequestNews extends Newsletter {
 
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
 
-        ItemStack itemStack = HeadUtils.getPlayerHead(Lang.NEWSLETTER_PLAYER_APPLICATION.get(offlinePlayer.getName()), offlinePlayer,
+        ItemStack itemStack = HeadUtils.getPlayerHead(
+                Lang.NEWSLETTER_PLAYER_APPLICATION.get(offlinePlayer.getName()), offlinePlayer,
+                Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
                 Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(offlinePlayer.getName(), getTownData().getBaseColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
 
@@ -94,7 +98,7 @@ public class PlayerJoinRequestNews extends Newsletter {
     }
 
     @Override
-    public GuiItem createConcernedGuiItem(Player player, Consumer<Player> onClick) {
+    public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
 
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
 

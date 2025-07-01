@@ -11,8 +11,10 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.HeadUtils;
 import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.TanTown;
@@ -65,7 +67,7 @@ public class PlayerJoinTownNews extends Newsletter {
     }
 
     @Override
-    public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
+    public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
         if(tanPlayer == null)
             return null;
@@ -73,7 +75,9 @@ public class PlayerJoinTownNews extends Newsletter {
         if(townData == null)
             return null;
 
-        ItemStack itemStack = HeadUtils.makeSkullURL(Lang.PLAYER_JOINED_TOWN_NEWSLETTER_TITLE.get(), "http://textures.minecraft.net/texture/16338322d26c6a7c08fb9fd22959a136728fa2d4dccd22b1563eb1bbaa1d5471",
+        ItemStack itemStack = HeadUtils.makeSkullURL(
+                Lang.PLAYER_JOINED_TOWN_NEWSLETTER_TITLE.get(), "http://textures.minecraft.net/texture/16338322d26c6a7c08fb9fd22959a136728fa2d4dccd22b1563eb1bbaa1d5471",
+                Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
                 Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(tanPlayer.getNameStored(), townData.getCustomColoredName().toLegacyText()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
 
@@ -87,8 +91,8 @@ public class PlayerJoinTownNews extends Newsletter {
     }
 
     @Override
-    public GuiItem createConcernedGuiItem(Player player, Consumer<Player> onClick) {
-        return createGuiItem(player, onClick);
+    public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+        return createGuiItem(player, lang, onClick);
     }
 
     @Override

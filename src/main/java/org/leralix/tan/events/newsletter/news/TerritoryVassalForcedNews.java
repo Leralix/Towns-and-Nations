@@ -12,7 +12,9 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
 import org.tan.api.interfaces.TanTerritory;
@@ -43,7 +45,7 @@ public class TerritoryVassalForcedNews extends Newsletter {
     }
 
     @Override
-    public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
+    public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         TerritoryData forcedTerritory = TerritoryUtil.getTerritory(forcedTerritoryID);
         if(proposingTerritory == null || forcedTerritory == null)
@@ -51,6 +53,7 @@ public class TerritoryVassalForcedNews extends Newsletter {
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
                 Lang.FORCED_VASSALAGE_TITLE.get(),
+                Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
                 Lang.FORCED_VASSALAGE.get(proposingTerritory.getBaseColoredName(), forcedTerritory.getBaseColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
 
@@ -64,8 +67,8 @@ public class TerritoryVassalForcedNews extends Newsletter {
     }
 
     @Override
-    public GuiItem createConcernedGuiItem(Player player, Consumer<Player> onClick) {
-       return createGuiItem(player, onClick);
+    public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+       return createGuiItem(player, lang, onClick);
     }
 
     @Override

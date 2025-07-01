@@ -10,6 +10,9 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
 import org.tan.api.interfaces.TanTerritory;
@@ -45,16 +48,19 @@ public class AttackCancelledByDefenderNewsletter extends Newsletter {
     }
 
     @Override
-    public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
+    public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
         TerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
         TerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
         if(attackingTerritory == null || defendingTerritory == null)
             return null;
 
+        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+
         ItemStack icon = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
-                Lang.ATTACK_CANCELLED_TITLE.get(),
-                Lang.ATTACK_CANCELLED.get(attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+                Lang.ATTACK_CANCELLED_TITLE.get(langType),
+                Lang.NEWSLETTER_DATE.get(langType, TimeZoneManager.getInstance().getRelativeTimeDescription(langType, getDate())),
+                Lang.ATTACK_CANCELLED.get(langType, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(langType));
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -66,8 +72,8 @@ public class AttackCancelledByDefenderNewsletter extends Newsletter {
     }
 
     @Override
-    public GuiItem createConcernedGuiItem(Player player, Consumer<Player> onClick) {
-        return createGuiItem(player, onClick);
+    public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+        return createGuiItem(player, lang, onClick);
     }
 
     @Override

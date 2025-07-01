@@ -8,6 +8,8 @@ import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.events.newsletter.dao.NewsletterDAO;
 import org.leralix.tan.events.newsletter.news.Newsletter;
+import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,6 +70,8 @@ public class NewsletterStorage {
     public List<GuiItem> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onClick) {
         List<GuiItem> newsletters = new ArrayList<>();
 
+        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+
         for (Newsletter newsletter : getNewsletters()) {
 
             EventScope eventScope = newsletter.getType().getNewsletterScope();
@@ -78,21 +82,21 @@ public class NewsletterStorage {
 
             if (eventScope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(player)) {
                 if (scope == NewsletterScope.SHOW_ALL) {
-                    newsletters.add(newsletter.createConcernedGuiItem(player, onClick));
+                    newsletters.add(newsletter.createConcernedGuiItem(player, langType, onClick));
                     continue;
                 }
                 if (scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)) {
-                    newsletters.add(newsletter.createGuiItem(player, onClick));
+                    newsletters.add(newsletter.createGuiItem(player, langType, onClick));
                     continue;
                 }
             }
             if (eventScope == EventScope.ALL) {
                 if (scope == NewsletterScope.SHOW_ALL) {
-                    newsletters.add(newsletter.createGuiItem(player, onClick));
+                    newsletters.add(newsletter.createGuiItem(player, langType, onClick));
                     continue;
                 }
                 if (scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)) {
-                    newsletters.add(newsletter.createGuiItem(player, onClick));
+                    newsletters.add(newsletter.createGuiItem(player, langType, onClick));
                     continue;
                 }
             }

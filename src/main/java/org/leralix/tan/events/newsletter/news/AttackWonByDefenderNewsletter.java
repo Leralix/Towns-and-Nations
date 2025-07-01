@@ -10,6 +10,8 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
+import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
 import org.tan.api.interfaces.TanTerritory;
@@ -45,7 +47,7 @@ public class AttackWonByDefenderNewsletter extends Newsletter {
     }
 
     @Override
-    public GuiItem createGuiItem(Player player, Consumer<Player> onClick) {
+    public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
         TerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
         TerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
         if(attackingTerritory == null || defendingTerritory == null)
@@ -53,6 +55,7 @@ public class AttackWonByDefenderNewsletter extends Newsletter {
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
                 Lang.ATTACK_WON_BY_DEFENDER_TITLE.get(),
+                Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
                 Lang.ATTACK_WON_BY_DEFENDER.get(attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
 
@@ -66,8 +69,8 @@ public class AttackWonByDefenderNewsletter extends Newsletter {
     }
 
     @Override
-    public GuiItem createConcernedGuiItem(Player player, Consumer<Player> onClick) {
-        return createGuiItem(player, onClick);
+    public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+        return createGuiItem(player, lang, onClick);
     }
 
     @Override

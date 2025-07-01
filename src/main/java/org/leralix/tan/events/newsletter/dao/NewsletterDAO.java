@@ -3,6 +3,7 @@ package org.leralix.tan.events.newsletter.dao;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.events.newsletter.news.Newsletter;
+import org.leralix.tan.timezone.TimeZoneManager;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -44,7 +45,6 @@ public class NewsletterDAO {
         subDaos.put(NewsletterType.ATTACK_CANCELLED, new AttackCancelledDAO(dataSource));
 
 
-
     }
 
     private void createTableIfNotExists() {
@@ -56,8 +56,7 @@ public class NewsletterDAO {
 
         try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException("Failed to create newsletter table", e);
         }
 
@@ -68,8 +67,7 @@ public class NewsletterDAO {
                 ")";
         try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException("Failed to create newsletter table", e);
         }
 
@@ -79,21 +77,17 @@ public class NewsletterDAO {
     public void save(Newsletter newsletter) throws SQLException {
         String sql = "INSERT INTO newsletter (id, type, date_created) VALUES (?, ?, ?)";
 
-        try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection()){
+            PreparedStatement ps = conn.prepareStatement(sql);
+
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getType().name());
-            ps.setTimestamp(3,
-                    Timestamp.valueOf(
-                            LocalDateTime.ofInstant(
-                                    Instant.ofEpochSecond(newsletter.getDate()),
-                                    TimeZone.getDefault().toZoneId()))
-            );
+            ps.setTimestamp(3, Timestamp.from(Instant.ofEpochMilli(newsletter.getDate())));
             ps.executeUpdate();
         }
 
-
         NewsletterSubDAO subDAO = subDaos.get(newsletter.getType());
-        if (subDAO == null){
+        if (subDAO == null) {
             throw new IllegalStateException("No DAO for type " + newsletter.getType());
         }
         subDAO.save(newsletter);
@@ -124,51 +118,58 @@ public class NewsletterDAO {
                     return rs.next();
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException("Failed to check if newsletter has been read", e);
         }
     }
 
     public List<Newsletter> getNewsletters() {
-
-        String sql = "SELECT * FROM newsletter ORDER BY date_created DESC";
+        String sql = "SELECT * FROM newsletter WHERE date_created <= ? ORDER BY date_created DESC";
         List<Newsletter> newsletters = new ArrayList<>();
 
-        try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    UUID id = UUID.fromString(rs.getString("id"));
-                    LocalDateTime createdAt = rs.getTimestamp("date_created").toLocalDateTime();
+        try (Connection conn = dataSource.getConnection()){
 
-                    String typeName = rs.getString("type");
-                    if(!NewsletterType.isValidEnumValue(typeName)) {
-                        TownsAndNations.getPlugin().getLogger().severe("Invalid newsletter type: " + typeName);
-                        removeNewsletter(id);
-                        continue;
-                    }
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setTimestamp(1, Timestamp.from(Instant.now()));
+            ResultSet rs = ps.executeQuery();
 
-                    NewsletterType type = NewsletterType.valueOf(rs.getString("type"));
+            while (rs.next()) {
+                UUID id = UUID.fromString(rs.getString("id"));
+                Timestamp timestamp = rs.getTimestamp("date_created");
+                if (timestamp == null) {
+                    TownsAndNations.getPlugin().getLogger().warning("Newsletter " + id + " has null date_created, skipping.");
+                    continue;
+                }
+                LocalDateTime createdAt = timestamp.toLocalDateTime();
 
-                    NewsletterSubDAO<?> subDAO = subDaos.get(type);
-                    if (subDAO == null) {
-                        System.err.println("Aucun DAO pour le type " + type + ", id: " + id);
-                        continue;
-                    }
+                String typeName = rs.getString("type");
+                if (!NewsletterType.isValidEnumValue(typeName)) {
+                    TownsAndNations.getPlugin().getLogger().severe("Invalid newsletter type: " + typeName);
+                    removeNewsletter(id);
+                    continue;
+                }
 
-                    Newsletter newsletter = subDAO.load(id, createdAt.toInstant(ZoneOffset.UTC).toEpochMilli());
-                    if (newsletter != null) {
-                        newsletters.add(newsletter);
-                    }
+                NewsletterType type = NewsletterType.valueOf(typeName);
+
+                NewsletterSubDAO<?> subDAO = subDaos.get(type);
+                if (subDAO == null) {
+                    TownsAndNations.getPlugin().getLogger().severe("No DAO for newsletter type " + type + ", id: " + id);
+                    continue;
+                }
+                ZoneOffset zoneOffset = TimeZoneManager.getInstance().getTimezoneEnum().toZoneOffset();
+                long createdAtMillis = createdAt.toInstant(zoneOffset).toEpochMilli();
+                Newsletter newsletter = subDAO.load(id, createdAtMillis);
+                if (newsletter != null) {
+                    newsletters.add(newsletter);
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException("Failed to get newsletters", e);
         }
 
         return newsletters;
     }
+
 
     private void removeNewsletter(UUID id) {
         String sql = "DELETE FROM newsletter WHERE id = ?";
@@ -206,7 +207,7 @@ public class NewsletterDAO {
 
         // Delete from the specific newsletter table
         String deleteSpecificSql = "DELETE FROM ? WHERE id = ?";
-        try (PreparedStatement ps = mainConn.prepareStatement(deleteSpecificSql)){
+        try (PreparedStatement ps = mainConn.prepareStatement(deleteSpecificSql)) {
             ps.setString(0, tableName);
             ps.setString(1, id);
             ps.executeUpdate();

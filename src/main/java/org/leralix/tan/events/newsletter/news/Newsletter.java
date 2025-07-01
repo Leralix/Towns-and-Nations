@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.events.newsletter.NewsletterType;
+import org.leralix.tan.lang.LangType;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -28,9 +29,9 @@ public abstract class Newsletter {
         return id;
     }
 
-    public abstract GuiItem createGuiItem(Player player, Consumer<Player> onClick);
+    public abstract GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick);
 
-    public abstract GuiItem createConcernedGuiItem(Player player, Consumer<Player> onClick);
+    public abstract GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick);
 
     public abstract boolean shouldShowToPlayer(Player player);
 
