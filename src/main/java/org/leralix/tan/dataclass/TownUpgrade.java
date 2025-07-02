@@ -1,20 +1,20 @@
 package org.leralix.tan.dataclass;
 
-import dev.triumphteam.gui
-.builder.item.ItemBuilder;
-import dev.triumphteam.gui
-.guis.GuiItem;
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +79,7 @@ public class TownUpgrade {
         return maxLevel;
     }
 
-    public List<String> getItemLore(Level townLevelClass, int townUpgradeLevel ) {
+    public List<String> getItemLore(LangType lang, Level townLevelClass, int townUpgradeLevel ) {
         List <String> lore = new ArrayList<>();
         boolean isMaxLevel = townUpgradeLevel >= this.getMaxLevel();
 
@@ -100,10 +100,10 @@ public class TownUpgrade {
                 Integer levelNeeded = entry.getValue();
                 Integer currentLevel = townLevelClass.getUpgradeLevel(prerequisiteName);
                 if(levelNeeded <= townLevelClass.getUpgradeLevel(prerequisiteName)){
-                    lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC3_1.get(DynamicLang.get(prerequisiteName), currentLevel, levelNeeded));
+                    lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC3_1.get(DynamicLang.get(lang, prerequisiteName), currentLevel, levelNeeded));
                 }
                 else {
-                    lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC3_2.get(DynamicLang.get(prerequisiteName), currentLevel, levelNeeded));
+                    lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC3_2.get(DynamicLang.get(lang, prerequisiteName), currentLevel, levelNeeded));
                 }
             }
         }
@@ -115,9 +115,9 @@ public class TownUpgrade {
                 String prerequisiteName = entry.getKey();
                 Integer value = entry.getValue();
                 if(value > 0)
-                    lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(DynamicLang.get(prerequisiteName), value));
+                    lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(DynamicLang.get(lang, prerequisiteName), value));
                 else
-                    lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(DynamicLang.get(prerequisiteName), value));
+                    lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(DynamicLang.get(lang, prerequisiteName), value));
             }
         }
 
@@ -127,10 +127,10 @@ public class TownUpgrade {
             String benefitName = entry.getKey();
             Integer value = entry.getValue();
             if(value > 0){
-                lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(DynamicLang.get(benefitName), value * townUpgradeLevel));
+                lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(DynamicLang.get(lang, benefitName), value * townUpgradeLevel));
             }
             else {
-                lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(DynamicLang.get(benefitName), value * townUpgradeLevel));
+                lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(DynamicLang.get(lang, benefitName), value * townUpgradeLevel));
             }
         }
         return lore;
@@ -155,12 +155,12 @@ public class TownUpgrade {
     public GuiItem createGuiItem(Player player, TownData townData, int page) {
         Level townLevel = townData.getLevel();
         int townUpgradeLevel = townLevel.getUpgradeLevel(getName());
-
-        List<String> lore = getItemLore(townLevel, townUpgradeLevel);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        List<String> lore = getItemLore(tanPlayer.getLang(), townLevel, townUpgradeLevel);
 
         ItemStack upgradeItemStack = HeadUtils.createCustomItemStack(
                 Material.getMaterial(getMaterialCode()),
-                DynamicLang.get(getName()),
+                DynamicLang.get(tanPlayer.getLang(), getName()),
                 lore);
 
         return ItemBuilder.from(upgradeItemStack).asGuiItem(event -> {

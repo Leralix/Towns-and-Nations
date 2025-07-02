@@ -13,6 +13,7 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class GuiUtil {
      * @param townData  The town on which the upgrade should be shown
      * @return          The {@link GuiItem} displaying the town current benefices
      */
-    public static GuiItem townUpgradeResume(TownData townData){
+    public static GuiItem townUpgradeResume(LangType langType, TownData townData){
 
         ItemStack townIcon = townData.getIconWithName();
         List<String> lore = new ArrayList<>();
@@ -45,10 +46,10 @@ public class GuiUtil {
             Integer value = entry.getValue();
             String line;
             if(value > 0){
-                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(DynamicLang.get(valueId), value);
+                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(DynamicLang.get(langType, valueId), value);
             }
             else {
-                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(DynamicLang.get(valueId), value);
+                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(DynamicLang.get(langType, valueId), value);
             }
             lore.add(line);
         }
