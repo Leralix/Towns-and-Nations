@@ -44,6 +44,7 @@ import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.CustomNBT;
+import org.leralix.tan.utils.EnabledPermissions;
 import org.leralix.tan.utils.NumberUtil;
 import org.tan.api.TanAPI;
 
@@ -174,6 +175,7 @@ public final class TownsAndNations extends JavaPlugin {
         NewsletterType.init();
         IconManager.getInstance();
         NumberUtil.init();
+        EnabledPermissions.getInstance().init();
 
         FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         allowColorCodes = mainConfig.getBoolean("EnablePlayerColorCode", false);
