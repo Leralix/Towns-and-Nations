@@ -360,7 +360,6 @@ language:
   BROADCAST_RELATION_IMPROVE: "§f{0}§f 与 {1}§f 之间的关系已改善至：{2}"
   BROADCAST_RELATION_WORSEN: "§f{0}§f 与 {1}§f 之间的关系已恶化至：{2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§c右键点击以发动攻击"
-  GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} 已对 {1} 发动攻击！"
   GUI_TOWN_ATTACK_FINISHED: "§c对 {0} 的攻击已结束！"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§a管理门的访问权限"
   GUI_TOWN_CLAIM_SETTINGS_CHEST: "§a管理箱子的访问权限"

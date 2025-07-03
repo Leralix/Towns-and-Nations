@@ -334,7 +334,6 @@ language:
   GUI_TOWN_RELATION_ADD_TOWN: "§aAñadir pueblo"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aRemover pueblo"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cClick derecho para lanzar un ataque"
-  GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} ha enviado un ataque contra {1} !"
   GUI_TOWN_ATTACK_FINISHED: "§cEl ataque contra {0} ha terminado!"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aAdministrar permisos de puerta"
   GUI_TOWN_CLAIM_SETTINGS_CHEST: "§aAdministrar permisos de cofre"

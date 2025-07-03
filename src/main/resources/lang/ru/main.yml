@@ -510,7 +510,6 @@ language:
   BROADCAST_RELATION_IMPROVE: "§fСвязи между {0}§f и {1}§f были улучшены до: {2}"
   BROADCAST_RELATION_WORSEN: "§fСвязи между {0}§f и {1}§f были ухудшены до: {2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cПравый клик, чтобы начать атаку"
-  GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} начали атаку на {1}!"
   GUI_TOWN_ATTACK_FINISHED: "§cАтака на {0} завершена!"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aУправление доступом к дверям"
   GUI_TOWN_CLAIM_SETTINGS_CHEST: "§aУправление доступом к сундукам"

@@ -270,7 +270,6 @@ language:
   GUI_TOWN_RELATION_ADD_TOWN: "§aDodaj miasto"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aUsuń miasto"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cKliknij prawym przyciskiem myszy, aby rozpocząć atak"
-  GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} przypuścili atak na {1} !"
   GUI_TOWN_ATTACK_FINISHED: "§cAtak na {0} zakończył się !"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aZarządzaj dostępem do drzwi"
   GUI_TOWN_CLAIM_SETTINGS_CHEST: "§aZarządzaj dostępem do skrzyń"

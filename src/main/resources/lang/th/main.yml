@@ -475,7 +475,6 @@ language:
   BROADCAST_RELATION_IMPROVE: "§fความสัมพันธ์ระหว่าง {0}§f และ {1}§f ดีขึ้นเป็น: {2}"
   BROADCAST_RELATION_WORSEN: "§fความสัมพันธ์ระหว่าง {0}§f และ {1}§f แย่ลงเป็น: {2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cคลิกขวาเพื่อเริ่มโจมตี"
-  GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} ได้โจมตี {1} !"
   GUI_TOWN_ATTACK_FINISHED: "§cการโจมตี {0} สิ้นสุดแล้ว!"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aจัดการการเข้าถึงประตู"
   GUI_TOWN_CLAIM_SETTINGS_CHEST: "§aจัดการการเข้าถึงหีบ"

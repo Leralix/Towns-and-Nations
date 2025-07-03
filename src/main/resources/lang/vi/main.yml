@@ -599,7 +599,6 @@ language:
   BROADCAST_RELATION_IMPROVE: "§fQuan hệ giữa {0}§f và {1}§f đã cải thiện thành: {2}"
   BROADCAST_RELATION_WORSEN: "§fQuan hệ giữa {0}§f và {1}§f đã xấu đi thành: {2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cNhấp chuột phải để phát động tấn công"
-  GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} đã phát động tấn công chống lại {1}!"
   GUI_TOWN_ATTACK_FINISHED: "§cCuộc tấn công chống lại {0} đã kết thúc!"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aQuản lý quyền truy cập cửa"
   GUI_TOWN_CLAIM_SETTINGS_CHEST: "§aQuản lý quyền truy cập rương"

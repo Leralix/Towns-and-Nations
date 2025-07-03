@@ -338,7 +338,6 @@ language:
   BROADCAST_RELATION_IMPROVE: "§fA relação entre {0}§f e {1}§f melhorou para: {2}"
   BROADCAST_RELATION_WORSEN: "§fA relação entre {0}§f e {1}§f piorou para: {2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cClique com o botão direito para iniciar um ataque"
-  GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} lançou um ataque contra {1}!"
   GUI_TOWN_ATTACK_FINISHED: "§cO ataque contra {0} terminou !"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aGerenciar acesso à porta"
   GUI_TOWN_CLAIM_SETTINGS_CHEST: "§aGerenciar acesso ao baú"

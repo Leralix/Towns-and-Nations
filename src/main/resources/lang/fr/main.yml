@@ -612,7 +612,6 @@ language:
   BROADCAST_RELATION_IMPROVE: "§fLa relation entre {0}§f et {1}§f s'est améliorée : {2}"
   BROADCAST_RELATION_WORSEN: "§fLa relation entre {0}§f et {1}§f s'est détériorée : {2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cClic droit pour lancer une attaque"
-  GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} a lancé une attaque contre {1}!"
   GUI_TOWN_ATTACK_FINISHED: "§cL'attaque contre {0} s'est terminée !"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aGérer l'accès aux portes"
   GUI_TOWN_CLAIM_SETTINGS_CHEST: "§aGérer l'accès aux coffres"
@@ -1059,6 +1058,7 @@ language:
   ATTACK_WON_BY_DEFENDER_TITLE: "Attaque gagnée par les défenseurs"
   ATTACK_WON_BY_DEFENDER: "§fLa bataille entre {0}§f et {1}§f a été gagnée par {2}"
   ATTACK_CANCELLED_TITLE: "Attaque annulée"
+  NEWSLETTER_DATE: "§fDate :§e {0}"
   ATTACK_CANCELLED: "{0}§f a annulé son attaque sur {1}"
   JOIN_REGION_PROPOSAL_NEWSLETTER: "{0}§f candidate pour rejoindre la région {1}"
   #Chunk blacklist
@@ -1091,3 +1091,11 @@ language:
   UTC_PLUS_10: "§eUTC+10:00, Sidney"
   UTC_PLUS_11: "§eUTC+11:00, Nouméa"
   UTC_PLUS_12: "§eUTC+12:00, Auckland | Fidji"
+  #Relative time description
+  RELATIVE_IN_FUTURE: "Dans le futur"
+  RELATIVE_TIME_SECOND: "§fIl y a §e{0}§f seconde(s)"
+  RELATIVE_TIME_MINUTE: "§fIl y a §e{0}§f minute(s)"
+  RELATIVE_TIME_HOUR: "§fIl y a §e{0}§f heure(s)"
+  RELATIVE_TIME_DAY: "§fIl y a §e{0}§f jour(s)"
+  RELATIVE_TIME_MONTH: "§fIl y a §e{0}§f moi(s)"
+  RELATIVE_TIME_YEAR: "§fIl y a §e{0}§f année(s)"

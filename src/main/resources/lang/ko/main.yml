@@ -290,7 +290,6 @@ language:
   GUI_TOWN_RELATION_ADD_TOWN: "§a마을 추가"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§a마을 제거"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§c우클릭하여 공격을 시작하세요"
-  GUI_TOWN_ATTACK_TOWN_INFO: "§c{0}가(이) {1}에 대한 공격을 시작했습니다!"
   GUI_TOWN_ATTACK_FINISHED: "§c{0}에 대한 공격이 종료되었습니다!"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§a문 접근 관리"
   GUI_TOWN_CLAIM_SETTINGS_CHEST: "§a상자 접근 관리"

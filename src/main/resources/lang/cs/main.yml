@@ -599,7 +599,6 @@ language:
   BROADCAST_RELATION_IMPROVE: "§fVztah mezi {0}§f a {1}§f se zlepšil na: {2}"
   BROADCAST_RELATION_WORSEN: "§fVztah mezi {0}§f a {1}§f se zhoršil na: {2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cPravým klikem zahajte útok"
-  GUI_TOWN_ATTACK_TOWN_INFO: "§c{0} zahájil útok na {1}!"
   GUI_TOWN_ATTACK_FINISHED: "§cÚtok na {0} skončil!"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aSpráva přístupu ke dveřím"
   GUI_TOWN_CLAIM_SETTINGS_CHEST: "§aSpráva přístupu k truhlám"

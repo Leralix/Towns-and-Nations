@@ -512,7 +512,6 @@ language:
   BROADCAST_RELATION_IMPROVE: "§f{0}§f ile {1}§f arasındaki ilişki geliştirildi: {2}"
   BROADCAST_RELATION_WORSEN: "§f{0}§f ile {1}§f arasındaki ilişki kötüleşti: {2}"
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cSaldırı başlatmak için sağ tıkla"
-  GUI_TOWN_ATTACK_TOWN_INFO: "§c{0}, {1} kasabasına saldırı başlattı!"
   GUI_TOWN_ATTACK_FINISHED: "§c{0} kasabasına yapılan saldırı sona erdi!"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aKapı erişimini yönet"
   GUI_TOWN_CLAIM_SETTINGS_CHEST: "§aSandık erişimini yönet"
