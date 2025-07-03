@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.leralix.lib.data.SoundEnum.REMOVE;
-import static org.leralix.lib.data.SoundEnum.WAR;
 
 public class CreateWarMenu extends BasicGui {
 
@@ -104,12 +103,6 @@ public class CreateWarMenu extends BasicGui {
                     }
 
                     EventManager.getInstance().callEvent(new AttackDeclaredInternalEvent(attackedTerritory, attackingTerritory));
-
-
-                    //TODO : delete when event system is fully implemented
-                    String message = Lang.GUI_TOWN_ATTACK_TOWN_INFO.get(tanPlayer, attackingTerritory.getName(), attackedTerritory.getName());
-                    attackingTerritory.broadcastMessageWithSound(message, WAR);
-                    attackedTerritory.broadcastMessageWithSound(message, WAR);
 
                     PlannedAttackStorage.newWar(attackData);
                     new WarMenu(player, attackingTerritory);

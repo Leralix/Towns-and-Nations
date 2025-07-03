@@ -99,8 +99,8 @@ public class AttackCancelledByDefenderNewsletter extends Newsletter {
         if(attackingTerritory == null || defendingTerritory == null)
             return;
 
-        player.sendMessage(getTANString() + Lang.ATTACK_CANCELLED.get(attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()));
-        SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
+        SoundUtil.playSound(player, SoundEnum.WAR);
+        player.sendMessage(getTANString() + Lang.DEFENSIVE_SIDE_HAS_SURRENDER.get(defendingTerritory.getBaseColoredName(), attackingTerritory.getBaseColoredName()));
     }
 
     @Override

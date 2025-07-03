@@ -294,8 +294,6 @@ public class PlannedAttack {
 
         EventManager.getInstance().callEvent(new DefenderAcceptDemandsBeforeWarInternalEvent(getMainDefender(), getMainAttacker()));
 
-        //TODO : Remove this message when the event system is implemented
-        broadCastMessageWithSound(Lang.DEFENSIVE_SIDE_HAS_SURRENDER.get(getMainDefender().getBaseColoredName(), getMainAttacker().getBaseColoredName()), SoundEnum.WAR);
         getWarGoal().applyWarGoal();
         remove();
     }

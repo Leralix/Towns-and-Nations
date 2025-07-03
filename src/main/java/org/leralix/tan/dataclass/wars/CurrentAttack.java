@@ -195,8 +195,6 @@ public class CurrentAttack {
 
         EventManager.getInstance().callEvent(new AttackWonByAttackerInternalEvent(mainDefendingTerritory, mainAttackingTerritory));
 
-        //TODO : switch message to the newsletter system (check what should remain and what should be removed)
-
         for(TerritoryData territoryData : this.attackers) {
             for(ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
                 Player player = tanPlayer.getPlayer();
