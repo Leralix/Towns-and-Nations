@@ -208,8 +208,8 @@ public class NewsletterDAO {
         // Delete from the specific newsletter table
         String deleteSpecificSql = "DELETE FROM ? WHERE id = ?";
         try (PreparedStatement ps = mainConn.prepareStatement(deleteSpecificSql)) {
-            ps.setString(0, tableName);
-            ps.setString(1, id);
+            ps.setString(1, tableName);
+            ps.setString(2, id);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
