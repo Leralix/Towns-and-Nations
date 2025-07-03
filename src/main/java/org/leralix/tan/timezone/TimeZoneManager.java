@@ -3,6 +3,8 @@ package org.leralix.tan.timezone;
 
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -67,6 +69,38 @@ public class TimeZoneManager {
         ZonedDateTime zonedDateTime = Instant.now().atZone(getServerTimeZone().toZoneOffset());
         int hourOfDay = zonedDateTime.getHour();
         return hourOfDay >= 8 && hourOfDay < 20;
+    }
+
+    public String getRelativeTimeDescription(LangType langType, long date) {
+        Instant instant = Instant.ofEpochMilli(date);
+        Instant now = Instant.now();
+
+        long diffSeconds = now.getEpochSecond() - instant.getEpochSecond();
+
+
+        if (diffSeconds < 0) {
+            return Lang.RELATIVE_IN_FUTURE.get();
+        }
+
+        long minutes = diffSeconds / 60;
+        long hours = minutes / 60;
+        long days = hours / 24;
+        long months = days / 30;
+        long years = days / 365;
+
+        if (diffSeconds < 60) {
+            return Lang.RELATIVE_TIME_SECOND.get(langType, diffSeconds);
+        } else if (minutes < 60) {
+            return Lang.RELATIVE_TIME_MINUTE.get(langType, minutes);
+        } else if (hours < 24) {
+            return Lang.RELATIVE_TIME_HOUR.get(langType, hours);
+        } else if (days < 7) {
+            return Lang.RELATIVE_TIME_DAY.get(langType, days);
+        } else if (months < 12) {
+            return Lang.RELATIVE_TIME_MONTH.get(langType, months);
+        } else {
+            return Lang.RELATIVE_TIME_SECOND.get(langType, years);
+        }
     }
 }
 

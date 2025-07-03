@@ -6,10 +6,11 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.events.EventManager;
+import org.leralix.tan.events.events.RegionDeletednternalEvent;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.user.MainMenu;
-import org.leralix.tan.gui.user.property.TownPropertiesMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.FileUtil;
 import org.leralix.tan.utils.GuiUtil;
@@ -90,6 +91,8 @@ public class RegionSettingsMenu extends SettingsMenus {
 
                     PlayerGUI.openConfirmMenu(player, Lang.GUI_CONFIRM_DELETE_REGION.get(tanPlayer, regionData.getName()), confirm -> {
                         FileUtil.addLineToHistory(Lang.REGION_DELETED_NEWSLETTER.get(tanPlayer, player.getName(), regionData.getName()));
+
+                        EventManager.getInstance().callEvent(new RegionDeletednternalEvent(regionData, tanPlayer));
                         regionData.delete();
                         SoundUtil.playSound(player, GOOD);
                         new MainMenu(player);

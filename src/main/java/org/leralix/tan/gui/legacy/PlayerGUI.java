@@ -387,7 +387,7 @@ public class PlayerGUI {
         ItemStack whitePanel = HeadUtils.createCustomItemStack(Material.WHITE_STAINED_GLASS_PANE, "");
         ItemStack ironBars = HeadUtils.createCustomItemStack(Material.IRON_BARS, Lang.LEVEL_LOCKED.get(tanPlayer));
 
-        GuiItem townIcon = GuiUtil.townUpgradeResume(townData);
+        GuiItem townIcon = GuiUtil.townUpgradeResume(tanPlayer.getLang(), townData);
 
         GuiItem whitePanelIcon = ItemBuilder.from(whitePanel).asGuiItem(event -> event.setCancelled(true));
         GuiItem ironBarsIcon = ItemBuilder.from(ironBars).asGuiItem(event -> event.setCancelled(true));

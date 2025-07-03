@@ -13,6 +13,8 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.StrongholdData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
+import org.leralix.tan.events.EventManager;
+import org.leralix.tan.events.events.DefenderAcceptDemandsBeforeWarInternalEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
@@ -289,7 +291,9 @@ public class PlannedAttack {
     }
 
     public void defenderSurrendered() {
-        broadCastMessageWithSound(Lang.DEFENSIVE_SIDE_HAS_SURRENDER.get(getMainDefender().getBaseColoredName(), getMainAttacker().getBaseColoredName()), SoundEnum.WAR);
+
+        EventManager.getInstance().callEvent(new DefenderAcceptDemandsBeforeWarInternalEvent(getMainDefender(), getMainAttacker()));
+
         getWarGoal().applyWarGoal();
         remove();
     }

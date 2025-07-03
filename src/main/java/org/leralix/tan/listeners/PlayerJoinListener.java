@@ -9,8 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.TeamUtils;
@@ -39,7 +39,7 @@ public class PlayerJoinListener implements Listener {
             player.sendMessage(TanChatUtils.getTANString() + Lang.NEW_VERSION_AVAILABLE_2.get());
         }
 
-        int nbNewsletterForPlayer = NewsletterStorage.getNbUnreadNewsletterForPlayer(player);
+        int nbNewsletterForPlayer = NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player);
         if (nbNewsletterForPlayer > 0) {
             player.sendMessage(Lang.NEWSLETTER_STRING.get() + Lang.NEWSLETTER_GREETING.get(nbNewsletterForPlayer));
             TextComponent message = new TextComponent(Lang.CLICK_TO_OPEN_NEWSLETTER.get());

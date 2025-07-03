@@ -36,14 +36,14 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.events.EventManager;
+import org.leralix.tan.events.events.DiplomacyProposalAcceptedInternalEvent;
+import org.leralix.tan.events.events.DiplomacyProposalInternalEvent;
+import org.leralix.tan.events.events.TerritoryVassalAcceptedInternalEvent;
+import org.leralix.tan.events.events.TerritoryVassalProposalInternalEvent;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.newsletter.news.DiplomacyAcceptedNews;
-import org.leralix.tan.newsletter.news.DiplomacyProposalNews;
-import org.leralix.tan.newsletter.news.TerritoryVassalAcceptedNews;
-import org.leralix.tan.newsletter.news.TerritoryVassalProposalNews;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
@@ -218,12 +218,13 @@ public abstract class TerritoryData {
     }
 
     public void setRelation(TerritoryData otherTerritory, TownRelation relation){
+
         TownRelation actualRelation = getRelationWith(otherTerritory);
+
+        EventManager.getInstance().callEvent(new DiplomacyProposalAcceptedInternalEvent(otherTerritory, this, actualRelation, relation));
 
         this.getRelations().setRelation(relation,otherTerritory);
         otherTerritory.getRelations().setRelation(relation,this);
-
-        NewsletterStorage.register(new DiplomacyAcceptedNews(getID(), otherTerritory.getID(), relation, actualRelation.isSuperiorTo(relation)));
 
         TeamUtils.updateAllScoreboardColor();
     }
@@ -242,8 +243,8 @@ public abstract class TerritoryData {
         getDiplomacyProposals().remove(proposingTerritoryID);
     }
     private void addDiplomaticProposal(TerritoryData proposingTerritory, TownRelation wantedRelation){
+        EventManager.getInstance().callEvent(new DiplomacyProposalInternalEvent(this, proposingTerritory, wantedRelation));
         getDiplomacyProposals().put(proposingTerritory.getID(), new DiplomacyProposal(proposingTerritory.getID(), getID(), wantedRelation));
-        NewsletterStorage.register(new DiplomacyProposalNews(proposingTerritory.getID(), getID(), wantedRelation));
     }
 
     public void receiveDiplomaticProposal(TerritoryData proposingTerritory, TownRelation wantedRelation) {
@@ -400,16 +401,12 @@ public abstract class TerritoryData {
 
     public void addVassal(TerritoryData vassal){
 
-        NewsletterStorage.register(new TerritoryVassalAcceptedNews(getID(), vassal.getID()));
-        NewsletterStorage.removeVassalisationProposal(this, vassal);
+        EventManager.getInstance().callEvent(new TerritoryVassalAcceptedInternalEvent(vassal, this));
         addVassalPrivate(vassal);
     }
     protected abstract void addVassalPrivate (TerritoryData vassal);
 
-    protected void removeVassal(TerritoryData vassal){
-        removeVassal(vassal.getID());
-    }
-    protected abstract void removeVassal(String vassalID);
+    protected abstract void removeVassal(TerritoryData vassalID);
 
     public abstract boolean isCapital();
 
@@ -576,7 +573,7 @@ public abstract class TerritoryData {
     public void addVassalisationProposal(TerritoryData proposal){
         getOverlordsProposals().add(proposal.getID());
         broadcastMessageWithSound(Lang.REGION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getBaseColoredName(), getBaseColoredName()), SoundEnum.MINOR_GOOD);
-        NewsletterStorage.register(new TerritoryVassalProposalNews(proposal, this));
+        EventManager.getInstance().callEvent(new TerritoryVassalProposalInternalEvent(proposal, this));
     }
 
     public void removeVassalisationProposal(TerritoryData proposal){

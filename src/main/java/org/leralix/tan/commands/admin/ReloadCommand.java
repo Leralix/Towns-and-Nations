@@ -14,6 +14,7 @@ import org.leralix.tan.storage.PvpSettings;
 import org.leralix.tan.storage.WildernessRules;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.utils.Constants;
+import org.leralix.tan.utils.EnabledPermissions;
 import org.leralix.tan.utils.NumberUtil;
 import org.leralix.tan.utils.TanChatUtils;
 
@@ -64,6 +65,7 @@ public class ReloadCommand extends SubCommand {
             PvpSettings.init();
             WildernessRules.getInstance().init();
             NumberUtil.init();
+            EnabledPermissions.getInstance().init();
 
             player.sendMessage(TanChatUtils.getTANString() + Lang.RELOAD_SUCCESS.get(player));
             player.sendMessage(TanChatUtils.getTANString() + Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());

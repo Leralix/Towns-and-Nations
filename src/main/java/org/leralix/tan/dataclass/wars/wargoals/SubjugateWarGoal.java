@@ -6,9 +6,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
+import org.leralix.tan.events.EventManager;
+import org.leralix.tan.events.events.TerritoryVassalForcedInternalEvent;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.newsletter.news.TerritoryVassalForcedNews;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.utils.TerritoryUtil;
 
 public class SubjugateWarGoal extends WarGoal {
@@ -17,7 +17,7 @@ public class SubjugateWarGoal extends WarGoal {
     final String territoryToSubjugate;
     final String newOverlordID;
 
-    public SubjugateWarGoal(CreateAttackData createAttackData){
+    public SubjugateWarGoal(CreateAttackData createAttackData) {
         super();
         this.territoryToSubjugate = createAttackData.getMainDefender().getID();
         this.newOverlordID = createAttackData.getMainAttacker().getID();
@@ -42,19 +42,18 @@ public class SubjugateWarGoal extends WarGoal {
     public void applyWarGoal() {
         TerritoryData territoryData = TerritoryUtil.getTerritory(territoryToSubjugate);
         TerritoryData newOverlord = TerritoryUtil.getTerritory(newOverlordID);
-        if(territoryData == null || newOverlord == null)
+        if (territoryData == null || newOverlord == null)
             return;
 
-        if(territoryData.haveOverlord()){
+        if (territoryData.haveOverlord()) {
             territoryData.removeOverlord();
         }
         territoryData.setOverlord(newOverlord);
 
-        NewsletterStorage.register(new TerritoryVassalForcedNews(
+        EventManager.getInstance().callEvent(new TerritoryVassalForcedInternalEvent(
                 territoryData,
                 newOverlord
         ));
-
     }
 
     @Override
@@ -73,7 +72,7 @@ public class SubjugateWarGoal extends WarGoal {
 
         TerritoryData loosingTerritory = TerritoryUtil.getTerritory(territoryToSubjugate);
         TerritoryData winningTerritory = TerritoryUtil.getTerritory(newOverlordID);
-        if(loosingTerritory == null || winningTerritory == null)
+        if (loosingTerritory == null || winningTerritory == null)
             return;
         player.sendMessage(Lang.WARGOAL_SUBJUGATE_SUCCESS.get(loosingTerritory.getBaseColoredName(), winningTerritory.getBaseColoredName()));
     }

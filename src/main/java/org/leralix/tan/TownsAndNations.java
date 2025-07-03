@@ -21,14 +21,16 @@ import org.leralix.tan.commands.server.ServerCommandManager;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.economy.TanEconomyStandalone;
 import org.leralix.tan.economy.VaultManager;
+import org.leralix.tan.events.EventManager;
+import org.leralix.tan.events.newsletter.NewsletterEvents;
+import org.leralix.tan.events.newsletter.NewsletterStorage;
+import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.integration.worldguard.WorldGuardManager;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.*;
 import org.leralix.tan.listeners.chat.ChatListener;
-import org.leralix.tan.newsletter.NewsletterType;
-import org.leralix.tan.newsletter.storage.NewsletterStorage;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.PvpSettings;
@@ -42,6 +44,7 @@ import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.CustomNBT;
+import org.leralix.tan.utils.EnabledPermissions;
 import org.leralix.tan.utils.NumberUtil;
 import org.tan.api.TanAPI;
 
@@ -79,7 +82,7 @@ public final class TownsAndNations extends JavaPlugin {
      * Used to check if the plugin is up-to-date to the latest version. Also
      * used to check if the plugin has just been updated and config file needs an update
      */
-    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,14,7);
+    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,14,8);
     private static final PluginVersion MINIMUM_SUPPORTING_DYNMAP = new PluginVersion(0,11,0);
     private static final PluginVersion MINIMUM_SUPPORTING_SPHERELIB = new PluginVersion(0,4,4);
 
@@ -172,6 +175,7 @@ public final class TownsAndNations extends JavaPlugin {
         NewsletterType.init();
         IconManager.getInstance();
         NumberUtil.init();
+        EnabledPermissions.getInstance().init();
 
         FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         allowColorCodes = mainConfig.getBoolean("EnablePlayerColorCode", false);
@@ -187,7 +191,8 @@ public final class TownsAndNations extends JavaPlugin {
         TownDataStorage.getInstance();
         LandmarkStorage.getInstance().load();
         PlannedAttackStorage.load();
-        NewsletterStorage.init();
+        NewsletterStorage.getInstance();
+        EventManager.getInstance().registerEvents(new NewsletterEvents());
 
 
         getLogger().log(Level.INFO,"[TaN] -Loading blocks data");

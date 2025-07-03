@@ -7,9 +7,10 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.events.EventManager;
+import org.leralix.tan.events.events.TownDeletedInternalEvent;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
-import org.leralix.tan.gui.user.property.TownPropertiesMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.FileUtil;
 import org.leralix.tan.utils.GuiUtil;
@@ -114,6 +115,7 @@ public class TownSettingsMenu extends SettingsMenus {
 
                     PlayerGUI.openConfirmMenu(player, Lang.GUI_CONFIRM_PLAYER_DELETE_TOWN.get(tanPlayer, townData.getName()), confirm -> {
                         FileUtil.addLineToHistory(Lang.TOWN_DELETED_NEWSLETTER.get(tanPlayer, player.getName(), townData.getName()));
+                        EventManager.getInstance().callEvent(new TownDeletedInternalEvent(townData, tanPlayer));
                         townData.delete();
                         player.closeInventory();
                         SoundUtil.playSound(player, GOOD);
