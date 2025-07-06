@@ -1,4 +1,4 @@
-package org.leralix.tan.storage;
+package org.leralix.tan.listeners.interact;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,51 +33,57 @@ import java.util.Map;
 
 public class PlayerSelectPropertyPositionStorage {
 
+    //TODO : transform this standalone code to a one-class-per-player. RightClickListenerEvent will handle
+    // the player assignment.
     private static final Map<String, List<Vector3D>> playerList = new HashMap<>();
-    public static boolean contains(Player player){
+
+    public static boolean contains(Player player) {
         return contains(player.getUniqueId().toString());
     }
-    public static boolean contains(ITanPlayer tanPlayer){
+
+    public static boolean contains(ITanPlayer tanPlayer) {
         return contains(tanPlayer.getID());
     }
-    public static boolean contains(String playerID){
+
+    public static boolean contains(String playerID) {
         return playerList.containsKey(playerID);
     }
-    public static void addPlayer(String playerID){
+
+    public static void addPlayer(String playerID) {
         playerList.put(playerID, new ArrayList<>());
     }
 
-    public static void addPlayer(ITanPlayer tanPlayer){
+    public static void addPlayer(ITanPlayer tanPlayer) {
         addPlayer(tanPlayer.getID());
     }
 
-    public static void removePlayer(Player player){
+    public static void removePlayer(Player player) {
         playerList.remove(player.getUniqueId().toString());
     }
-    public static void removePlayer(String playerID){
+
+    public static void removePlayer(String playerID) {
         playerList.remove(playerID);
     }
 
-    public static void addPoint(Player player, Block block, BlockFace blockFace){
+    public static void addPoint(Player player, Block block, BlockFace blockFace) {
         String playerID = player.getUniqueId().toString();
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
         TownData playerTown = tanPlayer.getTown();
 
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(block.getChunk());
-        if(claimedChunk == null){
+        if (claimedChunk == null) {
             player.sendMessage(Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get());
         }
 
         List<Vector3D> vList = playerList.get(playerID);
-        if(vList.isEmpty()){
+        if (vList.isEmpty()) {
             Vector3D vector3D = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
             vList.add(vector3D);
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_FIRST_POINT_SET.get(vector3D));
-        }
-        else if(vList.size() == 1) {
+        } else if (vList.size() == 1) {
 
             int maxPropertySize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("maxPropertySize", 50000);
-            if(Math.abs(vList.get(0).getX() - block.getX()) * Math.abs(vList.get(0).getY() - block.getY()) * Math.abs(vList.get(0).getZ() - block.getZ()) > maxPropertySize){
+            if (Math.abs(vList.get(0).getX() - block.getX()) * Math.abs(vList.get(0).getY() - block.getY()) * Math.abs(vList.get(0).getZ() - block.getZ()) > maxPropertySize) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_PROPERTY_TOO_BIG.get(maxPropertySize));
                 return;
             }
@@ -87,21 +93,19 @@ public class PlayerSelectPropertyPositionStorage {
             vList.add(vector3D);
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_SECOND_POINT_SET.get(vector3D));
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_PLACE_SIGN.get());
-        }
-        else if(vList.size() == 2){
-            int margin = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("maxPropertyMargin",3);
-            if(!isNearProperty(block.getLocation(),vList.get(0),vList.get(1), margin)){
+        } else if (vList.size() == 2) {
+            int margin = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("maxPropertyMargin", 3);
+            if (!isNearProperty(block.getLocation(), vList.get(0), vList.get(1), margin)) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_PROPERTY_SIGN_TOO_FAR.get(margin));
                 return;
             }
-
 
 
             SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_PROPERTY_CREATED.get());
             removePlayer(playerID);
 
-            PropertyData property = playerTown.registerNewProperty(vList.get(0),vList.get(1),tanPlayer);
+            PropertyData property = playerTown.registerNewProperty(vList.get(0), vList.get(1), tanPlayer);
             new PlayerPropertyManager(player, property, HumanEntity::closeInventory);
 
             createPropertyPanel(player, property, block, blockFace);
@@ -160,8 +164,7 @@ public class PlayerSelectPropertyPositionStorage {
         }
     }
 
-
-    static boolean isNearProperty(Location blockLocation,Vector3D p1, Vector3D p2, int margin) {
+    static boolean isNearProperty(Location blockLocation, Vector3D p1, Vector3D p2, int margin) {
         int minX = Math.min(p1.getX(), p2.getX()) - margin;
         int minY = Math.min(p1.getY(), p2.getY()) - margin;
         int minZ = Math.min(p1.getZ(), p2.getZ()) - margin;

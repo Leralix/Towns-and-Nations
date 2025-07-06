@@ -1,4 +1,4 @@
-package org.leralix.tan.listeners;
+package org.leralix.tan.listeners.interact;
 
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
@@ -10,7 +10,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.PlayerSelectPropertyPositionStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.TanChatUtils;

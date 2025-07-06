@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.leralix.tan.storage.PlayerSelectPropertyPositionStorage;
+import org.leralix.tan.listeners.interact.PlayerSelectPropertyPositionStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.lang.Lang;
 
