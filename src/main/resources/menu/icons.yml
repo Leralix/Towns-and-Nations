@@ -42,6 +42,7 @@ TERRITORY_BROWSE_ICON : "https://textures.minecraft.net/texture/47a374e21b81c0b2
 TERRITORY_DIPLOMACY_ICON : "https://textures.minecraft.net/texture/c507d6de631838e7a75720e5b38ef14d2966fdd8486e75d1f6812ed99bbca499"
 TERRITORY_LEVEL_ICON : "https://textures.minecraft.net/texture/fbe529ab6b2ea7c50d9192d89f898fd7da8a9e750d378295df73205e7a7eeae0"
 TERRITORY_SETTINGS_ICON : "https://textures.minecraft.net/texture/95d2cb38458da17fb6cdacf787161602a2493cbf93233636253cff07cd88a9c0"
+TERRITORY_BUILDING_ICON : "https://textures.minecraft.net/texture/4a89218d2671035e138cbbacf7401ad3258f483c7ef93063a1fda5cd57f143ab"
 TERRITORY_WAR_ICON : "https://textures.minecraft.net/texture/25de4ff8be70eee4d103b1eedf454f0abb9f0568f5f326ecba7cab6a47f9ade4"
 TERRITORY_HIERARCHY_ICON : "minecraft:GOLDEN_HELMET"
 #Town menu
@@ -164,3 +165,6 @@ CONFIRM_WAR_START_IMPOSSIBLE_ICON: "https://textures.minecraft.net/texture/beb58
 #Confirm claim landmark
 GUI_CONFIRM_CLAIM_LANDMARK_REQUIREMENTS_MET_ICON : "https://textures.minecraft.net/texture/4312ca4632def5ffaf2eb0d9d7cc7b55a50c4e3920d90372aab140781f5dfbc4"
 GUI_CONFIRM_CLAIM_LANDMARK_REQUIREMENTS_UNMET_ICON : "https://textures.minecraft.net/texture/4312ca4632def5ffaf2eb0d9d7cc7b55a50c4e3920d90372aab140781f5dfbc4"
+
+#Buildings
+FORT_BUILDING_ICON : "minecraft:IRON_BLOCK"

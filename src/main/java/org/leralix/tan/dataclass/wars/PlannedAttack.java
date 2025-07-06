@@ -271,6 +271,16 @@ public class PlannedAttack {
         return warGoal;
     }
 
+    public WarRole getRole(ITanPlayer player){
+        for(TerritoryData territoryData : player.getAllTerritoriesPlayerIsIn()){
+            WarRole role = getTerritoryRole(territoryData);
+            if(role != WarRole.NEUTRAL){
+                return role;
+            }
+        }
+        return WarRole.NEUTRAL;
+    }
+
     public WarRole getTerritoryRole(TerritoryData territory) {
         if(isMainAttacker(territory))
             return WarRole.MAIN_ATTACKER;

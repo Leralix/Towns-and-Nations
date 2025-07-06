@@ -461,6 +461,11 @@ language:
   GUI_TOWN_CHUNK_MOB: "§aMob spawn"
   #Player chunk settings
   GUI_RIGHT_CLICK_TO_ADD_SPECIFIC_PLAYER: "§7▶ Right click to add a specific player"
+  #Building menu
+  GUI_BUILDING_MENU: "§aBuilding"
+  GUI_BUILDING_MENU_DESC1: "§fCreate and manage buildings"
+  CREATE_FORT_ICON: "§aCreate a new fort"
+  CREATE_FORT_DESC1: "§fCost : {0}{MONEY_CHAR}"
   #GUI
   ##menu headers
   HEADER_MAIN_MENU: "Main menu"
@@ -520,6 +525,7 @@ language:
   HEADER_ADMIN_CHANGE_TOWN_LEADER: "Change {0} leader - Admin"
   HEADER_ADMIN_PLAYER_MENU: "Players - Admin"
   HEADER_ADMIN_SET_PLAYER_TOWN: "Set {0} town - Admin"
+  HEADER_BUILDING_MENU: "Buildings"
   GUI_TOWN_INFO_DESC0: "§7§o\"{0}\"" #town's quote
   GUI_TOWN_INFO_DESC1: "§fLeader: §3{0}"
   GUI_TOWN_INFO_DESC2: "§fMembers: §9{0}♣"
@@ -1099,3 +1105,5 @@ language:
   RELATIVE_TIME_DAY: "§e{0}§f day(s) ago"
   RELATIVE_TIME_MONTH: "§e{0}§f month(s) ago"
   RELATIVE_TIME_YEAR: "§e{0}§f year(s) ago"
+  #Forts
+  FORT_OCCUPIED_BY: "§fOccupied by : {0}"

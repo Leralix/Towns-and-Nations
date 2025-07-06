@@ -155,6 +155,13 @@ public class NewClaimedChunkStorage {
         }
     }
 
+    public ClaimedChunk2 get(int x, int z, String worldID) {
+        ClaimedChunk2 claimedChunk = claimedChunksMap.get(getChunkKey(x, z, worldID));
+        if (claimedChunk == null) {
+            return new WildernessChunk(x, z, worldID);
+        }
+        return claimedChunk;
+    }
 
     public @NotNull ClaimedChunk2 get(Chunk chunk) {
         ClaimedChunk2 claimedChunk = claimedChunksMap.get(getChunkKey(chunk));

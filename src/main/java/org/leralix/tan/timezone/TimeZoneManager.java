@@ -99,7 +99,7 @@ public class TimeZoneManager {
         } else if (months < 12) {
             return Lang.RELATIVE_TIME_MONTH.get(langType, months);
         } else {
-            return Lang.RELATIVE_TIME_SECOND.get(langType, years);
+            return Lang.RELATIVE_TIME_YEAR.get(langType, years);
         }
     }
 }

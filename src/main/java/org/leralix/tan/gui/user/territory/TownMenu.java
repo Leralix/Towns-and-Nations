@@ -36,8 +36,10 @@ public class TownMenu extends TerritoryMenu {
         gui.setItem(2, 7, getLevelButton());
         gui.setItem(2, 8, getSettingsButton());
 
-        gui.setItem(3, 2, getAttackButton());
-        gui.setItem(3, 3, getHierarchyButton());
+        gui.setItem(3, 2, getBuildingButton());
+        gui.setItem(3, 3, getAttackButton());
+        gui.setItem(3, 4, getHierarchyButton());
+
         gui.setItem(3, 7, getPropertiesButton());
         gui.setItem(3, 8, getLandmarksButton());
 

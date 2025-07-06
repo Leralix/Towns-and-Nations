@@ -19,6 +19,9 @@ import org.leralix.tan.storage.WildernessRules;
 
 public class WildernessChunk extends ClaimedChunk2 {
 
+    public WildernessChunk(int x, int z, String worldUUID) {
+        super(x, z, worldUUID, "wilderness");
+    }
 
     public WildernessChunk(Chunk chunk) {
         super(chunk, "wilderness");

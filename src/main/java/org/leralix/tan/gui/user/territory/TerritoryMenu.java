@@ -12,7 +12,6 @@ import org.leralix.tan.enums.BrowseScope;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -45,7 +44,7 @@ public abstract class TerritoryMenu extends BasicGui {
         lore.add(Lang.GUI_TOWN_INFO_CHANGE_ICON.get(tanPlayer));
         lore.add(Lang.RIGHT_CLICK_TO_SELECT_MEMBER_HEAD.get(tanPlayer));
 
-        return IconManager.getInstance().get(IconKey.TERRITORY_ICON)
+        return iconManager.get(IconKey.TERRITORY_ICON)
                 .setName(Lang.GUI_TOWN_NAME.get(langType, territoryData.getName()))
                 .setDescription(lore)
                 .setAction( action -> {
@@ -76,7 +75,7 @@ public abstract class TerritoryMenu extends BasicGui {
     }
 
     protected GuiItem getTownTreasuryButton() {
-        return IconManager.getInstance().get(IconKey.TERRITORY_TREASURY_ICON)
+        return iconManager.get(IconKey.TERRITORY_TREASURY_ICON)
                 .setName(Lang.GUI_TOWN_TREASURY_ICON.get(tanPlayer.getLang()))
                 .setDescription(
                         Lang.GUI_TOWN_TREASURY_ICON_DESC1.get(tanPlayer.getLang()),
@@ -87,7 +86,7 @@ public abstract class TerritoryMenu extends BasicGui {
     }
 
     protected GuiItem getMemberButton() {
-        return IconManager.getInstance().get(IconKey.TERRITORY_MEMBER_ICON)
+        return iconManager.get(IconKey.TERRITORY_MEMBER_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_ICON.get(tanPlayer.getLang()))
                 .setDescription(Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get(tanPlayer.getLang()),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer)
@@ -97,7 +96,7 @@ public abstract class TerritoryMenu extends BasicGui {
     }
 
     protected GuiItem getLandButton() {
-        return IconManager.getInstance().get(IconKey.TERRITORY_LAND_ICON)
+        return iconManager.get(IconKey.TERRITORY_LAND_ICON)
                 .setName(Lang.GUI_CLAIM_ICON.get(tanPlayer.getLang()))
                 .setDescription(
                         Lang.GUI_CLAIM_ICON_DESC1.get(tanPlayer.getLang()),
@@ -108,7 +107,7 @@ public abstract class TerritoryMenu extends BasicGui {
     }
 
     protected GuiItem getBrowseButton() {
-        return IconManager.getInstance().get(IconKey.TERRITORY_BROWSE_ICON)
+        return iconManager.get(IconKey.TERRITORY_BROWSE_ICON)
                 .setName(Lang.GUI_BROWSE_TERRITORY_ICON.get(tanPlayer.getLang()))
                 .setDescription(
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer)
@@ -118,7 +117,7 @@ public abstract class TerritoryMenu extends BasicGui {
     }
 
     protected GuiItem getDiplomacyButton() {
-        return IconManager.getInstance().get(IconKey.TERRITORY_DIPLOMACY_ICON)
+        return iconManager.get(IconKey.TERRITORY_DIPLOMACY_ICON)
                 .setName(Lang.GUI_RELATION_ICON.get(tanPlayer.getLang()))
                 .setDescription(
                         Lang.GUI_RELATION_ICON_DESC1.get(tanPlayer.getLang()),
@@ -129,7 +128,7 @@ public abstract class TerritoryMenu extends BasicGui {
     }
 
     protected GuiItem getAttackButton() {
-        return IconManager.getInstance().get(IconKey.TERRITORY_WAR_ICON)
+        return iconManager.get(IconKey.TERRITORY_WAR_ICON)
                 .setName(Lang.GUI_ATTACK_ICON.get(tanPlayer.getLang()))
                 .setDescription(
                         Lang.GUI_ATTACK_ICON_DESC1.get(tanPlayer.getLang()),
@@ -140,13 +139,23 @@ public abstract class TerritoryMenu extends BasicGui {
     }
 
     protected GuiItem getHierarchyButton() {
-        return IconManager.getInstance().get(IconKey.TERRITORY_HIERARCHY_ICON)
+        return iconManager.get(IconKey.TERRITORY_HIERARCHY_ICON)
                 .setName(Lang.GUI_HIERARCHY_MENU.get(tanPlayer.getLang()))
                 .setDescription(
                         Lang.GUI_HIERARCHY_MENU_DESC1.get(tanPlayer.getLang()),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer)
                 )
                 .setAction(event -> PlayerGUI.openHierarchyMenu(player, territoryData))
+                .asGuiItem(player);
+    }
+    
+    protected GuiItem getBuildingButton(){
+        return iconManager.get(IconKey.TERRITORY_BUILDING_ICON)
+                .setName(Lang.GUI_BUILDING_MENU.get(tanPlayer.getLang()))
+                .setDescription(
+                        Lang.GUI_BUILDING_MENU_DESC1.get(tanPlayer.getLang()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer.getLang()))
+                .setAction(event -> new BuildingMenu(player, territoryData, this))
                 .asGuiItem(player);
     }
 }

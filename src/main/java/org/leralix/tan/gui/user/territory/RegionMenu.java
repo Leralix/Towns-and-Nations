@@ -34,8 +34,9 @@ public class RegionMenu extends TerritoryMenu {
 
         gui.setItem(2, 8, getSettingsButton());
 
-        gui.setItem(3, 2, getAttackButton());
-        gui.setItem(3, 3, getHierarchyButton());
+        gui.setItem(3, 2, getBuildingButton());
+        gui.setItem(3, 3, getAttackButton());
+        gui.setItem(3, 4, getHierarchyButton());
 
         gui.setItem(4, 1, GuiUtil.createBackArrow(player, MainMenu::new));
 

@@ -17,6 +17,7 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.newhistory.ChunkPaymentHistory;
@@ -49,6 +50,8 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.*;
+import org.leralix.tan.war.fort.Fort;
+import org.leralix.tan.war.fort.FortData;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -76,6 +79,7 @@ public abstract class TerritoryData {
     private List<String> overlordsProposals;
     private ClaimedChunkSettings chunkSettings;
     private StrongholdData stronghold;
+    private List<Fort> forts;
 
     protected TerritoryData(String id, String name, ITanPlayer owner){
         this.id = id;
@@ -346,11 +350,11 @@ public abstract class TerritoryData {
     }
 
     public void addCurrentAttack(CurrentAttack currentAttacks){
-        getAttacksInvolvedID().add(currentAttacks.getId());
+        getAttacksInvolvedID().add(currentAttacks.getAttackData().getID());
 
     }
     public void removeCurrentAttack(CurrentAttack currentAttacks){
-        getAttacksInvolvedID().remove(currentAttacks.getId());
+        getAttacksInvolvedID().remove(currentAttacks.getAttackData().getID());
     }
 
     public abstract boolean atWarWith(String territoryID);
@@ -901,5 +905,20 @@ public abstract class TerritoryData {
         if (this.haveNoLeader())
             return Lang.NO_LEADER.get();
         return getLeaderData().getNameStored();
+    }
+
+    public List<Building> getBuildings() {
+        List<Building> res = new ArrayList<>();
+
+        res.addAll(getForts());
+
+        return res;
+    }
+
+    private List<Fort> getForts() {
+        if(forts == null){
+            forts = new ArrayList<>();
+        }
+        return forts;
     }
 }

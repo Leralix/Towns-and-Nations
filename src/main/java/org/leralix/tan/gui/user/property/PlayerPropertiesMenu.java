@@ -11,7 +11,7 @@ import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.player.PlayerMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.PlayerSelectPropertyPositionStorage;
+import org.leralix.tan.listeners.interact.PlayerSelectPropertyPositionStorage;
 import org.leralix.tan.utils.GuiUtil;
 import org.leralix.tan.utils.TanChatUtils;
 

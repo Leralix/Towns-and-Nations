@@ -208,10 +208,10 @@ public class PlayerData implements ITanPlayer {
     }
 
     public void addWar(CurrentAttack currentAttacks) {
-        if (getAttackInvolvedIn().contains(currentAttacks.getId())) {
+        if (getAttackInvolvedIn().contains(currentAttacks.getAttackData().getID())) {
             return;
         }
-        getAttackInvolvedIn().add(currentAttacks.getId());
+        getAttackInvolvedIn().add(currentAttacks.getAttackData().getID());
     }
 
     public void updateCurrentAttack() {
@@ -237,7 +237,7 @@ public class PlayerData implements ITanPlayer {
                 getAttackInvolvedIn().remove(attackID);
                 continue;
             }
-            if (currentAttack.getDefenders().contains(territoryData)) {
+            if (currentAttack.getAttackData().getDefendingTerritories().contains(territoryData)) {
                 return true;
             }
         }
@@ -245,7 +245,7 @@ public class PlayerData implements ITanPlayer {
     }
 
     public void removeWar(@NotNull CurrentAttack currentAttacks) {
-        getAttackInvolvedIn().remove(currentAttacks.getId());
+        getAttackInvolvedIn().remove(currentAttacks.getAttackData().getID());
     }
 
     public TownRelation getRelationWithPlayer(Player playerToAdd) {
