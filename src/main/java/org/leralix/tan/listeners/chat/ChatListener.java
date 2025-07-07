@@ -4,9 +4,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.leralix.tan.storage.PlayerSelectPropertyPositionStorage;
-import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.listeners.interact.RightClickListener;
+import org.leralix.tan.utils.TanChatUtils;
 
 public class ChatListener implements Listener {
 
@@ -17,13 +17,6 @@ public class ChatListener implements Listener {
 
         String message = event.getMessage();
 
-        if(PlayerSelectPropertyPositionStorage.contains(player) &&   message.equalsIgnoreCase(Lang.CANCEL_WORD.get())){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CANCELLED_ACTION.get());
-            PlayerSelectPropertyPositionStorage.removePlayer(player);
-            event.setCancelled(true);
-            return;
-        }
-
         if(chatListenerEvent == null)
             return;
 
@@ -31,7 +24,7 @@ public class ChatListener implements Listener {
 
         if (message.equalsIgnoreCase(Lang.CANCEL_WORD.get())) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CANCELLED_ACTION.get());
-            PlayerSelectPropertyPositionStorage.removePlayer(player);
+            RightClickListener.removePlayer(player);
             PlayerChatListenerStorage.removePlayer(player);
             return;
         }

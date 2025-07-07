@@ -31,6 +31,7 @@ import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.*;
 import org.leralix.tan.listeners.chat.ChatListener;
+import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.PvpSettings;
@@ -311,11 +312,12 @@ public final class TownsAndNations extends JavaPlugin {
         pluginManager.registerEvents(new ChatScopeListener(), this);
         pluginManager.registerEvents(new MobSpawnListener(), this);
         pluginManager.registerEvents(new SpawnListener(), this);
-        pluginManager.registerEvents(new CreatePropertyListener(),this);
         pluginManager.registerEvents(new PropertySignListener(),this);
         pluginManager.registerEvents(new LandmarkChestListener(),this);
         pluginManager.registerEvents(new AttackListener(),this);
         pluginManager.registerEvents(new EconomyInitialiser(), this);
+
+        pluginManager.registerEvents(new RightClickListener(), this);
     }
 
     /**

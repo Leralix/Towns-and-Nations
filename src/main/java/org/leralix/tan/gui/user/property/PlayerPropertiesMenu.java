@@ -11,7 +11,8 @@ import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.player.PlayerMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.PlayerSelectPropertyPositionStorage;
+import org.leralix.tan.listeners.interact.RightClickListener;
+import org.leralix.tan.listeners.interact.events.CreatePropertyEvent;
 import org.leralix.tan.utils.GuiUtil;
 import org.leralix.tan.utils.TanChatUtils;
 
@@ -73,13 +74,10 @@ public class PlayerPropertiesMenu extends IteratorGUI {
                         return;
                     }
 
-                    if(PlayerSelectPropertyPositionStorage.contains(tanPlayer)){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_ALREADY_IN_SCOPE.get(tanPlayer));
-                        return;
-                    }
+
                     player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY.get(tanPlayer));
                     player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(tanPlayer, Lang.CANCEL_WORD.get(tanPlayer)));
-                    PlayerSelectPropertyPositionStorage.addPlayer(tanPlayer);
+                    RightClickListener.register(player, new CreatePropertyEvent(player));
                     player.closeInventory();
                 })
                 .asGuiItem(player);
