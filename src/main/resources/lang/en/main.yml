@@ -22,7 +22,6 @@ language:
   CANT_KICK_REGIONAL_CAPITAL: "§cYou cannot remove the regional capital out of the region"
   PLAYER_ALREADY_IN_SCOPE: "§cYou are already registered"
   PLAYER_PROPERTY_CAP_REACHED: "§cYou reached the maximum number of properties for your town. Upgrade your town to get more"
-  POSITION_NEED_TO_BE_IN_CLAIMED_CHUNK: "§cYou need to be in a claimed chunk to set up a property position"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cYou need to be in your town to set up a property position"
   MESSAGE_NOT_RIGHT_SIZE: "§cMessage must be exactly {0} long"
   NO_TRADE_ALLOWED_EMBARGO: "§cYou cannot trade with a town under embargo"

@@ -26,6 +26,8 @@ public class Constants {
     private static double fortCost;
     private static double fortProtectingDistance;
     private static double fortCaptureRadius;
+    private static int propertySignMargin;
+
 
     public static void init(){
 
@@ -50,6 +52,7 @@ public class Constants {
         fortCost = config.getDouble("fortCost");
         fortProtectingDistance = config.getDouble("fortProtectingDistance");
         fortCaptureRadius = config.getDouble("fortCaptureRadius");
+        propertySignMargin = config.getInt("maxPropertyMargin", 3);
     }
 
     public static boolean displayTerritoryColor(){
@@ -105,5 +108,7 @@ public class Constants {
 
     public static double getFortCaptureRadius() {
         return fortCaptureRadius;
+    public static int getPropertySignMargin() {
+        return propertySignMargin;
     }
 }
