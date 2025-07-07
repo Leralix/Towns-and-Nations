@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.RandomUtil;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
@@ -920,5 +921,10 @@ public abstract class TerritoryData {
             forts = new ArrayList<>();
         }
         return forts;
+    }
+
+    public void registerFort(Vector3D location) {
+        FortData fortData = new FortData(location, Lang.DEFAULT_FORT_NAME.get(), this);
+        getForts().add(fortData);
     }
 }

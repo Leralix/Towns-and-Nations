@@ -212,6 +212,7 @@ language:
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cYou dont have enough money. You need {0} more"
   PLAYER_PAY_AT_EMBARGO_ERROR: "§cYou cannot pay a player in a town under embargo or at war with your town"
   TOWN_NOT_ENOUGH_MONEY: "§cThe town doesn't have enough money to perform this action"
+  TERRITORY_NOT_ENOUGH_MONEY_EXTENDED: "§cThe territory doesn't have enough money to perform this action. It need {0}{MONEY_CHAR} more"
   TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cThe town doesn't have enough money to perform this action. It need {0}{MONEY_CHAR} more"
   REGION_NOT_ENOUGH_MONEY_EXTENDED: "§cThe region doesn't have enough money to perform this action. It need {0}{MONEY_CHAR} more"
   NAME_ALREADY_USED: "§cThis name is already used"
@@ -1106,3 +1107,6 @@ language:
   RELATIVE_TIME_YEAR: "§e{0}§f year(s) ago"
   #Forts
   FORT_OCCUPIED_BY: "§fOccupied by : {0}"
+  CANNOT_CREATE_FORT_IF_ABOVE_BLOCKED: "§cYou cannot create a fort if the block above is not air"
+  DEFAULT_FORT_NAME: "Fort"
+  RIGHT_CLICK_TO_PLACE_FORT: "§fRight click to place the fort flag"

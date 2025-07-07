@@ -49,9 +49,9 @@ public class Constants {
         }
         landmarkClaimRequiresEncirclement = config.getBoolean("landmarkEncircleToCapture", true);
         //forts
-        fortCost = config.getDouble("fortCost");
-        fortProtectingDistance = config.getDouble("fortProtectingDistance");
-        fortCaptureRadius = config.getDouble("fortCaptureRadius");
+        fortCost = config.getDouble("fortCost", 1000.0);
+        fortProtectingDistance = config.getDouble("fortProtectingDistance", 50.0);
+        fortCaptureRadius = config.getDouble("fortCaptureRadius", 5.0);
         propertySignMargin = config.getInt("maxPropertyMargin", 3);
     }
 
@@ -108,6 +108,8 @@ public class Constants {
 
     public static double getFortCaptureRadius() {
         return fortCaptureRadius;
+    }
+
     public static int getPropertySignMargin() {
         return propertySignMargin;
     }

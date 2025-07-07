@@ -2,7 +2,9 @@ package org.leralix.tan.war.fort;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.leralix.lib.position.Vector3D;
@@ -24,13 +26,28 @@ import java.util.List;
 
 public abstract class Fort extends Building {
 
-    public abstract Vector3D getPositon();
+    public Fort(){
+
+    }
+
+    public void spawnFlag() {
+        Vector3D flagPosition = getFlagPosition();
+        Block baseBlock = flagPosition.getLocation().getBlock();
+        baseBlock.setMetadata("tan_fort_flag", new org.bukkit.metadata.FixedMetadataValue(org.leralix.tan.TownsAndNations.getPlugin(), this));
+
+         Block flagBlock = flagPosition.getLocation().add(0, 1, 0).getBlock();
+         flagBlock.setType(Material.GREEN_BANNER);
+         flagBlock.setMetadata("tan_fort_flag", new org.bukkit.metadata.FixedMetadataValue(org.leralix.tan.TownsAndNations.getPlugin(), this));
+
+    }
+
+    public abstract Vector3D getFlagPosition();
 
     public abstract TerritoryData getOwner();
 
     public abstract TerritoryData getOccupier();
 
-    protected abstract String getName();
+    public abstract String getName();
 
     public abstract int getCaptureProgress();
 
@@ -58,16 +75,16 @@ public abstract class Fort extends Building {
             return false;
         }
 
-        double distance = getPositon().getDistance(chunk.getVector2D());
+        double distance = getFlagPosition().getDistance(chunk.getVector2D());
         return Constants.getFortProtectingDistance() > distance;
     }
 
     void updateCatpure(PlannedAttack attackData) {
         double captureRadius = Constants.getFortCaptureRadius();
 
-        World world = getPositon().getWorld();
+        World world = getFlagPosition().getWorld();
 
-        List<Entity> nearbyEntities = (List<Entity>) world.getNearbyEntities(getPositon().getLocation(), captureRadius, captureRadius, captureRadius);
+        List<Entity> nearbyEntities = (List<Entity>) world.getNearbyEntities(getFlagPosition().getLocation(), captureRadius, captureRadius, captureRadius);
 
         // Keep only players
         List<Player> players = nearbyEntities.stream()
@@ -117,10 +134,10 @@ public abstract class Fort extends Building {
     }
 
     @Override
-    public GuiItem getGuiItem(IconManager iconManager, Player player) {
+    public GuiItem getGuiItem(IconManager iconManager, Player player, TerritoryData territoryData) {
 
         LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
-        Vector3D position = getPositon();
+        Vector3D position = getFlagPosition();
         return iconManager.get(IconKey.FORT_BUILDING_ICON)
                 .setName(getName())
                 .setDescription(
@@ -130,6 +147,8 @@ public abstract class Fort extends Building {
                 )
                 .asGuiItem(player);
     }
+
+
 
 
 }

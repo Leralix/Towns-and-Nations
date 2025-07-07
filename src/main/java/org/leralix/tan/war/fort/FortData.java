@@ -21,11 +21,12 @@ public class FortData extends Fort{
         this.name = name;
         this.ownerID = owningTerritory.getID();
         this.occupierID = owningTerritory.getID();
+        spawnFlag();
     }
 
 
     @Override
-    public Vector3D getPositon() {
+    public Vector3D getFlagPosition() {
         return position;
     }
 
@@ -40,7 +41,7 @@ public class FortData extends Fort{
     }
 
     @Override
-    protected String getName() {
+    public String getName() {
         return name;
     }
 
