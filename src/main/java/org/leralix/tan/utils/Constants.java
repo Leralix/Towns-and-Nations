@@ -23,6 +23,7 @@ public class Constants {
     private static boolean worldGuardOverrideLandmark;
     private static double claimLandmarkCost;
     private static boolean landmarkClaimRequiresEncirclement;
+    private static int propertySignMargin;
 
 
     public static void init(){
@@ -44,6 +45,7 @@ public class Constants {
             claimLandmarkCost = 0.0;
         }
         landmarkClaimRequiresEncirclement = config.getBoolean("landmarkEncircleToCapture", true);
+        propertySignMargin = config.getInt("maxPropertyMargin", 3);
     }
 
     public static boolean displayTerritoryColor(){
@@ -87,5 +89,9 @@ public class Constants {
 
     public static boolean isLandmarkClaimRequiresEncirclement() {
         return landmarkClaimRequiresEncirclement;
+    }
+
+    public static int getPropertySignMargin() {
+        return propertySignMargin;
     }
 }

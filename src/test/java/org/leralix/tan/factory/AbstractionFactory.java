@@ -67,15 +67,6 @@ public class AbstractionFactory {
         when(plugin.getDatabaseHandler()).thenReturn(Mockito.mock(DatabaseHandler.class));
         when(plugin.getDataFolder()).thenReturn(new File(classLoader.getResource("created").getFile()));
 
-        SQLiteHandler sqliteHandler = new SQLiteHandler("src/test/resources/database/main.db");
-        try {
-            sqliteHandler.connect();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        when(plugin.getDatabaseHandler()).thenReturn(sqliteHandler);
-
         MockedStatic<TownsAndNations> pluginInstance = Mockito.mockStatic(TownsAndNations.class);
         pluginInstance.when(TownsAndNations::getPlugin).thenReturn(plugin);
 
@@ -96,6 +87,14 @@ public class AbstractionFactory {
         BukkitScheduler bukkitScheduler = Mockito.mock(BukkitScheduler.class);
         bukkitInstance.when(Bukkit::getScheduler).thenAnswer(invocation -> bukkitScheduler);
 
+        SQLiteHandler sqliteHandler = new SQLiteHandler("src/test/resources/database/main.db");
+        try {
+            sqliteHandler.connect();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        when(plugin.getDatabaseHandler()).thenReturn(sqliteHandler);
 
         World world = Mockito.mock(World.class);
         when(world.getName()).thenReturn("world");
