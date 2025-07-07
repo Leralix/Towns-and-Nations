@@ -1,6 +1,5 @@
 package org.leralix.tan.listeners.interact.events;
 
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -59,12 +58,6 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(block.getChunk());
         if (claimedChunk instanceof TownClaimedChunk townClaimedChunk && townClaimedChunk.getTown().isPlayerIn(player)) {
             player.sendMessage(Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(langType));
-        }
-
-        Chunk blockChunk = block.getChunk();
-        if (!NewClaimedChunkStorage.getInstance().isChunkClaimed(blockChunk)){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.POSITION_NEED_TO_BE_IN_CLAIMED_CHUNK.get(langType)); //TODO Delete Lang, useless
-            return;
         }
 
         if (!tanPlayer.hasTown()){
