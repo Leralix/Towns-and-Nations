@@ -23,7 +23,7 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.impl.FortDataStorage;
+import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.ProgressBar;
@@ -32,7 +32,7 @@ import java.util.List;
 
 public abstract class Fort extends Building {
 
-    public Fort(){
+    protected Fort(){
 
     }
 
@@ -155,7 +155,7 @@ public abstract class Fort extends Building {
                 .setAction(
                         action -> {
                             if(action.isRightClick()){
-                                FortDataStorage.getInstance().delete(this);
+                                FortStorage.getInstance().delete(this);
                                 SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
                                 basicGui.open();
                             }

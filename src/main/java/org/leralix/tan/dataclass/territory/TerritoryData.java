@@ -47,7 +47,6 @@ import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.CurrentAttacksStorage;
-import org.leralix.tan.storage.impl.FortDataStorage;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
@@ -935,11 +934,11 @@ public abstract class TerritoryData {
     }
 
     public List<Fort> getOwnedForts() {
-        return FortDataStorage.getInstance().getOwnedFort(this);
+        return FortStorage.getInstance().getOwnedFort(this);
     }
 
     public List<Fort> getOccupiedForts() {
-        return FortDataStorage.getInstance().getControlledFort(this);
+        return FortStorage.getInstance().getControlledFort(this);
     }
 
     public void removeFort(String fortID) {

@@ -115,13 +115,13 @@ public class FortDataStorage extends FortStorage {
             Type type = new TypeToken<HashMap<String, FortData>>() {}.getType();
             forts = gson.fromJson(reader, type);
 
-            int ID = 0;
+            int id = 0;
             for (String ids: forts.keySet()) {
                 int newID =  Integer.parseInt(ids.substring(1));
-                if(newID > ID)
-                    ID = newID;
+                if(newID > id)
+                    id = newID;
             }
-            newFortID = ID+1;
+            newFortID = id+1;
         }
     }
 
@@ -132,10 +132,14 @@ public class FortDataStorage extends FortStorage {
         file.getParentFile().getParentFile().mkdir();
         file.getParentFile().mkdir();
 
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (!file.exists()){
+            try {
+                if(!file.createNewFile()){
+                    throw new FileNotFoundException("Could not create file: " + file.getAbsolutePath());
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         Writer writer;
         try {

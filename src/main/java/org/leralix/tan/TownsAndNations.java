@@ -178,7 +178,7 @@ public final class TownsAndNations extends JavaPlugin {
         IconManager.getInstance();
         NumberUtil.init();
         EnabledPermissions.getInstance().init();
-        FortDataStorage.init(new FortDataStorage());
+        FortStorage.init(new FortDataStorage());
 
         FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         allowColorCodes = mainConfig.getBoolean("EnablePlayerColorCode", false);
