@@ -82,6 +82,7 @@ public abstract class TerritoryData {
     private ClaimedChunkSettings chunkSettings;
     private StrongholdData stronghold;
     private List<String> fortIds;
+    private List<String> occupiedFortIds;
 
     protected TerritoryData(String id, String name, ITanPlayer owner){
         this.id = id;
@@ -501,6 +502,13 @@ public abstract class TerritoryData {
 
         castActionToAllPlayers(HumanEntity::closeInventory);
 
+        for(Fort occupiedFort : FortStorage.getInstance().getOccupiedFort(this)){
+            occupiedFort.liberate();
+        }
+
+        for(Fort controlledFort : FortStorage.getInstance().getOwnedFort(this)){
+            FortStorage.getInstance().delete(controlledFort);
+        }
 
         for(TerritoryData territory : getVassals()){
             territory.removeOverlord();
@@ -910,7 +918,7 @@ public abstract class TerritoryData {
     }
 
     public void registerFort(Vector3D location) {
-        Fort fort = FortStorage.getInstance().register(location, Lang.DEFAULT_FORT_NAME.get(), this);
+        Fort fort = FortStorage.getInstance().register(location,this);
         getOwnedFortIDs().add(fort.getID());
     }
 
@@ -918,6 +926,20 @@ public abstract class TerritoryData {
         if(fortIds == null)
             fortIds = new ArrayList<>();
         return fortIds;
+    }
+
+    public List<String> getOccupiedFortIds() {
+        if(occupiedFortIds == null)
+            occupiedFortIds = new ArrayList<>();
+        return occupiedFortIds;
+    }
+
+    public List<Fort> getOwnedForts() {
+        return FortDataStorage.getInstance().getOwnedFort(this);
+    }
+
+    public List<Fort> getOccupiedForts() {
+        return FortDataStorage.getInstance().getControlledFort(this);
     }
 
     public void removeFort(String fortID) {

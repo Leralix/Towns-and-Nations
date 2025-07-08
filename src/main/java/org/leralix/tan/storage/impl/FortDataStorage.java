@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.fort.FortData;
@@ -26,6 +27,19 @@ public class FortDataStorage extends FortStorage {
         this.forts = new HashMap<>();
         this.newFortID = 0;
         load();
+    }
+
+    @Override
+    public List<Fort> getOccupiedFort(TerritoryData territoryData) {
+        List<Fort> res = new ArrayList<>();
+        for(String fortID : territoryData.getOccupiedFortIds()) {
+            FortData fort = forts.get(fortID);
+            if (fort == null) {
+                continue;
+            }
+            res.add(fort);
+        }
+        return res;
     }
 
     @Override
@@ -68,8 +82,8 @@ public class FortDataStorage extends FortStorage {
     }
 
     @Override
-    public Fort register(Vector3D position, String name, TerritoryData owningTerritory) {
-        FortData fort = new FortData("F" + newFortID, position, name, owningTerritory);
+    public Fort register(Vector3D position, TerritoryData owningTerritory) {
+        FortData fort = new FortData("F" + newFortID, position, Lang.DEFAULT_FORT_NAME.get( newFortID), owningTerritory);
         forts.put(fort.getID(), fort);
         save();
         return fort;

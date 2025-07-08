@@ -12,7 +12,7 @@ public class FortData extends Fort{
 
     private String name;
 
-    private String ownerID;
+    private final String ownerID;
 
     private String occupierID;
 

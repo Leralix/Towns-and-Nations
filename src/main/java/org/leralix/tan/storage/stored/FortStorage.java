@@ -18,6 +18,8 @@ public abstract class FortStorage {
         return instance;
     }
 
+    public abstract List<Fort> getOccupiedFort(TerritoryData territoryData);
+
     public abstract List<Fort> getOwnedFort(TerritoryData territoryData);
 
     public abstract List<Fort> getControlledFort(TerritoryData territoryData);
@@ -30,12 +32,12 @@ public abstract class FortStorage {
 
     public abstract Fort getFort(String fortID);
 
-    public abstract Fort register(Vector3D position, String name, TerritoryData owningTerritory);
+    public abstract Fort register(Vector3D position, TerritoryData owningTerritory);
 
     public abstract void delete(String fortID);
 
     public void delete(Fort fort){
-        fort.deleteFlag();
+        fort.delete();
         delete(fort.getID());
     }
 }

@@ -165,7 +165,7 @@ public abstract class Fort extends Building {
     }
 
 
-    public void deleteFlag() {
+    private void deleteFlag() {
         Vector3D flagPosition = getFlagPosition();
         Block baseBlock = flagPosition.getLocation().getBlock();
         Block flagBlock = flagPosition.getLocation().add(0, 1, 0).getBlock();
@@ -173,5 +173,13 @@ public abstract class Fort extends Building {
 
         baseBlock.removeMetadata("fortFlag", TownsAndNations.getPlugin());
         flagBlock.removeMetadata("fortFlag", TownsAndNations.getPlugin());
+    }
+
+    public void delete() {
+        deleteFlag();
+    }
+
+    public void liberate() {
+        setOccupier(getOwner());
     }
 }
