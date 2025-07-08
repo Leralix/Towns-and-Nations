@@ -57,7 +57,7 @@ public class BuildingMenu extends IteratorGUI {
     private List<GuiItem> getBuildings() {
         List<GuiItem> res = new ArrayList<>();
         for(Building building : territoryData.getBuildings()){
-            res.add(building.getGuiItem(iconManager, player, territoryData));
+            res.add(building.getGuiItem(iconManager, player, territoryData, this));
         }
         return res;
     }

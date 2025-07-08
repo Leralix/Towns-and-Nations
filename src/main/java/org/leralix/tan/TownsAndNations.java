@@ -39,14 +39,15 @@ import org.leralix.tan.storage.WildernessRules;
 import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.database.MySqlHandler;
 import org.leralix.tan.storage.database.SQLiteHandler;
+import org.leralix.tan.storage.impl.FortDataStorage;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.utils.Constants;
-import org.leralix.tan.utils.CustomNBT;
 import org.leralix.tan.utils.EnabledPermissions;
 import org.leralix.tan.utils.NumberUtil;
+import org.leralix.tan.utils.TANCustomNBT;
 import org.tan.api.TanAPI;
 
 import java.io.BufferedReader;
@@ -177,6 +178,7 @@ public final class TownsAndNations extends JavaPlugin {
         IconManager.getInstance();
         NumberUtil.init();
         EnabledPermissions.getInstance().init();
+        FortDataStorage.init(new FortDataStorage());
 
         FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         allowColorCodes = mainConfig.getBoolean("EnablePlayerColorCode", false);
@@ -197,7 +199,7 @@ public final class TownsAndNations extends JavaPlugin {
 
 
         getLogger().log(Level.INFO,"[TaN] -Loading blocks data");
-        CustomNBT.setBlocsData();
+        TANCustomNBT.setBlocsData();
 
 
         getLogger().log(Level.INFO,"[TaN] -Loading commands");

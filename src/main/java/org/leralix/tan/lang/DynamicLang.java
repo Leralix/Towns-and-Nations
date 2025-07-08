@@ -50,7 +50,6 @@ public class DynamicLang {
 
             for (String key : configurationSection.getKeys(false)) {
                 String value = configurationSection.getString(key);
-                System.out.println("Loading translation for " + langType.getCode() + ": " + key + " = " + value);
                 values.put(key, value);
             }
 

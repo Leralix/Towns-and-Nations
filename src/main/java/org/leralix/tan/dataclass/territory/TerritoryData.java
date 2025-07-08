@@ -47,12 +47,13 @@ import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.CurrentAttacksStorage;
+import org.leralix.tan.storage.impl.FortDataStorage;
+import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.*;
 import org.leralix.tan.war.fort.Fort;
-import org.leralix.tan.war.fort.FortData;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -80,7 +81,7 @@ public abstract class TerritoryData {
     private List<String> overlordsProposals;
     private ClaimedChunkSettings chunkSettings;
     private StrongholdData stronghold;
-    private List<Fort> forts;
+    private List<String> fortIds;
 
     protected TerritoryData(String id, String name, ITanPlayer owner){
         this.id = id;
@@ -908,23 +909,26 @@ public abstract class TerritoryData {
         return getLeaderData().getNameStored();
     }
 
-    public List<Building> getBuildings() {
-        List<Building> res = new ArrayList<>();
-
-        res.addAll(getForts());
-
-        return res;
-    }
-
-    private List<Fort> getForts() {
-        if(forts == null){
-            forts = new ArrayList<>();
-        }
-        return forts;
-    }
-
     public void registerFort(Vector3D location) {
-        FortData fortData = new FortData(location, Lang.DEFAULT_FORT_NAME.get(), this);
-        getForts().add(fortData);
+        Fort fort = FortStorage.getInstance().register(location, Lang.DEFAULT_FORT_NAME.get(), this);
+        getOwnedFortIDs().add(fort.getID());
+    }
+
+    public List<String> getOwnedFortIDs() {
+        if(fortIds == null)
+            fortIds = new ArrayList<>();
+        return fortIds;
+    }
+
+    public void removeFort(String fortID) {
+        getOwnedFortIDs().remove(fortID);
+    }
+
+    public Collection<Building> getBuildings() {
+        List<Building> buildings = new ArrayList<>();
+        buildings.addAll(FortDataStorage.getInstance().getOwnedFort(this));
+
+        buildings.removeAll(Collections.singleton(null));
+        return buildings;
     }
 }

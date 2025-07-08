@@ -9,6 +9,7 @@ import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.Constants;
@@ -30,7 +31,7 @@ public class CreatefortEvent extends RightClickListenerEvent {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         Block block = event.getClickedBlock();
-        if( block == null) {
+        if(block == null) {
             return;
         }
 
@@ -51,6 +52,7 @@ public class CreatefortEvent extends RightClickListenerEvent {
         Vector3D position = new Vector3D(block.getLocation());
 
         tanTerritory.registerFort(position);
+        RightClickListener.removePlayer(player);
 
     }
 

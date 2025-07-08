@@ -49,7 +49,7 @@ public class ChunkListener implements Listener {
         }
 
         //Check if the block is a property sign
-        if (breakedBlock.hasMetadata("tan_fort_flag")) {
+        if (breakedBlock.hasMetadata("fortFlag")) {
             event.setCancelled(true);
             return;
         }

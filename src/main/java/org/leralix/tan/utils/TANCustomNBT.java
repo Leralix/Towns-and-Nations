@@ -9,20 +9,20 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.PropertyData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.TownsAndNations;
 
 
 /**
  * This class is used to add custom NBT tags to items
  */
-public class CustomNBT {
+public class TANCustomNBT {
 
-    private CustomNBT() {
+    private TANCustomNBT() {
         throw new IllegalStateException("Utility class");
     }
     /** Add a custom String tag to an item
@@ -96,6 +96,8 @@ public class CustomNBT {
             setBockMetaData(block, "LandmarkChest", landmark.getID());
         }
     }
+
+
 
 
 }

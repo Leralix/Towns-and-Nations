@@ -6,6 +6,8 @@ import org.leralix.tan.utils.TerritoryUtil;
 
 public class FortData extends Fort{
 
+    private final String id;
+
     private final Vector3D position;
 
     private String name;
@@ -16,7 +18,8 @@ public class FortData extends Fort{
 
     private int captureProgress;
 
-    public FortData(Vector3D position, String name, TerritoryData owningTerritory){
+    public FortData(String id, Vector3D position, String name, TerritoryData owningTerritory){
+        this.id = id;
         this.position = position;
         this.name = name;
         this.ownerID = owningTerritory.getID();
@@ -24,6 +27,11 @@ public class FortData extends Fort{
         spawnFlag();
     }
 
+
+    @Override
+    public String getID() {
+        return id;
+    }
 
     @Override
     public Vector3D getFlagPosition() {
