@@ -948,7 +948,7 @@ public abstract class TerritoryData {
 
     public Collection<Building> getBuildings() {
         List<Building> buildings = new ArrayList<>();
-        buildings.addAll(FortDataStorage.getInstance().getOwnedFort(this));
+        buildings.addAll(getOwnedForts());
 
         buildings.removeAll(Collections.singleton(null));
         return buildings;
