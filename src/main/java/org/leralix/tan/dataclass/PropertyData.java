@@ -356,6 +356,10 @@ public class PropertyData {
 
         Block signBlock = world.getBlockAt(signLocation.getX(), signLocation.getY(), signLocation.getZ());
         signBlock.setType(org.bukkit.Material.AIR);
+
+        signBlock.removeMetadata("propertySign", TownsAndNations.getPlugin());
+        signBlock.removeMetadata("propertySign", TownsAndNations.getPlugin());
+
         world.spawnParticle(Particle.BUBBLE_POP, signBlock.getLocation(), 5);
     }
 

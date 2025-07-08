@@ -48,6 +48,12 @@ public class ChunkListener implements Listener {
             return;
         }
 
+        //Check if the block is a property sign
+        if (breakedBlock.hasMetadata("fortFlag")) {
+            event.setCancelled(true);
+            return;
+        }
+
         if(!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK))
             event.setCancelled(true);
     }

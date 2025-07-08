@@ -8,6 +8,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 public abstract class BasicGui {
@@ -15,6 +16,7 @@ public abstract class BasicGui {
     protected final Gui gui;
     protected final Player player;
     protected final ITanPlayer tanPlayer;
+    protected final LangType langType;
     protected final IconManager iconManager;
 
     protected BasicGui(Player player, Lang title, int rows) {
@@ -22,13 +24,14 @@ public abstract class BasicGui {
     }
 
     protected BasicGui(Player player, String title, int rows){
-        this.tanPlayer = PlayerDataStorage.getInstance().get(player);
         this.gui = Gui.gui()
                 .title(Component.text(title))
                 .type(GuiType.CHEST)
                 .rows(rows)
                 .create();
         this.player = player;
+        this.tanPlayer = PlayerDataStorage.getInstance().get(player);
+        this.langType = tanPlayer.getLang();
         this.iconManager = IconManager.getInstance();
 
         gui.setDefaultClickAction(event -> {

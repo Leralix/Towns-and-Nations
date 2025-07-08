@@ -10,20 +10,11 @@ public class CurrentAttacksStorage {
     private static final Map<String, CurrentAttack> attackStatusMap = new HashMap<>();
 
     public static void startAttack(PlannedAttack plannedAttack){
-        String newID = getNextID();
-        attackStatusMap.put(newID, new CurrentAttack(newID, plannedAttack));
+        attackStatusMap.put(plannedAttack.getID(), new CurrentAttack(plannedAttack));
     }
 
     public static void remove(CurrentAttack currentAttacks){
-        attackStatusMap.remove(currentAttacks.getId());
-    }
-
-    private static String getNextID(){
-        int ID = 0;
-        while(attackStatusMap.containsKey("A"+ID)){
-            ID++;
-        }
-        return "A"+ID;
+        attackStatusMap.remove(currentAttacks.getAttackData().getID());
     }
 
     public static CurrentAttack get(String id) {

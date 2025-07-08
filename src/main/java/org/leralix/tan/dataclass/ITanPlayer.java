@@ -88,6 +88,9 @@ public interface ITanPlayer {
 
     Integer getRankID(TerritoryData territoryData);
 
+    /**
+     * @return  A list of all territory a player is in, starting from the lowest level.
+     */
     List<TerritoryData> getAllTerritoriesPlayerIsIn();
 
     OfflinePlayer getOfflinePlayer();

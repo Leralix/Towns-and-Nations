@@ -7,6 +7,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.leralix.lib.position.Vector2D;
+import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
@@ -22,22 +24,22 @@ import java.util.UUID;
 
 public abstract class ClaimedChunk2 {
 
+
     private final int x;
     private final int z;
     private final String worldUUID;
+    private Vector2D vector2D;
     protected final String ownerID;
 
     protected ClaimedChunk2(Chunk chunk, String owner) {
-        this.x = chunk.getX();
-        this.z = chunk.getZ();
-        this.worldUUID = chunk.getWorld().getUID().toString();
-        this.ownerID = owner;
+        this(chunk.getX(), chunk.getZ(), chunk.getWorld().getUID().toString(), owner);
     }
 
     protected ClaimedChunk2(int x, int z, String worldUUID, String owner) {
         this.x = x;
         this.z = z;
         this.worldUUID = worldUUID;
+        this.vector2D = new Vector2D(x, z, worldUUID);
         this.ownerID = owner;
     }
 
@@ -55,6 +57,13 @@ public abstract class ClaimedChunk2 {
 
     public String getOwnerID() {
         return this.ownerID;
+    }
+
+    public Vector2D getVector2D(){
+        if (vector2D == null){
+            this.vector2D = new Vector2D(x, z, worldUUID);
+        }
+        return vector2D;
     }
 
     public int getX() {

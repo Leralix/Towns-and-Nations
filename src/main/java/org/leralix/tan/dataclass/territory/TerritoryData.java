@@ -12,11 +12,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.RandomUtil;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.newhistory.ChunkPaymentHistory;
@@ -45,10 +47,12 @@ import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.CurrentAttacksStorage;
+import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.*;
+import org.leralix.tan.war.fort.Fort;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -76,6 +80,8 @@ public abstract class TerritoryData {
     private List<String> overlordsProposals;
     private ClaimedChunkSettings chunkSettings;
     private StrongholdData stronghold;
+    private List<String> fortIds;
+    private List<String> occupiedFortIds;
 
     protected TerritoryData(String id, String name, ITanPlayer owner){
         this.id = id;
@@ -346,11 +352,11 @@ public abstract class TerritoryData {
     }
 
     public void addCurrentAttack(CurrentAttack currentAttacks){
-        getAttacksInvolvedID().add(currentAttacks.getId());
+        getAttacksInvolvedID().add(currentAttacks.getAttackData().getID());
 
     }
     public void removeCurrentAttack(CurrentAttack currentAttacks){
-        getAttacksInvolvedID().remove(currentAttacks.getId());
+        getAttacksInvolvedID().remove(currentAttacks.getAttackData().getID());
     }
 
     public abstract boolean atWarWith(String territoryID);
@@ -495,6 +501,13 @@ public abstract class TerritoryData {
 
         castActionToAllPlayers(HumanEntity::closeInventory);
 
+        for(Fort occupiedFort : FortStorage.getInstance().getOccupiedFort(this)){
+            occupiedFort.liberate();
+        }
+
+        for(Fort controlledFort : FortStorage.getInstance().getOwnedFort(this)){
+            FortStorage.getInstance().delete(controlledFort);
+        }
 
         for(TerritoryData territory : getVassals()){
             territory.removeOverlord();
@@ -901,5 +914,42 @@ public abstract class TerritoryData {
         if (this.haveNoLeader())
             return Lang.NO_LEADER.get();
         return getLeaderData().getNameStored();
+    }
+
+    public void registerFort(Vector3D location) {
+        Fort fort = FortStorage.getInstance().register(location,this);
+        getOwnedFortIDs().add(fort.getID());
+    }
+
+    public List<String> getOwnedFortIDs() {
+        if(fortIds == null)
+            fortIds = new ArrayList<>();
+        return fortIds;
+    }
+
+    public List<String> getOccupiedFortIds() {
+        if(occupiedFortIds == null)
+            occupiedFortIds = new ArrayList<>();
+        return occupiedFortIds;
+    }
+
+    public List<Fort> getOwnedForts() {
+        return FortStorage.getInstance().getOwnedFort(this);
+    }
+
+    public List<Fort> getOccupiedForts() {
+        return FortStorage.getInstance().getControlledFort(this);
+    }
+
+    public void removeFort(String fortID) {
+        getOwnedFortIDs().remove(fortID);
+    }
+
+    public Collection<Building> getBuildings() {
+        List<Building> buildings = new ArrayList<>();
+        buildings.addAll(getOwnedForts());
+
+        buildings.removeAll(Collections.singleton(null));
+        return buildings;
     }
 }

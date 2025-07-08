@@ -23,6 +23,9 @@ public class Constants {
     private static boolean worldGuardOverrideLandmark;
     private static double claimLandmarkCost;
     private static boolean landmarkClaimRequiresEncirclement;
+    private static double fortCost;
+    private static double fortProtectingDistance;
+    private static double fortCaptureRadius;
     private static int propertySignMargin;
 
 
@@ -45,6 +48,10 @@ public class Constants {
             claimLandmarkCost = 0.0;
         }
         landmarkClaimRequiresEncirclement = config.getBoolean("landmarkEncircleToCapture", true);
+        //forts
+        fortCost = config.getDouble("fortCost", 1000.0);
+        fortProtectingDistance = config.getDouble("fortProtectingDistance", 50.0);
+        fortCaptureRadius = config.getDouble("fortCaptureRadius", 5.0);
         propertySignMargin = config.getInt("maxPropertyMargin", 3);
     }
 
@@ -89,6 +96,18 @@ public class Constants {
 
     public static boolean isLandmarkClaimRequiresEncirclement() {
         return landmarkClaimRequiresEncirclement;
+    }
+
+    public static double getFortCost() {
+        return fortCost;
+    }
+
+    public static double getFortProtectingDistance() {
+        return fortProtectingDistance;
+    }
+
+    public static double getFortCaptureRadius() {
+        return fortCaptureRadius;
     }
 
     public static int getPropertySignMargin() {

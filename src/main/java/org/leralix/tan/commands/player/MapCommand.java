@@ -88,8 +88,7 @@ public class MapCommand extends PlayerSubCommand {
                 chunkX += dx;
                 chunkZ += dz;
 
-                Chunk chunk = player.getWorld().getChunkAt(chunkX, chunkZ);
-                ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
+                ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunkX, chunkZ, player.getWorld().getUID().toString());
                 TextComponent icon = claimedChunk.getMapIcon(player);
 
                 if(dx == 0 && dz == 0){
@@ -98,7 +97,7 @@ public class MapCommand extends PlayerSubCommand {
 
                 ClaimAction claimAction = settings.getClaimActionType();
                 ClaimType mapType = settings.getClaimType();
-                icon.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tan " + claimAction.toString().toLowerCase() + " " + mapType.toString().toLowerCase() + " " + chunk.getX() + " " + chunk.getZ()));
+                icon.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tan " + claimAction.toString().toLowerCase() + " " + mapType.toString().toLowerCase() + " " + chunkX * 16 + " " + chunkZ * 16));
                 newLine.addExtra(icon);
             }
             if (text.containsKey(dz)) {

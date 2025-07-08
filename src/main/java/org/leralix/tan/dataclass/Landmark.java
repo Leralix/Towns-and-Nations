@@ -19,7 +19,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.CustomNBT;
+import org.leralix.tan.utils.TANCustomNBT;
 import org.leralix.tan.utils.TerritoryUtil;
 
 import java.util.ArrayList;
@@ -78,7 +78,7 @@ public class Landmark {
     public void spawnChest(){
         Block newBlock = position.getWorld().getBlockAt(position.getLocation());
         newBlock.setType(Material.CHEST);
-        CustomNBT.setBockMetaData(newBlock, "LandmarkChest", getID());
+        TANCustomNBT.setBockMetaData(newBlock, "LandmarkChest", getID());
     }
 
     public void dispawnChest(){
