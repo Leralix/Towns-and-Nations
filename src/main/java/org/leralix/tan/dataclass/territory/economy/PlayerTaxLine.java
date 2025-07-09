@@ -99,6 +99,10 @@ public class PlayerTaxLine extends ProfitLine {
         });
         GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
             event.setCancelled(true);
+            if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)) {
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                return;
+            }
             if (event.isLeftClick()) {
                 PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.PLAYER_TAX);
             } else if (event.isRightClick()) {

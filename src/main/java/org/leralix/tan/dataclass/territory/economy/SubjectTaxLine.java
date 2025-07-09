@@ -10,6 +10,7 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.user.territory.TreasuryMenu;
 import org.leralix.tan.lang.Lang;
@@ -66,6 +67,10 @@ public class SubjectTaxLine extends ProfitLine {
 
         GuiItem lowerTaxButton = ItemBuilder.from(lowerTax).asGuiItem(event -> {
             event.setCancelled(true);
+            if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_TAXES)) {
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                return;
+            }
             int amountToRemove = event.isShiftClick() && taxRate > 10 ? 10 : 1;
             if (taxRate < 1) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get());
@@ -78,6 +83,10 @@ public class SubjectTaxLine extends ProfitLine {
         });
 
         GuiItem increaseTaxButton = ItemBuilder.from(increaseTax).asGuiItem(event -> {
+            if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_TAXES)) {
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                return;
+            }
             event.setCancelled(true);
             int amountToRemove = event.isShiftClick() && taxRate >= 10 ? 10 : 1;
 
@@ -88,6 +97,10 @@ public class SubjectTaxLine extends ProfitLine {
         });
 
         GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
+            if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_TAXES)) {
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                return;
+            }
             event.setCancelled(true);
             if (event.isLeftClick()) {
                 PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.SUBJECT_TAX);
