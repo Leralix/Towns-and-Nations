@@ -424,7 +424,7 @@ public class TownData extends TerritoryData {
         }
 
         if (getNumberOfClaimedChunk() != 0 &&
-                !NewClaimedChunkStorage.getInstance().isAdjacentChunkClaimedBySameTown(chunk, getID()) &&
+                !NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTown(chunk, getID()) &&
                 !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("TownAllowNonAdjacentChunks", false)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
             return Optional.empty();

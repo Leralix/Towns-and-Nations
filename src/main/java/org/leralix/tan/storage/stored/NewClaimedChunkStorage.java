@@ -123,15 +123,21 @@ public class NewClaimedChunkStorage {
 
         for (String adjacentChunkKey : adjacentChunkKeys) {
             ClaimedChunk2 adjacentClaimedChunk = claimedChunksMap.get(adjacentChunkKey);
-            if (adjacentClaimedChunk == null || !adjacentClaimedChunk.getOwnerID().equals(territoryID)) {
-                System.out.println("Un chunk adjacent to " + getChunkKey(chunk) + " is not claimed by the same territory: " + adjacentChunkKey);
+
+            if(adjacentClaimedChunk == null) {
                 return false;
+            }
+
+            if(adjacentClaimedChunk instanceof TerritoryChunk territoryChunk){
+                if(!territoryChunk.getOccupierID().equals(territoryID)){
+                    return false;
+                }
             }
         }
         return true;
     }
 
-    public boolean isAdjacentChunkClaimedBySameTown(Chunk chunk, String townID) {
+    public boolean isOneAdjacentChunkClaimedBySameTown(Chunk chunk, String townID) {
 
         List<String> adjacentChunkKeys = Arrays.asList(
                 getChunkKey(chunk.getX() + 1, chunk.getZ(), chunk.getWorld().getUID().toString()),

@@ -23,9 +23,11 @@ import java.util.UUID;
 
 public abstract class ClaimedChunk2 {
 
-
+    @Deprecated(forRemoval = true) //0.16.0
     private final int x;
+    @Deprecated(forRemoval = true) //0.16.0
     private final int z;
+    @Deprecated(forRemoval = true) //0.16.0
     private final String worldUUID;
     private Vector2D vector2D;
     protected final String ownerID;

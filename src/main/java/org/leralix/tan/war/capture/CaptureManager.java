@@ -94,12 +94,20 @@ public class CaptureManager {
      * @return              True if the claimed chunk can be captured, false otherwise
      */
     private boolean canBeCaptured(ClaimedChunk2 claimedChunk, TerritoryData mainDefender) {
+        String ownerID = claimedChunk.getOwner().getID();
+        String defenderID = mainDefender.getID();
 
-        if(claimedChunk.getOwner().equals(mainDefender)){
-            return true;
+        if (!ownerID.equals(defenderID)) {
+            return false;
         }
-        boolean res = !NewClaimedChunkStorage.getInstance().isAllAdjacentChunksClaimedBySameTerritory(claimedChunk.getChunk(), mainDefender.getID());
-        System.out.println("All adjacent chunks claimed by same territory: " + res);
-        return res;
+
+        System.out.println("Chunk is from main defender ");
+
+        boolean surroundedBySame = NewClaimedChunkStorage.getInstance()
+                .isAllAdjacentChunksClaimedBySameTerritory(claimedChunk.getChunk(), defenderID);
+
+        System.out.println("Chunk is surrounded by same territory: " + surroundedBySame);
+
+        return !surroundedBySame;
     }
 }

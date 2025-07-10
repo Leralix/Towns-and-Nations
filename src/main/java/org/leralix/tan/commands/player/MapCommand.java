@@ -91,7 +91,7 @@ public class MapCommand extends PlayerSubCommand {
                 if(dx == 0 && dz == 0){
 
                     if(claimedChunk instanceof TerritoryChunk territoryChunk && territoryChunk.isOccupied()){
-                        icon.setText("🟠"); // For some reason, the only round emoji with the same size as ⬛ is this emoji
+                        icon.setText("🟠");
                     }
                     else{
                         icon.setText("🌑"); // For some reason, the only round emoji with the same size as ⬛ is this emoji
@@ -100,7 +100,7 @@ public class MapCommand extends PlayerSubCommand {
 
                 ClaimAction claimAction = settings.getClaimActionType();
                 ClaimType mapType = settings.getClaimType();
-                icon.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tan " + claimAction.toString().toLowerCase() + " " + mapType.toString().toLowerCase() + " " + chunkX * 16 + " " + chunkZ * 16));
+                icon.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tan " + claimAction.toString().toLowerCase() + " " + mapType.toString().toLowerCase() + " " + chunkX + " " + chunkZ));
                 newLine.addExtra(icon);
             }
             if (text.containsKey(dz)) {
