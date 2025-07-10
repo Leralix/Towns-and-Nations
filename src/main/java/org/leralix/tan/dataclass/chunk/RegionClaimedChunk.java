@@ -26,7 +26,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
 
-public class RegionClaimedChunk extends ClaimedChunk2 {
+public class RegionClaimedChunk extends TerritoryChunk {
 
 
     public RegionClaimedChunk(Chunk chunk, String owner) {
@@ -119,7 +119,15 @@ public class RegionClaimedChunk extends ClaimedChunk2 {
 
     @Override
     public TextComponent getMapIcon(ITanPlayer tanPlayer) {
-        TextComponent textComponent = new TextComponent("⬛");
+
+        TextComponent textComponent;
+        if(isOccupied()){
+            textComponent = new TextComponent("🟧");
+        }
+        else {
+            textComponent = new TextComponent("⬛s");
+        }
+
         textComponent.setColor(getRegion().getChunkColor());
         textComponent.setHoverEvent(new HoverEvent(
                 HoverEvent.Action.SHOW_TEXT,

@@ -113,6 +113,24 @@ public class NewClaimedChunkStorage {
         save();
     }
 
+    public boolean isAllAdjacentChunksClaimedBySameTerritory(Chunk chunk, String territoryID) {
+        List<String> adjacentChunkKeys = Arrays.asList(
+                getChunkKey(chunk.getX() + 1, chunk.getZ(), chunk.getWorld().getUID().toString()),
+                getChunkKey(chunk.getX() - 1, chunk.getZ(), chunk.getWorld().getUID().toString()),
+                getChunkKey(chunk.getX(), chunk.getZ() + 1, chunk.getWorld().getUID().toString()),
+                getChunkKey(chunk.getX(), chunk.getZ() - 1, chunk.getWorld().getUID().toString())
+        );
+
+        for (String adjacentChunkKey : adjacentChunkKeys) {
+            ClaimedChunk2 adjacentClaimedChunk = claimedChunksMap.get(adjacentChunkKey);
+            if (adjacentClaimedChunk == null || !adjacentClaimedChunk.getOwnerID().equals(territoryID)) {
+                System.out.println("Un chunk adjacent to " + getChunkKey(chunk) + " is not claimed by the same territory: " + adjacentChunkKey);
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean isAdjacentChunkClaimedBySameTown(Chunk chunk, String townID) {
 
         List<String> adjacentChunkKeys = Arrays.asList(
@@ -189,10 +207,14 @@ public class NewClaimedChunkStorage {
                     // Déterminer si c'est une ville ou une région en fonction de la première lettre de ownerID
                     if (ownerID.startsWith("T")) {
                         TownClaimedChunk townChunk = new TownClaimedChunk(x, z, worldUUID, ownerID);
+                        String occupierID = chunkData.has("occupierID") ? chunkData.get("occupierID").getAsString() : ownerID;
+                        townChunk.setOccupierID(occupierID);
                         claimedChunksMap.put(entry.getKey(), townChunk);
                     }
                     else if (ownerID.startsWith("R")) {
                         RegionClaimedChunk regionChunk = new RegionClaimedChunk(x, z, worldUUID, ownerID);
+                        String occupierID = chunkData.has("occupierID") ? chunkData.get("occupierID").getAsString() : ownerID;
+                        regionChunk.setOccupierID(occupierID);
                         claimedChunksMap.put(entry.getKey(), regionChunk);
                     }
                     else if (ownerID.startsWith("L")) {

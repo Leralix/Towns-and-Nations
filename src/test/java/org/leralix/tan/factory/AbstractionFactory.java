@@ -19,6 +19,8 @@ import org.leralix.tan.economy.TanEconomyStandalone;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.database.SQLiteHandler;
+import org.leralix.tan.storage.impl.FortDataStorage;
+import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -55,6 +57,8 @@ public class AbstractionFactory {
         ConfigUtil.addCustomConfig(config, ConfigTag.MAIN);
         File langConf = new File(classLoader.getResource("fakeLang.yml").getFile());
         ConfigUtil.addCustomConfig(langConf, ConfigTag.LANG);
+
+        FortStorage.init(new FortDataStorage());
 
         Lang.loadTranslations(new File(classLoader.getResource("lang").getFile()), "en");
 

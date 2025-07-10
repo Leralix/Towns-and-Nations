@@ -44,6 +44,7 @@ import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
+import org.leralix.tan.tasks.SecondTask;
 import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.EnabledPermissions;
 import org.leralix.tan.utils.NumberUtil;
@@ -230,6 +231,10 @@ public final class TownsAndNations extends JavaPlugin {
 
         TanAPI.register(new InternalAPI(CURRENT_VERSION,MINIMUM_SUPPORTING_DYNMAP));
         new Metrics(this, 20527);
+
+        getLogger().log(Level.INFO, "[TaN] -Registering Tasks");
+        SecondTask secondTask = new SecondTask();
+        secondTask.startScheduler();
 
         getLogger().log(Level.INFO,"[TaN] Plugin loaded successfully");
         getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");

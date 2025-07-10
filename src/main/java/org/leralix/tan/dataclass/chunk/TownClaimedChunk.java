@@ -30,7 +30,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
 
-public class TownClaimedChunk extends ClaimedChunk2 {
+public class TownClaimedChunk extends TerritoryChunk {
     public TownClaimedChunk(Chunk chunk, String owner) {
         super(chunk, owner);
     }
@@ -151,7 +151,14 @@ public class TownClaimedChunk extends ClaimedChunk2 {
     @Override
     public TextComponent getMapIcon(ITanPlayer tanPlayer) {
 
-        TextComponent textComponent = new TextComponent("⬛");
+        TextComponent textComponent;
+        if(isOccupied()){
+            textComponent = new TextComponent("🟧");
+        }
+        else {
+            textComponent = new TextComponent("⬛");
+        }
+
         textComponent.setColor(getTown().getChunkColor());
         textComponent.setHoverEvent(new HoverEvent(
                 HoverEvent.Action.SHOW_TEXT,

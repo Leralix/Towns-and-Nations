@@ -15,6 +15,9 @@ public abstract class FortStorage {
     }
 
     public static FortStorage getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("FortStorage has not been initialized.");
+        }
         return instance;
     }
 
