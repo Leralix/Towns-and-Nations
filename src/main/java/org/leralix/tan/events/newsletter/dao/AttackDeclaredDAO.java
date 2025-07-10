@@ -45,7 +45,7 @@ public class AttackDeclaredDAO extends NewsletterSubDAO<AttackDeclaredNewsletter
 
     @Override
     public AttackDeclaredNewsletter load(UUID id, long date) {
-        String sql = "SELECT attackingTerritoryID, defendingTerritoryID,FROM attack_declared_newsletter WHERE id = ?";
+        String sql = "SELECT attackingTerritoryID, defendingTerritoryID FROM attack_declared_newsletter WHERE id = ?";
         try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.setObject(1, id);
             var rs = ps.executeQuery();
@@ -55,7 +55,7 @@ public class AttackDeclaredDAO extends NewsletterSubDAO<AttackDeclaredNewsletter
                 return new AttackDeclaredNewsletter(id, date, attackingTerritoryID, defendingTerritoryID);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to load player application newsletter", e);
+            throw new RuntimeException("Failed to load player attack declared newsletter", e);
         }
         return null;
     }
