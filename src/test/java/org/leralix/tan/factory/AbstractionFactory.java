@@ -53,9 +53,9 @@ public class AbstractionFactory {
             isTanMockOn = true;
         }
 
-        File config = new File(classLoader.getResource("fakeConfig.yml").getFile());
+        File config = new File(classLoader.getResource("configs/fakeConfig.yml").getFile());
         ConfigUtil.addCustomConfig(config, ConfigTag.MAIN);
-        File langConf = new File(classLoader.getResource("fakeLang.yml").getFile());
+        File langConf = new File(classLoader.getResource("configs/fakeLang.yml").getFile());
         ConfigUtil.addCustomConfig(langConf, ConfigTag.LANG);
 
         FortStorage.init(new FortDataStorage());
@@ -67,9 +67,8 @@ public class AbstractionFactory {
 
     private static void initialisePluginMock(ClassLoader classLoader) {
         TownsAndNations plugin = Mockito.mock(TownsAndNations.class);
-        when(plugin.getDataFolder()).thenReturn(new File(classLoader.getResource("created").getFile()));
+        when(plugin.getDataFolder()).thenReturn(new File(classLoader.getResource("configs").getFile()));
         when(plugin.getDatabaseHandler()).thenReturn(Mockito.mock(DatabaseHandler.class));
-        when(plugin.getDataFolder()).thenReturn(new File(classLoader.getResource("created").getFile()));
 
         MockedStatic<TownsAndNations> pluginInstance = Mockito.mockStatic(TownsAndNations.class);
         pluginInstance.when(TownsAndNations::getPlugin).thenReturn(plugin);
