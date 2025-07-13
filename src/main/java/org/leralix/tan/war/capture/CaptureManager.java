@@ -42,9 +42,9 @@ public class CaptureManager {
 
                 if(!captures.containsKey(territoryChunk)){
                     if(territoryChunk.isOccupied()){
-                        captures.putIfAbsent(territoryChunk, new CaptureStatus(100));
+                        captures.putIfAbsent(territoryChunk, new CaptureStatus(100, territoryChunk));
                     }
-                    captures.putIfAbsent(territoryChunk, new CaptureStatus(0));
+                    captures.putIfAbsent(territoryChunk, new CaptureStatus(0, territoryChunk));
                 }
                 captures.get(territoryChunk).addAttacker(attacker.getPlayer());
             }
@@ -64,9 +64,9 @@ public class CaptureManager {
 
                 if(!captures.containsKey(territoryChunk)){
                     if(territoryChunk.isOccupied()){
-                        captures.putIfAbsent(territoryChunk, new CaptureStatus(100));
+                        captures.putIfAbsent(territoryChunk, new CaptureStatus(100, territoryChunk));
                     }
-                    captures.putIfAbsent(territoryChunk, new CaptureStatus(0));
+                    captures.putIfAbsent(territoryChunk, new CaptureStatus(0, territoryChunk));
                 }
                 captures.get(territoryChunk).addDefender(defender.getPlayer());
             }
@@ -101,12 +101,8 @@ public class CaptureManager {
             return false;
         }
 
-        System.out.println("Chunk is from main defender ");
-
         boolean surroundedBySame = NewClaimedChunkStorage.getInstance()
                 .isAllAdjacentChunksClaimedBySameTerritory(claimedChunk.getChunk(), defenderID);
-
-        System.out.println("Chunk is surrounded by same territory: " + surroundedBySame);
 
         return !surroundedBySame;
     }

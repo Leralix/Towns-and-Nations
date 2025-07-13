@@ -2,6 +2,7 @@ package org.leralix.tan.dataclass.chunk;
 
 import org.bukkit.Chunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.utils.TerritoryUtil;
 
 public abstract class TerritoryChunk extends ClaimedChunk2 {
 
@@ -22,6 +23,10 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
             return occupierID = ownerID;
         }
         return occupierID;
+    }
+
+    public TerritoryData getOccupier(){
+        return TerritoryUtil.getTerritory(getOccupierID());
     }
 
     public void setOccupierID(TerritoryData occupier) {

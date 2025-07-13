@@ -1110,3 +1110,7 @@ language:
   CANNOT_CREATE_FORT_IF_ABOVE_BLOCKED: "§cYou cannot create a fort if the block above is not air"
   DEFAULT_FORT_NAME: "Fort n°{0}"
   RIGHT_CLICK_TO_PLACE_FORT: "§fRight click to place the fort flag"
+  #Wars
+  WAR_INFO_CHUNK_CAPTURED: "§a4🌑§f Captured by {0}§f - [Atk : §e{1}§f, Def : §e{2}§f]"
+  WAR_INFO_CHUNK_OWNED: "§6🌑§f Contested - §f[Atk : §e{1}§f, Def : §e{2}§f]"
+  WAR_INFO_CONTESTED: "§2🌑§f Owned - §f[Atk : §e{1}§f, Def : §e{2}§f]"

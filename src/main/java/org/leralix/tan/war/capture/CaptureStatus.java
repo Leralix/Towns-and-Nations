@@ -3,21 +3,25 @@ package org.leralix.tan.war.capture;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.chunk.TerritoryChunk;
+import org.leralix.tan.lang.Lang;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CaptureStatus {
 
+    private final TerritoryChunk territoryChunk;
     private int score;
     private final int maxScore = 100;
     private final List<Player> attackers;
     private final List<Player> defenders;
 
-    public CaptureStatus(int initialScore) {
+    public CaptureStatus(int initialScore, TerritoryChunk territoryChunk) {
         this.score = initialScore;
         this.attackers = new ArrayList<>();
         this.defenders = new ArrayList<>();
+        this.territoryChunk = territoryChunk;
     }
 
     public boolean isCaptured() {
@@ -41,31 +45,10 @@ public class CaptureStatus {
     }
 
     public void update() {
-        boolean isContested = false;
-        if (attackers.size() > defenders.size()) {
-            score += 10;
-        } else if (defenders.size() > attackers.size()) {
-            score -= 10;
-        }
-        else {
-            isContested = true;
-        }
 
-        if (score < 0) {
-            score = 0;
-        } else if (score > maxScore) {
-            score = maxScore;
-        }
+        updateScore();
 
-        String message = isCaptured() ?
-                "Captured" :
-                isLiberated() ?
-                        "Liberated (" + score + "/" + maxScore + ")" :
-                        "In Progress (" + score + "/" + maxScore + ")";
-
-        if(isContested){
-            message = message + " - Contested";
-        }
+        String message = generateMessage();
 
         List<Player> allPlayers = new ArrayList<>(attackers);
         allPlayers.addAll(defenders);
@@ -77,6 +60,39 @@ public class CaptureStatus {
             player.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
         }
 
+    }
+
+    private String generateMessage() {
+
+        String message;
+        int nbDefenders = defenders.size();
+        int nbAttackers = attackers.size();
+
+        if(isCaptured()){
+            message = Lang.WAR_INFO_CHUNK_CAPTURED.get(territoryChunk.getOccupier().getColoredName(), nbAttackers, nbDefenders);
+        }
+        else if (isLiberated()){
+            message = Lang.WAR_INFO_CHUNK_OWNED.get(score, nbAttackers, nbDefenders);
+        }
+        else {
+            message = Lang.WAR_INFO_CONTESTED.get(score, nbAttackers, nbDefenders);
+        }
+
+        return message;
+    }
+
+    private void updateScore() {
+        if (attackers.size() > defenders.size()) {
+            score += 10;
+        } else if (defenders.size() > attackers.size()) {
+            score -= 10;
+        }
+
+        if (score < 0) {
+            score = 0;
+        } else if (score > maxScore) {
+            score = maxScore;
+        }
     }
 
 
