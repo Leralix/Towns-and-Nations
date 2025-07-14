@@ -2,6 +2,7 @@ package org.leralix.tan.dataclass.wars;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -342,5 +343,11 @@ public class PlannedAttack {
 
     public StrongholdData getDefenderStronghold() {
         return getMainDefender().getStronghold();
+    }
+
+    public List<Player> getAllPlayers() {
+        List<ITanPlayer> res = new ArrayList<>(getDefendingPlayers());
+        res.addAll(getAttackersPlayers());
+        return res.stream().map(ITanPlayer::getPlayer).toList();
     }
 }

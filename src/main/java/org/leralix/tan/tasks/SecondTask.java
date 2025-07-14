@@ -21,6 +21,7 @@ public class SecondTask {
             public void run() {
                 for (CurrentAttack currentAttack : CurrentAttacksStorage.getAll()) {
                     captureManager.updateCapture(currentAttack);
+                    currentAttack.displayBoundaries();
                 }
             }
         }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 20L); // Exécute toutes les 1200 ticks (1 minute en temps Minecraft)
