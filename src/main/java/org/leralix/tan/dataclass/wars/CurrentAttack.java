@@ -362,7 +362,9 @@ public class CurrentAttack {
 
     public void displayBoundaries() {
         for (Player player : attackData.getAllPlayers()) {
-            displayBoundaries(player);
+            if(player != null){
+                displayBoundaries(player);
+            }
         }
     }
 
@@ -426,7 +428,7 @@ public class CurrentAttack {
         ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(x, z, worldID);
 
         return claimedChunk2 instanceof TerritoryChunk territoryChunk &&
-                territoryChunk.getOccupierID().equals(attackData.getMainDefender().getID()) &&
-                territoryChunk.isOccupied();
+                territoryChunk.getOwnerID().equals(attackData.getMainDefender().getID()) &&
+                !territoryChunk.isOccupied();
     }
 }

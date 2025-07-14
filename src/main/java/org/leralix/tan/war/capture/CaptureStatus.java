@@ -72,7 +72,7 @@ public class CaptureStatus {
             message = Lang.WAR_INFO_CHUNK_CAPTURED.get(territoryChunk.getOccupier().getColoredName(), nbAttackers, nbDefenders);
         }
         else if (isLiberated()){
-            message = Lang.WAR_INFO_CHUNK_OWNED.get(score, nbAttackers, nbDefenders);
+            message = Lang.WAR_INFO_CHUNK_OWNED.get(nbAttackers, nbDefenders);
         }
         else {
             message = Lang.WAR_INFO_CONTESTED.get(score, nbAttackers, nbDefenders);
