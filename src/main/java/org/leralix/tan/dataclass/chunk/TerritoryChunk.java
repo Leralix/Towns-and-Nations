@@ -29,7 +29,7 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
         return TerritoryUtil.getTerritory(getOccupierID());
     }
 
-    public void setOccupierID(TerritoryData occupier) {
+    public void setOccupier(TerritoryData occupier) {
         setOccupierID(occupier.getID());
     }
 

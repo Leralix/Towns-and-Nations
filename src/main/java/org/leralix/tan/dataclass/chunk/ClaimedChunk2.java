@@ -66,6 +66,10 @@ public abstract class ClaimedChunk2 {
         }
         return vector2D;
     }
+    public Vector2D getMiddleVector2D(){
+        Vector2D vector2D = getVector2D();
+        return new Vector2D(vector2D.getX() * 16 + 8, vector2D.getZ() * 16 + 8, vector2D.getWorldID().toString());
+    }
 
     public int getX() {
         return this.x;

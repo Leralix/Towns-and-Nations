@@ -1111,6 +1111,7 @@ language:
   DEFAULT_FORT_NAME: "Fort n°{0}"
   RIGHT_CLICK_TO_PLACE_FORT: "§fRight click to place the fort flag"
   #Wars
+  WAR_INFO_CHUNK_PROTECTED: "§f🌑§f Protected ({0} - §f[Atk : §e{1}§f, Def : §e{2}§f]"
   WAR_INFO_CHUNK_OWNED: "§a🌑§f Owned - §f[Atk : §e{0}§f, Def : §e{1}§f]"
   WAR_INFO_CONTESTED: "§6🌑§f Contested (§e{0}%§f) - §f[Atk : §e{1}§f, Def : §e{2}§f]"
   WAR_INFO_CHUNK_CAPTURED: "§4🌑§f Captured by {0}§f - [Atk : §e{1}§f, Def : §e{2}§f]"

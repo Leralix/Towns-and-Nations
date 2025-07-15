@@ -83,7 +83,7 @@ public abstract class Fort extends Building {
         }
 
         double distance = getFlagPosition().getDistance(chunk.getVector2D());
-        return Constants.getFortProtectingDistance() > distance;
+        return Constants.getFortProtectionRadius() > distance;
     }
 
     void updateCatpure(PlannedAttack attackData) {

@@ -240,7 +240,7 @@ allowedTimeSlotsWar:
   - "08:00-10:00"
   - "12:00-20:30"
 
-#Admin need to approve every war. Admins need to use /tan admin gui to approve or deny a war
+#Admin needs to approve every war. Admins need to use /tan admin gui to approve or deny a war
 AdminApproval: false
 
 #The duration of a war in minutes
@@ -261,6 +261,13 @@ warScoreMultiplier : 0.70
 # Set the maximum number of chunks a territory can conquer during a war.
 # Set the value to 0 for unlimited chunks (capped by the maximum number of chunks the territory currently own).
 MaximumChunkConquer: 0
+
+## Forts
+Forts:
+  fortCost: 1000.0
+  fortProtectionRadius: 50.0
+  fortCaptureRadius: 10.0
+
 
 ########################
 ##  General settings  ##

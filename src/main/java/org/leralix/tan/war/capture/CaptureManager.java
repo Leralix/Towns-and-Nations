@@ -22,10 +22,10 @@ public class CaptureManager {
         for(CaptureStatus captureStatus : captures.values()){
             captureStatus.resetPlayers();
         }
-
-
-        Collection<ITanPlayer> attackers = currentAttack.getAttackData().getAttackersPlayers(); //TODO : Check if method only returns online players
-        Collection<ITanPlayer> defenders = currentAttack.getAttackData().getDefendingPlayers(); //TODO : Check if method only returns online players
+        
+        Collection<ITanPlayer> attackers = currentAttack.getAttackData().getAttackersPlayers();
+        Collection<ITanPlayer> defenders = currentAttack.getAttackData().getDefendingPlayers();
+        TerritoryData mainAttacker = currentAttack.getAttackData().getMainAttacker();
 
         for(ITanPlayer attacker : attackers) {
             Player player = attacker.getPlayer();
@@ -36,15 +36,14 @@ public class CaptureManager {
             ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(player.getLocation().getChunk());
 
             if(claimedChunk instanceof TerritoryChunk territoryChunk){
-                if(!canBeCaptured(claimedChunk, currentAttack.getAttackData().getMainDefender())){
+                if(!canBeCaptured(territoryChunk,
+                        currentAttack.getAttackData().getMainAttacker(),
+                        currentAttack.getAttackData().getMainDefender())){
                     continue;
                 }
 
                 if(!captures.containsKey(territoryChunk)){
-                    if(territoryChunk.isOccupied()){
-                        captures.putIfAbsent(territoryChunk, new CaptureStatus(100, territoryChunk));
-                    }
-                    captures.putIfAbsent(territoryChunk, new CaptureStatus(0, territoryChunk));
+                    captures.putIfAbsent(territoryChunk, new CaptureStatus(0, territoryChunk, mainAttacker));
                 }
                 captures.get(territoryChunk).addAttacker(attacker.getPlayer());
             }
@@ -58,30 +57,21 @@ public class CaptureManager {
             ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(player.getLocation().getChunk());
             if(claimedChunk instanceof TerritoryChunk territoryChunk){
 
-                if(!canBeCaptured(claimedChunk, currentAttack.getAttackData().getMainDefender())){
+                if(!canBeCaptured(territoryChunk,
+                        currentAttack.getAttackData().getMainAttacker(),
+                        currentAttack.getAttackData().getMainDefender())){
                     continue;
                 }
 
                 if(!captures.containsKey(territoryChunk)){
-                    if(territoryChunk.isOccupied()){
-                        captures.putIfAbsent(territoryChunk, new CaptureStatus(100, territoryChunk));
-                    }
-                    captures.putIfAbsent(territoryChunk, new CaptureStatus(0, territoryChunk));
+                    captures.putIfAbsent(territoryChunk, new CaptureStatus(0, territoryChunk, mainAttacker));
                 }
                 captures.get(territoryChunk).addDefender(defender.getPlayer());
             }
         }
 
-
-        for(Map.Entry <TerritoryChunk,CaptureStatus> entry : captures.entrySet()){
-            TerritoryChunk claimedChunk = entry.getKey();
-            CaptureStatus captureStatus = entry.getValue();
+        for(CaptureStatus captureStatus : captures.values()){
             captureStatus.update();
-            if(captureStatus.isCaptured()){
-                claimedChunk.setOccupierID(currentAttack.getAttackData().getMainAttacker());
-            } else if(captureStatus.isLiberated()){
-                claimedChunk.liberate();
-            }
         }
     }
 
@@ -89,20 +79,27 @@ public class CaptureManager {
      * Check if the claimed chunk can be claimed by the main defender of the current attack.
      * A claim can be captured only if the claimed chunk is owned by the main defender
      * and is adjacent to another claimed chunk of the same territory.
-     * @param claimedChunk  The claimed chunk to check
+     * @param territoryChunk  The claimed chunk to check
      * @param mainDefender  The main defender of the current attack
      * @return              True if the claimed chunk can be captured, false otherwise
      */
-    private boolean canBeCaptured(ClaimedChunk2 claimedChunk, TerritoryData mainDefender) {
-        String ownerID = claimedChunk.getOwner().getID();
+    private boolean canBeCaptured(TerritoryChunk territoryChunk, TerritoryData mainAttacker, TerritoryData mainDefender) {
+        String ownerID = territoryChunk.getOwnerID();
+        String occupierID = territoryChunk.getOccupierID();
+
         String defenderID = mainDefender.getID();
+        String attackerID = mainAttacker.getID();
+
+        if(ownerID.equals(attackerID) && occupierID.equals(defenderID)){
+            return true;
+        }
 
         if (!ownerID.equals(defenderID)) {
             return false;
         }
 
         boolean surroundedBySame = NewClaimedChunkStorage.getInstance()
-                .isAllAdjacentChunksClaimedBySameTerritory(claimedChunk.getChunk(), defenderID);
+                .isAllAdjacentChunksClaimedBySameTerritory(territoryChunk.getChunk(), defenderID);
 
         return !surroundedBySame;
     }
