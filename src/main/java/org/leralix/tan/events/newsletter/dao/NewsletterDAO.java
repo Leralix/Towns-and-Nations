@@ -187,7 +187,7 @@ public class NewsletterDAO {
 
         try (Connection mainConn = dataSource.getConnection()) {
 
-            String selectSql = "SELECT id FROM newsletter WHERE date_created < ?";
+            String selectSql = "SELECT id, type FROM newsletter WHERE date_created < ?";
             try (PreparedStatement ps = mainConn.prepareStatement(selectSql)) {
                 ps.setTimestamp(1, Timestamp.valueOf(cutoff));
                 try (ResultSet rs = ps.executeQuery()) {
@@ -205,11 +205,18 @@ public class NewsletterDAO {
 
     private void deleteNewsletter(Connection mainConn, String tableName, String id) {
 
+        NewsletterType type;
+        try{
+             type = NewsletterType.valueOf(tableName);
+        }
+        catch (IllegalArgumentException e){
+            return;
+        }
+
         // Delete from the specific newsletter table
-        String deleteSpecificSql = "DELETE FROM ? WHERE id = ?";
+        String deleteSpecificSql = "DELETE FROM `" + type.getDatabaseName() + "` WHERE id = ?";
         try (PreparedStatement ps = mainConn.prepareStatement(deleteSpecificSql)) {
-            ps.setString(1, tableName);
-            ps.setString(2, id);
+            ps.setString(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
