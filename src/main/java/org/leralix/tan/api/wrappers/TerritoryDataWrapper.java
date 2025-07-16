@@ -111,7 +111,7 @@ public class TerritoryDataWrapper implements TanTerritory {
 
     @Override
     public TanTerritory getOverlord() {
-        return  TerritoryDataWrapper.of(territoryData.getOverlord());
+        return TerritoryDataWrapper.of(territoryData.getOverlord().get());
     }
 
     @Override

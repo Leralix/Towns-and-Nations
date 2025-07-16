@@ -186,7 +186,10 @@ public class TownData extends TerritoryData {
             lore.add(Lang.GUI_TOWN_INFO_DESC1.get(langType, getLeaderName()));
             lore.add(Lang.GUI_TOWN_INFO_DESC2.get(langType, getPlayerIDList().size()));
             lore.add(Lang.GUI_TOWN_INFO_DESC3.get(langType, getNumberOfClaimedChunk()));
-            lore.add(haveOverlord() ? Lang.GUI_TOWN_INFO_DESC5_REGION.get(langType, getOverlord().getName()) : Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get(langType));
+            lore.add(getOverlord()
+                    .map(overlord -> Lang.GUI_TOWN_INFO_DESC5_REGION.get(langType, overlord.getName()))
+                    .orElseGet(() -> Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get(langType)))
+            ;
 
             meta.setLore(lore);
             icon.setItemMeta(meta);
@@ -251,9 +254,7 @@ public class TownData extends TerritoryData {
         if (haveOverlord()) {
             RegionData regionData = getRegion();
             overlords.add(regionData);
-            if (regionData.haveOverlord()) {
-                overlords.add(regionData.getOverlord());
-            }
+            regionData.getOverlord().map(overlords::add);
         }
 
         return overlords;
@@ -467,28 +468,9 @@ public class TownData extends TerritoryData {
         //Town have no vassals
     }
 
-
-    @Override
-    public boolean isCapital() {
-        if (!haveOverlord())
-            return false;
-        return getOverlord().getCapital().getID().equals(getID());
-    }
-
     @Override
     public String getCapitalID() {
         return null;
-    }
-
-
-    public boolean isRegionalCapital() {
-        if (!haveOverlord())
-            return false;
-        return getOverlord().getCapitalID().equals(getID());
-    }
-
-    public boolean haveRelationWith(TownData otherTown) {
-        return this.getRelationWith(otherTown) != null;
     }
 
     @Override
@@ -560,8 +542,8 @@ public class TownData extends TerritoryData {
     @Override
     protected void addSpecificTaxes(Budget budget) {
         budget.addProfitLine(new PlayerTaxLine(this));
-        if (haveOverlord())
-            budget.addProfitLine(new OverlordTaxLine(this));
+        getOverlord()
+                .ifPresent(overlord -> budget.addProfitLine(new OverlordTaxLine(this, overlord)));
         budget.addProfitLine(new PropertyRentTax(this));
         budget.addProfitLine(new PropertySellTax(this));
     }
@@ -816,13 +798,6 @@ public class TownData extends TerritoryData {
     @Override
     public boolean isVassal(String territoryID) {
         return false;
-    }
-
-    @Override
-    public boolean isCapitalOf(String territoryID) {
-        if (!haveOverlord())
-            return false;
-        return getOverlord().getCapitalID().equals(getID());
     }
 
     protected long getOldDateTime() {

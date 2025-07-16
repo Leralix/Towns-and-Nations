@@ -79,7 +79,7 @@ public class RegionSettingsMenu extends SettingsMenus {
                         return;
                     }
                     if (regionData.isCapital()) {
-                        player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, regionData.getOverlord().getBaseColoredName()));
+                        player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, regionData.getOverlord().get().getBaseColoredName()));
                         return;
                     }
 

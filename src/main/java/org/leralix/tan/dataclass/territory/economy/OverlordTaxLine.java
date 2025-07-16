@@ -10,12 +10,9 @@ public class OverlordTaxLine extends ProfitLine {
 
     double tax;
 
-    public OverlordTaxLine(TerritoryData territoryData) {
+    public OverlordTaxLine(TerritoryData territoryData, TerritoryData overlord) {
         super(territoryData);
-        TerritoryData overlordData = territoryData.getOverlord();
-        if (overlordData == null)
-            return;
-        tax = -overlordData.getTax();
+        tax = -overlord.getTax();
     }
 
     @Override

@@ -79,10 +79,8 @@ public class LiberateWarGoal extends WarGoal {
     @Override
     public void sendAttackSuccessToAttackers(Player player) {
         super.sendAttackSuccessToAttackers(player);
-        TerritoryData loosingTerritory = territoryToLiberate.getOverlord();
-        if(loosingTerritory == null)
-            return;
-        player.sendMessage(Lang.WARGOAL_LIBERATE_SUCCESS.get(territoryToLiberate.getBaseColoredName(), loosingTerritory.getBaseColoredName()));
+        territoryToLiberate.getOverlord()
+                .ifPresent(oldOverlord -> player.sendMessage( Lang.WARGOAL_LIBERATE_SUCCESS.get(territoryToLiberate.getBaseColoredName(), oldOverlord.getBaseColoredName())));
     }
 
     @Override

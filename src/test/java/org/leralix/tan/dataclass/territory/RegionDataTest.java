@@ -47,8 +47,10 @@ class RegionDataTest {
 
         assertEquals(2, regionData.getSubjects().size());
         assertTrue(regionData.getSubjects().contains(newTown));
-        assertSame(regionData, townData.getOverlord());
-        assertSame(regionData, newTown.getOverlord());
+        assertTrue(townData.getOverlord().isPresent());
+        assertSame(regionData, townData.getOverlord().get());
+        assertTrue(newTown.getOverlord().isPresent());
+        assertSame(regionData, newTown.getOverlord().get());
     }
 
     @Test

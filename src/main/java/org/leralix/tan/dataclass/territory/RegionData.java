@@ -219,10 +219,6 @@ public class RegionData extends TerritoryData {
         return nationID != null;
     }
 
-    @Override
-    public TerritoryData getOverlord() {
-        return null;
-    }
 
     @Override
     protected Collection<TerritoryData> getOverlords() {
@@ -240,13 +236,6 @@ public class RegionData extends TerritoryData {
             towns.add(TerritoryUtil.getTerritory(townID));
         }
         return towns;
-    }
-
-    @Override
-    public boolean isCapital() {
-        if (!hasNation())
-            return false;
-        return getOverlord().isCapital();
     }
 
     public int getNumberOfTownsIn() {
@@ -402,12 +391,6 @@ public class RegionData extends TerritoryData {
         return townsInRegion.contains(territoryID);
     }
 
-    @Override
-    public boolean isCapitalOf(String territoryID) {
-        if (!hasNation())
-            return false;
-        return getOverlord().getCapitalID().equals(territoryID);
-    }
 
     @Override
     public Collection<TerritoryData> getPotentialVassals() {

@@ -268,7 +268,8 @@ public abstract class TerritoryData {
         if(getID().equals(territoryID))
             return TownRelation.SELF;
 
-        if(haveOverlord() && getOverlord().getID().equals(territoryID))
+        Optional<TerritoryData> overlord = getOverlord();
+        if(overlord.isPresent() && overlord.get().getID().equals(territoryID))
             return TownRelation.OVERLORD;
 
         if(getVassalsID().contains(territoryID))
@@ -387,8 +388,16 @@ public abstract class TerritoryData {
         overlord.addVassal(this);
     }
 
-    public TerritoryData getOverlord(){
-        return TerritoryUtil.getTerritory(overlordID);
+    public Optional<TerritoryData> getOverlord(){
+        if(overlordID == null)
+            return Optional.empty();
+        TerritoryData overlord = TerritoryUtil.getTerritory(overlordID);
+        if(overlord == null){
+            overlordID = null;
+            return Optional.empty();
+        }
+        return Optional.of(overlord);
+
     }
 
     /**
@@ -397,9 +406,11 @@ public abstract class TerritoryData {
     protected abstract Collection<TerritoryData> getOverlords();
 
     public void removeOverlord(){
-        getOverlord().removeVassal(this);
-        removeOverlordPrivate();
-        this.overlordID = null;
+        getOverlord().ifPresent(overlord -> {
+            overlord.removeVassal(this);
+            removeOverlordPrivate();
+            this.overlordID = null;
+        });
     }
     public abstract void removeOverlordPrivate();
 
@@ -413,7 +424,12 @@ public abstract class TerritoryData {
 
     protected abstract void removeVassal(TerritoryData vassalID);
 
-    public abstract boolean isCapital();
+    public boolean isCapital(){
+        Optional<TerritoryData> capital = getOverlord();
+        return capital
+                .map(overlord -> Objects.equals(overlord.getCapitalID(), getID()))
+                .orElse(false);
+    }
 
     public TerritoryData getCapital(){
         return TerritoryUtil.getTerritory(getCapitalID());
@@ -440,7 +456,7 @@ public abstract class TerritoryData {
     }
 
     public boolean haveOverlord(){
-        return this.overlordID != null;
+        return getOverlord().isPresent();
     }
 
 
@@ -549,9 +565,11 @@ public abstract class TerritoryData {
     public abstract boolean isVassal(String territoryID);
 
     public boolean isCapitalOf(TerritoryData territoryData) {
-        return isCapitalOf(territoryData.getID());
+        return territoryData.getOverlord()
+                .map(overlord -> Objects.equals(overlord.getCapitalID(), getID()))
+                .orElse(false);
     }
-    public abstract boolean isCapitalOf(String territoryID);
+
 
     public abstract Collection<TerritoryData> getPotentialVassals();
 
