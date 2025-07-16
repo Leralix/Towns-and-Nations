@@ -254,7 +254,7 @@ public class TownData extends TerritoryData {
         if (haveOverlord()) {
             RegionData regionData = getRegion();
             overlords.add(regionData);
-            regionData.getOverlord().map(overlords::add);
+            regionData.getOverlord().ifPresent(overlords::add);
         }
 
         return overlords;
