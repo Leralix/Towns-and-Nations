@@ -34,7 +34,10 @@ import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 public class RegionData extends TerritoryData {
 
@@ -181,45 +184,41 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public Optional<ClaimedChunk2> claimChunkInternal(Player player, Chunk chunk) {
+    public void claimChunk(Player player, Chunk chunk) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
-            return Optional.empty();
+            return;
         }
 
 
         if (!doesPlayerHavePermission(tanPlayer, RolePermission.CLAIM_CHUNK)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
-            return Optional.empty();
+            return;
         }
         int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfRegionChunk", 5);
 
         if (getBalance() < cost) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.REGION_NOT_ENOUGH_MONEY_EXTENDED.get(cost - getBalance()));
-            return Optional.empty();
+            return;
         }
 
         ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
         if (!currentClaimedChunk.canTerritoryClaim(player, this)) {
-            return Optional.empty();
+            return;
         }
 
         removeFromBalance(cost);
         NewClaimedChunkStorage.getInstance().claimRegionChunk(chunk, getID());
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_CLAIMED_SUCCESS_REGION.get());
-        return Optional.of(NewClaimedChunkStorage.getInstance().get(chunk));
+        NewClaimedChunkStorage.getInstance().get(chunk);
     }
 
     public boolean hasNation() {
         return nationID != null;
     }
 
-    @Override
-    public TerritoryData getOverlord() {
-        return null;
-    }
 
     @Override
     protected Collection<TerritoryData> getOverlords() {
@@ -237,13 +236,6 @@ public class RegionData extends TerritoryData {
             towns.add(TerritoryUtil.getTerritory(townID));
         }
         return towns;
-    }
-
-    @Override
-    public boolean isCapital() {
-        if (!hasNation())
-            return false;
-        return getOverlord().isCapital();
     }
 
     public int getNumberOfTownsIn() {
@@ -399,12 +391,6 @@ public class RegionData extends TerritoryData {
         return townsInRegion.contains(territoryID);
     }
 
-    @Override
-    public boolean isCapitalOf(String territoryID) {
-        if (!hasNation())
-            return false;
-        return getOverlord().getCapitalID().equals(territoryID);
-    }
 
     @Override
     public Collection<TerritoryData> getPotentialVassals() {

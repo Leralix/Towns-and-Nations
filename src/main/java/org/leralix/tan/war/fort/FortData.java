@@ -54,7 +54,7 @@ public class FortData extends Fort{
     }
 
     @Override
-    public void setOccupier(TerritoryData newOwner) {
+    public void setOccupierInternal(TerritoryData newOwner) {
         this.occupierID = newOwner.getID();
     }
 

@@ -40,7 +40,10 @@ public abstract class TerritoryMenu extends BasicGui {
         lore.add(Lang.GUI_TOWN_INFO_DESC1.get(langType, territoryData.getLeaderName()));
         lore.add(Lang.GUI_TOWN_INFO_DESC2.get(langType, territoryData.getPlayerIDList().size()));
         lore.add(Lang.GUI_TOWN_INFO_DESC3.get(langType, territoryData.getNumberOfClaimedChunk()));
-        lore.add(territoryData.haveOverlord() ? Lang.GUI_TOWN_INFO_DESC5_REGION.get(langType, territoryData.getOverlord().getName()) : Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get(langType));
+        lore.add(territoryData.getOverlord().map(
+                overlord -> Lang.GUI_TOWN_INFO_DESC5_REGION.get(langType, overlord.getName()))
+                .orElseGet(() -> Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get(langType)));
+
         lore.add(Lang.GUI_TOWN_INFO_CHANGE_ICON.get(tanPlayer));
         lore.add(Lang.RIGHT_CLICK_TO_SELECT_MEMBER_HEAD.get(tanPlayer));
 

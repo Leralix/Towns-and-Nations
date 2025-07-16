@@ -2,9 +2,7 @@ package org.leralix.tan.dataclass.chunk;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -26,7 +24,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
 
-public class RegionClaimedChunk extends ClaimedChunk2 {
+public class RegionClaimedChunk extends TerritoryChunk {
 
 
     public RegionClaimedChunk(Chunk chunk, String owner) {
@@ -115,18 +113,6 @@ public class RegionClaimedChunk extends ClaimedChunk2 {
     @Override
     public boolean canEntitySpawn(EntityType entityType) {
         return true;
-    }
-
-    @Override
-    public TextComponent getMapIcon(ITanPlayer tanPlayer) {
-        TextComponent textComponent = new TextComponent("⬛");
-        textComponent.setColor(getRegion().getChunkColor());
-        textComponent.setHoverEvent(new HoverEvent(
-                HoverEvent.Action.SHOW_TEXT,
-                new Text("x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
-                        getRegion().getBaseColoredName() + "\n" +
-                        Lang.LEFT_CLICK_TO_CLAIM.get())));
-        return textComponent;
     }
 
     @Override

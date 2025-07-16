@@ -1199,8 +1199,9 @@ public class PlayerGUI {
         GuiItem overlordInfo;
         if (territoryData.canHaveOverlord()) {
             GuiItem overlordButton;
-            if (territoryData.haveOverlord()) {
-                TerritoryData overlord = territoryData.getOverlord();
+            Optional<TerritoryData> overlordOptional = territoryData.getOverlord();
+            if (overlordOptional.isPresent()) {
+                TerritoryData overlord = overlordOptional.get();
                 ItemStack overlordIcon = overlord.getIcon();
                 ItemMeta meta = overlordIcon.getItemMeta();
                 meta.setDisplayName(Lang.OVERLORD_GUI.get(tanPlayer));
@@ -1225,7 +1226,6 @@ public class PlayerGUI {
                         openHierarchyMenu(player, territoryData); //This should trigger only if town have been kicked from region during the menu
                         return;
                     }
-                    TerritoryData overlordData = territoryData.getOverlord();
 
                     if (territoryData.isCapital()) {
                         player.sendMessage(TanChatUtils.getTANString() + Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_CAPITAL.get(tanPlayer, territoryData.getBaseColoredName()));
@@ -1234,8 +1234,8 @@ public class PlayerGUI {
 
                     openConfirmMenu(player, Lang.GUI_CONFIRM_DECLARE_INDEPENDENCE.get(tanPlayer, territoryData.getBaseColoredName(), overlord.getBaseColoredName()), confirm -> {
                         territoryData.removeOverlord();
-                        territoryData.broadcastMessageWithSound(Lang.TOWN_BROADCAST_TOWN_LEFT_REGION.get(tanPlayer, territoryData.getName(), overlordData.getName()), BAD);
-                        overlordData.broadCastMessage(Lang.REGION_BROADCAST_TOWN_LEFT_REGION.get(tanPlayer, territoryData.getName()));
+                        territoryData.broadcastMessageWithSound(Lang.TOWN_BROADCAST_TOWN_LEFT_REGION.get(tanPlayer, territoryData.getName(), overlord.getName()), BAD);
+                        overlord.broadCastMessage(Lang.REGION_BROADCAST_TOWN_LEFT_REGION.get(tanPlayer, territoryData.getName()));
 
                         player.closeInventory();
                     }, remove -> openHierarchyMenu(player, territoryData));
