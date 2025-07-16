@@ -25,7 +25,7 @@ public abstract class FortStorage {
 
     public abstract List<Fort> getOwnedFort(TerritoryData territoryData);
 
-    public abstract List<Fort> getControlledFort(TerritoryData territoryData);
+    public abstract List<Fort> getAllControlledFort(TerritoryData territoryData);
 
     public abstract List<Fort> getForts();
 

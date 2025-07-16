@@ -51,22 +51,18 @@ public class FortDataStorage extends FortStorage {
                 continue;
             }
             res.add(fort);
-
         }
         return res;
     }
 
     @Override
-    public List<Fort> getControlledFort(TerritoryData territoryData) {
+    public List<Fort> getAllControlledFort(TerritoryData territoryData) {
+        List<Fort> allForts = new ArrayList<>(getOccupiedFort(territoryData));
+        allForts.addAll(getOwnedFort(territoryData));
+
         List<Fort> res = new ArrayList<>();
-        for(String fortID : territoryData.getOwnedFortIDs()) {
-            FortData fort = forts.get(fortID);
-            if (fort == null) {
-                continue;
-            }
-            if(!fort.isOccupied()){
-                res.add(fort);
-            }
+        for(Fort fort : getForts()) {
+            if(fort.getOccupier().getID().equals(territoryData.getID()));
         }
         return res;
     }

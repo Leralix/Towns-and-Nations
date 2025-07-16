@@ -392,42 +392,42 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public Optional<ClaimedChunk2> claimChunkInternal(Player player, Chunk chunk) {
+    public void claimChunk(Player player, Chunk chunk) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
 
 
         if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
-            return Optional.empty();
+            return;
         }
 
         if (!doesPlayerHavePermission(tanPlayer, RolePermission.CLAIM_CHUNK)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-            return Optional.empty();
+            return;
         }
 
         if (!canClaimMoreChunk()) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.MAX_CHUNK_LIMIT_REACHED.get());
-            return Optional.empty();
+            return;
         }
 
 
         int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfTownChunk", 0);
         if (getBalance() < cost) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(cost - getBalance()));
-            return Optional.empty();
+            return;
         }
 
         ClaimedChunk2 chunkData = NewClaimedChunkStorage.getInstance().get(chunk);
         if (!chunkData.canTerritoryClaim(player, this)) {
-            return Optional.empty();
+            return;
         }
 
         if (getNumberOfClaimedChunk() != 0 &&
                 !NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTown(chunk, getID()) &&
                 !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("TownAllowNonAdjacentChunks", false)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
-            return Optional.empty();
+            return;
         }
 
         removeFromBalance(cost);
@@ -438,7 +438,7 @@ public class TownData extends TerritoryData {
                 getNumberOfClaimedChunk(),
                 getLevel().getChunkCap())
         );
-        return Optional.of(NewClaimedChunkStorage.getInstance().get(chunk));
+        NewClaimedChunkStorage.getInstance().get(chunk);
     }
 
     public RegionData getRegion() {

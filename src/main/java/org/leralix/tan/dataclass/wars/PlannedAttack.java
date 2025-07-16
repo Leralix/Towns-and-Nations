@@ -11,7 +11,6 @@ import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.StrongholdData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
 import org.leralix.tan.events.EventManager;
@@ -339,10 +338,6 @@ public class PlannedAttack {
 
     public void rename(String message) {
         this.name = message;
-    }
-
-    public StrongholdData getDefenderStronghold() {
-        return getMainDefender().getStronghold();
     }
 
     public List<Player> getAllPlayers() {

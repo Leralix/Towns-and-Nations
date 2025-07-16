@@ -1,6 +1,5 @@
 package org.leralix.tan.dataclass.wars;
 
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -20,7 +19,6 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
-import org.leralix.tan.dataclass.territory.StrongholdData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
 import org.leralix.tan.events.EventManager;
@@ -29,7 +27,6 @@ import org.leralix.tan.events.events.AttackWonByDefenderInternalEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.utils.ProgressBar;
 
 import java.util.UUID;
 
@@ -45,9 +42,6 @@ public class CurrentAttack {
     private long remainingTime;
     private BossBar bossBar;
     private String originalTitle;
-    private final StrongholdData defenderStronghold;
-
-    StrongholdListener strongholdListener;
 
 
     public CurrentAttack(PlannedAttack plannedAttack) {
@@ -60,10 +54,6 @@ public class CurrentAttack {
         this.remainingTime = warDuration * 60 * 20;
 
         this.bossBar = Bukkit.createBossBar(this.originalTitle, BarColor.RED, BarStyle.SOLID);
-        this.defenderStronghold = plannedAttack.getDefenderStronghold();
-        this.defenderStronghold.setHolderSide(AttackSide.DEFENDER);
-        this.defenderStronghold.setControlLevel(0);
-        this.strongholdListener = new StrongholdListener(this, defenderStronghold);
 
         for (TerritoryData territoryData : plannedAttack.getAttackingTerritories()) {
             for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
@@ -251,7 +241,6 @@ public class CurrentAttack {
                     else
                         defenderWin();
                     this.cancel();
-                    strongholdListener.stop();
                 }
             }
         };
@@ -305,13 +294,6 @@ public class CurrentAttack {
     }
 
 
-    public void updateControl() {
-        String controlSide = defenderStronghold.getHolderSide().getBossBarMessage();
-        String progressBar = ProgressBar.createProgressBar(defenderStronghold.getControlLevel(), 10, 20, ChatColor.RED, ChatColor.GREEN);
-
-        setBossBarTitle(controlSide + ChatColor.WHITE + " | " + progressBar);
-    }
-
     public AttackSide getSideOfPlayer(ITanPlayer tanPlayer) {
         for (TerritoryData territoryData : attackData.getAttackingTerritories()) {
             if (territoryData.isPlayerIn(tanPlayer)) {
@@ -324,17 +306,6 @@ public class CurrentAttack {
             }
         }
         return null;
-    }
-
-    public void addScoreOfStronghold() {
-        AttackSide attackSide = this.defenderStronghold.getHolderSide();
-
-        if (attackSide == AttackSide.ATTACKER) {
-            addScore(5);
-        }
-        if (attackSide == AttackSide.DEFENDER) {
-            addScore(-5);
-        }
     }
 
     public void sendChatMessage(String message) {

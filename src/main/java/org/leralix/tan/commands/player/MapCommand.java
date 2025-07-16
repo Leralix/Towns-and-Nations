@@ -91,7 +91,7 @@ public class MapCommand extends PlayerSubCommand {
                 if(dx == 0 && dz == 0){
 
                     if(claimedChunk instanceof TerritoryChunk territoryChunk && territoryChunk.isOccupied()){
-                        icon.setText("🟠");
+                        icon.setText("🟠"); //Hashed orange square emoji
                     }
                     else{
                         icon.setText("🌑"); // For some reason, the only round emoji with the same size as ⬛ is this emoji

@@ -2,9 +2,7 @@ package org.leralix.tan.dataclass.chunk;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -115,26 +113,6 @@ public class RegionClaimedChunk extends TerritoryChunk {
     @Override
     public boolean canEntitySpawn(EntityType entityType) {
         return true;
-    }
-
-    @Override
-    public TextComponent getMapIcon(ITanPlayer tanPlayer) {
-
-        TextComponent textComponent;
-        if(isOccupied()){
-            textComponent = new TextComponent("🟧");
-        }
-        else {
-            textComponent = new TextComponent("⬛s");
-        }
-
-        textComponent.setColor(getRegion().getChunkColor());
-        textComponent.setHoverEvent(new HoverEvent(
-                HoverEvent.Action.SHOW_TEXT,
-                new Text("x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
-                        getRegion().getBaseColoredName() + "\n" +
-                        Lang.LEFT_CLICK_TO_CLAIM.get())));
-        return textComponent;
     }
 
     @Override

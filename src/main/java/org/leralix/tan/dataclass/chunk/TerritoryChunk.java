@@ -1,7 +1,12 @@
 package org.leralix.tan.dataclass.chunk;
 
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Chunk;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.TerritoryUtil;
 
 public abstract class TerritoryChunk extends ClaimedChunk2 {
@@ -17,6 +22,37 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
         super(x, z, worldUUID, owner);
         this.occupierID = owner;
     }
+
+
+    @Override
+    public TextComponent getMapIcon(ITanPlayer tanPlayer) {
+
+        TextComponent textComponent;
+        String text;
+        if(isOccupied()){
+            textComponent = new TextComponent("🟧");
+            textComponent.setColor(getOccupier().getChunkColor());
+            text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
+                    getOwner().getBaseColoredName() + "\n" +
+                    getOccupier().getBaseColoredName() + "\n" +
+                    Lang.LEFT_CLICK_TO_CLAIM.get();
+        }
+        else {
+            textComponent = new TextComponent("⬛");
+            textComponent.setColor(getOwner().getChunkColor());
+            text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
+                    getOwner().getBaseColoredName() + "\n" +
+                    Lang.LEFT_CLICK_TO_CLAIM.get();
+        }
+
+
+
+        textComponent.setHoverEvent(new HoverEvent(
+                HoverEvent.Action.SHOW_TEXT,
+                new Text(text)));
+        return textComponent;
+    }
+
 
     public String getOccupierID() {
         if(occupierID == null) {

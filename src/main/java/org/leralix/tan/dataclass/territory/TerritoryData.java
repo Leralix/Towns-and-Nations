@@ -79,7 +79,6 @@ public abstract class TerritoryData {
     private Map<String, DiplomacyProposal> diplomacyProposals;
     private List<String> overlordsProposals;
     private ClaimedChunkSettings chunkSettings;
-    private StrongholdData stronghold;
     private List<String> fortIds;
     private List<String> occupiedFortIds;
 
@@ -464,28 +463,7 @@ public abstract class TerritoryData {
         claimChunk(player, player.getLocation().getChunk());
     }
 
-    public void claimChunk(Player player, Chunk chunk){
-        Optional<ClaimedChunk2> claimedChunk2 = claimChunkInternal(player, chunk);
-        if(claimedChunk2.isPresent() && getNumberOfClaimedChunk() == 1){
-            stronghold = new StrongholdData(claimedChunk2.get());
-        }
-    }
-
-    public void setStrongholdPosition(Chunk newChunk){
-        this.stronghold.setPosition(newChunk);
-    }
-
-    public StrongholdData getStronghold(){
-        if(getNumberOfClaimedChunk() == 0)
-            return null;
-        if(stronghold == null){
-            ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().getAllChunkFrom(this).iterator().next();
-            stronghold = new StrongholdData(claimedChunk2);
-        }
-        return stronghold;
-    }
-
-    protected abstract Optional<ClaimedChunk2> claimChunkInternal(Player player, Chunk chunk);
+    public abstract void claimChunk(Player player, Chunk chunk);
 
 
     public void castActionToAllPlayers(Consumer<Player> action){
@@ -501,16 +479,16 @@ public abstract class TerritoryData {
 
         castActionToAllPlayers(HumanEntity::closeInventory);
 
-        for(Fort occupiedFort : FortStorage.getInstance().getOccupiedFort(this)){
+        for(TerritoryData territory : getVassals()){
+            territory.removeOverlord();
+        }
+
+        for(Fort occupiedFort : getOccupiedForts()){
             occupiedFort.liberate();
         }
 
-        for(Fort controlledFort : FortStorage.getInstance().getOwnedFort(this)){
-            FortStorage.getInstance().delete(controlledFort);
-        }
-
-        for(TerritoryData territory : getVassals()){
-            territory.removeOverlord();
+        for(Fort ownedFort : getOwnedForts()){
+            FortStorage.getInstance().delete(ownedFort);
         }
 
         getRelations().cleanAll(this);   //Cancel all Relation between the deleted territory and other territories
@@ -933,12 +911,42 @@ public abstract class TerritoryData {
         return occupiedFortIds;
     }
 
+    public void removeOccupiedFort(Fort fort) {
+        removeOccupiedFortID(fort.getID());
+    }
+
+    public void removeOccupiedFortID(String fortID) {
+        getOccupiedFortIds().remove(fortID);
+    }
+
+    public void addOccupiedFort(Fort fort) {
+        addOccupiedFortID(fort.getID());
+    }
+
+    public void addOccupiedFortID(String fortID) {
+        getOccupiedFortIds().add(fortID);
+    }
+
+    /**
+     * @return All forts owned by this territory, should they be occupied or not.
+     */
     public List<Fort> getOwnedForts() {
         return FortStorage.getInstance().getOwnedFort(this);
     }
 
+    /**
+     * @return All foreign forts occupied by this territory. Not including forts owned by the territory
+     */
     public List<Fort> getOccupiedForts() {
-        return FortStorage.getInstance().getControlledFort(this);
+        return FortStorage.getInstance().getOccupiedFort(this);
+    }
+
+    /**
+     * @return All forts occupied by this territory, including forts owned by this territory
+     * and excluding owned forts occupied by other territories
+     */
+    public List<Fort> getAllControlledFort() {
+        return FortStorage.getInstance().getAllControlledFort(this);
     }
 
     public void removeFort(String fortID) {

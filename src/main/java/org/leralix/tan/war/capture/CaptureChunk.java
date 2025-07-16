@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class CaptureStatus {
+public class CaptureChunk {
 
     private final TerritoryChunk territoryChunk;
     private int score;
@@ -22,7 +22,7 @@ public class CaptureStatus {
     private final List<Player> attackers;
     private final List<Player> defenders;
 
-    public CaptureStatus(int initialScore, TerritoryChunk territoryChunk, TerritoryData mainAttacker) {
+    public CaptureChunk(int initialScore, TerritoryChunk territoryChunk, TerritoryData mainAttacker) {
         this.score = initialScore;
         this.attackers = new ArrayList<>();
         this.defenders = new ArrayList<>();
@@ -68,7 +68,7 @@ public class CaptureStatus {
 
 
     private Optional<Fort> isProtectedByFort() {
-        for (Fort fort : territoryChunk.getOccupier().getOwnedForts()){
+        for (Fort fort : territoryChunk.getOccupier().getAllControlledFort()){
             if(fort.getFlagPosition().getDistance(territoryChunk.getMiddleVector2D()) <= Constants.getFortProtectionRadius()){
                 return Optional.of(fort);
             }
