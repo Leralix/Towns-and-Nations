@@ -8,7 +8,6 @@ import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.leralix.lib.position.Vector2D;
-import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
@@ -24,9 +23,11 @@ import java.util.UUID;
 
 public abstract class ClaimedChunk2 {
 
-
+    @Deprecated(forRemoval = true) //0.16.0
     private final int x;
+    @Deprecated(forRemoval = true) //0.16.0
     private final int z;
+    @Deprecated(forRemoval = true) //0.16.0
     private final String worldUUID;
     private Vector2D vector2D;
     protected final String ownerID;
@@ -64,6 +65,10 @@ public abstract class ClaimedChunk2 {
             this.vector2D = new Vector2D(x, z, worldUUID);
         }
         return vector2D;
+    }
+    public Vector2D getMiddleVector2D(){
+        Vector2D vector2D = getVector2D();
+        return new Vector2D(vector2D.getX() * 16 + 8, vector2D.getZ() * 16 + 8, vector2D.getWorldID().toString());
     }
 
     public int getX() {

@@ -60,7 +60,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'io.github.leralix:sphere-lib:0.5.0'
+    compileOnly 'io.github.leralix:sphere-lib:0.4.7'
     compileOnly 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'
     compileOnly 'com.mojang:authlib:4.0.43'
     compileOnly 'net.luckperms:api:5.4'
@@ -75,7 +75,7 @@ dependencies {
     implementation 'com.mysql:mysql-connector-j:8.4.0'
     implementation 'org.xerial:sqlite-jdbc:3.43.2.0'
 
-    testImplementation 'io.github.leralix:sphere-lib:0.4.3'
+    testImplementation 'io.github.leralix:sphere-lib:0.4.7'
     testImplementation 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'

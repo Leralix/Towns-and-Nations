@@ -2,6 +2,7 @@ package org.leralix.tan.dataclass.wars;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -10,7 +11,6 @@ import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.StrongholdData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
 import org.leralix.tan.events.EventManager;
@@ -340,7 +340,9 @@ public class PlannedAttack {
         this.name = message;
     }
 
-    public StrongholdData getDefenderStronghold() {
-        return getMainDefender().getStronghold();
+    public List<Player> getAllPlayers() {
+        List<ITanPlayer> res = new ArrayList<>(getDefendingPlayers());
+        res.addAll(getAttackersPlayers());
+        return res.stream().map(ITanPlayer::getPlayer).toList();
     }
 }

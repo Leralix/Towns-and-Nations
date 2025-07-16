@@ -1,23 +1,23 @@
 package org.leralix.tan.commands.player;
 
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
-import org.leralix.lib.position.CardinalPoint;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.enums.ClaimAction;
+import org.leralix.tan.enums.ClaimType;
 import org.leralix.tan.enums.MapSettings;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.ClaimType;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.utils.TanChatUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MapCommand extends PlayerSubCommand {
 
@@ -71,9 +71,6 @@ public class MapCommand extends PlayerSubCommand {
         text.put(-3, typeButton);
         TextComponent actionButton = settings.getClaimTypeButton();
         text.put(-2, actionButton);
-        float yaw = player.getLocation().getYaw();
-
-        CardinalPoint cardinalPoint = CardinalPoint.getCardinalPoint(yaw);
 
         // Envoi de l'en-tête
         player.sendMessage("╭─────────⟢⟐⟣─────────╮");
@@ -92,12 +89,18 @@ public class MapCommand extends PlayerSubCommand {
                 TextComponent icon = claimedChunk.getMapIcon(player);
 
                 if(dx == 0 && dz == 0){
-                    icon.setText("🌑"); // For some reason, the only round emoji with the same size as ⬛ is this emoji
+
+                    if(claimedChunk instanceof TerritoryChunk territoryChunk && territoryChunk.isOccupied()){
+                        icon.setText("🟠"); //Hashed orange square emoji
+                    }
+                    else{
+                        icon.setText("🌑"); // For some reason, the only round emoji with the same size as ⬛ is this emoji
+                    }
                 }
 
                 ClaimAction claimAction = settings.getClaimActionType();
                 ClaimType mapType = settings.getClaimType();
-                icon.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tan " + claimAction.toString().toLowerCase() + " " + mapType.toString().toLowerCase() + " " + chunkX * 16 + " " + chunkZ * 16));
+                icon.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tan " + claimAction.toString().toLowerCase() + " " + mapType.toString().toLowerCase() + " " + chunkX + " " + chunkZ));
                 newLine.addExtra(icon);
             }
             if (text.containsKey(dz)) {

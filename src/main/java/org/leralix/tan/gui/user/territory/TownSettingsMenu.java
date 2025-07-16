@@ -103,7 +103,7 @@ public class TownSettingsMenu extends SettingsMenus {
                         return;
                     }
                     if (townData.isCapital()) {
-                        player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, townData.getOverlord().getBaseColoredName()));
+                        player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, townData.getOverlord().get().getBaseColoredName()));
                         return;
                     }
 

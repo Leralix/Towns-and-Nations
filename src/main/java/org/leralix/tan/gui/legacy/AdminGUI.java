@@ -313,7 +313,10 @@ public class AdminGUI{
             FileUtil.addLineToHistory(Lang.REGION_DELETED_NEWSLETTER.get(player.getName(),territoryData.getName()));
 
             if(territoryData.isCapital()){
-                player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(territoryData.getOverlord().getBaseColoredName()));
+                territoryData.getOverlord().ifPresent(
+                        overlord ->
+                                player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(overlord.getBaseColoredName()))
+                );
                 return;
             }
             territoryData.delete();
@@ -411,7 +414,12 @@ public class AdminGUI{
                 Lang.ADMIN_GUI_CHANGE_TOWN_LEADER.get(),
                 Lang.ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1.get(townData.getLeaderName()));
 
-        ItemStack setRegionIcon = HeadUtils.makeSkullB64(townData.haveOverlord() ? townData.getOverlord().getName() : Lang.NO_REGION.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
+
+        String name = townData.getOverlord()
+                .map(TerritoryData::getName)
+                .orElseGet(Lang.NO_REGION::get);
+
+        ItemStack setRegionIcon = HeadUtils.makeSkullB64(name, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=");
         if(townData.haveOverlord()) {
             if(townData.isCapital())
                 HeadUtils.addLore(setRegionIcon, Lang.GUI_CANNOT_QUIT_IF_LEADER.get());

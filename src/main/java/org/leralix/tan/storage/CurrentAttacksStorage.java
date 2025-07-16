@@ -3,6 +3,7 @@ package org.leralix.tan.storage;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.dataclass.wars.PlannedAttack;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,5 +20,9 @@ public class CurrentAttacksStorage {
 
     public static CurrentAttack get(String id) {
         return attackStatusMap.get(id);
+    }
+
+    public static Collection<CurrentAttack> getAll() {
+        return attackStatusMap.values();
     }
 }
