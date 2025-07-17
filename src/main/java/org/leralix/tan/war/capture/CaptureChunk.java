@@ -15,6 +15,10 @@ import java.util.Optional;
 
 public class CaptureChunk {
 
+    /**
+     * The ID of the war related to this capture.
+     */
+    private final String warID;
     private final TerritoryChunk territoryChunk;
     private int score;
     private final int maxScore = 100;
@@ -22,12 +26,13 @@ public class CaptureChunk {
     private final List<Player> attackers;
     private final List<Player> defenders;
 
-    public CaptureChunk(int initialScore, TerritoryChunk territoryChunk, TerritoryData mainAttacker) {
+    public CaptureChunk(int initialScore, TerritoryChunk territoryChunk, TerritoryData mainAttacker, String id) {
         this.score = initialScore;
         this.attackers = new ArrayList<>();
         this.defenders = new ArrayList<>();
         this.territoryChunk = territoryChunk;
         this.mainAttacker = mainAttacker;
+        this.warID = id;
     }
 
     public boolean isCaptured() {
@@ -66,6 +71,9 @@ public class CaptureChunk {
         }
     }
 
+    public String getWarID() {
+        return warID;
+    }
 
     private Optional<Fort> isProtectedByFort() {
         for (Fort fort : territoryChunk.getOccupier().getAllControlledFort()){
@@ -121,5 +129,13 @@ public class CaptureChunk {
     public void resetPlayers() {
         this.attackers.clear();
         this.defenders.clear();
+    }
+
+    /**
+     * If the war is over, restitute the chunk to its original owner.
+     */
+    public void warOver() {
+        resetPlayers();
+        territoryChunk.liberate();
     }
 }

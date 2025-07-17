@@ -194,19 +194,6 @@ public class PlayerData implements ITanPlayer {
         return attackInvolvedIn;
     }
 
-    public void notifyDeath(Player killer) {
-        Iterator<String> iterator = getAttackInvolvedIn().iterator();
-        while (iterator.hasNext()) {
-            String attackID = iterator.next();
-            CurrentAttack currentAttacks = CurrentAttacksStorage.get(attackID);
-            if (currentAttacks != null) {
-                currentAttacks.playerKilled(this, killer);
-            } else {
-                iterator.remove();
-            }
-        }
-    }
-
     public void addWar(CurrentAttack currentAttacks) {
         if (getAttackInvolvedIn().contains(currentAttacks.getAttackData().getID())) {
             return;

@@ -151,10 +151,6 @@ public class NoPlayerData implements ITanPlayer {
         return List.of();
     }
 
-    @Override
-    public void notifyDeath(Player killer) {
-        // singleton class, no need to set name
-    }
 
     @Override
     public void addWar(CurrentAttack currentAttacks) {

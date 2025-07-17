@@ -14,6 +14,8 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
 import org.leralix.tan.events.EventManager;
+import org.leralix.tan.events.events.AttackWonByAttackerInternalEvent;
+import org.leralix.tan.events.events.AttackWonByDefenderInternalEvent;
 import org.leralix.tan.events.events.DefenderAcceptDemandsBeforeWarInternalEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.CurrentAttacksStorage;
@@ -21,6 +23,7 @@ import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.DateUtil;
 import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.war.capture.CaptureManager;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -41,15 +44,18 @@ public class PlannedAttack {
     private final long endTime;
     private final WarGoal warGoal;
 
+    private transient BukkitRunnable warStartTask;
+    private transient BukkitRunnable warWarningTask;
+
     boolean isAdminApproved;
 
-    public PlannedAttack(String id, CreateAttackData createAttackData, long startTime){
+    public PlannedAttack(String id, CreateAttackData createAttackData, long startTime) {
         this.ID = id;
         this.name = Lang.BASIC_ATTACK_NAME.get(createAttackData.getMainAttacker().getName(), createAttackData.getMainDefender().getName());
         this.mainAttackerID = createAttackData.getMainAttacker().getID();
         this.mainDefenderID = createAttackData.getMainDefender().getID();
 
-        this.isAdminApproved = !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AdminApproval",false);
+        this.isAdminApproved = !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AdminApproval", false);
 
         this.attackersID = new ArrayList<>();
         this.attackersID.add(mainAttackerID);
@@ -93,7 +99,7 @@ public class PlannedAttack {
 
     public Collection<ITanPlayer> getDefendingPlayers() {
         Collection<ITanPlayer> defenders = new ArrayList<>();
-        for(TerritoryData defendingTerritory : getDefendingTerritories()){
+        for (TerritoryData defendingTerritory : getDefendingTerritories()) {
             defenders.addAll(defendingTerritory.getITanPlayerList());
         }
         return defenders;
@@ -101,7 +107,7 @@ public class PlannedAttack {
 
     public Collection<ITanPlayer> getAttackersPlayers() {
         Collection<ITanPlayer> defenders = new ArrayList<>();
-        for(TerritoryData attackingTerritory : getAttackingTerritories()){
+        for (TerritoryData attackingTerritory : getAttackingTerritories()) {
             defenders.addAll(attackingTerritory.getITanPlayerList());
         }
         return defenders;
@@ -109,7 +115,7 @@ public class PlannedAttack {
 
     public Collection<TerritoryData> getDefendingTerritories() {
         Collection<TerritoryData> defenders = new ArrayList<>();
-        for(String defenderID : defendersID){
+        for (String defenderID : defendersID) {
             defenders.add(TerritoryUtil.getTerritory(defenderID));
         }
         return defenders;
@@ -117,7 +123,7 @@ public class PlannedAttack {
 
     public Collection<TerritoryData> getAttackingTerritories() {
         Collection<TerritoryData> attackers = new ArrayList<>();
-        for(String attackerID : attackersID){
+        for (String attackerID : attackersID) {
             attackers.add(TerritoryUtil.getTerritory(attackerID));
         }
         return attackers;
@@ -131,57 +137,62 @@ public class PlannedAttack {
         return endTime;
     }
 
-    public void broadCastMessageWithSound(String message, SoundEnum soundEnum){
+    public void broadCastMessageWithSound(String message, SoundEnum soundEnum) {
         Collection<TerritoryData> territoryData = getAttackingTerritories();
         territoryData.addAll(getDefendingTerritories());
-        for(TerritoryData territory : territoryData){
+        for (TerritoryData territory : territoryData) {
             territory.broadcastMessageWithSound(message, soundEnum);
         }
     }
 
-    public void setUpStartOfAttack(){
+    public void setUpStartOfAttack() {
         long timeLeftBeforeStart = (long) (startTime - new Date().getTime() * 0.02);
         long timeLeftBeforeWarning = timeLeftBeforeStart - 1200; //Warning 1 minute before
-        BukkitRunnable startOfWar = new BukkitRunnable() {
+
+        // Server started after the war start time, do not start the war
+        if(timeLeftBeforeStart <= 0) {
+            return;
+        }
+
+        warStartTask = new BukkitRunnable() {
             @Override
             public void run() {
                 startWar();
             }
         };
-        startOfWar.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeStart);
+        warStartTask.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeStart);
 
 
-        BukkitRunnable warningStartOfWar = new BukkitRunnable() {
+        warWarningTask = new BukkitRunnable() {
             @Override
             public void run() {
                 broadCastMessageWithSound("War begin in 1 minute", SoundEnum.WAR);
             }
         };
-        warningStartOfWar.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeWarning);
+        warWarningTask.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeWarning);
     }
 
     private void startWar() {
         broadCastMessageWithSound("War start", SoundEnum.WAR);
         CurrentAttacksStorage.startAttack(this);
-        remove();
     }
 
-    public void addDefender(TerritoryData territory){
+    public void addDefender(TerritoryData territory) {
         defendersID.add(territory.getID());
     }
-    public void addAttacker(TerritoryData territoryData){
+
+    public void addAttacker(TerritoryData territoryData) {
         attackersID.add(territoryData.getID());
     }
 
-
-    public ItemStack getAdminIcon(){
+    public ItemStack getAdminIcon() {
 
         long startDate = getStartTime() - new Date().getTime() / 50;
         long attackDuration = getEndTime() - getStartTime();
 
         ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
         ItemMeta itemMeta = itemStack.getItemMeta();
-        if(itemMeta != null){
+        if (itemMeta != null) {
             itemMeta.setDisplayName(ChatColor.GREEN + name);
             ArrayList<String> lore = new ArrayList<>();
             lore.add(Lang.ATTACK_ICON_DESC_1.get(getMainAttacker().getName()));
@@ -191,9 +202,9 @@ public class PlannedAttack {
             lore.add(Lang.ATTACK_ICON_DESC_5.get(warGoal.getCurrentDesc()));
             lore.add(Lang.ATTACK_ICON_DESC_6.get(DateUtil.getDateStringFromTicks(startDate)));
             lore.add(Lang.ATTACK_ICON_DESC_7.get(DateUtil.getDateStringFromTicks(attackDuration)));
-            if(isAdminApproved){
+            if (isAdminApproved) {
                 lore.add(Lang.ATTACK_ICON_DESC_ADMIN_APPROVED.get());
-            }else{
+            } else {
                 lore.add(Lang.ATTACK_ICON_DESC_ADMIN_NOT_APPROVED.get());
                 lore.add(Lang.LEFT_CLICK_TO_AUTHORIZE.get());
                 lore.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get());
@@ -205,7 +216,7 @@ public class PlannedAttack {
         return itemStack;
     }
 
-    public ItemStack getIcon(ITanPlayer tanPlayer, TerritoryData territoryConcerned){
+    public ItemStack getIcon(ITanPlayer tanPlayer, TerritoryData territoryConcerned) {
 
         long startDate = getStartTime() - new Date().getTime() / 50;
         long attackDuration = getEndTime() - getStartTime();
@@ -213,7 +224,7 @@ public class PlannedAttack {
 
         ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
         ItemMeta itemMeta = itemStack.getItemMeta();
-        if(itemMeta != null){
+        if (itemMeta != null) {
             itemMeta.setDisplayName(ChatColor.GREEN + name);
             ArrayList<String> lore = new ArrayList<>();
             lore.add(Lang.ATTACK_ICON_DESC_1.get(getMainAttacker().getName()));
@@ -240,12 +251,25 @@ public class PlannedAttack {
         return defendersID.size();
     }
 
-
     public void remove() {
-        for(TerritoryData territory : getAttackingTerritories()){
+        if (warStartTask != null) {
+            warStartTask.cancel();
+        }
+        if (warWarningTask != null){
+            warWarningTask.cancel();
+        }
+
+        // All chunks captured due to the war are now released
+        CaptureManager.getInstance().removeCapture(this);
+
+        CurrentAttack currentAttack = CurrentAttacksStorage.get(ID);
+        if(currentAttack != null){
+            currentAttack.end();
+        }
+        for (TerritoryData territory : getAttackingTerritories()) {
             territory.removePlannedAttack(this);
         }
-        for(TerritoryData territory : getDefendingTerritories()){
+        for (TerritoryData territory : getDefendingTerritories()) {
             territory.removePlannedAttack(this);
         }
         PlannedAttackStorage.remove(this);
@@ -271,10 +295,10 @@ public class PlannedAttack {
         return warGoal;
     }
 
-    public WarRole getRole(ITanPlayer player){
-        for(TerritoryData territoryData : player.getAllTerritoriesPlayerIsIn()){
+    public WarRole getRole(ITanPlayer player) {
+        for (TerritoryData territoryData : player.getAllTerritoriesPlayerIsIn()) {
             WarRole role = getTerritoryRole(territoryData);
-            if(role != WarRole.NEUTRAL){
+            if (role != WarRole.NEUTRAL) {
                 return role;
             }
         }
@@ -282,13 +306,13 @@ public class PlannedAttack {
     }
 
     public WarRole getTerritoryRole(TerritoryData territory) {
-        if(isMainAttacker(territory))
+        if (isMainAttacker(territory))
             return WarRole.MAIN_ATTACKER;
-        if(isMainDefender(territory))
+        if (isMainDefender(territory))
             return WarRole.MAIN_DEFENDER;
-        if(isSecondaryAttacker(territory))
+        if (isSecondaryAttacker(territory))
             return WarRole.OTHER_ATTACKER;
-        if(isSecondaryDefender(territory))
+        if (isSecondaryDefender(territory))
             return WarRole.OTHER_DEFENDER;
         return WarRole.NEUTRAL;
     }
@@ -308,13 +332,15 @@ public class PlannedAttack {
         remove();
     }
 
+
+
     public ItemStack getAttackingIcon() {
         ItemStack itemStack = new ItemStack(Material.IRON_HELMET);
         ItemMeta itemMeta = itemStack.getItemMeta();
         List<String> lore = new ArrayList<>();
         itemMeta.setDisplayName(Lang.GUI_ATTACKING_SIDE_ICON.get());
         lore.add(Lang.GUI_ATTACKING_SIDE_ICON_DESC1.get());
-        for(TerritoryData territoryData : getAttackingTerritories()){
+        for (TerritoryData territoryData : getAttackingTerritories()) {
             lore.add(Lang.GUI_ICON_LIST.get(territoryData.getBaseColoredName()));
         }
         itemMeta.setLore(lore);
@@ -328,7 +354,7 @@ public class PlannedAttack {
         List<String> lore = new ArrayList<>();
         itemMeta.setDisplayName(Lang.GUI_DEFENDING_SIDE_ICON.get());
         lore.add(Lang.GUI_DEFENDING_SIDE_ICON_DESC1.get());
-        for(TerritoryData territoryData : getDefendingTerritories()){
+        for (TerritoryData territoryData : getDefendingTerritories()) {
             lore.add(Lang.GUI_ICON_LIST.get(territoryData.getBaseColoredName()));
         }
         itemMeta.setLore(lore);
@@ -344,5 +370,52 @@ public class PlannedAttack {
         List<ITanPlayer> res = new ArrayList<>(getDefendingPlayers());
         res.addAll(getAttackersPlayers());
         return res.stream().map(ITanPlayer::getPlayer).toList();
+    }
+
+    public void attackerWin() {
+        EventManager.getInstance().callEvent(new AttackWonByAttackerInternalEvent(getMainDefender(), getMainAttacker()));
+
+        WarGoal warGoal = getWarGoal();
+
+        for (TerritoryData territoryData : getAttackingTerritories()) {
+            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
+                Player player = tanPlayer.getPlayer();
+                if (player != null) {
+                    warGoal.sendAttackSuccessToAttackers(player);
+                }
+            }
+        }
+        for (TerritoryData territoryData : getDefendingTerritories()) {
+            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
+                Player player = tanPlayer.getPlayer();
+                if (player != null) {
+                    warGoal.sendAttackSuccessToDefenders(player);
+                }
+            }
+        }
+        warGoal.applyWarGoal();
+    }
+
+    public void defenderWin() {
+        EventManager.getInstance().callEvent(new AttackWonByDefenderInternalEvent(getMainDefender(), getMainAttacker()));
+
+        WarGoal warGoal = getWarGoal();
+
+        for (TerritoryData territoryData : getAttackingTerritories()) {
+            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
+                Player player = tanPlayer.getPlayer();
+                if (player != null) {
+                    warGoal.sendAttackFailedToDefender(player);
+                }
+            }
+        }
+        for (TerritoryData territoryData : getDefendingTerritories()) {
+            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
+                Player player = tanPlayer.getPlayer();
+                if (player != null) {
+                    warGoal.sendAttackFailedToAttacker(player);
+                }
+            }
+        }
     }
 }

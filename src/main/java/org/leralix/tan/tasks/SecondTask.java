@@ -9,18 +9,13 @@ import org.leralix.tan.war.capture.CaptureManager;
 
 public class SecondTask {
 
-    CaptureManager captureManager;
-
-    public SecondTask() {
-        captureManager = new CaptureManager();
-    }
 
     public void startScheduler() {
         new BukkitRunnable() {
             @Override
             public void run() {
                 for (CurrentAttack currentAttack : CurrentAttacksStorage.getAll()) {
-                    captureManager.updateCapture(currentAttack);
+                    CaptureManager.getInstance().updateCapture(currentAttack.getAttackData());
                     currentAttack.displayBoundaries();
                 }
             }

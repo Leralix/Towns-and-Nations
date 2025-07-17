@@ -4,7 +4,6 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -20,25 +19,17 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
-import org.leralix.tan.events.EventManager;
-import org.leralix.tan.events.events.AttackWonByAttackerInternalEvent;
-import org.leralix.tan.events.events.AttackWonByDefenderInternalEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 
-import java.util.UUID;
-
 public class CurrentAttack {
 
     private final PlannedAttack attackData;
+    private boolean end;
 
 
-    private int score = 500;
-    private static final int MIN_SCORE = 0;
-
-    private static final int MAX_SCORE = 1000;
+    private long totalTime;
     private long remainingTime;
     private BossBar bossBar;
     private String originalTitle;
@@ -48,10 +39,12 @@ public class CurrentAttack {
 
         this.attackData = plannedAttack;
 
+        this.end = false;
 
         this.originalTitle = "War start";
         long warDuration = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("WarDuration");
-        this.remainingTime = warDuration * 60 * 20;
+        this.totalTime = warDuration * 60 * 20;
+        this.remainingTime = totalTime;
 
         this.bossBar = Bukkit.createBossBar(this.originalTitle, BarColor.RED, BarStyle.SOLID);
 
@@ -73,8 +66,7 @@ public class CurrentAttack {
                 }
             }
         }
-        startTimer();
-
+        start();
     }
 
     private void updateBossBar() {
@@ -84,163 +76,27 @@ public class CurrentAttack {
         String timeString = String.format("%02d:%02d:%02d", hours, minutes, seconds);
 
         bossBar.setTitle(Lang.TITLE_ATTACK.get(originalTitle, timeString));
-        bossBar.setProgress((double) score / MAX_SCORE);
-    }
-
-
-    public void playerKilled(ITanPlayer tanPlayer, Player killer) {
-        AttackSide attackSide = getSideOfPlayer(tanPlayer);
-
-        if (attackSide == AttackSide.ATTACKER) {
-            if (killer != null) {
-                attackingLoss();
-            } else {
-                Location playerLocation = tanPlayer.getPlayer().getLocation();
-                ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(playerLocation.getChunk());
-                if (attackData.getDefendingTerritories().contains(claimedChunk.getOwner())) {
-                    attackingLoss();
-                }
-            }
-        }
-        if (attackSide == AttackSide.DEFENDER && killer != null) {
-            defendingLoss();
-        }
-
-    }
-
-    public void attackingLoss() {
-        int nbAttackers = getNumberOfOnlineAttackers();
-        if (nbAttackers == 0) {
-            return;
-        }
-        double multiplier = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("warScoreMultiplier");
-        int deltaScore = (int) (multiplier / nbAttackers * 500);
-        addScore(-deltaScore);
-        sendChatMessage("Attacking player killed !");
-    }
-
-    public void defendingLoss() {
-        int nbDefenders = getNumberOfOnlineDefenders();
-        if (nbDefenders == 0) {
-            return;
-        }
-        double multiplier = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("warScoreMultiplier");
-        int deltaScore = (int) (multiplier / nbDefenders * 500);
-        addScore(deltaScore);
-        sendChatMessage("Defensive player killed!");
-    }
-
-    private int getNumberOfOnlineDefenders() {
-        int sum = 0;
-        for (TerritoryData territoryData : attackData.getDefendingTerritories()) {
-            for (String playerID : territoryData.getPlayerIDList()) {
-                if (Bukkit.getPlayer(UUID.fromString(playerID)) != null)
-                    sum++;
-            }
-        }
-        return sum;
-    }
-
-    private int getNumberOfOnlineAttackers() {
-        int sum = 0;
-        for (TerritoryData territoryData : attackData.getAttackingTerritories()) {
-            for (String playerID : territoryData.getPlayerIDList()) {
-                if (Bukkit.getPlayer(UUID.fromString(playerID)) != null)
-                    sum++;
-            }
-        }
-        return sum;
-    }
-
-    private void setBossBarTitle(String title) {
-        originalTitle = title;
-    }
-
-    private void addScore(int score) {
-        this.score += score;
-        if (this.score >= MAX_SCORE) {
-            this.score = MAX_SCORE;
-        }
-        if (this.score <= MIN_SCORE) {
-            this.score = MIN_SCORE;
-        }
-        updateBossBar();
-    }
-
-    private void attackerWin() {
-
-        EventManager.getInstance().callEvent(new AttackWonByAttackerInternalEvent(attackData.getMainDefender(), attackData.getMainAttacker()));
-
-        WarGoal warGoal = attackData.getWarGoal();
-
-        for (TerritoryData territoryData : attackData.getAttackingTerritories()) {
-            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                Player player = tanPlayer.getPlayer();
-                if (player != null) {
-                    warGoal.sendAttackSuccessToAttackers(player);
-                }
-            }
-        }
-        for (TerritoryData territoryData : attackData.getDefendingTerritories()) {
-            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                Player player = tanPlayer.getPlayer();
-                if (player != null) {
-                    warGoal.sendAttackSuccessToDefenders(player);
-                }
-            }
-        }
-        warGoal.applyWarGoal();
-        bossBar.setTitle(Lang.WAR_ATTACKER_WON_ANNOUNCEMENT.get());
-        endWar();
-    }
-
-    private void defenderWin() {
-
-        EventManager.getInstance().callEvent(new AttackWonByDefenderInternalEvent(attackData.getMainDefender(), attackData.getMainAttacker()));
-
-        WarGoal warGoal = attackData.getWarGoal();
-
-        for (TerritoryData territoryData : attackData.getAttackingTerritories()) {
-            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                Player player = tanPlayer.getPlayer();
-                if (player != null) {
-                    warGoal.sendAttackFailedToDefender(player);
-                }
-            }
-        }
-        for (TerritoryData territoryData : attackData.getDefendingTerritories()) {
-            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                Player player = tanPlayer.getPlayer();
-                if (player != null) {
-                    warGoal.sendAttackFailedToAttacker(player);
-                }
-            }
-        }
-
-        bossBar.setTitle(Lang.WAR_DEFENDER_WON_ANNOUNCEMENT.get());
-        endWar();
+        bossBar.setProgress((double) (totalTime - remainingTime) / totalTime);
     }
 
     public void addPlayer(ITanPlayer tanPlayer) {
         Player player = tanPlayer.getPlayer();
-        if (player != null && remainingTime > 0 && score > 0 && score < MAX_SCORE) {
+        if (player != null && remainingTime > 0) {
             bossBar.addPlayer(player);
         }
     }
 
-    private void startTimer() {
+    private void start() {
         BukkitRunnable timerTask = new BukkitRunnable() {
             @Override
             public void run() {
-                if (remainingTime > 0 && score > 0 && score < MAX_SCORE) {
+                if (remainingTime > 0 && !end) {
                     remainingTime--;
                     updateBossBar();
-                } else {
-                    if (score >= MAX_SCORE)
-                        attackerWin();
-                    else
-                        defenderWin();
-                    this.cancel();
+                }
+                else {
+                    end();
+                    cancel();
                 }
             }
         };
@@ -248,7 +104,9 @@ public class CurrentAttack {
     }
 
 
-    private void endWar() {
+    public void end() {
+
+        end = true;
 
         new BukkitRunnable() {
             @Override
@@ -265,7 +123,6 @@ public class CurrentAttack {
                 }
 
                 bossBar.removeAll();
-                bossBar = null;
                 CurrentAttacksStorage.remove(CurrentAttack.this);
 
                 for (TerritoryData territoryData : attackData.getAttackingTerritories()) {

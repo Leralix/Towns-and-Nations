@@ -70,8 +70,6 @@ public interface ITanPlayer {
 
     List<String> getAttackInvolvedIn();
 
-    void notifyDeath(Player killer);
-
     void addWar(CurrentAttack currentAttacks);
 
     void updateCurrentAttack();

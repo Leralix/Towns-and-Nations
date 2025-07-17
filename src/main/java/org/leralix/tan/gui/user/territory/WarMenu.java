@@ -45,9 +45,7 @@ public class WarMenu extends IteratorGUI {
             ItemStack attackIcon = plannedAttack.getIcon(tanPlayer, territoryData);
             GuiItem attackButton = ItemBuilder.from(attackIcon).asGuiItem(event -> {
                 event.setCancelled(true);
-                if(event.isLeftClick()){
-                    PlayerGUI.openSpecificPlannedAttackMenu(player, territoryData, plannedAttack);
-                }
+                PlayerGUI.openSpecificPlannedAttackMenu(player, territoryData, plannedAttack);
             });
             guiItems.add(attackButton);
         }
