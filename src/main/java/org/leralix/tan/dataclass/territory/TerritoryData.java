@@ -21,6 +21,7 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.newhistory.ChunkPaymentHistory;
 import org.leralix.tan.dataclass.newhistory.MiscellaneousHistory;
 import org.leralix.tan.dataclass.newhistory.PlayerDonationHistory;
@@ -33,7 +34,7 @@ import org.leralix.tan.dataclass.territory.economy.ChunkUpkeepLine;
 import org.leralix.tan.dataclass.territory.economy.SalaryPaymentLine;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.dataclass.wars.CurrentAttack;
-import org.leralix.tan.dataclass.wars.PlannedAttack;
+import org.leralix.tan.dataclass.wars.CurrentWar;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
@@ -47,9 +48,9 @@ import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.CurrentAttacksStorage;
+import org.leralix.tan.storage.stored.CurrentWarStorage;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.*;
 import org.leralix.tan.war.fort.Fort;
@@ -319,19 +320,19 @@ public abstract class TerritoryData {
             this.attackIncomingList = new ArrayList<>();
         return attackIncomingList;
     }
-    public Collection<PlannedAttack> getAttacksInvolved(){
-        Collection<PlannedAttack> res = new ArrayList<>();
+    public Collection<CurrentWar> getAttacksInvolved(){
+        Collection<CurrentWar> res = new ArrayList<>();
         for(String attackID : getAttacksInvolvedID()){
-            PlannedAttack plannedAttack = PlannedAttackStorage.get(attackID);
+            CurrentWar plannedAttack = CurrentWarStorage.get(attackID);
             res.add(plannedAttack);
         }
         return res;
     }
-    public void addPlannedAttack(PlannedAttack war){
+    public void addPlannedAttack(CurrentWar war){
         getAttacksInvolvedID().add(war.getID());
 
     }
-    public void removePlannedAttack(PlannedAttack war){
+    public void removePlannedAttack(CurrentWar war){
         getAttacksInvolvedID().remove(war.getID());
 
     }
@@ -508,7 +509,7 @@ public abstract class TerritoryData {
         }
 
         getRelations().cleanAll(this);   //Cancel all Relation between the deleted territory and other territories
-        PlannedAttackStorage.territoryDeleted(this);
+        CurrentWarStorage.territoryDeleted(this);
     }
 
     public boolean canConquerChunk(ClaimedChunk2 chunk) {
@@ -814,7 +815,7 @@ public abstract class TerritoryData {
         double minPercentageOfChunkToKeep = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("percentageOfChunksUnclaimed",10) / 100;
 
 
-        Collection<ClaimedChunk2> allChunkFrom = NewClaimedChunkStorage.getInstance().getAllChunkFrom(this);
+        Collection<TerritoryChunk> allChunkFrom = NewClaimedChunkStorage.getInstance().getAllChunkFrom(this);
         for(ClaimedChunk2 claimedChunk2 : allChunkFrom){
             if(RandomUtil.getRandom().nextDouble() < minPercentageOfChunkToKeep){
                 NewClaimedChunkStorage.getInstance().unclaimChunk(claimedChunk2);

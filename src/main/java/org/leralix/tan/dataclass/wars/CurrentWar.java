@@ -19,8 +19,9 @@ import org.leralix.tan.events.events.AttackWonByDefenderInternalEvent;
 import org.leralix.tan.events.events.DefenderAcceptDemandsBeforeWarInternalEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.CurrentAttacksStorage;
-import org.leralix.tan.storage.stored.PlannedAttackStorage;
+import org.leralix.tan.storage.stored.CurrentWarStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
+import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.DateUtil;
 import org.leralix.tan.utils.TerritoryUtil;
 import org.leralix.tan.war.capture.CaptureManager;
@@ -31,7 +32,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-public class PlannedAttack {
+public class CurrentWar {
 
     private final String ID;
     private String name;
@@ -49,7 +50,7 @@ public class PlannedAttack {
 
     boolean isAdminApproved;
 
-    public PlannedAttack(String id, CreateAttackData createAttackData, long startTime) {
+    public CurrentWar(String id, CreateAttackData createAttackData, long startTime) {
         this.ID = id;
         this.name = Lang.BASIC_ATTACK_NAME.get(createAttackData.getMainAttacker().getName(), createAttackData.getMainDefender().getName());
         this.mainAttackerID = createAttackData.getMainAttacker().getID();
@@ -63,7 +64,7 @@ public class PlannedAttack {
         this.defendersID.add(mainDefenderID);
 
         this.startTime = (long) (new Date().getTime() * 0.02 + startTime);
-        this.endTime = this.startTime + ConfigUtil.getCustomConfig(ConfigTag.MAIN).getLong("WarDuration") * 1200;
+        this.endTime = this.startTime + Constants.getWarDuration();
 
         createAttackData.getMainDefender().addPlannedAttack(this);
         createAttackData.getMainAttacker().addPlannedAttack(this);
@@ -149,15 +150,16 @@ public class PlannedAttack {
         long timeLeftBeforeStart = (long) (startTime - new Date().getTime() * 0.02);
         long timeLeftBeforeWarning = timeLeftBeforeStart - 1200; //Warning 1 minute before
 
-        // Server started after the war start time, do not start the war
+
         if(timeLeftBeforeStart <= 0) {
+            startWar(startTime - timeLeftBeforeStart);
             return;
         }
 
         warStartTask = new BukkitRunnable() {
             @Override
             public void run() {
-                startWar();
+                startWar(startTime);
             }
         };
         warStartTask.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeStart);
@@ -172,9 +174,9 @@ public class PlannedAttack {
         warWarningTask.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeWarning);
     }
 
-    private void startWar() {
+    private void startWar(long startTime) {
         broadCastMessageWithSound("War start", SoundEnum.WAR);
-        CurrentAttacksStorage.startAttack(this);
+        CurrentAttacksStorage.startAttack(this, startTime, endTime);
     }
 
     public void addDefender(TerritoryData territory) {
@@ -251,7 +253,7 @@ public class PlannedAttack {
         return defendersID.size();
     }
 
-    public void remove() {
+    public void endWar() {
         if (warStartTask != null) {
             warStartTask.cancel();
         }
@@ -272,7 +274,7 @@ public class PlannedAttack {
         for (TerritoryData territory : getDefendingTerritories()) {
             territory.removePlannedAttack(this);
         }
-        PlannedAttackStorage.remove(this);
+        CurrentWarStorage.remove(this);
     }
 
     public boolean isMainAttacker(TerritoryData territory) {
@@ -329,7 +331,7 @@ public class PlannedAttack {
         EventManager.getInstance().callEvent(new DefenderAcceptDemandsBeforeWarInternalEvent(getMainDefender(), getMainAttacker()));
 
         getWarGoal().applyWarGoal();
-        remove();
+        endWar();
     }
 
 

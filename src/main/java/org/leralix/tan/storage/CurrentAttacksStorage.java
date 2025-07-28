@@ -1,7 +1,7 @@
 package org.leralix.tan.storage;
 
 import org.leralix.tan.dataclass.wars.CurrentAttack;
-import org.leralix.tan.dataclass.wars.PlannedAttack;
+import org.leralix.tan.dataclass.wars.CurrentWar;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,8 +10,8 @@ import java.util.Map;
 public class CurrentAttacksStorage {
     private static final Map<String, CurrentAttack> attackStatusMap = new HashMap<>();
 
-    public static void startAttack(PlannedAttack plannedAttack){
-        attackStatusMap.put(plannedAttack.getID(), new CurrentAttack(plannedAttack));
+    public static void startAttack(CurrentWar plannedAttack, long startTime, long endTime) {
+        attackStatusMap.put(plannedAttack.getID(), new CurrentAttack(plannedAttack, startTime, endTime));
     }
 
     public static void remove(CurrentAttack currentAttacks){

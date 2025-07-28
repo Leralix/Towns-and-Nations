@@ -20,7 +20,7 @@ import org.leralix.tan.dataclass.chunk.LandmarkClaimedChunk;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.dataclass.wars.PlannedAttack;
+import org.leralix.tan.dataclass.wars.CurrentWar;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeLandmarkName;
@@ -101,7 +101,7 @@ public class AdminGUI{
     private static void openAdminWarMenu(Player player, int page) {
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_WAR_MENU.get(), 6);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for(PlannedAttack plannedAttack : PlannedAttackStorage.getWars()){
+        for(CurrentWar plannedAttack : CurrentWarStorage.getWars()){
             ItemStack icon = plannedAttack.getAdminIcon();
 
             GuiItem item = ItemBuilder.from(icon).asGuiItem(event -> {
@@ -111,7 +111,7 @@ public class AdminGUI{
                         plannedAttack.setAdminApproved(true);
                     }
                     else if(event.isRightClick()){
-                        plannedAttack.remove();
+                        plannedAttack.endWar();
                     }
                 }
                 openAdminWarMenu(player, page);

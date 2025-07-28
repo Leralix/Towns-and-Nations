@@ -1,15 +1,15 @@
 package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.wars.PlannedAttack;
+import org.leralix.tan.dataclass.wars.CurrentWar;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 
 import java.util.function.Consumer;
 
 public class ChangeAttackName extends ChatListenerEvent {
-    private final PlannedAttack plannedAttack;
+    private final CurrentWar plannedAttack;
     Consumer<Player> guiCallback;
-    public ChangeAttackName(PlannedAttack plannedAttack, Consumer<Player> guiCallback) {
+    public ChangeAttackName(CurrentWar plannedAttack, Consumer<Player> guiCallback) {
         this.plannedAttack = plannedAttack;
         this.guiCallback = guiCallback;
     }

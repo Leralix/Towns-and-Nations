@@ -17,7 +17,7 @@ import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.user.territory.WarMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlannedAttackStorage;
+import org.leralix.tan.storage.stored.CurrentWarStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.DateUtil;
 import org.leralix.tan.utils.GuiUtil;
@@ -104,7 +104,7 @@ public class CreateWarMenu extends BasicGui {
 
                     EventManager.getInstance().callEvent(new AttackDeclaredInternalEvent(attackedTerritory, attackingTerritory));
 
-                    PlannedAttackStorage.newWar(attackData);
+                    CurrentWarStorage.newWar(attackData);
                     new WarMenu(player, attackingTerritory);
 
 

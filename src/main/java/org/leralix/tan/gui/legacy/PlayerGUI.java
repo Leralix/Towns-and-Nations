@@ -22,7 +22,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
 import org.leralix.tan.dataclass.wars.CreateAttackData;
-import org.leralix.tan.dataclass.wars.PlannedAttack;
+import org.leralix.tan.dataclass.wars.CurrentWar;
 import org.leralix.tan.dataclass.wars.WarRole;
 import org.leralix.tan.dataclass.wars.wargoals.CaptureLandmarkWarGoal;
 import org.leralix.tan.dataclass.wars.wargoals.ConquerWarGoal;
@@ -103,7 +103,7 @@ public class PlayerGUI {
     }
 
     //Wars that will probably be reworked
-    public static void openSpecificPlannedAttackMenu(Player player, TerritoryData territory, PlannedAttack plannedAttack) {
+    public static void openSpecificPlannedAttackMenu(Player player, TerritoryData territory, CurrentWar plannedAttack) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_WAR_MANAGER.get(tanPlayer), 3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
@@ -126,7 +126,7 @@ public class PlayerGUI {
             ItemStack cancelAttack = HeadUtils.createCustomItemStack(Material.BARRIER, Lang.GUI_CANCEL_ATTACK.get(tanPlayer), Lang.GUI_GENERIC_CLICK_TO_DELETE.get(tanPlayer));
             ItemStack renameAttack = HeadUtils.createCustomItemStack(Material.NAME_TAG, Lang.GUI_RENAME_ATTACK.get(tanPlayer), Lang.GUI_GENERIC_CLICK_TO_RENAME.get(tanPlayer));
             GuiItem cancelButton = ItemBuilder.from(cancelAttack).asGuiItem(event -> {
-                plannedAttack.remove();
+                plannedAttack.endWar();
                 territory.broadcastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(tanPlayer, plannedAttack.getMainDefender().getName()), MINOR_GOOD);
                 new WarMenu(player, territory);
             });

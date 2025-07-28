@@ -6,11 +6,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.wars.PlannedAttack;
+import org.leralix.tan.dataclass.wars.CurrentWar;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlannedAttackStorage;
+import org.leralix.tan.storage.stored.CurrentWarStorage;
 import org.leralix.tan.utils.GuiUtil;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class WarMenu extends IteratorGUI {
 
     private List<GuiItem> getWars(ITanPlayer tanPlayer) {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for(PlannedAttack plannedAttack : PlannedAttackStorage.getWars()){
+        for(CurrentWar plannedAttack : CurrentWarStorage.getWars()){
             ItemStack attackIcon = plannedAttack.getIcon(tanPlayer, territoryData);
             GuiItem attackButton = ItemBuilder.from(attackIcon).asGuiItem(event -> {
                 event.setCancelled(true);

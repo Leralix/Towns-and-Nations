@@ -6,7 +6,7 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.wars.PlannedAttack;
+import org.leralix.tan.dataclass.wars.CurrentWar;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.Constants;
 import org.leralix.tan.war.fort.Fort;
@@ -35,13 +35,12 @@ public class CaptureManager {
 
     }
 
-    public void updateCapture(PlannedAttack currentAttack){
-
+    public void updateCapture(CurrentWar currentAttack){
         handleFortCapture(currentAttack);
         handleChunkCapture(currentAttack);
     }
 
-    private void handleFortCapture(PlannedAttack attackData) {
+    private void handleFortCapture(CurrentWar attackData) {
         for(Fort fortAtWar : attackData.getMainDefender().getOwnedForts()){
             forts.putIfAbsent(fortAtWar.getID(), new CaptureFort(fortAtWar, attackData.getMainAttacker(), attackData.getID()));
         }
@@ -75,7 +74,7 @@ public class CaptureManager {
         }
     }
 
-    private void handleChunkCapture(PlannedAttack attackData) {
+    private void handleChunkCapture(CurrentWar attackData) {
         for(CaptureChunk captureChunk : captures.values()){
             captureChunk.resetPlayers();
         }
@@ -164,12 +163,12 @@ public class CaptureManager {
 
     /**
      * When a planned attack is removed, all captures related to it should be removed.
-     * @param plannedAttack the planned attack to remove captures for
+     * @param currentWar the planned attack to remove captures for
      */
-    public void removeCapture(PlannedAttack plannedAttack){
-        String warID = plannedAttack.getID();
+    public void removeCapture(CurrentWar currentWar){
+        String warID = currentWar.getID();
 
-        Iterator<CaptureChunk> captureChunkIterator =  captures.values().iterator();
+        Iterator<CaptureChunk> captureChunkIterator = captures.values().iterator();
 
         while (captureChunkIterator.hasNext()){
             CaptureChunk captureChunk = captureChunkIterator.next();
@@ -187,6 +186,23 @@ public class CaptureManager {
                 captureFortIterator.remove();
             }
         }
+
+        TerritoryData mainAttacker = currentWar.getMainAttacker();
+        TerritoryData mainDefender = currentWar.getMainDefender();
+
+        for(TerritoryChunk territoryChunk : NewClaimedChunkStorage.getInstance().getAllChunkFrom(mainAttacker)){
+            if(territoryChunk.isOccupied() && territoryChunk.getOccupierID().equals(mainDefender.getID())){
+                territoryChunk.liberate();
+            }
+        }
+
+        for(TerritoryChunk territoryChunk : NewClaimedChunkStorage.getInstance().getAllChunkFrom(mainDefender)){
+            if(territoryChunk.isOccupied() && territoryChunk.getOccupierID().equals(mainAttacker.getID())){
+                territoryChunk.liberate();
+            }
+        }
+
+
 
 
     }

@@ -194,7 +194,7 @@ public final class TownsAndNations extends JavaPlugin {
         NewClaimedChunkStorage.getInstance();
         TownDataStorage.getInstance();
         LandmarkStorage.getInstance().load();
-        PlannedAttackStorage.load();
+        CurrentWarStorage.load();
         NewsletterStorage.getInstance();
         EventManager.getInstance().registerEvents(new NewsletterEvents());
 
@@ -296,7 +296,7 @@ public final class TownsAndNations extends JavaPlugin {
         PlayerDataStorage.getInstance().saveStats();
         NewClaimedChunkStorage.getInstance().save();
         LandmarkStorage.getInstance().save();
-        PlannedAttackStorage.save();
+        CurrentWarStorage.save();
 
         try {
             Thread.sleep(50);

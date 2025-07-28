@@ -19,7 +19,7 @@ public class SaveStats {
                 PlayerDataStorage.getInstance().saveStats();
                 NewClaimedChunkStorage.getInstance().save();
                 LandmarkStorage.getInstance().save();
-                PlannedAttackStorage.save();
+                CurrentWarStorage.save();
             }
         }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L);
     }

@@ -20,7 +20,7 @@ import org.leralix.tan.dataclass.chunk.RegionClaimedChunk;
 import org.leralix.tan.dataclass.newhistory.SubjectTaxHistory;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
-import org.leralix.tan.dataclass.wars.PlannedAttack;
+import org.leralix.tan.dataclass.wars.CurrentWar;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TerritoryIndependanceInternalEvent;
@@ -351,7 +351,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     public boolean atWarWith(String territoryID) {
-        for (PlannedAttack plannedAttack : getAttacksInvolved()) {
+        for (CurrentWar plannedAttack : getAttacksInvolved()) {
             if (plannedAttack.getMainDefender().getID().equals(territoryID))
                 return true;
         }

@@ -12,8 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.ParticleUtils;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -25,26 +23,26 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 
 public class CurrentAttack {
 
-    private final PlannedAttack attackData;
+    private final CurrentWar attackData;
     private boolean end;
 
 
-    private long totalTime;
-    private long remainingTime;
-    private BossBar bossBar;
-    private String originalTitle;
+    private final long totalTime;
+    private long remaining;
+    private final BossBar bossBar;
+    private final String originalTitle;
 
 
-    public CurrentAttack(PlannedAttack plannedAttack) {
+    public CurrentAttack(CurrentWar plannedAttack, long startTime, long endTime) {
 
         this.attackData = plannedAttack;
 
         this.end = false;
 
         this.originalTitle = "War start";
-        long warDuration = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("WarDuration");
-        this.totalTime = warDuration * 60 * 20;
-        this.remainingTime = totalTime;
+
+        this.totalTime = endTime - startTime;
+        this.remaining = totalTime;
 
         this.bossBar = Bukkit.createBossBar(this.originalTitle, BarColor.RED, BarStyle.SOLID);
 
@@ -70,18 +68,18 @@ public class CurrentAttack {
     }
 
     private void updateBossBar() {
-        long hours = remainingTime / 72000;
-        long minutes = (remainingTime % 72000) / 1200;
-        long seconds = (remainingTime % 1200) / 20;
+        long hours = remaining / 72000;
+        long minutes = (remaining % 72000) / 1200;
+        long seconds = (remaining % 1200) / 20;
         String timeString = String.format("%02d:%02d:%02d", hours, minutes, seconds);
 
         bossBar.setTitle(Lang.TITLE_ATTACK.get(originalTitle, timeString));
-        bossBar.setProgress((double) (totalTime - remainingTime) / totalTime);
+        bossBar.setProgress((double) (totalTime - remaining) / totalTime);
     }
 
     public void addPlayer(ITanPlayer tanPlayer) {
         Player player = tanPlayer.getPlayer();
-        if (player != null && remainingTime > 0) {
+        if (player != null && remaining > 0) {
             bossBar.addPlayer(player);
         }
     }
@@ -90,8 +88,8 @@ public class CurrentAttack {
         BukkitRunnable timerTask = new BukkitRunnable() {
             @Override
             public void run() {
-                if (remainingTime > 0 && !end) {
-                    remainingTime--;
+                if (remaining > 0 && !end) {
+                    remaining--;
                     updateBossBar();
                 }
                 else {
@@ -184,7 +182,7 @@ public class CurrentAttack {
         }
     }
 
-    public PlannedAttack getAttackData() {
+    public CurrentWar getAttackData() {
         return attackData;
     }
 
