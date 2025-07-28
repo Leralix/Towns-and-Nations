@@ -33,8 +33,6 @@ import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.ChunkUpkeepLine;
 import org.leralix.tan.dataclass.territory.economy.SalaryPaymentLine;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
-import org.leralix.tan.dataclass.wars.CurrentAttack;
-import org.leralix.tan.dataclass.wars.CurrentWar;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
@@ -53,7 +51,9 @@ import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.*;
+import org.leralix.tan.war.CurrentWar;
 import org.leralix.tan.war.fort.Fort;
+import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -352,15 +352,18 @@ public abstract class TerritoryData {
         return res;
     }
 
-    public void addCurrentAttack(CurrentAttack currentAttacks){
-        getAttacksInvolvedID().add(currentAttacks.getAttackData().getID());
-
-    }
     public void removeCurrentAttack(CurrentAttack currentAttacks){
         getAttacksInvolvedID().remove(currentAttacks.getAttackData().getID());
     }
 
-    public abstract boolean atWarWith(String territoryID);
+    public boolean atWarWith(String territoryID){
+
+        for (CurrentWar plannedAttack : getAttacksInvolved()) {
+            if (plannedAttack.getMainDefender().getID().equals(territoryID))
+                return true;
+        }
+        return false;
+    }
 
 
 

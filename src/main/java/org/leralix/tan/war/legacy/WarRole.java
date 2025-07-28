@@ -1,4 +1,4 @@
-package org.leralix.tan.dataclass.wars;
+package org.leralix.tan.war.legacy;
 
 import org.leralix.tan.lang.Lang;
 

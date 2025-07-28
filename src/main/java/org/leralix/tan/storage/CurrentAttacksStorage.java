@@ -1,7 +1,7 @@
 package org.leralix.tan.storage;
 
-import org.leralix.tan.dataclass.wars.CurrentAttack;
-import org.leralix.tan.dataclass.wars.CurrentWar;
+import org.leralix.tan.war.CurrentWar;
+import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.Collection;
 import java.util.HashMap;

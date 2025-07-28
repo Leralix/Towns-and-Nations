@@ -1,4 +1,4 @@
-package org.leralix.tan.dataclass.wars.wargoals;
+package org.leralix.tan.war.legacy.wargoals;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
@@ -9,11 +9,11 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.dataclass.wars.CreateAttackData;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.war.legacy.CreateAttackData;
 
 public class CaptureLandmarkWarGoal extends WarGoal {
 

@@ -2,9 +2,9 @@ package org.leralix.tan.tasks;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.war.capture.CaptureManager;
+import org.leralix.tan.war.legacy.CurrentAttack;
 
 
 public class SecondTask {

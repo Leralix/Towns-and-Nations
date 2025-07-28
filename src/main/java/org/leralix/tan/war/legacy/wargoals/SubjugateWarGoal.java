@@ -1,15 +1,15 @@
-package org.leralix.tan.dataclass.wars.wargoals;
+package org.leralix.tan.war.legacy.wargoals;
 
 import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.wars.CreateAttackData;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TerritoryVassalForcedInternalEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.war.legacy.CreateAttackData;
 
 public class SubjugateWarGoal extends WarGoal {
 

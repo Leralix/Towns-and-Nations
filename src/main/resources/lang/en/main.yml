@@ -466,6 +466,16 @@ language:
   GUI_BUILDING_MENU_DESC1: "§fCreate and manage buildings"
   CREATE_FORT_ICON: "§aCreate a new fort"
   CREATE_FORT_DESC1: "§fCost : {0}{MONEY_CHAR}"
+  #War menu
+  WAR_GOAL_LIST_BUTTON: "§aWar goals"
+  WAR_GOAL_LIST_BUTTON_DESC1: "§fCurrent war goals: "
+  WAR_GOAL_LIST_BUTTON_LIST: "§f- {0}"
+  WAR_CREATE_ATTACK: "§aDeclare an attack"
+  WAR_ENEMY_GOAL_LIST: "§aEnemy war goals"
+  WAR_ENEMY_GOAL_LIST_DESC1: "§fCurrent war goals: "
+  WAR_SURRENDER: "§cSurrender"
+  WAR_SURRENDER_DESC1: "§fSurrender to the enemy and end the war"
+  WAR_SURRENDER_DESC2: "§fThe following war goals will be applied:"
   #GUI
   ##menu headers
   HEADER_MAIN_MENU: "Main menu"
@@ -921,8 +931,6 @@ language:
   ATTACK_ICON_DESC_ADMIN_APPROVED: "§aThis attack has been approved by an admin"
   ATTACK_ICON_DESC_ADMIN_NOT_APPROVED: "§cThis attack has not been approved by an admin"
   GUI_TOWN_ATTACK_ALREADY_ATTACKING: "§cYou are already attacking this town"
-  TITLE_ATTACK: "{0} - {1}"
-  TITLE_ATTACK_INFO: "{0} - {1} - {2}"
   PLAYER_WON_ATTACK: "§aThe attack has been won !"
   PLAYER_LOST_ATTACK: "§cThe attack has been lost !"
   WAR_ATTACKER_WON_ANNOUNCEMENT: "§a Attackers have won !"
@@ -1116,3 +1124,4 @@ language:
   WAR_INFO_CONTESTED: "§6🌑§f Contested (§e{0}%§f) - §f[Atk : §e{1}§f, Def : §e{2}§f]"
   WAR_INFO_CHUNK_CAPTURED: "§4🌑§f Captured by {0}§f - [Atk : §e{1}§f, Def : §e{2}§f]"
   WAR_INFO_FORT_STATUS: "{0} - (Atk: §e{1}§f / Def: §e{2}§f)"
+

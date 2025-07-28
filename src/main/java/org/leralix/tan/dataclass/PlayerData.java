@@ -9,7 +9,6 @@ import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -19,6 +18,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.timezone.TimeZoneEnum;
 import org.leralix.tan.timezone.TimeZoneManager;
+import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.ArrayList;
 import java.util.Iterator;

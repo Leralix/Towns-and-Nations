@@ -1,4 +1,4 @@
-package org.leralix.tan.dataclass.wars;
+package org.leralix.tan.war;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -12,7 +12,6 @@ import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.AttackWonByAttackerInternalEvent;
 import org.leralix.tan.events.events.AttackWonByDefenderInternalEvent;
@@ -25,6 +24,10 @@ import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.DateUtil;
 import org.leralix.tan.utils.TerritoryUtil;
 import org.leralix.tan.war.capture.CaptureManager;
+import org.leralix.tan.war.legacy.CreateAttackData;
+import org.leralix.tan.war.legacy.CurrentAttack;
+import org.leralix.tan.war.legacy.WarRole;
+import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
 import java.time.Instant;
 import java.util.ArrayList;

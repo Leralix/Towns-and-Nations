@@ -6,9 +6,9 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.wars.CurrentWar;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.Constants;
+import org.leralix.tan.war.CurrentWar;
 import org.leralix.tan.war.fort.Fort;
 
 import java.util.Collection;

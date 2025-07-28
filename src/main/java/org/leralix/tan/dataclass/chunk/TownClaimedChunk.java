@@ -16,8 +16,6 @@ import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
-import org.leralix.tan.dataclass.wars.CurrentAttack;
-import org.leralix.tan.dataclass.wars.GriefAllowed;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
@@ -27,6 +25,8 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.war.legacy.CurrentAttack;
+import org.leralix.tan.war.legacy.GriefAllowed;
 
 public class TownClaimedChunk extends TerritoryChunk {
     public TownClaimedChunk(Chunk chunk, String owner) {

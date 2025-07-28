@@ -1,10 +1,10 @@
-package org.leralix.tan.dataclass.wars;
+package org.leralix.tan.war.legacy;
 
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.wars.wargoals.NoWarGoal;
-import org.leralix.tan.dataclass.wars.wargoals.WarGoal;
+import org.leralix.tan.war.legacy.wargoals.NoWarGoal;
+import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
 public class CreateAttackData {
 

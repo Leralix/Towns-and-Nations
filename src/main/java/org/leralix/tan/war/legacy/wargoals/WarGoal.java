@@ -1,4 +1,4 @@
-package org.leralix.tan.dataclass.wars.wargoals;
+package org.leralix.tan.war.legacy.wargoals;
 
 import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.Material;
@@ -7,8 +7,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.wars.CreateAttackData;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.war.legacy.CreateAttackData;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -21,13 +21,6 @@ import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
-import org.leralix.tan.dataclass.wars.CreateAttackData;
-import org.leralix.tan.dataclass.wars.CurrentWar;
-import org.leralix.tan.dataclass.wars.WarRole;
-import org.leralix.tan.dataclass.wars.wargoals.CaptureLandmarkWarGoal;
-import org.leralix.tan.dataclass.wars.wargoals.ConquerWarGoal;
-import org.leralix.tan.dataclass.wars.wargoals.LiberateWarGoal;
-import org.leralix.tan.dataclass.wars.wargoals.SubjugateWarGoal;
 import org.leralix.tan.enums.MobChunkSpawnEnum;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
@@ -35,7 +28,7 @@ import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.gui.landmark.LandmarkNoOwnerMenu;
 import org.leralix.tan.gui.user.territory.*;
-import org.leralix.tan.gui.user.war.CreateWarMenu;
+import org.leralix.tan.gui.user.war.CreateAttackMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeAttackName;
@@ -47,6 +40,15 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.*;
+import org.leralix.tan.war.CurrentWar;
+import org.leralix.tan.war.War;
+import org.leralix.tan.war.WarStorage;
+import org.leralix.tan.war.legacy.CreateAttackData;
+import org.leralix.tan.war.legacy.WarRole;
+import org.leralix.tan.war.legacy.wargoals.CaptureLandmarkWarGoal;
+import org.leralix.tan.war.legacy.wargoals.ConquerWarGoal;
+import org.leralix.tan.war.legacy.wargoals.LiberateWarGoal;
+import org.leralix.tan.war.legacy.wargoals.SubjugateWarGoal;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -128,7 +130,7 @@ public class PlayerGUI {
             GuiItem cancelButton = ItemBuilder.from(cancelAttack).asGuiItem(event -> {
                 plannedAttack.endWar();
                 territory.broadcastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(tanPlayer, plannedAttack.getMainDefender().getName()), MINOR_GOOD);
-                new WarMenu(player, territory);
+                new AttackMenu(player, territory);
             });
 
             GuiItem renameButton = ItemBuilder.from(renameAttack).asGuiItem(event -> {
@@ -147,7 +149,7 @@ public class PlayerGUI {
 
             GuiItem submitToRequestButton = ItemBuilder.from(submitToRequests).asGuiItem(event -> {
                 plannedAttack.defenderSurrendered();
-                new WarMenu(player, territory);
+                new AttackMenu(player, territory);
             });
             gui.setItem(2, 7, submitToRequestButton);
 
@@ -157,7 +159,7 @@ public class PlayerGUI {
             GuiItem quitButton = ItemBuilder.from(quitWar).asGuiItem(event -> {
                 plannedAttack.removeBelligerent(territory);
                 territory.broadcastMessageWithSound(Lang.TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE.get(tanPlayer, plannedAttack.getMainDefender().getName()), MINOR_GOOD);
-                new WarMenu(player, territory);
+                new AttackMenu(player, territory);
             });
             gui.setItem(2, 7, quitButton);
         } else if (territoryRole == WarRole.NEUTRAL) {
@@ -182,7 +184,7 @@ public class PlayerGUI {
             gui.setItem(2, 8, joinDefenderButton);
         }
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new WarMenu(player, territory)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AttackMenu(player, territory)));
         gui.open(player);
 
     }
@@ -203,13 +205,13 @@ public class PlayerGUI {
             GuiItem territoryButton = ItemBuilder.from(territoryIcon).asGuiItem(event -> {
                 event.setCancelled(true);
                 liberateWarGoal.setTerritoryToLiberate(territoryData);
-                new CreateWarMenu(player, createAttackData);
+                new CreateAttackMenu(player, createAttackData);
             });
 
             gui.addItem(territoryButton);
         }
 
-        gui.setItem(6, 1, GuiUtil.createBackArrow(player, e -> new CreateWarMenu(player, createAttackData)));
+        gui.setItem(6, 1, GuiUtil.createBackArrow(player, e -> new CreateAttackMenu(player, createAttackData)));
         gui.open(player);
     }
 
@@ -227,13 +229,13 @@ public class PlayerGUI {
             GuiItem landmarkButton = ItemBuilder.from(landmarkIcon).asGuiItem(event -> {
                 event.setCancelled(true);
                 captureLandmarkWarGoal.setLandmarkToCapture(ownedLandmark);
-                new CreateWarMenu(player, createAttackData);
+                new CreateAttackMenu(player, createAttackData);
             });
             landmarkButtons.add(landmarkButton);
         }
 
         GuiUtil.createIterator(gui, landmarkButtons, page, player,
-                p -> new CreateWarMenu(player, createAttackData),
+                p -> new CreateAttackMenu(player, createAttackData),
                 p -> openSelecteLandmarkToCapture(player, createAttackData, captureLandmarkWarGoal, page + 1),
                 p -> openSelecteLandmarkToCapture(player, createAttackData, captureLandmarkWarGoal, page - 1));
 
@@ -278,7 +280,7 @@ public class PlayerGUI {
         GuiItem conquerButton = ItemBuilder.from(conquer).asGuiItem(event -> {
             event.setCancelled(true);
             createAttackData.setWarGoal(new ConquerWarGoal(createAttackData.getMainAttacker(), createAttackData.getMainDefender()));
-            new CreateWarMenu(player, createAttackData);
+            new CreateAttackMenu(player, createAttackData);
         });
 
         GuiItem captureLandmarkButton = ItemBuilder.from(captureLandmark).asGuiItem(event -> {
@@ -288,7 +290,7 @@ public class PlayerGUI {
                 return;
             }
             createAttackData.setWarGoal(new CaptureLandmarkWarGoal(createAttackData.getMainAttacker().getID(), createAttackData.getMainDefender().getID()));
-            new CreateWarMenu(player, createAttackData);
+            new CreateAttackMenu(player, createAttackData);
         });
 
         GuiItem subjugateButton = ItemBuilder.from(subjugate).asGuiItem(event -> {
@@ -298,7 +300,7 @@ public class PlayerGUI {
                 return;
             }
             createAttackData.setWarGoal(new SubjugateWarGoal(createAttackData));
-            new CreateWarMenu(player, createAttackData);
+            new CreateAttackMenu(player, createAttackData);
         });
 
         GuiItem liberateButton = ItemBuilder.from(liberate).asGuiItem(event -> {
@@ -309,7 +311,7 @@ public class PlayerGUI {
                 return;
             }
             createAttackData.setWarGoal(new LiberateWarGoal());
-            new CreateWarMenu(player, createAttackData);
+            new CreateAttackMenu(player, createAttackData);
         });
 
         gui.setItem(2, 2, conquerButton);
@@ -317,7 +319,7 @@ public class PlayerGUI {
         gui.setItem(2, 6, subjugateButton);
         gui.setItem(2, 8, liberateButton);
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, e -> new CreateWarMenu(player, createAttackData)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, e -> new CreateAttackMenu(player, createAttackData)));
 
         gui.open(player);
     }
@@ -625,12 +627,13 @@ public class PlayerGUI {
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
-                    if (mainTerritory.atWarWith(territoryID)) {
+                    if (WarStorage.isTerritoryAtWarWith(mainTerritory, territoryData)) {
                         player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_ATTACK_ALREADY_ATTACKING.get(tanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
-                    new CreateWarMenu(player, mainTerritory, territoryData);
+                    War newWar = WarStorage.newWar(mainTerritory, territoryData);
+                    new WarMenu(player, mainTerritory, newWar);
                 }
             });
             guiItems.add(townButton);

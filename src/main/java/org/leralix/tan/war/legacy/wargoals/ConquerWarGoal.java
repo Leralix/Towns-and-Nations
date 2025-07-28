@@ -1,4 +1,4 @@
-package org.leralix.tan.dataclass.wars.wargoals;
+package org.leralix.tan.war.legacy.wargoals;
 
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
@@ -12,11 +12,11 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.wars.CreateAttackData;
-import org.leralix.tan.gui.user.war.CreateWarMenu;
+import org.leralix.tan.gui.user.war.CreateAttackMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.war.legacy.CreateAttackData;
 
 public class ConquerWarGoal extends WarGoal {
 
@@ -72,7 +72,7 @@ public class ConquerWarGoal extends WarGoal {
                     numberOfChunks += addNumberOfChunks;
                 }
             }
-            new CreateWarMenu(player, createAttackData);
+            new CreateAttackMenu(player, createAttackData);
         });
 
         GuiItem chunkInfoGui = ItemBuilder.from(chunkInfo).asGuiItem(event -> event.setCancelled(true));
@@ -88,7 +88,7 @@ public class ConquerWarGoal extends WarGoal {
             if(numberOfChunks < 1){
                 numberOfChunks = 1;
             }
-            new CreateWarMenu(player, createAttackData);
+            new CreateAttackMenu(player, createAttackData);
         });
 
         gui.setItem(3, 5, removeChunkGui);

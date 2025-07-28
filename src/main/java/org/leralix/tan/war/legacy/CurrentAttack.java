@@ -1,7 +1,5 @@
-package org.leralix.tan.dataclass.wars;
+package org.leralix.tan.war.legacy;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -17,9 +15,9 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.war.CurrentWar;
 
 public class CurrentAttack {
 
@@ -30,7 +28,6 @@ public class CurrentAttack {
     private final long totalTime;
     private long remaining;
     private final BossBar bossBar;
-    private final String originalTitle;
 
 
     public CurrentAttack(CurrentWar plannedAttack, long startTime, long endTime) {
@@ -39,12 +36,10 @@ public class CurrentAttack {
 
         this.end = false;
 
-        this.originalTitle = "War start";
-
         this.totalTime = endTime - startTime;
         this.remaining = totalTime;
 
-        this.bossBar = Bukkit.createBossBar(this.originalTitle, BarColor.RED, BarStyle.SOLID);
+        this.bossBar = Bukkit.createBossBar("", BarColor.RED, BarStyle.SOLID);
 
         for (TerritoryData territoryData : plannedAttack.getAttackingTerritories()) {
             for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
@@ -73,7 +68,7 @@ public class CurrentAttack {
         long seconds = (remaining % 1200) / 20;
         String timeString = String.format("%02d:%02d:%02d", hours, minutes, seconds);
 
-        bossBar.setTitle(Lang.TITLE_ATTACK.get(originalTitle, timeString));
+        bossBar.setTitle(timeString);
         bossBar.setProgress((double) (totalTime - remaining) / totalTime);
     }
 
@@ -148,39 +143,6 @@ public class CurrentAttack {
         return false;
     }
 
-
-    public AttackSide getSideOfPlayer(ITanPlayer tanPlayer) {
-        for (TerritoryData territoryData : attackData.getAttackingTerritories()) {
-            if (territoryData.isPlayerIn(tanPlayer)) {
-                return AttackSide.ATTACKER;
-            }
-        }
-        for (TerritoryData territoryData : attackData.getDefendingTerritories()) {
-            if (territoryData.isPlayerIn(tanPlayer)) {
-                return AttackSide.DEFENDER;
-            }
-        }
-        return null;
-    }
-
-    public void sendChatMessage(String message) {
-        for (TerritoryData territoryData : attackData.getAttackingTerritories()) {
-            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                Player player = tanPlayer.getPlayer();
-                if (player != null) {
-                    player.spigot().sendMessage(ChatMessageType.CHAT, new TextComponent(message));
-                }
-            }
-        }
-        for (TerritoryData territoryData : attackData.getDefendingTerritories()) {
-            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                Player player = tanPlayer.getPlayer();
-                if (player != null) {
-                    player.spigot().sendMessage(ChatMessageType.CHAT, new TextComponent(message));
-                }
-            }
-        }
-    }
 
     public CurrentWar getAttackData() {
         return attackData;

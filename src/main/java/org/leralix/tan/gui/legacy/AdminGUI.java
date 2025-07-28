@@ -20,7 +20,6 @@ import org.leralix.tan.dataclass.chunk.LandmarkClaimedChunk;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.dataclass.wars.CurrentWar;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeLandmarkName;
@@ -32,6 +31,7 @@ import org.leralix.tan.utils.FileUtil;
 import org.leralix.tan.utils.GuiUtil;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.war.CurrentWar;
 
 import java.util.ArrayList;
 import java.util.Collection;
