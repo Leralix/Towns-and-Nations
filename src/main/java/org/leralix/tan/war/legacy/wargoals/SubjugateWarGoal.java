@@ -1,30 +1,20 @@
 package org.leralix.tan.war.legacy.wargoals;
 
-import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TerritoryVassalForcedInternalEvent;
+import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.TerritoryUtil;
-import org.leralix.tan.war.legacy.CreateAttackData;
 
 public class SubjugateWarGoal extends WarGoal {
 
-
-    final String territoryToSubjugate;
-    final String newOverlordID;
-
-    public SubjugateWarGoal(CreateAttackData createAttackData) {
+    public SubjugateWarGoal() {
         super();
-        this.territoryToSubjugate = createAttackData.getMainDefender().getID();
-        this.newOverlordID = createAttackData.getMainAttacker().getID();
     }
 
     @Override
-    public ItemStack getIcon() {
+    public IconBuilder getIcon() {
         return buildIcon(Material.CHAIN, Lang.SUBJUGATE_WAR_GOAL_DESC.get());
     }
 
@@ -34,25 +24,18 @@ public class SubjugateWarGoal extends WarGoal {
     }
 
     @Override
-    public void addExtraOptions(Gui gui, Player player, CreateAttackData createAttackData) {
-        //Subjugate war goal does not have any extra options
-    }
-
-    @Override
-    public void applyWarGoal() {
-        TerritoryData territoryData = TerritoryUtil.getTerritory(territoryToSubjugate);
-        TerritoryData newOverlord = TerritoryUtil.getTerritory(newOverlordID);
-        if (territoryData == null || newOverlord == null)
+    public void applyWarGoal(TerritoryData winner, TerritoryData territoryToSubjugate) {
+        if (territoryToSubjugate == null || winner == null)
             return;
 
-        if (territoryData.haveOverlord()) {
-            territoryData.removeOverlord();
+        if (territoryToSubjugate.haveOverlord()) {
+            territoryToSubjugate.removeOverlord();
         }
-        territoryData.setOverlord(newOverlord);
+        territoryToSubjugate.setOverlord(winner);
 
         EventManager.getInstance().callEvent(new TerritoryVassalForcedInternalEvent(
-                territoryData,
-                newOverlord
+                territoryToSubjugate,
+                winner
         ));
     }
 
@@ -64,22 +47,6 @@ public class SubjugateWarGoal extends WarGoal {
     @Override
     public String getCurrentDesc() {
         return Lang.GUI_WARGOAL_SUBJUGATE_WAR_GOAL_RESULT.get();
-    }
-
-    @Override
-    public void sendAttackSuccessToAttackers(Player player) {
-        super.sendAttackSuccessToAttackers(player);
-
-        TerritoryData loosingTerritory = TerritoryUtil.getTerritory(territoryToSubjugate);
-        TerritoryData winningTerritory = TerritoryUtil.getTerritory(newOverlordID);
-        if (loosingTerritory == null || winningTerritory == null)
-            return;
-        player.sendMessage(Lang.WARGOAL_SUBJUGATE_SUCCESS.get(loosingTerritory.getBaseColoredName(), winningTerritory.getBaseColoredName()));
-    }
-
-    @Override
-    public void sendAttackSuccessToDefenders(Player player) {
-        sendAttackSuccessToAttackers(player);
     }
 
 }

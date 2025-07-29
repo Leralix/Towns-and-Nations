@@ -19,4 +19,14 @@ public enum WarRole {
     public String getName() {
         return name;
     }
+
+    public WarRole reverse() {
+        return switch (this) {
+            case MAIN_ATTACKER -> MAIN_DEFENDER;
+            case MAIN_DEFENDER -> MAIN_ATTACKER;
+            case OTHER_ATTACKER -> OTHER_DEFENDER;
+            case OTHER_DEFENDER -> OTHER_ATTACKER;
+            case NEUTRAL -> NEUTRAL;
+        };
+    }
 }

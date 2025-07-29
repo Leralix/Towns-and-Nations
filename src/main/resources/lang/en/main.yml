@@ -470,12 +470,15 @@ language:
   WAR_GOAL_LIST_BUTTON: "§aWar goals"
   WAR_GOAL_LIST_BUTTON_DESC1: "§fCurrent war goals: "
   WAR_GOAL_LIST_BUTTON_LIST: "§f- {0}"
+  WAR_GOAL_LIST_BUTTON_LIST_NO_WAR_GOAL_SET: "§c- No war goal set"
   WAR_CREATE_ATTACK: "§aDeclare an attack"
   WAR_ENEMY_GOAL_LIST: "§aEnemy war goals"
   WAR_ENEMY_GOAL_LIST_DESC1: "§fCurrent war goals: "
   WAR_SURRENDER: "§cSurrender"
   WAR_SURRENDER_DESC1: "§fSurrender to the enemy and end the war"
   WAR_SURRENDER_DESC2: "§fThe following war goals will be applied:"
+  #War goals menu
+  GUI_ADD_WAR_GOAL: "§aAdd a war goal"
   #GUI
   ##menu headers
   HEADER_MAIN_MENU: "Main menu"
@@ -965,6 +968,8 @@ language:
   GUI_SELECT_LANDMARK_TO_CAPTURE: "§aSelect the landmark to capture"
   GUI_SELECTED_LANDMARK_TO_CAPTURE: "§fSelected landmark: §6{0}"
   CAPTURE_LANDMARK_WAR_GOAL_DESC: "§fCapture a specific landmark from the enemy"
+  CAPTURE_FORT_WAR_GOAL: "§aCapture fort"
+  CAPTURE_FORT_WAR_GOAL_DESC: "§fCapture a specific fort from the enemy"
   GUI_CAPTURE_LANDMARK_CURRENT_DESC: "§fCapture the landmark §6{0}"
   GUI_WARGOAL_CAPTURE_LANDMARK_CANNOT_BE_USED: "§cOnly towns can capture landmarks"
   SUBJUGATE_WAR_GOAL: "§aSubjugate"

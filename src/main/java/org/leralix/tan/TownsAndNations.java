@@ -49,6 +49,7 @@ import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.EnabledPermissions;
 import org.leralix.tan.utils.NumberUtil;
 import org.leralix.tan.utils.TANCustomNBT;
+import org.leralix.tan.war.WarStorage;
 import org.tan.api.TanAPI;
 
 import java.io.BufferedReader;
@@ -196,6 +197,7 @@ public final class TownsAndNations extends JavaPlugin {
         LandmarkStorage.getInstance().load();
         CurrentWarStorage.load();
         NewsletterStorage.getInstance();
+        WarStorage.getInstance();
         EventManager.getInstance().registerEvents(new NewsletterEvents());
 
 

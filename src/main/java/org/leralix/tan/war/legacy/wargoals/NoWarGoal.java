@@ -1,16 +1,14 @@
 package org.leralix.tan.war.legacy.wargoals;
 
-import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.war.legacy.CreateAttackData;
 
 public class NoWarGoal extends WarGoal {
 
     @Override
-    public ItemStack getIcon() {
+    public IconBuilder getIcon() {
         return buildIcon(Material.BARRIER, Lang.NO_WAR_GOAL_SELECTED_DESC.get());
     }
 
@@ -20,12 +18,7 @@ public class NoWarGoal extends WarGoal {
     }
 
     @Override
-    public void addExtraOptions(Gui gui, Player player, CreateAttackData createAttackData) {
-
-    }
-
-    @Override
-    public void applyWarGoal() {
+    public void applyWarGoal(TerritoryData winner, TerritoryData loser) {
         return;
     }
 

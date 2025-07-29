@@ -5,9 +5,11 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.war.legacy.WarRole;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class War {
@@ -94,24 +96,45 @@ public class War {
         return new ItemStack(Material.IRON_SWORD);
     }
 
-    public void territorySurrender(TerritoryData territoryData) {
+    public void territorySurrender(TerritoryData looser, List<WarGoal> goals) {
 
-        if(isMainAttacker(territoryData)){
-            for(WarGoal goal : attackGoals) {
-                goal.applyWarGoal();
-            }
+        TerritoryData winner = isMainAttacker(looser) ? getMainDefender() : getMainAttacker();
+
+        for(WarGoal goal : goals) {
+            goal.applyWarGoal(winner, looser);
         }
 
-        if(isMainDefender(territoryData)) {
-            for (WarGoal goal : defenseGoals) {
-                goal.applyWarGoal();
-            }
-        }
 
         endWar();
     }
 
     public void endWar() {
         getMainAttacker().setRelation(getMainDefender(), TownRelation.NEUTRAL);
+        WarStorage.getInstance().remove(this);
+    }
+
+    public List<WarGoal> getGoals(WarRole warRole) {
+        if (warRole == WarRole.MAIN_ATTACKER) {
+            return attackGoals;
+        } else if (warRole == WarRole.MAIN_DEFENDER) {
+            return defenseGoals;
+        }
+        return Collections.emptyList();
+    }
+
+    public void removeGoal(WarRole warRole, WarGoal goal) {
+        if (warRole == WarRole.MAIN_ATTACKER) {
+            attackGoals.remove(goal);
+        } else if (warRole == WarRole.MAIN_DEFENDER) {
+            defenseGoals.remove(goal);
+        }
+    }
+
+    public void addGoal(WarRole warRole, WarGoal conquerWarGoal) {
+        if (warRole == WarRole.MAIN_ATTACKER) {
+            attackGoals.add(conquerWarGoal);
+        } else if (warRole == WarRole.MAIN_DEFENDER) {
+            defenseGoals.add(conquerWarGoal);
+        }
     }
 }

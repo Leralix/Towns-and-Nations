@@ -1,9 +1,7 @@
 package org.leralix.tan.gui.user.war;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -54,31 +52,17 @@ public class CreateAttackMenu extends BasicGui {
 
     @Override
     public void open() {
-
-
         gui.setItem(2, 2, getRemoveTimeButton());
         gui.setItem(2, 3, getTimeIcon());
         gui.setItem(2, 4, getAddTimeButton());
 
-        gui.setItem(2, 6, getWargoalButton());
-
         gui.setItem(2, 8, getConfirmButton());
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, e -> PlayerGUI.openSingleRelation(player, attackingTerritory, TownRelation.WAR, 0)));
-
-        attackData.getWargoal().addExtraOptions(gui, player, attackData);
 
         gui.open(player);
 
     }
 
-    private @NotNull GuiItem getWargoalButton() {
-
-        ItemStack wargoalIcon = attackData.getWargoal().getIcon();
-        return ItemBuilder.from(wargoalIcon).asGuiItem(event -> {
-            PlayerGUI.openSelectWarGoalMenu(player, attackData);
-            event.setCancelled(true);
-        });
-    }
 
     private @NotNull GuiItem getConfirmButton() {
 

@@ -13,8 +13,6 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.events.EventManager;
-import org.leralix.tan.events.events.AttackWonByAttackerInternalEvent;
-import org.leralix.tan.events.events.AttackWonByDefenderInternalEvent;
 import org.leralix.tan.events.events.DefenderAcceptDemandsBeforeWarInternalEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.CurrentAttacksStorage;
@@ -333,11 +331,9 @@ public class CurrentWar {
 
         EventManager.getInstance().callEvent(new DefenderAcceptDemandsBeforeWarInternalEvent(getMainDefender(), getMainAttacker()));
 
-        getWarGoal().applyWarGoal();
+        getWarGoal().applyWarGoal(getMainAttacker(), getMainDefender());
         endWar();
     }
-
-
 
     public ItemStack getAttackingIcon() {
         ItemStack itemStack = new ItemStack(Material.IRON_HELMET);
@@ -377,50 +373,4 @@ public class CurrentWar {
         return res.stream().map(ITanPlayer::getPlayer).toList();
     }
 
-    public void attackerWin() {
-        EventManager.getInstance().callEvent(new AttackWonByAttackerInternalEvent(getMainDefender(), getMainAttacker()));
-
-        WarGoal warGoal = getWarGoal();
-
-        for (TerritoryData territoryData : getAttackingTerritories()) {
-            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                Player player = tanPlayer.getPlayer();
-                if (player != null) {
-                    warGoal.sendAttackSuccessToAttackers(player);
-                }
-            }
-        }
-        for (TerritoryData territoryData : getDefendingTerritories()) {
-            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                Player player = tanPlayer.getPlayer();
-                if (player != null) {
-                    warGoal.sendAttackSuccessToDefenders(player);
-                }
-            }
-        }
-        warGoal.applyWarGoal();
-    }
-
-    public void defenderWin() {
-        EventManager.getInstance().callEvent(new AttackWonByDefenderInternalEvent(getMainDefender(), getMainAttacker()));
-
-        WarGoal warGoal = getWarGoal();
-
-        for (TerritoryData territoryData : getAttackingTerritories()) {
-            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                Player player = tanPlayer.getPlayer();
-                if (player != null) {
-                    warGoal.sendAttackFailedToDefender(player);
-                }
-            }
-        }
-        for (TerritoryData territoryData : getDefendingTerritories()) {
-            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                Player player = tanPlayer.getPlayer();
-                if (player != null) {
-                    warGoal.sendAttackFailedToAttacker(player);
-                }
-            }
-        }
-    }
 }

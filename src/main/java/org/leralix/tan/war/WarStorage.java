@@ -17,27 +17,39 @@ import java.util.Map;
 
 public class WarStorage {
 
-    private static Map<String, War> warMap = new HashMap<>();
+    private Map<String, War> warMap;
 
+    private static WarStorage instance;
 
-    public static War newWar(TerritoryData attackingTerritory, TerritoryData defendingTerritory) {
+    private WarStorage(){
+        warMap = new HashMap<>();
+        load();
+    }
 
+    public War newWar(TerritoryData attackingTerritory, TerritoryData defendingTerritory) {
         String newID = getNewID();
         War newWar = new War(newID, attackingTerritory, defendingTerritory);
         add(newWar);
         return newWar;
     }
 
-    private static void add(War plannedAttack) {
+    public static WarStorage getInstance() {
+        if(instance == null) {
+            instance = new WarStorage();
+        }
+        return instance;
+    }
+
+    private void add(War plannedAttack) {
         warMap.put(plannedAttack.getID(), plannedAttack);
         save();
     }
 
-    public static void remove(War plannedAttack) {
+    public void remove(War plannedAttack) {
         warMap.remove(plannedAttack.getID());
     }
 
-    private static String getNewID(){
+    private String getNewID(){
         int ID = 0;
         while(warMap.containsKey("W"+ID)){
             ID++;
@@ -45,21 +57,21 @@ public class WarStorage {
         return "W"+ID;
     }
 
-    public static Collection<War> getWars() {
+    public Collection<War> getWars() {
         return warMap.values();
     }
 
-    public static War get(String warID) {
+    public War get(String warID) {
         return warMap.get(warID);
     }
 
-    public static void load(){
+    public void load(){
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(WarGoal.class, new WargoalTypeAdapter())
                 .setPrettyPrinting().
                 create();
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Planned_wars.json");
+        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/storage/json/Wars.json");
         if (file.exists()){
             Reader reader;
             try {
@@ -67,7 +79,7 @@ public class WarStorage {
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            Type type = new TypeToken<HashMap<String, CurrentWar>>() {}.getType();
+            Type type = new TypeToken<HashMap<String, War>>() {}.getType();
             warMap = gson.fromJson(reader, type);
             for(War plannedAttack : warMap.values()){
                 warMap.put(plannedAttack.getID(), plannedAttack);
@@ -75,13 +87,13 @@ public class WarStorage {
         }
     }
 
-    public static void save() {
+    public void save() {
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(WarGoal.class, new WargoalTypeAdapter())
                 .setPrettyPrinting()
                 .create();
-        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Planned_wars.json");
+        File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/storage/json/Wars.json");
         file.getParentFile().mkdir();
 
         try {
@@ -109,20 +121,20 @@ public class WarStorage {
 
     }
 
-    public static void territoryDeleted(TerritoryData territoryData) {
+    public void territoryDeleted(TerritoryData territoryData) {
         for(War plannedAttack : getWars()){
             if(plannedAttack.isMainAttacker(territoryData) || plannedAttack.isMainDefender(territoryData))
                 plannedAttack.endWar();
         }
     }
 
-    public static List<War> getWarsOfTerritory(TerritoryData territoryData) {
+    public List<War> getWarsOfTerritory(TerritoryData territoryData) {
         return warMap.values().stream()
                 .filter(war -> war.isMainAttacker(territoryData) || war.isMainDefender(territoryData))
                 .toList();
     }
 
-    public static boolean isTerritoryAtWarWith(TerritoryData mainTerritory, TerritoryData territoryData) {
+    public boolean isTerritoryAtWarWith(TerritoryData mainTerritory, TerritoryData territoryData) {
         for(War war : getWarsOfTerritory(mainTerritory)){
             if(war.isMainAttacker(territoryData) || war.isMainDefender(territoryData)){
                 return true;

@@ -1,22 +1,16 @@
 package org.leralix.tan.war.legacy.wargoals;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.Gui;
-import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.war.legacy.CreateAttackData;
 
 public class LiberateWarGoal extends WarGoal {
 
     TerritoryData territoryToLiberate;
+
     @Override
-    public ItemStack getIcon() {
+    public IconBuilder getIcon() {
         return buildIcon(Material.LANTERN, Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC.get());
     }
 
@@ -26,35 +20,7 @@ public class LiberateWarGoal extends WarGoal {
     }
 
     @Override
-    public void addExtraOptions(Gui gui, Player player, CreateAttackData createAttackData) {
-
-        GuiItem selectedTerritoryGui;
-        if(territoryToLiberate == null){
-            ItemStack selectTerritory = HeadUtils.makeSkullB64(Lang.GUI_SELECT_TERRITORY_TO_LIBERATE.get(),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjMyZmZmMTYzZTIzNTYzMmY0MDQ3ZjQ4NDE1OTJkNDZmODVjYmJmZGU4OWZjM2RmNjg3NzFiZmY2OWE2NjIifX19",
-                    Lang.LEFT_CLICK_TO_SELECT.get());
-
-            selectedTerritoryGui = ItemBuilder.from(selectTerritory).asGuiItem(event -> {
-                PlayerGUI.openSelecteTerritoryToLiberate(player, createAttackData,this);
-                event.setCancelled(true);
-            });
-        }
-        else{
-            ItemStack selectedTerritory = HeadUtils.createCustomItemStack(territoryToLiberate.getIcon() , Lang.GUI_SELECT_TERRITORY_TO_LIBERATE.get(territoryToLiberate.getName()),
-                    Lang.GUI_SELECTED_TERRITORY_TO_LIBERATE.get(territoryToLiberate.getName()),
-                    Lang.LEFT_CLICK_TO_SELECT.get());
-            selectedTerritoryGui = ItemBuilder.from(selectedTerritory).asGuiItem(event -> {
-                PlayerGUI.openSelecteTerritoryToLiberate(player, createAttackData,this);
-                event.setCancelled(true);
-            });
-        }
-
-        gui.setItem(3, 6, selectedTerritoryGui);
-
-
-    }
-
-    @Override
-    public void applyWarGoal() {
+    public void applyWarGoal(TerritoryData winner, TerritoryData loser) {
         if(!territoryToLiberate.haveOverlord())
             return;
         territoryToLiberate.removeOverlord();
@@ -74,17 +40,5 @@ public class LiberateWarGoal extends WarGoal {
 
     public void setTerritoryToLiberate(TerritoryData territoryToLiberate) {
         this.territoryToLiberate = territoryToLiberate;
-    }
-
-    @Override
-    public void sendAttackSuccessToAttackers(Player player) {
-        super.sendAttackSuccessToAttackers(player);
-        territoryToLiberate.getOverlord()
-                .ifPresent(oldOverlord -> player.sendMessage( Lang.WARGOAL_LIBERATE_SUCCESS.get(territoryToLiberate.getBaseColoredName(), oldOverlord.getBaseColoredName())));
-    }
-
-    @Override
-    public void sendAttackSuccessToDefenders(Player player) {
-        sendAttackSuccessToAttackers(player);
     }
 }

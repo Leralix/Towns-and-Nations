@@ -29,7 +29,7 @@ class ChangeAttackNameTest {
         TownData town2 = TownDataStorage.getInstance().newTown("town 2");
 
         CreateAttackData createAttackData = new CreateAttackData(town1, town2);
-        createAttackData.setWarGoal(new ConquerWarGoal(town1, town2));
+        createAttackData.setWarGoal(new ConquerWarGoal());
         CurrentWar plannedAttack = CurrentWarStorage.newWar(createAttackData);
 
         ChangeAttackName changeAttackName = new ChangeAttackName(plannedAttack, null);
