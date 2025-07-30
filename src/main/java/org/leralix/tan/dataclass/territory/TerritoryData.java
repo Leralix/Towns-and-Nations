@@ -918,7 +918,7 @@ public abstract class TerritoryData {
 
     public void registerFort(Vector3D location) {
         Fort fort = FortStorage.getInstance().register(location,this);
-        getOwnedFortIDs().add(fort.getID());
+        addOwnedFort(fort);
     }
 
     public List<String> getOwnedFortIDs() {
@@ -981,5 +981,19 @@ public abstract class TerritoryData {
 
         buildings.removeAll(Collections.singleton(null));
         return buildings;
+    }
+
+    public void addOwnedFort(Fort fortToCapture) {
+        if(fortToCapture == null){
+            return;
+        }
+        getOwnedFortIDs().remove(fortToCapture.getID());
+    }
+
+    public void removeOwnedFort(Fort fortToCapture) {
+        if(fortToCapture == null){
+            return;
+        }
+        getOwnedFortIDs().remove(fortToCapture.getID());
     }
 }

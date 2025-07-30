@@ -51,7 +51,7 @@ public class SelectWarGoals extends IteratorGUI {
 
         List<GuiItem> items = new ArrayList<>();
         for(WarGoal goal : war.getGoals(warRole)) {
-            items.add(goal.getIcon()
+            items.add(goal.getIcon(langType)
                     .setAction(event -> {
                         if(event.isRightClick()){
                             war.removeGoal(warRole, goal);

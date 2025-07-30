@@ -6,6 +6,10 @@ import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TerritoryVassalForcedInternalEvent;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SubjugateWarGoal extends WarGoal {
 
@@ -14,8 +18,13 @@ public class SubjugateWarGoal extends WarGoal {
     }
 
     @Override
-    public IconBuilder getIcon() {
-        return buildIcon(Material.CHAIN, Lang.SUBJUGATE_WAR_GOAL_DESC.get());
+    public IconBuilder getIcon(LangType langType) {
+
+        List<String> description = new ArrayList<>();
+        description.add(Lang.SUBJUGATE_WAR_GOAL_DESC.get(langType));
+        description.add(Lang.SUBJUGATE_WAR_GOAL_DESC1.get(langType));
+
+        return buildIcon(Material.CHAIN, description);
     }
 
     @Override

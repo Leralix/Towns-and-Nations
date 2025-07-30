@@ -4,14 +4,23 @@ import org.bukkit.Material;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LiberateWarGoal extends WarGoal {
 
     TerritoryData territoryToLiberate;
 
     @Override
-    public IconBuilder getIcon() {
-        return buildIcon(Material.LANTERN, Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC.get());
+    public IconBuilder getIcon(LangType langType) {
+
+        List<String> description = new ArrayList<>();
+        description.add(Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC.get(langType));
+        description.add(Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC1.get(langType, territoryToLiberate.getName()));
+
+        return buildIcon(Material.LANTERN, description);
     }
 
     @Override

@@ -467,7 +467,7 @@ public class AdminGUI{
 
         for(TerritoryData potentialOverlord : territoryDataList){
             ItemStack potentialOverlordIcon =  potentialOverlord.getIconWithInformations(tanPlayer.getLang());
-            HeadUtils.addLore(potentialOverlordIcon, Lang.LEFT_CLICK_TO_SELECT.get());
+            HeadUtils.addLore(potentialOverlordIcon, Lang.GUI_GENERIC_CLICK_TO_SELECT.get());
 
             guiItems.add(ItemBuilder.from(potentialOverlordIcon).asGuiItem(event -> {
                 event.setCancelled(true);

@@ -5,19 +5,28 @@ import org.bukkit.Material;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConquerWarGoal extends WarGoal {
 
-    int numberOfChunks;
+    private final int numberOfChunks;
 
-    public ConquerWarGoal(){
-        numberOfChunks = 1;
+    public ConquerWarGoal(int nbChunks) {
+        numberOfChunks = nbChunks;
     }
 
 
     @Override
-    public IconBuilder getIcon() {
-        return buildIcon(Material.IRON_SWORD, Lang.CONQUER_WAR_GOAL_DESC.get());
+    public IconBuilder getIcon(LangType langType) {
+
+        List<String> description = new ArrayList<>();
+        description.add(Lang.CONQUER_WAR_GOAL_DESC.get(langType));
+        description.add(Lang.CONQUER_WAR_GOAL_DESC1.get(langType, numberOfChunks));
+
+        return buildIcon(Material.IRON_SWORD, description);
     }
 
     @Override

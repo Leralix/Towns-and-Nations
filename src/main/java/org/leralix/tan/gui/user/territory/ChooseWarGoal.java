@@ -45,11 +45,11 @@ public class ChooseWarGoal extends BasicGui {
                 .setName(Lang.CONQUER_WAR_GOAL.get(langType))
                 .setDescription(
                         Lang.CONQUER_WAR_GOAL_DESC.get(tanPlayer),
-                        Lang.LEFT_CLICK_TO_SELECT.get(tanPlayer)
+                        Lang.GUI_GENERIC_CLICK_TO_SELECT.get(tanPlayer)
                 )
                 .setAction(
                         action -> {
-                            war.addGoal(warRole, new ConquerWarGoal());
+                            war.addGoal(warRole, new ConquerWarGoal(1));
                             new SelectWarGoals(player, territoryData, war, warRole);
                         }
                 )
@@ -61,12 +61,11 @@ public class ChooseWarGoal extends BasicGui {
                 .setName(Lang.CAPTURE_LANDMARK_WAR_GOAL.get(langType))
                 .setDescription(
                         Lang.CAPTURE_LANDMARK_WAR_GOAL_DESC.get(tanPlayer),
-                        Lang.LEFT_CLICK_TO_SELECT.get(tanPlayer)
+                        Lang.GUI_GENERIC_CLICK_TO_SELECT.get(tanPlayer)
                 )
                 .setAction(
                         action -> {
-                            //war.addGoal(warRole, new CaptureLandmarkWarGoal());
-                            new SelectWarGoals(player, territoryData, war, warRole);
+                            new SelectLandmarkForCapture(player, territoryData, war, warRole);
                         }
                 )
                 .asGuiItem(player);
@@ -77,7 +76,7 @@ public class ChooseWarGoal extends BasicGui {
                 .setName(Lang.CAPTURE_FORT_WAR_GOAL.get(langType))
                 .setDescription(
                         Lang.CAPTURE_FORT_WAR_GOAL_DESC.get(tanPlayer),
-                        Lang.LEFT_CLICK_TO_SELECT.get(tanPlayer)
+                        Lang.GUI_GENERIC_CLICK_TO_SELECT.get(tanPlayer)
                 )
                 .setAction(
                         action -> {
@@ -93,7 +92,7 @@ public class ChooseWarGoal extends BasicGui {
                 .setName(Lang.SUBJUGATE_WAR_GOAL.get(langType))
                 .setDescription(
                         Lang.SUBJUGATE_WAR_GOAL_DESC.get(tanPlayer),
-                        Lang.LEFT_CLICK_TO_SELECT.get(tanPlayer)
+                        Lang.GUI_GENERIC_CLICK_TO_SELECT.get(tanPlayer)
                 )
                 .setAction(
                         action -> {

@@ -3,7 +3,7 @@ package org.leralix.tan.war.legacy;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.war.legacy.wargoals.NoWarGoal;
+import org.leralix.tan.war.legacy.wargoals.ConquerWarGoal;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
 public class CreateAttackData {
@@ -17,13 +17,13 @@ public class CreateAttackData {
 
     public CreateAttackData(TerritoryData mainAttacker, TerritoryData mainDefender){
 
-        minTime = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MinimumTimeBeforeAttack",120);
-        maxTime = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MaximumTimeBeforeAttack",4320);
-        minTime = minTime * 60 * 20;
-        maxTime = maxTime * 60 * 20;
+        this.minTime = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MinimumTimeBeforeAttack",120);
+        this.maxTime = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MaximumTimeBeforeAttack",4320);
+        this.minTime = minTime * 60 * 20;
+        this.maxTime = maxTime * 60 * 20;
 
-        deltaDateTime = (minTime + maxTime) / 2;
-        warGoal = new NoWarGoal();
+        this.deltaDateTime = (minTime + maxTime) / 2;
+        this.warGoal = new ConquerWarGoal(1);
         this.mainAttacker = mainAttacker;
         this.mainDefender = mainDefender;
     }
