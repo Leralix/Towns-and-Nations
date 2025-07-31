@@ -14,6 +14,7 @@ import java.util.List;
 
 public class CaptureFort {
 
+    private final String warId;
     private final Fort fort;
     private final TerritoryData attackingTerritory;
 
@@ -24,7 +25,7 @@ public class CaptureFort {
     private final List<Player> defenders;
     private final BossBar bossBar;
 
-    public CaptureFort(Fort fort, TerritoryData attackingTerritory) {
+    public CaptureFort(Fort fort, TerritoryData attackingTerritory, String warId) {
         this.fort = fort;
         this.score = 0;
         this.attackingTerritory = attackingTerritory;
@@ -32,6 +33,7 @@ public class CaptureFort {
         this.defenders = new ArrayList<>();
         updateTitle(0, 0);
         this.bossBar = Bukkit.createBossBar(this.title, BarColor.RED, BarStyle.SEGMENTED_10);
+        this.warId = warId;
     }
 
     private void updateTitle(int nbAttackers, int nbDefenders) {
@@ -90,4 +92,12 @@ public class CaptureFort {
     }
 
 
+    public void warOver() {
+        bossBar.removeAll();
+        fort.liberate();
+    }
+
+    public String getWarID() {
+        return warId;
+    }
 }

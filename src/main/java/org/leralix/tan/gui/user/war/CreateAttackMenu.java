@@ -1,13 +1,10 @@
 package org.leralix.tan.gui.user.war;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.wars.CreateAttackData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.AttackDeclaredInternalEvent;
@@ -15,13 +12,14 @@ import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.legacy.PlayerGUI;
-import org.leralix.tan.gui.user.territory.WarMenu;
+import org.leralix.tan.gui.user.territory.AttackMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlannedAttackStorage;
+import org.leralix.tan.storage.stored.CurrentWarStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.DateUtil;
 import org.leralix.tan.utils.GuiUtil;
 import org.leralix.tan.war.WarTimeSlot;
+import org.leralix.tan.war.legacy.CreateAttackData;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -30,13 +28,13 @@ import java.util.List;
 
 import static org.leralix.lib.data.SoundEnum.REMOVE;
 
-public class CreateWarMenu extends BasicGui {
+public class CreateAttackMenu extends BasicGui {
 
     private final CreateAttackData attackData;
     private final TerritoryData attackingTerritory;
     private final TerritoryData attackedTerritory;
 
-    public CreateWarMenu(Player player, TerritoryData attackingTerritory, TerritoryData attackedTerritory) {
+    public CreateAttackMenu(Player player, TerritoryData attackingTerritory, TerritoryData attackedTerritory) {
         super(player, Lang.HEADER_CREATE_WAR_MANAGER.get(player, attackedTerritory.getName()), 3);
         this.attackData = new CreateAttackData(attackingTerritory, attackedTerritory);
         this.attackingTerritory = attackingTerritory;
@@ -44,7 +42,7 @@ public class CreateWarMenu extends BasicGui {
         open();
     }
 
-    public CreateWarMenu(Player player, CreateAttackData attackData) {
+    public CreateAttackMenu(Player player, CreateAttackData attackData) {
         super(player, Lang.HEADER_CREATE_WAR_MANAGER.get(player, attackData.getMainDefender().getName()), 3);
         this.attackData = attackData;
         this.attackingTerritory = attackData.getMainAttacker();
@@ -54,31 +52,17 @@ public class CreateWarMenu extends BasicGui {
 
     @Override
     public void open() {
-
-
         gui.setItem(2, 2, getRemoveTimeButton());
         gui.setItem(2, 3, getTimeIcon());
         gui.setItem(2, 4, getAddTimeButton());
 
-        gui.setItem(2, 6, getWargoalButton());
-
         gui.setItem(2, 8, getConfirmButton());
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, e -> PlayerGUI.openSingleRelation(player, attackingTerritory, TownRelation.WAR, 0)));
-
-        attackData.getWargoal().addExtraOptions(gui, player, attackData);
 
         gui.open(player);
 
     }
 
-    private @NotNull GuiItem getWargoalButton() {
-
-        ItemStack wargoalIcon = attackData.getWargoal().getIcon();
-        return ItemBuilder.from(wargoalIcon).asGuiItem(event -> {
-            PlayerGUI.openSelectWarGoalMenu(player, attackData);
-            event.setCancelled(true);
-        });
-    }
 
     private @NotNull GuiItem getConfirmButton() {
 
@@ -104,11 +88,8 @@ public class CreateWarMenu extends BasicGui {
 
                     EventManager.getInstance().callEvent(new AttackDeclaredInternalEvent(attackedTerritory, attackingTerritory));
 
-                    PlannedAttackStorage.newWar(attackData);
-                    new WarMenu(player, attackingTerritory);
-
-
-
+                    CurrentWarStorage.newWar(attackData);
+                    new AttackMenu(player, attackingTerritory);
                 })
                 .asGuiItem(player);
 

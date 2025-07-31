@@ -58,13 +58,13 @@ public class FortDataStorage extends FortStorage {
     @Override
     public List<Fort> getAllControlledFort(TerritoryData territoryData) {
         List<Fort> allForts = new ArrayList<>(getOccupiedFort(territoryData));
-        allForts.addAll(getOwnedFort(territoryData));
 
-        List<Fort> res = new ArrayList<>();
-        for(Fort fort : getForts()) {
-            if(fort.getOccupier().getID().equals(territoryData.getID()));
+        for(Fort fort : getOwnedFort(territoryData)) {
+            if(!fort.isOccupied()){
+                allForts.add(fort);
+            }
         }
-        return res;
+        return allForts;
     }
 
     @Override

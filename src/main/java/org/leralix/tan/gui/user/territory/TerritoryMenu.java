@@ -137,7 +137,7 @@ public abstract class TerritoryMenu extends BasicGui {
                         Lang.GUI_ATTACK_ICON_DESC1.get(tanPlayer.getLang()),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer)
                 )
-                .setAction(event -> new WarMenu(player, territoryData))
+                .setAction(event -> new WarsMenu(player, territoryData))
                 .asGuiItem(player);
     }
 

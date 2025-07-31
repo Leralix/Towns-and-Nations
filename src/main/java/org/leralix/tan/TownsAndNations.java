@@ -49,6 +49,7 @@ import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.EnabledPermissions;
 import org.leralix.tan.utils.NumberUtil;
 import org.leralix.tan.utils.TANCustomNBT;
+import org.leralix.tan.war.WarStorage;
 import org.tan.api.TanAPI;
 
 import java.io.BufferedReader;
@@ -194,8 +195,9 @@ public final class TownsAndNations extends JavaPlugin {
         NewClaimedChunkStorage.getInstance();
         TownDataStorage.getInstance();
         LandmarkStorage.getInstance().load();
-        PlannedAttackStorage.load();
+        CurrentWarStorage.load();
         NewsletterStorage.getInstance();
+        WarStorage.getInstance();
         EventManager.getInstance().registerEvents(new NewsletterEvents());
 
 
@@ -296,7 +298,7 @@ public final class TownsAndNations extends JavaPlugin {
         PlayerDataStorage.getInstance().saveStats();
         NewClaimedChunkStorage.getInstance().save();
         LandmarkStorage.getInstance().save();
-        PlannedAttackStorage.save();
+        CurrentWarStorage.save();
 
         try {
             Thread.sleep(50);

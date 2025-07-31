@@ -129,14 +129,12 @@ public class Landmark {
 
 
     public ItemStack getIcon() {
-        Material material = Material.valueOf(materialName);
-        ItemStack icon = new ItemStack(material, amount);
+        Material rewardMaterial = Material.valueOf(materialName);
+        ItemStack icon = new ItemStack(rewardMaterial, amount);
         ItemMeta meta =  icon.getItemMeta();
         if(meta != null) {
             meta.setDisplayName(ChatColor.GREEN + getName());
-            List<String> description = new ArrayList<>();
-            description.add(Lang.DISPLAY_COORDINATES.get(position.getX(), position.getY(), position.getZ()));
-            description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(amount, material.name().toLowerCase()));
+            List<String> description = getBaseDescription(rewardMaterial);
             if(isOwned())
                 description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_OWNER.get(getOwner().getName()));
             else
@@ -146,6 +144,13 @@ public class Landmark {
         }
         icon.setItemMeta(meta);
         return icon;
+    }
+
+    public List<String> getBaseDescription(Material material) {
+        List<String> description = new ArrayList<>();
+        description.add(Lang.DISPLAY_COORDINATES.get(position.getX(), position.getY(), position.getZ()));
+        description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(amount, material.name().toLowerCase()));
+        return description;
     }
 
     public void deleteLandmark(){

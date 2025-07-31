@@ -6,14 +6,14 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.wars.CurrentAttack;
-import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.Constants;
+import org.leralix.tan.war.CurrentWar;
 import org.leralix.tan.war.fort.Fort;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -22,15 +22,27 @@ public class CaptureManager {
     private final Map<TerritoryChunk, CaptureChunk> captures = new HashMap<>();
     private final Map<String, CaptureFort> forts = new HashMap<>();
 
-    public void updateCapture(CurrentAttack currentAttack){
+    private static CaptureManager instance;
+
+    public static CaptureManager getInstance() {
+        if(instance == null) {
+            instance = new CaptureManager();
+        }
+        return instance;
+    }
+
+    public CaptureManager(){
+
+    }
+
+    public void updateCapture(CurrentWar currentAttack){
         handleFortCapture(currentAttack);
         handleChunkCapture(currentAttack);
     }
 
-    private void handleFortCapture(CurrentAttack currentAttack) {
-        PlannedAttack attackData = currentAttack.getAttackData();
+    private void handleFortCapture(CurrentWar attackData) {
         for(Fort fortAtWar : attackData.getMainDefender().getOwnedForts()){
-            forts.putIfAbsent(fortAtWar.getID(), new CaptureFort(fortAtWar, currentAttack.getAttackData().getMainAttacker()));
+            forts.putIfAbsent(fortAtWar.getID(), new CaptureFort(fortAtWar, attackData.getMainAttacker(), attackData.getID()));
         }
 
         registerPlayer(attackData.getAttackersPlayers(), forts, CaptureFort::addAttacker);
@@ -62,14 +74,15 @@ public class CaptureManager {
         }
     }
 
-    private void handleChunkCapture(CurrentAttack currentAttack) {
+    private void handleChunkCapture(CurrentWar attackData) {
         for(CaptureChunk captureChunk : captures.values()){
             captureChunk.resetPlayers();
         }
 
-        Collection<ITanPlayer> attackers = currentAttack.getAttackData().getAttackersPlayers();
-        Collection<ITanPlayer> defenders = currentAttack.getAttackData().getDefendingPlayers();
-        TerritoryData mainAttacker = currentAttack.getAttackData().getMainAttacker();
+
+        Collection<ITanPlayer> attackers = attackData.getAttackersPlayers();
+        Collection<ITanPlayer> defenders = attackData.getDefendingPlayers();
+        TerritoryData mainAttacker = attackData.getMainAttacker();
 
         for(ITanPlayer attacker : attackers) {
             Player player = attacker.getPlayer();
@@ -81,13 +94,13 @@ public class CaptureManager {
 
             if(claimedChunk instanceof TerritoryChunk territoryChunk){
                 if(!canBeCaptured(territoryChunk,
-                        currentAttack.getAttackData().getMainAttacker(),
-                        currentAttack.getAttackData().getMainDefender())){
+                        attackData.getMainAttacker(),
+                        attackData.getMainDefender())){
                     continue;
                 }
 
                 if(!captures.containsKey(territoryChunk)){
-                    captures.putIfAbsent(territoryChunk, new CaptureChunk(0, territoryChunk, mainAttacker));
+                    captures.putIfAbsent(territoryChunk, new CaptureChunk(0, territoryChunk, mainAttacker, attackData.getID()));
                 }
                 captures.get(territoryChunk).addAttacker(attacker.getPlayer());
             }
@@ -102,13 +115,13 @@ public class CaptureManager {
             if(claimedChunk instanceof TerritoryChunk territoryChunk){
 
                 if(!canBeCaptured(territoryChunk,
-                        currentAttack.getAttackData().getMainAttacker(),
-                        currentAttack.getAttackData().getMainDefender())){
+                        attackData.getMainAttacker(),
+                        attackData.getMainDefender())){
                     continue;
                 }
 
                 if(!captures.containsKey(territoryChunk)){
-                    captures.putIfAbsent(territoryChunk, new CaptureChunk(100, territoryChunk, mainAttacker));
+                    captures.putIfAbsent(territoryChunk, new CaptureChunk(100, territoryChunk, mainAttacker, attackData.getID()));
                 }
                 captures.get(territoryChunk).addDefender(defender.getPlayer());
             }
@@ -146,5 +159,51 @@ public class CaptureManager {
                 .isAllAdjacentChunksClaimedBySameTerritory(territoryChunk.getChunk(), defenderID);
 
         return !surroundedBySame;
+    }
+
+    /**
+     * When a planned attack is removed, all captures related to it should be removed.
+     * @param currentWar the planned attack to remove captures for
+     */
+    public void removeCapture(CurrentWar currentWar){
+        String warID = currentWar.getID();
+
+        Iterator<CaptureChunk> captureChunkIterator = captures.values().iterator();
+
+        while (captureChunkIterator.hasNext()){
+            CaptureChunk captureChunk = captureChunkIterator.next();
+            if(captureChunk.getWarID().equals(warID)){
+                captureChunk.warOver();
+                captureChunkIterator.remove();
+            }
+        }
+
+        Iterator<CaptureFort> captureFortIterator = forts.values().iterator();
+        while (captureFortIterator.hasNext()){
+            CaptureFort captureFort = captureFortIterator.next();
+            if(captureFort.getWarID().equals(warID)){
+                captureFort.warOver();
+                captureFortIterator.remove();
+            }
+        }
+
+        TerritoryData mainAttacker = currentWar.getMainAttacker();
+        TerritoryData mainDefender = currentWar.getMainDefender();
+
+        for(TerritoryChunk territoryChunk : NewClaimedChunkStorage.getInstance().getAllChunkFrom(mainAttacker)){
+            if(territoryChunk.isOccupied() && territoryChunk.getOccupierID().equals(mainDefender.getID())){
+                territoryChunk.liberate();
+            }
+        }
+
+        for(TerritoryChunk territoryChunk : NewClaimedChunkStorage.getInstance().getAllChunkFrom(mainDefender)){
+            if(territoryChunk.isOccupied() && territoryChunk.getOccupierID().equals(mainAttacker.getID())){
+                territoryChunk.liberate();
+            }
+        }
+
+
+
+
     }
 }

@@ -112,7 +112,10 @@ public abstract class Fort extends Building {
     }
 
     public void delete() {
+        getOccupier().removeOwnedFort(this);
         deleteFlag();
+
     }
 
+    public abstract void setOwner(TerritoryData newOwner);
 }

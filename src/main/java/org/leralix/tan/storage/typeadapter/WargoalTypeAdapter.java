@@ -1,7 +1,10 @@
 package org.leralix.tan.storage.typeadapter;
 
 import com.google.gson.*;
-import org.leralix.tan.dataclass.wars.wargoals.*;
+import org.leralix.tan.war.legacy.wargoals.ConquerWarGoal;
+import org.leralix.tan.war.legacy.wargoals.LiberateWarGoal;
+import org.leralix.tan.war.legacy.wargoals.SubjugateWarGoal;
+import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
 import java.lang.reflect.Type;
 
@@ -14,7 +17,6 @@ public class WargoalTypeAdapter implements JsonDeserializer<WarGoal>, JsonSerial
         return switch (type) {
             case "ConquerWarGoal" -> context.deserialize(jsonObject, ConquerWarGoal.class);
             case "SubjugateWarGoal" -> context.deserialize(jsonObject, SubjugateWarGoal.class);
-            case "NoWarGoal" -> context.deserialize(jsonObject, NoWarGoal.class);
             case "LiberateWarGoal" -> context.deserialize(jsonObject, LiberateWarGoal.class);
             default -> throw new JsonParseException("Unknown type: " + type);
         };

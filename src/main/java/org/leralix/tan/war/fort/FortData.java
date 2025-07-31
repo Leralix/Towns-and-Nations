@@ -12,7 +12,7 @@ public class FortData extends Fort{
 
     private String name;
 
-    private final String ownerID;
+    private String ownerID;
 
     private String occupierID;
 
@@ -66,5 +66,10 @@ public class FortData extends Fort{
     @Override
     public void setCaptureProgress(int value) {
         this.captureProgress = value;
+    }
+
+    @Override
+    public void setOwner(TerritoryData newOwner) {
+        this.ownerID = newOwner.getID();
     }
 }

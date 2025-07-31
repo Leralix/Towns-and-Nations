@@ -1,0 +1,64 @@
+package org.leralix.tan.gui.user.territory;
+
+import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.Landmark;
+import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.gui.IteratorGUI;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.war.War;
+import org.leralix.tan.war.legacy.WarRole;
+import org.leralix.tan.war.legacy.wargoals.CaptureLandmarkWarGoal;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SelectLandmarkForCapture extends IteratorGUI {
+
+    private final WarRole warRole;
+    private final TerritoryData territoryData;
+    private final War war;
+
+    private final TownData enemyTownData;
+
+
+    public SelectLandmarkForCapture(Player player, TerritoryData territoryData, War war, WarRole warRole) {
+        super(player, Lang.HEADER_SELECT_WARGOAL.get(player), 3);
+        this.warRole = warRole;
+        this.territoryData = territoryData;
+        this.war = war;
+        this.enemyTownData = (TownData) (war.isMainAttacker(territoryData) ? war.getMainDefender() : war.getMainAttacker());
+        open();
+    }
+
+    @Override
+    public void open() {
+        iterator(getLandmarks(), p -> new ChooseWarGoal(player, territoryData, war, warRole));
+        gui.open(player);
+    }
+
+    private List<GuiItem> getLandmarks() {
+
+        List<GuiItem> items = new ArrayList<>();
+
+        for(Landmark landmark : enemyTownData.getOwnedLandmarks()) {
+
+            List<String> description = landmark.getBaseDescription(landmark.getRessourceMaterial());
+            description.add(Lang.GUI_GENERIC_CLICK_TO_SELECT.get(langType));
+
+            GuiItem item = iconManager.get(landmark.getIcon())
+                    .setName(landmark.getName())
+                    .setDescription(
+                            description
+                    )
+                    .setAction(event -> {
+                        war.addGoal(warRole, new CaptureLandmarkWarGoal(landmark));
+                        new SelectWarGoals(player, territoryData, war, warRole);
+                    })
+                    .asGuiItem(player);
+            items.add(item);
+        }
+        return items;
+    }
+}
