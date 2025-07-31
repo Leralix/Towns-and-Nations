@@ -223,14 +223,14 @@ public abstract class TerritoryData {
         return relations;
     }
 
-    public void setRelation(TerritoryData otherTerritory, TownRelation relation){
+    public void setRelation(TerritoryData otherTerritory, TownRelation newRelation){
 
-        TownRelation actualRelation = getRelationWith(otherTerritory);
+        TownRelation oldRelation = getRelationWith(otherTerritory);
 
-        EventManager.getInstance().callEvent(new DiplomacyProposalAcceptedInternalEvent(otherTerritory, this, actualRelation, relation));
+        EventManager.getInstance().callEvent(new DiplomacyProposalAcceptedInternalEvent(otherTerritory, this, oldRelation, newRelation));
 
-        this.getRelations().setRelation(relation,otherTerritory);
-        otherTerritory.getRelations().setRelation(relation,this);
+        this.getRelations().setRelation(newRelation,otherTerritory);
+        otherTerritory.getRelations().setRelation(newRelation,this);
 
         TeamUtils.updateAllScoreboardColor();
     }
@@ -987,7 +987,7 @@ public abstract class TerritoryData {
         if(fortToCapture == null){
             return;
         }
-        getOwnedFortIDs().remove(fortToCapture.getID());
+        getOwnedFortIDs().add(fortToCapture.getID());
     }
 
     public void removeOwnedFort(Fort fortToCapture) {

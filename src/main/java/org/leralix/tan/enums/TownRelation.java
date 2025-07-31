@@ -54,4 +54,15 @@ public enum TownRelation {
             default -> EDiplomacyState.NEUTRAL; // SELF, OVERLORD, VASSAL
         };
     }
+
+    public static TownRelation fromAPI(EDiplomacyState state) {
+        return switch (state) {
+            case ALLIANCE -> ALLIANCE;
+            case NON_AGGRESSION -> NON_AGGRESSION;
+            case NEUTRAL -> NEUTRAL;
+            case EMBARGO -> EMBARGO;
+            case WAR -> WAR;
+            default -> NEUTRAL; // SELF, OVERLORD, VASSAL
+        };
+    }
 }

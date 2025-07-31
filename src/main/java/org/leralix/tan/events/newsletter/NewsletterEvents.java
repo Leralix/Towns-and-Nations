@@ -33,12 +33,23 @@ public class NewsletterEvents implements TanListener {
 
     @EventHandler
     public void onDiplomacyProposalAccepted(DiplomacyProposalAcceptedEvent event) {
-
+        newsletterStorage.register(
+                new DiplomacyAcceptedNews(
+                        event.getProposingTerritory(),
+                        event.getReceivingTerritory(),
+                        event.getNewDiplomacy(),
+                        event.isSuperior()
+                ));
     }
 
     @EventHandler
     public void onDiplomacyProposal(DiplomacyProposalEvent event) {
-
+        newsletterStorage.register(
+                new DiplomacyProposalNews(
+                        event.getProposingTerritory(),
+                        event.getReceivingTerritory(),
+                        event.getProposedDiplomacy()
+                ));
     }
 
     @EventHandler

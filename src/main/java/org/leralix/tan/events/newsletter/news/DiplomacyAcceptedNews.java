@@ -16,6 +16,8 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TerritoryUtil;
+import org.tan.api.enums.EDiplomacyState;
+import org.tan.api.interfaces.TanTerritory;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -37,12 +39,12 @@ public class DiplomacyAcceptedNews extends Newsletter {
         this.isRelationWorse = isRelationWorse;
     }
 
-    public DiplomacyAcceptedNews(String proposingTerritoryID, String receivingTerritoryID, TownRelation wantedRelation, boolean isRelationWorse) {
+    public DiplomacyAcceptedNews(TanTerritory proposingTerritory, TanTerritory receivingTerritory, EDiplomacyState newRelation, boolean isRelationBetter) {
         super();
-        this.proposingTerritoryID = proposingTerritoryID;
-        this.receivingTerritoryID = receivingTerritoryID;
-        this.wantedRelation = wantedRelation;
-        this.isRelationWorse = isRelationWorse;
+        this.proposingTerritoryID = proposingTerritory.getID();
+        this.receivingTerritoryID = receivingTerritory.getID();
+        this.wantedRelation = TownRelation.fromAPI(newRelation);
+        this.isRelationWorse = !isRelationBetter;
     }
 
     @Override

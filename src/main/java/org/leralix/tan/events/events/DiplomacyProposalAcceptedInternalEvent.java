@@ -17,8 +17,12 @@ public class DiplomacyProposalAcceptedInternalEvent extends InternalEvent implem
     private final TownRelation oldRelation;
     private final TownRelation newRelation;
 
-    public DiplomacyProposalAcceptedInternalEvent(TerritoryData proposedTerritory, TerritoryData acceptingTerritory,
-                                                  TownRelation oldRelation, TownRelation newRelation) {
+    public DiplomacyProposalAcceptedInternalEvent(
+            TerritoryData proposedTerritory,
+            TerritoryData acceptingTerritory,
+            TownRelation oldRelation,
+            TownRelation newRelation
+    ) {
         this.proposedTerritory = proposedTerritory;
         this.acceptingTerritory = acceptingTerritory;
         this.oldRelation = oldRelation;
