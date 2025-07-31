@@ -23,6 +23,7 @@ public class SubjugateWarGoal extends WarGoal {
         List<String> description = new ArrayList<>();
         description.add(Lang.SUBJUGATE_WAR_GOAL_DESC.get(langType));
         description.add(Lang.SUBJUGATE_WAR_GOAL_DESC1.get(langType));
+        description.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(langType));
 
         return buildIcon(Material.CHAIN, description);
     }

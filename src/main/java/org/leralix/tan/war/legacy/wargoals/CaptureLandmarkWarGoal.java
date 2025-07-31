@@ -26,7 +26,7 @@ public class CaptureLandmarkWarGoal extends WarGoal {
         List<String> description = new ArrayList<>();
         description.add(Lang.CAPTURE_LANDMARK_WAR_GOAL_DESC.get(langType));
         description.add(Lang.CAPTURE_LANDMARK_WAR_GOAL_DESC1.get(langType, landmarkToCapture.getName()));
-
+        description.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(langType));
 
         return buildIcon(Material.DIAMOND, description);
     }

@@ -54,7 +54,7 @@ public class SelectLandmarkForCapture extends IteratorGUI {
                     )
                     .setAction(event -> {
                         war.addGoal(warRole, new CaptureLandmarkWarGoal(landmark));
-                        new ChooseWarGoal(player, territoryData, war, warRole);
+                        new SelectWarGoals(player, territoryData, war, warRole);
                     })
                     .asGuiItem(player);
             items.add(item);

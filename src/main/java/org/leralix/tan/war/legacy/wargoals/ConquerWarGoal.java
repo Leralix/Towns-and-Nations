@@ -25,6 +25,7 @@ public class ConquerWarGoal extends WarGoal {
         List<String> description = new ArrayList<>();
         description.add(Lang.CONQUER_WAR_GOAL_DESC.get(langType));
         description.add(Lang.CONQUER_WAR_GOAL_DESC1.get(langType, numberOfChunks));
+        description.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(langType));
 
         return buildIcon(Material.IRON_SWORD, description);
     }

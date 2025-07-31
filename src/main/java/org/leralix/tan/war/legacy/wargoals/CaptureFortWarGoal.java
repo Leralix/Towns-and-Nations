@@ -25,6 +25,7 @@ public class CaptureFortWarGoal extends WarGoal {
         List<String> description = new ArrayList<>();
         description.add(Lang.CAPTURE_FORT_WAR_GOAL_DESC.get(langType));
         description.add(Lang.CAPTURE_FORT_WAR_GOAL_DESC1.get(langType, fortToCapture.getName()));
+        description.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(langType));
 
         return buildIcon(Material.IRON_BLOCK, description);
     }
