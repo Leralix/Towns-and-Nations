@@ -20,7 +20,6 @@ import org.leralix.tan.dataclass.chunk.LandmarkClaimedChunk;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeLandmarkName;
@@ -32,6 +31,7 @@ import org.leralix.tan.utils.FileUtil;
 import org.leralix.tan.utils.GuiUtil;
 import org.leralix.tan.utils.HeadUtils;
 import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.war.CurrentWar;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -101,7 +101,7 @@ public class AdminGUI{
     private static void openAdminWarMenu(Player player, int page) {
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_WAR_MENU.get(), 6);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for(PlannedAttack plannedAttack : PlannedAttackStorage.getWars()){
+        for(CurrentWar plannedAttack : CurrentWarStorage.getWars()){
             ItemStack icon = plannedAttack.getAdminIcon();
 
             GuiItem item = ItemBuilder.from(icon).asGuiItem(event -> {
@@ -111,7 +111,7 @@ public class AdminGUI{
                         plannedAttack.setAdminApproved(true);
                     }
                     else if(event.isRightClick()){
-                        plannedAttack.remove();
+                        plannedAttack.endWar();
                     }
                 }
                 openAdminWarMenu(player, page);
@@ -467,7 +467,7 @@ public class AdminGUI{
 
         for(TerritoryData potentialOverlord : territoryDataList){
             ItemStack potentialOverlordIcon =  potentialOverlord.getIconWithInformations(tanPlayer.getLang());
-            HeadUtils.addLore(potentialOverlordIcon, Lang.LEFT_CLICK_TO_SELECT.get());
+            HeadUtils.addLore(potentialOverlordIcon, Lang.GUI_GENERIC_CLICK_TO_SELECT.get());
 
             guiItems.add(ItemBuilder.from(potentialOverlordIcon).asGuiItem(event -> {
                 event.setCancelled(true);

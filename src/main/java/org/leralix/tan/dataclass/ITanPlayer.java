@@ -6,10 +6,10 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.dataclass.wars.CurrentAttack;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.timezone.TimeZoneEnum;
+import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.List;
 import java.util.UUID;
@@ -69,8 +69,6 @@ public interface ITanPlayer {
     Player getPlayer();
 
     List<String> getAttackInvolvedIn();
-
-    void notifyDeath(Player killer);
 
     void addWar(CurrentAttack currentAttacks);
 

@@ -18,7 +18,6 @@ import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.newhistory.PlayerTaxHistory;
 import org.leralix.tan.dataclass.territory.economy.*;
-import org.leralix.tan.dataclass.wars.PlannedAttack;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.events.EventManager;
@@ -723,16 +722,6 @@ public class TownData extends TerritoryData {
 
     public boolean canClaimMoreLandmarks() {
         return getLevel().getTotalBenefits().get("MAX_LANDMARKS") > getNumberOfOwnedLandmarks();
-    }
-
-
-    @Override
-    public boolean atWarWith(String territoryID) {
-        for (PlannedAttack plannedAttack : getAttacksInvolved()) {
-            if (plannedAttack.getMainDefender().getID().equals(territoryID))
-                return true;
-        }
-        return false;
     }
 
 

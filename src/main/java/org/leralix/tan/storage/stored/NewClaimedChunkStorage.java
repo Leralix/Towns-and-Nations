@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.chunk.*;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
 
 import java.io.File;
 import java.io.FileReader;
@@ -54,50 +53,14 @@ public class NewClaimedChunkStorage {
         return claimedChunksMap.containsKey(getChunkKey(chunk));
     }
 
-    public String getChunkOwnerID(Chunk chunk) {
-        ClaimedChunk2 claimedChunk = claimedChunksMap.get(getChunkKey(chunk));
-        return claimedChunk != null ? claimedChunk.getOwnerID() : null;
-    }
-
-    public TownData getChunkOwnerTown(Chunk chunk) {
-        if (!isChunkClaimed(chunk))
-            return null;
-        return TownDataStorage.getInstance().get(getChunkOwnerID(chunk));
-    }
-
-    public Collection<ClaimedChunk2> getAllChunkFrom(TerritoryData territoryData){
-        List<ClaimedChunk2> chunks = new ArrayList<>();
+    public Collection<TerritoryChunk> getAllChunkFrom(TerritoryData territoryData){
+        List<TerritoryChunk> chunks = new ArrayList<>();
         for(ClaimedChunk2 chunk : claimedChunksMap.values()){
-            if(chunk.getOwnerID().equals(territoryData.getID())){
-                chunks.add(chunk);
+            if(chunk instanceof TerritoryChunk territoryChunk && territoryChunk.getOwnerID().equals(territoryData.getID())){
+                chunks.add(territoryChunk);
             }
         }
         return Collections.unmodifiableCollection(chunks);
-    }
-
-    public String getChunkOwnerName(Chunk chunk) {
-
-        ClaimedChunk2 claimedChunk = claimedChunksMap.get(getChunkKey(chunk));
-
-        if(claimedChunk instanceof TownClaimedChunk){
-            return TownDataStorage.getInstance().get(claimedChunk.getOwnerID()).getName();
-        }
-        else if(claimedChunk instanceof RegionClaimedChunk){
-            return RegionDataStorage.getInstance().get(claimedChunk.getOwnerID()).getName();
-        }
-        return null;
-    }
-
-    public boolean isOwner(Chunk chunk, String townID) {
-
-        ClaimedChunk2 cChunk = claimedChunksMap.get(getChunkKey(chunk));
-        if(cChunk instanceof TownClaimedChunk){
-            return cChunk.getOwnerID().equals(townID);
-        }
-        else if(cChunk instanceof RegionClaimedChunk regionClaimedChunk){
-            return regionClaimedChunk.getRegion().isTownInRegion(TownDataStorage.getInstance().get(townID));
-        }
-        return false;
     }
 
     public void claimTownChunk(Chunk chunk, String ownerID) {

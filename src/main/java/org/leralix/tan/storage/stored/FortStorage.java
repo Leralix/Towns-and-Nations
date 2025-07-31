@@ -37,7 +37,7 @@ public abstract class FortStorage {
 
     public abstract Fort register(Vector3D position, TerritoryData owningTerritory);
 
-    public abstract void delete(String fortID);
+    protected abstract void delete(String fortID);
 
     public void delete(Fort fort){
         fort.delete();

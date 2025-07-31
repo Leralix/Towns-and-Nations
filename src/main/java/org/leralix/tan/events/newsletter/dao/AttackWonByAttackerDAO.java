@@ -45,7 +45,7 @@ public class AttackWonByAttackerDAO extends NewsletterSubDAO<AttackWonByAttacker
 
     @Override
     public AttackWonByAttackerNewsletter load(UUID id, long date) {
-        String sql = "SELECT attackingTerritoryID, defendingTerritoryID,FROM attack_won_by_attackers_newsletter WHERE id = ?";
+        String sql = "SELECT attackingTerritoryID, defendingTerritoryID FROM attack_won_by_attackers_newsletter WHERE id = ?";
         try (var ps = dataSource.getConnection().prepareStatement(sql)) {
             ps.setObject(1, id);
             var rs = ps.executeQuery();

@@ -5,9 +5,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.wars.GriefAllowed;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.war.legacy.GriefAllowed;
 
 import java.util.ArrayList;
 import java.util.List;

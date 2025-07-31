@@ -4,14 +4,14 @@ import org.bukkit.entity.Player;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.dataclass.wars.CreateAttackData;
-import org.leralix.tan.dataclass.wars.PlannedAttack;
-import org.leralix.tan.dataclass.wars.wargoals.ConquerWarGoal;
 import org.leralix.tan.factory.AbstractionFactory;
-import org.leralix.tan.storage.stored.PlannedAttackStorage;
+import org.leralix.tan.storage.stored.CurrentWarStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.war.CurrentWar;
+import org.leralix.tan.war.legacy.CreateAttackData;
+import org.leralix.tan.war.legacy.wargoals.ConquerWarGoal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ChangeAttackNameTest {
 
@@ -29,8 +29,8 @@ class ChangeAttackNameTest {
         TownData town2 = TownDataStorage.getInstance().newTown("town 2");
 
         CreateAttackData createAttackData = new CreateAttackData(town1, town2);
-        createAttackData.setWarGoal(new ConquerWarGoal(town1, town2));
-        PlannedAttack plannedAttack = PlannedAttackStorage.newWar(createAttackData);
+        createAttackData.setWarGoal(new ConquerWarGoal(1));
+        CurrentWar plannedAttack = CurrentWarStorage.newWar(createAttackData);
 
         ChangeAttackName changeAttackName = new ChangeAttackName(plannedAttack, null);
 
