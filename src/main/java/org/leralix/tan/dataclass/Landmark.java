@@ -1,9 +1,6 @@
 package org.leralix.tan.dataclass;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -24,6 +21,7 @@ import org.leralix.tan.utils.TerritoryUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Landmark {
 
@@ -87,8 +85,12 @@ public class Landmark {
         newBlock.setType(Material.AIR);
     }
 
-    public Block getChest(){
-        return position.getWorld().getBlockAt(position.getLocation());
+    public Optional<Block> getChest(){
+        World world = position.getWorld();
+        if(world == null){
+            return Optional.empty();
+        }
+        return Optional.of(position.getWorld().getBlockAt(position.getLocation()));
     }
 
     public Material getRessourceMaterial(){
