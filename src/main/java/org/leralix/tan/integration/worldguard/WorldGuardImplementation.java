@@ -1,63 +1,62 @@
 package org.leralix.tan.integration.worldguard;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.internal.platform.WorldGuardPlatform;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 
-import java.util.Set;
-
 
 public class WorldGuardImplementation {
 
 
-
-    public EWorldGuardResult canPlayerDo(Player player, Location location) {
-        WorldGuardPlatform platform = WorldGuard.getInstance().getPlatform();
-
-        World world = BukkitAdapter.adapt(location.getWorld());
-        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
-
-        RegionManager manager = platform.getRegionContainer().get(world);
-
-        BlockVector3 vector = BlockVector3.at(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-        ApplicableRegionSet regionSet = manager.getApplicableRegions(vector);
-
-        Set<ProtectedRegion> protectedRegions = regionSet.getRegions();
-
-        if(protectedRegions.isEmpty()){
-            return EWorldGuardResult.NO_REGION;
-        }
-
-        if(regionSet.isMemberOfAll(localPlayer)) {
-            return EWorldGuardResult.PLAYER_CAN;
-        }
-        return EWorldGuardResult.PLAYER_CANNOT;
-    }
-
     public boolean isActionAllowed(Player player, Location location, ChunkPermissionType actionType) {
-
         StateFlag flag = getFlagForAction(actionType);
         com.sk89q.worldedit.util.Location weLocation = BukkitAdapter.adapt(location);
         LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
 
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
-        return query.testState(weLocation, localPlayer, flag);
+
+        ApplicableRegionSet regionSet = query.getApplicableRegions(weLocation);
+
+        // Étape 1 : Vérifier si le joueur est Owner d'au moins une région applicable
+        for (var region : regionSet) {
+            if (region.isOwner(localPlayer)) {
+                return true; // Owner a tous les droits
+            }
+        }
+
+        // Étape 2 : Vérification classique des flags
+        boolean hasExplicitFlag = false;
+
+        for (var region : regionSet) {
+            StateFlag.State state = region.getFlag(flag);
+            if (state != null) {
+                hasExplicitFlag = true;
+                if (state == StateFlag.State.ALLOW) {
+                    return true;
+                }
+            }
+        }
+
+        // Si aucune région ne définit explicitement le flag, on autorise (comportement par défaut de WG)
+        if (!hasExplicitFlag) {
+            return true;
+        }
+
+        // Sinon, action refusée
+        return false;
     }
+
+
 
     public boolean isHandledByWorldGuard(Location location) {
         com.sk89q.worldedit.util.Location weLocation = BukkitAdapter.adapt(location);
