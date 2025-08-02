@@ -16,6 +16,8 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
+import java.util.Optional;
+
 
 /**
  * This class is used to add custom NBT tags to items
@@ -81,6 +83,9 @@ public class TANCustomNBT {
         for( TownData townData : TownDataStorage.getInstance().getTownMap().values() ){
             for( PropertyData propertyData : townData.getPropertyDataMap().values() ){
                 Block block = propertyData.getSign();
+                if(block == null){
+                    return;
+                }
                 Location blockBeneathLocation = propertyData.getSign().getLocation().add(0,-1,0);
                 Block blockBeneath = blockBeneathLocation.getWorld().getBlockAt(blockBeneathLocation);
 
@@ -92,8 +97,8 @@ public class TANCustomNBT {
 
     public static void setLandmarksData(){
         for(Landmark landmark : LandmarkStorage.getInstance().getAll()){
-            Block block = landmark.getChest();
-            setBockMetaData(block, "LandmarkChest", landmark.getID());
+            Optional<Block> optionalBlock = landmark.getChest();
+            optionalBlock.ifPresent(block -> setBockMetaData(block, "LandmarkChest", landmark.getID()));
         }
     }
 
