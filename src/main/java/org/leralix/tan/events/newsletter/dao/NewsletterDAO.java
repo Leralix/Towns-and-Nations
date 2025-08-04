@@ -14,72 +14,56 @@ import java.time.ZoneOffset;
 import java.util.*;
 
 public class NewsletterDAO {
-    private final Map<NewsletterType, NewsletterSubDAO<?>> subDaos;
-
+    private final Map<NewsletterType, NewsletterSubDAO<?>> subDaos = new EnumMap<>(NewsletterType.class);
     private final DataSource dataSource;
 
     public NewsletterDAO(DataSource dataSource) {
-        this.subDaos = new EnumMap<>(NewsletterType.class);
         this.dataSource = dataSource;
-
         createTableIfNotExists();
 
+        // Initialiser les sous-DAO
         subDaos.put(NewsletterType.TOWN_CREATED, new PlayerCreateTownDAO(dataSource));
         subDaos.put(NewsletterType.TOWN_DELETED, new PlayerDeleteTownDAO(dataSource));
         subDaos.put(NewsletterType.PLAYER_APPLICATION, new PlayerApplicationDAO(dataSource));
         subDaos.put(NewsletterType.PLAYER_JOIN_TOWN, new PlayerJoinTownDAO(dataSource));
         subDaos.put(NewsletterType.REGION_CREATED, new PlayerCreateRegionDAO(dataSource));
         subDaos.put(NewsletterType.REGION_DELETED, new PlayerDeleteRegionDAO(dataSource));
-
         subDaos.put(NewsletterType.TERRITORY_VASSAL_PROPOSAL, new TerritoryVassalProposalDAO(dataSource));
         subDaos.put(NewsletterType.TERRITORY_VASSAL_ACCEPTED, new TerritoryVassalAcceptedDAO(dataSource));
         subDaos.put(NewsletterType.TERRITORY_VASSAL_FORCED, new TerritoryVassalForcedDAO(dataSource));
         subDaos.put(NewsletterType.TERRITORY_VASSAL_INDEPENDENT, new TerritoryVassalIndependentDAO(dataSource));
-
         subDaos.put(NewsletterType.DIPLOMACY_ACCEPTED, new DiplomacyAcceptedDAO(dataSource));
         subDaos.put(NewsletterType.DIPLOMACY_PROPOSAL, new DiplomacyProposalDAO(dataSource));
-
         subDaos.put(NewsletterType.ATTACK_DECLARED, new AttackDeclaredDAO(dataSource));
         subDaos.put(NewsletterType.ATTACK_WON_BY_ATTACKER, new AttackWonByAttackerDAO(dataSource));
         subDaos.put(NewsletterType.ATTACK_WON_BY_DEFENDER, new AttackWonByDefenderDAO(dataSource));
         subDaos.put(NewsletterType.ATTACK_CANCELLED, new AttackCancelledDAO(dataSource));
-
-
     }
 
     private void createTableIfNotExists() {
-        String sql = "CREATE TABLE IF NOT EXISTS newsletter (" +
+        String sql1 = "CREATE TABLE IF NOT EXISTS newsletter (" +
                 "id VARCHAR(36) PRIMARY KEY, " +
                 "type VARCHAR(255) NOT NULL, " +
-                "date_created TIMESTAMP NOT NULL" +
-                ")";
-
-        try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to create newsletter table", e);
-        }
-
-        sql = "CREATE TABLE IF NOT EXISTS newsletter_read (" +
+                "date_created TIMESTAMP NOT NULL)";
+        String sql2 = "CREATE TABLE IF NOT EXISTS newsletter_read (" +
                 "newsletter_id VARCHAR(36) NOT NULL, " +
                 "player_id VARCHAR(36) NOT NULL, " +
-                "PRIMARY KEY (newsletter_id, player_id)" +
-                ")";
-        try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {
-            ps.executeUpdate();
+                "PRIMARY KEY (newsletter_id, player_id))";
+
+        try (Connection conn = dataSource.getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(sql1);
+            stmt.executeUpdate(sql2);
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to create newsletter table", e);
+            throw new RuntimeException("Failed to create newsletter tables", e);
         }
-
-
     }
 
     public void save(Newsletter newsletter) throws SQLException {
         String sql = "INSERT INTO newsletter (id, type, date_created) VALUES (?, ?, ?)";
 
-        try (Connection conn = dataSource.getConnection()){
-            PreparedStatement ps = conn.prepareStatement(sql);
-
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getType().name());
             ps.setTimestamp(3, Timestamp.from(Instant.ofEpochMilli(newsletter.getDate())));
@@ -93,30 +77,26 @@ public class NewsletterDAO {
         subDAO.save(newsletter);
     }
 
-
     public void markAsRead(UUID newsletterId, UUID playerId) {
-
-        try {
-            String sql = "INSERT INTO newsletter_read (newsletter_id, player_id) VALUES (?, ?) ON CONFLICT DO NOTHING";
-            try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {
-                ps.setObject(1, newsletterId);
-                ps.setObject(2, playerId);
-                ps.executeUpdate();
-            }
+        String sql = "INSERT INTO newsletter_read (newsletter_id, player_id) VALUES (?, ?) ON CONFLICT DO NOTHING";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setObject(1, newsletterId);
+            ps.setObject(2, playerId);
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to add entry in newsletter_read table", e);
         }
     }
 
     public boolean hasRead(UUID newsletterId, UUID playerId) {
-        try {
-            String sql = "SELECT 1 FROM newsletter_read WHERE newsletter_id = ? AND player_id = ?";
-            try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {
-                ps.setObject(1, newsletterId);
-                ps.setObject(2, playerId);
-                try (ResultSet rs = ps.executeQuery()) {
-                    return rs.next();
-                }
+        String sql = "SELECT 1 FROM newsletter_read WHERE newsletter_id = ? AND player_id = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setObject(1, newsletterId);
+            ps.setObject(2, playerId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
             }
         } catch (SQLException e) {
             throw new RuntimeException("Failed to check if newsletter has been read", e);
@@ -127,40 +107,40 @@ public class NewsletterDAO {
         String sql = "SELECT * FROM newsletter WHERE date_created <= ? ORDER BY date_created DESC";
         List<Newsletter> newsletters = new ArrayList<>();
 
-        try (Connection conn = dataSource.getConnection()){
-
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setTimestamp(1, Timestamp.from(Instant.now()));
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    UUID id = UUID.fromString(rs.getString("id"));
+                    Timestamp timestamp = rs.getTimestamp("date_created");
+                    if (timestamp == null) {
+                        TownsAndNations.getPlugin().getLogger().warning("Newsletter " + id + " has null date_created, skipping.");
+                        continue;
+                    }
 
-            while (rs.next()) {
-                UUID id = UUID.fromString(rs.getString("id"));
-                Timestamp timestamp = rs.getTimestamp("date_created");
-                if (timestamp == null) {
-                    TownsAndNations.getPlugin().getLogger().warning("Newsletter " + id + " has null date_created, skipping.");
-                    continue;
-                }
-                LocalDateTime createdAt = timestamp.toLocalDateTime();
+                    LocalDateTime createdAt = timestamp.toLocalDateTime();
+                    String typeName = rs.getString("type");
 
-                String typeName = rs.getString("type");
-                if (!NewsletterType.isValidEnumValue(typeName)) {
-                    TownsAndNations.getPlugin().getLogger().severe("Invalid newsletter type: " + typeName);
-                    removeNewsletter(id);
-                    continue;
-                }
+                    if (!NewsletterType.isValidEnumValue(typeName)) {
+                        TownsAndNations.getPlugin().getLogger().severe("Invalid newsletter type: " + typeName);
+                        removeNewsletter(id);
+                        continue;
+                    }
 
-                NewsletterType type = NewsletterType.valueOf(typeName);
+                    NewsletterType type = NewsletterType.valueOf(typeName);
+                    NewsletterSubDAO<?> subDAO = subDaos.get(type);
+                    if (subDAO == null) {
+                        TownsAndNations.getPlugin().getLogger().severe("No DAO for newsletter type " + type + ", id: " + id);
+                        continue;
+                    }
 
-                NewsletterSubDAO<?> subDAO = subDaos.get(type);
-                if (subDAO == null) {
-                    TownsAndNations.getPlugin().getLogger().severe("No DAO for newsletter type " + type + ", id: " + id);
-                    continue;
-                }
-                ZoneOffset zoneOffset = TimeZoneManager.getInstance().getTimezoneEnum().toZoneOffset();
-                long createdAtMillis = createdAt.toInstant(zoneOffset).toEpochMilli();
-                Newsletter newsletter = subDAO.load(id, createdAtMillis);
-                if (newsletter != null) {
-                    newsletters.add(newsletter);
+                    ZoneOffset zoneOffset = TimeZoneManager.getInstance().getTimezoneEnum().toZoneOffset();
+                    long createdAtMillis = createdAt.toInstant(zoneOffset).toEpochMilli();
+                    Newsletter newsletter = subDAO.load(id, createdAtMillis);
+                    if (newsletter != null) {
+                        newsletters.add(newsletter);
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -170,10 +150,10 @@ public class NewsletterDAO {
         return newsletters;
     }
 
-
     private void removeNewsletter(UUID id) {
         String sql = "DELETE FROM newsletter WHERE id = ?";
-        try (PreparedStatement ps = dataSource.getConnection().prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -185,51 +165,28 @@ public class NewsletterDAO {
         Duration duration = Duration.ofDays(nbDays);
         LocalDateTime cutoff = LocalDateTime.now().minus(duration);
 
-        try (Connection mainConn = dataSource.getConnection()) {
+        String selectSql = "SELECT id, type FROM newsletter WHERE date_created < ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(selectSql)) {
+            ps.setTimestamp(1, Timestamp.valueOf(cutoff));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String id = rs.getString("id");
+                    String typeStr = rs.getString("type");
 
-            String selectSql = "SELECT id, type FROM newsletter WHERE date_created < ?";
-            try (PreparedStatement ps = mainConn.prepareStatement(selectSql)) {
-                ps.setTimestamp(1, Timestamp.valueOf(cutoff));
-                try (ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        deleteNewsletter(mainConn,
-                                rs.getString("type"),
-                                rs.getString("id"));
+                    if (!NewsletterType.isValidEnumValue(typeStr)) continue;
+
+                    NewsletterType type = NewsletterType.valueOf(typeStr);
+                    NewsletterSubDAO<?> subDAO = subDaos.get(type);
+                    if (subDAO != null) {
+                        //subDAO.delete(UUID.fromString(id)); To add
                     }
+
+                    removeNewsletter(UUID.fromString(id));
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void deleteNewsletter(Connection mainConn, String tableName, String id) {
-
-        NewsletterType type;
-        try{
-             type = NewsletterType.valueOf(tableName);
-        }
-        catch (IllegalArgumentException e){
-            return;
-        }
-
-        // Delete from the specific newsletter table
-        String deleteSpecificSql = "DELETE FROM `" + type.getDatabaseName() + "` WHERE id = ?";
-        try (PreparedStatement ps = mainConn.prepareStatement(deleteSpecificSql)) {
-            ps.setString(1, id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        // Delete from the main newsletter table
-        String deleteSql = "DELETE FROM newsletter WHERE id = ?";
-        try (PreparedStatement ps = mainConn.prepareStatement(deleteSql)) {
-            ps.setString(1, id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to delete old newsletters", e);
         }
     }
 }
