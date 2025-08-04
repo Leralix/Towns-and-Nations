@@ -465,7 +465,7 @@ language:
   GUI_BUILDING_MENU: "§aBuilding"
   GUI_BUILDING_MENU_DESC1: "§fCreate and manage buildings"
   CREATE_FORT_ICON: "§aCreate a new fort"
-  CREATE_FORT_DESC1: "§fCost : {0}{MONEY_CHAR}"
+  CREATE_FORT_DESC1: "§fCost : §e{0}{MONEY_CHAR}"
   #War menu
   WAR_GOAL_LIST_BUTTON: "§aWar goals"
   WAR_GOAL_LIST_BUTTON_DESC1: "§fCurrent war goals: "

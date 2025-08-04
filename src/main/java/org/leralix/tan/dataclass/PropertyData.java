@@ -2,11 +2,15 @@ package org.leralix.tan.dataclass;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.Directional;
 import org.bukkit.block.sign.Side;
 import org.bukkit.block.sign.SignSide;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.ParticleUtils;
@@ -24,10 +28,12 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.listeners.interact.events.CreatePropertyEvent;
 import org.leralix.tan.storage.PermissionManager;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.NumberUtil;
+import org.leralix.tan.utils.TANCustomNBT;
 import org.leralix.tan.utils.TanChatUtils;
 
 import java.util.ArrayList;
@@ -51,6 +57,7 @@ public class PropertyData {
     private final Vector3D p1;
     private final Vector3D p2;
     private Vector3D signLocation;
+    private Vector3D supportLocation;
 
     public PropertyData(String id, Vector3D p1, Vector3D p2, ITanPlayer player) {
         this.ID = id;
@@ -68,13 +75,7 @@ public class PropertyData {
         this.rentPrice = 0;
 
         this.permissionManager = new PermissionManager();
-
     }
-
-    public void setSignLocation(Location loc) {
-        this.signLocation = new Vector3D(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), loc.getBlock().getWorld().getUID().toString());
-    }
-
 
     public Vector3D getFirstCorner() {
         return this.p1;
@@ -354,11 +355,12 @@ public class PropertyData {
             return;
         }
 
-        Block signBlock = world.getBlockAt(signLocation.getX(), signLocation.getY(), signLocation.getZ());
+        Block signBlock = signLocation.getLocation().getBlock();
         signBlock.setType(org.bukkit.Material.AIR);
 
-        signBlock.removeMetadata("propertySign", TownsAndNations.getPlugin());
-        signBlock.removeMetadata("propertySign", TownsAndNations.getPlugin());
+        TANCustomNBT.removeBockMetaData(signBlock, "propertySign");
+        TANCustomNBT.removeBockMetaData(supportLocation.getLocation().getBlock(), "propertySign");
+
 
         world.spawnParticle(Particle.BUBBLE_POP, signBlock.getLocation(), 5);
     }
@@ -459,5 +461,47 @@ public class PropertyData {
             permissionManager = new PermissionManager();
         }
         return permissionManager;
+    }
+
+    public void setSignData() {
+        TANCustomNBT.setBockMetaData(signLocation.getLocation().getBlock(), "propertySign", getTotalID());
+
+        //TODO : Check only because pre 0.15.0 plugin did not register the sign location
+        if(supportLocation != null){
+            TANCustomNBT.setBockMetaData(supportLocation.getLocation().getBlock(), "propertySign", getTotalID());
+        }
+    }
+
+    public void createPropertySign(Player player, PropertyData property, Block block, BlockFace blockFace) {
+        // Calcul de la position de la pancarte
+        Location signLocation = block.getRelative(blockFace).getLocation();
+        signLocation.getBlock().setType(blockFace == BlockFace.UP ? Material.OAK_SIGN : Material.OAK_WALL_SIGN);
+
+        BlockState blockState = signLocation.getBlock().getState();
+        Sign sign = (Sign) blockState;
+
+        // Gestion de l'orientation pour les pancartes murales
+        if (blockFace != BlockFace.UP) {
+            BlockFace direction = CreatePropertyEvent.getTopDirection(block.getLocation(), player.getLocation());
+            Directional directional = (Directional) sign.getBlockData();
+            directional.setFacing(direction);
+            sign.setBlockData(directional);
+        } else {
+            org.bukkit.block.data.type.Sign signData = (org.bukkit.block.data.type.Sign) sign.getBlockData();
+            BlockFace direction = CreatePropertyEvent.getTopDirection(block.getLocation(), player.getLocation());
+            signData.setRotation(direction);
+            sign.setBlockData(signData);
+        }
+
+        sign.update();
+
+        // Ajout des métadonnées aux blocs
+        block.setMetadata("propertySign", new FixedMetadataValue(TownsAndNations.getPlugin(), getTotalID()));
+        sign.getBlock().setMetadata("propertySign", new FixedMetadataValue(TownsAndNations.getPlugin(), getTotalID()));
+
+        this.signLocation = new Vector3D(signLocation);
+        this.supportLocation = new Vector3D(block.getLocation());
+        setSignData();
+        updateSign();
     }
 }

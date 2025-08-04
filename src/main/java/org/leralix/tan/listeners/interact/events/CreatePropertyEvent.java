@@ -1,22 +1,16 @@
 package org.leralix.tan.listeners.interact.events;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Sign;
-import org.bukkit.block.data.Directional;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -107,9 +101,8 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
         PropertyData property = playerTown.registerNewProperty(position1,position2, tanPlayer);
         new PlayerPropertyManager(player, property, HumanEntity::closeInventory);
 
-        createPropertySign(player, property, block, event.getBlockFace());
+        property.createPropertySign(player, property, block, event.getBlockFace());
         property.updateSign();
-
     }
 
     boolean isNearProperty(Location blockLocation, Vector3D p1, Vector3D p2, int margin) {
@@ -130,38 +123,7 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
     }
 
 
-    public void createPropertySign(Player player, PropertyData propertyData, Block block, BlockFace blockFace) {
-
-        // Calcul de la position de la pancarte
-        Location signLocation = block.getRelative(blockFace).getLocation();
-        signLocation.getBlock().setType(blockFace == BlockFace.UP ? Material.OAK_SIGN : Material.OAK_WALL_SIGN);
-
-        BlockState blockState = signLocation.getBlock().getState();
-        Sign sign = (Sign) blockState;
-
-        // Gestion de l'orientation pour les pancartes murales
-        if (blockFace != BlockFace.UP) {
-            BlockFace direction = getTopDirection(block.getLocation(), player.getLocation());
-            Directional directional = (Directional) sign.getBlockData();
-            directional.setFacing(direction);
-            sign.setBlockData(directional);
-        } else {
-            org.bukkit.block.data.type.Sign signData = (org.bukkit.block.data.type.Sign) sign.getBlockData();
-            BlockFace direction = getTopDirection(block.getLocation(), player.getLocation());
-            signData.setRotation(direction);
-            sign.setBlockData(signData);
-        }
-
-        sign.update();
-
-        // Ajout des métadonnées aux blocs
-        block.setMetadata("propertySign", new FixedMetadataValue(TownsAndNations.getPlugin(), propertyData.getTotalID()));
-        sign.getBlock().setMetadata("propertySign", new FixedMetadataValue(TownsAndNations.getPlugin(), propertyData.getTotalID()));
-
-        propertyData.setSignLocation(signLocation);
-    }
-
-    static BlockFace getTopDirection(Location blockLocation, Location playerLocation) {
+    public static BlockFace getTopDirection(Location blockLocation, Location playerLocation) {
         double dx = playerLocation.getX() - blockLocation.getX();
         double dz = playerLocation.getZ() - blockLocation.getZ();
         double angle = Math.toDegrees(Math.atan2(dz, dx)) + 180;

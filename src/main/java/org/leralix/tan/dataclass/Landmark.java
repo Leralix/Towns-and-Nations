@@ -8,7 +8,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.WildernessChunk;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -81,7 +80,8 @@ public class Landmark {
 
     public void dispawnChest(){
         Block newBlock = position.getWorld().getBlockAt(position.getLocation());
-        newBlock.removeMetadata("LandmarkChest", TownsAndNations.getPlugin());
+
+        TANCustomNBT.removeBockMetaData(newBlock, "LandmarkChest");
         newBlock.setType(Material.AIR);
     }
 
@@ -206,5 +206,12 @@ public class Landmark {
             if (!isEncircled) break;
         }
         return isEncircled;
+    }
+
+    public void setProtectedBlockData() {
+        if (getChest().isEmpty()) {
+            return;
+        }
+        TANCustomNBT.setBockMetaData(getChest().get(), "LandmarkChest", getID());
     }
 }

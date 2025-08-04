@@ -6,9 +6,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
-import org.leralix.lib.utils.CustomNBT;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.BasicGui;
@@ -18,6 +16,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.TANCustomNBT;
 
 public abstract class Fort extends Building {
 
@@ -38,12 +37,10 @@ public abstract class Fort extends Building {
 
     public void spawnFlag() {
         Vector3D flagPosition = getFlagPosition();
-        Block baseBlock = flagPosition.getLocation().getBlock();
         Block flagBlock = flagPosition.getLocation().add(0, 1, 0).getBlock();
         flagBlock.setType(Material.GREEN_BANNER);
 
-        CustomNBT.setBockMetaData(TownsAndNations.getPlugin(), baseBlock, "fortFlag", "fortFlag");
-        CustomNBT.setBockMetaData(TownsAndNations.getPlugin(), flagBlock, "fortFlag", "fortFlag");
+        setProtectedBlockData();
     }
 
     public abstract String getID();
@@ -107,8 +104,9 @@ public abstract class Fort extends Building {
         Block flagBlock = flagPosition.getLocation().add(0, 1, 0).getBlock();
         flagBlock.setType(Material.AIR);
 
-        baseBlock.removeMetadata("fortFlag", TownsAndNations.getPlugin());
-        flagBlock.removeMetadata("fortFlag", TownsAndNations.getPlugin());
+
+        TANCustomNBT.removeBockMetaData(baseBlock, "fortFlag");
+        TANCustomNBT.removeBockMetaData(flagBlock, "fortFlag");
     }
 
     public void delete() {
@@ -118,4 +116,13 @@ public abstract class Fort extends Building {
     }
 
     public abstract void setOwner(TerritoryData newOwner);
+
+    public void setProtectedBlockData() {
+        Vector3D flagPosition = getFlagPosition();
+        Block baseBlock = flagPosition.getLocation().getBlock();
+        Block flagBlock = flagPosition.getLocation().add(0, 1, 0).getBlock();
+
+        TANCustomNBT.setBockMetaData(baseBlock, "fortFlag", getID());
+        TANCustomNBT.setBockMetaData(flagBlock, "fortFlag", getID());
+    }
 }

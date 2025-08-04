@@ -527,7 +527,7 @@ public class PlayerGUI {
         });
 
         GuiUtil.createIterator(gui, guiItems, page, player, p -> openRelations(player, mainTerritory),
-                p -> openSingleRelation(player, mainTerritory, relation, page - 1),
+                p -> openSingleRelation(player, mainTerritory, relation, page + 1),
                 p -> openSingleRelation(player, mainTerritory, relation, page - 1));
 
         gui.setItem(6, 4, addRelation);
