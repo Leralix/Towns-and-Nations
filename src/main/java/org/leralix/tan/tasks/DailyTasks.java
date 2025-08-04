@@ -55,7 +55,7 @@ public class DailyTasks {
         clearOldTaxes();
         updatePlayerUsernames();
 
-        NewsletterStorage.getInstance().clearOldNewsletters();
+        //NewsletterStorage.getInstance().clearOldNewsletters(); Removed until fixed.
         if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("enableMidnightGenerateResource", true)) {
           LandmarkStorage.getInstance().generateAllResources();
         }

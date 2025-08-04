@@ -7,10 +7,7 @@ import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +29,8 @@ public abstract class DatabaseHandler {
                 VALUES (?, ?, ?, ?, ?)
             """;
 
-            try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(insertSQL)) {
+            try (Connection conn = dataSource.getConnection();
+                 PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
                 preparedStatement.setString(1, transactionHistory.getDate());
                 preparedStatement.setString(2, transactionHistory.getType().toString());
                 preparedStatement.setString(3, transactionHistory.getTerritoryDataID());
@@ -92,6 +90,7 @@ public abstract class DatabaseHandler {
         try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(deleteSQL)) {
             preparedStatement.setInt(1, nbDays);
             preparedStatement.setString(1, type.toString());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             TownsAndNations.getPlugin().getLogger().severe("Error while deleting old history");
         }

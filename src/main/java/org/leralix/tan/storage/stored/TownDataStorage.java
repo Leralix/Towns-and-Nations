@@ -100,25 +100,22 @@ public class TownDataStorage {
         if (!file.exists())
             return;
 
-        Reader reader;
-        try {
-            reader = new FileReader(file);
-        } catch (FileNotFoundException e) {
-            TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);
-            return;
-        }
-
-
         Gson gson = new GsonBuilder()
-            .registerTypeAdapter(new TypeToken<Map<ChunkPermissionType, RelationPermission>>() {}.getType(), new EnumMapKeyValueDeserializer<>(ChunkPermissionType.class, RelationPermission.class))
-            .registerTypeAdapter(new TypeToken<Map<TownRelation, List<String>>>() {}.getType(),new EnumMapDeserializer<>(TownRelation.class, new TypeToken<List<String>>(){}.getType()))
-            .registerTypeAdapter(new TypeToken<List<RelationPermission>>() {}.getType(),new EnumMapDeserializer<>(RelationPermission.class, new TypeToken<List<String>>(){}.getType()))
-            .registerTypeAdapter(ICustomIcon.class, new IconAdapter())
-            .create();
+                .registerTypeAdapter(new TypeToken<Map<ChunkPermissionType, RelationPermission>>() {}.getType(), new EnumMapKeyValueDeserializer<>(ChunkPermissionType.class, RelationPermission.class))
+                .registerTypeAdapter(new TypeToken<Map<TownRelation, List<String>>>() {}.getType(), new EnumMapDeserializer<>(TownRelation.class, new TypeToken<List<String>>() {}.getType()))
+                .registerTypeAdapter(new TypeToken<List<RelationPermission>>() {}.getType(), new EnumMapDeserializer<>(RelationPermission.class, new TypeToken<List<String>>() {}.getType()))
+                .registerTypeAdapter(ICustomIcon.class, new IconAdapter())
+                .create();
 
         Type type = new TypeToken<LinkedHashMap<String, TownData>>() {}.getType();
 
-        townDataMap = gson.fromJson(reader, type);
+        try (Reader reader = new FileReader(file)) {
+            townDataMap = gson.fromJson(reader, type);
+        } catch (IOException e) {
+            TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);
+            e.printStackTrace();
+            return;
+        }
 
         int id = 0;
         for (String cle : townDataMap.keySet()) {

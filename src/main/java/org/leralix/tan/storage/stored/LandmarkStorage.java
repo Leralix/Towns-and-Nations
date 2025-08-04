@@ -72,29 +72,28 @@ public class LandmarkStorage {
         }
     }
 
-    public void load(){
-
+    public void load() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Landmarks.json");
-        if (file.exists()){
-            Reader reader;
-            try {
-                reader = new FileReader(file);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+        if (file.exists()) {
             Type type = new TypeToken<HashMap<String, Landmark>>() {}.getType();
-            landMarkMap = gson.fromJson(reader, type);
+
+            try (Reader reader = new FileReader(file)) {
+                landMarkMap = gson.fromJson(reader, type);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to load landmarks", e);
+            }
 
             int ID = 0;
-            for (String ids: landMarkMap.keySet()) {
-                int newID =  Integer.parseInt(ids.substring(1));
-                if(newID > ID)
+            for (String ids : landMarkMap.keySet()) {
+                int newID = Integer.parseInt(ids.substring(1));
+                if (newID > ID)
                     ID = newID;
             }
-            newLandmarkID = ID+1;
+            newLandmarkID = ID + 1;
         }
     }
+
 
     public void save() {
 

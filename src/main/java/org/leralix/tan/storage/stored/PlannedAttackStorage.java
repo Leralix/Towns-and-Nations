@@ -60,28 +60,31 @@ public class PlannedAttackStorage {
         return warDataMapWithWarKey.get(warID);
     }
 
-    public static void load(){
-
+    public static void load() {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(WarGoal.class, new WargoalTypeAdapter())
-                .setPrettyPrinting().
-                create();
+                .setPrettyPrinting()
+                .create();
+
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Planned_wars.json");
-        if (file.exists()){
-            Reader reader;
-            try {
-                reader = new FileReader(file);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+
+        if (file.exists()) {
             Type type = new TypeToken<HashMap<String, PlannedAttack>>() {}.getType();
-            warDataMapWithWarKey = gson.fromJson(reader, type);
-            for(PlannedAttack plannedAttack : warDataMapWithWarKey.values()){
+
+            try (Reader reader = new FileReader(file)) {
+                warDataMapWithWarKey = gson.fromJson(reader, type);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to load planned wars", e);
+            }
+
+            for (PlannedAttack plannedAttack : warDataMapWithWarKey.values()) {
                 warDataMapWithWarKey.put(plannedAttack.getID(), plannedAttack);
             }
         }
+
         setupAllAttacks();
     }
+
 
     public static void save() {
 

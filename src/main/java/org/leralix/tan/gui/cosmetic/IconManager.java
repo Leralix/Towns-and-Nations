@@ -36,7 +36,7 @@ public class IconManager {
 
                 iconMap.put(iconKey, iconType);
             } catch (IllegalArgumentException e) {
-                plugin.getLogger().warning("Unkown key : " + key);
+                plugin.getLogger().warning("Unknown key : " + key);
             }
         }
     }

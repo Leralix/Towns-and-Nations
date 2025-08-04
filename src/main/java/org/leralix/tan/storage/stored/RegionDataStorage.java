@@ -101,35 +101,34 @@ public class RegionDataStorage {
     }
 
     public void loadStats() {
-
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Regions.json");
-        if (!file.exists()){
+        if (!file.exists()) {
             return;
         }
 
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(new TypeToken<Map<TownRelation, List<String>>>() {}.getType(),new EnumMapDeserializer<>(TownRelation.class, new TypeToken<List<String>>(){}.getType()))
+                .registerTypeAdapter(new TypeToken<Map<TownRelation, List<String>>>() {}.getType(), new EnumMapDeserializer<>(TownRelation.class, new TypeToken<List<String>>() {}.getType()))
                 .registerTypeAdapter(ICustomIcon.class, new IconAdapter())
                 .create();
 
-        Reader reader;
-        try {
-            reader = new FileReader(file);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
         Type type = new TypeToken<LinkedHashMap<String, RegionData>>() {}.getType();
-        regionStorage = gson.fromJson(reader, type);
+
+        try (Reader reader = new FileReader(file)) {
+            regionStorage = gson.fromJson(reader, type);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load region stats", e);
+        }
 
         int id = 0;
         for (Map.Entry<String, RegionData> entry : regionStorage.entrySet()) {
             String cle = entry.getKey();
-            int newID =  Integer.parseInt(cle.substring(1));
-            if(newID > id)
+            int newID = Integer.parseInt(cle.substring(1));
+            if (newID > id)
                 id = newID;
         }
-        nextID = id+1;
+        nextID = id + 1;
     }
+
 
     public void saveStats() {
 

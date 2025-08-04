@@ -84,24 +84,22 @@ public class PlayerDataStorage {
         return playerStorage.values();
     }
 
-    public void loadStats(){
-
+    public void loadStats() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/TAN - Players.json");
-        if (file.exists()){
-            Reader reader;
-            try {
-                reader = new FileReader(file);
-            } catch (FileNotFoundException e) {
-                TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);
-                return;
-            }
+
+        if (file.exists()) {
             Type type = new TypeToken<HashMap<String, PlayerData>>() {}.getType();
-            playerStorage = gson.fromJson(reader, type);
 
+            try (Reader reader = new FileReader(file)) {
+                playerStorage = gson.fromJson(reader, type);
+            } catch (IOException e) {
+                TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);
+                e.printStackTrace();
+            }
         }
-
     }
+
     public void saveStats() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

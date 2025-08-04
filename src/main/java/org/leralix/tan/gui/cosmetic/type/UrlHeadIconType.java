@@ -10,11 +10,15 @@ import org.bukkit.profile.PlayerTextures;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class UrlHeadIconType extends IconType {
 
     private final String headUrl;
+
+    private static final Map<String, PlayerProfile> profileCache = new HashMap<>();
 
     public UrlHeadIconType(String headUrl) {
         this.headUrl = headUrl;
@@ -39,10 +43,18 @@ public class UrlHeadIconType extends IconType {
     }
 
     private static PlayerProfile getProfile(URL url) {
+        String key = url.toString();
+
+        if (profileCache.containsKey(key)) {
+            return profileCache.get(key);
+        }
+
         PlayerProfile profile = Bukkit.createPlayerProfile(UUID.randomUUID());
         PlayerTextures textures = profile.getTextures();
         textures.setSkin(url);
         profile.setTextures(textures);
+
+        profileCache.put(key, profile);
         return profile;
     }
 
@@ -52,5 +64,9 @@ public class UrlHeadIconType extends IconType {
         meta.setOwnerProfile(playerProfile);
         skull.setItemMeta(meta);
         return skull;
+    }
+
+    public static void clearCache() {
+        profileCache.clear();
     }
 }

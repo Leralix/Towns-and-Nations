@@ -12,8 +12,10 @@ public class PlayerHeadIconType extends IconType {
 
     @Override
     protected ItemStack getItemStack(Player player) {
-        PlayerProfile playerProfile = player.getPlayerProfile();
-        return createSkull(playerProfile);
+        return new ItemStack(Material.PLAYER_HEAD); // On retourne une tête de steve
+
+        //PlayerProfile playerProfile = player.getPlayerProfile();
+        //return createSkull(playerProfile);
     }
 
     private ItemStack createSkull(PlayerProfile playerProfile) {

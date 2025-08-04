@@ -27,22 +27,7 @@ public class PlayerHeadIcon implements ICustomIcon {
     public ItemStack getIcon() {
         if(playerUUID == null) return new ItemStack(Material.SKELETON_SKULL);
 
-        ItemStack icon = new ItemStack(Material.PLAYER_HEAD);
-
-        SkullMeta skullMeta = (SkullMeta) icon.getItemMeta();
-
-        if(skullMeta == null){
-            return icon;
-        }
-        if(playerUUID != null){
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
-            skullMeta.setOwningPlayer(offlinePlayer);
-        }
-        else {
-            return new ItemStack(Material.SKELETON_SKULL);
-        }
-        icon.setItemMeta(skullMeta);
-        return icon;
+        return new ItemStack(Material.PLAYER_HEAD);
     }
     
     
