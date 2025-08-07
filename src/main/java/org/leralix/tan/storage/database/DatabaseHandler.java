@@ -7,10 +7,7 @@ import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +29,8 @@ public abstract class DatabaseHandler {
                 VALUES (?, ?, ?, ?, ?)
             """;
 
-            try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(insertSQL)) {
+            try (Connection conn = dataSource.getConnection();
+                    PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
                 preparedStatement.setString(1, transactionHistory.getDate());
                 preparedStatement.setString(2, transactionHistory.getType().toString());
                 preparedStatement.setString(3, transactionHistory.getTerritoryDataID());
@@ -57,7 +55,8 @@ public abstract class DatabaseHandler {
         // Map pour regrouper les transactions par date
         Map<String, List<TransactionHistory>> groupedByDate = new HashMap<>();
 
-        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(selectSQL)) {
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(selectSQL)) {
             preparedStatement.setString(1, territoryData.getID());
             preparedStatement.setString(2, type.toString());
 
@@ -89,7 +88,8 @@ public abstract class DatabaseHandler {
         AND type != ?
     """;
 
-        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(deleteSQL)) {
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(deleteSQL)) {
             preparedStatement.setInt(1, nbDays);
             preparedStatement.setString(1, type.toString());
         } catch (SQLException e) {
@@ -98,7 +98,8 @@ public abstract class DatabaseHandler {
     }
 
     protected void checkIfHistoryDbExists() {
-        try (Statement statement = dataSource.getConnection().createStatement()) {
+        try (Connection conn = dataSource.getConnection();
+             Statement statement = conn.createStatement()) {
             statement.execute("""
                 CREATE TABLE IF NOT EXISTS territoryTransactionHistory (
                 date TEXT,
