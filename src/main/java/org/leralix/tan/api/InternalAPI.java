@@ -1,10 +1,7 @@
 package org.leralix.tan.api;
 
 import org.leralix.lib.data.PluginVersion;
-import org.leralix.tan.api.managers.ClaimManager;
-import org.leralix.tan.api.managers.LandmarkManager;
-import org.leralix.tan.api.managers.PlayerManager;
-import org.leralix.tan.api.managers.TerritoryManager;
+import org.leralix.tan.api.managers.*;
 import org.leralix.tan.events.EventManager;
 import org.tan.api.TanAPI;
 import org.tan.api.getters.*;
@@ -16,6 +13,7 @@ public class InternalAPI extends TanAPI {
     ClaimManager claimManager = ClaimManager.getInstance();
     LandmarkManager landmarkManager = LandmarkManager.getInstance();
     EventManager eventManager = EventManager.getInstance();
+    FortManager fortManager = FortManager.getInstance();
 
     PluginVersion pluginVersion;
     PluginVersion minimumSupportingMapPlugin;
@@ -49,6 +47,11 @@ public class InternalAPI extends TanAPI {
     @Override
     public TanEventManager getEventManager() {
         return eventManager;
+    }
+
+    @Override
+    public TanFortManager getFortManager() {
+        return fortManager;
     }
 
     @Override
