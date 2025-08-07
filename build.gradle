@@ -60,14 +60,14 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'io.github.leralix:sphere-lib:0.4.7'
+    compileOnly 'io.github.leralix:sphere-lib:0.5.1'
     compileOnly 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'
     compileOnly 'com.mojang:authlib:4.0.43'
     compileOnly 'net.luckperms:api:5.4'
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     compileOnly 'me.clip:placeholderapi:2.11.5'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.9'
-    implementation 'io.github.leralix:tan-api:0.4.4'
+    implementation 'io.github.leralix:tan-api:0.5.0'
     implementation 'org.bstats:bstats-bukkit:3.1.0'
     implementation 'net.objecthunter:exp4j:0.4.8'
     implementation("dev.triumphteam:triumph-gui:3.1.11")
