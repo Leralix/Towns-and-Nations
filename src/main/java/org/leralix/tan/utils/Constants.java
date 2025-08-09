@@ -8,6 +8,8 @@ import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 
+import java.util.List;
+
 public class Constants {
 
 
@@ -28,6 +30,7 @@ public class Constants {
     private static double fortCaptureRadius;
     private static int propertySignMargin;
     private static long warDuration;
+    private static List<String> BlacklistedCommandsDuringAttacks;
 
 
     public static void init(){
@@ -55,6 +58,8 @@ public class Constants {
         fortCaptureRadius = config.getDouble("fortCaptureRadius", 10.0);
         propertySignMargin = config.getInt("maxPropertyMargin", 3);
         warDuration = config.getLong("WarDuration") * 1200;
+        //Attacks
+        BlacklistedCommandsDuringAttacks = config.getStringList("BlacklistedCommandsDuringAttacks");
     }
 
     public static boolean displayTerritoryColor(){
@@ -118,5 +123,9 @@ public class Constants {
 
     public static long getWarDuration() {
         return warDuration;
+    }
+
+    public static List<String> getBlacklistedCommandsDuringAttacks() {
+        return BlacklistedCommandsDuringAttacks;
     }
 }

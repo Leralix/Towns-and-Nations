@@ -28,10 +28,7 @@ import org.leralix.tan.war.legacy.WarRole;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class CurrentWar {
 
@@ -367,10 +364,10 @@ public class CurrentWar {
         this.name = message;
     }
 
-    public List<Player> getAllPlayers() {
+    public List<Player> getAllOnlinePlayers() {
         List<ITanPlayer> res = new ArrayList<>(getDefendingPlayers());
         res.addAll(getAttackersPlayers());
-        return res.stream().map(ITanPlayer::getPlayer).toList();
+        return res.stream().map(ITanPlayer::getPlayer).filter(Objects::nonNull).toList();
     }
 
 }

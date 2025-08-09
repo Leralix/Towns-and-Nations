@@ -7,10 +7,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.TanChatUtils;
@@ -40,6 +42,13 @@ public class CreatefortEvent extends RightClickListenerEvent {
 
         if(upBlock.getType() != Material.AIR){
             player.sendMessage(TanChatUtils.getTANString() + Lang.CANNOT_CREATE_FORT_IF_ABOVE_BLOCKED.get(tanPlayer));
+            return;
+        }
+
+        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(upBlock.getChunk());
+        if(tanTerritory.getID().equals(claimedChunk.getOwnerID())){
+            player.sendMessage(TanChatUtils.getTANString() +
+                    Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(tanPlayer));
             return;
         }
 

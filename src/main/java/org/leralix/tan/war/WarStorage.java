@@ -10,6 +10,7 @@ import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -94,13 +95,13 @@ public class WarStorage {
                 .setPrettyPrinting()
                 .create();
         File file = new File(TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/storage/json/Wars.json");
-        file.getParentFile().mkdir();
-
         try {
+            Files.createDirectories(file.getParentFile().toPath());
             file.createNewFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         Writer writer;
         try {
             writer = new FileWriter(file, false);

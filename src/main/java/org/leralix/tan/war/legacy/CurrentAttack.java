@@ -149,7 +149,7 @@ public class CurrentAttack {
     }
 
     public void displayBoundaries() {
-        for (Player player : attackData.getAllPlayers()) {
+        for (Player player : attackData.getAllOnlinePlayers()) {
             if(player != null){
                 displayBoundaries(player);
             }

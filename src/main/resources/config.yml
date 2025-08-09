@@ -133,13 +133,13 @@ TownMaxLevel: 10
 
 #Enable PVP between player whose towns share a certain relation
 #Default if missing : true
-disablePvpWhenRelationIs :
-  SELF : true #Players of the same town
-  ALLIANCE : true
-  NON_AGGRESSION : true
-  NEUTRAL : true
-  EMBARGO : true
-  WAR : true
+disablePvpWhenRelationIs:
+  SELF: true #Players of the same town
+  ALLIANCE: true
+  NON_AGGRESSION: true
+  NEUTRAL: true
+  EMBARGO: true
+  WAR: true
 
 ########################
 ##       Events       ##
@@ -152,54 +152,54 @@ disablePvpWhenRelationIs :
 # CONCERNED: Only the players involved by the event (members of the territory, players in the same alliance, etc.)
 # NONE: No one will be notified
 events:
-  TOWN_CREATED :
-    BROADCAST : "ALL"
-    NEWSLETTER : "ALL"
+  TOWN_CREATED:
+    BROADCAST: "ALL"
+    NEWSLETTER: "ALL"
   TOWN_DELETED:
     BROADCAST: "ALL"
     NEWSLETTER: "ALL"
-  PLAYER_APPLICATION :
-    BROADCAST : "CONCERNED"
-    NEWSLETTER : "CONCERNED"
-  PLAYER_JOIN_TOWN :
-    BROADCAST : "CONCERNED"
-    NEWSLETTER : "CONCERNED"
-  REGION_CREATED :
-    BROADCAST : "ALL"
-    NEWSLETTER : "ALL"
+  PLAYER_APPLICATION:
+    BROADCAST: "CONCERNED"
+    NEWSLETTER: "CONCERNED"
+  PLAYER_JOIN_TOWN:
+    BROADCAST: "CONCERNED"
+    NEWSLETTER: "CONCERNED"
+  REGION_CREATED:
+    BROADCAST: "ALL"
+    NEWSLETTER: "ALL"
   REGION_DELETED:
     BROADCAST: "ALL"
     NEWSLETTER: "ALL"
   TERRITORY_VASSAL_PROPOSAL:
     BROADCAST: "CONCERNED"
     NEWSLETTER: "CONCERNED"
-  TERRITORY_VASSAL_ACCEPTED :
-    BROADCAST : "ALL"
-    NEWSLETTER : "ALL"
-  TERRITORY_VASSAL_FORCED :
-    BROADCAST : "ALL"
-    NEWSLETTER : "ALL"
-  TERRITORY_VASSAL_INDEPENDENT :
-    BROADCAST : "ALL"
-    NEWSLETTER : "ALL"
-  DIPLOMACY_PROPOSAL :
-    BROADCAST : "CONCERNED"
-    NEWSLETTER : "CONCERNED"
+  TERRITORY_VASSAL_ACCEPTED:
+    BROADCAST: "ALL"
+    NEWSLETTER: "ALL"
+  TERRITORY_VASSAL_FORCED:
+    BROADCAST: "ALL"
+    NEWSLETTER: "ALL"
+  TERRITORY_VASSAL_INDEPENDENT:
+    BROADCAST: "ALL"
+    NEWSLETTER: "ALL"
+  DIPLOMACY_PROPOSAL:
+    BROADCAST: "CONCERNED"
+    NEWSLETTER: "CONCERNED"
   DIPLOMACY_ACCEPTED:
-    BROADCAST : "ALL"
-    NEWSLETTER : "ALL"
-  ATTACK_DECLARED :
-    BROADCAST : "ALL"
-    NEWSLETTER : "ALL"
-  ATTACK_WON_BY_ATTACKER :
-    BROADCAST : "ALL"
-    NEWSLETTER : "ALL"
-  ATTACK_WON_BY_DEFENDER :
-    BROADCAST : "ALL"
-    NEWSLETTER : "ALL"
-  ATTACK_CANCELLED :
-    BROADCAST : "ALL"
-    NEWSLETTER : "ALL"
+    BROADCAST: "ALL"
+    NEWSLETTER: "ALL"
+  ATTACK_DECLARED:
+    BROADCAST: "ALL"
+    NEWSLETTER: "ALL"
+  ATTACK_WON_BY_ATTACKER:
+    BROADCAST: "ALL"
+    NEWSLETTER: "ALL"
+  ATTACK_WON_BY_DEFENDER:
+    BROADCAST: "ALL"
+    NEWSLETTER: "ALL"
+  ATTACK_CANCELLED:
+    BROADCAST: "ALL"
+    NEWSLETTER: "ALL"
 
 
 ########################
@@ -243,7 +243,7 @@ allowedTimeSlotsWar:
 #Admin needs to approve every war. Admins need to use /tan admin gui to approve or deny a war
 AdminApproval: false
 
-#The duration of a war in minutes
+#The duration of an attack in minutes
 WarDuration: 30
 
 #The minimum time before starting a war in minutes
@@ -251,16 +251,18 @@ MinimumTimeBeforeAttack: 120 #2 hours
 #The maximum time before starting a war in minutes
 MaximumTimeBeforeAttack: 4320 #72 hours
 
-#War works on a scale between 0 and 100 and start at 50.
-#When a player is killed, it shifts the balance toward the killer team.
-#This score determines the percentage of progress needed to win, based on the number of connected players on the enemy team.
-#If the multiplier is 0.5, a player killed will give 0.5 * (50 / enemyTeamSize) points to the killer team.
-#The lower the multiplier, the longer the war will last.
-warScoreMultiplier : 0.70
 
 # Set the maximum number of chunks a territory can conquer during a war.
 # Set the value to 0 for unlimited chunks (capped by the maximum number of chunks the territory currently own).
 MaximumChunkConquer: 0
+
+#Commands blocked during attacks
+#Example : ["command 1", "command 1"]
+#You can use separated command if needed :
+#"/tan pay" WILL NOT block "/tan gui", "/tan claim"
+#"/tp"      WILL     block "/tp @r", "/tp <playerName>"...
+BlacklistedCommandsDuringAttacks: [ "/tan pay", "/tp" ]
+
 
 ## Forts
 Forts:
@@ -294,7 +296,7 @@ enabledPermissions:
   INTERACT_DOOR: true
   BREAK_BLOCK: true
   PLACE_BLOCK: true
-  ATTACK_PASSIVE_MOB : true
+  ATTACK_PASSIVE_MOB: true
   INTERACT_BUTTON: true
   INTERACT_REDSTONE: true
   INTERACT_FURNACE: true
@@ -362,8 +364,8 @@ enableMidnightGenerateResource: true
 #    coordinate : [0,0,10,10]
 
 claimBlacklist:
-  - name : "world"
-    coordinate : [0,0,1,1]
+  - name: "world"
+    coordinate: [ 0,0,1,1 ]
 
 #If a town cannot pay the territory upkeep, % of chunks that will be unclaimed
 percentageOfChunksUnclaimed: 15.0
@@ -406,7 +408,7 @@ wildernessRules:
     INTERACT_MINECART: true
     USE_BONE_MEAL: true
     INTERACT_BERRIES: true
-  world_nether :
+  world_nether:
     INTERACT_CHEST: true
     #add other rules here
 
@@ -428,18 +430,18 @@ TimeBeforeClearingNewsletter: 7
 #Database url cannot be configured
 
 database:
-    #Database type (sqlite or mysql)
-    type: "sqlite"
-    #Database host (if using sqlite, leave empty)
-    host: "localhost"
-    #Database port (if using sqlite, unused)
-    port: 3306
-    #Database name (if using sqlite, unused)
-    name: "towns_and_nations"
-    #Database user (if using sqlite, unused)
-    user: "user"
-    #Database password (if using sqlite, unused)
-    password: "password"
+  #Database type (sqlite or mysql)
+  type: "sqlite"
+  #Database host (if using sqlite, leave empty)
+  host: "localhost"
+  #Database port (if using sqlite, unused)
+  port: 3306
+  #Database name (if using sqlite, unused)
+  name: "towns_and_nations"
+  #Database user (if using sqlite, unused)
+  user: "user"
+  #Database password (if using sqlite, unused)
+  password: "password"
 
 ########################
 ##     Extensions     ##
@@ -447,10 +449,10 @@ database:
 
 ##WorldGuard
 #Defines which chunk's properties will be overridden by a worldguard region
-worldguard_override_wilderness : true
-worldguard_override_town : false
-worldguard_override_region : false
-worldguard_override_landmark : false
+worldguard_override_wilderness: true
+worldguard_override_town: false
+worldguard_override_region: false
+worldguard_override_landmark: false
 
 ########################
 ##       Storage      ##
