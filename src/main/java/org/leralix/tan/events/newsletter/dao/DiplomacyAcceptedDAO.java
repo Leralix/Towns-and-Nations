@@ -12,13 +12,15 @@ import java.util.UUID;
 
 public class DiplomacyAcceptedDAO extends NewsletterSubDAO<DiplomacyAcceptedNews> {
 
+    private static final String TABLE_NAME = "diplomacy_accepted_newsletter";
+
     public DiplomacyAcceptedDAO(DataSource dataSource) {
         super(dataSource);
     }
 
     @Override
     protected void createTableIfNotExists() {
-        String sql = "CREATE TABLE IF NOT EXISTS diplomacy_accepted_newsletter (" +
+        String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                 "id VARCHAR(36) PRIMARY KEY, " +
                 "proposingTerritoryID VARCHAR(36) NOT NULL, " +
                 "receivingTerritoryID VARCHAR(36) NOT NULL, " +
@@ -36,7 +38,7 @@ public class DiplomacyAcceptedDAO extends NewsletterSubDAO<DiplomacyAcceptedNews
 
     @Override
     public void save(DiplomacyAcceptedNews newsletter) {
-        String sql = "INSERT INTO diplomacy_accepted_newsletter (id, proposingTerritoryID, receivingTerritoryID, wantedRelation, isWorseRelation) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO " + TABLE_NAME + " (id, proposingTerritoryID, receivingTerritoryID, wantedRelation, isWorseRelation) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -53,7 +55,7 @@ public class DiplomacyAcceptedDAO extends NewsletterSubDAO<DiplomacyAcceptedNews
 
     @Override
     public DiplomacyAcceptedNews load(UUID id, long date) {
-        String sql = "SELECT proposingTerritoryID, receivingTerritoryID, wantedRelation, isWorseRelation FROM diplomacy_accepted_newsletter WHERE id = ?";
+        String sql = "SELECT proposingTerritoryID, receivingTerritoryID, wantedRelation, isWorseRelation FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, id);
@@ -70,5 +72,17 @@ public class DiplomacyAcceptedDAO extends NewsletterSubDAO<DiplomacyAcceptedNews
             throw new RuntimeException("Failed to load player application newsletter", e);
         }
         return null;
+    }
+
+    @Override
+    public void delete(UUID id) {
+        String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setObject(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to delete from table " + TABLE_NAME, e);
+        }
     }
 }

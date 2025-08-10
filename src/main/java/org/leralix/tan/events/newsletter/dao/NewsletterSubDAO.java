@@ -19,4 +19,6 @@ public abstract class NewsletterSubDAO<T extends Newsletter> {
     public abstract void save(T newsletter) throws SQLException;
 
     public abstract T load(UUID id, long date) throws SQLException;
+
+    public abstract void delete(UUID uuid);
 }

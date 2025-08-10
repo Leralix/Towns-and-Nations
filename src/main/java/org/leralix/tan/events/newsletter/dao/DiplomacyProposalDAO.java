@@ -12,13 +12,15 @@ import java.util.UUID;
 
 public class DiplomacyProposalDAO extends NewsletterSubDAO<DiplomacyProposalNews> {
 
+    private static final String TABLE_NAME = "diplomacy_proposal_newsletter";
+
     public DiplomacyProposalDAO(DataSource dataSource) {
         super(dataSource);
     }
 
     @Override
     protected void createTableIfNotExists() {
-        String sql = "CREATE TABLE IF NOT EXISTS diplomacy_proposal_newsletter (" +
+        String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                 "id VARCHAR(36) PRIMARY KEY, " +
                 "proposingTerritoryID VARCHAR(36) NOT NULL, " +
                 "receivingTerritoryID VARCHAR(36) NOT NULL, " +
@@ -35,7 +37,7 @@ public class DiplomacyProposalDAO extends NewsletterSubDAO<DiplomacyProposalNews
 
     @Override
     public void save(DiplomacyProposalNews newsletter) {
-        String sql = "INSERT INTO diplomacy_proposal_newsletter (id, proposingTerritoryID, receivingTerritoryID, wantedRelation) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO " + TABLE_NAME + " (id, proposingTerritoryID, receivingTerritoryID, wantedRelation) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -51,7 +53,7 @@ public class DiplomacyProposalDAO extends NewsletterSubDAO<DiplomacyProposalNews
 
     @Override
     public DiplomacyProposalNews load(UUID id, long date) {
-        String sql = "SELECT proposingTerritoryID, receivingTerritoryID, wantedRelation FROM diplomacy_proposal_newsletter WHERE id = ?";
+        String sql = "SELECT proposingTerritoryID, receivingTerritoryID, wantedRelation FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, id);
@@ -67,5 +69,17 @@ public class DiplomacyProposalDAO extends NewsletterSubDAO<DiplomacyProposalNews
             throw new RuntimeException("Failed to load diplomacy proposal newsletter", e);
         }
         return null;
+    }
+
+    @Override
+    public void delete(UUID id) {
+        String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setObject(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to delete from table " + TABLE_NAME, e);
+        }
     }
 }

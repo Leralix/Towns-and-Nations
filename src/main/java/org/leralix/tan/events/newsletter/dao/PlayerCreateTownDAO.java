@@ -64,6 +64,7 @@ public class PlayerCreateTownDAO extends NewsletterSubDAO<TownCreatedNews> {
         return null;
     }
 
+    @Override
     public void delete(UUID id) {
         String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection conn = dataSource.getConnection();

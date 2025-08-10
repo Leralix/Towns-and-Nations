@@ -29,6 +29,7 @@ public class NewsletterStorage {
     public static NewsletterStorage getInstance() {
         if (instance == null) {
             instance = new NewsletterStorage();
+            instance.clearOldNewsletters();
         }
         return instance;
     }

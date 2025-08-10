@@ -166,27 +166,40 @@ public class NewsletterDAO {
         LocalDateTime cutoff = LocalDateTime.now().minus(duration);
 
         String selectSql = "SELECT id, type FROM newsletter WHERE date_created < ?";
+        List<UUID> idsToDelete = new ArrayList<>();
+        List<NewsletterType> typesToDelete = new ArrayList<>();
+
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(selectSql)) {
             ps.setTimestamp(1, Timestamp.valueOf(cutoff));
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    String id = rs.getString("id");
+                    String idStr = rs.getString("id");
                     String typeStr = rs.getString("type");
 
-                    if (!NewsletterType.isValidEnumValue(typeStr)) continue;
-
-                    NewsletterType type = NewsletterType.valueOf(typeStr);
-                    NewsletterSubDAO<?> subDAO = subDaos.get(type);
-                    if (subDAO != null) {
-                        //subDAO.delete(UUID.fromString(id)); To add
+                    if (!NewsletterType.isValidEnumValue(typeStr)) {
+                        continue;
                     }
 
-                    removeNewsletter(UUID.fromString(id));
+                    idsToDelete.add(UUID.fromString(idStr));
+                    typesToDelete.add(NewsletterType.valueOf(typeStr));
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to delete old newsletters", e);
+            throw new RuntimeException("Failed to select old newsletters", e);
+        }
+
+        for (int i = 0; i < idsToDelete.size(); i++) {
+            UUID id = idsToDelete.get(i);
+            NewsletterType type = typesToDelete.get(i);
+
+            NewsletterSubDAO<?> subDAO = subDaos.get(type);
+            if (subDAO != null) {
+                subDAO.delete(id);
+            }
+
+            removeNewsletter(id);
         }
     }
+
 }

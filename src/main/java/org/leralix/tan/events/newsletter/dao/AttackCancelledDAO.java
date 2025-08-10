@@ -11,13 +11,15 @@ import java.util.UUID;
 
 public class AttackCancelledDAO extends NewsletterSubDAO<AttackCancelledByDefenderNewsletter> {
 
+    private static final String TABLE_NAME = "attack_cancelled_newsletter";
+
     public AttackCancelledDAO(DataSource dataSource) {
         super(dataSource);
     }
 
     @Override
     protected void createTableIfNotExists() {
-        String sql = "CREATE TABLE IF NOT EXISTS attack_cancelled_newsletter (" +
+        String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                 "id VARCHAR(36) PRIMARY KEY, " +
                 "attackingTerritoryID VARCHAR(36) NOT NULL, " +
                 "defendingTerritoryID VARCHAR(36) NOT NULL" +
@@ -33,7 +35,7 @@ public class AttackCancelledDAO extends NewsletterSubDAO<AttackCancelledByDefend
 
     @Override
     public void save(AttackCancelledByDefenderNewsletter newsletter) {
-        String sql = "INSERT INTO attack_cancelled_newsletter (id, attackingTerritoryID, defendingTerritoryID) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO " + TABLE_NAME + " (id, attackingTerritoryID, defendingTerritoryID) VALUES (?, ?, ?)";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -48,7 +50,7 @@ public class AttackCancelledDAO extends NewsletterSubDAO<AttackCancelledByDefend
 
     @Override
     public AttackCancelledByDefenderNewsletter load(UUID id, long date) {
-        String sql = "SELECT attackingTerritoryID, defendingTerritoryID FROM attack_cancelled_newsletter WHERE id = ?";
+        String sql = "SELECT attackingTerritoryID, defendingTerritoryID FROM " + TABLE_NAME + " WHERE id = ?";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -64,5 +66,17 @@ public class AttackCancelledDAO extends NewsletterSubDAO<AttackCancelledByDefend
             throw new RuntimeException("Failed to load player application newsletter", e);
         }
         return null;
+    }
+
+    @Override
+    public void delete(UUID id) {
+        String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setObject(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to delete from table " + TABLE_NAME, e);
+        }
     }
 }

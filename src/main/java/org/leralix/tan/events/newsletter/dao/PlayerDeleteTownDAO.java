@@ -3,7 +3,10 @@ package org.leralix.tan.events.newsletter.dao;
 import org.leralix.tan.events.newsletter.news.TownDeletedNews;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.UUID;
 
 public class PlayerDeleteTownDAO extends NewsletterSubDAO<TownDeletedNews> {
@@ -62,6 +65,7 @@ public class PlayerDeleteTownDAO extends NewsletterSubDAO<TownDeletedNews> {
         return null;
     }
 
+    @Override
     public void delete(UUID id) {
         String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection conn = dataSource.getConnection();

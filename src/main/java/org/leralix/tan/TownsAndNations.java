@@ -87,8 +87,8 @@ public final class TownsAndNations extends JavaPlugin {
      * used to check if the plugin has just been updated and config file needs an update
      */
     private static final PluginVersion CURRENT_VERSION = new PluginVersion(0,15,0);
-    private static final PluginVersion MINIMUM_SUPPORTING_DYNMAP = new PluginVersion(0,11,0);
-    private static final PluginVersion MINIMUM_SUPPORTING_SPHERELIB = new PluginVersion(0,4,4);
+    private static final PluginVersion MINIMUM_SUPPORTING_DYNMAP = new PluginVersion(0,13,0);
+    private static final PluginVersion MINIMUM_SUPPORTING_SPHERELIB = new PluginVersion(0,5,1);
 
     /**
      * The Latest version of the plugin on GitHub.
@@ -324,7 +324,7 @@ public final class TownsAndNations extends JavaPlugin {
         pluginManager.registerEvents(new PropertySignListener(),this);
         pluginManager.registerEvents(new LandmarkChestListener(),this);
         pluginManager.registerEvents(new EconomyInitialiser(), this);
-        pluginManager.registerEvents(new CommandBlocker(), this);
+
         pluginManager.registerEvents(new RightClickListener(), this);
     }
 
