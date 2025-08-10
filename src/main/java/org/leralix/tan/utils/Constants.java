@@ -31,6 +31,7 @@ public class Constants {
     private static int propertySignMargin;
     private static long warDuration;
     private static List<String> BlacklistedCommandsDuringAttacks;
+    private static int nbChunkToCaptureMax;
 
 
     public static void init(){
@@ -60,6 +61,11 @@ public class Constants {
         warDuration = config.getLong("WarDuration") * 1200;
         //Attacks
         BlacklistedCommandsDuringAttacks = config.getStringList("BlacklistedCommandsDuringAttacks");
+        nbChunkToCaptureMax = config.getInt("MaximumChunkConquer", 0);
+        if(nbChunkToCaptureMax == 0){
+            nbChunkToCaptureMax = Integer.MAX_VALUE;
+        }
+
     }
 
     public static boolean displayTerritoryColor(){
@@ -127,5 +133,9 @@ public class Constants {
 
     public static List<String> getBlacklistedCommandsDuringAttacks() {
         return BlacklistedCommandsDuringAttacks;
+    }
+
+    public static int getNbChunkToCaptureMax() {
+        return nbChunkToCaptureMax;
     }
 }

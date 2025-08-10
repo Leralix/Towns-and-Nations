@@ -9,6 +9,7 @@ import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
+import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.WarRole;
@@ -32,6 +33,12 @@ public class SelectNbChunksForConquer extends ChatListenerEvent {
         Integer amount = parseStringToInt(message);
         if(amount == null){
             player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
+            return;
+        }
+
+        int maxAmountOfChunkToCapture = Constants.getNbChunkToCaptureMax();
+        if(amount > maxAmountOfChunkToCapture){
+            player.sendMessage(Lang.VALUE_EXCEED_MAXIMUM_ERROR.get(player, maxAmountOfChunkToCapture));
             return;
         }
 

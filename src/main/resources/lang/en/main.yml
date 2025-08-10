@@ -7,6 +7,7 @@ language:
   #Common errors
   PLAYER_NO_TOWN: "§cYou do not have a town"
   PLAYER_NO_REGION: "§cYou do not have a region"
+  VALUE_EXCEED_MAXIMUM_ERROR: "§cThe value exceed the maximum authorized ({0})"
   TOWN_NO_REGION: "§cYour town does not belongs to a region"
   PLAYER_NOT_LEADER_OF_REGION: "§cYou need to be the leader of the region to execute this action"
   LEADER_CANNOT_QUIT_TOWN: "§cThe leader cannot quit a town"
