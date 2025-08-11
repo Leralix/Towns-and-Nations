@@ -3,6 +3,8 @@ package org.leralix.tan.gui.user.territory;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -10,8 +12,10 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.SelectNbChunksForConquer;
 import org.leralix.tan.utils.GuiUtil;
+import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.WarRole;
+import org.leralix.tan.war.legacy.wargoals.ConquerWarGoal;
 import org.leralix.tan.war.legacy.wargoals.LiberateWarGoal;
 import org.leralix.tan.war.legacy.wargoals.SubjugateWarGoal;
 
@@ -48,14 +52,34 @@ public class ChooseWarGoal extends BasicGui {
     }
 
     private @NotNull GuiItem getConquerButton() {
+
+        System.out.println(warRole);
+        System.out.println(war.getGoals(warRole));
+
+        boolean conquerAlreadyUsed = war.getGoals(warRole).stream()
+                .anyMatch(warGoal -> warGoal instanceof ConquerWarGoal);
+
+        List<String> description = new ArrayList<>();
+        description.add(Lang.CONQUER_WAR_GOAL_DESC.get(tanPlayer));
+        if (conquerAlreadyUsed){
+            description.add(Lang.GUI_ONLY_ONE_CONQUER_WAR_GOAL.get(tanPlayer));
+        }
+        else {
+            description.add(Lang.GUI_GENERIC_CLICK_TO_SELECT.get(tanPlayer));
+        }
+
         return iconManager.get(IconKey.WAR_GOAL_CONQUER_ICON)
                 .setName(Lang.CONQUER_WAR_GOAL.get(langType))
-                .setDescription(
-                        Lang.CONQUER_WAR_GOAL_DESC.get(tanPlayer),
-                        Lang.GUI_GENERIC_CLICK_TO_SELECT.get(tanPlayer)
-                )
+                .setDescription(description)
                 .setAction(
                         action -> {
+
+                            if(conquerAlreadyUsed){
+                                SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_ONLY_ONE_CONQUER_WAR_GOAL.get(tanPlayer));
+                                return;
+                            }
+
                             PlayerChatListenerStorage.register(player, new SelectNbChunksForConquer(war, warRole, new SelectWarGoals(player, territoryData, war, warRole)));
                             player.closeInventory();
                         }

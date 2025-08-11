@@ -24,11 +24,9 @@ public class CurrentAttack {
     private final CurrentWar attackData;
     private boolean end;
 
-
     private final long totalTime;
     private long remaining;
     private final BossBar bossBar;
-
 
     public CurrentAttack(CurrentWar plannedAttack, long startTime, long endTime) {
 

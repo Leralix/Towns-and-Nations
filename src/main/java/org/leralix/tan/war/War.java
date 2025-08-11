@@ -14,7 +14,6 @@ import java.util.List;
 
 public class War {
 
-
     private final String ID;
     private String name;
     private final String mainDefenderID;

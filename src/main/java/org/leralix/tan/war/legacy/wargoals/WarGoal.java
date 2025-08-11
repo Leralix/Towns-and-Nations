@@ -11,7 +11,10 @@ import java.util.List;
 
 public abstract class WarGoal {
 
-    String type;
+    /**
+     * Used for serialization
+     */
+    private final String type;
 
     protected WarGoal(){
         this.type = this.getClass().getSimpleName();

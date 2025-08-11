@@ -963,6 +963,7 @@ language:
   CONQUER_WAR_GOAL: "§aConquer territory"
   CONQUER_WAR_GOAL_DESC: "§fConquer a certain amount of territory"
   CONQUER_WAR_GOAL_DESC1: "§fNumber of chunks : §2{0}§f chunks"
+  GUI_ONLY_ONE_CONQUER_WAR_GOAL: "§cOnly one conquer war goal can be added"
   GUI_CONQUER_ADD_CHUNK: "§aIncrease the number of chunk"
   GUI_CONQUER_REMOVE_CHUNK: "§aDecrease the number of chunk"
   GUI_CONQUER_CHUNK_INFO: "§fCurrent number of chunk: §2{0}"

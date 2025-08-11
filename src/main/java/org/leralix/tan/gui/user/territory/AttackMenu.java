@@ -31,7 +31,6 @@ public class AttackMenu extends IteratorGUI {
         iterator(getWars(tanPlayer), territoryData::openMainMenu);
 
         gui.open(player);
-
     }
 
 
