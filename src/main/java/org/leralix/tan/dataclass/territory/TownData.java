@@ -29,10 +29,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.stored.*;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.StringUtil;
-import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.utils.TeamUtils;
+import org.leralix.tan.utils.*;
 
 import java.util.*;
 
@@ -425,7 +422,7 @@ public class TownData extends TerritoryData {
 
         if (getNumberOfClaimedChunk() != 0 &&
                 !NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTown(chunk, getID()) &&
-                !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("TownAllowNonAdjacentChunks", false)) {
+                !Constants.allowNonAdjacentChunksForTown()) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
             return;
         }

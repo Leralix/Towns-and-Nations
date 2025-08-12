@@ -203,6 +203,13 @@ public class RegionData extends TerritoryData {
             return;
         }
 
+        if (getNumberOfClaimedChunk() != 0 &&
+                !NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTown(chunk, getID()) &&
+                !Constants.allowNonAdjacentChunksForRegion()) {
+            player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
+            return;
+        }
+
         ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
         if (!currentClaimedChunk.canTerritoryClaim(player, this)) {
             return;

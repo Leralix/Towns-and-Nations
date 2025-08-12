@@ -32,7 +32,8 @@ public class Constants {
     private static long warDuration;
     private static List<String> BlacklistedCommandsDuringAttacks;
     private static int nbChunkToCaptureMax;
-
+    private static boolean allowNonAdjacentChunksForTown;
+    private static boolean allowNonAdjacentChunksForRegion;
 
     public static void init(){
 
@@ -65,6 +66,9 @@ public class Constants {
         if(nbChunkToCaptureMax == 0){
             nbChunkToCaptureMax = Integer.MAX_VALUE;
         }
+        //Claims
+        allowNonAdjacentChunksForRegion = config.getBoolean("RegionAllowNonAdjacentChunks", false);
+        allowNonAdjacentChunksForTown = config.getBoolean("TownAllowNonAdjacentChunks", false);
 
     }
 
@@ -137,5 +141,13 @@ public class Constants {
 
     public static int getNbChunkToCaptureMax() {
         return nbChunkToCaptureMax;
+    }
+
+    public static boolean allowNonAdjacentChunksForRegion() {
+        return allowNonAdjacentChunksForRegion;
+    }
+
+    public static boolean allowNonAdjacentChunksForTown() {
+        return allowNonAdjacentChunksForTown;
     }
 }
