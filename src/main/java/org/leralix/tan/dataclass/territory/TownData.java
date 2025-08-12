@@ -15,7 +15,6 @@ import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.newhistory.PlayerTaxHistory;
 import org.leralix.tan.dataclass.territory.economy.*;
 import org.leralix.tan.economy.EconomyUtil;
@@ -36,11 +35,6 @@ import java.util.*;
 
 public class TownData extends TerritoryData {
 
-    @Deprecated(since = "0.14.0", forRemoval = true)
-    private String TownId;
-    @Deprecated(since = "0.14.0", forRemoval = true)
-    private Integer townDefaultRankID;
-    @Deprecated(since = "0.14.0", forRemoval = true)
     //This is all that should be kept after the transition to the parent class
     private String UuidLeader;
     private String townTag;

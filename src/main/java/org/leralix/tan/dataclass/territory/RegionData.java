@@ -16,7 +16,6 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.chunk.RegionClaimedChunk;
 import org.leralix.tan.dataclass.newhistory.SubjectTaxHistory;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
@@ -46,7 +45,6 @@ public class RegionData extends TerritoryData {
     private String nationID;
     private final List<String> townsInRegion;
 
-    @Deprecated(since = "0.14.4", forRemoval = true)
     public RegionData(String id, String name, ITanPlayer owner) {
         super(id, name, owner);
         TownData ownerTown = owner.getTown();
