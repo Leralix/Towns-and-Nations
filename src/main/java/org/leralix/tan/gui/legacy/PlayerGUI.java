@@ -395,11 +395,6 @@ public class PlayerGUI {
                 WarStorage warStorage = WarStorage.getInstance();
 
                 if (relation == TownRelation.WAR) {
-                    if (territoryData.getNumberOfClaimedChunk() < 1) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_ATTACK_NO_CLAIMED_CHUNK.get(tanPlayer));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
-                        return;
-                    }
                     if (warStorage.isTerritoryAtWarWith(mainTerritory, territoryData)) {
                         player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_ATTACK_ALREADY_ATTACKING.get(tanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
