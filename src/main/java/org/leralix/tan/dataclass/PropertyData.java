@@ -472,12 +472,12 @@ public class PropertyData {
         }
     }
 
-    public void createPropertySign(Player player, PropertyData property, Block block, BlockFace blockFace) {
+    public void createPropertySign(Player player, Block block, BlockFace blockFace) {
         // Calcul de la position de la pancarte
-        Location signLocation = block.getRelative(blockFace).getLocation();
-        signLocation.getBlock().setType(blockFace == BlockFace.UP ? Material.OAK_SIGN : Material.OAK_WALL_SIGN);
+        Location selectedSignLocation = block.getRelative(blockFace).getLocation();
+        selectedSignLocation.getBlock().setType(blockFace == BlockFace.UP ? Material.OAK_SIGN : Material.OAK_WALL_SIGN);
 
-        BlockState blockState = signLocation.getBlock().getState();
+        BlockState blockState = selectedSignLocation.getBlock().getState();
         Sign sign = (Sign) blockState;
 
         // Gestion de l'orientation pour les pancartes murales
@@ -499,7 +499,7 @@ public class PropertyData {
         block.setMetadata("propertySign", new FixedMetadataValue(TownsAndNations.getPlugin(), getTotalID()));
         sign.getBlock().setMetadata("propertySign", new FixedMetadataValue(TownsAndNations.getPlugin(), getTotalID()));
 
-        this.signLocation = new Vector3D(signLocation);
+        this.signLocation = new Vector3D(selectedSignLocation);
         this.supportLocation = new Vector3D(block.getLocation());
         setSignData();
         updateSign();

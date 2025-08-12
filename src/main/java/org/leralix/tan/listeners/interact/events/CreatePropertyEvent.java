@@ -101,7 +101,7 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
         PropertyData property = playerTown.registerNewProperty(position1,position2, tanPlayer);
         new PlayerPropertyManager(player, property, HumanEntity::closeInventory);
 
-        property.createPropertySign(player, property, block, event.getBlockFace());
+        property.createPropertySign(player, block, event.getBlockFace());
         property.updateSign();
     }
 
