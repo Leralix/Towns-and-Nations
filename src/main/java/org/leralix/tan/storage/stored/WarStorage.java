@@ -1,4 +1,4 @@
-package org.leralix.tan.war;
+package org.leralix.tan.storage.stored;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.storage.typeadapter.WargoalTypeAdapter;
+import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
 import java.io.*;

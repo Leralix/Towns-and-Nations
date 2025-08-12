@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.factory.AbstractionFactory;
-import org.leralix.tan.storage.stored.CurrentWarStorage;
+import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.War;
@@ -32,7 +32,7 @@ class ChangeAttackNameTest {
         War war = new War("W1", town1, town2);
 
         CreateAttackData createAttackData = new CreateAttackData(war, WarRole.MAIN_ATTACKER);
-        PlannedAttack plannedAttack = CurrentWarStorage.newAttack(createAttackData);
+        PlannedAttack plannedAttack = PlannedAttackStorage.getInstance().newAttack(createAttackData);
 
         ChangeAttackName changeAttackName = new ChangeAttackName(plannedAttack, null);
 

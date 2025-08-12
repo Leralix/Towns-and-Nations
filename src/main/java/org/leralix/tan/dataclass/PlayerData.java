@@ -295,7 +295,7 @@ public class PlayerData implements ITanPlayer {
 
     public void clearAllTownApplications() {
         TownInviteDataStorage.removeInvitation(UUID); //Remove town invitation
-        for (TownData allTown : TownDataStorage.getInstance().getTownMap().values()) {
+        for (TownData allTown : TownDataStorage.getInstance().getAll().values()) {
             allTown.removePlayerJoinRequest(UUID); //Remove applications
         }
     }

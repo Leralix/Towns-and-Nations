@@ -42,7 +42,7 @@ public class ApplyToTownMenu extends IteratorGUI {
     public List<GuiItem> getTowns(){
         ArrayList<GuiItem> towns = new ArrayList<>();
 
-        for(TownData specificTownData : TownDataStorage.getInstance().getTownMap().values()){
+        for(TownData specificTownData : TownDataStorage.getInstance().getAll().values()){
             ItemStack townIcon = specificTownData.getIconWithInformations(tanPlayer.getLang());
             HeadUtils.addLore(townIcon,
                     "",

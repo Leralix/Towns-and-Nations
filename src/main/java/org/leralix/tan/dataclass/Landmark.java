@@ -160,7 +160,7 @@ public class Landmark {
         if(isOwned())
             getOwner().removeLandmark(getID());
         NewClaimedChunkStorage.getInstance().unclaimChunk(position.getLocation().getChunk());
-        LandmarkStorage.getInstance().getLandMarkMap().remove(getID());
+        LandmarkStorage.getInstance().delete(getID());
 
     }
 

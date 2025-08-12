@@ -16,7 +16,7 @@ import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.DefenderAcceptDemandsBeforeWarInternalEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.CurrentAttacksStorage;
-import org.leralix.tan.storage.stored.CurrentWarStorage;
+import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.DateUtil;
@@ -264,7 +264,7 @@ public class PlannedAttack {
         for (TerritoryData territory : getDefendingTerritories()) {
             territory.removePlannedAttack(this);
         }
-        CurrentWarStorage.remove(this);
+        PlannedAttackStorage.getInstance().delete(this);
     }
 
 

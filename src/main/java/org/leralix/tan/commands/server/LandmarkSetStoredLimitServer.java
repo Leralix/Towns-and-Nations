@@ -33,7 +33,7 @@ public class LandmarkSetStoredLimitServer extends SubCommand {
     @Override
     public List<String> getTabCompleteSuggestions(CommandSender commandSender, String s, String[] args) {
         if (args.length == 2) {
-            return LandmarkStorage.getInstance().getAll().stream().map(Landmark::getID).toList();
+            return LandmarkStorage.getInstance().getAll().values().stream().map(Landmark::getID).toList();
         }
         return Collections.emptyList();
     }

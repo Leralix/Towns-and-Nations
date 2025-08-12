@@ -9,8 +9,8 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.user.war.WarMenu;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.war.War;
-import org.leralix.tan.war.WarStorage;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -195,12 +195,12 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
     }
 
     private TerritoryData getTerritoryByName(String name) {
-        for(TownData townData : TownDataStorage.getInstance().getAll()){
+        for(TownData townData : TownDataStorage.getInstance().getAll().values()){
             if(townData.getName().equalsIgnoreCase(name)){
                 return townData;
             }
         }
-        for(RegionData regionData : RegionDataStorage.getInstance().getAll()){
+        for(RegionData regionData : RegionDataStorage.getInstance().getAll().values()){
             if(regionData.getName().equalsIgnoreCase(name)){
                 return regionData;
             }

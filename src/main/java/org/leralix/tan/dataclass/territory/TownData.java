@@ -125,7 +125,7 @@ public class TownData extends TerritoryData {
 
         EventManager.getInstance().callEvent(new PlayerJoinTownAcceptedInternalEvent(tanPlayer, this));
         TeamUtils.updateAllScoreboardColor();
-        TownDataStorage.getInstance().saveStats();
+        TownDataStorage.getInstance().save();
     }
 
     public void removePlayer(String tanPlayerID) {
@@ -140,7 +140,7 @@ public class TownData extends TerritoryData {
         getRank(tanPlayer).removePlayer(tanPlayer);
         townPlayerListId.remove(tanPlayer.getID());
         tanPlayer.leaveTown();
-        TownDataStorage.getInstance().saveStats();
+        TownDataStorage.getInstance().save();
     }
 
     @Override

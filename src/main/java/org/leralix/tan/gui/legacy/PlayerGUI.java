@@ -34,13 +34,9 @@ import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.DonateToTerritory;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
-import org.leralix.tan.storage.stored.LandmarkStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.*;
 import org.leralix.tan.war.War;
-import org.leralix.tan.war.WarStorage;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -453,8 +449,8 @@ public class PlayerGUI {
         List<GuiItem> guiItems = new ArrayList<>();
 
         List<String> territories = new ArrayList<>();
-        territories.addAll(TownDataStorage.getInstance().getTownMap().keySet());
-        territories.addAll(RegionDataStorage.getInstance().getRegionStorage().keySet());
+        territories.addAll(TownDataStorage.getInstance().getAll().keySet());
+        territories.addAll(RegionDataStorage.getInstance().getAll().keySet());
 
         territories.removeAll(relationListID); //Territory already have this relation
         territories.remove(territory.getID()); //Remove itself

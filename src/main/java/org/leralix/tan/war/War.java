@@ -6,7 +6,8 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.CurrentWarStorage;
+import org.leralix.tan.storage.stored.PlannedAttackStorage;
+import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.TerritoryUtil;
 import org.leralix.tan.war.legacy.WarRole;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;
@@ -89,7 +90,7 @@ public class War {
 
     public void endWar() {
         getMainAttacker().setRelation(getMainDefender(), TownRelation.NEUTRAL);
-        for(PlannedAttack plannedAttack : CurrentWarStorage.getWars()){
+        for(PlannedAttack plannedAttack : PlannedAttackStorage.getInstance().getAll().values()){
             if(plannedAttack.getWar().getID().equals(getID())){
                 plannedAttack.end();
             }

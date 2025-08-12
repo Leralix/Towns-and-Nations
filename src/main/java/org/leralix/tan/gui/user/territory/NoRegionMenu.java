@@ -76,7 +76,7 @@ public class NoRegionMenu extends BasicGui {
         return iconManager.get(IconKey.BROWSE_REGION_ICON)
                 .setName(Lang.GUI_REGION_BROWSE.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_REGION_BROWSE_DESC1.get(tanPlayer, RegionDataStorage.getInstance().getNumberOfRegion()),
+                        Lang.GUI_REGION_BROWSE_DESC1.get(tanPlayer, RegionDataStorage.getInstance().getAll().size()),
                         Lang.GUI_REGION_BROWSE_DESC2.get(tanPlayer)
                 )
                 .setAction(action -> {

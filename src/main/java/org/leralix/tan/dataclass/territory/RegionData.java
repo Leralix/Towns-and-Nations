@@ -391,7 +391,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     public Collection<TerritoryData> getPotentialVassals() {
-        return new ArrayList<>(TownDataStorage.getInstance().getTownMap().values());
+        return new ArrayList<>(TownDataStorage.getInstance().getAll().values());
     }
 
 

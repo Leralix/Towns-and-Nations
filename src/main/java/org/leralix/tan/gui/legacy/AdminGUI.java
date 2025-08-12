@@ -101,7 +101,7 @@ public class AdminGUI{
     private static void openAdminWarMenu(Player player, int page) {
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_WAR_MENU.get(), 6);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for(PlannedAttack plannedAttack : CurrentWarStorage.getWars()){
+        for(PlannedAttack plannedAttack : PlannedAttackStorage.getInstance().getAll().values()){
             ItemStack icon = plannedAttack.getAdminIcon();
 
             GuiItem item = ItemBuilder.from(icon).asGuiItem(event -> {
@@ -129,7 +129,7 @@ public class AdminGUI{
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
-        for(Landmark landmark : LandmarkStorage.getInstance().getAll()){
+        for(Landmark landmark : LandmarkStorage.getInstance().getAll().values()){
             ItemStack icon = landmark.getIcon();
             HeadUtils.addLore(icon,
                     "",
@@ -238,7 +238,7 @@ public class AdminGUI{
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
-        for (RegionData regionData : RegionDataStorage.getInstance().getAll()){
+        for (RegionData regionData : RegionDataStorage.getInstance().getAll().values()){
 
             ItemStack regionIcon = HeadUtils.getRegionIcon(regionData);
             HeadUtils.addLore(regionIcon, Lang.ADMIN_GUI_REGION_DESC.get());
@@ -370,7 +370,7 @@ public class AdminGUI{
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_TOWN_MENU.get(),6);
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (TownData townData : TownDataStorage.getInstance().getTownMap().values()) {
+        for (TownData townData : TownDataStorage.getInstance().getAll().values()) {
             ItemStack townIcon = townData.getIconWithInformations(tanPlayer.getLang());
             HeadUtils.addLore(townIcon,
                     "",
@@ -461,7 +461,7 @@ public class AdminGUI{
     private static void openChooseNewOverlord(Player player, TerritoryData territoryData, int page) {
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_CHANGE_OVERLORD.get(territoryData.getName()),6);
 
-        Collection<RegionData> territoryDataList = RegionDataStorage.getInstance().getAll();
+        Collection<RegionData> territoryDataList = RegionDataStorage.getInstance().getAll().values();
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         List<GuiItem> guiItems = new ArrayList<>();
 
@@ -518,7 +518,7 @@ public class AdminGUI{
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_PLAYER_MENU.get(),6);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (ITanPlayer tanPlayer : PlayerDataStorage.getInstance().getAll()) {
+        for (ITanPlayer tanPlayer : PlayerDataStorage.getInstance().getAll().values()) {
 
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(tanPlayer.getID()));
             ItemStack playerHead = HeadUtils.getPlayerHeadInformation(offlinePlayer);
@@ -588,7 +588,7 @@ public class AdminGUI{
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
 
-        for (TownData townData : TownDataStorage.getInstance().getTownMap().values()) {
+        for (TownData townData : TownDataStorage.getInstance().getAll().values()) {
             ItemStack townIcon = townData.getIconWithInformations(tanPlayer.getLang());
             HeadUtils.addLore(townIcon,
                     "",

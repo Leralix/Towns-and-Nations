@@ -49,7 +49,7 @@ public class TerritoryManager implements TanTerritoryManager {
 
     @Override
     public Collection<TanTown> getTowns() {
-        return townDataStorageInstance.getAll().stream()
+        return townDataStorageInstance.getAll().values().stream()
                 .map(TownDataWrapper::of)
                 .map(t -> (TanTown) t)
                 .toList();
@@ -68,7 +68,7 @@ public class TerritoryManager implements TanTerritoryManager {
 
     @Override
     public Collection<TanRegion> getRegions() {
-        return regionDataStorageInstance.getAll().stream()
+        return regionDataStorageInstance.getAll().values().stream()
                 .map(RegionDataWrapper::of)
                 .map(TanRegion.class::cast)
                 .toList();

@@ -46,9 +46,9 @@ import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.CurrentAttacksStorage;
-import org.leralix.tan.storage.stored.CurrentWarStorage;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.*;
 import org.leralix.tan.war.PlannedAttack;
@@ -494,7 +494,7 @@ public abstract class TerritoryData {
         }
 
         getRelations().cleanAll(this);   //Cancel all Relation between the deleted territory and other territories
-        CurrentWarStorage.territoryDeleted(this);
+        PlannedAttackStorage.getInstance().territoryDeleted(this);
     }
 
     public boolean canConquerChunk(ClaimedChunk2 chunk) {
@@ -620,14 +620,7 @@ public abstract class TerritoryData {
 
     protected Map<Integer, RankData> getRanks(){
         if(ranks == null) {
-            if(this instanceof TownData townData){
-                ranks = townData.getOldRanks();
-            }
-            else {
-                ranks = new HashMap<>();
-            }
-        } else if (ranks.isEmpty() && this instanceof TownData townData) {
-            ranks = townData.getOldRanks();
+            ranks = new HashMap<>();
         }
         return ranks;
     }

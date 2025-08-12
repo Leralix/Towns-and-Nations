@@ -12,7 +12,7 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.user.territory.AttackMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.CurrentWarStorage;
+import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.DateUtil;
 import org.leralix.tan.utils.GuiUtil;
@@ -54,9 +54,7 @@ public class CreateAttackMenu extends BasicGui {
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, e -> new WarMenu(player, territoryData, war)));
 
         gui.open(player);
-
     }
-
 
     private @NotNull GuiItem getConfirmButton() {
 
@@ -82,7 +80,7 @@ public class CreateAttackMenu extends BasicGui {
 
                     EventManager.getInstance().callEvent(new AttackDeclaredInternalEvent(war.getEnemyTerritory(warRole), war.getTerritory(warRole)));
 
-                    CurrentWarStorage.newAttack(attackData);
+                    PlannedAttackStorage.getInstance().newAttack(attackData);
                     new AttackMenu(player, war.getTerritory(warRole));
                 })
                 .asGuiItem(player);

@@ -73,7 +73,7 @@ public class TanPlayerWrapper implements TanPlayer {
     public Collection<TanProperty> getPropertiesRented() {
         List<TanProperty> properties = new ArrayList<>();
 
-        for(TownData town : TownDataStorage.getInstance().getAll()){
+        for(TownData town : TownDataStorage.getInstance().getAll().values()){
             for(PropertyData property : town.getProperties()){
                 ITanPlayer renter = property.getRenter();
                 if(renter == null){
@@ -90,7 +90,7 @@ public class TanPlayerWrapper implements TanPlayer {
     @Override
     public Collection<TanProperty> getPropertiesForSale() {
         List<TanProperty> properties = new ArrayList<>();
-        for(TownData town : TownDataStorage.getInstance().getAll()){
+        for(TownData town : TownDataStorage.getInstance().getAll().values()){
             for(PropertyData property : town.getProperties()){
                 ITanPlayer owner = property.getOwner();
                 if(getUUID().equals(owner.getUUID()) && property.isForSale()){

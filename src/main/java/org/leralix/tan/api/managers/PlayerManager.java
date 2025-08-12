@@ -41,7 +41,7 @@ public class PlayerManager implements TanPlayerManager {
 
     @Override
     public Collection<TanPlayer> getAll() {
-        return playerDataStorage.getAll().stream()
+        return playerDataStorage.getAll().values().stream()
                 .map(TanPlayerWrapper::of)
                 .toList();
     }

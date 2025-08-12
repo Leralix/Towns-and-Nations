@@ -83,7 +83,7 @@ public class TANCustomNBT {
      * Sets metadata for property sign blocks and the blocks directly beneath them for all properties in all towns.
      */
     public static void setSignData(){
-        for( TownData townData : TownDataStorage.getInstance().getTownMap().values() ){
+        for( TownData townData : TownDataStorage.getInstance().getAll().values() ){
             for( PropertyData propertyData : townData.getPropertyDataMap().values() ){
                 Block block = propertyData.getSign();
                 Location blockBeneathLocation = propertyData.getSign().getLocation().add(0,-1,0);
@@ -96,7 +96,7 @@ public class TANCustomNBT {
     }
 
     public static void setLandmarksData(){
-        for(Landmark landmark : LandmarkStorage.getInstance().getAll()){
+        for(Landmark landmark : LandmarkStorage.getInstance().getAll().values()){
             landmark.getChest().ifPresent(block -> setBockMetaData(block, "LandmarkChest", landmark.getID()));
         }
     }
