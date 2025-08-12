@@ -30,27 +30,29 @@ public class MapCommand extends PlayerSubCommand {
     public String getDescription() {
         return Lang.MAP_COMMAND_DESC.get();
     }
+
     public int getArguments() {
         return 1;
     }
+
     @Override
     public String getSyntax() {
         return "/tan map";
     }
 
     @Override
-    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {
         return new ArrayList<>();
     }
 
     @Override
     public void perform(Player player, String[] args) {
-        if(args.length == 1) {
+        if (args.length == 1) {
             openMap(player, new MapSettings());
             return;
         }
-        if(args.length == 3) {
-            openMap(player, new MapSettings(args[1],args[2]));
+        if (args.length == 3) {
+            openMap(player, new MapSettings(args[1], args[2]));
             return;
         }
 
@@ -88,12 +90,11 @@ public class MapCommand extends PlayerSubCommand {
                 ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunkX, chunkZ, player.getWorld().getUID().toString());
                 TextComponent icon = claimedChunk.getMapIcon(player);
 
-                if(dx == 0 && dz == 0){
+                if (dx == 0 && dz == 0) {
 
-                    if(claimedChunk instanceof TerritoryChunk territoryChunk && territoryChunk.isOccupied()){
+                    if (claimedChunk instanceof TerritoryChunk territoryChunk && territoryChunk.isOccupied()) {
                         icon.setText("🟠"); //Hashed orange square emoji
-                    }
-                    else{
+                    } else {
                         icon.setText("🌑"); // For some reason, the only round emoji with the same size as ⬛ is this emoji
                     }
                 }

@@ -11,12 +11,12 @@ import java.util.List;
 public class FortManager implements TanFortManager {
 
 
-    private final FortStorage FortStorage;
+    private final FortStorage fortStorage;
 
     private static FortManager instance;
 
     private FortManager () {
-        FortStorage = FortDataStorage.getInstance();
+        fortStorage = FortDataStorage.getInstance();
     }
 
     public static FortManager getInstance() {
@@ -28,7 +28,7 @@ public class FortManager implements TanFortManager {
 
     @Override
     public List<TanFort> getForts() {
-        return FortStorage.getForts().stream()
+        return fortStorage.getForts().stream()
                 .map(FortDataWrapper::of)
                 .map((TanFort t) -> t)
                 .toList();
@@ -36,6 +36,6 @@ public class FortManager implements TanFortManager {
 
     @Override
     public TanFort getFort(String fortID) {
-        return FortDataWrapper.of(FortStorage.getFort(fortID));
+        return FortDataWrapper.of(fortStorage.getFort(fortID));
     }
 }
