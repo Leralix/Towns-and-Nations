@@ -94,6 +94,7 @@ public class FortDataStorage extends FortStorage {
         TerritoryData owner = fort.getOwner();
         owner.removeFort(fortID);
         forts.remove(fortID);
+        save();
     }
 
 
@@ -121,6 +122,7 @@ public class FortDataStorage extends FortStorage {
         }
     }
 
+    @Override
     public void save() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

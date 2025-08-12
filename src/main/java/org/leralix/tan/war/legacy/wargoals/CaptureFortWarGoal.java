@@ -5,6 +5,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.impl.FortDataStorage;
 import org.leralix.tan.war.fort.Fort;
 
 import java.util.ArrayList;
@@ -12,11 +13,15 @@ import java.util.List;
 
 public class CaptureFortWarGoal extends WarGoal {
 
-    private final Fort fortToCapture;
+    private final String fortToCaptureID;
 
     public CaptureFortWarGoal(Fort fortToCapture){
         super();
-        this.fortToCapture = fortToCapture;
+        this.fortToCaptureID = fortToCapture.getID();
+    }
+
+    private Fort getFort(){
+        return FortDataStorage.getInstance().getFort(fortToCaptureID);
     }
 
     @Override
@@ -24,7 +29,7 @@ public class CaptureFortWarGoal extends WarGoal {
 
         List<String> description = new ArrayList<>();
         description.add(Lang.CAPTURE_FORT_WAR_GOAL_DESC.get(langType));
-        description.add(Lang.CAPTURE_FORT_WAR_GOAL_DESC1.get(langType, fortToCapture.getName()));
+        description.add(Lang.CAPTURE_FORT_WAR_GOAL_DESC1.get(langType, getFort().getName()));
         description.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(langType));
 
         return buildIcon(Material.IRON_BLOCK, description);
@@ -38,9 +43,10 @@ public class CaptureFortWarGoal extends WarGoal {
     @Override
     public void applyWarGoal(TerritoryData winner, TerritoryData looser) {
 
-        fortToCapture.setOwner(winner);
-        winner.addOwnedFort(fortToCapture);
-        looser.removeOwnedFort(fortToCapture);
+        Fort fort = getFort();
+        fort.setOwner(winner);
+        winner.addOwnedFort(fort);
+        looser.removeOwnedFort(fort);
     }
 
     @Override
@@ -50,7 +56,7 @@ public class CaptureFortWarGoal extends WarGoal {
 
     @Override
     public String getCurrentDesc() {
-        return Lang.GUI_CAPTURE_LANDMARK_CURRENT_DESC.get(fortToCapture.getName());
+        return Lang.GUI_CAPTURE_LANDMARK_CURRENT_DESC.get(getFort().getName());
     }
 
 }

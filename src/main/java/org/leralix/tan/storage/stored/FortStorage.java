@@ -43,4 +43,7 @@ public abstract class FortStorage {
         fort.delete();
         delete(fort.getID());
     }
+
+    public abstract void save();
+
 }

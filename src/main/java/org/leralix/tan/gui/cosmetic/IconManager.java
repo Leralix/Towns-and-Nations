@@ -79,4 +79,7 @@ public class IconManager {
         return new IconBuilder(new ItemIconType(icon));
     }
 
+    public IconBuilder get(Material material) {
+        return get(new ItemStack(material));
+    }
 }

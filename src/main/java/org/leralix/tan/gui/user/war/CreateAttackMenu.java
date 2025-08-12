@@ -5,21 +5,21 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.AttackDeclaredInternalEvent;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.user.territory.AttackMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.CurrentWarStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.DateUtil;
 import org.leralix.tan.utils.GuiUtil;
+import org.leralix.tan.war.War;
 import org.leralix.tan.war.WarTimeSlot;
 import org.leralix.tan.war.legacy.CreateAttackData;
+import org.leralix.tan.war.legacy.WarRole;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -31,22 +31,16 @@ import static org.leralix.lib.data.SoundEnum.REMOVE;
 public class CreateAttackMenu extends BasicGui {
 
     private final CreateAttackData attackData;
-    private final TerritoryData attackingTerritory;
-    private final TerritoryData attackedTerritory;
+    private final TerritoryData territoryData;
+    private final War war;
+    private final WarRole warRole;
 
-    public CreateAttackMenu(Player player, TerritoryData attackingTerritory, TerritoryData attackedTerritory) {
-        super(player, Lang.HEADER_CREATE_WAR_MANAGER.get(player, attackedTerritory.getName()), 3);
-        this.attackData = new CreateAttackData(attackingTerritory, attackedTerritory);
-        this.attackingTerritory = attackingTerritory;
-        this.attackedTerritory = attackedTerritory;
-        open();
-    }
-
-    public CreateAttackMenu(Player player, CreateAttackData attackData) {
-        super(player, Lang.HEADER_CREATE_WAR_MANAGER.get(player, attackData.getMainDefender().getName()), 3);
-        this.attackData = attackData;
-        this.attackingTerritory = attackData.getMainAttacker();
-        this.attackedTerritory = attackData.getMainDefender();
+    public CreateAttackMenu(Player player, TerritoryData territoryData, War war, WarRole warRole) {
+        super(player, Lang.HEADER_CREATE_WAR_MANAGER.get(player, war.getMainDefender().getName()), 3);
+        this.territoryData = territoryData;
+        this.war = war;
+        this.warRole = warRole;
+        this.attackData = new CreateAttackData(war, warRole);
         open();
     }
 
@@ -57,7 +51,7 @@ public class CreateAttackMenu extends BasicGui {
         gui.setItem(2, 4, getAddTimeButton());
 
         gui.setItem(2, 8, getConfirmButton());
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, e -> PlayerGUI.openSingleRelation(player, attackingTerritory, TownRelation.WAR, 0)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, e -> new WarMenu(player, territoryData, war)));
 
         gui.open(player);
 
@@ -86,10 +80,10 @@ public class CreateAttackMenu extends BasicGui {
                         return;
                     }
 
-                    EventManager.getInstance().callEvent(new AttackDeclaredInternalEvent(attackedTerritory, attackingTerritory));
+                    EventManager.getInstance().callEvent(new AttackDeclaredInternalEvent(war.getEnemyTerritory(warRole), war.getTerritory(warRole)));
 
-                    CurrentWarStorage.newWar(attackData);
-                    new AttackMenu(player, attackingTerritory);
+                    CurrentWarStorage.newAttack(attackData);
+                    new AttackMenu(player, war.getTerritory(warRole));
                 })
                 .asGuiItem(player);
 
@@ -98,14 +92,9 @@ public class CreateAttackMenu extends BasicGui {
     private boolean isValid(List<String> errorMessages) {
         boolean isValid = true;
 
-        Instant warStart = Instant.now().plusSeconds(attackData.getDeltaDateTime() / 20);
+        Instant warStart = Instant.now().plusSeconds(attackData.getSelectedTime() / 20);
         if (!WarTimeSlot.getInstance().canWarBeDeclared(warStart)) {
             errorMessages.add(Lang.GUI_WARGOAL_OUTSIDE_AUTHORIZED_SLOTS.get(tanPlayer));
-            isValid = false;
-        }
-
-        if (!attackData.getWargoal().isCompleted()) {
-            errorMessages.add(Lang.GUI_WARGOAL_NOT_COMPLETED.get(tanPlayer));
             isValid = false;
         }
         return isValid;
@@ -135,7 +124,7 @@ public class CreateAttackMenu extends BasicGui {
 
     private @NotNull GuiItem getTimeIcon() {
 
-        Instant startTime = Instant.now().plusSeconds(attackData.getDeltaDateTime() / 20);
+        Instant startTime = Instant.now().plusSeconds(attackData.getSelectedTime() / 20);
 
         List<String> availableTimeSlots = new ArrayList<>();
         availableTimeSlots.add(TimeZoneManager.getInstance().formatDateForPlayer(tanPlayer, startTime));
@@ -143,7 +132,7 @@ public class CreateAttackMenu extends BasicGui {
         availableTimeSlots.addAll(WarTimeSlot.getInstance().getPrintedTimeSlots(tanPlayer.getLang()));
 
         return IconManager.getInstance().get(IconKey.WAR_START_TIME_ICON)
-                .setName(Lang.GUI_ATTACK_SET_TO_START_IN.get(tanPlayer, DateUtil.getDateStringFromTicks(attackData.getDeltaDateTime())))
+                .setName(Lang.GUI_ATTACK_SET_TO_START_IN.get(tanPlayer, DateUtil.getDateStringFromTicks(attackData.getSelectedTime())))
                 .setDescription(availableTimeSlots)
                 .asGuiItem(player);
     }
@@ -168,6 +157,4 @@ public class CreateAttackMenu extends BasicGui {
                 })
                 .asGuiItem(player);
     }
-
-
 }

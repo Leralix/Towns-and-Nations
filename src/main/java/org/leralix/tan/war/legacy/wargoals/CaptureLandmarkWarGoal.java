@@ -7,17 +7,22 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.stored.LandmarkStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CaptureLandmarkWarGoal extends WarGoal {
 
-    private final Landmark landmarkToCapture;
+    private final String landmarkToCaptureID;
 
     public CaptureLandmarkWarGoal(Landmark landmarkToCapture){
         super();
-        this.landmarkToCapture = landmarkToCapture;
+        this.landmarkToCaptureID = landmarkToCapture.getID();
+    }
+
+    private Landmark getLandmark(){
+        return LandmarkStorage.getInstance().get(landmarkToCaptureID);
     }
 
     @Override
@@ -25,7 +30,7 @@ public class CaptureLandmarkWarGoal extends WarGoal {
 
         List<String> description = new ArrayList<>();
         description.add(Lang.CAPTURE_LANDMARK_WAR_GOAL_DESC.get(langType));
-        description.add(Lang.GUI_SELECTED_LANDMARK_TO_CAPTURE.get(langType, landmarkToCapture.getName()));
+        description.add(Lang.GUI_SELECTED_LANDMARK_TO_CAPTURE.get(langType, getLandmark().getName()));
         description.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(langType));
 
         return buildIcon(Material.DIAMOND, description);
@@ -40,8 +45,9 @@ public class CaptureLandmarkWarGoal extends WarGoal {
     public void applyWarGoal(TerritoryData winner, TerritoryData territoryToSubjugate) {
 
         if(winner instanceof TownData winnerTown && territoryToSubjugate instanceof TownData townToSubjugate) {
-            townToSubjugate.removeLandmark(landmarkToCapture);
-            winnerTown.addLandmark(landmarkToCapture);
+            Landmark landmark = getLandmark();
+            townToSubjugate.removeLandmark(landmark);
+            winnerTown.addLandmark(landmark);
         }
     }
 
@@ -52,7 +58,7 @@ public class CaptureLandmarkWarGoal extends WarGoal {
 
     @Override
     public String getCurrentDesc() {
-        return Lang.GUI_CAPTURE_LANDMARK_CURRENT_DESC.get(landmarkToCapture.getName());
+        return Lang.GUI_CAPTURE_LANDMARK_CURRENT_DESC.get(getLandmark().getName());
     }
 
 }

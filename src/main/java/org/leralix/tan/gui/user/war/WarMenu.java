@@ -1,4 +1,4 @@
-package org.leralix.tan.gui.user.territory;
+package org.leralix.tan.gui.user.war;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
@@ -6,7 +6,8 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.user.war.CreateAttackMenu;
+import org.leralix.tan.gui.user.territory.SelectWarGoals;
+import org.leralix.tan.gui.user.territory.WarsMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.GuiUtil;
 import org.leralix.tan.war.War;
@@ -20,7 +21,7 @@ public class WarMenu extends BasicGui {
 
     private final TerritoryData territoryData;
     private final War war;
-    private final WarRole warRole; // Assuming the player is always an attacker in this menu
+    private final WarRole warRole;
 
     public WarMenu(Player player, TerritoryData territoryData, War war) {
         super(player, "War Menu", 3);
@@ -84,7 +85,7 @@ public class WarMenu extends BasicGui {
         return iconManager.get(IconKey.WAR_CREATE_ATTACK_ICON)
                 .setName(Lang.WAR_CREATE_ATTACK.get(langType))
                 .setDescription(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(langType))
-                .setAction(action -> new CreateAttackMenu(player, territoryData, war.getMainDefender()))
+                .setAction(action -> new CreateAttackMenu(player, territoryData, war, warRole))
                 .asGuiItem(player);
     }
 
@@ -93,7 +94,7 @@ public class WarMenu extends BasicGui {
 
         List<String> description = new ArrayList<>();
         description.add(Lang.WAR_ENEMY_GOAL_LIST_DESC1.get(langType));
-        for(WarGoal goal : war.getGoals(warRole.reverse())) {
+        for(WarGoal goal : war.getGoals(warRole.opposite())) {
             description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(langType, goal.getCurrentDesc()));
         }
 
@@ -111,26 +112,18 @@ public class WarMenu extends BasicGui {
 
     private @NotNull GuiItem getSurrenderButton() {
 
-        List<WarGoal> goals = war.getGoals(warRole.reverse());
 
         List<String> description = new ArrayList<>();
         description.add(Lang.WAR_SURRENDER_DESC1.get(langType));
         description.add(Lang.WAR_SURRENDER_DESC2.get(langType));
 
-        for(WarGoal goal : goals) {
-            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(langType, goal.getCurrentDesc()));
-        }
-
-        // If no goals are set, add a message
-        if(description.size() == 1) {
-            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST_NO_WAR_GOAL_SET.get(langType));
-        }
+        description.addAll(war.generateWarGoalsDesciption(warRole, langType));
 
         return iconManager.get(IconKey.WAR_SURRENDER_ICON)
                 .setName(Lang.WAR_SURRENDER.get(langType))
                 .setDescription(description)
                 .setAction( action -> {
-                    war.territorySurrender(territoryData, goals);
+                    war.territorySurrender(warRole.opposite());
                     new WarsMenu(player, territoryData);
                 })
                 .asGuiItem(player);

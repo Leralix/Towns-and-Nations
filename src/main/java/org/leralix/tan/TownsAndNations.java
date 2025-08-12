@@ -292,13 +292,7 @@ public final class TownsAndNations extends JavaPlugin {
 
         getLogger().info("[TaN] Savings Data");
 
-
-        RegionDataStorage.getInstance().saveStats();
-        TownDataStorage.getInstance().saveStats();
-        PlayerDataStorage.getInstance().saveStats();
-        NewClaimedChunkStorage.getInstance().save();
-        LandmarkStorage.getInstance().save();
-        CurrentWarStorage.save();
+        SaveStats.saveAll();
 
         try {
             Thread.sleep(50);

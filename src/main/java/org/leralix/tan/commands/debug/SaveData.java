@@ -3,6 +3,7 @@ package org.leralix.tan.commands.debug;
 import org.bukkit.command.CommandSender;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.impl.FortDataStorage;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.war.WarStorage;
@@ -44,6 +45,7 @@ public class SaveData extends SubCommand {
         LandmarkStorage.getInstance().save();
         CurrentWarStorage.save();
         WarStorage.getInstance().save();
+        FortDataStorage.getInstance().save();
         commandSender.sendMessage(TanChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
 }

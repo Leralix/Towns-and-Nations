@@ -17,18 +17,18 @@ import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.war.CurrentWar;
+import org.leralix.tan.war.PlannedAttack;
 
 public class CurrentAttack {
 
-    private final CurrentWar attackData;
+    private final PlannedAttack attackData;
     private boolean end;
 
     private final long totalTime;
     private long remaining;
     private final BossBar bossBar;
 
-    public CurrentAttack(CurrentWar plannedAttack, long startTime, long endTime) {
+    public CurrentAttack(PlannedAttack plannedAttack, long startTime, long endTime) {
 
         this.attackData = plannedAttack;
 
@@ -142,7 +142,7 @@ public class CurrentAttack {
     }
 
 
-    public CurrentWar getAttackData() {
+    public PlannedAttack getAttackData() {
         return attackData;
     }
 
@@ -214,7 +214,7 @@ public class CurrentAttack {
         ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(x, z, worldID);
 
         return claimedChunk2 instanceof TerritoryChunk territoryChunk &&
-                territoryChunk.getOwnerID().equals(attackData.getMainDefender().getID()) &&
+                territoryChunk.getOwnerID().equals(attackData.getWar().getMainDefenderID()) &&
                 !territoryChunk.isOccupied();
     }
 }

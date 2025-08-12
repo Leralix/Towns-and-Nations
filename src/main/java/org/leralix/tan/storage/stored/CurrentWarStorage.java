@@ -6,7 +6,8 @@ import com.google.gson.GsonBuilder;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.storage.typeadapter.WargoalTypeAdapter;
-import org.leralix.tan.war.CurrentWar;
+import org.leralix.tan.war.PlannedAttack;
+import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.CreateAttackData;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
@@ -17,29 +18,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CurrentWarStorage {
-    private static Map<String, CurrentWar> warDataMapWithWarKey = new HashMap<>();
+    private static Map<String, PlannedAttack> warDataMapWithWarKey = new HashMap<>();
 
 
-    public static CurrentWar newWar(CreateAttackData createAttackData){
-
+    public static PlannedAttack newAttack(CreateAttackData createAttackData){
         String newID = getNewID();
-        long deltaDateTime = createAttackData.getDeltaDateTime();
-        CurrentWar plannedAttack = new CurrentWar(newID, createAttackData, deltaDateTime);
+        long deltaDateTime = createAttackData.getSelectedTime();
+        PlannedAttack plannedAttack = new PlannedAttack(newID, createAttackData, deltaDateTime);
         add(plannedAttack);
         save();
         return plannedAttack;
     }
 
-    private static void add(CurrentWar plannedAttack) {
+    private static void add(PlannedAttack plannedAttack) {
         warDataMapWithWarKey.put(plannedAttack.getID(), plannedAttack);
     }
 
-    public static void remove(CurrentWar plannedAttack) {
+    public static void remove(PlannedAttack plannedAttack) {
         warDataMapWithWarKey.remove(plannedAttack.getID());
     }
 
     private static void setupAllAttacks(){
-        for(CurrentWar plannedAttack : warDataMapWithWarKey.values()){
+        for(PlannedAttack plannedAttack : warDataMapWithWarKey.values()){
             plannedAttack.setUpStartOfAttack();
         }
     }
@@ -52,11 +52,11 @@ public class CurrentWarStorage {
         return "W"+ID;
     }
 
-    public static Collection<CurrentWar> getWars() {
+    public static Collection<PlannedAttack> getWars() {
         return warDataMapWithWarKey.values();
     }
 
-    public static CurrentWar get(String warID) {
+    public static PlannedAttack get(String warID) {
         return warDataMapWithWarKey.get(warID);
     }
 
@@ -74,9 +74,9 @@ public class CurrentWarStorage {
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            Type type = new TypeToken<HashMap<String, CurrentWar>>() {}.getType();
+            Type type = new TypeToken<HashMap<String, PlannedAttack>>() {}.getType();
             warDataMapWithWarKey = gson.fromJson(reader, type);
-            for(CurrentWar plannedAttack : warDataMapWithWarKey.values()){
+            for(PlannedAttack plannedAttack : warDataMapWithWarKey.values()){
                 warDataMapWithWarKey.put(plannedAttack.getID(), plannedAttack);
             }
         }
@@ -118,9 +118,10 @@ public class CurrentWarStorage {
     }
 
     public static void territoryDeleted(TerritoryData territoryData) {
-        for(CurrentWar plannedAttack : getWars()){
-            if(plannedAttack.isMainAttacker(territoryData) || plannedAttack.isMainDefender(territoryData))
-                plannedAttack.endWar();
+        for(PlannedAttack plannedAttack : getWars()){
+            War war = plannedAttack.getWar();
+            if(war.isMainAttacker(territoryData) || war.isMainDefender(territoryData))
+                plannedAttack.end();
         }
     }
 }

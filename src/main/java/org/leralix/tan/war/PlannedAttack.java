@@ -25,49 +25,47 @@ import org.leralix.tan.war.capture.CaptureManager;
 import org.leralix.tan.war.legacy.CreateAttackData;
 import org.leralix.tan.war.legacy.CurrentAttack;
 import org.leralix.tan.war.legacy.WarRole;
-import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
 import java.time.Instant;
 import java.util.*;
 
-public class CurrentWar {
+public class PlannedAttack {
 
     private final String ID;
     private String name;
-    private final String mainDefenderID;
-    private final String mainAttackerID;
     private final Collection<String> defendersID;
     private final Collection<String> attackersID;
 
     private final long startTime;
     private final long endTime;
-    private final WarGoal warGoal;
+    private final War war;
+    private final WarRole warRole;
 
     private transient BukkitRunnable warStartTask;
     private transient BukkitRunnable warWarningTask;
 
     boolean isAdminApproved;
 
-    public CurrentWar(String id, CreateAttackData createAttackData, long startTime) {
+    public PlannedAttack(String id, CreateAttackData createAttackData, long startTime) {
         this.ID = id;
-        this.name = Lang.BASIC_ATTACK_NAME.get(createAttackData.getMainAttacker().getName(), createAttackData.getMainDefender().getName());
-        this.mainAttackerID = createAttackData.getMainAttacker().getID();
-        this.mainDefenderID = createAttackData.getMainDefender().getID();
+
+        this.war = createAttackData.getWar();
+        this.warRole = createAttackData.getAttackingSide();
+
+        this.name = Lang.BASIC_ATTACK_NAME.get(war.getMainAttacker().getName(), war.getMainDefender().getName());
 
         this.isAdminApproved = !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AdminApproval", false);
 
         this.attackersID = new ArrayList<>();
-        this.attackersID.add(mainAttackerID);
+        this.attackersID.add(war.getMainAttackerID());
         this.defendersID = new ArrayList<>();
-        this.defendersID.add(mainDefenderID);
+        this.defendersID.add(war.getMainDefenderID());
 
         this.startTime = (long) (new Date().getTime() * 0.02 + startTime);
         this.endTime = this.startTime + Constants.getWarDuration();
 
-        createAttackData.getMainDefender().addPlannedAttack(this);
-        createAttackData.getMainAttacker().addPlannedAttack(this);
-
-        this.warGoal = createAttackData.getWargoal();
+        war.getMainDefender().addPlannedAttack(this);
+        war.getMainAttacker().addPlannedAttack(this);
 
         setUpStartOfAttack();
     }
@@ -80,12 +78,8 @@ public class CurrentWar {
         return name;
     }
 
-    public TerritoryData getMainDefender() {
-        return TerritoryUtil.getTerritory(mainDefenderID);
-    }
-
-    public TerritoryData getMainAttacker() {
-        return TerritoryUtil.getTerritory(mainAttackerID);
+    public War getWar() {
+        return war;
     }
 
     public boolean isAdminApproved() {
@@ -195,11 +189,10 @@ public class CurrentWar {
         if (itemMeta != null) {
             itemMeta.setDisplayName(ChatColor.GREEN + name);
             ArrayList<String> lore = new ArrayList<>();
-            lore.add(Lang.ATTACK_ICON_DESC_1.get(getMainAttacker().getName()));
-            lore.add(Lang.ATTACK_ICON_DESC_2.get(getMainDefender().getName()));
+            lore.add(Lang.ATTACK_ICON_DESC_1.get(war.getMainAttacker().getName()));
+            lore.add(Lang.ATTACK_ICON_DESC_2.get(war.getMainDefender().getName()));
             lore.add(Lang.ATTACK_ICON_DESC_3.get(getNumberOfAttackers()));
             lore.add(Lang.ATTACK_ICON_DESC_4.get(getNumberOfDefenders()));
-            lore.add(Lang.ATTACK_ICON_DESC_5.get(warGoal.getCurrentDesc()));
             lore.add(Lang.ATTACK_ICON_DESC_6.get(DateUtil.getDateStringFromTicks(startDate)));
             lore.add(Lang.ATTACK_ICON_DESC_7.get(DateUtil.getDateStringFromTicks(attackDuration)));
             if (isAdminApproved) {
@@ -227,11 +220,10 @@ public class CurrentWar {
         if (itemMeta != null) {
             itemMeta.setDisplayName(ChatColor.GREEN + name);
             ArrayList<String> lore = new ArrayList<>();
-            lore.add(Lang.ATTACK_ICON_DESC_1.get(getMainAttacker().getName()));
-            lore.add(Lang.ATTACK_ICON_DESC_2.get(getMainDefender().getName()));
+            lore.add(Lang.ATTACK_ICON_DESC_1.get(war.getMainAttacker().getName()));
+            lore.add(Lang.ATTACK_ICON_DESC_2.get(war.getMainDefender().getName()));
             lore.add(Lang.ATTACK_ICON_DESC_3.get(getNumberOfAttackers()));
             lore.add(Lang.ATTACK_ICON_DESC_4.get(getNumberOfDefenders()));
-            lore.add(Lang.ATTACK_ICON_DESC_5.get(warGoal.getCurrentDesc()));
             lore.add(Lang.ATTACK_ICON_DESC_6.get(DateUtil.getDateStringFromTicks(startDate), exactTimeStart));
             lore.add(Lang.ATTACK_ICON_DESC_7.get(DateUtil.getDateStringFromTicks(attackDuration)));
             lore.add(Lang.ATTACK_ICON_DESC_8.get(getTerritoryRole(territoryConcerned).getName()));
@@ -251,7 +243,7 @@ public class CurrentWar {
         return defendersID.size();
     }
 
-    public void endWar() {
+    public void end() {
         if (warStartTask != null) {
             warStartTask.cancel();
         }
@@ -275,13 +267,6 @@ public class CurrentWar {
         CurrentWarStorage.remove(this);
     }
 
-    public boolean isMainAttacker(TerritoryData territory) {
-        return territory.getID().equals(mainAttackerID);
-    }
-
-    public boolean isMainDefender(TerritoryData territory) {
-        return territory.getID().equals(mainDefenderID);
-    }
 
     private boolean isSecondaryAttacker(TerritoryData territoryConcerned) {
         return attackersID.contains(territoryConcerned.getID());
@@ -289,10 +274,6 @@ public class CurrentWar {
 
     private boolean isSecondaryDefender(TerritoryData territoryConcerned) {
         return defendersID.contains(territoryConcerned.getID());
-    }
-
-    public WarGoal getWarGoal() {
-        return warGoal;
     }
 
     public WarRole getRole(ITanPlayer player) {
@@ -306,9 +287,9 @@ public class CurrentWar {
     }
 
     public WarRole getTerritoryRole(TerritoryData territory) {
-        if (isMainAttacker(territory))
+        if (war.isMainAttacker(territory))
             return WarRole.MAIN_ATTACKER;
-        if (isMainDefender(territory))
+        if (war.isMainDefender(territory))
             return WarRole.MAIN_DEFENDER;
         if (isSecondaryAttacker(territory))
             return WarRole.OTHER_ATTACKER;
@@ -325,11 +306,9 @@ public class CurrentWar {
     }
 
     public void defenderSurrendered() {
-
-        EventManager.getInstance().callEvent(new DefenderAcceptDemandsBeforeWarInternalEvent(getMainDefender(), getMainAttacker()));
-
-        getWarGoal().applyWarGoal(getMainAttacker(), getMainDefender());
-        endWar();
+        EventManager.getInstance().callEvent(new DefenderAcceptDemandsBeforeWarInternalEvent(war.getMainDefender(), war.getMainAttacker()));
+        war.territorySurrender(warRole);
+        end();
     }
 
     public ItemStack getAttackingIcon() {

@@ -28,9 +28,9 @@ import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.gui.landmark.LandmarkNoOwnerMenu;
 import org.leralix.tan.gui.user.territory.*;
+import org.leralix.tan.gui.user.war.WarMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.listeners.chat.events.ChangeAttackName;
 import org.leralix.tan.listeners.chat.events.DonateToTerritory;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
@@ -39,10 +39,8 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.*;
-import org.leralix.tan.war.CurrentWar;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.WarStorage;
-import org.leralix.tan.war.legacy.WarRole;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -97,92 +95,6 @@ public class PlayerGUI {
 
         gui.open(player);
     }
-
-    //Wars that will probably be reworked
-    public static void openSpecificPlannedAttackMenu(Player player, TerritoryData territory, CurrentWar plannedAttack) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_WAR_MANAGER.get(tanPlayer), 3);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
-
-        GuiItem attackIcon = ItemBuilder.from(plannedAttack.getIcon(tanPlayer, territory)).asGuiItem();
-        gui.setItem(1, 5, attackIcon);
-
-        ItemStack attackingSideInfo = plannedAttack.getAttackingIcon();
-        GuiItem attackingSidePanel = ItemBuilder.from(attackingSideInfo).asGuiItem();
-        gui.setItem(2, 2, attackingSidePanel);
-
-        ItemStack defendingSideInfo = plannedAttack.getDefendingIcon();
-        GuiItem defendingSidePanel = ItemBuilder.from(defendingSideInfo).asGuiItem();
-        gui.setItem(2, 4, defendingSidePanel);
-
-
-        WarRole territoryRole = plannedAttack.getTerritoryRole(territory);
-
-        if (territoryRole == WarRole.MAIN_ATTACKER) {
-            ItemStack cancelAttack = HeadUtils.createCustomItemStack(Material.BARRIER, Lang.GUI_CANCEL_ATTACK.get(tanPlayer), Lang.GUI_GENERIC_CLICK_TO_DELETE.get(tanPlayer));
-            ItemStack renameAttack = HeadUtils.createCustomItemStack(Material.NAME_TAG, Lang.GUI_RENAME_ATTACK.get(tanPlayer), Lang.GUI_GENERIC_CLICK_TO_RENAME.get(tanPlayer));
-            GuiItem cancelButton = ItemBuilder.from(cancelAttack).asGuiItem(event -> {
-                plannedAttack.endWar();
-                territory.broadcastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(tanPlayer, plannedAttack.getMainDefender().getName()), MINOR_GOOD);
-                new AttackMenu(player, territory);
-            });
-
-            GuiItem renameButton = ItemBuilder.from(renameAttack).asGuiItem(event -> {
-                event.setCancelled(true);
-                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
-                PlayerChatListenerStorage.register(player, new ChangeAttackName(plannedAttack, p -> openSpecificPlannedAttackMenu(player, territory, plannedAttack)));
-            });
-
-            gui.setItem(2, 6, renameButton);
-            gui.setItem(2, 8, cancelButton);
-        } else if (territoryRole == WarRole.MAIN_DEFENDER) {
-            ItemStack submitToRequests = HeadUtils.createCustomItemStack(Material.SOUL_LANTERN,
-                    Lang.SUBMIT_TO_REQUESTS.get(tanPlayer),
-                    Lang.SUBMIT_TO_REQUEST_DESC1.get(tanPlayer),
-                    Lang.SUBMIT_TO_REQUEST_DESC2.get(tanPlayer, plannedAttack.getWarGoal().getCurrentDesc()));
-
-            GuiItem submitToRequestButton = ItemBuilder.from(submitToRequests).asGuiItem(event -> {
-                plannedAttack.defenderSurrendered();
-                new AttackMenu(player, territory);
-            });
-            gui.setItem(2, 7, submitToRequestButton);
-
-        } else if (territoryRole == WarRole.OTHER_ATTACKER || territoryRole == WarRole.OTHER_DEFENDER) {
-            ItemStack quitWar = HeadUtils.createCustomItemStack(Material.DARK_OAK_DOOR, Lang.GUI_QUIT_WAR.get(tanPlayer), Lang.GUI_QUIT_WAR_DESC1.get(tanPlayer));
-
-            GuiItem quitButton = ItemBuilder.from(quitWar).asGuiItem(event -> {
-                plannedAttack.removeBelligerent(territory);
-                territory.broadcastMessageWithSound(Lang.TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE.get(tanPlayer, plannedAttack.getMainDefender().getName()), MINOR_GOOD);
-                new AttackMenu(player, territory);
-            });
-            gui.setItem(2, 7, quitButton);
-        } else if (territoryRole == WarRole.NEUTRAL) {
-            ItemStack joinAttacker = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
-                    Lang.GUI_JOIN_ATTACKING_SIDE.get(tanPlayer),
-                    Lang.GUI_JOIN_ATTACKING_SIDE_DESC1.get(tanPlayer, territory.getBaseColoredName()),
-                    Lang.GUI_WAR_GOAL_INFO.get(tanPlayer, plannedAttack.getWarGoal().getDisplayName()));
-            ItemStack joinDefender = HeadUtils.createCustomItemStack(Material.SHIELD,
-                    Lang.GUI_JOIN_DEFENDING_SIDE.get(tanPlayer),
-                    Lang.GUI_JOIN_DEFENDING_SIDE_DESC1.get(tanPlayer, territory.getBaseColoredName()));
-
-            GuiItem joinAttackerButton = ItemBuilder.from(joinAttacker).asGuiItem(event -> {
-                plannedAttack.addAttacker(territory);
-                openSpecificPlannedAttackMenu(player, territory, plannedAttack);
-            });
-
-            GuiItem joinDefenderButton = ItemBuilder.from(joinDefender).asGuiItem(event -> {
-                plannedAttack.addDefender(territory);
-                openSpecificPlannedAttackMenu(player, territory, plannedAttack);
-            });
-            gui.setItem(2, 6, joinAttackerButton);
-            gui.setItem(2, 8, joinDefenderButton);
-        }
-
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AttackMenu(player, territory)));
-        gui.open(player);
-
-    }
-
 
     //Landmarks, to update
     public static void openOwnedLandmark(Player player, TownData townData, int page) {

@@ -20,7 +20,7 @@ public enum WarRole {
         return name;
     }
 
-    public WarRole reverse() {
+    public WarRole opposite() {
         return switch (this) {
             case MAIN_ATTACKER -> MAIN_DEFENDER;
             case MAIN_DEFENDER -> MAIN_ATTACKER;

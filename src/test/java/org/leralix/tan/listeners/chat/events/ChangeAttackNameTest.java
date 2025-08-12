@@ -7,9 +7,10 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.factory.AbstractionFactory;
 import org.leralix.tan.storage.stored.CurrentWarStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.war.CurrentWar;
+import org.leralix.tan.war.PlannedAttack;
+import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.CreateAttackData;
-import org.leralix.tan.war.legacy.wargoals.ConquerWarGoal;
+import org.leralix.tan.war.legacy.WarRole;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -28,9 +29,10 @@ class ChangeAttackNameTest {
         TownData town1 = TownDataStorage.getInstance().newTown("town 1");
         TownData town2 = TownDataStorage.getInstance().newTown("town 2");
 
-        CreateAttackData createAttackData = new CreateAttackData(town1, town2);
-        createAttackData.setWarGoal(new ConquerWarGoal(1));
-        CurrentWar plannedAttack = CurrentWarStorage.newWar(createAttackData);
+        War war = new War("W1", town1, town2);
+
+        CreateAttackData createAttackData = new CreateAttackData(war, WarRole.MAIN_ATTACKER);
+        PlannedAttack plannedAttack = CurrentWarStorage.newAttack(createAttackData);
 
         ChangeAttackName changeAttackName = new ChangeAttackName(plannedAttack, null);
 

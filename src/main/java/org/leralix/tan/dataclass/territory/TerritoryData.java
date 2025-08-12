@@ -51,7 +51,7 @@ import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.*;
-import org.leralix.tan.war.CurrentWar;
+import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.legacy.CurrentAttack;
 
@@ -320,19 +320,12 @@ public abstract class TerritoryData {
             this.attackIncomingList = new ArrayList<>();
         return attackIncomingList;
     }
-    public Collection<CurrentWar> getAttacksInvolved(){
-        Collection<CurrentWar> res = new ArrayList<>();
-        for(String attackID : getAttacksInvolvedID()){
-            CurrentWar plannedAttack = CurrentWarStorage.get(attackID);
-            res.add(plannedAttack);
-        }
-        return res;
-    }
-    public void addPlannedAttack(CurrentWar war){
+
+    public void addPlannedAttack(PlannedAttack war){
         getAttacksInvolvedID().add(war.getID());
 
     }
-    public void removePlannedAttack(CurrentWar war){
+    public void removePlannedAttack(PlannedAttack war){
         getAttacksInvolvedID().remove(war.getID());
 
     }
@@ -355,17 +348,6 @@ public abstract class TerritoryData {
     public void removeCurrentAttack(CurrentAttack currentAttacks){
         getAttacksInvolvedID().remove(currentAttacks.getAttackData().getID());
     }
-
-    public boolean atWarWith(String territoryID){
-
-        for (CurrentWar plannedAttack : getAttacksInvolved()) {
-            if (plannedAttack.getMainDefender().getID().equals(territoryID))
-                return true;
-        }
-        return false;
-    }
-
-
 
     public double getBalance(){
         if(treasury == null)

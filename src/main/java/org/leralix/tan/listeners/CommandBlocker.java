@@ -8,7 +8,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.utils.Constants;
 import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.war.CurrentWar;
+import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.UUID;
@@ -25,8 +25,8 @@ public class CommandBlocker implements Listener {
         for(String blackListedCommands : Constants.getBlacklistedCommandsDuringAttacks()){
             if(blackListedCommands.startsWith(event.getMessage())){
                 for(CurrentAttack attack : CurrentAttacksStorage.getAll()){
-                    CurrentWar currentWar = attack.getAttackData();
-                    for(Player playerInWar : currentWar.getAllOnlinePlayers()){
+                    PlannedAttack plannedAttack = attack.getAttackData();
+                    for(Player playerInWar : plannedAttack.getAllOnlinePlayers()){
                         if(playerInWar.getUniqueId().equals(playerID)){
                             event.setCancelled(true);
                             playerInWar.sendMessage(TanChatUtils.getTANString() + Lang.CANNOT_CAST_COMMAND_DURING_ATTACK.get());

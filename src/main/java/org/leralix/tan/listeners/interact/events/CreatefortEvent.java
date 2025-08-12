@@ -46,7 +46,7 @@ public class CreatefortEvent extends RightClickListenerEvent {
         }
 
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(upBlock.getChunk());
-        if(tanTerritory.getID().equals(claimedChunk.getOwnerID())){
+        if(!tanTerritory.getID().equals(claimedChunk.getOwnerID())){
             player.sendMessage(TanChatUtils.getTANString() +
                     Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(tanPlayer));
             return;
