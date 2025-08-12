@@ -47,18 +47,6 @@ public class RegionData extends TerritoryData {
     private final List<String> townsInRegion;
 
     @Deprecated(since = "0.14.4", forRemoval = true)
-    private String regionId;
-
-    @Deprecated(since = "0.14.4", forRemoval = true)
-    private String regionName;
-
-    @Deprecated(since = "0.14.4", forRemoval = true)
-    private Long regionDateTimeCreated;
-
-    @Deprecated(since = "0.14.4", forRemoval = true)
-    private Double balance;
-
-
     public RegionData(String id, String name, ITanPlayer owner) {
         super(id, name, owner);
         TownData ownerTown = owner.getTown();
@@ -67,16 +55,6 @@ public class RegionData extends TerritoryData {
         this.nationID = null;
 
         this.townsInRegion = new ArrayList<>();
-    }
-
-    @Override
-    public String getOldID() {
-        return regionId;
-    }
-
-    @Override
-    public String getOldName() {
-        return regionName;
     }
 
     public int getHierarchyRank() {
@@ -221,19 +199,10 @@ public class RegionData extends TerritoryData {
         NewClaimedChunkStorage.getInstance().get(chunk);
     }
 
-    public boolean hasNation() {
-        return nationID != null;
-    }
-
 
     @Override
     protected Collection<TerritoryData> getOverlords() {
-        List<TerritoryData> overlords = new ArrayList<>();
-
-        if(hasNation()){
-            // TODO : Add Nations
-        }
-        return overlords;
+        return new ArrayList<>();
     }
 
     public List<TerritoryData> getSubjects() {
@@ -254,17 +223,8 @@ public class RegionData extends TerritoryData {
     }
 
 
-    public void setCapital(TownData town) {
-        setCapital(town.getID());
-    }
-
     public void setCapital(String townID) {
         this.capitalID = townID;
-    }
-
-    @Override
-    public double getOldBalance() {
-        return StringUtil.handleDigits(balance);
     }
 
     @Override
@@ -287,10 +247,6 @@ public class RegionData extends TerritoryData {
         }
     }
 
-    public boolean isTownInRegion(TownData townData) {
-        return townsInRegion.contains(townData.getID());
-    }
-
     @Override
     protected void removeVassal(TerritoryData vassal) {
 
@@ -310,25 +266,6 @@ public class RegionData extends TerritoryData {
     @Override
     public double getChunkUpkeepCost() {
         return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("RegionChunkUpkeepCost", 0);
-    }
-
-    public boolean isPlayerInRegion(ITanPlayer tanPlayer) {
-        for (TerritoryData town : getSubjects()) {
-            if (town.isPlayerIn(tanPlayer))
-                return true;
-        }
-        return false;
-    }
-
-
-    public Collection<RegionClaimedChunk> getClaims() {
-        Collection<RegionClaimedChunk> res = new ArrayList<>();
-        for (ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getInstance().getClaimedChunksMap().values()) {
-            if (claimedChunk instanceof RegionClaimedChunk regionClaimedChunk && regionClaimedChunk.getOwnerID().equals(getID())) {
-                res.add(regionClaimedChunk);
-            }
-        }
-        return res;
     }
 
     @Override
@@ -428,7 +365,4 @@ public class RegionData extends TerritoryData {
         budget.addProfitLine(new SubjectTaxLine(this));
     }
 
-    protected long getOldDateTime() {
-        return regionDateTimeCreated;
-    }
 }

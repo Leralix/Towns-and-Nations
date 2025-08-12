@@ -41,17 +41,6 @@ public class TownData extends TerritoryData {
     @Deprecated(since = "0.14.0", forRemoval = true)
     private Integer townDefaultRankID;
     @Deprecated(since = "0.14.0", forRemoval = true)
-    private Long townDateTimeCreated;
-    @Deprecated(since = "0.14.0", forRemoval = true)
-    private Integer chunkColor;
-    @Deprecated(since = "0.14.0", forRemoval = true)
-    private String TownName;
-    @Deprecated(since = "0.14.0", forRemoval = true)
-    private Map<Integer, RankData> newRanks = new HashMap<>();
-
-    @Deprecated(since = "0.14.4", forRemoval = true)
-    private Double balance;
-
     //This is all that should be kept after the transition to the parent class
     private String UuidLeader;
     private String townTag;
@@ -85,14 +74,6 @@ public class TownData extends TerritoryData {
         this.townTag = townName.length() >= prefixSize
                 ? townName.substring(0, prefixSize).toUpperCase()
                 : townName.toUpperCase();
-    }
-
-    //because old code was not using the centralized attribute
-    @Deprecated(since = "0.15.0", forRemoval = true)
-    protected Map<Integer, RankData> getOldRanks() {
-        if (newRanks == null)
-            newRanks = new HashMap<>();
-        return newRanks;
     }
 
     @Override
@@ -193,17 +174,6 @@ public class TownData extends TerritoryData {
         return icon;
     }
 
-
-    @Override
-    public String getOldID() {
-        return this.TownId;
-    }
-
-    @Override
-    public String getOldName() {
-        return this.TownName;
-    }
-
     @Override
     public int getHierarchyRank() {
         return 0;
@@ -235,12 +205,6 @@ public class TownData extends TerritoryData {
     @Override
     public boolean isLeader(String leaderID) {
         return getLeaderID().equals(leaderID);
-    }
-
-
-    @Override
-    public double getOldBalance() {
-        return StringUtil.handleDigits(balance);
     }
 
     @Override
@@ -290,10 +254,6 @@ public class TownData extends TerritoryData {
         return getRank(getDefaultRankID());
     }
 
-    @Override
-    public int getNumberOfRank() {
-        return newRanks.size();
-    }
 
     public boolean isFull() {
         return this.townPlayerListId.size() >= this.townLevel.getPlayerCap();
@@ -470,15 +430,6 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public int getDefaultRankID() {
-        if (this.defaultRankID == null)
-            this.defaultRankID = townDefaultRankID;
-        if (this.defaultRankID == null)
-            this.defaultRankID = getRanks().values().iterator().next().getID();
-        return defaultRankID;
-    }
-
-    @Override
     public List<GuiItem> getOrderedMemberList(ITanPlayer tanPlayer) {
         Player player = tanPlayer.getPlayer();
         List<GuiItem> res = new ArrayList<>();
@@ -590,7 +541,7 @@ public class TownData extends TerritoryData {
 
     public String getTownTag() {
         if (this.townTag == null)
-            setTownTag(this.TownName.substring(0, 3).toUpperCase());
+            setTownTag(name.substring(0, 3).toUpperCase());
         return this.townTag;
     }
 
@@ -602,17 +553,6 @@ public class TownData extends TerritoryData {
         return getChunkColor() + "[" + getTownTag() + "]";
     }
 
-    public Collection<TownClaimedChunk> getClaims() {
-        Collection<TownClaimedChunk> res = new ArrayList<>();
-        for (ClaimedChunk2 claimedChunk : NewClaimedChunkStorage.getInstance().getClaimedChunksMap().values()) {
-            if (claimedChunk instanceof TownClaimedChunk townClaimedChunk && townClaimedChunk.getOwnerID().equals(getID())) {
-                res.add(townClaimedChunk);
-            }
-
-        }
-        return res;
-    }
-
 
     public void kickPlayer(OfflinePlayer kickedPlayer) {
         ITanPlayer kickedITanPlayer = PlayerDataStorage.getInstance().get(kickedPlayer);
@@ -620,9 +560,10 @@ public class TownData extends TerritoryData {
         removePlayer(kickedITanPlayer);
         broadcastMessageWithSound(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.get(kickedPlayer.getName()), SoundEnum.BAD);
 
-        if (kickedPlayer.isOnline())
+        Player player = kickedPlayer.getPlayer();
+        if(player != null){
             kickedPlayer.getPlayer().sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get());
-
+        }
     }
 
 
@@ -733,7 +674,7 @@ public class TownData extends TerritoryData {
     public void delete() {
         super.delete();
 
-        if(haveOverlord()){
+        if (haveOverlord()) {
             RegionData regionData = getRegion();
             regionData.removeVassal(this);
         }
@@ -784,10 +725,6 @@ public class TownData extends TerritoryData {
     @Override
     public boolean isVassal(String territoryID) {
         return false;
-    }
-
-    protected long getOldDateTime() {
-        return townDateTimeCreated;
     }
 }
 
