@@ -775,8 +775,8 @@ public class PlayerGUI {
         }
 
         GuiUtil.createIterator(gui, guiItems, page, player, p -> openVassalsList(player, territoryData, page),
-                p -> openAddVassal(player, territoryData, page - 1),
-                p -> openAddVassal(player, territoryData, page + 1));
+                p -> openAddVassal(player, territoryData, page + 1),
+                p -> openAddVassal(player, territoryData, page - 1));
 
         gui.open(player);
     }
