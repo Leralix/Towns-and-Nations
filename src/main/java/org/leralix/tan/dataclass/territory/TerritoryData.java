@@ -565,8 +565,15 @@ public abstract class TerritoryData {
     public abstract boolean isVassal(String territoryID);
 
     public boolean isCapitalOf(TerritoryData territoryData) {
+
         return territoryData.getOverlord()
-                .map(overlord -> Objects.equals(overlord.getCapitalID(), getID()))
+                .map(overlord -> {
+
+                    System.out.println("Overlord : " + overlord.getCapitalID());
+                    System.out.println("Territory : " + getID());
+
+                    return  Objects.equals(overlord.getCapitalID(), getID());
+                })
                 .orElse(false);
     }
 

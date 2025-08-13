@@ -23,7 +23,6 @@ public class WarStorage extends JsonStorage<War>{
                         .setPrettyPrinting().
                         create()
         );
-        load();
     }
 
     public War newWar(TerritoryData attackingTerritory, TerritoryData defendingTerritory) {

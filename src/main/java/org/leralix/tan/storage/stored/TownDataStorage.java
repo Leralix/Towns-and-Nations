@@ -22,7 +22,7 @@ public class TownDataStorage extends JsonStorage<TownData>{
 
     private static TownDataStorage instance;
 
-    private int newTownId = 1;
+    private int newTownId;
 
     private TownDataStorage() {
         super("TAN - Towns.json",
@@ -52,26 +52,26 @@ public class TownDataStorage extends JsonStorage<TownData>{
             }
         }
         newTownId = id + 1;
+        System.out.println("Next town ID will be : " + newTownId);
     }
 
 
     public static TownDataStorage getInstance() {
-        if (instance == null) instance = new TownDataStorage();
+        if (instance == null)
+            instance = new TownDataStorage();
         return instance;
     }
 
     public TownData newTown(String townName, ITanPlayer tanPlayer){
         String townId = getNextTownID();
-
         TownData newTown = new TownData(townId, townName, tanPlayer);
 
-
-        dataMap.put(townId,newTown);
-        save();
+        put(townId,newTown);
         return newTown;
     }
 
     private @NotNull String getNextTownID() {
+        System.out.println("getNextTownID : " + newTownId);
         String townId = "T"+newTownId;
         newTownId++;
         return townId;
@@ -82,8 +82,7 @@ public class TownDataStorage extends JsonStorage<TownData>{
 
         TownData newTown = new TownData(townId, townName);
 
-        dataMap.put(townId,newTown);
-        save();
+        put(townId,newTown);
         return newTown;
     }
 

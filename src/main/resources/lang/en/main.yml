@@ -134,7 +134,7 @@ language:
   VASSALISATION_PROPOSAL_SENT_SUCCESS: "Vassalisation proposal send to {0}"
   ACCEPTED_VASSALISATION_PROPOSAL_ALL: "{0}§f has joined the region {1}"
   #Diplomatic relation confirmation
-  REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f invited your town {1}§f to join their region"
+  REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f invited {1}§f to join the region"
   #Autoclaim command
   TOWN_AUTO_CLAIM_DESC: "Enable auto claiming while moving between chunks"
   AUTO_CLAIM_ON_FOR: "§fAuto claim is now on for chunk type: §9{0}"
@@ -265,6 +265,7 @@ language:
   GUI_GENERIC_CLICK_TO_OPEN_HISTORY: "§7▶ Left click to open the history"
   GUI_GENERIC_CLICK_TO_DELETE: "§7▶ Click to delete"
   GUI_GENERIC_RIGHT_CLICK_TO_DELETE: "§7▶ Right click to delete"
+  GUI_GENERIC_RIGHT_CLICK_TO_REMOVE: "§7▶ Right click to remove"
   GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT: "§7▶ Shift + click to teleport"
   GUI_GENERIC_ADD_BUTTON: "§7▶ Click to add"
   GUI_GENERIC_NEW_BALANCE_MENU: "§fBalance evolution : §e{0}{MONEY_CHAR} §f→ §e{1}{MONEY_CHAR}"
@@ -772,7 +773,6 @@ language:
   GUI_REGION_CHANGE_DESCRIPTION_DESC1: "§fCurrent message: §7§o\"{0}\""
   GUI_REGION_CHANGE_DESCRIPTION_DESC2: "§fLeft click to change the description"
   GUI_INVITE_TOWN_TO_REGION: "§aInvite a town to the region"
-  GUI_KICK_TOWN_TO_REGION: "§aKick a town from the region"
   GUI_REGION_INVITE_TOWN_DESC1: "§fLeft click to invite this town to the region"
   GUI_REGION_KICK_TOWN_DESC1: "§fLeft click to kick this town from the region"
   #Landmarks
@@ -845,7 +845,7 @@ language:
   GUI_OVERLORD_DECLARE_INDEPENDENCE_DESC1: "§fLeft click to declare independence"
   GUI_CONFIRM_DECLARE_INDEPENDENCE: "{0}§f will declare independence from {1}"
   TERRITORY_NO_OVERLORD: "§cThis territory does not have an suzerain"
-  CANNOT_DECLARE_INDEPENDENCE_BECAUSE_CAPITAL: "§cYou cannot declare independence because {0}§f is the capital of the region"
+  CANNOT_DECLARE_INDEPENDENCE_BECAUSE_CAPITAL: "§cImpossible to declare independence because {0}§c is the capital of the region"
   BROWSE_OVERLORD_INVITATION: "§aBrowse suzerain invitations"
   BROWSE_OVERLORD_INVITATION_DESC1: "§fYou have §6{0}§f proposals"
   GUI_OVERLORD_DONATE: "§aDonate to the suzerain"

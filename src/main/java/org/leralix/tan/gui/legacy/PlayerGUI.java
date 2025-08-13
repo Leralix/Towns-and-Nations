@@ -28,6 +28,7 @@ import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.gui.landmark.LandmarkNoOwnerMenu;
 import org.leralix.tan.gui.user.territory.*;
+import org.leralix.tan.gui.user.territory.hierarchy.VassalsMenu;
 import org.leralix.tan.gui.user.war.WarMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
@@ -710,50 +711,8 @@ public class PlayerGUI {
         gui.open(player);
     }
 
-    private static void openVassalsList(Player player, TerritoryData territoryData, int page) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_VASSALS.get(tanPlayer, page + 1), 6);
 
-        List<GuiItem> guiList = new ArrayList<>();
-
-        for (TerritoryData townData : territoryData.getVassals()) {
-            ItemStack townIcon = townData.getIconWithInformations(tanPlayer.getLang());
-            GuiItem townInfo = ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
-            guiList.add(townInfo);
-        }
-
-        ItemStack addTown = HeadUtils.makeSkullB64(Lang.GUI_INVITE_TOWN_TO_REGION.get(tanPlayer), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
-        ItemStack removeTown = HeadUtils.makeSkullB64(Lang.GUI_KICK_TOWN_TO_REGION.get(tanPlayer), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=");
-
-
-        GuiItem addButton = ItemBuilder.from(addTown).asGuiItem(event -> {
-            event.setCancelled(true);
-            if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
-                return;
-            }
-            openAddVassal(player, territoryData, page);
-        });
-        GuiItem removeButton = ItemBuilder.from(removeTown).asGuiItem(event -> {
-            event.setCancelled(true);
-            if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
-                return;
-            }
-            openRemoveVassal(player, territoryData, page);
-        });
-
-        GuiUtil.createIterator(gui, guiList, 0, player, p -> openHierarchyMenu(player, territoryData),
-                p -> openVassalsList(player, territoryData, page - 1),
-                p -> openVassalsList(player, territoryData, page + 1));
-
-
-        gui.setItem(6, 3, addButton);
-        gui.setItem(6, 4, removeButton);
-        gui.open(player);
-    }
-
-    private static void openAddVassal(Player player, TerritoryData territoryData, int page) {
+    public static void openAddVassal(Player player, TerritoryData territoryData, int page) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_VASSALS.get(tanPlayer, page + 1), 6);
 
@@ -774,39 +733,9 @@ public class PlayerGUI {
             guiItems.add(townButton);
         }
 
-        GuiUtil.createIterator(gui, guiItems, page, player, p -> openVassalsList(player, territoryData, page),
+        GuiUtil.createIterator(gui, guiItems, page, player, p -> new VassalsMenu(player, territoryData),
                 p -> openAddVassal(player, territoryData, page + 1),
                 p -> openAddVassal(player, territoryData, page - 1));
-
-        gui.open(player);
-    }
-
-    private static void openRemoveVassal(Player player, TerritoryData territoryData, int page) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_VASSALS.get(tanPlayer, page + 1), 6);
-
-        List<GuiItem> guiItems = new ArrayList<>();
-        for (TerritoryData territoryVassal : territoryData.getVassals()) {
-            ItemStack townIcon = territoryVassal.getIconWithInformationAndRelation(territoryData, tanPlayer.getLang());
-            HeadUtils.addLore(townIcon, Lang.GUI_REGION_INVITE_TOWN_DESC1.get(tanPlayer));
-
-            GuiItem townButton = ItemBuilder.from(townIcon).asGuiItem(event -> {
-                event.setCancelled(true);
-
-                if (territoryVassal.isCapitalOf(territoryData)) {
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.CANT_KICK_REGIONAL_CAPITAL.get(tanPlayer, territoryVassal.getName()));
-                    return;
-                }
-                territoryData.broadcastMessageWithSound(Lang.GUI_REGION_KICK_TOWN_BROADCAST.get(tanPlayer, territoryVassal.getName()), BAD);
-                territoryVassal.removeOverlord();
-                player.closeInventory();
-            });
-            guiItems.add(townButton);
-        }
-
-        GuiUtil.createIterator(gui, guiItems, page, player, p -> openVassalsList(player, territoryData, page),
-                p -> openRemoveVassal(player, territoryData, page - 1),
-                p -> openRemoveVassal(player, territoryData, page + 1));
 
         gui.open(player);
     }
@@ -1013,7 +942,8 @@ public class PlayerGUI {
                     PlayerChatListenerStorage.register(player, new DonateToTerritory(overlord));
                 });
                 gui.setItem(2, 3, donateToOverlordButton);
-            } else {
+            }
+            else {
                 ItemStack noCurrentOverlord = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET, Lang.OVERLORD_GUI.get(tanPlayer),
                         Lang.NO_OVERLORD.get(tanPlayer));
                 overlordInfo = ItemBuilder.from(noCurrentOverlord).asGuiItem(event -> event.setCancelled(true));
@@ -1027,7 +957,8 @@ public class PlayerGUI {
                 });
             }
             gui.setItem(2, 2, overlordButton);
-        } else {
+        }
+        else {
             ItemStack noOverlordItem = HeadUtils.createCustomItemStack(Material.IRON_BARS, Lang.OVERLORD_GUI.get(tanPlayer),
                     Lang.CANNOT_HAVE_OVERLORD.get(tanPlayer));
             overlordInfo = ItemBuilder.from(noOverlordItem).asGuiItem(event -> event.setCancelled(true));
@@ -1048,7 +979,7 @@ public class PlayerGUI {
                     Lang.GUI_REGION_TOWN_LIST_DESC1.get(tanPlayer));
             GuiItem vassalsButton = ItemBuilder.from(vassals).asGuiItem(event -> {
                 event.setCancelled(true);
-                openVassalsList(player, territoryData, 0);
+                new VassalsMenu(player, territoryData);
             });
             vassalInfo = ItemBuilder.from(vassalIcon).asGuiItem(event -> event.setCancelled(true));
             gui.setItem(2, 6, vassalsButton);

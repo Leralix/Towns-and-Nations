@@ -16,7 +16,6 @@ public class PlayerDataStorage extends JsonStorage<ITanPlayer> {
 
     private static final String ERROR_MESSAGE = "Error while creating player storage";
 
-
     private static PlayerDataStorage instance;
 
     private static ITanPlayer NO_PLAYER;

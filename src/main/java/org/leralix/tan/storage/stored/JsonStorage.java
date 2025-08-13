@@ -15,7 +15,7 @@ import java.util.Map;
 public class JsonStorage<T> {
 
     protected final File file;
-    protected Map<String, T> dataMap = new LinkedHashMap<>();
+    protected Map<String, T> dataMap;
     protected final Gson gson;
     private final Type type;
     private static final String NEW_FILE_FOLDER = "storage/json";
@@ -64,12 +64,18 @@ public class JsonStorage<T> {
 
 
     protected void load() {
-        if (!file.exists()) return;
-        try (Reader reader = new FileReader(file)) {
-            dataMap = gson.fromJson(reader, type);
-        } catch (IOException e) {
-            TownsAndNations.getPlugin().getLogger().severe("Error loading " + file.getName());
+        System.out.println("Load inside 1");
+        if (!file.exists()) {
+            dataMap = new LinkedHashMap<>();
         }
+        else {
+            try (Reader reader = new FileReader(file)) {
+                dataMap = gson.fromJson(reader, type);
+            } catch (IOException e) {
+                TownsAndNations.getPlugin().getLogger().severe("Error loading " + file.getName());
+            }
+        }
+        System.out.println("Load inside 2");
     }
 
     public void save() {

@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class RegionDataStorage extends JsonStorage<RegionData> {
 
-    private int nextID = 1;
+    private int nextID;
     private static RegionDataStorage instance;
 
     public static RegionDataStorage getInstance() {

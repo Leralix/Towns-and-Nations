@@ -3,17 +3,17 @@ package org.leralix.tan.events.events;
 import org.leralix.tan.api.wrappers.TerritoryDataWrapper;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.events.InternalEvent;
-import org.tan.api.events.TerritoryVassalForcedEvent;
+import org.tan.api.events.TerritoryVassalProposalEvent;
 import org.tan.api.interfaces.TanTerritory;
 
-public class TerritoryVassalProposalInternalEvent extends InternalEvent implements TerritoryVassalForcedEvent {
+public class TerritoryVassalProposalInternalEvent extends InternalEvent implements TerritoryVassalProposalEvent {
 
     private final TerritoryData territoryData;
-    private final TerritoryData newOverlordData;
+    private final TerritoryData potentialOverlordData;
 
-    public TerritoryVassalProposalInternalEvent(TerritoryData vassal, TerritoryData newOverlordData) {
+    public TerritoryVassalProposalInternalEvent(TerritoryData vassal, TerritoryData potentialOverlordData) {
         this.territoryData = vassal;
-        this.newOverlordData = newOverlordData;
+        this.potentialOverlordData = potentialOverlordData;
     }
 
 
@@ -23,7 +23,7 @@ public class TerritoryVassalProposalInternalEvent extends InternalEvent implemen
     }
 
     @Override
-    public TanTerritory getNewOverlord() {
-        return TerritoryDataWrapper.of(newOverlordData);
+    public TanTerritory getPotentialOverlord() {
+        return TerritoryDataWrapper.of(potentialOverlordData);
     }
 }

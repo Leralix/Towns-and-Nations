@@ -215,6 +215,4 @@ public class NewClaimedChunkStorage {
             TownsAndNations.getPlugin().getLogger().severe("Error while storing claimed chunks in file");
         }
     }
-
-
 }
