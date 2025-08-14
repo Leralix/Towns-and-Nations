@@ -290,6 +290,7 @@ displayTerritoryNameWithOwnColor: false
 fireGrief: "PLAYER_CHOICE_AND_WAR" #burning and spreading
 explosionGrief: "PLAYER_CHOICE_AND_WAR"
 pvpEnabledInClaimedChunks: "ALWAYS"
+mobGrief: "PLAYER_CHOICE"
 
 enabledPermissions:
   INTERACT_CHEST: true

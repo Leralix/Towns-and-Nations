@@ -109,6 +109,11 @@ public class WildernessChunk extends ClaimedChunk2 {
     }
 
     @Override
+    public boolean canMobGrief() {
+        return true;
+    }
+
+    @Override
     public ChunkType getType() {
         return ChunkType.WILDERNESS;
     }

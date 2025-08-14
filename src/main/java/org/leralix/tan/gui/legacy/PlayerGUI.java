@@ -543,7 +543,7 @@ public class PlayerGUI {
         for (GeneralChunkSetting generalChunkSetting : GeneralChunkSetting.values()) {
 
 
-            GuiItem guiItem = ItemBuilder.from(generalChunkSetting.getIcon(generalSettings.get(generalChunkSetting))).asGuiItem(event -> {
+            GuiItem guiItem = ItemBuilder.from(generalChunkSetting.getIcon(generalSettings.get(generalChunkSetting), tanPlayer.getLang())).asGuiItem(event -> {
                 event.setCancelled(true);
                 if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_CLAIM_SETTINGS)) {
                     player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));

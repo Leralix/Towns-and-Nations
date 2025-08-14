@@ -121,6 +121,11 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
     }
 
     @Override
+    public boolean canMobGrief() {
+        return false;
+    }
+
+    @Override
     public ChunkType getType() {
         return ChunkType.LANDMARK;
     }

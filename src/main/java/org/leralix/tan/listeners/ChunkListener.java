@@ -13,6 +13,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
@@ -530,6 +531,15 @@ public class ChunkListener implements Listener {
 
         return claimedChunk.canPlayerDo(player, permissionType,location);
 
+    }
+
+    public void onWitherBlockBreak(EntityChangeBlockEvent event) {
+
+        Chunk chunk = event.getBlock().getChunk();
+
+        if(!NewClaimedChunkStorage.getInstance().get(chunk).canMobGrief()){
+            event.setCancelled(true);
+        }
     }
 
 

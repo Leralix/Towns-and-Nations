@@ -156,6 +156,8 @@ public abstract class ClaimedChunk2 {
 
     public abstract boolean canPVPHappen();
 
+    public abstract boolean canMobGrief();
+
     public Chunk getChunk() {
         World world = Bukkit.getWorld(UUID.fromString(this.worldUUID));
         if (world == null) {

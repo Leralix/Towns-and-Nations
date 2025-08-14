@@ -151,6 +151,13 @@ public class RegionClaimedChunk extends TerritoryChunk {
     }
 
     @Override
+    public boolean canMobGrief() {
+        String pvpEnabled = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("mobGrief", "ALWAYS");
+        GriefAllowed griefAllowed = GriefAllowed.valueOf(pvpEnabled);
+        return griefAllowed.canGrief(getRegion(), GeneralChunkSetting.MOB_GRIEF);
+    }
+
+    @Override
     public ChunkType getType() {
         return ChunkType.REGION;
     }
