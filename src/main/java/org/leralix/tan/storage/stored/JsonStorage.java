@@ -64,7 +64,6 @@ public class JsonStorage<T> {
 
 
     protected void load() {
-        System.out.println("Load inside 1");
         if (!file.exists()) {
             dataMap = new LinkedHashMap<>();
         }
@@ -75,7 +74,6 @@ public class JsonStorage<T> {
                 TownsAndNations.getPlugin().getLogger().severe("Error loading " + file.getName());
             }
         }
-        System.out.println("Load inside 2");
     }
 
     public void save() {

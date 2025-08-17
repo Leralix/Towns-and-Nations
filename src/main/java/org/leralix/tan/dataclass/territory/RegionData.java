@@ -149,11 +149,6 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public String getCapitalID() {
-        return capitalID;
-    }
-
-    @Override
     public boolean haveOverlord() {
         return nationID != null;
     }
@@ -259,6 +254,14 @@ public class RegionData extends TerritoryData {
                 rank.removePlayer(playerID);
             }
         }
+    }
+
+    @Override
+    public TerritoryData getCapital() {
+        if(capitalID == null) {
+            capitalID = getSubjects().get(0).getID();
+        }
+        return TerritoryUtil.getTerritory(capitalID);
     }
 
     @Override

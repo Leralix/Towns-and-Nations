@@ -53,9 +53,6 @@ public class ChooseWarGoal extends BasicGui {
 
     private @NotNull GuiItem getConquerButton() {
 
-        System.out.println(warRole);
-        System.out.println(war.getGoals(warRole));
-
         boolean conquerAlreadyUsed = war.getGoals(warRole).stream()
                 .anyMatch(warGoal -> warGoal instanceof ConquerWarGoal);
 

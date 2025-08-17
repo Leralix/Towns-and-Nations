@@ -66,6 +66,7 @@ public class IconManager {
             case "PLAYER_HEAD" -> new PlayerHeadIconType();
             case "TOWN_HEAD" -> new TownIconType();
             case "PLAYER_LANGUAGE_HEAD" -> new PlayerLanguageIconType();
+            case "NO_ICON" -> new NoIconType();
             default -> new UrlHeadIconType("");
         };
     }

@@ -52,7 +52,6 @@ public class TownDataStorage extends JsonStorage<TownData>{
             }
         }
         newTownId = id + 1;
-        System.out.println("Next town ID will be : " + newTownId);
     }
 
 
@@ -71,7 +70,6 @@ public class TownDataStorage extends JsonStorage<TownData>{
     }
 
     private @NotNull String getNextTownID() {
-        System.out.println("getNextTownID : " + newTownId);
         String townId = "T"+newTownId;
         newTownId++;
         return townId;

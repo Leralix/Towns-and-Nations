@@ -419,7 +419,7 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public String getCapitalID() {
+    public TerritoryData getCapital() {
         return null;
     }
 

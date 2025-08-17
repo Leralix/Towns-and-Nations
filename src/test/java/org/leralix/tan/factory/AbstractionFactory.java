@@ -1,12 +1,10 @@
 package org.leralix.tan.factory;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFactory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.position.Vector2D;
@@ -22,6 +20,7 @@ import org.leralix.tan.storage.database.SQLiteHandler;
 import org.leralix.tan.storage.impl.FortDataStorage;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.ItemStackSerializer;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
@@ -69,6 +68,8 @@ public class AbstractionFactory {
         TownsAndNations plugin = Mockito.mock(TownsAndNations.class);
         when(plugin.getDataFolder()).thenReturn(new File(classLoader.getResource("configs").getFile()));
         when(plugin.getDatabaseHandler()).thenReturn(Mockito.mock(DatabaseHandler.class));
+
+        mockSerialiser();
 
         MockedStatic<TownsAndNations> pluginInstance = Mockito.mockStatic(TownsAndNations.class);
         pluginInstance.when(TownsAndNations::getPlugin).thenReturn(plugin);
@@ -162,5 +163,21 @@ public class AbstractionFactory {
         Vector2D vector2D = new Vector2D((int)x, (int)z, world.getUID().toString());
         when(position.getChunk()).thenAnswer(invocationOnMock -> chunkList.get(vector2D));
         return position;
+    }
+
+    public static void mockSerialiser(){
+
+        MockedStatic<ItemStackSerializer> pluginInstance = Mockito.mockStatic(ItemStackSerializer.class);
+        pluginInstance.when(() -> ItemStackSerializer.serializeItemStack(any(ItemStack.class)))
+                .thenAnswer(invocation -> {
+                    ItemStack item = invocation.getArgument(0);
+                    return item.getType().name();
+                });
+        pluginInstance.when(() -> ItemStackSerializer.deserializeItemStack(anyString()))
+                .thenAnswer(invocation -> {
+                    String itemName = invocation.getArgument(0);
+                    return new ItemStack(Material.valueOf(itemName));
+                });
+
     }
 }

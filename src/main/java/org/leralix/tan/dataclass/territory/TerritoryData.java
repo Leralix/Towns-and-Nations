@@ -422,15 +422,13 @@ public abstract class TerritoryData {
     public boolean isCapital() {
         Optional<TerritoryData> capital = getOverlord();
         return capital
-                .map(overlord -> Objects.equals(overlord.getCapitalID(), getID()))
+                .map(overlord -> Objects.equals(overlord.getCapital().getID(), getID()))
                 .orElse(false);
     }
 
-    public TerritoryData getCapital() {
-        return TerritoryUtil.getTerritory(getCapitalID());
-    }
+    public abstract TerritoryData getCapital();
 
-    public abstract String getCapitalID();
+
 
     public int getChunkColorCode() {
         if (color == null)
@@ -563,19 +561,6 @@ public abstract class TerritoryData {
     }
 
     public abstract boolean isVassal(String territoryID);
-
-    public boolean isCapitalOf(TerritoryData territoryData) {
-
-        return territoryData.getOverlord()
-                .map(overlord -> {
-
-                    System.out.println("Overlord : " + overlord.getCapitalID());
-                    System.out.println("Territory : " + getID());
-
-                    return  Objects.equals(overlord.getCapitalID(), getID());
-                })
-                .orElse(false);
-    }
 
 
     public abstract Collection<TerritoryData> getPotentialVassals();
