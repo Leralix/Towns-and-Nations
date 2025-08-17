@@ -3,23 +3,33 @@ package org.leralix.tan.dataclass.territory.cosmetic;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.utils.ItemStackSerializer;
 
 import javax.swing.*;
 
 public class CustomIcon implements ICustomIcon {
 
-    String materialTypeName;
-    Integer customModelData;
+    @Deprecated(since = "0.15.1", forRemoval = true)
+    private String materialTypeName;
+    @Deprecated(since = "0.15.1", forRemoval = true)
+    private Integer customModelData;
+
+    private String base64Item;
 
     public CustomIcon(ItemStack icon) {
-        this.materialTypeName = icon.getType().name();
-        ItemMeta meta = icon.getItemMeta();
-        if(meta != null && meta.hasCustomModelData())
-            this.customModelData = meta.getCustomModelData();
+        this.base64Item = ItemStackSerializer.serializeItemStack(icon);
     }
 
     public ItemStack getIcon() {
 
+        if(base64Item == null){
+            this.base64Item = ItemStackSerializer.serializeItemStack(getOldIcon());
+        }
+        return ItemStackSerializer.deserializeItemStack(base64Item);
+    }
+
+    private @NotNull ItemStack getOldIcon() {
         Material material = Material.getMaterial(materialTypeName);
         if(material == null){
             material = Material.BARRIER;
