@@ -488,8 +488,8 @@ public class PlayerGUI {
 
 
         GuiUtil.createIterator(gui, guiItems, 0, player, p -> openSingleRelation(player, territory, wantedRelation, 0),
-                p -> openTownRelationAdd(player, territory, wantedRelation, page - 1),
                 p -> openTownRelationAdd(player, territory, wantedRelation, page + 1),
+                p -> openTownRelationAdd(player, territory, wantedRelation, page - 1),
                 decorativeGlass);
 
 
@@ -525,8 +525,8 @@ public class PlayerGUI {
         }
 
         GuiUtil.createIterator(gui, guiItems, 0, player, p -> openSingleRelation(player, territory, wantedRelation, 0),
-                p -> openTownRelationRemove(player, territory, wantedRelation, page - 1),
                 p -> openTownRelationRemove(player, territory, wantedRelation, page + 1),
+                p -> openTownRelationRemove(player, territory, wantedRelation, page - 1),
                 decorativeGlass);
 
 
@@ -652,7 +652,7 @@ public class PlayerGUI {
         GuiUtil.createIterator(gui, guiItems, 0, player,
                 p -> new TerritoryChunkSettingsMenu(player, territoryData),
                 p -> openPlayerListForChunkPermission(player, territoryData, type, page + 1),
-                p -> openPlayerListForChunkPermission(player, territoryData, type, page + 1));
+                p -> openPlayerListForChunkPermission(player, territoryData, type, page - 1));
 
 
         ItemStack addIcon = HeadUtils.makeSkullB64(Lang.GUI_GENERIC_ADD_BUTTON.get(tanPlayer), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
@@ -706,7 +706,7 @@ public class PlayerGUI {
         GuiUtil.createIterator(gui, guiItems, 0, player,
                 p -> territoryData.openMainMenu(player),
                 p -> openAddPlayerForChunkPermission(player, territoryData, type, page + 1),
-                p -> openAddPlayerForChunkPermission(player, territoryData, type, page + 1));
+                p -> openAddPlayerForChunkPermission(player, territoryData, type, page - 1));
 
         gui.open(player);
     }
