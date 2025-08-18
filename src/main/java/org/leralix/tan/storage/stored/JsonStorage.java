@@ -53,9 +53,8 @@ public class JsonStorage<T> {
                 );
             } catch (IOException e) {
                 Bukkit.getLogger().severe(
-                        "Failed to move " + fileName + " to new storage location."
+                        "Failed to move " + fileName + " to new storage location. : " + e.getMessage()
                 );
-                e.printStackTrace();
             }
         }
 
@@ -86,8 +85,7 @@ public class JsonStorage<T> {
         try (Writer writer = new FileWriter(tempFile, false)) {
             gson.toJson(dataMap, type, writer);
         } catch (IOException e) {
-            Bukkit.getLogger().severe("Error saving " + file.getName());
-            e.printStackTrace();
+            Bukkit.getLogger().severe("Error saving " + file.getName() + " : " + e.getMessage());
             return;
         }
 
@@ -99,8 +97,7 @@ public class JsonStorage<T> {
                     StandardCopyOption.ATOMIC_MOVE // si supporté
             );
         } catch (IOException e) {
-            Bukkit.getLogger().severe("Failed to replace old file with new one: " + file.getName());
-            e.printStackTrace();
+            Bukkit.getLogger().severe("Failed to replace old file with new one: " + file.getName() + " : " + e.getMessage());
         }
     }
 

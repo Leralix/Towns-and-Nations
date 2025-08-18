@@ -1,10 +1,13 @@
 package org.leralix.tan.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Base64;
 
 public class ItemStackSerializer {
@@ -18,7 +21,7 @@ public class ItemStackSerializer {
             dataOutput.close();
             return Base64.getEncoder().encodeToString(outputStream.toByteArray());
         } catch (IOException e) {
-            e.printStackTrace();
+            Bukkit.getLogger().severe("Error serializing " + item.getType() + " : " + e.getMessage());
         }
         return null;
     }
@@ -32,7 +35,7 @@ public class ItemStackSerializer {
             dataInput.close();
             return item;
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            Bukkit.getLogger().severe("Error deSerializing " + data + " : " + e.getMessage());
         }
         return null;
     }
