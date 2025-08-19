@@ -3,6 +3,7 @@ package org.leralix.tan.listeners;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,6 +13,7 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.PremiumStorage;
 import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.utils.TeamUtils;
 import org.leralix.tan.utils.prefixUtil;
@@ -47,5 +49,10 @@ public class PlayerJoinListener implements Listener {
             message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tan newsletter"));
             player.spigot().sendMessage(message);
         }
+
+        Bukkit.getScheduler().runTaskAsynchronously(TownsAndNations.getPlugin(), () -> {
+            PremiumStorage.getInstance().isPremium(player.getName());
+        });
+
     }
 }

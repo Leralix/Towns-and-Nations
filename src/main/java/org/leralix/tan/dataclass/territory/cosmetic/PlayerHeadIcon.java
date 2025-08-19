@@ -6,7 +6,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.storage.cache.OfflinePlayerCache;
+import org.leralix.tan.storage.stored.PremiumStorage;
 
 import java.util.UUID;
 
@@ -24,7 +24,7 @@ public class PlayerHeadIcon implements ICustomIcon {
     public PlayerHeadIcon(String playerID) {
         this.playerUUID = playerID;
     }
-    
+
     public ItemStack getIcon() {
         if(playerUUID == null) return new ItemStack(Material.SKELETON_SKULL);
 
@@ -32,16 +32,14 @@ public class PlayerHeadIcon implements ICustomIcon {
 
         SkullMeta skullMeta = (SkullMeta) icon.getItemMeta();
 
-        if(skullMeta == null){
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
+
+        if(skullMeta == null || !PremiumStorage.getInstance().isPremium(offlinePlayer.getName())) {
             return icon;
         }
-        OfflinePlayer offlinePlayer = OfflinePlayerCache.getOfflinePlayer(UUID.fromString(playerUUID));
 
         skullMeta.setOwningPlayer(offlinePlayer);
         icon.setItemMeta(skullMeta);
         return icon;
     }
-    
-    
-
 }

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Constants {
 
-
+    private static boolean onlineMode;
     private static boolean displayTerritoryColor;
     private static boolean enableNation;
     private static boolean enableRegion;
@@ -39,6 +39,7 @@ public class Constants {
 
         FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
 
+        onlineMode = config.getBoolean("onlineMode", true);
         displayTerritoryColor = config.getBoolean("displayTerritoryNameWithOwnColor", false);
         enableNation = config.getBoolean("EnableKingdom",true);
         enableRegion = config.getBoolean("EnableRegion", true);
@@ -70,6 +71,10 @@ public class Constants {
         allowNonAdjacentChunksForRegion = config.getBoolean("RegionAllowNonAdjacentChunks", false);
         allowNonAdjacentChunksForTown = config.getBoolean("TownAllowNonAdjacentChunks", false);
 
+    }
+
+    public static boolean onlineMode() {
+        return onlineMode;
     }
 
     public static boolean displayTerritoryColor(){

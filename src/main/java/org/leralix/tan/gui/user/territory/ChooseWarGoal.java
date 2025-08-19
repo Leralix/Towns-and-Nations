@@ -172,6 +172,8 @@ public class ChooseWarGoal extends BasicGui {
                                 return;
                             }
 
+                            new PlayerGUI.
+
                             war.addGoal(warRole, new LiberateWarGoal());
                             new SelectWarGoals(player, territoryData, war, warRole);
                         }

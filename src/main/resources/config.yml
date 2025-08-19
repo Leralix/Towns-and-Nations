@@ -10,6 +10,11 @@
 ##      General       ##
 ########################
 
+# Online mode
+# If true, only premium (online-mode) players are allowed; their custom heads can be used as town icons.
+# If false (cracked mode), the plugin will attempt to fetch the skin for the given player name;
+# only players with a valid skin will have their head displayed as a town icon.
+onlineMode: true
 
 #Time of the day when taxes are collected (default is midnight in 0:00)
 taxHourTime: 0 #0-23

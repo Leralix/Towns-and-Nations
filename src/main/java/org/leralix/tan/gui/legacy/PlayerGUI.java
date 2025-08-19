@@ -419,7 +419,7 @@ public class PlayerGUI {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                 return;
             }
-            openTownRelationAdd(player, mainTerritory, relation, 0);
+            new AddRelationMenu(player, mainTerritory, relation);
         });
         GuiItem removeRelation = ItemBuilder.from(removeTownButton).asGuiItem(event -> {
             event.setCancelled(true);
@@ -436,61 +436,6 @@ public class PlayerGUI {
 
         gui.setItem(6, 4, addRelation);
         gui.setItem(6, 5, removeRelation);
-
-
-        gui.open(player);
-    }
-
-    public static void openTownRelationAdd(Player player, TerritoryData territory, TownRelation wantedRelation, int page) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_SELECT_ADD_TERRITORY_RELATION.get(tanPlayer, wantedRelation.getName()), 6);
-
-        List<String> relationListID = territory.getRelations().getTerritoriesIDWithRelation(wantedRelation);
-        ItemStack decorativeGlass = HeadUtils.createCustomItemStack(Material.GREEN_STAINED_GLASS_PANE, "");
-        List<GuiItem> guiItems = new ArrayList<>();
-
-        List<String> territories = new ArrayList<>();
-        territories.addAll(TownDataStorage.getInstance().getAll().keySet());
-        territories.addAll(RegionDataStorage.getInstance().getAll().keySet());
-
-        territories.removeAll(relationListID); //Territory already have this relation
-        territories.remove(territory.getID()); //Remove itself
-
-        for (String otherTownUUID : territories) {
-            TerritoryData otherTerritory = TerritoryUtil.getTerritory(otherTownUUID);
-            ItemStack icon = otherTerritory.getIconWithInformationAndRelation(territory, tanPlayer.getLang());
-
-            TownRelation actualRelation = territory.getRelationWith(otherTerritory);
-
-            if (!actualRelation.canBeChanged()) {
-                continue;
-            }
-
-            GuiItem iconGui = ItemBuilder.from(icon).asGuiItem(event -> {
-                event.setCancelled(true);
-
-                if (otherTerritory.haveNoLeader()) {
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_NO_LEADER.get(tanPlayer));
-                    return;
-                }
-
-                if (wantedRelation.isSuperiorTo(actualRelation)) {
-                    otherTerritory.receiveDiplomaticProposal(territory, wantedRelation);
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(tanPlayer, otherTerritory.getName()));
-                } else {
-                    territory.setRelation(otherTerritory, wantedRelation);
-                }
-                openSingleRelation(player, territory, wantedRelation, 0);
-
-            });
-            guiItems.add(iconGui);
-        }
-
-
-        GuiUtil.createIterator(gui, guiItems, 0, player, p -> openSingleRelation(player, territory, wantedRelation, 0),
-                p -> openTownRelationAdd(player, territory, wantedRelation, page + 1),
-                p -> openTownRelationAdd(player, territory, wantedRelation, page - 1),
-                decorativeGlass);
 
 
         gui.open(player);

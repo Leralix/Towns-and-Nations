@@ -29,6 +29,7 @@ public class SaveStats {
         PlannedAttackStorage.getInstance().save();
         WarStorage.getInstance().save();
         FortDataStorage.getInstance().save();
+        PremiumStorage.getInstance().save();
     }
 
 }
