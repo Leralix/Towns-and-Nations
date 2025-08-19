@@ -24,12 +24,12 @@ public abstract class IteratorGUI extends BasicGui {
     }
 
 
-    protected void iterator(List<GuiItem> itemList, Consumer<Player> onLeave){
+    protected void iterator(List<GuiItem> itemList, Consumer<Player> onLeave) {
         iterator(itemList, onLeave, Material.GRAY_STAINED_GLASS_PANE);
     }
 
-    protected void iterator(List<GuiItem> itemList, Consumer<Player> onLeave, Material decorativeMaterial){
-        GuiUtil.createIterator(gui, itemList, page, player, onLeave, p -> previousPage(), p -> nextPage(), decorativeMaterial);
+    protected void iterator(List<GuiItem> itemList, Consumer<Player> onLeave, Material decorativeMaterial) {
+        GuiUtil.createIterator(gui, itemList, page, player, onLeave, p -> nextPage(), p -> previousPage(), decorativeMaterial);
     }
 
     protected void previousPage() {
