@@ -13,8 +13,8 @@ import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeColor;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryDescription;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryName;
-import org.leralix.tan.utils.Constants;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
+import org.leralix.tan.utils.constants.Constants;
 
 import java.util.ArrayList;
 import java.util.List;

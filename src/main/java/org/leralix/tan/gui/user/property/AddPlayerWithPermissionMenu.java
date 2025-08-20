@@ -9,12 +9,11 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
-import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.PermissionManager;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.deprecated.HeadUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class AddPlayerWithPermissionMenu extends IteratorGUI {
 
     private final PermissionManager permissionManager;
     private final ChunkPermissionType chunkPermission;
-    private final BasicGui returnMenu;
+    private final BrowsePlayerWithPermissionMenu returnMenu;
 
     public AddPlayerWithPermissionMenu(Player player, PermissionManager permissionManager, ChunkPermissionType chunkPermission, BrowsePlayerWithPermissionMenu browsePlayerWithPermissionMenu) {
         super(player, chunkPermission.getLabel(player), 3);
@@ -40,7 +39,9 @@ public class AddPlayerWithPermissionMenu extends IteratorGUI {
 
     @Override
     public void open() {
-        iterator(getPlayers(), onLeave -> returnMenu.open());
+        iterator(getPlayers(), player -> {
+            returnMenu.open();
+        });
 
         gui.open(player);
     }

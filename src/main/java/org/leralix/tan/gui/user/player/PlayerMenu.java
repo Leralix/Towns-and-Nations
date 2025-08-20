@@ -12,7 +12,7 @@ import org.leralix.tan.gui.user.property.PlayerPropertiesMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.timezone.TimeZoneManager;
-import org.leralix.tan.utils.GuiUtil;
+import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public class PlayerMenu extends BasicGui {
 

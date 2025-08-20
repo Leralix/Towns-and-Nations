@@ -1,4 +1,4 @@
-package org.leralix.tan.utils;
+package org.leralix.tan.utils.file;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -19,7 +19,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * This class is used to archive local data every date to avoid data loss.
+ * This class is used to archive local data every day to avoid data loss.
  * Archived files are stored in the archive folder.
  */
 public class ArchiveUtil {

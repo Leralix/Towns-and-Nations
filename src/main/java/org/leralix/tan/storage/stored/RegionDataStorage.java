@@ -12,7 +12,7 @@ import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.storage.typeadapter.IconAdapter;
-import org.leralix.tan.utils.FileUtil;
+import org.leralix.tan.utils.file.FileUtil;
 
 import java.util.LinkedHashMap;
 import java.util.List;

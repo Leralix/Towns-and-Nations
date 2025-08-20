@@ -1,9 +1,7 @@
 package org.leralix.tan.gui.user.property;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -11,8 +9,8 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.user.territory.TownMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.GuiUtil;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -12,14 +12,14 @@ import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.timezone.TimeZoneManager;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.tan.api.interfaces.TanTerritory;
 
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static org.leralix.tan.utils.TanChatUtils.getTANString;
+import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
 
 public class AttackWonByAttackerNewsletter extends Newsletter {
 

@@ -27,10 +27,10 @@ import org.leralix.tan.listeners.chat.events.ChangeTerritoryDescription;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryName;
 import org.leralix.tan.listeners.chat.events.CreateEmptyTown;
 import org.leralix.tan.storage.stored.*;
-import org.leralix.tan.utils.FileUtil;
-import org.leralix.tan.utils.GuiUtil;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.file.FileUtil;
+import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.PlannedAttack;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package org.leralix.tan.utils;
+package org.leralix.tan.utils.constants;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.leralix.lib.utils.config.ConfigTag;

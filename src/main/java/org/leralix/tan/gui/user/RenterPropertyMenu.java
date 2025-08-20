@@ -9,8 +9,8 @@ import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.property.PropertyMenus;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.GuiUtil;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.lib.data.SoundEnum.MINOR_BAD;
 import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;

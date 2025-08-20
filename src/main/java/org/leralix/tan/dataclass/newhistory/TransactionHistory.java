@@ -2,7 +2,7 @@ package org.leralix.tan.dataclass.newhistory;
 
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

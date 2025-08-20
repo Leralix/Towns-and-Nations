@@ -11,7 +11,7 @@ public enum TownRelation {
     VASSAL(6,Lang.RELATION_VASSAL_NAME.get(), ChatColor.DARK_PURPLE, false),
     ALLIANCE(5,Lang.RELATION_ALLIANCE_NAME.get(), ChatColor.BLUE, true),
     NON_AGGRESSION(4,Lang.RELATION_NON_AGGRESSION_NAME.get(), ChatColor.DARK_AQUA, true),
-    NEUTRAL(3,Lang.RELATION_NEUTRAL_NAME.get(), ChatColor.WHITE, true),
+    NEUTRAL(3,Lang.RELATION_NEUTRAL_NAME.get(), ChatColor.GRAY, true),
     EMBARGO(2,Lang.RELATION_EMBARGO_NAME.get(), ChatColor.GOLD, true),
     WAR(1,Lang.RELATION_HOSTILE_NAME.get(), ChatColor.RED, true);
 

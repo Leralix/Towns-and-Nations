@@ -9,7 +9,7 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.SelectWarGoals;
 import org.leralix.tan.gui.user.territory.WarsMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.GuiUtil;
+import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.WarRole;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;

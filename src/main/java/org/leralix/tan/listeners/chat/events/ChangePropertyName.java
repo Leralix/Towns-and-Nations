@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.lang.Lang;

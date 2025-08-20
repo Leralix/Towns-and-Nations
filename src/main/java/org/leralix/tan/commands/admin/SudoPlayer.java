@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.storage.SudoPlayerStorage;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.lang.Lang;
 
 import java.util.ArrayList;

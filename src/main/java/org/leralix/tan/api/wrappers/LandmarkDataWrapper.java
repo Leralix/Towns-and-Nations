@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.tan.api.interfaces.TanLandmark;
 import org.tan.api.interfaces.TanTerritory;
 

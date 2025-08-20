@@ -8,9 +8,8 @@ import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.gui.IteratorGUI;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +54,7 @@ public class TerritoryChunkSettingsMenu extends IteratorGUI {
                             territoryData.nextPermission(type);
                             open();
                         } else if (event.isRightClick()) {
-                            PlayerGUI.openPlayerListForChunkPermission(player, territoryData, type, 0);
+                            new OpenPlayerListForChunkPermission(player, territoryData, type, this);
                         }
                     }).asGuiItem(player);
 

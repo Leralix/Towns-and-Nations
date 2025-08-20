@@ -5,7 +5,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -12,9 +12,9 @@ import org.leralix.tan.events.events.TownDeletedInternalEvent;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.FileUtil;
-import org.leralix.tan.utils.GuiUtil;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.file.FileUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.lib.data.SoundEnum.*;
 
@@ -151,10 +151,12 @@ public class TownSettingsMenu extends SettingsMenus {
                         Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.get(tanPlayer)
                 )
                 .setAction(event -> {
-                    if (townData.isLeader(tanPlayer))
-                        PlayerGUI.openTownChangeOwnershipPlayerSelect(player, townData, 0);
-                    else
+                    if (townData.isLeader(tanPlayer)){
+                        new SelectNewOwnerForTownMenu(player, townData);
+                    }
+                    else{
                         player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
+                    }
                 })
                 .asGuiItem(player);
 

@@ -45,10 +45,10 @@ import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.tasks.SecondTask;
-import org.leralix.tan.utils.Constants;
-import org.leralix.tan.utils.EnabledPermissions;
-import org.leralix.tan.utils.NumberUtil;
-import org.leralix.tan.utils.TANCustomNBT;
+import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.constants.EnabledPermissions;
+import org.leralix.tan.utils.gameplay.TANCustomNBT;
+import org.leralix.tan.utils.text.NumberUtil;
 import org.tan.api.TanAPI;
 
 import java.io.BufferedReader;

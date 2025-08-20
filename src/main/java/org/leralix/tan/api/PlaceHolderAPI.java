@@ -15,7 +15,7 @@ import org.leralix.tan.storage.LocalChatStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.StringUtil;
+import org.leralix.tan.utils.text.StringUtil;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

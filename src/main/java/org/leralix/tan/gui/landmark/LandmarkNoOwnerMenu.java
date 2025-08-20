@@ -14,9 +14,9 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.Constants;
-import org.leralix.tan.utils.GuiUtil;
-import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.constants.Constants;
 
 import java.util.ArrayList;
 import java.util.List;

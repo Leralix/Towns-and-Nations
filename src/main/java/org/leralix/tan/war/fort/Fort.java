@@ -16,7 +16,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.TANCustomNBT;
+import org.leralix.tan.utils.gameplay.TANCustomNBT;
 
 public abstract class Fort extends Building {
 

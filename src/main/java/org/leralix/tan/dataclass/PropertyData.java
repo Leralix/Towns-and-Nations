@@ -32,9 +32,9 @@ import org.leralix.tan.listeners.interact.events.CreatePropertyEvent;
 import org.leralix.tan.storage.PermissionManager;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.NumberUtil;
-import org.leralix.tan.utils.TANCustomNBT;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.gameplay.TANCustomNBT;
+import org.leralix.tan.utils.text.NumberUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;

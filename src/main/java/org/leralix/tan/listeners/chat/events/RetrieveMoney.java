@@ -8,7 +8,7 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 public class RetrieveMoney extends ChatListenerEvent {
     TerritoryData territoryData;

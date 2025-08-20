@@ -32,7 +32,7 @@ import org.leralix.tan.storage.SudoPlayerStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.EnabledPermissions;
+import org.leralix.tan.utils.constants.EnabledPermissions;
 
 public class ChunkListener implements Listener {
 

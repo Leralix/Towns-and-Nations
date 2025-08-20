@@ -8,7 +8,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.WarStorage;
-import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.war.legacy.WarRole;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;
 

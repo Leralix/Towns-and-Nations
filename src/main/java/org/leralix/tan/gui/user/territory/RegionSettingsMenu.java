@@ -12,9 +12,9 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.FileUtil;
-import org.leralix.tan.utils.GuiUtil;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.file.FileUtil;
+import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.lib.data.SoundEnum.GOOD;
 import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;

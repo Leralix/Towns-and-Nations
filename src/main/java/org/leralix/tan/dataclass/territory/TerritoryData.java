@@ -50,7 +50,13 @@ import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.*;
+import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.file.FileUtil;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.graphic.TeamUtils;
+import org.leralix.tan.utils.text.StringUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.legacy.CurrentAttack;
@@ -598,7 +604,7 @@ public abstract class TerritoryData {
             if (proposalOverlord == null)
                 continue;
             ItemStack territoryItem = proposalOverlord.getIconWithInformations(tanPlayer.getLang());
-            HeadUtils.addLore(territoryItem, Lang.LEFT_CLICK_TO_ACCEPT.get(), Lang.RIGHT_CLICK_TO_REFUSE.get());
+            HeadUtils.addLore(territoryItem, Lang.GUI_GENERIC_LEFT_CLICK_TO_ACCEPT.get(), Lang.RIGHT_CLICK_TO_REFUSE.get());
             GuiItem acceptInvitation = ItemBuilder.from(territoryItem).asGuiItem(event -> {
                 event.setCancelled(true);
                 if (event.isLeftClick()) {

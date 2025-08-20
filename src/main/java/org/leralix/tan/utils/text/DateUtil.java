@@ -1,4 +1,4 @@
-package org.leralix.tan.utils;
+package org.leralix.tan.utils.text;
 
 public class DateUtil {
 

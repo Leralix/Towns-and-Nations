@@ -16,7 +16,7 @@ import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.ArchiveUtil;
+import org.leralix.tan.utils.file.ArchiveUtil;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;

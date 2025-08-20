@@ -1,20 +1,20 @@
-package org.leralix.tan.gui.user.territory;
+package org.leralix.tan.gui.user.territory.relation;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.IteratorGUI;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class AddRelationMenu extends IteratorGUI {
     @Override
     public void open() {
 
-        iterator(getTerritories(), p -> PlayerGUI.openSingleRelation(player, territoryData, wantedRelation, 0));
+        iterator(getTerritories(), p -> new OpenRelationMenu(player, territoryData, wantedRelation), Material.GREEN_STAINED_GLASS_PANE);
 
         gui.open(player);
     }
@@ -77,7 +77,7 @@ public class AddRelationMenu extends IteratorGUI {
                 } else {
                     territoryData.setRelation(otherTerritory, wantedRelation);
                 }
-                PlayerGUI.openSingleRelation(player, territoryData, wantedRelation, 0);
+                new OpenRelationMenu(player, territoryData, wantedRelation);
 
             });
             guiItems.add(iconGui);

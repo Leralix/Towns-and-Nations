@@ -12,7 +12,7 @@ import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.PermissionManager;
-import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.deprecated.HeadUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +54,7 @@ public class BrowsePlayerWithPermissionMenu extends IteratorGUI {
                                     permissionManager,
                                     chunkPermission,
                                     this
-                            ).open();
+                            );
                         }
                 )
                 .asGuiItem(player);

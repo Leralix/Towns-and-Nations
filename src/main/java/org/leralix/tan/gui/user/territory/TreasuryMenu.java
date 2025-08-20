@@ -9,13 +9,12 @@ import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.DonateToTerritory;
 import org.leralix.tan.listeners.chat.events.RetrieveMoney;
-import org.leralix.tan.utils.GuiUtil;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +65,8 @@ public class TreasuryMenu extends BasicGui {
                 .setName(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(tanPlayer))
                 .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get(tanPlayer))
                 .setAction(action ->
-                        PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.MISCELLANEOUS))
+                        new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.MISCELLANEOUS)
+                )
                 .asGuiItem(player);
     }
 
@@ -88,7 +88,7 @@ public class TreasuryMenu extends BasicGui {
                 .setName(Lang.GUI_TREASURY_DONATION_HISTORY.get(tanPlayer))
                 .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get(tanPlayer))
                 .setAction(action ->
-                        PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.DONATION))
+                        new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.DONATION))
                 .asGuiItem(player);
     }
 

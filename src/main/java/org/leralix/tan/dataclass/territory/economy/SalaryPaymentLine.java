@@ -8,10 +8,10 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.user.territory.EconomicHistoryMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.StringUtil;
+import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.text.StringUtil;
 
 public class SalaryPaymentLine extends ProfitLine {
     double totalSalaries;
@@ -41,7 +41,7 @@ public class SalaryPaymentLine extends ProfitLine {
                 Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.get(StringUtil.getColoredMoney(getMoney())),
                 Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get());
         GuiItem salaryHistoryButton = ItemBuilder.from(salarySpending).asGuiItem(event -> {
-            PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.SALARY);
+            new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.SALARY);
             event.setCancelled(true);
         });
         gui.setItem(2, 6, salaryHistoryButton);

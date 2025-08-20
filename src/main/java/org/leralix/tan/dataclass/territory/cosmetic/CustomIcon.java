@@ -4,9 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.utils.ItemStackSerializer;
-
-import javax.swing.*;
+import org.leralix.tan.utils.gameplay.ItemStackSerializer;
 
 public class CustomIcon implements ICustomIcon {
 

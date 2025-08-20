@@ -14,9 +14,9 @@ import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.integration.worldguard.WorldGuardManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.Constants;
-import org.leralix.tan.utils.TanChatUtils;
-import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Objects;
 import java.util.UUID;

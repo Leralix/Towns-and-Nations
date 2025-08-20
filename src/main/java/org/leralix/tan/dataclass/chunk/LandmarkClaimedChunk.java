@@ -16,7 +16,7 @@ import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 public class LandmarkClaimedChunk extends ClaimedChunk2 {
     public LandmarkClaimedChunk(Chunk chunk, String owner) {

@@ -15,9 +15,9 @@ import org.leralix.tan.listeners.chat.events.ChangePropertyDescription;
 import org.leralix.tan.listeners.chat.events.ChangePropertyName;
 import org.leralix.tan.listeners.chat.events.ChangePropertyRentPrice;
 import org.leralix.tan.listeners.chat.events.ChangePropertySalePrice;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.NumberUtil;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.text.NumberUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.lib.data.SoundEnum.MINOR_BAD;
 import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;

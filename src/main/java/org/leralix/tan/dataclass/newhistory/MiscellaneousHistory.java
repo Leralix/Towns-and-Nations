@@ -2,7 +2,7 @@ package org.leralix.tan.dataclass.newhistory;
 
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.StringUtil;
+import org.leralix.tan.utils.text.StringUtil;
 
 public class MiscellaneousHistory extends TransactionHistory {
 

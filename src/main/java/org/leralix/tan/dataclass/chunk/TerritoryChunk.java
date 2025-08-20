@@ -7,7 +7,7 @@ import org.bukkit.Chunk;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 public abstract class TerritoryChunk extends ClaimedChunk2 {
 

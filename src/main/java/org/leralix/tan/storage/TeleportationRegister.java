@@ -12,7 +12,7 @@ import org.leralix.tan.dataclass.TeleportationData;
 import org.leralix.tan.dataclass.TeleportationPosition;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.HashMap;
 

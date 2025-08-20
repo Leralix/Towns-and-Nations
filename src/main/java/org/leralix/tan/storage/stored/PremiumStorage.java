@@ -4,7 +4,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.leralix.tan.utils.Constants;
+import org.leralix.tan.utils.constants.Constants;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;

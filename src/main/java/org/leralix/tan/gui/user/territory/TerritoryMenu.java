@@ -13,9 +13,10 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.user.territory.relation.OpenDiplomacyMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public abstract class TerritoryMenu extends BasicGui {
                 .setAction( action -> {
 
                     if(action.isRightClick()){
-                        PlayerGUI.openSelectHeadTerritoryMenu(player, territoryData, 0);
+                        new SelectTerritoryHeadMenu(player, territoryData);
                         return;
                     }
 
@@ -126,7 +127,7 @@ public abstract class TerritoryMenu extends BasicGui {
                         Lang.GUI_RELATION_ICON_DESC1.get(tanPlayer.getLang()),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer)
                 )
-                .setAction(event -> PlayerGUI.openRelations(player, territoryData))
+                .setAction(event -> new OpenDiplomacyMenu(player, territoryData))
                 .asGuiItem(player);
     }
 

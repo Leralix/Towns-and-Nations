@@ -152,6 +152,16 @@ GUI_CREATE_PROPERTY_ICON: "minecraft:OAK_SIGN"
 GUI_MANAGE_PROPERTY_ICON: "minecraft:WRITABLE_BOOK"
 GUI_ADMINISTRATOR_ICON: "minecraft:DIAMOND"
 
+#Diplomacy
+GUI_WAR_ICON: "minecraft:IRON_SWORD"
+GUI_EMBARGO_ICON: "minecraft:BARRIER"
+GUI_NON_AGGRESSION_PACT_ICON: "minecraft:WRITABLE_BOOK"
+GUI_ALLIANCE_ICON: "minecraft:CAMPFIRE"
+GUI_PROPOSALS_ICON: "minecraft:PAPER"
+
+GUI_ADD_TERRITORY_ICON : "https://textures.minecraft.net/texture/4e4b8b8d2362c864e062301487d94d3272a6b570afbf80c2c5b148c954579d46"
+GUI_REMOVE_TERRITORY_ICON : "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1"
+
 #Wars
 #War settings menu
 REMOVE_WAR_START_TIME_ICON: "https://textures.minecraft.net/texture/da56dab53d4ea1a79a8e5ed6322c2d56cb714dd35edf478763ad1a84a8310"

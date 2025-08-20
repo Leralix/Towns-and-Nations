@@ -3,7 +3,7 @@ package org.leralix.tan.listeners.chat;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.lang.Lang;
 
 import java.util.HashMap;

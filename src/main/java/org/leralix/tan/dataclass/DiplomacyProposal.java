@@ -1,14 +1,13 @@
 package org.leralix.tan.dataclass;
 
 import dev.triumphteam.gui.guis.GuiItem;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.user.territory.relation.OpenDiplomacyProposalsMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 public class DiplomacyProposal {
 
@@ -22,10 +21,14 @@ public class DiplomacyProposal {
         this.relationProposal = relationProposal;
     }
 
-    public GuiItem createGuiItem(Player player, TerritoryData territoryData, int page) {
+    public GuiItem createGuiItem(OpenDiplomacyProposalsMenu menu) {
 
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         TerritoryData askingTerritory = TerritoryUtil.getTerritory(askingTerritoryID);
+
+        if(receivingTerritory == null){
+            return null;
+        }
 
         if(askingTerritory == null){
             receivingTerritory.removeDiplomaticProposal(askingTerritoryID);
@@ -36,7 +39,7 @@ public class DiplomacyProposal {
         ItemStack diplomaticItem = HeadUtils.makeSkullURL(Lang.DIPLOMATIC_RELATION.get(askingTerritory.getBaseColoredName()),"https://textures.minecraft.net/texture/1818d1cc53c275c294f5dfb559174dd931fc516a85af61a1de256aed8bca5e7",
                 Lang.DIPLOMATIC_RELATION_DESC1.get(relationProposal.getColoredName()),
                 Lang.DIPLOMATIC_RELATION_DESC2.get(currentRelation.getColoredName()),
-                Lang.LEFT_CLICK_TO_ACCEPT.get());
+                Lang.GUI_GENERIC_LEFT_CLICK_TO_ACCEPT.get());
 
         return new GuiItem(diplomaticItem, event -> {
             event.setCancelled(true);
@@ -44,7 +47,7 @@ public class DiplomacyProposal {
                 askingTerritory.setRelation(receivingTerritory, relationProposal);
                 receivingTerritory.removeDiplomaticProposal(askingTerritoryID);
             }
-            PlayerGUI.openProposalMenu(player, territoryData, page);
+            menu.open();
         });
 
 

@@ -3,7 +3,7 @@ package org.leralix.tan.commands.player;
 
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.gui.user.MainMenu;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.lang.Lang;
 
 

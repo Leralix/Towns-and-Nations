@@ -1,4 +1,4 @@
-package org.leralix.tan.utils;
+package org.leralix.tan.utils.text;
 
 import org.leralix.lib.utils.RandomUtil;
 import org.leralix.tan.economy.EconomyUtil;

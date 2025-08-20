@@ -13,10 +13,10 @@ import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.PvpSettings;
 import org.leralix.tan.storage.WildernessRules;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
-import org.leralix.tan.utils.Constants;
-import org.leralix.tan.utils.EnabledPermissions;
-import org.leralix.tan.utils.NumberUtil;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.text.NumberUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
+import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.constants.EnabledPermissions;
 
 import java.io.File;
 import java.util.Collections;

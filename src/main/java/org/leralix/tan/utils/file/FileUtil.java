@@ -1,8 +1,8 @@
-package org.leralix.tan.utils;
+package org.leralix.tan.utils.file;
 
-import org.leralix.tan.TownsAndNations;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.TownsAndNations;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,12 +15,14 @@ import java.time.LocalDate;
  */
 public class FileUtil {
     private static final String ERROR_MESSAGE = "Could not create history file!";
+
     private FileUtil() {
         throw new IllegalStateException("Utility class");
     }
+
     public static void addLineToHistory(final String lineToAdd) {
 
-        if(!ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("archiveHistory",true)) {
+        if (!ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("archiveHistory", true)) {
             return;
         }
 
@@ -29,7 +31,7 @@ public class FileUtil {
 
         if (!archiveFile.exists()) {
             try {
-                if(!archiveFile.createNewFile()){
+                if (!archiveFile.createNewFile()) {
                     TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);
                 }
             } catch (IOException e) {
@@ -40,7 +42,7 @@ public class FileUtil {
 
         try (FileWriter fw = new FileWriter(archiveFile, true);
              BufferedWriter bw = new BufferedWriter(fw)) {
-            bw.write( "[" + LocalDate.now() + "] " + lineToAdd);
+            bw.write("[" + LocalDate.now() + "] " + lineToAdd);
             bw.newLine();
         } catch (IOException e) {
             TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);

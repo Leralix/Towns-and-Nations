@@ -1,7 +1,7 @@
 package org.leralix.tan.lang;
 
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.deprecated.HeadUtils;
 
 import java.util.HashMap;
 import java.util.Map;

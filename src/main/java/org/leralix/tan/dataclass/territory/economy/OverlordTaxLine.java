@@ -4,7 +4,7 @@ import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.StringUtil;
+import org.leralix.tan.utils.text.StringUtil;
 
 public class OverlordTaxLine extends ProfitLine {
 

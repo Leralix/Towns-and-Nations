@@ -20,7 +20,7 @@ import org.leralix.tan.storage.database.SQLiteHandler;
 import org.leralix.tan.storage.impl.FortDataStorage;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.ItemStackSerializer;
+import org.leralix.tan.utils.gameplay.ItemStackSerializer;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 

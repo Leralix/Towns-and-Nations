@@ -7,8 +7,7 @@ import dev.triumphteam.gui
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.deprecated.HeadUtils;
 
 public enum RankEnum {
 

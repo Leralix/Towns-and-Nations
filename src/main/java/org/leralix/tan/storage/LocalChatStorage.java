@@ -13,11 +13,11 @@ import org.leralix.tan.enums.ChatScope;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 import java.util.HashMap;
 
-import static org.leralix.tan.utils.TanChatUtils.getTANString;
+import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
 
 public class LocalChatStorage {
     private static final HashMap<String, ChatScope> playerChatScope = new HashMap<>();

@@ -1,4 +1,4 @@
-package org.leralix.tan.utils;
+package org.leralix.tan.utils.graphic;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.utils.config.ConfigTag;

@@ -1,4 +1,4 @@
-package org.leralix.tan.utils;
+package org.leralix.tan.utils.constants;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.leralix.lib.utils.config.ConfigTag;
@@ -14,10 +14,15 @@ public class EnabledPermissions {
 
     private static EnabledPermissions instance;
 
+    public static EnabledPermissions getInstance(){
+        if (instance == null){
+            instance = new EnabledPermissions();
+        }
+        return instance;
+    }
 
     private EnabledPermissions(){
         this.enabledPermissions = new HashSet<>();
-
         init();
     }
 
@@ -36,17 +41,7 @@ public class EnabledPermissions {
         }
     }
 
-    public static EnabledPermissions getInstance(){
-        if (instance == null){
-            instance = new EnabledPermissions();
-        }
-        return instance;
-    }
-
     public boolean isPermissionDisabled(ChunkPermissionType permission) {
         return enabledPermissions.contains(permission);
     }
-
-
-
 }

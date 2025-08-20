@@ -10,8 +10,8 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +20,10 @@ import static org.leralix.lib.data.SoundEnum.BAD;
 
 public class VassalsMenu extends IteratorGUI {
 
-    private final Player player;
     private final TerritoryData territoryData;
 
     public VassalsMenu(Player player, TerritoryData territoryData) {
         super(player, Lang.HEADER_VASSALS.get(player), 4);
-        this.player = player;
         this.territoryData = territoryData;
         open();
     }

@@ -15,14 +15,14 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
-import org.leralix.tan.utils.HeadUtils;
+import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.TanTown;
 
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static org.leralix.tan.utils.TanChatUtils.getTANString;
+import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
 
 public class PlayerJoinTownNews extends Newsletter {
 

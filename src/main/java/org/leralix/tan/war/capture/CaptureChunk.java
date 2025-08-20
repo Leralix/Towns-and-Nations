@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.Constants;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.fort.Fort;
 
 import java.util.ArrayList;

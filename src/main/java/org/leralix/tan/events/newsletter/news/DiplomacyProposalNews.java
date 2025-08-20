@@ -12,13 +12,13 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.events.newsletter.NewsletterType;
-import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.user.territory.relation.OpenDiplomacyProposalsMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.tan.api.enums.EDiplomacyState;
 import org.tan.api.interfaces.TanTerritory;
 
@@ -26,7 +26,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
-import static org.leralix.tan.utils.TanChatUtils.getTANString;
+import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
 
 public class DiplomacyProposalNews extends Newsletter {
     private final String proposingTerritoryID;
@@ -124,7 +124,7 @@ public class DiplomacyProposalNews extends Newsletter {
                     SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                     return;
                 }
-                PlayerGUI.openProposalMenu(player, receivingTerritory, 0);
+                new OpenDiplomacyProposalsMenu(player, receivingTerritory);
             }
             if(event.isRightClick()){
                 markAsRead(player);

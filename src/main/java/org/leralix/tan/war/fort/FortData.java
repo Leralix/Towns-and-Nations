@@ -2,7 +2,7 @@ package org.leralix.tan.war.fort;
 
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.utils.TerritoryUtil;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 public class FortData extends Fort{
 

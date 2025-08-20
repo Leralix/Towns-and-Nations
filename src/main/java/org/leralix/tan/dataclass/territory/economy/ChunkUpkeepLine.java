@@ -6,10 +6,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.user.territory.EconomicHistoryMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.StringUtil;
+import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.text.StringUtil;
 
 public class ChunkUpkeepLine extends ProfitLine {
     private final double totalUpkeep;
@@ -35,10 +35,9 @@ public class ChunkUpkeepLine extends ProfitLine {
                 Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.get(StringUtil.getColoredMoney(getMoney())),
                 Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(StringUtil.getColoredMoney(-territoryData.getChunkUpkeepCost())),
                 Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(territoryData.getNumberOfClaimedChunk()));
-        GuiItem chunkSpendingItem = new GuiItem(chunkSpending, event -> {
-            PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.CHUNK_SPENDING);
-            event.setCancelled(true);
-        });
+        GuiItem chunkSpendingItem = new GuiItem(chunkSpending, event ->
+                new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.CHUNK_SPENDING)
+        );
         gui.setItem(2, 7, chunkSpendingItem);
     }
 

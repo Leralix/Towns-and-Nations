@@ -1,4 +1,4 @@
-package org.leralix.tan.utils;
+package org.leralix.tan.utils.gameplay;
 
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -13,8 +13,10 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.storage.impl.FortDataStorage;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.war.fort.Fort;
 
 
 /**
@@ -77,6 +79,13 @@ public class TANCustomNBT {
     public static void setBlocsData(){
         setSignData();
         setLandmarksData();
+        setFortData();
+    }
+
+    private static void setFortData() {
+        for(Fort fort : FortDataStorage.getInstance().getForts()){
+            fort.setProtectedBlockData();
+        }
     }
 
     /**

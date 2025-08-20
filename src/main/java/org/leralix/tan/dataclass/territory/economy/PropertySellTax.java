@@ -11,15 +11,15 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
-import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.user.territory.EconomicHistoryMenu;
 import org.leralix.tan.gui.user.territory.TreasuryMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.RateType;
 import org.leralix.tan.listeners.chat.events.SetSpecificRate;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 
 public class PropertySellTax extends ProfitLine {
@@ -79,7 +79,7 @@ public class PropertySellTax extends ProfitLine {
         GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
             event.setCancelled(true);
             if (event.isLeftClick()) {
-                PlayerGUI.openTownEconomicsHistory(player, territoryData, TransactionHistoryEnum.PROPERTY_BUY_TAX);
+                new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.PROPERTY_BUY_TAX);
             } else if (event.isRightClick()) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_SET_TAX_IN_CHAT.get());
                 PlayerChatListenerStorage.register(player, new SetSpecificRate(territoryData, RateType.BUY));

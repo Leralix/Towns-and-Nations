@@ -1,4 +1,4 @@
-package org.leralix.tan.utils;
+package org.leralix.tan.utils.deprecated;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.components.GuiType;
@@ -30,25 +30,25 @@ public class GuiUtil {
     /**
      * Create the town upgrade resume {@link GuiItem}. This gui is used to summarize
      * every upgrade rewards the town currently have.
-     * @param townData  The town on which the upgrade should be shown
-     * @return          The {@link GuiItem} displaying the town current benefices
+     *
+     * @param townData The town on which the upgrade should be shown
+     * @return The {@link GuiItem} displaying the town current benefices
      */
-    public static GuiItem townUpgradeResume(LangType langType, TownData townData){
+    public static GuiItem townUpgradeResume(LangType langType, TownData townData) {
 
         ItemStack townIcon = townData.getIconWithName();
         List<String> lore = new ArrayList<>();
         lore.add(Lang.TOWN_LEVEL_BONUS_RECAP.get());
 
-        Map<String,Integer> benefits = townData.getLevel().getTotalBenefits();
+        Map<String, Integer> benefits = townData.getLevel().getTotalBenefits();
 
-        for(Map.Entry<String,Integer> entry : benefits.entrySet()){
+        for (Map.Entry<String, Integer> entry : benefits.entrySet()) {
             String valueId = entry.getKey();
             Integer value = entry.getValue();
             String line;
-            if(value > 0){
+            if (value > 0) {
                 line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(DynamicLang.get(langType, valueId), value);
-            }
-            else {
+            } else {
                 line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(DynamicLang.get(langType, valueId), value);
             }
             lore.add(line);
@@ -66,6 +66,7 @@ public class GuiUtil {
                 .rows(nRow)
                 .create();
     }
+
     public static GuiItem createBackArrow(Player player, Consumer<Player> openMenuAction) {
         ItemStack getBackArrow = HeadUtils.createCustomItemStack(Material.ARROW, Lang.GUI_BACK_ARROW.get());
         return ItemBuilder.from(getBackArrow).asGuiItem(event -> {
@@ -81,7 +82,7 @@ public class GuiUtil {
         item.setItemMeta(itemMeta);
         return ItemBuilder.from(item).asGuiItem(event -> event.setCancelled(true));
     }
-    
+
     public static void createIterator(Gui gui, List<GuiItem> guItems, int page,
                                       Player player, Consumer<Player> backArrowAction,
                                       Consumer<Player> nextPageAction, Consumer<Player> previousPageAction) {
@@ -112,11 +113,10 @@ public class GuiUtil {
         int totalSize = guItems.size();
 
         int endIndex;
-        if(startIndex + pageSize > totalSize){
+        if (startIndex + pageSize > totalSize) {
             endIndex = totalSize;
             lastPage = true;
-        }
-        else {
+        } else {
             lastPage = false;
             endIndex = startIndex + pageSize;
         }
@@ -144,7 +144,7 @@ public class GuiUtil {
 
         GuiItem previousButton = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
             event.setCancelled(true);
-            if(page == 0){
+            if (page == 0) {
                 return;
             }
             previousPageAction.accept(player);
@@ -152,7 +152,7 @@ public class GuiUtil {
 
         GuiItem nextButton = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
             event.setCancelled(true);
-            if(lastPage) {
+            if (lastPage) {
                 return;
             }
             nextPageAction.accept(player);
@@ -161,8 +161,8 @@ public class GuiUtil {
         int lastRow = gui.getRows();
 
         gui.getFiller().fillBottom(panel);
-        gui.setItem(lastRow,1, GuiUtil.createBackArrow(player, backArrowAction));
-        gui.setItem(lastRow,7, previousButton);
-        gui.setItem(lastRow,8, nextButton);
+        gui.setItem(lastRow, 1, GuiUtil.createBackArrow(player, backArrowAction));
+        gui.setItem(lastRow, 7, previousButton);
+        gui.setItem(lastRow, 8, nextButton);
     }
 }

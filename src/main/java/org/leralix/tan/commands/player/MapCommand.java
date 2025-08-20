@@ -12,7 +12,7 @@ import org.leralix.tan.enums.ClaimType;
 import org.leralix.tan.enums.MapSettings;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

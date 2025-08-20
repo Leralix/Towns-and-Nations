@@ -6,8 +6,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.CurrentAttacksStorage;
-import org.leralix.tan.utils.Constants;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.legacy.CurrentAttack;
 

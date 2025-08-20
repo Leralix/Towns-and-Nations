@@ -4,7 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.GuiUtil;
+import org.leralix.tan.utils.deprecated.GuiUtil;
 
 import java.util.List;
 import java.util.function.Consumer;

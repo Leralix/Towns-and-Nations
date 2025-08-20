@@ -1,4 +1,4 @@
-package org.leralix.tan.utils;
+package org.leralix.tan.utils.gameplay;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;

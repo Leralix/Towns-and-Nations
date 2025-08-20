@@ -1,4 +1,6 @@
-package org.leralix.tan.utils;
+package org.leralix.tan.utils.text;
+
+import org.leralix.tan.utils.constants.Constants;
 
 public class NumberUtil {
 

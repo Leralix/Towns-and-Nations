@@ -12,9 +12,9 @@ import org.leralix.tan.gui.user.territory.AttackMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeAttackName;
-import org.leralix.tan.utils.GuiUtil;
-import org.leralix.tan.utils.HeadUtils;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.legacy.WarRole;
 

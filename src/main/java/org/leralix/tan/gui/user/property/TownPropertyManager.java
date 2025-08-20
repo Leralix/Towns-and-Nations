@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.GuiUtil;
+import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public class TownPropertyManager extends PropertyMenus {
 

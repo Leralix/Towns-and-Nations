@@ -3,7 +3,7 @@ package org.leralix.tan.commands.player;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.storage.PlayerAutoClaimStorage;
-import org.leralix.tan.utils.TanChatUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.enums.ChunkType;
 
