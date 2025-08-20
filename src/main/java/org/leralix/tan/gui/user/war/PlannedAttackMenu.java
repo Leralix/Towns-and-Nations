@@ -74,7 +74,7 @@ public class PlannedAttackMenu extends BasicGui {
                     .setDescription(submitDescription)
                     .setAction(
                             event -> {
-                                plannedAttack.defenderSurrendered();
+                                plannedAttack.territorySurrendered();
                                 new AttackMenu(player, territoryData);
                             })
                     .asGuiItem(player));

@@ -76,12 +76,12 @@ public class War {
         return new ItemStack(Material.IRON_SWORD);
     }
 
-    public void territorySurrender(WarRole winningSide) {
+    public void territorySurrender(WarRole looserTerritory) {
 
-        TerritoryData winner = getTerritory(winningSide);
-        TerritoryData looser = getEnemyTerritory(winningSide);
+        TerritoryData looser = getTerritory(looserTerritory);
+        TerritoryData winner = getTerritory(looserTerritory.opposite());
 
-        for(WarGoal goal : getGoals(winningSide.opposite())) {
+        for(WarGoal goal : getGoals(looserTerritory.opposite())) {
             goal.applyWarGoal(winner, looser);
         }
 
@@ -129,16 +129,6 @@ public class War {
         }
         if(warRole == WarRole.MAIN_DEFENDER){
             return getMainDefender();
-        }
-        throw new IllegalArgumentException(warRole + " is not authorized");
-    }
-
-    public TerritoryData getEnemyTerritory(WarRole warRole) {
-        if(warRole == WarRole.MAIN_ATTACKER){
-            return getMainDefender();
-        }
-        if(warRole == WarRole.MAIN_DEFENDER){
-            return getMainAttacker();
         }
         throw new IllegalArgumentException(warRole + " is not authorized");
     }

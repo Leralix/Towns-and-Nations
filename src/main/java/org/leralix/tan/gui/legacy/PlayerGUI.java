@@ -397,6 +397,9 @@ public class PlayerGUI {
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
+
+                    mainTerritory.broadcastMessageWithSound(Lang.GUI_WAR_DECLARED.get(mainTerritory.getColoredName(), territoryData.getColoredName()), WAR);
+                    territoryData.broadcastMessageWithSound(Lang.GUI_WAR_DECLARED.get(mainTerritory.getColoredName(), territoryData.getColoredName()), WAR);
                     War newWar = warStorage.newWar(mainTerritory, territoryData);
                     new WarMenu(player, mainTerritory, newWar);
                 }

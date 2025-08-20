@@ -112,7 +112,6 @@ public class WarMenu extends BasicGui {
 
     private @NotNull GuiItem getSurrenderButton() {
 
-
         List<String> description = new ArrayList<>();
         description.add(Lang.WAR_SURRENDER_DESC1.get(langType));
         description.add(Lang.WAR_SURRENDER_DESC2.get(langType));
@@ -123,7 +122,7 @@ public class WarMenu extends BasicGui {
                 .setName(Lang.WAR_SURRENDER.get(langType))
                 .setDescription(description)
                 .setAction( action -> {
-                    war.territorySurrender(warRole.opposite());
+                    war.territorySurrender(warRole);
                     new WarsMenu(player, territoryData);
                 })
                 .asGuiItem(player);

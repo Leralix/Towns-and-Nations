@@ -16,7 +16,6 @@ import org.leralix.tan.utils.TanChatUtils;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.WarRole;
 import org.leralix.tan.war.legacy.wargoals.ConquerWarGoal;
-import org.leralix.tan.war.legacy.wargoals.LiberateWarGoal;
 import org.leralix.tan.war.legacy.wargoals.SubjugateWarGoal;
 
 import java.util.ArrayList;
@@ -172,10 +171,7 @@ public class ChooseWarGoal extends BasicGui {
                                 return;
                             }
 
-                            new PlayerGUI.
-
-                            war.addGoal(warRole, new LiberateWarGoal());
-                            new SelectWarGoals(player, territoryData, war, warRole);
+                            new SelectTerritoryForLIberation(player, territoryData, war, warRole);
                         }
                 )
                 .asGuiItem(player);

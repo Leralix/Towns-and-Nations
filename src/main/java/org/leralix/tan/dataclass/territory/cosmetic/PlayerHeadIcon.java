@@ -38,7 +38,7 @@ public class PlayerHeadIcon implements ICustomIcon {
             return icon;
         }
 
-        skullMeta.setOwningPlayer(offlinePlayer);
+        skullMeta.setOwnerProfile(offlinePlayer.getPlayerProfile());
         icon.setItemMeta(skullMeta);
         return icon;
     }

@@ -305,7 +305,7 @@ public class PlannedAttack {
         defendersID.remove(territoryID);
     }
 
-    public void defenderSurrendered() {
+    public void territorySurrendered() {
         EventManager.getInstance().callEvent(new DefenderAcceptDemandsBeforeWarInternalEvent(war.getMainDefender(), war.getMainAttacker()));
         war.territorySurrender(warRole);
         end();

@@ -78,7 +78,7 @@ public class CreateAttackMenu extends BasicGui {
                         return;
                     }
 
-                    EventManager.getInstance().callEvent(new AttackDeclaredInternalEvent(war.getEnemyTerritory(warRole), war.getTerritory(warRole)));
+                    EventManager.getInstance().callEvent(new AttackDeclaredInternalEvent(war.getTerritory(warRole.opposite()), war.getTerritory(warRole)));
 
                     PlannedAttackStorage.getInstance().newAttack(attackData);
                     new AttackMenu(player, war.getTerritory(warRole));

@@ -5,20 +5,25 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.utils.TerritoryUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LiberateWarGoal extends WarGoal {
 
-    TerritoryData territoryToLiberate;
+    private final String territoryToLiberateID;
+
+    public LiberateWarGoal(TerritoryData territoryToLiberate) {
+        this.territoryToLiberateID = territoryToLiberate.getID();
+    }
 
     @Override
     public IconBuilder getIcon(LangType langType) {
 
         List<String> description = new ArrayList<>();
         description.add(Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC.get(langType));
-        description.add(Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC1.get(langType, territoryToLiberate.getName()));
+        description.add(Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC1.get(langType, getTerritoryToLiberate().getName()));
         description.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(langType));
 
         return buildIcon(Material.LANTERN, description);
@@ -31,24 +36,26 @@ public class LiberateWarGoal extends WarGoal {
 
     @Override
     public void applyWarGoal(TerritoryData winner, TerritoryData loser) {
-        if(!territoryToLiberate.haveOverlord())
+        if(!getTerritoryToLiberate().haveOverlord()){
             return;
-        territoryToLiberate.removeOverlord();
+        }
+        getTerritoryToLiberate().removeOverlord();
     }
 
     @Override
     public boolean isCompleted() {
-        return territoryToLiberate != null;
+        return getTerritoryToLiberate() != null;
     }
 
     @Override
     public String getCurrentDesc() {
-        if(territoryToLiberate == null)
+        if(getTerritoryToLiberate() == null)
             return null;
-        return Lang.GUI_WARGOAL_LIBERATE_WAR_GOAL_RESULT.get();
+        return Lang.GUI_WARGOAL_LIBERATE_WAR_GOAL_RESULT.get(getTerritoryToLiberate().getName());
     }
 
-    public void setTerritoryToLiberate(TerritoryData territoryToLiberate) {
-        this.territoryToLiberate = territoryToLiberate;
+
+    public TerritoryData getTerritoryToLiberate() {
+        return TerritoryUtil.getTerritory(territoryToLiberateID);
     }
 }
