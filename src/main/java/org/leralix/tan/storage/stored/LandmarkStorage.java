@@ -5,8 +5,10 @@ import com.google.gson.GsonBuilder;
 import org.bukkit.Location;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.dataclass.Landmark;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class LandmarkStorage extends JsonStorage<Landmark> {
 
@@ -45,6 +47,12 @@ public class LandmarkStorage extends JsonStorage<Landmark> {
         return landmark;
     }
 
+    public List<Landmark> getLandmarkOf(TerritoryData territoryData){
+        return getAll().values().stream()
+                .filter(landmark -> landmark.isOwnedBy(territoryData))
+                .toList();
+    }
+
     public void generateAllResources(){
         for (Landmark landmark : getAll().values()) {
             landmark.generateResources();
@@ -62,5 +70,10 @@ public class LandmarkStorage extends JsonStorage<Landmark> {
                 ID = newID;
         }
         newLandmarkID = ID+1;
+    }
+
+    @Override
+    public void reset() {
+        instance = null;
     }
 }

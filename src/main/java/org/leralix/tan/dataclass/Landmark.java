@@ -10,6 +10,7 @@ import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.WildernessChunk;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.LandmarkStorage;
@@ -161,8 +162,6 @@ public class Landmark {
 
     public void deleteLandmark() {
         dispawnChest();
-        if (isOwned())
-            getOwner().removeLandmark(getID());
         NewClaimedChunkStorage.getInstance().unclaimChunk(position.getLocation().getChunk());
         LandmarkStorage.getInstance().delete(getID());
 
@@ -217,5 +216,15 @@ public class Landmark {
             return;
         }
         TANCustomNBT.setBockMetaData(getChest().get(), "LandmarkChest", getID());
+    }
+
+    public boolean isOwnedBy(TerritoryData territoryData) {
+        if (territoryData == null) {
+            return false;
+        }
+        if (ownerID == null) {
+            return false;
+        }
+        return ownerID.equals(territoryData.getID());
     }
 }

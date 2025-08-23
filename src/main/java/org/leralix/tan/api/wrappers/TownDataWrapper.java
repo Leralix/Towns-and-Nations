@@ -1,6 +1,7 @@
 package org.leralix.tan.api.wrappers;
 
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.tan.api.interfaces.TanLandmark;
 import org.tan.api.interfaces.TanProperty;
 import org.tan.api.interfaces.TanTown;
@@ -37,7 +38,7 @@ public class TownDataWrapper extends TerritoryDataWrapper implements TanTown {
 
     @Override
     public Collection<TanLandmark> getLandmarksOwned() {
-        return townData.getOwnedLandmarks().stream()
+        return LandmarkStorage.getInstance().getLandmarkOf(townData).stream()
                 .map(LandmarkDataWrapper::of)
                 .map(l -> (TanLandmark) l)
                 .toList();

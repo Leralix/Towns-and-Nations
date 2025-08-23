@@ -5,6 +5,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -19,8 +20,6 @@ import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.leralix.lib.data.SoundEnum.ADD;
 
 public class AddPlayerForChunkPermission extends IteratorGUI {
 
@@ -64,8 +63,7 @@ public class AddPlayerForChunkPermission extends IteratorGUI {
                 }
                 territoryData.getPermission(type).addSpecificPlayerPermission(playerToAdd.getUniqueId().toString());
                 open();
-                SoundUtil.playSound(player, ADD);
-
+                SoundUtil.playSound(player, SoundEnum.ADD);
             });
             guiItems.add(guiItem);
         }

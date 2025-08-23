@@ -75,5 +75,10 @@ public class PlayerDataStorage extends JsonStorage<ITanPlayer> {
         throw new RuntimeException("Error : Player ID [" + id + "] has not been found" );
     }
 
+    @Override
+    public void reset() {
+        instance = null;
+    }
+
 
 }

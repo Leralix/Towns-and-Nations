@@ -65,7 +65,8 @@ public class PropertyData {
         this.p1 = p1;
         this.p2 = p2;
 
-        this.icon = new CustomIcon(new ItemStack(Material.OAK_SIGN));
+        ItemStack itemStack = new ItemStack(Material.OAK_SIGN);
+        this.icon = new CustomIcon(itemStack);
         this.name = "Unnamed Zone";
         this.description = "No description";
         this.isForSale = false;

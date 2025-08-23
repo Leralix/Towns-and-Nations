@@ -16,6 +16,8 @@ import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class LandmarkClaimedChunk extends ClaimedChunk2 {
@@ -91,11 +93,6 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
 
     @Override
     public boolean canTerritoryClaim(Player player, TerritoryData territoryData) {
-
-        boolean canClaim = canTerritoryClaim(territoryData);
-        if(canClaim) {
-            return true;
-        }
         player.sendMessage(TanChatUtils.getTANString() + Lang.CANNOT_CLAIM_LANDMARK.get());
         return false;
     }
@@ -128,5 +125,19 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
     @Override
     public ChunkType getType() {
         return ChunkType.LANDMARK;
+    }
+
+    @Override
+    public void notifyUpdate() {
+        if (!Constants.isLandmarkClaimRequiresEncirclement() || !isClaimed()) {
+            return;
+        }
+
+        Landmark landmark = getLandMark();
+
+        if (ChunkUtil.isChunkEncirecledBy(this, chunk -> chunk.getOwnerID().equals(landmark.getOwnerID()))) {
+            return;
+        }
+        getLandMark().removeOwnership();
     }
 }

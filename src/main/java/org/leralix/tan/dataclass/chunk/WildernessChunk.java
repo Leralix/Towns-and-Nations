@@ -117,4 +117,9 @@ public class WildernessChunk extends ClaimedChunk2 {
     public ChunkType getType() {
         return ChunkType.WILDERNESS;
     }
+
+    @Override
+    public void notifyUpdate() {
+        // Wilderness chunks do not need to notify updates
+    }
 }

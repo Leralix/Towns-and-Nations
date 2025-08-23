@@ -54,6 +54,11 @@ public class TownDataStorage extends JsonStorage<TownData>{
         newTownId = id + 1;
     }
 
+    @Override
+    public void reset() {
+        instance = null;
+    }
+
 
     public static TownDataStorage getInstance() {
         if (instance == null)
@@ -70,7 +75,7 @@ public class TownDataStorage extends JsonStorage<TownData>{
     }
 
     private @NotNull String getNextTownID() {
-        String townId = "T"+newTownId;
+        String townId = "T"+ newTownId;
         newTownId++;
         return townId;
     }

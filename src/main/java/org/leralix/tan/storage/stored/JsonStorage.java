@@ -12,7 +12,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class JsonStorage<T> {
+public abstract class JsonStorage<T> {
 
     protected final File file;
     protected Map<String, T> dataMap;
@@ -119,5 +119,7 @@ public class JsonStorage<T> {
         dataMap.put(id, obj);
         save();
     }
+
+    public abstract void reset();
 
 }

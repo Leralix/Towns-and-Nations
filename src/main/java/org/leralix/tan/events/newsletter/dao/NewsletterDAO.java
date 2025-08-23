@@ -144,7 +144,8 @@ public class NewsletterDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to get newsletters", e);
+            TownsAndNations.getPlugin().getLogger().severe("Failed to retrieve newsletters: " + e.getMessage());
+            return Collections.emptyList();
         }
 
         return newsletters;

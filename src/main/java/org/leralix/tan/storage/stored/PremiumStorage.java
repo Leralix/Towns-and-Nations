@@ -74,4 +74,8 @@ public class PremiumStorage extends JsonStorage<Boolean> {
         return false;
     }
 
+    @Override
+    public void reset() {
+        instance = null;
+    }
 }

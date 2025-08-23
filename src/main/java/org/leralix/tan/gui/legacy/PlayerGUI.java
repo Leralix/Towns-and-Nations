@@ -74,10 +74,9 @@ public class PlayerGUI {
 
         ArrayList<GuiItem> landmarkGui = new ArrayList<>();
 
-        for (String landmarkID : townData.getOwnedLandmarksID()) {
-            Landmark landmarkData = LandmarkStorage.getInstance().get(landmarkID);
+        for(Landmark landmark : LandmarkStorage.getInstance().getLandmarkOf(townData)) {
 
-            GuiItem landmarkButton = ItemBuilder.from(landmarkData.getIcon()).asGuiItem(event -> event.setCancelled(true));
+            GuiItem landmarkButton = ItemBuilder.from(landmark.getIcon()).asGuiItem(event -> event.setCancelled(true));
             landmarkGui.add(landmarkButton);
         }
         GuiUtil.createIterator(gui, landmarkGui, page, player,
@@ -444,7 +443,7 @@ public class PlayerGUI {
             new LandmarkNoOwnerMenu(player, landmark);
             return;
         }
-        if (townData.ownLandmark(landmark)) {
+        if (landmark.isOwnedBy(townData)) {
             openPlayerOwnLandmark(player, landmark);
             return;
         }
@@ -483,9 +482,7 @@ public class PlayerGUI {
 
         GuiItem removeTownButton = ItemBuilder.from(removeTown).asGuiItem(event -> {
             event.setCancelled(true);
-            townData.removeLandmark(landmark);
-            TownData playerTown = TownDataStorage.getInstance().get(player);
-            playerTown.broadcastMessageWithSound(Lang.GUI_LANDMARK_REMOVED.get(tanPlayer), BAD);
+            landmark.removeOwnership();
             dispatchLandmarkGui(player, landmark);
         });
 
@@ -600,8 +597,7 @@ public class PlayerGUI {
                     PlayerChatListenerStorage.register(player, new DonateToTerritory(overlord));
                 });
                 gui.setItem(2, 3, donateToOverlordButton);
-            }
-            else {
+            } else {
                 ItemStack noCurrentOverlord = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET, Lang.OVERLORD_GUI.get(tanPlayer),
                         Lang.NO_OVERLORD.get(tanPlayer));
                 overlordInfo = ItemBuilder.from(noCurrentOverlord).asGuiItem(event -> event.setCancelled(true));
@@ -615,8 +611,7 @@ public class PlayerGUI {
                 });
             }
             gui.setItem(2, 2, overlordButton);
-        }
-        else {
+        } else {
             ItemStack noOverlordItem = HeadUtils.createCustomItemStack(Material.IRON_BARS, Lang.OVERLORD_GUI.get(tanPlayer),
                     Lang.CANNOT_HAVE_OVERLORD.get(tanPlayer));
             overlordInfo = ItemBuilder.from(noOverlordItem).asGuiItem(event -> event.setCancelled(true));

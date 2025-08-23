@@ -77,4 +77,9 @@ public class WarStorage extends JsonStorage<War>{
         }
         return false;
     }
+
+    @Override
+    public void reset() {
+        instance = null;
+    }
 }

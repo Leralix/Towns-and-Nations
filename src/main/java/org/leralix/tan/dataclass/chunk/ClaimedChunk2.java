@@ -168,4 +168,5 @@ public abstract class ClaimedChunk2 {
 
     public abstract ChunkType getType();
 
+    public abstract void notifyUpdate();
 }

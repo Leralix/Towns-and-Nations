@@ -12,7 +12,13 @@ import java.util.List;
 
 public class Constants {
 
+    //Config
     private static boolean onlineMode;
+
+    //Economy
+    private static double startingBalance;
+
+    //Territory
     private static boolean displayTerritoryColor;
     private static boolean enableNation;
     private static boolean enableRegion;
@@ -23,23 +29,31 @@ public class Constants {
     private static boolean worldGuardOverrideTown;
     private static boolean worldGuardOverrideRegion;
     private static boolean worldGuardOverrideLandmark;
-    private static double claimLandmarkCost;
-    private static boolean landmarkClaimRequiresEncirclement;
+
     private static double fortCost;
     private static double fortProtectionRadius;
     private static double fortCaptureRadius;
     private static int propertySignMargin;
+
+    //Wars
     private static long warDuration;
     private static List<String> BlacklistedCommandsDuringAttacks;
     private static int nbChunkToCaptureMax;
+
+    //Claims
     private static boolean allowNonAdjacentChunksForTown;
     private static boolean allowNonAdjacentChunksForRegion;
+    private static double claimLandmarkCost;
+    private static boolean landmarkClaimRequiresEncirclement;
 
     public static void init(){
 
         FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
 
         onlineMode = config.getBoolean("onlineMode", true);
+
+        startingBalance = config.getDouble("StartingMoney" , 100.0);
+
         displayTerritoryColor = config.getBoolean("displayTerritoryNameWithOwnColor", false);
         enableNation = config.getBoolean("EnableKingdom",true);
         enableRegion = config.getBoolean("EnableRegion", true);
@@ -154,5 +168,9 @@ public class Constants {
 
     public static boolean allowNonAdjacentChunksForTown() {
         return allowNonAdjacentChunksForTown;
+    }
+
+    public static double getStartingBalance() {
+        return startingBalance;
     }
 }

@@ -92,4 +92,9 @@ public class RegionDataStorage extends JsonStorage<RegionData> {
         }
         nextID = id+1;
     }
+
+    @Override
+    public void reset() {
+        instance = null;
+    }
 }

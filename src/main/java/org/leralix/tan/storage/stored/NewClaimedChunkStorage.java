@@ -124,7 +124,34 @@ public class NewClaimedChunkStorage {
     }
     public void unclaimChunk(Chunk chunk) {
         claimedChunksMap.remove(getChunkKey(chunk));
+        notifyAdjacentChunks(chunk);
         save();
+    }
+
+    private void notifyAdjacentChunks(Chunk chunk) {
+
+        for (ClaimedChunk2 chunkKey : getAjacentChunks(chunk)) {
+            if (chunkKey != null) {
+                chunkKey.notifyUpdate();
+            }
+        }
+    }
+
+    public @NotNull List<ClaimedChunk2> getAjacentChunks(ClaimedChunk2 chunk) {
+        return Arrays.asList(
+                get(chunk.getX(), chunk.getZ() - 1, chunk.getWorld().getUID().toString()), // Haut
+                get(chunk.getX() + 1, chunk.getZ() - 1, chunk.getWorld().getUID().toString()), // Haut-droite
+                get(chunk.getX() + 1, chunk.getZ(), chunk.getWorld().getUID().toString()), // Droite
+                get(chunk.getX() + 1, chunk.getZ() + 1, chunk.getWorld().getUID().toString()), // Bas-droite
+                get(chunk.getX(), chunk.getZ() + 1, chunk.getWorld().getUID().toString()), // Bas
+                get(chunk.getX() - 1, chunk.getZ() + 1, chunk.getWorld().getUID().toString()), // Bas-gauche
+                get(chunk.getX() - 1, chunk.getZ(), chunk.getWorld().getUID().toString()), // Gauche
+                get(chunk.getX() - 1, chunk.getZ() - 1, chunk.getWorld().getUID().toString())  // Haut-gauche
+        );
+    }
+
+    public @NotNull List<ClaimedChunk2> getAjacentChunks(Chunk chunk) {
+        return getAjacentChunks(get(chunk));
     }
 
     public void unclaimAllChunksFromTerritory(TerritoryData territoryData){

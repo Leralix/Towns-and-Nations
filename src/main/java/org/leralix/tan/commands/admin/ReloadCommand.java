@@ -13,10 +13,10 @@ import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.PvpSettings;
 import org.leralix.tan.storage.WildernessRules;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
-import org.leralix.tan.utils.text.NumberUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.constants.EnabledPermissions;
+import org.leralix.tan.utils.text.NumberUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.io.File;
 import java.util.Collections;
@@ -33,8 +33,10 @@ public class ReloadCommand extends SubCommand {
     public String getDescription() {
         return Lang.ADMIN_RELOAD_COMMAND.get();
     }
-    public int getArguments(){ return 1;}
 
+    public int getArguments() {
+        return 1;
+    }
 
     @Override
     public String getSyntax() {
@@ -42,19 +44,21 @@ public class ReloadCommand extends SubCommand {
     }
 
     @Override
-    public List<String> getTabCompleteSuggestions(CommandSender player, String lowerCase, String[] args){
+    public List<String> getTabCompleteSuggestions(CommandSender player, String lowerCase, String[] args) {
         return Collections.emptyList();
     }
-    @Override
-    public void perform(CommandSender player, String[] args){
-        if (args.length == 1){
-            Plugin plugin = TownsAndNations.getPlugin();
-            ConfigUtil.addCustomConfig(plugin,"config.yml", ConfigTag.MAIN);
-            ConfigUtil.addCustomConfig(plugin,"townUpgrades.yml", ConfigTag.UPGRADE);
-            ConfigUtil.addCustomConfig(plugin, "lang.yml", ConfigTag.LANG);
-            String lang = ConfigUtil.getCustomConfig(ConfigTag.LANG).getString("language");
 
+    @Override
+    public void perform(CommandSender player, String[] args) {
+        if (args.length == 1) {
+            Plugin plugin = TownsAndNations.getPlugin();
+            ConfigUtil.addCustomConfig(plugin, "config.yml", ConfigTag.MAIN);
+            ConfigUtil.addCustomConfig(plugin, "townUpgrades.yml", ConfigTag.UPGRADE);
+            ConfigUtil.addCustomConfig(plugin, "lang.yml", ConfigTag.LANG);
+
+            String lang = ConfigUtil.getCustomConfig(ConfigTag.LANG).getString("language");
             File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
+
             Lang.loadTranslations(langFolder, lang);
             DynamicLang.loadTranslations(langFolder, lang);
 
@@ -69,7 +73,7 @@ public class ReloadCommand extends SubCommand {
 
             player.sendMessage(TanChatUtils.getTANString() + Lang.RELOAD_SUCCESS.get(player));
             player.sendMessage(TanChatUtils.getTANString() + Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
-        }else{
+        } else {
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get(player));
             player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }

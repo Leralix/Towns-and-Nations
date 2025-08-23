@@ -39,7 +39,7 @@ public abstract class DatabaseHandler {
 
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
-                TownsAndNations.getPlugin().getLogger().severe("Error while adding transaction history");
+                TownsAndNations.getPlugin().getLogger().severe("Error while adding transaction history : " + e.getMessage());
             }
         });
     }
@@ -91,9 +91,9 @@ public abstract class DatabaseHandler {
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(deleteSQL)) {
             preparedStatement.setInt(1, nbDays);
-            preparedStatement.setString(1, type.toString());
+            preparedStatement.setString(2, type.toString());
         } catch (SQLException e) {
-            TownsAndNations.getPlugin().getLogger().severe("Error while deleting old history");
+            TownsAndNations.getPlugin().getLogger().severe("Error while deleting old history : " + e.getMessage());
         }
     }
 
@@ -110,7 +110,7 @@ public abstract class DatabaseHandler {
             )
             """);
         } catch (SQLException e) {
-            TownsAndNations.getPlugin().getLogger().severe("Error while creating history table");
+            TownsAndNations.getPlugin().getLogger().severe("Error while creating history table : " + e.getMessage());
         }
     }
 

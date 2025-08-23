@@ -4,8 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -18,6 +16,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.timezone.TimeZoneEnum;
 import org.leralix.tan.timezone.TimeZoneManager;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class PlayerData implements ITanPlayer {
     public PlayerData(Player player) {
         this.UUID = player.getUniqueId().toString();
         this.storedName = player.getName();
-        this.Balance = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("StartingMoney");
+        this.Balance = Constants.getStartingBalance();
         this.TownId = null;
         this.townRankID = null;
         this.regionRankID = null;

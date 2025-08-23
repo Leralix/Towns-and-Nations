@@ -44,7 +44,6 @@ public class TownData extends TerritoryData {
     private String townTag;
     private boolean isRecruiting;
     private Level townLevel;
-    private Collection<String> ownedLandmarks;
     private HashSet<String> PlayerJoinRequestSet;
     private Map<String, PropertyData> propertyDataMap;
     private TeleportationPosition teleportationPosition;
@@ -58,7 +57,6 @@ public class TownData extends TerritoryData {
     public TownData(String townId, String townName, ITanPlayer leader) {
         super(townId, townName, leader);
         this.townLevel = new Level();
-        this.ownedLandmarks = new ArrayList<>();
         this.PlayerJoinRequestSet = new HashSet<>();
         this.townPlayerListId = new HashSet<>();
         this.isRecruiting = false;
@@ -616,54 +614,13 @@ public class TownData extends TerritoryData {
         return this.UuidLeader == null;
     }
 
-    public Collection<String> getOwnedLandmarksID() {
-        if (ownedLandmarks == null)
-            ownedLandmarks = new ArrayList<>();
-        return ownedLandmarks;
-    }
-
-    public Collection<Landmark> getOwnedLandmarks() {
-        Collection<Landmark> res = new ArrayList<>();
-        for (String landmarkID : getOwnedLandmarksID()) {
-            res.add(LandmarkStorage.getInstance().get(landmarkID));
-        }
-        return res;
-    }
-
-    public int getNumberOfOwnedLandmarks() {
-        return getOwnedLandmarksID().size();
-    }
-
-    public void addLandmark(String landmarkID) {
-        getOwnedLandmarksID().add(landmarkID);
-    }
-
-    public void addLandmark(Landmark landmark) {
-        addLandmark(landmark.getID());
-        landmark.setOwner(this);
-    }
-
-    public void removeLandmark(String landmarkID) {
-        getOwnedLandmarksID().remove(landmarkID);
-    }
-
-    public void removeLandmark(Landmark landmark) {
-        removeLandmark(landmark.getID());
-        landmark.removeOwnership();
-    }
-
-    public boolean ownLandmark(Landmark landmark) {
-        return getOwnedLandmarksID().contains(landmark.getID());
-    }
-
     public boolean canClaimMoreLandmarks() {
-        return getLevel().getTotalBenefits().get("MAX_LANDMARKS") > getNumberOfOwnedLandmarks();
+        return getLevel().getTotalBenefits().get("MAX_LANDMARKS") > LandmarkStorage.getInstance().getLandmarkOf(this).size();
     }
 
 
     public void removeAllLandmark() {
-        for (String landmarkID : getOwnedLandmarksID()) {
-            Landmark landmark = LandmarkStorage.getInstance().get(landmarkID);
+        for (Landmark landmark : LandmarkStorage.getInstance().getLandmarkOf(this)) {
             landmark.removeOwnership();
         }
     }

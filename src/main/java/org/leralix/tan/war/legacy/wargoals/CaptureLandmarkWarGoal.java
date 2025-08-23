@@ -42,12 +42,15 @@ public class CaptureLandmarkWarGoal extends WarGoal {
     }
 
     @Override
-    public void applyWarGoal(TerritoryData winner, TerritoryData territoryToSubjugate) {
+    public void applyWarGoal(TerritoryData winner, TerritoryData looser) {
 
-        if(winner instanceof TownData winnerTown && territoryToSubjugate instanceof TownData townToSubjugate) {
-            Landmark landmark = getLandmark();
-            townToSubjugate.removeLandmark(landmark);
-            winnerTown.addLandmark(landmark);
+        Landmark landmark = getLandmark();
+
+        if(winner instanceof TownData winnerTown && 
+                landmark.isOwnedBy(looser))
+        {
+            landmark.removeOwnership();
+            landmark.setOwner(winnerTown);
         }
     }
 

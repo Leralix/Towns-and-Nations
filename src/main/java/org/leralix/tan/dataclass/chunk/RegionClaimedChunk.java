@@ -162,4 +162,9 @@ public class RegionClaimedChunk extends TerritoryChunk {
         return ChunkType.REGION;
     }
 
+    @Override
+    public void notifyUpdate() {
+        //TODO : Unclaim chunks if no longer linked to fort
+    }
+
 }

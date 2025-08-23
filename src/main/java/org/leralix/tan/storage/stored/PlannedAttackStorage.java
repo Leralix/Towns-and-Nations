@@ -64,4 +64,9 @@ public class PlannedAttackStorage extends JsonStorage<PlannedAttack> {
     public void delete(PlannedAttack plannedAttack){
         delete(plannedAttack.getID());
     }
+
+    @Override
+    public void reset() {
+
+    }
 }

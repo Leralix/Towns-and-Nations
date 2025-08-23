@@ -347,6 +347,7 @@ landmarkNameMaxSize: 25
 claimLandmarkCost: 500.0
 
 #Defines if a territory needs to encircle the landmark to claim it
+#If set to true, a claimed landmark will be unclaimed if the territory does not encircle it anymore
 landmarkEncircleToCapture: true
 
 # The default value is the maximum amount of resources to store. (amount * storedLimit)

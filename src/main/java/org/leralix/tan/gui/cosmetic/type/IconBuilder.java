@@ -73,7 +73,6 @@ public class IconBuilder {
                 meta.getItemFlags().add(ItemFlag.HIDE_ENCHANTS);
                 meta.getItemFlags().add(ItemFlag.HIDE_UNBREAKABLE);
                 meta.getItemFlags().add(ItemFlag.HIDE_PLACED_ON);
-                meta.getItemFlags().add(ItemFlag.HIDE_POTION_EFFECTS);
                 meta.getItemFlags().add(ItemFlag.HIDE_DYE);
             }
             item.setItemMeta(meta);
