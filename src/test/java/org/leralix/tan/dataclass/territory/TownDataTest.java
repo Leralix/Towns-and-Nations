@@ -1,26 +1,42 @@
 package org.leralix.tan.dataclass.territory;
 
 import org.bukkit.Material;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.leralix.lib.SphereLib;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.RankData;
-import org.leralix.tan.factory.AbstractionFactory;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.mockbukkit.mockbukkit.MockBukkit;
+import org.mockbukkit.mockbukkit.ServerMock;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TownDataTest {
 
-    @BeforeAll
-    static void setUp() {
-        AbstractionFactory.initializeConfigs();
+    private ServerMock server;
+
+    @BeforeEach
+    void setUp() {
+        server = MockBukkit.mock();
+
+        MockBukkit.load(SphereLib.class);
+        MockBukkit.load(TownsAndNations.class);
+    }
+
+    @AfterEach
+    public void tearDown()
+    {
+        MockBukkit.unmock();
     }
 
 
     @Test
     void createTown(){
-        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
         TownData townData = new TownData("T1", "testTown", tanPlayer);
 
         assertEquals("T1", townData.getID());
@@ -33,7 +49,7 @@ class TownDataTest {
 
     @Test
     void addRank(){
-        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
         TownData townData = TownDataStorage.getInstance().newTown("testTown", tanPlayer);
 
         assertEquals(townData.getTownDefaultRank(), tanPlayer.getTownRank());
@@ -52,27 +68,27 @@ class TownDataTest {
 
     @Test
     void deleteTownWithPlayers(){
-        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
-        ITanPlayer othertanPlayer = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().get(server.addPlayer());
         TownData townData = TownDataStorage.getInstance().newTown("testTown", tanPlayer);
 
         assertEquals(1, townData.getPlayerIDList().size());
         assertEquals(townData.getID(), tanPlayer.getTownId());
         assertTrue(townData.getTownDefaultRank().getPlayersID().contains(tanPlayer.getID()));
 
-        townData.addPlayer(othertanPlayer);
+        townData.addPlayer(tanPlayer2);
 
         assertEquals(2, townData.getPlayerIDList().size());
-        assertEquals(townData.getID(), othertanPlayer.getTownId());
-        assertTrue(townData.getTownDefaultRank().getPlayersID().contains(othertanPlayer.getID()));
+        assertEquals(townData.getID(), tanPlayer2.getTownId());
+        assertTrue(townData.getTownDefaultRank().getPlayersID().contains(tanPlayer2.getID()));
 
         townData.delete();
         TownData otherTownData = TownDataStorage.getInstance().newTown("townToShowPlayerRank");
 
-        assertNull(othertanPlayer.getTownId());
         assertNull(tanPlayer.getTownId());
+        assertNull(tanPlayer2.getTownId());
         assertNull(tanPlayer.getRankID(otherTownData));
-        assertNull(othertanPlayer.getRankID(otherTownData));
+        assertNull(tanPlayer2.getRankID(otherTownData));
     }
 
     @Test

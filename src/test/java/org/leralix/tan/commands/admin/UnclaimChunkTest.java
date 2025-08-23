@@ -2,81 +2,104 @@ package org.leralix.tan.commands.admin;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.junit.jupiter.api.BeforeAll;
+import org.bukkit.permissions.PermissionAttachment;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.leralix.lib.SphereLib;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.factory.AbstractionFactory;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.mockito.Mockito;
-
-import java.util.UUID;
+import org.mockbukkit.mockbukkit.MockBukkit;
+import org.mockbukkit.mockbukkit.ServerMock;
+import org.mockbukkit.mockbukkit.entity.PlayerMock;
+import org.mockbukkit.mockbukkit.world.WorldMock;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 public class UnclaimChunkTest {
 
-    public static Chunk chunkPosition;
-    public static Chunk otherChunkPosition;
-    public static World world;
-    public static TownData townData;
+    private ServerMock server;
 
-    @BeforeAll
-    static void initialise(){
-        AbstractionFactory.initializeConfigs();
+    private WorldMock world;
+    private PlayerMock playerMock;
+    private PermissionAttachment attachment;
 
-        townData = TownDataStorage.getInstance().newTown("Cool town");
+    @BeforeEach
+    void setUp() {
+        server = MockBukkit.mock();
 
+        MockBukkit.load(SphereLib.class);
+        var mockedTan = MockBukkit.load(TownsAndNations.class);
 
-        world = Mockito.mock(World.class);
-        when(world.getUID()).thenReturn(UUID.randomUUID());
+        world = server.addSimpleWorld("world");
 
-        chunkPosition = Mockito.mock(Chunk.class);
-        when(chunkPosition.getWorld()).thenReturn(world);
-        when(chunkPosition.getX()).thenReturn(0);
-        when(chunkPosition.getZ()).thenReturn(0);
+        playerMock = server.addPlayer("TestPlayer");
 
-        otherChunkPosition = Mockito.mock(Chunk.class);
-        when(otherChunkPosition.getWorld()).thenReturn(world);
-        when(otherChunkPosition.getX()).thenReturn(-1);
-        when(otherChunkPosition.getZ()).thenReturn(-1);
+        attachment = playerMock.addAttachment(mockedTan);
+        attachment.setPermission("tan.admin.commands", true);
+        attachment.setPermission("tan.admin.commands.unclaim", true);
 
-        when(world.getChunkAt(any(Location.class))).thenReturn(chunkPosition);
-
-        AbstractionFactory.initializeConfigs();
-
-        assertFalse(NewClaimedChunkStorage.getInstance().isChunkClaimed(chunkPosition));
-        NewClaimedChunkStorage.getInstance().claimTownChunk(chunkPosition, townData.getID());
-        assertTrue(NewClaimedChunkStorage.getInstance().isChunkClaimed(chunkPosition));
     }
+
+    @AfterEach
+    public void tearDown()
+    {
+        MockBukkit.unmock();
+    }
+
 
     @Test
     void standardUse() {
-        Player player = AbstractionFactory.getRandomPlayer();
-        when(player.getLocation()).thenReturn(new Location(world, 0, 0, 0));
 
-        UnclaimAdminCommand unclaim = new UnclaimAdminCommand();
-        unclaim.perform(player, new String[]{"unclaim"});
+        playerMock.teleport(new Location(world, 0, 10, 0));
 
-        assertFalse(NewClaimedChunkStorage.getInstance().isChunkClaimed(chunkPosition));
+        TownData town = TownDataStorage.getInstance().newTown("town");
+
+        Chunk chunkToUnclaim = world.getChunkAt(0,0);
+        NewClaimedChunkStorage.getInstance().claimTownChunk(chunkToUnclaim, town.getID());
+
+        server.dispatchCommand(playerMock, "tanadmin unclaim");
+
+        assertFalse(NewClaimedChunkStorage.getInstance().isChunkClaimed(chunkToUnclaim));
     }
 
     @Test
     void playerOnAnotherChunk() {
-        NewClaimedChunkStorage.getInstance().claimTownChunk(chunkPosition, townData.getID());
 
-        Player player = AbstractionFactory.getRandomPlayer();
-        when(player.getLocation()).thenReturn(new Location(world, 0, 0, 0));
-        when(world.getChunkAt(any(Location.class))).thenReturn(otherChunkPosition);
+        Chunk chunkToFailToUnclaim = world.getChunkAt(0,0);
 
-        UnclaimAdminCommand unclaim = new UnclaimAdminCommand();
-        unclaim.perform(player, new String[]{"unclaim"});
+        assertFalse(NewClaimedChunkStorage.getInstance().isChunkClaimed(chunkToFailToUnclaim));
 
-        assertTrue(NewClaimedChunkStorage.getInstance().isChunkClaimed(chunkPosition));
+        TownData town = TownDataStorage.getInstance().newTown("town");
+        NewClaimedChunkStorage.getInstance().claimTownChunk(chunkToFailToUnclaim, town.getID());
+
+        playerMock.teleport(new Location(world, -8, 10, -8));
+        server.dispatchCommand(playerMock, "tanadmin unclaim");
+
+
+        // Player is not on the claimed chunk
+        assertTrue(NewClaimedChunkStorage.getInstance().isChunkClaimed(chunkToFailToUnclaim));
+    }
+
+    @Test
+    void playerNoPermission() {
+
+        Chunk chunkToFailToUnclaim = world.getChunkAt(0,0);
+        assertFalse(NewClaimedChunkStorage.getInstance().isChunkClaimed(chunkToFailToUnclaim));
+
+
+        playerMock.removeAttachment(attachment);
+        playerMock.teleport(new Location(world, 0, 10, 0));
+        TownData town = TownDataStorage.getInstance().newTown("town");
+        NewClaimedChunkStorage.getInstance().claimTownChunk(chunkToFailToUnclaim, town.getID());
+
+        server.dispatchCommand(playerMock, "tanadmin unclaim");
+
+
+        // Player does not have permission
+        assertTrue(NewClaimedChunkStorage.getInstance().isChunkClaimed(chunkToFailToUnclaim));
     }
 }

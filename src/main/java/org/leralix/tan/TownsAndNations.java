@@ -65,7 +65,11 @@ import java.util.logging.Level;
  * Main Towns and Nations class, used to load the plugin and to manage the plugin.
  * @author Leralix
  */
-public final class TownsAndNations extends JavaPlugin {
+public class TownsAndNations extends JavaPlugin {
+
+    public TownsAndNations() {
+        super();
+    }
 
     /**
      * Singleton instance of the plugin.
@@ -231,7 +235,8 @@ public final class TownsAndNations extends JavaPlugin {
         getLogger().log(Level.INFO,"[TaN] -Registering API");
 
         TanAPI.register(new InternalAPI(CURRENT_VERSION,MINIMUM_SUPPORTING_DYNMAP));
-        new Metrics(this, 20527);
+
+        initBStats();
 
         getLogger().log(Level.INFO, "[TaN] -Registering Tasks");
         SecondTask secondTask = new SecondTask();
@@ -239,6 +244,15 @@ public final class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO,"[TaN] Plugin loaded successfully");
         getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
+    }
+
+    private void initBStats() {
+        try{
+            new Metrics(this, 20527);
+        }
+        catch (IllegalStateException e){
+            getLogger().log(Level.WARNING,"[TaN] Failed to submit stats to bStats");
+        }
     }
 
     private void loadDB() {
@@ -429,5 +443,19 @@ public final class TownsAndNations extends JavaPlugin {
 
     public DatabaseHandler getDatabaseHandler() {
         return databaseHandler;
+    }
+
+    /**
+     * Reset the singleton instance of the plugin.
+     * Used for testing purposes only.
+     * Remove it in a future version to replace singletons by dependency injection.
+     */
+    public void resetSingletonForTests(){
+        RegionDataStorage.getInstance().reset();
+        PlayerDataStorage.getInstance().reset();
+        TownDataStorage.getInstance().reset();
+        LandmarkStorage.getInstance().reset();
+        PlannedAttackStorage.getInstance().reset();
+        WarStorage.getInstance().reset();
     }
 }

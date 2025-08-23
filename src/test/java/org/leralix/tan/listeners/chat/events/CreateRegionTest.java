@@ -1,26 +1,41 @@
 package org.leralix.tan.listeners.chat.events;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.leralix.lib.SphereLib;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.factory.AbstractionFactory;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.mockbukkit.mockbukkit.MockBukkit;
+import org.mockbukkit.mockbukkit.ServerMock;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CreateRegionTest {
 
 
-    @BeforeAll
-    static void setUp() {
-        AbstractionFactory.initializeConfigs();
+    private ServerMock server;
+
+    @BeforeEach
+    void setUp() {
+        server = MockBukkit.mock();
+
+        MockBukkit.load(SphereLib.class);
+        MockBukkit.load(TownsAndNations.class);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        MockBukkit.unmock();
     }
 
     @Test
     void nominalCase(){
-        var tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
         var townData = TownDataStorage.getInstance().newTown("Town-B", tanPlayer);
         townData.addToBalance(50);
         String regionName = "Region-B";
@@ -38,8 +53,8 @@ class CreateRegionTest {
 
     @Test
     void playerNotLeader(){
-        var tanPlayer = AbstractionFactory.getRandomITanPlayer();
-        var secondTanPlayer = AbstractionFactory.getRandomITanPlayer();
+        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        var secondTanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
 
         var townData = TownDataStorage.getInstance().newTown("Town", tanPlayer);
 
@@ -55,7 +70,7 @@ class CreateRegionTest {
 
     @Test
     void notEnoughMoney(){
-        var tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
 
         var townData = TownDataStorage.getInstance().newTown("Town", tanPlayer);
 
@@ -67,7 +82,7 @@ class CreateRegionTest {
 
     @Test
     void regionNameTooLong(){
-        var tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
         var townData = TownDataStorage.getInstance().newTown("Town", tanPlayer);
         townData.addToBalance(50);
 
@@ -81,10 +96,10 @@ class CreateRegionTest {
 
     @Test
     void regionNameAlreadyUsed(){
-        var tanPlayer1 = AbstractionFactory.getRandomITanPlayer();
+        var tanPlayer1 = PlayerDataStorage.getInstance().get(server.addPlayer());
         var townData1 = TownDataStorage.getInstance().newTown("townData1", tanPlayer1);
 
-        var tanPlayer2 = AbstractionFactory.getRandomITanPlayer();
+        var tanPlayer2 = PlayerDataStorage.getInstance().get(server.addPlayer());
         var townData2 = TownDataStorage.getInstance().newTown("townData2", tanPlayer2);
 
         String regionName = "specificRegionName";

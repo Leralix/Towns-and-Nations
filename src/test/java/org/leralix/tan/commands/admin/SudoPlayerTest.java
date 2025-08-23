@@ -1,57 +1,62 @@
 package org.leralix.tan.commands.admin;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.leralix.tan.factory.AbstractionFactory;
+import org.leralix.lib.SphereLib;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.storage.SudoPlayerStorage;
-import org.mockito.Mockito;
+import org.mockbukkit.mockbukkit.MockBukkit;
+import org.mockbukkit.mockbukkit.ServerMock;
+import org.mockbukkit.mockbukkit.entity.PlayerMock;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class SudoPlayerTest {
 
+    private ServerMock server;
 
-    public static CommandSender sender;
+    private PlayerMock playerMock;
 
-    @BeforeAll
-    static void initialise(){
-        sender = Mockito.mock(CommandSender.class);
-        AbstractionFactory.initializeConfigs();
+    @BeforeEach
+    void setUp() {
+        server = MockBukkit.mock();
+
+        MockBukkit.load(SphereLib.class);
+        MockBukkit.load(TownsAndNations.class);
+
+
+        playerMock = server.addPlayer("TestPlayer");
+        playerMock.setOp(true);
     }
 
     @Test
     void standardUse() {
-        Player player = AbstractionFactory.getRandomPlayer();
 
-        SudoPlayer sudoPlayer = new SudoPlayer();
-        sudoPlayer.perform(player, new String[]{"sudo"});
+        assertFalse(SudoPlayerStorage.isSudoPlayer(playerMock));
 
-        assertTrue(SudoPlayerStorage.isSudoPlayer(player));
-    }
+        server.dispatchCommand(playerMock, "tanadmin sudo");
 
-    @Test
-    void useOnItself() {
-        Player player = AbstractionFactory.getRandomPlayer();
-
-        SudoPlayer sudoPlayer = new SudoPlayer();
-        sudoPlayer.perform(player, new String[]{"sudo", player.getName()});
-
-        assertTrue(SudoPlayerStorage.isSudoPlayer(player));
+        assertTrue(SudoPlayerStorage.isSudoPlayer(playerMock));
     }
 
     @Test
     void OtherPlayerUser() {
-        Player player = AbstractionFactory.getRandomPlayer();
-        Player playerToGiveSudo = AbstractionFactory.getRandomPlayer();
 
-        SudoPlayer sudoPlayer = new SudoPlayer();
-        sudoPlayer.perform(player, new String[]{"sudo", playerToGiveSudo.getName()});
+        PlayerMock secondPlayerMock = server.addPlayer("SecondTestPlayer");
 
-        assertFalse(SudoPlayerStorage.isSudoPlayer(player));
-        assertTrue(SudoPlayerStorage.isSudoPlayer(playerToGiveSudo));
+        server.dispatchCommand(playerMock, "tanadmin sudo " + secondPlayerMock.getName());
+
+
+        assertFalse(SudoPlayerStorage.isSudoPlayer(playerMock));
+        assertTrue(SudoPlayerStorage.isSudoPlayer(secondPlayerMock));
     }
 
+    @AfterEach
+    public void tearDown()
+    {
+        MockBukkit.unmock();
+    }
 }

@@ -1,37 +1,81 @@
 package org.leralix.tan.listeners.chat.events;
 
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.junit.jupiter.api.BeforeAll;
+import org.bukkit.inventory.ItemStack;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.leralix.lib.SphereLib;
 import org.leralix.lib.position.Vector3D;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.factory.AbstractionFactory;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.gameplay.ItemStackSerializer;
+import org.mockbukkit.mockbukkit.MockBukkit;
+import org.mockbukkit.mockbukkit.ServerMock;
+import org.mockito.MockedStatic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mockStatic;
 
 class ChangePropertySalePriceTest {
 
-    @BeforeAll
-    static void setUp() {
-        AbstractionFactory.initializeConfigs();
+    private Player player;
+    private PropertyData propertyData;
+    private MockedStatic<ItemStackSerializer> mockedSerializer;
+    private TownsAndNations townsAndNations;
+
+    @BeforeEach
+    void setUp() {
+
+        mockedSerializer = mockStatic(ItemStackSerializer.class);
+        mockedSerializer.when(() -> ItemStackSerializer.serializeItemStack(any(ItemStack.class)))
+                .thenAnswer(invocation -> {
+                    ItemStack arg = invocation.getArgument(0);
+                    return arg.getType().name();
+                });
+
+        mockedSerializer.when(() -> ItemStackSerializer.deserializeItemStack(anyString()))
+                .thenAnswer(invocation -> {
+                    String arg = invocation.getArgument(0);
+                    return new ItemStack(Material.valueOf(arg));
+                });
+
+        ServerMock server = MockBukkit.mock();
+
+        MockBukkit.load(SphereLib.class);
+        townsAndNations = MockBukkit.load(TownsAndNations.class);
+
+
+        player = server.addPlayer();
+        World world = server.addSimpleWorld("world");
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        TownData townData = TownDataStorage.getInstance().newTown("town 1");
+
+        propertyData = townData.registerNewProperty(
+                new Vector3D(new Location(world, 0, 0, 0)),
+                new Vector3D(new Location(world, 3, 3, 3)),
+                tanPlayer
+        );
+    }
+
+    @AfterEach
+    public void tearDown() {
+        MockBukkit.unmock();
+        mockedSerializer.close();
+        townsAndNations.resetSingletonForTests();
     }
 
     @Test
     void nominalCase() {
-
-        TownData townData = TownDataStorage.getInstance().newTown("town 1");
-        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
-        Player player = tanPlayer.getPlayer();
-
-
-        PropertyData propertyData = townData.registerNewProperty(
-                new Vector3D(0,0,0,"world"),
-                new Vector3D(3, 3, 3, "world"),
-                tanPlayer
-        );
 
         ChangePropertySalePrice changePropertySalePrice = new ChangePropertySalePrice(propertyData, null);
 
@@ -42,22 +86,12 @@ class ChangePropertySalePriceTest {
 
     @Test
     void wrongMessage() {
-        TownData townData = TownDataStorage.getInstance().newTown("town 1");
-        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
-        Player player = AbstractionFactory.getRandomPlayer();
 
+        ChangePropertySalePrice changePropertySalePrice = new ChangePropertySalePrice(propertyData, null);
 
-        PropertyData propertyData = townData.registerNewProperty(
-                new Vector3D(0,0,0,"world"),
-                new Vector3D(3, 3, 3, "world"),
-                tanPlayer
-        );
+        changePropertySalePrice.execute(player, "1%");
 
-        ChangePropertySalePrice changePropertyRentPrice = new ChangePropertySalePrice(propertyData, null);
-
-        changePropertyRentPrice.execute(player, "I000");
-
-        assertEquals(0, propertyData.getRentPrice());
+        assertEquals(0, propertyData.getBaseRentPrice());
     }
 
 }

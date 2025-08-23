@@ -57,17 +57,22 @@ repositories {
     maven { url 'https://jitpack.io' } //Vault
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://oss.sonatype.org/content/repositories/central' }
+    maven {
+        name = 'mockbukkit'
+        url 'https://repo.papermc.io/repository/maven-public/'
+    }
+
 }
 
 dependencies {
-    compileOnly 'io.github.leralix:sphere-lib:0.5.1'
-    compileOnly 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'
+    compileOnly 'io.github.leralix:sphere-lib:0.5.2'
+    compileOnly 'io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT'
     compileOnly 'com.mojang:authlib:4.0.43'
     compileOnly 'net.luckperms:api:5.4'
-    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7.1"
     compileOnly 'me.clip:placeholderapi:2.11.5'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.9'
-    implementation 'io.github.leralix:tan-api:0.5.0'
+    implementation 'io.github.leralix:tan-api:0.5.1'
     implementation 'org.bstats:bstats-bukkit:3.1.0'
     implementation 'net.objecthunter:exp4j:0.4.8'
     implementation("dev.triumphteam:triumph-gui:3.1.11")
@@ -75,20 +80,30 @@ dependencies {
     implementation 'com.mysql:mysql-connector-j:8.4.0'
     implementation 'org.xerial:sqlite-jdbc:3.43.2.0'
 
-    testImplementation 'io.github.leralix:sphere-lib:0.5.1'
-    testImplementation 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'
+    testImplementation 'io.github.leralix:sphere-lib:0.5.2'
+    testImplementation 'org.mockbukkit.mockbukkit:mockbukkit-v1.21:4.72.8'
+    testImplementation 'io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
     testImplementation 'org.mockito:mockito-core:5.7.0'
     testImplementation 'org.mockito:mockito-junit-jupiter:5.7.0'
     testImplementation 'org.xerial:sqlite-jdbc:3.43.2.0'
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'org.junit.platform:junit-platform-engine:1.10.0'
+        force 'org.junit.platform:junit-platform-launcher:1.10.0'
+        force 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+        force 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    }
 }
 
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 21
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion

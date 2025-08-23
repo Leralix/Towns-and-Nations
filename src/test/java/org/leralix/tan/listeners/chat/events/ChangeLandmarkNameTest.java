@@ -3,39 +3,50 @@ package org.leralix.tan.listeners.chat.events;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.leralix.lib.SphereLib;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.Landmark;
-import org.leralix.tan.factory.AbstractionFactory;
 import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.mockbukkit.mockbukkit.MockBukkit;
+import org.mockbukkit.mockbukkit.ServerMock;
 
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class ChangeLandmarkNameTest {
 
-    @BeforeAll
-    static void setUp() {
-        AbstractionFactory.initializeConfigs();
+    private ServerMock server;
+    private Landmark landmark;
+
+    @BeforeEach
+    void setUp() {
+        server = MockBukkit.mock();
+
+        MockBukkit.load(SphereLib.class);
+        MockBukkit.load(TownsAndNations.class);
+
+        World world = server.addSimpleWorld("world");
+        landmark = LandmarkStorage.getInstance().addLandmark(new Location(world, 0, 0, 0));
+    }
+
+    @AfterEach
+    public void tearDown()
+    {
+        MockBukkit.unmock();
     }
 
     @Test
     void nominalCase() {
 
-        Player player = AbstractionFactory.getRandomPlayer();
-
-        World world = AbstractionFactory.createWorld("world1", UUID.randomUUID());
-        AbstractionFactory.createChunk(0, 0, world);
-        Location location = AbstractionFactory.createLocation(0,0,0,world);
-
-        Landmark landmark = LandmarkStorage.getInstance().addLandmark(location);
-
+        Player player = server.addPlayer();
         ChangeLandmarkName changeLandmarkName = new ChangeLandmarkName(landmark, null);
-        String newName = "new landmark name";
 
+        String newName = "new landmark name";
         changeLandmarkName.execute(player, newName);
 
         assertEquals(newName, landmark.getName());
@@ -44,14 +55,7 @@ class ChangeLandmarkNameTest {
     @Test
     void nameTooLong() {
 
-        Player player = AbstractionFactory.getRandomPlayer();
-
-        World world = AbstractionFactory.createWorld("world1", UUID.randomUUID());
-        AbstractionFactory.createChunk(0, 0, world);
-        Location location = AbstractionFactory.createLocation(0,0,0,world);
-
-        Landmark landmark = LandmarkStorage.getInstance().addLandmark(location);
-
+        Player player = server.addPlayer();
         ChangeLandmarkName changeLandmarkName = new ChangeLandmarkName(landmark, null);
 
         int nameMaxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("landmarkNameMaxSize");

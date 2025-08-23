@@ -1,27 +1,41 @@
 package org.leralix.tan.listeners.chat.events;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.leralix.lib.SphereLib;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.factory.AbstractionFactory;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.mockbukkit.mockbukkit.MockBukkit;
+import org.mockbukkit.mockbukkit.ServerMock;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CreateTownTest {
 
-    @BeforeAll
-    static void setUp() {
-        AbstractionFactory.initializeConfigs();
+    private ServerMock server;
+
+    @BeforeEach
+    void setUp() {
+        server = MockBukkit.mock();
+
+        MockBukkit.load(SphereLib.class);
+        MockBukkit.load(TownsAndNations.class);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        MockBukkit.unmock();
     }
 
     @Test
     void nominalCase() {
 
-        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
 
         CreateTown createTown = new CreateTown(10);
         createTown.execute(tanPlayer.getPlayer(), "town-A");
@@ -37,7 +51,7 @@ class CreateTownTest {
     @Test
     void notEnoughMoney() {
 
-        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
 
         CreateTown createTown = new CreateTown((int) (tanPlayer.getBalance() + 1));
         createTown.execute(tanPlayer.getPlayer(), "anotherName");
@@ -48,7 +62,7 @@ class CreateTownTest {
     @Test
     void nameTooLong() {
 
-        ITanPlayer tanPlayer = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
 
         int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RegionNameSize");
 
@@ -61,8 +75,8 @@ class CreateTownTest {
     @Test
     void nameAlreadyUsed() {
 
-        ITanPlayer tanPlayer1 = AbstractionFactory.getRandomITanPlayer();
-        ITanPlayer tanPlayer2 = AbstractionFactory.getRandomITanPlayer();
+        ITanPlayer tanPlayer1 = PlayerDataStorage.getInstance().get(server.addPlayer());
+        ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().get(server.addPlayer());
 
         String townName = "townWithDuplicateName";
 
