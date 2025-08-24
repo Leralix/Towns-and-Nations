@@ -25,7 +25,7 @@ class OtherPlayerTownNameTest extends BasicTest {
     void nominalTest() {
 
         Player player = server.addPlayer("player name");
-        ITanPlayer tanPlayer  = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         TownData townData = TownDataStorage.getInstance().newTown("Town", tanPlayer);
 
@@ -33,13 +33,14 @@ class OtherPlayerTownNameTest extends BasicTest {
 
         String name = entry.getData(player, "player_{player name}_town_name");
 
-        assertEquals(townData.getTownTag(), name);
+        assertEquals(townData.getName(), name);
     }
 
     @Test
     void noTownTest() {
 
-        Player player = server.addPlayer("name");
+        Player player = server.addPlayer("player name");
+        PlayerDataStorage.getInstance().get(player);
 
         OtherPlayerTownName entry = new OtherPlayerTownName();
 

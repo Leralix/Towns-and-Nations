@@ -63,9 +63,11 @@ public class NewClaimedChunkStorage {
         return Collections.unmodifiableCollection(chunks);
     }
 
-    public void claimTownChunk(Chunk chunk, String ownerID) {
-        claimedChunksMap.put(getChunkKey(chunk), new TownClaimedChunk(chunk, ownerID));
+    public TownClaimedChunk claimTownChunk(Chunk chunk, String ownerID) {
+        TownClaimedChunk townClaimedChunk = new TownClaimedChunk(chunk, ownerID);
+        claimedChunksMap.put(getChunkKey(chunk), townClaimedChunk);
         save();
+        return townClaimedChunk;
     }
     public void claimRegionChunk(Chunk chunk, String ownerID){
         claimedChunksMap.put(getChunkKey(chunk), new RegionClaimedChunk(chunk, ownerID));

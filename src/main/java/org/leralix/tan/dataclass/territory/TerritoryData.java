@@ -21,7 +21,6 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.newhistory.ChunkPaymentHistory;
 import org.leralix.tan.dataclass.newhistory.MiscellaneousHistory;
 import org.leralix.tan.dataclass.newhistory.PlayerDonationHistory;
@@ -55,6 +54,7 @@ import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
+import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.PlannedAttack;
@@ -810,15 +810,17 @@ public abstract class TerritoryData {
         double minPercentageOfChunkToKeep = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("percentageOfChunksUnclaimed", 10) / 100;
 
 
-        Collection<TerritoryChunk> allChunkFrom = NewClaimedChunkStorage.getInstance().getAllChunkFrom(this);
-        for (ClaimedChunk2 claimedChunk2 : allChunkFrom) {
+        List<ClaimedChunk2> borderChunks = ChunkUtil.getBorderChunks(this);
+
+
+        for (ClaimedChunk2 claimedChunk2 : borderChunks) {
             if (RandomUtil.getRandom().nextDouble() < minPercentageOfChunkToKeep) {
                 NewClaimedChunkStorage.getInstance().unclaimChunk(claimedChunk2);
                 nbOfUnclaimedChunk++;
             }
         }
         if (nbOfUnclaimedChunk < minNbOfUnclaimedChunk) {
-            for (ClaimedChunk2 claimedChunk2 : allChunkFrom) {
+            for (ClaimedChunk2 claimedChunk2 : borderChunks) {
                 NewClaimedChunkStorage.getInstance().unclaimChunk(claimedChunk2);
                 nbOfUnclaimedChunk++;
                 if (nbOfUnclaimedChunk >= minNbOfUnclaimedChunk)
