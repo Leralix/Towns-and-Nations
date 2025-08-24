@@ -1,5 +1,6 @@
 package org.leralix.tan.utils.constants;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -34,6 +35,8 @@ public class Constants {
     private static double fortCost;
     private static double fortProtectionRadius;
     private static double fortCaptureRadius;
+    private static boolean useAsOutpost;
+
     private static int propertySignMargin;
 
     //Wars
@@ -78,12 +81,16 @@ public class Constants {
             claimLandmarkCost = 0.0;
         }
         landmarkClaimRequiresEncirclement = config.getBoolean("landmarkEncircleToCapture", true);
+
         //forts
-        fortCost = config.getDouble("fortCost", 1000.0);
-        fortProtectionRadius = config.getDouble("fortProtectionRadius", 50.0);
-        fortCaptureRadius = config.getDouble("fortCaptureRadius", 10.0);
-        propertySignMargin = config.getInt("maxPropertyMargin", 3);
-        warDuration = config.getLong("WarDuration") * 1200;
+        ConfigurationSection fortsSection = config.getConfigurationSection("Forts");
+        if (fortsSection != null) {
+            fortCost = fortsSection.getDouble("fortCost", 1000.0);
+            fortProtectionRadius = fortsSection.getDouble("fortProtectionRadius", 50.0);
+            fortCaptureRadius = fortsSection.getDouble("fortCaptureRadius", 10.0);
+            useAsOutpost = fortsSection.getBoolean("useAsOutpost", true);
+        }
+
         //Attacks
         blacklistedCommandsDuringAttacks = config.getStringList("BlacklistedCommandsDuringAttacks");
         nbChunkToCaptureMax = config.getInt("MaximumChunkConquer", 0);
@@ -159,6 +166,10 @@ public class Constants {
 
     public static double getFortCaptureRadius() {
         return fortCaptureRadius;
+    }
+
+    public static boolean enableFortOutpost() {
+        return useAsOutpost;
     }
 
     public static int getPropertySignMargin() {
