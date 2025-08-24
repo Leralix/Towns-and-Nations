@@ -1,6 +1,6 @@
 package org.leralix.tan.events.events;
 
-import org.leralix.tan.api.wrappers.TerritoryDataWrapper;
+import org.leralix.tan.api.internal.wrappers.TerritoryDataWrapper;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.events.InternalEvent;

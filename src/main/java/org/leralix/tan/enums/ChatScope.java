@@ -14,7 +14,7 @@ public enum ChatScope {
         this.name = name;
     }
 
-    public String getName(){
-        return name.get();
+    public Lang getName() {
+        return name;
     }
 }

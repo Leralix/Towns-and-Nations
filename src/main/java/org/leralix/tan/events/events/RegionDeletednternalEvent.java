@@ -1,7 +1,7 @@
 package org.leralix.tan.events.events;
 
-import org.leralix.tan.api.wrappers.RegionDataWrapper;
-import org.leralix.tan.api.wrappers.TanPlayerWrapper;
+import org.leralix.tan.api.internal.wrappers.RegionDataWrapper;
+import org.leralix.tan.api.internal.wrappers.TanPlayerWrapper;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.events.InternalEvent;
