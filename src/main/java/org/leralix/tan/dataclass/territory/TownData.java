@@ -303,9 +303,6 @@ public class TownData extends TerritoryData {
 
         for (ITanPlayer tanPlayer : getITanPlayerList()) {
             OfflinePlayer offlinePlayer = tanPlayer.getOfflinePlayer();
-            if (tanPlayer.getTownRankID() == null) { //TODO : Remove in v0.15.0, used to fixed missing rank application
-                tanPlayer.joinTown(this);
-            }
 
             if (!getRank(tanPlayer).isPayingTaxes())
                 continue;
@@ -565,20 +562,20 @@ public class TownData extends TerritoryData {
 
     public void upgradeTown(Player player) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Level townLevel = this.getLevel();
+        Level level = this.getLevel();
         if (!doesPlayerHavePermission(tanPlayer, RolePermission.UPGRADE_TOWN)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             return;
         }
-        if (this.getBalance() < townLevel.getMoneyRequiredForLevelUp()) {
+        if (this.getBalance() < level.getMoneyRequiredForLevelUp()) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
             SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             return;
         }
 
-        removeFromBalance(townLevel.getMoneyRequiredForLevelUp());
-        townLevel.townLevelUp();
+        removeFromBalance(level.getMoneyRequiredForLevelUp());
+        level.townLevelUp();
         SoundUtil.playSound(player, SoundEnum.LEVEL_UP);
         player.sendMessage(TanChatUtils.getTANString() + Lang.BASIC_LEVEL_UP.get());
     }

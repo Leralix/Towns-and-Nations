@@ -7,6 +7,7 @@ import org.leralix.tan.dataclass.chunk.ChunkType;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.war.legacy.GriefAllowed;
 
 import java.util.List;
 
@@ -37,35 +38,43 @@ public class Constants {
 
     //Wars
     private static long warDuration;
-    private static List<String> BlacklistedCommandsDuringAttacks;
+    private static List<String> blacklistedCommandsDuringAttacks;
     private static int nbChunkToCaptureMax;
 
     //Claims
+    private static GriefAllowed explosionGriefStatus;
+    private static GriefAllowed fireGriefStatus;
+    private static GriefAllowed pvpEnabledStatus;
+    private static GriefAllowed mobGriefStatus;
+
+
     private static boolean allowNonAdjacentChunksForTown;
     private static boolean allowNonAdjacentChunksForRegion;
     private static double claimLandmarkCost;
     private static boolean landmarkClaimRequiresEncirclement;
 
-    public static void init(){
+    private static final String ALWAYS = "ALWAYS";
+
+    public static void init() {
 
         FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
 
         onlineMode = config.getBoolean("onlineMode", true);
 
-        startingBalance = config.getDouble("StartingMoney" , 100.0);
+        startingBalance = config.getDouble("StartingMoney", 100.0);
 
         displayTerritoryColor = config.getBoolean("displayTerritoryNameWithOwnColor", false);
-        enableNation = config.getBoolean("EnableKingdom",true);
+        enableNation = config.getBoolean("EnableKingdom", true);
         enableRegion = config.getBoolean("EnableRegion", true);
         changeTownNameCost = config.getInt("ChangeTownNameCost", 1000);
         changeRegionNameCost = config.getInt("ChangeRegionNameCost", 1000);
-        nbDigits = config.getInt("DecimalDigits",2);
+        nbDigits = config.getInt("DecimalDigits", 2);
         worldGuardOverrideWilderness = config.getBoolean("worldguard_override_wilderness", true);
         worldGuardOverrideTown = config.getBoolean("worldguard_override_town", true);
         worldGuardOverrideRegion = config.getBoolean("worldguard_override_region", true);
         worldGuardOverrideLandmark = config.getBoolean("worldguard_override_landmark", true);
         claimLandmarkCost = config.getDouble("claimLandmarkCost", 500.0);
-        if(claimLandmarkCost < 0.0){
+        if (claimLandmarkCost < 0.0) {
             claimLandmarkCost = 0.0;
         }
         landmarkClaimRequiresEncirclement = config.getBoolean("landmarkEncircleToCapture", true);
@@ -76,12 +85,18 @@ public class Constants {
         propertySignMargin = config.getInt("maxPropertyMargin", 3);
         warDuration = config.getLong("WarDuration") * 1200;
         //Attacks
-        BlacklistedCommandsDuringAttacks = config.getStringList("BlacklistedCommandsDuringAttacks");
+        blacklistedCommandsDuringAttacks = config.getStringList("BlacklistedCommandsDuringAttacks");
         nbChunkToCaptureMax = config.getInt("MaximumChunkConquer", 0);
-        if(nbChunkToCaptureMax == 0){
+        if (nbChunkToCaptureMax == 0) {
             nbChunkToCaptureMax = Integer.MAX_VALUE;
         }
         //Claims
+
+        explosionGriefStatus = GriefAllowed.valueOf(config.getString("explosionGrief", ALWAYS));
+        fireGriefStatus = GriefAllowed.valueOf(config.getString("fireGrief", ALWAYS));
+        pvpEnabledStatus = GriefAllowed.valueOf(config.getString("pvpEnabledInClaimedChunks", ALWAYS));
+        mobGriefStatus = GriefAllowed.valueOf(config.getString("mobGrief", ALWAYS));
+
         allowNonAdjacentChunksForRegion = config.getBoolean("RegionAllowNonAdjacentChunks", false);
         allowNonAdjacentChunksForTown = config.getBoolean("TownAllowNonAdjacentChunks", false);
 
@@ -91,7 +106,7 @@ public class Constants {
         return onlineMode;
     }
 
-    public static boolean displayTerritoryColor(){
+    public static boolean displayTerritoryColor() {
         return displayTerritoryColor;
     }
 
@@ -104,20 +119,20 @@ public class Constants {
     }
 
     public static int getChangeTerritoryNameCost(TerritoryData territoryData) {
-        if(territoryData instanceof TownData){
+        if (territoryData instanceof TownData) {
             return changeTownNameCost;
         }
-        if(territoryData instanceof RegionData){
+        if (territoryData instanceof RegionData) {
             return changeRegionNameCost;
         }
         return changeTownNameCost;
     }
 
-    public static int getNbDigits(){
+    public static int getNbDigits() {
         return nbDigits;
     }
 
-    public static boolean isWorldGuardEnabledFor(ChunkType chunkType){
+    public static boolean isWorldGuardEnabledFor(ChunkType chunkType) {
         return switch (chunkType) {
             case WILDERNESS -> worldGuardOverrideWilderness;
             case TOWN -> worldGuardOverrideTown;
@@ -155,11 +170,28 @@ public class Constants {
     }
 
     public static List<String> getBlacklistedCommandsDuringAttacks() {
-        return BlacklistedCommandsDuringAttacks;
+        return blacklistedCommandsDuringAttacks;
     }
 
     public static int getNbChunkToCaptureMax() {
         return nbChunkToCaptureMax;
+    }
+
+
+    public static GriefAllowed getMobGriefStatus() {
+        return mobGriefStatus;
+    }
+
+    public static GriefAllowed getPvpStatus() {
+        return pvpEnabledStatus;
+    }
+
+    public static GriefAllowed getFireGriefStatus() {
+        return fireGriefStatus;
+    }
+
+    public static GriefAllowed getExplosionGriefStatus() {
+        return explosionGriefStatus;
     }
 
     public static boolean allowNonAdjacentChunksForRegion() {

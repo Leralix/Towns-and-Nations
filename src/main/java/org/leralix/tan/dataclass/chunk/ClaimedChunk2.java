@@ -1,7 +1,6 @@
 package org.leralix.tan.dataclass.chunk;
 
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -18,17 +17,8 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
-import java.util.Objects;
-import java.util.UUID;
-
 public abstract class ClaimedChunk2 {
 
-    @Deprecated(forRemoval = true) //0.16.0
-    private final int x;
-    @Deprecated(forRemoval = true) //0.16.0
-    private final int z;
-    @Deprecated(forRemoval = true) //0.16.0
-    private final String worldUUID;
     private Vector2D vector2D;
     protected final String ownerID;
 
@@ -37,71 +27,55 @@ public abstract class ClaimedChunk2 {
     }
 
     protected ClaimedChunk2(int x, int z, String worldUUID, String owner) {
-        this.x = x;
-        this.z = z;
-        this.worldUUID = worldUUID;
         this.vector2D = new Vector2D(x, z, worldUUID);
         this.ownerID = owner;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ClaimedChunk2 that)) return false;
-        return x == that.x && z == that.z && worldUUID.equals(that.worldUUID);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(x, z, worldUUID);
     }
 
     public String getOwnerID() {
         return this.ownerID;
     }
 
-    public Vector2D getVector2D(){
-        if (vector2D == null){
-            this.vector2D = new Vector2D(x, z, worldUUID);
-        }
+    public Vector2D getVector2D() {
         return vector2D;
     }
-    public Vector2D getMiddleVector2D(){
-        Vector2D vector2D = getVector2D();
-        return new Vector2D(vector2D.getX() * 16 + 8, vector2D.getZ() * 16 + 8, vector2D.getWorldID().toString());
+
+    public Vector2D getMiddleVector2D() {
+        Vector2D vector = getVector2D();
+        return new Vector2D(vector.getX() * 16 + 8, vector.getZ() * 16 + 8, vector.getWorldID().toString());
     }
 
     public int getX() {
-        return this.x;
+        return vector2D.getX();
     }
 
     public int getMiddleX() {
-        return this.x * 16 + 8;
+        return getX() * 16 + 8;
     }
 
     public int getZ() {
-        return this.z;
+        return vector2D.getZ();
     }
 
     public int getMiddleZ() {
-        return this.z * 16 + 8;
+        return getZ() * 16 + 8;
     }
 
     public String getWorldUUID() {
-        return this.worldUUID;
+        return vector2D.getWorldID().toString();
     }
 
-    public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location){
+    public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
 
 
-        //If worldguard is enabled and chunk type is checked, add a worldguard check to the default tan's check.
+        //If worldguard is enabled and a chunk type is ok, add a worldguard check to the default tan's check.
         var worldGuardManager = WorldGuardManager.getInstance();
-        if(worldGuardManager.isEnabled()){
-            if(Constants.isWorldGuardEnabledFor(getType()) &&
-                    worldGuardManager.isHandledByWorldGuard(location)) {
-                return worldGuardManager.isActionAllowed(player, location, permissionType) &&
-                        canPlayerDoInternal(player, permissionType, location);
-            }
+        if (worldGuardManager.isEnabled() &&
+                Constants.isWorldGuardEnabledFor(getType()) &&
+                worldGuardManager.isHandledByWorldGuard(location))
+        {
+            return worldGuardManager.isActionAllowed(player, location, permissionType) &&
+                    canPlayerDoInternal(player, permissionType, location);
+
         }
 
         return canPlayerDoInternal(player, permissionType, location);
@@ -123,7 +97,7 @@ public abstract class ClaimedChunk2 {
     public abstract boolean canEntitySpawn(EntityType entityType);
 
     public World getWorld() {
-        return Bukkit.getWorld(UUID.fromString(this.worldUUID));
+        return vector2D.getWorld();
     }
 
     public TerritoryData getOwner() {
@@ -159,11 +133,11 @@ public abstract class ClaimedChunk2 {
     public abstract boolean canMobGrief();
 
     public Chunk getChunk() {
-        World world = Bukkit.getWorld(UUID.fromString(this.worldUUID));
+        World world = vector2D.getWorld();
         if (world == null) {
             return null;
         }
-        return world.getChunkAt(x, z);
+        return world.getChunkAt(vector2D.getX(), vector2D.getZ());
     }
 
     public abstract ChunkType getType();

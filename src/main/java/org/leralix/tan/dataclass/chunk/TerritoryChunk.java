@@ -6,7 +6,9 @@ import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Chunk;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 public abstract class TerritoryChunk extends ClaimedChunk2 {
@@ -59,6 +61,26 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
             return occupierID = ownerID;
         }
         return occupierID;
+    }
+
+    @Override
+    public boolean canExplosionGrief() {
+        return Constants.getExplosionGriefStatus().canGrief(getOwner(), GeneralChunkSetting.TNT_GRIEF);
+    }
+
+    @Override
+    public boolean canFireGrief() {
+        return Constants.getFireGriefStatus().canGrief(getOwner(), GeneralChunkSetting.FIRE_GRIEF);
+    }
+
+    @Override
+    public boolean canPVPHappen() {
+        return Constants.getPvpStatus().canGrief(getOwner(), GeneralChunkSetting.ENABLE_PVP);
+    }
+
+    @Override
+    public boolean canMobGrief() {
+        return Constants.getMobGriefStatus().canGrief(getOwner(), GeneralChunkSetting.MOB_GRIEF);
     }
 
     public TerritoryData getOccupier(){

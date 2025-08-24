@@ -21,10 +21,10 @@ import java.util.Objects;
 
 public class ChannelChatScopeCommand extends PlayerSubCommand {
 
-    private static String TOWN = "town";
-    private static String ALLIANCE = "alliance";
-    private static String REGION = "region";
-    private static String GLOBAL = "global";
+    private static final String TOWN = "town";
+    private static final String ALLIANCE = "alliance";
+    private static final String REGION = "region";
+    private static final String GLOBAL = "global";
 
 
     @Override

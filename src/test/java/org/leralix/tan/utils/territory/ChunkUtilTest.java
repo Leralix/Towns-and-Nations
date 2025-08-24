@@ -7,10 +7,13 @@ import org.leralix.tan.BasicTest;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class ChunkUtilTest extends BasicTest {
 
     private World world;
 
+    @Override
     @BeforeEach
     protected void setUp() {
         super.setUp();
@@ -22,14 +25,14 @@ class ChunkUtilTest extends BasicTest {
 
         ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(world.getChunkAt(0,0));
 
-        ChunkUtil.isChunkEncirecledBy(claimedChunk2, claimedChunk -> !claimedChunk.isClaimed());
+        assertTrue(ChunkUtil.isChunkEncirecledBy(claimedChunk2, claimedChunk -> !claimedChunk.isClaimed()));
     }
 
     @Test
     void testIsChunkEncirecledByInvalid() {
         ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(world.getChunkAt(0,0));
 
-        ChunkUtil.isChunkEncirecledBy(claimedChunk2, claimedChunk -> !claimedChunk.isClaimed());
+        assertTrue(ChunkUtil.isChunkEncirecledBy(claimedChunk2, claimedChunk -> !claimedChunk.isClaimed()));
     }
 
 }
