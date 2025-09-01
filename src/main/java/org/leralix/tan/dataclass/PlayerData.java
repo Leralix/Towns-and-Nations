@@ -234,13 +234,17 @@ public class PlayerData implements ITanPlayer {
         getAttackInvolvedIn().remove(currentAttacks.getAttackData().getID());
     }
 
-    public TownRelation getRelationWithPlayer(Player playerToAdd) {
-        ITanPlayer otherPlayer = PlayerDataStorage.getInstance().get(playerToAdd);
-        if (!hasTown() || !otherPlayer.hasTown())
-            return null;
+    @Override
+    public TownRelation getRelationWithPlayer(Player otherPlayer) {
+        return getRelationWithPlayer(PlayerDataStorage.getInstance().get(otherPlayer));
+    }
 
-        TownData playerTown = TownDataStorage.getInstance().get(this);
-        TownData otherPlayerTown = TownDataStorage.getInstance().get(playerToAdd);
+    public TownRelation getRelationWithPlayer(ITanPlayer otherPlayer) {
+        if (!hasTown() || !otherPlayer.hasTown())
+            return TownRelation.NEUTRAL;
+
+        TownData playerTown = getTown();
+        TownData otherPlayerTown = otherPlayer.getTown();
 
         return playerTown.getRelationWith(otherPlayerTown);
     }

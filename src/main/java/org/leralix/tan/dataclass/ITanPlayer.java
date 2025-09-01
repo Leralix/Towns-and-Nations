@@ -78,7 +78,9 @@ public interface ITanPlayer {
 
     void removeWar(@NotNull CurrentAttack currentAttacks);
 
-    TownRelation getRelationWithPlayer(Player playerToAdd);
+    TownRelation getRelationWithPlayer(ITanPlayer otherPlayer);
+
+    TownRelation getRelationWithPlayer(Player otherPlayer);
 
     Integer getRegionRankID();
 

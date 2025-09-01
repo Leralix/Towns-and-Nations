@@ -34,7 +34,6 @@ import org.leralix.tan.listeners.chat.ChatListener;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
-import org.leralix.tan.storage.PvpSettings;
 import org.leralix.tan.storage.WildernessRules;
 import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.database.MySqlHandler;
@@ -172,7 +171,6 @@ public class TownsAndNations extends JavaPlugin {
         UpgradeStorage.init();
         MobChunkSpawnStorage.init();
         ClaimBlacklistStorage.init();
-        PvpSettings.init();
         WildernessRules.getInstance();
         NewsletterType.init();
         IconManager.getInstance();

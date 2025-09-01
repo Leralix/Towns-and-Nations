@@ -173,8 +173,13 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
-    public TownRelation getRelationWithPlayer(Player playerToAdd) {
-        return null;
+    public TownRelation getRelationWithPlayer(ITanPlayer otherPlayer) {
+        return TownRelation.NEUTRAL;
+    }
+
+    @Override
+    public TownRelation getRelationWithPlayer(Player otherPlayer) {
+        return TownRelation.NEUTRAL;
     }
 
     @Override

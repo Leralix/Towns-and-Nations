@@ -8,9 +8,12 @@ import org.leralix.tan.dataclass.chunk.ChunkType;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.war.legacy.GriefAllowed;
 
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 public class Constants {
 
@@ -47,6 +50,7 @@ public class Constants {
     private static int propertySignMargin;
 
     //Wars
+    private static Map<TownRelation, Boolean> canPvpHappenWithRelation;
     private static long warDuration;
     private static List<String> blacklistedCommandsDuringAttacks;
     private static int nbChunkToCaptureMax;
@@ -104,6 +108,18 @@ public class Constants {
         }
 
         //Attacks
+
+        canPvpHappenWithRelation = new EnumMap<>(TownRelation.class);
+        ConfigurationSection section = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getConfigurationSection("enablePvpWhenRelationIs");
+        if(section != null){
+            for(TownRelation relation : TownRelation.values()){
+                Boolean authorized = section.getBoolean(relation.name());
+                canPvpHappenWithRelation.put(relation, authorized);
+            }
+        }
+
+
+
         blacklistedCommandsDuringAttacks = config.getStringList("BlacklistedCommandsDuringAttacks");
         nbChunkToCaptureMax = config.getInt("MaximumChunkConquer", 0);
         if (nbChunkToCaptureMax == 0) {
@@ -231,5 +247,9 @@ public class Constants {
 
     public static boolean enableTownTag() {
         return allowTownTag;
+    }
+
+    public static boolean canPvpHappenWithRelation(TownRelation relation){
+        return canPvpHappenWithRelation.getOrDefault(relation, true);
     }
 }

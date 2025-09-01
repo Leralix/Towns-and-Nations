@@ -24,14 +24,12 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.FurnaceInventory;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
-import org.leralix.tan.storage.PvpSettings;
 import org.leralix.tan.storage.SudoPlayerStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.constants.EnabledPermissions;
 
 public class ChunkListener implements Listener {
@@ -337,22 +335,20 @@ public class ChunkListener implements Listener {
         if(!NewClaimedChunkStorage.getInstance().get(player2.getLocation().getChunk()).canPVPHappen()){
             return false;
         }
-        TownData townPlayer1 = TownDataStorage.getInstance().get(player1);
-        TownData townPlayer2 = TownDataStorage.getInstance().get(player2);
 
-        if(townPlayer1 == null || townPlayer2 == null){
-            return true;
-        }
-        TownRelation relation = townPlayer1.getRelationWith(townPlayer2);
-        return PvpSettings.canPvpHappenWithRelation(relation);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player1);
+        ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().get(player2);
+        TownRelation relation = tanPlayer.getRelationWithPlayer(tanPlayer2);
+
+        return Constants.canPvpHappenWithRelation(relation);
     }
 
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
-        if(event.getPlayer() instanceof Player player){
-            if(event.getInventory() instanceof FurnaceInventory ||
-                    event.getInventory() instanceof BlastFurnace ||
-                    event.getInventory() instanceof Smoker) {
+        if(event.getPlayer() instanceof Player player &&
+                (event.getInventory() instanceof FurnaceInventory ||
+                        event.getInventory() instanceof BlastFurnace ||
+                        event.getInventory() instanceof Smoker)) {
 
                 Location loc = event.getInventory().getLocation();
                 if(loc == null)
@@ -361,7 +357,7 @@ public class ChunkListener implements Listener {
                     event.setCancelled(true);
                 }
             }
-        }
+
     }
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
