@@ -14,8 +14,8 @@ import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.PremiumStorage;
+import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
-import org.leralix.tan.utils.graphic.prefixUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 
@@ -30,8 +30,7 @@ public class PlayerJoinListener implements Listener {
 
         if(tanPlayer.hasTown()){
             tanPlayer.updateCurrentAttack();
-            if(TownsAndNations.getPlugin().townTagIsEnabled())
-                prefixUtil.addPrefix(player);
+            PrefixUtil.updatePrefix(player);
         }
 
         TeamUtils.setIndividualScoreBoard(player);

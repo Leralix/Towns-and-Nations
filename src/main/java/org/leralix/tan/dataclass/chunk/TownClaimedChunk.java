@@ -23,6 +23,8 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.legacy.CurrentAttack;
 
@@ -108,8 +110,9 @@ public class TownClaimedChunk extends TerritoryChunk {
             }
         }
 
+        NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
         player.sendMessage(TanChatUtils.getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_TOWN.get(playerTown.getNumberOfClaimedChunk(), playerTown.getLevel().getChunkCap()));
-        NewClaimedChunkStorage.getInstance().unclaimChunk(this);
+
     }
 
     public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
@@ -161,8 +164,8 @@ public class TownClaimedChunk extends TerritoryChunk {
 
     @Override
     public void notifyUpdate() {
-        //TODO : Unclaim chunks if no longer linked to fort
+        if(!Constants.allowNonAdjacentChunksForTown()){
+            ChunkUtil.unclaimIfNoLongerSupplied(this);
+        }
     }
-
-
 }

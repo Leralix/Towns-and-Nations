@@ -158,42 +158,43 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public void claimChunk(Player player, Chunk chunk) {
+    public boolean claimChunk(Player player, Chunk chunk) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
-            return;
+            return false;
         }
 
 
         if (!doesPlayerHavePermission(tanPlayer, RolePermission.CLAIM_CHUNK)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
-            return;
+            return false;
         }
         int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfRegionChunk", 5);
 
         if (getBalance() < cost) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.REGION_NOT_ENOUGH_MONEY_EXTENDED.get(cost - getBalance()));
-            return;
+            return false;
         }
 
         if (getNumberOfClaimedChunk() != 0 &&
                 !NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTown(chunk, getID()) &&
                 !Constants.allowNonAdjacentChunksForRegion()) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
-            return;
+            return false;
         }
 
         ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
         if (!currentClaimedChunk.canTerritoryClaim(player, this)) {
-            return;
+            return false;
         }
 
         removeFromBalance(cost);
         NewClaimedChunkStorage.getInstance().claimRegionChunk(chunk, getID());
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_CLAIMED_SUCCESS_REGION.get());
         NewClaimedChunkStorage.getInstance().get(chunk);
+        return true;
     }
 
 

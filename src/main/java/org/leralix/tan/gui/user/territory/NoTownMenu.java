@@ -60,6 +60,7 @@ public class NoTownMenu extends BasicGui {
                     }
                     else {
                         player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get(tanPlayer));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.CAPITAL_WILL_BE_CREATED_ON_PLAYER_CHUNK.get(tanPlayer));
                         PlayerChatListenerStorage.register(player, new CreateTown(townPrice));
                     }
                 })

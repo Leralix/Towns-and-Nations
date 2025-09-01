@@ -12,9 +12,17 @@ import org.leralix.tan.events.events.TownDeletedInternalEvent;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
+import org.leralix.tan.listeners.chat.events.ChangeTownTag;
+import org.leralix.tan.listeners.interact.RightClickListener;
+import org.leralix.tan.listeners.interact.events.ChangeCapital;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.leralix.lib.data.SoundEnum.*;
 
@@ -23,7 +31,7 @@ public class TownSettingsMenu extends SettingsMenus {
     private final TownData townData;
 
     public TownSettingsMenu(Player player, TownData townData) {
-        super(player, Lang.HEADER_SETTINGS.get(player), townData);
+        super(player, Lang.HEADER_SETTINGS.get(player), townData, 4);
         this.townData = townData;
         open();
     }
@@ -38,14 +46,52 @@ public class TownSettingsMenu extends SettingsMenus {
         gui.setItem(2, 3, getChangeDescriptionButton());
         gui.setItem(2, 4, getChangeColorButton());
 
-        gui.setItem(2, 5, getChangeApplicationButton());
+        gui.setItem(3, 2, getChangeApplicationButton());
+        gui.setItem(3, 3, getChangeCapitalChunkButton());
+        if(Constants.enableTownTag()){
+            gui.setItem(3, 4, getChangeTagButton());
+        }
+
+
         gui.setItem(2, 6, getChangeOwnershipButton());
         gui.setItem(2, 7, getQuitButton());
         gui.setItem(2, 8, getDeleteButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new TownMenu(player, townData)));
+        gui.setItem(4, 1, GuiUtil.createBackArrow(player, p -> new TownMenu(player, townData)));
 
         gui.open(player);
+    }
+
+    private @NotNull GuiItem getChangeCapitalChunkButton() {
+
+        List<String> desc = new ArrayList<>();
+
+        townData.getCapitalLocation().ifPresentOrElse(
+                vector2D -> {
+                    desc.add(Lang.GUI_CAPITAL_CHUNK_ACTUAL_POSITION.get(langType, vector2D));
+                    desc.add(Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(langType));
+                },
+                () -> desc.add(Lang.GUI_NO_CAPITAL_CHUNK.get(langType))
+        );
+
+
+        return iconManager.get(IconKey.CHANGE_TOWN_CAPITAL_ICON)
+                .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_CAPITAL.get(langType))
+                .setDescription(desc)
+                .setAction( action -> RightClickListener.register(player, new ChangeCapital(townData, p -> open())))
+                .asGuiItem(player);
+
+    }
+
+    private @NotNull GuiItem getChangeTagButton() {
+        return iconManager.get(IconKey.CHANGE_TOWN_TAG_ICON)
+                .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_TAG.get(langType))
+                .setDescription(
+                        Lang.GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1.get(langType, townData.getTownTag()),
+                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(langType)
+                )
+                .setAction( action -> PlayerChatListenerStorage.register(player, new ChangeTownTag(townData, p -> open())))
+                .asGuiItem(player);
     }
 
     private GuiItem getQuitButton() {
@@ -134,7 +180,7 @@ public class TownSettingsMenu extends SettingsMenus {
                         townData.isRecruiting() ?
                                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT.get(tanPlayer) :
                                 Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT.get(tanPlayer),
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH.get(tanPlayer)
+                        Lang.GUI_GENERIC_CLICK_TO_SWITCH.get(tanPlayer)
                 )
                 .setAction(event -> {
                     townData.swapRecruiting();

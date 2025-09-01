@@ -271,6 +271,7 @@ BlacklistedCommandsDuringAttacks: [ "/tan pay", "/tp" ]
 
 ## Forts
 Forts:
+  useAsOutpost: true
   fortCost: 1000.0
   fortProtectionRadius: 50.0
   fortCaptureRadius: 10.0

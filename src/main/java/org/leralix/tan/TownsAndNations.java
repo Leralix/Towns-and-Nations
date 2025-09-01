@@ -105,11 +105,6 @@ public class TownsAndNations extends JavaPlugin {
      */
     private boolean allowColorCodes = false;
     /**
-     * If Enabled, player username will have a 3 letter prefix of their town name.
-     * This option cannot be enabled with allowColorCodes.
-     */
-    private boolean allowTownTag = false;
-    /**
      * This variable is used to check when the plugin has launched
      * If the plugin close in less than 30 seconds, it is most likely a crash
      * during onEnable. Since a crash here might erase stored data, saving will not take place
@@ -187,7 +182,7 @@ public class TownsAndNations extends JavaPlugin {
 
         FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         allowColorCodes = mainConfig.getBoolean("EnablePlayerColorCode", false);
-        allowTownTag = mainConfig.getBoolean("EnablePlayerPrefix",false);
+
 
 
 
@@ -382,6 +377,7 @@ public class TownsAndNations extends JavaPlugin {
             }
         } catch (Exception e) {
             getLogger().warning("[TaN] An error occurred while trying to check for updates.");
+            latestVersion = CURRENT_VERSION;
         }
     }
 
@@ -393,6 +389,7 @@ public class TownsAndNations extends JavaPlugin {
     private PluginVersion extractVersionFromResponse(String response) {
         JsonObject jsonResponse = JsonParser.parseString(response).getAsJsonObject();
         String version = jsonResponse.get("tag_name").getAsString();
+        System.out.println("version : " + version);
         return new PluginVersion(version);
     }
 
@@ -429,14 +426,6 @@ public class TownsAndNations extends JavaPlugin {
         return !allowColorCodes;
     }
 
-    /**
-     * Check if the town tag is enabled
-     * @return true if town tag is enabled, false otherwise.
-     */
-    public boolean townTagIsEnabled(){
-        return allowTownTag;
-    }
-
     public PluginVersion getMinimumSupportingDynmap() {
         return MINIMUM_SUPPORTING_DYNMAP;
     }
@@ -457,5 +446,6 @@ public class TownsAndNations extends JavaPlugin {
         LandmarkStorage.getInstance().reset();
         PlannedAttackStorage.getInstance().reset();
         WarStorage.getInstance().reset();
+        NewClaimedChunkStorage.getInstance().reset();
     }
 }

@@ -12,8 +12,8 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.lib.data.SoundEnum.GOOD;
@@ -24,7 +24,7 @@ public class RegionSettingsMenu extends SettingsMenus {
     private final RegionData regionData;
 
     public RegionSettingsMenu(Player player, RegionData regionData) {
-        super(player, Lang.HEADER_SETTINGS.get(player), regionData);
+        super(player, Lang.HEADER_SETTINGS.get(player), regionData, 3);
         this.regionData = regionData;
         open();
     }

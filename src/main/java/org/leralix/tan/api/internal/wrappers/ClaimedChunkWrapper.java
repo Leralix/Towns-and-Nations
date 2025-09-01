@@ -65,7 +65,7 @@ public class ClaimedChunkWrapper implements TanClaimedChunk {
 
     @Override
     public void unclaim() {
-        NewClaimedChunkStorage.getInstance().unclaimChunk(claimedChunk);
+        NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(claimedChunk);
     }
 
     @Override

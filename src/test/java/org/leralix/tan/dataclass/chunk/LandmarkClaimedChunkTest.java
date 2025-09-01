@@ -80,6 +80,7 @@ class LandmarkClaimedChunkTest extends BasicTest {
         NewClaimedChunkStorage claimedChunkStorage = NewClaimedChunkStorage.getInstance();
 
         Chunk chunk = world.getChunkAt(-5, 5);
+
         Landmark landmark = LandmarkStorage.getInstance().addLandmark(new Location(world,
                 (double) chunk.getX() * 16,
                 64,
@@ -89,7 +90,7 @@ class LandmarkClaimedChunkTest extends BasicTest {
         TownData townData = TownDataStorage.getInstance().newTown("town");
 
 
-        for(ClaimedChunk2 adjacent : claimedChunkStorage.getAjacentChunks(chunk)){
+        for(ClaimedChunk2 adjacent : claimedChunkStorage.getEightAjacentChunks(claimedChunkStorage.get(chunk))){
             claimedChunkStorage.claimTownChunk(adjacent.getChunk(), townData.getID());
         }
 

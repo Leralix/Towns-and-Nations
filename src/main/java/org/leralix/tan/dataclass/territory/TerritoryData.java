@@ -5,13 +5,14 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.RandomUtil;
 import org.leralix.lib.utils.SoundUtil;
@@ -53,6 +54,7 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.StringUtil;
@@ -71,7 +73,7 @@ public abstract class TerritoryData {
     protected String description;
     protected String overlordID;
     private Double treasury;
-    private Long dateTimeCreated;
+    private final Long dateTimeCreated;
     private ICustomIcon customIcon;
     private RelationData relations;
     private Double baseTax;
@@ -210,11 +212,11 @@ public abstract class TerritoryData {
 
     public Collection<String> getOrderedPlayerIDList() {
         List<String> sortedList = new ArrayList<>();
-        List<ITanPlayer> ITanPlayerSorted = getITanPlayerList().stream()
+        List<ITanPlayer> playersSorted = getITanPlayerList().stream()
                 .sorted(Comparator.comparingInt(tanPlayer -> -this.getRank(tanPlayer.getRankID(this)).getLevel()))
                 .toList();
 
-        for (ITanPlayer tanPlayer : ITanPlayerSorted) {
+        for (ITanPlayer tanPlayer : playersSorted) {
             sortedList.add(tanPlayer.getID());
         }
         return sortedList;
@@ -452,6 +454,7 @@ public abstract class TerritoryData {
 
     public void setChunkColor(int color) {
         this.color = color;
+        applyToAllOnlinePlayer(PrefixUtil::updatePrefix);
     }
 
     public boolean haveOverlord() {
@@ -479,21 +482,19 @@ public abstract class TerritoryData {
         claimChunk(player, player.getLocation().getChunk());
     }
 
-    public abstract void claimChunk(Player player, Chunk chunk);
+    /**
+     * Claim the chunk for the territory
+     * @param player    The player wishing to claim a chunk
+     * @param chunk     The chunk to claim
+     * @return  True if the chunk has been claimed successfully, false otherwise
+     */
+    public abstract boolean claimChunk(Player player, Chunk chunk);
 
-
-    public void castActionToAllPlayers(Consumer<Player> action) {
-        for (ITanPlayer tanPlayer : getITanPlayerList()) {
-            Player player = tanPlayer.getPlayer();
-            if (player != null)
-                action.accept(player);
-        }
-    }
 
     public void delete() {
         NewClaimedChunkStorage.getInstance().unclaimAllChunksFromTerritory(this); //Unclaim all chunk from town
 
-        castActionToAllPlayers(HumanEntity::closeInventory);
+        applyToAllOnlinePlayer(Player::closeInventory);
 
         for (TerritoryData territory : getVassals()) {
             territory.removeOverlord();
@@ -815,13 +816,13 @@ public abstract class TerritoryData {
 
         for (ClaimedChunk2 claimedChunk2 : borderChunks) {
             if (RandomUtil.getRandom().nextDouble() < minPercentageOfChunkToKeep) {
-                NewClaimedChunkStorage.getInstance().unclaimChunk(claimedChunk2);
+                NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(claimedChunk2);
                 nbOfUnclaimedChunk++;
             }
         }
         if (nbOfUnclaimedChunk < minNbOfUnclaimedChunk) {
             for (ClaimedChunk2 claimedChunk2 : borderChunks) {
-                NewClaimedChunkStorage.getInstance().unclaimChunk(claimedChunk2);
+                NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(claimedChunk2);
                 nbOfUnclaimedChunk++;
                 if (nbOfUnclaimedChunk >= minNbOfUnclaimedChunk)
                     break;
@@ -911,6 +912,10 @@ public abstract class TerritoryData {
 
     public void registerFort(Vector3D location) {
         Fort fort = FortStorage.getInstance().register(location, this);
+
+        Vector2D flagPosition = fort.getFlagPosition();
+        Chunk chunkToClaim = flagPosition.getWorld().getChunkAt(flagPosition.getX(), flagPosition.getZ());
+
         addOwnedFort(fort);
     }
 
@@ -988,5 +993,22 @@ public abstract class TerritoryData {
             return;
         }
         getOwnedFortIDs().remove(fortToCapture.getID());
+    }
+
+    public void applyToAllOnlinePlayer(Consumer<Player> action){
+        for(Player player : getPlayers()){
+            action.accept(player);
+        }
+    }
+
+    private List<Player> getPlayers() {
+        List<Player> playerList = new ArrayList<>();
+        for(String playerID : getPlayerIDList()){
+            Player player = Bukkit.getPlayer(UUID.fromString(playerID));
+            if(player != null){
+                playerList.add(player);
+            }
+        }
+        return playerList;
     }
 }

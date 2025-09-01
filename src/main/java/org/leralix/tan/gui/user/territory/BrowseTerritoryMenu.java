@@ -53,7 +53,7 @@ public class BrowseTerritoryMenu extends IteratorGUI {
     private GuiItem getScopeButton() {
         return iconManager.get(IconKey.CHANGE_SCOPE_ICON)
                 .setName(Lang.BROWSE_SCOPE.get(tanPlayer, scope.getName(tanPlayer)))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_SWITCH_SCOPE.get(tanPlayer))
+                .setDescription(Lang.GUI_GENERIC_CLICK_TO_SWITCH.get(tanPlayer))
                 .setAction(p -> setScope(scope.getNextScope()))
                 .asGuiItem(player);
     }

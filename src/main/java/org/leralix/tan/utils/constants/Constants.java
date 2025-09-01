@@ -20,6 +20,13 @@ public class Constants {
     //Economy
     private static double startingBalance;
 
+    //Cosmetic
+    /**
+     * If Enabled, player username will have a 3 letter prefix of their town name.
+     * This option cannot be enabled with allowColorCodes.
+     */
+    private static boolean allowTownTag;
+
     //Territory
     private static boolean displayTerritoryColor;
     private static boolean enableNation;
@@ -64,8 +71,13 @@ public class Constants {
 
         onlineMode = config.getBoolean("onlineMode", true);
 
+        //Economy
         startingBalance = config.getDouble("StartingMoney", 100.0);
 
+        //Cosmetic
+        allowTownTag = config.getBoolean("EnablePlayerPrefix",false);
+
+        //Territory
         displayTerritoryColor = config.getBoolean("displayTerritoryNameWithOwnColor", false);
         enableNation = config.getBoolean("EnableKingdom", true);
         enableRegion = config.getBoolean("EnableRegion", true);
@@ -215,5 +227,9 @@ public class Constants {
 
     public static double getStartingBalance() {
         return startingBalance;
+    }
+
+    public static boolean enableTownTag() {
+        return allowTownTag;
     }
 }

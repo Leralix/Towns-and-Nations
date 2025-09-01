@@ -13,8 +13,8 @@ import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeColor;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryDescription;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryName;
-import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +23,8 @@ public abstract class SettingsMenus extends BasicGui {
 
     protected final TerritoryData territoryData;
 
-    public SettingsMenus(Player player, String title, TerritoryData territoryData) {
-        super(player, title, 3);
+    protected SettingsMenus(Player player, String title, TerritoryData territoryData, int nbRows) {
+        super(player, title, nbRows);
         this.territoryData = territoryData;
     }
 

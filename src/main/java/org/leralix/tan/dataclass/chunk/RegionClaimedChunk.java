@@ -92,7 +92,7 @@ public class RegionClaimedChunk extends TerritoryChunk {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
             return;
         }
-        NewClaimedChunkStorage.getInstance().unclaimChunk(this);
+        NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
         player.sendMessage(TanChatUtils.getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_REGION.get(regionData.getNumberOfClaimedChunk()));
     }
 

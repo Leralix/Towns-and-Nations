@@ -58,7 +58,7 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
 
     public String getOccupierID() {
         if(occupierID == null) {
-            return occupierID = ownerID;
+            occupierID = ownerID;
         }
         return occupierID;
     }

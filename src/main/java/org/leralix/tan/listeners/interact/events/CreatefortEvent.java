@@ -8,14 +8,15 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.WildernessChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 public class CreatefortEvent extends RightClickListenerEvent {
 
@@ -45,24 +46,37 @@ public class CreatefortEvent extends RightClickListenerEvent {
             return;
         }
 
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(upBlock.getChunk());
-        if(!tanTerritory.getID().equals(claimedChunk.getOwnerID())){
-            player.sendMessage(TanChatUtils.getTANString() +
-                    Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(tanPlayer));
-            return;
-        }
-
         if(tanTerritory.getBalance() <= Constants.getFortCost()){
             player.sendMessage(TanChatUtils.getTANString() +
                     Lang.TERRITORY_NOT_ENOUGH_MONEY_EXTENDED.get(tanPlayer, Constants.getFortCost() - tanTerritory.getBalance()));
             return;
         }
 
+        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(upBlock.getChunk());
+
+        // If outposts are enabled and chunk is not claimed
+        if(Constants.enableFortOutpost() && claimedChunk instanceof WildernessChunk){
+            boolean wasAbleToClaim = tanTerritory.claimChunk(player, upBlock.getChunk());
+
+            if(!wasAbleToClaim){
+                return;
+            }
+        }
+        // Else, only create a fort if created inside a claimed chunk
+        else {
+            if(!tanTerritory.getID().equals(claimedChunk.getOwnerID())){
+                player.sendMessage(TanChatUtils.getTANString() + Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(tanPlayer));
+                return;
+            }
+        }
+        createFort(block, player);
+    }
+
+    private void createFort(Block block, Player player) {
         Vector3D position = new Vector3D(block.getLocation());
 
         tanTerritory.registerFort(position);
         RightClickListener.removePlayer(player);
-
     }
 
 

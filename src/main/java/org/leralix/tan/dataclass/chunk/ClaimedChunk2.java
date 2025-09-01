@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.leralix.lib.position.Vector2D;
+import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.api.external.worldguard.WorldGuardManager;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -143,4 +144,9 @@ public abstract class ClaimedChunk2 {
     public abstract ChunkType getType();
 
     public abstract void notifyUpdate();
+
+    public boolean containsPosition(Vector3D position) {
+        Chunk chunkToCompare = position.getLocation().getChunk();
+        return getChunk().getX() == chunkToCompare.getX() && getChunk().getZ() == chunkToCompare.getZ() && getChunk().getWorld() == chunkToCompare.getWorld();
+    }
 }

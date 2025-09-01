@@ -8,6 +8,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
@@ -30,6 +31,7 @@ import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -48,6 +50,7 @@ public class TownData extends TerritoryData {
     private Map<String, PropertyData> propertyDataMap;
     private TeleportationPosition teleportationPosition;
     private final HashSet<String> townPlayerListId;
+    private Vector2D capitalLocation;
 
 
     public TownData(String townId, String townName) {
@@ -102,6 +105,7 @@ public class TownData extends TerritoryData {
 
         EventManager.getInstance().callEvent(new PlayerJoinTownAcceptedInternalEvent(tanPlayer, this));
         TeamUtils.updateAllScoreboardColor();
+        PrefixUtil.updatePrefix(tanPlayer.getPlayer());
         TownDataStorage.getInstance().save();
     }
 
@@ -118,6 +122,7 @@ public class TownData extends TerritoryData {
         townPlayerListId.remove(tanPlayer.getID());
         tanPlayer.leaveTown();
         TownDataStorage.getInstance().save();
+        PrefixUtil.updatePrefix(tanPlayer.getPlayer());
     }
 
     @Override
@@ -342,53 +347,69 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public void claimChunk(Player player, Chunk chunk) {
+    public boolean claimChunk(Player player, Chunk chunk) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
 
 
         if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
-            return;
+            return false;
         }
 
         if (!doesPlayerHavePermission(tanPlayer, RolePermission.CLAIM_CHUNK)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-            return;
+            return false;
         }
 
         if (!canClaimMoreChunk()) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.MAX_CHUNK_LIMIT_REACHED.get());
-            return;
+            return false;
         }
 
 
         int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfTownChunk", 0);
         if (getBalance() < cost) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(cost - getBalance()));
-            return;
+            return false;
         }
 
         ClaimedChunk2 chunkData = NewClaimedChunkStorage.getInstance().get(chunk);
         if (!chunkData.canTerritoryClaim(player, this)) {
-            return;
+            return false;
         }
 
-        if (getNumberOfClaimedChunk() != 0 &&
-                !NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTown(chunk, getID()) &&
-                !Constants.allowNonAdjacentChunksForTown()) {
+        if (!Constants.allowNonAdjacentChunksForTown() &&
+                getNumberOfClaimedChunk() != 0 &&
+                !NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTown(chunk, getID())) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
-            return;
+            return false;
         }
 
         removeFromBalance(cost);
-        NewClaimedChunkStorage.getInstance().unclaimChunk(chunk);
-        NewClaimedChunkStorage.getInstance().claimTownChunk(chunk, getID());
+        NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(chunkData);
+        ClaimedChunk2 chunkClaimed = NewClaimedChunkStorage.getInstance().claimTownChunk(chunk, getID());
+
+        //If this was the first claimed chunk, set the capital.
+        if(getNumberOfClaimedChunk() == 1){
+            setCapitalLocation(chunkClaimed.getVector2D());
+        }
+
 
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_CLAIMED_SUCCESS.get(
                 getNumberOfClaimedChunk(),
                 getLevel().getChunkCap())
         );
+
         NewClaimedChunkStorage.getInstance().get(chunk);
+        return true;
+    }
+
+    public void setCapitalLocation(Vector2D vector2D) {
+        capitalLocation = vector2D;
+    }
+
+    public Optional<Vector2D> getCapitalLocation(){
+        return Optional.ofNullable(capitalLocation);
     }
 
     public RegionData getRegion() {
@@ -540,6 +561,7 @@ public class TownData extends TerritoryData {
 
     public void setTownTag(String townTag) {
         this.townTag = townTag;
+        applyToAllOnlinePlayer(PrefixUtil::updatePrefix);
     }
 
     public String getColoredTag() {

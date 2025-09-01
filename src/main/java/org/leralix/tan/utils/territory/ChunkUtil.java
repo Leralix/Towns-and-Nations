@@ -5,8 +5,7 @@ import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class ChunkUtil {
@@ -18,7 +17,7 @@ public class ChunkUtil {
     }
 
     public static boolean isChunkEncirecledBy(ClaimedChunk2 center, Predicate<ClaimedChunk2> predicate) {
-        for (ClaimedChunk2 neighbor : claimedChunkStorage.getAjacentChunks(center)) {
+        for (ClaimedChunk2 neighbor : claimedChunkStorage.getEightAjacentChunks(center)) {
             if (!predicate.test(neighbor)) {
                 return false;
             }
@@ -30,7 +29,7 @@ public class ChunkUtil {
 
         List<ClaimedChunk2> res = new ArrayList<>();
 
-        for(TerritoryChunk territoryChunk : NewClaimedChunkStorage.getInstance().getAllChunkFrom(territoryData)) {
+        for(TerritoryChunk territoryChunk : claimedChunkStorage.getAllChunkFrom(territoryData)) {
             if (!isChunkEncirecledBy(territoryChunk, chunk -> territoryData.getID().equals(chunk.getOwnerID()))) {
                 res.add(territoryChunk);
             }
@@ -38,5 +37,75 @@ public class ChunkUtil {
 
         return res;
 
+    }
+
+    public static void unclaimIfNoLongerSupplied(TerritoryChunk unclaimedChunk){
+
+        List<ChunkPolygon> polygonsAnalysed = new ArrayList<>();
+
+        for(ClaimedChunk2 claimedChunk2 : claimedChunkStorage.getEightAjacentChunks(unclaimedChunk)){
+
+            if(claimedChunk2 instanceof TerritoryChunk territoryChunk){
+                if(alreadyAnalysed(territoryChunk, polygonsAnalysed)){
+                    continue;
+                }
+
+                ChunkPolygon chunkPolygon = ChunkUtil.getPolygon(territoryChunk);
+
+                if(!chunkPolygon.isSupplied()){
+                    chunkPolygon.unclaimAll();
+                }
+                polygonsAnalysed.add(chunkPolygon);
+            }
+        }
+    }
+
+    private static ChunkPolygon getPolygon(TerritoryChunk startChunk) {
+
+        String ownerID = startChunk.getOwnerID();
+        Set<String> visited = new HashSet<>();
+        Set<ClaimedChunk2> result = new HashSet<>();
+        Queue<ClaimedChunk2> toVisit = new LinkedList<>();
+
+        toVisit.add(startChunk);
+
+        while (!toVisit.isEmpty()) {
+            ClaimedChunk2 current = toVisit.poll();
+            String key = current.getX() + "," + current.getZ() + "," + current.getWorldUUID();
+
+            if (visited.contains(key)) {
+                continue;
+            }
+            visited.add(key);
+
+            if (!(current instanceof TerritoryChunk territoryChunk)) {
+                continue; // Ignore wilderness or other non-territory chunks
+            }
+
+            if (!territoryChunk.getOwnerID().equals(ownerID)) {
+                continue; // Belongs to another territory
+            }
+
+            result.add(current);
+
+            // Get adjacent chunks (4 directions)
+            List<ClaimedChunk2> adjacentChunks = claimedChunkStorage.getFourAjacentChunks(current);
+            for (ClaimedChunk2 adj : adjacentChunks) {
+                if (adj != null && !visited.contains(adj.getX() + "," + adj.getZ() + "," + adj.getWorldUUID())) {
+                    toVisit.add(adj);
+                }
+            }
+        }
+
+        return new ChunkPolygon(startChunk.getOwner(), result);
+    }
+
+    private static boolean alreadyAnalysed(ClaimedChunk2 claimedChunk2, List<ChunkPolygon> polygonsAnalysed) {
+        for(ChunkPolygon chunkPolygon : polygonsAnalysed){
+            if(chunkPolygon.contains(claimedChunk2)){
+                return true;
+            }
+        }
+        return false;
     }
 }

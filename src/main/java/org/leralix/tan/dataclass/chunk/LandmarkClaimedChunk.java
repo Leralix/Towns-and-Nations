@@ -129,10 +129,12 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
 
     @Override
     public void notifyUpdate() {
-        if (!Constants.isLandmarkClaimRequiresEncirclement() || !isClaimed()) {
-            return;
+        if (Constants.isLandmarkClaimRequiresEncirclement() || !isClaimed()) {
+            removeIfNotEncircled();
         }
+    }
 
+    private void removeIfNotEncircled() {
         Landmark landmark = getLandMark();
 
         if (ChunkUtil.isChunkEncirecledBy(this, chunk -> chunk.getOwnerID().equals(landmark.getOwnerID()))) {
