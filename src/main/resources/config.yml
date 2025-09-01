@@ -139,12 +139,12 @@ TownMaxLevel: 10
 #Enable PVP between player whose towns share a certain relation
 #Default if missing : true
 disablePvpWhenRelationIs:
-  SELF: true #Players of the same town
-  ALLIANCE: true
-  NON_AGGRESSION: true
-  NEUTRAL: true
-  EMBARGO: true
-  WAR: true
+  SELF: false #Players of the same town
+  ALLIANCE: false
+  NON_AGGRESSION: false
+  NEUTRAL: false
+  EMBARGO: false
+  WAR: false
 
 ########################
 ##       Events       ##
