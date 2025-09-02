@@ -147,6 +147,7 @@ public abstract class ClaimedChunk2 {
 
     public boolean containsPosition(Vector3D position) {
         Chunk chunkToCompare = position.getLocation().getChunk();
-        return getChunk().getX() == chunkToCompare.getX() && getChunk().getZ() == chunkToCompare.getZ() && getChunk().getWorld() == chunkToCompare.getWorld();
+        Chunk chunk = getChunk();
+        return chunk.getX() == chunkToCompare.getX() && chunk.getZ() == chunkToCompare.getZ() && chunk.getWorld() == chunkToCompare.getWorld();
     }
 }

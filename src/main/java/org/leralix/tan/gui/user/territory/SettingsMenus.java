@@ -58,7 +58,8 @@ public abstract class SettingsMenus extends BasicGui {
                 .setDescription(
                         Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1.get(tanPlayer, territoryData.getName()),
                         Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC2.get(tanPlayer),
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3.get(tanPlayer, cost))
+                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3.get(tanPlayer, cost),
+                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get())
                 .setAction(action -> {
                     player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangeTerritoryName(territoryData, cost, p -> open()));
@@ -70,7 +71,8 @@ public abstract class SettingsMenus extends BasicGui {
         return iconManager.get(IconKey.TERRITORY_DESCRIPTION_ICON)
                 .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1.get(tanPlayer, territoryData.getDescription())
+                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1.get(tanPlayer, territoryData.getDescription()),
+                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get()
                 )
                 .setAction(action -> {
                     player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
@@ -85,7 +87,7 @@ public abstract class SettingsMenus extends BasicGui {
                 .setDescription(
                         Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(tanPlayer),
                         Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(tanPlayer, territoryData.getChunkColor() + territoryData.getChunkColorInHex()),
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3.get(tanPlayer)
+                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get()
                 )
                 .setAction(action -> {
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {

@@ -3,6 +3,7 @@ package org.leralix.tan.dataclass.chunk;
 import org.bukkit.World;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.TownsAndNations;
@@ -35,6 +36,7 @@ class TownClaimedChunkTest extends BasicTest {
         TownData townData = TownDataStorage.getInstance().newTown("Town");
 
         claimedChunkStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
+        townData.setCapitalLocation(new Vector2D(1,0, world.getUID().toString()));
         claimedChunkStorage.claimTownChunk(world.getChunkAt(0, 1), townData.getID());
 
         TerritoryChunk townClaimedChunk = new TownClaimedChunk(world.getChunkAt(0, 0), townData.getID());

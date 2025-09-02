@@ -19,12 +19,15 @@ class LandmarkClaimedChunkTest extends BasicTest {
 
     private World world;
 
+
+    @Override
     @BeforeEach
     protected void setUp() {
         super.setUp();
         world = server.addSimpleWorld("world");
     }
 
+    @Override
     @AfterEach
     protected void tearDown() {
         super.tearDown();

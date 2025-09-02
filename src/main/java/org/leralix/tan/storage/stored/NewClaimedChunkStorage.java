@@ -56,9 +56,13 @@ public class NewClaimedChunkStorage {
     }
 
     public Collection<TerritoryChunk> getAllChunkFrom(TerritoryData territoryData) {
+        return getAllChunkFrom(territoryData.getID());
+    }
+
+    public Collection<TerritoryChunk> getAllChunkFrom(String territoryDataID) {
         List<TerritoryChunk> chunks = new ArrayList<>();
         for (ClaimedChunk2 chunk : claimedChunksMap.values()) {
-            if (chunk instanceof TerritoryChunk territoryChunk && territoryChunk.getOwnerID().equals(territoryData.getID())) {
+            if (chunk instanceof TerritoryChunk territoryChunk && territoryChunk.getOwnerID().equals(territoryDataID)) {
                 chunks.add(territoryChunk);
             }
         }

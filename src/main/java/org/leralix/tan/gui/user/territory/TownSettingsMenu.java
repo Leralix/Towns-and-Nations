@@ -68,7 +68,7 @@ public class TownSettingsMenu extends SettingsMenus {
 
         townData.getCapitalLocation().ifPresentOrElse(
                 vector2D -> {
-                    desc.add(Lang.GUI_CAPITAL_CHUNK_ACTUAL_POSITION.get(langType, vector2D));
+                    desc.add(Lang.GUI_CAPITAL_CHUNK_ACTUAL_POSITION.get(langType, Lang.DISPLAY_2D_COORDINATES.get(vector2D.getX() * 16, vector2D.getZ() * 16)));
                     desc.add(Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(langType));
                 },
                 () -> desc.add(Lang.GUI_NO_CAPITAL_CHUNK.get(langType))
@@ -87,7 +87,7 @@ public class TownSettingsMenu extends SettingsMenus {
         return iconManager.get(IconKey.CHANGE_TOWN_TAG_ICON)
                 .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_TAG.get(langType))
                 .setDescription(
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1.get(langType, townData.getTownTag()),
+                        Lang.GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1.get(langType, townData.getColoredTag()),
                         Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(langType)
                 )
                 .setAction( action -> PlayerChatListenerStorage.register(player, new ChangeTownTag(townData, p -> open())))
