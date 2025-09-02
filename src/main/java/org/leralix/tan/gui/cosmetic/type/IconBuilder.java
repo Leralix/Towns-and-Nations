@@ -20,16 +20,16 @@ public class IconBuilder {
     private final List<String> description;
     private Consumer<InventoryClickEvent> action;
     private boolean hideItemFlags;
-    private final IconType iconType;
+    private final IconType menuIcon;
 
-    public IconBuilder(IconType iconType){
+    public IconBuilder(IconType menuIcon){
         this.description = new ArrayList<>();
         hideItemFlags = false;
-        if(iconType == null) {
-            this.iconType = new ItemIconBuillder(Material.BARRIER);
+        if(menuIcon == null) {
+            this.menuIcon = new ItemIconBuilder(Material.BARRIER);
         }
         else{
-            this.iconType = iconType;
+            this.menuIcon = menuIcon;
         }
     }
 
@@ -62,7 +62,7 @@ public class IconBuilder {
     }
 
     public GuiItem asGuiItem(Player player) {
-        ItemStack item = iconType.getItemStack(player);
+        ItemStack item = menuIcon.getItemStack(player);
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {

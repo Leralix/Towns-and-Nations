@@ -4,11 +4,11 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class ItemIconBuillder extends IconType {
+public class ItemIconBuilder extends IconType {
 
-    private final Material material;
+    protected final Material material;
 
-    public ItemIconBuillder(Material material) {
+    public ItemIconBuilder(Material material) {
         this.material = material;
 
     }

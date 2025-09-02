@@ -1,12 +1,13 @@
 # All types of possible icons are listed here.
-# 1. URL: starts with "http"
-# 2. Base64 texture: starts with "Base64:"
-# 3. Item: starts with "minecraft:"
-# 4. Player's head: "PLAYER_HEAD"
-# 5. Player's town head: "TOWN_HEAD"
-# 6. Player's region head: "REGION_HEAD"
-# 8. Player's used language: "PLAYER_LANGUAGE_HEAD"
-# 9. Remove icon: "NO_ICON" (removing a button may break some functionalities, use with caution)
+# URL: starts with "http"
+# Base64 texture: starts with "Base64:"
+# Item: starts with "minecraft:<ITEM_NAME>"
+# Item with custom model data: starts with "minecraft:<ITEM_NAME>:<custom model data>"
+# Player's head: "PLAYER_HEAD"
+# Player's town head: "TOWN_HEAD"
+# Player's region head: "REGION_HEAD"
+# Player's used language: "PLAYER_LANGUAGE_HEAD"
+# Remove icon: "NO_ICON" (removing a button may break some functionalities, use with caution)
 
 #Main menu
 TIMEZONE_ICON_DAY: "https://textures.minecraft.net/texture/b4d7651e9deb5c2813820fed311d541119f3155eaab549d3ad52d202bc3f0e7"
