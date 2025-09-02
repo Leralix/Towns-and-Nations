@@ -56,7 +56,7 @@ public class CreatefortEvent extends RightClickListenerEvent {
 
         // If outposts are enabled and chunk is not claimed
         if(Constants.enableFortOutpost() && claimedChunk instanceof WildernessChunk){
-            boolean wasAbleToClaim = tanTerritory.claimChunk(player, upBlock.getChunk());
+            boolean wasAbleToClaim = tanTerritory.claimChunk(player, upBlock.getChunk(), true);
 
             if(!wasAbleToClaim){
                 return;

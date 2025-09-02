@@ -29,7 +29,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.stored.*;
-import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
@@ -347,7 +346,7 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public boolean claimChunk(Player player, Chunk chunk) {
+    public boolean claimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
 
 
@@ -378,7 +377,7 @@ public class TownData extends TerritoryData {
             return false;
         }
 
-        if (!Constants.allowNonAdjacentChunksForTown() &&
+        if (!ignoreAdjacent &&
                 getNumberOfClaimedChunk() != 0 &&
                 !NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTown(chunk, getID())) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get());

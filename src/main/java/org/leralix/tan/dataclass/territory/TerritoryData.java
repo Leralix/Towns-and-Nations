@@ -488,8 +488,18 @@ public abstract class TerritoryData {
      * @param chunk     The chunk to claim
      * @return  True if the chunk has been claimed successfully, false otherwise
      */
-    public abstract boolean claimChunk(Player player, Chunk chunk);
+    public boolean claimChunk(Player player, Chunk chunk){
+        return claimChunk(player, chunk, Constants.allowNonAdjacentChunksForTown());
+    }
 
+    /**
+     * Claim the chunk for the territory
+     * @param player            The player wishing to claim a chunk
+     * @param chunk             The chunk to claim
+     * @param ignoreAdjacent    Defines if the chunk to claim should respect adjacent claiming
+     * @return  True if the chunk has been claimed successfully, false otherwise
+     */
+    public abstract boolean claimChunk(Player player, Chunk chunk, boolean ignoreAdjacent);
 
     public void delete() {
         NewClaimedChunkStorage.getInstance().unclaimAllChunksFromTerritory(this); //Unclaim all chunk from town
@@ -914,7 +924,7 @@ public abstract class TerritoryData {
         Fort fort = FortStorage.getInstance().register(location, this);
 
         Vector2D flagPosition = fort.getPosition();
-        Chunk chunkToClaim = flagPosition.getWorld().getChunkAt(flagPosition.getX(), flagPosition.getZ());
+        flagPosition.getWorld().getChunkAt(flagPosition.getX(), flagPosition.getZ());
 
         addOwnedFort(fort);
     }

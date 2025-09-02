@@ -158,7 +158,7 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public boolean claimChunk(Player player, Chunk chunk) {
+    public boolean claimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
@@ -178,7 +178,7 @@ public class RegionData extends TerritoryData {
             return false;
         }
 
-        if (getNumberOfClaimedChunk() != 0 &&
+        if (!ignoreAdjacent && getNumberOfClaimedChunk() != 0 &&
                 !NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTown(chunk, getID()) &&
                 !Constants.allowNonAdjacentChunksForRegion()) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get());

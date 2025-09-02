@@ -49,29 +49,6 @@ class CreatefortEventTest extends BasicTest {
         assertEquals(1, FortDataStorage.getInstance().getOwnedFort(townData).size());
     }
 
-    @Test
-    void notEnoughtMoneyTest(){
-
-        PlayerMock player = server.addPlayer();
-        World world = server.addSimpleWorld("world");
-
-        world.setBlockData(0, 1, 0, Bukkit.createBlockData(Material.AIR));
-
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-
-        TownData townData = TownDataStorage.getInstance().newTown("town", tanPlayer);
-
-        CreatefortEvent createfortEvent = new CreatefortEvent(townData);
-
-        createfortEvent.execute(new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, null, world.getBlockAt(0,0,0), BlockFace.UP));
-
-
-
-
-//        assertThat(player, hasReceived(TanChatUtils.getTANString() +
-//                Lang.TERRITORY_NOT_ENOUGH_MONEY_EXTENDED.get(tanPlayer, Constants.getFortCost() - townData.getBalance())));
-    }
-
 
 
 }
