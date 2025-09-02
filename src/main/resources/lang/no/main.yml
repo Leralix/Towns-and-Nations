@@ -190,7 +190,6 @@ language:
   GUI_TOWN_RELATION_NEUTRAL: "Nøytral"
   GUI_TOWN_RELATION_ADD_TOWN: "§aLegg til by"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aFjern by"
-  GUI_TOWN_ATTACK_TOWN_DESC1: "§cHøyreklikk for å starte et angrep"
   GUI_TOWN_ATTACK_FINISHED: "§cAngrepet mot {0} er over!"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aAdministrer dørtilgang"
   GUI_TOWN_CLAIM_SETTINGS_CHEST: "§aAdministrer kiste tilgang"
@@ -266,7 +265,6 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR: "§aEndre chunkfarge"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1: "§fEndre fargen på hevdede chunks på kartet"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2: "§fNåværende farge: §9{0}"
-  GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3: "§fVenstreklikk for å velge en ny farge"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§fFarge vellykket endret"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cUgyldig fargeformat"
   GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY: "§fEndre byfarge: §9{0}§f -> §9{1}"
@@ -296,7 +294,6 @@ language:
   GUI_REGION_CHANGE_DESCRIPTION_DESC1: "§fNåværende melding: §7§o\"{0}\""
   GUI_REGION_CHANGE_DESCRIPTION_DESC2: "§fVenstreklikk for å endre beskrivelsen"
   GUI_INVITE_TOWN_TO_REGION: "§aInviter en by til regionen"
-  GUI_KICK_TOWN_TO_REGION: "§aSpark en by fra regionen"
   GUI_REGION_INVITE_TOWN_DESC1: "§fVenstreklikk for å invitere denne byen til regionen"
   GUI_REGION_KICK_TOWN_DESC1: "§fVenstreklikk for å sparke denne byen fra regionen"
   ##Admin GUI
@@ -345,3 +342,4 @@ language:
   NO_TOWN: "Ingen by"
   NO_REGION: "Ingen region"
   NO_KINGDOM: "Ingen kongerike"
+

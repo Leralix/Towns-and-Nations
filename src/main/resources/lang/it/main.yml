@@ -22,7 +22,6 @@ language:
   CANT_KICK_REGIONAL_CAPITAL: "§cNon puoi rimuovere la capitale regionale all'infuori della regione"
   PLAYER_ALREADY_IN_SCOPE: "§cSei già registrato"
   PLAYER_PROPERTY_CAP_REACHED: "§cHai raggiunto il numero massimo di proprietà per la tua città. Migliorala per ottenerne di più"
-  POSITION_NEED_TO_BE_IN_CLAIMED_CHUNK: "§cDevi essere in un chunk reclamato per creare una posizione di proprietà"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cDevi essere all'interno della tua città per creare una posizione di proprietà"
   MESSAGE_NOT_RIGHT_SIZE: "§cIl messaggio deve essere lungo esattamente {0}"
   NO_TRADE_ALLOWED_EMBARGO: "§cNon puoi commerciare con una città sotto embargo"
@@ -131,8 +130,6 @@ language:
   DIPLOMATIC_INVITATION_SENT_SUCCESS: "Proposta inviata a {0}"
   VASSALISATION_PROPOSAL_SENT_SUCCESS: "Proposta di vassalizzazione inviata a {0}"
   ACCEPTED_VASSALISATION_PROPOSAL_ALL: "{0}§f si è unito alla regione {1}"
-  #Diplomatic relation confirmation
-  REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f ha invitato la tua città {1}§f ad unirsi alla loro regione"
   #Autoclaim command
   TOWN_AUTO_CLAIM_DESC: "Attiva reclamo automato delle aree"
   AUTO_CLAIM_ON_FOR: "§fIl reclamo automatico è ora attivo per le aree di tipo: §9{0}"
@@ -225,6 +222,6 @@ language:
   PLAYER_FIRST_POINT_SET: "Primo punto impostato a §9{0}"
   PLAYER_SECOND_POINT_SET: "Secondo punto impostato a §9{0}"
   PLAYER_PLACE_SIGN: "Fare clic con il tasto destro per posizionare un cartello sul blocco"
-  LEFT_CLICK_TO_SELECT: "§fClick sinistro per selezionare"
   #Newsletter menu
   OPEN_NEWSLETTER_DESC: "Ricevi le ultime notizie"
+

@@ -6,8 +6,11 @@ language:
   NEWSLETTER_STRING: "§6[TaN - Newsletter]§f "
   #Common errors
   PLAYER_NO_TOWN: "§cNo tienes un pueblo"
+  PLAYER_NO_REGION: "No tienes una región"
   TOWN_NO_REGION: "§cTu pueblo no pertenece a una región"
   PLAYER_NOT_LEADER_OF_REGION: "§cTienes que ser lider de la región para ejecutar esta acción"
+  LEADER_CANNOT_QUIT_TOWN: "El líder no puede abandonar su pueblo"
+  TOWN_ALREADY_HAVE_OVERLORD: "Esta ciudad ya tiene un soberano"
   PLAYER_NO_PERMISSION: "§cNo tienes permiso para ejecutar este comando"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cNo puedes ejecutar esta acción a rangos superiores o iguales al tuyo"
   PLAYER_ACTION_NO_PERMISSION: "§cNo tienes permisos para ejecutar esta acción"
@@ -19,7 +22,6 @@ language:
   CANT_KICK_REGIONAL_CAPITAL: "§cNo puedes expulsar a la capital de la región"
   PLAYER_ALREADY_IN_SCOPE: "§cYa estas registrado"
   PLAYER_PROPERTY_CAP_REACHED: "§cHas alcanzado el maximo de propiedades. Sube de nivel el pueblo para poder adquirir más"
-  POSITION_NEED_TO_BE_IN_CLAIMED_CHUNK: "§cNecesitas estar en un chunk reclamado para definir una propiedad"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cDebes estar en tu pueblo para definir una propiedad"
   MESSAGE_NOT_RIGHT_SIZE: "§cEl mensaje debe tener {0} palabras"
   NO_TRADE_ALLOWED_EMBARGO: "§cNo puedes intercambiar con un pueblo bajo embargo"
@@ -30,6 +32,9 @@ language:
   POSITION_NOT_IN_CLAIMED_CHUNK: "§cLa posición debe estar en un chunk reclamado"
   LANDMARK_ALREADY_CLAIMED: "§cEste generador ya ha sido reclamado por: §9{0}"
   INTERACTION_TOO_FAR_ERROR: "§cEstas demasiado lejos para realizar esta acción"
+  CHUNK_DO_NOT_BELONG_TO_TERRITORY: "Este chunk no le pertenece a {0}"
+  CANNOT_DELETE_TERRITORY_IF_CAPITAL: "Este territorio no puede ser eliminado, ya que es la capital de {0}"
+  TOWN_NOT_FOUND: "Ciudad no encontrada"
   #Common uses
   DISPLAY_COORDINATES: "§fCoordenadas: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"
@@ -95,8 +100,6 @@ language:
   TOWN_INVITATION_NO_INVITATION: "§aNo tienes invitaciones pendientes"
   TOWN_INVITATION_ACCEPTED_MEMBER_SIDE: "§fAhora eres miembro de: §3{0}"
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f se ha unido al pueblo!"
-  #Diplomatic relation confirmation
-  REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "§9{0}§f invita a tu pueblo §9{1}§f a unirse a su región"
   #Autoclaim command
   TOWN_AUTO_CLAIM_DESC: "§fActiva la autoreclamación de los chunks en los que estas"
   AUTO_CLAIM_ON_FOR: "§fAutoreclamo de chunks activado en: §9{0}"
@@ -150,6 +153,8 @@ language:
   #SUDO command
   SUDO_PLAYER_ADDED: "§3{0}§f esta ahora en modo sudo"
   SUDO_PLAYER_REMOVED: "§3{0}§f ya no esta en modo sudo"
+  ##CreateTown
+  CREATE_TOWN_SERVER_DESC: "Crear una ciudad"
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cNo tienes suficiente dinero para hacer esto"
   LEADER_NOT_ONLINE: "§cEl alcalde de tu pueblo no esta online"
@@ -181,12 +186,6 @@ language:
   RELATION_NON_AGGRESSION_NAME: "No-Agresivo"
   RELATION_EMBARGO_NAME: "Embargado"
   RELATION_HOSTILE_NAME: "Hostil"
-  GUI_GENERIC_CLICK_TO_DELETE: "§fClick para eliminar"
-  GUI_GENERIC_RIGHT_CLICK_TO_DELETE: "§fClick derecho para eliminar"
-  GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT: "§fShift + Click para teletransportarse"
-  LEFT_CLICK_TO_SELECT: "§fClick izquierdo para seleccionar"
-  LEFT_CLICK_TO_AUTHORIZE: "§fClick izquierdo para autorizar"
-  LEFT_CLICK_TO_MODIFY: "§fClick izquierdo para modificar"
   GUI_KINGDOM_ICON: "§aReino"
   GUI_KINGDOM_ICON_DESC1: "§fEn desarrollo"
   GUI_REGION_ICON: "§aRegión"
@@ -333,7 +332,6 @@ language:
   GUI_TOWN_RELATION_ALLIANCE_DESC1: "§fAdministra los territorios con los que tienes una alianza"
   GUI_TOWN_RELATION_ADD_TOWN: "§aAñadir pueblo"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aRemover pueblo"
-  GUI_TOWN_ATTACK_TOWN_DESC1: "§cClick derecho para lanzar un ataque"
   GUI_TOWN_ATTACK_FINISHED: "§cEl ataque contra {0} ha terminado!"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aAdministrar permisos de puerta"
   GUI_TOWN_CLAIM_SETTINGS_CHEST: "§aAdministrar permisos de cofre"
@@ -426,10 +424,7 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR: "§aCambia el color del chunk"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1: "§fCambia el color de los chunks reclamados en el mapa"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2: "§fColor actual: §9{0}"
-  GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC3: "§fClick izquierdo para escoger otro color"
   GUI_TOWN_SETTINGS_CHANGE_TAG: "§aCambia la etiqueta del pueblo"
-  GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1: "§fEtiqueta actual: §9{0}"
-  GUI_TOWN_SETTINGS_CHANGE_TAG_DESC2: "§fClick izquierdo para cambiar la etiqueta"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT: "§fEscribe el nuevo color en el chat en formato hexadecimal 'RRGGBB' (ej: 00FF00 para verde)"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§fColor cambiado exitosamente"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cFormato de color invalido"
@@ -461,7 +456,6 @@ language:
   GUI_REGION_CHANGE_DESCRIPTION_DESC1: "§fMensaje actual: §7§o\"{0}\""
   GUI_REGION_CHANGE_DESCRIPTION_DESC2: "§fClick izquierdo para cambiar la descripción"
   GUI_INVITE_TOWN_TO_REGION: "§aInvitar pueblo a la región"
-  GUI_KICK_TOWN_TO_REGION: "§aExpulsar pueblo de la región"
   GUI_REGION_INVITE_TOWN_DESC1: "§fClick izquierdo para invitar a este pueblo a la región"
   GUI_REGION_KICK_TOWN_DESC1: "§fClick izquierdo para expulsar a este pueblo de la región"
   #Landmarks
@@ -564,13 +558,11 @@ language:
   NO_TOWN: "Sin pueblo"
   NO_REGION: "Sin región"
   NO_KINGDOM: "Sin reino"
-  #Wars
   BASIC_ATTACK_NAME: "§aGuerra de {0} contra {1}"
   ATTACK_ICON_DESC_1: "§fAtacante principal: {0}"
   ATTACK_ICON_DESC_2: "§fDefensor principal: {0}"
   ATTACK_ICON_DESC_3: "§fNúmero de atacantes: §9{0}"
   ATTACK_ICON_DESC_4: "§fNumber of defensores: §9{0}"
-  ATTACK_ICON_DESC_5: "§fObjetivo de la guerra: §a{0}"
   ATTACK_ICON_DESC_7: "§fLa guerra durará: §6{0}"
   ATTACK_ICON_DESC_8: "§fPosición del territorio: §a{0}"
   ATTACK_ICON_DESC_ADMIN_APPROVED: "§aEste ataque ha sido aprobado por un administrador"
@@ -607,11 +599,8 @@ language:
   GUI_WARGOAL_SUBJUGATE_WAR_GOAL_RESULT: "§f{0} será servicial a {1}"
   LIBERATE_SUBJECT_WAR_GOAL: "§aLiberar"
   LIBERATE_SUBJECT_WAR_GOAL_DESC: "§fLibera un territorio de su dueño actual"
-  GUI_WARGOAL_LIBERATE_CANNOT_BE_USED: "§cUn pueblo no tiene sirvientes"
-  GUI_WARGOAL_LIBERATE_WAR_GOAL_RESULT: "§f{0} será liberado de {1}"
   GUI_SELECT_TERRITORY_TO_LIBERATE: "§aElige el territorio a liberar"
   GUI_SELECTED_TERRITORY_TO_LIBERATE: "§fTerritorio seleccionado: §9{0}"
-  GUI_WARGOAL_NOT_COMPLETED: "§cDebes de completar el objetivo de guerra"
   WARGOAL_SUBJUGATE_SUCCESS: "{0}§f ha sido subyugado por {1}"
   WARGOAL_LIBERATE_SUCCESS: "{0}§f ha sido liberado de {1}"
   GUI_CANCEL_ATTACK: "§cCancelar ataque"
@@ -639,3 +628,4 @@ language:
   MAP_REGION: "    §b[Región]"
   #Reload
   RELOAD_SUCCESS: "§aConfiguración recargada"
+

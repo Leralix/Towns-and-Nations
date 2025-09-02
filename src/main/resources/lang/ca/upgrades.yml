@@ -1,0 +1,25 @@
+#Upgrades.yml is used to define the names of upgrades and their benefits in the game.
+#To add a name to a new upgrade, add it to the customLang section.
+customLang:
+  #Names
+  CITY_HALL: "Ajuntament"
+  BARRACKS: "Barraques"
+  ADMINISTRATION: "Administració"
+  WATCHTOWER: "Torre de vigilància"
+  PORTAL: "Portal"
+  GUARDS: "Guàrdies"
+  COUNCIL_CHAMBER: "Sales del Consell"
+  NOTARY_HOUSE: "Casa del notari"
+  EXTRACTION_TEAM: "Equip d'extracció"
+  BETTER_TOOLS: "Millors eines"
+  #Prerequisites
+  TOWN_LEVEL: "Nivell de la localitat"
+  #Benefits
+  PLAYER_CAP: "Màxim de jugadors"
+  CHUNK_CAP: "Màxims chunks"
+  PROPERTY_CAP: "Màximes propietats"
+  UNLOCK_TOWN_SPAWN: "Desbloqueja l'spawn de la teva localitat"
+  UNLOCK_MOB_BAN: "Desbloqueja el bloqueig de criatures"
+  UNLOCK_REGION_CREATION: "Desbloqueja la creació de regions"
+  MAX_LANDMARKS: "Desbloqueja la bandera de la regió"
+  LANDMARK_BONUS: "% Recompenses per terres"

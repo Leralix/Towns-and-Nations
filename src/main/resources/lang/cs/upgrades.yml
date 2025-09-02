@@ -1,0 +1,25 @@
+#Upgrades.yml is used to define the names of upgrades and their benefits in the game.
+#To add a name to a new upgrade, add it to the customLang section.
+customLang:
+  #Names
+  CITY_HALL: "Radnice"
+  BARRACKS: "Kasárny"
+  ADMINISTRATION: "Administrace"
+  WATCHTOWER: "Strážná věž"
+  PORTAL: "Portál"
+  GUARDS: "Strážci"
+  COUNCIL_CHAMBER: "Zasedačka rady"
+  NOTARY_HOUSE: "Notářův dům"
+  EXTRACTION_TEAM: "Extrakční tým"
+  BETTER_TOOLS: "Lepší nástroje"
+  #Prerequisites
+  TOWN_LEVEL: "Úroveň města"
+  #Benefits
+  PLAYER_CAP: "Limit hráčů"
+  CHUNK_CAP: "Limit chunků"
+  PROPERTY_CAP: "Limit nemovitostí"
+  UNLOCK_TOWN_SPAWN: "Odemknout spawn ve městě"
+  UNLOCK_MOB_BAN: "Odemknout ban mobů"
+  UNLOCK_REGION_CREATION: "Odemknout tvorbu regionů"
+  MAX_LANDMARKS: "Odemknout vlajky regionu"
+  LANDMARK_BONUS: "% odměny z mezníku"
