@@ -110,6 +110,11 @@ public class TownClaimedChunk extends TerritoryChunk {
             }
         }
 
+        if(ChunkUtil.chunkContainsBuildings(this, playerTown)){
+            player.sendMessage(TanChatUtils.getTANString() + Lang.BUILDINGS_OR_CAPITAL_IN_CHUNK.get());
+            return;
+        }
+
         NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
         player.sendMessage(TanChatUtils.getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_TOWN.get(playerTown.getNumberOfClaimedChunk(), playerTown.getLevel().getChunkCap()));
 

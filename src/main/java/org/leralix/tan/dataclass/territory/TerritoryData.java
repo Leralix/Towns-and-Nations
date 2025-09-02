@@ -913,7 +913,7 @@ public abstract class TerritoryData {
     public void registerFort(Vector3D location) {
         Fort fort = FortStorage.getInstance().register(location, this);
 
-        Vector2D flagPosition = fort.getFlagPosition();
+        Vector2D flagPosition = fort.getPosition();
         Chunk chunkToClaim = flagPosition.getWorld().getChunkAt(flagPosition.getX(), flagPosition.getZ());
 
         addOwnedFort(fort);

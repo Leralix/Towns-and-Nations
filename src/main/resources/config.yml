@@ -281,7 +281,7 @@ BlacklistedCommandsDuringAttacks: [ "/tan pay", "/tp" ]
 
 ## Forts
 Forts:
-  useAsOutpost: true
+  useAsOutpost: true # If TownAllowNonAdjacentChunks : true, forts can be used as outposts
   fortCost: 1000.0
   fortProtectionRadius: 50.0
   fortCaptureRadius: 10.0

@@ -3,8 +3,10 @@ package org.leralix.tan.utils.territory;
 import org.bukkit.World;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -75,5 +77,26 @@ class ChunkUtilTest extends BasicTest {
 
         assertEquals(8, borderChunks.size());
         assertFalse(borderChunks.contains(chunkWithoutBorders));
+    }
+
+    @Test
+    void test_chunkContainsBuildings_noBuilding(){
+        TownData townData = TownDataStorage.getInstance().newTown("town");
+        NewClaimedChunkStorage newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
+
+        TownClaimedChunk chunkFreeFromBuildings = newClaimedChunkStorage.claimTownChunk(world.getChunkAt(0,0), townData.getID());
+
+        assertFalse(ChunkUtil.chunkContainsBuildings(chunkFreeFromBuildings, townData));
+    }
+
+    @Test
+    void test_chunkContainsBuildings_withBuilding(){
+        TownData townData = TownDataStorage.getInstance().newTown("town");
+        NewClaimedChunkStorage newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
+
+        TownClaimedChunk chunkWithBuilding = newClaimedChunkStorage.claimTownChunk(world.getChunkAt(0,0), townData.getID());
+        townData.registerFort(new Vector3D(0,0,0,world.getUID().toString()));
+
+        assertTrue(ChunkUtil.chunkContainsBuildings(chunkWithBuilding, townData));
     }
 }

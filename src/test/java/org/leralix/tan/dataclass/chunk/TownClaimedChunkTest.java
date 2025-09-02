@@ -29,9 +29,22 @@ class TownClaimedChunkTest extends BasicTest {
         TownsAndNations.getPlugin().resetSingletonForTests();
     }
 
-
     @Test
     void notifyUpdate() {
+
+        TownData townData = TownDataStorage.getInstance().newTown("Town");
+
+        claimedChunkStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
+        claimedChunkStorage.claimTownChunk(world.getChunkAt(0, 1), townData.getID());
+        TerritoryChunk townClaimedChunk = new TownClaimedChunk(world.getChunkAt(0, 0), townData.getID());
+
+        townClaimedChunk.notifyUpdate();
+
+        assertEquals(0, claimedChunkStorage.getClaimedChunksMap().size());
+    }
+
+    @Test
+    void notifyUpdateWithCapital() {
 
         TownData townData = TownDataStorage.getInstance().newTown("Town");
 
@@ -42,7 +55,7 @@ class TownClaimedChunkTest extends BasicTest {
         TerritoryChunk townClaimedChunk = new TownClaimedChunk(world.getChunkAt(0, 0), townData.getID());
         townClaimedChunk.notifyUpdate();
 
-        assertEquals(0, claimedChunkStorage.getClaimedChunksMap().size());
+        assertEquals(1, claimedChunkStorage.getClaimedChunksMap().size());
     }
 
     @Test

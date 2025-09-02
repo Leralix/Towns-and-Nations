@@ -67,7 +67,7 @@ public class CaptureManager {
             Vector3D playerPosition = new Vector3D(player.getLocation());
 
             for (CaptureFort captureFort : forts.values()) {
-                if (captureFort.getFort().getFlagPosition().getDistance(playerPosition) < Constants.getFortCaptureRadius()) {
+                if (captureFort.getFort().getPosition().getDistance(playerPosition) < Constants.getFortCaptureRadius()) {
                     consumer.accept(captureFort, player);
                 }
             }

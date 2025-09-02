@@ -172,6 +172,7 @@ language:
   UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cThis chunk is claimed by another town: §e{0}"
   UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§cThis chunk is claimed by another region: §b{0}"
   PROPERTY_IN_CHUNK: "§cThis chunk contains a property §f({0})"
+  BUILDINGS_OR_CAPITAL_IN_CHUNK: "§cThis chunk contains at least one building or is a capital chunk"
   #Map command
   MAP_COMMAND_DESC: "Open the map of chunks around the player"
   #Debug commands

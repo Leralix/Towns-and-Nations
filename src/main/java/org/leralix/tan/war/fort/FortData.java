@@ -34,7 +34,7 @@ public class FortData extends Fort{
     }
 
     @Override
-    public Vector3D getFlagPosition() {
+    public Vector3D getPosition() {
         return position;
     }
 

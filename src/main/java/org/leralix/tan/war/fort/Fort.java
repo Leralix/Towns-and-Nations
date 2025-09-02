@@ -25,7 +25,7 @@ public abstract class Fort extends Building {
     }
 
     public void updateFlag() {
-        Vector3D flagPosition = getFlagPosition();
+        Vector3D flagPosition = getPosition();
         Block flagBlock = flagPosition.getLocation().add(0, 1, 0).getBlock();
         if (isOccupied()) {
             flagBlock.setType(Material.RED_BANNER);
@@ -36,7 +36,7 @@ public abstract class Fort extends Building {
     }
 
     public void spawnFlag() {
-        Vector3D flagPosition = getFlagPosition();
+        Vector3D flagPosition = getPosition();
         Block flagBlock = flagPosition.getLocation().add(0, 1, 0).getBlock();
         flagBlock.setType(Material.GREEN_BANNER);
 
@@ -45,7 +45,7 @@ public abstract class Fort extends Building {
 
     public abstract String getID();
 
-    public abstract Vector3D getFlagPosition();
+    public abstract Vector3D getPosition();
 
     public abstract TerritoryData getOwner();
 
@@ -77,7 +77,7 @@ public abstract class Fort extends Building {
     public GuiItem getGuiItem(IconManager iconManager, Player player, TerritoryData territoryData, BasicGui basicGui) {
 
         LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
-        Vector3D position = getFlagPosition();
+        Vector3D position = getPosition();
         return iconManager.get(IconKey.FORT_BUILDING_ICON)
                 .setName(getName())
                 .setDescription(
@@ -99,7 +99,7 @@ public abstract class Fort extends Building {
 
 
     private void deleteFlag() {
-        Vector3D flagPosition = getFlagPosition();
+        Vector3D flagPosition = getPosition();
         Block baseBlock = flagPosition.getLocation().getBlock();
         Block flagBlock = flagPosition.getLocation().add(0, 1, 0).getBlock();
         flagBlock.setType(Material.AIR);
@@ -118,7 +118,7 @@ public abstract class Fort extends Building {
     public abstract void setOwner(TerritoryData newOwner);
 
     public void setProtectedBlockData() {
-        Vector3D flagPosition = getFlagPosition();
+        Vector3D flagPosition = getPosition();
         Block baseBlock = flagPosition.getLocation().getBlock();
         Block flagBlock = flagPosition.getLocation().add(0, 1, 0).getBlock();
 

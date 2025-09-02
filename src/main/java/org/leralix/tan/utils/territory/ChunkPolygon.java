@@ -36,7 +36,7 @@ public class ChunkPolygon {
 
         for(ClaimedChunk2 claimedChunk2 : chunksInPolygon){
             for(Fort fort : FortStorage.getInstance().getOwnedFort(territoryOwner)){
-                if(claimedChunk2.containsPosition(fort.getFlagPosition())){
+                if(claimedChunk2.containsPosition(fort.getPosition())){
                     return true;
                 }
             }

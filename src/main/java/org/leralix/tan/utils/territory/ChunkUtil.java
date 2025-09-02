@@ -1,8 +1,11 @@
 package org.leralix.tan.utils.territory;
 
+import org.leralix.lib.position.Vector2D;
+import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 
 import java.util.*;
@@ -106,6 +109,26 @@ public class ChunkUtil {
                 return true;
             }
         }
+        return false;
+    }
+
+    public static boolean chunkContainsBuildings(TerritoryChunk townClaimedChunk, TerritoryData territoryData) {
+        for(Building building : territoryData.getBuildings()){
+            if(building.getPosition().getLocation().getChunk().equals(townClaimedChunk.getChunk())){
+                return true;
+            }
+        }
+
+        if(territoryData instanceof TownData townData){
+
+            var optionalLocation = townData.getCapitalLocation();
+
+            if(optionalLocation.isPresent()){
+                Vector2D location = optionalLocation.get();
+                return location.getWorld().getChunkAt(location.getX(), location.getZ()).equals(townClaimedChunk.getChunk());
+            }
+        }
+
         return false;
     }
 }

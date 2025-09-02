@@ -33,7 +33,7 @@ public class FortDataWrapper implements TanFort {
 
     @Override
     public Vector3D getFlagPosition() {
-        return fort.getFlagPosition();
+        return fort.getPosition();
     }
 
     @Override

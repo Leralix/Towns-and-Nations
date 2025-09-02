@@ -77,7 +77,7 @@ public class CaptureChunk {
 
     private Optional<Fort> getFortProtecting() {
         for (Fort fort : territoryChunk.getOccupier().getAllControlledFort()){
-            if(fort.getFlagPosition().getDistance(territoryChunk.getMiddleVector2D()) <= Constants.getFortProtectionRadius()){
+            if(fort.getPosition().getDistance(territoryChunk.getMiddleVector2D()) <= Constants.getFortProtectionRadius()){
                 return Optional.of(fort);
             }
         }
@@ -91,7 +91,7 @@ public class CaptureChunk {
         int nbAttackers = attackers.size();
 
         if(fortProtectingChunk.isPresent()){
-            message = Lang.WAR_INFO_CHUNK_PROTECTED.get(fortProtectingChunk.get().getFlagPosition(), nbAttackers, nbDefenders);
+            message = Lang.WAR_INFO_CHUNK_PROTECTED.get(fortProtectingChunk.get().getPosition(), nbAttackers, nbDefenders);
         }
         else if(nbAttackers == nbDefenders){
             message = Lang.WAR_INFO_CONTESTED.get(score, nbAttackers, nbDefenders);
