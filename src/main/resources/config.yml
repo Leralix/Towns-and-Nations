@@ -262,6 +262,15 @@ MaximumTimeBeforeAttack: 4320 #72 hours
 # Set the value to 0 for unlimited chunks (capped by the maximum number of chunks the territory currently own).
 MaximumChunkConquer: 0
 
+# Command to execute when an attack starts/end ONCE
+commandToExecuteOnceWhenAttackStart: [ ] #eg : ["time set day", "..."]
+commandToExecuteOnceWhenAttackEnd: [ ] #eg : ["time set night", "..."]
+
+# Command to execute when an attack starts/end for EACH PLAYER
+# Placeholder : %PLAYER% -> Name one player
+commandToExecutePerPlayerWhenAttackStart: [ ] #eg : ["pvp %PLAYER% on", "..."]
+commandToExecutePerPlayerWhenAttackEnd: [ ] #eg : ["pvp %PLAYER% off", "..."]
+
 #Commands blocked during attacks
 #Example : ["command 1", "command 1"]
 #You can use separated command if needed :

@@ -23,8 +23,8 @@ import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
 
@@ -81,7 +81,7 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
             return;
         }
 
-        int margin = Constants.getPropertySignMargin();
+        int margin = Constants.getMaxPropertySignMargin();
         if (!isNearProperty(block.getLocation(), position1, position2, margin)) {
             player.sendMessage(getTANString() + Lang.PLAYER_PROPERTY_SIGN_TOO_FAR.get(margin));
             return;

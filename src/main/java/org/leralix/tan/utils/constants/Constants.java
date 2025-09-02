@@ -17,6 +17,10 @@ import java.util.Map;
 
 public class Constants {
 
+    private Constants(){
+        throw new AssertionError("Static class");
+    }
+
     //Config
     private static boolean onlineMode;
 
@@ -47,13 +51,17 @@ public class Constants {
     private static double fortCaptureRadius;
     private static boolean useAsOutpost;
 
-    private static int propertySignMargin;
+    private static int maxPropertySignMargin;
 
     //Wars
     private static Map<TownRelation, Boolean> canPvpHappenWithRelation;
-    private static long warDuration;
+    private static long attackDuration;
     private static List<String> blacklistedCommandsDuringAttacks;
     private static int nbChunkToCaptureMax;
+    private static List<String> onceStartCommands;
+    private static List<String> onceEndCommands;
+    private static List<String> perPlayerStartCommands;
+    private static List<String> perPlayerEndCommands;
 
     //Claims
     private static GriefAllowed explosionGriefStatus;
@@ -107,8 +115,9 @@ public class Constants {
             useAsOutpost = fortsSection.getBoolean("useAsOutpost", true);
         }
 
-        //Attacks
+        maxPropertySignMargin = config.getInt("maxPropertyMargin", 3);
 
+        //Attacks
         canPvpHappenWithRelation = new EnumMap<>(TownRelation.class);
         ConfigurationSection section = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getConfigurationSection("enablePvpWhenRelationIs");
         if(section != null){
@@ -117,14 +126,17 @@ public class Constants {
                 canPvpHappenWithRelation.put(relation, authorized);
             }
         }
-
-
-
+        attackDuration = config.getInt("WarDuration", 30);
         blacklistedCommandsDuringAttacks = config.getStringList("BlacklistedCommandsDuringAttacks");
         nbChunkToCaptureMax = config.getInt("MaximumChunkConquer", 0);
         if (nbChunkToCaptureMax == 0) {
             nbChunkToCaptureMax = Integer.MAX_VALUE;
         }
+        onceStartCommands = config.getStringList("commandToExecuteOnceWhenAttackStart");
+        onceEndCommands = config.getStringList("commandToExecuteOnceWhenAttackEnd");
+        perPlayerStartCommands = config.getStringList("commandToExecutePerPlayerWhenAttackStart");
+        perPlayerEndCommands = config.getStringList("commandToExecutePerPlayerWhenAttackEnd");
+
         //Claims
 
         explosionGriefStatus = GriefAllowed.valueOf(config.getString("explosionGrief", ALWAYS));
@@ -200,12 +212,12 @@ public class Constants {
         return useAsOutpost;
     }
 
-    public static int getPropertySignMargin() {
-        return propertySignMargin;
+    public static int getMaxPropertySignMargin() {
+        return maxPropertySignMargin;
     }
 
-    public static long getWarDuration() {
-        return warDuration;
+    public static long getAttackDuration() {
+        return attackDuration;
     }
 
     public static List<String> getBlacklistedCommandsDuringAttacks() {
@@ -251,5 +263,21 @@ public class Constants {
 
     public static boolean canPvpHappenWithRelation(TownRelation relation){
         return canPvpHappenWithRelation.getOrDefault(relation, true);
+    }
+
+    public static List<String> getPerPlayerEndCommands() {
+        return perPlayerEndCommands;
+    }
+
+    public static List<String> getPerPlayerStartCommands() {
+        return perPlayerStartCommands;
+    }
+
+    public static List<String> getOnceEndCommands() {
+        return onceEndCommands;
+    }
+
+    public static List<String> getOnceStartCommands() {
+        return onceStartCommands;
     }
 }

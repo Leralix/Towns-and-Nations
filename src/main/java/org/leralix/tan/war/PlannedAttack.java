@@ -2,6 +2,7 @@ package org.leralix.tan.war;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -62,7 +63,7 @@ public class PlannedAttack {
         this.defendersID.add(war.getMainDefenderID());
 
         this.startTime = (long) (new Date().getTime() * 0.02 + startTime);
-        this.endTime = this.startTime + Constants.getWarDuration();
+        this.endTime = this.startTime + Constants.getAttackDuration();
 
         war.getMainDefender().addPlannedAttack(this);
         war.getMainAttacker().addPlannedAttack(this);
@@ -343,10 +344,14 @@ public class PlannedAttack {
         this.name = message;
     }
 
-    public List<Player> getAllOnlinePlayers() {
+    public List<OfflinePlayer> getAllOfflinePlayers() {
         List<ITanPlayer> res = new ArrayList<>(getDefendingPlayers());
         res.addAll(getAttackersPlayers());
-        return res.stream().map(ITanPlayer::getPlayer).filter(Objects::nonNull).toList();
+        return res.stream().map(ITanPlayer::getOfflinePlayer).filter(Objects::nonNull).toList();
+    }
+
+    public List<Player> getAllOnlinePlayers() {
+        return getAllOfflinePlayers().stream().map(OfflinePlayer::getPlayer).filter(Objects::nonNull).toList();
     }
 
 }

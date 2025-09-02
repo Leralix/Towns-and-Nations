@@ -17,6 +17,7 @@ import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.utils.gameplay.CommandExecutor;
 import org.leralix.tan.war.PlannedAttack;
 
 public class CurrentAttack {
@@ -57,6 +58,7 @@ public class CurrentAttack {
                 }
             }
         }
+        CommandExecutor.applyStartWarCommands(getAttackData());
         start();
     }
 
@@ -97,6 +99,7 @@ public class CurrentAttack {
 
     public void end() {
 
+        CommandExecutor.applyEndWarCommands(getAttackData());
         end = true;
 
         new BukkitRunnable() {
