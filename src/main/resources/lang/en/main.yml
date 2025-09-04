@@ -988,7 +988,7 @@ language:
   LIBERATE_SUBJECT_WAR_GOAL: "§aLiberate"
   LIBERATE_SUBJECT_WAR_GOAL_DESC: "§fLiberate a specific territory from its current suzerain"
   LIBERATE_SUBJECT_WAR_GOAL_DESC1: "§fTerritory to liberate: §9{0}"
-  GUI_WARGOAL_LIBERATE_CANNOT_BE_USED: "§fTerritory to liberate: §9{0}"
+  GUI_WARGOAL_LIBERATE_CANNOT_BE_USED: "§cThe territory does not have any vassals to liberate"
   GUI_WARGOAL_LIBERATE_WAR_GOAL_RESULT: "§f{0} will be liberated"
   GUI_SELECT_TERRITORY_TO_LIBERATE: "§aSelect the territory to liberate"
   GUI_SELECTED_TERRITORY_TO_LIBERATE: "§fSelected territory: §9{0}"
