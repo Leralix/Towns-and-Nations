@@ -29,33 +29,34 @@ public class CreateRegion extends ChatListenerEvent {
     }
 
     @Override
-    public void execute(Player player, String message) {
+    public boolean execute(Player player, String message) {
 
 
         TownData town = TownDataStorage.getInstance().get(player);
 
         if(!town.isLeader(player)){
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get());
-            return;
+            return false;
         }
 
         if(town.getBalance() < cost){
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
-            return;
+            return false;
         }
 
         int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RegionNameSize");
         if(message.length() > maxSize){
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
-            return;
+            return false;
         }
 
         if(RegionDataStorage.getInstance().isNameUsed(message)){
             player.sendMessage(TanChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
-            return;
+            return false;
         }
 
         createRegion(player, message, town);
+        return true;
     }
 
     private void createRegion(Player player, String regionName, TownData capital) {

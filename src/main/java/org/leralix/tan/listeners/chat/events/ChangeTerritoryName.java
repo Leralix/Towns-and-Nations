@@ -25,17 +25,18 @@ public class ChangeTerritoryName extends ChatListenerEvent {
     }
 
     @Override
-    public void execute(Player player, String message) {
+    public boolean execute(Player player, String message) {
 
         int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownNameSize");
 
         if(message.length() > maxSize){
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
-            return;
+            return false;
         }
 
         PlayerChatListenerStorage.removePlayer(player);
         territoryToRename.rename(player, cost, message);
         openGui(guiCallback, player);
+        return true;
     }
 }

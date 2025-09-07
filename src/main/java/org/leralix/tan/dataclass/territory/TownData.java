@@ -504,8 +504,8 @@ public class TownData extends TerritoryData {
         budget.addProfitLine(new PlayerTaxLine(this));
         getOverlord()
                 .ifPresent(overlord -> budget.addProfitLine(new OverlordTaxLine(this, overlord)));
-        budget.addProfitLine(new PropertyRentTax(this));
-        budget.addProfitLine(new PropertySellTax(this));
+        budget.addProfitLine(new PropertyRentTaxLine(this));
+        budget.addProfitLine(new PropertySellTaxLine(this));
     }
 
     public Map<String, PropertyData> getPropertyDataMap() {

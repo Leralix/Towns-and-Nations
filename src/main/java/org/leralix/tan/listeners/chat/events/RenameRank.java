@@ -23,16 +23,17 @@ public class RenameRank extends ChatListenerEvent {
     }
 
     @Override
-    public void execute(Player player, String message) {
+    public boolean execute(Player player, String message) {
         int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RankNameSize");
 
         if(message.length() > maxSize){
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
-            return;
+            return false;
         }
 
         rankData.setName(message);
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> new RankManagerMenu(player, territoryConcerned, rankData).open());
         PlayerChatListenerStorage.removePlayer(player);
+        return false;
     }
 }

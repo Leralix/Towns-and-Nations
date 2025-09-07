@@ -17,17 +17,17 @@ public class RetrieveMoney extends ChatListenerEvent {
     }
 
     @Override
-    public void execute(Player player, String message) {
+    public boolean execute(Player player, String message) {
 
         Double amount = parseStringToDouble(message);
         if(amount == null){
             player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
-            return;
+            return false;
         }
 
         if(amount > territoryData.getBalance()){
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
-            return;
+            return false;
         }
         territoryData.removeFromBalance(amount);
         EconomyUtil.addFromBalance(player, amount);
@@ -35,5 +35,6 @@ public class RetrieveMoney extends ChatListenerEvent {
         player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_RETRIEVE_MONEY_SUCCESS.get(amount));
         SoundUtil.playSound(player, SoundEnum.MINOR_LEVEL_UP);
         PlayerChatListenerStorage.removePlayer(player);
+        return true;
     }
 }

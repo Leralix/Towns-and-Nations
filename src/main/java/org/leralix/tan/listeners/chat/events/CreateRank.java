@@ -21,20 +21,21 @@ public class CreateRank extends ChatListenerEvent {
     }
 
     @Override
-    public void execute(Player player, String message) {
+    public boolean execute(Player player, String message) {
         int maxNameSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RankNameSize");
 
         if(message.length() > maxNameSize){
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxNameSize));
-            return;
+            return false;
         }
         if(territoryData.isRankNameUsed(message)){
             player.sendMessage(TanChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
-            return;
+            return false;
         }
 
         PlayerChatListenerStorage.removePlayer(player);
         territoryData.registerNewRank(message);
         openGui(guiCallback, player);
+        return true;
     }
 }

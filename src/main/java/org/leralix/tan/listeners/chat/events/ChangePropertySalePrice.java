@@ -21,7 +21,7 @@ public class ChangePropertySalePrice extends ChatListenerEvent {
     }
 
     @Override
-    public void execute(Player player, String message) {
+    public boolean execute(Player player, String message) {
         int amount;
         try{
             amount = Integer.parseInt(message);
@@ -30,10 +30,11 @@ public class ChangePropertySalePrice extends ChatListenerEvent {
             }
         } catch (NumberFormatException e) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
-            return;
+            return false;
         }
         propertyData.setSalePrice(amount);
         PlayerChatListenerStorage.removePlayer(player);
         openGui(guiCallback, player);
+        return true;
     }
 }

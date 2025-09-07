@@ -21,18 +21,19 @@ public class ChangePropertyName extends ChatListenerEvent {
     }
 
     @Override
-    public void execute(Player player, String message) {
+    public boolean execute(Player player, String message) {
         PlayerChatListenerStorage.removePlayer(player);
 
         int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("PropertyNameSize");
 
         if(message.length() > maxSize){
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
-            return;
+            return false;
         }
 
         propertyToRename.setName(message);
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
         openGui(guiCallback, player);
+        return true;
     }
 }

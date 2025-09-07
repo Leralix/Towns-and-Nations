@@ -23,16 +23,17 @@ public class ChangeLandmarkName extends ChatListenerEvent {
     }
 
     @Override
-    public void execute(Player player, String message) {
+    public boolean execute(Player player, String message) {
         int nameMaxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("landmarkNameMaxSize",25);
         if(message.length() >= nameMaxSize){
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(nameMaxSize));
-            return;
+            return false;
         }
         PlayerChatListenerStorage.removePlayer(player);
         landmark.setName(message);
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
         SoundUtil.playSound(player, SoundEnum.MINOR_LEVEL_UP);
         openGui(guiCallback,player);
+        return true;
     }
 }

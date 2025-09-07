@@ -22,17 +22,18 @@ public class ChangeTownTag extends ChatListenerEvent {
     }
 
     @Override
-    public void execute(Player player, String message) {
+    public boolean execute(Player player, String message) {
 
         int size = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize");
         if(message.length() != size){
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_NOT_RIGHT_SIZE.get(size));
-            return;
+            return false;
         }
 
         townData.setTownTag(message);
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
         PlayerChatListenerStorage.removePlayer(player);
         openGui(guiCallback, player);
+        return true;
     }
 }

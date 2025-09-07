@@ -22,18 +22,19 @@ public class ChangePropertyDescription extends ChatListenerEvent {
     }
 
     @Override
-    public void execute(Player player, String message) {
+    public boolean execute(Player player, String message) {
 
         int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("PropertyDescSize");
 
         if(message.length() > maxSize){
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
-            return;
+            return false;
         }
         PlayerChatListenerStorage.removePlayer(player);
 
         propertyData.setDescription(message);
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
         openGui(guiCallback,player);
+        return true;
     }
 }

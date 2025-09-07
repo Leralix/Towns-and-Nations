@@ -27,18 +27,18 @@ public class CreateEmptyTown extends ChatListenerEvent {
     }
 
     @Override
-    public void execute(Player player, String townName) {
+    public boolean execute(Player player, String townName) {
         FileConfiguration config =  ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         int maxSize = config.getInt("TownNameSize");
 
         if(townName.length() > maxSize){
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
-            return;
+            return false;
         }
 
         if(TownDataStorage.getInstance().isNameUsed(townName)){
             player.sendMessage(TanChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
-            return;
+            return false;
         }
 
         TownData newTown = TownDataStorage.getInstance().newTown(townName);
@@ -49,5 +49,6 @@ public class CreateEmptyTown extends ChatListenerEvent {
         FileUtil.addLineToHistory(Lang.TOWN_CREATED_NEWSLETTER.get(player.getName(),newTown.getName()));
 
         openGui(guiCallback, player);
+        return true;
     }
 }

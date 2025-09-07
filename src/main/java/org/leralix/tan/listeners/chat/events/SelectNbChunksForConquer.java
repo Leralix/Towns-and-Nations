@@ -29,17 +29,17 @@ public class SelectNbChunksForConquer extends ChatListenerEvent {
     }
 
     @Override
-    protected void execute(Player player, String message) {
+    protected boolean execute(Player player, String message) {
         Integer amount = parseStringToInt(message);
         if(amount == null){
             player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
-            return;
+            return false;
         }
 
         int maxAmountOfChunkToCapture = Constants.getNbChunkToCaptureMax();
         if(amount > maxAmountOfChunkToCapture){
             player.sendMessage(Lang.VALUE_EXCEED_MAXIMUM_ERROR.get(player, maxAmountOfChunkToCapture));
-            return;
+            return false;
         }
 
         war.addGoal(warRole, new ConquerWarGoal(amount));
@@ -48,5 +48,6 @@ public class SelectNbChunksForConquer extends ChatListenerEvent {
 
         SoundUtil.playSound(player, SoundEnum.MINOR_LEVEL_UP);
         PlayerChatListenerStorage.removePlayer(player);
+        return true;
     }
 }

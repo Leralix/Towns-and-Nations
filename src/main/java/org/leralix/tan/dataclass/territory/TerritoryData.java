@@ -79,6 +79,7 @@ public abstract class TerritoryData {
     private Double baseTax;
     private double propertyRentTax;
     private double propertyBuyTax;
+    private double propertyCreateTax;
     protected Integer color;
     protected Integer defaultRankID;
     protected Map<Integer, RankData> ranks;
@@ -103,6 +104,7 @@ public abstract class TerritoryData {
         this.baseTax = 1.0;
         this.propertyRentTax = 0.1;
         this.propertyBuyTax = 0.1;
+        this.propertyCreateTax = 0.5;
 
         ranks = new HashMap<>();
         RankData defaultRank = registerNewRank("default");
@@ -172,8 +174,7 @@ public abstract class TerritoryData {
     }
 
     public String getDescription() {
-        if (description == null)
-            description = Lang.DEFAULT_DESCRIPTION.get();
+        if (description == null) description = Lang.DEFAULT_DESCRIPTION.get();
         return description;
     }
 
@@ -212,9 +213,7 @@ public abstract class TerritoryData {
 
     public Collection<String> getOrderedPlayerIDList() {
         List<String> sortedList = new ArrayList<>();
-        List<ITanPlayer> playersSorted = getITanPlayerList().stream()
-                .sorted(Comparator.comparingInt(tanPlayer -> -this.getRank(tanPlayer.getRankID(this)).getLevel()))
-                .toList();
+        List<ITanPlayer> playersSorted = getITanPlayerList().stream().sorted(Comparator.comparingInt(tanPlayer -> -this.getRank(tanPlayer.getRankID(this)).getLevel())).toList();
 
         for (ITanPlayer tanPlayer : playersSorted) {
             sortedList.add(tanPlayer.getID());
@@ -225,14 +224,12 @@ public abstract class TerritoryData {
     public abstract Collection<ITanPlayer> getITanPlayerList();
 
     public ClaimedChunkSettings getChunkSettings() {
-        if (chunkSettings == null)
-            chunkSettings = new ClaimedChunkSettings();
+        if (chunkSettings == null) chunkSettings = new ClaimedChunkSettings();
         return chunkSettings;
     }
 
     public RelationData getRelations() {
-        if (relations == null)
-            relations = new RelationData();
+        if (relations == null) relations = new RelationData();
         return relations;
     }
 
@@ -250,8 +247,7 @@ public abstract class TerritoryData {
 
 
     private Map<String, DiplomacyProposal> getDiplomacyProposals() {
-        if (diplomacyProposals == null)
-            diplomacyProposals = new HashMap<>();
+        if (diplomacyProposals == null) diplomacyProposals = new HashMap<>();
         return diplomacyProposals;
     }
 
@@ -282,15 +278,12 @@ public abstract class TerritoryData {
     }
 
     public TownRelation getRelationWith(String territoryID) {
-        if (getID().equals(territoryID))
-            return TownRelation.SELF;
+        if (getID().equals(territoryID)) return TownRelation.SELF;
 
         Optional<TerritoryData> overlord = getOverlord();
-        if (overlord.isPresent() && overlord.get().getID().equals(territoryID))
-            return TownRelation.OVERLORD;
+        if (overlord.isPresent() && overlord.get().getID().equals(territoryID)) return TownRelation.OVERLORD;
 
-        if (getVassalsID().contains(territoryID))
-            return TownRelation.VASSAL;
+        if (getVassalsID().contains(territoryID)) return TownRelation.VASSAL;
 
         return getRelations().getRelationWith(territoryID);
     }
@@ -331,25 +324,21 @@ public abstract class TerritoryData {
     }
 
     public Collection<String> getAttacksInvolvedID() {
-        if (attackIncomingList == null)
-            this.attackIncomingList = new ArrayList<>();
+        if (attackIncomingList == null) this.attackIncomingList = new ArrayList<>();
         return attackIncomingList;
     }
 
     public void addPlannedAttack(PlannedAttack war) {
         getAttacksInvolvedID().add(war.getID());
-
     }
 
     public void removePlannedAttack(PlannedAttack war) {
         getAttacksInvolvedID().remove(war.getID());
-
     }
 
 
     public Collection<String> getCurrentAttacksID() {
-        if (currentAttackList == null)
-            this.currentAttackList = new ArrayList<>();
+        if (currentAttackList == null) this.currentAttackList = new ArrayList<>();
         return currentAttackList;
     }
 
@@ -366,9 +355,8 @@ public abstract class TerritoryData {
         getAttacksInvolvedID().remove(currentAttacks.getAttackData().getID());
     }
 
-    public double getBalance(){
-        if(treasury == null)
-            treasury = 0.;
+    public double getBalance() {
+        if (treasury == null) treasury = 0.;
         return treasury;
     }
 
@@ -390,8 +378,7 @@ public abstract class TerritoryData {
     }
 
     public Optional<TerritoryData> getOverlord() {
-        if (overlordID == null)
-            return Optional.empty();
+        if (overlordID == null) return Optional.empty();
         TerritoryData overlord = TerritoryUtil.getTerritory(overlordID);
         if (overlord == null) {
             overlordID = null;
@@ -418,7 +405,6 @@ public abstract class TerritoryData {
 
 
     public void addVassal(TerritoryData vassal) {
-
         EventManager.getInstance().callEvent(new TerritoryVassalAcceptedInternalEvent(vassal, this));
         addVassalPrivate(vassal);
     }
@@ -429,18 +415,14 @@ public abstract class TerritoryData {
 
     public boolean isCapital() {
         Optional<TerritoryData> capital = getOverlord();
-        return capital
-                .map(overlord -> Objects.equals(overlord.getCapital().getID(), getID()))
-                .orElse(false);
+        return capital.map(overlord -> Objects.equals(overlord.getCapital().getID(), getID())).orElse(false);
     }
 
     public abstract TerritoryData getCapital();
 
 
-
     public int getChunkColorCode() {
-        if (color == null)
-            color = StringUtil.randomColor();
+        if (color == null) color = StringUtil.randomColor();
         return color;
     }
 
@@ -463,8 +445,7 @@ public abstract class TerritoryData {
 
 
     public Map<String, Integer> getAvailableEnemyClaims() {
-        if (availableClaims == null)
-            availableClaims = new HashMap<>();
+        if (availableClaims == null) availableClaims = new HashMap<>();
         return availableClaims;
     }
 
@@ -474,30 +455,38 @@ public abstract class TerritoryData {
 
     public void consumeEnemyClaim(String territoryID) {
         getAvailableEnemyClaims().merge(territoryID, -1, Integer::sum);
-        if (getAvailableEnemyClaims().get(territoryID) <= 0)
-            getAvailableEnemyClaims().remove(territoryID);
+        if (getAvailableEnemyClaims().get(territoryID) <= 0) getAvailableEnemyClaims().remove(territoryID);
     }
 
-    public void claimChunk(Player player) {
-        claimChunk(player, player.getLocation().getChunk());
+
+    /**
+     * Claim the chunk for the territory. The chunk used will be the one where the player stands
+     *
+     * @param player The player wishing to claim a chunk
+     * @return True if the chunk has been claimed successfully, false otherwise
+     */
+    public boolean claimChunk(Player player) {
+        return claimChunk(player, player.getLocation().getChunk());
     }
 
     /**
      * Claim the chunk for the territory
-     * @param player    The player wishing to claim a chunk
-     * @param chunk     The chunk to claim
-     * @return  True if the chunk has been claimed successfully, false otherwise
+     *
+     * @param player The player wishing to claim a chunk
+     * @param chunk  The chunk to claim
+     * @return True if the chunk has been claimed successfully, false otherwise
      */
-    public boolean claimChunk(Player player, Chunk chunk){
+    public boolean claimChunk(Player player, Chunk chunk) {
         return claimChunk(player, chunk, Constants.allowNonAdjacentChunksForTown());
     }
 
     /**
      * Claim the chunk for the territory
-     * @param player            The player wishing to claim a chunk
-     * @param chunk             The chunk to claim
-     * @param ignoreAdjacent    Defines if the chunk to claim should respect adjacent claiming
-     * @return  True if the chunk has been claimed successfully, false otherwise
+     *
+     * @param player         The player wishing to claim a chunk
+     * @param chunk          The chunk to claim
+     * @param ignoreAdjacent Defines if the chunk to claim should respect adjacent claiming
+     * @return True if the chunk has been claimed successfully, false otherwise
      */
     public abstract boolean claimChunk(Player player, Chunk chunk, boolean ignoreAdjacent);
 
@@ -563,8 +552,7 @@ public abstract class TerritoryData {
         List<TerritoryData> res = new ArrayList<>();
         for (String vassalID : getVassalsID()) {
             TerritoryData vassal = TerritoryUtil.getTerritory(vassalID);
-            if (vassal != null)
-                res.add(vassal);
+            if (vassal != null) res.add(vassal);
         }
         return res;
     }
@@ -583,8 +571,7 @@ public abstract class TerritoryData {
     public abstract Collection<TerritoryData> getPotentialVassals();
 
     private List<String> getOverlordsProposals() {
-        if (overlordsProposals == null)
-            overlordsProposals = new ArrayList<>();
+        if (overlordsProposals == null) overlordsProposals = new ArrayList<>();
         return overlordsProposals;
     }
 
@@ -612,8 +599,7 @@ public abstract class TerritoryData {
 
         for (String proposalID : getOverlordsProposals()) {
             TerritoryData proposalOverlord = TerritoryUtil.getTerritory(proposalID);
-            if (proposalOverlord == null)
-                continue;
+            if (proposalOverlord == null) continue;
             ItemStack territoryItem = proposalOverlord.getIconWithInformations(tanPlayer.getLang());
             HeadUtils.addLore(territoryItem, Lang.GUI_GENERIC_LEFT_CLICK_TO_ACCEPT.get(), Lang.RIGHT_CLICK_TO_REFUSE.get());
             GuiItem acceptInvitation = ItemBuilder.from(territoryItem).asGuiItem(event -> {
@@ -653,9 +639,7 @@ public abstract class TerritoryData {
     }
 
     public Collection<RankData> getAllRanksSorted() {
-        return getRanks().values().stream()
-                .sorted(Comparator.comparingInt(p -> -p.getLevel()))
-                .toList();
+        return getRanks().values().stream().sorted(Comparator.comparingInt(p -> -p.getLevel())).toList();
     }
 
     public RankData getRank(int rankID) {
@@ -673,8 +657,7 @@ public abstract class TerritoryData {
     }
 
     public boolean isRankNameUsed(String message) {
-        if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication", false))
-            return false;
+        if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication", false)) return false;
 
         for (RankData rank : getAllRanks()) {
             if (rank.getName().equals(message)) {
@@ -687,8 +670,7 @@ public abstract class TerritoryData {
     public RankData registerNewRank(String rankName) {
         int nextRankId = 0;
         for (RankData rank : getAllRanks()) {
-            if (rank.getID() >= nextRankId)
-                nextRankId = rank.getID() + 1;
+            if (rank.getID() >= nextRankId) nextRankId = rank.getID() + 1;
         }
 
         RankData newRank = new RankData(nextRankId, rankName);
@@ -728,8 +710,7 @@ public abstract class TerritoryData {
             return false;
         }
 
-        if (isLeader(tanPlayer))
-            return true;
+        if (isLeader(tanPlayer)) return true;
 
         return getRank(tanPlayer).hasPermission(townRolePermission);
     }
@@ -763,8 +744,7 @@ public abstract class TerritoryData {
     public abstract double getChunkUpkeepCost();
 
     public double getTax() {
-        if (baseTax == null)
-            setTax(0.0);
+        if (baseTax == null) setTax(0.0);
         return baseTax;
     }
 
@@ -834,45 +814,39 @@ public abstract class TerritoryData {
             for (ClaimedChunk2 claimedChunk2 : borderChunks) {
                 NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(claimedChunk2);
                 nbOfUnclaimedChunk++;
-                if (nbOfUnclaimedChunk >= minNbOfUnclaimedChunk)
-                    break;
+                if (nbOfUnclaimedChunk >= minNbOfUnclaimedChunk) break;
             }
         }
-
-
     }
 
 
     protected abstract void collectTaxes();
 
     public double getTaxOnRentingProperty() {
-        if (propertyRentTax > 1)
-            propertyRentTax = 1; //Convert to percentage
+        if (propertyRentTax > 1) propertyRentTax = 1; //Convert to percentage
         return propertyRentTax;
     }
 
-    public void addToRentTax(double value) {
-        propertyRentTax += value;
-    }
-
-    public void setRentRate(double amount) {
+    public void setTaxOnRentingProperty(double amount) {
         propertyRentTax = amount;
     }
 
     public double getTaxOnBuyingProperty() {
-        if (propertyBuyTax > 1)
-            propertyBuyTax = 1; //Convert to percentage
+        if (propertyBuyTax > 1) propertyBuyTax = 1; //Convert to percentage
         return propertyBuyTax;
     }
 
-    public void addToBuyTax(double value) {
-        propertyBuyTax += value;
-    }
-
-    public void setBuyRate(double amount) {
+    public void setTaxOnBuyingProperty(double amount) {
         propertyBuyTax = amount;
     }
 
+    public double getTaxOnCreatingProperty() {
+        return propertyCreateTax;
+    }
+
+    public void setTaxOnCreatingProperty(double amount) {
+        propertyCreateTax = amount;
+    }
 
     public boolean isAtWar() {
         return !getCurrentAttacks().isEmpty();
@@ -915,8 +889,7 @@ public abstract class TerritoryData {
     }
 
     public String getLeaderName() {
-        if (this.haveNoLeader())
-            return Lang.NO_LEADER.get();
+        if (this.haveNoLeader()) return Lang.NO_LEADER.get();
         return getLeaderData().getNameStored();
     }
 
@@ -930,14 +903,12 @@ public abstract class TerritoryData {
     }
 
     public List<String> getOwnedFortIDs() {
-        if (fortIds == null)
-            fortIds = new ArrayList<>();
+        if (fortIds == null) fortIds = new ArrayList<>();
         return fortIds;
     }
 
     public List<String> getOccupiedFortIds() {
-        if (occupiedFortIds == null)
-            occupiedFortIds = new ArrayList<>();
+        if (occupiedFortIds == null) occupiedFortIds = new ArrayList<>();
         return occupiedFortIds;
     }
 
@@ -1005,17 +976,17 @@ public abstract class TerritoryData {
         getOwnedFortIDs().remove(fortToCapture.getID());
     }
 
-    public void applyToAllOnlinePlayer(Consumer<Player> action){
-        for(Player player : getPlayers()){
+    public void applyToAllOnlinePlayer(Consumer<Player> action) {
+        for (Player player : getPlayers()) {
             action.accept(player);
         }
     }
 
     private List<Player> getPlayers() {
         List<Player> playerList = new ArrayList<>();
-        for(String playerID : getPlayerIDList()){
+        for (String playerID : getPlayerIDList()) {
             Player player = Bukkit.getPlayer(UUID.fromString(playerID));
-            if(player != null){
+            if (player != null) {
                 playerList.add(player);
             }
         }

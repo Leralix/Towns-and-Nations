@@ -1,4 +1,4 @@
-package org.leralix.tan.listeners.chat.events;
+package org.leralix.tan.listeners.chat.events.Treasury;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -12,28 +12,37 @@ import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
-public class SetSpecificTax extends ChatListenerEvent {
+import java.util.function.Consumer;
 
-    TerritoryData territoryData;
+public abstract class SetSpecificTax extends ChatListenerEvent {
 
-    public SetSpecificTax(TerritoryData territoryData) {
-        super();
-        this.territoryData = territoryData;
+    private final Consumer<Player> guiCallback;
+
+
+    protected SetSpecificTax(Consumer<Player> guiCallback) {
+        this.guiCallback = guiCallback;
     }
+
     @Override
-    public void execute(Player player, String message) {
+    public boolean execute(Player player, String message) {
         PlayerChatListenerStorage.removePlayer(player);
         Double amount = parseStringToDouble(message);
-        if(amount == null){
+        if (amount == null) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
-            return;
+            return false;
         }
-        amount = Math.max(0, amount);
+        if (amount < 0) {
+            player.sendMessage(TanChatUtils.getTANString() + Lang.VALUE_CANNOT_BE_NEGATIVE_ERROR.get());
+            return false;
+        }
 
         player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_SET_TAX_SUCCESS.get(amount));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
-        territoryData.setTax(amount);
+        setTax(amount);
 
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> new TreasuryMenu(player, territoryData));
+        openGui(guiCallback, player);
+        return true;
     }
+
+    protected abstract void setTax(double amount);
 }

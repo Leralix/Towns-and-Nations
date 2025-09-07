@@ -15,8 +15,9 @@ public class ChangeAttackName extends ChatListenerEvent {
     }
 
     @Override
-    public void execute(Player player, String message) {
+    public boolean execute(Player player, String message) {
         plannedAttack.rename(message);
         openGui(guiCallback,player);
+        return true;
     }
 }

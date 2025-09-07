@@ -13,7 +13,7 @@ public abstract class ChatListenerEvent {
 
     }
 
-    protected abstract void execute(Player player, String message);
+    protected abstract boolean execute(Player player, String message);
 
     protected static Integer parseStringToInt(String stringAmount) {
         if (stringAmount != null && stringAmount.matches("-?\\d+")) {

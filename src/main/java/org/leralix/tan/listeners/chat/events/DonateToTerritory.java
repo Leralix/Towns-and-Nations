@@ -18,13 +18,14 @@ public class DonateToTerritory extends ChatListenerEvent {
     }
 
     @Override
-    public void execute(Player player, String message) {
+    public boolean execute(Player player, String message) {
         PlayerChatListenerStorage.removePlayer(player);
         Double amount = parseStringToDouble(message);
         if (amount == null) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
-            return;
+            return false;
         }
         territoryToDonate.addDonation(player, amount);
+        return true;
     }
 }

@@ -1,4 +1,4 @@
-package org.leralix.tan.listeners.chat.events;
+package org.leralix.tan.listeners.chat.events.Treasury;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -9,26 +9,23 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.user.territory.TreasuryMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
-import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
-public class SetSpecificRate extends ChatListenerEvent {
+public abstract class SetSpecificRate extends ChatListenerEvent {
 
-    TerritoryData territoryData;
-    RateType rateType;
+    protected final TerritoryData territoryData;
 
-    public SetSpecificRate(TerritoryData territoryData, RateType rateType) {
+    protected SetSpecificRate(TerritoryData territoryData) {
         super();
         this.territoryData = territoryData;
-        this.rateType = rateType;
     }
+
     @Override
-    public void execute(Player player, String message) {
-        PlayerChatListenerStorage.removePlayer(player);
+    public boolean execute(Player player, String message) {
         Double amount = parseStringToDouble(message);
-        if(amount == null){
+        if (amount == null) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
-            return;
+            return false;
         }
         amount = Math.min(100, Math.max(0, amount));
 
@@ -36,11 +33,11 @@ public class SetSpecificRate extends ChatListenerEvent {
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
 
 
-        switch (rateType) {
-            case RENT -> territoryData.setRentRate(amount/100);
-            case BUY -> territoryData.setBuyRate(amount/100);
-        }
+        setRate(amount / 100);
 
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> new TreasuryMenu(player, territoryData));
+        return false;
     }
+
+    abstract void setRate(double percentage);
 }

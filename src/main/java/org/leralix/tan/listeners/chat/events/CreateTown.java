@@ -29,12 +29,12 @@ public class CreateTown extends ChatListenerEvent {
     }
 
     @Override
-    public void execute(Player player, String message) {
+    public boolean execute(Player player, String message) {
         double playerBalance = EconomyUtil.getBalance(player);
 
         if(playerBalance < cost){
             player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(cost - playerBalance));
-            return;
+            return false;
         }
 
         FileConfiguration config =  ConfigUtil.getCustomConfig(ConfigTag.MAIN);
@@ -42,16 +42,17 @@ public class CreateTown extends ChatListenerEvent {
 
         if(message.length() > maxSize){
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
-            return;
+            return false;
         }
 
         if(TownDataStorage.getInstance().isNameUsed(message)){
             player.sendMessage(TanChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
-            return;
+            return false;
         }
         PlayerChatListenerStorage.removePlayer(player);
         createTown(player, message);
 
+        return true;
     }
 
     public void createTown(Player player, String message) {

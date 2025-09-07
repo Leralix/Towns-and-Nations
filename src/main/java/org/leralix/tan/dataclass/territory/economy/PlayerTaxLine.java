@@ -18,7 +18,8 @@ import org.leralix.tan.gui.user.territory.EconomicHistoryMenu;
 import org.leralix.tan.gui.user.territory.TreasuryMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.listeners.chat.events.SetSpecificTax;
+import org.leralix.tan.listeners.chat.events.Treasury.SetSpecificTax;
+import org.leralix.tan.listeners.chat.events.Treasury.SetTerritoryTax;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.StringUtil;
@@ -108,7 +109,7 @@ public class PlayerTaxLine extends ProfitLine {
             }
             else if (event.isRightClick()) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_SET_TAX_IN_CHAT.get());
-                PlayerChatListenerStorage.register(player, new SetSpecificTax(territoryData));
+                PlayerChatListenerStorage.register(player, new SetTerritoryTax(territoryData, p -> new TreasuryMenu(player, territoryData)));
                 player.closeInventory();
             }
         });
