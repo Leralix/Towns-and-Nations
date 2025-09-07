@@ -15,7 +15,7 @@ import org.leralix.tan.gui.user.territory.EconomicHistoryMenu;
 import org.leralix.tan.gui.user.territory.TreasuryMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.listeners.chat.events.Treasury.SetTerritoryTax;
+import org.leralix.tan.listeners.chat.events.treasury.SetTerritoryTax;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;

@@ -1,4 +1,4 @@
-package org.leralix.tan.listeners.chat.events.Treasury;
+package org.leralix.tan.listeners.chat.events.treasury;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

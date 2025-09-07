@@ -12,7 +12,7 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.user.territory.EconomicHistoryMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.listeners.chat.events.Treasury.SetBuyPropertyRate;
+import org.leralix.tan.listeners.chat.events.treasury.SetBuyPropertyRate;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.TanChatUtils;
