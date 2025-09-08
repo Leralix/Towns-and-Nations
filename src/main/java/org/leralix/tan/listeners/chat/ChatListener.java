@@ -22,13 +22,18 @@ public class ChatListener implements Listener {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CANCELLED_ACTION.get());
             RightClickListener.removePlayer(player);
             PlayerChatListenerStorage.removePlayer(player);
+            event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event){
         Player player = event.getPlayer();
-        PlayerChatListenerStorage.playerMessage(player, event.getMessage());
+
+        if(PlayerChatListenerStorage.contains(player)){
+            event.setCancelled(true);
+            PlayerChatListenerStorage.execute(player, event.getMessage());
+        }
     }
 
 }

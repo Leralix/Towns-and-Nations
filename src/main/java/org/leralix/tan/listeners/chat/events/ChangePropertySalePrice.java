@@ -33,7 +33,6 @@ public class ChangePropertySalePrice extends ChatListenerEvent {
             return false;
         }
         propertyData.setSalePrice(amount);
-        PlayerChatListenerStorage.removePlayer(player);
         openGui(guiCallback, player);
         return true;
     }

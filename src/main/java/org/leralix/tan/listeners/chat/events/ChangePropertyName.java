@@ -22,8 +22,6 @@ public class ChangePropertyName extends ChatListenerEvent {
 
     @Override
     public boolean execute(Player player, String message) {
-        PlayerChatListenerStorage.removePlayer(player);
-
         int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("PropertyNameSize");
 
         if(message.length() > maxSize){

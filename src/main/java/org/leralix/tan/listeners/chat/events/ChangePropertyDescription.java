@@ -30,7 +30,6 @@ public class ChangePropertyDescription extends ChatListenerEvent {
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
             return false;
         }
-        PlayerChatListenerStorage.removePlayer(player);
 
         propertyData.setDescription(message);
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());

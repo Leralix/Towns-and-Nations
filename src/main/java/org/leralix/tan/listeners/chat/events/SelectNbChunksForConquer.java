@@ -45,9 +45,7 @@ public class SelectNbChunksForConquer extends ChatListenerEvent {
         war.addGoal(warRole, new ConquerWarGoal(amount));
 
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), fallbackGui::open);
-
         SoundUtil.playSound(player, SoundEnum.MINOR_LEVEL_UP);
-        PlayerChatListenerStorage.removePlayer(player);
         return true;
     }
 }

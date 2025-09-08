@@ -20,11 +20,7 @@ public class PlayerChatListenerStorage {
         SoundUtil.playSound(player, SoundEnum.WRITE);
         player.closeInventory();
     }
-
-    public static ChatListenerEvent getPlayer(Player player){
-        return chatStorage.get(player);
-    }
-
+    
     public static void removePlayer(Player p) {
         chatStorage.remove(p);
     }
@@ -33,9 +29,10 @@ public class PlayerChatListenerStorage {
         return chatStorage.containsKey(player);
     }
 
-    public static void playerMessage(Player player, @NotNull String message) {
+    public static void execute(Player player, @NotNull String message) {
         ChatListenerEvent event = chatStorage.get(player);
         if(event == null){
+            chatStorage.remove(player);
             return;
         }
         

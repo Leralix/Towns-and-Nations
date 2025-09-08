@@ -34,7 +34,6 @@ public class ChangeTerritoryName extends ChatListenerEvent {
             return false;
         }
 
-        PlayerChatListenerStorage.removePlayer(player);
         territoryToRename.rename(player, cost, message);
         openGui(guiCallback, player);
         return true;

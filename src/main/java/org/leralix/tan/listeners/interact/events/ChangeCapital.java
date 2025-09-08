@@ -25,11 +25,11 @@ public class ChangeCapital extends RightClickListenerEvent {
     }
 
     @Override
-    public void execute(PlayerInteractEvent event) {
+    public boolean execute(PlayerInteractEvent event) {
 
         Block block = event.getClickedBlock();
         if(block == null) {
-            return;
+            return false;
         }
 
         ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(block.getChunk());
@@ -42,7 +42,8 @@ public class ChangeCapital extends RightClickListenerEvent {
 
             openGui(fallbackGui, player);
             SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
-            RightClickListener.removePlayer(player);
+            return true;
         }
+        return false;
     }
 }

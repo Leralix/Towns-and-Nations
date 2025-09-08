@@ -29,7 +29,6 @@ public class ChangeLandmarkName extends ChatListenerEvent {
             player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(nameMaxSize));
             return false;
         }
-        PlayerChatListenerStorage.removePlayer(player);
         landmark.setName(message);
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
         SoundUtil.playSound(player, SoundEnum.MINOR_LEVEL_UP);

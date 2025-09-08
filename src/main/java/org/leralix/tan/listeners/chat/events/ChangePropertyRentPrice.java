@@ -22,7 +22,6 @@ public class ChangePropertyRentPrice extends ChatListenerEvent {
 
     @Override
     public boolean execute(Player player, String message) {
-        PlayerChatListenerStorage.removePlayer(player);
         int amount;
         try{
             amount = Integer.parseInt(message);
@@ -35,7 +34,6 @@ public class ChangePropertyRentPrice extends ChatListenerEvent {
         }
 
         propertyData.setRentPrice(amount);
-        PlayerChatListenerStorage.removePlayer(player);
         openGui(guiCallback, player);
         return true;
     }

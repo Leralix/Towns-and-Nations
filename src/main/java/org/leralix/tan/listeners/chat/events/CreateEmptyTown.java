@@ -42,7 +42,6 @@ public class CreateEmptyTown extends ChatListenerEvent {
         }
 
         TownData newTown = TownDataStorage.getInstance().newTown(townName);
-        PlayerChatListenerStorage.removePlayer(player);
 
         ITanPlayer playerData = PlayerDataStorage.getInstance().get(player);
         EventManager.getInstance().callEvent(new TownCreatedInternalEvent(newTown, playerData));

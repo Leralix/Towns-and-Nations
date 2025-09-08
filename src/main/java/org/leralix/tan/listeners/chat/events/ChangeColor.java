@@ -25,7 +25,6 @@ public class ChangeColor extends ChatListenerEvent {
             return false;
         }
 
-        PlayerChatListenerStorage.removePlayer(player);
         territoryData.setChunkColor(StringUtil.hexColorToInt(message));
         player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS.get());
         openGui(guiCallback,player);

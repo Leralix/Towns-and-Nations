@@ -33,7 +33,6 @@ public class CreateRank extends ChatListenerEvent {
             return false;
         }
 
-        PlayerChatListenerStorage.removePlayer(player);
         territoryData.registerNewRank(message);
         openGui(guiCallback, player);
         return true;

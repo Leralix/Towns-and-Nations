@@ -3,7 +3,6 @@ package org.leralix.tan.listeners.chat;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
-import org.leralix.tan.lang.Lang;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,7 +30,7 @@ class PlayerChatListenerStorageTest extends BasicTest {
         when(mockedChatListenerEvent.execute(any(Player.class), anyString())).thenReturn(true);
         PlayerChatListenerStorage.register(player, mockedChatListenerEvent);
 
-        PlayerChatListenerStorage.playerMessage(player, "");
+        PlayerChatListenerStorage.execute(player, "");
 
         assertFalse(PlayerChatListenerStorage.contains(player));
     }
@@ -44,7 +43,7 @@ class PlayerChatListenerStorageTest extends BasicTest {
         when(mockedChatListenerEvent.execute(any(Player.class), anyString())).thenReturn(false);
         PlayerChatListenerStorage.register(player, mockedChatListenerEvent);
 
-        PlayerChatListenerStorage.playerMessage(player, "");
+        PlayerChatListenerStorage.execute(player, "");
 
         assertFalse(PlayerChatListenerStorage.contains(player));
     }

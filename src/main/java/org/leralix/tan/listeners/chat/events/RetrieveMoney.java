@@ -34,7 +34,6 @@ public class RetrieveMoney extends ChatListenerEvent {
 
         player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_RETRIEVE_MONEY_SUCCESS.get(amount));
         SoundUtil.playSound(player, SoundEnum.MINOR_LEVEL_UP);
-        PlayerChatListenerStorage.removePlayer(player);
         return true;
     }
 }

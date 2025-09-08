@@ -28,9 +28,15 @@ public class RightClickListener implements Listener {
         }
 
         Player player = event.getPlayer();
-        if(events.containsKey(player)){
+        if(event.getAction().isRightClick() && events.containsKey(player)){
             event.setCancelled(true);
-            events.get(player).execute(event);
+            boolean success = events.get(player).execute(event);
+            if(success){
+                events.remove(player);
+            }
+            else{
+                player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+            }
         }
     }
 

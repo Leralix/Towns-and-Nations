@@ -35,7 +35,6 @@ public class ChangeTerritoryDescription extends ChatListenerEvent {
         FileUtil.addLineToHistory(Lang.HISTORY_TOWN_MESSAGE_CHANGED.get(player.getName(), territoryData.getName(),message));
         territoryData.setDescription(message);
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
-        PlayerChatListenerStorage.removePlayer(player);
         openGui(guiCallback,player);
         return true;
     }

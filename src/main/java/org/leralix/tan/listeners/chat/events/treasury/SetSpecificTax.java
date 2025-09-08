@@ -21,7 +21,6 @@ public abstract class SetSpecificTax extends ChatListenerEvent {
 
     @Override
     public boolean execute(Player player, String message) {
-        PlayerChatListenerStorage.removePlayer(player);
         Double amount = parseStringToDouble(message);
         if (amount == null) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());

@@ -40,30 +40,30 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
 
 
     @Override
-    public void execute(PlayerInteractEvent event) {
+    public boolean execute(PlayerInteractEvent event) {
 
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         LangType langType = tanPlayer.getLang();
 
         Block block = event.getClickedBlock();
         if (block == null)
-            return;
+            return false;
 
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(block.getChunk());
         if (claimedChunk instanceof TownClaimedChunk townClaimedChunk && townClaimedChunk.getTown().isPlayerIn(player)) {
             player.sendMessage(Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(langType));
+            return false;
         }
 
         if (!tanPlayer.hasTown()){
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get(langType));
-            RightClickListener.removePlayer(player);
-            return;
+            return false;
         }
 
         if (position1 == null){
             position1 = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
             player.sendMessage(getTANString() + Lang.PLAYER_FIRST_POINT_SET.get(player, position1));
-            return;
+            return false;
         }
         if(position2 == null){
             int maxPropertySize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("maxPropertySize", 50000);
@@ -73,36 +73,31 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
 
             if (Math.abs(position1.getX() - vector3D.getX()) * Math.abs(position1.getY() - vector3D.getY()) * Math.abs(position1.getZ() - vector3D.getZ()) > maxPropertySize) {
                 player.sendMessage(getTANString() + Lang.PLAYER_PROPERTY_TOO_BIG.get(maxPropertySize));
-                return;
+                return false;
             }
             position2 = vector3D;
             player.sendMessage(getTANString() + Lang.PLAYER_SECOND_POINT_SET.get(vector3D));
             player.sendMessage(getTANString() + Lang.PLAYER_PLACE_SIGN.get());
-            return;
+            return false;
         }
 
         int margin = Constants.getMaxPropertySignMargin();
         if (!isNearProperty(block.getLocation(), position1, position2, margin)) {
             player.sendMessage(getTANString() + Lang.PLAYER_PROPERTY_SIGN_TOO_FAR.get(margin));
-            return;
+            return false;
         }
-
-        RightClickListener.removePlayer(player);
 
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
         player.sendMessage(getTANString() + Lang.PLAYER_PROPERTY_CREATED.get());
 
         TownData playerTown = tanPlayer.getTown();
-        if(playerTown == null){
-            player.sendMessage(getTANString() + Lang.PLAYER_NO_TOWN.get());
-            return;
-        }
 
         PropertyData property = playerTown.registerNewProperty(position1,position2, tanPlayer);
         new PlayerPropertyManager(player, property, HumanEntity::closeInventory);
 
         property.createPropertySign(player, block, event.getBlockFace());
         property.updateSign();
+        return true;
     }
 
     boolean isNearProperty(Location blockLocation, Vector3D p1, Vector3D p2, int margin) {

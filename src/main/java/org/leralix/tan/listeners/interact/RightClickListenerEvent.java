@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 
 public abstract class RightClickListenerEvent {
 
-    public abstract void execute(PlayerInteractEvent event);
+    public abstract boolean execute(PlayerInteractEvent event);
 
     protected void openGui(Consumer<Player> playerConsumer, Player player){
         new BukkitRunnable() {

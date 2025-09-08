@@ -62,7 +62,6 @@ public class CreateRegion extends ChatListenerEvent {
     private void createRegion(Player player, String regionName, TownData capital) {
         capital.removeFromBalance(cost);
         RegionData newRegion = RegionDataStorage.getInstance().createNewRegion(regionName, capital);
-        PlayerChatListenerStorage.removePlayer(player);
 
         ITanPlayer playerData = PlayerDataStorage.getInstance().get(player);
         EventManager.getInstance().callEvent(new RegionCreatedInternalEvent(newRegion, TanPlayerWrapper.of(playerData)));

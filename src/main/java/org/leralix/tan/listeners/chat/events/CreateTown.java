@@ -49,7 +49,6 @@ public class CreateTown extends ChatListenerEvent {
             player.sendMessage(TanChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
             return false;
         }
-        PlayerChatListenerStorage.removePlayer(player);
         createTown(player, message);
 
         return true;
