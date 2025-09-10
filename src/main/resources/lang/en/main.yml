@@ -1081,6 +1081,8 @@ language:
   FORCED_VASSALAGE: "{0}§f has been forced to be a vassal of {1}"
   ATTACK_DECLARED_TITLE: "Attack declared"
   ATTACK_DECLARED: "§fAn attack has been declared by {0}§f against {1}"
+  ATTACK_START_IN_1_MINUTES: "{0} will start in 1 minute"
+  ATTACK_START_NOW: "{0} has started."
   ATTACK_WON_BY_ATTACKER_TITLE: "Attackers won"
   ATTACK_WON_BY_ATTACKER: "§fThe battle between {0}§f and {1}§f has been won by {2}"
   ATTACK_WON_BY_DEFENDER_TITLE: "Defenders won"

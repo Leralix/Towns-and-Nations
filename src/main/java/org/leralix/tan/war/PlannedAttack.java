@@ -22,6 +22,7 @@ import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.DateUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.capture.CaptureManager;
 import org.leralix.tan.war.legacy.CreateAttackData;
 import org.leralix.tan.war.legacy.CurrentAttack;
@@ -161,14 +162,14 @@ public class PlannedAttack {
         warWarningTask = new BukkitRunnable() {
             @Override
             public void run() {
-                broadCastMessageWithSound("War begin in 1 minute", SoundEnum.WAR);
+                broadCastMessageWithSound(Lang.ATTACK_START_IN_1_MINUTES.get(name), SoundEnum.WAR);
             }
         };
         warWarningTask.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeWarning);
     }
 
     private void startWar(long startTime) {
-        broadCastMessageWithSound("War start", SoundEnum.WAR);
+        broadCastMessageWithSound(Lang.ATTACK_START_NOW.get(name), SoundEnum.WAR);
         CurrentAttacksStorage.startAttack(this, startTime, endTime);
     }
 
