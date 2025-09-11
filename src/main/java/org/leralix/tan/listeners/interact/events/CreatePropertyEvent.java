@@ -15,6 +15,7 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.lang.Lang;
@@ -23,7 +24,9 @@ import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
@@ -31,18 +34,21 @@ import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
 public class CreatePropertyEvent extends RightClickListenerEvent {
 
     private final Player player;
+    private final TownData townData;
+    private final ITanPlayer tanPlayer;
     private Vector3D position1;
     private Vector3D position2;
 
     public CreatePropertyEvent(Player player){
         this.player = player;
+        this.townData = TownDataStorage.getInstance().get(player);
+        this.tanPlayer = PlayerDataStorage.getInstance().get(player);
     }
 
 
     @Override
     public boolean execute(PlayerInteractEvent event) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         LangType langType = tanPlayer.getLang();
 
         Block block = event.getClickedBlock();
@@ -70,12 +76,21 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
 
             Vector3D vector3D = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
 
-
             if (Math.abs(position1.getX() - vector3D.getX()) * Math.abs(position1.getY() - vector3D.getY()) * Math.abs(position1.getZ() - vector3D.getZ()) > maxPropertySize) {
                 player.sendMessage(getTANString() + Lang.PLAYER_PROPERTY_TOO_BIG.get(maxPropertySize));
                 return false;
             }
             position2 = vector3D;
+
+            double totalCost = NumberUtil.roundWithDigits(getTotalCost());
+            if(tanPlayer.getBalance() < totalCost){
+                player.sendMessage(getTANString() + Lang.PLAYER_PROPERTY_TOO_BIG.get(maxPropertySize));
+                return true;
+            }
+
+            tanPlayer.removeFromBalance(totalCost);
+            townData.addToBalance(totalCost);
+
             player.sendMessage(getTANString() + Lang.PLAYER_SECOND_POINT_SET.get(vector3D));
             player.sendMessage(getTANString() + Lang.PLAYER_PLACE_SIGN.get());
             return false;
@@ -90,14 +105,18 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
         player.sendMessage(getTANString() + Lang.PLAYER_PROPERTY_CREATED.get());
 
-        TownData playerTown = tanPlayer.getTown();
 
-        PropertyData property = playerTown.registerNewProperty(position1,position2, tanPlayer);
+        PropertyData property = townData.registerNewProperty(position1,position2, tanPlayer);
         new PlayerPropertyManager(player, property, HumanEntity::closeInventory);
 
         property.createPropertySign(player, block, event.getBlockFace());
         property.updateSign();
         return true;
+    }
+
+    private double getTotalCost() {
+        double costPerBlock = townData.getTaxOnCreatingProperty();
+        return costPerBlock * position1.getArea(position2);
     }
 
     boolean isNearProperty(Location blockLocation, Vector3D p1, Vector3D p2, int margin) {

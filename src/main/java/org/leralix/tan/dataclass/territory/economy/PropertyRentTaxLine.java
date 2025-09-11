@@ -69,7 +69,7 @@ public class PropertyRentTaxLine extends ProfitLine {
             }
         });
 
-        gui.setItem(4, 2, taxInfo);
+        gui.setItem(4, 3, taxInfo);
     }
 
     @Override

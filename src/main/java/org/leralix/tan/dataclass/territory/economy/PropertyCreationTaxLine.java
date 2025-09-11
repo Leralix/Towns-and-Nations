@@ -61,7 +61,7 @@ public class PropertyCreationTaxLine extends ProfitLine {
             }
         });
 
-        gui.setItem(4, 4, taxInfo);
+        gui.setItem(4, 2, taxInfo);
     }
 
     @Override

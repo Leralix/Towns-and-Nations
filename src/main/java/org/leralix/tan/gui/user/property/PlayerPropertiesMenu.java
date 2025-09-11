@@ -46,11 +46,16 @@ public class PlayerPropertiesMenu extends IteratorGUI {
             TownData townData = tanPlayer.getTown();
             int nbProperties = townData.getProperties().size();
             int maxNbProperties = townData.getLevel().getPropertyCap();
+            double costPerBlock = townData.getTaxOnCreatingProperty();
             if(nbProperties >= maxNbProperties){
-                description.add(Lang.GUI_PROPERTY_CAP_FULL.get(tanPlayer, nbProperties, maxNbProperties));
+                description.add(Lang.GUI_PROPERTY_CAP_FULL.get(langType, nbProperties, maxNbProperties));
             }
             else {
-                description.add(Lang.GUI_PROPERTY_CAP.get(tanPlayer, nbProperties, maxNbProperties));
+                description.add(Lang.GUI_PROPERTY_CAP.get(langType, nbProperties, maxNbProperties));
+            }
+
+            if(costPerBlock > 0) {
+                description.add(Lang.GUI_PROPERTY_COST_PER_BLOCK.get(langType, costPerBlock));
             }
         }
         else {

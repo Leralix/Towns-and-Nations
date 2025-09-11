@@ -502,10 +502,10 @@ public class TownData extends TerritoryData {
     @Override
     protected void addSpecificTaxes(Budget budget) {
         budget.addProfitLine(new PlayerTaxLine(this));
-        getOverlord()
-                .ifPresent(overlord -> budget.addProfitLine(new OverlordTaxLine(this, overlord)));
+        getOverlord().ifPresent(overlord -> budget.addProfitLine(new OverlordTaxLine(this, overlord)));
         budget.addProfitLine(new PropertyRentTaxLine(this));
         budget.addProfitLine(new PropertySellTaxLine(this));
+        budget.addProfitLine(new PropertyCreationTaxLine(this));
     }
 
     public Map<String, PropertyData> getPropertyDataMap() {
