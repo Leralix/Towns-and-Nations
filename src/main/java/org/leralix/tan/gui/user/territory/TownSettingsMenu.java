@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TownDeletedInternalEvent;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -78,7 +79,13 @@ public class TownSettingsMenu extends SettingsMenus {
         return iconManager.get(IconKey.CHANGE_TOWN_CAPITAL_ICON)
                 .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_CAPITAL.get(langType))
                 .setDescription(desc)
-                .setAction( action -> RightClickListener.register(player, new ChangeCapital(townData, p -> open())))
+                .setAction(action -> {
+                            if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
+                                player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
+                                return;
+                            }
+                            RightClickListener.register(player, new ChangeCapital(townData, p -> open()));
+                        })
                 .asGuiItem(player);
 
     }

@@ -61,6 +61,10 @@ public abstract class SettingsMenus extends BasicGui {
                         Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3.get(tanPlayer, cost),
                         Lang.GUI_GENERIC_CLICK_TO_MODIFY.get())
                 .setAction(action -> {
+                    if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
+                        return;
+                    }
                     player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangeTerritoryName(territoryData, cost, p -> open()));
                 })
@@ -75,6 +79,10 @@ public abstract class SettingsMenus extends BasicGui {
                         Lang.GUI_GENERIC_CLICK_TO_MODIFY.get()
                 )
                 .setAction(action -> {
+                    if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
+                        return;
+                    }
                     player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangeTerritoryDescription(territoryData, p -> open()));
                 })
@@ -92,11 +100,10 @@ public abstract class SettingsMenus extends BasicGui {
                 .setAction(action -> {
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
                         player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
-                    } else {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT.get(tanPlayer));
-                        PlayerChatListenerStorage.register(player, new ChangeColor(territoryData, p -> open()));
+                        return;
                     }
-
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT.get(tanPlayer));
+                    PlayerChatListenerStorage.register(player, new ChangeColor(territoryData, p -> open()));
                 })
                 .asGuiItem(player);
     }
