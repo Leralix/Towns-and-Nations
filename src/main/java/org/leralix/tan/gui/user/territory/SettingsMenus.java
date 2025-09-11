@@ -54,11 +54,11 @@ public abstract class SettingsMenus extends BasicGui {
         int cost = Constants.getChangeTerritoryNameCost(territoryData);
 
         return iconManager.get(IconKey.TERRITORY_RENAME_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME.get(tanPlayer))
+                .setName(Lang.GUI_SETTINGS_CHANGE_TOWN_NAME.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1.get(tanPlayer, territoryData.getName()),
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC2.get(tanPlayer),
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3.get(tanPlayer, cost),
+                        Lang.GUI_SETTINGS_CHANGE_TOWN_NAME_DESC1.get(tanPlayer, territoryData.getName()),
+                        Lang.GUI_GENERIC_LEFT_CLICK_TO_MODIFY.get(tanPlayer),
+                        Lang.GUI_SETTINGS_CHANGE_TOWN_NAME_DESC3.get(tanPlayer, cost),
                         Lang.GUI_GENERIC_CLICK_TO_MODIFY.get())
                 .setAction(action -> {
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
@@ -73,9 +73,9 @@ public abstract class SettingsMenus extends BasicGui {
 
     protected GuiItem getChangeDescriptionButton() {
         return iconManager.get(IconKey.TERRITORY_DESCRIPTION_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE.get(tanPlayer))
+                .setName(Lang.GUI_SETTINGS_CHANGE_TOWN_MESSAGE.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1.get(tanPlayer, territoryData.getDescription()),
+                        Lang.GUI_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1.get(tanPlayer, territoryData.getDescription()),
                         Lang.GUI_GENERIC_CLICK_TO_MODIFY.get()
                 )
                 .setAction(action -> {
