@@ -68,6 +68,7 @@ public class PropertySignListener implements Listener {
 
     }
 
+    //TODO : switch to new system
     private boolean playerEmbargoWithTown(Player player, Block clickedBlock) {
         ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(clickedBlock.getChunk());
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);

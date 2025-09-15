@@ -54,6 +54,8 @@ public class Constants {
     private static int maxPropertySignMargin;
 
     //Wars
+    private static Map<TownRelation, RelationConstant> relationsConstants;
+
     private static Map<TownRelation, Boolean> canPvpHappenWithRelation;
     private static long attackDuration;
     private static List<String> blacklistedCommandsDuringAttacks;
@@ -118,6 +120,18 @@ public class Constants {
         maxPropertySignMargin = config.getInt("maxPropertyMargin", 3);
 
         //Attacks
+
+        relationsConstants = new EnumMap<>(TownRelation.class);
+        ConfigurationSection relationsSection = config.getConfigurationSection("relationConstants");
+        if(relationsSection != null){
+            for(TownRelation relation : TownRelation.values()){
+                ConfigurationSection relationSection = relationsSection.getConfigurationSection(relation.name());
+                if(relationSection != null){
+                    relationsConstants.put(relation, new RelationConstant(relationSection));
+                }
+            }
+        }
+
         canPvpHappenWithRelation = new EnumMap<>(TownRelation.class);
         ConfigurationSection section = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getConfigurationSection("enablePvpWhenRelationIs");
         if(section != null){

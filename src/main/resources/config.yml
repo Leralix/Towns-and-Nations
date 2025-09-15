@@ -136,6 +136,53 @@ TownMaxLevel: 10
 ##      Relations     ##
 ########################
 
+#Sets the number of hours of a truce
+TRUCE_HOUR_DURATION: 48
+
+# enablePvP :           If true, two players with the relation can hurt each-other (check only apply to hit and arrow)
+# haveTruce :           If true, a relation cannot go below NEUTRAL for TRUCE_HOUR_DURATION hours
+# canInteractWithProperty        If true, a player can buy or rent property in another town. This is not retroactive.
+# canAccessTerritory :  If false, a player will not be able to navigate inside the territory claims.
+#                       This does not apply during attacks.
+# blockedCommands       A list of command that cannot be cast by a player if another player is selected.
+#                       Eg : /tpa %PLAYER% will disable /tpa only if aimed at a player under embargo
+relationConstants:
+  SELF: #Player is in the same town
+    enablePvP: true
+    canInteractWithProperty: true
+    canAccessTerritory: true
+    blockedCommands: [ ]
+  ALLIANCE:
+    enablePvP: true
+    haveTruce: true
+    canInteractWithProperty: true
+    canAccessTerritory: true
+    blockedCommands: [ ]
+  NON_AGGRESSION:
+    enablePvP: true
+    haveTruce: true
+    canInteractWithProperty: true
+    canAccessTerritory: true
+    blockedCommands: [ ]
+  NEUTRAL: #Default relation between two territories
+    enablePvP: true
+    haveTruce: false
+    canInteractWithProperty: true
+    canAccessTerritory: true
+    blockedCommands: [ ]
+  EMBARGO:
+    enablePvP: true
+    haveTruce: false
+    canInteractWithProperty: false
+    canAccessTerritory: true
+    blockedCommands: [ "/tpa %PLAYER%", "/tan pay %PLAYER%", "/pay %PLAYER%"]
+  WAR:
+    enablePvP: true
+    haveTruce: false
+    canInteractWithProperty: false
+    canAccessTerritory: true
+    blockedCommands: [ "/tpa %PLAYER%", "/tan pay %PLAYER%", "/pay %PLAYER%"]
+
 # Enable PVP between player whose towns share a certain relation
 # If a player have no town -> Neutral
 # Default value -> true
