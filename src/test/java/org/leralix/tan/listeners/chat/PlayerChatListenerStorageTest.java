@@ -4,7 +4,8 @@ import org.bukkit.entity.Player;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -35,6 +36,9 @@ class PlayerChatListenerStorageTest extends BasicTest {
         assertFalse(PlayerChatListenerStorage.contains(player));
     }
 
+    /**
+     * Assert that a failed chat message will keep the player registered to look to his next message.
+     */
     @Test
     void messageError(){
 
@@ -45,6 +49,6 @@ class PlayerChatListenerStorageTest extends BasicTest {
 
         PlayerChatListenerStorage.execute(player, "");
 
-        assertFalse(PlayerChatListenerStorage.contains(player));
+        assertTrue(PlayerChatListenerStorage.contains(player));
     }
 }

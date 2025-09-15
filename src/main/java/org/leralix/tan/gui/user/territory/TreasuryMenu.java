@@ -52,7 +52,7 @@ public class TreasuryMenu extends BasicGui {
     protected GuiItem getBudgetIcon(){
         List<String> description = new ArrayList<>();
         description.add(Lang.GUI_TREASURY_STORAGE_DESC1.get(tanPlayer, territoryData.getBalance()));
-        description.addAll(budget.createLore());
+        description.addAll(budget.createLore(tanPlayer.getLang()));
 
         return iconManager.get(IconKey.BUDGET_ICON)
                 .setName(Lang.GUI_TREASURY_STORAGE.get(tanPlayer))
