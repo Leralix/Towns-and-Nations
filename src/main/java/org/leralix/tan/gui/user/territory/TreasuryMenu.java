@@ -33,7 +33,7 @@ public class TreasuryMenu extends BasicGui {
 
     @Override
     public void open() {
-        budget.createGui(gui, player);
+        budget.createGui(gui, player, langType);
 
         gui.setItem(1, 5, getBudgetIcon());
         gui.getFiller().fillTop(GuiUtil.getUnnamedItem(Material.YELLOW_STAINED_GLASS_PANE));

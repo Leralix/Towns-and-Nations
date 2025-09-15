@@ -8,6 +8,7 @@ import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.user.territory.EconomicHistoryMenu;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.StringUtil;
 
@@ -25,16 +26,16 @@ public class ChunkUpkeepLine extends ProfitLine {
     }
 
     @Override
-    public String getLine() {
-        return Lang.TERRITORY_UPKEEP_LINE.get(StringUtil.getColoredMoney(getMoney()));
+    public String getLine(LangType lang) {
+        return Lang.TERRITORY_UPKEEP_LINE.get(lang, StringUtil.getColoredMoney(getMoney()));
     }
 
     @Override
-    public void addItems(Gui gui, Player player) {
-        ItemStack chunkSpending = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=",
-                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.get(StringUtil.getColoredMoney(getMoney())),
-                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(StringUtil.getColoredMoney(-territoryData.getChunkUpkeepCost())),
-                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(territoryData.getNumberOfClaimedChunk()));
+    public void addItems(Gui gui, Player player, LangType lang) {
+        ItemStack chunkSpending = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(lang), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=",
+                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.get(lang, StringUtil.getColoredMoney(getMoney())),
+                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(lang, StringUtil.getColoredMoney(-territoryData.getChunkUpkeepCost())),
+                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(lang, territoryData.getNumberOfClaimedChunk()));
         GuiItem chunkSpendingItem = new GuiItem(chunkSpending, event ->
                 new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.CHUNK_SPENDING)
         );

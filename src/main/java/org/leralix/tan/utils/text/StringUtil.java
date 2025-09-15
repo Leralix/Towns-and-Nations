@@ -44,12 +44,13 @@ public class StringUtil {
 
     public static String getColoredMoney(double money){
         String moneyChar = EconomyUtil.getMoneyIcon();
+        String formatedMoney = formatMoney(money);
         if(money > 0){
-            return "§a+" + formatMoney(money) + moneyChar;
+            return "§a+" + formatedMoney + moneyChar;
         }else if(money < 0){
-            return "§c" + formatMoney(money) + moneyChar;
+            return "§c" + formatedMoney + moneyChar;
         }
-        return "§7" + formatMoney(money) + moneyChar;
+        return "§7" + formatedMoney + moneyChar;
     }
 
     public static String formatMoney(double amount) {

@@ -14,6 +14,7 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.user.territory.EconomicHistoryMenu;
 import org.leralix.tan.gui.user.territory.TreasuryMenu;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.treasury.SetTerritoryTax;
 import org.leralix.tan.utils.deprecated.HeadUtils;
@@ -42,38 +43,38 @@ public class SubjectTaxLine extends ProfitLine {
     }
 
     @Override
-    public String getLine() {
+    public String getLine(LangType lang) {
         if (missingTaxes > 0)
-            return Lang.PLAYER_TAX_MISSING_LINE.get(StringUtil.getColoredMoney(getMoney()), missingTaxes);
+            return Lang.PLAYER_TAX_MISSING_LINE.get(lang, StringUtil.getColoredMoney(getMoney()), missingTaxes);
         else
-            return Lang.PLAYER_TAX_LINE.get(StringUtil.getColoredMoney(getMoney()));
+            return Lang.PLAYER_TAX_LINE.get(lang, StringUtil.getColoredMoney(getMoney()));
     }
 
     @Override
-    public void addItems(Gui gui, Player player) {
+    public void addItems(Gui gui, Player player, LangType lang) {
         double taxRate = territoryData.getTax();
 
-        ItemStack lowerTax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_LOWER_TAX.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=",
-                Lang.GUI_DECREASE_1_DESC.get(),
-                Lang.GUI_DECREASE_10_DESC.get());
-        ItemStack increaseTax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_INCREASE_TAX.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19",
-                Lang.GUI_INCREASE_1_DESC.get(),
-                Lang.GUI_INCREASE_10_DESC.get());
-        ItemStack tax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_FLAT_TAX.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk4ZGY0MmY0NzdmMjEzZmY1ZTlkN2ZhNWE0Y2M0YTY5ZjIwZDljZWYyYjkwYzRhZTRmMjliZDE3Mjg3YjUifX19",
-                Lang.GUI_TREASURY_FLAT_TAX_DESC1.get(taxRate),
-                Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get(),
-                Lang.RIGHT_CLICK_TO_SET_TAX.get());
+        ItemStack lowerTax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_LOWER_TAX.get(lang), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=",
+                Lang.GUI_DECREASE_1_DESC.get(lang),
+                Lang.GUI_DECREASE_10_DESC.get(lang));
+        ItemStack increaseTax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_INCREASE_TAX.get(lang), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19",
+                Lang.GUI_INCREASE_1_DESC.get(lang),
+                Lang.GUI_INCREASE_10_DESC.get(lang));
+        ItemStack tax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_FLAT_TAX.get(lang), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk4ZGY0MmY0NzdmMjEzZmY1ZTlkN2ZhNWE0Y2M0YTY5ZjIwZDljZWYyYjkwYzRhZTRmMjliZDE3Mjg3YjUifX19",
+                Lang.GUI_TREASURY_FLAT_TAX_DESC1.get(lang, taxRate),
+                Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get(lang),
+                Lang.RIGHT_CLICK_TO_SET_TAX.get(lang));
 
 
         GuiItem lowerTaxButton = ItemBuilder.from(lowerTax).asGuiItem(event -> {
             event.setCancelled(true);
             if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_TAXES)) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(lang));
                 return;
             }
             int amountToRemove = event.isShiftClick() && taxRate > 10 ? 10 : 1;
             if (taxRate < 1) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get(lang));
                 return;
             }
             SoundUtil.playSound(player, SoundEnum.REMOVE);
@@ -84,7 +85,7 @@ public class SubjectTaxLine extends ProfitLine {
 
         GuiItem increaseTaxButton = ItemBuilder.from(increaseTax).asGuiItem(event -> {
             if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_TAXES)) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(lang));
                 return;
             }
             event.setCancelled(true);
@@ -98,14 +99,14 @@ public class SubjectTaxLine extends ProfitLine {
 
         GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
             if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_TAXES)) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(lang));
                 return;
             }
             event.setCancelled(true);
             if (event.isLeftClick()) {
                 new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.SUBJECT_TAX);
             } else if (event.isRightClick()) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_SET_TAX_IN_CHAT.get());
+                player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
                 PlayerChatListenerStorage.register(player, new SetTerritoryTax(territoryData, p -> new TreasuryMenu(player, territoryData)));
                 player.closeInventory();
             }

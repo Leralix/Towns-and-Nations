@@ -2,6 +2,7 @@ package org.leralix.tan.dataclass.territory.economy;
 
 import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.lang.Lang;
 
@@ -23,14 +24,14 @@ public class Budget {
     }
 
 
-    public List<String> createLore() {
+    public List<String> createLore(LangType langType) {
         double total = 0;
         LinkedList<String> lore = new LinkedList<>();
 
         Collections.sort(profitList);
         for (ProfitLine profitLine : profitList) {
             if (profitLine.isRecurrent()) {
-                lore.add(profitLine.getLine());
+                lore.add(profitLine.getLine(langType));
                 total += profitLine.getMoney();
             }
         }
@@ -38,9 +39,9 @@ public class Budget {
         return lore;
     }
 
-    public void createGui(Gui gui, Player player) {
+    public void createGui(Gui gui, Player player, LangType langType) {
         for (ProfitLine profitLine : profitList) {
-            profitLine.addItems(gui, player);
+            profitLine.addItems(gui, player, langType);
         }
     }
 }
