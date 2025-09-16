@@ -273,6 +273,25 @@ public abstract class TerritoryData {
         return getDiplomacyProposals().values();
     }
 
+    /**
+     * Get the worst relation a territory may have with a all the territory a player is part of (town, region...)
+     * @param player    The player to check
+     * @return          The worst relation
+     */
+    public TownRelation getWorstRelationWith(ITanPlayer player) {
+        TownRelation worstRelation = null;
+        for(TerritoryData territoryData : player.getAllTerritoriesPlayerIsIn()){
+            TownRelation actualRelation = getRelationWith(territoryData);
+            if(worstRelation == null || worstRelation.isSuperiorTo(actualRelation)){
+                worstRelation = actualRelation;
+            }
+        }
+        if(worstRelation == null){
+            return TownRelation.NEUTRAL;
+        }
+        return worstRelation;
+    }
+
     public TownRelation getRelationWith(TerritoryData territoryData) {
         return getRelationWith(territoryData.getID());
     }

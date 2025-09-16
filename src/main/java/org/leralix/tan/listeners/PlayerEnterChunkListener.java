@@ -10,66 +10,76 @@ import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.chunk.WildernessChunk;
 import org.leralix.tan.enums.ChunkType;
+import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.PlayerAutoClaimStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class PlayerEnterChunkListener implements Listener {
 
     private final boolean displayTerritoryNamewithColor;
+    private final NewClaimedChunkStorage newClaimedChunkStorage;
+    private final PlayerDataStorage playerDataStorage;
 
     public PlayerEnterChunkListener(){
         displayTerritoryNamewithColor = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("displayTerritoryNameWithOwnColor");
+        newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
+        playerDataStorage = PlayerDataStorage.getInstance();
     }
 
     @EventHandler
-    public void playerMoveEvent(final @NotNull PlayerMoveEvent e){
+    public void playerMoveEvent(final @NotNull PlayerMoveEvent event){
 
-        Chunk currentChunk = e.getFrom().getChunk();
-        if(e.getTo() == null){
-            return;
-        }
-        Chunk nextChunk = e.getTo().getChunk();
+        Chunk currentChunk = event.getFrom().getChunk();
+        Chunk nextChunk = event.getTo().getChunk();
 
         if(currentChunk.equals(nextChunk)){
             return;
         }
 
-        Player player = e.getPlayer();
-
-
-
-
+        Player player = event.getPlayer();
 
         //If both chunks are not claimed, no need to display anything
-        if(!NewClaimedChunkStorage.getInstance().isChunkClaimed(currentChunk) &&
-                !NewClaimedChunkStorage.getInstance().isChunkClaimed(nextChunk)){
+        if(!newClaimedChunkStorage.isChunkClaimed(currentChunk) &&
+                !newClaimedChunkStorage.isChunkClaimed(nextChunk)){
 
-            if(PlayerAutoClaimStorage.containsPlayer(e.getPlayer())){
-                autoClaimChunk(e, nextChunk, player);
+            if(PlayerAutoClaimStorage.containsPlayer(event.getPlayer())){
+                autoClaimChunk(event, nextChunk, player);
             }
             return;
         }
 
 
-        ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.getInstance().get(currentChunk);
-        ClaimedChunk2 nextClaimedChunk = NewClaimedChunkStorage.getInstance().get(nextChunk);
+        ClaimedChunk2 currentClaimedChunk = newClaimedChunkStorage.get(currentChunk);
+        ClaimedChunk2 nextClaimedChunk = newClaimedChunkStorage.get(nextChunk);
 
         //Both chunks have the same owner, no need to change
         if(sameOwner(currentClaimedChunk,nextClaimedChunk)){
             return;
+        }
+        //If territory deny access to players with a certain relation.
+        if(nextClaimedChunk instanceof TerritoryChunk territoryChunk){
+            ITanPlayer tanPlayer = playerDataStorage.get(player);
+            TownRelation worstRelation = territoryChunk.getOwner().getWorstRelationWith(tanPlayer);
+            if(!Constants.getRelationConstants(worstRelation).canAccessTerritory()){
+                event.setCancelled(true);
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_CANNOT_ENTER_CHUNK_WITH_RELATION.get(player, territoryChunk.getOwner().getColoredName(), worstRelation.getColoredName()));
+                return;
+            }
         }
 
         nextClaimedChunk.playerEnterClaimedArea(player, displayTerritoryNamewithColor);
 
 
         if(nextClaimedChunk instanceof WildernessChunk &&
-                PlayerAutoClaimStorage.containsPlayer(e.getPlayer())){
-            autoClaimChunk(e, nextChunk, player);
+                PlayerAutoClaimStorage.containsPlayer(event.getPlayer())){
+            autoClaimChunk(event, nextChunk, player);
         }
     }
 
