@@ -15,12 +15,10 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
-import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -72,7 +70,7 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
             return false;
         }
         if(position2 == null){
-            int maxPropertySize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("maxPropertySize", 50000);
+            int maxPropertySize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MaxPropertySize", 50000);
 
             Vector3D vector3D = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
 
