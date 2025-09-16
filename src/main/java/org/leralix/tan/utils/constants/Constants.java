@@ -11,9 +11,7 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.war.legacy.GriefAllowed;
 
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Constants {
 
@@ -55,8 +53,8 @@ public class Constants {
 
     //Wars
     private static Map<TownRelation, RelationConstant> relationsConstants;
+    private static Set<String> allRelationBlacklistedCommands;
 
-    private static Map<TownRelation, Boolean> canPvpHappenWithRelation;
     private static long attackDuration;
     private static List<String> blacklistedCommandsDuringAttacks;
     private static int nbChunkToCaptureMax;
@@ -122,24 +120,18 @@ public class Constants {
         //Attacks
 
         relationsConstants = new EnumMap<>(TownRelation.class);
+        allRelationBlacklistedCommands = new HashSet<>();
         ConfigurationSection relationsSection = config.getConfigurationSection("relationConstants");
         if(relationsSection != null){
             for(TownRelation relation : TownRelation.values()){
-                ConfigurationSection relationSection = relationsSection.getConfigurationSection(relation.name());
+                ConfigurationSection relationSection = relationsSection.getConfigurationSection(relation.name().toLowerCase());
                 if(relationSection != null){
                     relationsConstants.put(relation, new RelationConstant(relationSection));
+                    allRelationBlacklistedCommands.addAll(relationSection.getStringList("blockedCommands"));
                 }
             }
         }
 
-        canPvpHappenWithRelation = new EnumMap<>(TownRelation.class);
-        ConfigurationSection section = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getConfigurationSection("enablePvpWhenRelationIs");
-        if(section != null){
-            for(TownRelation relation : TownRelation.values()){
-                Boolean authorized = section.getBoolean(relation.name());
-                canPvpHappenWithRelation.put(relation, authorized);
-            }
-        }
         attackDuration = config.getInt("WarDuration", 30);
         blacklistedCommandsDuringAttacks = config.getStringList("BlacklistedCommandsDuringAttacks");
         nbChunkToCaptureMax = config.getInt("MaximumChunkConquer", 0);
@@ -275,8 +267,12 @@ public class Constants {
         return allowTownTag;
     }
 
-    public static boolean canPvpHappenWithRelation(TownRelation relation){
-        return canPvpHappenWithRelation.getOrDefault(relation, true);
+    public static RelationConstant getRelationConstants(TownRelation relation){
+        return relationsConstants.getOrDefault(relation, relationsConstants.get(TownRelation.NEUTRAL));
+    }
+
+    public static Set<String> getAllRelationBlacklistedCommands() {
+        return allRelationBlacklistedCommands;
     }
 
     public static List<String> getPerPlayerEndCommands() {

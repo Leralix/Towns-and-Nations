@@ -36,10 +36,7 @@ import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class PropertyData {
     private final String ID;
@@ -323,14 +320,14 @@ public class PropertyData {
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), this::updateSign);
     }
 
-    public Block getSign() {
+    public Optional<Block> getSign() {
 
         World world = Bukkit.getWorld(signLocation.getWorldID());
         if(world == null) {
-            return null;
+            return Optional.empty();
         }
 
-        return world.getBlockAt(this.signLocation.getX(), this.signLocation.getY(), this.signLocation.getZ());
+        return Optional.of(world.getBlockAt(this.signLocation.getX(), this.signLocation.getY(), this.signLocation.getZ()));
     }
 
 

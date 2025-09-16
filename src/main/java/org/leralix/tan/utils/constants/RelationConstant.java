@@ -21,19 +21,19 @@ public class RelationConstant {
         this.blockedCommands = new HashSet<>(configurationSection.getStringList("blockedCommands"));
     }
 
-    public boolean isCanPvP() {
+    public boolean canPvP() {
         return canPvP;
     }
 
-    public boolean isHaveTruce() {
+    public boolean haveTruce() {
         return haveTruce;
     }
 
-    public boolean isCanInteractWithProperty() {
+    public boolean canInteractWithProperty() {
         return canInteractWithProperty;
     }
 
-    public boolean isCanAccessTerritory() {
+    public boolean canAccessTerritory() {
         return canAccessTerritory;
     }
 

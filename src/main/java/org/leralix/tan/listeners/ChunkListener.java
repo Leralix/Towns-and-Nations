@@ -340,7 +340,7 @@ public class ChunkListener implements Listener {
         ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().get(player2);
         TownRelation relation = tanPlayer.getRelationWithPlayer(tanPlayer2);
 
-        return Constants.canPvpHappenWithRelation(relation);
+        return Constants.getRelationConstants(relation).canPvP();
     }
 
     @EventHandler

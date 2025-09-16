@@ -22,6 +22,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.constants.Constants;
 
 public class PropertySignListener implements Listener {
     @EventHandler
@@ -68,13 +69,12 @@ public class PropertySignListener implements Listener {
 
     }
 
-    //TODO : switch to new system
     private boolean playerEmbargoWithTown(Player player, Block clickedBlock) {
         ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(clickedBlock.getChunk());
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         if(tanPlayer.hasTown() && claimedChunk2 instanceof TownClaimedChunk townClaimedChunk){
-            TownRelation townRelation = townClaimedChunk.getTown().getRelationWith(tanPlayer.getTown());
-            return townRelation == TownRelation.EMBARGO || townRelation == TownRelation.WAR;
+            TownRelation territoryRelation = townClaimedChunk.getTown().getRelationWith(tanPlayer.getTown());
+            return Constants.getRelationConstants(territoryRelation).canInteractWithProperty();
         }
         return false;
     }

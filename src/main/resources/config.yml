@@ -145,54 +145,47 @@ TRUCE_HOUR_DURATION: 48
 # canAccessTerritory :  If false, a player will not be able to navigate inside the territory claims.
 #                       This does not apply during attacks.
 # blockedCommands       A list of command that cannot be cast by a player if another player is selected.
-#                       Eg : /tpa %PLAYER% will disable /tpa only if aimed at a player under embargo
+#                       Eg : /tpa %PLAYER% will disable /tpa "playerName" only if aimed at a player under embargo
+#                       Every command that match the blacklisted part will be blocked (/tp %PLAYER% will block /tp notch 0 70 0)
+#                       Keywords :
+#                       - %PLAYER%  placeholder to get the player username. Mandatory or command will not be registered.
 relationConstants:
-  SELF: #Player is in the same town
+  self: #Player is in the same town
     enablePvP: true
     canInteractWithProperty: true
     canAccessTerritory: true
     blockedCommands: [ ]
-  ALLIANCE:
-    enablePvP: true
-    haveTruce: true
-    canInteractWithProperty: true
-    canAccessTerritory: true
-    blockedCommands: [ ]
-  NON_AGGRESSION:
+  alliance:
     enablePvP: true
     haveTruce: true
     canInteractWithProperty: true
     canAccessTerritory: true
     blockedCommands: [ ]
-  NEUTRAL: #Default relation between two territories
+  non_aggression:
+    enablePvP: true
+    haveTruce: true
+    canInteractWithProperty: true
+    canAccessTerritory: true
+    blockedCommands: [ ]
+  neutral: #Default relation between two territories
     enablePvP: true
     haveTruce: false
     canInteractWithProperty: true
     canAccessTerritory: true
     blockedCommands: [ ]
-  EMBARGO:
+  embargo:
     enablePvP: true
     haveTruce: false
     canInteractWithProperty: false
     canAccessTerritory: true
-    blockedCommands: [ "/tpa %PLAYER%", "/tan pay %PLAYER%", "/pay %PLAYER%"]
-  WAR:
+    blockedCommands: [ "/tpa %PLAYER%", "/tan pay %PLAYER%", "/pay %PLAYER% "]
+  war:
     enablePvP: true
     haveTruce: false
     canInteractWithProperty: false
     canAccessTerritory: true
     blockedCommands: [ "/tpa %PLAYER%", "/tan pay %PLAYER%", "/pay %PLAYER%"]
 
-# Enable PVP between player whose towns share a certain relation
-# If a player have no town -> Neutral
-# Default value -> true
-enablePvpWhenRelationIs:
-  SELF: true # Same town
-  ALLIANCE: true
-  NON_AGGRESSION: true
-  NEUTRAL: true
-  EMBARGO: true
-  WAR: true
 
 ########################
 ##       Events       ##

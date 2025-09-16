@@ -18,6 +18,9 @@ import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.war.fort.Fort;
 
+import java.util.Iterator;
+import java.util.Optional;
+
 
 /**
  * This class is used to add custom NBT tags to items
@@ -93,13 +96,21 @@ public class TANCustomNBT {
      */
     public static void setSignData(){
         for( TownData townData : TownDataStorage.getInstance().getAll().values() ){
-            for( PropertyData propertyData : townData.getPropertyDataMap().values() ){
-                Block block = propertyData.getSign();
-                Location blockBeneathLocation = propertyData.getSign().getLocation().add(0,-1,0);
-                Block blockBeneath = blockBeneathLocation.getWorld().getBlockAt(blockBeneathLocation);
+            Iterator<PropertyData> iterator = townData.getPropertyDataMap().values().iterator();
+            while (iterator.hasNext()) {
+                PropertyData propertyData = iterator.next();
 
-                setBockMetaData(block, "propertySign", propertyData.getTotalID());
-                setBockMetaData(blockBeneath, "propertySign", propertyData.getTotalID());
+                Optional<Block> optBlock = propertyData.getSign();
+                if (optBlock.isPresent()) {
+                    Block block = optBlock.get();
+                    Location blockBeneathLocation = block.getLocation().add(0,-1,0);
+                    Block blockBeneath = blockBeneathLocation.getWorld().getBlockAt(blockBeneathLocation);
+
+                    setBockMetaData(block, "propertySign", propertyData.getTotalID());
+                    setBockMetaData(blockBeneath, "propertySign", propertyData.getTotalID());
+                } else {
+                    iterator.remove();
+                }
             }
         }
     }
