@@ -12,8 +12,8 @@ public class ChunkPermission {
     private RelationPermission overallPermission;
     private final List<String> specificPlayerPermissions;
 
-    public ChunkPermission() {
-        this.overallPermission = RelationPermission.TOWN;
+    public ChunkPermission(RelationPermission defaultRelation) {
+        this.overallPermission = defaultRelation;
         this.specificPlayerPermissions = new ArrayList<>();
     }
 

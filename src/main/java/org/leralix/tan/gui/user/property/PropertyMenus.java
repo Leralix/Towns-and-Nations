@@ -162,12 +162,26 @@ public abstract class PropertyMenus extends BasicGui {
     }
 
     protected GuiItem getAuthorizedPlayersButton() {
+
+        boolean isRentedAndPlayerIsNotRenter = propertyData.isRented() && !propertyData.getRenter().equals(tanPlayer);
+
+
+
         return iconManager.get(IconKey.AUTHORIZED_PLAYERS_ICON)
-                .setName(Lang.GUI_PROPERTY_PLAYER_LIST.get(tanPlayer))
+                .setName(Lang.GUI_PROPERTY_PLAYER_LIST.get(langType))
                 .setDescription(
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get()
+                        isRentedAndPlayerIsNotRenter ?
+                                Lang.CANNOT_MANAGE_AUTHORIZED_PLAYER_IF_PROPERTY_IS_RENTED.get(langType) :
+                                Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType)
                 )
-                .setAction(event -> new PropertyChunkSettingsMenu(player, propertyData, this))
+                .setAction(event -> {
+                    if(isRentedAndPlayerIsNotRenter){
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.CANNOT_MANAGE_AUTHORIZED_PLAYER_IF_PROPERTY_IS_RENTED.get(langType));
+                        return;
+                    }
+                    new PropertyChunkSettingsMenu(player, propertyData, this);
+
+                })
                 .asGuiItem(player);
     }
 

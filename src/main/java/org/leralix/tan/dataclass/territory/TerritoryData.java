@@ -116,6 +116,8 @@ public abstract class TerritoryData {
         diplomacyProposals = new HashMap<>();
         overlordsProposals = new ArrayList<>();
 
+        chunkSettings = new ClaimedChunkSettings();
+
         color = StringUtil.randomColor();
     }
 
@@ -224,7 +226,8 @@ public abstract class TerritoryData {
     public abstract Collection<ITanPlayer> getITanPlayerList();
 
     public ClaimedChunkSettings getChunkSettings() {
-        if (chunkSettings == null) chunkSettings = new ClaimedChunkSettings();
+        if (chunkSettings == null)
+            chunkSettings = new ClaimedChunkSettings();
         return chunkSettings;
     }
 

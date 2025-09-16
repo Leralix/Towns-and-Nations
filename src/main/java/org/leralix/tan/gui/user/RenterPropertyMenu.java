@@ -28,7 +28,8 @@ public class RenterPropertyMenu extends PropertyMenus {
         gui.setItem(1,5, getPropertyIcon());
         gui.getFiller().fillTop(GuiUtil.getUnnamedItem(Material.BROWN_STAINED_GLASS_PANE));
 
-        gui.setItem(2, 5, getStopRentPropertyButton());
+        gui.setItem(2, 4, getAuthorizedPlayersButton());
+        gui.setItem(2, 6, getStopRentPropertyButton());
 
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory));
         gui.open(player);

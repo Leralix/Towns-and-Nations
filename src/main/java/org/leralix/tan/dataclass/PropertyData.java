@@ -24,6 +24,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
+import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
@@ -72,7 +73,7 @@ public class PropertyData {
         this.rentingPlayerID = null;
         this.rentPrice = 0;
 
-        this.permissionManager = new PermissionManager();
+        this.permissionManager = new PermissionManager(RelationPermission.SELECTED_ONLY);
     }
 
     public Vector3D getFirstCorner() {
@@ -137,7 +138,7 @@ public class PropertyData {
         if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("payRentAtStart", false))
             payRent();
         this.updateSign();
-        getPermissionManager().clear();
+        getPermissionManager().setAll(RelationPermission.SELECTED_ONLY);
     }
 
     public boolean isRented() {
@@ -403,7 +404,7 @@ public class PropertyData {
 
         this.isForSale = false;
         updateSign();
-        getPermissionManager().clear();
+        getPermissionManager().setAll(RelationPermission.SELECTED_ONLY);
     }
 
     public boolean isPlayerAllowed(ChunkPermissionType action, ITanPlayer tanPlayer) {
@@ -433,7 +434,7 @@ public class PropertyData {
         if (rentBack)
             isForRent = true;
         updateSign();
-        getPermissionManager().clear();
+        getPermissionManager().setAll(RelationPermission.SELECTED_ONLY);
     }
 
     public boolean canPlayerManageInvites(String id) {
@@ -456,18 +457,14 @@ public class PropertyData {
 
     public PermissionManager getPermissionManager() {
         if (permissionManager == null) {
-            permissionManager = new PermissionManager();
+            permissionManager = new PermissionManager(RelationPermission.SELECTED_ONLY);
         }
         return permissionManager;
     }
 
     public void setSignData() {
         TANCustomNBT.setBockMetaData(signLocation.getLocation().getBlock(), "propertySign", getTotalID());
-
-        //TODO : Check only because pre 0.15.0 plugin did not register the sign location
-        if(supportLocation != null){
-            TANCustomNBT.setBockMetaData(supportLocation.getLocation().getBlock(), "propertySign", getTotalID());
-        }
+        TANCustomNBT.setBockMetaData(supportLocation.getLocation().getBlock(), "propertySign", getTotalID());
     }
 
     public void createPropertySign(Player player, Block block, BlockFace blockFace) {

@@ -36,6 +36,7 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
     private final ITanPlayer tanPlayer;
     private Vector3D position1;
     private Vector3D position2;
+    private double cost;
 
     public CreatePropertyEvent(Player player){
         this.player = player;
@@ -54,7 +55,7 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
             return false;
 
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(block.getChunk());
-        if (claimedChunk instanceof TownClaimedChunk townClaimedChunk && townClaimedChunk.getTown().isPlayerIn(player)) {
+        if (!(claimedChunk instanceof TownClaimedChunk townClaimedChunk && townClaimedChunk.getTown().isPlayerIn(player))) {
             player.sendMessage(Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(langType));
             return false;
         }
@@ -80,14 +81,11 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
             }
             position2 = vector3D;
 
-            double totalCost = NumberUtil.roundWithDigits(getTotalCost());
-            if(tanPlayer.getBalance() < totalCost){
-                player.sendMessage(getTANString() + Lang.PLAYER_PROPERTY_TOO_BIG.get(maxPropertySize));
+            cost = NumberUtil.roundWithDigits(getTotalCost());
+            if(tanPlayer.getBalance() < cost){
+                player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(cost - tanPlayer.getBalance()));
                 return true;
             }
-
-            tanPlayer.removeFromBalance(totalCost);
-            townData.addToBalance(totalCost);
 
             player.sendMessage(getTANString() + Lang.PLAYER_SECOND_POINT_SET.get(vector3D));
             player.sendMessage(getTANString() + Lang.PLAYER_PLACE_SIGN.get());
@@ -102,7 +100,8 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
 
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
         player.sendMessage(getTANString() + Lang.PLAYER_PROPERTY_CREATED.get());
-
+        tanPlayer.removeFromBalance(cost);
+        townData.addToBalance(cost);
 
         PropertyData property = townData.registerNewProperty(position1,position2, tanPlayer);
         new PlayerPropertyManager(player, property, HumanEntity::closeInventory);

@@ -3,6 +3,7 @@ package org.leralix.tan.storage;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
+import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 
 import java.util.EnumMap;
@@ -12,34 +13,27 @@ public class PermissionManager {
     private final EnumMap<ChunkPermissionType, ChunkPermission> chunkPermissions;
 
 
-    public PermissionManager() {
+    public PermissionManager(RelationPermission relationPermission) {
         this.chunkPermissions = new EnumMap<>(ChunkPermissionType.class);
-        reset();
+        setAll(relationPermission);
     }
 
-    public void reset() {
+    public void setAll(RelationPermission relationPermission) {
         this.chunkPermissions.clear();
         for (ChunkPermissionType type : ChunkPermissionType.values()) {
-            this.chunkPermissions.put(type, new ChunkPermission());
+            chunkPermissions.put(type, new ChunkPermission(relationPermission));
         }
     }
 
     public boolean canPlayerDo(TerritoryData territoryToCheck, ChunkPermissionType action, ITanPlayer tanPlayer) {
-        return chunkPermissions.getOrDefault(action, new ChunkPermission())
-                .isAllowed(territoryToCheck, tanPlayer);
+        return get(action).isAllowed(territoryToCheck, tanPlayer);
     }
 
     public ChunkPermission get(ChunkPermissionType type) {
-        return chunkPermissions.getOrDefault(type, new ChunkPermission());
+        return chunkPermissions.getOrDefault(type, new ChunkPermission(RelationPermission.TOWN));
     }
 
     public void nextPermission(ChunkPermissionType type) {
         get(type).nextPermission();
-    }
-
-    public void clear() {
-        for (ChunkPermissionType type : ChunkPermissionType.values()) {
-            chunkPermissions.put(type, new ChunkPermission());
-        }
     }
 }

@@ -43,7 +43,7 @@ public class PropertySignListener implements Listener {
                         PropertyData propertyData = TownDataStorage.getInstance().get(ids[0]).getProperty(ids[1]);
                         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
-                            if(playerEmbargoWithTown(player, clickedBlock)){
+                            if(!canPlayerOpenMenu(player, clickedBlock)){
                                 player.sendMessage(Lang.NO_TRADE_ALLOWED_EMBARGO.get());
                                 return;
                             }
@@ -69,11 +69,11 @@ public class PropertySignListener implements Listener {
 
     }
 
-    private boolean playerEmbargoWithTown(Player player, Block clickedBlock) {
+    private boolean canPlayerOpenMenu(Player player, Block clickedBlock) {
         ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(clickedBlock.getChunk());
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         if(tanPlayer.hasTown() && claimedChunk2 instanceof TownClaimedChunk townClaimedChunk){
-            TownRelation territoryRelation = townClaimedChunk.getTown().getRelationWith(tanPlayer.getTown());
+            TownRelation territoryRelation = townClaimedChunk.getTown().getWorstRelationWith(tanPlayer);
             return Constants.getRelationConstants(territoryRelation).canInteractWithProperty();
         }
         return false;
