@@ -89,9 +89,8 @@ public class PayCommand extends PlayerSubCommand {
         }
         EconomyUtil.removeFromBalance(player,amount);
         EconomyUtil.addFromBalance(receiver,amount);
-        String moneyIcon = EconomyUtil.getMoneyIcon();
-        player.sendMessage(TanChatUtils.getTANString() + Lang.PAY_CONFIRMED_SENDER.get(amount + moneyIcon,receiver.getName()));
-        receiver.sendMessage(TanChatUtils.getTANString() + Lang.PAY_CONFIRMED_RECEIVER.get(amount + moneyIcon,player.getName()));
+        player.sendMessage(TanChatUtils.getTANString() + Lang.PAY_CONFIRMED_SENDER.get(amount,receiver.getName()));
+        receiver.sendMessage(TanChatUtils.getTANString() + Lang.PAY_CONFIRMED_RECEIVER.get(amount,player.getName()));
     }
 
 
