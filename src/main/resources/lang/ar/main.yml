@@ -1,1 +1,10 @@
+language:
+  WELCOME: "مرحباً"
+  NEWSLETTER_STRING: "النشرة الإخبارية"
+  #Common errors
+  PLAYER_NO_TOWN: "أنت لست جزءا من المدينة"
+  PLAYER_NO_REGION: "أنت لست جزءًا من منطقة"
+  TOWN_NO_REGION: "مدينتك ليست جزءا من سوزرية"
+  LEADER_CANNOT_QUIT_TOWN: "لا يمكن للزعيم أن يتخلى عن المدينة"
+  TOWN_ALREADY_HAVE_OVERLORD: "هذه المدينة لديها بالفعل سوزرية"
 

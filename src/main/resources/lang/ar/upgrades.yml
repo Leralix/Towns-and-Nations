@@ -1,0 +1,25 @@
+#Upgrades.yml is used to define the names of upgrades and their benefits in the game.
+#To add a name to a new upgrade, add it to the customLang section.
+customLang:
+  #Names
+  CITY_HALL: "قاعة المدينة"
+  BARRACKS: "الثكنات"
+  ADMINISTRATION: "إداري"
+  WATCHTOWER: "برج المراقبة"
+  PORTAL: "البوابة"
+  GUARDS: "حراس"
+  COUNCIL_CHAMBER: "غرف المجلس"
+  NOTARY_HOUSE: ""
+  EXTRACTION_TEAM: "فريق الاستخراج"
+  BETTER_TOOLS: "أدوات أفضل"
+  #Prerequisites
+  TOWN_LEVEL: "مستوى قاعة المدينة"
+  #Benefits
+  PLAYER_CAP: "حد اللاعب"
+  CHUNK_CAP: "حد القطعة"
+  PROPERTY_CAP: "حد الملكية / الحد الأقصى"
+  UNLOCK_TOWN_SPAWN: "فتح المدينة"
+  UNLOCK_MOB_BAN: "فتح التحكم في الغوغاء"
+  UNLOCK_REGION_CREATION: "فتح إنشاء المنطقة"
+  MAX_LANDMARKS: "فتح علم المنطقة"
+  LANDMARK_BONUS: "مكافآت تاريخية"

@@ -207,7 +207,6 @@ language:
   PLAYER_NOT_ENOUGH_MONEY: "§cNon hai abbastanza soldi per eseguire quest'azione"
   LEADER_NOT_ONLINE: "§cIl capo città non è online"
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cNon hai abbastanza soldi. Hai bisogno di {0} in più"
-  PLAYER_PAY_AT_EMBARGO_ERROR: "§cNon puoi pagare un giocatore in una città sotto embargo o in guerra con la tua città"
   TOWN_NOT_ENOUGH_MONEY: "§cLa città non ha abbastanza denaro per eseguire questa azione"
   TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cLa città non ha abbastanza soldi per eseguire questa azione. Ha bisogno di {0}{MONEY_CHAR} più"
   REGION_NOT_ENOUGH_MONEY_EXTENDED: "§cLa regione non ha abbastanza soldi per eseguire questa azione. Ha bisogno di {0}{MONEY_CHAR} più"

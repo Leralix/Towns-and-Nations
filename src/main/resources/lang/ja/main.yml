@@ -1,1 +1,12 @@
+language:
+  #Common errors
+  PLAYER_NO_TOWN: "§cあなたは街を持っていません"
+  PLAYER_NO_REGION: "§cあなたは地域を持っていません"
+  VALUE_EXCEED_MAXIMUM_ERROR: "§cこの値は許可された最大値({0})を超えています"
+  TOWN_NO_REGION: "§cあなたの町は地域に属していません"
+  PLAYER_NOT_LEADER_OF_REGION: "§cこのアクションを実行するには地域のリーダーである必要があります"
+  LEADER_CANNOT_QUIT_TOWN: "§cリーダーは町を辞めることができません"
+  TOWN_ALREADY_HAVE_OVERLORD: "§cこの町には既に支配者がいます"
+  PLAYER_NO_PERMISSION: "このコマンドを実行する権限がありません"
+  PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cあなたはあなたと同等以上のランクでこのアクションを実行する権限がありません"
 
