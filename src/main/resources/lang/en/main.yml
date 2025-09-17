@@ -16,6 +16,7 @@ language:
   PLAYER_NO_PERMISSION: "§cYou do not have permission to execute this command"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cYou do not have permission to perform this action on a rank higher or equal to you"
   CANNOT_CAST_COMMAND_DURING_ATTACK: "§cYou cannot use this command during an attack"
+  CANNOT_CAST_COMMAND_ON_PLAYER_WITH_SPECIFIC_RELATION: "§cYou cannot use this command on §e{0}§c because you share a relation : {1}"
   PLAYER_ACTION_NO_PERMISSION: "§cYou do not have permission to perform this action"
   PLAYER_NOT_FOUND: "§cInvalid name, or the player is not connected"
   TOWN_NOT_ENOUGH_LEVEL: "§cYour town does not have the required level with: §a{0}"

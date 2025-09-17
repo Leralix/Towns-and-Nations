@@ -6,8 +6,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Set;
 
@@ -43,24 +46,22 @@ public class CommandBlocker implements Listener {
             boolean nextCommand = false;
             String selectedPlayer = null;
             String[] blackListedParts = blackListedCommand.split(" ");
-
             if(blackListedParts.length > inputParts.length){
                 continue;
             }
+            for(int i = 0; i < blackListedParts.length; i++){
 
-            for(int i = 0; i < inputParts.length; i++){
-                 if(blackListedParts[i].equals("%PLAYER%")){
+                if(blackListedParts[i].equals("%PLAYER%")){
                     selectedPlayer = inputParts[i];
                 }
-                else if(!inputParts[i].equals(blackListedParts[i])){
+                else if(!blackListedParts[i].equals(inputParts[i])){
                     nextCommand = true;
+                    break;
                 }
             }
-
             if(nextCommand || selectedPlayer == null){
                 continue;
             }
-
             Player receiver = Bukkit.getPlayer(selectedPlayer);
             if(receiver == null){
                 continue;
@@ -68,8 +69,9 @@ public class CommandBlocker implements Listener {
 
             ITanPlayer senderData = PlayerDataStorage.getInstance().get(sender);
             ITanPlayer receiverData = PlayerDataStorage.getInstance().get(receiver);
-
-            if(Constants.getRelationConstants(senderData.getRelationWithPlayer(receiverData)).getBlockedCommands().contains(blackListedCommand)){
+            TownRelation worstRelationWithPlayer = senderData.getRelationWithPlayer(receiverData);
+            if(Constants.getRelationConstants(worstRelationWithPlayer).getBlockedCommands().contains(blackListedCommand)){
+                sender.sendMessage(TanChatUtils.getTANString() + Lang.CANNOT_CAST_COMMAND_ON_PLAYER_WITH_SPECIFIC_RELATION.get(sender, receiver.getName(),worstRelationWithPlayer.getColoredName()));
                 return true;
             }
         }
