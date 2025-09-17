@@ -65,7 +65,7 @@ public abstract class SettingsMenus extends BasicGui {
                         player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
                         return;
                     }
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.ENTER_NEW_VALUE.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangeTerritoryName(territoryData, cost, p -> open()));
                 })
                 .asGuiItem(player);
@@ -83,7 +83,7 @@ public abstract class SettingsMenus extends BasicGui {
                         player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
                         return;
                     }
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.ENTER_NEW_VALUE.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangeTerritoryDescription(territoryData, p -> open()));
                 })
                 .asGuiItem(player);

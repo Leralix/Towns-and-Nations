@@ -56,7 +56,7 @@ public class PlannedAttackMenu extends BasicGui {
 
             GuiItem renameButton = ItemBuilder.from(renameAttack).asGuiItem(event -> {
                 event.setCancelled(true);
-                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
+                player.sendMessage(TanChatUtils.getTANString() + Lang.ENTER_NEW_VALUE.get(tanPlayer));
                 PlayerChatListenerStorage.register(player, new ChangeAttackName(plannedAttack, p -> open()));
             });
 

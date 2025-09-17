@@ -27,9 +27,9 @@ import org.leralix.tan.listeners.chat.events.ChangeTerritoryDescription;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryName;
 import org.leralix.tan.listeners.chat.events.CreateEmptyTown;
 import org.leralix.tan.storage.stored.*;
-import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.PlannedAttack;
 
@@ -198,7 +198,7 @@ public class AdminGUI{
 
         GuiItem changeLandmarkNameGui = ItemBuilder.from(changeLandmarkName).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.ENTER_NEW_VALUE.get());
             PlayerChatListenerStorage.register(player, new ChangeLandmarkName(landmark, p -> openSpecificLandmarkMenu(player, landmark)));
         });
 
@@ -299,12 +299,12 @@ public class AdminGUI{
 
         GuiItem changeRegionNameGui = ItemBuilder.from(changeRegionName).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.ENTER_NEW_VALUE.get());
             PlayerChatListenerStorage.register(player, new ChangeTerritoryName(territoryData, 0, p -> openSpecificTerritoryMenu(player, territoryData)));
         });
         GuiItem changeRegionDescriptionGui = ItemBuilder.from(changeRegionDescription).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.ENTER_NEW_VALUE.get());
             PlayerChatListenerStorage.register(player, new ChangeTerritoryDescription(territoryData, p -> openSpecificTerritoryMenu(player, territoryData)));
         });
         GuiItem deleteRegionGui = ItemBuilder.from(deleteRegion).asGuiItem(event -> {
@@ -395,7 +395,7 @@ public class AdminGUI{
 
         GuiItem createTownGui = ItemBuilder.from(createTown).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.ENTER_NEW_VALUE.get());
             PlayerChatListenerStorage.register(player, new CreateEmptyTown(p -> openAdminBrowseTown(player, 0)));
         });
 

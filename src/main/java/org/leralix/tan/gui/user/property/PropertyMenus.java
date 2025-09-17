@@ -46,7 +46,7 @@ public abstract class PropertyMenus extends BasicGui {
                         Lang.GUI_GENERIC_CLICK_TO_RENAME.get(tanPlayer)
                 )
                 .setAction(action -> {
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.ENTER_NEW_VALUE.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangePropertyName(propertyData, p -> open()));
                 })
                 .asGuiItem(player);
@@ -60,7 +60,7 @@ public abstract class PropertyMenus extends BasicGui {
                         Lang.GUI_GENERIC_CLICK_TO_RENAME.get(tanPlayer)
                 )
                 .setAction(action -> {
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
+                    player.sendMessage(TanChatUtils.getTANString() + Lang.ENTER_NEW_VALUE.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangePropertyDescription(propertyData, p -> open()));
                 })
                 .asGuiItem(player);
@@ -98,7 +98,7 @@ public abstract class PropertyMenus extends BasicGui {
                 )
                 .setAction(event -> {
                     if (event.getClick() == ClickType.RIGHT) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.ENTER_NEW_VALUE.get(tanPlayer));
                         PlayerChatListenerStorage.register(player, new ChangePropertySalePrice(propertyData, p -> open()));
                         player.closeInventory();
                     } else if (event.getClick() == ClickType.LEFT) {
@@ -132,7 +132,7 @@ public abstract class PropertyMenus extends BasicGui {
                 )
                 .setAction(event -> {
                     if (event.getClick() == ClickType.RIGHT) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT.get(tanPlayer));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.ENTER_NEW_VALUE.get(tanPlayer));
                         PlayerChatListenerStorage.register(player, new ChangePropertyRentPrice(propertyData, p -> open()));
                     } else if (event.getClick() == ClickType.LEFT) {
                         if (propertyData.isRented()) {

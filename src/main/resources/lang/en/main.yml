@@ -59,6 +59,7 @@ language:
   CURRENT_STATE: "§fCurrent state: §a{0}"
   ENABLED: "§aEnabled"
   DISABLED: "§cDisabled"
+  ENTER_NEW_VALUE: "Write the new message or value in the chat"
   #Common default messages
   DEFAULT_DESCRIPTION: "Default description"
   #Chat scope
@@ -716,7 +717,6 @@ language:
   GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST: "Your region capital is now §b{0}"
   GUI_SETTINGS_CHANGE_TOWN_MESSAGE: "§aChange description"
   GUI_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1: "§fCurrent message: §7§o\"{0}\""
-  GUI_TOWN_SETTINGS_CHANGE_MESSAGE_IN_CHAT: "Enter the new message"
   TOWN_SET_TAX_IN_CHAT: "Enter the new tax"
   CHANGE_MESSAGE_SUCCESS: "Successfully changed the message"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aModify town application"
