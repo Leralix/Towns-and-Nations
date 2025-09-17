@@ -29,7 +29,7 @@ public abstract class JsonStorage<T> {
         load();
     }
 
-    private static @NotNull File getFile(String fileName) {
+    static @NotNull File getFile(String fileName) {
         File pluginFolder = TownsAndNations.getPlugin().getDataFolder();
 
         // Old path
