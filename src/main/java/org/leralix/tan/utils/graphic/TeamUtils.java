@@ -9,6 +9,7 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.constants.Constants;
 
 /**
  * Utility class for handling teams for scoreboard color coding
@@ -23,10 +24,10 @@ public class TeamUtils {
      * Update the color of all the scoreboards
      */
     public static void updateAllScoreboardColor(){
-        if(TownsAndNations.getPlugin().colorCodeIsNotEnabled())
-            return;
-        for(Player player : Bukkit.getOnlinePlayers())
-            setIndividualScoreBoard(player);
+        if(Constants.enableColorUsernames()){
+            for(Player player : Bukkit.getOnlinePlayers())
+                setIndividualScoreBoard(player);
+        }
     }
 
     /**
@@ -39,12 +40,10 @@ public class TeamUtils {
     }
 
     private static void setIndividualScoreBoardSync(Player player) {
-        if(TownsAndNations.getPlugin().colorCodeIsNotEnabled())
+        if(!Constants.enableColorUsernames())
             return;
 
         ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
-        if(scoreboardManager == null)
-            return;
 
         Scoreboard board = scoreboardManager.getNewScoreboard();
 

@@ -102,16 +102,11 @@ public class TownsAndNations extends JavaPlugin {
     private PluginVersion latestVersion;
 
     /**
-     * If enabled, current player usernames will be from the color of the relation.
-     * This option cannot be enabled with allowTownTag.
-     */
-    private boolean allowColorCodes = false;
-    /**
      * This variable is used to check when the plugin has launched
      * If the plugin close in less than 30 seconds, it is most likely a crash
      * during onEnable. Since a crash here might erase stored data, saving will not take place
      */
-    private final long dateOfStart = System.currentTimeMillis();
+    private boolean loadedSuccessfully = false;
     /**
      * Database handler used to access the database.
      */
@@ -182,7 +177,6 @@ public class TownsAndNations extends JavaPlugin {
         FortStorage.init(new FortDataStorage());
 
         FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
-        allowColorCodes = mainConfig.getBoolean("EnablePlayerColorCode", false);
 
 
         getLogger().log(Level.INFO, "[TaN] -Loading Local data");
@@ -236,6 +230,7 @@ public class TownsAndNations extends JavaPlugin {
         SecondTask secondTask = new SecondTask();
         secondTask.startScheduler();
 
+        loadedSuccessfully = true;
         getLogger().log(Level.INFO, "[TaN] Plugin loaded successfully");
         getLogger().info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
     }
@@ -290,8 +285,8 @@ public class TownsAndNations extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        if (System.currentTimeMillis() - dateOfStart < 30000) {
-            getLogger().info("[TaN] Not saving data because plugin was closed less than 30s after launch");
+        if(!loadedSuccessfully){
+            getLogger().info("[TaN] Not saving data because plugin crashed during loading");
             getLogger().info("[TaN] Plugin disabled");
             return;
         }
@@ -417,16 +412,6 @@ public class TownsAndNations extends JavaPlugin {
      */
     public PluginVersion getCurrentVersion() {
         return CURRENT_VERSION;
-    }
-
-
-    /**
-     * Check if the color code is enabled
-     *
-     * @return true if color code is enabled, false otherwise.
-     */
-    public boolean colorCodeIsNotEnabled() {
-        return !allowColorCodes;
     }
 
     public PluginVersion getMinimumSupportingDynmap() {

@@ -31,6 +31,7 @@ public class Constants {
      * This option cannot be enabled with allowColorCodes.
      */
     private static boolean allowTownTag;
+    private static boolean allowColorCode;
 
     //Territory
     private static boolean displayTerritoryColor;
@@ -88,7 +89,7 @@ public class Constants {
 
         //Cosmetic
         allowTownTag = config.getBoolean("EnablePlayerPrefix",false);
-
+        allowColorCode = config.getBoolean("EnablePlayerColorCode", false);
         //Territory
         displayTerritoryColor = config.getBoolean("displayTerritoryNameWithOwnColor", false);
         enableNation = config.getBoolean("EnableKingdom", true);
@@ -265,6 +266,10 @@ public class Constants {
 
     public static boolean enableTownTag() {
         return allowTownTag;
+    }
+
+    public static boolean enableColorUsernames(){
+        return allowColorCode;
     }
 
     public static RelationConstant getRelationConstants(TownRelation relation){
