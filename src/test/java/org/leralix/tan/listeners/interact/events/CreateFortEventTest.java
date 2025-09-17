@@ -19,7 +19,7 @@ import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-class CreatefortEventTest extends BasicTest {
+class CreateFortEventTest extends BasicTest {
 
     @Override
     @BeforeEach
@@ -43,7 +43,7 @@ class CreatefortEventTest extends BasicTest {
         TownData townData = TownDataStorage.getInstance().newTown("town", tanPlayer);
         townData.addToBalance(5000.);
 
-        CreatefortEvent createfortEvent = new CreatefortEvent(townData);
+        CreateFortEvent createfortEvent = new CreateFortEvent(townData);
         createfortEvent.execute(new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, null, world.getBlockAt(-1,0,-1), BlockFace.UP));
 
         assertEquals(1, FortDataStorage.getInstance().getOwnedFort(townData).size());

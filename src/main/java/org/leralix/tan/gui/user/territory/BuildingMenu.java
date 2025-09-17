@@ -10,7 +10,7 @@ import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.RightClickListener;
-import org.leralix.tan.listeners.interact.events.CreatefortEvent;
+import org.leralix.tan.listeners.interact.events.CreateFortEvent;
 import org.leralix.tan.utils.constants.Constants;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class BuildingMenu extends IteratorGUI {
                 )
                 .setAction(action -> {
                     player.sendMessage(getTANString() + Lang.RIGHT_CLICK_TO_PLACE_FORT.get(langType));
-                    RightClickListener.register(player, new CreatefortEvent(territoryData));
+                    RightClickListener.register(player, new CreateFortEvent(territoryData));
                     player.closeInventory();
                 })
                 .asGuiItem(player);

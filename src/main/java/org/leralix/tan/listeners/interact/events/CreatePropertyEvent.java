@@ -19,6 +19,7 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.listeners.interact.ListenerState;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -46,29 +47,29 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
 
 
     @Override
-    public boolean execute(PlayerInteractEvent event) {
+    public ListenerState execute(PlayerInteractEvent event) {
 
         LangType langType = tanPlayer.getLang();
 
         Block block = event.getClickedBlock();
         if (block == null)
-            return false;
+            return ListenerState.CONTINUE;
 
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(block.getChunk());
         if (!(claimedChunk instanceof TownClaimedChunk townClaimedChunk && townClaimedChunk.getTown().isPlayerIn(player))) {
             player.sendMessage(Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(langType));
-            return false;
+            return ListenerState.FAILURE;
         }
 
         if (!tanPlayer.hasTown()){
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get(langType));
-            return false;
+            return ListenerState.FAILURE;
         }
 
         if (position1 == null){
             position1 = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
             player.sendMessage(getTANString() + Lang.PLAYER_FIRST_POINT_SET.get(player, position1));
-            return false;
+            return ListenerState.CONTINUE;
         }
         if(position2 == null){
             int maxPropertySize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MaxPropertySize", 50000);
@@ -77,25 +78,25 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
 
             if (Math.abs(position1.getX() - vector3D.getX()) * Math.abs(position1.getY() - vector3D.getY()) * Math.abs(position1.getZ() - vector3D.getZ()) > maxPropertySize) {
                 player.sendMessage(getTANString() + Lang.PLAYER_PROPERTY_TOO_BIG.get(maxPropertySize));
-                return false;
+                return ListenerState.FAILURE;
             }
             position2 = vector3D;
 
             cost = NumberUtil.roundWithDigits(getTotalCost());
             if(tanPlayer.getBalance() < cost){
                 player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(cost - tanPlayer.getBalance()));
-                return true;
+                return ListenerState.SUCCESS;
             }
 
             player.sendMessage(getTANString() + Lang.PLAYER_SECOND_POINT_SET.get(vector3D));
             player.sendMessage(getTANString() + Lang.PLAYER_PLACE_SIGN.get());
-            return false;
+            return ListenerState.CONTINUE;
         }
 
         int margin = Constants.getMaxPropertySignMargin();
         if (!isNearProperty(block.getLocation(), position1, position2, margin)) {
             player.sendMessage(getTANString() + Lang.PLAYER_PROPERTY_SIGN_TOO_FAR.get(margin));
-            return false;
+            return ListenerState.CONTINUE;
         }
 
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
@@ -108,7 +109,7 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
 
         property.createPropertySign(player, block, event.getBlockFace());
         property.updateSign();
-        return true;
+        return ListenerState.SUCCESS;
     }
 
     private double getTotalCost() {

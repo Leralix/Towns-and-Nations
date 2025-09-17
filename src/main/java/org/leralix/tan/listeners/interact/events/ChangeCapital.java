@@ -8,6 +8,7 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.listeners.interact.ListenerState;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 
@@ -24,25 +25,25 @@ public class ChangeCapital extends RightClickListenerEvent {
     }
 
     @Override
-    public boolean execute(PlayerInteractEvent event) {
+    public ListenerState execute(PlayerInteractEvent event) {
 
         Block block = event.getClickedBlock();
         if(block == null) {
-            return false;
+            return ListenerState.CONTINUE;
         }
 
         ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(block.getChunk());
 
         if(claimedChunk2 instanceof TownClaimedChunk townClaimedChunk &&
                 townData.getID().equals(townClaimedChunk.getOwnerID())){
-            townData.setCapitalLocation(claimedChunk2.getVector2D());
 
+            townData.setCapitalLocation(claimedChunk2.getVector2D());
             Player player = event.getPlayer();
 
             openGui(fallbackGui, player);
             SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
-            return true;
+            return ListenerState.SUCCESS;
         }
-        return false;
+        return ListenerState.FAILURE;
     }
 }
