@@ -27,9 +27,9 @@ public class War {
     private final List<WarGoal> attackGoals;
     private final List<WarGoal> defenseGoals;
 
-    public War(String ID, TerritoryData mainDefender, TerritoryData mainAttacker) {
-        this.ID = ID;
-        this.name = "War " + ID;
+    public War(String id, TerritoryData mainAttacker, TerritoryData mainDefender) {
+        this.ID = id;
+        this.name = "War " + id;
         this.mainDefenderID = mainDefender.getID();
         this.mainAttackerID = mainAttacker.getID();
         this.attackGoals = new ArrayList<>();

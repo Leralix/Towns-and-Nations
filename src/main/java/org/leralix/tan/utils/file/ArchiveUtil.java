@@ -51,7 +51,6 @@ public class ArchiveUtil {
         int counter = 0;
         while (true) {
             String suffix = counter == 0 ? "" : " - " + counter;
-            System.out.println("Creating zip file : " + name + suffix + ".zip");
             zipFile = new File(archiveFolder, name + suffix + ".zip");
             if (!zipFile.exists()) {
                 break;
@@ -61,7 +60,6 @@ public class ArchiveUtil {
 
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(zipFile))) {
             for(File file : filesToArchive){
-                System.out.println("file : " + file.getName() + " - " + file.exists());
                 if(file.exists()){
                     addFileToArchive(file, zipOutputStream);
                 }
