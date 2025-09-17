@@ -5,7 +5,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.lang.Lang;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -52,6 +51,7 @@ public class ArchiveUtil {
         int counter = 0;
         while (true) {
             String suffix = counter == 0 ? "" : " - " + counter;
+            System.out.println("Creating zip file : " + name + suffix + ".zip");
             zipFile = new File(archiveFolder, name + suffix + ".zip");
             if (!zipFile.exists()) {
                 break;
@@ -61,6 +61,7 @@ public class ArchiveUtil {
 
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(zipFile))) {
             for(File file : filesToArchive){
+                System.out.println("file : " + file.getName() + " - " + file.exists());
                 if(file.exists()){
                     addFileToArchive(file, zipOutputStream);
                 }
@@ -102,7 +103,7 @@ public class ArchiveUtil {
     private static Collection<File> getAllStorageFiles(){
         Collection<File> fileCollections = new ArrayList<>();
 
-        String dataFolder = TownsAndNations.getPlugin().getDataFolder().getAbsolutePath();
+        String dataFolder = TownsAndNations.getPlugin().getDataFolder().getAbsolutePath() + "/storage/json/";
         fileCollections.add(new File(dataFolder, "TAN - Claimed Chunks.json"));
         fileCollections.add(new File(dataFolder, "TAN - Landmarks.json"));
         fileCollections.add(new File(dataFolder, "TAN - Newsletter.json"));
@@ -128,7 +129,6 @@ public class ArchiveUtil {
         fileCollections.add(pluginListFile);
 
         ArchiveUtil.archiveFiles(fileCollections, "reports", reportName);
-        commandSender.sendMessage(Lang.DEBUG_REPORT_CREATED.get());
 
         try {
             Files.delete(pluginListFile.toPath());

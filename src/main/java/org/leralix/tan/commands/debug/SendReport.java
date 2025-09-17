@@ -1,6 +1,7 @@
 package org.leralix.tan.commands.debug;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.file.ArchiveUtil;
@@ -12,7 +13,7 @@ public class SendReport extends SubCommand {
 
     @Override
     public String getName() {
-        return "sendReport";
+        return "report";
     }
 
     @Override
@@ -35,6 +36,12 @@ public class SendReport extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         ArchiveUtil.sendReport(commandSender);
+        if(commandSender instanceof Player player){
+            commandSender.sendMessage(Lang.DEBUG_REPORT_CREATED.get(player));
+        }
+        else {
+            commandSender.sendMessage(Lang.DEBUG_REPORT_CREATED.get());
+        }
     }
 }
 
