@@ -47,6 +47,12 @@ public class BuildingMenu extends IteratorGUI {
                         Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(langType)
                 )
                 .setAction(action -> {
+
+                    if(Constants.getFortCost() > territoryData.getBalance()){
+                        player.sendMessage(getTANString() + Lang.TERRITORY_NOT_ENOUGH_MONEY_EXTENDED.get(langType, Constants.getFortCost() - territoryData.getBalance()));
+                        return;
+                    }
+
                     player.sendMessage(getTANString() + Lang.RIGHT_CLICK_TO_PLACE_FORT.get(langType));
                     RightClickListener.register(player, new CreateFortEvent(territoryData));
                     player.closeInventory();
