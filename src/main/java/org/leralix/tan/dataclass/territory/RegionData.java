@@ -15,17 +15,14 @@ import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.RankData;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.newhistory.SubjectTaxHistory;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
-import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TerritoryIndependanceInternalEvent;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
@@ -70,8 +67,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     public String getLeaderID() {
-        if (leaderID == null)
-            leaderID = getCapital().getLeaderID();
+        if (leaderID == null) leaderID = getCapital().getLeaderID();
         return leaderID;
     }
 
@@ -158,47 +154,22 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public boolean claimChunk(Player player, Chunk chunk) {
-        return claimChunk(player, chunk, Constants.allowNonAdjacentChunksForRegion());
+    public boolean abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
+
+        removeFromBalance(Constants.territoryClaimRegionCost());
+
+        NewClaimedChunkStorage.getInstance().claimRegionChunk(chunk, getID());
+        player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_CLAIMED_SUCCESS_REGION.get(player));
+        return true;
     }
 
     @Override
-    public boolean claimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+    public int getClaimCost() {
+        return Constants.territoryClaimRegionCost();
+    }
 
-        if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
-            return false;
-        }
-
-        if (!doesPlayerHavePermission(tanPlayer, RolePermission.CLAIM_CHUNK)) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
-            return false;
-        }
-
-        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfRegionChunk", 5);
-        if (getBalance() < cost) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.REGION_NOT_ENOUGH_MONEY_EXTENDED.get(cost - getBalance()));
-            return false;
-        }
-
-        ClaimedChunk2 currentClaimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
-        if (!currentClaimedChunk.canTerritoryClaim(player, this)) {
-            return false;
-        }
-
-        if (!ignoreAdjacent && getNumberOfClaimedChunk() != 0
-                && !NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTerritory(chunk, getID())) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
-            return false;
-        }
-
-
-
-        removeFromBalance(cost);
-        NewClaimedChunkStorage.getInstance().claimRegionChunk(chunk, getID());
-        player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_CLAIMED_SUCCESS_REGION.get());
-        NewClaimedChunkStorage.getInstance().get(chunk);
+    @Override
+    protected boolean canClaimMoreChunk() {
         return true;
     }
 
@@ -357,8 +328,7 @@ public class RegionData extends TerritoryData {
         for (String playerUUID : getOrderedPlayerIDList()) {
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
             ITanPlayer playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
-            ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
-                    Lang.GUI_TOWN_MEMBER_DESC1.get(playerIterateData.getRegionRank().getColoredName()));
+            ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate, Lang.GUI_TOWN_MEMBER_DESC1.get(playerIterateData.getRegionRank().getColoredName()));
 
             GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> event.setCancelled(true));
             res.add(playerButton);

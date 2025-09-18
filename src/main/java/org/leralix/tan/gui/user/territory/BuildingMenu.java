@@ -49,7 +49,7 @@ public class BuildingMenu extends IteratorGUI {
                 .setAction(action -> {
 
                     if(Constants.getFortCost() > territoryData.getBalance()){
-                        player.sendMessage(getTANString() + Lang.TERRITORY_NOT_ENOUGH_MONEY_EXTENDED.get(langType, Constants.getFortCost() - territoryData.getBalance()));
+                        player.sendMessage(getTANString() + Lang.TERRITORY_NOT_ENOUGH_MONEY.get(langType, territoryData.getColoredName() ,Constants.getFortCost() - territoryData.getBalance()));
                         return;
                     }
 

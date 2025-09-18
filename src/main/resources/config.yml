@@ -67,6 +67,13 @@ maxPayDistance: 15
 StartingMoney: 100.0
 
 ########################
+##     Territories    ##
+########################
+
+#Buffer zone between territories when creating a new territory (Capital chunk or Fort as outpost)
+TerritoryClaimBufferZone : 2
+
+########################
 ##      Kingdoms      ##
 ########################
 

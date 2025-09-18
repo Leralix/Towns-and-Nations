@@ -23,14 +23,18 @@ public class ClaimCommand extends PlayerSubCommand {
     public String getDescription() {
         return Lang.CLAIM_CHUNK_COMMAND_DESC.get();
     }
-    public int getArguments(){ return 1;}
+
+    public int getArguments() {
+        return 1;
+    }
 
     @Override
     public String getSyntax() {
         return "/tan claim <town/region>";
     }
+
     @Override
-    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
             suggestions.add("town");
@@ -38,34 +42,33 @@ public class ClaimCommand extends PlayerSubCommand {
         }
         return suggestions;
     }
+
     @Override
-    public void perform(Player player, String[] args){
+    public void perform(Player player, String[] args) {
 
 
         if (!(args.length == 2 || args.length == 4)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR.get());
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()) );
+            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
             return;
         }
 
         TerritoryData territoryData;
 
-        if(args[1].equals("town")){
+        if (args[1].equals("town")) {
             territoryData = TownDataStorage.getInstance().get(player);
-            if(territoryData == null){
+            if (territoryData == null) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
                 return;
             }
-        }
-        else if(args[1].equals("region")){
+        } else if (args[1].equals("region")) {
             territoryData = RegionDataStorage.getInstance().get(player);
-            if(territoryData == null){
+            if (territoryData == null) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NO_REGION.get());
                 return;
             }
-        }
-        else{
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()) );
+        } else {
+            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
             return;
         }
 
@@ -73,10 +76,9 @@ public class ClaimCommand extends PlayerSubCommand {
             int x = Integer.parseInt(args[2]);
             int z = Integer.parseInt(args[3]);
             Chunk chunk = player.getWorld().getChunkAt(x, z);
-            territoryData.claimChunk(player,chunk);
+            territoryData.claimChunk(player, chunk);
             MapCommand.openMap(player, new MapSettings(args[0], args[1]));
-        }
-        else {
+        } else {
             territoryData.claimChunk(player);
         }
     }

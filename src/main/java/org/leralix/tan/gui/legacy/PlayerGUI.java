@@ -258,7 +258,7 @@ public class PlayerGUI {
                     SoundUtil.playSound(player, ADD);
                 } else {
                     if (townData.getBalance() < cost) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get(tanPlayer));
+                        player.sendMessage(TanChatUtils.getTANString() + Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), cost - townData.getBalance()));
                         return;
                     }
                     townData.removeFromBalance(cost);

@@ -12,7 +12,6 @@ import org.leralix.tan.events.events.RegionCreatedInternalEvent;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
-import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -31,27 +30,27 @@ public class CreateRegion extends ChatListenerEvent {
     @Override
     public boolean execute(Player player, String message) {
 
-
-        TownData town = TownDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        TownData town = TownDataStorage.getInstance().get(tanPlayer);
 
         if(!town.isLeader(player)){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get(tanPlayer));
             return false;
         }
 
         if(town.getBalance() < cost){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, town.getColoredName(), cost - town.getBalance()));
             return false;
         }
 
         int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RegionNameSize");
         if(message.length() > maxSize){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
+            player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(tanPlayer, maxSize));
             return false;
         }
 
         if(RegionDataStorage.getInstance().isNameUsed(message)){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get(tanPlayer));
             return false;
         }
 

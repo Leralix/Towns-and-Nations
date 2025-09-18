@@ -35,6 +35,10 @@ public class Constants {
 
     //Territory
     private static boolean displayTerritoryColor;
+    private static int territoryClaimBufferZone;
+    private static int territoryClaimTownCost;
+    private static int territoryClaimRegionCost;
+
     private static boolean enableNation;
     private static boolean enableRegion;
     private static int changeTownNameCost;
@@ -92,6 +96,10 @@ public class Constants {
         allowColorCode = config.getBoolean("EnablePlayerColorCode", false);
         //Territory
         displayTerritoryColor = config.getBoolean("displayTerritoryNameWithOwnColor", false);
+        territoryClaimBufferZone = config.getInt("TerritoryClaimBufferZone", 2);
+        territoryClaimTownCost = config.getInt("CostOfTownChunk", 1);
+        territoryClaimRegionCost = config.getInt("CostOfRegionChunk", 5);
+
         enableNation = config.getBoolean("EnableKingdom", true);
         enableRegion = config.getBoolean("EnableRegion", true);
         changeTownNameCost = config.getInt("ChangeTownNameCost", 1000);
@@ -162,6 +170,18 @@ public class Constants {
 
     public static boolean displayTerritoryColor() {
         return displayTerritoryColor;
+    }
+
+    public static int territoryClaimBufferZone(){
+        return territoryClaimBufferZone;
+    }
+
+    public static int territoryClaimTownCost() {
+        return territoryClaimTownCost;
+    }
+
+    public static int territoryClaimRegionCost() {
+        return territoryClaimRegionCost;
     }
 
     public static boolean enableNation() {
@@ -252,12 +272,22 @@ public class Constants {
         return explosionGriefStatus;
     }
 
+    public static boolean allowNonAdjacentChunksForTown() {
+        return allowNonAdjacentChunksForTown;
+    }
+
     public static boolean allowNonAdjacentChunksForRegion() {
         return allowNonAdjacentChunksForRegion;
     }
 
-    public static boolean allowNonAdjacentChunksForTown() {
-        return allowNonAdjacentChunksForTown;
+    public static boolean allowNonAdjacentChunksFor(TerritoryData territoryData) {
+        if (territoryData instanceof TownData) {
+            return allowNonAdjacentChunksForTown;
+        }
+        if (territoryData instanceof RegionData) {
+            return allowNonAdjacentChunksForRegion;
+        }
+        return false;
     }
 
     public static double getStartingBalance() {

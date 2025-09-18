@@ -45,6 +45,7 @@ import org.leralix.tan.events.events.TerritoryVassalProposalInternalEvent;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
@@ -131,16 +132,16 @@ public abstract class TerritoryData {
 
     public void rename(Player player, int cost, String newName) {
         if (getBalance() < cost) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY.get());
+            player.sendMessage(TanChatUtils.getTANString() + Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), cost - getBalance()));
             return;
         }
 
         TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new MiscellaneousHistory(this, cost));
 
         removeFromBalance(cost);
-        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player.getName(), name, newName));
+        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player, player.getName(), name, newName));
 
-        player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get(name, newName));
+        player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get(player, name, newName));
         SoundUtil.playSound(player, SoundEnum.GOOD);
         rename(newName);
     }
@@ -492,13 +493,30 @@ public abstract class TerritoryData {
     }
 
     /**
-     * Claim the chunk for the territory
+     * Claim the chunk for the territory. The chunk used will be the one where the player stands
      *
      * @param player The player wishing to claim a chunk
      * @param chunk  The chunk to claim
      * @return True if the chunk has been claimed successfully, false otherwise
      */
-    public abstract boolean claimChunk(Player player, Chunk chunk);
+    public boolean claimChunk(Player player, Chunk chunk) {
+        return claimChunk(player, chunk, Constants.allowNonAdjacentChunksFor(this));
+    }
+
+    /**
+     * Claim the chunk for the territory
+     *
+     * @param player            The player wishing to claim a chunk
+     * @param chunk             The chunk to claim
+     * @param ignoreAdjacent    Defines whether the chunk to claim should respect adjacent claiming
+     * @return True if the chunk has been claimed successfully, false otherwise
+     */
+    public boolean claimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
+        if(canClaimChunk(player, chunk, ignoreAdjacent)){
+            return abstractClaimChunk(player, chunk, ignoreAdjacent);
+        }
+        return false;
+    }
 
     /**
      * Claim the chunk for the territory
@@ -508,7 +526,48 @@ public abstract class TerritoryData {
      * @param ignoreAdjacent Defines if the chunk to claim should respect adjacent claiming
      * @return True if the chunk has been claimed successfully, false otherwise
      */
-    public abstract boolean claimChunk(Player player, Chunk chunk, boolean ignoreAdjacent);
+    protected abstract boolean abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent);
+
+    public boolean canClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+
+        if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
+            player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get(player));
+            return false;
+        }
+
+        if (!doesPlayerHavePermission(tanPlayer, RolePermission.CLAIM_CHUNK)) {
+            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(player));
+            return false;
+        }
+
+        if (!canClaimMoreChunk()) {
+            player.sendMessage(TanChatUtils.getTANString() + Lang.MAX_CHUNK_LIMIT_REACHED.get(player));
+            return false;
+        }
+
+        int cost = getClaimCost();
+        if (getBalance() < cost) {
+            player.sendMessage(TanChatUtils.getTANString() + Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), cost - getBalance()));
+            return false;
+        }
+
+        ClaimedChunk2 chunkData = NewClaimedChunkStorage.getInstance().get(chunk);
+        if (!chunkData.canTerritoryClaim(player, this)) {
+            return false;
+        }
+
+        if (!ignoreAdjacent && getNumberOfClaimedChunk() != 0 && !NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTerritory(chunk, getID())) {
+            player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get(player));
+            return false;
+        }
+        return true;
+    }
+
+    public abstract int getClaimCost();
+
+    protected abstract boolean canClaimMoreChunk();
+
 
     public void delete() {
         NewClaimedChunkStorage.getInstance().unclaimAllChunksFromTerritory(this); //Unclaim all chunk from town

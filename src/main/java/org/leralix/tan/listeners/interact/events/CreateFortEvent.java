@@ -34,37 +34,36 @@ public class CreateFortEvent extends RightClickListenerEvent {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         Block block = event.getClickedBlock();
-        if(block == null) {
+        if (block == null) {
             return ListenerState.CONTINUE;
         }
 
         World world = block.getWorld();
-        Block upBlock =  world.getBlockAt(block.getX(), block.getY() + 1, block.getZ());
+        Block upBlock = world.getBlockAt(block.getX(), block.getY() + 1, block.getZ());
 
-        if(upBlock.getType() != Material.AIR){
+        if (upBlock.getType() != Material.AIR) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CANNOT_CREATE_FORT_IF_ABOVE_BLOCKED.get(tanPlayer));
             return ListenerState.FAILURE;
         }
 
-        if(tanTerritory.getBalance() <= Constants.getFortCost()){
-            player.sendMessage(TanChatUtils.getTANString() +
-                    Lang.TERRITORY_NOT_ENOUGH_MONEY_EXTENDED.get(tanPlayer, Constants.getFortCost() - tanTerritory.getBalance()));
+        if (tanTerritory.getBalance() <= Constants.getFortCost()) {
+            player.sendMessage(TanChatUtils.getTANString() + Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, tanTerritory.getColoredName(), Constants.getFortCost() - tanTerritory.getBalance()));
             return ListenerState.FAILURE;
         }
 
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(upBlock.getChunk());
 
         // If outposts are enabled and chunk is not claimed
-        if(Constants.enableFortOutpost() && claimedChunk instanceof WildernessChunk){
+        if (Constants.enableFortOutpost() && claimedChunk instanceof WildernessChunk) {
             boolean wasAbleToClaim = tanTerritory.claimChunk(player, upBlock.getChunk(), true);
 
-            if(!wasAbleToClaim){
+            if (!wasAbleToClaim) {
                 return ListenerState.FAILURE;
             }
         }
         // Else, only create a fort if created inside a claimed chunk
         else {
-            if(!tanTerritory.getID().equals(claimedChunk.getOwnerID())){
+            if (!tanTerritory.getID().equals(claimedChunk.getOwnerID())) {
                 player.sendMessage(TanChatUtils.getTANString() + Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(tanPlayer));
                 return ListenerState.FAILURE;
             }

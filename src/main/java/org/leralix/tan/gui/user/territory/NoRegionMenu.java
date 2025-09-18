@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.BrowseScope;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -22,7 +23,7 @@ import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 public class NoRegionMenu extends BasicGui {
 
 
-    public NoRegionMenu(Player player){
+    public NoRegionMenu(Player player) {
         super(player, Lang.HEADER_NO_REGION, 3);
         open();
     }
@@ -41,48 +42,34 @@ public class NoRegionMenu extends BasicGui {
 
         int regionCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
 
-        return iconManager.get(IconKey.CREATE_REGION_ICON)
-                .setName(Lang.GUI_REGION_CREATE.get(tanPlayer))
-                .setDescription(
-                        Lang.GUI_REGION_CREATE_DESC1.get(tanPlayer, regionCost),
-                        Lang.GUI_REGION_CREATE_DESC2.get(tanPlayer)
-                )
-                .setAction(action -> {
-                    if(!player.hasPermission("tan.base.region.create")){
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
-                        return;
-                    }
+        return iconManager.get(IconKey.CREATE_REGION_ICON).setName(Lang.GUI_REGION_CREATE.get(tanPlayer)).setDescription(Lang.GUI_REGION_CREATE_DESC1.get(tanPlayer, regionCost), Lang.GUI_REGION_CREATE_DESC2.get(tanPlayer)).setAction(action -> {
+            if (!player.hasPermission("tan.base.region.create")) {
+                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                SoundUtil.playSound(player, NOT_ALLOWED);
+                return;
+            }
 
-                    if(!tanPlayer.hasTown()){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get(tanPlayer));
-                        return;
-                    }
-                    double townMoney = TownDataStorage.getInstance().get(player).getBalance();
-                    if (townMoney < regionCost) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(tanPlayer, regionCost - townMoney));
-                    }
-                    else {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(tanPlayer));
-                        player.closeInventory();
-                        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
-                        PlayerChatListenerStorage.register(player, new CreateRegion(cost));
-                    }
-                })
-                .asGuiItem(player);
+            if (!tanPlayer.hasTown()) {
+                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get(tanPlayer));
+                return;
+            }
+            TownData townData = TownDataStorage.getInstance().get(player);
+            double townMoney = townData.getBalance();
+            if (townMoney < regionCost) {
+                player.sendMessage(TanChatUtils.getTANString() + Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), regionCost - townMoney));
+            } else {
+                player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(tanPlayer));
+                player.closeInventory();
+                int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
+                PlayerChatListenerStorage.register(player, new CreateRegion(cost));
+            }
+        }).asGuiItem(player);
     }
 
     private GuiItem getBrowseRegionsButton() {
-        return iconManager.get(IconKey.BROWSE_REGION_ICON)
-                .setName(Lang.GUI_REGION_BROWSE.get(tanPlayer))
-                .setDescription(
-                        Lang.GUI_REGION_BROWSE_DESC1.get(tanPlayer, RegionDataStorage.getInstance().getAll().size()),
-                        Lang.GUI_REGION_BROWSE_DESC2.get(tanPlayer)
-                )
-                .setAction(action -> {
-                    new BrowseTerritoryMenu(player, null, BrowseScope.REGIONS, p -> open());
-                })
-                .asGuiItem(player);
+        return iconManager.get(IconKey.BROWSE_REGION_ICON).setName(Lang.GUI_REGION_BROWSE.get(tanPlayer)).setDescription(Lang.GUI_REGION_BROWSE_DESC1.get(tanPlayer, RegionDataStorage.getInstance().getAll().size()), Lang.GUI_REGION_BROWSE_DESC2.get(tanPlayer)).setAction(action -> {
+            new BrowseTerritoryMenu(player, null, BrowseScope.REGIONS, p -> open());
+        }).asGuiItem(player);
 
     }
 
