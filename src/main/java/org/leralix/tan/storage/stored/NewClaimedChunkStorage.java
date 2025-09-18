@@ -111,7 +111,7 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
         return true;
     }
 
-    public boolean isOneAdjacentChunkClaimedBySameTown(Chunk chunk, String townID) {
+    public boolean isOneAdjacentChunkClaimedBySameTerritory(Chunk chunk, String townID) {
 
         List<String> adjacentChunkKeys = Arrays.asList(
                 getChunkKey(chunk.getX() + 1, chunk.getZ(), chunk.getWorld().getUID().toString()),

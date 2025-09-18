@@ -29,6 +29,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.stored.*;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
@@ -346,9 +347,13 @@ public class TownData extends TerritoryData {
     }
 
     @Override
+    public boolean claimChunk(Player player, Chunk chunk) {
+        return claimChunk(player, chunk, Constants.allowNonAdjacentChunksForTown());
+    }
+
+    @Override
     public boolean claimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
-
 
         if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get());
@@ -365,7 +370,6 @@ public class TownData extends TerritoryData {
             return false;
         }
 
-
         int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfTownChunk", 0);
         if (getBalance() < cost) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NOT_ENOUGH_MONEY_EXTENDED.get(cost - getBalance()));
@@ -377,9 +381,9 @@ public class TownData extends TerritoryData {
             return false;
         }
 
-        if (!ignoreAdjacent &&
-                getNumberOfClaimedChunk() != 0 &&
-                !NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTown(chunk, getID())) {
+        if (!ignoreAdjacent && getNumberOfClaimedChunk() != 0
+                && !NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTerritory(chunk, getID())) {
+
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
             return false;
         }
@@ -389,7 +393,7 @@ public class TownData extends TerritoryData {
         ClaimedChunk2 chunkClaimed = NewClaimedChunkStorage.getInstance().claimTownChunk(chunk, getID());
 
         //If this was the first claimed chunk, set the capital.
-        if(getNumberOfClaimedChunk() == 1){
+        if (getNumberOfClaimedChunk() == 1) {
             setCapitalLocation(chunkClaimed.getVector2D());
         }
 
@@ -407,7 +411,7 @@ public class TownData extends TerritoryData {
         capitalLocation = vector2D;
     }
 
-    public Optional<Vector2D> getCapitalLocation(){
+    public Optional<Vector2D> getCapitalLocation() {
         return Optional.ofNullable(capitalLocation);
     }
 
@@ -575,7 +579,7 @@ public class TownData extends TerritoryData {
         broadcastMessageWithSound(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.get(kickedPlayer.getName()), SoundEnum.BAD);
 
         Player player = kickedPlayer.getPlayer();
-        if(player != null){
+        if (player != null) {
             kickedPlayer.getPlayer().sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get());
         }
     }

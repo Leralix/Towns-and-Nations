@@ -498,9 +498,7 @@ public abstract class TerritoryData {
      * @param chunk  The chunk to claim
      * @return True if the chunk has been claimed successfully, false otherwise
      */
-    public boolean claimChunk(Player player, Chunk chunk) {
-        return claimChunk(player, chunk, Constants.allowNonAdjacentChunksForTown());
-    }
+    public abstract boolean claimChunk(Player player, Chunk chunk);
 
     /**
      * Claim the chunk for the territory

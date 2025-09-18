@@ -115,8 +115,7 @@ public abstract class ClaimedChunk2 {
     public abstract boolean canTerritoryClaim(TerritoryData territoryData);
 
     public boolean canTerritoryClaim(Player player, TerritoryData territoryData) {
-        boolean result = canTerritoryClaim(territoryData);
-        if (result) {
+        if (canTerritoryClaim(territoryData)) {
             return true;
         }
         player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(player, getOwner().getBaseColoredName()));

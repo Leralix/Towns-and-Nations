@@ -158,6 +158,11 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
+    public boolean claimChunk(Player player, Chunk chunk) {
+        return claimChunk(player, chunk, Constants.allowNonAdjacentChunksForRegion());
+    }
+
+    @Override
     public boolean claimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
@@ -166,22 +171,14 @@ public class RegionData extends TerritoryData {
             return false;
         }
 
-
         if (!doesPlayerHavePermission(tanPlayer, RolePermission.CLAIM_CHUNK)) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get());
             return false;
         }
-        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfRegionChunk", 5);
 
+        int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("CostOfRegionChunk", 5);
         if (getBalance() < cost) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.REGION_NOT_ENOUGH_MONEY_EXTENDED.get(cost - getBalance()));
-            return false;
-        }
-
-        if (!ignoreAdjacent && getNumberOfClaimedChunk() != 0 &&
-                !NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTown(chunk, getID()) &&
-                !Constants.allowNonAdjacentChunksForRegion()) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
             return false;
         }
 
@@ -189,6 +186,14 @@ public class RegionData extends TerritoryData {
         if (!currentClaimedChunk.canTerritoryClaim(player, this)) {
             return false;
         }
+
+        if (!ignoreAdjacent && getNumberOfClaimedChunk() != 0
+                && !NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTerritory(chunk, getID())) {
+            player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get());
+            return false;
+        }
+
+
 
         removeFromBalance(cost);
         NewClaimedChunkStorage.getInstance().claimRegionChunk(chunk, getID());
@@ -263,7 +268,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     public TerritoryData getCapital() {
-        if(capitalID == null) {
+        if (capitalID == null) {
             capitalID = getSubjects().get(0).getID();
         }
         return TerritoryUtil.getTerritory(capitalID);
@@ -340,7 +345,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     public RankData getRank(ITanPlayer tanPlayer) {
-        if(!tanPlayer.hasRegion()){
+        if (!tanPlayer.hasRegion()) {
             return null;
         }
         return getRank(tanPlayer.getRegionRankID());
