@@ -1,5 +1,6 @@
 package org.leralix.tan.utils.territory;
 
+import org.bukkit.Chunk;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -7,6 +8,7 @@ import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.utils.constants.Constants;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -130,5 +132,61 @@ public class ChunkUtil {
         }
 
         return false;
+    }
+
+    /**
+     * Get all claimed chunks in a radius around a center chunk
+     * The radius is in chunks and is circular.
+     * @param center    The chunk at the center of the radius
+     * @param radius    The radius in chunks
+     * @return  A list of claimed chunks in the radius
+     */
+    public static List<ClaimedChunk2> getChunksInRadius(Chunk center, int radius) {
+        return getChunksInRadius(NewClaimedChunkStorage.getInstance().get(center), radius);
+    }
+
+    /**
+     * Get all claimed chunks in a radius around a center chunk
+     * The radius is in chunks and is circular.
+     * @param center    The chunk at the center of the radius
+     * @param radius    The radius in chunks
+     * @return  A list of claimed chunks in the radius
+     */
+    public static List<ClaimedChunk2> getChunksInRadius(ClaimedChunk2 center, int radius) {
+        List<ClaimedChunk2> chunksInRadius = new ArrayList<>();
+        int centerX = center.getX();
+        int centerZ = center.getZ();
+        String worldUUID = center.getWorldUUID();
+
+        Vector2D centerPos = new Vector2D(center.getX(), center.getZ(), worldUUID);
+
+        for (int dx = -radius; dx <= radius; dx++) {
+            for (int dz = -radius; dz <= radius; dz++) {
+                int chunkX = centerX + dx;
+                int chunkZ = centerZ + dz;
+                ClaimedChunk2 chunk = claimedChunkStorage.get(chunkX, chunkZ, worldUUID);
+                if (chunk != null && centerPos.getDistance(new Vector2D(chunk.getX(), chunk.getZ(), worldUUID)) <= radius) {
+                    chunksInRadius.add(chunk);
+                }
+            }
+        }
+
+        return chunksInRadius;
+    }
+
+    public static boolean isInBufferZone(ClaimedChunk2 chunkToAnalyse, TerritoryData territoryToAllow) {
+
+        List<ClaimedChunk2> claimedChunkToAnalyse = getChunksInRadius(chunkToAnalyse, Constants.territoryClaimBufferZone());
+
+        for(ClaimedChunk2 claimedChunk2 : claimedChunkToAnalyse){
+            if(claimedChunk2 instanceof TerritoryChunk territoryChunk
+                    && !territoryToAllow.canAccessBufferZone(territoryChunk)){
+                return true;
+            }
+        }
+        return false;
+
+
+
     }
 }

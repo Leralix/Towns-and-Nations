@@ -240,7 +240,7 @@ public class RegionData extends TerritoryData {
     @Override
     public TerritoryData getCapital() {
         if (capitalID == null) {
-            capitalID = getSubjects().get(0).getID();
+            capitalID = getSubjects().getFirst().getID();
         }
         return TerritoryUtil.getTerritory(capitalID);
     }

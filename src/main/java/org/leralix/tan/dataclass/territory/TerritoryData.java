@@ -22,6 +22,7 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.newhistory.ChunkPaymentHistory;
 import org.leralix.tan.dataclass.newhistory.MiscellaneousHistory;
 import org.leralix.tan.dataclass.newhistory.PlayerDonationHistory;
@@ -557,7 +558,22 @@ public abstract class TerritoryData {
             return false;
         }
 
-        if (!ignoreAdjacent && getNumberOfClaimedChunk() != 0 && !NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTerritory(chunk, getID())) {
+        if(ignoreAdjacent){
+            return true;
+        }
+
+        // If first claim of the territory and in a buffer zone of another territory, deny the claim
+        if(getNumberOfClaimedChunk() == 0) {
+
+            if(ChunkUtil.isInBufferZone(chunkData, this)) {
+                player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_IN_BUFFER_ZONE.get(player, Constants.territoryClaimBufferZone()));
+                return false;
+            }
+            return true;
+        }
+
+
+        if (!NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTerritory(chunk, getID())) {
             player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get(player));
             return false;
         }
@@ -569,7 +585,7 @@ public abstract class TerritoryData {
     protected abstract boolean canClaimMoreChunk();
 
 
-    public void delete() {
+    public synchronized void delete() {
         NewClaimedChunkStorage.getInstance().unclaimAllChunksFromTerritory(this); //Unclaim all chunk from town
 
         applyToAllOnlinePlayer(Player::closeInventory);
@@ -1067,5 +1083,25 @@ public abstract class TerritoryData {
             }
         }
         return playerList;
+    }
+
+    /**
+     * Defines if a territory can claim next to an already claimed chunk.
+     * If the chunk is owned by the territory itself or by its overlord, it can claim
+     * @param territoryChunk    The chunk to check
+     * @return      True if the territory can claim next to the chunk, false otherwise
+     */
+    public boolean canAccessBufferZone(TerritoryChunk territoryChunk) {
+        String ownerID = territoryChunk.getOwnerID();
+        if(ownerID.equals(id)){
+            return true;
+        }
+        Optional<TerritoryData> optCapital = getOverlord();
+
+        if(optCapital.isPresent()){
+            TerritoryData capital = optCapital.get();
+            return ownerID.equals(capital.getID());
+        }
+        return false;
     }
 }

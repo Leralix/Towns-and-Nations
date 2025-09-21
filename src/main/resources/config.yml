@@ -71,6 +71,7 @@ StartingMoney: 100.0
 ########################
 
 #Buffer zone between territories when creating a new territory (Capital chunk or Fort as outpost)
+#Buffer is only checked if ...AllowNonAdjacentChunks is set to false
 TerritoryClaimBufferZone : 2
 
 ########################

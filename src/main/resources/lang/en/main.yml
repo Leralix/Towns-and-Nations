@@ -109,7 +109,7 @@ language:
   CLAIM_CHUNK_COMMAND_DESC: "Claim a chunk"
   CHUNK_ALREADY_CLAIMED_WARNING: "§cThis chunk is already claimed by: §9{0}"
   CANNOT_CLAIM_LANDMARK: "§cYou cannot claim a landmark chunk"
-  CHUNK_IN_BUFFER_ZONE: "§cYou cannot claim a first chunk to close to another territory"
+  CHUNK_IN_BUFFER_ZONE: "§cYou cannot claim a first chunk too close to another territory (minimum §e{0}§c chunks away)"
   MAX_CHUNK_LIMIT_REACHED: "§cYou reached the maximum number of chunks claimed, upgrade your town to get more available chunks"
   CHUNK_NOT_ADJACENT: "§cThis chunk is not adjacent to your town"
   CHUNK_CLAIMED_SUCCESS_REGION: "Regional chunk claimed !"

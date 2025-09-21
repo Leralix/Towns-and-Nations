@@ -99,4 +99,33 @@ class ChunkUtilTest extends BasicTest {
 
         assertTrue(ChunkUtil.chunkContainsBuildings(chunkWithBuilding, townData));
     }
+
+    @Test
+    void test_getChunksInRadius(){
+        assertEquals(1, ChunkUtil.getChunksInRadius(world.getChunkAt(0,0), 0).size());
+        assertEquals(5, ChunkUtil.getChunksInRadius(world.getChunkAt(0,0), 1).size());
+        assertEquals(13, ChunkUtil.getChunksInRadius(world.getChunkAt(0,0), 2).size());
+        assertEquals(29, ChunkUtil.getChunksInRadius(world.getChunkAt(0,0), 3).size());
+    }
+
+    @Test
+    void test_isChunkInBufferZone(){
+        TownData townDataBuffer = TownDataStorage.getInstance().newTown("townBuffer");
+        TownData townToClaim = TownDataStorage.getInstance().newTown("townToClaim");
+
+        NewClaimedChunkStorage newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
+
+        int x = 0;
+        int z = 0;
+
+        newClaimedChunkStorage.claimTownChunk(world.getChunkAt(x,z), townDataBuffer.getID());
+
+        ClaimedChunk2 chunkInBuffer = newClaimedChunkStorage.get(world.getChunkAt(x+2,z));
+        ClaimedChunk2 chunkOutsideBuffer = newClaimedChunkStorage.get(world.getChunkAt(x+3,z));
+
+
+        assertTrue(ChunkUtil.isInBufferZone(chunkInBuffer, townToClaim));
+        assertFalse(ChunkUtil.isInBufferZone(chunkOutsideBuffer, townToClaim));
+
+    }
 }
