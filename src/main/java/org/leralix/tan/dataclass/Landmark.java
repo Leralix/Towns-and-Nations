@@ -12,6 +12,9 @@ import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.WildernessChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.events.EventManager;
+import org.leralix.tan.events.events.LandmarkClaimedInternalEvent;
+import org.leralix.tan.events.events.LandmarkUnclaimedInternalEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
@@ -58,14 +61,12 @@ public class Landmark {
     }
 
     public void setOwner(TownData newOwner) {
-        setOwnerID(newOwner.getID());
-    }
-
-    private void setOwnerID(String newOwnerID) {
-        this.ownerID = newOwnerID;
+        EventManager.getInstance().callEvent(new LandmarkClaimedInternalEvent(this, newOwner));
+        this.ownerID = newOwner.getID();
     }
 
     public void removeOwnership() {
+        EventManager.getInstance().callEvent(new LandmarkUnclaimedInternalEvent(this, getOwner()));
         this.ownerID = null;
     }
 

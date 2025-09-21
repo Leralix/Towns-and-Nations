@@ -100,4 +100,14 @@ public class NewsletterEvents implements TanListener {
     public void onTownDeleted(TownDeletedEvent event) {
         newsletterStorage.register(new TownDeletedNews(event.getTown(), event.getExecutor()));
     }
+
+    @EventHandler
+    public void onLandmarkClaimed(LandmarkClaimedEvent event) {
+        newsletterStorage.register(new LandmarkClaimedNewsletter(event.getLandmark(), event.getNewOwner()));
+    }
+
+    @EventHandler
+    public void onLandmarkUnclaimed(LandmarkUnclaimedEvent event) {
+        newsletterStorage.register(new LandmarkUnclaimedNewsletter(event.getLandmark(), event.getOldOwner()));
+    }
 }

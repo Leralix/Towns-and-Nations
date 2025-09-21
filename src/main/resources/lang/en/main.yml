@@ -1040,6 +1040,7 @@ language:
   #Greeting
   NEWSLETTER_GREETING: "§fYou have §b{0}§f unread news"
   CLICK_TO_OPEN_NEWSLETTER: "[Click to open your newsletter]"
+  #Single newsletter
   NEWSLETTER_PLAYER_APPLICATION: "§fTown application from §3{0}"
   NEWSLETTER_PLAYER_APPLICATION_DESC1: "§3{0}§f has applied to join {1}"
   NEWSLETTER_PLAYER_APPLICATION_DESC2: "§fLeft click to manage applications"
@@ -1053,7 +1054,6 @@ language:
   NEWSLETTER_SUBJUGATE_PROPOSAL: "§fSubjugate proposal from {0}"
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC1: "§f{0}§f asked {1}§f for its vassalage"
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§fLeft click to access the proposal"
-  #Newsletter Broadcast
   TOWN_CREATED_NEWSLETTER_TITLE: "New town created"
   TOWN_CREATED_NEWSLETTER: "§e{0}§f has created the town {1}"
   TOWN_DELETED_NEWSLETTER_TITLE: "Town deleted"
@@ -1088,6 +1088,10 @@ language:
   NEWSLETTER_DATE: "§fDate:§e {0}"
   ATTACK_CANCELLED: "{0}§f has cancelled their attack on {1}"
   JOIN_REGION_PROPOSAL_NEWSLETTER: "{0}§f has proposed to join the region {1}"
+  LANDMARK_CLAIMED_NEWSLETTER_TITLE: "Landmark claimed"
+  LANDMARK_CLAIMED_NEWSLETTER: "{0}§f has claimed §e{1}"
+  LANDMARK_UNCLAIMED_NEWSLETTER_TITLE: "Landmark unclaimed"
+  LANDMARK_UNCLAIMED_NEWSLETTER: "{0}§f no longer control §e{1}"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cYou cannot claim this chunk"
   #DateTime format

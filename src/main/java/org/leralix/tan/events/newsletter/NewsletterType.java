@@ -20,7 +20,9 @@ public enum NewsletterType {
     ATTACK_DECLARED("attack_declared_newsletter"),
     ATTACK_WON_BY_ATTACKER("attack_won_by_attackers_newsletter"),
     ATTACK_WON_BY_DEFENDER("attack_won_by_defender_newsletter"),
-    ATTACK_CANCELLED("attack_cancelled_newsletter");
+    ATTACK_CANCELLED("attack_cancelled_newsletter"),
+    LANDMARK_CLAIMED("landmark_claimed_newsletter"),
+    LANDMARK_UNCLAIMED("landmark_unclaimed_newsletter");
 
     private final String databaseName;
 
