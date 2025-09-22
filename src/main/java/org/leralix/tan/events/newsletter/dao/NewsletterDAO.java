@@ -34,6 +34,8 @@ public class NewsletterDAO {
         subDaos.put(NewsletterType.TERRITORY_VASSAL_INDEPENDENT, new TerritoryVassalIndependentDAO(dataSource));
         subDaos.put(NewsletterType.DIPLOMACY_ACCEPTED, new DiplomacyAcceptedDAO(dataSource));
         subDaos.put(NewsletterType.DIPLOMACY_PROPOSAL, new DiplomacyProposalDAO(dataSource));
+        subDaos.put(NewsletterType.LANDMARK_CLAIMED, new LandmarkClaimedDAO(dataSource));
+        subDaos.put(NewsletterType.LANDMARK_UNCLAIMED, new LandmarkUnclaimedDAO(dataSource));
         subDaos.put(NewsletterType.ATTACK_DECLARED, new AttackDeclaredDAO(dataSource));
         subDaos.put(NewsletterType.ATTACK_WON_BY_ATTACKER, new AttackWonByAttackerDAO(dataSource));
         subDaos.put(NewsletterType.ATTACK_WON_BY_DEFENDER, new AttackWonByDefenderDAO(dataSource));
