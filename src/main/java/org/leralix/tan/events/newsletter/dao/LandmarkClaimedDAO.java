@@ -22,14 +22,14 @@ public class LandmarkClaimedDAO extends NewsletterSubDAO<LandmarkClaimedNewslett
         String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                 "id VARCHAR(36) PRIMARY KEY, " +
                 "landmarkID VARCHAR(36) NOT NULL, " +
-                "newOwnerID VARCHAR(36) NOT NULL, " +
+                "newOwnerID VARCHAR(36) NOT NULL " +
                 ")";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to create diplomacy proposal newsletter table", e);
+            throw new RuntimeException("Failed to create " + TABLE_NAME, e);
         }
     }
 

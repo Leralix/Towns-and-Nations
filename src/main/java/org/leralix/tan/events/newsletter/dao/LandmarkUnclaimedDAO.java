@@ -22,7 +22,7 @@ public class LandmarkUnclaimedDAO extends NewsletterSubDAO<LandmarkUnclaimedNews
         String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                 "id VARCHAR(36) PRIMARY KEY, " +
                 "landmarkID VARCHAR(36) NOT NULL, " +
-                "oldOwnerID VARCHAR(36) NOT NULL, " +
+                "oldOwnerID VARCHAR(36) NOT NULL " +
                 ")";
 
         try (Connection conn = dataSource.getConnection();
