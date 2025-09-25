@@ -46,6 +46,10 @@ public class LandmarkClaimedNewsletter extends Newsletter {
         TerritoryData newOwner = TerritoryUtil.getTerritory(newOwnerID);
         Landmark landmark = LandmarkStorage.getInstance().get(landmarkID);
 
+        if(landmark == null || newOwner == null){
+            return null;
+        }
+
         return IconManager.getInstance().get(Material.CHEST)
                 .setName(Lang.LANDMARK_CLAIMED_NEWSLETTER_TITLE.get(lang))
                 .setDescription(Lang.LANDMARK_CLAIMED_NEWSLETTER.get(lang, newOwner.getColoredName(), landmark.getName()))

@@ -49,6 +49,10 @@ public class LandmarkUnclaimedNewsletter extends Newsletter {
         TerritoryData oldOwner = TerritoryUtil.getTerritory(oldOwnerID);
         Landmark landmark = LandmarkStorage.getInstance().get(landmarkID);
 
+        if(landmark == null || oldOwner == null){
+            return null;
+        }
+
         return IconManager.getInstance().get(Material.CHEST)
                 .setName(Lang.LANDMARK_UNCLAIMED_NEWSLETTER_TITLE.get(lang))
                 .setDescription(Lang.LANDMARK_UNCLAIMED_NEWSLETTER.get(lang, oldOwner.getColoredName(), landmark.getName()))
