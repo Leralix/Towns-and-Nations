@@ -145,8 +145,10 @@ public class AdminGUI {
                 Lang.ADMIN_GUI_DELETE_LANDMARK.get(langType),
                 Lang.ADMIN_GUI_DELETE_LANDMARK_DESC1.get(langType));
 
+        ItemStack ressources = landmark.getResources();
+        
         ItemStack setReward = HeadUtils.createCustomItemStack(landmark.getResources(),
-                Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(langType),
+                Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(langType, ressources.getAmount(), ressources.getType().name().toLowerCase()),
                 Lang.SPECIFIC_LANDMARK_ICON_SWITCH_REWARD.get(langType));
 
         GuiItem changeLandmarkNameGui = ItemBuilder.from(changeLandmarkName).asGuiItem(event -> {

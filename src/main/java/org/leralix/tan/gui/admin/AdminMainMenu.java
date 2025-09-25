@@ -24,7 +24,7 @@ public class AdminMainMenu extends BasicGui {
         gui.setItem(2, 7, getLandmarkButton());
         gui.setItem(2, 8, getWarButton());
 
-        gui.setItem(4, 1, GuiUtil.createBackArrow(player, p -> player.closeInventory()));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> player.closeInventory()));
 
         gui.open(player);
     }
