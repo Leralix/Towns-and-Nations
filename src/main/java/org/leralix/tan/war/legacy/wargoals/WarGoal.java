@@ -22,22 +22,20 @@ public abstract class WarGoal {
 
     public abstract IconBuilder getIcon(LangType langType);
 
-    public abstract String getDisplayName();
+    public abstract String getDisplayName(LangType langType);
 
     public abstract void applyWarGoal(TerritoryData winner, TerritoryData loser);
 
     public abstract boolean isCompleted();
 
-    protected IconBuilder buildIcon(Material material, List<String> description){
+    protected IconBuilder buildIcon(Material material, List<String> description, LangType langType){
         ItemStack itemStack = new ItemStack(material);
 
         return IconManager.getInstance().get(itemStack)
-                .setName(getDisplayName())
-                .setDescription(
-                        description
-                );
+                .setName(getDisplayName(langType))
+                .setDescription(description);
     }
 
-    public abstract String getCurrentDesc();
+    public abstract String getCurrentDesc(LangType langType);
 
 }

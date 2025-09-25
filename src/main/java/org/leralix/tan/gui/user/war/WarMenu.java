@@ -63,7 +63,7 @@ public class WarMenu extends BasicGui {
         List<String> description = new ArrayList<>();
         description.add(Lang.WAR_GOAL_LIST_BUTTON_DESC1.get(langType));
         for(WarGoal goal : war.getGoals(warRole)) {
-            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(langType, goal.getCurrentDesc()));
+            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(langType, goal.getCurrentDesc(langType)));
         }
 
         // If no goals are set, add a message
@@ -95,7 +95,7 @@ public class WarMenu extends BasicGui {
         List<String> description = new ArrayList<>();
         description.add(Lang.WAR_ENEMY_GOAL_LIST_DESC1.get(langType));
         for(WarGoal goal : war.getGoals(warRole.opposite())) {
-            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(langType, goal.getCurrentDesc()));
+            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(langType, goal.getCurrentDesc(langType)));
         }
 
         // If no goals are set, add a message

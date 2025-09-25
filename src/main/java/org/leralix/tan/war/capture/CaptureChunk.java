@@ -91,19 +91,19 @@ public class CaptureChunk {
         int nbAttackers = attackers.size();
 
         if(fortProtectingChunk.isPresent()){
-            message = Lang.WAR_INFO_CHUNK_PROTECTED.get(fortProtectingChunk.get().getPosition(), nbAttackers, nbDefenders);
+            message = Lang.WAR_INFO_CHUNK_PROTECTED.get(Lang.getServerLang(), fortProtectingChunk.get().getPosition(), nbAttackers, nbDefenders);
         }
         else if(nbAttackers == nbDefenders){
-            message = Lang.WAR_INFO_CONTESTED.get(score, nbAttackers, nbDefenders);
+            message = Lang.WAR_INFO_CONTESTED.get(Lang.getServerLang(), score, nbAttackers, nbDefenders);
         }
         else if(isCaptured()){
-            message = Lang.WAR_INFO_CHUNK_CAPTURED.get(territoryChunk.getOccupier().getColoredName(), nbAttackers, nbDefenders);
+            message = Lang.WAR_INFO_CHUNK_CAPTURED.get(Lang.getServerLang(), territoryChunk.getOccupier().getColoredName(), nbAttackers, nbDefenders);
         }
         else if (isLiberated()){
-            message = Lang.WAR_INFO_CHUNK_OWNED.get(nbAttackers, nbDefenders);
+            message = Lang.WAR_INFO_CHUNK_OWNED.get(Lang.getServerLang(), nbAttackers, nbDefenders);
         }
         else {
-            message = Lang.WAR_INFO_CONTESTED.get(score, nbAttackers, nbDefenders);
+            message = Lang.WAR_INFO_CONTESTED.get(Lang.getServerLang(), score, nbAttackers, nbDefenders);
         }
 
         return message;

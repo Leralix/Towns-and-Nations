@@ -56,14 +56,14 @@ public class TerritoryRanksMenu extends IteratorGUI {
                     event.setCancelled(true);
 
                     if(!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.CREATE_RANK)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                         return;
                     }
                     if(territoryData.getNumberOfRank() >= nbRanks){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_RANK_CAP_REACHED.get(tanPlayer));
+                        player.sendMessage(Lang.TOWN_RANK_CAP_REACHED.get(tanPlayer));
                         return;
                     }
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(tanPlayer));
+                    player.sendMessage(Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new CreateRank(territoryData, p -> new TerritoryRanksMenu(player, territoryData).open()));
                 })
                 .asGuiItem(player);
@@ -81,16 +81,16 @@ public class TerritoryRanksMenu extends IteratorGUI {
         return iconManager.get(rank.getRankIcon())
                 .setName(rank.getColoredName())
                 .setDescription(
-                        Lang.GUI_RANK_NUMBER_PLAYER_WITH_ROLE.get(tanPlayer, rank.getNumberOfPlayer()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get()
+                        Lang.GUI_RANK_NUMBER_PLAYER_WITH_ROLE.get(langType, rank.getNumberOfPlayer()),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType)
                 )
                 .setAction(action -> {
                     if(!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_RANKS)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(langType));
                         return;
                     }
                     if(territoryData.getRank(tanPlayer).getLevel() <= rank.getLevel() && !territoryData.isLeader(tanPlayer)){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get(tanPlayer));
+                        player.sendMessage(Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get(langType));
                         return;
                     }
                     new RankManagerMenu(player, territoryData, rank).open();

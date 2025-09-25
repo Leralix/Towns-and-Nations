@@ -72,7 +72,7 @@ public class ChooseWarGoal extends BasicGui {
 
                             if(conquerAlreadyUsed){
                                 SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
-                                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_ONLY_ONE_CONQUER_WAR_GOAL.get(tanPlayer));
+                                player.sendMessage(Lang.GUI_ONLY_ONE_CONQUER_WAR_GOAL.get(tanPlayer));
                                 return;
                             }
 

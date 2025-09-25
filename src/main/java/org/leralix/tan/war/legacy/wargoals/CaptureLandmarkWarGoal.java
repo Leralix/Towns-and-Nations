@@ -33,12 +33,12 @@ public class CaptureLandmarkWarGoal extends WarGoal {
         description.add(Lang.GUI_SELECTED_LANDMARK_TO_CAPTURE.get(langType, getLandmark().getName()));
         description.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(langType));
 
-        return buildIcon(Material.DIAMOND, description);
+        return buildIcon(Material.DIAMOND, description, langType);
     }
 
     @Override
-    public String getDisplayName() {
-        return Lang.CONQUER_WAR_GOAL.get();
+    public String getDisplayName(LangType langType) {
+        return Lang.CONQUER_WAR_GOAL.get(langType);
     }
 
     @Override
@@ -60,8 +60,8 @@ public class CaptureLandmarkWarGoal extends WarGoal {
     }
 
     @Override
-    public String getCurrentDesc() {
-        return Lang.GUI_CAPTURE_LANDMARK_CURRENT_DESC.get(getLandmark().getName());
+    public String getCurrentDesc(LangType langType) {
+        return Lang.GUI_CAPTURE_LANDMARK_CURRENT_DESC.get(Lang.getServerLang(), getLandmark().getName());
     }
 
 }

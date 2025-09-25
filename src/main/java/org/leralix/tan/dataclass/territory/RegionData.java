@@ -21,6 +21,7 @@ import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TerritoryIndependanceInternalEvent;
 import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
@@ -159,7 +160,7 @@ public class RegionData extends TerritoryData {
         removeFromBalance(Constants.territoryClaimRegionCost());
 
         NewClaimedChunkStorage.getInstance().claimRegionChunk(chunk, getID());
-        player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_CLAIMED_SUCCESS_REGION.get(player));
+        player.sendMessage(Lang.CHUNK_CLAIMED_SUCCESS_REGION.get(player));
         return true;
     }
 
@@ -251,21 +252,23 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public void broadCastMessage(String message) {
+    public void broadCastMessage(FilledLang message) {
         for (TerritoryData townData : getSubjects())
             townData.broadCastMessage(message);
     }
 
     @Override
-    public void broadcastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix) {
-        for (TerritoryData townData : getSubjects())
+    public void broadcastMessageWithSound(FilledLang message, SoundEnum soundEnum, boolean addPrefix) {
+        for (TerritoryData townData : getSubjects()){
             townData.broadcastMessageWithSound(message, soundEnum, addPrefix);
+        }
     }
 
     @Override
-    public void broadcastMessageWithSound(String message, SoundEnum soundEnum) {
-        for (TerritoryData townData : getSubjects())
+    public void broadcastMessageWithSound(FilledLang message, SoundEnum soundEnum) {
+        for (TerritoryData townData : getSubjects()){
             townData.broadcastMessageWithSound(message, soundEnum);
+        }
     }
 
     @Override
@@ -328,7 +331,7 @@ public class RegionData extends TerritoryData {
         for (String playerUUID : getOrderedPlayerIDList()) {
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
             ITanPlayer playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
-            ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate, Lang.GUI_TOWN_MEMBER_DESC1.get(playerIterateData.getRegionRank().getColoredName()));
+            ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate, Lang.GUI_TOWN_MEMBER_DESC1.get(tanPlayer.getLang(), playerIterateData.getRegionRank().getColoredName()));
 
             GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> event.setCancelled(true));
             res.add(playerButton);

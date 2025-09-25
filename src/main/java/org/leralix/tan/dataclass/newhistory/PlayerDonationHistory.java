@@ -29,6 +29,6 @@ public class PlayerDonationHistory extends TransactionHistory {
     @Override
     public String addLoreLine() {
         OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(getTransactionParty()));
-        return Lang.DONATION_PAYMENT_HISTORY_LORE.get(player.getName(), StringUtil.getColoredMoney(getAmount()));
+        return Lang.DONATION_PAYMENT_HISTORY_LORE.get(Lang.getServerLang(), player.getName(), StringUtil.getColoredMoney(getAmount()));
     }
 }

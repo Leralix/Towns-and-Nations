@@ -17,7 +17,7 @@ public class SkipDay extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.DEBUG_SKIP_DAY.get();
+        return Lang.DEBUG_SKIP_DAY.getDefault();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class SkipDay extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         DailyTasks.executeMidnightTasks();
-        commandSender.sendMessage(Lang.COMMAND_GENERIC_SUCCESS.get());
+        commandSender.sendMessage(Lang.COMMAND_GENERIC_SUCCESS.getDefault());
     }
 }
 

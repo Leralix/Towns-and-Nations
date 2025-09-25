@@ -71,10 +71,10 @@ public class RegionDeletedNews extends Newsletter {
         if (tanPlayer == null)
             return null;
         ItemStack itemStack = HeadUtils.makeSkullB64(
-                Lang.REGION_DELETED_NEWSLETTER_TITLE.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=",
+                Lang.REGION_DELETED_NEWSLETTER_TITLE.get(lang), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDljMTgzMmU0ZWY1YzRhZDljNTE5ZDE5NGIxOTg1MDMwZDI1NzkxNDMzNGFhZjI3NDVjOWRmZDYxMWQ2ZDYxZCJ9fX0=",
                 Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
-                Lang.REGION_DELETED_NEWSLETTER.get(tanPlayer.getNameStored(), regionName),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+                Lang.REGION_DELETED_NEWSLETTER.get(lang, tanPlayer.getNameStored(), regionName),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);

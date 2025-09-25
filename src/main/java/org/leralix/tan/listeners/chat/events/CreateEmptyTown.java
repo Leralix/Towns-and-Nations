@@ -10,11 +10,9 @@ import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TownCreatedInternalEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
-import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.file.FileUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.function.Consumer;
 
@@ -32,12 +30,12 @@ public class CreateEmptyTown extends ChatListenerEvent {
         int maxSize = config.getInt("TownNameSize");
 
         if(townName.length() > maxSize){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
+            player.sendMessage(Lang.MESSAGE_TOO_LONG.get(player, maxSize));
             return false;
         }
 
         if(TownDataStorage.getInstance().isNameUsed(townName)){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
+            player.sendMessage(Lang.NAME_ALREADY_USED.get(player));
             return false;
         }
 

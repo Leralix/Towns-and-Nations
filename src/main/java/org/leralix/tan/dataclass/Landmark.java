@@ -16,6 +16,7 @@ import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.LandmarkClaimedInternalEvent;
 import org.leralix.tan.events.events.LandmarkUnclaimedInternalEvent;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -39,7 +40,7 @@ public class Landmark {
 
     public Landmark(String id, Vector3D position) {
         this.ID = id;
-        this.name = Lang.SPECIFIC_LANDMARK_ICON_DEFAULT_NAME.get(getID());
+        this.name = Lang.SPECIFIC_LANDMARK_ICON_DEFAULT_NAME.get(Lang.getServerLang(), getID());
         this.position = position;
         this.materialName = "DIAMOND";
         this.amount = 2;
@@ -136,17 +137,17 @@ public class Landmark {
     }
 
 
-    public ItemStack getIcon() {
+    public ItemStack getIcon(LangType langType) {
         Material rewardMaterial = Material.valueOf(materialName);
         ItemStack icon = new ItemStack(rewardMaterial, amount);
         ItemMeta meta = icon.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(ChatColor.GREEN + getName());
-            List<String> description = getBaseDescription(rewardMaterial);
+            List<String> description = getBaseDescription(langType);
             if (isOwned())
-                description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_OWNER.get(getOwner().getName()));
+                description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_OWNER.get(langType, getOwner().getName()));
             else
-                description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER.get());
+                description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER.get(langType));
 
             meta.setLore(description);
         }
@@ -154,10 +155,10 @@ public class Landmark {
         return icon;
     }
 
-    public List<String> getBaseDescription(Material material) {
+    public List<String> getBaseDescription(LangType langType) {
         List<String> description = new ArrayList<>();
-        description.add(Lang.DISPLAY_COORDINATES.get(position.getX(), position.getY(), position.getZ()));
-        description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(amount, material.name().toLowerCase()));
+        description.add(Lang.DISPLAY_COORDINATES.get(langType, position.getX(), position.getY(), position.getZ()));
+        description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(langType, amount, materialName.toLowerCase()));
         return description;
     }
 

@@ -14,6 +14,7 @@ import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.war.WarMenu;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -28,7 +29,7 @@ public class OpenRelationMenu extends IteratorGUI {
     private final TownRelation relation;
 
     public OpenRelationMenu(Player player, TerritoryData territoryData, TownRelation relation) {
-        super(player, Lang.HEADER_RELATION_WITH.get(player, relation.getName()), 6);
+        super(player, Lang.HEADER_RELATION_WITH.get(player, relation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
         this.territoryData = territoryData;
         this.relation = relation;
         open();
@@ -51,7 +52,7 @@ public class OpenRelationMenu extends IteratorGUI {
                 .setAction(
                         action -> {
                             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TOWN_RELATION)) {
-                                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                                 return;
                             }
                             new RemoveRelationMenu(player, territoryData, relation);
@@ -65,7 +66,7 @@ public class OpenRelationMenu extends IteratorGUI {
                 .setAction(
                         action -> {
                             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TOWN_RELATION)) {
-                                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                                 return;
                             }
                             new AddRelationMenu(player, territoryData, relation);
@@ -96,7 +97,7 @@ public class OpenRelationMenu extends IteratorGUI {
                 if (relation == TownRelation.WAR && event.isRightClick()) {
                     WarStorage warStorage = WarStorage.getInstance();
                     if (warStorage.isTerritoryAtWarWith(territoryData, otherTerritory)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_ATTACK_ALREADY_ATTACKING.get(tanPlayer));
+                        player.sendMessage(Lang.GUI_TOWN_ATTACK_ALREADY_ATTACKING.get(tanPlayer));
                         SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                         return;
                     }

@@ -13,6 +13,7 @@ import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
@@ -51,7 +52,8 @@ public class LandmarkNoOwnerMenu extends BasicGui {
     }
 
     private @NotNull GuiItem getLandmarkIcon(Landmark landmark) {
-        return ItemBuilder.from(landmark.getIcon()).asGuiItem(event -> event.setCancelled(true));
+        LangType lang = tanPlayer.getLang();
+        return ItemBuilder.from(landmark.getIcon(lang)).asGuiItem(event -> event.setCancelled(true));
     }
 
     private @NotNull GuiItem getClaimButton() {
@@ -107,7 +109,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
                             confirm -> {
                                 playerTown.removeFromBalance(cost);
                                 landmark.setOwner(playerTown);
-                                playerTown.broadcastMessageWithSound(Lang.GUI_LANDMARK_CLAIMED.get(tanPlayer), GOOD);
+                                playerTown.broadcastMessageWithSound(Lang.GUI_LANDMARK_CLAIMED.get(), GOOD);
                                 PlayerGUI.dispatchLandmarkGui(player, landmark);
                             },
                             cancel -> open()

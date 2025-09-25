@@ -14,7 +14,7 @@ public class PlayerSelectTimezoneMenu extends IteratorGUI {
 
 
     public PlayerSelectTimezoneMenu(Player player){
-        super(player, Lang.HEADER_SELECT_TIMEZONE.get(), 4);
+        super(player, Lang.HEADER_SELECT_TIMEZONE.get(player), 4);
         open();
     }
 
@@ -32,7 +32,7 @@ public class PlayerSelectTimezoneMenu extends IteratorGUI {
             timezones.add(
                     iconManager.get(IconKey.TIMEZONE_BUTTON)
                             .setName(timeZoneEnum.getName(tanPlayer.getLang()))
-                            .setDescription(Lang.GUI_GENERIC_CLICK_TO_MODIFY.get())
+                            .setDescription(Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(langType))
                             .setAction(
                                     action -> {
                                         tanPlayer.setTimeZone(timeZoneEnum);

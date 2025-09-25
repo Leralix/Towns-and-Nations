@@ -65,13 +65,13 @@ public abstract class TerritoryMenu extends BasicGui {
                         return;
                     }
                     if(!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(langType));
+                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(langType));
                         SoundUtil.playSound(player,NOT_ALLOWED);
                         return;
                     }
                     ItemStack itemMaterial = action.getCursor();
                     territoryData.setIcon(new CustomIcon(itemMaterial));
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get(langType));
+                    player.sendMessage(Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get(langType));
                     SoundUtil.playSound(player, SoundEnum.GOOD);
                     open();
                 })

@@ -1,23 +1,24 @@
 package org.leralix.tan.war.legacy;
 
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 
 public enum WarRole {
 
-    MAIN_ATTACKER(Lang.MAIN_ATTACKER_NAME.get()),
-    MAIN_DEFENDER(Lang.MAIN_DEFENDER_NAME.get()),
-    OTHER_ATTACKER(Lang.OTHER_ATTACKER_NAME.get()),
-    OTHER_DEFENDER(Lang.OTHER_DEFENDER_NAME.get()),
-    NEUTRAL(Lang.NEUTRAL_NAME.get());
+    MAIN_ATTACKER(Lang.MAIN_ATTACKER_NAME),
+    MAIN_DEFENDER(Lang.MAIN_DEFENDER_NAME),
+    OTHER_ATTACKER(Lang.OTHER_ATTACKER_NAME),
+    OTHER_DEFENDER(Lang.OTHER_DEFENDER_NAME),
+    NEUTRAL(Lang.NEUTRAL_NAME);
 
-    final String name;
+    final Lang name;
 
-    WarRole(String name){
+    WarRole(Lang name) {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
+    public String getName(LangType langType) {
+        return name.get(langType);
     }
 
     public WarRole opposite() {

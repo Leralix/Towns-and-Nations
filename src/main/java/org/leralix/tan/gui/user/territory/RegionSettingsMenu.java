@@ -56,7 +56,7 @@ public class RegionSettingsMenu extends SettingsMenus {
                 .setAction(event -> {
                     event.setCancelled(true);
                     if (!regionData.isLeader(tanPlayer)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
+                        player.sendMessage(Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
                         return;
                     }
                     PlayerGUI.openRegionChangeOwnership(player, 0);
@@ -75,7 +75,7 @@ public class RegionSettingsMenu extends SettingsMenus {
                 .setAction(event -> {
                     event.setCancelled(true);
                     if (!regionData.isLeader(tanPlayer)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
+                        player.sendMessage(Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
                         return;
                     }
                     if (regionData.isCapital()) {
@@ -90,7 +90,7 @@ public class RegionSettingsMenu extends SettingsMenus {
                     }
 
                     PlayerGUI.openConfirmMenu(player, Lang.GUI_CONFIRM_DELETE_REGION.get(tanPlayer, regionData.getName()), confirm -> {
-                        FileUtil.addLineToHistory(Lang.REGION_DELETED_NEWSLETTER.get(tanPlayer, player.getName(), regionData.getName()));
+                        FileUtil.addLineToHistory(Lang.REGION_DELETED_NEWSLETTER.get(player.getName(), regionData.getName()));
 
                         EventManager.getInstance().callEvent(new RegionDeletednternalEvent(regionData, tanPlayer));
                         regionData.delete();

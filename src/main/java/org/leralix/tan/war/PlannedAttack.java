@@ -15,14 +15,15 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.DefenderAcceptDemandsBeforeWarInternalEvent;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.DateUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.capture.CaptureManager;
 import org.leralix.tan.war.legacy.CreateAttackData;
 import org.leralix.tan.war.legacy.CurrentAttack;
@@ -54,7 +55,7 @@ public class PlannedAttack {
         this.war = createAttackData.getWar();
         this.warRole = createAttackData.getAttackingSide();
 
-        this.name = Lang.BASIC_ATTACK_NAME.get(war.getMainAttacker().getName(), war.getMainDefender().getName());
+        this.name = Lang.BASIC_ATTACK_NAME.get(Lang.getServerLang(), war.getMainAttacker().getName(), war.getMainDefender().getName());
 
         this.isAdminApproved = !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AdminApproval", false);
 
@@ -132,7 +133,7 @@ public class PlannedAttack {
         return endTime;
     }
 
-    public void broadCastMessageWithSound(String message, SoundEnum soundEnum) {
+    public void broadCastMessageWithSound(FilledLang message, SoundEnum soundEnum) {
         Collection<TerritoryData> territoryData = getAttackingTerritories();
         territoryData.addAll(getDefendingTerritories());
         for (TerritoryData territory : territoryData) {
@@ -181,7 +182,7 @@ public class PlannedAttack {
         attackersID.add(territoryData.getID());
     }
 
-    public ItemStack getAdminIcon() {
+    public ItemStack getAdminIcon(LangType langType) {
 
         long startDate = getStartTime() - new Date().getTime() / 50;
         long attackDuration = getEndTime() - getStartTime();
@@ -191,19 +192,19 @@ public class PlannedAttack {
         if (itemMeta != null) {
             itemMeta.setDisplayName(ChatColor.GREEN + name);
             ArrayList<String> lore = new ArrayList<>();
-            lore.add(Lang.ATTACK_ICON_DESC_1.get(war.getMainAttacker().getName()));
-            lore.add(Lang.ATTACK_ICON_DESC_2.get(war.getMainDefender().getName()));
-            lore.add(Lang.ATTACK_ICON_DESC_3.get(getNumberOfAttackers()));
-            lore.add(Lang.ATTACK_ICON_DESC_4.get(getNumberOfDefenders()));
-            lore.add(Lang.ATTACK_ICON_DESC_6.get(DateUtil.getDateStringFromTicks(startDate)));
-            lore.add(Lang.ATTACK_ICON_DESC_7.get(DateUtil.getDateStringFromTicks(attackDuration)));
+            lore.add(Lang.ATTACK_ICON_DESC_1.get(langType, war.getMainAttacker().getName()));
+            lore.add(Lang.ATTACK_ICON_DESC_2.get(langType, war.getMainDefender().getName()));
+            lore.add(Lang.ATTACK_ICON_DESC_3.get(langType, getNumberOfAttackers()));
+            lore.add(Lang.ATTACK_ICON_DESC_4.get(langType, getNumberOfDefenders()));
+            lore.add(Lang.ATTACK_ICON_DESC_6.get(langType, DateUtil.getDateStringFromTicks(startDate)));
+            lore.add(Lang.ATTACK_ICON_DESC_7.get(langType, DateUtil.getDateStringFromTicks(attackDuration)));
             if (isAdminApproved) {
-                lore.add(Lang.ATTACK_ICON_DESC_ADMIN_APPROVED.get());
+                lore.add(Lang.ATTACK_ICON_DESC_ADMIN_APPROVED.get(langType));
             } else {
-                lore.add(Lang.ATTACK_ICON_DESC_ADMIN_NOT_APPROVED.get());
-                lore.add(Lang.LEFT_CLICK_TO_AUTHORIZE.get());
-                lore.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get());
-                lore.add(Lang.ATTACK_WILL_NOT_TRIGGER_IF_NOT_APPROVED.get());
+                lore.add(Lang.ATTACK_ICON_DESC_ADMIN_NOT_APPROVED.get(langType));
+                lore.add(Lang.LEFT_CLICK_TO_AUTHORIZE.get(langType));
+                lore.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(langType));
+                lore.add(Lang.ATTACK_WILL_NOT_TRIGGER_IF_NOT_APPROVED.get(langType));
             }
             itemMeta.setLore(lore);
         }
@@ -216,21 +217,22 @@ public class PlannedAttack {
         long startDate = getStartTime() - new Date().getTime() / 50;
         long attackDuration = getEndTime() - getStartTime();
         String exactTimeStart = TimeZoneManager.getInstance().formatDateForPlayer(tanPlayer, Instant.ofEpochSecond(getStartTime() / 20));
+        LangType langType = tanPlayer.getLang();
 
         ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (itemMeta != null) {
             itemMeta.setDisplayName(ChatColor.GREEN + name);
             ArrayList<String> lore = new ArrayList<>();
-            lore.add(Lang.ATTACK_ICON_DESC_1.get(war.getMainAttacker().getName()));
-            lore.add(Lang.ATTACK_ICON_DESC_2.get(war.getMainDefender().getName()));
-            lore.add(Lang.ATTACK_ICON_DESC_3.get(getNumberOfAttackers()));
-            lore.add(Lang.ATTACK_ICON_DESC_4.get(getNumberOfDefenders()));
-            lore.add(Lang.ATTACK_ICON_DESC_6.get(DateUtil.getDateStringFromTicks(startDate), exactTimeStart));
-            lore.add(Lang.ATTACK_ICON_DESC_7.get(DateUtil.getDateStringFromTicks(attackDuration)));
-            lore.add(Lang.ATTACK_ICON_DESC_8.get(getTerritoryRole(territoryConcerned).getName()));
+            lore.add(Lang.ATTACK_ICON_DESC_1.get(langType, war.getMainAttacker().getName()));
+            lore.add(Lang.ATTACK_ICON_DESC_2.get(langType, war.getMainDefender().getName()));
+            lore.add(Lang.ATTACK_ICON_DESC_3.get(langType, getNumberOfAttackers()));
+            lore.add(Lang.ATTACK_ICON_DESC_4.get(langType, getNumberOfDefenders()));
+            lore.add(Lang.ATTACK_ICON_DESC_6.get(langType, DateUtil.getDateStringFromTicks(startDate), exactTimeStart));
+            lore.add(Lang.ATTACK_ICON_DESC_7.get(langType, DateUtil.getDateStringFromTicks(attackDuration)));
+            lore.add(Lang.ATTACK_ICON_DESC_8.get(langType, getTerritoryRole(territoryConcerned).getName(langType)));
 
-            lore.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get());
+            lore.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType));
             itemMeta.setLore(lore);
         }
         itemStack.setItemMeta(itemMeta);
@@ -313,28 +315,28 @@ public class PlannedAttack {
         end();
     }
 
-    public ItemStack getAttackingIcon() {
+    public ItemStack getAttackingIcon(LangType langType) {
         ItemStack itemStack = new ItemStack(Material.IRON_HELMET);
         ItemMeta itemMeta = itemStack.getItemMeta();
         List<String> lore = new ArrayList<>();
-        itemMeta.setDisplayName(Lang.GUI_ATTACKING_SIDE_ICON.get());
-        lore.add(Lang.GUI_ATTACKING_SIDE_ICON_DESC1.get());
+        itemMeta.setDisplayName(Lang.GUI_ATTACKING_SIDE_ICON.get(langType));
+        lore.add(Lang.GUI_ATTACKING_SIDE_ICON_DESC1.get(langType));
         for (TerritoryData territoryData : getAttackingTerritories()) {
-            lore.add(Lang.GUI_ICON_LIST.get(territoryData.getBaseColoredName()));
+            lore.add(Lang.GUI_ICON_LIST.get(langType, territoryData.getBaseColoredName()));
         }
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
 
-    public ItemStack getDefendingIcon() {
+    public ItemStack getDefendingIcon(LangType langType) {
         ItemStack itemStack = new ItemStack(Material.DIAMOND_HELMET);
         ItemMeta itemMeta = itemStack.getItemMeta();
         List<String> lore = new ArrayList<>();
-        itemMeta.setDisplayName(Lang.GUI_DEFENDING_SIDE_ICON.get());
-        lore.add(Lang.GUI_DEFENDING_SIDE_ICON_DESC1.get());
+        itemMeta.setDisplayName(Lang.GUI_DEFENDING_SIDE_ICON.get(langType));
+        lore.add(Lang.GUI_DEFENDING_SIDE_ICON_DESC1.get(langType));
         for (TerritoryData territoryData : getDefendingTerritories()) {
-            lore.add(Lang.GUI_ICON_LIST.get(territoryData.getBaseColoredName()));
+            lore.add(Lang.GUI_ICON_LIST.get(langType, territoryData.getBaseColoredName()));
         }
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);

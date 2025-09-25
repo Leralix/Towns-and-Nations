@@ -26,12 +26,12 @@ public class LiberateWarGoal extends WarGoal {
         description.add(Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC1.get(langType, getTerritoryToLiberate().getName()));
         description.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(langType));
 
-        return buildIcon(Material.LANTERN, description);
+        return buildIcon(Material.LANTERN, description, langType);
     }
 
     @Override
-    public String getDisplayName() {
-        return Lang.LIBERATE_SUBJECT_WAR_GOAL.get();
+    public String getDisplayName(LangType langType) {
+        return Lang.LIBERATE_SUBJECT_WAR_GOAL.get(langType);
     }
 
     @Override
@@ -48,10 +48,10 @@ public class LiberateWarGoal extends WarGoal {
     }
 
     @Override
-    public String getCurrentDesc() {
+    public String getCurrentDesc(LangType langType) {
         if(getTerritoryToLiberate() == null)
             return null;
-        return Lang.GUI_WARGOAL_LIBERATE_WAR_GOAL_RESULT.get(getTerritoryToLiberate().getName());
+        return Lang.GUI_WARGOAL_LIBERATE_WAR_GOAL_RESULT.get(langType, getTerritoryToLiberate().getName());
     }
 
 

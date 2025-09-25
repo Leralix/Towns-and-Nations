@@ -90,7 +90,7 @@ public class OpenDiplomacyMenu extends BasicGui {
                 )
                 .setAction(action -> {
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TOWN_RELATION)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                         return;
                     }
                     new OpenDiplomacyProposalsMenu(player, territoryData);

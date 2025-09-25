@@ -11,8 +11,9 @@ import org.leralix.tan.enums.ClaimAction;
 import org.leralix.tan.enums.ClaimType;
 import org.leralix.tan.enums.MapSettings;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.utils.text.TanChatUtils;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class MapCommand extends PlayerSubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.MAP_COMMAND_DESC.get();
+        return Lang.MAP_COMMAND_DESC.getDefault();
     }
 
     public int getArguments() {
@@ -55,23 +56,24 @@ public class MapCommand extends PlayerSubCommand {
             openMap(player, new MapSettings(args[1], args[2]));
             return;
         }
-
-        player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
-        player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        player.sendMessage(Lang.TOO_MANY_ARGS_ERROR.get(langType));
+        player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
     }
 
     public static void openMap(Player player, MapSettings settings) {
         Chunk currentChunk = player.getLocation().getChunk();
+        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
         int radius = 4;
         Map<Integer, TextComponent> text = new HashMap<>();
-        TextComponent claimType = new TextComponent(Lang.MAP_CLAIM_TYPE.get());
+        TextComponent claimType = new TextComponent(Lang.MAP_CLAIM_TYPE.get(langType));
         claimType.setHoverEvent(null);
         claimType.setClickEvent(null);
         claimType.setColor(net.md_5.bungee.api.ChatColor.GRAY);
         text.put(-4, claimType);
-        TextComponent typeButton = settings.getMapTypeButton();
+        TextComponent typeButton = settings.getMapTypeButton(langType);
         text.put(-3, typeButton);
-        TextComponent actionButton = settings.getClaimTypeButton();
+        TextComponent actionButton = settings.getClaimTypeButton(langType);
         text.put(-2, actionButton);
 
         // Envoi de l'en-tête

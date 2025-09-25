@@ -23,7 +23,7 @@ public class NoPlayerData implements ITanPlayer {
 
     @Override
     public String getNameStored() {
-        return Lang.NO_LEADER.get();
+        return Lang.NO_LEADER.getDefault();
     }
 
     @Override

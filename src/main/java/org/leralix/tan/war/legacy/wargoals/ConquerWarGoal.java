@@ -27,12 +27,12 @@ public class ConquerWarGoal extends WarGoal {
         description.add(Lang.CONQUER_WAR_GOAL_DESC1.get(langType, numberOfChunks));
         description.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(langType));
 
-        return buildIcon(Material.IRON_SWORD, description);
+        return buildIcon(Material.IRON_SWORD, description, langType);
     }
 
     @Override
-    public String getDisplayName() {
-        return Lang.CONQUER_WAR_GOAL.get();
+    public String getDisplayName(LangType langType) {
+        return Lang.CONQUER_WAR_GOAL.get(langType);
     }
 
     @Override
@@ -48,8 +48,8 @@ public class ConquerWarGoal extends WarGoal {
     }
 
     @Override
-    public String getCurrentDesc() {
-        return Lang.GUI_CONQUER_CHUNK_CURRENT_DESC.get(numberOfChunks);
+    public String getCurrentDesc(LangType langType) {
+        return Lang.GUI_CONQUER_CHUNK_CURRENT_DESC.get(langType, numberOfChunks);
     }
 
 

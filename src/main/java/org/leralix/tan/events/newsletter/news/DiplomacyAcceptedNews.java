@@ -78,12 +78,14 @@ public class DiplomacyAcceptedNews extends Newsletter {
         if(receivingTerritory == null)
             return;
 
+        LangType lang = PlayerDataStorage.getInstance().get(player).getLang();
+
         if(isRelationWorse){
-            player.sendMessage(getTANString() + Lang.BROADCAST_RELATION_WORSEN.get(proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName()));
+            player.sendMessage(getTANString() + Lang.BROADCAST_RELATION_WORSEN.get(proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName(lang)));
             SoundUtil.playSound(player, SoundEnum.BAD);
         }
         else{
-            player.sendMessage(getTANString() + Lang.BROADCAST_RELATION_IMPROVE.get(proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName()));
+            player.sendMessage(getTANString() + Lang.BROADCAST_RELATION_IMPROVE.get(proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName(lang)));
             SoundUtil.playSound(player, SoundEnum.GOOD);
        }
     }
@@ -98,10 +100,10 @@ public class DiplomacyAcceptedNews extends Newsletter {
         if(receivingTerritory == null)
             return null;
 
-        ItemStack itemStack = HeadUtils.makeSkullURL(Lang.DIPLOMACY_ACCEPT_NEWSLETTER_TITLE.get(), "http://textures.minecraft.net/texture/b62c08805bd9c957da3450554a09e994042f54695db855c1c2cb47ef442e1bf6",
+        ItemStack itemStack = HeadUtils.makeSkullURL(Lang.DIPLOMACY_ACCEPT_NEWSLETTER_TITLE.get(lang), "http://textures.minecraft.net/texture/b62c08805bd9c957da3450554a09e994042f54695db855c1c2cb47ef442e1bf6",
                 Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
-                Lang.BROADCAST_RELATION_WORSEN.get(proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName()),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+                Lang.BROADCAST_RELATION_WORSEN.get(lang, proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName(lang)),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
         return ItemBuilder.from(itemStack).asGuiItem(e -> {
             e.setCancelled(true);

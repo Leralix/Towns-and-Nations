@@ -1,6 +1,7 @@
 package org.leralix.tan.enums;
 
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 
 public enum ChatScope {
     CITY(Lang.CITY_SCOPE),
@@ -14,7 +15,7 @@ public enum ChatScope {
         this.name = name;
     }
 
-    public Lang getName() {
-        return name;
+    public String getName(LangType langType) {
+        return name.get(langType);
     }
 }

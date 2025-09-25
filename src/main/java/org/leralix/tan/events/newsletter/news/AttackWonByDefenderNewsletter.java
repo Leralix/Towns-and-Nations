@@ -54,10 +54,10 @@ public class AttackWonByDefenderNewsletter extends Newsletter {
             return null;
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
-                Lang.ATTACK_WON_BY_DEFENDER_TITLE.get(),
+                Lang.ATTACK_WON_BY_DEFENDER_TITLE.get(lang),
                 Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
-                Lang.ATTACK_WON_BY_DEFENDER.get(attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+                Lang.ATTACK_WON_BY_DEFENDER.get(lang, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);

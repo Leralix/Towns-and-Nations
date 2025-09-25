@@ -8,6 +8,7 @@ import org.bukkit.scoreboard.Team;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 
@@ -48,10 +49,10 @@ public class TeamUtils {
         Scoreboard board = scoreboardManager.getNewScoreboard();
 
         for (TownRelation relation : TownRelation.values()) {
-            Team team = board.getTeam(relation.getName().toLowerCase());
+            Team team = board.getTeam(relation.getName(Lang.getServerLang()).toLowerCase());
 
             if (team == null) {
-                team = board.registerNewTeam(relation.getName().toLowerCase());
+                team = board.registerNewTeam(relation.getName(Lang.getServerLang()).toLowerCase());
             }
 
             team.setColor(relation.getColor());
@@ -85,10 +86,10 @@ public class TeamUtils {
         if(relation == null)
             return;
 
-        Team playerTeam = scoreboard.getTeam(relation.getName().toLowerCase());
+        Team playerTeam = scoreboard.getTeam(relation.getName(Lang.getServerLang()).toLowerCase());
         if(playerTeam == null){ //Player did not have a town when he logged in. No team was created for him.
             TeamUtils.setIndividualScoreBoard(player);
-            playerTeam = scoreboard.getTeam(relation.getName().toLowerCase());
+            playerTeam = scoreboard.getTeam(relation.getName(Lang.getServerLang()).toLowerCase());
         }
         if(playerTeam == null)
             return;

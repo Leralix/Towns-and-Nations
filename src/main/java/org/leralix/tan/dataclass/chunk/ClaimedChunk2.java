@@ -85,8 +85,8 @@ public abstract class ClaimedChunk2 {
     protected abstract boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location);
 
     void playerCantPerformAction(Player player) {
-        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_ACTION_NO_PERMISSION.get(player));
-        player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_BELONGS_TO.get(player, getOwner().getName()));
+        player.sendMessage(Lang.PLAYER_ACTION_NO_PERMISSION.get(player));
+        player.sendMessage(Lang.CHUNK_BELONGS_TO.get(player, getOwner().getName()));
     }
 
     public abstract void unclaimChunk(Player player);
@@ -118,7 +118,7 @@ public abstract class ClaimedChunk2 {
         if (canTerritoryClaim(territoryData)) {
             return true;
         }
-        player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(player, getOwner().getBaseColoredName()));
+        player.sendMessage(Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(player, getOwner().getBaseColoredName()));
         return false;
     }
 

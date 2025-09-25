@@ -4,9 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
-import org.leralix.tan.storage.SudoPlayerStorage;
-import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.SudoPlayerStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ public class SudoPlayer extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.ADMIN_SUDO_COMMAND.get();
+        return Lang.ADMIN_SUDO_COMMAND.getDefault();
     }
 
     @Override
@@ -53,7 +52,7 @@ public class SudoPlayer extends SubCommand {
         else if (args.length == 2) {
             Player target = Bukkit.getPlayer(args[1]);
             if (target == null) {
-                commandSender.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_FOUND.get());
+                commandSender.sendMessage(Lang.PLAYER_NOT_FOUND.getDefault());
                 return;
             }
             if (commandSender instanceof Player player && target.getUniqueId().equals(player.getUniqueId())){
@@ -64,8 +63,8 @@ public class SudoPlayer extends SubCommand {
 
         }
         else {
-            commandSender.sendMessage(TanChatUtils.getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
-            commandSender.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+            commandSender.sendMessage(Lang.NOT_ENOUGH_ARGS_ERROR.getDefault());
+            commandSender.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
         }
     }
 }

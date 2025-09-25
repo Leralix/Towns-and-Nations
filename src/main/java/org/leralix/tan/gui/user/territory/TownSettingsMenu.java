@@ -81,7 +81,7 @@ public class TownSettingsMenu extends SettingsMenus {
                 .setDescription(desc)
                 .setAction(action -> {
                             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
-                                player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
+                                player.sendMessage(Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
                                 return;
                             }
                             RightClickListener.register(player, new ChangeCapital(townData, p -> open()));
@@ -112,14 +112,14 @@ public class TownSettingsMenu extends SettingsMenus {
                     event.setCancelled(true);
 
                     if (!player.hasPermission("tan.base.town.quit")) {
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get());
+                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(langType));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
 
                     if (townData.isLeader(tanPlayer)) {
                         SoundUtil.playSound(player, NOT_ALLOWED);
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.get(tanPlayer));
+                        player.sendMessage(Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.get(tanPlayer));
                         return;
                     }
 
@@ -127,15 +127,15 @@ public class TownSettingsMenu extends SettingsMenus {
                         RegionData regionData = townData.getRegion();
                         if (regionData.isLeader(tanPlayer)) {
                             SoundUtil.playSound(player, NOT_ALLOWED);
-                            player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER.get(tanPlayer));
+                            player.sendMessage(Lang.CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER.get(tanPlayer));
                         }
                     }
 
                     PlayerGUI.openConfirmMenu(player, Lang.GUI_CONFIRM_PLAYER_LEAVE_TOWN.get(tanPlayer, tanPlayer.getNameStored()), confirm -> {
                         player.closeInventory();
                         townData.removePlayer(tanPlayer);
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_PLAYER_LEFT_THE_TOWN.get(tanPlayer));
-                        townData.broadcastMessageWithSound(Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(tanPlayer, tanPlayer.getNameStored()), BAD);
+                        player.sendMessage(Lang.CHAT_PLAYER_LEFT_THE_TOWN.get(tanPlayer));
+                        townData.broadcastMessageWithSound(Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(tanPlayer.getNameStored()), BAD);
                     }, remove -> open());
                 })
                 .asGuiItem(player);
@@ -152,7 +152,7 @@ public class TownSettingsMenu extends SettingsMenus {
                 .setAction(event -> {
                     event.setCancelled(true);
                     if (!townData.isLeader(tanPlayer)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.get(tanPlayer));
+                        player.sendMessage(Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.get(tanPlayer));
                         return;
                     }
                     if (townData.isCapital()) {
@@ -167,7 +167,7 @@ public class TownSettingsMenu extends SettingsMenus {
                     }
 
                     PlayerGUI.openConfirmMenu(player, Lang.GUI_CONFIRM_PLAYER_DELETE_TOWN.get(tanPlayer, townData.getName()), confirm -> {
-                        FileUtil.addLineToHistory(Lang.TOWN_DELETED_NEWSLETTER.get(tanPlayer, player.getName(), townData.getName()));
+                        FileUtil.addLineToHistory(Lang.TOWN_DELETED_NEWSLETTER.get(player.getName(), townData.getName()));
                         EventManager.getInstance().callEvent(new TownDeletedInternalEvent(townData, tanPlayer));
                         townData.delete();
                         player.closeInventory();
@@ -208,7 +208,7 @@ public class TownSettingsMenu extends SettingsMenus {
                         new SelectNewOwnerForTownMenu(player, townData);
                     }
                     else{
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
+                        player.sendMessage(Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
                     }
                 })
                 .asGuiItem(player);

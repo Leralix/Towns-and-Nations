@@ -62,7 +62,7 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
         }
 
         if (!tanPlayer.hasTown()){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get(langType));
+            player.sendMessage(Lang.PLAYER_NO_TOWN.get(langType));
             return ListenerState.FAILURE;
         }
 

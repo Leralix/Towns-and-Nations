@@ -50,7 +50,7 @@ public class SelectNewOwnerForTownMenu extends IteratorGUI {
                 PlayerGUI.openConfirmMenu(player, Lang.GUI_CONFIRM_CHANGE_TOWN_LEADER.get(tanPlayer, townPlayer.getName()), confirm -> {
 
                     townData.setLeaderID(townPlayer.getUniqueId().toString());
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(tanPlayer, townPlayer.getName()));
+                    player.sendMessage(Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(tanPlayer, townPlayer.getName()));
                     PlayerGUI.dispatchPlayerTown(player);
 
                     player.closeInventory();

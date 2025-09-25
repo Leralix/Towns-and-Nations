@@ -53,10 +53,10 @@ public class TownDeletedNews extends Newsletter {
             return null;
 
         ItemStack itemStack = HeadUtils.makeSkullB64(
-                Lang.TOWN_DELETED_NEWSLETTER_TITLE.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
+                Lang.TOWN_DELETED_NEWSLETTER_TITLE.get(lang), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
                 Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
-                Lang.TOWN_DELETED_NEWSLETTER.get(tanPlayer.getNameStored(), oldTownName),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+                Lang.TOWN_DELETED_NEWSLETTER.get(lang, tanPlayer.getNameStored(), oldTownName),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
 
         return ItemBuilder.from(itemStack).asGuiItem(event -> {

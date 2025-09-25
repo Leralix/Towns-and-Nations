@@ -19,6 +19,7 @@ import org.leralix.tan.gui.user.RenterPropertyMenu;
 import org.leralix.tan.gui.user.property.BuyOrRentPropertyMenu;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -43,8 +44,10 @@ public class PropertySignListener implements Listener {
                         PropertyData propertyData = TownDataStorage.getInstance().get(ids[0]).getProperty(ids[1]);
                         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
+                            LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+
                             if(!canPlayerOpenMenu(player, clickedBlock)){
-                                player.sendMessage(Lang.NO_TRADE_ALLOWED_EMBARGO.get());
+                                player.sendMessage(Lang.NO_TRADE_ALLOWED_EMBARGO.get(langType));
                                 return;
                             }
 
@@ -58,7 +61,7 @@ public class PropertySignListener implements Listener {
                                     new BuyOrRentPropertyMenu(player, propertyData);
                                 }
                                 else
-                                    player.sendMessage(Lang.PROPERTY_NOT_FOR_SALE_OR_RENT.get());
+                                    player.sendMessage(Lang.PROPERTY_NOT_FOR_SALE_OR_RENT.get(langType));
                             }
                         } else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                             propertyData.showBox(player);

@@ -5,7 +5,6 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.*;
 
@@ -14,33 +13,35 @@ public class RelationData {
     private final Map<TownRelation, List<String>> townRelations = new LinkedHashMap<>();
 
 
-    public RelationData(){
+    public RelationData() {
         this.townRelations.put(TownRelation.WAR, new ArrayList<>());
         this.townRelations.put(TownRelation.EMBARGO, new ArrayList<>());
         this.townRelations.put(TownRelation.NON_AGGRESSION, new ArrayList<>());
         this.townRelations.put(TownRelation.ALLIANCE, new ArrayList<>());
     }
 
-    public void setRelation(TownRelation relation, TerritoryData territoryID){
+    public void setRelation(TownRelation relation, TerritoryData territoryID) {
         setRelation(relation, territoryID.getID());
     }
 
-    public void setRelation(TownRelation relation, String territoryID){
+    public void setRelation(TownRelation relation, String territoryID) {
         removeAllRelationWith(territoryID);
-        if(!townRelations.containsKey(relation))
+        if (!townRelations.containsKey(relation))
             return;
         addRelation(relation, territoryID);
     }
 
 
-    public void addRelation(TownRelation relation, String townID){
+    public void addRelation(TownRelation relation, String townID) {
         townRelations.get(relation).add(townID);
     }
-    public void removeRelation(TownRelation relation, String townID){
-        if(!townRelations.containsKey(relation))
+
+    public void removeRelation(TownRelation relation, String townID) {
+        if (!townRelations.containsKey(relation))
             return;
         townRelations.get(relation).remove(townID);
     }
+
     public List<String> getTerritoriesIDWithRelation(TownRelation relation) {
         return townRelations.get(relation);
     }
@@ -62,36 +63,37 @@ public class RelationData {
         }
         return TownRelation.NEUTRAL;
     }
+
     public TownRelation getRelationWith(TerritoryData territory) {
         return getRelationWith(territory.getID());
     }
 
-    public void cleanAll(TerritoryData territoryData){
+    public void cleanAll(TerritoryData territoryData) {
 
-        for(TownRelation relation : TownRelation.values()){
+        for (TownRelation relation : TownRelation.values()) {
 
             Collection<String> territories = townRelations.get(relation);
-            if(territories == null){
+            if (territories == null) {
                 continue;
             }
 
             for (String otherTerritory : territories) {
 
                 TerritoryData otherTerritoryData = TerritoryUtil.getTerritory(otherTerritory);
-                if(otherTerritoryData == null)
+                if (otherTerritoryData == null)
                     continue;
 
                 otherTerritoryData.getRelations().removeAllRelationWith(territoryData.getID());
                 otherTerritoryData.broadcastMessageWithSound(
-                        TanChatUtils.getTANString() + Lang.WARNING_OTHER_TOWN_HAS_BEEN_DELETED.get(territoryData.getBaseColoredName(),relation.getColoredName()),
+                        Lang.WARNING_OTHER_TOWN_HAS_BEEN_DELETED.get(territoryData.getBaseColoredName(), relation.getColoredName(Lang.getServerLang())),
                         SoundEnum.MINOR_BAD
                 );
             }
         }
     }
 
-    public void removeAllRelationWith(String townID){
-        for(List<String> territories : townRelations.values()){
+    public void removeAllRelationWith(String townID) {
+        for (List<String> territories : townRelations.values()) {
             territories.remove(townID);
         }
     }

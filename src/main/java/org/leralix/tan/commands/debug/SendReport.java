@@ -18,7 +18,7 @@ public class SendReport extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.DEBUG_SEND_REPORT.get();
+        return Lang.DEBUG_SEND_REPORT.getDefault();
     }
 
     @Override
@@ -40,7 +40,7 @@ public class SendReport extends SubCommand {
             commandSender.sendMessage(Lang.DEBUG_REPORT_CREATED.get(player));
         }
         else {
-            commandSender.sendMessage(Lang.DEBUG_REPORT_CREATED.get());
+            commandSender.sendMessage(Lang.DEBUG_REPORT_CREATED.getDefault());
         }
     }
 }

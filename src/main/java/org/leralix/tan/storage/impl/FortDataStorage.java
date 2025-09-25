@@ -79,7 +79,7 @@ public class FortDataStorage extends FortStorage {
 
     @Override
     public Fort register(Vector3D position, TerritoryData owningTerritory) {
-        FortData fort = new FortData("F" + newFortID, position, Lang.DEFAULT_FORT_NAME.get( newFortID), owningTerritory);
+        FortData fort = new FortData("F" + newFortID, position, Lang.DEFAULT_FORT_NAME.get(Lang.getServerLang(), newFortID), owningTerritory);
         forts.put(fort.getID(), fort);
         save();
         return fort;

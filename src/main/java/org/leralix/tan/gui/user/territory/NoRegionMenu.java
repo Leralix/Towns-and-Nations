@@ -50,15 +50,15 @@ public class NoRegionMenu extends BasicGui {
             }
 
             if (!tanPlayer.hasTown()) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get(tanPlayer));
+                player.sendMessage(Lang.PLAYER_NO_TOWN.get(tanPlayer));
                 return;
             }
             TownData townData = TownDataStorage.getInstance().get(player);
             double townMoney = townData.getBalance();
             if (townMoney < regionCost) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), regionCost - townMoney));
+                player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), regionCost - townMoney));
             } else {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(tanPlayer));
+                player.sendMessage(Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(tanPlayer));
                 player.closeInventory();
                 int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
                 PlayerChatListenerStorage.register(player, new CreateRegion(cost));

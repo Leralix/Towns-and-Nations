@@ -31,7 +31,7 @@ public class LandmarkChestListener implements Listener {
                         String customData = value.asString();
                         Landmark landmark = LandmarkStorage.getInstance().get(customData);
                         if(!tanPlayer.hasTown()){
-                            player.sendMessage(Lang.PLAYER_NO_TOWN.get());
+                            player.sendMessage(Lang.PLAYER_NO_TOWN.get(tanPlayer.getLang()));
                             return;
                         }
                         PlayerGUI.dispatchLandmarkGui(player, landmark);

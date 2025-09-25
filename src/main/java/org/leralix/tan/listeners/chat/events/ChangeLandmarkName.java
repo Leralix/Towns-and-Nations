@@ -3,13 +3,11 @@ package org.leralix.tan.listeners.chat.events;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.Landmark;
-import org.leralix.tan.listeners.chat.ChatListenerEvent;
-import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
+import org.leralix.tan.listeners.chat.ChatListenerEvent;
 
 import java.util.function.Consumer;
 
@@ -26,11 +24,11 @@ public class ChangeLandmarkName extends ChatListenerEvent {
     public boolean execute(Player player, String message) {
         int nameMaxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("landmarkNameMaxSize",25);
         if(message.length() >= nameMaxSize){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(nameMaxSize));
+            player.sendMessage(Lang.MESSAGE_TOO_LONG.get(player, nameMaxSize));
             return false;
         }
         landmark.setName(message);
-        player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get());
+        player.sendMessage(Lang.CHANGE_MESSAGE_SUCCESS.get(player));
         SoundUtil.playSound(player, SoundEnum.MINOR_LEVEL_UP);
         openGui(guiCallback,player);
         return true;

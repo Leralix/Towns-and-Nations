@@ -25,8 +25,8 @@ public class SalaryPaymentHistory extends TransactionHistory {
     @Override
     public String addLoreLine() {
         TerritoryData territoryData = TerritoryUtil.getTerritory(getTerritoryDataID());
-        if (territoryData == null) return Lang.TERRITORY_NOT_FOUND.get();
+        if (territoryData == null) return Lang.TERRITORY_NOT_FOUND.getDefault();
         RankData rankData = territoryData.getRank(Integer.parseInt(getTransactionParty()));
-        return Lang.SALARY_PAYMENT_HISTORY_LORE.get(rankData.getColoredName(), StringUtil.getColoredMoney(-getAmount()));
+        return Lang.SALARY_PAYMENT_HISTORY_LORE.get(Lang.getServerLang(), rankData.getColoredName(), StringUtil.getColoredMoney(-getAmount()));
     }
 }

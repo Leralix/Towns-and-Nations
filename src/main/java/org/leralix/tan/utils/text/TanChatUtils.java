@@ -16,7 +16,7 @@ public class TanChatUtils {
      * @return the prefix for every chat message in the plugin.
      */
     public static String getTANString(){
-        return Lang.PLUGIN_STRING.get();
+        return Lang.PLUGIN_STRING.getDefault();
     }
 
     /**
@@ -24,7 +24,7 @@ public class TanChatUtils {
      * @return the prefix for every debug or admin chat message in the plugin.
      */
     public static String getTANDebugString(){
-        return Lang.PLUGIN_DEBUG_STRING.get();
+        return Lang.PLUGIN_DEBUG_STRING.getDefault();
     }
 
 }

@@ -3,7 +3,6 @@ package org.leralix.tan.commands.debug;
 import org.bukkit.command.CommandSender;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.utils.file.ArchiveUtil;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class CreateBackup extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.DEBUG_CREATE_BACKUP.get();
+        return Lang.DEBUG_CREATE_BACKUP.getDefault();
     }
 
     @Override
@@ -36,7 +35,7 @@ public class CreateBackup extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         ArchiveUtil.archiveFiles();
-        commandSender.sendMessage(TanChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
+        commandSender.sendMessage(Lang.COMMAND_GENERIC_SUCCESS.getDefault());
     }
 
 }

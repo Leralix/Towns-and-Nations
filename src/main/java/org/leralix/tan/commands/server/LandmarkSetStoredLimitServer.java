@@ -17,7 +17,7 @@ public class LandmarkSetStoredLimitServer extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.LANDMARK_UPDATE_SERVER_DESC.get();
+        return Lang.LANDMARK_UPDATE_SERVER_DESC.getDefault();
     }
 
     @Override
@@ -41,21 +41,21 @@ public class LandmarkSetStoredLimitServer extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         if (args.length < 3) {
-            commandSender.sendMessage(Lang.INVALID_ARGUMENTS.get());
+            commandSender.sendMessage(Lang.INVALID_ARGUMENTS.getDefault());
         } else {
             Landmark landmark = LandmarkStorage.getInstance().get(args[1]);
             if(landmark == null){
-                commandSender.sendMessage(Lang.LANDMARK_NOT_FOUND.get());
+                commandSender.sendMessage(Lang.LANDMARK_NOT_FOUND.getDefault());
                 return;
             }
             String value = args[2];
             if(value == null){
-                commandSender.sendMessage(Lang.INVALID_ARGUMENTS.get());
+                commandSender.sendMessage(Lang.INVALID_ARGUMENTS.getDefault());
                 return;
             }
 
             landmark.setStoredLimit(Integer.parseInt(value));
-            commandSender.sendMessage(Lang.LANDMARK_STORED_UPDATED.get(landmark.getName(), landmark.getID(), value));
+            commandSender.sendMessage(Lang.LANDMARK_STORED_UPDATED.get(Lang.getServerLang(), landmark.getName(), landmark.getID(), value));
         }
     }
 }

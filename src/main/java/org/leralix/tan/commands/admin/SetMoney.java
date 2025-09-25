@@ -8,7 +8,6 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.file.FileUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class SetMoney extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.ADMIN_SET_PLAYER_MONEY_BALANCE.get();
+        return Lang.ADMIN_SET_PLAYER_MONEY_BALANCE.getDefault();
     }
 
     @Override
@@ -33,37 +32,38 @@ public class SetMoney extends SubCommand {
     public String getSyntax() {
         return "/tanadmin setmoney <player> <amount>";
     }
-    public List<String> getTabCompleteSuggestions(CommandSender player, String lowerCase, String[] args){
+
+    public List<String> getTabCompleteSuggestions(CommandSender player, String lowerCase, String[] args) {
         return payPlayerSuggestion(args);
     }
 
     @Override
     public void perform(CommandSender player, String[] args) {
         if (args.length < 3) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+            player.sendMessage(Lang.NOT_ENOUGH_ARGS_ERROR.getDefault());
+            player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
         } else if (args.length == 3) {
             ITanPlayer target = PlayerDataStorage.getInstance().get(Bukkit.getOfflinePlayer(args[1]));
             setMoney(player, args, target);
 
         } else {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+            player.sendMessage(Lang.TOO_MANY_ARGS_ERROR.get().getDefault());
+            player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
         }
     }
 
-    static void setMoney(CommandSender player, String[] args, ITanPlayer target) {
+    static void setMoney(CommandSender commandSender, String[] args, ITanPlayer target) {
         double amount;
         try {
             amount = Double.parseDouble(args[2]);
         } catch (NumberFormatException e) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
+            commandSender.sendMessage(Lang.SYNTAX_ERROR_AMOUNT.get().getDefault());
             return;
         }
 
         EconomyUtil.setBalance(target, amount);
         target.setBalance(amount);
-        player.sendMessage(TanChatUtils.getTANString() + Lang.SET_MONEY_COMMAND_SUCCESS.get(amount, target.getNameStored()));
-        FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_SET_MONEY.get(player.getName(),amount, target.getNameStored()));
+        commandSender.sendMessage(Lang.SET_MONEY_COMMAND_SUCCESS.get(amount, target.getNameStored()).getDefault());
+        FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_SET_MONEY.get(commandSender.getName(), amount, target.getNameStored()));
     }
 }

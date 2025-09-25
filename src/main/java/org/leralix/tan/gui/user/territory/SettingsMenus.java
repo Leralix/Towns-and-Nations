@@ -59,13 +59,13 @@ public abstract class SettingsMenus extends BasicGui {
                         Lang.GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC1.get(tanPlayer, territoryData.getName()),
                         Lang.GUI_GENERIC_LEFT_CLICK_TO_MODIFY.get(tanPlayer),
                         Lang.GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC3.get(tanPlayer, cost),
-                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get())
+                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(tanPlayer))
                 .setAction(action -> {
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
+                        player.sendMessage(Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
                         return;
                     }
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.ENTER_NEW_VALUE.get(tanPlayer));
+                    player.sendMessage(Lang.ENTER_NEW_VALUE.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangeTerritoryName(territoryData, cost, p -> open()));
                 })
                 .asGuiItem(player);
@@ -76,14 +76,14 @@ public abstract class SettingsMenus extends BasicGui {
                 .setName(Lang.GUI_SETTINGS_CHANGE_TOWN_MESSAGE.get(tanPlayer))
                 .setDescription(
                         Lang.GUI_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1.get(tanPlayer, territoryData.getDescription()),
-                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get()
+                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(tanPlayer)
                 )
                 .setAction(action -> {
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
+                        player.sendMessage(Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
                         return;
                     }
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.ENTER_NEW_VALUE.get(tanPlayer));
+                    player.sendMessage(Lang.ENTER_NEW_VALUE.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangeTerritoryDescription(territoryData, p -> open()));
                 })
                 .asGuiItem(player);
@@ -95,14 +95,14 @@ public abstract class SettingsMenus extends BasicGui {
                 .setDescription(
                         Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(tanPlayer),
                         Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(tanPlayer, territoryData.getChunkColor() + territoryData.getChunkColorInHex()),
-                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get()
+                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(tanPlayer)
                 )
                 .setAction(action -> {
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
+                        player.sendMessage(Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
                         return;
                     }
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT.get(tanPlayer));
+                    player.sendMessage(Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangeColor(territoryData, p -> open()));
                 })
                 .asGuiItem(player);

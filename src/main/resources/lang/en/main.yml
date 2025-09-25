@@ -747,6 +747,7 @@ language:
   PERCENT_COMPLETED: "§6{0}%§f completed"
   CLICK_HERE_TO_OPEN_BROWSER: "§fClick here to open crowdin in your browser"
   #Region GUI
+  GUI_ADMIN_PLAYER_ICON: "§aManage player"
   GUI_REGION_CREATE: "§aCreate a region"
   GUI_REGION_CREATE_DESC1: "§fCost: §6{0}{MONEY_CHAR}"
   GUI_REGION_CREATE_DESC2: "§fLeft click to create a new region with your town as regional capital"

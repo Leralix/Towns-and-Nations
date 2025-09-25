@@ -4,9 +4,7 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
-import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.utils.text.StringUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.function.Consumer;
 
@@ -21,12 +19,12 @@ public class ChangeColor extends ChatListenerEvent {
     @Override
     public boolean execute(Player player, String message) {
         if(!StringUtil.isValidColorCode(message)){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR.get());
+            player.sendMessage(Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR.get(player));
             return false;
         }
 
         territoryData.setChunkColor(StringUtil.hexColorToInt(message));
-        player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS.get());
+        player.sendMessage(Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS.get(player));
         openGui(guiCallback,player);
         return true;
     }

@@ -30,9 +30,9 @@ public class PlayerTaxHistory extends TransactionHistory {
     public String addLoreLine() {
         OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(getTransactionParty()));
         if (getAmount() >= 0) {
-            return Lang.TAX_PAYMENT_HISTORY_LORE.get(player.getName(), StringUtil.getColoredMoney(getAmount()));
+            return Lang.TAX_PAYMENT_HISTORY_LORE.get(Lang.getServerLang(), player.getName(), StringUtil.getColoredMoney(getAmount()));
         } else {
-            return Lang.TAX_PAYMENT_HISTORY_LORE_NOT_ENOUGH_MONEY.get(player.getName());
+            return Lang.TAX_PAYMENT_HISTORY_LORE_NOT_ENOUGH_MONEY.get(Lang.getServerLang(), player.getName());
         }
     }
 }

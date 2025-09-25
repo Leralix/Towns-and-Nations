@@ -82,7 +82,7 @@ public class PlayerTaxLine extends ProfitLine {
         GuiItem lowerTaxButton = ItemBuilder.from(lowerTax).asGuiItem(event -> {
             event.setCancelled(true);
             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(lang));
+                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(lang));
                 return;
             }
 
@@ -90,7 +90,7 @@ public class PlayerTaxLine extends ProfitLine {
             int amountToRemove = event.isShiftClick() && currentTax > 9 ? 10 : 1;
 
             if (currentTax <= 0) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_TREASURY_CANT_TAX_LESS.get(lang));
+                player.sendMessage(Lang.GUI_TREASURY_CANT_TAX_LESS.get(lang));
                 return;
             }
             SoundUtil.playSound(player, SoundEnum.REMOVE);
@@ -101,14 +101,14 @@ public class PlayerTaxLine extends ProfitLine {
         GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
             event.setCancelled(true);
             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(lang));
+                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(lang));
                 return;
             }
             if (event.isLeftClick()) {
                 new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.PLAYER_TAX);
             }
             else if (event.isRightClick()) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
+                player.sendMessage(Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
                 PlayerChatListenerStorage.register(player, new SetTerritoryTax(territoryData, p -> new TreasuryMenu(player, territoryData)));
                 player.closeInventory();
             }
@@ -117,7 +117,7 @@ public class PlayerTaxLine extends ProfitLine {
             event.setCancelled(true);
 
             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(lang));
+                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(lang));
                 return;
             }
 

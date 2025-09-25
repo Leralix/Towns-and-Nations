@@ -12,6 +12,7 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.PremiumStorage;
 import org.leralix.tan.utils.graphic.PrefixUtil;
@@ -34,16 +35,16 @@ public class PlayerJoinListener implements Listener {
         }
 
         TeamUtils.setIndividualScoreBoard(player);
-
+        LangType langType = tanPlayer.getLang();
         if(player.hasPermission("tan.debug") && !TownsAndNations.getPlugin().isLatestVersion()){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.NEW_VERSION_AVAILABLE.get(TownsAndNations.getPlugin().getLatestVersion()));
-            player.sendMessage(TanChatUtils.getTANString() + Lang.NEW_VERSION_AVAILABLE_2.get());
+            player.sendMessage(Lang.NEW_VERSION_AVAILABLE.get(langType, TownsAndNations.getPlugin().getLatestVersion()));
+            player.sendMessage(Lang.NEW_VERSION_AVAILABLE_2.get(langType));
         }
 
         int nbNewsletterForPlayer = NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player);
         if (nbNewsletterForPlayer > 0) {
-            player.sendMessage(Lang.NEWSLETTER_STRING.get() + Lang.NEWSLETTER_GREETING.get(nbNewsletterForPlayer));
-            TextComponent message = new TextComponent(Lang.CLICK_TO_OPEN_NEWSLETTER.get());
+            player.sendMessage(Lang.NEWSLETTER_STRING.get(langType) + Lang.NEWSLETTER_GREETING.get(langType, nbNewsletterForPlayer));
+            TextComponent message = new TextComponent(Lang.CLICK_TO_OPEN_NEWSLETTER.get(langType));
             message.setColor(ChatColor.GOLD);
             message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tan newsletter"));
             player.spigot().sendMessage(message);

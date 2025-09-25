@@ -21,7 +21,7 @@ class QuitTownServer extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.QUIT_TOWN_SERVER_DESC.get();
+        return Lang.QUIT_TOWN_SERVER_DESC.getDefault();
     }
 
     @Override
@@ -42,24 +42,24 @@ class QuitTownServer extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         if(args.length < 2){
-            commandSender.sendMessage(Lang.INVALID_ARGUMENTS.get());
+            commandSender.sendMessage(Lang.INVALID_ARGUMENTS.getDefault());
             return;
         }
 
 
         Player p = commandSender.getServer().getPlayer(args[1]);
         if(p == null){
-            commandSender.sendMessage(Lang.PLAYER_NOT_FOUND.get());
+            commandSender.sendMessage(Lang.PLAYER_NOT_FOUND.getDefault());
             return;
         }
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(p);
         TownData townData = tanPlayer.getTown();
         if(townData == null){
-            commandSender.sendMessage(Lang.PLAYER_NO_TOWN.get());
+            commandSender.sendMessage(Lang.PLAYER_NO_TOWN.get(tanPlayer));
             return;
         }
         if(townData.isLeader(tanPlayer)){
-            commandSender.sendMessage(Lang.LEADER_CANNOT_QUIT_TOWN.get());
+            commandSender.sendMessage(Lang.LEADER_CANNOT_QUIT_TOWN.get(tanPlayer));
             return;
         }
         townData.removePlayer(tanPlayer);

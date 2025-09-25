@@ -126,8 +126,8 @@ public class CreateAttackMenu extends BasicGui {
 
         List<String> availableTimeSlots = new ArrayList<>();
         availableTimeSlots.add(TimeZoneManager.getInstance().formatDateForPlayer(tanPlayer, startTime));
-        availableTimeSlots.add(Lang.AUTHORIZED_ATTACK_TIME_SLOT_TITLE.get());
-        availableTimeSlots.addAll(WarTimeSlot.getInstance().getPrintedTimeSlots(tanPlayer.getLang()));
+        availableTimeSlots.add(Lang.AUTHORIZED_ATTACK_TIME_SLOT_TITLE.get(langType));
+        availableTimeSlots.addAll(WarTimeSlot.getInstance().getPrintedTimeSlots(langType));
 
         return IconManager.getInstance().get(IconKey.WAR_START_TIME_ICON)
                 .setName(Lang.GUI_ATTACK_SET_TO_START_IN.get(tanPlayer, DateUtil.getDateStringFromTicks(attackData.getSelectedTime())))

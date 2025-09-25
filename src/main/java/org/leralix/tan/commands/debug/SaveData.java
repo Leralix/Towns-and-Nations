@@ -4,7 +4,6 @@ import org.bukkit.command.CommandSender;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.tasks.SaveStats;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +17,7 @@ public class SaveData extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.DEBUG_SAVE_ALL_DATA.get();
+        return Lang.DEBUG_SAVE_ALL_DATA.getDefault();
     }
 
     @Override
@@ -36,6 +35,6 @@ public class SaveData extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         SaveStats.saveAll();
-        commandSender.sendMessage(TanChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
+        commandSender.sendMessage(Lang.COMMAND_GENERIC_SUCCESS.getDefault());
     }
 }

@@ -137,7 +137,7 @@ public class War {
         List<WarGoal> goals = getGoals(warRole.opposite());
         List<String> goalsToString = new ArrayList<>();
         for(WarGoal goal : goals) {
-            goalsToString.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(langType, goal.getCurrentDesc()));
+            goalsToString.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(langType, goal.getCurrentDesc(langType)));
         }
 
         // If no goals are set, add a message

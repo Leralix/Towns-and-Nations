@@ -1,13 +1,12 @@
 package org.leralix.tan.commands.player;
 
 
+import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.gui.user.MainMenu;
-import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.lang.Lang;
-
-
-import org.bukkit.entity.Player;
+import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +21,7 @@ public class OpenGuiCommand extends PlayerSubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.TOWN_GUI_COMMAND_DESC.get();
+        return Lang.TOWN_GUI_COMMAND_DESC.getDefault();
     }
     public int getArguments(){ return 2;}
 
@@ -42,8 +41,9 @@ public class OpenGuiCommand extends PlayerSubCommand {
 
             getOpeningGui(player);
         }else if(args.length > 1){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+            LangType lang = PlayerDataStorage.getInstance().get(player).getLang();
+            player.sendMessage(Lang.TOO_MANY_ARGS_ERROR.get(lang));
+            player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(lang, getSyntax()));
         }
 
     }

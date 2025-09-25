@@ -15,7 +15,6 @@ import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.constants.EnabledPermissions;
 import org.leralix.tan.utils.text.NumberUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.io.File;
 import java.util.Collections;
@@ -30,7 +29,7 @@ public class ReloadCommand extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.ADMIN_RELOAD_COMMAND.get();
+        return Lang.ADMIN_RELOAD_COMMAND.getDefault();
     }
 
     public int getArguments() {
@@ -48,7 +47,7 @@ public class ReloadCommand extends SubCommand {
     }
 
     @Override
-    public void perform(CommandSender player, String[] args) {
+    public void perform(CommandSender commandSender, String[] args) {
         if (args.length == 1) {
             Plugin plugin = TownsAndNations.getPlugin();
             ConfigUtil.addCustomConfig(plugin, "config.yml", ConfigTag.MAIN);
@@ -69,11 +68,11 @@ public class ReloadCommand extends SubCommand {
             NumberUtil.init();
             EnabledPermissions.getInstance().init();
 
-            player.sendMessage(TanChatUtils.getTANString() + Lang.RELOAD_SUCCESS.get(player));
-            player.sendMessage(TanChatUtils.getTANString() + Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
+            commandSender.sendMessage(Lang.RELOAD_SUCCESS.getDefault());
+            commandSender.sendMessage(Lang.LANGUAGE_SUCCESSFULLY_LOADED.getDefault());
         } else {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get(player));
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+            commandSender.sendMessage(Lang.TOO_MANY_ARGS_ERROR.getDefault());
+            commandSender.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
         }
     }
 

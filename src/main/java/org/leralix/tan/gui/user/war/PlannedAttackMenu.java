@@ -50,13 +50,13 @@ public class PlannedAttackMenu extends BasicGui {
             ItemStack renameAttack = HeadUtils.createCustomItemStack(Material.NAME_TAG, Lang.GUI_RENAME_ATTACK.get(tanPlayer), Lang.GUI_GENERIC_CLICK_TO_RENAME.get(tanPlayer));
             GuiItem cancelButton = ItemBuilder.from(cancelAttack).asGuiItem(event -> {
                 plannedAttack.end();
-                territoryData.broadcastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(tanPlayer, plannedAttack.getWar().getMainDefender().getName()), MINOR_GOOD);
+                territoryData.broadcastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(plannedAttack.getWar().getMainDefender().getName()), MINOR_GOOD);
                 new AttackMenu(player, territoryData);
             });
 
             GuiItem renameButton = ItemBuilder.from(renameAttack).asGuiItem(event -> {
                 event.setCancelled(true);
-                player.sendMessage(TanChatUtils.getTANString() + Lang.ENTER_NEW_VALUE.get(tanPlayer));
+                player.sendMessage(Lang.ENTER_NEW_VALUE.get(tanPlayer));
                 PlayerChatListenerStorage.register(player, new ChangeAttackName(plannedAttack, p -> open()));
             });
 
@@ -85,7 +85,7 @@ public class PlannedAttackMenu extends BasicGui {
                     .setDescription(Lang.GUI_QUIT_WAR_DESC1.get(langType))
                     .setAction(event -> {
                         plannedAttack.removeBelligerent(territoryData);
-                        territoryData.broadcastMessageWithSound(Lang.TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE.get(tanPlayer, plannedAttack.getWar().getMainDefender().getName()), MINOR_GOOD);
+                        territoryData.broadcastMessageWithSound(Lang.TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE.get(plannedAttack.getWar().getMainDefender().getName()), MINOR_GOOD);
                         new AttackMenu(player, territoryData);
                     })
                     .asGuiItem(player));
@@ -121,11 +121,11 @@ public class PlannedAttackMenu extends BasicGui {
     }
 
     private @NotNull GuiItem getDefendingSidePanel() {
-        return ItemBuilder.from(plannedAttack.getDefendingIcon()).asGuiItem();
+        return ItemBuilder.from(plannedAttack.getDefendingIcon(langType)).asGuiItem();
     }
 
     private @NotNull GuiItem getAttackingSideSidePanel() {
-        return ItemBuilder.from(plannedAttack.getAttackingIcon()).asGuiItem();
+        return ItemBuilder.from(plannedAttack.getAttackingIcon(langType)).asGuiItem();
     }
 
     private @NotNull GuiItem getAttackIcon() {

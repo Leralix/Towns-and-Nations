@@ -1,9 +1,9 @@
 package org.leralix.tan.dataclass.newhistory;
 
 import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.text.StringUtil;
 
 public class PropertyBuyTaxTransaction extends TransactionHistory {
     public PropertyBuyTaxTransaction(TownData town, PropertyData propertyData, double tax) {
@@ -23,6 +23,6 @@ public class PropertyBuyTaxTransaction extends TransactionHistory {
     public String addLoreLine() {
         TownData territoryData = (TownData) getTerritoryData();
         PropertyData propertyData = territoryData.getProperty(getTransactionParty());
-        return Lang.PROPERTY_SALE_LINE.get(territoryData.getName(), propertyData.getName(), StringUtil.getColoredMoney(-getAmount()));
+        return Lang.PROPERTY_SALE_LINE.get(Lang.getServerLang(), territoryData.getName(), propertyData.getName(), StringUtil.getColoredMoney(-getAmount()));
     }
 }

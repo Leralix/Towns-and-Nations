@@ -3,6 +3,8 @@ package org.leralix.tan.utils.file;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.lang.FilledLang;
+import org.leralix.tan.lang.Lang;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -20,7 +22,7 @@ public class FileUtil {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void addLineToHistory(final String lineToAdd) {
+    public static void addLineToHistory(final FilledLang lineToAdd) {
 
         if (!ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("archiveHistory", true)) {
             return;
@@ -42,7 +44,7 @@ public class FileUtil {
 
         try (FileWriter fw = new FileWriter(archiveFile, true);
              BufferedWriter bw = new BufferedWriter(fw)) {
-            bw.write("[" + LocalDate.now() + "] " + lineToAdd);
+            bw.write("[" + LocalDate.now() + "] " + lineToAdd.getDefault());
             bw.newLine();
         } catch (IOException e) {
             TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);

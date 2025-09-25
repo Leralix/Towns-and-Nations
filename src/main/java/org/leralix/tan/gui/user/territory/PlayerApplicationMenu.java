@@ -60,12 +60,12 @@ public class PlayerApplicationMenu extends IteratorGUI {
                 event.setCancelled(true);
                 if(event.isLeftClick()){
                     if(!townData.doesPlayerHavePermission(tanPlayer, RolePermission.INVITE_PLAYER)){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
                     if(townData.isFull()){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.INVITATION_TOWN_FULL.get(tanPlayer));
+                        player.sendMessage(Lang.INVITATION_TOWN_FULL.get(tanPlayer));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                         return;
                     }
@@ -73,7 +73,7 @@ public class PlayerApplicationMenu extends IteratorGUI {
                 }
                 else if(event.isRightClick()){
                     if(!townData.doesPlayerHavePermission(tanPlayer, RolePermission.KICK_PLAYER)){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                         return;
                     }
                     townData.removePlayerJoinRequest(playerIterateData.getID());

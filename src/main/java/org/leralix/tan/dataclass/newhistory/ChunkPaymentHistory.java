@@ -22,6 +22,6 @@ public class ChunkPaymentHistory extends TransactionHistory {
 
     @Override
     public String addLoreLine() {
-        return Lang.CHUNK_PAYMENT_HISTORY_LORE.get(StringUtil.getColoredMoney(-getAmount()));
+        return Lang.CHUNK_PAYMENT_HISTORY_LORE.get(Lang.getServerLang(), StringUtil.getColoredMoney(-getAmount()));
     }
 }

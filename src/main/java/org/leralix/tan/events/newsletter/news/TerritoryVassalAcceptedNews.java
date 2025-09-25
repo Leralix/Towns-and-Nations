@@ -47,10 +47,10 @@ public class TerritoryVassalAcceptedNews extends Newsletter {
             return null;
 
         ItemStack itemStack = HeadUtils.makeSkullB64(
-                Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER_TITLE.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
+                Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER_TITLE.get(lang), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
                 Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
-                Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER.get(town.getCustomColoredName().toLegacyText(), region.getCustomColoredName().toLegacyText()),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get()
+                Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER.get(lang, town.getCustomColoredName().toLegacyText(), region.getCustomColoredName().toLegacyText()),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang)
         );
 
 

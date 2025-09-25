@@ -8,7 +8,6 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.file.FileUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class AddMoney extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.ADMIN_ADD_MONEY_TO_PLAYER.get();
+        return Lang.ADMIN_ADD_MONEY_TO_PLAYER.getDefault();
     }
 
     @Override
@@ -40,16 +39,16 @@ public class AddMoney extends SubCommand {
     public void perform(CommandSender commandSender, String[] args) {
 
         if (args.length < 2) {
-            commandSender.sendMessage(TanChatUtils.getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
-            commandSender.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+            commandSender.sendMessage(Lang.NOT_ENOUGH_ARGS_ERROR.getDefault());
+            commandSender.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
         }
         else if (args.length == 3) {
             ITanPlayer target = PlayerDataStorage.getInstance().get(Bukkit.getServer().getOfflinePlayer(args[1]));
             addMoney(commandSender, args, target);
         }
         else{
-            commandSender.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
-            commandSender.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+            commandSender.sendMessage(Lang.TOO_MANY_ARGS_ERROR.getDefault());
+            commandSender.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
         }
     }
 
@@ -58,11 +57,11 @@ public class AddMoney extends SubCommand {
         try {
             amount = Double.parseDouble(args[2]);
         } catch (NumberFormatException e) {
-            commandSender.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
+            commandSender.sendMessage(Lang.SYNTAX_ERROR_AMOUNT.getDefault());
             return;
         }
         EconomyUtil.addFromBalance(target, amount);
-        commandSender.sendMessage(TanChatUtils.getTANString() + Lang.ADD_MONEY_COMMAND_SUCCESS.get(amount, target.getNameStored()));
+        commandSender.sendMessage(Lang.ADD_MONEY_COMMAND_SUCCESS.get(amount, target.getNameStored()).getDefault());
         FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_GIVE_MONEY.get(commandSender.getName(),amount, target.getNameStored()));
     }
 }

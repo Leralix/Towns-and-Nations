@@ -26,7 +26,7 @@ public class AddRelationMenu extends IteratorGUI {
 
 
     public AddRelationMenu(Player player, TerritoryData territory, TownRelation wantedRelation) {
-        super(player, Lang.HEADER_SELECT_ADD_TERRITORY_RELATION.get(player, wantedRelation.getName()), 6);
+        super(player, Lang.HEADER_SELECT_ADD_TERRITORY_RELATION.get(player, wantedRelation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
         this.territoryData = territory;
         this.wantedRelation = wantedRelation;
         open();
@@ -67,13 +67,13 @@ public class AddRelationMenu extends IteratorGUI {
                 event.setCancelled(true);
 
                 if (otherTerritory.haveNoLeader()) {
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_DIPLOMATIC_INVITATION_NO_LEADER.get(tanPlayer));
+                    player.sendMessage(Lang.TOWN_DIPLOMATIC_INVITATION_NO_LEADER.get(tanPlayer));
                     return;
                 }
 
                 if (wantedRelation.isSuperiorTo(actualRelation)) {
                     otherTerritory.receiveDiplomaticProposal(territoryData, wantedRelation);
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(tanPlayer, otherTerritory.getName()));
+                    player.sendMessage(Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(tanPlayer, otherTerritory.getName()));
                 } else {
                     territoryData.setRelation(otherTerritory, wantedRelation);
                 }

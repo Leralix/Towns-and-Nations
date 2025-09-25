@@ -17,7 +17,7 @@ public class ColorCode extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.DEBUG_GET_COLOR_CODE.get();
+        return Lang.DEBUG_GET_COLOR_CODE.getDefault();
     }
 
     @Override

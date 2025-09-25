@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.file.FileUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,28 +97,28 @@ public class SudoPlayerStorage {
     public static void swap(Player player) {
         if(sudoPlayersID.contains(player.getUniqueId().toString())){
             removeSudoPlayer(player);
-            player.sendMessage(TanChatUtils.getTANString() + Lang.SUDO_PLAYER_REMOVED.get(player.getName()));
+            player.sendMessage(Lang.SUDO_PLAYER_REMOVED.get(player, player.getName()));
             FileUtil.addLineToHistory(Lang.HISTORY_SUDO_MODE_REMOVED.get(player.getName(),player.getName()));
         }
         else{
             addSudoPlayer(player);
-            player.sendMessage(TanChatUtils.getTANString() + Lang.SUDO_PLAYER_ADDED.get(player.getName()));
+            player.sendMessage(Lang.SUDO_PLAYER_ADDED.get(player, player.getName()));
             FileUtil.addLineToHistory(Lang.HISTORY_SUDO_MODE.get(player.getName(),player.getName()));
         }
     }
 
-    public static void swap(CommandSender player, Player target) {
+    public static void swap(CommandSender commandSender, Player target) {
         if(sudoPlayersID.contains(target.getUniqueId().toString())){
             removeSudoPlayer(target);
-            player.sendMessage(TanChatUtils.getTANString() + Lang.SUDO_PLAYER_REMOVED.get(target.getName()));
-            target.sendMessage(TanChatUtils.getTANString() + Lang.SUDO_PLAYER_REMOVED.get(target.getName()));
-            FileUtil.addLineToHistory(Lang.HISTORY_SUDO_MODE_REMOVED.get(player.getName(),target.getName()));
+            commandSender.sendMessage(Lang.SUDO_PLAYER_REMOVED.get(target.getName()).getDefault());
+            target.sendMessage(Lang.SUDO_PLAYER_REMOVED.get(target, target.getName()));
+            FileUtil.addLineToHistory(Lang.HISTORY_SUDO_MODE_REMOVED.get(commandSender.getName(),target.getName()));
         }
         else{
             addSudoPlayer(target);
-            player.sendMessage(TanChatUtils.getTANString() + Lang.SUDO_PLAYER_ADDED.get(target.getName()));
-            target.sendMessage(TanChatUtils.getTANString() + Lang.SUDO_PLAYER_ADDED.get(target.getName()));
-            FileUtil.addLineToHistory(Lang.HISTORY_SUDO_MODE.get(player.getName(),target.getName()));
+            commandSender.sendMessage(Lang.SUDO_PLAYER_ADDED.get(target.getName()).getDefault());
+            target.sendMessage(Lang.SUDO_PLAYER_ADDED.get(target, target.getName()));
+            FileUtil.addLineToHistory(Lang.HISTORY_SUDO_MODE.get(commandSender.getName(),target.getName()));
         }
     }
 }

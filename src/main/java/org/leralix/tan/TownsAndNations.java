@@ -139,7 +139,7 @@ public class TownsAndNations extends JavaPlugin {
         File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
         Lang.loadTranslations(langFolder, lang);
         DynamicLang.loadTranslations(langFolder, lang);
-        getLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
+        getLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.getDefault());
 
         getLogger().log(Level.INFO, "[TaN] -Loading Configs");
 

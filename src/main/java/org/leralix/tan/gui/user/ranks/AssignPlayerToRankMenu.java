@@ -26,7 +26,7 @@ public class AssignPlayerToRankMenu extends IteratorGUI {
     private final RankData rankData;
 
     public AssignPlayerToRankMenu(Player player, TerritoryData territoryData, RankData rankData){
-        super(player, Lang.HEADER_RANK_ADD_PLAYER.get(), 3);
+        super(player, Lang.HEADER_RANK_ADD_PLAYER.get(player), 3);
         this.territoryData = territoryData;
         this.rankData = rankData;
 
@@ -55,7 +55,7 @@ public class AssignPlayerToRankMenu extends IteratorGUI {
                 event.setCancelled(true);
                 RankData otherPlayerActualRank = territoryData.getRank(otherITanPlayer);
                 if(territoryData.getRank(player).getLevel() <= otherPlayerActualRank.getLevel() && !territoryData.isLeader(tanPlayer)){
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get(tanPlayer));
+                    player.sendMessage(Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get(tanPlayer));
                     return;
                 }
 

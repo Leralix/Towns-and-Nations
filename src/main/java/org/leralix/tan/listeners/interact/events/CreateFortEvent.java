@@ -42,12 +42,12 @@ public class CreateFortEvent extends RightClickListenerEvent {
         Block upBlock = world.getBlockAt(block.getX(), block.getY() + 1, block.getZ());
 
         if (upBlock.getType() != Material.AIR) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CANNOT_CREATE_FORT_IF_ABOVE_BLOCKED.get(tanPlayer));
+            player.sendMessage(Lang.CANNOT_CREATE_FORT_IF_ABOVE_BLOCKED.get(tanPlayer));
             return ListenerState.FAILURE;
         }
 
         if (tanTerritory.getBalance() <= Constants.getFortCost()) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, tanTerritory.getColoredName(), Constants.getFortCost() - tanTerritory.getBalance()));
+            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, tanTerritory.getColoredName(), Constants.getFortCost() - tanTerritory.getBalance()));
             return ListenerState.FAILURE;
         }
 
@@ -64,7 +64,7 @@ public class CreateFortEvent extends RightClickListenerEvent {
         // Else, only create a fort if created inside a claimed chunk
         else {
             if (!tanTerritory.getID().equals(claimedChunk.getOwnerID())) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(tanPlayer));
+                player.sendMessage(Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(tanPlayer));
                 return ListenerState.FAILURE;
             }
         }

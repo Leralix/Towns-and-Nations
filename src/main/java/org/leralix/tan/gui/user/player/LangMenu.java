@@ -44,7 +44,7 @@ public class LangMenu extends IteratorGUI {
             ItemStack langIcon = lang.getIcon();
             GuiItem langGui = ItemBuilder.from(langIcon).asGuiItem(event -> {
                 tanPlayer.setLang(lang);
-                player.sendMessage(TanChatUtils.getTANString() + Lang.GUI_LANGUAGE_CHANGED.get(tanPlayer, lang.getName()));
+                player.sendMessage(Lang.GUI_LANGUAGE_CHANGED.get(tanPlayer, lang.getName()));
                 new PlayerMenu(player);
             });
             guiItems.add(langGui);
@@ -59,7 +59,7 @@ public class LangMenu extends IteratorGUI {
                 .setName(Lang.HELP_US_TRANSLATE.get(tanPlayer))
                 .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer))
                 .setAction(event -> {
-                    TextComponent textComponent = new TextComponent(TanChatUtils.getTANString() + Lang.CLICK_HERE_TO_OPEN_BROWSER.get(tanPlayer));
+                    TextComponent textComponent = new TextComponent(Lang.CLICK_HERE_TO_OPEN_BROWSER.get(tanPlayer));
                     textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://crowdin.com/project/town-and-nation"));
                     player.spigot().sendMessage(textComponent);
                     player.closeInventory();

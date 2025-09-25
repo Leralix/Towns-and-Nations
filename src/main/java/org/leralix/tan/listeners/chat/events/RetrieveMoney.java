@@ -20,18 +20,18 @@ public class RetrieveMoney extends ChatListenerEvent {
 
         Double amount = parseStringToDouble(message);
         if(amount == null){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get(player));
+            player.sendMessage(Lang.SYNTAX_ERROR_AMOUNT.get(player));
             return false;
         }
 
         if(amount > territoryData.getBalance()){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, territoryData.getColoredName(), amount - territoryData.getBalance()));
+            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, territoryData.getColoredName(), amount - territoryData.getBalance()));
             return false;
         }
         territoryData.removeFromBalance(amount);
         EconomyUtil.addFromBalance(player, amount);
 
-        player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_RETRIEVE_MONEY_SUCCESS.get(player, amount));
+        player.sendMessage(Lang.TOWN_RETRIEVE_MONEY_SUCCESS.get(player, amount));
         SoundUtil.playSound(player, SoundEnum.MINOR_LEVEL_UP);
         return true;
     }

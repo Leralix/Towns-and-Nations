@@ -83,10 +83,10 @@ public class PlayerJoinRequestNews extends Newsletter {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
 
         ItemStack itemStack = HeadUtils.getPlayerHead(
-                Lang.NEWSLETTER_PLAYER_APPLICATION.get(offlinePlayer.getName()), offlinePlayer,
+                Lang.NEWSLETTER_PLAYER_APPLICATION.get(lang, offlinePlayer.getName()), offlinePlayer,
                 Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
-                Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(offlinePlayer.getName(), getTownData().getBaseColoredName()),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+                Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(lang, offlinePlayer.getName(), getTownData().getBaseColoredName()),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);
@@ -102,10 +102,11 @@ public class PlayerJoinRequestNews extends Newsletter {
 
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
 
-        ItemStack itemStack = HeadUtils.getPlayerHead(Lang.NEWSLETTER_PLAYER_APPLICATION.get(offlinePlayer.getName()), offlinePlayer,
-                Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(offlinePlayer.getName(), TownDataStorage.getInstance().get(townID).getBaseColoredName()),
-                Lang.NEWSLETTER_PLAYER_APPLICATION_DESC2.get(),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+        ItemStack itemStack = HeadUtils.getPlayerHead(
+                Lang.NEWSLETTER_PLAYER_APPLICATION.get(lang, offlinePlayer.getName()), offlinePlayer,
+                Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(lang, offlinePlayer.getName(), TownDataStorage.getInstance().get(townID).getBaseColoredName()),
+                Lang.NEWSLETTER_PLAYER_APPLICATION_DESC2.get(lang),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);

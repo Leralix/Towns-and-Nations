@@ -49,7 +49,7 @@ class OtherPlayerRegionNameTest extends BasicTest  {
 
         String name = entry.getData(player, "player_{player name}_region_name");
 
-        assertEquals(Lang.NO_REGION.get(), name);
+        assertEquals(Lang.NO_REGION.get(player), name);
     }
 
 }

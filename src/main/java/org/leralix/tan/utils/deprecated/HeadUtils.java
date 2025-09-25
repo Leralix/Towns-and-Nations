@@ -15,8 +15,8 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.utils.text.StringUtil;
 
 import java.net.MalformedURLException;
@@ -256,20 +256,10 @@ public class HeadUtils {
     /**
      * Create a player head displaying a town with his information
      *
-     * @param regionID The ID of the region to display
-     * @return The ItemStack displaying the town
-     */
-    public static ItemStack getRegionIcon(String regionID) {
-        return getRegionIcon(RegionDataStorage.getInstance().get(regionID));
-    }
-
-    /**
-     * Create a player head displaying a town with his information
-     *
      * @param regionData The data of the region to display
      * @return The ItemStack displaying the town
      */
-    public static ItemStack getRegionIcon(RegionData regionData) {
+    public static ItemStack getRegionIcon(RegionData regionData, LangType langType) {
         ItemStack icon = regionData.getIcon();
 
         ItemMeta meta = icon.getItemMeta();
@@ -277,12 +267,12 @@ public class HeadUtils {
             meta.setDisplayName(ChatColor.AQUA + regionData.getName());
 
             List<String> lore = new ArrayList<>();
-            lore.add(Lang.GUI_REGION_INFO_DESC0.get(regionData.getDescription()));
-            lore.add(Lang.GUI_REGION_INFO_DESC1.get(regionData.getCapital().getName()));
-            lore.add(Lang.GUI_REGION_INFO_DESC2.get(regionData.getNumberOfTownsIn()));
-            lore.add(Lang.GUI_REGION_INFO_DESC3.get(regionData.getTotalPlayerCount()));
-            lore.add(Lang.GUI_REGION_INFO_DESC4.get(regionData.getBalance()));
-            lore.add(Lang.GUI_REGION_INFO_DESC5.get(regionData.getNumberOfClaimedChunk()));
+            lore.add(Lang.GUI_REGION_INFO_DESC0.get(langType, regionData.getDescription()));
+            lore.add(Lang.GUI_REGION_INFO_DESC1.get(langType, regionData.getCapital().getName()));
+            lore.add(Lang.GUI_REGION_INFO_DESC2.get(langType, regionData.getNumberOfTownsIn()));
+            lore.add(Lang.GUI_REGION_INFO_DESC3.get(langType, regionData.getTotalPlayerCount()));
+            lore.add(Lang.GUI_REGION_INFO_DESC4.get(langType, regionData.getBalance()));
+            lore.add(Lang.GUI_REGION_INFO_DESC5.get(langType, regionData.getNumberOfClaimedChunk()));
             meta.setLore(lore);
             icon.setItemMeta(meta);
         }

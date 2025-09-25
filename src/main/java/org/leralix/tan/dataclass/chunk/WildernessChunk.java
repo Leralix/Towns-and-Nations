@@ -35,7 +35,7 @@ public class WildernessChunk extends ClaimedChunk2 {
         if(WildernessRules.getInstance().canPlayerDoInWilderness(world, permissionType)){
             return true;
         }
-        player.sendMessage(Lang.WILDERNESS_NO_PERMISSION.get());
+        player.sendMessage(Lang.WILDERNESS_NO_PERMISSION.getDefault());
         return false;
     }
 
@@ -46,7 +46,7 @@ public class WildernessChunk extends ClaimedChunk2 {
 
     @Override
     public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.WILDERNESS.get()));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.WILDERNESS.getDefault()));
     }
 
     @Override

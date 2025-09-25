@@ -21,6 +21,6 @@ public class MiscellaneousHistory extends TransactionHistory {
 
     @Override
     public String addLoreLine() {
-        return Lang.MISCELLANEOUS_PAYMENT_HISTORY_LORE.get(StringUtil.getColoredMoney(-getAmount()));
+        return Lang.MISCELLANEOUS_PAYMENT_HISTORY_LORE.get(Lang.getServerLang(), StringUtil.getColoredMoney(-getAmount()));
     }
 }

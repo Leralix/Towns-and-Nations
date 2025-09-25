@@ -7,6 +7,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.WarRole;
@@ -35,20 +36,20 @@ public class SelectLandmarkForCapture extends IteratorGUI {
 
     @Override
     public void open() {
-        iterator(getLandmarks(), p -> new ChooseWarGoal(player, territoryData, war, warRole));
+        iterator(getLandmarks(langType), p -> new ChooseWarGoal(player, territoryData, war, warRole));
         gui.open(player);
     }
 
-    private List<GuiItem> getLandmarks() {
+    private List<GuiItem> getLandmarks(LangType langType) {
 
         List<GuiItem> items = new ArrayList<>();
 
         for(Landmark landmark : LandmarkStorage.getInstance().getLandmarkOf(enemyTownData)) {
 
-            List<String> description = landmark.getBaseDescription(landmark.getRessourceMaterial());
+            List<String> description = landmark.getBaseDescription(langType);
             description.add(Lang.GUI_GENERIC_CLICK_TO_SELECT.get(langType));
 
-            GuiItem item = iconManager.get(landmark.getIcon())
+            GuiItem item = iconManager.get(landmark.getIcon(langType))
                     .setName(landmark.getName())
                     .setDescription(
                             description

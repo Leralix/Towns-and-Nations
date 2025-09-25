@@ -15,11 +15,11 @@ import org.leralix.tan.dataclass.chunk.WildernessChunk;
 import org.leralix.tan.enums.ChunkType;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.PlayerAutoClaimStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 public class PlayerEnterChunkListener implements Listener {
 
@@ -69,7 +69,8 @@ public class PlayerEnterChunkListener implements Listener {
             TownRelation worstRelation = territoryChunk.getOwner().getWorstRelationWith(tanPlayer);
             if(!Constants.getRelationConstants(worstRelation).canAccessTerritory()){
                 event.setCancelled(true);
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_CANNOT_ENTER_CHUNK_WITH_RELATION.get(player, territoryChunk.getOwner().getColoredName(), worstRelation.getColoredName()));
+                LangType lang = tanPlayer.getLang();
+                player.sendMessage(Lang.PLAYER_CANNOT_ENTER_CHUNK_WITH_RELATION.get(lang, territoryChunk.getOwner().getColoredName(), worstRelation.getColoredName(lang)));
                 return;
             }
         }
@@ -89,14 +90,14 @@ public class PlayerEnterChunkListener implements Listener {
 
         if(chunkType == ChunkType.TOWN) {
             if (!playerStat.hasTown()) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
+                player.sendMessage(Lang.PLAYER_NO_TOWN.get(player));
                 return;
             }
             playerStat.getTown().claimChunk(player, nextChunk);
         }
         if(chunkType == ChunkType.REGION) {
             if(!playerStat.hasRegion()){
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_REGION.get());
+                player.sendMessage(Lang.PLAYER_NO_REGION.get(player));
                 return;
             }
             playerStat.getRegion().claimChunk(player, nextChunk);

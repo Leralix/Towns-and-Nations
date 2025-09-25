@@ -3,13 +3,12 @@ package org.leralix.tan.commands.admin;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
-import org.leralix.tan.utils.text.TanChatUtils;
+import org.leralix.tan.gui.admin.AdminMainMenu;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 import java.util.List;
-
-import static org.leralix.tan.gui.legacy.AdminGUI.openMainMenu;
 
 
 public class OpenAdminGUI extends PlayerSubCommand {
@@ -21,7 +20,7 @@ public class OpenAdminGUI extends PlayerSubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.ADMIN_OPEN_GUI.get();
+        return Lang.ADMIN_OPEN_GUI.getDefault();
     }
     public int getArguments(){ return 2;}
 
@@ -38,10 +37,10 @@ public class OpenAdminGUI extends PlayerSubCommand {
     @Override
     public void perform(Player player, String[] args){
         if (args.length == 1){
-            openMainMenu(player);
+            new AdminMainMenu(player);
         }else if(args.length > 1){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get(player));
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(player, getSyntax()));
+            player.sendMessage(Lang.TOO_MANY_ARGS_ERROR.get(player));
+            player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(player, getSyntax()));
         }
 
     }

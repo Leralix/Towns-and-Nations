@@ -14,12 +14,10 @@ import org.leralix.tan.events.events.TownCreatedInternalEvent;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
-import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 public class CreateTown extends ChatListenerEvent {
     int cost;
@@ -33,7 +31,7 @@ public class CreateTown extends ChatListenerEvent {
         double playerBalance = EconomyUtil.getBalance(player);
 
         if(playerBalance < cost){
-            player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(cost - playerBalance));
+            player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(player, cost - playerBalance));
             return false;
         }
 
@@ -41,12 +39,12 @@ public class CreateTown extends ChatListenerEvent {
         int maxSize = config.getInt("TownNameSize");
 
         if(message.length() > maxSize){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.MESSAGE_TOO_LONG.get(maxSize));
+            player.sendMessage(Lang.MESSAGE_TOO_LONG.get(player, maxSize));
             return false;
         }
 
         if(TownDataStorage.getInstance().isNameUsed(message)){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.NAME_ALREADY_USED.get());
+            player.sendMessage(Lang.NAME_ALREADY_USED.get(player));
             return false;
         }
         createTown(player, message);

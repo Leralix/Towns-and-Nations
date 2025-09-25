@@ -58,7 +58,7 @@ public class AddPlayerForChunkPermission extends IteratorGUI {
             GuiItem guiItem = ItemBuilder.from(icon).asGuiItem(event -> {
                 event.setCancelled(true);
                 if (!territoryData.doesPlayerHavePermission(playerStat, RolePermission.MANAGE_CLAIM_SETTINGS)) {
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                    player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                     return;
                 }
                 territoryData.getPermission(type).addSpecificPlayerPermission(playerToAdd.getUniqueId().toString());

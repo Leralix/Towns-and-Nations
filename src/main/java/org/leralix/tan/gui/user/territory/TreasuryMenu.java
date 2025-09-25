@@ -75,7 +75,7 @@ public class TreasuryMenu extends BasicGui {
                 .setName(Lang.GUI_TREASURY_DONATION.get(tanPlayer))
                 .setDescription(Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get(tanPlayer))
                 .setAction(action -> {
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get(tanPlayer));
+                    player.sendMessage(Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get(tanPlayer));
                     player.closeInventory();
 
                     PlayerChatListenerStorage.register(player, new DonateToTerritory(territoryData));
@@ -98,10 +98,10 @@ public class TreasuryMenu extends BasicGui {
                 .setDescription(Lang.GUI_TREASURY_RETRIEVE_GOLD_DESC1.get(tanPlayer))
                 .setAction(action -> {
                     if(!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                         return;
                     }
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_WRITE_QUANTITY_IN_CHAT.get(tanPlayer));
+                    player.sendMessage(Lang.PLAYER_WRITE_QUANTITY_IN_CHAT.get(tanPlayer));
                     PlayerChatListenerStorage.register(player,new RetrieveMoney(territoryData));
                     player.closeInventory();
                 })

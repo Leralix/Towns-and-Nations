@@ -17,7 +17,7 @@ public class LandmarkUpdateServer extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.LANDMARK_UPDATE_SERVER_DESC.get();
+        return Lang.LANDMARK_UPDATE_SERVER_DESC.getDefault();
     }
 
     @Override
@@ -43,11 +43,11 @@ public class LandmarkUpdateServer extends SubCommand {
         LandmarkStorage instance = LandmarkStorage.getInstance();
         if (args.length < 2) {
             instance.generateAllResources();
-            commandSender.sendMessage(Lang.ALL_LANDMARK_UPDATED.get());
+            commandSender.sendMessage(Lang.ALL_LANDMARK_UPDATED.getDefault());
         } else {
             Landmark landmark = instance.get(args[1]);
             landmark.generateResources();
-            commandSender.sendMessage(Lang.LANDMARK_UPDATED.get(landmark.getName(), landmark.getID()));
+            commandSender.sendMessage(Lang.LANDMARK_UPDATED.get(Lang.getServerLang(), landmark.getName(), landmark.getID()));
         }
     }
 }

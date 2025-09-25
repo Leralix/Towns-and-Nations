@@ -52,10 +52,10 @@ public class TerritoryVassalForcedNews extends Newsletter {
             return null;
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
-                Lang.FORCED_VASSALAGE_TITLE.get(),
+                Lang.FORCED_VASSALAGE_TITLE.get(lang),
                 Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
-                Lang.FORCED_VASSALAGE.get(proposingTerritory.getBaseColoredName(), forcedTerritory.getBaseColoredName()),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+                Lang.FORCED_VASSALAGE.get(lang, proposingTerritory.getBaseColoredName(), forcedTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);

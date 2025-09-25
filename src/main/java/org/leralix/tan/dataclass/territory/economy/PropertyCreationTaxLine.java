@@ -50,13 +50,13 @@ public class PropertyCreationTaxLine extends ProfitLine {
         GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
             event.setCancelled(true);
             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(lang));
+                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(lang));
                 return;
             }
             if (event.isLeftClick()) {
                 new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.PROPERTY_BUY_TAX);
             } else if (event.isRightClick()) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
+                player.sendMessage(Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
                 PlayerChatListenerStorage.register(player, new SetCreatePropertyTax(territoryData, p -> new TreasuryMenu(player, territoryData)));
                 player.closeInventory();
             }

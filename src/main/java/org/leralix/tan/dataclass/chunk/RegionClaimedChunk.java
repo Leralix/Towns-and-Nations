@@ -72,35 +72,35 @@ public class RegionClaimedChunk extends TerritoryChunk {
     public void unclaimChunk(Player player) {
         ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
         if (!playerStat.hasTown()) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_TOWN.get());
+            player.sendMessage(Lang.PLAYER_NO_TOWN.get(player));
             return;
         }
 
         if (!playerStat.hasRegion()) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_NO_REGION.get());
+            player.sendMessage(Lang.TOWN_NO_REGION.get(player));
             return;
         }
 
         RegionData regionData = playerStat.getRegion();
 
         if (!regionData.equals(getRegion())) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.UNCLAIMED_CHUNK_NOT_RIGHT_REGION.get(getRegion().getName()));
+            player.sendMessage(Lang.UNCLAIMED_CHUNK_NOT_RIGHT_REGION.get(player, getRegion().getName()));
             return;
         }
 
         if (!regionData.doesPlayerHavePermission(playerStat, RolePermission.UNCLAIM_CHUNK)) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_LEADER_OF_REGION.get());
+            player.sendMessage(Lang.PLAYER_NOT_LEADER_OF_REGION.get(player));
             return;
         }
         NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
-        player.sendMessage(TanChatUtils.getTANString() + Lang.UNCLAIMED_CHUNK_SUCCESS_REGION.get(regionData.getNumberOfClaimedChunk()));
+        player.sendMessage(Lang.UNCLAIMED_CHUNK_SUCCESS_REGION.get(player, regionData.getNumberOfClaimedChunk()));
     }
 
     public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
         RegionData regionData = getRegion();
 
         TextComponent name = displayTerritoryColor ? regionData.getCustomColoredName() : new TextComponent(regionData.getBaseColoredName());
-        String message = Lang.PLAYER_ENTER_TERRITORY_CHUNK.get(name.toLegacyText());
+        String message = Lang.PLAYER_ENTER_TERRITORY_CHUNK.get(player, name.toLegacyText());
         player.sendTitle("", message, 5, 40, 20);
 
         TextComponent textComponent = new TextComponent(regionData.getDescription());

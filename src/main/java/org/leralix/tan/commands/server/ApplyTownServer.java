@@ -21,7 +21,7 @@ public class ApplyTownServer extends SubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.APPLY_TOWN_SERVER_DESC.get();
+        return Lang.APPLY_TOWN_SERVER_DESC.getDefault();
     }
 
     @Override
@@ -42,23 +42,23 @@ public class ApplyTownServer extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         if(args.length < 3){
-            commandSender.sendMessage(Lang.INVALID_ARGUMENTS.get());
+            commandSender.sendMessage(Lang.INVALID_ARGUMENTS.getDefault());
             return;
         }
         String townID = args[1];
         String playerName = args[2];
         Player p = commandSender.getServer().getPlayer(playerName);
         if(p == null){
-            commandSender.sendMessage(Lang.PLAYER_NOT_FOUND.get());
+            commandSender.sendMessage(Lang.PLAYER_NOT_FOUND.getDefault());
             return;
         }
         if(townID == null){
-            commandSender.sendMessage(Lang.TOWN_NOT_FOUND.get());
+            commandSender.sendMessage(Lang.TOWN_NOT_FOUND.getDefault());
             return;
         }
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(p.getUniqueId().toString());
         if(tanPlayer.hasTown()){
-            commandSender.sendMessage(Lang.PLAYER_ALREADY_HAVE_TOWN.get());
+            commandSender.sendMessage(Lang.PLAYER_ALREADY_HAVE_TOWN.getDefault());
             return;
         }
         TownData townData = TownDataStorage.getInstance().get(townID);

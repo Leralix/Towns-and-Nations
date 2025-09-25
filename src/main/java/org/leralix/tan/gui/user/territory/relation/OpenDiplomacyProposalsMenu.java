@@ -6,6 +6,7 @@ import org.leralix.tan.dataclass.DiplomacyProposal;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,15 +24,15 @@ public class OpenDiplomacyProposalsMenu extends IteratorGUI {
 
     @Override
     public void open() {
-        iterator(getDiplomacyProposals(), p -> new OpenDiplomacyMenu(player, territoryData));
+        iterator(getDiplomacyProposals(langType), p -> new OpenDiplomacyMenu(player, territoryData));
         gui.open(player);
     }
 
-    private List<GuiItem> getDiplomacyProposals() {
+    private List<GuiItem> getDiplomacyProposals(LangType langType) {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
         for (DiplomacyProposal diplomacyProposal : territoryData.getAllDiplomacyProposal()) {
-            guiItems.add(diplomacyProposal.createGuiItem(this));
+            guiItems.add(diplomacyProposal.createGuiItem(this, langType));
         }
         return guiItems;
     }

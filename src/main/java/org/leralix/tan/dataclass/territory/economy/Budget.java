@@ -2,9 +2,9 @@ package org.leralix.tan.dataclass.territory.economy;
 
 import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.text.StringUtil;
-import org.leralix.tan.lang.Lang;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -35,7 +35,7 @@ public class Budget {
                 total += profitLine.getMoney();
             }
         }
-        lore.addFirst(Lang.TOTAL_ESTIMATED_EVOLUTION.get(StringUtil.getColoredMoney(total)));
+        lore.addFirst(Lang.TOTAL_ESTIMATED_EVOLUTION.get(langType, StringUtil.getColoredMoney(total)));
         return lore;
     }
 

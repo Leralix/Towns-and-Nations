@@ -21,7 +21,7 @@ public class PropertyRentTaxHistory extends TransactionHistory {
     public String addLoreLine() {
         TownData territoryData = (TownData) getTerritoryData();
         PropertyData propertyData = territoryData.getProperty(getTransactionParty());
-        return Lang.PROPERTY_RENT_LINE.get(territoryData.getName(), propertyData.getName(), StringUtil.getColoredMoney(-getAmount()));
+        return Lang.PROPERTY_RENT_LINE.get(Lang.getServerLang(), territoryData.getName(), propertyData.getName(), StringUtil.getColoredMoney(-getAmount()));
     }
 
 }

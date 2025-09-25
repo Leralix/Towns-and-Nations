@@ -8,7 +8,8 @@ import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.text.TanChatUtils;
+import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class PayCommand extends PlayerSubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.PAY_COMMAND_DESC.get();
+        return Lang.PAY_COMMAND_DESC.getDefault();
     }
 
     @Override
@@ -29,70 +30,70 @@ public class PayCommand extends PlayerSubCommand {
         return "/tan pay <player> <amount>";
     }
 
-    public int getArguments(){
+    public int getArguments() {
         return 3;
     }
 
     @Override
-    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {
         return payPlayerSuggestion(args);
     }
 
     @Override
-    public void perform(Player player, String[] args){
-        if (args.length < 3){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.NOT_ENOUGH_ARGS_ERROR.get());
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+    public void perform(Player player, String[] args) {
+        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        if (args.length < 3) {
+            player.sendMessage(Lang.NOT_ENOUGH_ARGS_ERROR.get(langType));
+            player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
             return;
-        }
-        else if(args.length > 3){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.TOO_MANY_ARGS_ERROR.get());
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+        } else if (args.length > 3) {
+            player.sendMessage(Lang.TOO_MANY_ARGS_ERROR.get(langType));
+            player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
             return;
         }
 
         Player receiver = Bukkit.getServer().getPlayer(args[1]);
-        if(receiver == null){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_FOUND);
+        if (receiver == null) {
+            player.sendMessage(Lang.PLAYER_NOT_FOUND.get(langType));
             return;
         }
-        if(receiver.getUniqueId().equals(player.getUniqueId())){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PAY_SELF_ERROR.get());
+        if (receiver.getUniqueId().equals(player.getUniqueId())) {
+            player.sendMessage(Lang.PAY_SELF_ERROR.get(langType));
             return;
         }
-        
+
         Location senderLocation = player.getLocation();
         Location receiverLocation = receiver.getLocation();
-        if(senderLocation.getWorld() != receiverLocation.getWorld()){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.INTERACTION_TOO_FAR_ERROR.get());
+        if (senderLocation.getWorld() != receiverLocation.getWorld()) {
+            player.sendMessage(Lang.INTERACTION_TOO_FAR_ERROR.get(langType));
             return;
         }
-        if(senderLocation.distance(receiverLocation) > ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("maxPayDistance")){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.INTERACTION_TOO_FAR_ERROR.get());
+        if (senderLocation.distance(receiverLocation) > ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("maxPayDistance")) {
+            player.sendMessage(Lang.INTERACTION_TOO_FAR_ERROR.get(langType));
             return;
         }
         int amount;
-        try{
+        try {
             amount = Integer.parseInt(args[2]);
         } catch (NumberFormatException e) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
+            player.sendMessage(Lang.SYNTAX_ERROR_AMOUNT.get(langType));
             return;
         }
-        if(amount <1){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PAY_MINIMUM_REQUIRED.get(EconomyUtil.getMoneyIcon()));
+        if (amount < 1) {
+            player.sendMessage(Lang.PAY_MINIMUM_REQUIRED.get(langType));
             return;
         }
-        if(EconomyUtil.getBalance(player) < amount){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(
+        if (EconomyUtil.getBalance(player) < amount) {
+            player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(
+                    langType,
                     amount - EconomyUtil.getBalance(player)));
             return;
         }
-        EconomyUtil.removeFromBalance(player,amount);
-        EconomyUtil.addFromBalance(receiver,amount);
-        player.sendMessage(TanChatUtils.getTANString() + Lang.PAY_CONFIRMED_SENDER.get(amount,receiver.getName()));
-        receiver.sendMessage(TanChatUtils.getTANString() + Lang.PAY_CONFIRMED_RECEIVER.get(amount,player.getName()));
+        EconomyUtil.removeFromBalance(player, amount);
+        EconomyUtil.addFromBalance(receiver, amount);
+        player.sendMessage(Lang.PAY_CONFIRMED_SENDER.get(langType, amount, receiver.getName()));
+        receiver.sendMessage(Lang.PAY_CONFIRMED_RECEIVER.get(langType, amount, player.getName()));
     }
-
 
 
 }

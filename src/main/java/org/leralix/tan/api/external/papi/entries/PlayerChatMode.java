@@ -21,6 +21,6 @@ public class PlayerChatMode extends PapiEntry{
             return PLAYER_NOT_FOUND;
         }
 
-        return LocalChatStorage.getPlayerChatScope(player.getUniqueId().toString()).getName().get(tanPlayer);
+        return LocalChatStorage.getPlayerChatScope(player.getUniqueId().toString()).getName(tanPlayer.getLang());
     }
 }

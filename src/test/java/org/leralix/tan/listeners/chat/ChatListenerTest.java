@@ -8,7 +8,7 @@ import org.leralix.tan.lang.Lang;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 
 class ChatListenerTest extends BasicTest {
@@ -20,7 +20,7 @@ class ChatListenerTest extends BasicTest {
         Player player = server.addPlayer();
         ChatListenerEvent mockedChatListenerEvent = mock(ChatListenerEvent.class);
         PlayerChatListenerStorage.register(player, mockedChatListenerEvent);
-        var asyncPlayerChatEvent = new AsyncPlayerChatEvent(false, player, Lang.CANCEL_WORD.get(), Set.of() );
+        var asyncPlayerChatEvent = new AsyncPlayerChatEvent(false, player, Lang.CANCEL_WORD.get(player), Set.of() );
         ChatListener chatListener = new ChatListener();
 
         chatListener.checkForCancelWord(asyncPlayerChatEvent);

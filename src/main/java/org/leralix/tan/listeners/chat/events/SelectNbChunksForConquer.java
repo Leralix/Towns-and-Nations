@@ -8,8 +8,6 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
-import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.WarRole;
@@ -32,7 +30,7 @@ public class SelectNbChunksForConquer extends ChatListenerEvent {
     protected boolean execute(Player player, String message) {
         Integer amount = parseStringToInt(message);
         if(amount == null){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR_AMOUNT.get());
+            player.sendMessage(Lang.SYNTAX_ERROR_AMOUNT.get(player));
             return false;
         }
 

@@ -6,6 +6,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.user.territory.relation.OpenDiplomacyProposalsMenu;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
@@ -21,7 +22,7 @@ public class DiplomacyProposal {
         this.relationProposal = relationProposal;
     }
 
-    public GuiItem createGuiItem(OpenDiplomacyProposalsMenu menu) {
+    public GuiItem createGuiItem(OpenDiplomacyProposalsMenu menu, LangType langType) {
 
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         TerritoryData askingTerritory = TerritoryUtil.getTerritory(askingTerritoryID);
@@ -36,10 +37,10 @@ public class DiplomacyProposal {
         }
         TownRelation currentRelation = askingTerritory.getRelationWith(receivingTerritory);
 
-        ItemStack diplomaticItem = HeadUtils.makeSkullURL(Lang.DIPLOMATIC_RELATION.get(askingTerritory.getBaseColoredName()),"https://textures.minecraft.net/texture/1818d1cc53c275c294f5dfb559174dd931fc516a85af61a1de256aed8bca5e7",
-                Lang.DIPLOMATIC_RELATION_DESC1.get(relationProposal.getColoredName()),
-                Lang.DIPLOMATIC_RELATION_DESC2.get(currentRelation.getColoredName()),
-                Lang.GUI_GENERIC_LEFT_CLICK_TO_ACCEPT.get());
+        ItemStack diplomaticItem = HeadUtils.makeSkullURL(Lang.DIPLOMATIC_RELATION.get(langType, askingTerritory.getBaseColoredName()),"https://textures.minecraft.net/texture/1818d1cc53c275c294f5dfb559174dd931fc516a85af61a1de256aed8bca5e7",
+                Lang.DIPLOMATIC_RELATION_DESC1.get(langType, relationProposal.getColoredName(langType)),
+                Lang.DIPLOMATIC_RELATION_DESC2.get(langType, currentRelation.getColoredName(langType)),
+                Lang.GUI_GENERIC_LEFT_CLICK_TO_ACCEPT.get(langType));
 
         return new GuiItem(diplomaticItem, event -> {
             event.setCancelled(true);

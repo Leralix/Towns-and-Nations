@@ -179,5 +179,8 @@ public enum IconKey {
     WAR_GOAL_SUBJUGATE_ICON,
     WAR_GOAL_LIBERATE_ICON,
 
+    //Admin Icons
+
+
 
 }

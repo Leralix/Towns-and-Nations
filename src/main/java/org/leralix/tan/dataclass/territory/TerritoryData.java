@@ -44,6 +44,7 @@ import org.leralix.tan.events.events.DiplomacyProposalInternalEvent;
 import org.leralix.tan.events.events.TerritoryVassalAcceptedInternalEvent;
 import org.leralix.tan.events.events.TerritoryVassalProposalInternalEvent;
 import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
@@ -60,7 +61,6 @@ import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.StringUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.legacy.CurrentAttack;
@@ -97,7 +97,7 @@ public abstract class TerritoryData {
     protected TerritoryData(String id, String name, ITanPlayer owner) {
         this.id = id;
         this.name = name;
-        this.description = Lang.DEFAULT_DESCRIPTION.get();
+        this.description = Lang.DEFAULT_DESCRIPTION.getDefault();
         this.dateTimeCreated = new Date().getTime();
 
         this.customIcon = new PlayerHeadIcon(owner);
@@ -133,16 +133,16 @@ public abstract class TerritoryData {
 
     public void rename(Player player, int cost, String newName) {
         if (getBalance() < cost) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), cost - getBalance()));
+            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), cost - getBalance()));
             return;
         }
 
         TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new MiscellaneousHistory(this, cost));
 
         removeFromBalance(cost);
-        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player, player.getName(), name, newName));
+        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player.getName(), name, newName));
 
-        player.sendMessage(TanChatUtils.getTANString() + Lang.CHANGE_MESSAGE_SUCCESS.get(player, name, newName));
+        player.sendMessage(Lang.CHANGE_MESSAGE_SUCCESS.get(player, name, newName));
         SoundUtil.playSound(player, SoundEnum.GOOD);
         rename(newName);
     }
@@ -178,7 +178,7 @@ public abstract class TerritoryData {
     }
 
     public String getDescription() {
-        if (description == null) description = Lang.DEFAULT_DESCRIPTION.get();
+        if (description == null) description = Lang.DEFAULT_DESCRIPTION.getDefault();
         return description;
     }
 
@@ -317,11 +317,11 @@ public abstract class TerritoryData {
         return dateTimeCreated;
     }
 
-    public abstract void broadCastMessage(String message);
+    public abstract void broadCastMessage(FilledLang message);
 
-    public abstract void broadcastMessageWithSound(String message, SoundEnum soundEnum, boolean addPrefix);
+    public abstract void broadcastMessageWithSound(FilledLang message, SoundEnum soundEnum, boolean addPrefix);
 
-    public abstract void broadcastMessageWithSound(String message, SoundEnum soundEnum);
+    public abstract void broadcastMessageWithSound(FilledLang message, SoundEnum soundEnum);
 
     public abstract boolean haveNoLeader();
 
@@ -338,7 +338,7 @@ public abstract class TerritoryData {
 
             if (territoryData != null && lore != null) {
                 TownRelation relation = getRelationWith(territoryData);
-                lore.add(Lang.GUI_TOWN_INFO_TOWN_RELATION.get(relation.getColor() + relation.getName()));
+                lore.add(Lang.GUI_TOWN_INFO_TOWN_RELATION.get(langType, relation.getColoredName(langType)));
             }
 
             meta.setLore(lore);
@@ -533,23 +533,23 @@ public abstract class TerritoryData {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_IS_BLACKLISTED.get(player));
+            player.sendMessage(Lang.CHUNK_IS_BLACKLISTED.get(player));
             return false;
         }
 
         if (!doesPlayerHavePermission(tanPlayer, RolePermission.CLAIM_CHUNK)) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(player));
+            player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(player));
             return false;
         }
 
         if (!canClaimMoreChunk()) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.MAX_CHUNK_LIMIT_REACHED.get(player));
+            player.sendMessage(Lang.MAX_CHUNK_LIMIT_REACHED.get(player));
             return false;
         }
 
         int cost = getClaimCost();
         if (getBalance() < cost) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), cost - getBalance()));
+            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), cost - getBalance()));
             return false;
         }
 
@@ -566,7 +566,7 @@ public abstract class TerritoryData {
         if(getNumberOfClaimedChunk() == 0) {
 
             if(ChunkUtil.isInBufferZone(chunkData, this)) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_IN_BUFFER_ZONE.get(player, Constants.territoryClaimBufferZone()));
+                player.sendMessage(Lang.CHUNK_IN_BUFFER_ZONE.get(player, Constants.territoryClaimBufferZone()));
                 return false;
             }
             return true;
@@ -574,7 +574,7 @@ public abstract class TerritoryData {
 
 
         if (!NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTerritory(chunk, getID())) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CHUNK_NOT_ADJACENT.get(player));
+            player.sendMessage(Lang.CHUNK_NOT_ADJACENT.get(player));
             return false;
         }
         return true;
@@ -615,14 +615,15 @@ public abstract class TerritoryData {
     }
 
     public void addDonation(Player player, double amount) {
+        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
         double playerBalance = EconomyUtil.getBalance(player);
 
         if (playerBalance < amount) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY.get());
+            player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY.get(langType));
             return;
         }
         if (amount <= 0) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PAY_MINIMUM_REQUIRED.get());
+            player.sendMessage(Lang.PAY_MINIMUM_REQUIRED.get(langType));
             return;
         }
 
@@ -631,7 +632,7 @@ public abstract class TerritoryData {
         addToBalance(amount);
 
         TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerDonationHistory(this, player, amount));
-        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_SEND_MONEY_SUCCESS.get(amount, getBaseColoredName()));
+        player.sendMessage(Lang.PLAYER_SEND_MONEY_SUCCESS.get(langType, amount, getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_LEVEL_UP);
     }
 
@@ -691,17 +692,18 @@ public abstract class TerritoryData {
     public List<GuiItem> getAllSubjugationProposals(Player player, int page) {
         ArrayList<GuiItem> proposals = new ArrayList<>();
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        LangType langType = tanPlayer.getLang();
 
         for (String proposalID : getOverlordsProposals()) {
             TerritoryData proposalOverlord = TerritoryUtil.getTerritory(proposalID);
             if (proposalOverlord == null) continue;
-            ItemStack territoryItem = proposalOverlord.getIconWithInformations(tanPlayer.getLang());
-            HeadUtils.addLore(territoryItem, Lang.GUI_GENERIC_LEFT_CLICK_TO_ACCEPT.get(), Lang.RIGHT_CLICK_TO_REFUSE.get());
+            ItemStack territoryItem = proposalOverlord.getIconWithInformations(langType);
+            HeadUtils.addLore(territoryItem, Lang.GUI_GENERIC_LEFT_CLICK_TO_ACCEPT.get(langType), Lang.RIGHT_CLICK_TO_REFUSE.get(langType));
             GuiItem acceptInvitation = ItemBuilder.from(territoryItem).asGuiItem(event -> {
                 event.setCancelled(true);
                 if (event.isLeftClick()) {
                     if (haveOverlord()) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.TOWN_ALREADY_HAVE_OVERLORD.get());
+                        player.sendMessage(Lang.TOWN_ALREADY_HAVE_OVERLORD.get(langType));
                         SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                         return;
                     }
@@ -981,7 +983,7 @@ public abstract class TerritoryData {
     }
 
     public String getLeaderName() {
-        if (this.haveNoLeader()) return Lang.NO_LEADER.get();
+        if (this.haveNoLeader()) return Lang.NO_LEADER.getDefault();
         return getLeaderData().getNameStored();
     }
 

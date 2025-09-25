@@ -59,7 +59,7 @@ public class PlayerPropertiesMenu extends IteratorGUI {
             }
         }
         else {
-            description.add(Lang.PLAYER_NO_TOWN.get());
+            description.add(Lang.PLAYER_NO_TOWN.get(langType));
         }
 
 
@@ -69,19 +69,19 @@ public class PlayerPropertiesMenu extends IteratorGUI {
                 .setAction(event -> {
                     TownData playerTown = tanPlayer.getTown();
                     if(!playerTown.doesPlayerHavePermission(tanPlayer, RolePermission.CREATE_PROPERTY)){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                         SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                         return;
                     }
 
                     if(playerTown.getPropertyDataMap().size() >= playerTown.getLevel().getPropertyCap()){
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_PROPERTY_CAP_REACHED.get(tanPlayer));
+                        player.sendMessage(Lang.PLAYER_PROPERTY_CAP_REACHED.get(tanPlayer));
                         return;
                     }
 
 
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY.get(tanPlayer));
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.WRITE_CANCEL_TO_CANCEL.get(tanPlayer, Lang.CANCEL_WORD.get(tanPlayer)));
+                    player.sendMessage(Lang.PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY.get(tanPlayer));
+                    player.sendMessage(Lang.WRITE_CANCEL_TO_CANCEL.get(tanPlayer, Lang.CANCEL_WORD.get(tanPlayer)));
                     RightClickListener.register(player, new CreatePropertyEvent(player));
                     player.closeInventory();
                 })

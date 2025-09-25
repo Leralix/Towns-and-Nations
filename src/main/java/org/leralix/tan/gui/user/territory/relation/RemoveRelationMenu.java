@@ -10,6 +10,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -24,7 +25,7 @@ public class RemoveRelationMenu extends IteratorGUI {
     private final TownRelation relation;
 
     public RemoveRelationMenu(Player player, TerritoryData territoryData, TownRelation relation){
-        super(player, Lang.HEADER_SELECT_REMOVE_TERRITORY_RELATION.get(player, relation.getName()), 6);
+        super(player, Lang.HEADER_SELECT_REMOVE_TERRITORY_RELATION.get(player, relation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
         this.territoryData = territoryData;
         this.relation = relation;
         open();
@@ -53,7 +54,7 @@ public class RemoveRelationMenu extends IteratorGUI {
                     territoryData.setRelation(otherTerritory, TownRelation.NEUTRAL);
                 } else {
                     otherTerritory.receiveDiplomaticProposal(territoryData, TownRelation.NEUTRAL);
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(tanPlayer, otherTerritory.getName()));
+                    player.sendMessage(Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(tanPlayer, otherTerritory.getName()));
                     SoundUtil.playSound(player, MINOR_GOOD);
                 }
                 new OpenRelationMenu(player, territoryData, relation);

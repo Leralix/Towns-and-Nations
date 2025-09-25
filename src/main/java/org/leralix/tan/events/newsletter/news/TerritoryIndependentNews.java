@@ -54,10 +54,10 @@ public class TerritoryIndependentNews extends Newsletter {
             return null;
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
-                Lang.TOWN_LEAVE_REGION_NEWSLETTER_TITLE.get(),
+                Lang.TOWN_LEAVE_REGION_NEWSLETTER_TITLE.get(lang),
                 Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
-                Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(leavingTown.getBaseColoredName(), region.getBaseColoredName()),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+                Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(lang, leavingTown.getBaseColoredName(), region.getBaseColoredName()),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);

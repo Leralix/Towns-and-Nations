@@ -79,7 +79,7 @@ public class TimeZoneManager {
 
 
         if (diffSeconds < 0) {
-            return Lang.RELATIVE_IN_FUTURE.get();
+            return Lang.RELATIVE_IN_FUTURE.get(langType);
         }
 
         long minutes = diffSeconds / 60;

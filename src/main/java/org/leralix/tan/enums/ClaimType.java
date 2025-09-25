@@ -1,23 +1,24 @@
 package org.leralix.tan.enums;
 
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 
 public enum ClaimType {
 
-    TOWN(Lang.MAP_TOWN.get(), "TOWN"),
-    REGION(Lang.MAP_REGION.get(), "REGION");
+    TOWN(Lang.MAP_TOWN, "TOWN"),
+    REGION(Lang.MAP_REGION, "REGION");
 
-    private final String buttonName;
+    private final Lang buttonName;
     private final String buttonCommand;
     private ClaimType nextType;
 
-    ClaimType(String buttonName, String buttonCommand){
+    ClaimType(Lang buttonName, String buttonCommand){
         this.buttonName = buttonName;
         this.buttonCommand = buttonCommand;
     }
 
-    public String getName() {
-        return buttonName;
+    public String getName(LangType langType) {
+        return buttonName.get(langType);
     }
 
     public String getTypeCommand() {

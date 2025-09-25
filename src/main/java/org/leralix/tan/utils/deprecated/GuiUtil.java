@@ -38,7 +38,7 @@ public class GuiUtil {
 
         ItemStack townIcon = townData.getIconWithName();
         List<String> lore = new ArrayList<>();
-        lore.add(Lang.TOWN_LEVEL_BONUS_RECAP.get());
+        lore.add(Lang.TOWN_LEVEL_BONUS_RECAP.get(langType));
 
         Map<String, Integer> benefits = townData.getLevel().getTotalBenefits();
 
@@ -47,9 +47,9 @@ public class GuiUtil {
             Integer value = entry.getValue();
             String line;
             if (value > 0) {
-                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(DynamicLang.get(langType, valueId), value);
+                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(langType, DynamicLang.get(langType, valueId), value);
             } else {
-                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(DynamicLang.get(langType, valueId), value);
+                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(langType, DynamicLang.get(langType, valueId), value);
             }
             lore.add(line);
         }
@@ -68,7 +68,7 @@ public class GuiUtil {
     }
 
     public static GuiItem createBackArrow(Player player, Consumer<Player> openMenuAction) {
-        ItemStack getBackArrow = HeadUtils.createCustomItemStack(Material.ARROW, Lang.GUI_BACK_ARROW.get());
+        ItemStack getBackArrow = HeadUtils.createCustomItemStack(Material.ARROW, Lang.GUI_BACK_ARROW.get(player));
         return ItemBuilder.from(getBackArrow).asGuiItem(event -> {
             event.setCancelled(true);
             openMenuAction.accept(player);

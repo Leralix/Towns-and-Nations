@@ -12,7 +12,6 @@ import org.leralix.tan.dataclass.TeleportationData;
 import org.leralix.tan.dataclass.TeleportationPosition;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.HashMap;
 
@@ -64,14 +63,14 @@ public class TeleportationRegister {
             return;
 
         if(isPlayerRegistered(tanPlayer.getID())){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.WAIT_BEFORE_ANOTHER_TELEPORTATION.get());
+            player.sendMessage(Lang.WAIT_BEFORE_ANOTHER_TELEPORTATION.get(tanPlayer));
             return;
         }
         if(secondBeforeTeleport > 0) {
             if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnMovePosition", true)) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.TELEPORTATION_IN_X_SECONDS_NOT_MOVE.get(secondBeforeTeleport));
+                player.sendMessage(Lang.TELEPORTATION_IN_X_SECONDS_NOT_MOVE.get(tanPlayer, secondBeforeTeleport));
             } else {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.TELEPORTATION_IN_X_SECONDS.get(secondBeforeTeleport));
+                player.sendMessage(Lang.TELEPORTATION_IN_X_SECONDS.get(tanPlayer, secondBeforeTeleport));
             }
 
             registerSpawn(tanPlayer, townData);
@@ -95,7 +94,7 @@ public class TeleportationRegister {
         if(player != null){
             teleportationPosition.teleport(player);
             SoundUtil.playSound(player, SoundEnum.MINOR_GOOD );
-            player.sendMessage(TanChatUtils.getTANString() + Lang.SPAWN_TELEPORTED.get());
+            player.sendMessage(Lang.SPAWN_TELEPORTED.get(tanPlayer));
         }
         removePlayer(tanPlayer);
 

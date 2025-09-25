@@ -25,12 +25,12 @@ public class SubjugateWarGoal extends WarGoal {
         description.add(Lang.SUBJUGATE_WAR_GOAL_DESC1.get(langType));
         description.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(langType));
 
-        return buildIcon(Material.CHAIN, description);
+        return buildIcon(Material.CHAIN, description, langType);
     }
 
     @Override
-    public String getDisplayName() {
-        return Lang.SUBJUGATE_WAR_GOAL.get();
+    public String getDisplayName(LangType langType) {
+        return Lang.SUBJUGATE_WAR_GOAL.get(langType);
     }
 
     @Override
@@ -55,8 +55,8 @@ public class SubjugateWarGoal extends WarGoal {
     }
 
     @Override
-    public String getCurrentDesc() {
-        return Lang.GUI_WARGOAL_SUBJUGATE_WAR_GOAL_RESULT.get();
+    public String getCurrentDesc(LangType langType) {
+        return Lang.GUI_WARGOAL_SUBJUGATE_WAR_GOAL_RESULT.get(langType);
     }
 
 }

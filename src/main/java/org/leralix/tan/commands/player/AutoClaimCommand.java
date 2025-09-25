@@ -2,10 +2,10 @@ package org.leralix.tan.commands.player;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
+import org.leralix.tan.enums.ChunkType;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.PlayerAutoClaimStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.enums.ChunkType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class AutoClaimCommand extends PlayerSubCommand {
 
     @Override
     public String getDescription() {
-        return Lang.TOWN_AUTO_CLAIM_DESC.get();
+        return Lang.TOWN_AUTO_CLAIM_DESC.getDefault();
     }
     public int getArguments(){ return 1;}
 
@@ -43,7 +43,7 @@ public class AutoClaimCommand extends PlayerSubCommand {
     public void perform(Player player, String[] args){
 
         if (args.length != 2) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(player, getSyntax()));
+            player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(player, getSyntax()));
             return;
         }
 
@@ -52,17 +52,17 @@ public class AutoClaimCommand extends PlayerSubCommand {
         switch (message) {
             case "town" -> {
                 PlayerAutoClaimStorage.addPlayer(player, ChunkType.TOWN);
-                player.sendMessage(TanChatUtils.getTANString() + Lang.AUTO_CLAIM_ON_FOR.get(player, ChunkType.TOWN.getName()));
+                player.sendMessage(Lang.AUTO_CLAIM_ON_FOR.get(player, ChunkType.TOWN.getName()));
             }
             case "region" -> {
                 PlayerAutoClaimStorage.addPlayer(player, ChunkType.REGION);
-                player.sendMessage(TanChatUtils.getTANString() + Lang.AUTO_CLAIM_ON_FOR.get(player, ChunkType.REGION.getName()));
+                player.sendMessage(Lang.AUTO_CLAIM_ON_FOR.get(player, ChunkType.REGION.getName()));
             }
             case "stop" -> {
                 PlayerAutoClaimStorage.removePlayer(player);
-                player.sendMessage(TanChatUtils.getTANString() + Lang.AUTO_CLAIM_OFF.get(player));
+                player.sendMessage(Lang.AUTO_CLAIM_OFF.get(player));
             }
-            default -> player.sendMessage(TanChatUtils.getTANString() + Lang.CORRECT_SYNTAX_INFO.get(player, getSyntax()));
+            default -> player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(player, getSyntax()));
         }
     }
 }

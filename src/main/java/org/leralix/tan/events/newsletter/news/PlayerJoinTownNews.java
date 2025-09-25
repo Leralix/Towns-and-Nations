@@ -76,10 +76,10 @@ public class PlayerJoinTownNews extends Newsletter {
             return null;
 
         ItemStack itemStack = HeadUtils.makeSkullURL(
-                Lang.PLAYER_JOINED_TOWN_NEWSLETTER_TITLE.get(), "http://textures.minecraft.net/texture/16338322d26c6a7c08fb9fd22959a136728fa2d4dccd22b1563eb1bbaa1d5471",
+                Lang.PLAYER_JOINED_TOWN_NEWSLETTER_TITLE.get(lang), "http://textures.minecraft.net/texture/16338322d26c6a7c08fb9fd22959a136728fa2d4dccd22b1563eb1bbaa1d5471",
                 Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
-                Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(tanPlayer.getNameStored(), townData.getCustomColoredName().toLegacyText()),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+                Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(lang, tanPlayer.getNameStored(), townData.getCustomColoredName().toLegacyText()),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);

@@ -55,12 +55,12 @@ public class NoTownMenu extends BasicGui {
 
                     double playerMoney = EconomyUtil.getBalance(player);
                     if (playerMoney < townPrice) {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(tanPlayer, townPrice - playerMoney));
+                        player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(tanPlayer, townPrice - playerMoney));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                     }
                     else {
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get(tanPlayer));
-                        player.sendMessage(TanChatUtils.getTANString() + Lang.CAPITAL_WILL_BE_CREATED_ON_PLAYER_CHUNK.get(tanPlayer));
+                        player.sendMessage(Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get(tanPlayer));
+                        player.sendMessage(Lang.CAPITAL_WILL_BE_CREATED_ON_PLAYER_CHUNK.get(tanPlayer));
                         PlayerChatListenerStorage.register(player, new CreateTown(townPrice));
                     }
                 })

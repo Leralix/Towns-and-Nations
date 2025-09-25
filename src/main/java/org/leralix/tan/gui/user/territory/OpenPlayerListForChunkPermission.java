@@ -53,7 +53,7 @@ public class OpenPlayerListForChunkPermission extends IteratorGUI {
         return ItemBuilder.from(addIcon).asGuiItem(event -> {
             event.setCancelled(true);
             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS)) {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                 SoundUtil.playSound(player, NOT_ALLOWED);
                 return;
             }
@@ -72,7 +72,7 @@ public class OpenPlayerListForChunkPermission extends IteratorGUI {
             GuiItem guiItem = ItemBuilder.from(icon).asGuiItem(event -> {
                 event.setCancelled(true);
                 if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS)) {
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                    player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                     return;
                 }
                 if (event.isRightClick()) {

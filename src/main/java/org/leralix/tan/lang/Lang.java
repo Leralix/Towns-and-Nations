@@ -11,6 +11,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 import java.io.File;
 import java.util.EnumMap;
+import java.util.List;
 
 public enum Lang {
     WELCOME,
@@ -511,6 +512,7 @@ public enum Lang {
     HELP_US_TRANSLATE,
     PERCENT_COMPLETED,
     CLICK_HERE_TO_OPEN_BROWSER,
+    GUI_ADMIN_PLAYER_ICON,
     ADMIN_GUI_REGION_DESC,
     ADMIN_GUI_TOWN_DESC,
     ADMIN_GUI_PLAYER_DESC,
@@ -1119,14 +1121,17 @@ public enum Lang {
         return (int) ((double) completedLang.get(langType) / Lang.values().length * 100);
     }
 
-    public String get() {
+    public String getDefault() {
         return get(serverLang);
+    }
+
+    public FilledLang get() {
+        return new FilledLang(this);
     }
 
     public String get(Player player){
         return get(PlayerDataStorage.getInstance().get(player));
     }
-
 
     public String get(ITanPlayer tanPlayer){
         if(tanPlayer == null) {
@@ -1147,8 +1152,8 @@ public enum Lang {
         return get(LangType.ENGLISH);
     }
 
-    public String get(Object... placeholders) {
-        return get(serverLang, placeholders);
+    public FilledLang get(Object... placeholders) {
+        return new FilledLang(this, placeholders);
     }
 
     public String get(Player player, Object... placeholders) {
@@ -1161,13 +1166,16 @@ public enum Lang {
         }
         return get(tanPlayer.getLang(), placeholders);
     }
-
     public String get(LangType lang, Object... placeholders) {
+        return get(lang, List.of(placeholders));
+    }
+
+    public String get(LangType lang, List<Object> placeholders) {
         String translation = translations.get(lang).get(this);
         if (translation != null) {
             translation = ChatColor.translateAlternateColorCodes('§', translation);
-            for (int i = 0; i < placeholders.length; i++) {
-                String val = placeholders[i] == null ? "null" : placeholders[i].toString();
+            for(int i = 0; i < placeholders.size(); i++) {
+                String val = placeholders.get(i) == null ? "null" : placeholders.get(i).toString();
                 translation = translation.replace("{" + i + "}",val);
             }
             translation = replaceCommonPlaceholders(translation);
@@ -1198,18 +1206,9 @@ public enum Lang {
             }
         }
         if(translation.contains(CANCEL)) {
-            translation = translation.replace(CANCEL, Lang.CANCEL_WORD.get());
+            translation = translation.replace(CANCEL, Lang.CANCEL_WORD.get(serverLang));
         }
         return translation;
-    }
-
-
-    public String getWithoutPlaceholder() {
-        String translation = translations.get(serverLang).get(this);
-        if (translation != null) {
-            return ChatColor.translateAlternateColorCodes('§', translation);
-        }
-        return MESSAGE_NOT_FOUND_FOR + this.name() + IN_THIS_LANGUAGE_FILE;
     }
 
     public static void shouldShowCurrency(boolean show) {

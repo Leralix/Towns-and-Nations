@@ -73,7 +73,8 @@ public class DiplomacyProposalNews extends Newsletter {
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         if(receivingTerritory == null)
             return;
-        player.sendMessage(getTANString() + Lang.DIPLOMACY_PROPOSAL_NEWSLETTER.get(proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName()));
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        player.sendMessage(getTANString() + Lang.DIPLOMACY_PROPOSAL_NEWSLETTER.get(proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName(tanPlayer.getLang())));
         SoundUtil.playSound(player, MINOR_GOOD);
     }
 
@@ -90,10 +91,10 @@ public class DiplomacyProposalNews extends Newsletter {
             return null;
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.PAPER,
-                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL.get(proposingTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL.get(lang, proposingTerritory.getBaseColoredName()),
                 Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
-                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1.get(receivingTerritory.getBaseColoredName(), wantedRelation.getColoredName()),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1.get(lang, receivingTerritory.getBaseColoredName(), wantedRelation.getColoredName(lang)),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -111,16 +112,18 @@ public class DiplomacyProposalNews extends Newsletter {
         if(proposingTerritory == null || receivingTerritory == null)
             return null;
 
+
+
         ItemStack icon = HeadUtils.createCustomItemStack(Material.PAPER,
-                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL.get(proposingTerritory.getBaseColoredName()),
-                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1.get(receivingTerritory.getBaseColoredName(), wantedRelation.getColoredName()),
-                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC2.get(),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL.get(lang, proposingTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1.get(lang, receivingTerritory.getBaseColoredName(), wantedRelation.getColoredName(lang)),
+                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC2.get(lang),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);
             if(event.isLeftClick()){
                 if(receivingTerritory.doesPlayerHavePermission(player, RolePermission.MANAGE_TOWN_RELATION)){
-                    player.sendMessage(Lang.PLAYER_NO_PERMISSION.get());
+                    player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(lang));
                     SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                     return;
                 }

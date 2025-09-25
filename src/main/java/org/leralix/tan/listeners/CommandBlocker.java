@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -71,7 +72,8 @@ public class CommandBlocker implements Listener {
             ITanPlayer receiverData = PlayerDataStorage.getInstance().get(receiver);
             TownRelation worstRelationWithPlayer = senderData.getRelationWithPlayer(receiverData);
             if(Constants.getRelationConstants(worstRelationWithPlayer).getBlockedCommands().contains(blackListedCommand)){
-                sender.sendMessage(TanChatUtils.getTANString() + Lang.CANNOT_CAST_COMMAND_ON_PLAYER_WITH_SPECIFIC_RELATION.get(sender, receiver.getName(),worstRelationWithPlayer.getColoredName()));
+                LangType lang = senderData.getLang();
+                sender.sendMessage(Lang.CANNOT_CAST_COMMAND_ON_PLAYER_WITH_SPECIFIC_RELATION.get(lang, receiver.getName(),worstRelationWithPlayer.getColoredName(lang)));
                 return true;
             }
         }

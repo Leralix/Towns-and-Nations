@@ -53,10 +53,10 @@ public class TerritoryVassalProposalNews extends Newsletter {
             return null;
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
-                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL.get(),
+                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL.get(lang),
                 Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
-                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(proposingTerritory.getBaseColoredName(), receivingTerritory.getBaseColoredName()),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(lang, proposingTerritory.getBaseColoredName(), receivingTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
@@ -76,10 +76,10 @@ public class TerritoryVassalProposalNews extends Newsletter {
             return null;
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
-                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL.get(),
-                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(proposingTerritory.getBaseColoredName(), receivingTerritory.getBaseColoredName()),
-                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2.get(),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get());
+                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL.get(lang),
+                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(lang, proposingTerritory.getBaseColoredName(), receivingTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2.get(lang),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
 
         return ItemBuilder.from(icon).asGuiItem(event -> {

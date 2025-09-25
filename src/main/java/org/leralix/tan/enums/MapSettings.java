@@ -5,6 +5,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 
 public class MapSettings {
 
@@ -33,16 +34,16 @@ public class MapSettings {
         return claimAction;
     }
 
-    public TextComponent getMapTypeButton(){
-        TextComponent claimButton = new TextComponent(claimType.getName());
-        claimButton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Lang.LEFT_CLICK_TO_MODIFY.get())));
+    public TextComponent getMapTypeButton(LangType langType){
+        TextComponent claimButton = new TextComponent(claimType.getName(langType));
+        claimButton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Lang.LEFT_CLICK_TO_MODIFY.get(langType))));
         claimButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, getNextCommand(claimAction, claimType.getNextType())));
         return claimButton;
     }
 
-    public TextComponent getClaimTypeButton(){
-        TextComponent claimButton = new TextComponent(claimAction.getName());
-        claimButton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Lang.LEFT_CLICK_TO_MODIFY.get())));
+    public TextComponent getClaimTypeButton(LangType langType){
+        TextComponent claimButton = new TextComponent(claimAction.getName(langType));
+        claimButton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Lang.LEFT_CLICK_TO_MODIFY.get(langType))));
         claimButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, getNextCommand(claimAction.getNextType(), claimType)));
         return claimButton;
     }

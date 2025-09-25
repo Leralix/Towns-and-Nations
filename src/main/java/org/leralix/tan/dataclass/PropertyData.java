@@ -35,7 +35,6 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.text.NumberUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.*;
 
@@ -291,20 +290,23 @@ public class PropertyData {
 
         String[] lines = new String[4];
 
-        lines[0] = Lang.SIGN_NAME.get(this.getName());
-        lines[1] = Lang.SIGN_PLAYER.get(PlayerDataStorage.getInstance().get(this.getOwnerID()).getNameStored());
+        LangType langType = Lang.getServerLang();
+
+
+        lines[0] = Lang.SIGN_NAME.get(langType, this.getName());
+        lines[1] = Lang.SIGN_PLAYER.get(langType, PlayerDataStorage.getInstance().get(this.getOwnerID()).getNameStored());
 
         if (this.isForSale) {
-            lines[2] = Lang.SIGN_FOR_SALE.get();
-            lines[3] = Lang.SIGN_SALE_PRICE.get(this.getSalePrice());
+            lines[2] = Lang.SIGN_FOR_SALE.get(langType);
+            lines[3] = Lang.SIGN_SALE_PRICE.get(langType, this.getSalePrice());
         } else if (this.isForRent) {
-            lines[2] = Lang.SIGN_RENT.get();
-            lines[3] = Lang.SIGN_RENT_PRICE.get(this.getRentPrice());
+            lines[2] = Lang.SIGN_RENT.get(langType);
+            lines[3] = Lang.SIGN_RENT_PRICE.get(langType, this.getRentPrice());
         } else if (this.isRented()) {
-            lines[2] = Lang.SIGN_RENTED_BY.get();
+            lines[2] = Lang.SIGN_RENTED_BY.get(langType);
             lines[3] = this.getRenter().getNameStored();
         } else {
-            lines[2] = Lang.SIGN_NOT_FOR_SALE.get();
+            lines[2] = Lang.SIGN_NOT_FOR_SALE.get(langType);
             lines[3] = "";
         }
 
@@ -343,7 +345,7 @@ public class PropertyData {
 
         Player player = Bukkit.getPlayer(UUID.fromString(owningPlayerID));
         if (player != null) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_DELETED.get());
+            player.sendMessage(Lang.PROPERTY_DELETED.get(owner.getLang()));
             SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
         }
     }
@@ -365,11 +367,11 @@ public class PropertyData {
     }
 
     public void buyProperty(Player player) {
-
+        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
         double playerBalance = EconomyUtil.getBalance(player);
         double cost = getSalePrice();
         if (playerBalance < cost) {
-            player.sendMessage(TanChatUtils.getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(cost - playerBalance));
+            player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(player, cost - playerBalance));
             SoundUtil.playSound(player, SoundEnum.MINOR_BAD);
             return;
         }
@@ -378,10 +380,10 @@ public class PropertyData {
         OfflinePlayer exOwnerOffline = Bukkit.getOfflinePlayer(UUID.fromString(owningPlayerID));
 
         if (exOwner != null) {
-            exOwner.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_SOLD_EX_OWNER.get(getName(), player.getName(), getSalePrice()));
+            exOwner.sendMessage(Lang.PROPERTY_SOLD_EX_OWNER.get(player, getName(), player.getName(), getSalePrice()));
             SoundUtil.playSound(exOwner, SoundEnum.GOOD);
         }
-        player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_SOLD_NEW_OWNER.get(getName(), getSalePrice()));
+        player.sendMessage(Lang.PROPERTY_SOLD_NEW_OWNER.get(player, getName(), getSalePrice()));
         SoundUtil.playSound(player, SoundEnum.GOOD);
 
         TownData town = getTown();
@@ -417,11 +419,11 @@ public class PropertyData {
         return isOwner(tanPlayer.getID());
     }
 
-    public String getDenyMessage() {
+    public String getDenyMessage(LangType langType) {
         if (isRented())
-            return Lang.PROPERTY_RENTED_BY.get(getRenter().getNameStored());
+            return Lang.PROPERTY_RENTED_BY.get(langType, getRenter().getNameStored());
         else
-            return Lang.PROPERTY_BELONGS_TO.get(getOwner().getNameStored());
+            return Lang.PROPERTY_BELONGS_TO.get(langType, getOwner().getNameStored());
 
     }
 

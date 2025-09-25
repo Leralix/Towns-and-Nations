@@ -42,12 +42,12 @@ public class RenterPropertyMenu extends PropertyMenus {
                 .setAction(action -> {
                     propertyData.expelRenter(true);
 
-                    player.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_RENTER_LEAVE_RENTER_SIDE.get(tanPlayer, propertyData.getName()));
+                    player.sendMessage(Lang.PROPERTY_RENTER_LEAVE_RENTER_SIDE.get(tanPlayer, propertyData.getName()));
                     SoundUtil.playSound(player,MINOR_GOOD);
 
                     Player owner = propertyData.getOwnerPlayer();
                     if(owner != null){
-                        owner.sendMessage(TanChatUtils.getTANString() + Lang.PROPERTY_RENTER_LEAVE_OWNER_SIDE.get(tanPlayer, player.getName(), propertyData.getName()));
+                        owner.sendMessage(Lang.PROPERTY_RENTER_LEAVE_OWNER_SIDE.get(tanPlayer, player.getName(), propertyData.getName()));
                         SoundUtil.playSound(owner,MINOR_BAD);
                     }
 
