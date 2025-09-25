@@ -599,7 +599,7 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public void delete() {
+    public synchronized void delete() {
         super.delete();
 
         if (haveOverlord()) {
