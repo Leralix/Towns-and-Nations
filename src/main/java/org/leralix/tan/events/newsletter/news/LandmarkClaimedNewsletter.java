@@ -73,7 +73,7 @@ public class LandmarkClaimedNewsletter extends Newsletter {
 
     @Override
     public NewsletterType getType() {
-        return NewsletterType.LANDMARK_UNCLAIMED;
+        return NewsletterType.LANDMARK_CLAIMED;
     }
 
     @Override

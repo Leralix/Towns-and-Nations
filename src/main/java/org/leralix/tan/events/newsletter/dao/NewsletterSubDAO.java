@@ -10,7 +10,7 @@ public abstract class NewsletterSubDAO<T extends Newsletter> {
 
     protected DataSource dataSource;
 
-    public NewsletterSubDAO(DataSource dataSource) {
+    protected NewsletterSubDAO(DataSource dataSource) {
         this.dataSource = dataSource;
         createTableIfNotExists();
     }
