@@ -49,7 +49,7 @@ public class TerritoryRanksMenu extends IteratorGUI {
         return iconManager.get(IconKey.NEW_RANK_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES_DESC1.get(tanPlayer, nbRanks),
+                        Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES_DESC1.get(tanPlayer, Integer.toString(nbRanks)),
                         Lang.GUI_GENERIC_CLICK_TO_CREATE.get(tanPlayer)
                 )
                 .setAction( event -> {
@@ -81,7 +81,7 @@ public class TerritoryRanksMenu extends IteratorGUI {
         return iconManager.get(rank.getRankIcon())
                 .setName(rank.getColoredName())
                 .setDescription(
-                        Lang.GUI_RANK_NUMBER_PLAYER_WITH_ROLE.get(langType, rank.getNumberOfPlayer()),
+                        Lang.GUI_RANK_NUMBER_PLAYER_WITH_ROLE.get(langType, Integer.toString(rank.getNumberOfPlayer())),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType)
                 )
                 .setAction(action -> {

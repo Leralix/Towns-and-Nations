@@ -62,7 +62,7 @@ public class PlayerJoinTownNews extends Newsletter {
         TownData townData = TownDataStorage.getInstance().get(townID);
         if(townData == null)
             return;
-        player.sendMessage(getTANString() + Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(tanPlayer.getNameStored(), townData.getBaseColoredName()));
+        player.sendMessage(Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(player, tanPlayer.getNameStored(), townData.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
     }
 

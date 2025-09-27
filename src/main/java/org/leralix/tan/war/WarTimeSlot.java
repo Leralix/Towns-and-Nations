@@ -75,7 +75,12 @@ public class WarTimeSlot {
             int hour2 = range.getMaxVal() / 60;
             int minute2 = range.getMaxVal() % 60;
 
-            printedTime.add(Lang.AUTHORIZED_ATTACK_TIME_SLOT_SINGLE.get(langType, hour1, minute1, hour2, minute2));
+            printedTime.add(Lang.AUTHORIZED_ATTACK_TIME_SLOT_SINGLE.get(langType,
+                    Integer.toString(hour1),
+                    Integer.toString(minute1),
+                    Integer.toString(hour2),
+                    Integer.toString(minute2)
+            ));
         }
 
         return printedTime;

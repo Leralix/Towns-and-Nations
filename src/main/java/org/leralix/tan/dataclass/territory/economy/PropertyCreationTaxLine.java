@@ -43,7 +43,7 @@ public class PropertyCreationTaxLine extends ProfitLine {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         ItemStack tax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_CREATE_PROPERTY_TAX.get(lang), "http://textures.minecraft.net/texture/97f82aceb98fe069e8c166ced00242a76660bbe07091c92cdde54c6ed10dcff9",
-                Lang.GUI_TREASURY_CREATE_PROPERTY_TAX_DESC1.get(lang, territoryData.getTaxOnCreatingProperty()),
+                Lang.GUI_TREASURY_CREATE_PROPERTY_TAX_DESC1.get(lang, Double.toString(territoryData.getTaxOnCreatingProperty())),
                 Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get(lang),
                 Lang.RIGHT_CLICK_TO_SET_TAX.get(lang));
 

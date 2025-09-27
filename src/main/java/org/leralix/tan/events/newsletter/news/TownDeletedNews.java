@@ -89,7 +89,7 @@ public class TownDeletedNews extends Newsletter {
         if (tanPlayer == null)
             return;
 
-        player.sendMessage(getTANString() + Lang.TOWN_DELETED_NEWSLETTER.get(tanPlayer.getNameStored(), oldTownName));
+        player.sendMessage(Lang.TOWN_DELETED_NEWSLETTER.get(player, tanPlayer.getNameStored(), oldTownName));
         SoundUtil.playSound(player, SoundEnum.BAD);
     }
 

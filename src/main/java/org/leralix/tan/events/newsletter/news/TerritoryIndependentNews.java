@@ -98,7 +98,7 @@ public class TerritoryIndependentNews extends Newsletter {
         if (region == null)
             return;
 
-        player.sendMessage(getTANString() + Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(leavingTown.getBaseColoredName(), region.getBaseColoredName()));
+        player.sendMessage(Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(player, leavingTown.getBaseColoredName(), region.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
     }
 

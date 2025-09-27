@@ -37,7 +37,7 @@ public class CaptureFort {
     }
 
     private void updateTitle(int nbAttackers, int nbDefenders) {
-        this.title = Lang.WAR_INFO_FORT_STATUS.get(Lang.getServerLang(), fort.getName(), nbAttackers, nbDefenders);
+        this.title = Lang.WAR_INFO_FORT_STATUS.get(Lang.getServerLang(), fort.getName(), Integer.toString(nbAttackers), Integer.toString(nbDefenders));
     }
 
     public Fort getFort() {

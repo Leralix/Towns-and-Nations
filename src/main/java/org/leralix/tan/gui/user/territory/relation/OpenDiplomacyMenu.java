@@ -86,7 +86,7 @@ public class OpenDiplomacyMenu extends BasicGui {
                 .setName(Lang.GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL.get(langType))
                 .setDescription(
                         Lang.GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC1.get(tanPlayer),
-                        Lang.GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC2.get(tanPlayer, territoryData.getAllDiplomacyProposal().size())
+                        Lang.GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC2.get(tanPlayer, Integer.toString(territoryData.getAllDiplomacyProposal().size()))
                 )
                 .setAction(action -> {
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TOWN_RELATION)) {

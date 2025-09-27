@@ -159,8 +159,8 @@ public class TownData extends TerritoryData {
             List<String> lore = new ArrayList<>();
             lore.add(Lang.GUI_TOWN_INFO_DESC0.get(langType, getDescription()));
             lore.add(Lang.GUI_TOWN_INFO_DESC1.get(langType, getLeaderName()));
-            lore.add(Lang.GUI_TOWN_INFO_DESC2.get(langType, getPlayerIDList().size()));
-            lore.add(Lang.GUI_TOWN_INFO_DESC3.get(langType, getNumberOfClaimedChunk()));
+            lore.add(Lang.GUI_TOWN_INFO_DESC2.get(langType, Integer.toString(getPlayerIDList().size())));
+            lore.add(Lang.GUI_TOWN_INFO_DESC3.get(langType, Integer.toString(getNumberOfClaimedChunk())));
             lore.add(getOverlord().map(overlord -> Lang.GUI_TOWN_INFO_DESC5_REGION.get(langType, overlord.getName())).orElseGet(() -> Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get(langType)));
 
             meta.setLore(lore);
@@ -353,7 +353,11 @@ public class TownData extends TerritoryData {
             setCapitalLocation(chunkClaimed.getVector2D());
         }
 
-        player.sendMessage(Lang.CHUNK_CLAIMED_SUCCESS.get(player, getNumberOfClaimedChunk(), getLevel().getChunkCap()));
+        player.sendMessage(Lang.CHUNK_CLAIMED_SUCCESS.get(
+                player,
+                Integer.toString(getNumberOfClaimedChunk()),
+                Integer.toString(getLevel().getChunkCap()))
+        );
         return true;
     }
 
@@ -545,7 +549,7 @@ public class TownData extends TerritoryData {
             return;
         }
         if (this.getBalance() < level.getMoneyRequiredForLevelUp()) {
-            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), level.getMoneyRequiredForLevelUp() - this.getBalance()));
+            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), Double.toString(level.getMoneyRequiredForLevelUp() - this.getBalance())));
             SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             return;
         }
@@ -566,7 +570,7 @@ public class TownData extends TerritoryData {
         }
         int cost = townUpgrade.getCost(townLevel.getUpgradeLevel(townUpgrade.getName()));
         if (this.getBalance() < cost) {
-            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), cost - this.getBalance()));
+            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), Double.toString(cost - this.getBalance())));
             SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             return;
         }

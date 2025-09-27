@@ -89,17 +89,17 @@ public class TimeZoneManager {
         long years = days / 365;
 
         if (diffSeconds < 60) {
-            return Lang.RELATIVE_TIME_SECOND.get(langType, diffSeconds);
+            return Lang.RELATIVE_TIME_SECOND.get(langType, String.valueOf(diffSeconds));
         } else if (minutes < 60) {
-            return Lang.RELATIVE_TIME_MINUTE.get(langType, minutes);
+            return Lang.RELATIVE_TIME_MINUTE.get(langType, String.valueOf(minutes));
         } else if (hours < 24) {
-            return Lang.RELATIVE_TIME_HOUR.get(langType, hours);
+            return Lang.RELATIVE_TIME_HOUR.get(langType, String.valueOf(hours));
         } else if (days < 7) {
-            return Lang.RELATIVE_TIME_DAY.get(langType, days);
+            return Lang.RELATIVE_TIME_DAY.get(langType, String.valueOf(days));
         } else if (months < 12) {
-            return Lang.RELATIVE_TIME_MONTH.get(langType, months);
+            return Lang.RELATIVE_TIME_MONTH.get(langType, String.valueOf(months));
         } else {
-            return Lang.RELATIVE_TIME_YEAR.get(langType, years);
+            return Lang.RELATIVE_TIME_YEAR.get(langType, String.valueOf(years));
         }
     }
 }

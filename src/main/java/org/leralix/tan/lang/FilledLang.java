@@ -10,14 +10,14 @@ import java.util.List;
 public class FilledLang {
 
     private final Lang lang;
-    private final List<Object> placeholders;
+    private final List<String> placeholders;
 
     public FilledLang(Lang lang) {
         this.lang = lang;
         this.placeholders = Collections.emptyList();
     }
 
-    public FilledLang(Lang lang, Object... placeholders) {
+    public FilledLang(Lang lang, String... placeholders) {
         this.lang = lang;
         this.placeholders = List.of(placeholders);
     }

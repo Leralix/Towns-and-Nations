@@ -20,7 +20,6 @@ import org.leralix.tan.listeners.interact.events.ChangeCapital;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.file.FileUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +68,7 @@ public class TownSettingsMenu extends SettingsMenus {
 
         townData.getCapitalLocation().ifPresentOrElse(
                 vector2D -> {
-                    desc.add(Lang.GUI_CAPITAL_CHUNK_ACTUAL_POSITION.get(langType, Lang.DISPLAY_2D_COORDINATES.get(vector2D.getX() * 16, vector2D.getZ() * 16)));
+                    desc.add(Lang.GUI_CAPITAL_CHUNK_ACTUAL_POSITION.get(langType, Lang.DISPLAY_2D_COORDINATES.get(langType, Integer.toString(vector2D.getX() * 16), Integer.toString(vector2D.getZ() * 16))));
                     desc.add(Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(langType));
                 },
                 () -> desc.add(Lang.GUI_NO_CAPITAL_CHUNK.get(langType))

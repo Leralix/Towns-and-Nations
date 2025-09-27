@@ -31,15 +31,15 @@ public class CreateTown extends ChatListenerEvent {
         double playerBalance = EconomyUtil.getBalance(player);
 
         if(playerBalance < cost){
-            player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(player, cost - playerBalance));
+            player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(player, Double.toString(cost - playerBalance)));
             return false;
         }
 
         FileConfiguration config =  ConfigUtil.getCustomConfig(ConfigTag.MAIN);
-        int maxSize = config.getInt("TownNameSize");
+        int maxSize = config.getInt("TownNameSize", 45);
 
         if(message.length() > maxSize){
-            player.sendMessage(Lang.MESSAGE_TOO_LONG.get(player, maxSize));
+            player.sendMessage(Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxSize)));
             return false;
         }
 

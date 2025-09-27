@@ -26,7 +26,7 @@ public class ChangeTerritoryDescription extends ChatListenerEvent {
         int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownDescSize");
 
         if(message.length() > maxSize){
-            player.sendMessage(Lang.MESSAGE_TOO_LONG.get(player, maxSize));
+            player.sendMessage(Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxSize)));
             return false;
         }
 

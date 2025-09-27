@@ -168,7 +168,7 @@ public class RankManagerMenu extends BasicGui {
         return iconManager.get(IconKey.CURRENT_SALARY_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_ROLE_SALARY.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_DESC1.get(tanPlayer, rankData.getSalary())
+                        Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_DESC1.get(tanPlayer, Integer.toString(rankData.getSalary()))
                 )
                 .asGuiItem(player);
     }
@@ -211,7 +211,7 @@ public class RankManagerMenu extends BasicGui {
     private GuiItem getRankLevel() {
         RankEnum rankEnum = rankData.getRankEnum();
         return iconManager.get(rankData.getRankEnum().getBasicRankIcon())
-                .setName(rankEnum.getColor() + Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_X.get(tanPlayer, rankEnum.getLevel()))
+                .setName(rankEnum.getColor() + Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_X.get(tanPlayer, Integer.toString(rankEnum.getLevel())))
                 .setDescription(
                         Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1.get(tanPlayer),
                         Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2.get(tanPlayer)

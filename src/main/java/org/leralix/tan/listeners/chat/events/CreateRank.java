@@ -23,7 +23,7 @@ public class CreateRank extends ChatListenerEvent {
         int maxNameSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RankNameSize");
 
         if(message.length() > maxNameSize){
-            player.sendMessage(Lang.MESSAGE_TOO_LONG.get(player, maxNameSize));
+            player.sendMessage(Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxNameSize)));
             return false;
         }
         if(territoryData.isRankNameUsed(message)){

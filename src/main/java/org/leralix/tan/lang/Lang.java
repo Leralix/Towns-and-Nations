@@ -162,7 +162,6 @@ public enum Lang {
     TERRITORY_NOT_ENOUGH_MONEY,
     NAME_ALREADY_USED,
     PLAYER_WRITE_TOWN_NAME_IN_CHAT,
-    CAPITAL_WILL_BE_CREATED_ON_PLAYER_CHUNK,
     PLAYER_WRITE_QUANTITY_IN_CHAT,
     TOWN_RETRIEVE_MONEY_SUCCESS,
     TOWN_SET_TAX_SUCCESS,
@@ -1152,25 +1151,26 @@ public enum Lang {
         return get(LangType.ENGLISH);
     }
 
-    public FilledLang get(Object... placeholders) {
+    public FilledLang get(String... placeholders) {
         return new FilledLang(this, placeholders);
     }
 
-    public String get(Player player, Object... placeholders) {
+    public String get(Player player, String... placeholders) {
         return get(PlayerDataStorage.getInstance().get(player), placeholders);
     }
 
-    public String get(ITanPlayer tanPlayer, Object... placeholders) {
+    public String get(ITanPlayer tanPlayer, String... placeholders) {
         if(tanPlayer == null) {
             return get(serverLang, placeholders);
         }
         return get(tanPlayer.getLang(), placeholders);
     }
-    public String get(LangType lang, Object... placeholders) {
+    public String get(LangType lang, String... placeholders) {
         return get(lang, List.of(placeholders));
     }
 
-    public String get(LangType lang, List<Object> placeholders) {
+
+    public String get(LangType lang, List<String> placeholders) {
         String translation = translations.get(lang).get(this);
         if (translation != null) {
             translation = ChatColor.translateAlternateColorCodes('§', translation);

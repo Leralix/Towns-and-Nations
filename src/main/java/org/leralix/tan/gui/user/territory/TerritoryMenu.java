@@ -39,8 +39,8 @@ public abstract class TerritoryMenu extends BasicGui {
         List<String> lore = new ArrayList<>();
         lore.add(Lang.GUI_TOWN_INFO_DESC0.get(langType, territoryData.getDescription()));
         lore.add(Lang.GUI_TOWN_INFO_DESC1.get(langType, territoryData.getLeaderName()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC2.get(langType, territoryData.getPlayerIDList().size()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC3.get(langType, territoryData.getNumberOfClaimedChunk()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC2.get(langType, Integer.toString(territoryData.getPlayerIDList().size())));
+        lore.add(Lang.GUI_TOWN_INFO_DESC3.get(langType, Integer.toString(territoryData.getNumberOfClaimedChunk())));
         lore.add(territoryData.getOverlord().map(
                 overlord -> Lang.GUI_TOWN_INFO_DESC5_REGION.get(langType, overlord.getName()))
                 .orElseGet(() -> Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get(langType)));

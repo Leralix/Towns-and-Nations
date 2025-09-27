@@ -194,8 +194,8 @@ public class PlannedAttack {
             ArrayList<String> lore = new ArrayList<>();
             lore.add(Lang.ATTACK_ICON_DESC_1.get(langType, war.getMainAttacker().getName()));
             lore.add(Lang.ATTACK_ICON_DESC_2.get(langType, war.getMainDefender().getName()));
-            lore.add(Lang.ATTACK_ICON_DESC_3.get(langType, getNumberOfAttackers()));
-            lore.add(Lang.ATTACK_ICON_DESC_4.get(langType, getNumberOfDefenders()));
+            lore.add(Lang.ATTACK_ICON_DESC_3.get(langType, Integer.toString(getNumberOfAttackers())));
+            lore.add(Lang.ATTACK_ICON_DESC_4.get(langType, Integer.toString(getNumberOfDefenders())));
             lore.add(Lang.ATTACK_ICON_DESC_6.get(langType, DateUtil.getDateStringFromTicks(startDate)));
             lore.add(Lang.ATTACK_ICON_DESC_7.get(langType, DateUtil.getDateStringFromTicks(attackDuration)));
             if (isAdminApproved) {
@@ -226,8 +226,8 @@ public class PlannedAttack {
             ArrayList<String> lore = new ArrayList<>();
             lore.add(Lang.ATTACK_ICON_DESC_1.get(langType, war.getMainAttacker().getName()));
             lore.add(Lang.ATTACK_ICON_DESC_2.get(langType, war.getMainDefender().getName()));
-            lore.add(Lang.ATTACK_ICON_DESC_3.get(langType, getNumberOfAttackers()));
-            lore.add(Lang.ATTACK_ICON_DESC_4.get(langType, getNumberOfDefenders()));
+            lore.add(Lang.ATTACK_ICON_DESC_3.get(langType, Integer.toString(getNumberOfAttackers())));
+            lore.add(Lang.ATTACK_ICON_DESC_4.get(langType, Integer.toString(getNumberOfDefenders())));
             lore.add(Lang.ATTACK_ICON_DESC_6.get(langType, DateUtil.getDateStringFromTicks(startDate), exactTimeStart));
             lore.add(Lang.ATTACK_ICON_DESC_7.get(langType, DateUtil.getDateStringFromTicks(attackDuration)));
             lore.add(Lang.ATTACK_ICON_DESC_8.get(langType, getTerritoryRole(territoryConcerned).getName(langType)));

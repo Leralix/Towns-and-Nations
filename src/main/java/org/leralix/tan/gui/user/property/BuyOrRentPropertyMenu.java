@@ -46,7 +46,7 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
         return iconManager.get(IconKey.CONFIRM_BUY_PROPERTY_ICON)
                 .setName(Lang.CONFIRM_SALE.get(tanPlayer))
                 .setDescription(
-                        Lang.CONFIRM_SALE_DESC1.get(tanPlayer, price),
+                        Lang.CONFIRM_SALE_DESC1.get(tanPlayer, Double.toString(price)),
                         Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer)
                 )
                 .setAction(action -> {
@@ -73,7 +73,7 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
         return iconManager.get(IconKey.CONFIRM_RENT_PROPERTY_ICON)
                 .setName(Lang.CONFIRM_RENT.get(tanPlayer))
                 .setDescription(
-                        Lang.CONFIRM_RENT_DESC1.get(tanPlayer, price),
+                        Lang.CONFIRM_RENT_DESC1.get(tanPlayer, Double.toString(price)),
                         Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer)
                 )
                 .setAction(event -> {

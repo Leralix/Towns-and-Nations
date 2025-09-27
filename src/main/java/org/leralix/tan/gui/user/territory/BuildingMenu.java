@@ -43,17 +43,17 @@ public class BuildingMenu extends IteratorGUI {
         return iconManager.get(IconKey.FORT_BUILDING_ICON)
                 .setName(Lang.CREATE_FORT_ICON.get(langType))
                 .setDescription(
-                        Lang.CREATE_FORT_DESC1.get(langType, Constants.getFortCost()),
+                        Lang.CREATE_FORT_DESC1.get(langType, Double.toString(Constants.getFortCost())),
                         Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(langType)
                 )
                 .setAction(action -> {
 
-                    if(Constants.getFortCost() > territoryData.getBalance()){
-                        player.sendMessage(getTANString() + Lang.TERRITORY_NOT_ENOUGH_MONEY.get(langType, territoryData.getColoredName() ,Constants.getFortCost() - territoryData.getBalance()));
+                    if (Constants.getFortCost() > territoryData.getBalance()) {
+                        player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(langType, territoryData.getColoredName(), Double.toString(Constants.getFortCost() - territoryData.getBalance())));
                         return;
                     }
 
-                    player.sendMessage(getTANString() + Lang.RIGHT_CLICK_TO_PLACE_FORT.get(langType));
+                    player.sendMessage(Lang.RIGHT_CLICK_TO_PLACE_FORT.get(langType));
                     RightClickListener.register(player, new CreateFortEvent(territoryData));
                     player.closeInventory();
                 })
@@ -62,7 +62,7 @@ public class BuildingMenu extends IteratorGUI {
 
     private List<GuiItem> getBuildings() {
         List<GuiItem> res = new ArrayList<>();
-        for(Building building : territoryData.getBuildings()){
+        for (Building building : territoryData.getBuildings()) {
             res.add(building.getGuiItem(iconManager, player, territoryData, this));
         }
         return res;

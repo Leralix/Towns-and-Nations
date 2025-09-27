@@ -102,7 +102,7 @@ public class TownCreatedNews extends Newsletter {
         TownData townData = TownDataStorage.getInstance().get(townID);
         if (townData == null)
             return;
-        player.sendMessage(getTANString() + Lang.TOWN_CREATED_NEWSLETTER.get(tanPlayer.getNameStored(), townData.getBaseColoredName()));
+        player.sendMessage(Lang.TOWN_CREATED_NEWSLETTER.get(player, tanPlayer.getNameStored(), townData.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.GOOD);
     }
 

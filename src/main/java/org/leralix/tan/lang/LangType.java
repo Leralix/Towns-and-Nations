@@ -68,8 +68,8 @@ public enum LangType {
         return name().toLowerCase();
     }
 
-    public ItemStack getIcon() {
-        return HeadUtils.makeSkullURL(getName(), url, Lang.PERCENT_COMPLETED.get(Lang.getServerLang(), Lang.getCompletionPercentage(this)));
+    public ItemStack getIcon(LangType langType) {
+        return HeadUtils.makeSkullURL(getName(), url, Lang.PERCENT_COMPLETED.get(langType, Integer.toString(Lang.getCompletionPercentage(this))));
     }
 
 

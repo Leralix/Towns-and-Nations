@@ -42,7 +42,7 @@ public class NoRegionMenu extends BasicGui {
 
         int regionCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
 
-        return iconManager.get(IconKey.CREATE_REGION_ICON).setName(Lang.GUI_REGION_CREATE.get(tanPlayer)).setDescription(Lang.GUI_REGION_CREATE_DESC1.get(tanPlayer, regionCost), Lang.GUI_REGION_CREATE_DESC2.get(tanPlayer)).setAction(action -> {
+        return iconManager.get(IconKey.CREATE_REGION_ICON).setName(Lang.GUI_REGION_CREATE.get(tanPlayer)).setDescription(Lang.GUI_REGION_CREATE_DESC1.get(tanPlayer, Integer.toString(regionCost)), Lang.GUI_REGION_CREATE_DESC2.get(tanPlayer)).setAction(action -> {
             if (!player.hasPermission("tan.base.region.create")) {
                 player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                 SoundUtil.playSound(player, NOT_ALLOWED);
@@ -56,7 +56,7 @@ public class NoRegionMenu extends BasicGui {
             TownData townData = TownDataStorage.getInstance().get(player);
             double townMoney = townData.getBalance();
             if (townMoney < regionCost) {
-                player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), regionCost - townMoney));
+                player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), Double.toString(regionCost - townMoney)));
             } else {
                 player.sendMessage(Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(tanPlayer));
                 player.closeInventory();
@@ -67,7 +67,7 @@ public class NoRegionMenu extends BasicGui {
     }
 
     private GuiItem getBrowseRegionsButton() {
-        return iconManager.get(IconKey.BROWSE_REGION_ICON).setName(Lang.GUI_REGION_BROWSE.get(tanPlayer)).setDescription(Lang.GUI_REGION_BROWSE_DESC1.get(tanPlayer, RegionDataStorage.getInstance().getAll().size()), Lang.GUI_REGION_BROWSE_DESC2.get(tanPlayer)).setAction(action -> {
+        return iconManager.get(IconKey.BROWSE_REGION_ICON).setName(Lang.GUI_REGION_BROWSE.get(tanPlayer)).setDescription(Lang.GUI_REGION_BROWSE_DESC1.get(tanPlayer, Integer.toString(RegionDataStorage.getInstance().getAll().size())), Lang.GUI_REGION_BROWSE_DESC2.get(tanPlayer)).setAction(action -> {
             new BrowseTerritoryMenu(player, null, BrowseScope.REGIONS, p -> open());
         }).asGuiItem(player);
 

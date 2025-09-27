@@ -30,7 +30,7 @@ public class CreateEmptyTown extends ChatListenerEvent {
         int maxSize = config.getInt("TownNameSize");
 
         if(townName.length() > maxSize){
-            player.sendMessage(Lang.MESSAGE_TOO_LONG.get(player, maxSize));
+            player.sendMessage(Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxSize)));
             return false;
         }
 

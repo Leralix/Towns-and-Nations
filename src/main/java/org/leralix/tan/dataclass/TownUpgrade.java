@@ -31,7 +31,6 @@ public class TownUpgrade {
     private final Map<String, Integer> benefits;
 
 
-
     public TownUpgrade(String name, int col, int row, String materialCode, int maxLevel, List<Integer> cost, Map<String, Integer> prerequisites, Map<String, Integer> benefits) {
         this.name = name;
         this.col = col;
@@ -49,16 +48,17 @@ public class TownUpgrade {
     }
 
     public String getMaterialCode() {
-        if(materialCode == null)
+        if (materialCode == null)
             return "BEDROCK";
         return materialCode;
     }
 
     public int getCost(int level) {
-        if(cost.size() <= level)
+        if (cost.size() <= level)
             return cost.getLast();
         return cost.get(level);
     }
+
     public Map<String, Integer> getPrerequisites() {
         return prerequisites;
     }
@@ -79,72 +79,70 @@ public class TownUpgrade {
         return maxLevel;
     }
 
-    public List<String> getItemLore(LangType lang, Level townLevelClass, int townUpgradeLevel ) {
-        List <String> lore = new ArrayList<>();
+    public List<String> getItemLore(LangType lang, Level townLevelClass, int townUpgradeLevel) {
+        List<String> lore = new ArrayList<>();
         boolean isMaxLevel = townUpgradeLevel >= this.getMaxLevel();
 
 
         lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC1.get(lang, townUpgradeLevel + "/" + this.getMaxLevel()));
-        if(isMaxLevel)
+        if (isMaxLevel)
             lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC2_MAX_LEVEL.get(lang));
         else
-            lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC2.get(lang, townUpgradeLevel + 1 , this.getCost(townUpgradeLevel)));
+            lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC2.get(lang, Integer.toString(townUpgradeLevel + 1), Integer.toString(this.getCost(townUpgradeLevel))));
 
 
         //Pre-requisite
-        if(!prerequisites.isEmpty()){
+        if (!prerequisites.isEmpty()) {
             lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC3.get(lang));
 
-            for(Map.Entry<String,Integer> entry : this.getPrerequisites().entrySet()) {
+            for (Map.Entry<String, Integer> entry : this.getPrerequisites().entrySet()) {
                 String prerequisiteName = entry.getKey();
                 Integer levelNeeded = entry.getValue();
                 Integer currentLevel = townLevelClass.getUpgradeLevel(prerequisiteName);
-                if(levelNeeded <= townLevelClass.getUpgradeLevel(prerequisiteName)){
-                    lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC3_1.get(lang, DynamicLang.get(lang, prerequisiteName), currentLevel, levelNeeded));
-                }
-                else {
-                    lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC3_2.get(lang, DynamicLang.get(lang, prerequisiteName), currentLevel, levelNeeded));
+                if (levelNeeded <= townLevelClass.getUpgradeLevel(prerequisiteName)) {
+                    lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC3_1.get(lang, DynamicLang.get(lang, prerequisiteName), Integer.toString(currentLevel), Integer.toString(levelNeeded)));
+                } else {
+                    lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC3_2.get(lang, DynamicLang.get(lang, prerequisiteName), Integer.toString(currentLevel), Integer.toString(levelNeeded)));
                 }
             }
         }
 
         //Benefits
-        if(!isMaxLevel){    //If max level do not show this part
+        if (!isMaxLevel) {    //If max level do not show this part
             lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4.get(lang));
-            for(Map.Entry<String,Integer> entry : this.getBenefits().entrySet()){
+            for (Map.Entry<String, Integer> entry : this.getBenefits().entrySet()) {
                 String prerequisiteName = entry.getKey();
                 Integer value = entry.getValue();
-                if(value > 0)
-                    lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(lang, DynamicLang.get(lang, prerequisiteName), value));
+                if (value > 0)
+                    lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(lang, DynamicLang.get(lang, prerequisiteName), Integer.toString(value)));
                 else
-                    lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(lang, DynamicLang.get(lang, prerequisiteName), value));
+                    lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(lang, DynamicLang.get(lang, prerequisiteName), Integer.toString(value)));
             }
         }
 
         //Total Benefits
         lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC5.get(lang));
-        for(Map.Entry<String,Integer> entry : this.getBenefits().entrySet()){
+        for (Map.Entry<String, Integer> entry : this.getBenefits().entrySet()) {
             String benefitName = entry.getKey();
             Integer value = entry.getValue();
-            if(value > 0){
-                lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(lang, DynamicLang.get(lang, benefitName), value * townUpgradeLevel));
-            }
-            else {
-                lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(lang, DynamicLang.get(lang, benefitName), value * townUpgradeLevel));
+            if (value > 0) {
+                lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(lang, DynamicLang.get(lang, benefitName), Integer.toString(value * townUpgradeLevel)));
+            } else {
+                lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(lang, DynamicLang.get(lang, benefitName), Integer.toString(value * townUpgradeLevel)));
             }
         }
         return lore;
     }
 
     public boolean isPrerequisiteMet(Level townLevel) {
-        if(prerequisites.isEmpty())
+        if (prerequisites.isEmpty())
             return true;
 
-        for(Map.Entry<String,Integer> entry : this.getPrerequisites().entrySet()) {
+        for (Map.Entry<String, Integer> entry : this.getPrerequisites().entrySet()) {
             String prerequisiteName = entry.getKey();
             Integer levelNeeded = entry.getValue();
             Integer currentLevel = townLevel.getUpgradeLevel(prerequisiteName);
-            if(levelNeeded > currentLevel){
+            if (levelNeeded > currentLevel) {
                 return false;
             }
         }
@@ -165,13 +163,13 @@ public class TownUpgrade {
 
         return ItemBuilder.from(upgradeItemStack).asGuiItem(event -> {
             event.setCancelled(true);
-            if(!isPrerequisiteMet(townLevel)){
+            if (!isPrerequisiteMet(townLevel)) {
                 player.sendMessage(Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.get(tanPlayer.getLang()));
                 SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                 return;
             }
-            townData.upgradeTown(player,this,townUpgradeLevel);
-            PlayerGUI.openTownLevel(player,page);
+            townData.upgradeTown(player, this, townUpgradeLevel);
+            PlayerGUI.openTownLevel(player, page);
         });
     }
 }

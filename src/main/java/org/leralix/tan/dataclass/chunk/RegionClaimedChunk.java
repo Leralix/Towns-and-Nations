@@ -93,7 +93,7 @@ public class RegionClaimedChunk extends TerritoryChunk {
             return;
         }
         NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
-        player.sendMessage(Lang.UNCLAIMED_CHUNK_SUCCESS_REGION.get(player, regionData.getNumberOfClaimedChunk()));
+        player.sendMessage(Lang.UNCLAIMED_CHUNK_SUCCESS_REGION.get(player, Integer.toString(regionData.getNumberOfClaimedChunk())));
     }
 
     public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {

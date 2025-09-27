@@ -25,13 +25,13 @@ public class RetrieveMoney extends ChatListenerEvent {
         }
 
         if(amount > territoryData.getBalance()){
-            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, territoryData.getColoredName(), amount - territoryData.getBalance()));
+            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, territoryData.getColoredName(), Double.toString(amount - territoryData.getBalance())));
             return false;
         }
         territoryData.removeFromBalance(amount);
         EconomyUtil.addFromBalance(player, amount);
 
-        player.sendMessage(Lang.TOWN_RETRIEVE_MONEY_SUCCESS.get(player, amount));
+        player.sendMessage(Lang.TOWN_RETRIEVE_MONEY_SUCCESS.get(player, Double.toString(amount)));
         SoundUtil.playSound(player, SoundEnum.MINOR_LEVEL_UP);
         return true;
     }

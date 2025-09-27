@@ -39,13 +39,13 @@ public class CreateRegion extends ChatListenerEvent {
         }
 
         if(town.getBalance() < cost){
-            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, town.getColoredName(), cost - town.getBalance()));
+            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, town.getColoredName(), Double.toString(cost - town.getBalance())));
             return false;
         }
 
         int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RegionNameSize");
         if(message.length() > maxSize){
-            player.sendMessage(Lang.MESSAGE_TOO_LONG.get(tanPlayer, maxSize));
+            player.sendMessage(Lang.MESSAGE_TOO_LONG.get(tanPlayer, Integer.toString(maxSize)));
             return false;
         }
 

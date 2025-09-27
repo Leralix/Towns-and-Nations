@@ -82,7 +82,7 @@ public abstract class Fort extends Building {
                 .setName(getName())
                 .setDescription(
                         Lang.FORT_OCCUPIED_BY.get(langType, getOccupier().getColoredName()),
-                        Lang.DISPLAY_COORDINATES.get(langType, position.getX(), position.getY(), position.getZ()),
+                        Lang.DISPLAY_COORDINATES.get(langType, Integer.toString(position.getX()), Integer.toString(position.getY()), Integer.toString(position.getZ())),
                         Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(langType)
                 )
                 .setAction(

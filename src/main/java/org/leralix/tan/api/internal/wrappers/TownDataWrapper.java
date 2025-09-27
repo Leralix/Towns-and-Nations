@@ -1,5 +1,6 @@
 package org.leralix.tan.api.internal.wrappers;
 
+import org.leralix.lib.position.Vector2D;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.tan.api.interfaces.TanLandmark;
@@ -7,6 +8,7 @@ import org.tan.api.interfaces.TanProperty;
 import org.tan.api.interfaces.TanTown;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public class TownDataWrapper extends TerritoryDataWrapper implements TanTown {
 
@@ -42,5 +44,10 @@ public class TownDataWrapper extends TerritoryDataWrapper implements TanTown {
                 .map(LandmarkDataWrapper::of)
                 .map(l -> (TanLandmark) l)
                 .toList();
+    }
+
+    @Override
+    public Optional<Vector2D> getCapitalLocation() {
+        return townData.getCapitalLocation();
     }
 }

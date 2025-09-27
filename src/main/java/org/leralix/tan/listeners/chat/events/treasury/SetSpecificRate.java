@@ -28,7 +28,7 @@ public abstract class SetSpecificRate extends ChatListenerEvent {
         }
         amount = Math.min(100, Math.max(0, amount));
 
-        player.sendMessage(Lang.TOWN_SET_RATE_SUCCESS.get(player, amount));
+        player.sendMessage(Lang.TOWN_SET_RATE_SUCCESS.get(player, Double.toString(amount)));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
 
 

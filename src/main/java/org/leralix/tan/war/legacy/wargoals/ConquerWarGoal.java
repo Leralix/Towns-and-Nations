@@ -24,7 +24,7 @@ public class ConquerWarGoal extends WarGoal {
 
         List<String> description = new ArrayList<>();
         description.add(Lang.CONQUER_WAR_GOAL_DESC.get(langType));
-        description.add(Lang.CONQUER_WAR_GOAL_DESC1.get(langType, numberOfChunks));
+        description.add(Lang.CONQUER_WAR_GOAL_DESC1.get(langType, Integer.toString(numberOfChunks)));
         description.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(langType));
 
         return buildIcon(Material.IRON_SWORD, description, langType);
@@ -49,7 +49,7 @@ public class ConquerWarGoal extends WarGoal {
 
     @Override
     public String getCurrentDesc(LangType langType) {
-        return Lang.GUI_CONQUER_CHUNK_CURRENT_DESC.get(langType, numberOfChunks);
+        return Lang.GUI_CONQUER_CHUNK_CURRENT_DESC.get(langType, Integer.toString(numberOfChunks));
     }
 
 

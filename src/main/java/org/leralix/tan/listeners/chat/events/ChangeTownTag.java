@@ -24,7 +24,7 @@ public class ChangeTownTag extends ChatListenerEvent {
 
         int size = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize");
         if(message.length() != size){
-            player.sendMessage(Lang.MESSAGE_NOT_RIGHT_SIZE.get(player, size));
+            player.sendMessage(Lang.MESSAGE_NOT_RIGHT_SIZE.get(player, Integer.toString(size)));
             return false;
         }
 

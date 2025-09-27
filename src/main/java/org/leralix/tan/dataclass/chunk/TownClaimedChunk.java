@@ -117,7 +117,7 @@ public class TownClaimedChunk extends TerritoryChunk {
         }
 
         NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
-        player.sendMessage(Lang.UNCLAIMED_CHUNK_SUCCESS_TOWN.get(langType, playerTown.getNumberOfClaimedChunk(), playerTown.getLevel().getChunkCap()));
+        player.sendMessage(Lang.UNCLAIMED_CHUNK_SUCCESS_TOWN.get(langType, Integer.toString(playerTown.getNumberOfClaimedChunk()), Integer.toString(playerTown.getLevel().getChunkCap())));
 
     }
 

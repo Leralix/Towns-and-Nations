@@ -100,7 +100,7 @@ public class AttackCancelledByDefenderNewsletter extends Newsletter {
             return;
 
         SoundUtil.playSound(player, SoundEnum.WAR);
-        player.sendMessage(getTANString() + Lang.DEFENSIVE_SIDE_HAS_SURRENDER.get(defendingTerritory.getBaseColoredName(), attackingTerritory.getBaseColoredName()));
+        player.sendMessage(Lang.DEFENSIVE_SIDE_HAS_SURRENDER.get(player, defendingTerritory.getBaseColoredName(), attackingTerritory.getBaseColoredName()));
     }
 
     @Override

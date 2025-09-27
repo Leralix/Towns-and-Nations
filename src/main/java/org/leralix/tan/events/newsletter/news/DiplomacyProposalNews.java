@@ -74,7 +74,7 @@ public class DiplomacyProposalNews extends Newsletter {
         if(receivingTerritory == null)
             return;
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        player.sendMessage(getTANString() + Lang.DIPLOMACY_PROPOSAL_NEWSLETTER.get(proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName(tanPlayer.getLang())));
+        player.sendMessage(Lang.DIPLOMACY_PROPOSAL_NEWSLETTER.get(player, proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName(tanPlayer.getLang())));
         SoundUtil.playSound(player, MINOR_GOOD);
     }
 

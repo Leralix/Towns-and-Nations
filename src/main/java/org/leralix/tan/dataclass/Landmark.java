@@ -157,8 +157,8 @@ public class Landmark {
 
     public List<String> getBaseDescription(LangType langType) {
         List<String> description = new ArrayList<>();
-        description.add(Lang.DISPLAY_COORDINATES.get(langType, position.getX(), position.getY(), position.getZ()));
-        description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(langType, amount, materialName.toLowerCase()));
+        description.add(Lang.DISPLAY_COORDINATES.get(langType, Integer.toString(position.getX()), Integer.toString(position.getY()), Integer.toString(position.getZ())));
+        description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(langType, Integer.toString(amount), materialName.toLowerCase()));
         return description;
     }
 

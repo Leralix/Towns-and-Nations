@@ -36,7 +36,7 @@ public class SelectNbChunksForConquer extends ChatListenerEvent {
 
         int maxAmountOfChunkToCapture = Constants.getNbChunkToCaptureMax();
         if(amount > maxAmountOfChunkToCapture){
-            player.sendMessage(Lang.VALUE_EXCEED_MAXIMUM_ERROR.get(player, maxAmountOfChunkToCapture));
+            player.sendMessage(Lang.VALUE_EXCEED_MAXIMUM_ERROR.get(player, Integer.toString(maxAmountOfChunkToCapture)));
             return false;
         }
 

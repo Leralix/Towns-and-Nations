@@ -26,9 +26,6 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.NumberUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
-
-import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
 
 public class CreatePropertyEvent extends RightClickListenerEvent {
 
@@ -68,7 +65,7 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
 
         if (position1 == null){
             position1 = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
-            player.sendMessage(getTANString() + Lang.PLAYER_FIRST_POINT_SET.get(player, position1));
+            player.sendMessage(Lang.PLAYER_FIRST_POINT_SET.get(player, position1.toString()));
             return ListenerState.CONTINUE;
         }
         if(position2 == null){
@@ -77,30 +74,30 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
             Vector3D vector3D = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
 
             if (Math.abs(position1.getX() - vector3D.getX()) * Math.abs(position1.getY() - vector3D.getY()) * Math.abs(position1.getZ() - vector3D.getZ()) > maxPropertySize) {
-                player.sendMessage(getTANString() + Lang.PLAYER_PROPERTY_TOO_BIG.get(maxPropertySize));
+                player.sendMessage(Lang.PLAYER_PROPERTY_TOO_BIG.get(langType, Integer.toString(maxPropertySize)));
                 return ListenerState.FAILURE;
             }
             position2 = vector3D;
 
             cost = NumberUtil.roundWithDigits(getTotalCost());
             if(tanPlayer.getBalance() < cost){
-                player.sendMessage(getTANString() + Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(cost - tanPlayer.getBalance()));
+                player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(langType, Double.toString(cost - tanPlayer.getBalance())));
                 return ListenerState.SUCCESS;
             }
 
-            player.sendMessage(getTANString() + Lang.PLAYER_SECOND_POINT_SET.get(vector3D));
-            player.sendMessage(getTANString() + Lang.PLAYER_PLACE_SIGN.get());
+            player.sendMessage(Lang.PLAYER_SECOND_POINT_SET.get(langType, vector3D.toString()));
+            player.sendMessage(Lang.PLAYER_PLACE_SIGN.get(langType));
             return ListenerState.CONTINUE;
         }
 
         int margin = Constants.getMaxPropertySignMargin();
         if (!isNearProperty(block.getLocation(), position1, position2, margin)) {
-            player.sendMessage(getTANString() + Lang.PLAYER_PROPERTY_SIGN_TOO_FAR.get(margin));
+            player.sendMessage(Lang.PLAYER_PROPERTY_SIGN_TOO_FAR.get(langType, Integer.toString(margin)));
             return ListenerState.CONTINUE;
         }
 
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
-        player.sendMessage(getTANString() + Lang.PLAYER_PROPERTY_CREATED.get());
+        player.sendMessage(Lang.PLAYER_PROPERTY_CREATED.get(langType));
         tanPlayer.removeFromBalance(cost);
         townData.addToBalance(cost);
 

@@ -55,7 +55,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
         return IconManager.getInstance().get(IconKey.MANAGE_APPLICATIONS_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(tanPlayer, townData.getPlayerJoinRequestSet().size()),
+                        Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(tanPlayer, Integer.toString(townData.getPlayerJoinRequestSet().size())),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer))
                 .setAction(p -> new PlayerApplicationMenu(player, townData).open())
                 .asGuiItem(player);

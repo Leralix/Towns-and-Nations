@@ -298,10 +298,10 @@ public class PropertyData {
 
         if (this.isForSale) {
             lines[2] = Lang.SIGN_FOR_SALE.get(langType);
-            lines[3] = Lang.SIGN_SALE_PRICE.get(langType, this.getSalePrice());
+            lines[3] = Lang.SIGN_SALE_PRICE.get(langType, Double.toString(this.getSalePrice()));
         } else if (this.isForRent) {
             lines[2] = Lang.SIGN_RENT.get(langType);
-            lines[3] = Lang.SIGN_RENT_PRICE.get(langType, this.getRentPrice());
+            lines[3] = Lang.SIGN_RENT_PRICE.get(langType, Double.toString(this.getRentPrice()));
         } else if (this.isRented()) {
             lines[2] = Lang.SIGN_RENTED_BY.get(langType);
             lines[3] = this.getRenter().getNameStored();
@@ -371,7 +371,7 @@ public class PropertyData {
         double playerBalance = EconomyUtil.getBalance(player);
         double cost = getSalePrice();
         if (playerBalance < cost) {
-            player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(player, cost - playerBalance));
+            player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(player, Double.toString(cost - playerBalance)));
             SoundUtil.playSound(player, SoundEnum.MINOR_BAD);
             return;
         }
@@ -380,10 +380,10 @@ public class PropertyData {
         OfflinePlayer exOwnerOffline = Bukkit.getOfflinePlayer(UUID.fromString(owningPlayerID));
 
         if (exOwner != null) {
-            exOwner.sendMessage(Lang.PROPERTY_SOLD_EX_OWNER.get(player, getName(), player.getName(), getSalePrice()));
+            exOwner.sendMessage(Lang.PROPERTY_SOLD_EX_OWNER.get(player, getName(), player.getName(),Double.toString(getSalePrice())));
             SoundUtil.playSound(exOwner, SoundEnum.GOOD);
         }
-        player.sendMessage(Lang.PROPERTY_SOLD_NEW_OWNER.get(player, getName(), getSalePrice()));
+        player.sendMessage(Lang.PROPERTY_SOLD_NEW_OWNER.get(player, getName(),Double.toString(getSalePrice())));
         SoundUtil.playSound(player, SoundEnum.GOOD);
 
         TownData town = getTown();

@@ -86,13 +86,13 @@ public class PayCommand extends PlayerSubCommand {
         if (EconomyUtil.getBalance(player) < amount) {
             player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(
                     langType,
-                    amount - EconomyUtil.getBalance(player)));
+                    Double.toString(amount - EconomyUtil.getBalance(player))));
             return;
         }
         EconomyUtil.removeFromBalance(player, amount);
         EconomyUtil.addFromBalance(receiver, amount);
-        player.sendMessage(Lang.PAY_CONFIRMED_SENDER.get(langType, amount, receiver.getName()));
-        receiver.sendMessage(Lang.PAY_CONFIRMED_RECEIVER.get(langType, amount, player.getName()));
+        player.sendMessage(Lang.PAY_CONFIRMED_SENDER.get(langType, Integer.toString(amount), receiver.getName()));
+        receiver.sendMessage(Lang.PAY_CONFIRMED_RECEIVER.get(langType, Integer.toString(amount), player.getName()));
     }
 
 

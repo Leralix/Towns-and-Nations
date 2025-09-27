@@ -130,9 +130,9 @@ public class RegionData extends TerritoryData {
             List<String> lore = new ArrayList<>();
             lore.add(Lang.GUI_REGION_INFO_DESC0.get(langType, getDescription()));
             lore.add(Lang.GUI_REGION_INFO_DESC1.get(langType, getCapital().getName()));
-            lore.add(Lang.GUI_REGION_INFO_DESC2.get(langType, getNumberOfTownsIn()));
-            lore.add(Lang.GUI_REGION_INFO_DESC3.get(langType, getTotalPlayerCount()));
-            lore.add(Lang.GUI_REGION_INFO_DESC5.get(langType, getNumberOfClaimedChunk()));
+            lore.add(Lang.GUI_REGION_INFO_DESC2.get(langType, Integer.toString(getNumberOfTownsIn()) ));
+            lore.add(Lang.GUI_REGION_INFO_DESC3.get(langType, Integer.toString(getTotalPlayerCount())));
+            lore.add(Lang.GUI_REGION_INFO_DESC5.get(langType, Integer.toString(getNumberOfClaimedChunk())));
 
             meta.setLore(lore);
             icon.setItemMeta(meta);

@@ -56,7 +56,7 @@ public class RegionDeletedNews extends Newsletter {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
         if (tanPlayer == null)
             return;
-        player.sendMessage(getTANString() + Lang.REGION_DELETED_NEWSLETTER.get(tanPlayer.getNameStored(), regionName));
+        player.sendMessage(Lang.REGION_DELETED_NEWSLETTER.get(player, tanPlayer.getNameStored(), regionName));
         SoundUtil.playSound(player, SoundEnum.GOOD);
     }
 

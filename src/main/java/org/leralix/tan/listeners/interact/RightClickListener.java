@@ -50,7 +50,7 @@ public class RightClickListener implements Listener {
         player.closeInventory();
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
         LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
-        player.sendMessage(Lang.WRITE_CANCEL_TO_CANCEL.get(langType, Lang.CANCEL_WORD.get()));
+        player.sendMessage(Lang.WRITE_CANCEL_TO_CANCEL.get(langType, Lang.CANCEL_WORD.get(langType)));
         events.put(player, rightClickListenerEvent);
     }
 

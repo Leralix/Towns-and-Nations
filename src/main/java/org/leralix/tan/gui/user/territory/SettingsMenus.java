@@ -35,8 +35,8 @@ public abstract class SettingsMenus extends BasicGui {
         List<String> lore = new ArrayList<>();
         lore.add(Lang.GUI_TOWN_INFO_DESC0.get(langType, territoryData.getDescription()));
         lore.add(Lang.GUI_TOWN_INFO_DESC1.get(langType, territoryData.getLeaderName()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC2.get(langType, territoryData.getPlayerIDList().size()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC3.get(langType, territoryData.getNumberOfClaimedChunk()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC2.get(langType, Integer.toString(territoryData.getPlayerIDList().size())));
+        lore.add(Lang.GUI_TOWN_INFO_DESC3.get(langType, Integer.toString(territoryData.getNumberOfClaimedChunk())));
         lore.add(territoryData.getOverlord()
                         .map(overlord -> Lang.GUI_TOWN_INFO_DESC5_REGION.get(langType, overlord.getName()))
                         .orElseGet(() ->  Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get(langType)));
@@ -58,7 +58,7 @@ public abstract class SettingsMenus extends BasicGui {
                 .setDescription(
                         Lang.GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC1.get(tanPlayer, territoryData.getName()),
                         Lang.GUI_GENERIC_LEFT_CLICK_TO_MODIFY.get(tanPlayer),
-                        Lang.GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC3.get(tanPlayer, cost),
+                        Lang.GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC3.get(tanPlayer, Integer.toString(cost)),
                         Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(tanPlayer))
                 .setAction(action -> {
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {

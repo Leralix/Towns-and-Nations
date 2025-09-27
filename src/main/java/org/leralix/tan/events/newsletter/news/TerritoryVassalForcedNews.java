@@ -99,7 +99,7 @@ public class TerritoryVassalForcedNews extends Newsletter {
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(forcedTerritoryID);
         if(receivingTerritory == null)
             return;
-        player.sendMessage(getTANString() + Lang.FORCED_VASSALAGE.get(receivingTerritory.getBaseColoredName(), proposingTerritory.getBaseColoredName()));
+        player.sendMessage(Lang.FORCED_VASSALAGE.get(player, receivingTerritory.getBaseColoredName(), proposingTerritory.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_BAD);
     }
 

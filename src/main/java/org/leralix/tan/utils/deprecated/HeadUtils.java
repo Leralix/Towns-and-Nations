@@ -269,10 +269,10 @@ public class HeadUtils {
             List<String> lore = new ArrayList<>();
             lore.add(Lang.GUI_REGION_INFO_DESC0.get(langType, regionData.getDescription()));
             lore.add(Lang.GUI_REGION_INFO_DESC1.get(langType, regionData.getCapital().getName()));
-            lore.add(Lang.GUI_REGION_INFO_DESC2.get(langType, regionData.getNumberOfTownsIn()));
-            lore.add(Lang.GUI_REGION_INFO_DESC3.get(langType, regionData.getTotalPlayerCount()));
-            lore.add(Lang.GUI_REGION_INFO_DESC4.get(langType, regionData.getBalance()));
-            lore.add(Lang.GUI_REGION_INFO_DESC5.get(langType, regionData.getNumberOfClaimedChunk()));
+            lore.add(Lang.GUI_REGION_INFO_DESC2.get(langType, Integer.toString(regionData.getNumberOfTownsIn())));
+            lore.add(Lang.GUI_REGION_INFO_DESC3.get(langType, Integer.toString(regionData.getTotalPlayerCount())));
+            lore.add(Lang.GUI_REGION_INFO_DESC4.get(langType, Double.toString(regionData.getBalance())));
+            lore.add(Lang.GUI_REGION_INFO_DESC5.get(langType, Integer.toString(regionData.getNumberOfClaimedChunk())));
             meta.setLore(lore);
             icon.setItemMeta(meta);
         }

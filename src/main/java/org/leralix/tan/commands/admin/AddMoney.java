@@ -32,21 +32,21 @@ public class AddMoney extends SubCommand {
     public String getSyntax() {
         return "/tanadmin addmoney <player> <amount>";
     }
-    public List<String> getTabCompleteSuggestions(CommandSender commandSender, String lowerCase, String[] args){
+
+    public List<String> getTabCompleteSuggestions(CommandSender commandSender, String lowerCase, String[] args) {
         return payPlayerSuggestion(args);
     }
+
     @Override
     public void perform(CommandSender commandSender, String[] args) {
 
         if (args.length < 2) {
             commandSender.sendMessage(Lang.NOT_ENOUGH_ARGS_ERROR.getDefault());
             commandSender.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
-        }
-        else if (args.length == 3) {
+        } else if (args.length == 3) {
             ITanPlayer target = PlayerDataStorage.getInstance().get(Bukkit.getServer().getOfflinePlayer(args[1]));
             addMoney(commandSender, args, target);
-        }
-        else{
+        } else {
             commandSender.sendMessage(Lang.TOO_MANY_ARGS_ERROR.getDefault());
             commandSender.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
         }
@@ -61,7 +61,7 @@ public class AddMoney extends SubCommand {
             return;
         }
         EconomyUtil.addFromBalance(target, amount);
-        commandSender.sendMessage(Lang.ADD_MONEY_COMMAND_SUCCESS.get(amount, target.getNameStored()).getDefault());
-        FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_GIVE_MONEY.get(commandSender.getName(),amount, target.getNameStored()));
+        commandSender.sendMessage(Lang.ADD_MONEY_COMMAND_SUCCESS.get(Double.toString(amount), target.getNameStored()).getDefault());
+        FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_GIVE_MONEY.get(commandSender.getName(), Double.toString(amount), target.getNameStored()));
     }
 }

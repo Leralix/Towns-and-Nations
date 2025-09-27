@@ -47,9 +47,9 @@ public class GuiUtil {
             Integer value = entry.getValue();
             String line;
             if (value > 0) {
-                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(langType, DynamicLang.get(langType, valueId), value);
+                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(langType, DynamicLang.get(langType, valueId), Integer.toString(value));
             } else {
-                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(langType, DynamicLang.get(langType, valueId), value);
+                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(langType, DynamicLang.get(langType, valueId), Integer.toString(value));
             }
             lore.add(line);
         }

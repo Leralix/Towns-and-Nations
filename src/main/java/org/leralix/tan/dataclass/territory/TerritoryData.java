@@ -133,7 +133,7 @@ public abstract class TerritoryData {
 
     public void rename(Player player, int cost, String newName) {
         if (getBalance() < cost) {
-            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), cost - getBalance()));
+            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), Double.toString(cost - getBalance())));
             return;
         }
 
@@ -549,7 +549,7 @@ public abstract class TerritoryData {
 
         int cost = getClaimCost();
         if (getBalance() < cost) {
-            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), cost - getBalance()));
+            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), Double.toString(cost - getBalance())));
             return false;
         }
 
@@ -566,7 +566,7 @@ public abstract class TerritoryData {
         if(getNumberOfClaimedChunk() == 0) {
 
             if(ChunkUtil.isInBufferZone(chunkData, this)) {
-                player.sendMessage(Lang.CHUNK_IN_BUFFER_ZONE.get(player, Constants.territoryClaimBufferZone()));
+                player.sendMessage(Lang.CHUNK_IN_BUFFER_ZONE.get(player, Integer.toString(Constants.territoryClaimBufferZone())));
                 return false;
             }
             return true;
@@ -632,7 +632,7 @@ public abstract class TerritoryData {
         addToBalance(amount);
 
         TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerDonationHistory(this, player, amount));
-        player.sendMessage(Lang.PLAYER_SEND_MONEY_SUCCESS.get(langType, amount, getBaseColoredName()));
+        player.sendMessage(Lang.PLAYER_SEND_MONEY_SUCCESS.get(langType, Double.toString(amount) , getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_LEVEL_UP);
     }
 

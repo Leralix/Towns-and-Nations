@@ -59,6 +59,9 @@ public class PlannedAttackStorage extends JsonStorage<PlannedAttack> {
         while (iterator.hasNext()) {
             PlannedAttack plannedAttack = iterator.next();
             War war = plannedAttack.getWar();
+            if(war == null){
+                continue;
+            }
             if (war.isMainAttacker(territoryData) || war.isMainDefender(territoryData)) {
                 plannedAttack.end();
                 iterator.remove();

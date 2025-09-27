@@ -55,7 +55,7 @@ public class CaptureChunk {
 
         Optional<Fort> fortProtectingChunk = getFortProtecting();
 
-        if(fortProtectingChunk.isEmpty()){
+        if (fortProtectingChunk.isEmpty()) {
             updateScore();
         }
 
@@ -76,8 +76,8 @@ public class CaptureChunk {
     }
 
     private Optional<Fort> getFortProtecting() {
-        for (Fort fort : territoryChunk.getOccupier().getAllControlledFort()){
-            if(fort.getPosition().getDistance(territoryChunk.getMiddleVector2D()) <= Constants.getFortProtectionRadius()){
+        for (Fort fort : territoryChunk.getOccupier().getAllControlledFort()) {
+            if (fort.getPosition().getDistance(territoryChunk.getMiddleVector2D()) <= Constants.getFortProtectionRadius()) {
                 return Optional.of(fort);
             }
         }
@@ -87,23 +87,19 @@ public class CaptureChunk {
     private String generateMessage(Optional<Fort> fortProtectingChunk) {
 
         String message;
-        int nbDefenders = defenders.size();
-        int nbAttackers = attackers.size();
+        String nbDefenders = Integer.toString(defenders.size());
+        String nbAttackers = Integer.toString(attackers.size());
 
-        if(fortProtectingChunk.isPresent()){
-            message = Lang.WAR_INFO_CHUNK_PROTECTED.get(Lang.getServerLang(), fortProtectingChunk.get().getPosition(), nbAttackers, nbDefenders);
-        }
-        else if(nbAttackers == nbDefenders){
-            message = Lang.WAR_INFO_CONTESTED.get(Lang.getServerLang(), score, nbAttackers, nbDefenders);
-        }
-        else if(isCaptured()){
+        if (fortProtectingChunk.isPresent()) {
+            message = Lang.WAR_INFO_CHUNK_PROTECTED.get(Lang.getServerLang(), fortProtectingChunk.get().getPosition().toString(), nbAttackers, nbDefenders);
+        } else if (nbAttackers == nbDefenders) {
+            message = Lang.WAR_INFO_CONTESTED.get(Lang.getServerLang(), Integer.toString(score), nbAttackers, nbDefenders);
+        } else if (isCaptured()) {
             message = Lang.WAR_INFO_CHUNK_CAPTURED.get(Lang.getServerLang(), territoryChunk.getOccupier().getColoredName(), nbAttackers, nbDefenders);
-        }
-        else if (isLiberated()){
+        } else if (isLiberated()) {
             message = Lang.WAR_INFO_CHUNK_OWNED.get(Lang.getServerLang(), nbAttackers, nbDefenders);
-        }
-        else {
-            message = Lang.WAR_INFO_CONTESTED.get(Lang.getServerLang(), score, nbAttackers, nbDefenders);
+        } else {
+            message = Lang.WAR_INFO_CONTESTED.get(Lang.getServerLang(), Integer.toString(score), nbAttackers, nbDefenders);
         }
 
         return message;

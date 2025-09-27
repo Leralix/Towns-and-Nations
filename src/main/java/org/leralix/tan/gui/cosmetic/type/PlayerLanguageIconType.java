@@ -9,6 +9,6 @@ public class PlayerLanguageIconType extends IconType {
     @Override
     protected ItemStack getItemStack(Player player) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        return tanPlayer.getLang().getIcon();
+        return tanPlayer.getLang().getIcon(tanPlayer.getLang());
     }
 }

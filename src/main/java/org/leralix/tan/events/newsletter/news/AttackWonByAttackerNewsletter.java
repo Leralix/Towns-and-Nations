@@ -96,7 +96,7 @@ public class AttackWonByAttackerNewsletter extends Newsletter {
         if(attackingTerritory == null || defendingTerritory == null)
             return;
 
-        player.sendMessage(getTANString() + Lang.ATTACK_WON_BY_ATTACKER.get(attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName(), attackingTerritory.getBaseColoredName()) );
+        player.sendMessage(Lang.ATTACK_WON_BY_ATTACKER.get(player, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName(), attackingTerritory.getBaseColoredName()) );
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
     }
 

@@ -63,7 +63,7 @@ public class SetMoney extends SubCommand {
 
         EconomyUtil.setBalance(target, amount);
         target.setBalance(amount);
-        commandSender.sendMessage(Lang.SET_MONEY_COMMAND_SUCCESS.get(amount, target.getNameStored()).getDefault());
-        FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_SET_MONEY.get(commandSender.getName(), amount, target.getNameStored()));
+        commandSender.sendMessage(Lang.SET_MONEY_COMMAND_SUCCESS.get(Double.toString(amount), target.getNameStored()).getDefault());
+        FileUtil.addLineToHistory(Lang.HISTORY_ADMIN_SET_MONEY.get(commandSender.getName(), Double.toString(amount), target.getNameStored()));
     }
 }

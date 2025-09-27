@@ -15,7 +15,7 @@ import java.util.*;
 
 public class Constants {
 
-    private Constants(){
+    private Constants() {
         throw new AssertionError("Static class");
     }
 
@@ -24,6 +24,7 @@ public class Constants {
 
     //Economy
     private static double startingBalance;
+    private static String moneyIcon;
 
     //Cosmetic
     /**
@@ -90,9 +91,9 @@ public class Constants {
 
         //Economy
         startingBalance = config.getDouble("StartingMoney", 100.0);
-
+        moneyIcon = config.getString("moneyIcon", "$");
         //Cosmetic
-        allowTownTag = config.getBoolean("EnablePlayerPrefix",false);
+        allowTownTag = config.getBoolean("EnablePlayerPrefix", false);
         allowColorCode = config.getBoolean("EnablePlayerColorCode", false);
         //Territory
         displayTerritoryColor = config.getBoolean("displayTerritoryNameWithOwnColor", false);
@@ -131,10 +132,10 @@ public class Constants {
         relationsConstants = new EnumMap<>(TownRelation.class);
         allRelationBlacklistedCommands = new HashSet<>();
         ConfigurationSection relationsSection = config.getConfigurationSection("relationConstants");
-        if(relationsSection != null){
-            for(TownRelation relation : TownRelation.values()){
+        if (relationsSection != null) {
+            for (TownRelation relation : TownRelation.values()) {
                 ConfigurationSection relationSection = relationsSection.getConfigurationSection(relation.name().toLowerCase());
-                if(relationSection != null){
+                if (relationSection != null) {
                     relationsConstants.put(relation, new RelationConstant(relationSection));
                     allRelationBlacklistedCommands.addAll(relationSection.getStringList("blockedCommands"));
                 }
@@ -172,7 +173,7 @@ public class Constants {
         return displayTerritoryColor;
     }
 
-    public static int territoryClaimBufferZone(){
+    public static int territoryClaimBufferZone() {
         return territoryClaimBufferZone;
     }
 
@@ -298,11 +299,11 @@ public class Constants {
         return allowTownTag;
     }
 
-    public static boolean enableColorUsernames(){
+    public static boolean enableColorUsernames() {
         return allowColorCode;
     }
 
-    public static RelationConstant getRelationConstants(TownRelation relation){
+    public static RelationConstant getRelationConstants(TownRelation relation) {
         return relationsConstants.getOrDefault(relation, relationsConstants.get(TownRelation.NEUTRAL));
     }
 
@@ -324,5 +325,9 @@ public class Constants {
 
     public static List<String> getOnceStartCommands() {
         return onceStartCommands;
+    }
+
+    public static String getMoneyIcon() {
+        return moneyIcon;
     }
 }

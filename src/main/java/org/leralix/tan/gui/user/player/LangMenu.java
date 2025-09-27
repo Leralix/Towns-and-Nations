@@ -41,7 +41,7 @@ public class LangMenu extends IteratorGUI {
     private List<GuiItem> getLangItems() {
         List<GuiItem> guiItems = new ArrayList<>();
         for(LangType lang : LangType.values()){
-            ItemStack langIcon = lang.getIcon();
+            ItemStack langIcon = lang.getIcon(langType);
             GuiItem langGui = ItemBuilder.from(langIcon).asGuiItem(event -> {
                 tanPlayer.setLang(lang);
                 player.sendMessage(Lang.GUI_LANGUAGE_CHANGED.get(tanPlayer, lang.getName()));

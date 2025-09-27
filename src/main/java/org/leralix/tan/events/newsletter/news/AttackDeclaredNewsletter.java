@@ -55,7 +55,7 @@ public class AttackDeclaredNewsletter extends Newsletter {
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
                 Lang.ATTACK_DECLARED_TITLE.getDefault(),
-                Lang.NEWSLETTER_DATE.get(Lang.getServerLang(), lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
+                Lang.NEWSLETTER_DATE.get(Lang.getServerLang(), String.valueOf(lang), TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
                 Lang.ATTACK_DECLARED.get(Lang.getServerLang(), attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.getDefault());
 
@@ -96,7 +96,7 @@ public class AttackDeclaredNewsletter extends Newsletter {
         if(attackingTerritory == null || defendingTerritory == null)
             return;
 
-        player.sendMessage(getTANString() + Lang.ATTACK_DECLARED.get(attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()));
+        player.sendMessage(Lang.ATTACK_DECLARED.get(player, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
     }
 

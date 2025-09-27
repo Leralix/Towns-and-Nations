@@ -61,7 +61,7 @@ public class RegionCreationNews extends Newsletter {
         RegionData regionData = RegionDataStorage.getInstance().get(regionID);
         if(regionData == null)
             return;
-        player.sendMessage(getTANString() + Lang.REGION_CREATED_NEWSLETTER.get(tanPlayer.getNameStored(), regionData.getBaseColoredName()));
+        player.sendMessage(Lang.REGION_CREATED_NEWSLETTER.get(player, tanPlayer.getNameStored(), regionData.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.GOOD);
     }
 

@@ -45,17 +45,17 @@ public class PlayerMenu extends BasicGui {
 
     private GuiItem getBalanceButton() {
         return IconManager.getInstance().get(IconKey.PLAYER_BALANCE_ICON)
-                .setName(Lang.GUI_YOUR_BALANCE.get(tanPlayer, player.getName()))
-                .setDescription(Lang.GUI_YOUR_BALANCE_DESC1.get(tanPlayer, EconomyUtil.getBalance(player)))
+                .setName(Lang.GUI_YOUR_BALANCE.get(langType, player.getName()))
+                .setDescription(Lang.GUI_YOUR_BALANCE_DESC1.get(langType, Double.toString(EconomyUtil.getBalance(player))))
                 .asGuiItem(player);
     }
 
     private GuiItem getPropertyButton() {
         return IconManager.getInstance().get(IconKey.PLAYER_PROPERTY_ICON)
-                .setName(Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(tanPlayer))
+                .setName(Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(langType))
                 .setDescription(
-                        Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get(tanPlayer),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer)
+                        Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get(langType),
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType)
                 )
                 .setAction(event -> new PlayerPropertiesMenu(player).open())
                 .asGuiItem(player);
@@ -65,7 +65,7 @@ public class PlayerMenu extends BasicGui {
         return IconManager.getInstance().get(IconKey.NEWSLETTER_ICON)
                 .setName(Lang.GUI_PLAYER_NEWSLETTER.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_PLAYER_NEWSLETTER_DESC1.get(tanPlayer, NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player)),
+                        Lang.GUI_PLAYER_NEWSLETTER_DESC1.get(tanPlayer, Double.toString(NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player))),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer)
                 )
                 .setAction(event -> new NewsletterMenu(player).open())

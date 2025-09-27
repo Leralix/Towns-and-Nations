@@ -47,7 +47,7 @@ public class CreateFortEvent extends RightClickListenerEvent {
         }
 
         if (tanTerritory.getBalance() <= Constants.getFortCost()) {
-            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, tanTerritory.getColoredName(), Constants.getFortCost() - tanTerritory.getBalance()));
+            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, tanTerritory.getColoredName(), Double.toString(Constants.getFortCost() - tanTerritory.getBalance())));
             return ListenerState.FAILURE;
         }
 

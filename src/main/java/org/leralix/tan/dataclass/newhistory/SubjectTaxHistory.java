@@ -24,7 +24,7 @@ public class SubjectTaxHistory extends TransactionHistory {
     public String addLoreLine() {
         TerritoryData vassal = TerritoryUtil.getTerritory(getTransactionParty());
         if (getAmount() > 0) {
-            return Lang.TAX_PAYMENT_HISTORY_LORE.get(Lang.getServerLang(), vassal.getBaseColoredName(), getAmount());
+            return Lang.TAX_PAYMENT_HISTORY_LORE.get(Lang.getServerLang(), vassal.getBaseColoredName(), Double.toString(getAmount()) );
         } else {
             return Lang.TAX_PAYMENT_HISTORY_LORE_NOT_ENOUGH_MONEY.get(Lang.getServerLang(), vassal.getBaseColoredName());
         }

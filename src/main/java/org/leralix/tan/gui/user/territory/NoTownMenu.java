@@ -44,7 +44,7 @@ public class NoTownMenu extends BasicGui {
         return IconManager.getInstance().get(IconKey.CREATE_TOWN_ICON)
                 .setName(Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.get(tanPlayer, townPrice),
+                        Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.get(tanPlayer, Integer.toString(townPrice)),
                         Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer))
                 .setAction( action -> {
                     if(!player.hasPermission("tan.base.town.create")){
@@ -55,12 +55,11 @@ public class NoTownMenu extends BasicGui {
 
                     double playerMoney = EconomyUtil.getBalance(player);
                     if (playerMoney < townPrice) {
-                        player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(tanPlayer, townPrice - playerMoney));
+                        player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(tanPlayer, Double.toString(townPrice - playerMoney)));
                         SoundUtil.playSound(player, NOT_ALLOWED);
                     }
                     else {
                         player.sendMessage(Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get(tanPlayer));
-                        player.sendMessage(Lang.CAPITAL_WILL_BE_CREATED_ON_PLAYER_CHUNK.get(tanPlayer));
                         PlayerChatListenerStorage.register(player, new CreateTown(townPrice));
                     }
                 })
@@ -72,7 +71,7 @@ public class NoTownMenu extends BasicGui {
         return IconManager.getInstance().get(IconKey.BROWSE_TOWN_ICON)
                 .setName(Lang.GUI_NO_TOWN_JOIN_A_TOWN.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(tanPlayer, TownDataStorage.getInstance().getNumberOfTown()),
+                        Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(tanPlayer, Integer.toString(TownDataStorage.getInstance().getNumberOfTown())),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer))
                 .setAction(event -> {
                     new ApplyToTownMenu(player);

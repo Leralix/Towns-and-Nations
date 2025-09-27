@@ -81,11 +81,11 @@ public class DiplomacyAcceptedNews extends Newsletter {
         LangType lang = PlayerDataStorage.getInstance().get(player).getLang();
 
         if(isRelationWorse){
-            player.sendMessage(getTANString() + Lang.BROADCAST_RELATION_WORSEN.get(proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName(lang)));
+            player.sendMessage(Lang.BROADCAST_RELATION_WORSEN.get(player, proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName(lang)));
             SoundUtil.playSound(player, SoundEnum.BAD);
         }
         else{
-            player.sendMessage(getTANString() + Lang.BROADCAST_RELATION_IMPROVE.get(proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName(lang)));
+            player.sendMessage(Lang.BROADCAST_RELATION_IMPROVE.get(player, proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName(lang)));
             SoundUtil.playSound(player, SoundEnum.GOOD);
        }
     }

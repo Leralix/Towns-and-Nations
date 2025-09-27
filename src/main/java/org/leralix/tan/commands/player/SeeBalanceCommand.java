@@ -21,7 +21,8 @@ public class SeeBalanceCommand extends PlayerSubCommand {
     public String getDescription() {
         return Lang.BAL_COMMAND_DESC.getDefault();
     }
-    public int getArguments(){
+
+    public int getArguments() {
         return 1;
     }
 
@@ -29,17 +30,17 @@ public class SeeBalanceCommand extends PlayerSubCommand {
     public String getSyntax() {
         return "/tan balance";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
+
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {
         return Collections.emptyList();
     }
 
     @Override
-    public void perform(Player player, String[] args){
+    public void perform(Player player, String[] args) {
         LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
-        if (args.length == 1){
-            player.sendMessage(Lang.BAL_AMOUNT.get(langType, EconomyUtil.getBalance(PlayerDataStorage.getInstance().get(player))));
-        }
-        else if(args.length > 1){
+        if (args.length == 1) {
+            player.sendMessage(Lang.BAL_AMOUNT.get(langType, Double.toString(EconomyUtil.getBalance(PlayerDataStorage.getInstance().get(player)))));
+        } else if (args.length > 1) {
             player.sendMessage(Lang.TOO_MANY_ARGS_ERROR.get(langType));
             player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
         }

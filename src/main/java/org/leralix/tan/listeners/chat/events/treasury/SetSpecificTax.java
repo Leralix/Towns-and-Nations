@@ -29,7 +29,7 @@ public abstract class SetSpecificTax extends ChatListenerEvent {
             return false;
         }
 
-        player.sendMessage(Lang.TOWN_SET_TAX_SUCCESS.get(player, amount));
+        player.sendMessage(Lang.TOWN_SET_TAX_SUCCESS.get(player, Double.toString(amount)));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
         setTax(amount);
 

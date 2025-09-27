@@ -25,35 +25,39 @@ public class UnclaimAdminCommand extends PlayerSubCommand {
     public String getDescription() {
         return Lang.ADMIN_UNCLAIM_DESC.getDefault();
     }
-    public int getArguments(){ return 1;}
+
+    public int getArguments() {
+        return 1;
+    }
 
 
     @Override
     public String getSyntax() {
         return "/tanadmin unclaim";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
+
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {
         return Collections.emptyList();
     }
+
     @Override
-    public void perform(Player player, String[] args){
-        if (args.length != 1){
-            player.sendMessage( Lang.CORRECT_SYNTAX_INFO.get(player));
+    public void perform(Player player, String[] args) {
+        if (args.length != 1) {
+            player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(player));
             return;
         }
 
         Chunk chunk = player.getLocation().getChunk();
-        if(!NewClaimedChunkStorage.getInstance().isChunkClaimed(chunk)) {
+        if (!NewClaimedChunkStorage.getInstance().isChunkClaimed(chunk)) {
             player.sendMessage(Lang.ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED.get(player));
             return;
         }
 
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
 
-        if(claimedChunk instanceof TownClaimedChunk townClaimedChunk){
+        if (claimedChunk instanceof TownClaimedChunk townClaimedChunk) {
             unclaimChunkTown(player, townClaimedChunk);
-        }
-        else if (claimedChunk instanceof RegionClaimedChunk regionClaimedChunk){
+        } else if (claimedChunk instanceof RegionClaimedChunk regionClaimedChunk) {
             unclaimChunkRegion(player, regionClaimedChunk);
         }
     }
@@ -61,13 +65,13 @@ public class UnclaimAdminCommand extends PlayerSubCommand {
     private void unclaimChunkTown(Player player, TownClaimedChunk claimedChunk) {
         TownData townData = claimedChunk.getTown();
         NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(claimedChunk);
-        player.sendMessage(Lang.DEBUG_UNCLAIMED_CHUNK_SUCCESS_TOWN.get(player, townData.getName(), townData.getNumberOfClaimedChunk(),townData.getLevel().getChunkCap()));
+        player.sendMessage(Lang.DEBUG_UNCLAIMED_CHUNK_SUCCESS_TOWN.get(player, townData.getName(), Integer.toString(townData.getNumberOfClaimedChunk()), Integer.toString(townData.getLevel().getChunkCap())));
     }
 
     private void unclaimChunkRegion(Player player, RegionClaimedChunk claimedChunk) {
         RegionData regionData = claimedChunk.getRegion();
         NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(claimedChunk);
-        player.sendMessage(Lang.DEBUG_UNCLAIMED_CHUNK_SUCCESS_REGION.get(player, regionData.getName(), regionData.getNumberOfClaimedChunk()));
+        player.sendMessage(Lang.DEBUG_UNCLAIMED_CHUNK_SUCCESS_REGION.get(player, regionData.getName(), Integer.toString(regionData.getNumberOfClaimedChunk())));
 
     }
 }

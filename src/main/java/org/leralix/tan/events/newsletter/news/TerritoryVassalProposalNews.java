@@ -117,7 +117,7 @@ public class TerritoryVassalProposalNews extends Newsletter {
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         if(receivingTerritory == null)
             return;
-        player.sendMessage(getTANString() + Lang.TOWN_JOIN_REGION_PROPOSAL_NEWSLETTER.get(proposingTerritory.getBaseColoredName(), receivingTerritory.getBaseColoredName()));
+        player.sendMessage(Lang.TOWN_JOIN_REGION_PROPOSAL_NEWSLETTER.get(player, proposingTerritory.getBaseColoredName(), receivingTerritory.getBaseColoredName()));
         SoundUtil.playSound(player, SoundEnum.MINOR_BAD);
     }
 

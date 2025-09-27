@@ -72,7 +72,7 @@ public class LocalChatStorage {
         } else if (scope == ChatScope.REGION) {
 
             if (!tanPlayer.hasRegion()) {
-                player.sendMessage(getTANString() + Lang.NO_REGION.get());
+                player.sendMessage(Lang.NO_REGION.get(tanPlayer.getLang()));
                 SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                 return;
             }

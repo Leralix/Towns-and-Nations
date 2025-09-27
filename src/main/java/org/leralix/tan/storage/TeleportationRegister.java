@@ -68,9 +68,9 @@ public class TeleportationRegister {
         }
         if(secondBeforeTeleport > 0) {
             if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnMovePosition", true)) {
-                player.sendMessage(Lang.TELEPORTATION_IN_X_SECONDS_NOT_MOVE.get(tanPlayer, secondBeforeTeleport));
+                player.sendMessage(Lang.TELEPORTATION_IN_X_SECONDS_NOT_MOVE.get(tanPlayer, Integer.toString(secondBeforeTeleport)));
             } else {
-                player.sendMessage(Lang.TELEPORTATION_IN_X_SECONDS.get(tanPlayer, secondBeforeTeleport));
+                player.sendMessage(Lang.TELEPORTATION_IN_X_SECONDS.get(tanPlayer, Integer.toString(secondBeforeTeleport)));
             }
 
             registerSpawn(tanPlayer, townData);

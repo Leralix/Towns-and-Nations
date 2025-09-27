@@ -61,8 +61,8 @@ public class LandmarkNoOwnerMenu extends BasicGui {
         double cost = Constants.getClaimLandmarkCost();
         List<String> description = new ArrayList<>();
 
-        if(cost > 0.0){
-            description.add(Lang.GUI_LANDMARK_CLAIM_COST.get(player, cost));
+        if (cost > 0.0) {
+            description.add(Lang.GUI_LANDMARK_CLAIM_COST.get(player, String.valueOf(cost)));
         }
 
         boolean isRequirementsMet = true;
@@ -79,7 +79,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
 
         if (cost > playerTown.getBalance()) {
             isRequirementsMet = false;
-            description.add(Lang.GUI_LANDMARK_NOT_ENOUGH_MONEY.get(tanPlayer, Constants.getClaimLandmarkCost()));
+            description.add(Lang.GUI_LANDMARK_NOT_ENOUGH_MONEY.get(tanPlayer, Double.toString(Constants.getClaimLandmarkCost())));
         }
 
         if (isRequirementsMet) {
@@ -105,7 +105,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
 
                     PlayerGUI.openConfirmMenu(
                             player,
-                            Lang.GUI_GENERIC_NEW_BALANCE_MENU.get(tanPlayer, actualBalance, newBalance),
+                            Lang.GUI_GENERIC_NEW_BALANCE_MENU.get(tanPlayer, Double.toString(actualBalance), Double.toString(newBalance)),
                             confirm -> {
                                 playerTown.removeFromBalance(cost);
                                 landmark.setOwner(playerTown);

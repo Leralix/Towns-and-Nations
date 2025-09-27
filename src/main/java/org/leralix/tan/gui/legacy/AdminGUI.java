@@ -148,7 +148,7 @@ public class AdminGUI {
         ItemStack ressources = landmark.getResources();
         
         ItemStack setReward = HeadUtils.createCustomItemStack(landmark.getResources(),
-                Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(langType, ressources.getAmount(), ressources.getType().name().toLowerCase()),
+                Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(langType, Integer.toString(ressources.getAmount()), ressources.getType().name().toLowerCase()),
                 Lang.SPECIFIC_LANDMARK_ICON_SWITCH_REWARD.get(langType));
 
         GuiItem changeLandmarkNameGui = ItemBuilder.from(changeLandmarkName).asGuiItem(event -> {
@@ -170,7 +170,7 @@ public class AdminGUI {
             if (itemOnCursor.getType() == Material.AIR) {
                 return;
             }
-            player.sendMessage(Lang.ADMIN_GUI_LANDMARK_REWARD_SET.get(player, itemOnCursor.getAmount(), itemOnCursor.getType().name()));
+            player.sendMessage(Lang.ADMIN_GUI_LANDMARK_REWARD_SET.get(player, Integer.toString(itemOnCursor.getAmount()), itemOnCursor.getType().name()));
             landmark.setReward(itemOnCursor);
             openSpecificLandmarkMenu(player, landmark);
             SoundUtil.playSound(player, GOOD);
@@ -464,7 +464,7 @@ public class AdminGUI {
 
             GuiItem playerHeadGui = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
-                FileUtil.addLineToHistory(Lang.HISTORY_TOWN_LEADER_CHANGED.get(player.getName(), townData.getLeaderData(), townPlayer.getName()));
+                FileUtil.addLineToHistory(Lang.HISTORY_TOWN_LEADER_CHANGED.get(player.getName(), townData.getLeaderData().getNameStored(), townPlayer.getName()));
                 townData.setLeaderID(townPlayer.getUniqueId().toString());
                 player.sendMessage(Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(langType, townPlayer.getName()));
                 openSpecificTownMenu(player, townData);

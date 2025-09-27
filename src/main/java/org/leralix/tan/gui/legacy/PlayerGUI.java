@@ -69,12 +69,12 @@ public class PlayerGUI {
     //Landmarks, to update
     public static void openOwnedLandmark(Player player, TownData townData, int page) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_OWNED_LANDMARK.get(tanPlayer, page + 1), 6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_OWNED_LANDMARK.get(tanPlayer, String.valueOf(page + 1)), 6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         ArrayList<GuiItem> landmarkGui = new ArrayList<>();
 
-        for(Landmark landmark : LandmarkStorage.getInstance().getLandmarkOf(townData)) {
+        for (Landmark landmark : LandmarkStorage.getInstance().getLandmarkOf(townData)) {
 
             GuiItem landmarkButton = ItemBuilder.from(landmark.getIcon(tanPlayer.getLang())).asGuiItem(event -> event.setCancelled(true));
             landmarkGui.add(landmarkButton);
@@ -93,7 +93,7 @@ public class PlayerGUI {
     //Town level to rework
     public static void openTownLevel(Player player, int level) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_UPGRADE.get(tanPlayer, level + 1), 6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_UPGRADE.get(tanPlayer, String.valueOf(level + 1)), 6);
 
         TownData townData = TownDataStorage.getInstance().get(player);
         Level townLevel = townData.getLevel();
@@ -132,8 +132,8 @@ public class PlayerGUI {
                 pannelIcon = ironBarsIcon;
                 ItemStack upgradeTownLevel = HeadUtils.createCustomItemStack(Material.ORANGE_STAINED_GLASS_PANE,
                         Lang.GUI_TOWN_LEVEL_UP.get(tanPlayer),
-                        Lang.GUI_TOWN_LEVEL_UP_DESC1.get(tanPlayer, townLevel.getTownLevel()),
-                        Lang.GUI_TOWN_LEVEL_UP_DESC2.get(tanPlayer, townLevel.getTownLevel() + 1, townLevel.getMoneyRequiredForLevelUp()));
+                        Lang.GUI_TOWN_LEVEL_UP_DESC1.get(tanPlayer, Integer.toString(townLevel.getTownLevel())),
+                        Lang.GUI_TOWN_LEVEL_UP_DESC2.get(tanPlayer, Integer.toString(townLevel.getTownLevel() + 1), Integer.toString(townLevel.getMoneyRequiredForLevelUp())));
 
                 bottomIcon = ItemBuilder.from(upgradeTownLevel).asGuiItem(event -> {
                     event.setCancelled(true);
@@ -221,7 +221,7 @@ public class PlayerGUI {
 
     public static void openTownChunkMobSettings(Player player, int page) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_MOB_SETTINGS.get(tanPlayer, page + 1), 6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_MOB_SETTINGS.get(tanPlayer, Integer.toString(page + 1)), 6);
 
         TownData townData = TownDataStorage.getInstance().get(player);
         ClaimedChunkSettings chunkSettings = townData.getChunkSettings();
@@ -243,7 +243,7 @@ public class PlayerGUI {
                 }
             } else {
                 status.add(Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_LOCKED.get(tanPlayer));
-                status.add(Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_LOCKED2.get(tanPlayer, cost));
+                status.add(Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_LOCKED2.get(tanPlayer, Integer.toString(cost)));
             }
             ItemStack mobIcon = HeadUtils.makeSkullB64(mobEnum.name(), mobEnum.getTexture(), status);
 
@@ -258,7 +258,7 @@ public class PlayerGUI {
                     SoundUtil.playSound(player, ADD);
                 } else {
                     if (townData.getBalance() < cost) {
-                        player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), cost - townData.getBalance()));
+                        player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), Double.toString(cost - townData.getBalance())));
                         return;
                     }
                     townData.removeFromBalance(cost);
@@ -371,7 +371,7 @@ public class PlayerGUI {
 
     public static void openAddVassal(Player player, TerritoryData territoryData, int page) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_VASSALS.get(tanPlayer, page + 1), 6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_VASSALS.get(tanPlayer, Double.toString(page + 1)), 6);
 
         List<GuiItem> guiItems = new ArrayList<>();
 
@@ -476,7 +476,7 @@ public class PlayerGUI {
                 Lang.GUI_COLLECT_LANDMARK.get(tanPlayer),
                 bagTexture,
                 Lang.GUI_COLLECT_LANDMARK_DESC1.get(tanPlayer),
-                Lang.GUI_COLLECT_LANDMARK_DESC2.get(tanPlayer, quantity)
+                Lang.GUI_COLLECT_LANDMARK_DESC2.get(tanPlayer, Integer.toString(quantity))
         );
 
 
@@ -489,7 +489,7 @@ public class PlayerGUI {
         GuiItem collectRessourcesButton = ItemBuilder.from(collectRessources).asGuiItem(event -> {
             event.setCancelled(true);
             landmark.giveToPlayer(player, quantity);
-            player.sendMessage(Lang.GUI_LANDMARK_REWARD_COLLECTED.get(tanPlayer, quantity));
+            player.sendMessage(Lang.GUI_LANDMARK_REWARD_COLLECTED.get(tanPlayer, Integer.toString(quantity)));
             SoundUtil.playSound(player, GOOD);
             dispatchLandmarkGui(player, landmark);
         });
@@ -603,7 +603,7 @@ public class PlayerGUI {
                 overlordInfo = ItemBuilder.from(noCurrentOverlord).asGuiItem(event -> event.setCancelled(true));
 
                 ItemStack joinOverlord = HeadUtils.createCustomItemStack(Material.WRITABLE_BOOK, Lang.BROWSE_OVERLORD_INVITATION.get(tanPlayer),
-                        Lang.BROWSE_OVERLORD_INVITATION_DESC1.get(tanPlayer, territoryData.getNumberOfVassalisationProposals()));
+                        Lang.BROWSE_OVERLORD_INVITATION_DESC1.get(tanPlayer, Integer.toString(territoryData.getNumberOfVassalisationProposals())));
 
                 overlordButton = ItemBuilder.from(joinOverlord).asGuiItem(event -> {
                     event.setCancelled(true);
@@ -626,7 +626,7 @@ public class PlayerGUI {
         GuiItem vassalInfo;
         if (territoryData.canHaveVassals()) {
             ItemStack vassalIcon = HeadUtils.createCustomItemStack(Material.GOLDEN_SWORD, Lang.VASSAL_GUI.get(tanPlayer),
-                    Lang.VASSAL_GUI_DESC1.get(tanPlayer, territoryData.getBaseColoredName(), territoryData.getVassalCount()));
+                    Lang.VASSAL_GUI_DESC1.get(tanPlayer, territoryData.getBaseColoredName(), Integer.toString(territoryData.getVassalCount())));
 
             ItemStack vassals = HeadUtils.makeSkullB64(Lang.GUI_REGION_TOWN_LIST.get(tanPlayer), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
                     Lang.GUI_REGION_TOWN_LIST_DESC1.get(tanPlayer));

@@ -93,7 +93,8 @@ public class TerritoryVassalAcceptedNews extends Newsletter {
         if (receivingTerritory == null)
             return;
 
-        player.sendMessage(getTANString() + Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER.get(
+        player.sendMessage(Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER.get(
+                player,
                 proposingTerritory.getCustomColoredName().toLegacyText(),
                 receivingTerritory.getCustomColoredName().toLegacyText()));
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
