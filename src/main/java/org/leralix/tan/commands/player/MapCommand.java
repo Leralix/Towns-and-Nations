@@ -90,7 +90,7 @@ public class MapCommand extends PlayerSubCommand {
                 chunkZ += dz;
 
                 ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunkX, chunkZ, player.getWorld().getUID().toString());
-                TextComponent icon = claimedChunk.getMapIcon(player);
+                TextComponent icon = claimedChunk.getMapIcon(langType);
 
                 if (dx == 0 && dz == 0) {
 

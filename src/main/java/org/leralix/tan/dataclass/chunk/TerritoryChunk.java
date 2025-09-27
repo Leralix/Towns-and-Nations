@@ -4,10 +4,10 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Chunk;
-import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
@@ -27,7 +27,7 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
 
 
     @Override
-    public TextComponent getMapIcon(ITanPlayer tanPlayer) {
+    public TextComponent getMapIcon(LangType langType) {
 
         TextComponent textComponent;
         String text;
@@ -37,14 +37,14 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
             text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
                     getOwner().getBaseColoredName() + "\n" +
                     getOccupier().getBaseColoredName() + "\n" +
-                    Lang.LEFT_CLICK_TO_CLAIM.get();
+                    Lang.LEFT_CLICK_TO_CLAIM.get(langType);
         }
         else {
             textComponent = new TextComponent("⬛");
             textComponent.setColor(getOwner().getChunkColor());
             text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
                     getOwner().getBaseColoredName() + "\n" +
-                    Lang.LEFT_CLICK_TO_CLAIM.get();
+                    Lang.LEFT_CLICK_TO_CLAIM.get(langType);
         }
 
 

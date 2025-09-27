@@ -10,10 +10,10 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.WildernessRules;
 
@@ -60,7 +60,7 @@ public class WildernessChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public TextComponent getMapIcon(ITanPlayer tanPlayer) {
+    public TextComponent getMapIcon(LangType langType) {
 
         if (ClaimBlacklistStorage.cannotBeClaimed(this)) {
             TextComponent textComponent = new TextComponent("✖");
@@ -68,8 +68,8 @@ public class WildernessChunk extends ClaimedChunk2 {
             textComponent.setHoverEvent(new HoverEvent(
                     HoverEvent.Action.SHOW_TEXT,
                     new Text("x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
-                            Lang.WILDERNESS.get() + "\n" +
-                            Lang.CHUNK_IS_BLACKLISTED.get())));
+                            Lang.WILDERNESS.get(langType) + "\n" +
+                            Lang.CHUNK_IS_BLACKLISTED.get(langType))));
             return textComponent;
         }
 
@@ -78,8 +78,8 @@ public class WildernessChunk extends ClaimedChunk2 {
         textComponent.setHoverEvent(new HoverEvent(
                 HoverEvent.Action.SHOW_TEXT,
                 new Text("x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
-                        Lang.WILDERNESS.get() + "\n" +
-                        Lang.LEFT_CLICK_TO_CLAIM.get())));
+                        Lang.WILDERNESS.get(langType) + "\n" +
+                        Lang.LEFT_CLICK_TO_CLAIM.get(langType))));
         return textComponent;
     }
 

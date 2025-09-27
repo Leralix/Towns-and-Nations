@@ -9,11 +9,11 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
@@ -74,14 +74,14 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public TextComponent getMapIcon(ITanPlayer tanPlayer) {
+    public TextComponent getMapIcon(LangType langType) {
         TextComponent textComponent = new TextComponent("⬛");
         textComponent.setColor(ChatColor.GOLD);
         textComponent.setHoverEvent(new HoverEvent(
                 HoverEvent.Action.SHOW_TEXT,
                 new Text("x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
                         ChatColor.GOLD + getLandMark().getName() + "\n" +
-                        Lang.LEFT_CLICK_TO_CLAIM.get())));
+                        Lang.LEFT_CLICK_TO_CLAIM.get(langType))));
         return textComponent;
     }
 
