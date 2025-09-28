@@ -65,7 +65,7 @@ public class PlayerMenu extends BasicGui {
         return IconManager.getInstance().get(IconKey.NEWSLETTER_ICON)
                 .setName(Lang.GUI_PLAYER_NEWSLETTER.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_PLAYER_NEWSLETTER_DESC1.get(tanPlayer, Double.toString(NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player))),
+                        Lang.GUI_PLAYER_NEWSLETTER_DESC1.get(tanPlayer, Integer.toString(NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player))),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer)
                 )
                 .setAction(event -> new NewsletterMenu(player).open())

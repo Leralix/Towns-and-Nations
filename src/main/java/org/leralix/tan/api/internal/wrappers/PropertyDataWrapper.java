@@ -10,20 +10,22 @@ import java.util.Optional;
 public class PropertyDataWrapper implements TanProperty {
     private final PropertyData propertyData;
 
-    private PropertyDataWrapper(PropertyData propertyData){
+    private PropertyDataWrapper(PropertyData propertyData) {
         this.propertyData = propertyData;
     }
 
     public static PropertyDataWrapper of(PropertyData propertyData) {
-        if(propertyData == null){
+        if (propertyData == null) {
             return null;
         }
         return new PropertyDataWrapper(propertyData);
     }
 
-    public String getID(){
+    @Override
+    public String getID() {
         return propertyData.getPropertyID();
     }
+
     @Override
     public String getName() {
         return propertyData.getName();
