@@ -32,6 +32,11 @@ public class PropertyDataWrapper implements TanProperty {
     }
 
     @Override
+    public String getDescription() {
+        return propertyData.getDescription();
+    }
+
+    @Override
     public Vector3D getFirstCorner() {
         return propertyData.getFirstCorner();
     }
