@@ -659,6 +659,7 @@ language:
   GUI_TOWN_CLAIM_SETTINGS_GATHER_BERRIES: "§aManage gathering berries"
   GUI_TOWN_CLAIM_SETTINGS_USE_BONE_MEAL: "§aManage using bone meal"
   ENABLE_PVP_SETTING: "§aEnable PVP inside the territory"
+  ENABLE_MOB_GRIEF_SETTING: "§aEnable mob griefing"
   ENABLE_FIRE_GRIEF_SETTING: "§aEnable fire griefing"
   ENABLE_TNT_GRIEF_SETTING: "§aEnable explosion griefing"
   GUI_TOWN_CLAIM_SETTINGS_DESC1: "§fCurrent permission: §e{0}"
