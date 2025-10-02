@@ -1,24 +1,18 @@
 package org.leralix.tan.war.legacy;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.World;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.leralix.lib.position.Vector3D;
-import org.leralix.lib.utils.ParticleUtils;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.storage.CurrentAttacksStorage;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.gameplay.CommandExecutor;
 import org.leralix.tan.war.PlannedAttack;
+import org.leralix.tan.war.cosmetic.ShowBoundaries;
 
 public class CurrentAttack {
 
@@ -152,72 +146,10 @@ public class CurrentAttack {
     public void displayBoundaries() {
         for (Player player : attackData.getAllOnlinePlayers()) {
             if(player != null){
-                displayBoundaries(player);
+                ShowBoundaries.display(player);
             }
         }
     }
 
-    public void displayBoundaries(Player player) {
-        Chunk centerChunk = player.getLocation().getChunk();
-        World world = centerChunk.getWorld();
-        String worldID = world.getUID().toString();
-        int centerChunkX = centerChunk.getX();
-        int centerChunkZ = centerChunk.getZ();
-        int viewDistance = 4;
 
-        for (int dx = -viewDistance; dx <= viewDistance; dx++) {
-            for (int dz = -viewDistance; dz <= viewDistance; dz++) {
-                int chunkX = centerChunkX + dx;
-                int chunkZ = centerChunkZ + dz;
-
-                if (!isOwnedByDefensiveSide(chunkX, chunkZ, worldID)) {
-                    continue;
-                }
-
-                int x0 = chunkX * 16;
-                int z0 = chunkZ * 16;
-                int y = (int) player.getLocation().getY() + 1;
-
-                // NORTH
-                if (!isOwnedByDefensiveSide(chunkX, chunkZ - 1, worldID)) {
-                    ParticleUtils.drawLine(TownsAndNations.getPlugin(), player,
-                            new Vector3D(x0, y, z0, worldID),
-                            new Vector3D(x0 + 16, y, z0, worldID),
-                            1);
-                }
-
-                // SOUTH
-                if (!isOwnedByDefensiveSide(chunkX, chunkZ + 1, worldID)) {
-                    ParticleUtils.drawLine(TownsAndNations.getPlugin(), player,
-                            new Vector3D(x0, y, z0 + 16, worldID),
-                            new Vector3D(x0 + 16, y, z0 + 16, worldID),
-                            1);
-                }
-
-                // WEST
-                if (!isOwnedByDefensiveSide(chunkX - 1, chunkZ, worldID)) {
-                    ParticleUtils.drawLine(TownsAndNations.getPlugin(), player,
-                            new Vector3D(x0, y, z0, worldID),
-                            new Vector3D(x0, y, z0 + 16, worldID),
-                            1);
-                }
-
-                // EAST
-                if (!isOwnedByDefensiveSide(chunkX + 1, chunkZ, worldID)) {
-                    ParticleUtils.drawLine(TownsAndNations.getPlugin(), player,
-                            new Vector3D(x0 + 16, y, z0, worldID),
-                            new Vector3D(x0 + 16, y, z0 + 16, worldID),
-                            1);
-                }
-            }
-        }
-    }
-
-    private boolean isOwnedByDefensiveSide(int x, int z, String worldID) {
-        ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(x, z, worldID);
-
-        return claimedChunk2 instanceof TerritoryChunk territoryChunk &&
-                territoryChunk.getOwnerID().equals(attackData.getWar().getMainDefenderID()) &&
-                !territoryChunk.isOccupied();
-    }
 }

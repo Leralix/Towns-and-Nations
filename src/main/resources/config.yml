@@ -340,6 +340,11 @@ Forts:
   fortProtectionRadius: 50.0
   fortCaptureRadius: 10.0
 
+# During a war, boundaries of territories at war are shown to players as a cylinder.
+# Radius of the cylinder.
+warBoundaryRadius: 16.0
+# Height of the cylinder. (half above and half below the player position)
+warBoundaryHeight: 6.0
 
 ########################
 ##  General settings  ##
@@ -436,8 +441,8 @@ enableMidnightGenerateResource: true
 #    coordinate : [0,0,10,10]
 
 claimBlacklist:
-  - name: "world"
-    coordinate: [ 0,0,1,1 ]
+  # - name: "world"
+  #   coordinate: [ 0,0,1,1 ]
 
 #If a town cannot pay the territory upkeep, % of chunks that will be unclaimed
 percentageOfChunksUnclaimed: 15.0

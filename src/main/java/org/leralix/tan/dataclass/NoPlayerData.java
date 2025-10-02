@@ -236,4 +236,9 @@ public class NoPlayerData implements ITanPlayer {
     public void setTimeZone(TimeZoneEnum timeZone) {
         // singleton class, no need to set name
     }
+
+    @Override
+    public List<CurrentAttack> getCurrentAttacks() {
+        return List.of();
+    }
 }

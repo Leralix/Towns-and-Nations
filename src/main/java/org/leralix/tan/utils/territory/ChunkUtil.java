@@ -141,8 +141,30 @@ public class ChunkUtil {
      * @param radius    The radius in chunks
      * @return  A list of claimed chunks in the radius
      */
+    public static List<ClaimedChunk2> getChunksInRadius(Chunk center, double radius) {
+        return getChunksInRadius(center, (int) Math.ceil(radius) );
+    }
+
+    /**
+     * Get all claimed chunks in a radius around a center chunk
+     * The radius is in chunks and is circular.
+     * @param center    The chunk at the center of the radius
+     * @param radius    The radius in chunks
+     * @return  A list of claimed chunks in the radius
+     */
     public static List<ClaimedChunk2> getChunksInRadius(Chunk center, int radius) {
         return getChunksInRadius(NewClaimedChunkStorage.getInstance().get(center), radius);
+    }
+
+    /**
+     * Get all claimed chunks in a radius around a center chunk
+     * The radius is in chunks and is circular.
+     * @param center    The chunk at the center of the radius
+     * @param radius    The radius in chunks
+     * @return  A list of claimed chunks in the radius
+     */
+    public static List<ClaimedChunk2> getChunksInRadius(ClaimedChunk2 center, double radius) {
+        return getChunksInRadius(center, (int) Math.ceil(radius) );
     }
 
     /**

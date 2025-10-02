@@ -324,4 +324,15 @@ public class PlayerData implements ITanPlayer {
         this.timeZone = timeZone;
     }
 
+    @Override
+    public List<CurrentAttack> getCurrentAttacks() {
+        List<CurrentAttack> res = new ArrayList<>();
+
+        for(TerritoryData territoryData : getAllTerritoriesPlayerIsIn()){
+            res.addAll(territoryData.getCurrentAttacks());
+        }
+
+        return res;
+    }
+
 }

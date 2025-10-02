@@ -58,6 +58,10 @@ public class Constants {
     private static int maxPropertySignMargin;
 
     //Wars
+
+    private static double warBoundaryRadius;
+    private static double warBoundaryHeight;
+
     private static Map<TownRelation, RelationConstant> relationsConstants;
     private static Set<String> allRelationBlacklistedCommands;
 
@@ -128,6 +132,10 @@ public class Constants {
         maxPropertySignMargin = config.getInt("maxPropertyMargin", 3);
 
         //Attacks
+
+        warBoundaryRadius = config.getDouble("warBoundaryRadius", 16);
+        warBoundaryHeight = config.getDouble("warBoundaryHeight", 3);
+
 
         relationsConstants = new EnumMap<>(TownRelation.class);
         allRelationBlacklistedCommands = new HashSet<>();
@@ -242,6 +250,14 @@ public class Constants {
 
     public static int getMaxPropertySignMargin() {
         return maxPropertySignMargin;
+    }
+
+    public static double getWarBoundaryRadius() {
+        return warBoundaryRadius;
+    }
+
+    public static double getWarBoundaryHeight() {
+        return warBoundaryHeight;
     }
 
     public static long getAttackDuration() {

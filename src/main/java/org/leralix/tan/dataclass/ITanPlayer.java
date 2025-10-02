@@ -107,4 +107,5 @@ public interface ITanPlayer {
 
     void setTimeZone(TimeZoneEnum timeZone);
 
+    List<CurrentAttack> getCurrentAttacks();
 }
