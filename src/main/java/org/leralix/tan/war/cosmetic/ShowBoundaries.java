@@ -26,20 +26,16 @@ public class ShowBoundaries {
 
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
-
         List<CurrentAttack> attacks = tanPlayer.getCurrentAttacks();
-        if(attacks.isEmpty()){
+        if (attacks.isEmpty()) {
             return;
         }
-
         double radius = Constants.getWarBoundaryRadius();
-
         List<ClaimedChunk2> chunkInRange = ChunkUtil.getChunksInRadius(player.getChunk(), radius);
 
         List<ChunkLine> lines = sortChunkLines(chunkInRange, attacks);
 
         drawLines(player, lines);
-        
     }
 
     static void drawLines(Player player, List<ChunkLine> lines) {
@@ -63,14 +59,14 @@ public class ShowBoundaries {
 
                 // NORTH
                 ClaimedChunk2 northChunk = NewClaimedChunkStorage.getInstance()
-                        .get(centerChunkPosition.getX(), centerChunkPosition.getZ() + 1, centerChunkPosition.getWorldID().toString());
+                        .get(centerChunkPosition.getX(), centerChunkPosition.getZ() - 1, centerChunkPosition.getWorldID().toString());
                 if (isFrontline(territoryChunk, northChunk, attacks)) {
                     res.add(getChunkLine(centerChunkPosition, CardinalPoint.NORTH));
                 }
 
                 // SOUTH
                 ClaimedChunk2 southChunk = NewClaimedChunkStorage.getInstance()
-                        .get(centerChunkPosition.getX(), centerChunkPosition.getZ() - 1, centerChunkPosition.getWorldID().toString());
+                        .get(centerChunkPosition.getX(), centerChunkPosition.getZ() + 1, centerChunkPosition.getWorldID().toString());
                 if (isFrontline(territoryChunk, southChunk, attacks)) {
                     res.add(getChunkLine(centerChunkPosition, CardinalPoint.SOUTH));
                 }
@@ -82,7 +78,7 @@ public class ShowBoundaries {
                     res.add(getChunkLine(centerChunkPosition, CardinalPoint.EAST));
                 }
 
-                // WEST
+// WEST
                 ClaimedChunk2 westChunk = NewClaimedChunkStorage.getInstance()
                         .get(centerChunkPosition.getX() - 1, centerChunkPosition.getZ(), centerChunkPosition.getWorldID().toString());
                 if (isFrontline(territoryChunk, westChunk, attacks)) {
@@ -126,20 +122,19 @@ public class ShowBoundaries {
     }
 
 
-
     private static boolean isFrontline(TerritoryChunk centerChunk, ClaimedChunk2 chunkToCompare, List<CurrentAttack> attacks) {
 
-        if(chunkToCompare == null){
+        if (chunkToCompare == null) {
             return false;
         }
 
         TerritoryData occupier = centerChunk.getOccupier();
 
-        for(CurrentAttack attackData : attacks){
+        for (CurrentAttack attackData : attacks) {
             // If chunk is at war, a frontline apprears if the other chunk is not occupied by the same town
-            if(attackData.getAttackData().getWar().isMainDefender(occupier)){
-                if(chunkToCompare instanceof TerritoryChunk territoryChunk &&
-                        territoryChunk.getOccupierID().equals(occupier.getID())){
+            if (attackData.getAttackData().getWar().isMainDefender(occupier)) {
+                if (chunkToCompare instanceof TerritoryChunk territoryChunk &&
+                        territoryChunk.getOccupierID().equals(occupier.getID())) {
                     return false;
                 }
                 return true;

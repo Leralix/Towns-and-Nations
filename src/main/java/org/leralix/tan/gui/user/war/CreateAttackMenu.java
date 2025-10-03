@@ -14,10 +14,10 @@ import org.leralix.tan.gui.user.territory.AttackMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.war.War;
-import org.leralix.tan.war.WarTimeSlot;
 import org.leralix.tan.war.legacy.CreateAttackData;
 import org.leralix.tan.war.legacy.WarRole;
 
@@ -91,7 +91,7 @@ public class CreateAttackMenu extends BasicGui {
         boolean isValid = true;
 
         Instant warStart = Instant.now().plusSeconds(attackData.getSelectedTime() / 20);
-        if (!WarTimeSlot.getInstance().canWarBeDeclared(warStart)) {
+        if (!Constants.getWarTimeSlot().canWarBeDeclared(warStart)) {
             errorMessages.add(Lang.GUI_WARGOAL_OUTSIDE_AUTHORIZED_SLOTS.get(tanPlayer));
             isValid = false;
         }
@@ -127,7 +127,7 @@ public class CreateAttackMenu extends BasicGui {
         List<String> availableTimeSlots = new ArrayList<>();
         availableTimeSlots.add(TimeZoneManager.getInstance().formatDateForPlayer(tanPlayer, startTime));
         availableTimeSlots.add(Lang.AUTHORIZED_ATTACK_TIME_SLOT_TITLE.get(langType));
-        availableTimeSlots.addAll(WarTimeSlot.getInstance().getPrintedTimeSlots(langType));
+        availableTimeSlots.addAll(Constants.getWarTimeSlot().getPrintedTimeSlots(langType));
 
         return IconManager.getInstance().get(IconKey.WAR_START_TIME_ICON)
                 .setName(Lang.GUI_ATTACK_SET_TO_START_IN.get(tanPlayer, DateUtil.getDateStringFromTicks(attackData.getSelectedTime())))

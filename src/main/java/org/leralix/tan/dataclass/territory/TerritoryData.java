@@ -86,7 +86,6 @@ public abstract class TerritoryData {
     protected Integer defaultRankID;
     protected Map<Integer, RankData> ranks;
     private Collection<String> attackIncomingList;
-    private Collection<String> currentAttackList;
     private HashMap<String, Integer> availableClaims;
     private Map<String, DiplomacyProposal> diplomacyProposals;
     private List<String> overlordsProposals;
@@ -113,7 +112,6 @@ public abstract class TerritoryData {
         setDefaultRank(defaultRank);
 
         attackIncomingList = new ArrayList<>();
-        currentAttackList = new ArrayList<>();
         availableClaims = new HashMap<>();
         diplomacyProposals = new HashMap<>();
         overlordsProposals = new ArrayList<>();
@@ -360,17 +358,13 @@ public abstract class TerritoryData {
         getAttacksInvolvedID().remove(war.getID());
     }
 
-
-    public Collection<String> getCurrentAttacksID() {
-        if (currentAttackList == null) this.currentAttackList = new ArrayList<>();
-        return currentAttackList;
-    }
-
     public Collection<CurrentAttack> getCurrentAttacks() {
         Collection<CurrentAttack> res = new ArrayList<>();
-        for (String attackID : getCurrentAttacksID()) {
+        for (String attackID : getAttacksInvolvedID()) {
             CurrentAttack attackInvolved = CurrentAttacksStorage.get(attackID);
-            res.add(attackInvolved);
+            if(attackInvolved != null){
+                res.add(attackInvolved);
+            }
         }
         return res;
     }

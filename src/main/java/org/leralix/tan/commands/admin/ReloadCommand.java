@@ -60,7 +60,7 @@ public class ReloadCommand extends SubCommand {
             Lang.loadTranslations(langFolder, lang);
             DynamicLang.loadTranslations(langFolder, lang);
 
-            Constants.init();
+            Constants.init(ConfigUtil.getCustomConfig(ConfigTag.MAIN));
             UpgradeStorage.init();
             MobChunkSpawnStorage.init();
             ClaimBlacklistStorage.init();

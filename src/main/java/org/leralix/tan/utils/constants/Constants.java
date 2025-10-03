@@ -2,13 +2,12 @@ package org.leralix.tan.utils.constants;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.chunk.ChunkType;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.war.WarTimeSlot;
 import org.leralix.tan.war.legacy.GriefAllowed;
 
 import java.util.*;
@@ -59,6 +58,8 @@ public class Constants {
 
     //Wars
 
+    private static WarTimeSlot warTimeSlot;
+
     private static double warBoundaryRadius;
     private static double warBoundaryHeight;
 
@@ -87,9 +88,8 @@ public class Constants {
 
     private static final String ALWAYS = "ALWAYS";
 
-    public static void init() {
+    public static void init(FileConfiguration config) {
 
-        FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
 
         onlineMode = config.getBoolean("onlineMode", true);
 
@@ -132,6 +132,8 @@ public class Constants {
         maxPropertySignMargin = config.getInt("maxPropertyMargin", 3);
 
         //Attacks
+
+        warTimeSlot = new WarTimeSlot(config.getStringList("allowedTimeSlotsWar"));
 
         warBoundaryRadius = config.getDouble("warBoundaryRadius", 16);
         warBoundaryHeight = config.getDouble("warBoundaryHeight", 3);
@@ -250,6 +252,10 @@ public class Constants {
 
     public static int getMaxPropertySignMargin() {
         return maxPropertySignMargin;
+    }
+
+    public static WarTimeSlot getWarTimeSlot(){
+        return warTimeSlot;
     }
 
     public static double getWarBoundaryRadius() {

@@ -72,7 +72,7 @@ StartingMoney: 100.0
 
 #Buffer zone between territories when creating a new territory (Capital chunk or Fort as outpost)
 #Buffer is only checked if ...AllowNonAdjacentChunks is set to false
-TerritoryClaimBufferZone : 2
+TerritoryClaimBufferZone: 2
 
 ########################
 ##      Kingdoms      ##
@@ -186,13 +186,13 @@ relationConstants:
     haveTruce: false
     canInteractWithProperty: false
     canAccessTerritory: true
-    blockedCommands: [ "/tpa %PLAYER%", "/tan pay %PLAYER%", "/pay %PLAYER% "]
+    blockedCommands: [ "/tpa %PLAYER%", "/tan pay %PLAYER%", "/pay %PLAYER% " ]
   war:
     enablePvP: true
     haveTruce: false
     canInteractWithProperty: false
     canAccessTerritory: true
-    blockedCommands: [ "/tpa %PLAYER%", "/tan pay %PLAYER%", "/pay %PLAYER%"]
+    blockedCommands: [ "/tpa %PLAYER%", "/tan pay %PLAYER%", "/pay %PLAYER%" ]
 
 
 ########################
@@ -296,9 +296,7 @@ RankNameSize: 25
 EnableWar: true
 
 #Authorized ranges
-allowedTimeSlotsWar:
-  - "08:00-10:00"
-  - "12:00-20:30"
+allowedTimeSlotsWar: [ "08:00-10:00", "12:00-20:30" ]
 
 #Admin needs to approve every war. Admins need to use /tan admin gui to approve or deny a war
 AdminApproval: false
@@ -441,8 +439,8 @@ enableMidnightGenerateResource: true
 #    coordinate : [0,0,10,10]
 
 claimBlacklist:
-  # - name: "world"
-  #   coordinate: [ 0,0,1,1 ]
+# - name: "world"
+#   coordinate: [ 0,0,1,1 ]
 
 #If a town cannot pay the territory upkeep, % of chunks that will be unclaimed
 percentageOfChunksUnclaimed: 15.0

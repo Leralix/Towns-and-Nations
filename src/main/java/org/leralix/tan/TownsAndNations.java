@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.lib.SphereLib;
@@ -165,7 +164,7 @@ public class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO, "[TaN] -Loading Storage");
 
-        Constants.init();
+        Constants.init(ConfigUtil.getCustomConfig(ConfigTag.MAIN));
         UpgradeStorage.init();
         MobChunkSpawnStorage.init();
         ClaimBlacklistStorage.init();
@@ -175,8 +174,6 @@ public class TownsAndNations extends JavaPlugin {
         NumberUtil.init();
         EnabledPermissions.getInstance().init();
         FortStorage.init(new FortDataStorage());
-
-        FileConfiguration mainConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
 
 
         getLogger().log(Level.INFO, "[TaN] -Loading Local data");

@@ -1,7 +1,6 @@
 package org.leralix.tan.war;
 
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
+import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.Range;
 import org.leralix.tan.lang.Lang;
@@ -19,13 +18,10 @@ public class WarTimeSlot {
 
     private final List<Range> timeSlots;
 
-    private static WarTimeSlot instance;
-
-    private WarTimeSlot(){
+    public WarTimeSlot(@NotNull List<String> allowedTimeSlotsWar){
         timeSlots = new ArrayList<>();
 
-        List<String> stringSlots = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getStringList("allowedTimeSlotsWar");
-        for(String value : stringSlots){
+        for(String value : allowedTimeSlotsWar){
             timeSlots.add(extractTimeSlot(value));
         }
     }
@@ -41,8 +37,6 @@ public class WarTimeSlot {
             int start = convertToMinutes(timeSlots[0].trim());
             int end = convertToMinutes(timeSlots[1].trim());
 
-            //Add check that timezones don't overlap
-
             return new Range(start, end);
         } catch (DateTimeParseException | NumberFormatException e) {
             TownsAndNations.getPlugin().getLogger()
@@ -54,13 +48,6 @@ public class WarTimeSlot {
     private int convertToMinutes(String time) throws DateTimeParseException {
         LocalTime localTime = LocalTime.parse(time);
         return localTime.getHour() * 60 + localTime.getMinute();
-    }
-
-    public static WarTimeSlot getInstance() {
-        if (instance == null) {
-            instance = new WarTimeSlot();
-        }
-        return instance;
     }
 
     public List<String> getPrintedTimeSlots(LangType langType)
