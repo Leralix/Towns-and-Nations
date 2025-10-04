@@ -13,10 +13,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
-import org.leralix.lib.utils.ParticleUtils;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.lib.utils.particles.ParticleUtils;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.newhistory.PropertyBuyTaxTransaction;
@@ -33,6 +33,7 @@ import org.leralix.tan.listeners.interact.events.CreatePropertyEvent;
 import org.leralix.tan.storage.PermissionManager;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.text.NumberUtil;
 
@@ -263,7 +264,7 @@ public class PropertyData {
     }
 
     public void showBox(Player player) {
-        ParticleUtils.showBox(TownsAndNations.getPlugin(), player, this.getFirstCorner(), this.getSecondCorner(), 10);
+        ParticleUtils.drawBox(TownsAndNations.getPlugin(), player, this.getFirstCorner(), this.getSecondCorner(), 10, Constants.getPropertyBoundaryParticles());
     }
 
     public void updateSign() {

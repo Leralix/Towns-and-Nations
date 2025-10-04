@@ -65,7 +65,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'io.github.leralix:sphere-lib:0.5.2'
+    compileOnly 'io.github.leralix:sphere-lib:0.5.3'
     compileOnly 'io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT'
     compileOnly 'com.mojang:authlib:4.0.43'
     compileOnly 'net.luckperms:api:5.4'
@@ -80,7 +80,7 @@ dependencies {
     implementation 'com.mysql:mysql-connector-j:8.4.0'
     implementation 'org.xerial:sqlite-jdbc:3.43.2.0'
 
-    testImplementation 'io.github.leralix:sphere-lib:0.5.2'
+    testImplementation 'io.github.leralix:sphere-lib:0.5.3'
     testImplementation 'com.github.MockBukkit:MockBukkit:v4.72.9'
     testImplementation 'io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'

@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.position.CardinalPoint;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
-import org.leralix.lib.utils.ParticleUtils;
+import org.leralix.lib.utils.particles.ParticleUtils;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -43,10 +43,11 @@ public class ShowBoundaries {
         int y = (int) player.getLocation().getY() + 1;
 
         for (ChunkLine line : lines) {
-            ParticleUtils.drawLine(TownsAndNations.getPlugin(), player,
+            ParticleUtils.drawPane(TownsAndNations.getPlugin(), player,
                     new Vector3D(line.getPoint1().getX(), y, line.getPoint1().getZ(), line.getPoint1().getWorldID().toString()),
-                    new Vector3D(line.getPoint2().getX(), y, line.getPoint2().getZ(), line.getPoint2().getWorldID().toString()),
-                    1);
+                    new Vector3D(line.getPoint2().getX(), y - 1, line.getPoint2().getZ(), line.getPoint2().getWorldID().toString()),
+                    1,
+                    Constants.getWarBoundaryParticle());
         }
     }
 

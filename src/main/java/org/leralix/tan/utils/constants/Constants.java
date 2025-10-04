@@ -1,5 +1,6 @@
 package org.leralix.tan.utils.constants;
 
+import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.leralix.tan.dataclass.chunk.ChunkType;
@@ -54,14 +55,17 @@ public class Constants {
     private static double fortCaptureRadius;
     private static boolean useAsOutpost;
 
+    //Properties
     private static int maxPropertySignMargin;
+    private static int maxPropertySize;
+    private static Particle propertyBoundaryParticles;
 
     //Wars
 
     private static WarTimeSlot warTimeSlot;
 
     private static double warBoundaryRadius;
-    private static double warBoundaryHeight;
+    private static Particle warBoundaryParticle;
 
     private static Map<TownRelation, RelationConstant> relationsConstants;
     private static Set<String> allRelationBlacklistedCommands;
@@ -130,14 +134,15 @@ public class Constants {
         }
 
         maxPropertySignMargin = config.getInt("maxPropertyMargin", 3);
+        maxPropertySize = config.getInt("MaxPropertySize", 50000);
+        propertyBoundaryParticles = Particle.valueOf(config.getString("propertyBoundaryParticles"));
 
         //Attacks
 
         warTimeSlot = new WarTimeSlot(config.getStringList("allowedTimeSlotsWar"));
 
         warBoundaryRadius = config.getDouble("warBoundaryRadius", 16);
-        warBoundaryHeight = config.getDouble("warBoundaryHeight", 3);
-
+        warBoundaryParticle = Particle.valueOf(config.getString("warBoundaryParticle", "DRAGON_BREATH").toUpperCase());
 
         relationsConstants = new EnumMap<>(TownRelation.class);
         allRelationBlacklistedCommands = new HashSet<>();
@@ -254,6 +259,14 @@ public class Constants {
         return maxPropertySignMargin;
     }
 
+    public static int getMaxPropertySize(){
+        return maxPropertySize;
+    }
+
+    public static Particle getPropertyBoundaryParticles(){
+        return propertyBoundaryParticles;
+    }
+
     public static WarTimeSlot getWarTimeSlot(){
         return warTimeSlot;
     }
@@ -262,8 +275,8 @@ public class Constants {
         return warBoundaryRadius;
     }
 
-    public static double getWarBoundaryHeight() {
-        return warBoundaryHeight;
+    public static Particle getWarBoundaryParticle(){
+        return warBoundaryParticle;
     }
 
     public static long getAttackDuration() {

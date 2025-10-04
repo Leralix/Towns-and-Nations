@@ -9,8 +9,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -69,7 +67,7 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
             return ListenerState.CONTINUE;
         }
         if(position2 == null){
-            int maxPropertySize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MaxPropertySize", 50000);
+            int maxPropertySize = Constants.getMaxPropertySize();
 
             Vector3D vector3D = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
 
