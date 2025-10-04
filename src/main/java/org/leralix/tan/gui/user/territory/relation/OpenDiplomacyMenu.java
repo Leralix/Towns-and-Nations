@@ -10,8 +10,12 @@ import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.constants.RelationConstant;
 import org.leralix.tan.utils.deprecated.GuiUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OpenDiplomacyMenu extends BasicGui {
 
@@ -38,45 +42,41 @@ public class OpenDiplomacyMenu extends BasicGui {
     }
 
     private GuiItem getWarButton() {
+        List<String> desc = generateDescription(Lang.GUI_TOWN_RELATION_HOSTILE_DESC1.get(langType), TownRelation.WAR);
+
         return iconManager.get(IconKey.GUI_WAR_ICON)
                 .setName(Lang.GUI_TOWN_RELATION_HOSTILE.get(langType))
-                .setDescription(
-                        Lang.GUI_TOWN_RELATION_HOSTILE_DESC1.get(langType, territoryData.getName()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType)
-                )
+                .setDescription(desc)
                 .setAction(p -> new OpenRelationMenu(player, territoryData, TownRelation.WAR))
                 .asGuiItem(player);
     }
 
     private GuiItem getEmbargoButton() {
+        List<String> desc = generateDescription(Lang.GUI_TOWN_RELATION_EMBARGO_DESC1.get(langType), TownRelation.EMBARGO);
+
         return iconManager.get(IconKey.GUI_EMBARGO_ICON)
                 .setName(Lang.GUI_TOWN_RELATION_EMBARGO.get(langType))
-                .setDescription(
-                        Lang.GUI_TOWN_RELATION_EMBARGO_DESC1.get(langType, territoryData.getName()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType)
-                )
+                .setDescription(desc)
                 .setAction(p -> new OpenRelationMenu(player, territoryData, TownRelation.EMBARGO))
                 .asGuiItem(player);
     }
 
     private GuiItem getNonAggressionPactButton() {
+        List<String> desc = generateDescription(Lang.GUI_TOWN_RELATION_NAP_DESC1.get(langType), TownRelation.NON_AGGRESSION);
+
         return iconManager.get(IconKey.GUI_NON_AGGRESSION_PACT_ICON)
-                .setName(Lang.GUI_TOWN_RELATION_HOSTILE.get(langType))
-                .setDescription(
-                        Lang.GUI_TOWN_RELATION_HOSTILE_DESC1.get(langType, territoryData.getName()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType)
-                )
+                .setName(Lang.GUI_TOWN_RELATION_NAP.get(langType))
+                .setDescription(desc)
                 .setAction(p -> new OpenRelationMenu(player, territoryData, TownRelation.NON_AGGRESSION))
                 .asGuiItem(player);
     }
 
     private GuiItem getAllianceButton() {
+        List<String> desc = generateDescription(Lang.GUI_TOWN_RELATION_ALLIANCE_DESC1.get(langType), TownRelation.ALLIANCE);
+
         return iconManager.get(IconKey.GUI_ALLIANCE_ICON)
                 .setName(Lang.GUI_TOWN_RELATION_ALLIANCE.get(langType))
-                .setDescription(
-                        Lang.GUI_TOWN_RELATION_ALLIANCE_DESC1.get(langType, territoryData.getName()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType)
-                )
+                .setDescription(desc)
                 .setAction(p -> new OpenRelationMenu(player, territoryData, TownRelation.ALLIANCE))
                 .asGuiItem(player);
     }
@@ -96,5 +96,44 @@ public class OpenDiplomacyMenu extends BasicGui {
                     new OpenDiplomacyProposalsMenu(player, territoryData);
                 })
                 .asGuiItem(player);
+    }
+
+
+    private List<String> generateDescription(String description,  TownRelation relation){
+
+        List<String> res = new ArrayList<>();
+
+        res.add(description);
+        RelationConstant relationConstant = Constants.getRelationConstants(relation);
+
+        if(relationConstant.canPvP()){
+            res.add(Lang.GUI_RELATION_ENABLE_PVP.get(langType));
+        }
+        else {
+            res.add(Lang.GUI_RELATION_DISABLE_PVP.get(langType));
+        }
+
+        if(relationConstant.canInteractWithProperty()){
+            res.add(Lang.GUI_RELATION_ENABLE_PROPERTY.get(langType));
+        }
+        else {
+            res.add(Lang.GUI_RELATION_DISABLE_PROPERTY.get(langType));
+        }
+
+        if(!relationConstant.canAccessTerritory()){
+            res.add(Lang.GUI_RELATION_BLOCK_ENTRY.get(langType));
+        }
+
+        int blockCommandsSize = relationConstant.getBlockedCommands().size();
+        if(blockCommandsSize > 0){
+            res.add(Lang.GUI_RELATION_DISABLE_COMMANDS.get(langType, Integer.toString(blockCommandsSize)));
+        }
+        if(relation == TownRelation.WAR){
+            res.add(Lang.GUI_RELATION_ENABLE_WAR.get(langType));
+        }
+        res.add("");
+        res.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType));
+
+        return res;
     }
 }
