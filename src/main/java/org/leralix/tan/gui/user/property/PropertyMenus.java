@@ -99,7 +99,6 @@ public abstract class PropertyMenus extends BasicGui {
                     if (event.getClick() == ClickType.RIGHT) {
                         player.sendMessage(Lang.ENTER_NEW_VALUE.get(langType));
                         PlayerChatListenerStorage.register(player, new ChangePropertySalePrice(propertyData, p -> open()));
-                        player.closeInventory();
                     } else if (event.getClick() == ClickType.LEFT) {
                         if (propertyData.isRented()) {
                             player.sendMessage(Lang.PROPERTY_ALREADY_RENTED.get(langType));

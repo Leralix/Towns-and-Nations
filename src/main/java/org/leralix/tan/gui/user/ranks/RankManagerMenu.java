@@ -16,7 +16,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.RenameRank;
 import org.leralix.tan.utils.deprecated.GuiUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,7 +141,6 @@ public class RankManagerMenu extends BasicGui {
                 .setAction(event -> {
                     player.sendMessage(Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new RenameRank(territoryData , rankData));
-                    player.closeInventory();
                 })
                 .asGuiItem(player);
     }

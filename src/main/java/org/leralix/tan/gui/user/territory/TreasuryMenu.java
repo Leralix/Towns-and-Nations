@@ -14,7 +14,6 @@ import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.DonateToTerritory;
 import org.leralix.tan.listeners.chat.events.RetrieveMoney;
 import org.leralix.tan.utils.deprecated.GuiUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,8 +75,6 @@ public class TreasuryMenu extends BasicGui {
                 .setDescription(Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get(tanPlayer))
                 .setAction(action -> {
                     player.sendMessage(Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get(tanPlayer));
-                    player.closeInventory();
-
                     PlayerChatListenerStorage.register(player, new DonateToTerritory(territoryData));
                 })
                 .asGuiItem(player);
@@ -103,7 +100,6 @@ public class TreasuryMenu extends BasicGui {
                     }
                     player.sendMessage(Lang.PLAYER_WRITE_QUANTITY_IN_CHAT.get(tanPlayer));
                     PlayerChatListenerStorage.register(player,new RetrieveMoney(territoryData));
-                    player.closeInventory();
                 })
                 .asGuiItem(player);
     }

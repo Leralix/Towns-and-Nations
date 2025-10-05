@@ -107,7 +107,6 @@ public class SubjectTaxLine extends ProfitLine {
             } else if (event.isRightClick()) {
                 player.sendMessage(Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
                 PlayerChatListenerStorage.register(player, new SetTerritoryTax(territoryData, p -> new TreasuryMenu(player, territoryData)));
-                player.closeInventory();
             }
         });
 

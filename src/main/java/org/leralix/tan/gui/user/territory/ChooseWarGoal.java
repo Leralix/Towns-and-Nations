@@ -12,7 +12,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.SelectNbChunksForConquer;
 import org.leralix.tan.utils.deprecated.GuiUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.WarRole;
 import org.leralix.tan.war.legacy.wargoals.ConquerWarGoal;
@@ -75,9 +74,8 @@ public class ChooseWarGoal extends BasicGui {
                                 player.sendMessage(Lang.GUI_ONLY_ONE_CONQUER_WAR_GOAL.get(tanPlayer));
                                 return;
                             }
-
+                            player.sendMessage(Lang.ENTER_NEW_VALUE.get(langType));
                             PlayerChatListenerStorage.register(player, new SelectNbChunksForConquer(war, warRole, new SelectWarGoals(player, territoryData, war, warRole)));
-                            player.closeInventory();
                         }
                 )
                 .asGuiItem(player);

@@ -96,7 +96,10 @@ public class TownSettingsMenu extends SettingsMenus {
                         Lang.GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1.get(langType, townData.getColoredTag()),
                         Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(langType)
                 )
-                .setAction( action -> PlayerChatListenerStorage.register(player, new ChangeTownTag(townData, p -> open())))
+                .setAction( action -> {
+                    player.sendMessage(Lang.ENTER_NEW_VALUE.get(langType));
+                    PlayerChatListenerStorage.register(player, new ChangeTownTag(townData, p -> open()));
+                })
                 .asGuiItem(player);
     }
 

@@ -16,7 +16,6 @@ import org.leralix.tan.listeners.chat.events.CreateRegion;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
@@ -59,7 +58,6 @@ public class NoRegionMenu extends BasicGui {
                 player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), Double.toString(regionCost - townMoney)));
             } else {
                 player.sendMessage(Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(tanPlayer));
-                player.closeInventory();
                 int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
                 PlayerChatListenerStorage.register(player, new CreateRegion(cost));
             }
