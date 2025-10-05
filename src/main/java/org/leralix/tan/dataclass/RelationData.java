@@ -36,12 +36,6 @@ public class RelationData {
         townRelations.get(relation).add(townID);
     }
 
-    public void removeRelation(TownRelation relation, String townID) {
-        if (!townRelations.containsKey(relation))
-            return;
-        townRelations.get(relation).remove(townID);
-    }
-
     public List<String> getTerritoriesIDWithRelation(TownRelation relation) {
         return townRelations.get(relation);
     }

@@ -144,11 +144,10 @@ TownMaxLevel: 10
 ##      Relations     ##
 ########################
 
-#Sets the number of hours of a truce
-TRUCE_HOUR_DURATION: 48
-
 # enablePvP :           If true, two players with the relation can hurt each-other (check only apply to hit and arrow)
-# haveTruce :           If true, a relation cannot go below NEUTRAL for TRUCE_HOUR_DURATION hours
+# truce_period          The number of hours a territory cannot set a hostile relation after the current relation has been removed.
+#                       Only for Alliance and Non-Aggression pact.
+#                       Set to 0 to disable option
 # canInteractWithProperty        If true, a player can buy or rent property in another town. This is not retroactive.
 # canAccessTerritory :  If false, a player will not be able to navigate inside the territory claims.
 #                       This does not apply during attacks.
@@ -157,6 +156,7 @@ TRUCE_HOUR_DURATION: 48
 #                       Every command that match the blacklisted part will be blocked (/tp %PLAYER% will block /tp notch 0 70 0)
 #                       Keywords :
 #                       - %PLAYER%  placeholder to get the player username. Mandatory or command will not be registered.
+
 relationConstants:
   self: #Player is in the same town
     enablePvP: true
@@ -165,31 +165,28 @@ relationConstants:
     blockedCommands: [ ]
   alliance:
     enablePvP: true
-    haveTruce: true
+    truce_period: 72
     canInteractWithProperty: true
     canAccessTerritory: true
     blockedCommands: [ ]
   non_aggression:
     enablePvP: true
-    haveTruce: true
+    truce_period: 48
     canInteractWithProperty: true
     canAccessTerritory: true
     blockedCommands: [ ]
-  neutral: #Default relation between two territories
+  neutral: #Default relation between two territories. Also used for Vassals and Overlord relation.
     enablePvP: true
-    haveTruce: false
     canInteractWithProperty: true
     canAccessTerritory: true
     blockedCommands: [ ]
   embargo:
     enablePvP: true
-    haveTruce: false
     canInteractWithProperty: false
     canAccessTerritory: true
     blockedCommands: [ "/tpa %PLAYER%", "/tan pay %PLAYER%", "/pay %PLAYER% " ]
   war:
     enablePvP: true
-    haveTruce: false
     canInteractWithProperty: false
     canAccessTerritory: true
     blockedCommands: [ "/tpa %PLAYER%", "/tan pay %PLAYER%", "/pay %PLAYER%" ]

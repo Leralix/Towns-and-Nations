@@ -106,6 +106,11 @@ public class OpenDiplomacyMenu extends BasicGui {
         res.add(description);
         RelationConstant relationConstant = Constants.getRelationConstants(relation);
 
+        int trucePeriod = relationConstant.trucePeriod();
+        if(trucePeriod > 0){
+            res.add(Lang.GUI_RELATION_TRUCE.get(langType, Integer.toString(trucePeriod)));
+        }
+
         if(relationConstant.canPvP()){
             res.add(Lang.GUI_RELATION_ENABLE_PVP.get(langType));
         }

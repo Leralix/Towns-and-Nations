@@ -30,6 +30,7 @@ public class SaveStats {
         WarStorage.getInstance().save();
         FortDataStorage.getInstance().save();
         PremiumStorage.getInstance().save();
+        TruceStorage.getInstance().save();
     }
 
 }

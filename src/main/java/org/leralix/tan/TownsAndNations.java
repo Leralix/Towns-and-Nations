@@ -187,7 +187,7 @@ public class TownsAndNations extends JavaPlugin {
         NewsletterStorage.getInstance();
         WarStorage.getInstance();
         EventManager.getInstance().registerEvents(new NewsletterEvents());
-
+        TruceStorage.getInstance();
 
         getLogger().log(Level.INFO, "[TaN] -Loading blocks data");
         TANCustomNBT.setBlocsData();

@@ -6,13 +6,16 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.dataclass.ActiveTruce;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.TruceStorage;
+import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.constants.RelationConstant;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +54,14 @@ public class RemoveRelationMenu extends IteratorGUI {
                 event.setCancelled(true);
 
                 if (relation.isSuperiorTo(TownRelation.NEUTRAL)) {
+
+                    RelationConstant relationConstant = Constants.getRelationConstants(relation);
+                    int trucePeriod = relationConstant.trucePeriod();
+                    if(trucePeriod > 0){
+                        ActiveTruce activeTruce = new ActiveTruce(territoryData, otherTerritory, trucePeriod);
+                        TruceStorage.getInstance().add(activeTruce);
+                    }
+
                     territoryData.setRelation(otherTerritory, TownRelation.NEUTRAL);
                 } else {
                     otherTerritory.receiveDiplomaticProposal(territoryData, TownRelation.NEUTRAL);
