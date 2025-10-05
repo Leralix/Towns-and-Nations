@@ -71,6 +71,8 @@ public class Constants {
     private static Set<String> allRelationBlacklistedCommands;
 
     private static long attackDuration;
+    private static int minTimeBeforeAttack;
+    private static int maxTimeBeforeAttack;
     private static List<String> blacklistedCommandsDuringAttacks;
     private static int nbChunkToCaptureMax;
     private static List<String> onceStartCommands;
@@ -157,7 +159,10 @@ public class Constants {
             }
         }
 
-        attackDuration = config.getInt("WarDuration", 30);
+        attackDuration = config.getLong("WarDuration", 30);
+        minTimeBeforeAttack = config.getInt("MinimumTimeBeforeAttack",120);
+        maxTimeBeforeAttack = config.getInt("MaximumTimeBeforeAttack",4320);
+
         blacklistedCommandsDuringAttacks = config.getStringList("BlacklistedCommandsDuringAttacks");
         nbChunkToCaptureMax = config.getInt("MaximumChunkConquer", 0);
         if (nbChunkToCaptureMax == 0) {
@@ -281,6 +286,14 @@ public class Constants {
 
     public static long getAttackDuration() {
         return attackDuration;
+    }
+
+    public static int getMaxTimeBeforeAttack() {
+        return maxTimeBeforeAttack;
+    }
+
+    public static int getMinTimeBeforeAttack() {
+        return minTimeBeforeAttack;
     }
 
     public static List<String> getBlacklistedCommandsDuringAttacks() {

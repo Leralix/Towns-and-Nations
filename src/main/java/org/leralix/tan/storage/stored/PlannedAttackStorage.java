@@ -34,8 +34,7 @@ public class PlannedAttackStorage extends JsonStorage<PlannedAttack> {
 
     public PlannedAttack newAttack(CreateAttackData createAttackData) {
         String newID = getNewID();
-        long deltaDateTime = createAttackData.getSelectedTime();
-        PlannedAttack plannedAttack = new PlannedAttack(newID, createAttackData, deltaDateTime);
+        PlannedAttack plannedAttack = new PlannedAttack(newID, createAttackData);
         put(newID, plannedAttack);
         return plannedAttack;
     }

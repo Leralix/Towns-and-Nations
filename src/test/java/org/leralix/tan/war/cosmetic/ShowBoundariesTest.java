@@ -40,7 +40,7 @@ class ShowBoundariesTest extends BasicTest {
 
         War war = new War("TestWar", townAttacker, townDefender);
         CreateAttackData createAttackData = new CreateAttackData(war, WarRole.MAIN_ATTACKER);
-        PlannedAttack plannedAttack = new PlannedAttack("TetsWar", createAttackData, 0);
+        PlannedAttack plannedAttack = new PlannedAttack("TetsWar", createAttackData);
         CurrentAttack currentAttack = new CurrentAttack(plannedAttack, 0, 0);
 
         townDefender.claimChunk(defender, world.getChunkAt(0, 0));

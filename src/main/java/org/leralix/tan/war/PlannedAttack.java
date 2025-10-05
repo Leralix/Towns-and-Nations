@@ -39,7 +39,13 @@ public class PlannedAttack {
     private final Collection<String> defendersID;
     private final Collection<String> attackersID;
 
-    private final long startTime;
+    /**
+     * The start time of the war, in milliseconds since January 1, 1970
+     */
+    final long startTime;
+    /**
+     * The end time of the war, in milliseconds since January 1, 1970
+     */
     private final long endTime;
     private final War war;
     private final WarRole warRole;
@@ -49,7 +55,12 @@ public class PlannedAttack {
 
     boolean isAdminApproved;
 
-    public PlannedAttack(String id, CreateAttackData createAttackData, long startTime) {
+    /**
+     * Constructor for a Planned attack
+     * @param id                The ID of the attack
+     * @param createAttackData  Data related to the attack and its war.
+     */
+    public PlannedAttack(String id, CreateAttackData createAttackData) {
         this.ID = id;
 
         this.war = createAttackData.getWar();
@@ -64,8 +75,8 @@ public class PlannedAttack {
         this.defendersID = new ArrayList<>();
         this.defendersID.add(war.getMainDefenderID());
 
-        this.startTime = (long) (new Date().getTime() * 0.02 + startTime);
-        this.endTime = this.startTime + Constants.getAttackDuration();
+        this.startTime = new Date().getTime() + (long) createAttackData.getSelectedTime() * 60 * 1000;
+        this.endTime = this.startTime + Constants.getAttackDuration() * 60 * 1000 ;
 
         war.getMainDefender().addPlannedAttack(this);
         war.getMainAttacker().addPlannedAttack(this);
@@ -125,14 +136,6 @@ public class PlannedAttack {
         return attackers;
     }
 
-    public long getStartTime() {
-        return startTime;
-    }
-
-    public long getEndTime() {
-        return endTime;
-    }
-
     public void broadCastMessageWithSound(FilledLang message, SoundEnum soundEnum) {
         Collection<TerritoryData> territoryData = getAttackingTerritories();
         territoryData.addAll(getDefendingTerritories());
@@ -142,7 +145,10 @@ public class PlannedAttack {
     }
 
     public void setUpStartOfAttack() {
-        long timeLeftBeforeStart = (long) (startTime - new Date().getTime() * 0.02);
+
+        //Convesion to ticks
+        long currentTime = new Date().getTime();
+        long timeLeftBeforeStart = (long) ((startTime - currentTime) * 0.02);
         long timeLeftBeforeWarning = timeLeftBeforeStart - 1200; //Warning 1 minute before
 
 
@@ -159,17 +165,18 @@ public class PlannedAttack {
         };
         warStartTask.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeStart);
 
-
-        warWarningTask = new BukkitRunnable() {
-            @Override
-            public void run() {
-                broadCastMessageWithSound(Lang.ATTACK_START_IN_1_MINUTES.get(name), SoundEnum.WAR);
-            }
-        };
-        warWarningTask.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeWarning);
+        if(timeLeftBeforeWarning > 0){
+            warWarningTask = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    broadCastMessageWithSound(Lang.ATTACK_START_IN_1_MINUTES.get(name), SoundEnum.WAR);
+                }
+            };
+            warWarningTask.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeWarning);
+        }
     }
 
-    private void startWar(long startTime) {
+    void startWar(long startTime) {
         broadCastMessageWithSound(Lang.ATTACK_START_NOW.get(name), SoundEnum.WAR);
         CurrentAttacksStorage.startAttack(this, startTime, endTime);
     }
@@ -184,8 +191,8 @@ public class PlannedAttack {
 
     public ItemStack getAdminIcon(LangType langType) {
 
-        long startDate = getStartTime() - new Date().getTime() / 50;
-        long attackDuration = getEndTime() - getStartTime();
+        long startDate = startTime - new Date().getTime() / 50;
+        long attackDuration = endTime - startTime;
 
         ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -214,9 +221,9 @@ public class PlannedAttack {
 
     public ItemStack getIcon(ITanPlayer tanPlayer, TerritoryData territoryConcerned) {
 
-        long startDate = getStartTime() - new Date().getTime() / 50;
-        long attackDuration = getEndTime() - getStartTime();
-        String exactTimeStart = TimeZoneManager.getInstance().formatDateForPlayer(tanPlayer, Instant.ofEpochSecond(getStartTime() / 20));
+        long startDate = startTime - new Date().getTime() / 50;
+        long attackDuration = endTime - startTime;
+        String exactTimeStart = TimeZoneManager.getInstance().formatDateForPlayer(tanPlayer, Instant.ofEpochSecond(startTime / 20));
         LangType langType = tanPlayer.getLang();
 
         ItemStack itemStack = new ItemStack(Material.IRON_SWORD);

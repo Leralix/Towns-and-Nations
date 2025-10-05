@@ -90,7 +90,7 @@ public class CreateAttackMenu extends BasicGui {
     private boolean isValid(List<String> errorMessages) {
         boolean isValid = true;
 
-        Instant warStart = Instant.now().plusSeconds(attackData.getSelectedTime() / 20);
+        Instant warStart = Instant.now().plusSeconds(attackData.getSelectedTime() * 60L);
         if (!Constants.getWarTimeSlot().canWarBeDeclared(warStart)) {
             errorMessages.add(Lang.GUI_WARGOAL_OUTSIDE_AUTHORIZED_SLOTS.get(tanPlayer));
             isValid = false;
@@ -111,9 +111,9 @@ public class CreateAttackMenu extends BasicGui {
                     SoundUtil.playSound(player, REMOVE);
 
                     if (event.isShiftClick()) {
-                        attackData.addDeltaDateTime(60 * 1200L);
+                        attackData.addDeltaDateTime(60);
                     } else if (event.isLeftClick()) {
-                        attackData.addDeltaDateTime(1200L);
+                        attackData.addDeltaDateTime(1);
                     }
                     open();
                 })
@@ -122,7 +122,7 @@ public class CreateAttackMenu extends BasicGui {
 
     private @NotNull GuiItem getTimeIcon() {
 
-        Instant startTime = Instant.now().plusSeconds(attackData.getSelectedTime() / 20);
+        Instant startTime = Instant.now().plusSeconds(attackData.getSelectedTime() * 60L);
 
         List<String> availableTimeSlots = new ArrayList<>();
         availableTimeSlots.add(TimeZoneManager.getInstance().formatDateForPlayer(tanPlayer, startTime));
@@ -147,9 +147,9 @@ public class CreateAttackMenu extends BasicGui {
                     SoundUtil.playSound(player, REMOVE);
 
                     if (event.isShiftClick()) {
-                        attackData.addDeltaDateTime(-60 * 1200L);
+                        attackData.addDeltaDateTime(-60);
                     } else if (event.isLeftClick()) {
-                        attackData.addDeltaDateTime(-1200);
+                        attackData.addDeltaDateTime(-1);
                     }
                     open();
                 })

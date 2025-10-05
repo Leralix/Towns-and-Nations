@@ -1,30 +1,36 @@
 package org.leralix.tan.war.legacy;
 
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.War;
 
 public class CreateAttackData {
 
-    private long minTime;
-    private long maxTime;
-    private long selectedTime;
+    /**
+     * The minimum time, in minutes
+     */
+    private final int minTime;
+    /**
+     * The maximum time, in minutes
+     */
+    private final int maxTime;
+    /**
+     * The selected time, in minutes
+     */
+    private int selectedTime;
     private final War war;
     private final WarRole attackingSide;
 
     public CreateAttackData(War war, WarRole attackingSide){
 
-        this.minTime = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MinimumTimeBeforeAttack",120);
-        this.maxTime = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("MaximumTimeBeforeAttack",4320);
-        this.minTime = minTime * 60 * 20;
-        this.maxTime = maxTime * 60 * 20;
+        this.minTime = Constants.getMinTimeBeforeAttack();
+        this.maxTime = Constants.getMaxTimeBeforeAttack();
 
         this.selectedTime = (minTime + maxTime) / 2;
         this.war = war;
         this.attackingSide = attackingSide;
     }
 
-    public void addDeltaDateTime(long deltaDateTime){
+    public void addDeltaDateTime(int deltaDateTime){
         this.selectedTime += deltaDateTime;
         if(this.selectedTime < minTime){
             this.selectedTime = minTime;
@@ -34,7 +40,7 @@ public class CreateAttackData {
         }
     }
 
-    public long getSelectedTime(){
+    public int getSelectedTime(){
         return selectedTime;
     }
 

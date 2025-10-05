@@ -19,7 +19,13 @@ public class CurrentAttack {
     private final PlannedAttack attackData;
     private boolean end;
 
+    /**
+     * total time, in tick
+     */
     private final long totalTime;
+    /**
+     * Remaning time, in tick
+     */
     private long remaining;
     private final BossBar bossBar;
 
@@ -29,7 +35,8 @@ public class CurrentAttack {
 
         this.end = false;
 
-        this.totalTime = endTime - startTime;
+        //Conversion from ms to ticks
+        this.totalTime = (endTime - startTime) / 50;
         this.remaining = totalTime;
 
         this.bossBar = Bukkit.createBossBar("", BarColor.RED, BarStyle.SOLID);
@@ -87,7 +94,7 @@ public class CurrentAttack {
                 }
             }
         };
-        timerTask.runTaskTimer(TownsAndNations.getPlugin(), 0, 1); // Exécute toutes les secondes
+        timerTask.runTaskTimer(TownsAndNations.getPlugin(), 0, 1); // Execute every tick (20/s)
     }
 
 

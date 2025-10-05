@@ -7,8 +7,8 @@ public class DateUtil {
     }
 
     public static String getDateStringFromTicks(long date){
-        int nbHours = (int) (date / 72000);
-        int nbMinutes = (int) ((date % 72000) / 1200);
+        int nbHours = (int) (date / 60);
+        int nbMinutes = (int) (date % 60);
         return nbHours + "h" + String.format("%02d", nbMinutes) + "m";
     }
 }
