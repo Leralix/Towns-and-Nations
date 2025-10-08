@@ -9,8 +9,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -143,7 +141,7 @@ public class TownClaimedChunk extends TerritoryChunk {
         }
         TownRelation relation = playerTown.getRelationWith(townTo);
 
-        if (relation == TownRelation.WAR && ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("notifyEnemyEnterTown", true)) {
+        if (relation == TownRelation.WAR && Constants.notifyWhenEnemyEnterTerritory()) {
             SoundUtil.playSound(player, SoundEnum.BAD);
             player.sendMessage(Lang.CHUNK_ENTER_TOWN_AT_WAR.get(tanPlayer.getLang()));
             townTo.broadcastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.getInstance().get(player).getName(), player.getName()), SoundEnum.BAD);

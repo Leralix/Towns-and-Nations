@@ -1,7 +1,5 @@
 package org.leralix.tan.economy;
 
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.utils.constants.Constants;
 
@@ -28,6 +26,6 @@ public class TanEconomyStandalone extends AbstractTanEcon{
 
     @Override
     public String getMoneyIcon() {
-        return Constants.getMoneyIcon();
+        return Constants.getBaseCurrencyChar();
     }
 }

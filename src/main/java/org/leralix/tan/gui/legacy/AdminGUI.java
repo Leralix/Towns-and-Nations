@@ -30,6 +30,7 @@ import org.leralix.tan.listeners.chat.events.ChangeTerritoryDescription;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryName;
 import org.leralix.tan.listeners.chat.events.CreateEmptyTown;
 import org.leralix.tan.storage.stored.*;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.file.FileUtil;
@@ -154,7 +155,7 @@ public class AdminGUI {
         GuiItem changeLandmarkNameGui = ItemBuilder.from(changeLandmarkName).asGuiItem(event -> {
             event.setCancelled(true);
             player.sendMessage(Lang.ENTER_NEW_VALUE.get(player));
-            PlayerChatListenerStorage.register(player, new ChangeLandmarkName(landmark, p -> openSpecificLandmarkMenu(player, landmark)));
+            PlayerChatListenerStorage.register(player, new ChangeLandmarkName(landmark, Constants.getLandmarkMaxNameSize(), p -> openSpecificLandmarkMenu(player, landmark)));
         });
 
         GuiItem deleteLandmarkGui = ItemBuilder.from(deleteLandmark).asGuiItem(event -> {

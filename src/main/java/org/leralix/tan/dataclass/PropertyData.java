@@ -1,5 +1,6 @@
 package org.leralix.tan.dataclass;
 
+import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -14,12 +15,14 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.lib.utils.particles.ParticleUtils;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.newhistory.PropertyBuyTaxTransaction;
+import org.leralix.tan.dataclass.property.AbstractOwner;
+import org.leralix.tan.dataclass.property.PlayerOwned;
+import org.leralix.tan.dataclass.property.TerritoryOwned;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
@@ -27,9 +30,12 @@ import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.gui.BasicGui;
+import org.leralix.tan.gui.cosmetic.IconManager;
+import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.listeners.interact.events.CreatePropertyEvent;
+import org.leralix.tan.listeners.interact.events.property.CreatePropertyEvent;
 import org.leralix.tan.storage.PermissionManager;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -37,11 +43,29 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.text.NumberUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-public class PropertyData {
+public class PropertyData extends Building {
     private final String ID;
+
+    /**
+     * Old storage method for the owner of the property
+     * Replaced by owner
+     * Keep until 0.17.0 to ensure retro-compatibility
+     * TODO : add TypeAdapter for Gson
+     */
+    @Deprecated(since = "0.15.6")
     private String owningPlayerID;
+    /**
+     *
+     */
+    private AbstractOwner owner;
+    /**
+     * ID of the renter. Can be null if not rented.
+     */
     private String rentingPlayerID;
     private PermissionManager permissionManager;
 
@@ -57,9 +81,20 @@ public class PropertyData {
     private Vector3D signLocation;
     private Vector3D supportLocation;
 
-    public PropertyData(String id, Vector3D p1, Vector3D p2, ITanPlayer player) {
+
+    public PropertyData(String id, Vector3D p1, Vector3D p2, TerritoryData owner) {
+        this(id, p1, p2, new TerritoryOwned(owner));
+    }
+
+
+    public PropertyData(String id, Vector3D p1, Vector3D p2, ITanPlayer owner) {
+        this(id, p1, p2, new PlayerOwned(owner));
+    }
+
+
+    public PropertyData(String id, Vector3D p1, Vector3D p2, AbstractOwner owner) {
         this.ID = id;
-        this.owningPlayerID = player.getID();
+        this.owner = owner;
         this.p1 = p1;
         this.p2 = p2;
 
@@ -124,18 +159,10 @@ public class PropertyData {
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), this::updateSign);
     }
 
-    public String getOwnerID() {
-        return owningPlayerID;
-    }
-
-    public ITanPlayer getOwner() {
-        return PlayerDataStorage.getInstance().get(owningPlayerID);
-    }
-
     public void allocateRenter(Player renter) {
         rentingPlayerID = renter.getUniqueId().toString();
         this.isForRent = false;
-        if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("payRentAtStart", false))
+        if (Constants.shouldPayRentAtStart())
             payRent();
         this.updateSign();
         getPermissionManager().setAll(RelationPermission.SELECTED_ONLY);
@@ -165,10 +192,6 @@ public class PropertyData {
         return Bukkit.getOfflinePlayer(UUID.fromString(rentingPlayerID));
     }
 
-    public Player getOwnerPlayer() {
-        return Bukkit.getPlayer(UUID.fromString(owningPlayerID));
-    }
-
     public String getDescription() {
         return description;
     }
@@ -176,7 +199,6 @@ public class PropertyData {
     public void payRent() {
 
         OfflinePlayer renter = Bukkit.getOfflinePlayer(UUID.fromString(rentingPlayerID));
-        OfflinePlayer owner = Bukkit.getOfflinePlayer(UUID.fromString(owningPlayerID));
         TerritoryData town = getTown();
 
         double baseRent = getBaseRentPrice();
@@ -191,12 +213,15 @@ public class PropertyData {
 
 
         EconomyUtil.removeFromBalance(renter, rent);
-        EconomyUtil.addFromBalance(owner, baseRent);
+        getOwner().addToBalance(baseRent);
         town.addToBalance(taxRent);
     }
 
-    public boolean isOwner(String playerID) {
-        return playerID.equals(this.owningPlayerID);
+    public AbstractOwner getOwner() {
+        if(owner == null){
+            owner = new PlayerOwned(owningPlayerID);
+        }
+        return owner;
     }
 
     public String getName() {
@@ -236,7 +261,7 @@ public class PropertyData {
         lore.add(Lang.GUI_PROPERTY_DESCRIPTION.get(langType, getDescription()));
         lore.add(Lang.GUI_PROPERTY_STRUCTURE_OWNER.get(langType, getTown().getName()));
 
-        lore.add(Lang.GUI_PROPERTY_OWNER.get(langType, getOwner().getNameStored()));
+        lore.add(Lang.GUI_PROPERTY_OWNER.get(langType, getOwner().getName()));
         if (isForSale())
             lore.add(Lang.GUI_PROPERTY_FOR_SALE.get(langType, String.valueOf(salePrice)));
         else if (isRented())
@@ -295,7 +320,7 @@ public class PropertyData {
 
 
         lines[0] = Lang.SIGN_NAME.get(langType, this.getName());
-        lines[1] = Lang.SIGN_PLAYER.get(langType, PlayerDataStorage.getInstance().get(this.getOwnerID()).getNameStored());
+        lines[1] = Lang.SIGN_PLAYER.get(langType, getOwner().getName());
 
         if (this.isForSale) {
             lines[2] = Lang.SIGN_FOR_SALE.get(langType);
@@ -336,18 +361,21 @@ public class PropertyData {
 
 
     public void delete() {
-        ITanPlayer owner = PlayerDataStorage.getInstance().get(owningPlayerID);
         TownData town = getTown();
         expelRenter(false);
         removeSign();
 
-        owner.removeProperty(this);
         town.removeProperty(this);
 
-        Player player = Bukkit.getPlayer(UUID.fromString(owningPlayerID));
-        if (player != null) {
-            player.sendMessage(Lang.PROPERTY_DELETED.get(owner.getLang()));
-            SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
+        if(getOwner() instanceof PlayerOwned playerOwnedClass){
+            ITanPlayer playerOwner = PlayerDataStorage.getInstance().get(playerOwnedClass.getPlayerID());
+            playerOwner.removeProperty(this);
+
+            Player player = Bukkit.getPlayer(UUID.fromString(playerOwnedClass.getPlayerID()));
+            if (player != null) {
+                player.sendMessage(Lang.PROPERTY_DELETED.get(playerOwner.getLang()));
+                SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
+            }
         }
     }
 
@@ -367,43 +395,44 @@ public class PropertyData {
         world.spawnParticle(Particle.BUBBLE_POP, signBlock.getLocation(), 5);
     }
 
-    public void buyProperty(Player player) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
-        double playerBalance = EconomyUtil.getBalance(player);
+    public void buyProperty(Player buyer) {
+        LangType langType = PlayerDataStorage.getInstance().get(buyer).getLang();
+
+        double playerBalance = EconomyUtil.getBalance(buyer);
         double cost = getSalePrice();
         if (playerBalance < cost) {
-            player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(player, Double.toString(cost - playerBalance)));
-            SoundUtil.playSound(player, SoundEnum.MINOR_BAD);
+            buyer.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(langType, Double.toString(cost - playerBalance)));
+            SoundUtil.playSound(buyer, SoundEnum.MINOR_BAD);
             return;
         }
 
-        Player exOwner = Bukkit.getPlayer(UUID.fromString(owningPlayerID));
-        OfflinePlayer exOwnerOffline = Bukkit.getOfflinePlayer(UUID.fromString(owningPlayerID));
-
-        if (exOwner != null) {
-            exOwner.sendMessage(Lang.PROPERTY_SOLD_EX_OWNER.get(player, getName(), player.getName(),Double.toString(getSalePrice())));
-            SoundUtil.playSound(exOwner, SoundEnum.GOOD);
+        if(getOwner() instanceof PlayerOwned playerOwned){
+            UUID exOwnerID = UUID.fromString(playerOwned.getPlayerID());
+            OfflinePlayer exOwnerOffline = Bukkit.getOfflinePlayer(exOwnerID);
+            Player exOwner = exOwnerOffline.getPlayer();
+            if (exOwner != null) {
+                exOwner.sendMessage(Lang.PROPERTY_SOLD_EX_OWNER.get(langType, getName(), buyer.getName(),Double.toString(getSalePrice())));
+                SoundUtil.playSound(exOwner, SoundEnum.GOOD);
+            }
+            ITanPlayer exOwnerData = PlayerDataStorage.getInstance().get(exOwnerID);
+            exOwnerData.removeProperty(this);
         }
-        player.sendMessage(Lang.PROPERTY_SOLD_NEW_OWNER.get(player, getName(),Double.toString(getSalePrice())));
-        SoundUtil.playSound(player, SoundEnum.GOOD);
+
+        buyer.sendMessage(Lang.PROPERTY_SOLD_NEW_OWNER.get(langType, getName(),Double.toString(getSalePrice())));
+        SoundUtil.playSound(buyer, SoundEnum.GOOD);
 
         TownData town = getTown();
         double townCut = getSalePrice() - getBaseSalePrice();
 
         TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PropertyBuyTaxTransaction(town, this, townCut));
-
-        EconomyUtil.removeFromBalance(player, getSalePrice());
-        EconomyUtil.addFromBalance(exOwnerOffline, getBaseSalePrice());
+        EconomyUtil.removeFromBalance(buyer, getSalePrice());
+        getOwner().addToBalance(getBaseSalePrice());
         town.addToBalance(townCut);
 
-        ITanPlayer exOwnerData = PlayerDataStorage.getInstance().get(owningPlayerID);
-        ITanPlayer newOwnerData = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
 
-        exOwnerData.removeProperty(this);
+        ITanPlayer newOwnerData = PlayerDataStorage.getInstance().get(buyer.getUniqueId().toString());
         newOwnerData.addProperty(this);
-
-
-        this.owningPlayerID = player.getUniqueId().toString();
+        this.owner = new PlayerOwned(buyer.getUniqueId().toString());
 
         this.isForSale = false;
         updateSign();
@@ -417,14 +446,14 @@ public class PropertyData {
         }
         if (isRented())
             return tanPlayer.getID().equals(rentingPlayerID);
-        return isOwner(tanPlayer.getID());
+        return getOwner().canAccess(tanPlayer);
     }
 
     public String getDenyMessage(LangType langType) {
         if (isRented())
             return Lang.PROPERTY_RENTED_BY.get(langType, getRenter().getNameStored());
         else
-            return Lang.PROPERTY_BELONGS_TO.get(langType, getOwner().getNameStored());
+            return Lang.PROPERTY_BELONGS_TO.get(langType, getOwner().getName());
 
     }
 
@@ -439,13 +468,6 @@ public class PropertyData {
         updateSign();
         getPermissionManager().setAll(RelationPermission.SELECTED_ONLY);
     }
-
-    public boolean canPlayerManageInvites(String id) {
-        if (!isRented() && isOwner(id))
-            return true;
-        return isRented() && Objects.equals(getRenterID(), id);
-    }
-
 
     public boolean isInChunk(ClaimedChunk2 chunk) {
         int minX = Math.min(p1.getX() >> 4, p2.getX() >> 4);
@@ -501,5 +523,30 @@ public class PropertyData {
         this.supportLocation = new Vector3D(block.getLocation());
         setSignData();
         updateSign();
+    }
+
+    @Override
+    public GuiItem getGuiItem(IconManager iconManager, Player player, TerritoryData territoryData, BasicGui basicGui) {
+
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        boolean canInteract = getOwner().canAccess(tanPlayer);
+
+        return iconManager.get(getIcon())
+                        .setName(getName())
+                        .setDescription(getBasicDescription(tanPlayer.getLang()))
+                        .setAction(event -> {
+                            if(!canInteract){
+                                SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                                return;
+                            }
+                            new PlayerPropertyManager(player, this, p -> basicGui.open());
+
+                        })
+                        .asGuiItem(player);
+    }
+
+    @Override
+    public Vector3D getPosition() {
+        return signLocation;
     }
 }

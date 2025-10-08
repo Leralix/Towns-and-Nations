@@ -12,9 +12,8 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.player.PlayerMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.RightClickListener;
-import org.leralix.tan.listeners.interact.events.CreatePropertyEvent;
+import org.leralix.tan.listeners.interact.events.property.CreatePlayerPropertyEvent;
 import org.leralix.tan.utils.deprecated.GuiUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +81,7 @@ public class PlayerPropertiesMenu extends IteratorGUI {
 
                     player.sendMessage(Lang.PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY.get(tanPlayer));
                     player.sendMessage(Lang.WRITE_CANCEL_TO_CANCEL.get(tanPlayer, Lang.CANCEL_WORD.get(tanPlayer)));
-                    RightClickListener.register(player, new CreatePropertyEvent(player));
+                    RightClickListener.register(player, new CreatePlayerPropertyEvent(player));
                     player.closeInventory();
                 })
                 .asGuiItem(player);
@@ -96,11 +95,13 @@ public class PlayerPropertiesMenu extends IteratorGUI {
             desc.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer));
 
 
-            guiItems.add(iconManager.get(propertyData.getIcon())
-                    .setName(propertyData.getName())
-                    .setDescription(desc)
-                    .setAction(event -> new PlayerPropertyManager(player, propertyData, p -> open()))
-                    .asGuiItem(player));
+            guiItems.add(
+                    iconManager.get(propertyData.getIcon())
+                            .setName(propertyData.getName())
+                            .setDescription(desc)
+                            .setAction(event -> new PlayerPropertyManager(player, propertyData, p -> open()))
+                            .asGuiItem(player)
+            );
         }
         return guiItems;
     }

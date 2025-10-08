@@ -7,22 +7,17 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
-import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.legacy.CurrentAttack;
-import org.leralix.tan.war.legacy.GriefAllowed;
 
 public class RegionClaimedChunk extends TerritoryChunk {
 
@@ -127,34 +122,6 @@ public class RegionClaimedChunk extends TerritoryChunk {
     @Override
     public boolean isClaimed() {
         return true;
-    }
-
-    @Override
-    public boolean canExplosionGrief() {
-        String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("explosionGrief", "ALWAYS");
-        GriefAllowed griefAllowed = GriefAllowed.valueOf(fireGrief);
-        return griefAllowed.canGrief(getRegion(), GeneralChunkSetting.TNT_GRIEF);
-    }
-
-    @Override
-    public boolean canFireGrief() {
-        String fireGrief = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("fireGrief", "ALWAYS");
-        GriefAllowed griefAllowed = GriefAllowed.valueOf(fireGrief);
-        return griefAllowed.canGrief(getRegion(), GeneralChunkSetting.FIRE_GRIEF);
-    }
-
-    @Override
-    public boolean canPVPHappen() {
-        String pvpEnabled = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("pvpEnabledInClaimedChunks", "ALWAYS");
-        GriefAllowed griefAllowed = GriefAllowed.valueOf(pvpEnabled);
-        return griefAllowed.canGrief(getRegion(), GeneralChunkSetting.ENABLE_PVP);
-    }
-
-    @Override
-    public boolean canMobGrief() {
-        String pvpEnabled = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("mobGrief", "ALWAYS");
-        GriefAllowed griefAllowed = GriefAllowed.valueOf(pvpEnabled);
-        return griefAllowed.canGrief(getRegion(), GeneralChunkSetting.MOB_GRIEF);
     }
 
     @Override

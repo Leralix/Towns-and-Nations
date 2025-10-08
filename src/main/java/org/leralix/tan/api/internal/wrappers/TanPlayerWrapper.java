@@ -89,15 +89,6 @@ public class TanPlayerWrapper implements TanPlayer {
 
     @Override
     public Collection<TanProperty> getPropertiesForSale() {
-        List<TanProperty> properties = new ArrayList<>();
-        for(TownData town : TownDataStorage.getInstance().getAll().values()){
-            for(PropertyData property : town.getProperties()){
-                ITanPlayer owner = property.getOwner();
-                if(getUUID().equals(owner.getUUID()) && property.isForSale()){
-                    properties.add(PropertyDataWrapper.of(property));
-                }
-            }
-        }
-        return properties;
+        return null; //TODO : update TAN-API
     }
 }

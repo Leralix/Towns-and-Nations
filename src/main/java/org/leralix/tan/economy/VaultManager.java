@@ -4,9 +4,8 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.utils.constants.Constants;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +17,7 @@ public class VaultManager {
         Logger logger = Bukkit.getLogger();
 
 
-        if(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("UseTanEconomy",true)){
+        if(Constants.useStandaloneEconomy()){
             TanEconomyVault tanEconomyVault = new TanEconomyVault();
             EconomyUtil.register(tanEconomyVault);
             Bukkit.getServicesManager().register(Economy.class, tanEconomyVault, TownsAndNations.getPlugin(), ServicePriority.Normal);

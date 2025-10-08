@@ -3,7 +3,7 @@ package org.leralix.tan.war.legacy;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 
-public enum GriefAllowed {
+public enum InteractionStatus {
     ALWAYS,
     WAR_ONLY,
     PLAYER_CHOICE_AND_WAR,

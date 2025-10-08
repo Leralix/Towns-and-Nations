@@ -15,7 +15,7 @@ import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
-import org.leralix.tan.storage.WildernessRules;
+import org.leralix.tan.utils.constants.Constants;
 
 public class WildernessChunk extends ClaimedChunk2 {
 
@@ -32,7 +32,7 @@ public class WildernessChunk extends ClaimedChunk2 {
 
         World world = location.getWorld();
 
-        if(WildernessRules.getInstance().canPlayerDoInWilderness(world, permissionType)){
+        if(Constants.getWildernessRules().canPlayerDoInWilderness(world, permissionType)){
             return true;
         }
         player.sendMessage(Lang.WILDERNESS_NO_PERMISSION.getDefault());

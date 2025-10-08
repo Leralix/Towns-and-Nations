@@ -23,7 +23,7 @@ public class RankData {
 
     private boolean isPayingTaxes;
 
-    public RankData(int id, String name){
+    public RankData(int id, String name) {
         this.ID = id;
         this.name = name;
         this.rankEnum = RankEnum.FIVE;
@@ -35,51 +35,64 @@ public class RankData {
     public void swapPayingTaxes() {
         this.isPayingTaxes = !this.isPayingTaxes;
     }
-    public String getName(){
+
+    public String getName() {
         return this.name;
     }
-    public String getColoredName(){
+
+    public String getColoredName() {
         return this.rankEnum.getColor() + this.name;
     }
-    public void setName(String newName){
+
+    public void setName(String newName) {
         this.name = newName;
     }
-    public RankEnum getRankEnum(){
+
+    public RankEnum getRankEnum() {
         return this.rankEnum;
     }
-    public int getLevel(){return this.rankEnum.getLevel();}
-    public void incrementLevel(){
+
+    public int getLevel() {
+        return this.rankEnum.getLevel();
+    }
+
+    public void incrementLevel() {
         this.rankEnum = rankEnum.nextRank();
     }
 
     public void decrementLevel() {
         this.rankEnum = rankEnum.previousRank();
     }
-    public ItemStack getRankIcon(){
-        if(this.rankIcon == null)
+
+    public ItemStack getRankIcon() {
+        if (this.rankIcon == null)
             return rankEnum.getBasicRankIcon();
         return rankIcon.getIcon();
     }
-    public void addPlayer(String playerUUID){
+
+    public void addPlayer(String playerUUID) {
         this.players.add(playerUUID);
     }
-    public void addPlayer(ITanPlayer tanPlayer){
+
+    public void addPlayer(ITanPlayer tanPlayer) {
         addPlayer(tanPlayer.getID());
     }
-    public void removePlayer(String playerUUID){
+
+    public void removePlayer(String playerUUID) {
         this.players.remove(playerUUID);
     }
-    public void removePlayer(ITanPlayer player){
+
+    public void removePlayer(ITanPlayer player) {
         removePlayer(player.getID());
     }
 
-    public List<String> getPlayersID(){
+    public List<String> getPlayersID() {
         return this.players;
     }
 
-    public List<ITanPlayer> getPlayers(){
+    public List<ITanPlayer> getPlayers() {
         List<ITanPlayer> playerList = new ArrayList<>();
-        for(String playerID : this.players){
+        for (String playerID : this.players) {
             playerList.add(PlayerDataStorage.getInstance().get(playerID));
         }
         return playerList;
@@ -88,25 +101,36 @@ public class RankData {
     public boolean isPayingTaxes() {
         return this.isPayingTaxes;
     }
+
     public void setRankIcon(ItemStack rankItem) {
         this.rankIcon = new CustomIcon(rankItem);
     }
-    public int getNumberOfPlayer(){
+
+    public int getNumberOfPlayer() {
         return players.size();
     }
 
     public void addPermission(RolePermission permission) {
         permissions.add(permission);
     }
+
+    /**
+     * Check if the rank has a specific permission
+     * Keep in mind that since leader overrides all permissions,
+     * {@link org.leralix.tan.dataclass.territory.TerritoryData#doesPlayerHavePermission} should be used for player permission
+     * @param permission    the permission to check
+     * @return  True if the rank contains the permission, false otherwise.
+     */
     public boolean hasPermission(RolePermission permission) {
         return permissions.contains(permission);
     }
+
     public void removePermission(RolePermission permission) {
         permissions.remove(permission);
     }
 
     public void switchPermission(RolePermission permission) {
-        if(hasPermission(permission))
+        if (hasPermission(permission))
             removePermission(permission);
         else
             addPermission(permission);

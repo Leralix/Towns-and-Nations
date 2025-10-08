@@ -3,20 +3,23 @@ package org.leralix.tan.gui.user.territory;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.events.CreateFortEvent;
+import org.leralix.tan.listeners.interact.events.property.CreateTerritoryPropertyEvent;
 import org.leralix.tan.utils.constants.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
 
 public class BuildingMenu extends IteratorGUI {
 
@@ -35,8 +38,45 @@ public class BuildingMenu extends IteratorGUI {
     public void open() {
         iterator(getBuildings(), p -> previousMenu.open());
 
-        gui.setItem(4, 6, getCreateFortButton());
+        //For now, only towns can have properties
+        if (territoryData instanceof TownData townData) {
+            gui.setItem(4, 4, getCreatePublicPropertyButton(townData));
+        }
+        gui.setItem(4, 5, getCreateFortButton());
         gui.open(player);
+    }
+
+    private @NotNull GuiItem getCreatePublicPropertyButton(TownData townData) {
+
+        List<String> description = new ArrayList<>();
+
+        int nbProperties = townData.getProperties().size();
+        int maxNbProperties = townData.getLevel().getPropertyCap();
+        if (nbProperties >= maxNbProperties) {
+            description.add(Lang.GUI_PROPERTY_CAP_FULL.get(langType, Integer.toString(nbProperties), Integer.toString(maxNbProperties)));
+        } else {
+            description.add(Lang.GUI_PROPERTY_CAP.get(langType, Integer.toString(nbProperties), Integer.toString(maxNbProperties)));
+        }
+        description.add(Lang.CREATE_PUBLIC_PROPERTY_COST.get(langType));
+        description.add(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(langType));
+
+        return iconManager.get(IconKey.PLAYER_PROPERTY_ICON)
+                .setName(Lang.CREATE_PUBLIC_PROPERTY_ICON.get(langType))
+                .setDescription(description)
+                .setAction(action -> {
+                    if (!townData.doesPlayerHavePermission(player, RolePermission.MANAGE_PROPERTY)) {
+                        SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(langType));
+                        return;
+                    }
+                    if (nbProperties >= maxNbProperties) {
+                        SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                        player.sendMessage(Lang.GUI_PROPERTY_CAP_FULL.get(langType, Integer.toString(nbProperties), Integer.toString(maxNbProperties)));
+                        return;
+                    }
+                    RightClickListener.register(player, new CreateTerritoryPropertyEvent(player, townData));
+                })
+                .asGuiItem(player);
     }
 
     private @NotNull GuiItem getCreateFortButton() {

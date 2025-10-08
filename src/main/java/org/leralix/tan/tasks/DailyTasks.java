@@ -22,24 +22,27 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class DailyTasks {
-    private DailyTasks() {
-        throw new IllegalStateException("Utility class");
+
+    private final Calendar calendar;
+
+    private final int hourTime;
+    private final int minuteTime;
+
+    public DailyTasks(int hourTime, int minuteTime) {
+        this.hourTime = hourTime;
+        this.minuteTime = minuteTime;
+        this.calendar = new GregorianCalendar();
     }
 
-    public static void scheduleMidnightTask() {
+    public void scheduleMidnightTask() {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Calendar calendar = new GregorianCalendar();
-
-                int minute = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("taxHourTime",0);
-                int hour = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("taxMinuteTime",0);
-
-                if (calendar.get(Calendar.HOUR_OF_DAY) == hour && calendar.get(Calendar.MINUTE) == minute) {
+                if (calendar.get(Calendar.HOUR_OF_DAY) == hourTime && calendar.get(Calendar.MINUTE) == minuteTime) {
                     executeMidnightTasks();
                 }
             }
-        }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L); // Exécute toutes les 1200 ticks (1 minute en temps Minecraft)
+        }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L); // Execute every 1200 ticks (1 minute)
     }
 
     public static void executeMidnightTasks() {

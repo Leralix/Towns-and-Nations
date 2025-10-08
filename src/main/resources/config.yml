@@ -16,7 +16,7 @@
 # only players with a valid skin will have their head displayed as a town icon.
 onlineMode: true
 
-#Time of the day when taxes are collected (default is midnight in 0:00)
+#Time of the day when taxes are collected (default is midnight at 0:00)
 taxHourTime: 0 #0-23
 taxMinuteTime: 0 #0-59
 
@@ -49,7 +49,7 @@ prefixSize: 3
 #Use TownsAndNations economy for vault
 #If set to false, plugin will use the economy plugin linked to vault
 #If no other economy plugin are provided by vault, the plugin will use its own economy system without linking to vault
-UseTanEconomy: true
+UseTanEconomy: false
 
 #If TownsAndNations economy is used, set the currency symbol
 moneyIcon: "✦"
@@ -355,17 +355,18 @@ warBoundaryParticle : "DRAGON_BREATH"
 #player enter claimed chunks.
 displayTerritoryNameWithOwnColor: false
 
-#General settings in claimed chunks
-# Always                 | Always allowed
+#General settings in claimed chunks of territories
+# Always                 | Always allow
 # Player choice          | Allow territories to choose
-# Player choice and War  | Allow territories to choose and is automatically enabled during a war
-# WarOnly                | Allow only during a war
-# Never                  | Never allowed
+# Player choice and War  | Allow territories to choose but is automatically enabled during wars
+# WarOnly                | Allow only during wars
+# Never                  | Never allow
 # [ALWAYS, WAR_ONLY, PLAYER_CHOICE_AND_WAR, PLAYER_CHOICE, NEVER]
-fireGrief: "PLAYER_CHOICE_AND_WAR" #burning and spreading
-explosionGrief: "PLAYER_CHOICE_AND_WAR"
-pvpEnabledInClaimedChunks: "ALWAYS"
-mobGrief: "PLAYER_CHOICE"
+chunkGeneralSettings:
+  fire: "PLAYER_CHOICE_AND_WAR" #burning and spreading
+  explosion: "PLAYER_CHOICE_AND_WAR" #Explosion (creeper included)
+  pvp: "ALWAYS"
+  mob: "PLAYER_CHOICE"  #Ender
 
 enabledPermissions:
   INTERACT_CHEST: true
@@ -420,8 +421,8 @@ claimLandmarkCost: 500.0
 #If set to true, a claimed landmark will be unclaimed if the territory does not encircle it anymore
 landmarkEncircleToCapture: true
 
-# The default value is the maximum amount of resources to store. (amount * storedLimit)
-storedLimit: 7
+# The default value is the maximum amount of resources to store. (amount * storageLimit)
+landmarkStorageCapacity: 7
 
 # Midnight generate resource
 enableMidnightGenerateResource: true

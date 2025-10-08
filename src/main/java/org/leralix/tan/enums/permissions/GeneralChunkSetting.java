@@ -3,29 +3,26 @@ package org.leralix.tan.enums.permissions;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.war.legacy.GriefAllowed;
+import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.war.legacy.InteractionStatus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public enum GeneralChunkSetting {
-    ENABLE_PVP(Material.DIAMOND_SWORD, Lang.ENABLE_PVP_SETTING, "pvpEnabledInClaimedChunks"),
-    FIRE_GRIEF(Material.FLINT_AND_STEEL, Lang.ENABLE_FIRE_GRIEF_SETTING, "fireGrief"),
-    TNT_GRIEF(Material.TNT, Lang.ENABLE_TNT_GRIEF_SETTING, "explosionGrief"),
-    MOB_GRIEF(Material.ENDER_PEARL, Lang.ENABLE_MOB_GRIEF_SETTING, "mobGrief");
+    ENABLE_PVP(Material.DIAMOND_SWORD, Lang.ENABLE_PVP_SETTING),
+    FIRE_GRIEF(Material.FLINT_AND_STEEL, Lang.ENABLE_FIRE_GRIEF_SETTING),
+    TNT_GRIEF(Material.TNT, Lang.ENABLE_TNT_GRIEF_SETTING),
+    MOB_GRIEF(Material.ENDER_PEARL, Lang.ENABLE_MOB_GRIEF_SETTING);
 
     private final Material material;
     private final Lang name;
-    private final GriefAllowed setting;
 
-    GeneralChunkSetting(Material icon, Lang name, String configPath) {
+    GeneralChunkSetting(Material icon, Lang name) {
         this.material = icon;
         this.name = name;
-        this.setting = GriefAllowed.valueOf(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString(configPath,"ALWAYS"));
     }
 
     public ItemStack getIcon(Boolean isEnabled, LangType lang) {
@@ -39,13 +36,13 @@ public enum GeneralChunkSetting {
 
     public List<String> getDescription(boolean isEnabled, LangType lang) {
 
-        String state = isEnabled ? Lang.ENABLED.get(lang) : Lang.DISABLED.get(lang);
+        InteractionStatus state = Constants.getChunkSettings(this);
+        boolean canBeModified = state != InteractionStatus.ALWAYS && state != InteractionStatus.NEVER && state != InteractionStatus.WAR_ONLY;
 
-        boolean canBeModified = setting != GriefAllowed.ALWAYS && setting != GriefAllowed.NEVER && setting != GriefAllowed.WAR_ONLY;
         List<String> description = new ArrayList<>();
-
         if(canBeModified) {
-            description.add(Lang.CURRENT_STATE.get(lang, state));
+            String status = isEnabled ? Lang.ENABLED.get(lang) : Lang.DISABLED.get(lang);
+            description.add(Lang.CURRENT_STATE.get(lang, status));
             description.add(Lang.LEFT_CLICK_TO_MODIFY.get(lang));
         }
         else {

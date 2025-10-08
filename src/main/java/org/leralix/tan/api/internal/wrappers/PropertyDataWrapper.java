@@ -48,7 +48,7 @@ public class PropertyDataWrapper implements TanProperty {
 
     @Override
     public TanPlayer getOwner() {
-        return TanPlayerWrapper.of(propertyData.getOwner());
+        return null; //TODO : Update with new Owner class
     }
 
     @Override

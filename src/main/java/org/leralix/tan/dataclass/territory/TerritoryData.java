@@ -16,8 +16,6 @@ import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.RandomUtil;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.*;
@@ -748,8 +746,6 @@ public abstract class TerritoryData {
     }
 
     public boolean isRankNameUsed(String message) {
-        if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication", false)) return false;
-
         for (RankData rank : getAllRanks()) {
             if (rank.getName().equals(message)) {
                 return true;
@@ -832,8 +828,6 @@ public abstract class TerritoryData {
         return NewClaimedChunkStorage.getInstance().getAllChunkFrom(this).size();
     }
 
-    public abstract double getChunkUpkeepCost();
-
     public double getTax() {
         if (baseTax == null) setTax(0.0);
         return baseTax;
@@ -872,7 +866,7 @@ public abstract class TerritoryData {
     }
 
     private void payChunkUpkeep() {
-        double upkeepCost = this.getChunkUpkeepCost();
+        double upkeepCost = Constants.getUpkeepCost(this);
 
         int numberClaimedChunk = getNumberOfClaimedChunk();
         double totalUpkeep = numberClaimedChunk * upkeepCost;
@@ -887,16 +881,16 @@ public abstract class TerritoryData {
     }
 
     private void deletePortionOfChunk() {
-        int minNbOfUnclaimedChunk = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("minimumNumberOfChunksUnclaimed", 5);
+        int minNbOfUnclaimedChunk = Constants.getMinimumNumberOfChunksUnclaimed();
         int nbOfUnclaimedChunk = 0;
-        double minPercentageOfChunkToKeep = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("percentageOfChunksUnclaimed", 10) / 100;
+        double percentageOfChunkToKeep = Constants.getPercentageOfChunksUnclaimed();
 
 
         List<ClaimedChunk2> borderChunks = ChunkUtil.getBorderChunks(this);
 
 
         for (ClaimedChunk2 claimedChunk2 : borderChunks) {
-            if (RandomUtil.getRandom().nextDouble() < minPercentageOfChunkToKeep) {
+            if (RandomUtil.getRandom().nextDouble() < percentageOfChunkToKeep) {
                 NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(claimedChunk2);
                 nbOfUnclaimedChunk++;
             }
@@ -1043,9 +1037,11 @@ public abstract class TerritoryData {
     }
 
     public Collection<Building> getBuildings() {
-        List<Building> buildings = new ArrayList<>();
-        buildings.addAll(getOwnedForts());
+        List<Building> buildings = new ArrayList<>(getOwnedForts());
 
+        if(this instanceof TownData townData){
+            buildings.addAll(townData.getProperties());
+        }
         buildings.removeAll(Collections.singleton(null));
         return buildings;
     }

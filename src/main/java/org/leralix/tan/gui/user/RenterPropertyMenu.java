@@ -1,18 +1,21 @@
 package org.leralix.tan.gui.user;
 
 import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PropertyData;
+import org.leralix.tan.dataclass.property.AbstractOwner;
+import org.leralix.tan.dataclass.property.PlayerOwned;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.property.PropertyMenus;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 
-import static org.leralix.lib.data.SoundEnum.MINOR_BAD;
+import java.util.UUID;
+
 import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
 
 public class RenterPropertyMenu extends PropertyMenus {
@@ -45,10 +48,10 @@ public class RenterPropertyMenu extends PropertyMenus {
                     player.sendMessage(Lang.PROPERTY_RENTER_LEAVE_RENTER_SIDE.get(tanPlayer, propertyData.getName()));
                     SoundUtil.playSound(player,MINOR_GOOD);
 
-                    Player owner = propertyData.getOwnerPlayer();
-                    if(owner != null){
-                        owner.sendMessage(Lang.PROPERTY_RENTER_LEAVE_OWNER_SIDE.get(tanPlayer, player.getName(), propertyData.getName()));
-                        SoundUtil.playSound(owner,MINOR_BAD);
+                    AbstractOwner owner = propertyData.getOwner();
+                    if(owner instanceof PlayerOwned playerOwned){
+                        Player playerOwn = Bukkit.getPlayer(UUID.fromString(playerOwned.getPlayerID()));
+                        playerOwn.sendMessage(Lang.PROPERTY_RENTER_LEAVE_OWNER_SIDE.get(playerOwn, player.getName(), propertyData.getName()));
                     }
 
                     player.closeInventory();

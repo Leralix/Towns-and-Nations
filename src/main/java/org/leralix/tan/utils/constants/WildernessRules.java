@@ -1,10 +1,8 @@
-package org.leralix.tan.storage;
+package org.leralix.tan.utils.constants;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 
 import java.util.EnumMap;
@@ -15,24 +13,11 @@ public class WildernessRules {
 
     private final Map<String, Map<ChunkPermissionType, Boolean>> rules;
 
-    private static WildernessRules instance;
 
-    private WildernessRules() {
+    public WildernessRules(ConfigurationSection wildernessRules) {
         rules = new HashMap<>();
-        init();
-    }
 
-    public static WildernessRules getInstance() {
-        if(instance == null) {
-            instance = new WildernessRules();
-        }
-        return instance;
-    }
-
-    public void init() {
-        ConfigurationSection config = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getConfigurationSection("wildernessRules");
-
-        if(config == null) {
+        if(wildernessRules == null) {
             EnumMap<ChunkPermissionType, Boolean> defaultRules = new EnumMap<>(ChunkPermissionType.class);
             for(ChunkPermissionType permissionType : ChunkPermissionType.values()) {
                 defaultRules.put(permissionType, true);
@@ -41,14 +26,14 @@ public class WildernessRules {
             return;
         }
 
-        registerWorld(config, "default");
+        registerWorld(wildernessRules, "default");
 
         for(World world : Bukkit.getWorlds()) {
             String worldName = world.getName();
-            if(!config.contains(worldName))
+            if(!wildernessRules.contains(worldName))
                 continue;
 
-            registerWorld(config, worldName);
+            registerWorld(wildernessRules, worldName);
         }
     }
 

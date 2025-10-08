@@ -3,8 +3,6 @@ package org.leralix.tan.gui.user.territory;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.BrowseScope;
 import org.leralix.tan.gui.BasicGui;
@@ -15,6 +13,7 @@ import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.CreateRegion;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
 import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
@@ -39,7 +38,7 @@ public class NoRegionMenu extends BasicGui {
 
     private GuiItem getCreateRegionButton() {
 
-        int regionCost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
+        int regionCost = Constants.getRegionCost();
 
         return iconManager.get(IconKey.CREATE_REGION_ICON).setName(Lang.GUI_REGION_CREATE.get(tanPlayer)).setDescription(Lang.GUI_REGION_CREATE_DESC1.get(tanPlayer, Integer.toString(regionCost)), Lang.GUI_REGION_CREATE_DESC2.get(tanPlayer)).setAction(action -> {
             if (!player.hasPermission("tan.base.region.create")) {
@@ -58,8 +57,7 @@ public class NoRegionMenu extends BasicGui {
                 player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), Double.toString(regionCost - townMoney)));
             } else {
                 player.sendMessage(Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(tanPlayer));
-                int cost = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("regionCost");
-                PlayerChatListenerStorage.register(player, new CreateRegion(cost));
+                PlayerChatListenerStorage.register(player, new CreateRegion(regionCost));
             }
         }).asGuiItem(player);
     }

@@ -2,6 +2,7 @@ package org.leralix.tan.commands.player;
 
 import org.leralix.lib.commands.CommandManager;
 import org.leralix.lib.commands.MainHelpCommand;
+import org.leralix.tan.utils.constants.Constants;
 
 public class PlayerCommandManager extends CommandManager {
 
@@ -13,7 +14,7 @@ public class PlayerCommandManager extends CommandManager {
         addSubCommand(new UnclaimCommand());
         addSubCommand(new MapCommand());
         addSubCommand(new SeeBalanceCommand());
-        addSubCommand(new PayCommand());
+        addSubCommand(new PayCommand(Constants.getMaxPayRange()));
         addSubCommand(new OpenGuiCommand());
         addSubCommand(new OpenNewsletterCommand());
         addSubCommand(new ChannelChatScopeCommand());

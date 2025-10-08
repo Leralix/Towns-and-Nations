@@ -8,8 +8,9 @@ import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.war.WarTimeSlot;
-import org.leralix.tan.war.legacy.GriefAllowed;
+import org.leralix.tan.war.legacy.InteractionStatus;
 
 import java.util.*;
 
@@ -21,11 +22,14 @@ public class Constants {
 
     //Config
     private static boolean onlineMode;
-
+    private static DatabaseConstants databaseConstants;
+    private static int dailyTaskHour;
+    private static int dailyTaskMinute;
     //Economy
+    private static boolean useStandaloneEconomy;
     private static double startingBalance;
-    private static String moneyIcon;
-
+    private static double maxPayRange;
+    private static int nbDigits;
     //Cosmetic
     /**
      * If Enabled, player username will have a 3 letter prefix of their town name.
@@ -33,23 +37,32 @@ public class Constants {
      */
     private static boolean allowTownTag;
     private static boolean allowColorCode;
+    private static String baseCurrencyChar;
+    private static boolean showCurrency;
+    private static int prefixSize;
 
     //Territory
+    private static int townCost;
+    private static int regionCost;
+    private static double townChunkUpkeepCost;
+    private static double regionChunkUpkeepCost;
     private static boolean displayTerritoryColor;
     private static int territoryClaimBufferZone;
     private static int territoryClaimTownCost;
     private static int territoryClaimRegionCost;
+    private static int minimumNumberOfChunksUnclaimed;
+    private static double percentageOfChunksUnclaimed;
 
     private static boolean enableNation;
     private static boolean enableRegion;
     private static int changeTownNameCost;
     private static int changeRegionNameCost;
-    private static int nbDigits;
     private static boolean worldGuardOverrideWilderness;
     private static boolean worldGuardOverrideTown;
     private static boolean worldGuardOverrideRegion;
     private static boolean worldGuardOverrideLandmark;
 
+    //Buildings
     private static double fortCost;
     private static double fortProtectionRadius;
     private static double fortCaptureRadius;
@@ -59,14 +72,13 @@ public class Constants {
     private static int maxPropertySignMargin;
     private static int maxPropertySize;
     private static Particle propertyBoundaryParticles;
+    private static boolean payRentAtStart;
 
     //Wars
-
     private static WarTimeSlot warTimeSlot;
-
     private static double warBoundaryRadius;
     private static Particle warBoundaryParticle;
-
+    private static boolean notifyWhenEnemyEnterTerritory;
     private static Map<TownRelation, RelationConstant> relationsConstants;
     private static Set<String> allRelationBlacklistedCommands;
 
@@ -81,10 +93,12 @@ public class Constants {
     private static List<String> perPlayerEndCommands;
 
     //Claims
-    private static GriefAllowed explosionGriefStatus;
-    private static GriefAllowed fireGriefStatus;
-    private static GriefAllowed pvpEnabledStatus;
-    private static GriefAllowed mobGriefStatus;
+    private static GeneralChunkSettings generalChunkSettings;
+    private static WildernessRules wildernessRules;
+    private static InteractionStatus explosionGriefStatus;
+    private static InteractionStatus fireGriefStatus;
+    private static InteractionStatus pvpEnabledStatus;
+    private static InteractionStatus mobGriefStatus;
 
 
     private static boolean allowNonAdjacentChunksForTown;
@@ -92,24 +106,41 @@ public class Constants {
     private static double claimLandmarkCost;
     private static boolean landmarkClaimRequiresEncirclement;
 
+    private static int landmarkStorageCapacity;
+    private static int landmarkMaxNameSize;
+
     private static final String ALWAYS = "ALWAYS";
 
     public static void init(FileConfiguration config) {
 
 
         onlineMode = config.getBoolean("onlineMode", true);
+        databaseConstants = new DatabaseConstants(config.getConfigurationSection("database"));
+        dailyTaskHour = config.getInt("taxHourTime", 0);
+        dailyTaskMinute = config.getInt("taxMinuteTime", 0);
 
         //Economy
+        useStandaloneEconomy = config.getBoolean("UseTanEconomy", false);
         startingBalance = config.getDouble("StartingMoney", 100.0);
-        moneyIcon = config.getString("moneyIcon", "$");
+        maxPayRange = config.getDouble("maxPayDistance", 15);
         //Cosmetic
         allowTownTag = config.getBoolean("EnablePlayerPrefix", false);
         allowColorCode = config.getBoolean("EnablePlayerColorCode", false);
+        baseCurrencyChar = config.getString("moneyIcon", "$");
+        showCurrency = config.getBoolean("showCurrency", true);
+        prefixSize = config.getInt("prefixSize", 3);
         //Territory
+        townCost = config.getInt("townCost", 1000);
+        regionCost = config.getInt("regionCost", 7500);
+        townChunkUpkeepCost = config.getDouble("TownChunkUpkeepCost", 0);
+        regionChunkUpkeepCost = config.getDouble("RegionChunkUpkeepCost", 0);
+
         displayTerritoryColor = config.getBoolean("displayTerritoryNameWithOwnColor", false);
         territoryClaimBufferZone = config.getInt("TerritoryClaimBufferZone", 2);
         territoryClaimTownCost = config.getInt("CostOfTownChunk", 1);
         territoryClaimRegionCost = config.getInt("CostOfRegionChunk", 5);
+        minimumNumberOfChunksUnclaimed = config.getInt("minimumNumberOfChunksUnclaimed", 5);
+        percentageOfChunksUnclaimed = config.getDouble("percentageOfChunksUnclaimed", 10) / 100;
 
         enableNation = config.getBoolean("EnableKingdom", true);
         enableRegion = config.getBoolean("EnableRegion", true);
@@ -124,6 +155,8 @@ public class Constants {
         if (claimLandmarkCost < 0.0) {
             claimLandmarkCost = 0.0;
         }
+
+
         landmarkClaimRequiresEncirclement = config.getBoolean("landmarkEncircleToCapture", true);
 
         //forts
@@ -137,14 +170,15 @@ public class Constants {
 
         maxPropertySignMargin = config.getInt("maxPropertyMargin", 3);
         maxPropertySize = config.getInt("MaxPropertySize", 50000);
+        payRentAtStart = config.getBoolean("payRentAtStart", true);
         propertyBoundaryParticles = Particle.valueOf(config.getString("propertyBoundaryParticles"));
 
         //Attacks
 
         warTimeSlot = new WarTimeSlot(config.getStringList("allowedTimeSlotsWar"));
-
         warBoundaryRadius = config.getDouble("warBoundaryRadius", 16);
         warBoundaryParticle = Particle.valueOf(config.getString("warBoundaryParticle", "DRAGON_BREATH").toUpperCase());
+        notifyWhenEnemyEnterTerritory = config.getBoolean("notifyEnemyEnterTown", true);
 
         relationsConstants = new EnumMap<>(TownRelation.class);
         allRelationBlacklistedCommands = new HashSet<>();
@@ -160,8 +194,8 @@ public class Constants {
         }
 
         attackDuration = config.getLong("WarDuration", 30);
-        minTimeBeforeAttack = config.getInt("MinimumTimeBeforeAttack",120);
-        maxTimeBeforeAttack = config.getInt("MaximumTimeBeforeAttack",4320);
+        minTimeBeforeAttack = config.getInt("MinimumTimeBeforeAttack", 120);
+        maxTimeBeforeAttack = config.getInt("MaximumTimeBeforeAttack", 4320);
 
         blacklistedCommandsDuringAttacks = config.getStringList("BlacklistedCommandsDuringAttacks");
         nbChunkToCaptureMax = config.getInt("MaximumChunkConquer", 0);
@@ -174,19 +208,36 @@ public class Constants {
         perPlayerEndCommands = config.getStringList("commandToExecutePerPlayerWhenAttackEnd");
 
         //Claims
-
-        explosionGriefStatus = GriefAllowed.valueOf(config.getString("explosionGrief", ALWAYS));
-        fireGriefStatus = GriefAllowed.valueOf(config.getString("fireGrief", ALWAYS));
-        pvpEnabledStatus = GriefAllowed.valueOf(config.getString("pvpEnabledInClaimedChunks", ALWAYS));
-        mobGriefStatus = GriefAllowed.valueOf(config.getString("mobGrief", ALWAYS));
+        generalChunkSettings = new GeneralChunkSettings(config.getConfigurationSection("chunkGeneralSettings"));
+        wildernessRules = new WildernessRules(config.getConfigurationSection("wildernessRules"));
+        explosionGriefStatus = InteractionStatus.valueOf(config.getString("explosionGrief", ALWAYS));
+        fireGriefStatus = InteractionStatus.valueOf(config.getString("fireGrief", ALWAYS));
+        pvpEnabledStatus = InteractionStatus.valueOf(config.getString("pvpEnabledInClaimedChunks", ALWAYS));
+        mobGriefStatus = InteractionStatus.valueOf(config.getString("mobGrief", ALWAYS));
 
         allowNonAdjacentChunksForRegion = config.getBoolean("RegionAllowNonAdjacentChunks", false);
         allowNonAdjacentChunksForTown = config.getBoolean("TownAllowNonAdjacentChunks", false);
+
+        //Landmarks
+        landmarkStorageCapacity = config.getInt("landmarkStorageCapacity", 7);
+        landmarkMaxNameSize = config.getInt("landmarkNameMaxSize", 25);
 
     }
 
     public static boolean onlineMode() {
         return onlineMode;
+    }
+
+    public static DatabaseConstants databaseConstants() {
+        return databaseConstants;
+    }
+
+    public static int getDailyTaskHour() {
+        return dailyTaskHour;
+    }
+
+    public static int getDailyTaskMinute() {
+        return dailyTaskMinute;
     }
 
     public static boolean displayTerritoryColor() {
@@ -203,6 +254,18 @@ public class Constants {
 
     public static int territoryClaimRegionCost() {
         return territoryClaimRegionCost;
+    }
+
+    public static int getMinimumNumberOfChunksUnclaimed() {
+        return minimumNumberOfChunksUnclaimed;
+    }
+
+    public static double getPercentageOfChunksUnclaimed() {
+        return percentageOfChunksUnclaimed;
+    }
+
+    public static int getPrefixSize() {
+        return prefixSize;
     }
 
     public static boolean enableNation() {
@@ -264,15 +327,19 @@ public class Constants {
         return maxPropertySignMargin;
     }
 
-    public static int getMaxPropertySize(){
+    public static int getMaxPropertySize() {
         return maxPropertySize;
     }
 
-    public static Particle getPropertyBoundaryParticles(){
+    public static Particle getPropertyBoundaryParticles() {
         return propertyBoundaryParticles;
     }
 
-    public static WarTimeSlot getWarTimeSlot(){
+    public static boolean shouldPayRentAtStart() {
+        return payRentAtStart;
+    }
+
+    public static WarTimeSlot getWarTimeSlot() {
         return warTimeSlot;
     }
 
@@ -280,8 +347,12 @@ public class Constants {
         return warBoundaryRadius;
     }
 
-    public static Particle getWarBoundaryParticle(){
+    public static Particle getWarBoundaryParticle() {
         return warBoundaryParticle;
+    }
+
+    public static boolean notifyWhenEnemyEnterTerritory() {
+        return notifyWhenEnemyEnterTerritory;
     }
 
     public static long getAttackDuration() {
@@ -304,20 +375,27 @@ public class Constants {
         return nbChunkToCaptureMax;
     }
 
+    public static InteractionStatus getChunkSettings(GeneralChunkSetting generalChunkSetting) {
+        return generalChunkSettings.getAction(generalChunkSetting);
+    }
 
-    public static GriefAllowed getMobGriefStatus() {
+    public static InteractionStatus getMobGriefStatus() {
         return mobGriefStatus;
     }
 
-    public static GriefAllowed getPvpStatus() {
+    public static InteractionStatus getPvpStatus() {
         return pvpEnabledStatus;
     }
 
-    public static GriefAllowed getFireGriefStatus() {
+    public static InteractionStatus getFireGriefStatus() {
         return fireGriefStatus;
     }
 
-    public static GriefAllowed getExplosionGriefStatus() {
+    public static WildernessRules getWildernessRules() {
+        return wildernessRules;
+    }
+
+    public static InteractionStatus getExplosionGriefStatus() {
         return explosionGriefStatus;
     }
 
@@ -339,8 +417,16 @@ public class Constants {
         return false;
     }
 
+    public static boolean useStandaloneEconomy() {
+        return useStandaloneEconomy;
+    }
+
     public static double getStartingBalance() {
         return startingBalance;
+    }
+
+    public static double getMaxPayRange() {
+        return maxPayRange;
     }
 
     public static boolean enableTownTag() {
@@ -349,6 +435,35 @@ public class Constants {
 
     public static boolean enableColorUsernames() {
         return allowColorCode;
+    }
+
+    public static String getBaseCurrencyChar() {
+        return baseCurrencyChar;
+    }
+
+    public static boolean shouldShowCurrency() {
+        return showCurrency;
+    }
+
+    public static int getTownCost() {
+        return townCost;
+    }
+
+    public static int getRegionCost() {
+        return regionCost;
+    }
+
+    public static double getUpkeepCost(TerritoryData territoryData) {
+        if (territoryData instanceof TownData) {
+            return townChunkUpkeepCost;
+        } else if (territoryData instanceof RegionData) {
+            return regionChunkUpkeepCost;
+        }
+        return townChunkUpkeepCost;
+    }
+
+    public static double getRegionChunkUpkeepCost() {
+        return regionChunkUpkeepCost;
     }
 
     public static RelationConstant getRelationConstants(TownRelation relation) {
@@ -375,7 +490,11 @@ public class Constants {
         return onceStartCommands;
     }
 
-    public static String getMoneyIcon() {
-        return moneyIcon;
+    public static int getLandmarkStorageCapacity() {
+        return landmarkStorageCapacity;
+    }
+
+    public static int getLandmarkMaxNameSize() {
+        return landmarkMaxNameSize;
     }
 }

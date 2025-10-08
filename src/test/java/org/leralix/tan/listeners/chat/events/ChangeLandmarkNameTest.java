@@ -7,8 +7,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.leralix.lib.SphereLib;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.storage.stored.LandmarkStorage;
@@ -44,7 +42,7 @@ class ChangeLandmarkNameTest {
     void nominalCase() {
 
         Player player = server.addPlayer();
-        ChangeLandmarkName changeLandmarkName = new ChangeLandmarkName(landmark, null);
+        ChangeLandmarkName changeLandmarkName = new ChangeLandmarkName(landmark,25, null);
 
         String newName = "new landmark name";
         changeLandmarkName.execute(player, newName);
@@ -56,9 +54,9 @@ class ChangeLandmarkNameTest {
     void nameTooLong() {
 
         Player player = server.addPlayer();
-        ChangeLandmarkName changeLandmarkName = new ChangeLandmarkName(landmark, null);
+        int nameMaxSize = 5;
 
-        int nameMaxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("landmarkNameMaxSize");
+        ChangeLandmarkName changeLandmarkName = new ChangeLandmarkName(landmark, nameMaxSize,null);
 
         StringBuilder newName = new StringBuilder("a");
         newName.append("a".repeat(nameMaxSize));

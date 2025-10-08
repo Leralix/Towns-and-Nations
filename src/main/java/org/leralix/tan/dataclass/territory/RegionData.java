@@ -10,8 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.RankData;
@@ -243,11 +241,6 @@ public class RegionData extends TerritoryData {
             capitalID = getSubjects().getFirst().getID();
         }
         return TerritoryUtil.getTerritory(capitalID);
-    }
-
-    @Override
-    public double getChunkUpkeepCost() {
-        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("RegionChunkUpkeepCost", 0);
     }
 
     @Override

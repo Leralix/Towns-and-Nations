@@ -8,6 +8,7 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.constants.Constants;
 
 import java.io.File;
 import java.util.EnumMap;
@@ -430,6 +431,8 @@ public enum Lang {
     GUI_RIGHT_CLICK_TO_ADD_SPECIFIC_PLAYER,
     GUI_BUILDING_MENU,
     GUI_BUILDING_MENU_DESC1,
+    CREATE_PUBLIC_PROPERTY_ICON,
+    CREATE_PUBLIC_PROPERTY_COST,
     CREATE_FORT_ICON,
     CREATE_FORT_DESC1,
     WAR_GOAL_LIST_BUTTON,
@@ -1081,8 +1084,6 @@ public enum Lang {
     private static final EnumMap<LangType ,EnumMap<Lang, String>> translations = new EnumMap<>(LangType.class);
     private static final EnumMap<LangType , Integer> completedLang = new EnumMap<>(LangType.class);
 
-    private static boolean showCurrency = true;
-
     static final String MESSAGE_NOT_FOUND_FOR = "Message not found for ";
     static final String IN_THIS_LANGUAGE_FILE = " in this language file.";
 
@@ -1204,7 +1205,7 @@ public enum Lang {
 
 
         if(translation.contains(MONEY_CHAR)) {
-            if(showCurrency) {
+            if(Constants.shouldShowCurrency()) {
                 String moneyChar = EconomyUtil.getMoneyIcon();
                 if(moneyChar == null) {
                     moneyChar = "$";
@@ -1221,7 +1222,4 @@ public enum Lang {
         return translation;
     }
 
-    public static void shouldShowCurrency(boolean show) {
-        showCurrency = show;
-    }
 }

@@ -1,9 +1,8 @@
-package org.leralix.tan.listeners.interact.events;
+package org.leralix.tan.listeners.interact.events.property;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.leralix.lib.data.SoundEnum;
@@ -14,7 +13,6 @@ import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.interact.ListenerState;
@@ -25,16 +23,16 @@ import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.NumberUtil;
 
-public class CreatePropertyEvent extends RightClickListenerEvent {
+public abstract class CreatePropertyEvent extends RightClickListenerEvent {
 
-    private final Player player;
-    private final TownData townData;
-    private final ITanPlayer tanPlayer;
-    private Vector3D position1;
-    private Vector3D position2;
-    private double cost;
+    protected final Player player;
+    protected final TownData townData;
+    protected final ITanPlayer tanPlayer;
+    protected Vector3D position1;
+    protected Vector3D position2;
+    protected double cost;
 
-    public CreatePropertyEvent(Player player){
+    protected CreatePropertyEvent(Player player){
         this.player = player;
         this.townData = TownDataStorage.getInstance().get(player);
         this.tanPlayer = PlayerDataStorage.getInstance().get(player);
@@ -96,16 +94,15 @@ public class CreatePropertyEvent extends RightClickListenerEvent {
 
         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
         player.sendMessage(Lang.PLAYER_PROPERTY_CREATED.get(langType));
-        tanPlayer.removeFromBalance(cost);
-        townData.addToBalance(cost);
 
-        PropertyData property = townData.registerNewProperty(position1,position2, tanPlayer);
-        new PlayerPropertyManager(player, property, HumanEntity::closeInventory);
+        PropertyData property = createProperty();
 
         property.createPropertySign(player, block, event.getBlockFace());
         property.updateSign();
         return ListenerState.SUCCESS;
     }
+
+    protected abstract PropertyData createProperty();
 
     private double getTotalCost() {
         double costPerBlock = townData.getTaxOnCreatingProperty();

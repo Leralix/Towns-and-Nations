@@ -2,7 +2,6 @@ package org.leralix.tan.tasks;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.storage.impl.FortDataStorage;
 import org.leralix.tan.storage.stored.*;
 
 public class SaveStats {
@@ -28,7 +27,7 @@ public class SaveStats {
         LandmarkStorage.getInstance().save();
         PlannedAttackStorage.getInstance().save();
         WarStorage.getInstance().save();
-        FortDataStorage.getInstance().save();
+        FortStorage.getInstance().save();
         PremiumStorage.getInstance().save();
         TruceStorage.getInstance().save();
     }

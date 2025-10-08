@@ -38,7 +38,7 @@ language:
   INTERACTION_TOO_FAR_ERROR: "§cYou are too far to do this action"
   CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§cThis chunk does not belong to {0}"
   CANNOT_DELETE_TERRITORY_IF_CAPITAL: "§cThis territory cannot be deleted because it is the leader of {0}"
-  ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT: "§cYou cannot interact with thispermission because your rank does not have it"
+  ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT: "§cYou cannot interact with this permission because your rank does not have it"
   TOWN_NOT_FOUND: "§cTown not found"
   TERRITORY_NOT_FOUND: "§cTerritory not found"
   INVALID_ARGUMENTS: "§cInvalid arguments"
@@ -473,6 +473,8 @@ language:
   #Building menu
   GUI_BUILDING_MENU: "§aBuilding"
   GUI_BUILDING_MENU_DESC1: "§fCreate and manage buildings"
+  CREATE_PUBLIC_PROPERTY_ICON : "§aCreate a public property"
+  CREATE_PUBLIC_PROPERTY_COST : "§fCost : §eFree"
   CREATE_FORT_ICON: "§aCreate a new fort"
   CREATE_FORT_DESC1: "§fCost : §e{0}{MONEY_CHAR}"
   #War menu

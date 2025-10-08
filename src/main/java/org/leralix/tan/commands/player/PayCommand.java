@@ -4,8 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -15,6 +13,13 @@ import java.util.List;
 
 
 public class PayCommand extends PlayerSubCommand {
+
+    private final double maxPayDistance;
+
+    public PayCommand(double maxPayDistance){
+        this.maxPayDistance = maxPayDistance;
+    }
+
     @Override
     public String getName() {
         return "pay";
@@ -68,7 +73,7 @@ public class PayCommand extends PlayerSubCommand {
             player.sendMessage(Lang.INTERACTION_TOO_FAR_ERROR.get(langType));
             return;
         }
-        if (senderLocation.distance(receiverLocation) > ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("maxPayDistance")) {
+        if (senderLocation.distance(receiverLocation) > maxPayDistance) {
             player.sendMessage(Lang.INTERACTION_TOO_FAR_ERROR.get(langType));
             return;
         }

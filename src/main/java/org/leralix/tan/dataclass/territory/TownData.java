@@ -11,8 +11,6 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -68,7 +66,7 @@ public class TownData extends TerritoryData {
             addPlayer(leader);
         }
 
-        int prefixSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("prefixSize", 3);
+        int prefixSize = Constants.getPrefixSize();
         this.townTag = townName.length() >= prefixSize ? townName.substring(0, prefixSize).toUpperCase() : townName.toUpperCase();
     }
 
@@ -317,12 +315,6 @@ public class TownData extends TerritoryData {
         }
     }
 
-
-    @Override
-    public double getChunkUpkeepCost() {
-        return ConfigUtil.getCustomConfig(ConfigTag.MAIN).getDouble("TownChunkUpkeepCost", 0);
-    }
-
     public void setSpawn(Location location) {
         this.teleportationPosition = new TeleportationPosition(location);
     }
@@ -484,6 +476,14 @@ public class TownData extends TerritoryData {
         int size = getPropertyDataMap().size();
         int lastID = Integer.parseInt(getPropertyDataMap().values().stream().toList().get(size - 1).getTotalID().split("P")[1]);
         return "P" + (lastID + 1);
+    }
+
+    public PropertyData registerNewProperty(Vector3D p1, Vector3D p2, TerritoryData owner) {
+        String propertyID = nextPropertyID();
+        String id = this.getID() + "_" + propertyID;
+        PropertyData newProperty = new PropertyData(id, p1, p2, owner);
+        this.propertyDataMap.put(propertyID, newProperty);
+        return newProperty;
     }
 
     public PropertyData registerNewProperty(Vector3D p1, Vector3D p2, ITanPlayer owner) {

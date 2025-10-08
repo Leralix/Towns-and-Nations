@@ -33,7 +33,6 @@ import org.leralix.tan.listeners.chat.ChatListener;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
-import org.leralix.tan.storage.WildernessRules;
 import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.database.MySqlHandler;
 import org.leralix.tan.storage.database.SQLiteHandler;
@@ -44,6 +43,7 @@ import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.tasks.SecondTask;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.constants.DatabaseConstants;
 import org.leralix.tan.utils.constants.EnabledPermissions;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.text.NumberUtil;
@@ -148,7 +148,6 @@ public class TownsAndNations extends JavaPlugin {
         mainBlackList.add("allowedTimeSlotsWar");
         ConfigUtil.saveAndUpdateResource(this, "config.yml", mainBlackList);
         ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.MAIN);
-        Lang.shouldShowCurrency(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("showCurrency", true));
 
         List<String> upgradeBlackList = new ArrayList<>();
         upgradeBlackList.add("upgrades");
@@ -156,25 +155,25 @@ public class TownsAndNations extends JavaPlugin {
         ConfigUtil.addCustomConfig(this, "townUpgrades.yml", ConfigTag.UPGRADE);
 
 
-        getLogger().log(Level.INFO, "[TaN] -Loading Database");
-        loadDB();
 
-        getLogger().log(Level.INFO, "[TaN] -Loading Economy");
-        setupEconomy();
 
-        getLogger().log(Level.INFO, "[TaN] -Loading Storage");
+        getLogger().log(Level.INFO, "[TaN] -Loading Configs");
 
         Constants.init(ConfigUtil.getCustomConfig(ConfigTag.MAIN));
         UpgradeStorage.init();
         MobChunkSpawnStorage.init();
         ClaimBlacklistStorage.init();
-        WildernessRules.getInstance();
         NewsletterType.init();
         IconManager.getInstance();
         NumberUtil.init();
         EnabledPermissions.getInstance().init();
         FortStorage.init(new FortDataStorage());
 
+        getLogger().log(Level.INFO, "[TaN] -Loading Economy");
+        setupEconomy();
+
+        getLogger().log(Level.INFO, "[TaN] -Loading Database");
+        loadDB();
 
         getLogger().log(Level.INFO, "[TaN] -Loading Local data");
 
@@ -195,7 +194,9 @@ public class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO, "[TaN] -Loading commands");
         SaveStats.startSchedule();
-        DailyTasks.scheduleMidnightTask();
+
+        DailyTasks dailyTasks = new DailyTasks(Constants.getDailyTaskHour(), Constants.getDailyTaskMinute());
+        dailyTasks.scheduleMidnightTask();
 
         enableEventList();
         getCommand("tan").setExecutor(new PlayerCommandManager());
@@ -242,20 +243,20 @@ public class TownsAndNations extends JavaPlugin {
 
     private void loadDB() {
 
-        var dbConfig = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getConfigurationSection("database");
+        DatabaseConstants constants = Constants.databaseConstants();
 
-        String dbName = dbConfig.getString("type", "sqlite");
+        String dbName = constants.getDbType();
         if (dbName.equalsIgnoreCase("sqlite")) {
             String dbPath = getDataFolder().getAbsolutePath() + "/database/main.db";
             databaseHandler = new SQLiteHandler(dbPath);
         }
         if (dbName.equals("mysql")) {
-            String host = dbConfig.getString("host", "localhost");
-            int port = dbConfig.getInt("port", 3306);
-            String database = dbConfig.getString("name", "towns_and_nations");
-            String user = dbConfig.getString("user", "root");
-            String password = dbConfig.getString("password", "");
-            databaseHandler = new MySqlHandler(host, port, database, user, password);
+            databaseHandler = new MySqlHandler(
+                    constants.getHost(),
+                    constants.getPort(),
+                    constants.getDbType(),
+                    constants.getUser(),
+                    constants.getPassword());
         }
         try {
             databaseHandler.connect();

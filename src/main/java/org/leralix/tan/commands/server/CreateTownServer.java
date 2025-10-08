@@ -3,8 +3,6 @@ package org.leralix.tan.commands.server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.events.CreateTown;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -58,8 +56,7 @@ class CreateTownServer extends SubCommand {
             commandSender.sendMessage(Lang.PLAYER_NOT_FOUND.getDefault());
             return;
         }
-        boolean allowDuplicate = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AllowNameDuplication",false);
-        if(!allowDuplicate && TownDataStorage.getInstance().isNameUsed(townName)){
+        if(TownDataStorage.getInstance().isNameUsed(townName)){
             commandSender.sendMessage(Lang.NAME_ALREADY_USED.getDefault());
             return;
         }

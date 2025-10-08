@@ -6,8 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.position.Vector3D;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.WildernessChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -20,6 +18,7 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
@@ -45,7 +44,7 @@ public class Landmark {
         this.materialName = "DIAMOND";
         this.amount = 2;
         this.storedDays = 0;
-        this.storedLimit = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("storedLimit", 7);
+        this.storedLimit = Constants.getLandmarkStorageCapacity();
         spawnChest();
     }
 

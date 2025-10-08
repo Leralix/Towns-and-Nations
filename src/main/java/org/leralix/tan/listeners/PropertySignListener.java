@@ -44,24 +44,26 @@ public class PropertySignListener implements Listener {
                         PropertyData propertyData = TownDataStorage.getInstance().get(ids[0]).getProperty(ids[1]);
                         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
-                            LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+                            ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+                            LangType langType = tanPlayer.getLang();
 
                             if(!canPlayerOpenMenu(player, clickedBlock)){
                                 player.sendMessage(Lang.NO_TRADE_ALLOWED_EMBARGO.get(langType));
                                 return;
                             }
-
-                            if(propertyData.getOwnerID().equals(player.getUniqueId().toString())){
+                            if(propertyData.getOwner().canAccess(tanPlayer)){
                                 new PlayerPropertyManager(player, propertyData, HumanEntity::closeInventory);
-                            }else if(propertyData.isRented() && propertyData.getRenterID().equals(player.getUniqueId().toString())){
+                            }
+                            else if(propertyData.isRented() && propertyData.getRenterID().equals(player.getUniqueId().toString())){
                                 new RenterPropertyMenu(player, propertyData);
                             }
                             else {
                                 if(propertyData.isForRent() || propertyData.isForSale()){
                                     new BuyOrRentPropertyMenu(player, propertyData);
                                 }
-                                else
+                                else{
                                     player.sendMessage(Lang.PROPERTY_NOT_FOR_SALE_OR_RENT.get(langType));
+                                }
                             }
                         } else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                             propertyData.showBox(player);
