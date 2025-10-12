@@ -60,12 +60,6 @@ public class TownClaimedChunk extends TerritoryChunk {
             }
         }
 
-        //Chunk is claimed yet player have no town
-        if (!tanPlayer.hasTown()) {
-            playerCantPerformAction(player);
-            return false;
-        }
-
         //Player is at war with the town
         for (CurrentAttack currentAttacks : ownerTown.getCurrentAttacks()) {
             if (currentAttacks.containsPlayer(tanPlayer))

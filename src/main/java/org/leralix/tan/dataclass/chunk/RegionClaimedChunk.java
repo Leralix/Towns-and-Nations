@@ -40,11 +40,6 @@ public class RegionClaimedChunk extends TerritoryChunk {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         RegionData ownerRegion = getRegion();
-        //Chunk is claimed yet player has no town
-        if (!tanPlayer.hasTown()) {
-            playerCantPerformAction(player);
-            return false;
-        }
 
         //Player is at war with the region
         for (CurrentAttack currentAttacks : ownerRegion.getCurrentAttacks()) {
