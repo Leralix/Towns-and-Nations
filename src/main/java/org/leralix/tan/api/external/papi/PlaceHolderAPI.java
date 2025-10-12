@@ -68,6 +68,8 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
         registerEntry(new PlayerTownRankName());
         registerEntry(new PlayerTownRemainingQuantity());
         registerEntry(new PlayerTownResidentQuantity());
+        registerEntry(new PlayerTownTag());
+        registerEntry(new PlayerColoredTownTag());
         registerEntry(new TerritoryWithIdExist());
         registerEntry(new TerritoryWithNameExist());
         registerEntry(new TerritoryWithNameLeaderName());
