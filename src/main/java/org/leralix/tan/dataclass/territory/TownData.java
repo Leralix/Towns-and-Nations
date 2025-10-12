@@ -32,6 +32,7 @@ import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.text.StringUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.*;
 
@@ -79,18 +80,13 @@ public class TownData extends TerritoryData {
         return townLevel;
     }
 
-    public void addPlayer(String tanPlayerID) {
-        addPlayer(PlayerDataStorage.getInstance().get(tanPlayerID));
-    }
 
     public void addPlayer(ITanPlayer tanNewPlayer) {
         townPlayerListId.add(tanNewPlayer.getID());
         getTownDefaultRank().addPlayer(tanNewPlayer);
         tanNewPlayer.joinTown(this);
 
-        Player newMember = tanNewPlayer.getPlayer();
-        if (newMember != null)
-            newMember.sendMessage(Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(tanNewPlayer.getLang(), getBaseColoredName()));
+        TanChatUtils.message(tanNewPlayer.getPlayer(), Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(tanNewPlayer.getLang(), getBaseColoredName()));
 
         tanNewPlayer.clearAllTownApplications();
 
@@ -219,7 +215,8 @@ public class TownData extends TerritoryData {
         for (String playerId : townPlayerListId) {
             Player player = Bukkit.getServer().getPlayer(UUID.fromString(playerId));
             if (player != null && player.isOnline()) {
-                player.sendMessage(message.get(player));
+
+                TanChatUtils.message(player, message.get(player));
             }
         }
     }
@@ -228,12 +225,7 @@ public class TownData extends TerritoryData {
     public void broadcastMessageWithSound(FilledLang message, SoundEnum soundEnum, boolean addPrefix) {
         for (String playerId : townPlayerListId) {
             Player player = Bukkit.getPlayer(UUID.fromString(playerId));
-            if (player != null && player.isOnline()) {
-                SoundUtil.playSound(player, soundEnum);
-                if (addPrefix) {
-                    player.sendMessage(message.get(player));
-                } else player.sendMessage(message.get(player));
-            }
+            TanChatUtils.message(player, message, soundEnum);
         }
     }
 
@@ -345,10 +337,12 @@ public class TownData extends TerritoryData {
             setCapitalLocation(chunkClaimed.getVector2D());
         }
 
-        player.sendMessage(Lang.CHUNK_CLAIMED_SUCCESS.get(
+        TanChatUtils.message(
                 player,
-                Integer.toString(getNumberOfClaimedChunk()),
-                Integer.toString(getLevel().getChunkCap()))
+                Lang.CHUNK_CLAIMED_SUCCESS.get(
+                        Integer.toString(getNumberOfClaimedChunk()),
+                        Integer.toString(getLevel().getChunkCap())
+                )
         );
         return true;
     }
@@ -420,19 +414,19 @@ public class TownData extends TerritoryData {
 
 
                     if (!doesPlayerHavePermission(tanPlayer, RolePermission.KICK_PLAYER)) {
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(langType));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType));
                         return;
                     }
                     if (townData.getRank(kickedPlayer).isSuperiorTo(townData.getRank(tanPlayer))) {
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get(langType));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get(langType));
                         return;
                     }
                     if (isLeader(kickedPlayer)) {
-                        player.sendMessage(Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get(langType));
+                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get(langType));
                         return;
                     }
                     if (tanPlayer.getID().equals(kickedPlayer.getID())) {
-                        player.sendMessage(Lang.GUI_TOWN_MEMBER_CANT_KICK_YOURSELF.get(langType));
+                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_CANT_KICK_YOURSELF.get(langType));
                         return;
                     }
 
@@ -531,12 +525,10 @@ public class TownData extends TerritoryData {
         ITanPlayer kickedITanPlayer = PlayerDataStorage.getInstance().get(kickedPlayer);
 
         removePlayer(kickedITanPlayer);
-        broadcastMessageWithSound(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.get(kickedPlayer.getName()), SoundEnum.BAD);
 
+        broadcastMessageWithSound(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.get(kickedPlayer.getName()), SoundEnum.BAD);
         Player player = kickedPlayer.getPlayer();
-        if (player != null) {
-            kickedPlayer.getPlayer().sendMessage(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get(player));
-        }
+        TanChatUtils.message(player,Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get(player), SoundEnum.BAD);
     }
 
 
@@ -544,12 +536,12 @@ public class TownData extends TerritoryData {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         Level level = this.getLevel();
         if (!doesPlayerHavePermission(tanPlayer, RolePermission.UPGRADE_TOWN)) {
-            player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(player));
+            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(player));
             SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             return;
         }
         if (this.getBalance() < level.getMoneyRequiredForLevelUp()) {
-            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), Double.toString(level.getMoneyRequiredForLevelUp() - this.getBalance())));
+            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), Double.toString(level.getMoneyRequiredForLevelUp() - this.getBalance())));
             SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
             return;
         }
@@ -557,34 +549,30 @@ public class TownData extends TerritoryData {
         removeFromBalance(level.getMoneyRequiredForLevelUp());
         level.townLevelUp();
         SoundUtil.playSound(player, SoundEnum.LEVEL_UP);
-        player.sendMessage(Lang.BASIC_LEVEL_UP.get(player));
+        TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(player));
     }
 
     public void upgradeTown(Player player, TownUpgrade townUpgrade, int townUpgradeLevel) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         if (!doesPlayerHavePermission(tanPlayer, RolePermission.UPGRADE_TOWN)) {
-            player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(player));
-            SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(player), SoundEnum.NOT_ALLOWED);
             return;
         }
         int cost = townUpgrade.getCost(townLevel.getUpgradeLevel(townUpgrade.getName()));
         if (this.getBalance() < cost) {
-            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), Double.toString(cost - this.getBalance())));
-            SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), Double.toString(cost - this.getBalance())), SoundEnum.NOT_ALLOWED);
             return;
         }
         Level level = this.getLevel();
         if (level.getUpgradeLevel(townUpgrade.getName()) >= townUpgrade.getMaxLevel()) {
-            player.sendMessage(Lang.TOWN_UPGRADE_MAX_LEVEL.get(player));
-            SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+            TanChatUtils.message(player, Lang.TOWN_UPGRADE_MAX_LEVEL.get(player), SoundEnum.NOT_ALLOWED);
             return;
         }
 
         removeFromBalance(townUpgrade.getCost(townUpgradeLevel));
         level.levelUp(townUpgrade);
-        SoundUtil.playSound(player, SoundEnum.LEVEL_UP);
-        player.sendMessage(Lang.BASIC_LEVEL_UP.get(player));
+        TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(player), SoundEnum.LEVEL_UP);
     }
 
     public boolean haveNoLeader() {
@@ -616,7 +604,7 @@ public class TownData extends TerritoryData {
 
         List<String> playersToRemove = new ArrayList<>(getPlayerIDList());
         for (String playerID : playersToRemove) {
-            removePlayer(playerID); // Modification sécurisée après la boucle
+            removePlayer(playerID);
         }
 
         TeamUtils.updateAllScoreboardColor();

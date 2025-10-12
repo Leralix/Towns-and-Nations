@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,17 +45,16 @@ class OpenGuiServer extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         if(args.length < 2){
-            commandSender.sendMessage(Lang.INVALID_ARGUMENTS.getDefault());
+            TanChatUtils.message(commandSender, Lang.INVALID_ARGUMENTS);
             return;
         }
         String playerName = args[1];
         Player player = commandSender.getServer().getPlayer(playerName);
         if(player == null){
-            commandSender.sendMessage(Lang.PLAYER_NOT_FOUND.getDefault());
+            TanChatUtils.message(commandSender, Lang.PLAYER_NOT_FOUND);
             return;
         }
         new MainMenu(player);
-        commandSender.sendMessage(Lang.COMMAND_GENERIC_SUCCESS.getDefault());
-
+        TanChatUtils.message(commandSender, Lang.COMMAND_GENERIC_SUCCESS);
     }
 }

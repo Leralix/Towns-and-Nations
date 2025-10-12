@@ -5,6 +5,7 @@ import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -43,11 +44,11 @@ public class LandmarkUpdateServer extends SubCommand {
         LandmarkStorage instance = LandmarkStorage.getInstance();
         if (args.length < 2) {
             instance.generateAllResources();
-            commandSender.sendMessage(Lang.ALL_LANDMARK_UPDATED.getDefault());
+            TanChatUtils.message(commandSender, Lang.ALL_LANDMARK_UPDATED);
         } else {
             Landmark landmark = instance.get(args[1]);
             landmark.generateResources();
-            commandSender.sendMessage(Lang.LANDMARK_UPDATED.get(Lang.getServerLang(), landmark.getName(), landmark.getID()));
+            TanChatUtils.message(commandSender, Lang.LANDMARK_UPDATED.get(landmark.getName(), landmark.getID()));
         }
     }
 }

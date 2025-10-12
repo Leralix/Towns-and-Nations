@@ -20,9 +20,12 @@ import org.leralix.tan.storage.stored.TruceStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.constants.RelationConstant;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
 public class AddRelationMenu extends IteratorGUI {
 
@@ -72,13 +75,13 @@ public class AddRelationMenu extends IteratorGUI {
                 event.setCancelled(true);
 
                 if (otherTerritory.haveNoLeader()) {
-                    player.sendMessage(Lang.TOWN_DIPLOMATIC_INVITATION_NO_LEADER.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.TOWN_DIPLOMATIC_INVITATION_NO_LEADER.get(tanPlayer));
                     return;
                 }
 
                 if (wantedRelation.isSuperiorTo(actualRelation)) {
                     otherTerritory.receiveDiplomaticProposal(territoryData, wantedRelation);
-                    player.sendMessage(Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(tanPlayer, otherTerritory.getName()));
+                    TanChatUtils.message(player, Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(tanPlayer, otherTerritory.getName()));
                 }
 
                 else {
@@ -87,14 +90,12 @@ public class AddRelationMenu extends IteratorGUI {
                     //If actual relation has a truce, it cannot be switched to a negative relation instantly
                     if(wantedRelation.isNegative()){
                         if(trucePeriod > 0){
-                            SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
-                            player.sendMessage(Lang.CURRENT_RELATION_REQUIRES_TRUCE.get(tanPlayer, Integer.toString(trucePeriod)));
+                            TanChatUtils.message(player, Lang.CURRENT_RELATION_REQUIRES_TRUCE.get(tanPlayer, Integer.toString(trucePeriod)), NOT_ALLOWED);
                             return;
                         }
                         long nbActiveHourTruce = TruceStorage.getInstance().getRemainingTruce(territoryData, otherTerritory);
                         if(nbActiveHourTruce > 0){
-                            SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
-                            player.sendMessage(Lang.CANNOT_SET_RELATION_TO_NEGATIVE_WHILE_TRUCE.get(tanPlayer, Long.toString(nbActiveHourTruce), otherTerritory.getColoredName()));
+                            TanChatUtils.message(player, Lang.CANNOT_SET_RELATION_TO_NEGATIVE_WHILE_TRUCE.get(tanPlayer, Long.toString(nbActiveHourTruce), otherTerritory.getColoredName()), NOT_ALLOWED);
                             return;
                         }
                     }

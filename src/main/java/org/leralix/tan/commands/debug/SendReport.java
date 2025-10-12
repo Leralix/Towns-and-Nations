@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.file.ArchiveUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,12 +37,7 @@ public class SendReport extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         ArchiveUtil.sendReport(commandSender);
-        if(commandSender instanceof Player player){
-            commandSender.sendMessage(Lang.DEBUG_REPORT_CREATED.get(player));
-        }
-        else {
-            commandSender.sendMessage(Lang.DEBUG_REPORT_CREATED.getDefault());
-        }
+        TanChatUtils.message(commandSender, Lang.DEBUG_REPORT_CREATED);
     }
 }
 

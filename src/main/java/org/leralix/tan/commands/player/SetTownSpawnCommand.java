@@ -12,6 +12,7 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,14 +45,14 @@ public class SetTownSpawnCommand extends PlayerSubCommand {
 
         //Incorrect syntax
         if (args.length != 1){
-            player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()) );
+            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()) );
             return;
         }
 
         //No town
         ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
         if(!playerStat.hasTown()){
-            player.sendMessage(Lang.PLAYER_NO_TOWN.get(langType));
+            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
             return;
         }
 
@@ -59,25 +60,25 @@ public class SetTownSpawnCommand extends PlayerSubCommand {
         TownData townData = TownDataStorage.getInstance().get(player);
 
         if(!townData.doesPlayerHavePermission(playerStat, RolePermission.TOWN_ADMINISTRATOR)){
-            player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(langType));
+            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType));
             return;
         }
 
 
         //Spawn Unlocked
         if(townData.isSpawnLocked()){
-            player.sendMessage(Lang.SPAWN_NOT_UNLOCKED.get(langType));
+            TanChatUtils.message(player, Lang.SPAWN_NOT_UNLOCKED.get(langType));
             return;
         }
 
         ClaimedChunk2 currentChunk = NewClaimedChunkStorage.getInstance().get(player.getLocation().getChunk());
         if(!(currentChunk instanceof TownClaimedChunk townChunk && townChunk.getTown().equals(townData))){
-            player.sendMessage(Lang.SPAWN_NEED_TO_BE_IN_CHUNK.get(langType));
+            TanChatUtils.message(player, Lang.SPAWN_NEED_TO_BE_IN_CHUNK.get(langType));
             return;
         }
 
         townData.setSpawn(player.getLocation());
-        player.sendMessage(Lang.SPAWN_SET_SUCCESS.get(langType));
+        TanChatUtils.message(player, Lang.SPAWN_SET_SUCCESS.get(langType));
     }
 
 }

@@ -18,6 +18,7 @@ import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.territory.ChunkUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 public class LandmarkClaimedChunk extends ClaimedChunk2 {
     public LandmarkClaimedChunk(Chunk chunk, String owner) {
@@ -51,7 +52,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
         }
 
 
-        player.sendMessage(Lang.CANNOT_DO_IN_LANDMARK.get(player));
+        TanChatUtils.message(player, Lang.CANNOT_DO_IN_LANDMARK.get(player));
         return false;
     }
 
@@ -61,7 +62,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
     }
 
     public void unclaimChunk(Player player) {
-        player.sendMessage(Lang.CANNOT_UNCLAIM_LANDMARK_CHUNK.get(player));
+        TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_LANDMARK_CHUNK.get(player));
     }
 
     public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
@@ -92,7 +93,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
 
     @Override
     public boolean canTerritoryClaim(Player player, TerritoryData territoryData) {
-        player.sendMessage(Lang.CANNOT_CLAIM_LANDMARK.get(player));
+        TanChatUtils.message(player, Lang.CANNOT_CLAIM_LANDMARK.get(player));
         return false;
     }
 

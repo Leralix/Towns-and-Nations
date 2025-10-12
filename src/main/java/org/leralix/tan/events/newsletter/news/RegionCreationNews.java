@@ -15,13 +15,14 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.TanRegion;
 
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
+
 
 public class RegionCreationNews extends Newsletter {
 
@@ -61,8 +62,7 @@ public class RegionCreationNews extends Newsletter {
         RegionData regionData = RegionDataStorage.getInstance().get(regionID);
         if(regionData == null)
             return;
-        player.sendMessage(Lang.REGION_CREATED_NEWSLETTER.get(player, tanPlayer.getNameStored(), regionData.getBaseColoredName()));
-        SoundUtil.playSound(player, SoundEnum.GOOD);
+        TanChatUtils.message(player, Lang.REGION_CREATED_NEWSLETTER.get(player, tanPlayer.getNameStored(), regionData.getBaseColoredName()));
     }
 
     @Override

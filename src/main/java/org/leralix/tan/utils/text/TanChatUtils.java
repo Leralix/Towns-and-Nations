@@ -1,5 +1,10 @@
 package org.leralix.tan.utils.text;
 
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 
 /**
@@ -11,20 +16,46 @@ public class TanChatUtils {
         throw new IllegalStateException("Utility class");
     }
 
-    /**
-     * This method send the prefix for every chat message in the plugin.
-     * @return the prefix for every chat message in the plugin.
-     */
-    public static String getTANString(){
-        return Lang.PLUGIN_STRING.getDefault();
+
+    public static void message(CommandSender commandSender, Lang lang) {
+        message(commandSender, lang, null);
     }
 
-    /**
-     * This method send the prefix for every debug or admin chat message in the plugin.
-     * @return the prefix for every debug or admin chat message in the plugin.
-     */
-    public static String getTANDebugString(){
-        return Lang.PLUGIN_DEBUG_STRING.getDefault();
+    public static void message(CommandSender commandSender, Lang message, SoundEnum soundEnum) {
+
+        if (commandSender == null) {
+            return;
+        }
+
+        if (commandSender instanceof Player player) {
+            message(player, message.get(player), soundEnum);
+        }
+        commandSender.sendMessage(message.getDefault());
+    }
+
+    public static void message(CommandSender commandSender, FilledLang message) {
+        message(commandSender, message, null);
+    }
+
+    public static void message(CommandSender commandSender, FilledLang message, SoundEnum soundEnum) {
+        if (commandSender instanceof Player player) {
+            message(player, message.get(player), soundEnum);
+        }
+        commandSender.sendMessage(message.getDefault());
+    }
+
+    public static void message(Player player, String message) {
+        if (player == null) {
+            return;
+        }
+        player.sendMessage(Lang.PLUGIN_STRING.getDefault() + message);
+    }
+
+    public static void message(Player player, String message, SoundEnum soundEnum) {
+        TanChatUtils.message(player, message);
+        if (soundEnum != null && player != null) {
+            SoundUtil.playSound(player, soundEnum);
+        }
     }
 
 }

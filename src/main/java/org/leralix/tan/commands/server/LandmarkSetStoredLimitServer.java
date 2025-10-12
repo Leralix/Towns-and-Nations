@@ -5,6 +5,7 @@ import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,21 +42,21 @@ public class LandmarkSetStoredLimitServer extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         if (args.length < 3) {
-            commandSender.sendMessage(Lang.INVALID_ARGUMENTS.getDefault());
+            TanChatUtils.message(commandSender, Lang.INVALID_ARGUMENTS);
         } else {
             Landmark landmark = LandmarkStorage.getInstance().get(args[1]);
             if(landmark == null){
-                commandSender.sendMessage(Lang.LANDMARK_NOT_FOUND.getDefault());
+                TanChatUtils.message(commandSender, Lang.LANDMARK_NOT_FOUND);
                 return;
             }
             String value = args[2];
             if(value == null){
-                commandSender.sendMessage(Lang.INVALID_ARGUMENTS.getDefault());
+                TanChatUtils.message(commandSender, Lang.INVALID_ARGUMENTS);
                 return;
             }
 
             landmark.setStoredLimit(Integer.parseInt(value));
-            commandSender.sendMessage(Lang.LANDMARK_STORED_UPDATED.get(Lang.getServerLang(), landmark.getName(), landmark.getID(), value));
+            TanChatUtils.message(commandSender, Lang.LANDMARK_STORED_UPDATED.get(landmark.getName(), landmark.getID(), value));
         }
     }
 }

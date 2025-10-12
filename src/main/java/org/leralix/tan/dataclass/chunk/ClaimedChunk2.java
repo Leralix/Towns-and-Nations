@@ -16,6 +16,7 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 public abstract class ClaimedChunk2 {
 
@@ -84,8 +85,8 @@ public abstract class ClaimedChunk2 {
     protected abstract boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location);
 
     void playerCantPerformAction(Player player) {
-        player.sendMessage(Lang.PLAYER_ACTION_NO_PERMISSION.get(player));
-        player.sendMessage(Lang.CHUNK_BELONGS_TO.get(player, getOwner().getName()));
+        TanChatUtils.message(player, Lang.PLAYER_ACTION_NO_PERMISSION.get(player));
+        TanChatUtils.message(player, Lang.CHUNK_BELONGS_TO.get(player, getOwner().getName()));
     }
 
     public abstract void unclaimChunk(Player player);
@@ -113,7 +114,7 @@ public abstract class ClaimedChunk2 {
         if (canTerritoryClaim(territoryData)) {
             return true;
         }
-        player.sendMessage(Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(player, getOwner().getBaseColoredName()));
+        TanChatUtils.message(player, Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(player, getOwner().getBaseColoredName()));
         return false;
     }
 

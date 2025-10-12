@@ -17,6 +17,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.legacy.CurrentAttack;
 
 public class RegionClaimedChunk extends TerritoryChunk {
@@ -67,28 +68,28 @@ public class RegionClaimedChunk extends TerritoryChunk {
     public void unclaimChunk(Player player) {
         ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
         if (!playerStat.hasTown()) {
-            player.sendMessage(Lang.PLAYER_NO_TOWN.get(player));
+            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(player));
             return;
         }
 
         if (!playerStat.hasRegion()) {
-            player.sendMessage(Lang.TOWN_NO_REGION.get(player));
+            TanChatUtils.message(player, Lang.TOWN_NO_REGION.get(player));
             return;
         }
 
         RegionData regionData = playerStat.getRegion();
 
         if (!regionData.equals(getRegion())) {
-            player.sendMessage(Lang.UNCLAIMED_CHUNK_NOT_RIGHT_REGION.get(player, getRegion().getName()));
+            TanChatUtils.message(player, Lang.UNCLAIMED_CHUNK_NOT_RIGHT_REGION.get(player, getRegion().getName()));
             return;
         }
 
         if (!regionData.doesPlayerHavePermission(playerStat, RolePermission.UNCLAIM_CHUNK)) {
-            player.sendMessage(Lang.PLAYER_NOT_LEADER_OF_REGION.get(player));
+            TanChatUtils.message(player, Lang.PLAYER_NOT_LEADER_OF_REGION.get(player));
             return;
         }
         NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
-        player.sendMessage(Lang.UNCLAIMED_CHUNK_SUCCESS_REGION.get(player, Integer.toString(regionData.getNumberOfClaimedChunk())));
+        TanChatUtils.message(player, Lang.UNCLAIMED_CHUNK_SUCCESS_REGION.get(player, Integer.toString(regionData.getNumberOfClaimedChunk())));
     }
 
     public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {

@@ -37,13 +37,13 @@ public class PlayerJoinListener implements Listener {
         TeamUtils.setIndividualScoreBoard(player);
         LangType langType = tanPlayer.getLang();
         if(player.hasPermission("tan.debug") && !TownsAndNations.getPlugin().isLatestVersion()){
-            player.sendMessage(Lang.NEW_VERSION_AVAILABLE.get(langType, TownsAndNations.getPlugin().getLatestVersion().toString()));
-            player.sendMessage(Lang.NEW_VERSION_AVAILABLE_2.get(langType));
+            TanChatUtils.message(player, Lang.NEW_VERSION_AVAILABLE.get(langType, TownsAndNations.getPlugin().getLatestVersion().toString()));
+            TanChatUtils.message(player, Lang.NEW_VERSION_AVAILABLE_2.get(langType));
         }
 
         int nbNewsletterForPlayer = NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player);
         if (nbNewsletterForPlayer > 0) {
-            player.sendMessage(Lang.NEWSLETTER_STRING.get(langType) + Lang.NEWSLETTER_GREETING.get(langType, Integer.toString(nbNewsletterForPlayer)));
+            TanChatUtils.message(player, Lang.NEWSLETTER_STRING.get(langType) + Lang.NEWSLETTER_GREETING.get(langType, Integer.toString(nbNewsletterForPlayer)));
             TextComponent message = new TextComponent(Lang.CLICK_TO_OPEN_NEWSLETTER.get(langType));
             message.setColor(ChatColor.GOLD);
             message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tan newsletter"));

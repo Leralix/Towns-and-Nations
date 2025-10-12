@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.function.Consumer;
 
@@ -21,13 +22,13 @@ public class ChangePropertyRentPrice extends ChatListenerEvent {
     @Override
     public boolean execute(Player player, String message) {
         int amount;
-        try{
+        try {
             amount = Integer.parseInt(message);
-            if(amount < 0) {
+            if (amount < 0) {
                 amount = 0;
             }
         } catch (NumberFormatException e) {
-            player.sendMessage(Lang.SYNTAX_ERROR_AMOUNT.get(player));
+            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(player));
             return false;
         }
 

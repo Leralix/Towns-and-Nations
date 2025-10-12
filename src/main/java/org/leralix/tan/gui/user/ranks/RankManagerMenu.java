@@ -16,6 +16,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.RenameRank;
 import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,13 +78,11 @@ public class RankManagerMenu extends BasicGui {
                 .setDescription(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer))
                 .setAction(event -> {
                     if(!isEmpty){
-                        player.sendMessage(Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY.get(tanPlayer));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY.get(tanPlayer), NOT_ALLOWED);
                         return;
                     }
                     if(isDefaultRank){
-                        player.sendMessage(Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_DEFAULT.get(tanPlayer));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_DEFAULT.get(tanPlayer), NOT_ALLOWED);
                         return;
                     }
                     territoryData.removeRank(rankData.getID());
@@ -106,8 +105,7 @@ public class RankManagerMenu extends BasicGui {
                 .setDescription(description)
                 .setAction(event -> {
                     if(isDefaultRank){
-                        player.sendMessage(Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT.get(tanPlayer));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT.get(tanPlayer), NOT_ALLOWED);
                     }
                     else{
                         territoryData.setDefaultRank(rankData.getID());
@@ -139,7 +137,7 @@ public class RankManagerMenu extends BasicGui {
                 .setName(Lang.GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME.get(tanPlayer))
                 .setDescription(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer))
                 .setAction(event -> {
-                    player.sendMessage(Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new RenameRank(territoryData , rankData));
                 })
                 .asGuiItem(player);
@@ -183,8 +181,7 @@ public class RankManagerMenu extends BasicGui {
                     int amountToRemove = event.isShiftClick() && currentSalary >= 10 ? 10 : 1;
 
                     if (currentSalary <= 0) {
-                        player.sendMessage(Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER.get(tanPlayer));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER.get(tanPlayer), NOT_ALLOWED);
                         return;
                     }
 
@@ -220,7 +217,7 @@ public class RankManagerMenu extends BasicGui {
                     boolean isInferiorOrEquals = playerRank.getRankEnum().getLevel() <= (rankData.getRankEnum().getLevel() + 1);
 
                     if(isInferiorOrEquals && !isLeader){
-                        player.sendMessage(Lang.GUI_TOWN_MEMBERS_ROLE_RANK_UP_INFERIOR_RANK.get(tanPlayer, playerRank.getColoredName()));
+                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_RANK_UP_INFERIOR_RANK.get(tanPlayer, playerRank.getColoredName()));
                         return;
                     }
 
@@ -245,12 +242,12 @@ public class RankManagerMenu extends BasicGui {
                 .setAction(event -> {
                     ItemStack itemMaterial = event.getCursor();
                     if(itemMaterial.getType() == Material.AIR){
-                        player.sendMessage(Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.get(tanPlayer));
                         return;
                     }
                     rankData.setRankIcon(itemMaterial);
                     open();
-                    player.sendMessage(Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get(tanPlayer));
                 })
                 .asGuiItem(player);
     }

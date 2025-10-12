@@ -34,6 +34,7 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.file.FileUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.PlannedAttack;
 
 import java.util.ArrayList;
@@ -123,7 +124,7 @@ public class AdminGUI {
             ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(player.getLocation().getBlock().getChunk());
 
             if (claimedChunk instanceof LandmarkClaimedChunk) {
-                player.sendMessage(Lang.ADMIN_CHUNK_ALREADY_LANDMARK.get(player));
+                TanChatUtils.message(player, Lang.ADMIN_CHUNK_ALREADY_LANDMARK.get(player));
                 return;
             }
             LandmarkStorage.getInstance().addLandmark(player.getLocation());
@@ -147,14 +148,14 @@ public class AdminGUI {
                 Lang.ADMIN_GUI_DELETE_LANDMARK_DESC1.get(langType));
 
         ItemStack ressources = landmark.getResources();
-        
+
         ItemStack setReward = HeadUtils.createCustomItemStack(landmark.getResources(),
                 Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(langType, Integer.toString(ressources.getAmount()), ressources.getType().name().toLowerCase()),
                 Lang.SPECIFIC_LANDMARK_ICON_SWITCH_REWARD.get(langType));
 
         GuiItem changeLandmarkNameGui = ItemBuilder.from(changeLandmarkName).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage(Lang.ENTER_NEW_VALUE.get(player));
+            TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(player));
             PlayerChatListenerStorage.register(player, new ChangeLandmarkName(landmark, Constants.getLandmarkMaxNameSize(), p -> openSpecificLandmarkMenu(player, landmark)));
         });
 
@@ -171,10 +172,9 @@ public class AdminGUI {
             if (itemOnCursor.getType() == Material.AIR) {
                 return;
             }
-            player.sendMessage(Lang.ADMIN_GUI_LANDMARK_REWARD_SET.get(player, Integer.toString(itemOnCursor.getAmount()), itemOnCursor.getType().name()));
+            TanChatUtils.message(player, Lang.ADMIN_GUI_LANDMARK_REWARD_SET.get(player, Integer.toString(itemOnCursor.getAmount()), itemOnCursor.getType().name()), GOOD);
             landmark.setReward(itemOnCursor);
             openSpecificLandmarkMenu(player, landmark);
-            SoundUtil.playSound(player, GOOD);
         });
 
 
@@ -257,12 +257,12 @@ public class AdminGUI {
 
         GuiItem changeRegionNameGui = ItemBuilder.from(changeRegionName).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage(Lang.ENTER_NEW_VALUE.get(player));
+            TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(player));
             PlayerChatListenerStorage.register(player, new ChangeTerritoryName(territoryData, 0, p -> openSpecificTerritoryMenu(player, territoryData)));
         });
         GuiItem changeRegionDescriptionGui = ItemBuilder.from(changeRegionDescription).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage(Lang.ENTER_NEW_VALUE.get(player));
+            TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(player));
             PlayerChatListenerStorage.register(player, new ChangeTerritoryDescription(territoryData, p -> openSpecificTerritoryMenu(player, territoryData)));
         });
         GuiItem deleteRegionGui = ItemBuilder.from(deleteRegion).asGuiItem(event -> {
@@ -273,7 +273,7 @@ public class AdminGUI {
             if (territoryData.isCapital()) {
                 territoryData.getOverlord().ifPresent(
                         overlord ->
-                                player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(langType, overlord.getBaseColoredName()))
+                                TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(langType, overlord.getBaseColoredName()))
                 );
                 return;
             }
@@ -359,7 +359,7 @@ public class AdminGUI {
 
         GuiItem createTownGui = ItemBuilder.from(createTown).asGuiItem(event -> {
             event.setCancelled(true);
-            player.sendMessage(Lang.ENTER_NEW_VALUE.get(player));
+            TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(player));
             PlayerChatListenerStorage.register(player, new CreateEmptyTown(p -> openAdminBrowseTown(player, 0)));
         });
 
@@ -403,7 +403,7 @@ public class AdminGUI {
             event.setCancelled(true);
             if (townData.haveOverlord()) {
                 if (townData.isCapital())
-                    player.sendMessage(Lang.GUI_CANNOT_QUIT_IF_LEADER.get(langType));
+                    TanChatUtils.message(player, Lang.GUI_CANNOT_QUIT_IF_LEADER.get(langType));
                 else {
                     townData.removeOverlord();
                     openSpecificTownMenu(player, townData);
@@ -467,7 +467,7 @@ public class AdminGUI {
                 event.setCancelled(true);
                 FileUtil.addLineToHistory(Lang.HISTORY_TOWN_LEADER_CHANGED.get(player.getName(), townData.getLeaderData().getNameStored(), townPlayer.getName()));
                 townData.setLeaderID(townPlayer.getUniqueId().toString());
-                player.sendMessage(Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(langType, townPlayer.getName()));
+                TanChatUtils.message(player, Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(langType, townPlayer.getName()));
                 openSpecificTownMenu(player, townData);
             });
             guiItems.add(playerHeadGui);
@@ -523,12 +523,12 @@ public class AdminGUI {
                 TownData townData = tanPlayer.getTown();
 
                 if (townData.isLeader(tanPlayer)) {
-                    player.sendMessage(Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get(langType));
+                    TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get(langType));
                     return;
                 }
                 townData.removePlayer(tanPlayer);
 
-                player.sendMessage(Lang.ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS.get(langType, tanPlayer.getNameStored(), townData.getName()));
+                TanChatUtils.message(player, Lang.ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS.get(langType, tanPlayer.getNameStored(), townData.getName()));
                 openSpecificPlayerMenu(player, tanPlayer);
             });
             gui.setItem(2, 2, removePlayerTownGui);

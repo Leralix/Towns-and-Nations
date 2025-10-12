@@ -16,13 +16,13 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.TanTown;
 
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
 
 public class PlayerJoinTownNews extends Newsletter {
 
@@ -57,22 +57,21 @@ public class PlayerJoinTownNews extends Newsletter {
     @Override
     public void broadcast(Player player) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
-        if(tanPlayer == null)
+        if (tanPlayer == null)
             return;
         TownData townData = TownDataStorage.getInstance().get(townID);
-        if(townData == null)
+        if (townData == null)
             return;
-        player.sendMessage(Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(player, tanPlayer.getNameStored(), townData.getBaseColoredName()));
-        SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(player, Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(player, tanPlayer.getNameStored(), townData.getBaseColoredName()), SoundEnum.MINOR_GOOD);
     }
 
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
-        if(tanPlayer == null)
+        if (tanPlayer == null)
             return null;
         TownData townData = TownDataStorage.getInstance().get(townID);
-        if(townData == null)
+        if (townData == null)
             return null;
 
         ItemStack itemStack = HeadUtils.makeSkullURL(
@@ -83,7 +82,7 @@ public class PlayerJoinTownNews extends Newsletter {
 
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
             event.setCancelled(true);
-            if(event.isRightClick()){
+            if (event.isRightClick()) {
                 markAsRead(player);
                 onClick.accept(player);
             }
@@ -98,7 +97,7 @@ public class PlayerJoinTownNews extends Newsletter {
     @Override
     public boolean shouldShowToPlayer(Player player) {
         TownData townData = TownDataStorage.getInstance().get(townID);
-        if(townData == null)
+        if (townData == null)
             return false;
         return townData.doesPlayerHavePermission(player, RolePermission.INVITE_PLAYER);
     }

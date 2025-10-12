@@ -1,6 +1,7 @@
 package org.leralix.tan.dataclass.property;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.storage.stored.PlayerDataStorage;

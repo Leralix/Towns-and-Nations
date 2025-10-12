@@ -15,6 +15,7 @@ import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
@@ -42,21 +43,20 @@ public class NoRegionMenu extends BasicGui {
 
         return iconManager.get(IconKey.CREATE_REGION_ICON).setName(Lang.GUI_REGION_CREATE.get(tanPlayer)).setDescription(Lang.GUI_REGION_CREATE_DESC1.get(tanPlayer, Integer.toString(regionCost)), Lang.GUI_REGION_CREATE_DESC2.get(tanPlayer)).setAction(action -> {
             if (!player.hasPermission("tan.base.region.create")) {
-                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
-                SoundUtil.playSound(player, NOT_ALLOWED);
+                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
                 return;
             }
 
             if (!tanPlayer.hasTown()) {
-                player.sendMessage(Lang.PLAYER_NO_TOWN.get(tanPlayer));
+                TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer), NOT_ALLOWED);
                 return;
             }
             TownData townData = TownDataStorage.getInstance().get(player);
             double townMoney = townData.getBalance();
             if (townMoney < regionCost) {
-                player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), Double.toString(regionCost - townMoney)));
+                TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), Double.toString(regionCost - townMoney)));
             } else {
-                player.sendMessage(Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(tanPlayer));
+                TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(tanPlayer));
                 PlayerChatListenerStorage.register(player, new CreateRegion(regionCost));
             }
         }).asGuiItem(player);

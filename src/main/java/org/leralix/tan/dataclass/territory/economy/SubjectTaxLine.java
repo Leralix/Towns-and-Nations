@@ -19,6 +19,7 @@ import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.treasury.SetTerritoryTax;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.StringUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 public class SubjectTaxLine extends ProfitLine {
 
@@ -68,12 +69,12 @@ public class SubjectTaxLine extends ProfitLine {
         GuiItem lowerTaxButton = ItemBuilder.from(lowerTax).asGuiItem(event -> {
             event.setCancelled(true);
             if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_TAXES)) {
-                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(lang));
+                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang));
                 return;
             }
             int amountToRemove = event.isShiftClick() && taxRate > 10 ? 10 : 1;
             if (taxRate < 1) {
-                player.sendMessage(Lang.GUI_TREASURY_CANT_TAX_LESS.get(lang));
+                TanChatUtils.message(player, Lang.GUI_TREASURY_CANT_TAX_LESS.get(lang));
                 return;
             }
             SoundUtil.playSound(player, SoundEnum.REMOVE);
@@ -84,7 +85,7 @@ public class SubjectTaxLine extends ProfitLine {
 
         GuiItem increaseTaxButton = ItemBuilder.from(increaseTax).asGuiItem(event -> {
             if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_TAXES)) {
-                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(lang));
+                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang));
                 return;
             }
             event.setCancelled(true);
@@ -98,14 +99,14 @@ public class SubjectTaxLine extends ProfitLine {
 
         GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
             if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_TAXES)) {
-                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(lang));
+                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang));
                 return;
             }
             event.setCancelled(true);
             if (event.isLeftClick()) {
                 new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.SUBJECT_TAX);
             } else if (event.isRightClick()) {
-                player.sendMessage(Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
+                TanChatUtils.message(player, Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
                 PlayerChatListenerStorage.register(player, new SetTerritoryTax(territoryData, p -> new TreasuryMenu(player, territoryData)));
             }
         });

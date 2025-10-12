@@ -15,7 +15,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.lib.utils.particles.ParticleUtils;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -42,6 +41,7 @@ import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.text.NumberUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -218,7 +218,7 @@ public class PropertyData extends Building {
     }
 
     public AbstractOwner getOwner() {
-        if(owner == null){
+        if (owner == null) {
             owner = new PlayerOwned(owningPlayerID);
         }
         return owner;
@@ -352,7 +352,7 @@ public class PropertyData extends Building {
     public Optional<Block> getSign() {
 
         World world = Bukkit.getWorld(signLocation.getWorldID());
-        if(world == null) {
+        if (world == null) {
             return Optional.empty();
         }
 
@@ -367,21 +367,20 @@ public class PropertyData extends Building {
 
         town.removeProperty(this);
 
-        if(getOwner() instanceof PlayerOwned playerOwnedClass){
+        if (getOwner() instanceof PlayerOwned playerOwnedClass) {
             ITanPlayer playerOwner = PlayerDataStorage.getInstance().get(playerOwnedClass.getPlayerID());
             playerOwner.removeProperty(this);
 
             Player player = Bukkit.getPlayer(UUID.fromString(playerOwnedClass.getPlayerID()));
             if (player != null) {
-                player.sendMessage(Lang.PROPERTY_DELETED.get(playerOwner.getLang()));
-                SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
+                TanChatUtils.message(player, Lang.PROPERTY_DELETED.get(playerOwner.getLang()), SoundEnum.MINOR_GOOD);
             }
         }
     }
 
     private void removeSign() {
         World world = Bukkit.getWorld(signLocation.getWorldID());
-        if(world == null) {
+        if (world == null) {
             return;
         }
 
@@ -401,25 +400,21 @@ public class PropertyData extends Building {
         double playerBalance = EconomyUtil.getBalance(buyer);
         double cost = getSalePrice();
         if (playerBalance < cost) {
-            buyer.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(langType, Double.toString(cost - playerBalance)));
-            SoundUtil.playSound(buyer, SoundEnum.MINOR_BAD);
+            TanChatUtils.message(buyer, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(langType, Double.toString(cost - playerBalance)), SoundEnum.MINOR_BAD);
             return;
         }
 
-        if(getOwner() instanceof PlayerOwned playerOwned){
+        if (getOwner() instanceof PlayerOwned playerOwned) {
             UUID exOwnerID = UUID.fromString(playerOwned.getPlayerID());
             OfflinePlayer exOwnerOffline = Bukkit.getOfflinePlayer(exOwnerID);
             Player exOwner = exOwnerOffline.getPlayer();
-            if (exOwner != null) {
-                exOwner.sendMessage(Lang.PROPERTY_SOLD_EX_OWNER.get(langType, getName(), buyer.getName(),Double.toString(getSalePrice())));
-                SoundUtil.playSound(exOwner, SoundEnum.GOOD);
-            }
+            TanChatUtils.message(exOwner, Lang.PROPERTY_SOLD_EX_OWNER.get(langType, getName(), buyer.getName(), Double.toString(getSalePrice())), SoundEnum.GOOD);
+
             ITanPlayer exOwnerData = PlayerDataStorage.getInstance().get(exOwnerID);
             exOwnerData.removeProperty(this);
         }
 
-        buyer.sendMessage(Lang.PROPERTY_SOLD_NEW_OWNER.get(langType, getName(),Double.toString(getSalePrice())));
-        SoundUtil.playSound(buyer, SoundEnum.GOOD);
+        TanChatUtils.message(buyer, Lang.PROPERTY_SOLD_NEW_OWNER.get(langType, getName(), Double.toString(getSalePrice())), SoundEnum.BAD);
 
         TownData town = getTown();
         double townCut = getSalePrice() - getBaseSalePrice();
@@ -441,7 +436,7 @@ public class PropertyData extends Building {
 
     public boolean isPlayerAllowed(ChunkPermissionType action, ITanPlayer tanPlayer) {
 
-        if(getPermissionManager().canPlayerDo(getTown(), action, tanPlayer)){
+        if (getPermissionManager().canPlayerDo(getTown(), action, tanPlayer)) {
             return true;
         }
         if (isRented())
@@ -532,17 +527,17 @@ public class PropertyData extends Building {
         boolean canInteract = getOwner().canAccess(tanPlayer);
 
         return iconManager.get(getIcon())
-                        .setName(getName())
-                        .setDescription(getBasicDescription(tanPlayer.getLang()))
-                        .setAction(event -> {
-                            if(!canInteract){
-                                SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
-                                return;
-                            }
-                            new PlayerPropertyManager(player, this, p -> basicGui.open());
+                .setName(getName())
+                .setDescription(getBasicDescription(tanPlayer.getLang()))
+                .setAction(event -> {
+                    if (!canInteract) {
+                        SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                        return;
+                    }
+                    new PlayerPropertyManager(player, this, p -> basicGui.open());
 
-                        })
-                        .asGuiItem(player);
+                })
+                .asGuiItem(player);
     }
 
     @Override

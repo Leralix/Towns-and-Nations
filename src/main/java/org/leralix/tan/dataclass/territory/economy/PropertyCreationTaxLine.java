@@ -17,6 +17,7 @@ import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.treasury.SetCreatePropertyTax;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 
 public class PropertyCreationTaxLine extends ProfitLine {
@@ -49,13 +50,13 @@ public class PropertyCreationTaxLine extends ProfitLine {
         GuiItem taxInfo = ItemBuilder.from(tax).asGuiItem(event -> {
             event.setCancelled(true);
             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)) {
-                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(lang));
+                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang));
                 return;
             }
             if (event.isLeftClick()) {
                 new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.PROPERTY_BUY_TAX);
             } else if (event.isRightClick()) {
-                player.sendMessage(Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
+                TanChatUtils.message(player, Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
                 PlayerChatListenerStorage.register(player, new SetCreatePropertyTax(territoryData, p -> new TreasuryMenu(player, territoryData)));
             }
         });

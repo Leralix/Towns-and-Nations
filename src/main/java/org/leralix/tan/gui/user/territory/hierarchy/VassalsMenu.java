@@ -44,7 +44,7 @@ public class VassalsMenu extends IteratorGUI {
         return ItemBuilder.from(addTown).asGuiItem(event -> {
             event.setCancelled(true);
             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
-                player.sendMessage(Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
+                TanChatUtils.message(player, Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
                 return;
             }
             PlayerGUI.openAddVassal(player, territoryData, 0);
@@ -71,7 +71,7 @@ public class VassalsMenu extends IteratorGUI {
                             return;
                         }
                         if (vassal.isCapital()) {
-                            player.sendMessage(Lang.CANT_KICK_REGIONAL_CAPITAL.get(tanPlayer, vassal.getName()));
+                            TanChatUtils.message(player, Lang.CANT_KICK_REGIONAL_CAPITAL.get(tanPlayer, vassal.getName()));
                             return;
                         }
                         PlayerGUI.openConfirmMenu(

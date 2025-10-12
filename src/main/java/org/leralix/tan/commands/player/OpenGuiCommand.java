@@ -7,6 +7,7 @@ import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,8 +43,8 @@ public class OpenGuiCommand extends PlayerSubCommand {
             getOpeningGui(player);
         }else if(args.length > 1){
             LangType lang = PlayerDataStorage.getInstance().get(player).getLang();
-            player.sendMessage(Lang.TOO_MANY_ARGS_ERROR.get(lang));
-            player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(lang, getSyntax()));
+            TanChatUtils.message(player, Lang.TOO_MANY_ARGS_ERROR.get(lang));
+            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(lang, getSyntax()));
         }
 
     }

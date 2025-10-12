@@ -14,12 +14,13 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanTerritory;
 
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
+
 
 public class AttackWonByAttackerNewsletter extends Newsletter {
 
@@ -96,8 +97,7 @@ public class AttackWonByAttackerNewsletter extends Newsletter {
         if(attackingTerritory == null || defendingTerritory == null)
             return;
 
-        player.sendMessage(Lang.ATTACK_WON_BY_ATTACKER.get(player, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName(), attackingTerritory.getBaseColoredName()) );
-        SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(player, Lang.ATTACK_WON_BY_ATTACKER.get(player, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName(), attackingTerritory.getBaseColoredName()), SoundEnum.MINOR_GOOD);
     }
 
     @Override

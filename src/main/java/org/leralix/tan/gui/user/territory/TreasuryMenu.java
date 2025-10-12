@@ -14,6 +14,7 @@ import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.DonateToTerritory;
 import org.leralix.tan.listeners.chat.events.RetrieveMoney;
 import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,7 @@ public class TreasuryMenu extends BasicGui {
                 .setName(Lang.GUI_TREASURY_DONATION.get(tanPlayer))
                 .setDescription(Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get(tanPlayer))
                 .setAction(action -> {
-                    player.sendMessage(Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new DonateToTerritory(territoryData));
                 })
                 .asGuiItem(player);
@@ -95,10 +96,10 @@ public class TreasuryMenu extends BasicGui {
                 .setDescription(Lang.GUI_TREASURY_RETRIEVE_GOLD_DESC1.get(tanPlayer))
                 .setAction(action -> {
                     if(!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)){
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                         return;
                     }
-                    player.sendMessage(Lang.PLAYER_WRITE_QUANTITY_IN_CHAT.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.PLAYER_WRITE_QUANTITY_IN_CHAT.get(tanPlayer));
                     PlayerChatListenerStorage.register(player,new RetrieveMoney(territoryData));
                 })
                 .asGuiItem(player);

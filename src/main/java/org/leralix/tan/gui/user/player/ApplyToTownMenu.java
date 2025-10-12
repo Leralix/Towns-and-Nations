@@ -55,19 +55,18 @@ public class ApplyToTownMenu extends IteratorGUI {
                 if(event.isLeftClick()){
 
                     if(!player.hasPermission("tan.base.town.join")){
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
                         return;
                     }
                     if(specificTownData.isPlayerAlreadyRequested(player)){
                         return;
                     }
                     if(!specificTownData.isRecruiting()){
-                        player.sendMessage(Lang.PLAYER_TOWN_NOT_RECRUITING.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.PLAYER_TOWN_NOT_RECRUITING.get(tanPlayer));
                         return;
                     }
                     specificTownData.addPlayerJoinRequest(player);
-                    player.sendMessage(Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(tanPlayer, specificTownData.getName()));
+                    TanChatUtils.message(player, Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(tanPlayer, specificTownData.getName()));
                     open();
                 }
                 if(event.isRightClick()){
@@ -75,7 +74,7 @@ public class ApplyToTownMenu extends IteratorGUI {
                         return;
                     }
                     specificTownData.removePlayerJoinRequest(player);
-                    player.sendMessage(Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(tanPlayer));
                     open();
                 }
             });

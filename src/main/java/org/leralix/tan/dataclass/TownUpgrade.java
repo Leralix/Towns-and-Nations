@@ -164,8 +164,7 @@ public class TownUpgrade {
         return ItemBuilder.from(upgradeItemStack).asGuiItem(event -> {
             event.setCancelled(true);
             if (!isPrerequisiteMet(townLevel)) {
-                player.sendMessage(Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.get(tanPlayer.getLang()));
-                SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                TanChatUtils.message(player, Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.get(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
                 return;
             }
             townData.upgradeTown(player, this, townUpgradeLevel);

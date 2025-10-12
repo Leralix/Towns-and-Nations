@@ -8,6 +8,7 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,23 +43,23 @@ public class ApplyTownServer extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         if(args.length < 3){
-            commandSender.sendMessage(Lang.INVALID_ARGUMENTS.getDefault());
+            TanChatUtils.message(commandSender, Lang.INVALID_ARGUMENTS);
             return;
         }
         String townID = args[1];
         String playerName = args[2];
         Player p = commandSender.getServer().getPlayer(playerName);
         if(p == null){
-            commandSender.sendMessage(Lang.PLAYER_NOT_FOUND.getDefault());
+            TanChatUtils.message(commandSender, Lang.PLAYER_NOT_FOUND);
             return;
         }
         if(townID == null){
-            commandSender.sendMessage(Lang.TOWN_NOT_FOUND.getDefault());
+            TanChatUtils.message(commandSender, Lang.TOWN_NOT_FOUND);
             return;
         }
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(p.getUniqueId().toString());
         if(tanPlayer.hasTown()){
-            commandSender.sendMessage(Lang.PLAYER_ALREADY_HAVE_TOWN.getDefault());
+            TanChatUtils.message(commandSender, Lang.PLAYER_ALREADY_HAVE_TOWN);
             return;
         }
         TownData townData = TownDataStorage.getInstance().get(townID);

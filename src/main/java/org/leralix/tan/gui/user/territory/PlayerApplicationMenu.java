@@ -60,20 +60,18 @@ public class PlayerApplicationMenu extends IteratorGUI {
                 event.setCancelled(true);
                 if(event.isLeftClick()){
                     if(!townData.doesPlayerHavePermission(tanPlayer, RolePermission.INVITE_PLAYER)){
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
                         return;
                     }
                     if(townData.isFull()){
-                        player.sendMessage(Lang.INVITATION_TOWN_FULL.get(tanPlayer));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.INVITATION_TOWN_FULL.get(tanPlayer), NOT_ALLOWED);
                         return;
                     }
                     townData.addPlayer(playerIterateData);
                 }
                 else if(event.isRightClick()){
                     if(!townData.doesPlayerHavePermission(tanPlayer, RolePermission.KICK_PLAYER)){
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                         return;
                     }
                     townData.removePlayerJoinRequest(playerIterateData.getID());

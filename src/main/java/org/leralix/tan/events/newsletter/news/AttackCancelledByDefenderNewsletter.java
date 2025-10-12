@@ -15,12 +15,12 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanTerritory;
 
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
 
 public class AttackCancelledByDefenderNewsletter extends Newsletter {
 
@@ -51,7 +51,7 @@ public class AttackCancelledByDefenderNewsletter extends Newsletter {
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
         TerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
         TerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
-        if(attackingTerritory == null || defendingTerritory == null)
+        if (attackingTerritory == null || defendingTerritory == null)
             return null;
 
         LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
@@ -64,7 +64,7 @@ public class AttackCancelledByDefenderNewsletter extends Newsletter {
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);
-            if(event.isRightClick()){
+            if (event.isRightClick()) {
                 markAsRead(player);
                 onClick.accept(player);
             }
@@ -96,11 +96,9 @@ public class AttackCancelledByDefenderNewsletter extends Newsletter {
     public void broadcast(Player player) {
         TerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
         TerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
-        if(attackingTerritory == null || defendingTerritory == null)
+        if (attackingTerritory == null || defendingTerritory == null)
             return;
-
-        SoundUtil.playSound(player, SoundEnum.WAR);
-        player.sendMessage(Lang.DEFENSIVE_SIDE_HAS_SURRENDER.get(player, defendingTerritory.getBaseColoredName(), attackingTerritory.getBaseColoredName()));
+        TanChatUtils.message(player, Lang.DEFENSIVE_SIDE_HAS_SURRENDER.get(player, defendingTerritory.getBaseColoredName(), attackingTerritory.getBaseColoredName()), SoundEnum.WAR);
     }
 
     @Override

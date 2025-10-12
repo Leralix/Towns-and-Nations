@@ -18,9 +18,11 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 public class CreateTown extends ChatListenerEvent {
     int cost;
+
     public CreateTown(int cost) {
         super();
         this.cost = cost;
@@ -30,21 +32,21 @@ public class CreateTown extends ChatListenerEvent {
     public boolean execute(Player player, String message) {
         double playerBalance = EconomyUtil.getBalance(player);
 
-        if(playerBalance < cost){
-            player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(player, Double.toString(cost - playerBalance)));
+        if (playerBalance < cost) {
+            TanChatUtils.message(player, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(player, Double.toString(cost - playerBalance)));
             return false;
         }
 
-        FileConfiguration config =  ConfigUtil.getCustomConfig(ConfigTag.MAIN);
+        FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         int maxSize = config.getInt("TownNameSize", 45);
 
-        if(message.length() > maxSize){
-            player.sendMessage(Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxSize)));
+        if (message.length() > maxSize) {
+            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxSize)));
             return false;
         }
 
-        if(TownDataStorage.getInstance().isNameUsed(message)){
-            player.sendMessage(Lang.NAME_ALREADY_USED.get(player));
+        if (TownDataStorage.getInstance().isNameUsed(message)) {
+            TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(player));
             return false;
         }
         createTown(player, message);
@@ -55,7 +57,7 @@ public class CreateTown extends ChatListenerEvent {
     public void createTown(Player player, String message) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         TownData newTown = TownDataStorage.getInstance().newTown(message, tanPlayer);
-        EconomyUtil.removeFromBalance(player,cost);
+        EconomyUtil.removeFromBalance(player, cost);
 
         ITanPlayer playerData = PlayerDataStorage.getInstance().get(player);
         EventManager.getInstance().callEvent(new TownCreatedInternalEvent(newTown, playerData));

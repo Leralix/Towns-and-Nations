@@ -6,8 +6,10 @@ import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.MapSettings;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +47,11 @@ public class ClaimCommand extends PlayerSubCommand {
     @Override
     public void perform(Player player, String[] args) {
 
+        LangType langType = LangType.of(player);
 
         if (!(args.length == 2 || args.length == 4)) {
-            player.sendMessage(Lang.SYNTAX_ERROR.getDefault());
-            player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
+            TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
+            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
             return;
         }
 
@@ -57,17 +60,17 @@ public class ClaimCommand extends PlayerSubCommand {
         if (args[1].equals("town")) {
             territoryData = TownDataStorage.getInstance().get(player);
             if (territoryData == null) {
-                player.sendMessage(Lang.PLAYER_NO_TOWN.get().getDefault());
+                TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get().getDefault());
                 return;
             }
         } else if (args[1].equals("region")) {
             territoryData = RegionDataStorage.getInstance().get(player);
             if (territoryData == null) {
-                player.sendMessage(Lang.TOWN_NO_REGION.get().getDefault());
+                TanChatUtils.message(player, Lang.TOWN_NO_REGION.get().getDefault());
                 return;
             }
         } else {
-            player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
+            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
             return;
         }
 

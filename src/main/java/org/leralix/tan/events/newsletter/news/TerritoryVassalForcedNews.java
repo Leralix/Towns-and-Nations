@@ -17,12 +17,13 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanTerritory;
 
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
+
 
 public class TerritoryVassalForcedNews extends Newsletter {
     private final String proposingTerritoryID;
@@ -99,8 +100,7 @@ public class TerritoryVassalForcedNews extends Newsletter {
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(forcedTerritoryID);
         if(receivingTerritory == null)
             return;
-        player.sendMessage(Lang.FORCED_VASSALAGE.get(player, receivingTerritory.getBaseColoredName(), proposingTerritory.getBaseColoredName()));
-        SoundUtil.playSound(player, SoundEnum.MINOR_BAD);
+        TanChatUtils.message(player, Lang.FORCED_VASSALAGE.get(player, receivingTerritory.getBaseColoredName(), proposingTerritory.getBaseColoredName()), SoundEnum.MINOR_BAD);
     }
 
     public String getProposingTerritoryID() {

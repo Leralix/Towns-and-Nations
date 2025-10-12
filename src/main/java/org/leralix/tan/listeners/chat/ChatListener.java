@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.RightClickListener;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 public class ChatListener implements Listener {
 
@@ -18,7 +19,7 @@ public class ChatListener implements Listener {
         Player player = event.getPlayer();
         if (message.equalsIgnoreCase(Lang.CANCEL_WORD.get(player))) {
 
-            player.sendMessage(Lang.CANCELLED_ACTION.get(player));
+            TanChatUtils.message(player, Lang.CANCELLED_ACTION.get(player));
             RightClickListener.removePlayer(player);
             PlayerChatListenerStorage.removePlayer(player);
             event.setCancelled(true);

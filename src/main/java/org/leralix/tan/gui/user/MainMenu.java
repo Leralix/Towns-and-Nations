@@ -16,6 +16,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,18 +38,16 @@ public class MainMenu extends BasicGui {
         int townPosition = 6;
         int playerPosition = 8;
 
-        if(Constants.enableRegion()){
-            if(Constants.enableNation()){
+        if (Constants.enableRegion()) {
+            if (Constants.enableNation()) {
                 gui.setItem(2, nationPosition, getNationButton(tanPlayer));
-            }
-            else {
+            } else {
                 regionPosition = 3;
                 townPosition = 5;
                 playerPosition = 7;
             }
             gui.setItem(2, regionPosition, getRegionButton(tanPlayer));
-        }
-        else {
+        } else {
             townPosition = 4;
             playerPosition = 6;
         }
@@ -56,7 +55,7 @@ public class MainMenu extends BasicGui {
         gui.setItem(2, townPosition, getTownButton(tanPlayer));
         gui.setItem(2, playerPosition, getPlayerButton(tanPlayer));
 
-        gui.setItem(3,1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory));
 
         gui.open(player);
     }
@@ -75,7 +74,7 @@ public class MainMenu extends BasicGui {
                 .setDescription(
                         Lang.CURRENT_SERVER_TIME.get(tanPlayer, timeManager.formatDateNowForServer()),
                         Lang.CURRENT_PLAYER_TIME.get(tanPlayer, timeManager.formatDateNowForPlayer(tanPlayer))
-                        )
+                )
                 .asGuiItem(player);
     }
 
@@ -84,8 +83,7 @@ public class MainMenu extends BasicGui {
                 .setName(Lang.GUI_KINGDOM_ICON.get(tanPlayer))
                 .setDescription(Lang.GUI_WARNING_STILL_IN_DEV.get(tanPlayer))
                 .setAction(action -> {
-                    player.sendMessage(Lang.GUI_WARNING_STILL_IN_DEV.get(tanPlayer));
-                    SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                    TanChatUtils.message(player, Lang.GUI_WARNING_STILL_IN_DEV.get(tanPlayer), SoundEnum.NOT_ALLOWED);
                 })
                 .asGuiItem(player);
     }
@@ -94,12 +92,11 @@ public class MainMenu extends BasicGui {
 
         List<String> description = new ArrayList<>();
 
-        if(tanPlayer.hasRegion()){
+        if (tanPlayer.hasRegion()) {
             RegionData regionData = tanPlayer.getRegion();
             description.add(Lang.GUI_REGION_ICON_DESC1_REGION.get(tanPlayer, regionData.getColoredName()));
             description.add(Lang.GUI_REGION_ICON_DESC2_REGION.get(tanPlayer, regionData.getRank(tanPlayer).getColoredName()));
-        }
-        else {
+        } else {
             description.add(Lang.GUI_REGION_ICON_DESC1_NO_REGION.get(tanPlayer));
         }
         description.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer));
@@ -115,11 +112,10 @@ public class MainMenu extends BasicGui {
     private GuiItem getTownButton(ITanPlayer tanPlayer) {
 
         List<String> description = new ArrayList<>();
-        if(tanPlayer.hasTown()){
+        if (tanPlayer.hasTown()) {
             description.add(Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(tanPlayer, tanPlayer.getTown().getColoredName()));
             description.add(Lang.GUI_TOWN_ICON_DESC2_HAVE_TOWN.get(tanPlayer, tanPlayer.getTown().getRank(tanPlayer).getColoredName()));
-        }
-        else {
+        } else {
             description.add(Lang.GUI_TOWN_ICON_DESC1_NO_TOWN.get(tanPlayer));
         }
         description.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer));

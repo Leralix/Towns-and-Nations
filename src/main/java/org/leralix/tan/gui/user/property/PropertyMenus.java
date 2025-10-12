@@ -17,6 +17,7 @@ import org.leralix.tan.listeners.chat.events.ChangePropertyRentPrice;
 import org.leralix.tan.listeners.chat.events.ChangePropertySalePrice;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.NumberUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.lib.data.SoundEnum.MINOR_BAD;
 import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
@@ -45,7 +46,7 @@ public abstract class PropertyMenus extends BasicGui {
                         Lang.GUI_GENERIC_CLICK_TO_RENAME.get(langType)
                 )
                 .setAction(action -> {
-                    player.sendMessage(Lang.ENTER_NEW_VALUE.get(langType));
+                    TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
                     PlayerChatListenerStorage.register(player, new ChangePropertyName(propertyData, p -> open()));
                 })
                 .asGuiItem(player);
@@ -59,7 +60,7 @@ public abstract class PropertyMenus extends BasicGui {
                         Lang.GUI_GENERIC_CLICK_TO_RENAME.get(langType)
                 )
                 .setAction(action -> {
-                    player.sendMessage(Lang.ENTER_NEW_VALUE.get(langType));
+                    TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
                     PlayerChatListenerStorage.register(player, new ChangePropertyDescription(propertyData, p -> open()));
                 })
                 .asGuiItem(player);
@@ -97,11 +98,11 @@ public abstract class PropertyMenus extends BasicGui {
                 )
                 .setAction(event -> {
                     if (event.getClick() == ClickType.RIGHT) {
-                        player.sendMessage(Lang.ENTER_NEW_VALUE.get(langType));
+                        TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
                         PlayerChatListenerStorage.register(player, new ChangePropertySalePrice(propertyData, p -> open()));
                     } else if (event.getClick() == ClickType.LEFT) {
                         if (propertyData.isRented()) {
-                            player.sendMessage(Lang.PROPERTY_ALREADY_RENTED.get(langType));
+                            TanChatUtils.message(player, Lang.PROPERTY_ALREADY_RENTED.get(langType));
                             return;
                         }
                         propertyData.swapIsForSale();
@@ -130,11 +131,11 @@ public abstract class PropertyMenus extends BasicGui {
                 )
                 .setAction(event -> {
                     if (event.getClick() == ClickType.RIGHT) {
-                        player.sendMessage(Lang.ENTER_NEW_VALUE.get(langType));
+                        TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
                         PlayerChatListenerStorage.register(player, new ChangePropertyRentPrice(propertyData, p -> open()));
                     } else if (event.getClick() == ClickType.LEFT) {
                         if (propertyData.isRented()) {
-                            player.sendMessage(Lang.PROPERTY_ALREADY_RENTED.get(langType));
+                            TanChatUtils.message(player, Lang.PROPERTY_ALREADY_RENTED.get(langType));
                             return;
                         }
                         propertyData.swapIsRent();
@@ -173,7 +174,7 @@ public abstract class PropertyMenus extends BasicGui {
                 )
                 .setAction(event -> {
                     if (isRentedAndPlayerIsNotRenter) {
-                        player.sendMessage(Lang.CANNOT_MANAGE_AUTHORIZED_PLAYER_IF_PROPERTY_IS_RENTED.get(langType));
+                        TanChatUtils.message(player, Lang.CANNOT_MANAGE_AUTHORIZED_PLAYER_IF_PROPERTY_IS_RENTED.get(langType));
                         return;
                     }
                     new PropertyChunkSettingsMenu(player, propertyData, this);
@@ -192,13 +193,9 @@ public abstract class PropertyMenus extends BasicGui {
                     Player renter = propertyData.getRenterPlayer();
                     propertyData.expelRenter(false);
 
-                    player.sendMessage(Lang.PROPERTY_RENTER_EXPELLED_OWNER_SIDE.get(langType));
-                    SoundUtil.playSound(player, MINOR_GOOD);
+                    TanChatUtils.message(player, Lang.PROPERTY_RENTER_EXPELLED_OWNER_SIDE.get(langType), MINOR_GOOD);
+                    TanChatUtils.message(renter, Lang.PROPERTY_RENTER_EXPELLED_RENTER_SIDE.get(renter, propertyData.getName()), MINOR_BAD);
 
-                    if (renter != null) {
-                        renter.sendMessage(Lang.PROPERTY_RENTER_EXPELLED_RENTER_SIDE.get(langType, propertyData.getName()));
-                        SoundUtil.playSound(renter, MINOR_BAD);
-                    }
                     open();
                 })
                 .asGuiItem(player);

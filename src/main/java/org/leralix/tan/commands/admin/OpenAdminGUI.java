@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.gui.admin.AdminMainMenu;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
@@ -39,8 +40,9 @@ public class OpenAdminGUI extends PlayerSubCommand {
         if (args.length == 1){
             new AdminMainMenu(player);
         }else if(args.length > 1){
-            player.sendMessage(Lang.TOO_MANY_ARGS_ERROR.get(player));
-            player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(player, getSyntax()));
+            LangType langType = LangType.of(player);
+            TanChatUtils.message(player, Lang.TOO_MANY_ARGS_ERROR.get(langType));
+            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
         }
 
     }

@@ -18,6 +18,7 @@ import org.leralix.tan.listeners.chat.events.treasury.SetRentPropertyRate;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.StringUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 
 public class PropertyRentTaxLine extends ProfitLine {
@@ -56,14 +57,14 @@ public class PropertyRentTaxLine extends ProfitLine {
             event.setCancelled(true);
 
             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)) {
-                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(lang));
+                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang));
                 return;
             }
 
             if (event.isLeftClick()) {
                 new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.PROPERTY_RENT_TAX);
             } else if (event.isRightClick()) {
-                player.sendMessage(Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
+                TanChatUtils.message(player, Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
                 PlayerChatListenerStorage.register(player, new SetRentPropertyRate(territoryData));
             }
         });

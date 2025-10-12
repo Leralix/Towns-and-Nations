@@ -47,7 +47,7 @@ public class TerritoryChunkSettingsMenu extends IteratorGUI {
                     .setAction(event -> {
                         event.setCancelled(true);
                         if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_CLAIM_SETTINGS)) {
-                            player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                             return;
                         }
                         if (event.isLeftClick()) {

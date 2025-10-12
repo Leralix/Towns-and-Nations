@@ -15,6 +15,7 @@ import org.leralix.tan.listeners.chat.events.CreateTown;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
@@ -46,18 +47,16 @@ public class NoTownMenu extends BasicGui {
                         Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer))
                 .setAction( action -> {
                     if(!player.hasPermission("tan.base.town.create")){
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
                         return;
                     }
 
                     double playerMoney = EconomyUtil.getBalance(player);
                     if (playerMoney < townPrice) {
-                        player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(tanPlayer, Double.toString(townPrice - playerMoney)));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(tanPlayer, Double.toString(townPrice - playerMoney)), NOT_ALLOWED);
                     }
                     else {
-                        player.sendMessage(Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get(tanPlayer));
                         PlayerChatListenerStorage.register(player, new CreateTown(townPrice));
                     }
                 })

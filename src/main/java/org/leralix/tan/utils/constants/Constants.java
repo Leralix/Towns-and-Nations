@@ -109,6 +109,12 @@ public class Constants {
     private static int landmarkStorageCapacity;
     private static int landmarkMaxNameSize;
 
+    //Teleportation
+    private static int timeBeforeTeleport;
+    private static boolean cancelTeleportOnMoveHead;
+    private static boolean cancelTeleportOnMovePosition;
+    private static boolean cancelTeleportOnDamage;
+
     private static final String ALWAYS = "ALWAYS";
 
     public static void init(FileConfiguration config) {
@@ -222,6 +228,11 @@ public class Constants {
         landmarkStorageCapacity = config.getInt("landmarkStorageCapacity", 7);
         landmarkMaxNameSize = config.getInt("landmarkNameMaxSize", 25);
 
+        //Teleportation
+        timeBeforeTeleport = config.getInt("timeBeforeTeleport", 5);
+        cancelTeleportOnMoveHead = config.getBoolean("cancelTeleportOnMoveHead", false);
+        cancelTeleportOnMovePosition = config.getBoolean("cancelTeleportOnMovePosition", true);
+        cancelTeleportOnDamage = config.getBoolean("cancelTeleportOnDamage", true);
     }
 
     public static boolean onlineMode() {
@@ -496,5 +507,21 @@ public class Constants {
 
     public static int getLandmarkMaxNameSize() {
         return landmarkMaxNameSize;
+    }
+
+    public static boolean isCancelTeleportOnDamage() {
+        return cancelTeleportOnDamage;
+    }
+
+    public static boolean isCancelTeleportOnMovePosition() {
+        return cancelTeleportOnMovePosition;
+    }
+
+    public static boolean isCancelTeleportOnMoveHead() {
+        return cancelTeleportOnMoveHead;
+    }
+
+    public static int getTimeBeforeTeleport() {
+        return timeBeforeTeleport;
     }
 }

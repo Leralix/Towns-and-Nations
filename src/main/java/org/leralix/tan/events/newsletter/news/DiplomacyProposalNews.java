@@ -19,6 +19,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.enums.EDiplomacyState;
 import org.tan.api.interfaces.TanTerritory;
 
@@ -26,7 +27,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
-import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
+
 
 public class DiplomacyProposalNews extends Newsletter {
     private final String proposingTerritoryID;
@@ -66,7 +67,6 @@ public class DiplomacyProposalNews extends Newsletter {
 
     @Override
     public void broadcast(Player player) {
-        SoundUtil.playSound(player, MINOR_GOOD);
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         if(proposingTerritory == null)
             return;
@@ -74,8 +74,13 @@ public class DiplomacyProposalNews extends Newsletter {
         if(receivingTerritory == null)
             return;
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        player.sendMessage(Lang.DIPLOMACY_PROPOSAL_NEWSLETTER.get(player, proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName(tanPlayer.getLang())));
-        SoundUtil.playSound(player, MINOR_GOOD);
+        TanChatUtils.message(player,
+                Lang.DIPLOMACY_PROPOSAL_NEWSLETTER.get(
+                        player,
+                        proposingTerritory.getCustomColoredName().toLegacyText(),
+                        receivingTerritory.getCustomColoredName().toLegacyText(),
+                        wantedRelation.getColoredName(tanPlayer.getLang())),
+                SoundEnum.MINOR_GOOD);
     }
 
     @Override
@@ -123,8 +128,7 @@ public class DiplomacyProposalNews extends Newsletter {
             event.setCancelled(true);
             if(event.isLeftClick()){
                 if(receivingTerritory.doesPlayerHavePermission(player, RolePermission.MANAGE_TOWN_RELATION)){
-                    player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(lang));
-                    SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                    TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang), SoundEnum.NOT_ALLOWED);
                     return;
                 }
                 new OpenDiplomacyProposalsMenu(player, receivingTerritory);

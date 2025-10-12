@@ -16,6 +16,7 @@ import org.leralix.tan.storage.stored.TruceStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.constants.RelationConstant;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +66,7 @@ public class RemoveRelationMenu extends IteratorGUI {
                     territoryData.setRelation(otherTerritory, TownRelation.NEUTRAL);
                 } else {
                     otherTerritory.receiveDiplomaticProposal(territoryData, TownRelation.NEUTRAL);
-                    player.sendMessage(Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(tanPlayer, otherTerritory.getName()));
-                    SoundUtil.playSound(player, MINOR_GOOD);
+                    TanChatUtils.message(player, Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(tanPlayer, otherTerritory.getName()), MINOR_GOOD);
                 }
                 new OpenRelationMenu(player, territoryData, relation);
             });

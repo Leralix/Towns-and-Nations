@@ -4,8 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
+import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.SudoPlayerStorage;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +54,7 @@ public class SudoPlayer extends SubCommand {
         else if (args.length == 2) {
             Player target = Bukkit.getPlayer(args[1]);
             if (target == null) {
-                commandSender.sendMessage(Lang.PLAYER_NOT_FOUND.getDefault());
+                TanChatUtils.message(commandSender, Lang.PLAYER_NOT_FOUND, SoundEnum.NOT_ALLOWED);
                 return;
             }
             if (commandSender instanceof Player player && target.getUniqueId().equals(player.getUniqueId())){
@@ -63,8 +65,8 @@ public class SudoPlayer extends SubCommand {
 
         }
         else {
-            commandSender.sendMessage(Lang.NOT_ENOUGH_ARGS_ERROR.getDefault());
-            commandSender.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
+            TanChatUtils.message(commandSender, Lang.NOT_ENOUGH_ARGS_ERROR, SoundEnum.NOT_ALLOWED);
+            TanChatUtils.message(commandSender, Lang.CORRECT_SYNTAX_INFO);
         }
     }
 }

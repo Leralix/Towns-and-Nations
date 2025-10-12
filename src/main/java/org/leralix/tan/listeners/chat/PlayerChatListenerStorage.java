@@ -7,6 +7,7 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class PlayerChatListenerStorage {
     public static void register(Player player, ChatListenerEvent category) {
         chatStorage.put(player, category);
         LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
-        player.sendMessage(Lang.WRITE_CANCEL_TO_CANCEL.get(langType, Lang.CANCEL_WORD.get(langType)));
+        TanChatUtils.message(player, Lang.WRITE_CANCEL_TO_CANCEL.get(langType, Lang.CANCEL_WORD.get(langType)));
         SoundUtil.playSound(player, SoundEnum.WRITE);
         player.closeInventory();
     }
@@ -44,7 +45,7 @@ public class PlayerChatListenerStorage {
         }
         else {
             LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
-            player.sendMessage(Lang.WRITE_CANCEL_TO_CANCEL.get(langType, Lang.CANCEL_WORD.get(langType)));
+            TanChatUtils.message(player, Lang.WRITE_CANCEL_TO_CANCEL.get(langType, Lang.CANCEL_WORD.get(langType)));
         }
     }
 }

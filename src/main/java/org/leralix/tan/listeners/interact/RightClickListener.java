@@ -10,6 +10,7 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.HashMap;
 
@@ -37,7 +38,7 @@ public class RightClickListener implements Listener {
             }
             if(state == ListenerState.FAILURE){
                 LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
-                player.sendMessage(Lang.WRITE_CANCEL_TO_CANCEL.get(langType, Lang.CANCEL_WORD.get(langType)));
+                TanChatUtils.message(player, Lang.WRITE_CANCEL_TO_CANCEL.get(langType, Lang.CANCEL_WORD.get(langType)));
             }
         }
     }
@@ -48,9 +49,8 @@ public class RightClickListener implements Listener {
 
     public static void register(Player player, RightClickListenerEvent rightClickListenerEvent){
         player.closeInventory();
-        SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
         LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
-        player.sendMessage(Lang.WRITE_CANCEL_TO_CANCEL.get(langType, Lang.CANCEL_WORD.get(langType)));
+        TanChatUtils.message(player, Lang.WRITE_CANCEL_TO_CANCEL.get(langType, Lang.CANCEL_WORD.get(langType)), SoundEnum.MINOR_GOOD);
         events.put(player, rightClickListenerEvent);
     }
 

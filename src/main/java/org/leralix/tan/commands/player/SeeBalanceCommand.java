@@ -6,6 +6,7 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,10 +40,10 @@ public class SeeBalanceCommand extends PlayerSubCommand {
     public void perform(Player player, String[] args) {
         LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
         if (args.length == 1) {
-            player.sendMessage(Lang.BAL_AMOUNT.get(langType, Double.toString(EconomyUtil.getBalance(PlayerDataStorage.getInstance().get(player)))));
+            TanChatUtils.message(player, Lang.BAL_AMOUNT.get(langType, Double.toString(EconomyUtil.getBalance(PlayerDataStorage.getInstance().get(player)))));
         } else if (args.length > 1) {
-            player.sendMessage(Lang.TOO_MANY_ARGS_ERROR.get(langType));
-            player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
+            TanChatUtils.message(player, Lang.TOO_MANY_ARGS_ERROR.get(langType));
+            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
         }
     }
 

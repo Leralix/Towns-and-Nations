@@ -59,6 +59,7 @@ import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.StringUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.legacy.CurrentAttack;
@@ -129,7 +130,7 @@ public abstract class TerritoryData {
 
     public void rename(Player player, int cost, String newName) {
         if (getBalance() < cost) {
-            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), Double.toString(cost - getBalance())));
+            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), Double.toString(cost - getBalance())));
             return;
         }
 
@@ -138,8 +139,7 @@ public abstract class TerritoryData {
         removeFromBalance(cost);
         FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player.getName(), name, newName));
 
-        player.sendMessage(Lang.CHANGE_MESSAGE_SUCCESS.get(player, name, newName));
-        SoundUtil.playSound(player, SoundEnum.GOOD);
+        TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.get(player, name, newName), SoundEnum.GOOD);
         rename(newName);
     }
 
@@ -525,23 +525,23 @@ public abstract class TerritoryData {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
-            player.sendMessage(Lang.CHUNK_IS_BLACKLISTED.get(player));
+            TanChatUtils.message(player, Lang.CHUNK_IS_BLACKLISTED.get(player));
             return false;
         }
 
         if (!doesPlayerHavePermission(tanPlayer, RolePermission.CLAIM_CHUNK)) {
-            player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(player));
+            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(player));
             return false;
         }
 
         if (!canClaimMoreChunk()) {
-            player.sendMessage(Lang.MAX_CHUNK_LIMIT_REACHED.get(player));
+            TanChatUtils.message(player, Lang.MAX_CHUNK_LIMIT_REACHED.get(player));
             return false;
         }
 
         int cost = getClaimCost();
         if (getBalance() < cost) {
-            player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), Double.toString(cost - getBalance())));
+            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), Double.toString(cost - getBalance())));
             return false;
         }
 
@@ -558,7 +558,7 @@ public abstract class TerritoryData {
         if(getNumberOfClaimedChunk() == 0) {
 
             if(ChunkUtil.isInBufferZone(chunkData, this)) {
-                player.sendMessage(Lang.CHUNK_IN_BUFFER_ZONE.get(player, Integer.toString(Constants.territoryClaimBufferZone())));
+                TanChatUtils.message(player, Lang.CHUNK_IN_BUFFER_ZONE.get(player, Integer.toString(Constants.territoryClaimBufferZone())));
                 return false;
             }
             return true;
@@ -566,7 +566,7 @@ public abstract class TerritoryData {
 
 
         if (!NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTerritory(chunk, getID())) {
-            player.sendMessage(Lang.CHUNK_NOT_ADJACENT.get(player));
+            TanChatUtils.message(player, Lang.CHUNK_NOT_ADJACENT.get(player));
             return false;
         }
         return true;
@@ -611,11 +611,11 @@ public abstract class TerritoryData {
         double playerBalance = EconomyUtil.getBalance(player);
 
         if (playerBalance < amount) {
-            player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY.get(langType));
+            TanChatUtils.message(player, Lang.PLAYER_NOT_ENOUGH_MONEY.get(langType));
             return;
         }
         if (amount <= 0) {
-            player.sendMessage(Lang.PAY_MINIMUM_REQUIRED.get(langType));
+            TanChatUtils.message(player, Lang.PAY_MINIMUM_REQUIRED.get(langType));
             return;
         }
 
@@ -624,8 +624,7 @@ public abstract class TerritoryData {
         addToBalance(amount);
 
         TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerDonationHistory(this, player, amount));
-        player.sendMessage(Lang.PLAYER_SEND_MONEY_SUCCESS.get(langType, Double.toString(amount) , getBaseColoredName()));
-        SoundUtil.playSound(player, SoundEnum.MINOR_LEVEL_UP);
+        TanChatUtils.message(player, Lang.PLAYER_SEND_MONEY_SUCCESS.get(langType, Double.toString(amount) , getBaseColoredName()), SoundEnum.MINOR_GOOD);
     }
 
     public abstract void openMainMenu(Player player);
@@ -695,8 +694,7 @@ public abstract class TerritoryData {
                 event.setCancelled(true);
                 if (event.isLeftClick()) {
                     if (haveOverlord()) {
-                        player.sendMessage(Lang.TOWN_ALREADY_HAVE_OVERLORD.get(langType));
-                        SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.TOWN_ALREADY_HAVE_OVERLORD.get(langType), SoundEnum.NOT_ALLOWED);
                         return;
                     }
 

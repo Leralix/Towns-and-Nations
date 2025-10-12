@@ -9,6 +9,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,8 +40,8 @@ public class UnclaimCommand extends PlayerSubCommand {
 
         LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
         if (!(args.length == 1 || args.length == 4)) {
-            player.sendMessage(Lang.SYNTAX_ERROR.get(langType));
-            player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()) );
+            TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
+            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()) );
             return;
         }
 
@@ -56,7 +57,7 @@ public class UnclaimCommand extends PlayerSubCommand {
         }
 
         if(!NewClaimedChunkStorage.getInstance().isChunkClaimed(chunk)){
-            player.sendMessage(Lang.CHUNK_NOT_CLAIMED.get(langType));
+            TanChatUtils.message(player, Lang.CHUNK_NOT_CLAIMED.get(langType));
             return;
         }
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);

@@ -9,6 +9,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +49,7 @@ public class ManageRankPermissionMenu extends IteratorGUI {
                         .setAction(event -> {
                             event.setCancelled(true);
                             if(!territoryData.getRank(player).hasPermission(permission) && !territoryData.isLeader(player)) {
-                                player.sendMessage(Lang.ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT.get(player));
-                                SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                                TanChatUtils.message(player, Lang.ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT.get(player), SoundEnum.NOT_ALLOWED);
                                 return;
                             }
                             rankData.switchPermission(permission);

@@ -7,6 +7,7 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,24 +43,24 @@ class QuitTownServer extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         if(args.length < 2){
-            commandSender.sendMessage(Lang.INVALID_ARGUMENTS.getDefault());
+            TanChatUtils.message(commandSender, Lang.INVALID_ARGUMENTS);
             return;
         }
 
 
         Player p = commandSender.getServer().getPlayer(args[1]);
         if(p == null){
-            commandSender.sendMessage(Lang.PLAYER_NOT_FOUND.getDefault());
+            TanChatUtils.message(commandSender, Lang.PLAYER_NOT_FOUND);
             return;
         }
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(p);
         TownData townData = tanPlayer.getTown();
         if(townData == null){
-            commandSender.sendMessage(Lang.PLAYER_NO_TOWN.get(tanPlayer));
+            TanChatUtils.message(commandSender, Lang.PLAYER_NO_TOWN);
             return;
         }
         if(townData.isLeader(tanPlayer)){
-            commandSender.sendMessage(Lang.LEADER_CANNOT_QUIT_TOWN.get(tanPlayer));
+            TanChatUtils.message(commandSender, Lang.LEADER_CANNOT_QUIT_TOWN);
             return;
         }
         townData.removePlayer(tanPlayer);

@@ -5,6 +5,7 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.function.Consumer;
 
@@ -23,12 +24,12 @@ public class ChangeTownTag extends ChatListenerEvent {
 
         int size = Constants.getPrefixSize();
         if(message.length() != size){
-            player.sendMessage(Lang.MESSAGE_NOT_RIGHT_SIZE.get(player, Integer.toString(size)));
+            TanChatUtils.message(player, Lang.MESSAGE_NOT_RIGHT_SIZE.get(player, Integer.toString(size)));
             return false;
         }
 
         townData.setTownTag(message);
-        player.sendMessage(Lang.CHANGE_MESSAGE_SUCCESS.get(player));
+        TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.get(player));
         openGui(guiCallback, player);
         return true;
     }

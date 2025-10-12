@@ -53,7 +53,7 @@ public class SetMoneyTest {
     @Test
     void wrongValue() {
 
-        server.dispatchCommand(playerMock, "tanadmin addmoney TestPlayer 50€");
+        server.dispatchCommand(playerMock, "tanadmin setmoney TestPlayer 50€");
 
         assertEquals(Constants.getStartingBalance(), tanPlayer.getBalance());
     }

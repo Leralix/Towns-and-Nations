@@ -13,9 +13,11 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.property.PropertyMenus;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.UUID;
 
+import static org.leralix.lib.data.SoundEnum.MINOR_BAD;
 import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
 
 public class RenterPropertyMenu extends PropertyMenus {
@@ -45,13 +47,12 @@ public class RenterPropertyMenu extends PropertyMenus {
                 .setAction(action -> {
                     propertyData.expelRenter(true);
 
-                    player.sendMessage(Lang.PROPERTY_RENTER_LEAVE_RENTER_SIDE.get(tanPlayer, propertyData.getName()));
-                    SoundUtil.playSound(player,MINOR_GOOD);
+                    TanChatUtils.message(player, Lang.PROPERTY_RENTER_LEAVE_RENTER_SIDE.get(tanPlayer, propertyData.getName()), MINOR_GOOD);
 
                     AbstractOwner owner = propertyData.getOwner();
                     if(owner instanceof PlayerOwned playerOwned){
                         Player playerOwn = Bukkit.getPlayer(UUID.fromString(playerOwned.getPlayerID()));
-                        playerOwn.sendMessage(Lang.PROPERTY_RENTER_LEAVE_OWNER_SIDE.get(playerOwn, player.getName(), propertyData.getName()));
+                        TanChatUtils.message(playerOwn, Lang.PROPERTY_RENTER_LEAVE_OWNER_SIDE.get(playerOwn, player.getName(), propertyData.getName()), MINOR_BAD);
                     }
 
                     player.closeInventory();

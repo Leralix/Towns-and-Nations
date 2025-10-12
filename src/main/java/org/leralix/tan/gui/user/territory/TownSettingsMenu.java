@@ -20,6 +20,7 @@ import org.leralix.tan.listeners.interact.events.ChangeCapital;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.file.FileUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +81,7 @@ public class TownSettingsMenu extends SettingsMenus {
                 .setDescription(desc)
                 .setAction(action -> {
                             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
-                                player.sendMessage(Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
+                                TanChatUtils.message(player, Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
                                 return;
                             }
                             RightClickListener.register(player, new ChangeCapital(townData, p -> open()));
@@ -97,7 +98,7 @@ public class TownSettingsMenu extends SettingsMenus {
                         Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(langType)
                 )
                 .setAction( action -> {
-                    player.sendMessage(Lang.ENTER_NEW_VALUE.get(langType));
+                    TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
                     PlayerChatListenerStorage.register(player, new ChangeTownTag(townData, p -> open()));
                 })
                 .asGuiItem(player);
@@ -114,29 +115,26 @@ public class TownSettingsMenu extends SettingsMenus {
                     event.setCancelled(true);
 
                     if (!player.hasPermission("tan.base.town.quit")) {
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(langType));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType), NOT_ALLOWED);
                         return;
                     }
 
                     if (townData.isLeader(tanPlayer)) {
-                        SoundUtil.playSound(player, NOT_ALLOWED);
-                        player.sendMessage(Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.get(tanPlayer), NOT_ALLOWED);
                         return;
                     }
 
                     if (townData.haveOverlord()) {
                         RegionData regionData = townData.getRegion();
                         if (regionData.isLeader(tanPlayer)) {
-                            SoundUtil.playSound(player, NOT_ALLOWED);
-                            player.sendMessage(Lang.CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER.get(tanPlayer));
+                            TanChatUtils.message(player, Lang.CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER.get(tanPlayer), NOT_ALLOWED);
                         }
                     }
 
                     PlayerGUI.openConfirmMenu(player, Lang.GUI_CONFIRM_PLAYER_LEAVE_TOWN.get(tanPlayer, tanPlayer.getNameStored()), confirm -> {
                         player.closeInventory();
                         townData.removePlayer(tanPlayer);
-                        player.sendMessage(Lang.CHAT_PLAYER_LEFT_THE_TOWN.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.CHAT_PLAYER_LEFT_THE_TOWN.get(tanPlayer));
                         townData.broadcastMessageWithSound(Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(tanPlayer.getNameStored()), BAD);
                     }, remove -> open());
                 })
@@ -154,17 +152,16 @@ public class TownSettingsMenu extends SettingsMenus {
                 .setAction(event -> {
                     event.setCancelled(true);
                     if (!townData.isLeader(tanPlayer)) {
-                        player.sendMessage(Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER.get(tanPlayer));
                         return;
                     }
                     if (townData.isCapital()) {
-                        player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, townData.getOverlord().get().getBaseColoredName()));
+                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, townData.getOverlord().get().getBaseColoredName()));
                         return;
                     }
 
                     if (!player.hasPermission("tan.base.town.disband")) {
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
                         return;
                     }
 
@@ -210,7 +207,7 @@ public class TownSettingsMenu extends SettingsMenus {
                         new SelectNewOwnerForTownMenu(player, townData);
                     }
                     else{
-                        player.sendMessage(Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
                     }
                 })
                 .asGuiItem(player);

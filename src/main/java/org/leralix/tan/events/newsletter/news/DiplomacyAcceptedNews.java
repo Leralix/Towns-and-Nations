@@ -16,6 +16,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.enums.EDiplomacyState;
 import org.tan.api.interfaces.TanTerritory;
 
@@ -23,7 +24,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
-import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
+
 
 public class DiplomacyAcceptedNews extends Newsletter {
     private final String proposingTerritoryID;
@@ -70,7 +71,6 @@ public class DiplomacyAcceptedNews extends Newsletter {
 
     @Override
     public void broadcast(Player player) {
-        SoundUtil.playSound(player, MINOR_GOOD);
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         if(proposingTerritory == null)
             return;
@@ -81,12 +81,22 @@ public class DiplomacyAcceptedNews extends Newsletter {
         LangType lang = PlayerDataStorage.getInstance().get(player).getLang();
 
         if(isRelationWorse){
-            player.sendMessage(Lang.BROADCAST_RELATION_WORSEN.get(player, proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName(lang)));
-            SoundUtil.playSound(player, SoundEnum.BAD);
+            TanChatUtils.message(player,
+                    Lang.BROADCAST_RELATION_WORSEN.get(
+                            player,
+                            proposingTerritory.getCustomColoredName().toLegacyText(),
+                            receivingTerritory.getCustomColoredName().toLegacyText(),
+                            wantedRelation.getColoredName(lang)),
+                    SoundEnum.BAD);
         }
         else{
-            player.sendMessage(Lang.BROADCAST_RELATION_IMPROVE.get(player, proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName(lang)));
-            SoundUtil.playSound(player, SoundEnum.GOOD);
+            TanChatUtils.message(player,
+                    Lang.BROADCAST_RELATION_IMPROVE.get(
+                            player,
+                            proposingTerritory.getCustomColoredName().toLegacyText(),
+                            receivingTerritory.getCustomColoredName().toLegacyText(),
+                            wantedRelation.getColoredName(lang)),
+                    SoundEnum.GOOD);
        }
     }
 

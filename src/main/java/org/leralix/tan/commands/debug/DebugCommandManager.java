@@ -10,7 +10,6 @@ public class DebugCommandManager extends CommandManager {
 
         addSubCommand(new SaveData());
         addSubCommand(new CreateBackup());
-        addSubCommand(new ColorCode());
 
         addSubCommand(new SkipDay());
         addSubCommand(new PlaySound());

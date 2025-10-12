@@ -13,6 +13,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.constants.RelationConstant;
 import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +91,7 @@ public class OpenDiplomacyMenu extends BasicGui {
                 )
                 .setAction(action -> {
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TOWN_RELATION)) {
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                         return;
                     }
                     new OpenDiplomacyProposalsMenu(player, territoryData);

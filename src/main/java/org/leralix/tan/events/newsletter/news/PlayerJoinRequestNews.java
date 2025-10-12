@@ -18,13 +18,14 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.TanTown;
 
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
+
 
 public class PlayerJoinRequestNews extends Newsletter {
 
@@ -68,8 +69,12 @@ public class PlayerJoinRequestNews extends Newsletter {
         TownData townData = TownDataStorage.getInstance().get(townID);
         if(townData == null)
             return;
-        player.sendMessage(Lang.PLAYER_APPLICATION_NEWSLETTER.get(player, tanPlayer.getNameStored(), townData.getBaseColoredName()));
-        SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(player,
+                Lang.PLAYER_APPLICATION_NEWSLETTER.get(
+                        player,
+                        tanPlayer.getNameStored(),
+                        townData.getBaseColoredName()),
+                SoundEnum.MINOR_GOOD);
     }
 
     @Override

@@ -203,8 +203,7 @@ public class PlayerGUI {
             GuiItem guiItem = ItemBuilder.from(generalChunkSetting.getIcon(generalSettings.getOrDefault(generalChunkSetting, false), tanPlayer.getLang())).asGuiItem(event -> {
                 event.setCancelled(true);
                 if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_CLAIM_SETTINGS)) {
-                    player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
-                    SoundUtil.playSound(player, NOT_ALLOWED);
+                    TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
                     return;
                 }
                 generalSettings.put(generalChunkSetting, !generalSettings.get(generalChunkSetting));
@@ -250,7 +249,7 @@ public class PlayerGUI {
             GuiItem mobItem = new GuiItem(mobIcon, event -> {
                 event.setCancelled(true);
                 if (!townData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_MOB_SPAWN)) {
-                    player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                     return;
                 }
                 if (upgradeStatus.isUnlocked()) {
@@ -258,7 +257,7 @@ public class PlayerGUI {
                     SoundUtil.playSound(player, ADD);
                 } else {
                     if (townData.getBalance() < cost) {
-                        player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), Double.toString(cost - townData.getBalance())));
+                        TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), Double.toString(cost - townData.getBalance())));
                         return;
                     }
                     townData.removeFromBalance(cost);
@@ -295,7 +294,7 @@ public class PlayerGUI {
             GuiItem guiItem = ItemBuilder.from(icon).asGuiItem(event -> {
                 event.setCancelled(true);
                 if (!territoryData.doesPlayerHavePermission(playerStat, RolePermission.MANAGE_CLAIM_SETTINGS)) {
-                    player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                     return;
                 }
                 if (event.isRightClick()) {
@@ -317,8 +316,7 @@ public class PlayerGUI {
         GuiItem addButton = ItemBuilder.from(addIcon).asGuiItem(event -> {
             event.setCancelled(true);
             if (!territoryData.doesPlayerHavePermission(playerStat, RolePermission.MANAGE_CLAIM_SETTINGS)) {
-                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
-                SoundUtil.playSound(player, NOT_ALLOWED);
+                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
                 return;
             }
             openAddPlayerForChunkPermission(player, territoryData, type, 0);
@@ -349,7 +347,7 @@ public class PlayerGUI {
             GuiItem guiItem = ItemBuilder.from(icon).asGuiItem(event -> {
                 event.setCancelled(true);
                 if (!territoryData.doesPlayerHavePermission(playerStat, RolePermission.MANAGE_CLAIM_SETTINGS)) {
-                    player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                     return;
                 }
                 territoryData.getPermission(type).addSpecificPlayerPermission(playerToAdd.getUniqueId().toString());
@@ -448,9 +446,7 @@ public class PlayerGUI {
             return;
         }
         TownData owner = TownDataStorage.getInstance().get(landmark.getOwnerID());
-        player.sendMessage(Lang.LANDMARK_ALREADY_CLAIMED.get(tanPlayer, owner.getName()));
-        SoundUtil.playSound(player, MINOR_BAD);
-
+        TanChatUtils.message(player, Lang.LANDMARK_ALREADY_CLAIMED.get(tanPlayer, owner.getName()), MINOR_BAD);
     }
 
     private static void openPlayerOwnLandmark(Player player, Landmark landmark) {
@@ -489,8 +485,7 @@ public class PlayerGUI {
         GuiItem collectRessourcesButton = ItemBuilder.from(collectRessources).asGuiItem(event -> {
             event.setCancelled(true);
             landmark.giveToPlayer(player, quantity);
-            player.sendMessage(Lang.GUI_LANDMARK_REWARD_COLLECTED.get(tanPlayer, Integer.toString(quantity)));
-            SoundUtil.playSound(player, GOOD);
+            TanChatUtils.message(player, Lang.GUI_LANDMARK_REWARD_COLLECTED.get(tanPlayer, Integer.toString(quantity)), GOOD);
             dispatchLandmarkGui(player, landmark);
         });
 
@@ -573,13 +568,13 @@ public class PlayerGUI {
                 overlordButton = ItemBuilder.from(declareIndependence).asGuiItem(event -> {
                     event.setCancelled(true);
                     if (!territoryData.haveOverlord()) {
-                        player.sendMessage(Lang.TERRITORY_NO_OVERLORD.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.TERRITORY_NO_OVERLORD.get(tanPlayer));
                         openHierarchyMenu(player, territoryData); //This should trigger only if town have been kicked from region during the menu
                         return;
                     }
 
                     if (territoryData.isCapital()) {
-                        player.sendMessage(Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_CAPITAL.get(tanPlayer, territoryData.getBaseColoredName()));
+                        TanChatUtils.message(player, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_CAPITAL.get(tanPlayer, territoryData.getBaseColoredName()));
                         return;
                     }
 
@@ -593,7 +588,7 @@ public class PlayerGUI {
                 });
                 GuiItem donateToOverlordButton = ItemBuilder.from(donateToOverlord).asGuiItem(event -> {
                     event.setCancelled(true);
-                    player.sendMessage(Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new DonateToTerritory(overlord));
                 });
                 gui.setItem(2, 3, donateToOverlordButton);

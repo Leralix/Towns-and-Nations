@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.file.ArchiveUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class CreateBackup extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         ArchiveUtil.archiveFiles();
-        commandSender.sendMessage(Lang.COMMAND_GENERIC_SUCCESS.getDefault());
+        TanChatUtils.message(commandSender, Lang.COMMAND_GENERIC_SUCCESS);
     }
 
 }

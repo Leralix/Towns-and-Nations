@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
@@ -73,7 +74,7 @@ public class CommandBlocker implements Listener {
             TownRelation worstRelationWithPlayer = senderData.getRelationWithPlayer(receiverData);
             if(Constants.getRelationConstants(worstRelationWithPlayer).getBlockedCommands().contains(blackListedCommand)){
                 LangType lang = senderData.getLang();
-                sender.sendMessage(Lang.CANNOT_CAST_COMMAND_ON_PLAYER_WITH_SPECIFIC_RELATION.get(lang, receiver.getName(),worstRelationWithPlayer.getColoredName(lang)));
+                TanChatUtils.message(sender, Lang.CANNOT_CAST_COMMAND_ON_PLAYER_WITH_SPECIFIC_RELATION.get(lang, receiver.getName(),worstRelationWithPlayer.getColoredName(lang)), SoundEnum.NOT_ALLOWED);
                 return true;
             }
         }

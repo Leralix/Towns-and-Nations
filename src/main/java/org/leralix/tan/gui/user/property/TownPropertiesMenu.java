@@ -53,13 +53,11 @@ public class TownPropertiesMenu extends IteratorGUI {
                     .setAction(event -> {
                         event.setCancelled(true);
                         if(!tanPlayer.hasTown()){
-                            player.sendMessage(Lang.PLAYER_NO_TOWN.get(tanPlayer));
-                            SoundUtil.playSound(player, NOT_ALLOWED);
+                            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer), NOT_ALLOWED);
                             return;
                         }
                         if(!townData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_PROPERTY)){
-                            player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
-                            SoundUtil.playSound(player, NOT_ALLOWED);
+                            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
                             return;
                         }
                         new TownPropertyManager(player, townProperty, townData);

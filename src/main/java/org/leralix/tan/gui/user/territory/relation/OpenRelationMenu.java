@@ -52,7 +52,7 @@ public class OpenRelationMenu extends IteratorGUI {
                 .setAction(
                         action -> {
                             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TOWN_RELATION)) {
-                                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                                 return;
                             }
                             new RemoveRelationMenu(player, territoryData, relation);
@@ -66,7 +66,7 @@ public class OpenRelationMenu extends IteratorGUI {
                 .setAction(
                         action -> {
                             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TOWN_RELATION)) {
-                                player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                                 return;
                             }
                             new AddRelationMenu(player, territoryData, relation);
@@ -97,7 +97,7 @@ public class OpenRelationMenu extends IteratorGUI {
                 if (relation == TownRelation.WAR && event.isRightClick()) {
                     WarStorage warStorage = WarStorage.getInstance();
                     if (warStorage.isTerritoryAtWarWith(territoryData, otherTerritory)) {
-                        player.sendMessage(Lang.GUI_TOWN_ATTACK_ALREADY_ATTACKING.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.GUI_TOWN_ATTACK_ALREADY_ATTACKING.get(tanPlayer));
                         SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                         return;
                     }

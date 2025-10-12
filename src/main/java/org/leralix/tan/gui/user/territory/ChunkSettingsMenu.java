@@ -64,8 +64,7 @@ public class ChunkSettingsMenu extends BasicGui {
                         if (townData.getLevel().getBenefitsLevel("UNLOCK_MOB_BAN") >= 1)
                             PlayerGUI.openTownChunkMobSettings(player, 0);
                         else {
-                            player.sendMessage(Lang.TOWN_NOT_ENOUGH_LEVEL.get(tanPlayer, DynamicLang.get(tanPlayer.getLang(), "UNLOCK_MOB_BAN")));
-                            SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                            TanChatUtils.message(player, Lang.TOWN_NOT_ENOUGH_LEVEL.get(tanPlayer, DynamicLang.get(tanPlayer.getLang(), "UNLOCK_MOB_BAN")), SoundEnum.NOT_ALLOWED);
                         }
                     }
                 })

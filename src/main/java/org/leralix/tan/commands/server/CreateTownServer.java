@@ -6,6 +6,7 @@ import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.events.CreateTown;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +42,7 @@ class CreateTownServer extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] args) {
         if(args.length < 3){
-            commandSender.sendMessage(Lang.INVALID_ARGUMENTS.getDefault());
+            TanChatUtils.message(commandSender, Lang.INVALID_ARGUMENTS);
             return;
         }
 
@@ -53,11 +54,11 @@ class CreateTownServer extends SubCommand {
 
         Player p = commandSender.getServer().getPlayer(args[1]);
         if(p == null){
-            commandSender.sendMessage(Lang.PLAYER_NOT_FOUND.getDefault());
+            TanChatUtils.message(commandSender, Lang.PLAYER_NOT_FOUND);
             return;
         }
         if(TownDataStorage.getInstance().isNameUsed(townName)){
-            commandSender.sendMessage(Lang.NAME_ALREADY_USED.getDefault());
+            TanChatUtils.message(commandSender, Lang.NAME_ALREADY_USED);
             return;
         }
         new CreateTown(0).createTown(p, townName);

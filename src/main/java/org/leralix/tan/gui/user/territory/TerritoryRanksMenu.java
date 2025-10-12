@@ -56,14 +56,14 @@ public class TerritoryRanksMenu extends IteratorGUI {
                     event.setCancelled(true);
 
                     if(!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.CREATE_RANK)) {
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                         return;
                     }
                     if(territoryData.getNumberOfRank() >= nbRanks){
-                        player.sendMessage(Lang.TOWN_RANK_CAP_REACHED.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.TOWN_RANK_CAP_REACHED.get(tanPlayer));
                         return;
                     }
-                    player.sendMessage(Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new CreateRank(territoryData, p -> new TerritoryRanksMenu(player, territoryData).open()));
                 })
                 .asGuiItem(player);
@@ -86,11 +86,11 @@ public class TerritoryRanksMenu extends IteratorGUI {
                 )
                 .setAction(action -> {
                     if(!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_RANKS)) {
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(langType));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType));
                         return;
                     }
                     if(territoryData.getRank(tanPlayer).getLevel() <= rank.getLevel() && !territoryData.isLeader(tanPlayer)){
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get(langType));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get(langType));
                         return;
                     }
                     new RankManagerMenu(player, territoryData, rank).open();

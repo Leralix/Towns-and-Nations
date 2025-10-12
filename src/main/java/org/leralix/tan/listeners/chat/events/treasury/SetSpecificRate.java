@@ -9,6 +9,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.user.territory.TreasuryMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 public abstract class SetSpecificRate extends ChatListenerEvent {
 
@@ -23,13 +24,12 @@ public abstract class SetSpecificRate extends ChatListenerEvent {
     public boolean execute(Player player, String message) {
         Double amount = parseStringToDouble(message);
         if (amount == null) {
-            player.sendMessage(Lang.SYNTAX_ERROR_AMOUNT.get(player));
+            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(player));
             return false;
         }
         amount = Math.min(100, Math.max(0, amount));
 
-        player.sendMessage(Lang.TOWN_SET_RATE_SUCCESS.get(player, Double.toString(amount)));
-        SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(player, Lang.TOWN_SET_RATE_SUCCESS.get(player, Double.toString(amount)), SoundEnum.MINOR_GOOD);
 
 
         setRate(amount / 100);

@@ -21,6 +21,7 @@ import org.leralix.tan.utils.text.TanChatUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.leralix.lib.data.SoundEnum.GOOD;
 import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
 public abstract class TerritoryMenu extends BasicGui {
@@ -65,14 +66,12 @@ public abstract class TerritoryMenu extends BasicGui {
                         return;
                     }
                     if(!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)){
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(langType));
-                        SoundUtil.playSound(player,NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType), NOT_ALLOWED);
                         return;
                     }
                     ItemStack itemMaterial = action.getCursor();
                     territoryData.setIcon(new CustomIcon(itemMaterial));
-                    player.sendMessage(Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get(langType));
-                    SoundUtil.playSound(player, SoundEnum.GOOD);
+                    TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get(langType), GOOD);
                     open();
                 })
                 .asGuiItem(player);

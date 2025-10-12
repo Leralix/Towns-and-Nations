@@ -17,6 +17,7 @@ import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.events.CreateFortEvent;
 import org.leralix.tan.listeners.interact.events.property.CreateTerritoryPropertyEvent;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,13 +66,11 @@ public class BuildingMenu extends IteratorGUI {
                 .setDescription(description)
                 .setAction(action -> {
                     if (!townData.doesPlayerHavePermission(player, RolePermission.MANAGE_PROPERTY)) {
-                        SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(langType));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType), SoundEnum.NOT_ALLOWED);
                         return;
                     }
                     if (nbProperties >= maxNbProperties) {
-                        SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
-                        player.sendMessage(Lang.GUI_PROPERTY_CAP_FULL.get(langType, Integer.toString(nbProperties), Integer.toString(maxNbProperties)));
+                        TanChatUtils.message(player, Lang.GUI_PROPERTY_CAP_FULL.get(langType, Integer.toString(nbProperties), Integer.toString(maxNbProperties)), SoundEnum.NOT_ALLOWED);
                         return;
                     }
                     RightClickListener.register(player, new CreateTerritoryPropertyEvent(player, townData));
@@ -89,11 +88,11 @@ public class BuildingMenu extends IteratorGUI {
                 .setAction(action -> {
 
                     if (Constants.getFortCost() > territoryData.getBalance()) {
-                        player.sendMessage(Lang.TERRITORY_NOT_ENOUGH_MONEY.get(langType, territoryData.getColoredName(), Double.toString(Constants.getFortCost() - territoryData.getBalance())));
+                        TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(langType, territoryData.getColoredName(), Double.toString(Constants.getFortCost() - territoryData.getBalance())));
                         return;
                     }
 
-                    player.sendMessage(Lang.RIGHT_CLICK_TO_PLACE_FORT.get(langType));
+                    TanChatUtils.message(player, Lang.RIGHT_CLICK_TO_PLACE_FORT.get(langType));
                     RightClickListener.register(player, new CreateFortEvent(territoryData));
                     player.closeInventory();
                 })

@@ -14,6 +14,7 @@ import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.constants.EnabledPermissions;
 import org.leralix.tan.utils.text.NumberUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.io.File;
 import java.util.Collections;
@@ -66,11 +67,11 @@ public class ReloadCommand extends SubCommand {
             NumberUtil.init();
             EnabledPermissions.getInstance().init();
 
-            commandSender.sendMessage(Lang.RELOAD_SUCCESS.getDefault());
-            commandSender.sendMessage(Lang.LANGUAGE_SUCCESSFULLY_LOADED.getDefault());
+            TanChatUtils.message(commandSender, Lang.RELOAD_SUCCESS);
+            TanChatUtils.message(commandSender, Lang.LANGUAGE_SUCCESSFULLY_LOADED);
         } else {
-            commandSender.sendMessage(Lang.TOO_MANY_ARGS_ERROR.getDefault());
-            commandSender.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
+            TanChatUtils.message(commandSender, Lang.TOO_MANY_ARGS_ERROR);
+            TanChatUtils.message(commandSender, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
     }
 

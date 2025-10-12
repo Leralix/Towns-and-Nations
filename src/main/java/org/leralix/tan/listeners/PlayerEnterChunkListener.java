@@ -20,6 +20,7 @@ import org.leralix.tan.storage.PlayerAutoClaimStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 public class PlayerEnterChunkListener implements Listener {
 
@@ -27,29 +28,29 @@ public class PlayerEnterChunkListener implements Listener {
     private final NewClaimedChunkStorage newClaimedChunkStorage;
     private final PlayerDataStorage playerDataStorage;
 
-    public PlayerEnterChunkListener(){
+    public PlayerEnterChunkListener() {
         displayTerritoryNamewithColor = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("displayTerritoryNameWithOwnColor");
         newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
         playerDataStorage = PlayerDataStorage.getInstance();
     }
 
     @EventHandler
-    public void playerMoveEvent(final @NotNull PlayerMoveEvent event){
+    public void playerMoveEvent(final @NotNull PlayerMoveEvent event) {
 
         Chunk currentChunk = event.getFrom().getChunk();
         Chunk nextChunk = event.getTo().getChunk();
 
-        if(currentChunk.equals(nextChunk)){
+        if (currentChunk.equals(nextChunk)) {
             return;
         }
 
         Player player = event.getPlayer();
 
         //If both chunks are not claimed, no need to display anything
-        if(!newClaimedChunkStorage.isChunkClaimed(currentChunk) &&
-                !newClaimedChunkStorage.isChunkClaimed(nextChunk)){
+        if (!newClaimedChunkStorage.isChunkClaimed(currentChunk) &&
+                !newClaimedChunkStorage.isChunkClaimed(nextChunk)) {
 
-            if(PlayerAutoClaimStorage.containsPlayer(event.getPlayer())){
+            if (PlayerAutoClaimStorage.containsPlayer(event.getPlayer())) {
                 autoClaimChunk(event, nextChunk, player);
             }
             return;
@@ -60,17 +61,17 @@ public class PlayerEnterChunkListener implements Listener {
         ClaimedChunk2 nextClaimedChunk = newClaimedChunkStorage.get(nextChunk);
 
         //Both chunks have the same owner, no need to change
-        if(sameOwner(currentClaimedChunk,nextClaimedChunk)){
+        if (sameOwner(currentClaimedChunk, nextClaimedChunk)) {
             return;
         }
         //If territory deny access to players with a certain relation.
-        if(nextClaimedChunk instanceof TerritoryChunk territoryChunk){
+        if (nextClaimedChunk instanceof TerritoryChunk territoryChunk) {
             ITanPlayer tanPlayer = playerDataStorage.get(player);
             TownRelation worstRelation = territoryChunk.getOwner().getWorstRelationWith(tanPlayer);
-            if(!Constants.getRelationConstants(worstRelation).canAccessTerritory()){
+            if (!Constants.getRelationConstants(worstRelation).canAccessTerritory()) {
                 event.setCancelled(true);
                 LangType lang = tanPlayer.getLang();
-                player.sendMessage(Lang.PLAYER_CANNOT_ENTER_CHUNK_WITH_RELATION.get(lang, territoryChunk.getOwner().getColoredName(), worstRelation.getColoredName(lang)));
+                TanChatUtils.message(player, Lang.PLAYER_CANNOT_ENTER_CHUNK_WITH_RELATION.get(lang, territoryChunk.getOwner().getColoredName(), worstRelation.getColoredName(lang)));
                 return;
             }
         }
@@ -78,8 +79,8 @@ public class PlayerEnterChunkListener implements Listener {
         nextClaimedChunk.playerEnterClaimedArea(player, displayTerritoryNamewithColor);
 
 
-        if(nextClaimedChunk instanceof WildernessChunk &&
-                PlayerAutoClaimStorage.containsPlayer(event.getPlayer())){
+        if (nextClaimedChunk instanceof WildernessChunk &&
+                PlayerAutoClaimStorage.containsPlayer(event.getPlayer())) {
             autoClaimChunk(event, nextChunk, player);
         }
     }
@@ -88,16 +89,16 @@ public class PlayerEnterChunkListener implements Listener {
         ChunkType chunkType = PlayerAutoClaimStorage.getChunkType(e.getPlayer());
         ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
 
-        if(chunkType == ChunkType.TOWN) {
+        if (chunkType == ChunkType.TOWN) {
             if (!playerStat.hasTown()) {
-                player.sendMessage(Lang.PLAYER_NO_TOWN.get(player));
+                TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(player));
                 return;
             }
             playerStat.getTown().claimChunk(player, nextChunk);
         }
-        if(chunkType == ChunkType.REGION) {
-            if(!playerStat.hasRegion()){
-                player.sendMessage(Lang.PLAYER_NO_REGION.get(player));
+        if (chunkType == ChunkType.REGION) {
+            if (!playerStat.hasRegion()) {
+                TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(player));
                 return;
             }
             playerStat.getRegion().claimChunk(player, nextChunk);
@@ -105,7 +106,7 @@ public class PlayerEnterChunkListener implements Listener {
     }
 
     public static boolean sameOwner(final ClaimedChunk2 a, final ClaimedChunk2 b) {
-        if (a==b) return true;
+        if (a == b) return true;
         return a.getOwnerID().equals(b.getOwnerID());
     }
 

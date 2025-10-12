@@ -14,6 +14,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.events.property.CreatePlayerPropertyEvent;
 import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,19 +69,18 @@ public class PlayerPropertiesMenu extends IteratorGUI {
                 .setAction(event -> {
                     TownData playerTown = tanPlayer.getTown();
                     if(!playerTown.doesPlayerHavePermission(tanPlayer, RolePermission.CREATE_PROPERTY)){
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
-                        SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), SoundEnum.NOT_ALLOWED);
                         return;
                     }
 
                     if(playerTown.getPropertyDataMap().size() >= playerTown.getLevel().getPropertyCap()){
-                        player.sendMessage(Lang.PLAYER_PROPERTY_CAP_REACHED.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.PLAYER_PROPERTY_CAP_REACHED.get(tanPlayer), SoundEnum.NOT_ALLOWED);
                         return;
                     }
 
 
-                    player.sendMessage(Lang.PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY.get(tanPlayer));
-                    player.sendMessage(Lang.WRITE_CANCEL_TO_CANCEL.get(tanPlayer, Lang.CANCEL_WORD.get(tanPlayer)));
+                    TanChatUtils.message(player, Lang.PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.WRITE_CANCEL_TO_CANCEL.get(tanPlayer, Lang.CANCEL_WORD.get(tanPlayer)));
                     RightClickListener.register(player, new CreatePlayerPropertyEvent(player));
                     player.closeInventory();
                 })

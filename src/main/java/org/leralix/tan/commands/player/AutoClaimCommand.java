@@ -43,7 +43,7 @@ public class AutoClaimCommand extends PlayerSubCommand {
     public void perform(Player player, String[] args){
 
         if (args.length != 2) {
-            player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(player, getSyntax()));
+            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(player, getSyntax()));
             return;
         }
 
@@ -52,17 +52,17 @@ public class AutoClaimCommand extends PlayerSubCommand {
         switch (message) {
             case "town" -> {
                 PlayerAutoClaimStorage.addPlayer(player, ChunkType.TOWN);
-                player.sendMessage(Lang.AUTO_CLAIM_ON_FOR.get(player, ChunkType.TOWN.getName()));
+                TanChatUtils.message(player, Lang.AUTO_CLAIM_ON_FOR.get(player, ChunkType.TOWN.getName()));
             }
             case "region" -> {
                 PlayerAutoClaimStorage.addPlayer(player, ChunkType.REGION);
-                player.sendMessage(Lang.AUTO_CLAIM_ON_FOR.get(player, ChunkType.REGION.getName()));
+                TanChatUtils.message(player, Lang.AUTO_CLAIM_ON_FOR.get(player, ChunkType.REGION.getName()));
             }
             case "stop" -> {
                 PlayerAutoClaimStorage.removePlayer(player);
-                player.sendMessage(Lang.AUTO_CLAIM_OFF.get(player));
+                TanChatUtils.message(player, Lang.AUTO_CLAIM_OFF.get(player));
             }
-            default -> player.sendMessage(Lang.CORRECT_SYNTAX_INFO.get(player, getSyntax()));
+            default -> TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(player, getSyntax()));
         }
     }
 }

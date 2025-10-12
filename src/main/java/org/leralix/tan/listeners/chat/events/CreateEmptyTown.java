@@ -13,6 +13,7 @@ import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.file.FileUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.function.Consumer;
 
@@ -26,16 +27,16 @@ public class CreateEmptyTown extends ChatListenerEvent {
 
     @Override
     public boolean execute(Player player, String townName) {
-        FileConfiguration config =  ConfigUtil.getCustomConfig(ConfigTag.MAIN);
+        FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         int maxSize = config.getInt("TownNameSize");
 
-        if(townName.length() > maxSize){
-            player.sendMessage(Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxSize)));
+        if (townName.length() > maxSize) {
+            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxSize)));
             return false;
         }
 
-        if(TownDataStorage.getInstance().isNameUsed(townName)){
-            player.sendMessage(Lang.NAME_ALREADY_USED.get(player));
+        if (TownDataStorage.getInstance().isNameUsed(townName)) {
+            TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(player));
             return false;
         }
 
@@ -43,7 +44,7 @@ public class CreateEmptyTown extends ChatListenerEvent {
 
         ITanPlayer playerData = PlayerDataStorage.getInstance().get(player);
         EventManager.getInstance().callEvent(new TownCreatedInternalEvent(newTown, playerData));
-        FileUtil.addLineToHistory(Lang.TOWN_CREATED_NEWSLETTER.get(player.getName(),newTown.getName()));
+        FileUtil.addLineToHistory(Lang.TOWN_CREATED_NEWSLETTER.get(player.getName(), newTown.getName()));
 
         openGui(guiCallback, player);
         return true;

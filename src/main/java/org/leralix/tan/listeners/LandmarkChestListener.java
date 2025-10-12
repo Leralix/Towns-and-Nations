@@ -14,6 +14,7 @@ import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 public class LandmarkChestListener implements Listener {
     @EventHandler
@@ -24,19 +25,19 @@ public class LandmarkChestListener implements Listener {
         if (clickedBlock != null &&
                 (event.getAction() == Action.RIGHT_CLICK_BLOCK) &&
                 clickedBlock.getType() == Material.CHEST &&
-                clickedBlock.hasMetadata("LandmarkChest")){
-                    event.setCancelled(true);
-                    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-                    for (MetadataValue value : clickedBlock.getMetadata("LandmarkChest")) {
-                        String customData = value.asString();
-                        Landmark landmark = LandmarkStorage.getInstance().get(customData);
-                        if(!tanPlayer.hasTown()){
-                            player.sendMessage(Lang.PLAYER_NO_TOWN.get(tanPlayer.getLang()));
-                            return;
-                        }
-                        PlayerGUI.dispatchLandmarkGui(player, landmark);
-                    }
+                clickedBlock.hasMetadata("LandmarkChest")) {
+            event.setCancelled(true);
+            ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+            for (MetadataValue value : clickedBlock.getMetadata("LandmarkChest")) {
+                String customData = value.asString();
+                Landmark landmark = LandmarkStorage.getInstance().get(customData);
+                if (!tanPlayer.hasTown()) {
+                    TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer.getLang()));
+                    return;
                 }
+                PlayerGUI.dispatchLandmarkGui(player, landmark);
+            }
+        }
 
 
     }

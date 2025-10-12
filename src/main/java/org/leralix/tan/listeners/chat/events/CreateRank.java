@@ -6,6 +6,7 @@ import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.function.Consumer;
 
@@ -22,12 +23,12 @@ public class CreateRank extends ChatListenerEvent {
     public boolean execute(Player player, String message) {
         int maxNameSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RankNameSize");
 
-        if(message.length() > maxNameSize){
-            player.sendMessage(Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxNameSize)));
+        if (message.length() > maxNameSize) {
+            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxNameSize)));
             return false;
         }
-        if(territoryData.isRankNameUsed(message)){
-            player.sendMessage(Lang.NAME_ALREADY_USED.get(player));
+        if (territoryData.isRankNameUsed(message)) {
+            TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(player));
             return false;
         }
 

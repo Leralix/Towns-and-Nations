@@ -56,7 +56,7 @@ public class RegionSettingsMenu extends SettingsMenus {
                 .setAction(event -> {
                     event.setCancelled(true);
                     if (!regionData.isLeader(tanPlayer)) {
-                        player.sendMessage(Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
                         return;
                     }
                     PlayerGUI.openRegionChangeOwnership(player, 0);
@@ -75,17 +75,16 @@ public class RegionSettingsMenu extends SettingsMenus {
                 .setAction(event -> {
                     event.setCancelled(true);
                     if (!regionData.isLeader(tanPlayer)) {
-                        player.sendMessage(Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
                         return;
                     }
                     if (regionData.isCapital()) {
-                        player.sendMessage(Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, regionData.getOverlord().get().getBaseColoredName()));
+                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, regionData.getOverlord().get().getBaseColoredName()));
                         return;
                     }
 
                     if (!player.hasPermission("tan.base.region.disband")) {
-                        player.sendMessage(Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
-                        SoundUtil.playSound(player, NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
                         return;
                     }
 

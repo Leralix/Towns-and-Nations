@@ -12,6 +12,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.SelectNbChunksForConquer;
 import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.WarRole;
 import org.leralix.tan.war.legacy.wargoals.ConquerWarGoal;
@@ -70,11 +71,10 @@ public class ChooseWarGoal extends BasicGui {
                         action -> {
 
                             if(conquerAlreadyUsed){
-                                SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
-                                player.sendMessage(Lang.GUI_ONLY_ONE_CONQUER_WAR_GOAL.get(tanPlayer));
+                                TanChatUtils.message(player, Lang.GUI_ONLY_ONE_CONQUER_WAR_GOAL.get(tanPlayer), SoundEnum.NOT_ALLOWED);
                                 return;
                             }
-                            player.sendMessage(Lang.ENTER_NEW_VALUE.get(langType));
+                            TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
                             PlayerChatListenerStorage.register(player, new SelectNbChunksForConquer(war, warRole, new SelectWarGoals(player, territoryData, war, warRole)));
                         }
                 )
@@ -133,7 +133,7 @@ public class ChooseWarGoal extends BasicGui {
                         action -> {
 
                             if(!canBeSubjugated) {
-                                player.sendMessage(Lang.GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED.get(langType));
+                                TanChatUtils.message(player, Lang.GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED.get(langType));
                                 return;
                             }
 
@@ -165,7 +165,7 @@ public class ChooseWarGoal extends BasicGui {
                 .setAction(
                         action -> {
                             if(!doesEnemyHaveSubjects){
-                                player.sendMessage(Lang.GUI_WARGOAL_LIBERATE_CANNOT_BE_USED.get(langType));
+                                TanChatUtils.message(player, Lang.GUI_WARGOAL_LIBERATE_CANNOT_BE_USED.get(langType));
                                 return;
                             }
 

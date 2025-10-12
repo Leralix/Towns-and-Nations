@@ -15,10 +15,11 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.HashMap;
 
-import static org.leralix.tan.utils.text.TanChatUtils.getTANString;
+
 
 public class LocalChatStorage {
     private static final HashMap<String, ChatScope> playerChatScope = new HashMap<>();
@@ -72,8 +73,7 @@ public class LocalChatStorage {
         } else if (scope == ChatScope.REGION) {
 
             if (!tanPlayer.hasRegion()) {
-                player.sendMessage(Lang.NO_REGION.get(tanPlayer.getLang()));
-                SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                TanChatUtils.message(player, Lang.NO_REGION.get(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
                 return;
             }
 

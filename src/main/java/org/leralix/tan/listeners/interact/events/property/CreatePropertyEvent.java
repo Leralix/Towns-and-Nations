@@ -22,6 +22,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.NumberUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 public abstract class CreatePropertyEvent extends RightClickListenerEvent {
 
@@ -32,7 +33,7 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
     protected Vector3D position2;
     protected double cost;
 
-    protected CreatePropertyEvent(Player player){
+    protected CreatePropertyEvent(Player player) {
         this.player = player;
         this.townData = TownDataStorage.getInstance().get(player);
         this.tanPlayer = PlayerDataStorage.getInstance().get(player);
@@ -50,55 +51,53 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
 
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(block.getChunk());
         if (!(claimedChunk instanceof TownClaimedChunk townClaimedChunk && townClaimedChunk.getTown().isPlayerIn(player))) {
-            player.sendMessage(Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(langType));
+            TanChatUtils.message(player, Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(langType));
             return ListenerState.FAILURE;
         }
 
-        if (!tanPlayer.hasTown()){
-            player.sendMessage(Lang.PLAYER_NO_TOWN.get(langType));
+        if (!tanPlayer.hasTown()) {
+            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
             return ListenerState.FAILURE;
         }
 
-        if (position1 == null){
+        if (position1 == null) {
             position1 = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
-            player.sendMessage(Lang.PLAYER_FIRST_POINT_SET.get(player, position1.toString()));
+            TanChatUtils.message(player, Lang.PLAYER_FIRST_POINT_SET.get(player, position1.toString()));
             return ListenerState.CONTINUE;
         }
-        if(position2 == null){
+        if (position2 == null) {
             int maxPropertySize = Constants.getMaxPropertySize();
 
             Vector3D vector3D = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
 
             if (Math.abs(position1.getX() - vector3D.getX()) * Math.abs(position1.getY() - vector3D.getY()) * Math.abs(position1.getZ() - vector3D.getZ()) > maxPropertySize) {
-                player.sendMessage(Lang.PLAYER_PROPERTY_TOO_BIG.get(langType, Integer.toString(maxPropertySize)));
+                TanChatUtils.message(player, Lang.PLAYER_PROPERTY_TOO_BIG.get(langType, Integer.toString(maxPropertySize)));
                 return ListenerState.FAILURE;
             }
             position2 = vector3D;
 
             cost = NumberUtil.roundWithDigits(getTotalCost());
-            if(tanPlayer.getBalance() < cost){
-                player.sendMessage(Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(langType, Double.toString(cost - tanPlayer.getBalance())));
+            if (tanPlayer.getBalance() < cost) {
+                TanChatUtils.message(player, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(langType, Double.toString(cost - tanPlayer.getBalance())));
                 return ListenerState.SUCCESS;
             }
 
-            player.sendMessage(Lang.PLAYER_SECOND_POINT_SET.get(langType, vector3D.toString()));
-            player.sendMessage(Lang.PLAYER_PLACE_SIGN.get(langType));
+            TanChatUtils.message(player, Lang.PLAYER_SECOND_POINT_SET.get(langType, vector3D.toString()));
+            TanChatUtils.message(player, Lang.PLAYER_PLACE_SIGN.get(langType));
             return ListenerState.CONTINUE;
         }
 
         int margin = Constants.getMaxPropertySignMargin();
         if (!isNearProperty(block.getLocation(), position1, position2, margin)) {
-            player.sendMessage(Lang.PLAYER_PROPERTY_SIGN_TOO_FAR.get(langType, Integer.toString(margin)));
+            TanChatUtils.message(player, Lang.PLAYER_PROPERTY_SIGN_TOO_FAR.get(langType, Integer.toString(margin)), SoundEnum.NOT_ALLOWED);
             return ListenerState.CONTINUE;
         }
 
-        SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
-        player.sendMessage(Lang.PLAYER_PROPERTY_CREATED.get(langType));
-
         PropertyData property = createProperty();
-
         property.createPropertySign(player, block, event.getBlockFace());
         property.updateSign();
+
+        TanChatUtils.message(player, Lang.PLAYER_PROPERTY_CREATED.get(langType), SoundEnum.MINOR_GOOD);
         return ListenerState.SUCCESS;
     }
 

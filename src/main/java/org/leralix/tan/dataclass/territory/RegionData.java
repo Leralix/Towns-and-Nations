@@ -30,6 +30,7 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -157,7 +158,7 @@ public class RegionData extends TerritoryData {
         removeFromBalance(Constants.territoryClaimRegionCost());
 
         NewClaimedChunkStorage.getInstance().claimRegionChunk(chunk, getID());
-        player.sendMessage(Lang.CHUNK_CLAIMED_SUCCESS_REGION.get(player));
+        TanChatUtils.message(player, Lang.CHUNK_CLAIMED_SUCCESS_REGION.get(player));
         return true;
     }
 
