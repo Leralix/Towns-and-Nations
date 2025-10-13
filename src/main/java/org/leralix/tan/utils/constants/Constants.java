@@ -95,10 +95,6 @@ public class Constants {
     //Claims
     private static GeneralChunkSettings generalChunkSettings;
     private static WildernessRules wildernessRules;
-    private static InteractionStatus explosionGriefStatus;
-    private static InteractionStatus fireGriefStatus;
-    private static InteractionStatus pvpEnabledStatus;
-    private static InteractionStatus mobGriefStatus;
 
 
     private static boolean allowNonAdjacentChunksForTown;
@@ -216,10 +212,6 @@ public class Constants {
         //Claims
         generalChunkSettings = new GeneralChunkSettings(config.getConfigurationSection("chunkGeneralSettings"));
         wildernessRules = new WildernessRules(config.getConfigurationSection("wildernessRules"));
-        explosionGriefStatus = InteractionStatus.valueOf(config.getString("explosionGrief", ALWAYS));
-        fireGriefStatus = InteractionStatus.valueOf(config.getString("fireGrief", ALWAYS));
-        pvpEnabledStatus = InteractionStatus.valueOf(config.getString("pvpEnabledInClaimedChunks", ALWAYS));
-        mobGriefStatus = InteractionStatus.valueOf(config.getString("mobGrief", ALWAYS));
 
         allowNonAdjacentChunksForRegion = config.getBoolean("RegionAllowNonAdjacentChunks", false);
         allowNonAdjacentChunksForTown = config.getBoolean("TownAllowNonAdjacentChunks", false);
@@ -390,24 +382,8 @@ public class Constants {
         return generalChunkSettings.getAction(generalChunkSetting);
     }
 
-    public static InteractionStatus getMobGriefStatus() {
-        return mobGriefStatus;
-    }
-
-    public static InteractionStatus getPvpStatus() {
-        return pvpEnabledStatus;
-    }
-
-    public static InteractionStatus getFireGriefStatus() {
-        return fireGriefStatus;
-    }
-
     public static WildernessRules getWildernessRules() {
         return wildernessRules;
-    }
-
-    public static InteractionStatus getExplosionGriefStatus() {
-        return explosionGriefStatus;
     }
 
     public static boolean allowNonAdjacentChunksForTown() {

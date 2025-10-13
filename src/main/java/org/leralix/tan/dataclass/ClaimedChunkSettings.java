@@ -15,7 +15,7 @@ public class ClaimedChunkSettings {
     private Map<String, UpgradeStatus> mobSpawnStorage;
     private Map<GeneralChunkSetting, Boolean> generalSettings;
 
-    public ClaimedChunkSettings(){
+    public ClaimedChunkSettings() {
         this.newPermission = new EnumMap<>(ChunkPermissionType.class);
         this.mobSpawnStorage = new HashMap<>();
         this.generalSettings = new EnumMap<>(GeneralChunkSetting.class);
@@ -23,20 +23,18 @@ public class ClaimedChunkSettings {
         for (ChunkPermissionType type : ChunkPermissionType.values()) {
             newPermission.put(type, new ChunkPermission(RelationPermission.TOWN));
         }
-        for(GeneralChunkSetting setting : GeneralChunkSetting.values()){
-            generalSettings.put(setting, true);
+        for (GeneralChunkSetting setting : GeneralChunkSetting.values()) {
+            generalSettings.put(setting, false);
         }
     }
 
     public Map<ChunkPermissionType, ChunkPermission> getChunkPermissions() {
-        if(newPermission == null)
+        if (newPermission == null)
             newPermission = new EnumMap<>(ChunkPermissionType.class);
         return newPermission;
     }
 
     public Map<GeneralChunkSetting, Boolean> getChunkSetting() {
-        if(generalSettings == null)
-            generalSettings = new EnumMap<>(GeneralChunkSetting.class);
         return generalSettings;
     }
 
@@ -46,18 +44,15 @@ public class ClaimedChunkSettings {
         return map.get(type);
     }
 
-    public boolean getSetting(GeneralChunkSetting type) {
-        var map = getChunkSetting();
-        map.putIfAbsent(type, true);
-        return map.get(type);
-    }
 
     public void nextPermission(ChunkPermissionType type) {
         getChunkPermissions().get(type).nextPermission();
     }
+
     public UpgradeStatus getSpawnControl(MobChunkSpawnEnum mobType) {
         return getSpawnControl(mobType.name());
     }
+
     public UpgradeStatus getSpawnControl(String mobType) {
         mobSpawnStorage.putIfAbsent(mobType, new UpgradeStatus(false, false));
         return mobSpawnStorage.get(mobType);

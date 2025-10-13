@@ -65,22 +65,22 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
 
     @Override
     public boolean canExplosionGrief() {
-        return Constants.getExplosionGriefStatus().canGrief(getOwner(), GeneralChunkSetting.TNT_GRIEF);
+        return Constants.getChunkSettings(GeneralChunkSetting.TNT_GRIEF).canGrief(getOwner(), GeneralChunkSetting.TNT_GRIEF);
     }
 
     @Override
     public boolean canFireGrief() {
-        return Constants.getFireGriefStatus().canGrief(getOwner(), GeneralChunkSetting.FIRE_GRIEF);
+        return Constants.getChunkSettings(GeneralChunkSetting.FIRE_GRIEF).canGrief(getOwner(), GeneralChunkSetting.FIRE_GRIEF);
     }
 
     @Override
     public boolean canPVPHappen() {
-        return Constants.getPvpStatus().canGrief(getOwner(), GeneralChunkSetting.ENABLE_PVP);
+        return Constants.getChunkSettings(GeneralChunkSetting.ENABLE_PVP).canGrief(getOwner(), GeneralChunkSetting.ENABLE_PVP);
     }
 
     @Override
     public boolean canMobGrief() {
-        return Constants.getMobGriefStatus().canGrief(getOwner(), GeneralChunkSetting.MOB_GRIEF);
+        return Constants.getChunkSettings(GeneralChunkSetting.MOB_GRIEF).canGrief(getOwner(), GeneralChunkSetting.MOB_GRIEF);
     }
 
     public TerritoryData getOccupier(){

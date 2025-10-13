@@ -17,10 +17,10 @@ public class GeneralChunkSettings {
     public GeneralChunkSettings(ConfigurationSection configurationSection){
         allowAction = new HashMap<>();
 
-        allowAction.put(GeneralChunkSetting.FIRE_GRIEF, InteractionStatus.valueOf(configurationSection.getString("fireGrief", DEFAULT_VALUE)));
-        allowAction.put(GeneralChunkSetting.TNT_GRIEF, InteractionStatus.valueOf(configurationSection.getString("explosionGrief", DEFAULT_VALUE)));
+        allowAction.put(GeneralChunkSetting.FIRE_GRIEF, InteractionStatus.valueOf(configurationSection.getString("fire", DEFAULT_VALUE)));
+        allowAction.put(GeneralChunkSetting.TNT_GRIEF, InteractionStatus.valueOf(configurationSection.getString("explosion", DEFAULT_VALUE)));
         allowAction.put(GeneralChunkSetting.ENABLE_PVP, InteractionStatus.valueOf(configurationSection.getString("pvp", DEFAULT_VALUE)));
-        allowAction.put(GeneralChunkSetting.MOB_GRIEF, InteractionStatus.valueOf(configurationSection.getString("mobGrief", DEFAULT_VALUE)));
+        allowAction.put(GeneralChunkSetting.MOB_GRIEF, InteractionStatus.valueOf(configurationSection.getString("mob", DEFAULT_VALUE)));
     }
 
     public InteractionStatus getAction(GeneralChunkSetting key) {
