@@ -1140,6 +1140,9 @@ public enum Lang {
     }
 
     public String get(Player player){
+        if(player == null){
+            return get(serverLang);
+        }
         return get(PlayerDataStorage.getInstance().get(player));
     }
 
