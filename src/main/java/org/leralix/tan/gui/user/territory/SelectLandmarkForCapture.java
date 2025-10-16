@@ -46,14 +46,9 @@ public class SelectLandmarkForCapture extends IteratorGUI {
 
         for(Landmark landmark : LandmarkStorage.getInstance().getLandmarkOf(enemyTownData)) {
 
-            List<String> description = landmark.getBaseDescription(langType);
-            description.add(Lang.GUI_GENERIC_CLICK_TO_SELECT.get(langType));
-
             GuiItem item = iconManager.get(landmark.getIcon(langType))
                     .setName(landmark.getName())
-                    .setDescription(
-                            description
-                    )
+                    .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
                     .setAction(event -> {
                         war.addGoal(warRole, new CaptureLandmarkWarGoal(landmark));
                         new SelectWarGoals(player, territoryData, war, warRole);

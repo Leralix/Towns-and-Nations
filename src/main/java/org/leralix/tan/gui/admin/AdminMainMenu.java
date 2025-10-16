@@ -32,7 +32,6 @@ public class AdminMainMenu extends BasicGui {
     private GuiItem getWarButton() {
         return iconManager.get(IconKey.TERRITORY_WAR_ICON)
                 .setName(Lang.ADMIN_GUI_WAR_ICON.get(langType))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType))
                 .setAction(action -> AdminGUI.openAdminWarMenu(player, 0))
                 .asGuiItem(player);
     }
@@ -41,7 +40,6 @@ public class AdminMainMenu extends BasicGui {
     private GuiItem getLandmarkButton() {
         return iconManager.get(IconKey.TOWN_LANDMARKS_ICON)
                 .setName(Lang.ADMIN_GUI_LANDMARK_ICON.get(langType))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType))
                 .setAction(action -> AdminGUI.openLandmarks(player, 0))
                 .asGuiItem(player);
     }
@@ -49,7 +47,6 @@ public class AdminMainMenu extends BasicGui {
     private GuiItem getPlayerButton() {
         return iconManager.get(IconKey.PLAYER_HEAD_ICON)
                 .setName(Lang.GUI_ADMIN_PLAYER_ICON.get(langType))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType))
                 .setAction(action -> AdminGUI.openPlayerMenu(player, 0))
                 .asGuiItem(player);
     }
@@ -57,7 +54,6 @@ public class AdminMainMenu extends BasicGui {
     private GuiItem getTownButton() {
         return iconManager.get(IconKey.TOWN_BASE_ICON)
                 .setName(Lang.GUI_TOWN_ICON.get(langType))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType))
                 .setAction(action -> AdminGUI.openAdminBrowseTown(player, 0))
                 .asGuiItem(player);
     }
@@ -65,7 +61,6 @@ public class AdminMainMenu extends BasicGui {
     private GuiItem getRegionButton() {
         return iconManager.get(IconKey.REGION_BASE_ICON)
                 .setName(Lang.GUI_REGION_ICON.get(langType))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType))
                 .setAction(action -> AdminGUI.openAdminBrowseRegion(player, 0))
                 .asGuiItem(player);
     }

@@ -10,7 +10,6 @@ import org.leralix.tan.war.legacy.CreateAttackData;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class PlannedAttackStorage extends JsonStorage<PlannedAttack> {
 
@@ -53,17 +52,15 @@ public class PlannedAttackStorage extends JsonStorage<PlannedAttack> {
         return "W" + ID;
     }
 
-    public void territoryDeleted(TerritoryData territoryData) {
-        Iterator<PlannedAttack> iterator = getAll().values().iterator();
-        while (iterator.hasNext()) {
-            PlannedAttack plannedAttack = iterator.next();
+    public synchronized void territoryDeleted(TerritoryData territoryData) {
+        for (PlannedAttack plannedAttack : getAll().values()) {
             War war = plannedAttack.getWar();
-            if(war == null){
+            if (war == null) {
                 continue;
             }
             if (war.isMainAttacker(territoryData) || war.isMainDefender(territoryData)) {
                 plannedAttack.end();
-                iterator.remove();
+                //iterator.remove();
             }
         }
     }

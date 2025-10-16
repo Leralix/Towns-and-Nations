@@ -49,10 +49,7 @@ public class SelectTerritoryForLIberation extends IteratorGUI {
 
             items.add(iconManager.get(territory.getIcon())
                     .setName(territory.getName())
-                    .setDescription(
-
-                            Lang.GUI_GENERIC_CLICK_TO_SELECT.get(langType)
-                    )
+                    .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
                     .setAction(action -> {
                         SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
                         war.addGoal(warRole, new LiberateWarGoal(territory));

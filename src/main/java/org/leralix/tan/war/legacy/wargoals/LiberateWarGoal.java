@@ -24,7 +24,6 @@ public class LiberateWarGoal extends WarGoal {
         List<String> description = new ArrayList<>();
         description.add(Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC.get(langType));
         description.add(Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC1.get(langType, getTerritoryToLiberate().getName()));
-        description.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(langType));
 
         return buildIcon(Material.LANTERN, description, langType);
     }

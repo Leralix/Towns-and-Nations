@@ -4,7 +4,6 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -59,11 +58,11 @@ public class BuildingMenu extends IteratorGUI {
             description.add(Lang.GUI_PROPERTY_CAP.get(langType, Integer.toString(nbProperties), Integer.toString(maxNbProperties)));
         }
         description.add(Lang.CREATE_PUBLIC_PROPERTY_COST.get(langType));
-        description.add(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(langType));
 
         return iconManager.get(IconKey.PLAYER_PROPERTY_ICON)
                 .setName(Lang.CREATE_PUBLIC_PROPERTY_ICON.get(langType))
                 .setDescription(description)
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> {
                     if (!townData.doesPlayerHavePermission(player, RolePermission.MANAGE_PROPERTY)) {
                         TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType), SoundEnum.NOT_ALLOWED);
@@ -81,10 +80,8 @@ public class BuildingMenu extends IteratorGUI {
     private @NotNull GuiItem getCreateFortButton() {
         return iconManager.get(IconKey.FORT_BUILDING_ICON)
                 .setName(Lang.CREATE_FORT_ICON.get(langType))
-                .setDescription(
-                        Lang.CREATE_FORT_DESC1.get(langType, Double.toString(Constants.getFortCost())),
-                        Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(langType)
-                )
+                .setDescription(Lang.CREATE_FORT_DESC1.get(langType, Double.toString(Constants.getFortCost())))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> {
 
                     if (Constants.getFortCost() > territoryData.getBalance()) {

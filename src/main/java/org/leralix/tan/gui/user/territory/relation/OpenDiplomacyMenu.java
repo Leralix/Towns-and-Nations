@@ -137,8 +137,6 @@ public class OpenDiplomacyMenu extends BasicGui {
         if(relation == TownRelation.WAR){
             res.add(Lang.GUI_RELATION_ENABLE_WAR.get(langType));
         }
-        res.add("");
-        res.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType));
 
         return res;
     }

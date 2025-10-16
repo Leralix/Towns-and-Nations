@@ -3,7 +3,6 @@ package org.leralix.tan.gui.user.property;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
@@ -91,14 +90,11 @@ public class PlayerPropertiesMenu extends IteratorGUI {
         List<GuiItem> guiItems = new ArrayList<>();
         for (PropertyData propertyData : tanPlayer.getProperties()){
 
-            List<String> desc = propertyData.getBasicDescription(tanPlayer.getLang());
-            desc.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer));
-
 
             guiItems.add(
                     iconManager.get(propertyData.getIcon())
                             .setName(propertyData.getName())
-                            .setDescription(desc)
+                            .setDescription(propertyData.getBasicDescription(tanPlayer.getLang()))
                             .setAction(event -> new PlayerPropertyManager(player, propertyData, p -> open()))
                             .asGuiItem(player)
             );

@@ -4,6 +4,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 
 public enum RolePermission {
 
@@ -17,10 +18,11 @@ public enum RolePermission {
     DELETE_RANK(false, IconKey.GUI_DELETE_RANK_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DELETE_RANK),
     MANAGE_RANKS(false, IconKey.GUI_MANAGE_RANK_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MODIFY_RANK),
     MANAGE_CLAIM_SETTINGS(true, IconKey.GUI_MANAGE_CLAIMS_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_CLAIM_SETTINGS),
-    MANAGE_TOWN_RELATION(false, IconKey.GUI_MANAGE_DIPLOMACY_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION),
+    MANAGE_TOWN_RELATION(false, IconKey.GUI_MANAGE_DIPLOMACY_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_TOWN_RELATION), // Diplomacy
+    MANAGE_WARS(false, IconKey.GUI_MANAGE_WAR_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_WAR),
     MANAGE_MOB_SPAWN(true, IconKey.GUI_MANAGE_MOB_SPAWN_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_MOB_SPAWN),
     CREATE_PROPERTY(false, IconKey.GUI_CREATE_PROPERTY_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_PROPERTY),
-    MANAGE_PROPERTY(false, IconKey.GUI_MANAGE_PROPERTY_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_PROPERTY),
+    MANAGE_PROPERTY(false, IconKey.GUI_MANAGE_PROPERTY_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_PROPERTY), // Manage all buildings
     TOWN_ADMINISTRATOR(true, IconKey.GUI_ADMINISTRATOR_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_TOWN_ADMINISTRATOR),;
 
     private final boolean onlyTown;
@@ -47,5 +49,8 @@ public enum RolePermission {
 
     public Lang getName(){
         return name;
+    }
+    public String getName(LangType langType){
+        return name.get(langType);
     }
 }

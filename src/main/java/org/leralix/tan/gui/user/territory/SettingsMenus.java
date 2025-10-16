@@ -7,6 +7,7 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
+import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
@@ -57,14 +58,11 @@ public abstract class SettingsMenus extends BasicGui {
                 .setName(Lang.GUI_SETTINGS_CHANGE_TERRITORY_NAME.get(tanPlayer))
                 .setDescription(
                         Lang.GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC1.get(tanPlayer, territoryData.getName()),
-                        Lang.GUI_GENERIC_LEFT_CLICK_TO_MODIFY.get(tanPlayer),
-                        Lang.GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC3.get(tanPlayer, Integer.toString(cost)),
-                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(tanPlayer))
+                        Lang.GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC3.get(tanPlayer, Integer.toString(cost))
+                )
+                .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(action -> {
-                    if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
-                        TanChatUtils.message(player, Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
-                        return;
-                    }
                     TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangeTerritoryName(territoryData, cost, p -> open()));
                 })
@@ -74,15 +72,10 @@ public abstract class SettingsMenus extends BasicGui {
     protected GuiItem getChangeDescriptionButton() {
         return iconManager.get(IconKey.TERRITORY_DESCRIPTION_ICON)
                 .setName(Lang.GUI_SETTINGS_CHANGE_TOWN_MESSAGE.get(tanPlayer))
-                .setDescription(
-                        Lang.GUI_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1.get(tanPlayer, territoryData.getDescription()),
-                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(tanPlayer)
-                )
+                .setDescription(Lang.GUI_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1.get(tanPlayer, territoryData.getDescription()))
+                .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(action -> {
-                    if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
-                        TanChatUtils.message(player, Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
-                        return;
-                    }
                     TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangeTerritoryDescription(territoryData, p -> open()));
                 })
@@ -94,19 +87,14 @@ public abstract class SettingsMenus extends BasicGui {
                 .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR.get(tanPlayer))
                 .setDescription(
                         Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1.get(tanPlayer),
-                        Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(tanPlayer, territoryData.getChunkColor() + territoryData.getChunkColorInHex()),
-                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(tanPlayer)
+                        Lang.GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2.get(tanPlayer, territoryData.getChunkColor() + territoryData.getChunkColorInHex())
                 )
+                .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(action -> {
-                    if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
-                        TanChatUtils.message(player, Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
-                        return;
-                    }
                     TanChatUtils.message(player, Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangeColor(territoryData, p -> open()));
                 })
                 .asGuiItem(player);
     }
-
-
 }

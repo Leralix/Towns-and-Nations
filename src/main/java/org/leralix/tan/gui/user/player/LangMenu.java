@@ -57,7 +57,6 @@ public class LangMenu extends IteratorGUI {
     private GuiItem getPlayerGUI() {
         return IconManager.getInstance().get(IconKey.HELP_TRANSLATION_ICON)
                 .setName(Lang.HELP_US_TRANSLATE.get(tanPlayer))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer))
                 .setAction(event -> {
                     TextComponent textComponent = new TextComponent(Lang.CLICK_HERE_TO_OPEN_BROWSER.get(tanPlayer));
                     textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://crowdin.com/project/town-and-nation"));

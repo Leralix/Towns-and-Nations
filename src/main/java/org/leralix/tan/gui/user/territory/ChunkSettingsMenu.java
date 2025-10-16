@@ -4,12 +4,13 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
@@ -42,7 +43,7 @@ public class ChunkSettingsMenu extends BasicGui {
     private GuiItem getChunkIcon() {
         return iconManager.get(IconKey.LANDS_PERMISSION_ICON)
                 .setName(Lang.GUI_TOWN_CHUNK_PLAYER.get(tanPlayer))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer))
+                .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS))
                 .setAction(event -> new TerritoryChunkSettingsMenu(player, territoryData))
                 .asGuiItem(player);
     }
@@ -50,7 +51,7 @@ public class ChunkSettingsMenu extends BasicGui {
     private GuiItem getChunkGeneralSettings(){
         return iconManager.get(IconKey.GENERAL_SETTINGS_ICON)
                 .setName(Lang.CHUNK_GENERAL_SETTINGS.get(tanPlayer))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer))
+                .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS))
                 .setAction(event -> PlayerGUI.openChunkGeneralSettings(player, territoryData))
                 .asGuiItem(player);
     }
@@ -58,7 +59,7 @@ public class ChunkSettingsMenu extends BasicGui {
     private GuiItem getChunkMobSpawnSettings(){
         return iconManager.get(IconKey.MOBS_SPAWN_SETTINGS_ICON)
                 .setName(Lang.GUI_TOWN_CHUNK_MOB.get(tanPlayer))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer))
+                .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS))
                 .setAction(event -> {
                     if (territoryData instanceof TownData townData) {
                         if (townData.getLevel().getBenefitsLevel("UNLOCK_MOB_BAN") >= 1)

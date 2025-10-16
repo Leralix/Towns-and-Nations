@@ -271,6 +271,11 @@ public class PlayerData implements ITanPlayer {
         return null;
     }
 
+    @Override
+    public RankData getRank(TerritoryData territoryData) {
+        return territoryData.getRank(getRankID(territoryData));
+    }
+
     public List<TerritoryData> getAllTerritoriesPlayerIsIn() {
         List<TerritoryData> territories = new ArrayList<>();
         if (hasTown()) {

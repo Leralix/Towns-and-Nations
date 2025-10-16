@@ -71,8 +71,6 @@ public class WarMenu extends BasicGui {
             description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST_NO_WAR_GOAL_SET.get(langType));
         }
 
-        description.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType));
-
 
         return iconManager.get(IconKey.WAR_GOAL_LIST_ICON)
                 .setName(Lang.WAR_GOAL_LIST_BUTTON.get(langType))
@@ -84,7 +82,7 @@ public class WarMenu extends BasicGui {
     private @NotNull GuiItem getAttackButton() {
         return iconManager.get(IconKey.WAR_CREATE_ATTACK_ICON)
                 .setName(Lang.WAR_CREATE_ATTACK.get(langType))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(langType))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> new CreateAttackMenu(player, territoryData, war, warRole))
                 .asGuiItem(player);
     }

@@ -23,7 +23,6 @@ import org.leralix.tan.war.legacy.WarRole;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.leralix.lib.data.SoundEnum.REMOVE;
@@ -58,22 +57,22 @@ public class CreateAttackMenu extends BasicGui {
 
     private @NotNull GuiItem getConfirmButton() {
 
-        List<String> errorMessages = new ArrayList<>();
-        boolean isValid = isValid(errorMessages);
+        boolean isOutsideOfSlots = isIsOutsideOfSlots();
 
-        IconKey iconKey = isValid ? IconKey.CONFIRM_WAR_START_ICON : IconKey.CONFIRM_WAR_START_IMPOSSIBLE_ICON;
+        IconKey iconKey = isOutsideOfSlots ? IconKey.CONFIRM_WAR_START_ICON : IconKey.CONFIRM_WAR_START_IMPOSSIBLE_ICON;
 
         return iconManager.get(iconKey)
                 .setName(Lang.GUI_CONFIRM_ATTACK.get(tanPlayer))
-                .setDescription(
-                        errorMessages.isEmpty() ?
-                                Collections.singleton(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer))
-                                : errorMessages
+                .setClickToAcceptMessage(
+                        isOutsideOfSlots ?
+                                Lang.GUI_GENERIC_CLICK_TO_PROCEED
+                                : Lang.GUI_WARGOAL_OUTSIDE_AUTHORIZED_SLOTS
+
                 )
                 .setAction(event -> {
                     event.setCancelled(true);
 
-                    if (!isValid) {
+                    if (!isOutsideOfSlots) {
                         SoundUtil.playSound(player, REMOVE);
                         return;
                     }
@@ -87,17 +86,10 @@ public class CreateAttackMenu extends BasicGui {
 
     }
 
-    private boolean isValid(List<String> errorMessages) {
-        boolean isValid = true;
-
+    private boolean isIsOutsideOfSlots() {
         Instant warStart = Instant.now().plusSeconds(attackData.getSelectedTime() * 60L);
-        if (!Constants.getWarTimeSlot().canWarBeDeclared(warStart)) {
-            errorMessages.add(Lang.GUI_WARGOAL_OUTSIDE_AUTHORIZED_SLOTS.get(tanPlayer));
-            isValid = false;
-        }
-        return isValid;
+        return !Constants.getWarTimeSlot().canWarBeDeclared(warStart);
     }
-
 
     private @NotNull GuiItem getAddTimeButton() {
         return iconManager.get(IconKey.ADD_WAR_START_TIME_ICON)

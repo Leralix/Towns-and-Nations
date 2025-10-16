@@ -3,7 +3,6 @@ package org.leralix.tan.gui.user.ranks;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
@@ -44,8 +43,8 @@ public class ManageRankPermissionMenu extends IteratorGUI {
                         .setDescription(
                                 rankData.hasPermission(permission) ?
                                         Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get(tanPlayer) :
-                                        Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get(tanPlayer),
-                                Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(tanPlayer))
+                                        Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get(tanPlayer))
+                        .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                         .setAction(event -> {
                             event.setCancelled(true);
                             if(!territoryData.getRank(player).hasPermission(permission) && !territoryData.isLeader(player)) {

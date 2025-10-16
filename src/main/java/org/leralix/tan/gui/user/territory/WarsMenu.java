@@ -42,8 +42,7 @@ public class WarsMenu extends IteratorGUI {
                     .setName(war.getName())
                      .setDescription(
                              Lang.ATTACK_ICON_DESC_1.get(langType, war.getMainAttacker().getColoredName()),
-                             Lang.ATTACK_ICON_DESC_2.get(langType, war.getMainDefender().getColoredName()),
-                             Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType)
+                             Lang.ATTACK_ICON_DESC_2.get(langType, war.getMainDefender().getColoredName())
                      )
                     .setAction(event -> new WarMenu(player, territoryData, war))
                     .asGuiItem(player));

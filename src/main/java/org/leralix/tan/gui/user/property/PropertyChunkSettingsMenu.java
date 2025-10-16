@@ -44,10 +44,10 @@ public class PropertyChunkSettingsMenu extends IteratorGUI {
 
             GuiItem item = iconManager.get(type.getIconKey())
                     .setName(type.getName().get(tanPlayer))
-                    .setDescription(
-                            Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.get(tanPlayer, permission.getColoredName(langType)),
-                            Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(tanPlayer),
-                            Lang.GUI_RIGHT_CLICK_TO_ADD_SPECIFIC_PLAYER.get(tanPlayer)
+                    .setDescription(Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.get(tanPlayer, permission.getColoredName(langType)))
+                    .setClickToAcceptMessage(
+                            Lang.GUI_GENERIC_CLICK_TO_MODIFY,
+                            Lang.GUI_RIGHT_CLICK_TO_ADD_SPECIFIC_PLAYER
                     )
                     .setAction(event -> {
                         event.setCancelled(true);

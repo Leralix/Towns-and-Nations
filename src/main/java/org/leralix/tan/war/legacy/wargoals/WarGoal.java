@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 
 import java.util.List;
@@ -33,7 +34,8 @@ public abstract class WarGoal {
 
         return IconManager.getInstance().get(itemStack)
                 .setName(getDisplayName(langType))
-                .setDescription(description);
+                .setDescription(description)
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE);
     }
 
     public abstract String getCurrentDesc(LangType langType);

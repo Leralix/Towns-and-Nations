@@ -5,7 +5,6 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.gui.BasicGui;
@@ -14,8 +13,8 @@ import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.user.player.PlayerMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.timezone.TimeZoneManager;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -82,9 +81,7 @@ public class MainMenu extends BasicGui {
         return iconManager.get(IconKey.NATION_BASE_ICON)
                 .setName(Lang.GUI_KINGDOM_ICON.get(tanPlayer))
                 .setDescription(Lang.GUI_WARNING_STILL_IN_DEV.get(tanPlayer))
-                .setAction(action -> {
-                    TanChatUtils.message(player, Lang.GUI_WARNING_STILL_IN_DEV.get(tanPlayer), SoundEnum.NOT_ALLOWED);
-                })
+                .setAction(action -> TanChatUtils.message(player, Lang.GUI_WARNING_STILL_IN_DEV.get(tanPlayer), SoundEnum.NOT_ALLOWED))
                 .asGuiItem(player);
     }
 
@@ -99,7 +96,6 @@ public class MainMenu extends BasicGui {
         } else {
             description.add(Lang.GUI_REGION_ICON_DESC1_NO_REGION.get(tanPlayer));
         }
-        description.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer));
 
 
         return iconManager.get(IconKey.REGION_BASE_ICON)
@@ -118,7 +114,6 @@ public class MainMenu extends BasicGui {
         } else {
             description.add(Lang.GUI_TOWN_ICON_DESC1_NO_TOWN.get(tanPlayer));
         }
-        description.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer));
 
         return iconManager.get(IconKey.TOWN_BASE_ICON)
                 .setName(Lang.GUI_TOWN_ICON.get(tanPlayer))
@@ -130,7 +125,6 @@ public class MainMenu extends BasicGui {
     private GuiItem getPlayerButton(ITanPlayer tanPlayer) {
         return iconManager.get(IconKey.PLAYER_BASE_ICON)
                 .setName(Lang.GUI_PLAYER_MENU_ICON.get(tanPlayer, player.getName()))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer))
                 .setAction(action -> new PlayerMenu(player))
                 .asGuiItem(player);
     }

@@ -53,10 +53,7 @@ public class PlayerMenu extends BasicGui {
     private GuiItem getPropertyButton() {
         return IconManager.getInstance().get(IconKey.PLAYER_PROPERTY_ICON)
                 .setName(Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(langType))
-                .setDescription(
-                        Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get(langType),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType)
-                )
+                .setDescription(Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get(langType))
                 .setAction(event -> new PlayerPropertiesMenu(player).open())
                 .asGuiItem(player);
     }
@@ -65,8 +62,7 @@ public class PlayerMenu extends BasicGui {
         return IconManager.getInstance().get(IconKey.NEWSLETTER_ICON)
                 .setName(Lang.GUI_PLAYER_NEWSLETTER.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_PLAYER_NEWSLETTER_DESC1.get(tanPlayer, Integer.toString(NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player))),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer)
+                        Lang.GUI_PLAYER_NEWSLETTER_DESC1.get(tanPlayer, Integer.toString(NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player)))
                 )
                 .setAction(event -> new NewsletterMenu(player).open())
                 .asGuiItem(player);
@@ -80,8 +76,7 @@ public class PlayerMenu extends BasicGui {
                         Lang.GUI_TIMEZONE_BUTTON_SERVER_ZONE.get(tanPlayer,
                                 timeZoneManager.getTimezoneEnum().getName(tanPlayer.getLang())),
                         Lang.GUI_TIMEZONE_BUTTON_PLAYER_ZONE.get(tanPlayer,
-                                tanPlayer.getTimeZone().getName(tanPlayer.getLang())),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer)
+                                tanPlayer.getTimeZone().getName(tanPlayer.getLang()))
                 )
                 .setAction(p -> new PlayerSelectTimezoneMenu(player))
                 .asGuiItem(player);
@@ -96,8 +91,7 @@ public class PlayerMenu extends BasicGui {
                 .setName(Lang.GUI_LANGUAGE_BUTTON.get(tanPlayer))
                 .setDescription(
                         Lang.GUI_LANGUAGE_BUTTON_DESC1.get(tanPlayer, serverLang.getName()),
-                        Lang.GUI_LANGUAGE_BUTTON_DESC2.get(tanPlayer, playerLang.getName()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer)
+                        Lang.GUI_LANGUAGE_BUTTON_DESC2.get(tanPlayer, playerLang.getName())
                 )
                 .setAction(event -> new LangMenu(player).open())
                 .asGuiItem(player);

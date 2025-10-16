@@ -32,7 +32,7 @@ public class PlayerSelectTimezoneMenu extends IteratorGUI {
             timezones.add(
                     iconManager.get(IconKey.TIMEZONE_BUTTON)
                             .setName(timeZoneEnum.getName(tanPlayer.getLang()))
-                            .setDescription(Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(langType))
+                            .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                             .setAction(
                                     action -> {
                                         tanPlayer.setTimeZone(timeZoneEnum);

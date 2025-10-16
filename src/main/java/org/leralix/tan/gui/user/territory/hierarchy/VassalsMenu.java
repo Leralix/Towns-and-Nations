@@ -64,8 +64,9 @@ public class VassalsMenu extends IteratorGUI {
                             Lang.GUI_TOWN_INFO_DESC0.get(langType, vassal.getDescription()),
                             Lang.GUI_TOWN_INFO_DESC1.get(langType, vassal.getLeaderName()),
                             Lang.GUI_TOWN_INFO_DESC2.get(langType, Integer.toString(vassal.getPlayerIDList().size())),
-                            Lang.GUI_TOWN_INFO_DESC3.get(langType, Integer.toString(vassal.getNumberOfClaimedChunk())),
-                            Lang.GUI_GENERIC_RIGHT_CLICK_TO_REMOVE.get(langType))
+                            Lang.GUI_TOWN_INFO_DESC3.get(langType, Integer.toString(vassal.getNumberOfClaimedChunk()))
+                    )
+                    .setClickToAcceptMessage(Lang.GUI_GENERIC_RIGHT_CLICK_TO_REMOVE)
                     .setAction(action -> {
                         if(!action.isRightClick()){
                             return;

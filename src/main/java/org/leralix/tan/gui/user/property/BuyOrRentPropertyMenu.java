@@ -46,9 +46,9 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
         return iconManager.get(IconKey.CONFIRM_BUY_PROPERTY_ICON)
                 .setName(Lang.CONFIRM_SALE.get(tanPlayer))
                 .setDescription(
-                        Lang.CONFIRM_SALE_DESC1.get(tanPlayer, Double.toString(price)),
-                        Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer)
+                        Lang.CONFIRM_SALE_DESC1.get(tanPlayer, Double.toString(price))
                 )
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> {
                     propertyData.buyProperty(player);
                     new PlayerPropertyManager(player, propertyData, p -> player.closeInventory());
@@ -59,9 +59,7 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
     private GuiItem getCancelBuyButton() {
         return iconManager.get(IconKey.CANCEL_BUY_PROPERTY_ICON)
                 .setName(Lang.CANCEL_SALE.get(tanPlayer))
-                .setDescription(
-                        Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer)
-                )
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> player.closeInventory())
                 .asGuiItem(player);
     }
@@ -73,9 +71,9 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
         return iconManager.get(IconKey.CONFIRM_RENT_PROPERTY_ICON)
                 .setName(Lang.CONFIRM_RENT.get(tanPlayer))
                 .setDescription(
-                        Lang.CONFIRM_RENT_DESC1.get(tanPlayer, Double.toString(price)),
-                        Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer)
+                        Lang.CONFIRM_RENT_DESC1.get(tanPlayer, Double.toString(price))
                 )
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(event -> {
                     propertyData.allocateRenter(player);
                     new RenterPropertyMenu(player, propertyData);
@@ -86,9 +84,7 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
     private GuiItem getCancelRentButton() {
         return iconManager.get(IconKey.CANCEL_RENT_PROPERTY_ICON)
                 .setName(Lang.CANCEL_RENT.get(tanPlayer))
-                .setDescription(
-                        Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer)
-                )
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> player.closeInventory())
                 .asGuiItem(player);
     }

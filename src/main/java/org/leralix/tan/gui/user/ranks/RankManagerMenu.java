@@ -75,7 +75,7 @@ public class RankManagerMenu extends BasicGui {
 
         return iconManager.get(IconKey.DELETE_RANK_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_ROLE_DELETE.get(tanPlayer))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(event -> {
                     if(!isEmpty){
                         TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY.get(tanPlayer), NOT_ALLOWED);
@@ -122,8 +122,8 @@ public class RankManagerMenu extends BasicGui {
                 .setDescription(
                         rankData.isPayingTaxes() ?
                                 Lang.GUI_TOWN_MEMBERS_ROLE_PAY_TAXES.get(tanPlayer) :
-                                Lang.GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES.get(tanPlayer),
-                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(tanPlayer))
+                                Lang.GUI_TOWN_MEMBERS_ROLE_NOT_PAY_TAXES.get(tanPlayer))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(event -> {
                     rankData.swapPayingTaxes();
                     SoundUtil.playSound(player, ADD);
@@ -135,7 +135,7 @@ public class RankManagerMenu extends BasicGui {
     private GuiItem getRenameRankButton() {
         return iconManager.get(IconKey.RENAME_RANK_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME.get(tanPlayer))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(event -> {
                     TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new RenameRank(territoryData , rankData));
@@ -197,7 +197,6 @@ public class RankManagerMenu extends BasicGui {
     private GuiItem getManagePermissionIcon() {
         return iconManager.get(IconKey.MANAGE_PERMISSION_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION.get(tanPlayer))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer))
                 .setAction(event -> new ManageRankPermissionMenu(player, territoryData, rankData))
                 .asGuiItem(player);
     }

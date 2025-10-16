@@ -239,7 +239,6 @@ public class PlannedAttack {
             lore.add(Lang.ATTACK_ICON_DESC_7.get(langType, DateUtil.getDateStringFromTicks(attackDuration)));
             lore.add(Lang.ATTACK_ICON_DESC_8.get(langType, getTerritoryRole(territoryConcerned).getName(langType)));
 
-            lore.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType));
             itemMeta.setLore(lore);
         }
         itemStack.setItemMeta(itemMeta);
