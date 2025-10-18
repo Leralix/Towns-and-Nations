@@ -4,7 +4,18 @@
 # itemCode: the item that will be displayed in the GUI
 # maxLevel: the maximum level of the upgrade
 # cost: the cost of each level upgrade. If less than the max level, biggest cost will always display
-# prerequisites: the prerequisites to unlock the upgrade (town_level_[level])
+# prerequisites :
+# - TOWN_LEVEL: territory level required to unlock the upgrade. Same used for all levels of the upgrade
+# - Other upgrades: you can set other upgrade levels as prerequisite. Example: BARRACK : 1
+# - RESSOURCES: you can set ressources as prerequisite. Example: OAK_WOOD: [100] or PLANK: [50, 100, 150] for each level
+#   Some special ressources exists:
+#      - WOOD : any type of wood
+#      - PLANK : any type of planks
+#      - STONE : any type of stone (cobblestone, granite, diorite, andesite, stone)
+
+
+
+
 # benefits: the benefits of the upgrade
 # - PLAYER_CAP: maximum number of player per town
 # - CHUNK_CAP: maximum number of claimable chunk per town

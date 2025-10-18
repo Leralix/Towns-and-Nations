@@ -179,6 +179,11 @@ public enum IconKey {
     WAR_GOAL_SUBJUGATE_ICON,
     WAR_GOAL_LIBERATE_ICON,
 
+    // Upgrades
+    UP_ARROW,
+    DOWN_ARROW,
+    LEVEL_UP_ICON,
+
     //Admin Icons
 
 

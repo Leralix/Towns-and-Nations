@@ -15,7 +15,6 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.RandomUtil;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.*;
@@ -51,6 +50,8 @@ import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.upgrade.NewLevel;
+import org.leralix.tan.upgrade.Upgrade;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.file.FileUtil;
@@ -91,6 +92,7 @@ public abstract class TerritoryData {
     private ClaimedChunkSettings chunkSettings;
     private List<String> fortIds;
     private List<String> occupiedFortIds;
+    protected NewLevel upgradesStatus;
 
     protected TerritoryData(String id, String name, ITanPlayer owner) {
         this.id = id;
@@ -1093,5 +1095,17 @@ public abstract class TerritoryData {
             return ownerID.equals(capital.getID());
         }
         return false;
+    }
+
+    public NewLevel getNewLevel(){
+        if(this.upgradesStatus == null){
+            upgradesStatus = new NewLevel();
+        }
+        return upgradesStatus;
+    }
+
+    public void upgradeTown(Upgrade townUpgrade){
+        NewLevel level = getNewLevel();
+        level.levelUp(townUpgrade);
     }
 }

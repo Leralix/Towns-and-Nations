@@ -9,6 +9,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
+import org.leralix.tan.upgrade.NewUpgradeStorage;
 import org.leralix.tan.war.WarTimeSlot;
 import org.leralix.tan.war.legacy.InteractionStatus;
 
@@ -110,6 +111,9 @@ public class Constants {
     private static boolean cancelTeleportOnMoveHead;
     private static boolean cancelTeleportOnMovePosition;
     private static boolean cancelTeleportOnDamage;
+
+    //Upgrades
+    private static NewUpgradeStorage upgradeStorage;
 
     private static final String ALWAYS = "ALWAYS";
 
@@ -225,6 +229,9 @@ public class Constants {
         cancelTeleportOnMoveHead = config.getBoolean("cancelTeleportOnMoveHead", false);
         cancelTeleportOnMovePosition = config.getBoolean("cancelTeleportOnMovePosition", true);
         cancelTeleportOnDamage = config.getBoolean("cancelTeleportOnDamage", true);
+
+        //Upgrade
+        upgradeStorage = new NewUpgradeStorage();
     }
 
     public static boolean onlineMode() {
@@ -487,6 +494,10 @@ public class Constants {
 
     public static boolean isCancelTeleportOnDamage() {
         return cancelTeleportOnDamage;
+    }
+
+    public static NewUpgradeStorage getUpgradeStorage() {
+        return upgradeStorage;
     }
 
     public static boolean isCancelTeleportOnMovePosition() {

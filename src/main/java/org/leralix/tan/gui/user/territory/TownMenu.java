@@ -10,6 +10,7 @@ import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.gui.user.MainMenu;
+import org.leralix.tan.gui.user.territory.upgrade.UpgradeMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
@@ -55,7 +56,7 @@ public class TownMenu extends TerritoryMenu {
                 .setName(Lang.GUI_TOWN_LEVEL_ICON.get(tanPlayer.getLang()))
                 .setDescription(Lang.GUI_TOWN_LEVEL_ICON_DESC1.get(tanPlayer.getLang()))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.UPGRADE_TOWN))
-                .setAction(event -> PlayerGUI.openTownLevel(player, 0))
+                .setAction(event -> new UpgradeMenu(player, townData))
                 .asGuiItem(player);
     }
 

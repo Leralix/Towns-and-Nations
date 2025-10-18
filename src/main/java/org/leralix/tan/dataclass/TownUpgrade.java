@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.DynamicLang;
@@ -97,8 +96,8 @@ public class TownUpgrade {
 
             for (Map.Entry<String, Integer> entry : this.getPrerequisites().entrySet()) {
                 String prerequisiteName = entry.getKey();
-                Integer levelNeeded = entry.getValue();
-                Integer currentLevel = townLevelClass.getUpgradeLevel(prerequisiteName);
+                int levelNeeded = entry.getValue();
+                int currentLevel = townLevelClass.getUpgradeLevel(prerequisiteName);
                 if (levelNeeded <= townLevelClass.getUpgradeLevel(prerequisiteName)) {
                     lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC3_1.get(lang, DynamicLang.get(lang, prerequisiteName), Integer.toString(currentLevel), Integer.toString(levelNeeded)));
                 } else {
@@ -112,7 +111,7 @@ public class TownUpgrade {
             lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4.get(lang));
             for (Map.Entry<String, Integer> entry : this.getBenefits().entrySet()) {
                 String prerequisiteName = entry.getKey();
-                Integer value = entry.getValue();
+                int value = entry.getValue();
                 if (value > 0)
                     lore.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(lang, DynamicLang.get(lang, prerequisiteName), Integer.toString(value)));
                 else
