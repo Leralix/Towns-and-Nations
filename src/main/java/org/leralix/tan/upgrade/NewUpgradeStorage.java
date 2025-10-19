@@ -6,10 +6,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.gui.service.requirements.upgrade.LevelUpgradeRequirement;
-import org.leralix.tan.gui.service.requirements.upgrade.OtherUpgradeRequirementBuilder;
-import org.leralix.tan.gui.service.requirements.upgrade.UpgradeCostRequirement;
-import org.leralix.tan.gui.service.requirements.upgrade.UpgradeRequirement;
+import org.leralix.tan.gui.service.requirements.model.AllWoodScope;
+import org.leralix.tan.gui.service.requirements.model.MaterialScope;
+import org.leralix.tan.gui.service.requirements.upgrade.*;
 
 import java.util.*;
 
@@ -31,13 +30,12 @@ public class NewUpgradeStorage {
                 String itemCode = upgradesSection.getString(key + ".itemCode", "BARRIER");
                 Material icon = Material.valueOf(itemCode.toUpperCase());
                 int maxLevel = upgradesSection.getInt(key + ".maxLevel");
-                List<Integer> cost = upgradesSection.getIntegerList(key + ".cost");
 
-                // Modification here for prerequisites
-
+                // Prerequisites
                 List<UpgradeRequirement> newPrerequisites = new ArrayList<>();
-                newPrerequisites.add(new UpgradeCostRequirement(cost));
 
+                List<Integer> cost = upgradesSection.getIntegerList(key + ".cost");
+                newPrerequisites.add(new UpgradeCostRequirement(cost));
 
                 ConfigurationSection prerequisiteSection = upgradesSection.getConfigurationSection(key + ".prerequisites");
                 if (prerequisiteSection != null) {
@@ -52,6 +50,18 @@ public class NewUpgradeStorage {
                     }
                 }
 
+                ConfigurationSection resourcesSection = upgradesSection.getConfigurationSection(key + ".resources");
+                if(resourcesSection != null){
+                    for (String ressourcesKey : resourcesSection.getKeys(false)) {
+                        int number = resourcesSection.getInt(ressourcesKey);
+                        if(ressourcesKey.equals("ALL_WOOD")){
+                            newPrerequisites.add(new ItemRequirementBuilder(new AllWoodScope(), number));
+                        }
+                        newPrerequisites.add(new ItemRequirementBuilder(new MaterialScope(Material.valueOf(ressourcesKey)), number));
+                    }
+                }
+
+                //Benefits
                 ConfigurationSection benefitsSection = upgradesSection.getConfigurationSection(key + ".benefits");
                 HashMap<String, Integer> benefits = new HashMap<>();
                 if (benefitsSection != null) {
@@ -69,7 +79,6 @@ public class NewUpgradeStorage {
                                 icon,
                                 maxLevel,
                                 newPrerequisites,
-                                cost,
                                 Collections.emptyList()
                         )
                 );

@@ -1,6 +1,7 @@
 package org.leralix.tan.upgrade;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.service.requirements.IndividualRequirement;
 import org.leralix.tan.gui.service.requirements.upgrade.UpgradeRequirement;
@@ -20,18 +21,16 @@ public class Upgrade {
     private final String nameKey;
     private final int maxLevel;
     private final Collection<UpgradeRequirement> upgradeRequirements;
-    private final List<Integer> costs;
     private final Collection<IndividualReward> rewards;
 
 
-    public Upgrade(int row, int column, String nameKey, Material iconMaterial, int maxLevel, List<UpgradeRequirement> upgradeRequirements, List<Integer> costs, Collection<IndividualReward> rewards){
+    public Upgrade(int row, int column, String nameKey, Material iconMaterial, int maxLevel, List<UpgradeRequirement> upgradeRequirements, Collection<IndividualReward> rewards){
         this.row = row;
         this.column = column;
         this.nameKey = nameKey;
         this.iconMaterial = iconMaterial;
         this.maxLevel = maxLevel;
         this.upgradeRequirements = upgradeRequirements;
-        this.costs = costs;
         this.rewards = rewards;
 
     }
@@ -48,11 +47,11 @@ public class Upgrade {
         return DynamicLang.get(langType, nameKey);
     }
 
-    public Collection<IndividualRequirement> getRequirements(TerritoryData territoryData) {
+    public Collection<IndividualRequirement> getRequirements(TerritoryData territoryData, Player player) {
 
         List<IndividualRequirement> res = new ArrayList<>();
         for(UpgradeRequirement upgradeRequirement : upgradeRequirements){
-            res.add(upgradeRequirement.toIndividualRequirement(this, territoryData));
+            res.add(upgradeRequirement.toIndividualRequirement(this, territoryData, player));
         }
         return res;
 

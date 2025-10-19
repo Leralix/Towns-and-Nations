@@ -7,8 +7,8 @@
 # prerequisites :
 # - TOWN_LEVEL: territory level required to unlock the upgrade. Same used for all levels of the upgrade
 # - Other upgrades: you can set other upgrade levels as prerequisite. Example: BARRACK : 1
-# - RESSOURCES: you can set ressources as prerequisite. Example: OAK_WOOD: [100] or PLANK: [50, 100, 150] for each level
-#   Some special ressources exists:
+# - Resources : you can set resources as prerequisite. Example: OAK_WOOD: [100] or PLANK: [50, 100, 150] for each level
+#   Some special resources exists:
 #      - WOOD : any type of wood
 #      - PLANK : any type of planks
 #      - STONE : any type of stone (cobblestone, granite, diorite, andesite, stone)
@@ -36,7 +36,7 @@ townUpgrades:
 
 upgrades:
 
-  CITY_HALL: #"City hall" upgrade is already unlocked when creating a town.
+  CITY_HALL: #"City hall" tag is already unlocked when creating a town. Use it to store default values of yur towns
     col: 1
     row: 2
     itemCode: 'BELL'
@@ -56,6 +56,8 @@ upgrades:
     cost: [ '500', '590', '760', '1010', '1340', '1750', '2240', '2810', '3460', '4190', '5000' ]
     prerequisites:
       TOWN_LEVEL: 1
+    resources:
+      OAK_WOOD : 50
     benefits:
       PLAYER_CAP: +3
 

@@ -1,5 +1,6 @@
 package org.leralix.tan.gui.service.requirements.upgrade;
 
+import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.service.requirements.AmountForUpgradeRequirement;
 import org.leralix.tan.gui.service.requirements.IndividualRequirement;
@@ -16,7 +17,7 @@ public class UpgradeCostRequirement extends UpgradeRequirement{
     }
 
     @Override
-    public IndividualRequirement toIndividualRequirement(Upgrade upgrade, TerritoryData territoryData) {
+    public IndividualRequirement toIndividualRequirement(Upgrade upgrade, TerritoryData territoryData, Player player) {
         return new AmountForUpgradeRequirement(territoryData, upgrade, costs);
     }
 }

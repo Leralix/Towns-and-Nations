@@ -1,0 +1,27 @@
+package org.leralix.tan.gui.service.requirements.model;
+
+import org.bukkit.Material;
+import org.leralix.tan.lang.LangType;
+
+public class AllWoodScope extends ItemScope {
+
+
+    @Override
+    public boolean isInScope(Material material) {
+        return material == Material.ACACIA_WOOD ||
+                material == Material.BIRCH_WOOD ||
+                material == Material.CHERRY_WOOD ||
+                material == Material.JUNGLE_WOOD ||
+                material == Material.MANGROVE_WOOD ||
+                material == Material.OAK_WOOD ||
+                material == Material.DARK_OAK_WOOD||
+                material == Material.SPRUCE_WOOD ||
+                material == Material.CRIMSON_STEM ||
+                material == Material.WARPED_STEM ;
+    }
+
+    @Override
+    public String getName(LangType langType) {
+        return "any wood";
+    }
+}

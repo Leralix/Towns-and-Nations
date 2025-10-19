@@ -76,7 +76,7 @@ public class UpgradeMenu extends BasicGui {
             gui.setItem(row, column,
                     iconManager.get(upgrade.getIconMaterial())
                             .setName(upgrade.getName(langType))
-                            .setRequirements(upgrade.getRequirements(territoryData))
+                            .setRequirements(upgrade.getRequirements(territoryData, player))
                             .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_UPGRADE)
                             .setAction( action -> {
                                 territoryData.upgradeTown(upgrade);

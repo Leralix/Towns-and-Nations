@@ -643,6 +643,8 @@ language:
   REQUIREMENT_MAIN_LEVEL_POSITIVE: "§a- Level required : {0}"
   REQUIREMENT_UPGRADE_LEVEL_NEGATIVE: "§c- Upgrade level required : {0} {1}/{2}"
   REQUIREMENT_UPGRADE_LEVEL_POSITIVE: "§a- Upgrade level required : {0} {1}/{2}"
+  REQUIREMENT_RESOURCES_NEGATIVE: "§c- Resources : {1} x{2}"
+  REQUIREMENT_RESOURCES_POSITIVE: "§a- Resources : {1} x{2}"
   GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET: "§cYou do not meet the prerequisites"
   GUI_TOWN_RELATION_HOSTILE: "§aHostile"
   GUI_TOWN_RELATION_HOSTILE_DESC1: "§fManage hostile relations"
