@@ -5,6 +5,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.Level;
@@ -15,6 +16,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.upgrade.Upgrade;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 
@@ -79,6 +81,7 @@ public class UpgradeMenu extends BasicGui {
                             .setRequirements(upgrade.getRequirements(territoryData, player))
                             .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_UPGRADE)
                             .setAction( action -> {
+                                TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
                                 territoryData.upgradeTown(upgrade);
                                 open();
                             })

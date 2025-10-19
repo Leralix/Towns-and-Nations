@@ -609,7 +609,6 @@ language:
   GUI_TREASURY_DONATION_HISTORY: "§aDonation history"
   GUI_TREASURY_RETRIEVE_GOLD: "§aRetrieve gold"
   GUI_TREASURY_RETRIEVE_GOLD_DESC1: "§fRetrieve gold from the treasury"
-  GUI_TOWN_LEVEL_INFO: "{0}" #town's name
   # Upgrades
   GUI_GENERIC_UP : "§aUp"
   GUI_GENERIC_DOWN : "§aDown"
@@ -617,7 +616,6 @@ language:
   GUI_TOWN_LEVEL_UP: "§aUpgrade town level"
   GUI_TOWN_LEVEL_UP_DESC1: "§fCurrent level is: §e{0}"
   GUI_TOWN_LEVEL_UP_DESC2: "§fLevel §a{0}§f upgrade cost: §e{1}{MONEY_CHAR}"
-  GUI_TOWN_LEVEL_UP_UNI: "§a{}"
   GUI_TOWN_LEVEL_UP_UNI_DESC1: "§fCurrent level: §e{0}"
   GUI_TOWN_LEVEL_UP_UNI_DESC2: "§fLevel §a{0}§f upgrade cost: §6{1}{MONEY_CHAR}"
   GUI_TOWN_LEVEL_UP_UNI_DESC2_MAX_LEVEL: "§6Max level reached"
@@ -630,6 +628,8 @@ language:
   GUI_TOWN_LEVEL_UP_UNI_DESC5: "§f§nTotal:"
   TOWN_LEVEL_BONUS_RECAP: "§f§nCurrent Town Stat:"
   TOWN_UPGRADE_MAX_LEVEL: "§cYou reached the maximum level of the upgrade"
+  ALL_WOOD_SCOPE_NAME: "All wood types"
+  ALL_STONE_SCOPE_NAME: "All stone types"
   # Requirements
   REQUIREMENT_RANK_PERMISSION_NEGATIVE: "§c- Permission : {0}"
   REQUIREMENT_RANK_PERMISSION_POSITIVE: "§a- Permission : {0}"

@@ -21,15 +21,15 @@ public class RessourceRequirement extends IndividualRequirement {
     @Override
     public String getLine(LangType langType) {
         if(isInvalid()){
-            return Lang.REQUIREMENT_RESOURCES_NEGATIVE.get(langType, itemScope.getName(langType), Integer.toString(amount));
+            return Lang.REQUIREMENT_RESOURCES_NEGATIVE.get(langType, itemScope.getName(langType), Integer.toString(amount), itemScope.getName(langType));
         }
         else {
-            return Lang.REQUIREMENT_RESOURCES_POSITIVE.get(langType, itemScope.getName(langType), Integer.toString(amount));
+            return Lang.REQUIREMENT_RESOURCES_POSITIVE.get(langType, itemScope.getName(langType), Integer.toString(amount), itemScope.getName(langType));
         }
     }
 
     @Override
     public boolean isInvalid() {
-        return InventoryUtil.playerEnoughItem(player, itemScope, amount);
+        return !InventoryUtil.playerEnoughItem(player, itemScope, amount);
     }
 }

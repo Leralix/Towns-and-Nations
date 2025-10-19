@@ -1,6 +1,7 @@
 package org.leralix.tan.gui.service.requirements.model;
 
 import org.bukkit.Material;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 
 public class AllWoodScope extends ItemScope {
@@ -22,6 +23,6 @@ public class AllWoodScope extends ItemScope {
 
     @Override
     public String getName(LangType langType) {
-        return "any wood";
+        return Lang.ALL_WOOD_SCOPE_NAME.get(langType);
     }
 }
