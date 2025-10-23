@@ -66,8 +66,8 @@ public class Level {
 
     private int getRequiredMoney(int level) {
         FileConfiguration fg = ConfigUtil.getCustomConfig(ConfigTag.UPGRADE);
-        ConfigurationSection section = fg.getConfigurationSection("townUpgrades");
-        String expressionString = section.getString("TownLevelExpression");
+        ConfigurationSection section = fg.getConfigurationSection("townLevelExpression");
+        String expressionString = section.getString("LevelExpression");
         String squareMultName = "squareMultiplier";
         String flatMultName = "flatMultiplier";
 

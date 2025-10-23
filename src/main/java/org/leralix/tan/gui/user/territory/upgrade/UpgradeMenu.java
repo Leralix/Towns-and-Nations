@@ -20,7 +20,6 @@ import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,14 +27,12 @@ public class UpgradeMenu extends BasicGui {
 
     private final TownData territoryData;
     private int verticalScrollIndex;
-    private int horizontalScrollIndex;
     private final int maxLevel;
 
     public UpgradeMenu(Player player, TownData territoryData){
         super(player, Lang.HEADER_TOWN_UPGRADE, 6);
         this.territoryData = territoryData;
         this.verticalScrollIndex = 0;
-        this.horizontalScrollIndex = 0;
         this.maxLevel = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownMaxLevel", 10);
         open();
     }
@@ -76,7 +73,7 @@ public class UpgradeMenu extends BasicGui {
         for(Upgrade upgrade : Constants.getUpgradeStorage().getUpgrades()){
 
             int row =  5 - upgrade.getRow() + verticalScrollIndex;
-            int column = upgrade.getColumn() + 3 - horizontalScrollIndex;
+            int column = upgrade.getColumn() + 2;
 
             if(column > 9 || column < 2 || row > 5 || row < 1){
                 continue;
@@ -117,19 +114,11 @@ public class UpgradeMenu extends BasicGui {
     private @NotNull GuiItem getTerritoryStats() {
 
         List<String> desc = new ArrayList<>();
-
-        desc.add("Current stats :");
         desc.add("");
 
-
-
-        Collection<IndividualStat> upgrades = territoryData.getNewLevel().getAllStats();
-
-        for(IndividualStat stat : upgrades){
+        for(IndividualStat stat : territoryData.getNewLevel().getAllStats()){
             desc.add(stat.getStatReward(langType));
         }
-
-
 
         return iconManager.get(territoryData.getIcon())
                 .setName(territoryData.getName())

@@ -19,6 +19,7 @@ public class MaterialScope extends ItemScope{
 
     @Override
     public String getName(LangType langType) {
-        return materialInScope.name().toLowerCase().replace("_", " ");
+        String name = materialInScope.name().toLowerCase().replace("_", " ");
+        return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 }

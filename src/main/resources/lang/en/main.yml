@@ -629,8 +629,10 @@ language:
   GUI_TOWN_LEVEL_UP_UNI_DESC5: "§f§nTotal:"
   TOWN_LEVEL_BONUS_RECAP: "§f§nCurrent Town Stat:"
   TOWN_UPGRADE_MAX_LEVEL: "§cYou reached the maximum level of the upgrade"
-  ALL_WOOD_SCOPE_NAME: "All wood types"
-  ALL_STONE_SCOPE_NAME: "All stone types"
+  ANY_WOOD_SCOPE_NAME: "Any wood"
+  ANY_LOG_SCOPE_NAME: "Any log"
+  ANY_PLANK_SCOPE_NAME: "Any planks"
+  ANY_STONE_SCOPE_NAME: "Any stone"
   # Requirements
   REQUIREMENT_RANK_PERMISSION_NEGATIVE: "§c- Permission : {0}"
   REQUIREMENT_RANK_PERMISSION_POSITIVE: "§a- Permission : {0}"
@@ -644,8 +646,8 @@ language:
   REQUIREMENT_MAIN_LEVEL_POSITIVE: "§a- Level required : {0}/{1}"
   REQUIREMENT_UPGRADE_LEVEL_NEGATIVE: "§c- Upgrade level required : {0} {1}/{2}"
   REQUIREMENT_UPGRADE_LEVEL_POSITIVE: "§a- Upgrade level required : {0} {1}/{2}"
-  REQUIREMENT_RESOURCES_NEGATIVE: "§c- Resources : {1} x{2}"
-  REQUIREMENT_RESOURCES_POSITIVE: "§a- Resources : {1} x{2}"
+  REQUIREMENT_RESOURCES_NEGATIVE: "§c- Resources : {1} {2}"
+  REQUIREMENT_RESOURCES_POSITIVE: "§a- Resources : {1} {2}"
   GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET: "§cYou do not meet the prerequisites"
   # Upgrade rewards
   UPGRADE_CURRENT_LEVEL: "§fCurrent level: §e{0}/{1}"

@@ -28,15 +28,13 @@ public class TerritoryStats {
 
     public TerritoryStats(Level oldLevel){
         this.mainLevel = oldLevel.getTownLevel();
-        this.level = new HashMap<>();
-        for(Map.Entry<String, Integer> entry : oldLevel.getTotalBenefits().entrySet()){
-            this.level.put(entry.getKey(), entry.getValue());
-        }
+        this.level = oldLevel.getTotalBenefits();
     }
 
     public TerritoryStats(){
         this.mainLevel = 1;
         this.level = new HashMap<>();
+        this.level.put("TOWN_HALL", 1);
     }
 
     public int getLevel(Upgrade upgrade){
@@ -112,8 +110,8 @@ public class TerritoryStats {
 
     private int getRequiredMoney(int level) {
         FileConfiguration fg = ConfigUtil.getCustomConfig(ConfigTag.UPGRADE);
-        ConfigurationSection section = fg.getConfigurationSection("townUpgrades");
-        String expressionString = section.getString("TownLevelExpression");
+        ConfigurationSection section = fg.getConfigurationSection("townLevelExpression");
+        String expressionString = section.getString("LevelExpression");
         String squareMultName = "squareMultiplier";
         String flatMultName = "flatMultiplier";
 

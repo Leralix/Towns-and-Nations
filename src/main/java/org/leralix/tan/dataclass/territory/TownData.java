@@ -243,7 +243,7 @@ public class TownData extends TerritoryData {
 
 
     public boolean isFull() {
-        return getNewLevel().getStat(TownPlayerCap.class).canDoAction(this.townPlayerListId.size());
+        return !getNewLevel().getStat(TownPlayerCap.class).canDoAction(this.townPlayerListId.size());
     }
 
     public void addPlayerJoinRequest(Player player) {

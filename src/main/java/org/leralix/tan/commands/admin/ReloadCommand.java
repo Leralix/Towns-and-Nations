@@ -51,7 +51,7 @@ public class ReloadCommand extends SubCommand {
         if (args.length == 1) {
             Plugin plugin = TownsAndNations.getPlugin();
             ConfigUtil.addCustomConfig(plugin, "config.yml", ConfigTag.MAIN);
-            ConfigUtil.addCustomConfig(plugin, "townUpgrades.yml", ConfigTag.UPGRADE);
+            ConfigUtil.addCustomConfig(plugin, "upgrades.yml", ConfigTag.UPGRADE);
             ConfigUtil.addCustomConfig(plugin, "lang.yml", ConfigTag.LANG);
 
             String lang = ConfigUtil.getCustomConfig(ConfigTag.LANG).getString("language");

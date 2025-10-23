@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 
-public class AllWoodScope extends ItemScope {
+public class AnyWoodScope extends ItemScope {
 
 
     @Override
@@ -17,12 +17,12 @@ public class AllWoodScope extends ItemScope {
                 material == Material.OAK_WOOD ||
                 material == Material.DARK_OAK_WOOD||
                 material == Material.SPRUCE_WOOD ||
-                material == Material.CRIMSON_STEM ||
-                material == Material.WARPED_STEM ;
+                material == Material.CRIMSON_HYPHAE ||
+                material == Material.WARPED_HYPHAE ;
     }
 
     @Override
     public String getName(LangType langType) {
-        return Lang.ALL_WOOD_SCOPE_NAME.get(langType);
+        return Lang.ANY_WOOD_SCOPE_NAME.get(langType);
     }
 }
