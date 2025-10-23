@@ -111,6 +111,7 @@ public class IconBuilder {
                     TanChatUtils.message(player, Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.get(langType), SoundEnum.NOT_ALLOWED);
                     return;
                 }
+                requirements.actionConsume();
                 action.accept(event);
             });
         }

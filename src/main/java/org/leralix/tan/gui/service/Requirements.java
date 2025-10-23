@@ -1,6 +1,7 @@
 package org.leralix.tan.gui.service;
 
 import org.leralix.tan.gui.service.requirements.IndividualRequirement;
+import org.leralix.tan.gui.service.requirements.IndividualRequirementWithCost;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 
@@ -42,5 +43,13 @@ public class Requirements {
 
     public boolean isEmpty() {
         return individualRequirementList.isEmpty();
+    }
+
+    public void actionConsume() {
+        for(var requirement : individualRequirementList){
+            if(requirement instanceof  IndividualRequirementWithCost individualRequirementWithCost){
+                individualRequirementWithCost.actionDone();
+            }
+        }
     }
 }

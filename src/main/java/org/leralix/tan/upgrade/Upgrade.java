@@ -8,6 +8,7 @@ import org.leralix.tan.gui.service.requirements.upgrade.UpgradeRequirement;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.upgrade.rewards.IndividualStat;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,11 +21,11 @@ public class Upgrade {
     private final Material iconMaterial;
     private final String nameKey;
     private final int maxLevel;
-    private final Collection<UpgradeRequirement> upgradeRequirements;
-    private final Collection<IndividualReward> rewards;
+    private final List<UpgradeRequirement> upgradeRequirements;
+    private final List<IndividualStat> rewards;
 
 
-    public Upgrade(int row, int column, String nameKey, Material iconMaterial, int maxLevel, List<UpgradeRequirement> upgradeRequirements, Collection<IndividualReward> rewards){
+    public Upgrade(int row, int column, String nameKey, Material iconMaterial, int maxLevel, List<UpgradeRequirement> upgradeRequirements, List<IndividualStat> rewards){
         this.row = row;
         this.column = column;
         this.nameKey = nameKey;
@@ -69,4 +70,7 @@ public class Upgrade {
         return maxLevel;
     }
 
+    public Collection<IndividualStat> getRewards() {
+        return rewards;
+    }
 }

@@ -18,7 +18,6 @@ class InventoryUtilTest extends BasicTest {
 
     @Test
     public void testItemsNumberInInventory_has0() {
-
         int number = InventoryUtil.getItemsNumberInInventory(server.addPlayer(), new AllWoodScope());
 
         assertEquals(0, number);

@@ -12,20 +12,17 @@
 #      - WOOD : any type of wood
 #      - PLANK : any type of planks
 #      - STONE : any type of stone (cobblestone, granite, diorite, andesite, stone)
-
-
-
-
 # benefits: the benefits of the upgrade
 # - PLAYER_CAP: maximum number of player per town
 # - CHUNK_CAP: maximum number of claimable chunk per town
 # - PROPERTY_CAP: maximum number of property per town
 # - UNLOCK_TOWN_SPAWN: unlock /tan spawn
 # - UNLOCK_MOB_BAN: unlock the mob ban tab
-# - If you need other upgrades ask on my discord
 # - MAX_LANDMARKS: maximum number of owned landmarks per town
 # - LANDMARK_BONUS: percentage of bonus on landmarks (ex 50 = 50%)
 # You can create your own names, prerequisites and benefits in the lang files.
+
+# - If you need other upgrades ask on my discord
 
 # The cost of the upgrade is calculated with the expression. The expression is a string that will be evaluated with the level of the upgrade.
 townUpgrades:
@@ -41,7 +38,7 @@ upgrades:
     row: 2
     itemCode: 'BELL'
     maxLevel: 1
-    cost: ['0']
+    cost: [ '0' ]
     prerequisites:
       TOWN_LEVEL: 0
     benefits:
@@ -57,7 +54,7 @@ upgrades:
     prerequisites:
       TOWN_LEVEL: 1
     resources:
-      OAK_WOOD : 50
+      OAK_WOOD: 50
     benefits:
       PLAYER_CAP: +3
 

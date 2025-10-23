@@ -16,10 +16,11 @@ public class LevelRequirement extends IndividualRequirement {
 
     @Override
     public String getLine(LangType langType) {
+        int currentLevel = territoryData.getNewLevel().getMainLevel();
         if(isInvalid()){
-            return Lang.REQUIREMENT_MAIN_LEVEL_NEGATIVE.get(langType, Integer.toString(requiredLevel));
+            return Lang.REQUIREMENT_MAIN_LEVEL_NEGATIVE.get(langType, Integer.toString(currentLevel), Integer.toString(requiredLevel));
         } else {
-            return Lang.REQUIREMENT_MAIN_LEVEL_POSITIVE.get(langType, Integer.toString(requiredLevel));
+            return Lang.REQUIREMENT_MAIN_LEVEL_POSITIVE.get(langType, Integer.toString(currentLevel), Integer.toString(requiredLevel));
         }
     }
 

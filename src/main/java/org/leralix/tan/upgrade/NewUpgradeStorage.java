@@ -9,6 +9,14 @@ import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.gui.service.requirements.model.AllWoodScope;
 import org.leralix.tan.gui.service.requirements.model.MaterialScope;
 import org.leralix.tan.gui.service.requirements.upgrade.*;
+import org.leralix.tan.upgrade.rewards.IndividualStat;
+import org.leralix.tan.upgrade.rewards.bool.EnableMobBan;
+import org.leralix.tan.upgrade.rewards.bool.EnableTownSpawn;
+import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
+import org.leralix.tan.upgrade.rewards.numeric.LandmarkCap;
+import org.leralix.tan.upgrade.rewards.numeric.PropertyCap;
+import org.leralix.tan.upgrade.rewards.numeric.TownPlayerCap;
+import org.leralix.tan.upgrade.rewards.percentage.LandmarkBonus;
 
 import java.util.*;
 
@@ -41,20 +49,19 @@ public class NewUpgradeStorage {
                 if (prerequisiteSection != null) {
                     for (String prerequisiteKey : prerequisiteSection.getKeys(false)) {
                         int requiredLevel = prerequisiteSection.getInt(prerequisiteKey);
-                        if(prerequisiteKey.equals("TOWN_LEVEL")){
+                        if (prerequisiteKey.equals("TOWN_LEVEL")) {
                             newPrerequisites.add(new LevelUpgradeRequirement(requiredLevel));
-                        }
-                        else {
+                        } else {
                             newPrerequisites.add(new OtherUpgradeRequirementBuilder(prerequisiteKey, requiredLevel));
                         }
                     }
                 }
 
                 ConfigurationSection resourcesSection = upgradesSection.getConfigurationSection(key + ".resources");
-                if(resourcesSection != null){
+                if (resourcesSection != null) {
                     for (String ressourcesKey : resourcesSection.getKeys(false)) {
                         int number = resourcesSection.getInt(ressourcesKey);
-                        if(ressourcesKey.equals("ALL_WOOD")){
+                        if (ressourcesKey.equals("ALL_WOOD")) {
                             newPrerequisites.add(new ItemRequirementBuilder(new AllWoodScope(), number));
                         }
                         newPrerequisites.add(new ItemRequirementBuilder(new MaterialScope(Material.valueOf(ressourcesKey)), number));
@@ -63,10 +70,23 @@ public class NewUpgradeStorage {
 
                 //Benefits
                 ConfigurationSection benefitsSection = upgradesSection.getConfigurationSection(key + ".benefits");
-                HashMap<String, Integer> benefits = new HashMap<>();
+                List<IndividualStat> rewards = new ArrayList<>();
                 if (benefitsSection != null) {
                     for (String benefitKey : benefitsSection.getKeys(false)) {
-                        benefits.put(benefitKey, benefitsSection.getInt(benefitKey));
+                        switch (benefitKey) {
+                            case "PROPERTY_CAP" ->
+                                    rewards.add(new PropertyCap(benefitsSection.getInt(benefitKey), false));
+                            case "PLAYER_CAP" ->
+                                    rewards.add(new TownPlayerCap(benefitsSection.getInt(benefitKey), false));
+                            case "CHUNK_CAP" -> rewards.add(new ChunkCap(benefitsSection.getInt(benefitKey), false));
+                            case "MAX_LANDMARKS" ->
+                                    rewards.add(new LandmarkCap(benefitsSection.getInt(benefitKey), false));
+                            case "UNLOCK_TOWN_SPAWN" -> rewards.add(new EnableTownSpawn(true));
+                            case "UNLOCK_MOB_BAN" -> rewards.add(new EnableMobBan(true));
+                            case "LANDMARK_BONUS" ->
+                                    rewards.add(new LandmarkBonus(benefitsSection.getDouble(benefitKey) / 100));
+
+                        }
                     }
                 }
 
@@ -79,7 +99,7 @@ public class NewUpgradeStorage {
                                 icon,
                                 maxLevel,
                                 newPrerequisites,
-                                Collections.emptyList()
+                                rewards
                         )
                 );
             }

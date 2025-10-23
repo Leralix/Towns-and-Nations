@@ -50,7 +50,7 @@ import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.upgrade.NewLevel;
+import org.leralix.tan.upgrade.TerritoryStats;
 import org.leralix.tan.upgrade.Upgrade;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.HeadUtils;
@@ -92,7 +92,7 @@ public abstract class TerritoryData {
     private ClaimedChunkSettings chunkSettings;
     private List<String> fortIds;
     private List<String> occupiedFortIds;
-    protected NewLevel upgradesStatus;
+    protected TerritoryStats upgradesStatus;
 
     protected TerritoryData(String id, String name, ITanPlayer owner) {
         this.id = id;
@@ -1097,15 +1097,15 @@ public abstract class TerritoryData {
         return false;
     }
 
-    public NewLevel getNewLevel(){
+    public TerritoryStats getNewLevel(){
         if(this.upgradesStatus == null){
-            upgradesStatus = new NewLevel();
+            upgradesStatus = new TerritoryStats();
         }
         return upgradesStatus;
     }
 
     public void upgradeTown(Upgrade townUpgrade){
-        NewLevel level = getNewLevel();
+        TerritoryStats level = getNewLevel();
         level.levelUp(townUpgrade);
     }
 }

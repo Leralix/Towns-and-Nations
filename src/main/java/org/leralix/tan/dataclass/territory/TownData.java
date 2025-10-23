@@ -27,6 +27,7 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.*;
+import org.leralix.tan.upgrade.rewards.numeric.TownPlayerCap;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.graphic.PrefixUtil;
@@ -240,7 +241,7 @@ public class TownData extends TerritoryData {
 
 
     public boolean isFull() {
-        return this.townPlayerListId.size() >= this.townLevel.getPlayerCap();
+        return getNewLevel().getStat(TownPlayerCap.class).canDoAction(this.townPlayerListId.size());
     }
 
     @Override
@@ -548,6 +549,7 @@ public class TownData extends TerritoryData {
 
         removeFromBalance(level.getMoneyRequiredForLevelUp());
         level.townLevelUp();
+        getNewLevel().levelUpMain();
         SoundUtil.playSound(player, SoundEnum.LEVEL_UP);
         TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(player));
     }

@@ -6,7 +6,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.gameplay.InventoryUtil;
 
-public class RessourceRequirement extends IndividualRequirement {
+public class RessourceRequirement extends IndividualRequirementWithCost {
 
     private final ItemScope itemScope;
     private final Player player;
@@ -31,5 +31,10 @@ public class RessourceRequirement extends IndividualRequirement {
     @Override
     public boolean isInvalid() {
         return !InventoryUtil.playerEnoughItem(player, itemScope, amount);
+    }
+
+    @Override
+    public void actionDone() {
+        InventoryUtil.removeItemsFromInventory(player, itemScope, amount);
     }
 }

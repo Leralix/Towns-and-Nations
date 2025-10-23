@@ -8,17 +8,21 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.dataclass.Level;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.upgrade.TerritoryStats;
 import org.leralix.tan.upgrade.Upgrade;
+import org.leralix.tan.upgrade.rewards.IndividualStat;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class UpgradeMenu extends BasicGui {
 
@@ -49,8 +53,11 @@ public class UpgradeMenu extends BasicGui {
 
     private void generateUpgrades() {
 
-        int townLevel = territoryData.getLevel().getTownLevel();
+        gui.setItem(6, 6, getTerritoryStats());
 
+
+        TerritoryStats territoryStats = territoryData.getNewLevel();
+        int townLevel = territoryStats.getMainLevel();
         //Fill the 5 rows of colored due to town level.
         for(int i = 0; i < 6; i++){
             int adaptedCursor = 5 - i + verticalScrollIndex;
@@ -74,13 +81,29 @@ public class UpgradeMenu extends BasicGui {
             if(column > 9 || column < 2 || row > 5 || row < 1){
                 continue;
             }
+            int levelOfUpgrade = territoryStats.getLevel(upgrade) ;
+            int maxLevelOfUpgrade = upgrade.getMaxLevel();
+
+            List<String> desc = new ArrayList<>();
+            desc.add(Lang.UPGRADE_CURRENT_LEVEL.get(langType, Integer.toString(levelOfUpgrade), Integer.toString(maxLevelOfUpgrade)));
+            desc.add(" ");
+            desc.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4.get(langType));
+            for(IndividualStat individualStat : upgrade.getRewards()){
+                desc.add(individualStat.getStatReward(langType, levelOfUpgrade, maxLevelOfUpgrade));
+            }
+
 
             gui.setItem(row, column,
                     iconManager.get(upgrade.getIconMaterial())
                             .setName(upgrade.getName(langType))
+                            .setDescription(desc)
                             .setRequirements(upgrade.getRequirements(territoryData, player))
                             .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_UPGRADE)
                             .setAction( action -> {
+                                if(levelOfUpgrade >= maxLevelOfUpgrade){
+                                    TanChatUtils.message(player, Lang.TOWN_UPGRADE_MAX_LEVEL.get(langType), SoundEnum.NOT_ALLOWED);
+                                    return;
+                                }
                                 TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
                                 territoryData.upgradeTown(upgrade);
                                 open();
@@ -89,6 +112,30 @@ public class UpgradeMenu extends BasicGui {
             );
 
         }
+    }
+
+    private @NotNull GuiItem getTerritoryStats() {
+
+        List<String> desc = new ArrayList<>();
+
+        desc.add("Current stats :");
+        desc.add("");
+
+
+
+        Collection<IndividualStat> upgrades = territoryData.getNewLevel().getAllStats();
+
+        for(IndividualStat stat : upgrades){
+            desc.add(stat.getStatReward(langType));
+        }
+
+
+
+        return iconManager.get(territoryData.getIcon())
+                .setName(territoryData.getName())
+                .setDescription(desc)
+                .asGuiItem(player);
+
     }
 
     private void generateMenuPart() {
@@ -105,14 +152,15 @@ public class UpgradeMenu extends BasicGui {
 
     private @NotNull GuiItem getUpgradeTownButton() {
 
-        Level level = territoryData.getLevel();
-        int currentLevel = level.getTownLevel();
+        TerritoryStats level = territoryData.getNewLevel();
+        int currentLevel = level.getMainLevel();
+        int nextLevelPrice = level.getMoneyRequiredForLevelUp();
 
         return iconManager.get(IconKey.LEVEL_UP_ICON)
                 .setName(Lang.GUI_TOWN_LEVEL_UP.get(langType))
                 .setDescription(
                         Lang.GUI_TOWN_LEVEL_UP_DESC1.get(langType, Integer.toString(currentLevel)),
-                        Lang.GUI_TOWN_LEVEL_UP_DESC2.get(langType, Integer.toString(currentLevel + 1), Integer.toString(level.getMoneyRequiredForLevelUp()))
+                        Lang.GUI_TOWN_LEVEL_UP_DESC2.get(langType, Integer.toString(currentLevel + 1), Integer.toString(nextLevelPrice))
                 )
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction( action -> {

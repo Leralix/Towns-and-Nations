@@ -8,7 +8,7 @@ import org.leralix.tan.utils.text.NumberUtil;
 
 import java.util.List;
 
-public class AmountForUpgradeRequirement extends IndividualRequirement {
+public class AmountForUpgradeRequirement extends IndividualRequirementWithCost {
 
     private final TerritoryData territoryData;
     private final Upgrade upgrade;
@@ -40,5 +40,10 @@ public class AmountForUpgradeRequirement extends IndividualRequirement {
         if (costs.size() <= level)
             return NumberUtil.roundWithDigits(costs.getLast());
         return NumberUtil.roundWithDigits(costs.get(level));
+    }
+
+    @Override
+    public void actionDone() {
+        territoryData.addToBalance(-getCost());
     }
 }
