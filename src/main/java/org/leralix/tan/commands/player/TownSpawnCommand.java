@@ -9,6 +9,7 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.TeleportationRegister;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.upgrade.rewards.bool.EnableTownSpawn;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
@@ -58,8 +59,9 @@ public class TownSpawnCommand extends PlayerSubCommand {
         }
 
         TownData townData = TownDataStorage.getInstance().get(player);
+        EnableTownSpawn enableTownSpawn = townData.getNewLevel().getStat(EnableTownSpawn.class);
         //Spawn Unlocked
-        if (townData.isSpawnLocked()) {
+        if (!enableTownSpawn.isEnabled()) {
             TanChatUtils.message(player, Lang.SPAWN_NOT_UNLOCKED.get(langType));
             return;
         }

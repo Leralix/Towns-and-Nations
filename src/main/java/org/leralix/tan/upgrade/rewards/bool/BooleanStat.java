@@ -31,4 +31,7 @@ public abstract class BooleanStat extends IndividualStat {
     }
 
 
+    public boolean isEnabled() {
+        return state;
+    }
 }

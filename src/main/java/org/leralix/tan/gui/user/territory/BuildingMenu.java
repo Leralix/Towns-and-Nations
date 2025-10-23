@@ -15,6 +15,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.events.CreateFortEvent;
 import org.leralix.tan.listeners.interact.events.property.CreateTerritoryPropertyEvent;
+import org.leralix.tan.upgrade.rewards.numeric.PropertyCap;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -51,7 +52,7 @@ public class BuildingMenu extends IteratorGUI {
         List<String> description = new ArrayList<>();
 
         int nbProperties = townData.getProperties().size();
-        int maxNbProperties = townData.getLevel().getPropertyCap();
+        int maxNbProperties = townData.getNewLevel().getStat(PropertyCap.class).getMaxAmount();
         if (nbProperties >= maxNbProperties) {
             description.add(Lang.GUI_PROPERTY_CAP_FULL.get(langType, Integer.toString(nbProperties), Integer.toString(maxNbProperties)));
         } else {

@@ -51,4 +51,8 @@ public class LandmarkBonus extends IndividualStat implements AggregatableStat<La
         int percentValue = (int) ((1. + percentage) * 100);
         return Lang.UPGRADE_LINE_PERCENT_MAX.get(langType, Lang.LANDMARK_BONUS.get(langType), Double.toString(percentValue));
     }
+
+    public double multiply(double baseValue) {
+        return baseValue * (1. + percentage);
+    }
 }

@@ -11,6 +11,7 @@ import org.leralix.tan.storage.legacy.UpgradeStorage;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated(since = "0.16.0", forRemoval = true)
 public class Level {
     private int townLevel;
 

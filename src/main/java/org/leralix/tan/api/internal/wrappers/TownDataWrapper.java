@@ -27,7 +27,7 @@ public class TownDataWrapper extends TerritoryDataWrapper implements TanTown {
 
     @Override
     public int getLevel() {
-        return townData.getLevel().getTownLevel();
+        return townData.getNewLevel().getMainLevel();
     }
 
     @Override

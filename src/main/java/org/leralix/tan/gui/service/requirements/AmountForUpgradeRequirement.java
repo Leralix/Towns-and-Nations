@@ -44,6 +44,6 @@ public class AmountForUpgradeRequirement extends IndividualRequirementWithCost {
 
     @Override
     public void actionDone() {
-        territoryData.addToBalance(-getCost());
+        territoryData.removeFromBalance(getCost());
     }
 }

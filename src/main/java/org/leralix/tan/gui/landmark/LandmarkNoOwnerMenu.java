@@ -14,7 +14,9 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.upgrade.rewards.numeric.LandmarkCap;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.deprecated.HeadUtils;
@@ -67,7 +69,9 @@ public class LandmarkNoOwnerMenu extends BasicGui {
 
         boolean isRequirementsMet = true;
 
-        if (!playerTown.canClaimMoreLandmarks()) {
+        LandmarkCap landmarkCap = playerTown.getNewLevel().getStat(LandmarkCap.class);
+        int currentLandmarkCount = LandmarkStorage.getInstance().getLandmarkOf(playerTown).size();
+        if (!landmarkCap.canDoAction(currentLandmarkCount)) {
             isRequirementsMet = false;
             description.add(Lang.GUI_LANDMARK_TOWN_FULL.get(tanPlayer));
         }

@@ -10,7 +10,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -44,7 +43,11 @@ public class TownData extends TerritoryData {
     private String UuidLeader;
     private String townTag;
     private boolean isRecruiting;
-    private Level townLevel;
+    /**
+     * Keep to maintain backward compatibility until 0.17.0
+     */
+    @Deprecated(since = "0.16.0", forRemoval = true)
+    Level townLevel;
     private HashSet<String> PlayerJoinRequestSet;
     private Map<String, PropertyData> propertyDataMap;
     private TeleportationPosition teleportationPosition;
@@ -58,7 +61,6 @@ public class TownData extends TerritoryData {
 
     public TownData(String townId, String townName, ITanPlayer leader) {
         super(townId, townName, leader);
-        this.townLevel = new Level();
         this.PlayerJoinRequestSet = new HashSet<>();
         this.townPlayerListId = new HashSet<>();
         this.isRecruiting = false;
@@ -77,9 +79,9 @@ public class TownData extends TerritoryData {
         return getRank(tanPlayer.getTownRankID());
     }
 
-    public Level getLevel() {
-        return townLevel;
-    }
+//    public Level getLevel() {
+//        return townLevel;
+//    }
 
 
     public void addPlayer(ITanPlayer tanNewPlayer) {
@@ -244,12 +246,6 @@ public class TownData extends TerritoryData {
         return getNewLevel().getStat(TownPlayerCap.class).canDoAction(this.townPlayerListId.size());
     }
 
-    @Override
-    public boolean canClaimMoreChunk() {
-        return this.getNumberOfClaimedChunk() < this.townLevel.getChunkCap();
-    }
-
-
     public void addPlayerJoinRequest(Player player) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         EventManager.getInstance().callEvent(new PlayerJoinTownRequestInternalEvent(tanPlayer, this));
@@ -320,32 +316,17 @@ public class TownData extends TerritoryData {
         return this.teleportationPosition;
     }
 
-    public boolean isSpawnLocked() {
-        return this.townLevel.getBenefitsLevel("UNLOCK_TOWN_SPAWN") <= 0;
-    }
-
-
     @Override
-    public boolean abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
+    public void abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
 
         removeFromBalance(Constants.territoryClaimTownCost());
-
         NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(NewClaimedChunkStorage.getInstance().get(chunk));
-        ClaimedChunk2 chunkClaimed = NewClaimedChunkStorage.getInstance().claimTownChunk(chunk, getID());
 
+        ClaimedChunk2 chunkClaimed = NewClaimedChunkStorage.getInstance().claimTownChunk(chunk, getID());
         //If this was the first claimed chunk, set the capital.
         if (getNumberOfClaimedChunk() == 1) {
             setCapitalLocation(chunkClaimed.getVector2D());
         }
-
-        TanChatUtils.message(
-                player,
-                Lang.CHUNK_CLAIMED_SUCCESS.get(
-                        Integer.toString(getNumberOfClaimedChunk()),
-                        Integer.toString(getLevel().getChunkCap())
-                )
-        );
-        return true;
     }
 
     @Override
@@ -533,56 +514,12 @@ public class TownData extends TerritoryData {
     }
 
 
-    public void upgradeTown(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Level level = this.getLevel();
-        if (!doesPlayerHavePermission(tanPlayer, RolePermission.UPGRADE_TOWN)) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(player));
-            SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
-            return;
-        }
-        if (this.getBalance() < level.getMoneyRequiredForLevelUp()) {
-            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), Double.toString(level.getMoneyRequiredForLevelUp() - this.getBalance())));
-            SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
-            return;
-        }
-
-        removeFromBalance(level.getMoneyRequiredForLevelUp());
-        level.townLevelUp();
+    public void upgradeTown() {
         getNewLevel().levelUpMain();
-        SoundUtil.playSound(player, SoundEnum.LEVEL_UP);
-        TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(player));
-    }
-
-    public void upgradeTown(Player player, TownUpgrade townUpgrade, int townUpgradeLevel) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-
-        if (!doesPlayerHavePermission(tanPlayer, RolePermission.UPGRADE_TOWN)) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(player), SoundEnum.NOT_ALLOWED);
-            return;
-        }
-        int cost = townUpgrade.getCost(townLevel.getUpgradeLevel(townUpgrade.getName()));
-        if (this.getBalance() < cost) {
-            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), Double.toString(cost - this.getBalance())), SoundEnum.NOT_ALLOWED);
-            return;
-        }
-        Level level = this.getLevel();
-        if (level.getUpgradeLevel(townUpgrade.getName()) >= townUpgrade.getMaxLevel()) {
-            TanChatUtils.message(player, Lang.TOWN_UPGRADE_MAX_LEVEL.get(player), SoundEnum.NOT_ALLOWED);
-            return;
-        }
-
-        removeFromBalance(townUpgrade.getCost(townUpgradeLevel));
-        level.levelUp(townUpgrade);
-        TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(player), SoundEnum.LEVEL_UP);
     }
 
     public boolean haveNoLeader() {
         return this.UuidLeader == null;
-    }
-
-    public boolean canClaimMoreLandmarks() {
-        return getLevel().getTotalBenefits().get("MAX_LANDMARKS") > LandmarkStorage.getInstance().getLandmarkOf(this).size();
     }
 
 

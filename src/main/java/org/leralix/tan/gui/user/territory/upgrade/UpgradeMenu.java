@@ -164,7 +164,8 @@ public class UpgradeMenu extends BasicGui {
                 )
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction( action -> {
-                    territoryData.upgradeTown(player);
+                    territoryData.upgradeTown();
+                    TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
                     open();
                 })
                 .asGuiItem(player);

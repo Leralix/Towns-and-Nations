@@ -10,53 +10,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 public class GuiUtil {
 
     private GuiUtil() {
         throw new IllegalStateException("Utility class");
-    }
-
-    /**
-     * Create the town upgrade resume {@link GuiItem}. This gui is used to summarize
-     * every upgrade rewards the town currently have.
-     *
-     * @param townData The town on which the upgrade should be shown
-     * @return The {@link GuiItem} displaying the town current benefices
-     */
-    public static GuiItem townUpgradeResume(LangType langType, TownData townData) {
-
-        ItemStack townIcon = townData.getIconWithName();
-        List<String> lore = new ArrayList<>();
-        lore.add(Lang.TOWN_LEVEL_BONUS_RECAP.get(langType));
-
-        Map<String, Integer> benefits = townData.getLevel().getTotalBenefits();
-
-        for (Map.Entry<String, Integer> entry : benefits.entrySet()) {
-            String valueId = entry.getKey();
-            Integer value = entry.getValue();
-            String line;
-            if (value > 0) {
-                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_1.get(langType, DynamicLang.get(langType, valueId), Integer.toString(value));
-            } else {
-                line = Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4_2.get(langType, DynamicLang.get(langType, valueId), Integer.toString(value));
-            }
-            lore.add(line);
-        }
-
-        HeadUtils.setLore(townIcon, lore);
-
-        return ItemBuilder.from(townIcon).asGuiItem(event -> event.setCancelled(true));
     }
 
     public static Gui createChestGui(String name, int nRow) {

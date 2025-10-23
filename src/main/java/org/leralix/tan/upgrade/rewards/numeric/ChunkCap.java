@@ -1,8 +1,5 @@
 package org.leralix.tan.upgrade.rewards.numeric;
 
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.gui.service.requirements.IndividualRequirement;
-import org.leralix.tan.gui.service.requirements.PropertyCapRequirement;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.upgrade.rewards.AggregatableStat;
@@ -24,6 +21,14 @@ public class ChunkCap extends NumericStat implements AggregatableStat<ChunkCap> 
         super(maxAmount, isUnlimited);
     }
 
+    public String getMaxNumberOfChunks() {
+        if (isUnlimited) {
+            return "∞";
+        } else {
+            return Integer.toString(maxAmount);
+        }
+    }
+
     @Override
     public ChunkCap aggregate(List<ChunkCap> stats) {
 
@@ -41,10 +46,6 @@ public class ChunkCap extends NumericStat implements AggregatableStat<ChunkCap> 
     @Override
     public ChunkCap scale(int factor) {
         return new ChunkCap(maxAmount * factor, isUnlimited);
-    }
-
-    public IndividualRequirement getRequirement(TownData townData) {
-        return new PropertyCapRequirement(townData, maxAmount);
     }
 
     @Override

@@ -92,7 +92,7 @@ public class CaptureChunk {
 
         if (fortProtectingChunk.isPresent()) {
             message = Lang.WAR_INFO_CHUNK_PROTECTED.get(Lang.getServerLang(), fortProtectingChunk.get().getPosition().toString(), nbAttackers, nbDefenders);
-        } else if (nbAttackers == nbDefenders) {
+        } else if (defenders.size() == attackers.size()) {
             message = Lang.WAR_INFO_CONTESTED.get(Lang.getServerLang(), Integer.toString(score), nbAttackers, nbDefenders);
         } else if (isCaptured()) {
             message = Lang.WAR_INFO_CHUNK_CAPTURED.get(Lang.getServerLang(), territoryChunk.getOccupier().getColoredName(), nbAttackers, nbDefenders);

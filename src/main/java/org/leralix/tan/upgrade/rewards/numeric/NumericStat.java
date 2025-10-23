@@ -65,4 +65,12 @@ public abstract class NumericStat extends IndividualStat {
         }
         return value <= maxAmount;
     }
+
+    public int getMaxAmount() {
+        return maxAmount;
+    }
+
+    public boolean isUnlimited() {
+        return isUnlimited;
+    }
 }

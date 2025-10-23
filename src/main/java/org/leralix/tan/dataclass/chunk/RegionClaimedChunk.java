@@ -17,6 +17,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.legacy.CurrentAttack;
 
@@ -80,11 +81,20 @@ public class RegionClaimedChunk extends TerritoryChunk {
         }
 
         if (!regionData.doesPlayerHavePermission(playerStat, RolePermission.UNCLAIM_CHUNK)) {
-            TanChatUtils.message(player, Lang.PLAYER_NOT_LEADER_OF_REGION.get(player));
+            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(player));
             return;
         }
         NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
-        TanChatUtils.message(player, Lang.UNCLAIMED_CHUNK_SUCCESS_REGION.get(player, Integer.toString(regionData.getNumberOfClaimedChunk())));
+
+        ChunkCap chunkCap = regionData.getNewLevel().getStat(ChunkCap.class);
+        if(chunkCap.isUnlimited()){
+            Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(player, regionData.getColoredName());
+        }
+        else {
+            String currentChunks = Integer.toString(regionData.getNumberOfClaimedChunk());
+            String maxChunks = Integer.toString(chunkCap.getMaxAmount());
+            Lang.CHUNK_UNCLAIMED_SUCCESS_LIMITED.get(player, regionData.getColoredName(), currentChunks, maxChunks);
+        }
     }
 
     public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {

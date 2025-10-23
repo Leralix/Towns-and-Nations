@@ -6,6 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.dataclass.Level;
 import org.leralix.tan.upgrade.rewards.AggregatableStat;
 import org.leralix.tan.upgrade.rewards.IndividualStat;
 import org.leralix.tan.upgrade.rewards.bool.EnableMobBan;
@@ -24,6 +25,14 @@ public class TerritoryStats {
 
     private int mainLevel;
     private Map<String, Integer> level;
+
+    public TerritoryStats(Level oldLevel){
+        this.mainLevel = oldLevel.getTownLevel();
+        this.level = new HashMap<>();
+        for(Map.Entry<String, Integer> entry : oldLevel.getTotalBenefits().entrySet()){
+            this.level.put(entry.getKey(), entry.getValue());
+        }
+    }
 
     public TerritoryStats(){
         this.mainLevel = 1;

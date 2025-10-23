@@ -1,24 +1,17 @@
 package org.leralix.tan.dataclass;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.deprecated.HeadUtils;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated(since = "0.16.0", forRemoval = true)
 public class TownUpgrade {
     private final String name;
     private final String materialCode;
@@ -150,24 +143,25 @@ public class TownUpgrade {
     }
 
     public GuiItem createGuiItem(Player player, TownData townData, int page) {
-        Level townLevel = townData.getLevel();
-        int townUpgradeLevel = townLevel.getUpgradeLevel(getName());
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        List<String> lore = getItemLore(tanPlayer.getLang(), townLevel, townUpgradeLevel);
-
-        ItemStack upgradeItemStack = HeadUtils.createCustomItemStack(
-                Material.getMaterial(getMaterialCode()),
-                DynamicLang.get(tanPlayer.getLang(), getName()),
-                lore);
-
-        return ItemBuilder.from(upgradeItemStack).asGuiItem(event -> {
-            event.setCancelled(true);
-            if (!isPrerequisiteMet(townLevel)) {
-                TanChatUtils.message(player, Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.get(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
-                return;
-            }
-            townData.upgradeTown(player, this, townUpgradeLevel);
-            PlayerGUI.openTownLevel(player, page);
-        });
+//        Level townLevel = townData.getLevel();
+//        int townUpgradeLevel = townLevel.getUpgradeLevel(getName());
+//        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+//        List<String> lore = getItemLore(tanPlayer.getLang(), townLevel, townUpgradeLevel);
+//
+//        ItemStack upgradeItemStack = HeadUtils.createCustomItemStack(
+//                Material.getMaterial(getMaterialCode()),
+//                DynamicLang.get(tanPlayer.getLang(), getName()),
+//                lore);
+//
+//        return ItemBuilder.from(upgradeItemStack).asGuiItem(event -> {
+//            event.setCancelled(true);
+//            if (!isPrerequisiteMet(townLevel)) {
+//                TanChatUtils.message(player, Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.get(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
+//                return;
+//            }
+//            townData.upgradeTown(player, this, townUpgradeLevel);
+//            PlayerGUI.openTownLevel(player, page);
+//        });
+        return null;
     }
 }

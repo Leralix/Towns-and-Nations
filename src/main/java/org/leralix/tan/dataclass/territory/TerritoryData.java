@@ -52,6 +52,7 @@ import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.upgrade.TerritoryStats;
 import org.leralix.tan.upgrade.Upgrade;
+import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.file.FileUtil;
@@ -507,10 +508,28 @@ public abstract class TerritoryData {
      * @return True if the chunk has been claimed successfully, false otherwise
      */
     public boolean claimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
-        if(canClaimChunk(player, chunk, ignoreAdjacent)){
-            return abstractClaimChunk(player, chunk, ignoreAdjacent);
+        if(!canClaimChunk(player, chunk, ignoreAdjacent)) {
+            return false;
         }
-        return false;
+
+         abstractClaimChunk(player, chunk, ignoreAdjacent);
+
+        ChunkCap chunkCap = getNewLevel().getStat(ChunkCap.class);
+
+        FilledLang message;
+        if(chunkCap.isUnlimited()){
+            message = Lang.CHUNK_CLAIMED_SUCCESS_UNLIMITED.get(getColoredName());
+        }
+        else {
+            String currentAmountOfChunks = Integer.toString(getNumberOfClaimedChunk());
+            String maxAmountOfChunks = Integer.toString(chunkCap.getMaxAmount());
+            message = Lang.CHUNK_CLAIMED_SUCCESS_LIMITED.get(getColoredName(), currentAmountOfChunks, maxAmountOfChunks);
+        }
+
+
+        TanChatUtils.message(player, message);
+
+        return true;
     }
 
     /**
@@ -519,9 +538,8 @@ public abstract class TerritoryData {
      * @param player         The player wishing to claim a chunk
      * @param chunk          The chunk to claim
      * @param ignoreAdjacent Defines if the chunk to claim should respect adjacent claiming
-     * @return True if the chunk has been claimed successfully, false otherwise
      */
-    protected abstract boolean abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent);
+    protected abstract void abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent);
 
     public boolean canClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
@@ -536,7 +554,9 @@ public abstract class TerritoryData {
             return false;
         }
 
-        if (!canClaimMoreChunk()) {
+        TerritoryStats territoryStats = getNewLevel();
+        int nbOfClaimedChunks = getNumberOfClaimedChunk();
+        if (!territoryStats.getStat(ChunkCap.class).canDoAction(nbOfClaimedChunks)) {
             TanChatUtils.message(player, Lang.MAX_CHUNK_LIMIT_REACHED.get(player));
             return false;
         }
@@ -575,8 +595,6 @@ public abstract class TerritoryData {
     }
 
     public abstract int getClaimCost();
-
-    protected abstract boolean canClaimMoreChunk();
 
 
     public synchronized void delete() {
@@ -1099,6 +1117,11 @@ public abstract class TerritoryData {
 
     public TerritoryStats getNewLevel(){
         if(this.upgradesStatus == null){
+            // Migrate old data if exists
+            if(this instanceof TownData townData && townData.townLevel != null){
+                this.upgradesStatus = new TerritoryStats(townData.townLevel);
+                townData.townLevel = null;
+            }
             upgradesStatus = new TerritoryStats();
         }
         return upgradesStatus;

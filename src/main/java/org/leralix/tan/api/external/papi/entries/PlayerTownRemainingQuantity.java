@@ -5,10 +5,11 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
 
-public class PlayerTownRemainingQuantity extends PapiEntry{
+public class PlayerTownRemainingQuantity extends PapiEntry {
 
-    public PlayerTownRemainingQuantity(){
+    public PlayerTownRemainingQuantity() {
         super("player_town_chunk_remaining_quantity");
     }
 
@@ -21,8 +22,16 @@ public class PlayerTownRemainingQuantity extends PapiEntry{
             return PLAYER_NOT_FOUND;
         }
 
-        if(!tanPlayer.hasTown()) return Lang.NO_TOWN.get(tanPlayer);
-        int remaining = tanPlayer.getTown().getLevel().getChunkCap() - tanPlayer.getTown().getNumberOfClaimedChunk();
-        return Integer.toString(remaining);
+        if (tanPlayer.hasTown()) {
+            var town = tanPlayer.getTown();
+            var level = town.getNewLevel().getStat(ChunkCap.class);
+
+            if (level.isUnlimited()) {
+                return "∞";
+            } else {
+                return Integer.toString(level.getMaxAmount() - town.getNumberOfClaimedChunk());
+            }
+        }
+        return Lang.NO_TOWN.get(tanPlayer);
     }
 }
