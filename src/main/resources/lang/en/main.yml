@@ -109,6 +109,7 @@ language:
   CLAIM_CHUNK_COMMAND_DESC: "Claim a chunk"
   CHUNK_ALREADY_CLAIMED_WARNING: "§cThis chunk is already claimed by: §9{0}"
   CANNOT_CLAIM_LANDMARK: "§cYou cannot claim a landmark chunk"
+  CHUNK_BIOME_NOT_ALLOWED: "§cYou cannot claim chunks in this biome."
   CHUNK_IN_BUFFER_ZONE: "§cYou cannot claim a first chunk too close to another territory (minimum §e{0}§c chunks away)"
   MAX_CHUNK_LIMIT_REACHED: "§cYou reached the maximum number of chunks claimed, upgrade your town to get more available chunks"
   CHUNK_NOT_ADJACENT: "§cThis chunk is not adjacent to your town"
@@ -669,6 +670,7 @@ language:
   UNLOCK_MOB_BAN: "Mob ban"
   LANDMARK_BONUS: "Landmark rewards"
   UNLOCK_PERMISSION: "Unlock permission"
+  CHUNK_AUTHORIZED_BIOMES: "Authorized biomes"
   # Diplomacy
   GUI_TOWN_RELATION_HOSTILE: "§aHostile"
   GUI_TOWN_RELATION_HOSTILE_DESC1: "§fManage hostile relations"

@@ -11,6 +11,8 @@ import org.leralix.tan.upgrade.rewards.AggregatableStat;
 import org.leralix.tan.upgrade.rewards.IndividualStat;
 import org.leralix.tan.upgrade.rewards.bool.EnableMobBan;
 import org.leralix.tan.upgrade.rewards.bool.EnableTownSpawn;
+import org.leralix.tan.upgrade.rewards.list.BiomeStat;
+import org.leralix.tan.upgrade.rewards.list.PermissionList;
 import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.upgrade.rewards.numeric.LandmarkCap;
 import org.leralix.tan.upgrade.rewards.numeric.PropertyCap;
@@ -34,7 +36,7 @@ public class TerritoryStats {
     public TerritoryStats(){
         this.mainLevel = 1;
         this.level = new HashMap<>();
-        this.level.put("CITY_HALL", 1);
+        this.level.put("CITY_HALL", 1); // Default upgrade
     }
 
     public int getLevel(Upgrade upgrade){
@@ -100,6 +102,8 @@ public class TerritoryStats {
         allStats.add(getStat(LandmarkBonus.class));
         allStats.add(getStat(EnableTownSpawn.class));
         allStats.add(getStat(EnableMobBan.class));
+        allStats.add(getStat(PermissionList.class));
+        allStats.add(getStat(BiomeStat.class));
         return allStats;
     }
 

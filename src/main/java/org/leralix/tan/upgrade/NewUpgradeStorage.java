@@ -11,7 +11,8 @@ import org.leralix.tan.gui.service.requirements.upgrade.*;
 import org.leralix.tan.upgrade.rewards.IndividualStat;
 import org.leralix.tan.upgrade.rewards.bool.EnableMobBan;
 import org.leralix.tan.upgrade.rewards.bool.EnableTownSpawn;
-import org.leralix.tan.upgrade.rewards.list.ListStat;
+import org.leralix.tan.upgrade.rewards.list.BiomeStat;
+import org.leralix.tan.upgrade.rewards.list.PermissionList;
 import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.upgrade.rewards.numeric.LandmarkCap;
 import org.leralix.tan.upgrade.rewards.numeric.PropertyCap;
@@ -97,7 +98,11 @@ public class NewUpgradeStorage {
                             ));
                             case "UNLOCK_NEW_PERMISSIONS" -> {
                                 List<String> permissions = benefitsSection.getStringList(benefitKey);
-                                rewards.add(new ListStat(permissions));
+                                rewards.add(new PermissionList(permissions));
+                            }
+                            case "AUTHORIZED_BIOMES" -> {
+                                List<String> biomeKeys = benefitsSection.getStringList(benefitKey);
+                                rewards.add(BiomeStat.fromStrings(biomeKeys));
                             }
                         }
                     }

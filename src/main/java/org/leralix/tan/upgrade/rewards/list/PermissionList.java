@@ -14,15 +14,15 @@ import java.util.List;
  * A stat representing a list of strings, such as permissions or commands.
  * For now, it is only used to represent permissions unlocked by an upgrade.
  */
-public class ListStat extends IndividualStat implements AggregatableStat<ListStat> {
+public class PermissionList extends IndividualStat implements AggregatableStat<PermissionList> {
 
     private final List<String> values;
 
-    public ListStat(){
+    public PermissionList(){
         values = Collections.emptyList();
     }
 
-    public ListStat(Collection<String> values){
+    public PermissionList(Collection<String> values){
         this.values = List.copyOf(values);
     }
 
@@ -31,21 +31,21 @@ public class ListStat extends IndividualStat implements AggregatableStat<ListSta
     }
 
     @Override
-    public ListStat aggregate(List<ListStat> stats) {
+    public PermissionList aggregate(List<PermissionList> stats) {
         List<String> res = new ArrayList<>();
-        for(ListStat stat : stats){
+        for(PermissionList stat : stats){
             res.addAll(stat.values);
         }
-        return new ListStat(res);
+        return new PermissionList(res);
     }
 
     @Override
-    public ListStat scale(int factor) {
+    public PermissionList scale(int factor) {
         if(factor > 0){
             return this;
         }
         else {
-            return new ListStat(); // Level 0 => No values unlocked.
+            return new PermissionList(); // Level 0 => No values unlocked.
         }
     }
 

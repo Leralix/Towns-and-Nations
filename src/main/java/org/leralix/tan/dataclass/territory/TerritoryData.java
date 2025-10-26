@@ -52,6 +52,7 @@ import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.upgrade.TerritoryStats;
 import org.leralix.tan.upgrade.Upgrade;
+import org.leralix.tan.upgrade.rewards.list.BiomeStat;
 import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.HeadUtils;
@@ -556,6 +557,12 @@ public abstract class TerritoryData {
 
         TerritoryStats territoryStats = getNewLevel();
         int nbOfClaimedChunks = getNumberOfClaimedChunk();
+
+        if(!territoryStats.getStat(BiomeStat.class).canClaimBiome(chunk)){
+            TanChatUtils.message(player, Lang.CHUNK_BIOME_NOT_ALLOWED.get(player));
+            return false;
+        }
+
         if (!territoryStats.getStat(ChunkCap.class).canDoAction(nbOfClaimedChunks)) {
             TanChatUtils.message(player, Lang.MAX_CHUNK_LIMIT_REACHED.get(player));
             return false;
