@@ -34,7 +34,7 @@ public class TerritoryStats {
     public TerritoryStats(){
         this.mainLevel = 1;
         this.level = new HashMap<>();
-        this.level.put("TOWN_HALL", 1);
+        this.level.put("CITY_HALL", 1);
     }
 
     public int getLevel(Upgrade upgrade){
