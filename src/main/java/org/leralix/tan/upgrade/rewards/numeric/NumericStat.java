@@ -14,13 +14,6 @@ public abstract class NumericStat extends IndividualStat {
         this.isUnlimited = isUnlimited;
     }
 
-    protected String getMathSign(int value){
-        if(value > 0){
-            return "+" + value;
-        }
-        return Integer.toString(value);
-    }
-
     protected String getStatReward(LangType langType, int level, int maxLevel, Lang statName) {
         if(isUnlimited){
             if(level == 0){

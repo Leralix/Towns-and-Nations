@@ -668,6 +668,7 @@ language:
   UNLOCK_TOWN_SPAWN: "Town spawn"
   UNLOCK_MOB_BAN: "Mob ban"
   LANDMARK_BONUS: "Landmark rewards"
+  UNLOCK_PERMISSION: "Unlock permission"
   # Diplomacy
   GUI_TOWN_RELATION_HOSTILE: "§aHostile"
   GUI_TOWN_RELATION_HOSTILE_DESC1: "§fManage hostile relations"

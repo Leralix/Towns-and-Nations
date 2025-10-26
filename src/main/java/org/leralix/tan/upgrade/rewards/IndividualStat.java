@@ -20,4 +20,10 @@ public abstract class IndividualStat {
      */
     public abstract String getStatReward(LangType langType);
 
+    protected String getMathSign(int value){
+        if(value > 0){
+            return "+" + value;
+        }
+        return Integer.toString(value);
+    }
 }

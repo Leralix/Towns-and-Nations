@@ -79,10 +79,6 @@ public class TownData extends TerritoryData {
         return getRank(tanPlayer.getTownRankID());
     }
 
-//    public Level getLevel() {
-//        return townLevel;
-//    }
-
 
     public void addPlayer(ITanPlayer tanNewPlayer) {
         townPlayerListId.add(tanNewPlayer.getID());

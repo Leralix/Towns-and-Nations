@@ -11,6 +11,7 @@ import org.leralix.tan.gui.service.requirements.upgrade.*;
 import org.leralix.tan.upgrade.rewards.IndividualStat;
 import org.leralix.tan.upgrade.rewards.bool.EnableMobBan;
 import org.leralix.tan.upgrade.rewards.bool.EnableTownSpawn;
+import org.leralix.tan.upgrade.rewards.list.ListStat;
 import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.upgrade.rewards.numeric.LandmarkCap;
 import org.leralix.tan.upgrade.rewards.numeric.PropertyCap;
@@ -85,22 +86,19 @@ public class NewUpgradeStorage {
                         int intValue = parseIntValue(benefitsSection, benefitKey);
 
                         switch (benefitKey) {
-                            case "PROPERTY_CAP" ->
-                                    rewards.add(new PropertyCap(intValue, isUnlimited));
-                            case "PLAYER_CAP" ->
-                                    rewards.add(new TownPlayerCap(intValue, isUnlimited));
-                            case "CHUNK_CAP" ->
-                                    rewards.add(new ChunkCap(intValue, isUnlimited));
-                            case "LANDMARKS_CAP" ->
-                                    rewards.add(new LandmarkCap(intValue, isUnlimited));
-                            case "UNLOCK_TOWN_SPAWN" ->
-                                    rewards.add(new EnableTownSpawn(true));
-                            case "UNLOCK_MOB_BAN" ->
-                                    rewards.add(new EnableMobBan(true));
-                            case "LANDMARK_BONUS" ->
-                                    rewards.add(new LandmarkBonus(
-                                            benefitsSection.getDouble(benefitKey) / 100
-                                    ));
+                            case "PROPERTY_CAP" -> rewards.add(new PropertyCap(intValue, isUnlimited));
+                            case "PLAYER_CAP" -> rewards.add(new TownPlayerCap(intValue, isUnlimited));
+                            case "CHUNK_CAP" -> rewards.add(new ChunkCap(intValue, isUnlimited));
+                            case "LANDMARKS_CAP" -> rewards.add(new LandmarkCap(intValue, isUnlimited));
+                            case "UNLOCK_TOWN_SPAWN" -> rewards.add(new EnableTownSpawn(true));
+                            case "UNLOCK_MOB_BAN" -> rewards.add(new EnableMobBan(true));
+                            case "LANDMARK_BONUS" -> rewards.add(new LandmarkBonus(
+                                    benefitsSection.getDouble(benefitKey) / 100
+                            ));
+                            case "UNLOCK_NEW_PERMISSIONS" -> {
+                                List<String> permissions = benefitsSection.getStringList(benefitKey);
+                                rewards.add(new ListStat(permissions));
+                            }
                         }
                     }
                 }
