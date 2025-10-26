@@ -49,10 +49,7 @@ public class InventoryUtil {
             if (itemScope.isInScope(item)) {
                 int itemAmount = item.getAmount();
                 if (itemAmount + amountRemoved <= amountToRemove) {
-                    amountRemoved += itemAmount;
-                    player.getInventory().remove(item);
-                } else {
-                    int toRemove = amountToRemove - amountRemoved;
+                    int toRemove = Math.max(64, amountToRemove - amountRemoved);
                     item.setAmount(itemAmount - toRemove);
                     amountRemoved += toRemove;
                 }
