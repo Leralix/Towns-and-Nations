@@ -68,7 +68,7 @@ public class TerritoryStats {
 
     public <T extends IndividualStat & AggregatableStat<T>> T getStat(Class<T> rewardClass) {
         List<T> stats = new ArrayList<>();
-        for (Upgrade upgrade : Constants.getUpgradeStorage().getUpgrades()) {
+        for (Upgrade upgrade : Constants.getUpgradeStorage().getTownUpgrades()) {
             int currentLevel = getLevel(upgrade);
             if (currentLevel == 0) continue;
 

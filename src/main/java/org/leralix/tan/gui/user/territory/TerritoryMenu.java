@@ -11,9 +11,11 @@ import org.leralix.tan.enums.BrowseScope;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.gui.user.territory.relation.OpenDiplomacyMenu;
+import org.leralix.tan.gui.user.territory.upgrade.UpgradeMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -71,6 +73,15 @@ public abstract class TerritoryMenu extends BasicGui {
                     TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get(langType), SoundEnum.GOOD);
                     open();
                 })
+                .asGuiItem(player);
+    }
+
+    protected GuiItem getLevelButton() {
+        return IconManager.getInstance().get(IconKey.TERRITORY_LEVEL_ICON)
+                .setName(Lang.GUI_TOWN_LEVEL_ICON.get(tanPlayer.getLang()))
+                .setDescription(Lang.GUI_TOWN_LEVEL_ICON_DESC1.get(tanPlayer.getLang()))
+                .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.UPGRADE_TOWN))
+                .setAction(event -> new UpgradeMenu(player, territoryData))
                 .asGuiItem(player);
     }
 

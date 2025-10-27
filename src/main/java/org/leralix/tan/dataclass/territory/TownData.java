@@ -509,11 +509,6 @@ public class TownData extends TerritoryData {
         TanChatUtils.message(player,Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get(player), SoundEnum.BAD);
     }
 
-
-    public void upgradeTown() {
-        getNewLevel().levelUpMain();
-    }
-
     public boolean haveNoLeader() {
         return this.UuidLeader == null;
     }

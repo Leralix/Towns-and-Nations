@@ -23,11 +23,11 @@ import java.util.*;
 
 public class NewUpgradeStorage {
 
-    private final Map<String, Upgrade> upgrades;
+    private final Map<String, Upgrade> townUpgrades;
 
     public NewUpgradeStorage() {
 
-        this.upgrades = new HashMap<>();
+        this.townUpgrades = new HashMap<>();
 
         FileConfiguration upgradeConfig = ConfigUtil.getCustomConfig(ConfigTag.UPGRADE);
         ConfigurationSection upgradesSection = upgradeConfig.getConfigurationSection("upgrades");
@@ -108,7 +108,7 @@ public class NewUpgradeStorage {
                     }
                 }
 
-                upgrades.put(
+                townUpgrades.put(
                         key,
                         new Upgrade(
                                 row,
@@ -151,10 +151,10 @@ public class NewUpgradeStorage {
 
 
     public Upgrade getUpgradeByName(String name) {
-        return upgrades.get(name);
+        return townUpgrades.get(name);
     }
 
-    public Collection<Upgrade> getUpgrades() {
-        return upgrades.values();
+    public Collection<Upgrade> getTownUpgrades() {
+        return townUpgrades.values();
     }
 }

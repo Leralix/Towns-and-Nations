@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
@@ -25,11 +25,11 @@ import java.util.List;
 
 public class UpgradeMenu extends BasicGui {
 
-    private final TownData territoryData;
+    private final TerritoryData territoryData;
     private int verticalScrollIndex;
     private final int maxLevel;
 
-    public UpgradeMenu(Player player, TownData territoryData){
+    public UpgradeMenu(Player player, TerritoryData territoryData){
         super(player, Lang.HEADER_TOWN_UPGRADE, 6);
         this.territoryData = territoryData;
         this.verticalScrollIndex = 0;
@@ -70,7 +70,7 @@ public class UpgradeMenu extends BasicGui {
         }
 
 
-        for(Upgrade upgrade : Constants.getUpgradeStorage().getUpgrades()){
+        for(Upgrade upgrade : Constants.getUpgradeStorage().getTownUpgrades()){
 
             int row =  5 - upgrade.getRow() + verticalScrollIndex;
             int column = upgrade.getColumn() + 2;
@@ -153,7 +153,7 @@ public class UpgradeMenu extends BasicGui {
                 )
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction( action -> {
-                    territoryData.upgradeTown();
+                    territoryData.getNewLevel().levelUpMain();
                     TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
                     open();
                 })
