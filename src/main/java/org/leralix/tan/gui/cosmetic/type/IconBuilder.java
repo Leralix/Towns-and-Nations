@@ -8,6 +8,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.gui.service.Requirements;
+import org.leralix.tan.gui.service.requirements.IndividualRequirement;
+import org.leralix.tan.lang.FilledLang;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,18 +24,22 @@ import java.util.function.Consumer;
 public class IconBuilder {
 
     private String name;
-    private final List<String> description;
+    private final List<FilledLang> description;
+    private final Requirements requirements;
     private Consumer<InventoryClickEvent> action;
     private boolean hideItemFlags;
     private final IconType menuIcon;
+    private final List<Lang> clickForActionMessage;
 
-    public IconBuilder(IconType menuIcon){
+    public IconBuilder(IconType menuIcon) {
         this.description = new ArrayList<>();
-        hideItemFlags = false;
-        if(menuIcon == null) {
+        this.hideItemFlags = false;
+        this.requirements = new Requirements();
+        this.clickForActionMessage = new ArrayList<>();
+        this.clickForActionMessage.add(Lang.GUI_GENERIC_CLICK_TO_OPEN);
+        if (menuIcon == null) {
             this.menuIcon = new ItemIconBuilder(Material.BARRIER);
-        }
-        else{
+        } else {
             this.menuIcon = menuIcon;
         }
     }
@@ -39,15 +50,30 @@ public class IconBuilder {
         return this;
     }
 
-    public IconBuilder setDescription(String... descriptions) {
+    public IconBuilder setDescription(FilledLang... descriptions) {
+        return setDescription(List.of(descriptions));
+    }
+
+    public IconBuilder setDescription(Collection<FilledLang> description) {
         this.description.clear();
-        this.description.addAll(List.of(descriptions));
+        this.description.addAll(description);
         return this;
     }
 
-    public IconBuilder setDescription(Collection<String> description) {
-        this.description.clear();
-        this.description.addAll(description);
+    public IconBuilder setRequirements(IndividualRequirement... requirements) {
+        return setRequirements(List.of(requirements));
+    }
+
+    public IconBuilder setRequirements(Collection<IndividualRequirement> requirements) {
+        this.requirements.add(requirements);
+        return this;
+    }
+    public IconBuilder setClickToAcceptMessage(Lang... messages){
+        return setClickToAcceptMessage(List.of(messages));
+    }
+    public IconBuilder setClickToAcceptMessage(Collection<Lang> messages){
+        this.clickForActionMessage.clear();
+        this.clickForActionMessage.addAll(messages);
         return this;
     }
 
@@ -61,14 +87,14 @@ public class IconBuilder {
         return this;
     }
 
-    public GuiItem asGuiItem(Player player) {
+    public GuiItem asGuiItem(Player player, LangType langType) {
         ItemStack item = menuIcon.getItemStack(player);
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
             meta.setDisplayName(name);
-            meta.setLore(description);
-            if(hideItemFlags) {
+            meta.setLore(generateDescription(langType));
+            if (hideItemFlags) {
                 meta.getItemFlags().add(ItemFlag.HIDE_ATTRIBUTES);
                 meta.getItemFlags().add(ItemFlag.HIDE_ENCHANTS);
                 meta.getItemFlags().add(ItemFlag.HIDE_UNBREAKABLE);
@@ -77,12 +103,36 @@ public class IconBuilder {
             }
             item.setItemMeta(meta);
         }
-        if(action == null){
+        if (action == null) {
             return ItemBuilder.from(item).asGuiItem(event -> event.setCancelled(true));
+        } else {
+            return ItemBuilder.from(item).asGuiItem(event -> {
+                if (requirements.isInvalid()) {
+                    TanChatUtils.message(player, Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.get(langType), SoundEnum.NOT_ALLOWED);
+                    return;
+                }
+                requirements.actionConsume();
+                action.accept(event);
+            });
         }
-        else {
-            return ItemBuilder.from(item).asGuiItem(event -> action.accept(event));
+    }
+
+    private List<String> generateDescription(LangType langType) {
+        List<String> res = new ArrayList<>();
+
+        for(FilledLang filledLang : description){
+            res.add(filledLang.get(langType));
         }
+
+        if (action != null && !requirements.isEmpty()) {
+            res.add("");
+            res.addAll(requirements.getRequirementsParagraph(langType));
+        }
+        res.add("");
+        for(Lang messages : clickForActionMessage){
+            res.add(messages.get(langType));
+        }
+        return res;
     }
 
 }

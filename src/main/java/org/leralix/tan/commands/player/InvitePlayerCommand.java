@@ -93,7 +93,7 @@ public class InvitePlayerCommand extends PlayerSubCommand {
 
         if (inviteStat.getTownId() != null) {
             if (inviteStat.getTownId().equals(town.getID())) {
-                TanChatUtils.message(player, Lang.INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN.get(langType));
+                TanChatUtils.message(player, Lang.INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN.get(langType, invite.getName()));
                 return;
             }
             TanChatUtils.message(player, Lang.INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN.get(

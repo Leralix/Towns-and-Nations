@@ -8,6 +8,7 @@ import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.SelectWarGoals;
 import org.leralix.tan.gui.user.territory.WarsMenu;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.war.War;
@@ -50,71 +51,69 @@ public class WarMenu extends BasicGui {
         return iconManager.get(war.getIcon())
                 .setName(war.getName())
                 .setDescription(
-                        Lang.ATTACK_ICON_DESC_1.get(langType, war.getMainAttacker().getColoredName()),
-                        Lang.ATTACK_ICON_DESC_2.get(langType, war.getMainDefender().getColoredName())
+                        Lang.ATTACK_ICON_DESC_1.get(war.getMainAttacker().getColoredName()),
+                        Lang.ATTACK_ICON_DESC_2.get(war.getMainDefender().getColoredName())
                 )
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
 
     }
 
     private @NotNull GuiItem getWargoalsButton() {
 
 
-        List<String> description = new ArrayList<>();
-        description.add(Lang.WAR_GOAL_LIST_BUTTON_DESC1.get(langType));
+        List<FilledLang> description = new ArrayList<>();
+        description.add(Lang.WAR_GOAL_LIST_BUTTON_DESC1.get());
         for(WarGoal goal : war.getGoals(warRole)) {
-            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(langType, goal.getCurrentDesc(langType)));
+            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(goal.getCurrentDesc(langType)));
         }
 
         // If no goals are set, add a message
         if(description.size() == 1) {
-            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST_NO_WAR_GOAL_SET.get(langType));
+            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST_NO_WAR_GOAL_SET.get());
         }
-
-        description.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType));
 
 
         return iconManager.get(IconKey.WAR_GOAL_LIST_ICON)
                 .setName(Lang.WAR_GOAL_LIST_BUTTON.get(langType))
                 .setDescription(description)
                 .setAction(action -> new SelectWarGoals(player, territoryData, war, warRole))
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getAttackButton() {
         return iconManager.get(IconKey.WAR_CREATE_ATTACK_ICON)
                 .setName(Lang.WAR_CREATE_ATTACK.get(langType))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(langType))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> new CreateAttackMenu(player, territoryData, war, warRole))
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getEnemyWargoalsIcon() {
 
 
-        List<String> description = new ArrayList<>();
-        description.add(Lang.WAR_ENEMY_GOAL_LIST_DESC1.get(langType));
+        List<FilledLang> description = new ArrayList<>();
+        description.add(Lang.WAR_ENEMY_GOAL_LIST_DESC1.get());
         for(WarGoal goal : war.getGoals(warRole.opposite())) {
-            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(langType, goal.getCurrentDesc(langType)));
+            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(goal.getCurrentDesc(langType)));
         }
 
         // If no goals are set, add a message
         if(description.size() == 1) {
-            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST_NO_WAR_GOAL_SET.get(langType));
+            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST_NO_WAR_GOAL_SET.get());
         }
 
 
         return iconManager.get(IconKey.WAR_ENEMY_GOAL_LIST_ICON)
                 .setName(Lang.WAR_ENEMY_GOAL_LIST.get(langType))
                 .setDescription(description)
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getSurrenderButton() {
 
-        List<String> description = new ArrayList<>();
-        description.add(Lang.WAR_SURRENDER_DESC1.get(langType));
-        description.add(Lang.WAR_SURRENDER_DESC2.get(langType));
+        List<FilledLang> description = new ArrayList<>();
+        description.add(Lang.WAR_SURRENDER_DESC1.get());
+        description.add(Lang.WAR_SURRENDER_DESC2.get());
 
         description.addAll(war.generateWarGoalsDesciption(warRole, langType));
 
@@ -125,7 +124,7 @@ public class WarMenu extends BasicGui {
                     war.territorySurrender(warRole);
                     new WarsMenu(player, territoryData);
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 }
 

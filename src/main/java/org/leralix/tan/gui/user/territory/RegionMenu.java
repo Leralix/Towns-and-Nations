@@ -31,7 +31,7 @@ public class RegionMenu extends TerritoryMenu {
         gui.setItem(2, 4, getLandButton());
         gui.setItem(2, 5, getBrowseButton());
         gui.setItem(2, 6, getDiplomacyButton());
-
+        gui.setItem(2, 7, getLevelButton());
         gui.setItem(2, 8, getSettingsButton());
 
         gui.setItem(3, 2, getBuildingButton());
@@ -46,12 +46,9 @@ public class RegionMenu extends TerritoryMenu {
     private GuiItem getSettingsButton() {
         return IconManager.getInstance().get(IconKey.TERRITORY_SETTINGS_ICON)
                 .setName(Lang.GUI_TOWN_SETTINGS_ICON.get(tanPlayer.getLang()))
-                .setDescription(
-                        Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get(tanPlayer.getLang()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer)
-                )
+                .setDescription(Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get())
                 .setAction(event -> new RegionSettingsMenu(player, regionData))
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
 

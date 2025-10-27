@@ -5,9 +5,11 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
+import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
@@ -46,18 +48,17 @@ public class TerritoryMemberMenu extends IteratorGUI {
     private GuiItem getManageRankButton() {
         return IconManager.getInstance().get(IconKey.MANAGE_RANKS_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_MANAGE_ROLES.get(tanPlayer))
-                .setDescription(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer))
+                .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_RANKS))
                 .setAction(p -> new TerritoryRanksMenu(player, territoryData).open())
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private GuiItem getManageApplicationsButton(TownData townData) {
         return IconManager.getInstance().get(IconKey.MANAGE_APPLICATIONS_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION.get(tanPlayer))
-                .setDescription(
-                        Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(tanPlayer, Integer.toString(townData.getPlayerJoinRequestSet().size())),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer))
+                .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.INVITE_PLAYER))
+                .setDescription(Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(Integer.toString(townData.getPlayerJoinRequestSet().size())))
                 .setAction(p -> new PlayerApplicationMenu(player, townData).open())
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 }

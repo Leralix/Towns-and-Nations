@@ -151,8 +151,8 @@ public class TownsAndNations extends JavaPlugin {
 
         List<String> upgradeBlackList = new ArrayList<>();
         upgradeBlackList.add("upgrades");
-        ConfigUtil.saveAndUpdateResource(this, "townUpgrades.yml", upgradeBlackList);
-        ConfigUtil.addCustomConfig(this, "townUpgrades.yml", ConfigTag.UPGRADE);
+        ConfigUtil.saveAndUpdateResource(this, "upgrades.yml", upgradeBlackList);
+        ConfigUtil.addCustomConfig(this, "upgrades.yml", ConfigTag.UPGRADE);
 
 
 

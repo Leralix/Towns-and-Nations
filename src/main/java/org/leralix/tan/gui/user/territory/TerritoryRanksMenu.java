@@ -9,6 +9,8 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.service.requirements.RankDifferenceRequirement;
+import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.gui.user.ranks.RankManagerMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
@@ -48,10 +50,8 @@ public class TerritoryRanksMenu extends IteratorGUI {
 
         return iconManager.get(IconKey.NEW_RANK_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES.get(tanPlayer))
-                .setDescription(
-                        Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES_DESC1.get(tanPlayer, Integer.toString(nbRanks)),
-                        Lang.GUI_GENERIC_CLICK_TO_CREATE.get(tanPlayer)
-                )
+                .setDescription(Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES_DESC1.get(Integer.toString(nbRanks)))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_CREATE)
                 .setAction( event -> {
                     event.setCancelled(true);
 
@@ -66,7 +66,7 @@ public class TerritoryRanksMenu extends IteratorGUI {
                     TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new CreateRank(territoryData, p -> new TerritoryRanksMenu(player, territoryData).open()));
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private List<GuiItem> getRanks() {
@@ -80,21 +80,18 @@ public class TerritoryRanksMenu extends IteratorGUI {
     private GuiItem getSingleRankButton(RankData rank) {
         return iconManager.get(rank.getRankIcon())
                 .setName(rank.getColoredName())
-                .setDescription(
-                        Lang.GUI_RANK_NUMBER_PLAYER_WITH_ROLE.get(langType, Integer.toString(rank.getNumberOfPlayer())),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType)
+                .setDescription(Lang.GUI_RANK_NUMBER_PLAYER_WITH_ROLE.get(Integer.toString(rank.getNumberOfPlayer())))
+                .setRequirements(
+                        new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_RANKS),
+                        new RankDifferenceRequirement(territoryData, tanPlayer, rank)
                 )
                 .setAction(action -> {
-                    if(!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_RANKS)) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType));
-                        return;
-                    }
                     if(territoryData.getRank(tanPlayer).getLevel() <= rank.getLevel() && !territoryData.isLeader(tanPlayer)){
                         TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get(langType));
                         return;
                     }
                     new RankManagerMenu(player, territoryData, rank).open();
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 }

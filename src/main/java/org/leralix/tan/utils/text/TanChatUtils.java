@@ -41,7 +41,9 @@ public class TanChatUtils {
         if (commandSender instanceof Player player) {
             message(player, message.get(player), soundEnum);
         }
-        commandSender.sendMessage(message.getDefault());
+        else if(commandSender != null){
+            commandSender.sendMessage(message.getDefault());
+        }
     }
 
     public static void message(Player player, String message) {

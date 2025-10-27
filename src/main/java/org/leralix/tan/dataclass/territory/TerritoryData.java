@@ -15,7 +15,6 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.RandomUtil;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.*;
@@ -51,6 +50,12 @@ import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.upgrade.TerritoryStats;
+import org.leralix.tan.upgrade.Upgrade;
+import org.leralix.tan.upgrade.rewards.StatsType;
+import org.leralix.tan.upgrade.rewards.list.BiomeStat;
+import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
+import org.leralix.tan.upgrade.rewards.numeric.ChunkCost;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.file.FileUtil;
@@ -91,6 +96,7 @@ public abstract class TerritoryData {
     private ClaimedChunkSettings chunkSettings;
     private List<String> fortIds;
     private List<String> occupiedFortIds;
+    protected TerritoryStats upgradesStatus;
 
     protected TerritoryData(String id, String name, ITanPlayer owner) {
         this.id = id;
@@ -505,10 +511,28 @@ public abstract class TerritoryData {
      * @return True if the chunk has been claimed successfully, false otherwise
      */
     public boolean claimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
-        if(canClaimChunk(player, chunk, ignoreAdjacent)){
-            return abstractClaimChunk(player, chunk, ignoreAdjacent);
+        if(!canClaimChunk(player, chunk, ignoreAdjacent)) {
+            return false;
         }
-        return false;
+
+         abstractClaimChunk(player, chunk, ignoreAdjacent);
+
+        ChunkCap chunkCap = getNewLevel().getStat(ChunkCap.class);
+
+        FilledLang message;
+        if(chunkCap.isUnlimited()){
+            message = Lang.CHUNK_CLAIMED_SUCCESS_UNLIMITED.get(getColoredName());
+        }
+        else {
+            String currentAmountOfChunks = Integer.toString(getNumberOfClaimedChunk());
+            String maxAmountOfChunks = Integer.toString(chunkCap.getMaxAmount());
+            message = Lang.CHUNK_CLAIMED_SUCCESS_LIMITED.get(getColoredName(), currentAmountOfChunks, maxAmountOfChunks);
+        }
+
+
+        TanChatUtils.message(player, message);
+
+        return true;
     }
 
     /**
@@ -517,9 +541,8 @@ public abstract class TerritoryData {
      * @param player         The player wishing to claim a chunk
      * @param chunk          The chunk to claim
      * @param ignoreAdjacent Defines if the chunk to claim should respect adjacent claiming
-     * @return True if the chunk has been claimed successfully, false otherwise
      */
-    protected abstract boolean abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent);
+    protected abstract void abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent);
 
     public boolean canClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
@@ -534,7 +557,15 @@ public abstract class TerritoryData {
             return false;
         }
 
-        if (!canClaimMoreChunk()) {
+        TerritoryStats territoryStats = getNewLevel();
+        int nbOfClaimedChunks = getNumberOfClaimedChunk();
+
+        if(!territoryStats.getStat(BiomeStat.class).canClaimBiome(chunk)){
+            TanChatUtils.message(player, Lang.CHUNK_BIOME_NOT_ALLOWED.get(player));
+            return false;
+        }
+
+        if (!territoryStats.getStat(ChunkCap.class).canDoAction(nbOfClaimedChunks)) {
             TanChatUtils.message(player, Lang.MAX_CHUNK_LIMIT_REACHED.get(player));
             return false;
         }
@@ -572,9 +603,9 @@ public abstract class TerritoryData {
         return true;
     }
 
-    public abstract int getClaimCost();
-
-    protected abstract boolean canClaimMoreChunk();
+    public int getClaimCost(){
+        return getNewLevel().getStat(ChunkCost.class).getCost();
+    }
 
 
     public synchronized void delete() {
@@ -1093,5 +1124,28 @@ public abstract class TerritoryData {
             return ownerID.equals(capital.getID());
         }
         return false;
+    }
+
+    public TerritoryStats getNewLevel(){
+        if(this.upgradesStatus == null){
+            // Migrate old data if exists
+            if(this instanceof TownData townData) {
+                if(townData.townLevel != null){
+                    this.upgradesStatus = new TerritoryStats(townData.townLevel);
+                    townData.townLevel = null;
+                }
+                else {
+                    this.upgradesStatus = new TerritoryStats(StatsType.TOWN);
+                }
+            }
+            else {
+                this.upgradesStatus = new TerritoryStats(StatsType.REGION);
+            }
+        }
+        return upgradesStatus;
+    }
+
+    public void upgradeTown(Upgrade townUpgrade){
+        getNewLevel().levelUp(townUpgrade);
     }
 }

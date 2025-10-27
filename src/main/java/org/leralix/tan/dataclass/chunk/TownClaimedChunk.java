@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -22,6 +21,7 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -103,14 +103,22 @@ public class TownClaimedChunk extends TerritoryChunk {
             }
         }
 
-        if(ChunkUtil.chunkContainsBuildings(this, playerTown)){
+        if (ChunkUtil.chunkContainsBuildings(this, playerTown)) {
             TanChatUtils.message(player, Lang.BUILDINGS_OR_CAPITAL_IN_CHUNK.get(langType));
             return;
         }
 
         NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
-        TanChatUtils.message(player, Lang.UNCLAIMED_CHUNK_SUCCESS_TOWN.get(langType, Integer.toString(playerTown.getNumberOfClaimedChunk()), Integer.toString(playerTown.getLevel().getChunkCap())));
 
+        ChunkCap chunkCap = playerTown.getNewLevel().getStat(ChunkCap.class);
+        if(chunkCap.isUnlimited()){
+            Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(player, playerTown.getColoredName());
+        }
+        else {
+            String currentChunks = Integer.toString(playerTown.getNumberOfClaimedChunk());
+            String maxChunks = Integer.toString(chunkCap.getMaxAmount());
+            Lang.CHUNK_UNCLAIMED_SUCCESS_LIMITED.get(player, playerTown.getColoredName(), currentChunks, maxChunks);
+        }
     }
 
     public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
@@ -163,7 +171,7 @@ public class TownClaimedChunk extends TerritoryChunk {
 
     @Override
     public void notifyUpdate() {
-        if(!Constants.allowNonAdjacentChunksForTown()){
+        if (!Constants.allowNonAdjacentChunksForTown()) {
             ChunkUtil.unclaimIfNoLongerSupplied(this);
         }
     }

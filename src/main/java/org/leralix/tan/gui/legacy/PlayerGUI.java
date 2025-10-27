@@ -10,9 +10,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.dataclass.*;
+import org.leralix.tan.dataclass.ClaimedChunkSettings;
+import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.Landmark;
+import org.leralix.tan.dataclass.UpgradeStatus;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -27,7 +28,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.DonateToTerritory;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
-import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
@@ -84,107 +84,6 @@ public class PlayerGUI {
                 p -> openOwnedLandmark(player, townData, page + 1),
                 p -> openOwnedLandmark(player, townData, page - 1)
         );
-
-        gui.open(player);
-
-    }
-
-
-    //Town level to rework
-    public static void openTownLevel(Player player, int level) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_UPGRADE.get(tanPlayer, String.valueOf(level + 1)), 6);
-
-        TownData townData = TownDataStorage.getInstance().get(player);
-        Level townLevel = townData.getLevel();
-
-        ItemStack whitePanel = HeadUtils.createCustomItemStack(Material.WHITE_STAINED_GLASS_PANE, "");
-        ItemStack ironBars = HeadUtils.createCustomItemStack(Material.IRON_BARS, Lang.LEVEL_LOCKED.get(tanPlayer));
-
-        GuiItem townIcon = GuiUtil.townUpgradeResume(tanPlayer.getLang(), townData);
-
-        GuiItem whitePanelIcon = ItemBuilder.from(whitePanel).asGuiItem(event -> event.setCancelled(true));
-        GuiItem ironBarsIcon = ItemBuilder.from(ironBars).asGuiItem(event -> event.setCancelled(true));
-        ItemStack greenLevelIcon = HeadUtils.createCustomItemStack(Material.GREEN_STAINED_GLASS_PANE, "");
-
-        gui.setItem(1, 1, townIcon);
-        gui.setItem(2, 1, whitePanelIcon);
-        gui.setItem(3, 1, whitePanelIcon);
-        gui.setItem(4, 1, whitePanelIcon);
-        gui.setItem(5, 1, whitePanelIcon);
-        gui.setItem(6, 2, whitePanelIcon);
-        gui.setItem(6, 3, whitePanelIcon);
-        gui.setItem(6, 4, whitePanelIcon);
-        gui.setItem(6, 5, whitePanelIcon);
-        gui.setItem(6, 6, whitePanelIcon);
-        gui.setItem(6, 9, whitePanelIcon);
-
-        GuiItem pannelIcon;
-        GuiItem bottomIcon;
-
-        for (int i = 2; i < 10; i++) {
-            if (townLevel.getTownLevel() > (i - 2 + level)) {
-                ItemStack fillerGreen = HeadUtils.createCustomItemStack(Material.LIME_STAINED_GLASS_PANE, "Level " + (i - 1 + level));
-
-                pannelIcon = ItemBuilder.from(greenLevelIcon).asGuiItem(event -> event.setCancelled(true));
-                bottomIcon = ItemBuilder.from(fillerGreen).asGuiItem(event -> event.setCancelled(true));
-            } else if (townLevel.getTownLevel() == (i - 2 + level)) {
-                pannelIcon = ironBarsIcon;
-                ItemStack upgradeTownLevel = HeadUtils.createCustomItemStack(Material.ORANGE_STAINED_GLASS_PANE,
-                        Lang.GUI_TOWN_LEVEL_UP.get(tanPlayer),
-                        Lang.GUI_TOWN_LEVEL_UP_DESC1.get(tanPlayer, Integer.toString(townLevel.getTownLevel())),
-                        Lang.GUI_TOWN_LEVEL_UP_DESC2.get(tanPlayer, Integer.toString(townLevel.getTownLevel() + 1), Integer.toString(townLevel.getMoneyRequiredForLevelUp())));
-
-                bottomIcon = ItemBuilder.from(upgradeTownLevel).asGuiItem(event -> {
-                    event.setCancelled(true);
-                    townData.upgradeTown(player);
-                    openTownLevel(player, level);
-                });
-            } else {
-                pannelIcon = ironBarsIcon;
-                ItemStack redLevel = HeadUtils.createCustomItemStack(Material.RED_STAINED_GLASS_PANE, "Town level " + (i + level - 1) + " locked");
-                bottomIcon = ItemBuilder.from(redLevel).asGuiItem(event -> event.setCancelled(true));
-            }
-            gui.setItem(1, i, pannelIcon);
-            gui.setItem(2, i, pannelIcon);
-            gui.setItem(3, i, pannelIcon);
-            gui.setItem(4, i, pannelIcon);
-            gui.setItem(5, i, bottomIcon);
-        }
-
-        for (TownUpgrade townUpgrade : UpgradeStorage.getUpgrades()) {
-            GuiItem guiButton = townUpgrade.createGuiItem(player, townData, level);
-            if (level + 1 <= townUpgrade.getCol() && townUpgrade.getCol() <= level + 7) {
-                gui.setItem(townUpgrade.getRow(), townUpgrade.getCol() + (1 - level), guiButton);
-            }
-        }
-
-        ItemStack nextPageButton = HeadUtils.makeSkullB64(
-                Lang.GUI_NEXT_PAGE.get(tanPlayer),
-                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0="
-        );
-
-        ItemStack previousPageButton = HeadUtils.makeSkullB64(
-                Lang.GUI_PREVIOUS_PAGE.get(tanPlayer),
-                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19"
-        );
-
-        GuiItem previousButton = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
-            event.setCancelled(true);
-            if (level > 0)
-                openTownLevel(player, level - 1);
-        });
-        GuiItem nextButton = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
-            event.setCancelled(true);
-            int townMaxLevel = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownMaxLevel", 10);
-            if (level < (townMaxLevel - 7))
-                openTownLevel(player, level + 1);
-        });
-
-
-        gui.setItem(6, 1, GuiUtil.createBackArrow(player, p -> dispatchPlayerTown(player)));
-        gui.setItem(6, 7, previousButton);
-        gui.setItem(6, 8, nextButton);
 
         gui.open(player);
 
@@ -369,7 +268,7 @@ public class PlayerGUI {
 
     public static void openAddVassal(Player player, TerritoryData territoryData, int page) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_VASSALS.get(tanPlayer, Double.toString(page + 1)), 6);
+        Gui gui = GuiUtil.createChestGui(Lang.HEADER_VASSALS.get(tanPlayer, Integer.toString(page + 1)), 6);
 
         List<GuiItem> guiItems = new ArrayList<>();
 

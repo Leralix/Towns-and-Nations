@@ -9,6 +9,7 @@ import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.user.territory.EconomicHistoryMenu;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.deprecated.HeadUtils;
@@ -32,8 +33,8 @@ public class SalaryPaymentLine extends ProfitLine {
     }
 
     @Override
-    public String getLine(LangType lang) {
-        return Lang.PLAYER_SALARY_LINE.get(lang, StringUtil.getColoredMoney(getMoney()));
+    public FilledLang getLine() {
+        return Lang.PLAYER_SALARY_LINE.get(StringUtil.getColoredMoney(getMoney()));
     }
 
     @Override

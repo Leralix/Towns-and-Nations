@@ -1,0 +1,201 @@
+### Town upgrade config file ###
+#
+# col: between 0 and 8
+# row: between 0 and max level
+# itemCode: the item that will be displayed in the GUI
+# maxLevel: the maximum level of the upgrade
+# cost: the cost of each level upgrade.
+#       The last cost will be used if less values are registered than the max level.
+#
+# prerequisites :
+# - TOWN_LEVEL: territory level required to unlock the upgrade. Same used for all levels of the upgrade
+# - Other upgrades: you can set other upgrade levels as prerequisite. Example: BARRACK : 1
+# - Resources : you can set resources as prerequisite. Example: OAK_WOOD: [100] or PLANK: [50, 100, 150] for each level
+#   Some special resources exists:
+#      - ANY_WOOD : any type of wood
+#      - ANY_LOG : any type of log
+#      - ANY_PLANK : any type of plank
+#      - ANY_STONE : any type of stone (cobblestone, granite, diorite, andesite, stone)
+#
+# benefits: the benefits of the upgrade
+# - PLAYER_CAP: maximum number of player per town [-1,0,1,2... or infinity]
+# - CHUNK_CAP: maximum number of claimable chunk per town [-1,0,1,2... or infinity]
+# - CHUNK_COST : cost to claim one chunk [-1,0,1,2...]
+# - PROPERTY_CAP: maximum number of property per town [-1,0,1,2... or infinity]
+# - LANDMARKS_CAP: maximum number of owned landmarks per town [-1,0,1,2... or infinity]
+# - UNLOCK_TOWN_SPAWN: unlock /tan spawn [level 0 -> locked, level 1 -> unlock]
+# - UNLOCK_MOB_BAN: unlock the mob ban tab [level 0 -> locked, level 1 -> unlock]
+# - LANDMARK_BONUS: percentage of bonus on landmarks (ex 50 = 50%) [10 = 10%]
+# - AUTHORIZED_BIOMES: allowed biomes for claiming [level 0 -> locked, level 1 -> unlock]
+#                      You can either use standard biome names (OCEAN, DEEP_OCEAN, WARM_OCEAN, LUKEWARM_OCEAN...)
+#                      or use packages (ALL, OCEAN, PLAINS, DESERT, FOREST, MOUNTAIN, NETHER, END)
+#                      Work with custom chunks (terralith:yellowstone),
+
+# You can create custom upgrade names in lang/./upgrades.yml
+
+# If you need other upgrades ask on discord
+
+# The cost of the upgrade is calculated with the expression.
+townLevelExpression:
+  LevelExpression: '(squareMultiplier * level ^ 2 + flatMultiplier * level + base) * 10'
+  squareMultiplier: 8.0
+  flatMultiplier: 10.0
+  base: 100.0
+
+regionLevelExpression:
+  LevelExpression: '(squareMultiplier * level ^ 2 + flatMultiplier * level + base) * 10'
+  squareMultiplier: 10.0
+  flatMultiplier: 20.0
+  base: 200.0
+
+upgrades:
+
+  CITY_HALL: #"City hall" tag is already unlocked when creating a town. Use it to store default values of yur towns
+    col: 0
+    row: 0
+    itemCode: 'BELL'
+    maxLevel: 1
+    cost: [ '0' ]
+    prerequisites:
+      TOWN_LEVEL: 0
+    benefits:
+      PLAYER_CAP: +3
+      CHUNK_CAP: +100
+      CHUNK_COST: 0
+      AUTHORIZED_BIOMES: [ 'ALL' ]
+
+  ADMINISTRATION:
+    col: 3
+    row: 0
+    itemCode: 'WRITABLE_BOOK'
+    maxLevel: 10
+    cost: [ '500', '590', '760', '1010', '1340', '1750', '2240', '2800', '3200', '3800', '4500' ]
+    prerequisites:
+      TOWN_LEVEL: 1
+    resources:
+      ANY_PLANK: 32
+    benefits:
+      CHUNK_CAP: +35
+
+  BARRACKS:
+    col: 1
+    row: 1
+    itemCode: 'IRON_SWORD'
+    maxLevel: 10
+    cost: [ '500', '590', '760', '1010', '1340', '1750', '2240', '2810', '3460', '4190', '5000' ]
+    prerequisites:
+      TOWN_LEVEL: 2
+    resources:
+      ANY_STONE: 64
+    benefits:
+      PLAYER_CAP: +3
+
+  WATCHTOWER:
+    col: 2
+    row: 2
+    itemCode: 'OAK_FENCE'
+    maxLevel: 5
+    cost: [ '700', '1000', '1350', '1700', '2200' ]
+    prerequisites:
+      TOWN_LEVEL: 3
+      BARRACKS: 1
+    resources:
+      ANY_LOG: 64
+    benefits:
+      CHUNK_CAP: +75
+      PLAYER_CAP: -1
+
+  PORTAL:
+    col: 5
+    row: 3
+    itemCode: 'BEACON'
+    maxLevel: 1
+    cost: [ '1500' ]
+    prerequisites:
+      TOWN_LEVEL: 4
+      BARRACKS: 1
+      ADMINISTRATION: 2
+    resources:
+      BEACON: 1
+    benefits:
+      UNLOCK_TOWN_SPAWN: +1
+
+  NOTARY_HOUSE:
+    col: 4
+    row: 2
+    itemCode: 'PAPER'
+    maxLevel: 5
+    cost: [ '500', '800', '1200' ]
+    prerequisites:
+      TOWN_LEVEL: 3
+      ADMINISTRATION: 1
+    benefits:
+      PROPERTY_CAP: +3
+
+  GUARDS:
+    col: 3
+    row: 4
+    itemCode: 'COBBLESTONE_WALL'
+    maxLevel: 1
+    cost: [ '1000' ]
+    prerequisites:
+      TOWN_LEVEL: 5
+    benefits:
+      PLAYER_CAP: -2
+      UNLOCK_MOB_BAN: +1
+
+  EXTRACTION_TEAM:
+    col: 4
+    row: 4
+    itemCode: 'CAULDRON'
+    maxLevel: 10
+    cost: [ '500', '1000', '1500', '1750', '2000', '2250', '2500', '2750', '3000', '3250' ]
+    prerequisites:
+      TOWN_LEVEL: 5
+      ADMINISTRATION: 1
+    benefits:
+      CHUNK_CAP: +5
+      LANDMARKS_CAP: +1
+
+  BETTER_TOOLS:
+    col: 4
+    row: 5
+    itemCode: 'SMITHING_TABLE'
+    maxLevel: 6
+    cost: [ '2000' ]
+    prerequisites:
+      TOWN_LEVEL: 5
+    benefits:
+      LANDMARK_BONUS: +10
+
+  EXTENDED_ADMINISTRATION:
+    col: 2
+    row: 5
+    itemCode: 'LECTERN'
+    maxLevel: 6
+    cost: [ '3000', '4000', '5000', '6000', '7000' ]
+    prerequisites:
+      TOWN_LEVEL: 5
+      ADMINISTRATION: 3
+    resources:
+      ANY_PLANK: 64
+      PAPER: 32
+    benefits:
+      PROPERTY_CAP: +3
+      CHUNK_CAP: +50
+
+
+region_upgrades:
+
+  CITY_HALL: #"City hall" tag is already unlocked when creating a town. Use it to store default values of yur towns
+    col: 0
+    row: 0
+    itemCode: 'BELL'
+    maxLevel: 1
+    cost: [ '0' ]
+    prerequisites:
+      TOWN_LEVEL: 0
+    benefits:
+      CHUNK_CAP: infinity
+      CHUNK_COST: 5
+      AUTHORIZED_BIOMES: [ 'ALL' ]

@@ -198,6 +198,11 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
+    public RankData getRank(TerritoryData territoryData) {
+        return territoryData.getRank(territoryData.getDefaultRankID());
+    }
+
+    @Override
     public List<TerritoryData> getAllTerritoriesPlayerIsIn() {
         return List.of();
     }

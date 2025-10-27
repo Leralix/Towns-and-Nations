@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.impl.FortDataStorage;
+import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.legacy.WarRole;
@@ -44,18 +44,15 @@ public class SelectFortForCapture extends IteratorGUI {
 
         List<GuiItem> items = new ArrayList<>();
 
-        for(Fort fort : FortDataStorage.getInstance().getOwnedFort(enemyTerritoryData)) {
-            List<String> description = new ArrayList<>();
-            description.add(Lang.GUI_GENERIC_CLICK_TO_SELECT.get(langType));
-
+        for(Fort fort : FortStorage.getInstance().getOwnedFort(enemyTerritoryData)) {
             items.add(iconManager.get(new ItemStack(Material.IRON_BLOCK))
                     .setName(fort.getName())
-                    .setDescription(description)
+                    .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
                     .setAction(event -> {
                         war.addGoal(warRole, new CaptureFortWarGoal(fort));
                         new SelectWarGoals(player, territoryData, war, warRole);
                     })
-                    .asGuiItem(player));
+                    .asGuiItem(player, langType));
         }
         return items;
     }

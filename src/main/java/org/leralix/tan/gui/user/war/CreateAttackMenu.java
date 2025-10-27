@@ -11,6 +11,7 @@ import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.user.territory.AttackMenu;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
@@ -23,7 +24,6 @@ import org.leralix.tan.war.legacy.WarRole;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.leralix.lib.data.SoundEnum.REMOVE;
@@ -58,22 +58,22 @@ public class CreateAttackMenu extends BasicGui {
 
     private @NotNull GuiItem getConfirmButton() {
 
-        List<String> errorMessages = new ArrayList<>();
-        boolean isValid = isValid(errorMessages);
+        boolean isOutsideOfSlots = isIsOutsideOfSlots();
 
-        IconKey iconKey = isValid ? IconKey.CONFIRM_WAR_START_ICON : IconKey.CONFIRM_WAR_START_IMPOSSIBLE_ICON;
+        IconKey iconKey = isOutsideOfSlots ? IconKey.CONFIRM_WAR_START_ICON : IconKey.CONFIRM_WAR_START_IMPOSSIBLE_ICON;
 
         return iconManager.get(iconKey)
                 .setName(Lang.GUI_CONFIRM_ATTACK.get(tanPlayer))
-                .setDescription(
-                        errorMessages.isEmpty() ?
-                                Collections.singleton(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer))
-                                : errorMessages
+                .setClickToAcceptMessage(
+                        isOutsideOfSlots ?
+                                Lang.GUI_GENERIC_CLICK_TO_PROCEED
+                                : Lang.GUI_WARGOAL_OUTSIDE_AUTHORIZED_SLOTS
+
                 )
                 .setAction(event -> {
                     event.setCancelled(true);
 
-                    if (!isValid) {
+                    if (!isOutsideOfSlots) {
                         SoundUtil.playSound(player, REMOVE);
                         return;
                     }
@@ -83,28 +83,21 @@ public class CreateAttackMenu extends BasicGui {
                     PlannedAttackStorage.getInstance().newAttack(attackData);
                     new AttackMenu(player, war.getTerritory(warRole));
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
 
     }
 
-    private boolean isValid(List<String> errorMessages) {
-        boolean isValid = true;
-
+    private boolean isIsOutsideOfSlots() {
         Instant warStart = Instant.now().plusSeconds(attackData.getSelectedTime() * 60L);
-        if (!Constants.getWarTimeSlot().canWarBeDeclared(warStart)) {
-            errorMessages.add(Lang.GUI_WARGOAL_OUTSIDE_AUTHORIZED_SLOTS.get(tanPlayer));
-            isValid = false;
-        }
-        return isValid;
+        return !Constants.getWarTimeSlot().canWarBeDeclared(warStart);
     }
-
 
     private @NotNull GuiItem getAddTimeButton() {
         return iconManager.get(IconKey.ADD_WAR_START_TIME_ICON)
                 .setName(Lang.GUI_ATTACK_ADD_TIME.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(tanPlayer),
-                        Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get(tanPlayer)
+                        Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(),
+                        Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get()
                 )
                 .setAction(event -> {
                     event.setCancelled(true);
@@ -117,30 +110,30 @@ public class CreateAttackMenu extends BasicGui {
                     }
                     open();
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getTimeIcon() {
 
         Instant startTime = Instant.now().plusSeconds(attackData.getSelectedTime() * 60L);
 
-        List<String> availableTimeSlots = new ArrayList<>();
+        List<FilledLang> availableTimeSlots = new ArrayList<>();
         availableTimeSlots.add(TimeZoneManager.getInstance().formatDateForPlayer(tanPlayer, startTime));
-        availableTimeSlots.add(Lang.AUTHORIZED_ATTACK_TIME_SLOT_TITLE.get(langType));
-        availableTimeSlots.addAll(Constants.getWarTimeSlot().getPrintedTimeSlots(langType));
+        availableTimeSlots.add(Lang.AUTHORIZED_ATTACK_TIME_SLOT_TITLE.get());
+        availableTimeSlots.addAll(Constants.getWarTimeSlot().getPrintedTimeSlots());
 
         return IconManager.getInstance().get(IconKey.WAR_START_TIME_ICON)
                 .setName(Lang.GUI_ATTACK_SET_TO_START_IN.get(tanPlayer, DateUtil.getDateStringFromTicks(attackData.getSelectedTime())))
                 .setDescription(availableTimeSlots)
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getRemoveTimeButton() {
         return iconManager.get(IconKey.REMOVE_WAR_START_TIME_ICON)
                 .setName(Lang.GUI_ATTACK_REMOVE_TIME.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(tanPlayer),
-                        Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get(tanPlayer)
+                        Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(),
+                        Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get()
                 )
                 .setAction(event -> {
                     event.setCancelled(true);
@@ -153,6 +146,6 @@ public class CreateAttackMenu extends BasicGui {
                     }
                     open();
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 }

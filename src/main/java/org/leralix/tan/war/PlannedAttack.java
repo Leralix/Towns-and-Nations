@@ -223,7 +223,7 @@ public class PlannedAttack {
 
         long startDate = startTime - new Date().getTime() / 50;
         long attackDuration = endTime - startTime;
-        String exactTimeStart = TimeZoneManager.getInstance().formatDateForPlayer(tanPlayer, Instant.ofEpochSecond(startTime / 20));
+        FilledLang exactTimeStart = TimeZoneManager.getInstance().formatDateForPlayer(tanPlayer, Instant.ofEpochSecond(startTime / 20));
         LangType langType = tanPlayer.getLang();
 
         ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
@@ -235,11 +235,10 @@ public class PlannedAttack {
             lore.add(Lang.ATTACK_ICON_DESC_2.get(langType, war.getMainDefender().getName()));
             lore.add(Lang.ATTACK_ICON_DESC_3.get(langType, Integer.toString(getNumberOfAttackers())));
             lore.add(Lang.ATTACK_ICON_DESC_4.get(langType, Integer.toString(getNumberOfDefenders())));
-            lore.add(Lang.ATTACK_ICON_DESC_6.get(langType, DateUtil.getDateStringFromTicks(startDate), exactTimeStart));
+            lore.add(Lang.ATTACK_ICON_DESC_6.get(langType, DateUtil.getDateStringFromTicks(startDate), exactTimeStart.get(langType)));
             lore.add(Lang.ATTACK_ICON_DESC_7.get(langType, DateUtil.getDateStringFromTicks(attackDuration)));
             lore.add(Lang.ATTACK_ICON_DESC_8.get(langType, getTerritoryRole(territoryConcerned).getName(langType)));
 
-            lore.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(langType));
             itemMeta.setLore(lore);
         }
         itemStack.setItemMeta(itemMeta);

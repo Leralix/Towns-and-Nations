@@ -48,13 +48,13 @@ public class SelectTerritoryHeadMenu extends IteratorGUI {
                     iconManager
                             .get(playerHead)
                             .setName(offlinePlayer.getName())
-                            .setDescription(Lang.GUI_GENERIC_CLICK_TO_SELECT.get(langType))
+                            .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
                             .setAction(action -> {
                                 territoryData.setIcon(new PlayerHeadIcon(offlinePlayer.getUniqueId().toString()));
                                 SoundUtil.playSound(player, MINOR_GOOD);
                                 territoryData.openMainMenu(player);
                             })
-                            .asGuiItem(player)
+                            .asGuiItem(player, langType)
             );
         }
 

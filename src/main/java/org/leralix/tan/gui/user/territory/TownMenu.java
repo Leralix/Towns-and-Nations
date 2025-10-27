@@ -8,7 +8,6 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.user.MainMenu;
-import org.leralix.tan.gui.user.property.TownPropertiesMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
@@ -40,7 +39,6 @@ public class TownMenu extends TerritoryMenu {
         gui.setItem(3, 3, getAttackButton());
         gui.setItem(3, 4, getHierarchyButton());
 
-        gui.setItem(3, 7, getPropertiesButton());
         gui.setItem(3, 8, getLandmarksButton());
 
         gui.setItem(4, 1, GuiUtil.createBackArrow(player, MainMenu::new));
@@ -50,47 +48,19 @@ public class TownMenu extends TerritoryMenu {
 
 
 
-    private GuiItem getLevelButton() {
-        return IconManager.getInstance().get(IconKey.TERRITORY_LEVEL_ICON)
-                .setName(Lang.GUI_TOWN_LEVEL_ICON.get(tanPlayer.getLang()))
-                .setDescription(
-                        Lang.GUI_TOWN_LEVEL_ICON_DESC1.get(tanPlayer.getLang()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer)
-                )
-                .setAction(event -> PlayerGUI.openTownLevel(player, 0))
-                .asGuiItem(player);
-    }
-
     private GuiItem getSettingsButton() {
         return IconManager.getInstance().get(IconKey.TERRITORY_SETTINGS_ICON)
                 .setName(Lang.GUI_TOWN_SETTINGS_ICON.get(tanPlayer.getLang()))
-                .setDescription(
-                        Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get(tanPlayer.getLang()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer)
-                )
+                .setDescription(Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get())
                 .setAction(event -> new TownSettingsMenu(player, townData))
-                .asGuiItem(player);
-    }
-
-    private GuiItem getPropertiesButton() {
-        return IconManager.getInstance().get(IconKey.TOWN_PROPERTIES_ICON)
-                .setName(Lang.GUI_TOWN_PROPERTIES_ICON.get(tanPlayer.getLang()))
-                .setDescription(
-                        Lang.GUI_TOWN_PROPERTIES_ICON_DESC1.get(tanPlayer.getLang()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer)
-                )
-                .setAction(event -> new TownPropertiesMenu(player, townData))
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private GuiItem getLandmarksButton() {
         return IconManager.getInstance().get(IconKey.TOWN_LANDMARKS_ICON)
                 .setName(Lang.ADMIN_GUI_LANDMARK_ICON.get(tanPlayer.getLang()))
-                .setDescription(
-                        Lang.ADMIN_GUI_LANDMARK_DESC1.get(tanPlayer.getLang()),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer)
-                )
+                .setDescription(Lang.ADMIN_GUI_LANDMARK_DESC1.get())
                 .setAction(event -> PlayerGUI.openOwnedLandmark(player, townData, 0))
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 }

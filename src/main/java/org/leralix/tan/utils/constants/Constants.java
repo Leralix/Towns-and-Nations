@@ -9,6 +9,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
+import org.leralix.tan.upgrade.NewUpgradeStorage;
 import org.leralix.tan.war.WarTimeSlot;
 import org.leralix.tan.war.legacy.InteractionStatus;
 
@@ -48,8 +49,6 @@ public class Constants {
     private static double regionChunkUpkeepCost;
     private static boolean displayTerritoryColor;
     private static int territoryClaimBufferZone;
-    private static int territoryClaimTownCost;
-    private static int territoryClaimRegionCost;
     private static int minimumNumberOfChunksUnclaimed;
     private static double percentageOfChunksUnclaimed;
 
@@ -111,6 +110,9 @@ public class Constants {
     private static boolean cancelTeleportOnMovePosition;
     private static boolean cancelTeleportOnDamage;
 
+    //Upgrades
+    private static NewUpgradeStorage upgradeStorage;
+
     private static final String ALWAYS = "ALWAYS";
 
     public static void init(FileConfiguration config) {
@@ -139,8 +141,6 @@ public class Constants {
 
         displayTerritoryColor = config.getBoolean("displayTerritoryNameWithOwnColor", false);
         territoryClaimBufferZone = config.getInt("TerritoryClaimBufferZone", 2);
-        territoryClaimTownCost = config.getInt("CostOfTownChunk", 1);
-        territoryClaimRegionCost = config.getInt("CostOfRegionChunk", 5);
         minimumNumberOfChunksUnclaimed = config.getInt("minimumNumberOfChunksUnclaimed", 5);
         percentageOfChunksUnclaimed = config.getDouble("percentageOfChunksUnclaimed", 10) / 100;
 
@@ -225,6 +225,9 @@ public class Constants {
         cancelTeleportOnMoveHead = config.getBoolean("cancelTeleportOnMoveHead", false);
         cancelTeleportOnMovePosition = config.getBoolean("cancelTeleportOnMovePosition", true);
         cancelTeleportOnDamage = config.getBoolean("cancelTeleportOnDamage", true);
+
+        //Upgrade
+        upgradeStorage = new NewUpgradeStorage();
     }
 
     public static boolean onlineMode() {
@@ -249,14 +252,6 @@ public class Constants {
 
     public static int territoryClaimBufferZone() {
         return territoryClaimBufferZone;
-    }
-
-    public static int territoryClaimTownCost() {
-        return territoryClaimTownCost;
-    }
-
-    public static int territoryClaimRegionCost() {
-        return territoryClaimRegionCost;
     }
 
     public static int getMinimumNumberOfChunksUnclaimed() {
@@ -487,6 +482,10 @@ public class Constants {
 
     public static boolean isCancelTeleportOnDamage() {
         return cancelTeleportOnDamage;
+    }
+
+    public static NewUpgradeStorage getUpgradeStorage() {
+        return upgradeStorage;
     }
 
     public static boolean isCancelTeleportOnMovePosition() {

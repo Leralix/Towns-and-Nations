@@ -4,7 +4,6 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -12,10 +11,12 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.events.CreateFortEvent;
 import org.leralix.tan.listeners.interact.events.property.CreateTerritoryPropertyEvent;
+import org.leralix.tan.upgrade.rewards.numeric.PropertyCap;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -49,21 +50,21 @@ public class BuildingMenu extends IteratorGUI {
 
     private @NotNull GuiItem getCreatePublicPropertyButton(TownData townData) {
 
-        List<String> description = new ArrayList<>();
+        List<FilledLang> description = new ArrayList<>();
 
         int nbProperties = townData.getProperties().size();
-        int maxNbProperties = townData.getLevel().getPropertyCap();
+        int maxNbProperties = townData.getNewLevel().getStat(PropertyCap.class).getMaxAmount();
         if (nbProperties >= maxNbProperties) {
-            description.add(Lang.GUI_PROPERTY_CAP_FULL.get(langType, Integer.toString(nbProperties), Integer.toString(maxNbProperties)));
+            description.add(Lang.GUI_PROPERTY_CAP_FULL.get(Integer.toString(nbProperties), Integer.toString(maxNbProperties)));
         } else {
-            description.add(Lang.GUI_PROPERTY_CAP.get(langType, Integer.toString(nbProperties), Integer.toString(maxNbProperties)));
+            description.add(Lang.GUI_PROPERTY_CAP.get(Integer.toString(nbProperties), Integer.toString(maxNbProperties)));
         }
-        description.add(Lang.CREATE_PUBLIC_PROPERTY_COST.get(langType));
-        description.add(Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(langType));
+        description.add(Lang.CREATE_PUBLIC_PROPERTY_COST.get());
 
         return iconManager.get(IconKey.PLAYER_PROPERTY_ICON)
                 .setName(Lang.CREATE_PUBLIC_PROPERTY_ICON.get(langType))
                 .setDescription(description)
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> {
                     if (!townData.doesPlayerHavePermission(player, RolePermission.MANAGE_PROPERTY)) {
                         TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType), SoundEnum.NOT_ALLOWED);
@@ -75,16 +76,14 @@ public class BuildingMenu extends IteratorGUI {
                     }
                     RightClickListener.register(player, new CreateTerritoryPropertyEvent(player, townData));
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getCreateFortButton() {
         return iconManager.get(IconKey.FORT_BUILDING_ICON)
                 .setName(Lang.CREATE_FORT_ICON.get(langType))
-                .setDescription(
-                        Lang.CREATE_FORT_DESC1.get(langType, Double.toString(Constants.getFortCost())),
-                        Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(langType)
-                )
+                .setDescription(Lang.CREATE_FORT_DESC1.get(Double.toString(Constants.getFortCost())))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> {
 
                     if (Constants.getFortCost() > territoryData.getBalance()) {
@@ -96,13 +95,13 @@ public class BuildingMenu extends IteratorGUI {
                     RightClickListener.register(player, new CreateFortEvent(territoryData));
                     player.closeInventory();
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private List<GuiItem> getBuildings() {
         List<GuiItem> res = new ArrayList<>();
         for (Building building : territoryData.getBuildings()) {
-            res.add(building.getGuiItem(iconManager, player, territoryData, this));
+            res.add(building.getGuiItem(iconManager, player, this, langType));
         }
         return res;
     }

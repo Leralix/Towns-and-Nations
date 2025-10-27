@@ -11,6 +11,7 @@ import org.leralix.tan.storage.legacy.UpgradeStorage;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated(since = "0.16.0", forRemoval = true)
 public class Level {
     private int townLevel;
 
@@ -65,8 +66,8 @@ public class Level {
 
     private int getRequiredMoney(int level) {
         FileConfiguration fg = ConfigUtil.getCustomConfig(ConfigTag.UPGRADE);
-        ConfigurationSection section = fg.getConfigurationSection("townUpgrades");
-        String expressionString = section.getString("TownLevelExpression");
+        ConfigurationSection section = fg.getConfigurationSection("townLevelExpression");
+        String expressionString = section.getString("LevelExpression");
         String squareMultName = "squareMultiplier";
         String flatMultName = "flatMultiplier";
 

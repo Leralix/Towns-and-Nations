@@ -79,7 +79,7 @@ public class ShowBoundaries {
                     res.add(getChunkLine(centerChunkPosition, CardinalPoint.EAST));
                 }
 
-// WEST
+                // WEST
                 ClaimedChunk2 westChunk = NewClaimedChunkStorage.getInstance()
                         .get(centerChunkPosition.getX() - 1, centerChunkPosition.getZ(), centerChunkPosition.getWorldID().toString());
                 if (isFrontline(territoryChunk, westChunk, attacks)) {

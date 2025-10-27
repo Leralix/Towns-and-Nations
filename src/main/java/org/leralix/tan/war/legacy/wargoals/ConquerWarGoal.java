@@ -4,6 +4,7 @@ package org.leralix.tan.war.legacy.wargoals;
 import org.bukkit.Material;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 
@@ -22,10 +23,9 @@ public class ConquerWarGoal extends WarGoal {
     @Override
     public IconBuilder getIcon(LangType langType) {
 
-        List<String> description = new ArrayList<>();
-        description.add(Lang.CONQUER_WAR_GOAL_DESC.get(langType));
-        description.add(Lang.CONQUER_WAR_GOAL_DESC1.get(langType, Integer.toString(numberOfChunks)));
-        description.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(langType));
+        List<FilledLang> description = new ArrayList<>();
+        description.add(Lang.CONQUER_WAR_GOAL_DESC.get());
+        description.add(Lang.CONQUER_WAR_GOAL_DESC1.get(Integer.toString(numberOfChunks)));
 
         return buildIcon(Material.IRON_SWORD, description, langType);
     }

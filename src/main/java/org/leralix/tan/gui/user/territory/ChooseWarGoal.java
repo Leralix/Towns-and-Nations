@@ -4,7 +4,6 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -17,9 +16,6 @@ import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.WarRole;
 import org.leralix.tan.war.legacy.wargoals.ConquerWarGoal;
 import org.leralix.tan.war.legacy.wargoals.SubjugateWarGoal;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ChooseWarGoal extends BasicGui {
 
@@ -53,20 +49,16 @@ public class ChooseWarGoal extends BasicGui {
     private @NotNull GuiItem getConquerButton() {
 
         boolean conquerAlreadyUsed = war.getGoals(warRole).stream()
-                .anyMatch(warGoal -> warGoal instanceof ConquerWarGoal);
+                .anyMatch(ConquerWarGoal.class::isInstance);
 
-        List<String> description = new ArrayList<>();
-        description.add(Lang.CONQUER_WAR_GOAL_DESC.get(tanPlayer));
-        if (conquerAlreadyUsed){
-            description.add(Lang.GUI_ONLY_ONE_CONQUER_WAR_GOAL.get(tanPlayer));
-        }
-        else {
-            description.add(Lang.GUI_GENERIC_CLICK_TO_SELECT.get(tanPlayer));
-        }
 
         return iconManager.get(IconKey.WAR_GOAL_CONQUER_ICON)
                 .setName(Lang.CONQUER_WAR_GOAL.get(langType))
-                .setDescription(description)
+                .setDescription(Lang.CONQUER_WAR_GOAL_DESC.get())
+                .setClickToAcceptMessage(conquerAlreadyUsed ?
+                        Lang.GUI_ONLY_ONE_CONQUER_WAR_GOAL :
+                        Lang.GUI_GENERIC_CLICK_TO_SELECT
+                )
                 .setAction(
                         action -> {
 
@@ -78,37 +70,29 @@ public class ChooseWarGoal extends BasicGui {
                             PlayerChatListenerStorage.register(player, new SelectNbChunksForConquer(war, warRole, new SelectWarGoals(player, territoryData, war, warRole)));
                         }
                 )
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getcaptureLandmarkButton() {
         return iconManager.get(IconKey.WAR_GOAL_CAPTURE_LANDMARK_ICON)
                 .setName(Lang.CAPTURE_LANDMARK_WAR_GOAL.get(langType))
-                .setDescription(
-                        Lang.CAPTURE_LANDMARK_WAR_GOAL_DESC.get(tanPlayer),
-                        Lang.GUI_GENERIC_CLICK_TO_SELECT.get(tanPlayer)
-                )
+                .setDescription(Lang.CAPTURE_LANDMARK_WAR_GOAL_DESC.get())
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
                 .setAction(
-                        action -> {
-                            new SelectLandmarkForCapture(player, territoryData, war, warRole);
-                        }
+                        action -> new SelectLandmarkForCapture(player, territoryData, war, warRole)
                 )
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getCaptureFortButton() {
         return iconManager.get(IconKey.WAR_GOAL_CAPTURE_FORT_ICON)
                 .setName(Lang.CAPTURE_FORT_WAR_GOAL.get(langType))
-                .setDescription(
-                        Lang.CAPTURE_FORT_WAR_GOAL_DESC.get(tanPlayer),
-                        Lang.GUI_GENERIC_CLICK_TO_SELECT.get(tanPlayer)
-                )
+                .setDescription(Lang.CAPTURE_FORT_WAR_GOAL_DESC.get())
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
                 .setAction(
-                        action -> {
-                            new SelectFortForCapture(player, territoryData, war, warRole);
-                        }
+                        action -> new SelectFortForCapture(player, territoryData, war, warRole)
                 )
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getSubjugateButton() {
@@ -117,18 +101,14 @@ public class ChooseWarGoal extends BasicGui {
                 ? war.getMainDefender().getHierarchyRank() < territoryData.getHierarchyRank()
                 : war.getMainAttacker().getHierarchyRank() < territoryData.getHierarchyRank();
 
-        List<String> description = new ArrayList<>();
-        description.add(Lang.SUBJUGATE_WAR_GOAL_DESC.get(langType));
-        description.add(Lang.GUI_GENERIC_CLICK_TO_SELECT.get(langType));
-        if(!canBeSubjugated){
-            description.add(Lang.GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED.get(langType));
-        }
-
-
-
         return iconManager.get(IconKey.WAR_GOAL_SUBJUGATE_ICON)
                 .setName(Lang.SUBJUGATE_WAR_GOAL.get(langType))
-                .setDescription(description)
+                .setDescription(Lang.SUBJUGATE_WAR_GOAL_DESC.get())
+                .setClickToAcceptMessage(
+                        canBeSubjugated ?
+                                Lang.GUI_GENERIC_CLICK_TO_SELECT :
+                                Lang.GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED
+                )
                 .setAction(
                         action -> {
 
@@ -141,7 +121,7 @@ public class ChooseWarGoal extends BasicGui {
                             new SelectWarGoals(player, territoryData, war, warRole);
                         }
                 )
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getLiberateButton() {
@@ -150,17 +130,13 @@ public class ChooseWarGoal extends BasicGui {
                 ? !war.getMainDefender().getVassals().isEmpty()
                 : !war.getMainAttacker().getVassals().isEmpty();
 
-        List<String> description = new ArrayList<>();
-        description.add(Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC.get(langType));
-        description.add(Lang.GUI_GENERIC_CLICK_TO_SELECT.get(langType));
-        if(!doesEnemyHaveSubjects){
-            description.add(Lang.GUI_WARGOAL_LIBERATE_CANNOT_BE_USED.get(langType));
-        }
-
         return iconManager.get(IconKey.WAR_GOAL_LIBERATE_ICON)
                 .setName(Lang.LIBERATE_SUBJECT_WAR_GOAL.get(langType))
-                .setDescription(
-                        description
+                .setDescription(Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC.get())
+                .setClickToAcceptMessage(
+                        doesEnemyHaveSubjects ?
+                                Lang.GUI_GENERIC_CLICK_TO_SELECT :
+                                Lang.GUI_WARGOAL_LIBERATE_CANNOT_BE_USED
                 )
                 .setAction(
                         action -> {
@@ -172,7 +148,7 @@ public class ChooseWarGoal extends BasicGui {
                             new SelectTerritoryForLIberation(player, territoryData, war, warRole);
                         }
                 )
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
 
     }
 

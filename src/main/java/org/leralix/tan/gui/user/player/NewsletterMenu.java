@@ -44,28 +44,24 @@ public class NewsletterMenu extends IteratorGUI {
     private GuiItem getMarkAllAsReadButton() {
         return IconManager.getInstance().get(IconKey.MARK_ALL_AS_READ_ICON)
                 .setName(Lang.MARK_ALL_AS_READ.get(tanPlayer))
-                .setDescription(
-                        Lang.GUI_GENERIC_CLICK_TO_PROCEED.get(tanPlayer)
-                )
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(event -> {
                     NewsletterStorage.getInstance().markAllAsReadForPlayer(player);
                     open();
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private GuiItem getCheckScopeGui() {
         return IconManager.getInstance().get(IconKey.CHANGE_NEWSLETTER_SCOPE_ICON)
                 .setName(Lang.NEWSLETTER_SCOPE_ICON.get(tanPlayer))
-                .setDescription(
-                        Lang.NEWSLETTER_SCOPE_ICON_DESC1.get(tanPlayer, scope.getName(tanPlayer.getLang())),
-                        Lang.GUI_GENERIC_CLICK_TO_MODIFY.get(tanPlayer)
-                )
+                .setDescription(Lang.NEWSLETTER_SCOPE_ICON_DESC1.get(scope.getName(tanPlayer.getLang())))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(event -> {
                     scope = scope.getNextScope();
                     open();
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
 

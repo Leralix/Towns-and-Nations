@@ -88,6 +88,8 @@ public interface ITanPlayer {
 
     Integer getRankID(TerritoryData territoryData);
 
+    RankData getRank(TerritoryData territoryData);
+
     /**
      * @return  A list of all territory a player is in, starting from the lowest level.
      */

@@ -1,7 +1,6 @@
 package org.leralix.tan.utils.text;
 
 import org.leralix.lib.utils.RandomUtil;
-import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.utils.constants.Constants;
 
 import java.util.Random;
@@ -42,14 +41,13 @@ public class StringUtil {
     }
 
     public static String getColoredMoney(double money){
-        String moneyChar = EconomyUtil.getMoneyIcon();
         String formatedMoney = formatMoney(money);
         if(money > 0){
-            return "§a+" + formatedMoney + moneyChar;
+            return "§a+" + formatedMoney;
         }else if(money < 0){
-            return "§c" + formatedMoney + moneyChar;
+            return "§c" + formatedMoney;
         }
-        return "§7" + formatedMoney + moneyChar;
+        return "§7" + formatedMoney;
     }
 
     public static String formatMoney(double amount) {

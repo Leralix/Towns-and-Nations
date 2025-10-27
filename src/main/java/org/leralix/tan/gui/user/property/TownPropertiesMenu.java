@@ -2,7 +2,6 @@ package org.leralix.tan.gui.user.property;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
@@ -44,12 +43,9 @@ public class TownPropertiesMenu extends IteratorGUI {
 
         for (PropertyData townProperty : townData.getProperties()){
 
-            List<String> desc = townProperty.getBasicDescription(tanPlayer.getLang());
-            desc.add(Lang.GUI_GENERIC_CLICK_TO_OPEN.get(tanPlayer));
-
             res.add(iconManager.get(townProperty.getIcon())
                     .setName(townProperty.getName())
-                    .setDescription(desc)
+                    .setDescription(townProperty.getBasicDescription())
                     .setAction(event -> {
                         event.setCancelled(true);
                         if(!tanPlayer.hasTown()){
@@ -62,7 +58,7 @@ public class TownPropertiesMenu extends IteratorGUI {
                         }
                         new TownPropertyManager(player, townProperty, townData);
                     })
-                    .asGuiItem(player));
+                    .asGuiItem(player, langType));
         }
         return res;
     }

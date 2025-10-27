@@ -50,8 +50,8 @@ public class PlayerPropertyManager extends PropertyMenus {
 
     @Override
     protected GuiItem getPropertyIcon(){
-        var desc = propertyData.getBasicDescription(tanPlayer.getLang());
-        desc.add(Lang.GUI_PROPERTY_CHANGE_ICON.get(langType));
+        var desc = propertyData.getBasicDescription();
+        desc.add(Lang.GUI_PROPERTY_CHANGE_ICON.get());
 
         return iconManager.get(propertyData.getIcon())
                 .setName(propertyData.getName())
@@ -68,6 +68,6 @@ public class PlayerPropertyManager extends PropertyMenus {
                     SoundUtil.playSound(player, SoundEnum.GOOD);
                     open();
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 }

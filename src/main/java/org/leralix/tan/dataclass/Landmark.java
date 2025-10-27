@@ -18,6 +18,8 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.upgrade.TerritoryStats;
+import org.leralix.tan.upgrade.rewards.percentage.LandmarkBonus;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
@@ -169,8 +171,9 @@ public class Landmark {
     }
 
     public int computeStoredReward(TownData townData) {
-        long bonus = (townData.getLevel().getTotalBenefits().get("LANDMARK_BONUS") + 100) / 100;
-        return (int) (this.amount * storedDays * bonus);
+        TerritoryStats territoryStats = townData.getNewLevel();
+        LandmarkBonus bonus = territoryStats.getStat(LandmarkBonus.class);
+        return (int) bonus.multiply((double) this.amount * storedDays);
     }
 
     public void giveToPlayer(Player player, int number) {
