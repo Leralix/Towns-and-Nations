@@ -666,6 +666,7 @@ language:
   CHUNK_CAP: "Max chunk"
   PROPERTY_CAP: "Max property"
   LANDMARK_CAP: "Max landmarks"
+  CHUNK_COST: "Chunk cost"
   UNLOCK_TOWN_SPAWN: "Town spawn"
   UNLOCK_MOB_BAN: "Mob ban"
   LANDMARK_BONUS: "Landmark rewards"

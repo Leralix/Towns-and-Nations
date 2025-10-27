@@ -26,7 +26,6 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
@@ -154,15 +153,9 @@ public class RegionData extends TerritoryData {
     @Override
     public void abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
 
-        removeFromBalance(Constants.territoryClaimRegionCost());
+        removeFromBalance(getClaimCost());
         NewClaimedChunkStorage.getInstance().claimRegionChunk(chunk, getID());
     }
-
-    @Override
-    public int getClaimCost() {
-        return Constants.territoryClaimRegionCost();
-    }
-
 
     @Override
     protected Collection<TerritoryData> getOverlords() {

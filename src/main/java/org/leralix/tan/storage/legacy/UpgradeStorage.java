@@ -68,7 +68,7 @@ public class UpgradeStorage {
     }
 
 
-    public static  void loadIntoMap(Map<String,Integer> map){
+    public static void loadIntoMap(Map<String,Integer> map){
         for(TownUpgrade upgrade : UpgradeStorage.getUpgrades()){
             map.put(upgrade.getName(),0);
         }

@@ -389,6 +389,7 @@ public enum Lang {
     CHUNK_CAP,
     PROPERTY_CAP,
     LANDMARK_CAP,
+    CHUNK_COST,
     UNLOCK_TOWN_SPAWN,
     UNLOCK_MOB_BAN,
     LANDMARK_BONUS,

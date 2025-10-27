@@ -6,7 +6,6 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.service.requirements.IndividualRequirement;
 import org.leralix.tan.gui.service.requirements.upgrade.UpgradeRequirement;
 import org.leralix.tan.lang.DynamicLang;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.upgrade.rewards.IndividualStat;
 
@@ -41,7 +40,7 @@ public class Upgrade {
     }
 
     public String getID() {
-        return DynamicLang.get(Lang.getServerLang(), nameKey);
+        return nameKey;
     }
 
     public String getName(LangType langType) {

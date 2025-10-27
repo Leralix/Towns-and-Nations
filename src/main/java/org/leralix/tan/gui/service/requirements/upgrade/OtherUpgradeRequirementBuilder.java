@@ -20,7 +20,7 @@ public class OtherUpgradeRequirementBuilder extends UpgradeRequirement {
 
     @Override
     public IndividualRequirement toIndividualRequirement(Upgrade upgrade, TerritoryData territoryData, Player player) {
-        Upgrade otherUpgrade = Constants.getUpgradeStorage().getUpgradeByName(otherUpgradeId);
+        Upgrade otherUpgrade = Constants.getUpgradeStorage().getUpgradeByName(territoryData, otherUpgradeId);
         if(otherUpgrade == null){
             return new UpgradeErrorRequirement();
         }

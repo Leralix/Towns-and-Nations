@@ -32,7 +32,11 @@ public class BiomeStat extends IndividualStat implements AggregatableStat<BiomeS
             key = key.toUpperCase().replace(" ", "_");
 
             if(key.equals("ALL")){
-                res.addAll(Arrays.asList(Biome.values()));
+                try {
+                    res.addAll(Arrays.asList(Biome.values()));
+                } catch (IncompatibleClassChangeError ignored) {
+
+                }
                 break;
             }
 

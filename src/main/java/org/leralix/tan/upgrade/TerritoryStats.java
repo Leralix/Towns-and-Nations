@@ -9,14 +9,12 @@ import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.Level;
 import org.leralix.tan.upgrade.rewards.AggregatableStat;
 import org.leralix.tan.upgrade.rewards.IndividualStat;
+import org.leralix.tan.upgrade.rewards.StatsType;
 import org.leralix.tan.upgrade.rewards.bool.EnableMobBan;
 import org.leralix.tan.upgrade.rewards.bool.EnableTownSpawn;
 import org.leralix.tan.upgrade.rewards.list.BiomeStat;
 import org.leralix.tan.upgrade.rewards.list.PermissionList;
-import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
-import org.leralix.tan.upgrade.rewards.numeric.LandmarkCap;
-import org.leralix.tan.upgrade.rewards.numeric.PropertyCap;
-import org.leralix.tan.upgrade.rewards.numeric.TownPlayerCap;
+import org.leralix.tan.upgrade.rewards.numeric.*;
 import org.leralix.tan.upgrade.rewards.percentage.LandmarkBonus;
 import org.leralix.tan.utils.constants.Constants;
 
@@ -27,16 +25,21 @@ public class TerritoryStats {
 
     private int mainLevel;
     private Map<String, Integer> level;
+    private final StatsType statsType;
+
 
     public TerritoryStats(Level oldLevel){
         this.mainLevel = oldLevel.getTownLevel();
         this.level = oldLevel.getTotalBenefits();
+        this.level.put("CITY_HALL", 1); // Default upgrade
+        statsType = StatsType.TOWN;
     }
 
-    public TerritoryStats(){
+    public TerritoryStats(StatsType statsType){
         this.mainLevel = 1;
         this.level = new HashMap<>();
         this.level.put("CITY_HALL", 1); // Default upgrade
+        this.statsType = statsType;
     }
 
     public int getLevel(Upgrade upgrade){
@@ -68,7 +71,7 @@ public class TerritoryStats {
 
     public <T extends IndividualStat & AggregatableStat<T>> T getStat(Class<T> rewardClass) {
         List<T> stats = new ArrayList<>();
-        for (Upgrade upgrade : Constants.getUpgradeStorage().getTownUpgrades()) {
+        for (Upgrade upgrade : Constants.getUpgradeStorage().getUpgrades(statsType)) {
             int currentLevel = getLevel(upgrade);
             if (currentLevel == 0) continue;
 
@@ -96,12 +99,16 @@ public class TerritoryStats {
 
         List<IndividualStat> allStats = new ArrayList<>();
         allStats.add(getStat(ChunkCap.class));
-        allStats.add(getStat(LandmarkCap.class));
-        allStats.add(getStat(PropertyCap.class));
-        allStats.add(getStat(TownPlayerCap.class));
-        allStats.add(getStat(LandmarkBonus.class));
-        allStats.add(getStat(EnableTownSpawn.class));
-        allStats.add(getStat(EnableMobBan.class));
+        allStats.add(getStat(ChunkCost.class));
+        // Town only stats.
+        if(statsType == StatsType.TOWN){
+            allStats.add(getStat(LandmarkCap.class));
+            allStats.add(getStat(PropertyCap.class));
+            allStats.add(getStat(TownPlayerCap.class));
+            allStats.add(getStat(LandmarkBonus.class));
+            allStats.add(getStat(EnableTownSpawn.class));
+            allStats.add(getStat(EnableMobBan.class));
+        }
         allStats.add(getStat(PermissionList.class));
         allStats.add(getStat(BiomeStat.class));
         return allStats;

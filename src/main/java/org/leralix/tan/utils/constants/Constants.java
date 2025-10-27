@@ -49,8 +49,6 @@ public class Constants {
     private static double regionChunkUpkeepCost;
     private static boolean displayTerritoryColor;
     private static int territoryClaimBufferZone;
-    private static int territoryClaimTownCost;
-    private static int territoryClaimRegionCost;
     private static int minimumNumberOfChunksUnclaimed;
     private static double percentageOfChunksUnclaimed;
 
@@ -143,8 +141,6 @@ public class Constants {
 
         displayTerritoryColor = config.getBoolean("displayTerritoryNameWithOwnColor", false);
         territoryClaimBufferZone = config.getInt("TerritoryClaimBufferZone", 2);
-        territoryClaimTownCost = config.getInt("CostOfTownChunk", 1);
-        territoryClaimRegionCost = config.getInt("CostOfRegionChunk", 5);
         minimumNumberOfChunksUnclaimed = config.getInt("minimumNumberOfChunksUnclaimed", 5);
         percentageOfChunksUnclaimed = config.getDouble("percentageOfChunksUnclaimed", 10) / 100;
 
@@ -256,14 +252,6 @@ public class Constants {
 
     public static int territoryClaimBufferZone() {
         return territoryClaimBufferZone;
-    }
-
-    public static int territoryClaimTownCost() {
-        return territoryClaimTownCost;
-    }
-
-    public static int territoryClaimRegionCost() {
-        return territoryClaimRegionCost;
     }
 
     public static int getMinimumNumberOfChunksUnclaimed() {

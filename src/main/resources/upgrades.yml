@@ -18,16 +18,18 @@
 #      - ANY_STONE : any type of stone (cobblestone, granite, diorite, andesite, stone)
 #
 # benefits: the benefits of the upgrade
-# - PLAYER_CAP: maximum number of player per town [0,1,2... or infinity]
-# - CHUNK_CAP: maximum number of claimable chunk per town [0,1,2... or infinity]
-# - PROPERTY_CAP: maximum number of property per town [0,1,2... or infinity]
-# - LANDMARKS_CAP: maximum number of owned landmarks per town [0,1,2... or infinity]
+# - PLAYER_CAP: maximum number of player per town [-1,0,1,2... or infinity]
+# - CHUNK_CAP: maximum number of claimable chunk per town [-1,0,1,2... or infinity]
+# - CHUNK_COST : cost to claim one chunk [-1,0,1,2...]
+# - PROPERTY_CAP: maximum number of property per town [-1,0,1,2... or infinity]
+# - LANDMARKS_CAP: maximum number of owned landmarks per town [-1,0,1,2... or infinity]
 # - UNLOCK_TOWN_SPAWN: unlock /tan spawn [level 0 -> locked, level 1 -> unlock]
 # - UNLOCK_MOB_BAN: unlock the mob ban tab [level 0 -> locked, level 1 -> unlock]
 # - LANDMARK_BONUS: percentage of bonus on landmarks (ex 50 = 50%) [10 = 10%]
 # - AUTHORIZED_BIOMES: allowed biomes for claiming [level 0 -> locked, level 1 -> unlock]
 #                      You can either use standard biome names (OCEAN, DEEP_OCEAN, WARM_OCEAN, LUKEWARM_OCEAN...)
 #                      or use packages (ALL, OCEAN, PLAINS, DESERT, FOREST, MOUNTAIN, NETHER, END)
+#                      Work with custom chunks (terralith:yellowstone),
 
 # You can create custom upgrade names in lang/./upgrades.yml
 
@@ -59,6 +61,7 @@ upgrades:
     benefits:
       PLAYER_CAP: +3
       CHUNK_CAP: +100
+      CHUNK_COST: 0
       AUTHORIZED_BIOMES: [ 'ALL' ]
 
   ADMINISTRATION:
@@ -180,3 +183,19 @@ upgrades:
     benefits:
       PROPERTY_CAP: +3
       CHUNK_CAP: +50
+
+
+region_upgrades:
+
+  CITY_HALL: #"City hall" tag is already unlocked when creating a town. Use it to store default values of yur towns
+    col: 0
+    row: 0
+    itemCode: 'BELL'
+    maxLevel: 1
+    cost: [ '0' ]
+    prerequisites:
+      TOWN_LEVEL: 0
+    benefits:
+      CHUNK_CAP: infinity
+      CHUNK_COST: 5
+      AUTHORIZED_BIOMES: [ 'ALL' ]

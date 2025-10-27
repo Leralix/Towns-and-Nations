@@ -6,17 +6,17 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.service.requirements.model.*;
 import org.leralix.tan.gui.service.requirements.upgrade.*;
 import org.leralix.tan.upgrade.rewards.IndividualStat;
+import org.leralix.tan.upgrade.rewards.StatsType;
 import org.leralix.tan.upgrade.rewards.bool.EnableMobBan;
 import org.leralix.tan.upgrade.rewards.bool.EnableTownSpawn;
 import org.leralix.tan.upgrade.rewards.list.BiomeStat;
 import org.leralix.tan.upgrade.rewards.list.PermissionList;
-import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
-import org.leralix.tan.upgrade.rewards.numeric.LandmarkCap;
-import org.leralix.tan.upgrade.rewards.numeric.PropertyCap;
-import org.leralix.tan.upgrade.rewards.numeric.TownPlayerCap;
+import org.leralix.tan.upgrade.rewards.numeric.*;
 import org.leralix.tan.upgrade.rewards.percentage.LandmarkBonus;
 
 import java.util.*;
@@ -24,14 +24,21 @@ import java.util.*;
 public class NewUpgradeStorage {
 
     private final Map<String, Upgrade> townUpgrades;
+    private final Map<String, Upgrade> regionUpgrades;
+
 
     public NewUpgradeStorage() {
 
         this.townUpgrades = new HashMap<>();
+        this.regionUpgrades = new HashMap<>();
 
         FileConfiguration upgradeConfig = ConfigUtil.getCustomConfig(ConfigTag.UPGRADE);
-        ConfigurationSection upgradesSection = upgradeConfig.getConfigurationSection("upgrades");
+        setUpUpgrades(townUpgrades, upgradeConfig.getConfigurationSection("upgrades"));
+        setUpUpgrades(regionUpgrades, upgradeConfig.getConfigurationSection("region_upgrades"));
 
+    }
+
+    private void setUpUpgrades(Map<String, Upgrade> upgradeMap, ConfigurationSection upgradesSection) {
         if (upgradesSection != null) {
             for (String key : upgradesSection.getKeys(false)) {
                 int col = upgradesSection.getInt(key + ".col");
@@ -90,6 +97,7 @@ public class NewUpgradeStorage {
                             case "PROPERTY_CAP" -> rewards.add(new PropertyCap(intValue, isUnlimited));
                             case "PLAYER_CAP" -> rewards.add(new TownPlayerCap(intValue, isUnlimited));
                             case "CHUNK_CAP" -> rewards.add(new ChunkCap(intValue, isUnlimited));
+                            case "CHUNK_COST" -> rewards.add(new ChunkCost(intValue, isUnlimited));
                             case "LANDMARKS_CAP" -> rewards.add(new LandmarkCap(intValue, isUnlimited));
                             case "UNLOCK_TOWN_SPAWN" -> rewards.add(new EnableTownSpawn(true));
                             case "UNLOCK_MOB_BAN" -> rewards.add(new EnableMobBan(true));
@@ -108,7 +116,7 @@ public class NewUpgradeStorage {
                     }
                 }
 
-                townUpgrades.put(
+                upgradeMap.put(
                         key,
                         new Upgrade(
                                 row,
@@ -149,12 +157,26 @@ public class NewUpgradeStorage {
         }
     }
 
-
-    public Upgrade getUpgradeByName(String name) {
+    public Upgrade getUpgradeByName(TerritoryData territoryData, String name) {
+        if(territoryData instanceof RegionData){
+            return regionUpgrades.get(name);
+        }
         return townUpgrades.get(name);
     }
 
-    public Collection<Upgrade> getTownUpgrades() {
-        return townUpgrades.values();
+    public Collection<Upgrade> getUpgrades(StatsType statsType) {
+        return switch (statsType){
+            case REGION -> regionUpgrades.values();
+            case TOWN -> townUpgrades.values();
+            case null -> townUpgrades.values();
+        };
     }
+
+    public Collection<Upgrade> getUpgrades(TerritoryData territoryData) {
+        if(territoryData instanceof RegionData){
+            return getUpgrades(StatsType.REGION);
+        }
+        return getUpgrades(StatsType.TOWN);
+    }
+
 }

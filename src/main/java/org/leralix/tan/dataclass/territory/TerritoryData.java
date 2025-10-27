@@ -52,8 +52,10 @@ import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.upgrade.TerritoryStats;
 import org.leralix.tan.upgrade.Upgrade;
+import org.leralix.tan.upgrade.rewards.StatsType;
 import org.leralix.tan.upgrade.rewards.list.BiomeStat;
 import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
+import org.leralix.tan.upgrade.rewards.numeric.ChunkCost;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.file.FileUtil;
@@ -601,7 +603,9 @@ public abstract class TerritoryData {
         return true;
     }
 
-    public abstract int getClaimCost();
+    public int getClaimCost(){
+        return getNewLevel().getStat(ChunkCost.class).getCost();
+    }
 
 
     public synchronized void delete() {
@@ -1125,17 +1129,23 @@ public abstract class TerritoryData {
     public TerritoryStats getNewLevel(){
         if(this.upgradesStatus == null){
             // Migrate old data if exists
-            if(this instanceof TownData townData && townData.townLevel != null){
-                this.upgradesStatus = new TerritoryStats(townData.townLevel);
-                townData.townLevel = null;
+            if(this instanceof TownData townData) {
+                if(townData.townLevel != null){
+                    this.upgradesStatus = new TerritoryStats(townData.townLevel);
+                    townData.townLevel = null;
+                }
+                else {
+                    this.upgradesStatus = new TerritoryStats(StatsType.TOWN);
+                }
             }
-            upgradesStatus = new TerritoryStats();
+            else {
+                this.upgradesStatus = new TerritoryStats(StatsType.REGION);
+            }
         }
         return upgradesStatus;
     }
 
     public void upgradeTown(Upgrade townUpgrade){
-        TerritoryStats level = getNewLevel();
-        level.levelUp(townUpgrade);
+        getNewLevel().levelUp(townUpgrade);
     }
 }

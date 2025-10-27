@@ -50,7 +50,7 @@ public class UpgradeMenu extends BasicGui {
 
     private void generateUpgrades() {
 
-        gui.setItem(6, 6, getTerritoryStats());
+        gui.setItem(6, 6, getTerritoryStats(territoryData));
 
 
         TerritoryStats territoryStats = territoryData.getNewLevel();
@@ -70,7 +70,7 @@ public class UpgradeMenu extends BasicGui {
         }
 
 
-        for(Upgrade upgrade : Constants.getUpgradeStorage().getTownUpgrades()){
+            for(Upgrade upgrade : Constants.getUpgradeStorage().getUpgrades(territoryData)){
 
             int row =  5 - upgrade.getRow() + verticalScrollIndex;
             int column = upgrade.getColumn() + 2;
@@ -111,7 +111,7 @@ public class UpgradeMenu extends BasicGui {
         }
     }
 
-    private @NotNull GuiItem getTerritoryStats() {
+    private @NotNull GuiItem getTerritoryStats(TerritoryData territoryData) {
 
         List<String> desc = new ArrayList<>();
         desc.add("");

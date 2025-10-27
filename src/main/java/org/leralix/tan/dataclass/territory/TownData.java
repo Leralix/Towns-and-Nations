@@ -315,7 +315,7 @@ public class TownData extends TerritoryData {
     @Override
     public void abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
 
-        removeFromBalance(Constants.territoryClaimTownCost());
+        removeFromBalance(getClaimCost());
         NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(NewClaimedChunkStorage.getInstance().get(chunk));
 
         ClaimedChunk2 chunkClaimed = NewClaimedChunkStorage.getInstance().claimTownChunk(chunk, getID());
@@ -325,10 +325,6 @@ public class TownData extends TerritoryData {
         }
     }
 
-    @Override
-    public int getClaimCost() {
-        return Constants.territoryClaimTownCost();
-    }
 
     public void setCapitalLocation(Vector2D vector2D) {
         capitalLocation = vector2D;
