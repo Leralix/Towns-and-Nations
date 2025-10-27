@@ -48,11 +48,12 @@ public class InventoryUtil {
 
             if (itemScope.isInScope(item)) {
                 int itemAmount = item.getAmount();
-                if (itemAmount + amountRemoved <= amountToRemove) {
-                    int toRemove = Math.max(64, amountToRemove - amountRemoved);
-                    item.setAmount(itemAmount - toRemove);
-                    amountRemoved += toRemove;
-                }
+                int remainingToRemove = amountToRemove - amountRemoved;
+
+                int toRemove = Math.min(itemAmount, remainingToRemove);
+
+                item.setAmount(itemAmount - toRemove);
+                amountRemoved += toRemove;
 
                 if (amountRemoved >= amountToRemove) {
                     break;
