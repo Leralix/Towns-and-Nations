@@ -33,6 +33,7 @@ import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.interact.events.property.CreatePropertyEvent;
@@ -256,21 +257,21 @@ public class PropertyData extends Building {
                 Math.max(p1.getZ(), p2.getZ()) >= location.getZ() && Math.min(p1.getZ(), p2.getZ()) <= location.getZ();
     }
 
-    public List<String> getBasicDescription(LangType langType) {
-        List<String> lore = new ArrayList<>();
+    public List<FilledLang> getBasicDescription() {
+        List<FilledLang> lore = new ArrayList<>();
 
-        lore.add(Lang.GUI_PROPERTY_DESCRIPTION.get(langType, getDescription()));
-        lore.add(Lang.GUI_PROPERTY_STRUCTURE_OWNER.get(langType, getTown().getName()));
+        lore.add(Lang.GUI_PROPERTY_DESCRIPTION.get(getDescription()));
+        lore.add(Lang.GUI_PROPERTY_STRUCTURE_OWNER.get(getTown().getName()));
 
-        lore.add(Lang.GUI_PROPERTY_OWNER.get(langType, getOwner().getName()));
+        lore.add(Lang.GUI_PROPERTY_OWNER.get(getOwner().getName()));
         if (isForSale())
-            lore.add(Lang.GUI_PROPERTY_FOR_SALE.get(langType, String.valueOf(salePrice)));
+            lore.add(Lang.GUI_PROPERTY_FOR_SALE.get(String.valueOf(salePrice)));
         else if (isRented())
-            lore.add(Lang.GUI_PROPERTY_RENTED_BY.get(langType, getRenter().getNameStored(), String.valueOf(rentPrice)));
+            lore.add(Lang.GUI_PROPERTY_RENTED_BY.get(getRenter().getNameStored(), String.valueOf(rentPrice)));
         else if (isForRent())
-            lore.add(Lang.GUI_PROPERTY_FOR_RENT.get(langType, String.valueOf(rentPrice)));
+            lore.add(Lang.GUI_PROPERTY_FOR_RENT.get(String.valueOf(rentPrice)));
         else {
-            lore.add(Lang.GUI_PROPERTY_NOT_FOR_SALE.get(langType));
+            lore.add(Lang.GUI_PROPERTY_NOT_FOR_SALE.get());
         }
         return lore;
     }
@@ -522,14 +523,14 @@ public class PropertyData extends Building {
     }
 
     @Override
-    public GuiItem getGuiItem(IconManager iconManager, Player player, TerritoryData territoryData, BasicGui basicGui) {
+    public GuiItem getGuiItem(IconManager iconManager, Player player, BasicGui basicGui, LangType langType) {
 
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         boolean canInteract = getOwner().canAccess(tanPlayer);
 
         return iconManager.get(getIcon())
                 .setName(getName())
-                .setDescription(getBasicDescription(tanPlayer.getLang()))
+                .setDescription(getBasicDescription())
                 .setAction(event -> {
                     if (!canInteract) {
                         SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
@@ -538,7 +539,7 @@ public class PropertyData extends Building {
                     new PlayerPropertyManager(player, this, p -> basicGui.open());
 
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     @Override

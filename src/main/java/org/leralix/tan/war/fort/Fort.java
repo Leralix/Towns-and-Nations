@@ -15,7 +15,6 @@ import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.FortStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 
 public abstract class Fort extends Building {
@@ -74,15 +73,14 @@ public abstract class Fort extends Building {
     }
 
     @Override
-    public GuiItem getGuiItem(IconManager iconManager, Player player, TerritoryData territoryData, BasicGui basicGui) {
+    public GuiItem getGuiItem(IconManager iconManager, Player player, BasicGui basicGui, LangType langType) {
 
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
         Vector3D position = getPosition();
         return iconManager.get(IconKey.FORT_BUILDING_ICON)
                 .setName(getName())
                 .setDescription(
-                        Lang.FORT_OCCUPIED_BY.get(langType, getOccupier().getColoredName()),
-                        Lang.DISPLAY_COORDINATES.get(langType, Integer.toString(position.getX()), Integer.toString(position.getY()), Integer.toString(position.getZ()))
+                        Lang.FORT_OCCUPIED_BY.get(getOccupier().getColoredName()),
+                        Lang.DISPLAY_COORDINATES.get(Integer.toString(position.getX()), Integer.toString(position.getY()), Integer.toString(position.getZ()))
                 )
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE)
                 .setAction(
@@ -94,7 +92,7 @@ public abstract class Fort extends Building {
                             }
                         }
                 )
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
 

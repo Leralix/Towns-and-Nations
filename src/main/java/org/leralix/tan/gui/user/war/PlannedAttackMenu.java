@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.user.territory.AttackMenu;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeAttackName;
@@ -65,8 +66,8 @@ public class PlannedAttackMenu extends BasicGui {
         }
         else if (warRole == WarRole.MAIN_DEFENDER) {
 
-            List<String> submitDescription = new ArrayList<>();
-            submitDescription.add(Lang.SUBMIT_TO_REQUEST_DESC1.get(langType));
+            List<FilledLang> submitDescription = new ArrayList<>();
+            submitDescription.add(Lang.SUBMIT_TO_REQUEST_DESC1.get());
             submitDescription.addAll(plannedAttack.getWar().generateWarGoalsDesciption(warRole, langType));
 
             gui.setItem(2, 7, iconManager.get(Material.SOUL_LANTERN)
@@ -77,23 +78,23 @@ public class PlannedAttackMenu extends BasicGui {
                                 plannedAttack.territorySurrendered();
                                 new AttackMenu(player, territoryData);
                             })
-                    .asGuiItem(player));
+                    .asGuiItem(player, langType));
         }
         else if (warRole == WarRole.OTHER_ATTACKER || warRole == WarRole.OTHER_DEFENDER) {
             gui.setItem(2, 7, iconManager.get(Material.DARK_OAK_DOOR)
                     .setName(Lang.GUI_QUIT_WAR.get(langType))
-                    .setDescription(Lang.GUI_QUIT_WAR_DESC1.get(langType))
+                    .setDescription(Lang.GUI_QUIT_WAR_DESC1.get())
                     .setAction(event -> {
                         plannedAttack.removeBelligerent(territoryData);
                         territoryData.broadcastMessageWithSound(Lang.TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE.get(plannedAttack.getWar().getMainDefender().getName()), MINOR_GOOD);
                         new AttackMenu(player, territoryData);
                     })
-                    .asGuiItem(player));
+                    .asGuiItem(player, langType));
         }
         else if (warRole == WarRole.NEUTRAL) {
 
-            List<String> description = new ArrayList<>();
-            description.add(Lang.GUI_JOIN_ATTACKING_SIDE_DESC1.get(langType, territoryData.getBaseColoredName()));
+            List<FilledLang> description = new ArrayList<>();
+            description.add(Lang.GUI_JOIN_ATTACKING_SIDE_DESC1.get(territoryData.getBaseColoredName()));
             description.addAll(plannedAttack.getWar().generateWarGoalsDesciption(warRole, langType));
 
             gui.setItem(2, 6, iconManager.get(Material.IRON_SWORD)
@@ -103,17 +104,17 @@ public class PlannedAttackMenu extends BasicGui {
                         plannedAttack.addAttacker(territoryData);
                         open();
                     })
-                    .asGuiItem(player)
+                    .asGuiItem(player, langType)
             );
 
             gui.setItem(2, 8, iconManager.get(Material.SHIELD)
                     .setName(Lang.GUI_JOIN_DEFENDING_SIDE.get(tanPlayer))
-                    .setDescription(Lang.GUI_JOIN_DEFENDING_SIDE_DESC1.get(tanPlayer, territoryData.getBaseColoredName()))
+                    .setDescription(Lang.GUI_JOIN_DEFENDING_SIDE_DESC1.get(territoryData.getBaseColoredName()))
                     .setAction(event -> {
                         plannedAttack.addDefender(territoryData);
                         open();
                     })
-                    .asGuiItem(player));
+                    .asGuiItem(player, langType));
         }
 
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AttackMenu(player, territoryData)));

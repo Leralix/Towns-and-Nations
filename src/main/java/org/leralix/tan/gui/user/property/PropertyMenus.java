@@ -33,32 +33,32 @@ public abstract class PropertyMenus extends BasicGui {
     protected GuiItem getPropertyIcon() {
         return iconManager.get(propertyData.getIcon())
                 .setName(propertyData.getName())
-                .setDescription(propertyData.getBasicDescription(tanPlayer.getLang()))
-                .asGuiItem(player);
+                .setDescription(propertyData.getBasicDescription())
+                .asGuiItem(player, langType);
     }
 
     protected GuiItem getRenameButton() {
         return iconManager.get(IconKey.PROPERTY_RENAME_ICON)
                 .setName(Lang.GUI_PROPERTY_CHANGE_NAME.get(langType))
-                .setDescription(Lang.GUI_PROPERTY_CHANGE_NAME_DESC1.get(langType, propertyData.getName()))
+                .setDescription(Lang.GUI_PROPERTY_CHANGE_NAME_DESC1.get(propertyData.getName()))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_RENAME)
                 .setAction(action -> {
                     TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
                     PlayerChatListenerStorage.register(player, new ChangePropertyName(propertyData, p -> open()));
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     protected GuiItem getDescriptionButton() {
         return iconManager.get(IconKey.PROPERTY_DESCRIPTION_ICON)
                 .setName(Lang.GUI_PROPERTY_CHANGE_DESCRIPTION.get(langType))
-                .setDescription(Lang.GUI_PROPERTY_CHANGE_DESCRIPTION_DESC1.get(langType, propertyData.getDescription()))
+                .setDescription(Lang.GUI_PROPERTY_CHANGE_DESCRIPTION_DESC1.get(propertyData.getDescription()))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_RENAME)
                 .setAction(action -> {
                     TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
                     PlayerChatListenerStorage.register(player, new ChangePropertyDescription(propertyData, p -> open()));
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     protected GuiItem getBoundariesButton() {
@@ -69,7 +69,7 @@ public abstract class PropertyMenus extends BasicGui {
                     player.closeInventory();
                     propertyData.showBox(player);
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     protected GuiItem forSaleButton() {
@@ -84,8 +84,8 @@ public abstract class PropertyMenus extends BasicGui {
         return iconManager.get(iconKey)
                 .setName(name.get(langType))
                 .setDescription(
-                        Lang.GUI_BUYING_PRICE.get(langType, Double.toString(total), Double.toString(price), Double.toString(taxPrice)),
-                        Lang.GUI_TOWN_RATE.get(langType, String.format("%.2f", propertyData.getTown().getTaxOnBuyingProperty() * 100))
+                        Lang.GUI_BUYING_PRICE.get(Double.toString(total), Double.toString(price), Double.toString(taxPrice)),
+                        Lang.GUI_TOWN_RATE.get(String.format("%.2f", propertyData.getTown().getTaxOnBuyingProperty() * 100))
                 )
                 .setClickToAcceptMessage(
                         Lang.GUI_LEFT_CLICK_TO_SWITCH_SALE,
@@ -104,7 +104,7 @@ public abstract class PropertyMenus extends BasicGui {
                         open();
                     }
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     protected GuiItem forRentButton() {
@@ -119,8 +119,8 @@ public abstract class PropertyMenus extends BasicGui {
         return iconManager.get(iconKey)
                 .setName(name.get(langType))
                 .setDescription(
-                        Lang.GUI_BUYING_PRICE.get(langType, Double.toString(total), Double.toString(price), Double.toString(taxPrice)),
-                        Lang.GUI_TOWN_RATE.get(langType, String.format("%.2f", propertyData.getTown().getTaxOnRentingProperty() * 100))
+                        Lang.GUI_BUYING_PRICE.get(Double.toString(total), Double.toString(price), Double.toString(taxPrice)),
+                        Lang.GUI_TOWN_RATE.get(String.format("%.2f", propertyData.getTown().getTaxOnRentingProperty() * 100))
                 )
                 .setClickToAcceptMessage(
                         Lang.GUI_LEFT_CLICK_TO_SWITCH_SALE,
@@ -139,7 +139,7 @@ public abstract class PropertyMenus extends BasicGui {
                         open();
                     }
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     protected GuiItem getDeleteButton() {
@@ -154,7 +154,7 @@ public abstract class PropertyMenus extends BasicGui {
                                 },
                                 p -> open()
                         ))
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     protected GuiItem getAuthorizedPlayersButton() {
@@ -176,13 +176,13 @@ public abstract class PropertyMenus extends BasicGui {
                     new PropertyChunkSettingsMenu(player, propertyData, this);
 
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     protected GuiItem getKickRenterButton() {
         return iconManager.get(new ItemStack(HeadUtils.getPlayerHead(propertyData.getOfflineRenter())))
                 .setName(Lang.GUI_PROPERTY_RENTED_BY.get(langType, propertyData.getRenter().getNameStored()))
-                .setDescription(Lang.GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER.get(langType))
+                .setDescription(Lang.GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER.get())
                 .setAction(event -> {
                     event.setCancelled(true);
 
@@ -194,7 +194,7 @@ public abstract class PropertyMenus extends BasicGui {
 
                     open();
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
 }

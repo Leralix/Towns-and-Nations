@@ -36,7 +36,7 @@ public class TerritoryChunkSettingsMenu extends IteratorGUI {
 
             GuiItem item = iconManager.get(type.getIconKey())
                     .setName(type.getName().get(tanPlayer))
-                    .setDescription(Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.get(tanPlayer, permission.getColoredName(langType)))
+                    .setDescription(Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.get(permission.getColoredName(langType)))
                     .setClickToAcceptMessage(
                             Lang.GUI_GENERIC_CLICK_TO_MODIFY,
                             Lang.GUI_RIGHT_CLICK_TO_ADD_SPECIFIC_PLAYER
@@ -49,7 +49,7 @@ public class TerritoryChunkSettingsMenu extends IteratorGUI {
                         } else if (event.isRightClick()) {
                             new OpenPlayerListForChunkPermission(player, territoryData, type, this);
                         }
-                    }).asGuiItem(player);
+                    }).asGuiItem(player, langType);
 
             guiItems.add(item);
         }

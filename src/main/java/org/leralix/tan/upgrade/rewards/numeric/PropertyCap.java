@@ -3,6 +3,7 @@ package org.leralix.tan.upgrade.rewards.numeric;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.service.requirements.IndividualRequirement;
 import org.leralix.tan.gui.service.requirements.PropertyCapRequirement;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.upgrade.rewards.AggregatableStat;
@@ -48,12 +49,12 @@ public class PropertyCap extends NumericStat implements AggregatableStat<Propert
     }
 
     @Override
-    public String getStatReward(LangType langType, int level, int maxLevel) {
+    public FilledLang getStatReward(LangType langType, int level, int maxLevel) {
         return getStatReward(langType, level, maxLevel, Lang.PROPERTY_CAP);
     }
 
     @Override
-    public String getStatReward(LangType langType) {
+    public FilledLang getStatReward(LangType langType) {
         return getStatReward(langType, Lang.PROPERTY_CAP);
     }
 }

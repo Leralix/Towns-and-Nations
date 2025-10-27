@@ -42,8 +42,8 @@ public class ManageRankPermissionMenu extends IteratorGUI {
                         .setName(permission.getName().get(tanPlayer))
                         .setDescription(
                                 rankData.hasPermission(permission) ?
-                                        Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get(tanPlayer) :
-                                        Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get(tanPlayer))
+                                        Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() :
+                                        Lang.GUI_TOWN_MEMBERS_ROLE_NO_PERMISSION.get())
                         .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                         .setAction(event -> {
                             event.setCancelled(true);
@@ -54,7 +54,7 @@ public class ManageRankPermissionMenu extends IteratorGUI {
                             rankData.switchPermission(permission);
                             open();
                         })
-                        .asGuiItem(player));
+                        .asGuiItem(player, langType));
             }
         }
         return guiItems;

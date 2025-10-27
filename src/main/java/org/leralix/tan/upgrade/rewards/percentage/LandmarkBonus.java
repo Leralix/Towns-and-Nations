@@ -1,5 +1,6 @@
 package org.leralix.tan.upgrade.rewards.percentage;
 
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.upgrade.rewards.AggregatableStat;
@@ -35,21 +36,21 @@ public class LandmarkBonus extends IndividualStat implements AggregatableStat<La
     }
 
     @Override
-    public String getStatReward(LangType langType, int level, int maxLevel) {
+    public FilledLang getStatReward(LangType langType, int level, int maxLevel) {
         int percentValue = (int) (percentage * level * 100);
         int percentValueNext = (int) (percentage * (level + 1) * 100);
 
         if(level >= maxLevel){
-            return Lang.UPGRADE_LINE_PERCENT_MAX.get(langType, Lang.LANDMARK_BONUS.get(langType), Integer.toString(percentValue));
+            return Lang.UPGRADE_LINE_PERCENT_MAX.get(Lang.LANDMARK_BONUS.get(langType), Integer.toString(percentValue));
         } else {
-            return Lang.UPGRADE_LINE_PERCENT.get(langType, Lang.LANDMARK_BONUS.get(langType), Integer.toString(percentValue), Integer.toString(percentValueNext));
+            return Lang.UPGRADE_LINE_PERCENT.get(Lang.LANDMARK_BONUS.get(langType), Integer.toString(percentValue), Integer.toString(percentValueNext));
         }
     }
 
     @Override
-    public String getStatReward(LangType langType) {
+    public FilledLang getStatReward(LangType langType) {
         int percentValue = (int) ((1. + percentage) * 100);
-        return Lang.UPGRADE_LINE_PERCENT_MAX.get(langType, Lang.LANDMARK_BONUS.get(langType), Double.toString(percentValue));
+        return Lang.UPGRADE_LINE_PERCENT_MAX.get(Lang.LANDMARK_BONUS.get(langType), Double.toString(percentValue));
     }
 
     public double multiply(double baseValue) {

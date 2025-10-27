@@ -41,11 +41,11 @@ public class WarsMenu extends IteratorGUI {
             guiItems.add(iconManager.get(war.getIcon())
                     .setName(war.getName())
                      .setDescription(
-                             Lang.ATTACK_ICON_DESC_1.get(langType, war.getMainAttacker().getColoredName()),
-                             Lang.ATTACK_ICON_DESC_2.get(langType, war.getMainDefender().getColoredName())
+                             Lang.ATTACK_ICON_DESC_1.get(war.getMainAttacker().getColoredName()),
+                             Lang.ATTACK_ICON_DESC_2.get(war.getMainDefender().getColoredName())
                      )
                     .setAction(event -> new WarMenu(player, territoryData, war))
-                    .asGuiItem(player));
+                    .asGuiItem(player, langType));
         }
 
         gui.setItem(4, 4, getAttackButton(territoryData));
@@ -56,7 +56,7 @@ public class WarsMenu extends IteratorGUI {
         return iconManager.get(new ItemStack(Material.BOW))
                 .setName("Open Attacks")
                 .setAction(p -> new AttackMenu(player, territoryData))
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
 }

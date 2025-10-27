@@ -39,7 +39,7 @@ public class PlayerSelectTimezoneMenu extends IteratorGUI {
                                         new PlayerMenu(player);
                                     }
                             )
-                            .asGuiItem(player)
+                            .asGuiItem(player, langType)
             );
         }
         return timezones;

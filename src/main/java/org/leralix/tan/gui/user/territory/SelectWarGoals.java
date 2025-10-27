@@ -44,7 +44,7 @@ public class SelectWarGoals extends IteratorGUI {
                 .setName(Lang.GUI_ADD_WAR_GOAL.get(langType))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> new ChooseWarGoal(player, territoryData, war, warRole))
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
 
@@ -59,7 +59,7 @@ public class SelectWarGoals extends IteratorGUI {
                             open();
                         }
                     })
-                    .asGuiItem(player));
+                    .asGuiItem(player, langType));
         }
         return items;
     }

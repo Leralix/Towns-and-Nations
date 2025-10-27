@@ -52,7 +52,7 @@ public class SelectFortForCapture extends IteratorGUI {
                         war.addGoal(warRole, new CaptureFortWarGoal(fort));
                         new SelectWarGoals(player, territoryData, war, warRole);
                     })
-                    .asGuiItem(player));
+                    .asGuiItem(player, langType));
         }
         return items;
     }

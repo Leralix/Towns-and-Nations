@@ -5,6 +5,7 @@ import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.LandmarkStorage;
@@ -28,9 +29,9 @@ public class CaptureLandmarkWarGoal extends WarGoal {
     @Override
     public IconBuilder getIcon(LangType langType) {
 
-        List<String> description = new ArrayList<>();
-        description.add(Lang.CAPTURE_LANDMARK_WAR_GOAL_DESC.get(langType));
-        description.add(Lang.GUI_SELECTED_LANDMARK_TO_CAPTURE.get(langType, getLandmark().getName()));
+        List<FilledLang> description = new ArrayList<>();
+        description.add(Lang.CAPTURE_LANDMARK_WAR_GOAL_DESC.get());
+        description.add(Lang.GUI_SELECTED_LANDMARK_TO_CAPTURE.get(getLandmark().getName()));
 
         return buildIcon(Material.DIAMOND, description, langType);
     }

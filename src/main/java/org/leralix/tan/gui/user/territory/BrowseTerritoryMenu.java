@@ -55,7 +55,7 @@ public class BrowseTerritoryMenu extends IteratorGUI {
                 .setName(Lang.BROWSE_SCOPE.get(tanPlayer, scope.getName(tanPlayer)))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SWITCH)
                 .setAction(p -> setScope(scope.getNextScope()))
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private List<GuiItem> getTerritory() {

@@ -1,8 +1,8 @@
 package org.leralix.tan.timezone;
 
 
-import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 
@@ -33,28 +33,28 @@ public class TimeZoneManager {
         return TimeZoneEnum.fromOffset(offset.getTotalSeconds() / 3600);
     }
 
-    public String formatDateNowForPlayer(ITanPlayer tanPlayer){
+    public FilledLang formatDateNowForPlayer(ITanPlayer tanPlayer){
         return formatDateForPlayer(tanPlayer, Instant.now());
     }
 
-    public String formatDateForPlayer(ITanPlayer tanPlayer, Instant timestamp) {
+    public FilledLang formatDateForPlayer(ITanPlayer tanPlayer, Instant timestamp) {
         TimeZoneEnum timeZone = tanPlayer.getTimeZone();
         return getDate(timestamp, timeZone);
     }
 
-    public String formatDateNowForServer() {
+    public FilledLang formatDateNowForServer() {
         return formatDateForServer(Instant.now());
     }
 
-    public String formatDateForServer(Instant timestamp) {
+    public FilledLang formatDateForServer(Instant timestamp) {
         return getDate(timestamp, getServerTimeZone());
     }
 
-    private static @NotNull String getDate(Instant timestamp, TimeZoneEnum timeZone) {
+    private static FilledLang getDate(Instant timestamp, TimeZoneEnum timeZone) {
         ZonedDateTime zonedDateTime = timestamp.atZone(timeZone.toZoneOffset());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM HH:mm").withLocale(Locale.ENGLISH);
-        return formatter.format(zonedDateTime);
+        return Lang.STRING.get(formatter.format(zonedDateTime));
     }
 
     public TimeZoneEnum getTimezoneEnum() {

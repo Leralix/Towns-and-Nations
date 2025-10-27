@@ -53,7 +53,7 @@ public class SelectLandmarkForCapture extends IteratorGUI {
                         war.addGoal(warRole, new CaptureLandmarkWarGoal(landmark));
                         new SelectWarGoals(player, territoryData, war, warRole);
                     })
-                    .asGuiItem(player);
+                    .asGuiItem(player, langType);
             items.add(item);
         }
         return items;

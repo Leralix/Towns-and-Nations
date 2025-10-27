@@ -2,7 +2,6 @@ package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.BrowseScope;
 import org.leralix.tan.gui.BasicGui;
@@ -41,31 +40,40 @@ public class NoRegionMenu extends BasicGui {
 
         int regionCost = Constants.getRegionCost();
 
-        return iconManager.get(IconKey.CREATE_REGION_ICON).setName(Lang.GUI_REGION_CREATE.get(tanPlayer)).setDescription(Lang.GUI_REGION_CREATE_DESC1.get(tanPlayer, Integer.toString(regionCost)), Lang.GUI_REGION_CREATE_DESC2.get(tanPlayer)).setAction(action -> {
-            if (!player.hasPermission("tan.base.region.create")) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
-                return;
-            }
+        return iconManager.get(IconKey.CREATE_REGION_ICON)
+                .setName(Lang.GUI_REGION_CREATE.get(tanPlayer))
+                .setDescription(
+                        Lang.GUI_REGION_CREATE_DESC1.get(Integer.toString(regionCost)),
+                        Lang.GUI_REGION_CREATE_DESC2.get())
+                .setAction(action -> {
+                    if (!player.hasPermission("tan.base.region.create")) {
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
+                        return;
+                    }
 
-            if (!tanPlayer.hasTown()) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer), NOT_ALLOWED);
-                return;
-            }
-            TownData townData = TownDataStorage.getInstance().get(player);
-            double townMoney = townData.getBalance();
-            if (townMoney < regionCost) {
-                TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), Double.toString(regionCost - townMoney)));
-            } else {
-                TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(tanPlayer));
-                PlayerChatListenerStorage.register(player, new CreateRegion(regionCost));
-            }
-        }).asGuiItem(player);
+                    if (!tanPlayer.hasTown()) {
+                        TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer), NOT_ALLOWED);
+                        return;
+                    }
+                    TownData townData = TownDataStorage.getInstance().get(player);
+                    double townMoney = townData.getBalance();
+                    if (townMoney < regionCost) {
+                        TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), Double.toString(regionCost - townMoney)));
+                    } else {
+                        TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(tanPlayer));
+                        PlayerChatListenerStorage.register(player, new CreateRegion(regionCost));
+                    }
+                }).asGuiItem(player, langType);
     }
 
     private GuiItem getBrowseRegionsButton() {
-        return iconManager.get(IconKey.BROWSE_REGION_ICON).setName(Lang.GUI_REGION_BROWSE.get(tanPlayer)).setDescription(Lang.GUI_REGION_BROWSE_DESC1.get(tanPlayer, Integer.toString(RegionDataStorage.getInstance().getAll().size())), Lang.GUI_REGION_BROWSE_DESC2.get(tanPlayer)).setAction(action -> {
-            new BrowseTerritoryMenu(player, null, BrowseScope.REGIONS, p -> open());
-        }).asGuiItem(player);
+        return iconManager.get(IconKey.BROWSE_REGION_ICON)
+                .setName(Lang.GUI_REGION_BROWSE.get(tanPlayer))
+                .setDescription(
+                        Lang.GUI_REGION_BROWSE_DESC1.get(Integer.toString(RegionDataStorage.getInstance().getAll().size())),
+                        Lang.GUI_REGION_BROWSE_DESC2.get())
+                .setAction(action -> new BrowseTerritoryMenu(player, null, BrowseScope.REGIONS, p -> open()))
+                .asGuiItem(player, langType);
 
     }
 

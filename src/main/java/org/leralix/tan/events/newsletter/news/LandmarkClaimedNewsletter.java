@@ -42,7 +42,7 @@ public class LandmarkClaimedNewsletter extends Newsletter {
     }
 
     @Override
-    public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+    public GuiItem createGuiItem(Player player, LangType langType, Consumer<Player> onClick) {
         TerritoryData newOwner = TerritoryUtil.getTerritory(newOwnerID);
         Landmark landmark = LandmarkStorage.getInstance().get(landmarkID);
 
@@ -51,8 +51,8 @@ public class LandmarkClaimedNewsletter extends Newsletter {
         }
 
         return IconManager.getInstance().get(Material.CHEST)
-                .setName(Lang.LANDMARK_CLAIMED_NEWSLETTER_TITLE.get(lang))
-                .setDescription(Lang.LANDMARK_CLAIMED_NEWSLETTER.get(lang, newOwner.getColoredName(), landmark.getName()))
+                .setName(Lang.LANDMARK_CLAIMED_NEWSLETTER_TITLE.get(langType))
+                .setDescription(Lang.LANDMARK_CLAIMED_NEWSLETTER.get(newOwner.getColoredName(), landmark.getName()))
                 .setAction(event -> {
                     event.setCancelled(true);
                     if (event.isRightClick()) {
@@ -60,7 +60,7 @@ public class LandmarkClaimedNewsletter extends Newsletter {
                         onClick.accept(player);
                     }
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     @Override

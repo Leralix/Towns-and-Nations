@@ -41,7 +41,7 @@ public class NoTownMenu extends BasicGui {
 
         return IconManager.getInstance().get(IconKey.CREATE_TOWN_ICON)
                 .setName(Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.get(tanPlayer))
-                .setDescription(Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.get(tanPlayer, Integer.toString(townPrice)))
+                .setDescription(Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.get(Integer.toString(townPrice)))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction( action -> {
                     if(!player.hasPermission("tan.base.town.create")){
@@ -58,7 +58,7 @@ public class NoTownMenu extends BasicGui {
                         PlayerChatListenerStorage.register(player, new CreateTown(townPrice));
                     }
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private GuiItem getBrowseTownsButton() {
@@ -66,12 +66,10 @@ public class NoTownMenu extends BasicGui {
         return IconManager.getInstance().get(IconKey.BROWSE_TOWN_ICON)
                 .setName(Lang.GUI_NO_TOWN_JOIN_A_TOWN.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(tanPlayer, Integer.toString(TownDataStorage.getInstance().getNumberOfTown()))
+                        Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(Integer.toString(TownDataStorage.getInstance().getNumberOfTown()))
                 )
-                .setAction(event -> {
-                    new ApplyToTownMenu(player);
-                })
-                .asGuiItem(player);
+                .setAction(event -> new ApplyToTownMenu(player))
+                .asGuiItem(player, langType);
     }
 
 

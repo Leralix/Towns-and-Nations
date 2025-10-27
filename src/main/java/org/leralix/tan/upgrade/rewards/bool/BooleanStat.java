@@ -1,5 +1,6 @@
 package org.leralix.tan.upgrade.rewards.bool;
 
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.upgrade.rewards.IndividualStat;
@@ -12,21 +13,21 @@ public abstract class BooleanStat extends IndividualStat {
         this.state = state;
     }
 
-    protected String getStatReward(LangType langType, int level, int maxLevel, Lang statName) {
+    protected FilledLang getStatReward(LangType langType, int level, Lang statName) {
         if(level == 0){
-            return Lang.UPGRADE_LINE_LOCKED_UNLOCKED.get(langType, statName.get(langType));
+            return Lang.UPGRADE_LINE_LOCKED_UNLOCKED.get(statName.get(langType));
         }
         else {
-            return Lang.UPGRADE_LINE_UNLOCKED.get(langType, statName.get(langType));
+            return Lang.UPGRADE_LINE_UNLOCKED.get(statName.get(langType));
         }
     }
 
-    protected String getStatReward(LangType langType, Lang statName) {
+    protected FilledLang getStatReward(LangType langType, Lang statName) {
         if(state){
-            return Lang.UPGRADE_LINE_UNLOCKED.get(langType, statName.get(langType));
+            return Lang.UPGRADE_LINE_UNLOCKED.get(statName.get(langType));
         }
         else {
-            return Lang.UPGRADE_LINE_LOCKED.get(langType, statName.get(langType));
+            return Lang.UPGRADE_LINE_LOCKED.get(statName.get(langType));
         }
     }
 

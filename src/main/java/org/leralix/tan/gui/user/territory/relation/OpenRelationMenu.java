@@ -57,7 +57,7 @@ public class OpenRelationMenu extends IteratorGUI {
                             }
                             new RemoveRelationMenu(player, territoryData, relation);
                         })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private GuiItem getAddTerritoryButton() {
@@ -71,7 +71,7 @@ public class OpenRelationMenu extends IteratorGUI {
                             }
                             new AddRelationMenu(player, territoryData, relation);
                         })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private List<GuiItem> getTerritories() {

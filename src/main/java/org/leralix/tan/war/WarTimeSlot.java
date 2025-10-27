@@ -3,8 +3,8 @@ package org.leralix.tan.war;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.Range;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
 import org.leralix.tan.timezone.TimeZoneManager;
 
 import java.time.Instant;
@@ -50,9 +50,9 @@ public class WarTimeSlot {
         return localTime.getHour() * 60 + localTime.getMinute();
     }
 
-    public List<String> getPrintedTimeSlots(LangType langType)
+    public List<FilledLang> getPrintedTimeSlots()
     {
-        List<String> printedTime = new ArrayList<>();
+        List<FilledLang> printedTime = new ArrayList<>();
 
         for(Range range : timeSlots){
 
@@ -62,7 +62,7 @@ public class WarTimeSlot {
             int hour2 = range.getMaxVal() / 60;
             int minute2 = range.getMaxVal() % 60;
 
-            printedTime.add(Lang.AUTHORIZED_ATTACK_TIME_SLOT_SINGLE.get(langType,
+            printedTime.add(Lang.AUTHORIZED_ATTACK_TIME_SLOT_SINGLE.get(
                     Integer.toString(hour1),
                     Integer.toString(minute1),
                     Integer.toString(hour2),

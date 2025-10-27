@@ -55,7 +55,7 @@ public class SelectTerritoryForLIberation extends IteratorGUI {
                         war.addGoal(warRole, new LiberateWarGoal(territory));
                         new SelectWarGoals(player, territoryData, war, warRole);
                     })
-                    .asGuiItem(player));
+                    .asGuiItem(player, langType));
 
         }
         return items;

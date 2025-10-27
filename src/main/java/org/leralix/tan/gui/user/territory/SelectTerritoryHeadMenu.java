@@ -54,7 +54,7 @@ public class SelectTerritoryHeadMenu extends IteratorGUI {
                                 SoundUtil.playSound(player, MINOR_GOOD);
                                 territoryData.openMainMenu(player);
                             })
-                            .asGuiItem(player)
+                            .asGuiItem(player, langType)
             );
         }
 

@@ -45,7 +45,7 @@ public class ChunkSettingsMenu extends BasicGui {
                 .setName(Lang.GUI_TOWN_CHUNK_PLAYER.get(tanPlayer))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS))
                 .setAction(event -> new TerritoryChunkSettingsMenu(player, territoryData))
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private GuiItem getChunkGeneralSettings(){
@@ -53,7 +53,7 @@ public class ChunkSettingsMenu extends BasicGui {
                 .setName(Lang.CHUNK_GENERAL_SETTINGS.get(tanPlayer))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS))
                 .setAction(event -> PlayerGUI.openChunkGeneralSettings(player, territoryData))
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private GuiItem getChunkMobSpawnSettings(){
@@ -70,6 +70,6 @@ public class ChunkSettingsMenu extends BasicGui {
                         }
                     }
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 }

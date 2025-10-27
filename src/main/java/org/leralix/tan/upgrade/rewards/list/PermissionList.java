@@ -1,5 +1,6 @@
 package org.leralix.tan.upgrade.rewards.list;
 
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.upgrade.rewards.AggregatableStat;
@@ -50,24 +51,24 @@ public class PermissionList extends IndividualStat implements AggregatableStat<P
     }
 
     @Override
-    public String getStatReward(LangType langType, int level, int maxLevel) {
+    public FilledLang getStatReward(LangType langType, int level, int maxLevel) {
         String nbNewCommands = getMathSign(values.size());
         if(level == 0){
-            return Lang.UPGRADE_LINE_INT.get(langType, Lang.UNLOCK_PERMISSION.get(langType),  "0", nbNewCommands);
+            return Lang.UPGRADE_LINE_INT.get(Lang.UNLOCK_PERMISSION.get(langType),  "0", nbNewCommands);
         }
         else {
-            return Lang.UPGRADE_LINE_INT_MAX.get(langType, Lang.UNLOCK_PERMISSION.get(langType),nbNewCommands);
+            return Lang.UPGRADE_LINE_INT_MAX.get(Lang.UNLOCK_PERMISSION.get(langType),nbNewCommands);
         }
     }
 
     @Override
-    public String getStatReward(LangType langType) {
+    public FilledLang getStatReward(LangType langType) {
         if(values.isEmpty()){
-            return Lang.UPGRADE_LINE_INT_MAX.get(langType, Lang.UNLOCK_PERMISSION.get(langType), "0");
+            return Lang.UPGRADE_LINE_INT_MAX.get(Lang.UNLOCK_PERMISSION.get(langType), "0");
         }
         else {
             String nbNewCommands = getMathSign(values.size());
-            return Lang.UPGRADE_LINE_INT_MAX.get(langType, Lang.UNLOCK_PERMISSION.get(langType), nbNewCommands);
+            return Lang.UPGRADE_LINE_INT_MAX.get(Lang.UNLOCK_PERMISSION.get(langType), nbNewCommands);
         }
     }
 }

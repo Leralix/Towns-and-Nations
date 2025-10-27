@@ -5,7 +5,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.property.AbstractOwner;
 import org.leralix.tan.dataclass.property.PlayerOwned;
@@ -43,7 +42,7 @@ public class RenterPropertyMenu extends PropertyMenus {
     private GuiItem getStopRentPropertyButton() {
         return iconManager.get(IconKey.STOP_RENTING_PROPERTY_ICON)
                 .setName(Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY.get(tanPlayer))
-                .setDescription(Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY_DESC1.get(tanPlayer))
+                .setDescription(Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY_DESC1.get())
                 .setAction(action -> {
                     propertyData.expelRenter(true);
 
@@ -57,7 +56,7 @@ public class RenterPropertyMenu extends PropertyMenus {
 
                     player.closeInventory();
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
 

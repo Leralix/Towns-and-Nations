@@ -16,6 +16,8 @@ import java.util.List;
 
 public enum Lang {
     WELCOME,
+    STRING,
+    EMPTY,
     LANGUAGE_SUCCESSFULLY_LOADED,
     PLUGIN_STRING,
     PLUGIN_DEBUG_STRING,

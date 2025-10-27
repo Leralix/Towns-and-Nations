@@ -11,6 +11,7 @@ import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.upgrade.TerritoryStats;
 import org.leralix.tan.upgrade.Upgrade;
@@ -81,10 +82,10 @@ public class UpgradeMenu extends BasicGui {
             int levelOfUpgrade = territoryStats.getLevel(upgrade) ;
             int maxLevelOfUpgrade = upgrade.getMaxLevel();
 
-            List<String> desc = new ArrayList<>();
-            desc.add(Lang.UPGRADE_CURRENT_LEVEL.get(langType, Integer.toString(levelOfUpgrade), Integer.toString(maxLevelOfUpgrade)));
-            desc.add(" ");
-            desc.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4.get(langType));
+            List<FilledLang> desc = new ArrayList<>();
+            desc.add(Lang.UPGRADE_CURRENT_LEVEL.get(Integer.toString(levelOfUpgrade), Integer.toString(maxLevelOfUpgrade)));
+            desc.add(Lang.EMPTY.get());
+            desc.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4.get());
             for(IndividualStat individualStat : upgrade.getRewards()){
                 desc.add(individualStat.getStatReward(langType, levelOfUpgrade, maxLevelOfUpgrade));
             }
@@ -105,7 +106,7 @@ public class UpgradeMenu extends BasicGui {
                                 territoryData.upgradeTown(upgrade);
                                 open();
                             })
-                            .asGuiItem(player)
+                            .asGuiItem(player, langType)
             );
 
         }
@@ -113,8 +114,8 @@ public class UpgradeMenu extends BasicGui {
 
     private @NotNull GuiItem getTerritoryStats(TerritoryData territoryData) {
 
-        List<String> desc = new ArrayList<>();
-        desc.add("");
+        List<FilledLang> desc = new ArrayList<>();
+        desc.add(Lang.EMPTY.get());
 
         for(IndividualStat stat : territoryData.getNewLevel().getAllStats()){
             desc.add(stat.getStatReward(langType));
@@ -123,7 +124,7 @@ public class UpgradeMenu extends BasicGui {
         return iconManager.get(territoryData.getIcon())
                 .setName(territoryData.getName())
                 .setDescription(desc)
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
 
     }
 
@@ -148,8 +149,8 @@ public class UpgradeMenu extends BasicGui {
         return iconManager.get(IconKey.LEVEL_UP_ICON)
                 .setName(Lang.GUI_TOWN_LEVEL_UP.get(langType))
                 .setDescription(
-                        Lang.GUI_TOWN_LEVEL_UP_DESC1.get(langType, Integer.toString(currentLevel)),
-                        Lang.GUI_TOWN_LEVEL_UP_DESC2.get(langType, Integer.toString(currentLevel + 1), Integer.toString(nextLevelPrice))
+                        Lang.GUI_TOWN_LEVEL_UP_DESC1.get(Integer.toString(currentLevel)),
+                        Lang.GUI_TOWN_LEVEL_UP_DESC2.get(Integer.toString(currentLevel + 1), Integer.toString(nextLevelPrice))
                 )
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction( action -> {
@@ -157,7 +158,7 @@ public class UpgradeMenu extends BasicGui {
                     TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
                     open();
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getUpButton() {
@@ -169,7 +170,7 @@ public class UpgradeMenu extends BasicGui {
                     generateUpgrades();
                     gui.open(player);
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getDownButton() {
@@ -181,6 +182,6 @@ public class UpgradeMenu extends BasicGui {
                     generateUpgrades();
                     gui.open(player);
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 }

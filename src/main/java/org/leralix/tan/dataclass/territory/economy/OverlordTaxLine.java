@@ -3,6 +3,7 @@ package org.leralix.tan.dataclass.territory.economy;
 import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.text.StringUtil;
@@ -21,8 +22,8 @@ public class OverlordTaxLine extends ProfitLine {
         return tax;
     }
 
-    public String getLine(LangType lang) {
-        return Lang.OVERLORD_TAX_LINE.get(lang, StringUtil.getColoredMoney(getMoney()));
+    public FilledLang getLine() {
+        return Lang.OVERLORD_TAX_LINE.get(StringUtil.getColoredMoney(getMoney()));
     }
 
     @Override

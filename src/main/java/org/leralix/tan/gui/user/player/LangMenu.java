@@ -63,7 +63,7 @@ public class LangMenu extends IteratorGUI {
                     player.spigot().sendMessage(textComponent);
                     player.closeInventory();
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
 

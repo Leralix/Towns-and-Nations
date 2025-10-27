@@ -50,15 +50,15 @@ public class TerritoryMemberMenu extends IteratorGUI {
                 .setName(Lang.GUI_TOWN_MEMBERS_MANAGE_ROLES.get(tanPlayer))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_RANKS))
                 .setAction(p -> new TerritoryRanksMenu(player, territoryData).open())
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private GuiItem getManageApplicationsButton(TownData townData) {
         return IconManager.getInstance().get(IconKey.MANAGE_APPLICATIONS_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION.get(tanPlayer))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.INVITE_PLAYER))
-                .setDescription(Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(tanPlayer, Integer.toString(townData.getPlayerJoinRequestSet().size())))
+                .setDescription(Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(Integer.toString(townData.getPlayerJoinRequestSet().size())))
                 .setAction(p -> new PlayerApplicationMenu(player, townData).open())
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 }

@@ -11,6 +11,7 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.service.requirements.IndividualRequirement;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.gui.user.player.PlayerMenu;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.events.property.CreatePlayerPropertyEvent;
@@ -43,7 +44,7 @@ public class PlayerPropertiesMenu extends IteratorGUI {
 
     private GuiItem getNewPropertyButton() {
 
-        List<String> description = new ArrayList<>();
+        List<FilledLang> description = new ArrayList<>();
         List<IndividualRequirement> requirements = new ArrayList<>();
         if(tanPlayer.hasTown()){
             TownData townData = tanPlayer.getTown();
@@ -51,13 +52,13 @@ public class PlayerPropertiesMenu extends IteratorGUI {
             double costPerBlock = townData.getTaxOnCreatingProperty();
 
             if(costPerBlock > 0) {
-                description.add(Lang.GUI_PROPERTY_COST_PER_BLOCK.get(langType, Double.toString(costPerBlock)));
+                description.add(Lang.GUI_PROPERTY_COST_PER_BLOCK.get(Double.toString(costPerBlock)));
             }
             requirements.add(townData.getNewLevel().getStat(PropertyCap.class).getRequirement(townData));
             requirements.add(new RankPermissionRequirement(townData, tanPlayer, RolePermission.CREATE_PROPERTY));
         }
         else {
-            description.add(Lang.PLAYER_NO_TOWN.get(langType));
+            description.add(Lang.PLAYER_NO_TOWN.get());
         }
 
 
@@ -76,7 +77,7 @@ public class PlayerPropertiesMenu extends IteratorGUI {
                     RightClickListener.register(player, new CreatePlayerPropertyEvent(player));
                     player.closeInventory();
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private List<GuiItem> getProperties() {
@@ -87,9 +88,9 @@ public class PlayerPropertiesMenu extends IteratorGUI {
             guiItems.add(
                     iconManager.get(propertyData.getIcon())
                             .setName(propertyData.getName())
-                            .setDescription(propertyData.getBasicDescription(tanPlayer.getLang()))
+                            .setDescription(propertyData.getBasicDescription())
                             .setAction(event -> new PlayerPropertyManager(player, propertyData, p -> open()))
-                            .asGuiItem(player)
+                            .asGuiItem(player, langType)
             );
         }
         return guiItems;

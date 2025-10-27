@@ -2,6 +2,7 @@ package org.leralix.tan.upgrade.rewards.list;
 
 import org.bukkit.Chunk;
 import org.bukkit.block.Biome;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.upgrade.rewards.AggregatableStat;
@@ -35,7 +36,8 @@ public class BiomeStat extends IndividualStat implements AggregatableStat<BiomeS
                 try {
                     res.addAll(Arrays.asList(Biome.values()));
                 } catch (IncompatibleClassChangeError ignored) {
-
+                    res.add(Biome.PLAINS);
+                    // Error with MockBukkit. This allows for tests to run.
                 }
                 break;
             }
@@ -76,20 +78,20 @@ public class BiomeStat extends IndividualStat implements AggregatableStat<BiomeS
     }
 
     @Override
-    public String getStatReward(LangType langType, int level, int maxLevel) {
+    public FilledLang getStatReward(LangType langType, int level, int maxLevel) {
         String nbNewCommands = getMathSign(biomes.size());
         if(level == 0){
-            return Lang.UPGRADE_LINE_INT.get(langType, Lang.CHUNK_AUTHORIZED_BIOMES.get(langType),  "0", nbNewCommands);
+            return Lang.UPGRADE_LINE_INT.get(Lang.CHUNK_AUTHORIZED_BIOMES.get(langType),  "0", nbNewCommands);
         }
         else {
-            return Lang.UPGRADE_LINE_INT_MAX.get(langType, Lang.CHUNK_AUTHORIZED_BIOMES.get(langType),nbNewCommands);
+            return Lang.UPGRADE_LINE_INT_MAX.get(Lang.CHUNK_AUTHORIZED_BIOMES.get(langType),nbNewCommands);
         }
     }
 
     @Override
-    public String getStatReward(LangType langType) {
+    public FilledLang getStatReward(LangType langType) {
         String nbNewCommands = getMathSign(biomes.size());
-        return Lang.UPGRADE_LINE_INT_MAX.get(langType, Lang.CHUNK_AUTHORIZED_BIOMES.get(langType), nbNewCommands);
+        return Lang.UPGRADE_LINE_INT_MAX.get(Lang.CHUNK_AUTHORIZED_BIOMES.get(langType), nbNewCommands);
     }
 
     public boolean canClaimBiome(Chunk chunk) {

@@ -11,6 +11,7 @@ import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.user.territory.EconomicHistoryMenu;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
@@ -38,8 +39,8 @@ public class PropertyRentTaxLine extends ProfitLine {
     }
 
     @Override
-    public String getLine(LangType lang) {
-        return Lang.PROPERTY_TAX_LINE.get(lang, StringUtil.getColoredMoney(getMoney()));
+    public FilledLang getLine() {
+        return Lang.PROPERTY_TAX_LINE.get(StringUtil.getColoredMoney(getMoney()));
     }
 
     @Override

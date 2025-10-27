@@ -1,5 +1,6 @@
 package org.leralix.tan.upgrade.rewards.bool;
 
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.upgrade.rewards.AggregatableStat;
@@ -36,12 +37,12 @@ public class EnableTownSpawn extends BooleanStat implements AggregatableStat<Ena
     }
 
     @Override
-    public String getStatReward(LangType langType, int level, int maxLevel) {
-        return getStatReward(langType, level, maxLevel, Lang.UNLOCK_TOWN_SPAWN);
+    public FilledLang getStatReward(LangType langType, int level, int maxLevel) {
+        return getStatReward(langType, level, Lang.UNLOCK_TOWN_SPAWN);
     }
 
     @Override
-    public String getStatReward(LangType langType) {
+    public FilledLang getStatReward(LangType langType) {
         return getStatReward(langType, Lang.UNLOCK_TOWN_SPAWN);
     }
 }

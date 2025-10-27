@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 
@@ -29,7 +30,7 @@ public abstract class WarGoal {
 
     public abstract boolean isCompleted();
 
-    protected IconBuilder buildIcon(Material material, List<String> description, LangType langType){
+    protected IconBuilder buildIcon(Material material, List<FilledLang> description, LangType langType){
         ItemStack itemStack = new ItemStack(material);
 
         return IconManager.getInstance().get(itemStack)

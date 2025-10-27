@@ -11,6 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.gui.service.Requirements;
 import org.leralix.tan.gui.service.requirements.IndividualRequirement;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -23,7 +24,7 @@ import java.util.function.Consumer;
 public class IconBuilder {
 
     private String name;
-    private final List<String> description;
+    private final List<FilledLang> description;
     private final Requirements requirements;
     private Consumer<InventoryClickEvent> action;
     private boolean hideItemFlags;
@@ -49,11 +50,11 @@ public class IconBuilder {
         return this;
     }
 
-    public IconBuilder setDescription(String... descriptions) {
+    public IconBuilder setDescription(FilledLang... descriptions) {
         return setDescription(List.of(descriptions));
     }
 
-    public IconBuilder setDescription(Collection<String> description) {
+    public IconBuilder setDescription(Collection<FilledLang> description) {
         this.description.clear();
         this.description.addAll(description);
         return this;
@@ -86,8 +87,7 @@ public class IconBuilder {
         return this;
     }
 
-    public GuiItem asGuiItem(Player player) {
-        var langType = LangType.of(player); //TODO : ask the langType directly from the method + replace desc<String> for desc<FilledLang>;
+    public GuiItem asGuiItem(Player player, LangType langType) {
         ItemStack item = menuIcon.getItemStack(player);
         ItemMeta meta = item.getItemMeta();
 
@@ -118,15 +118,21 @@ public class IconBuilder {
     }
 
     private List<String> generateDescription(LangType langType) {
+        List<String> res = new ArrayList<>();
+
+        for(FilledLang filledLang : description){
+            res.add(filledLang.get(langType));
+        }
+
         if (action != null && !requirements.isEmpty()) {
-            description.add("");
-            description.addAll(requirements.getRequirementsParagraph(langType));
+            res.add("");
+            res.addAll(requirements.getRequirementsParagraph(langType));
         }
-        description.add("");
+        res.add("");
         for(Lang messages : clickForActionMessage){
-            description.add(messages.get(langType));
+            res.add(messages.get(langType));
         }
-        return description;
+        return res;
     }
 
 }

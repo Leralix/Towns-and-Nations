@@ -11,6 +11,7 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.events.CreateFortEvent;
@@ -49,16 +50,16 @@ public class BuildingMenu extends IteratorGUI {
 
     private @NotNull GuiItem getCreatePublicPropertyButton(TownData townData) {
 
-        List<String> description = new ArrayList<>();
+        List<FilledLang> description = new ArrayList<>();
 
         int nbProperties = townData.getProperties().size();
         int maxNbProperties = townData.getNewLevel().getStat(PropertyCap.class).getMaxAmount();
         if (nbProperties >= maxNbProperties) {
-            description.add(Lang.GUI_PROPERTY_CAP_FULL.get(langType, Integer.toString(nbProperties), Integer.toString(maxNbProperties)));
+            description.add(Lang.GUI_PROPERTY_CAP_FULL.get(Integer.toString(nbProperties), Integer.toString(maxNbProperties)));
         } else {
-            description.add(Lang.GUI_PROPERTY_CAP.get(langType, Integer.toString(nbProperties), Integer.toString(maxNbProperties)));
+            description.add(Lang.GUI_PROPERTY_CAP.get(Integer.toString(nbProperties), Integer.toString(maxNbProperties)));
         }
-        description.add(Lang.CREATE_PUBLIC_PROPERTY_COST.get(langType));
+        description.add(Lang.CREATE_PUBLIC_PROPERTY_COST.get());
 
         return iconManager.get(IconKey.PLAYER_PROPERTY_ICON)
                 .setName(Lang.CREATE_PUBLIC_PROPERTY_ICON.get(langType))
@@ -75,13 +76,13 @@ public class BuildingMenu extends IteratorGUI {
                     }
                     RightClickListener.register(player, new CreateTerritoryPropertyEvent(player, townData));
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getCreateFortButton() {
         return iconManager.get(IconKey.FORT_BUILDING_ICON)
                 .setName(Lang.CREATE_FORT_ICON.get(langType))
-                .setDescription(Lang.CREATE_FORT_DESC1.get(langType, Double.toString(Constants.getFortCost())))
+                .setDescription(Lang.CREATE_FORT_DESC1.get(Double.toString(Constants.getFortCost())))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> {
 
@@ -94,13 +95,13 @@ public class BuildingMenu extends IteratorGUI {
                     RightClickListener.register(player, new CreateFortEvent(territoryData));
                     player.closeInventory();
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private List<GuiItem> getBuildings() {
         List<GuiItem> res = new ArrayList<>();
         for (Building building : territoryData.getBuildings()) {
-            res.add(building.getGuiItem(iconManager, player, territoryData, this));
+            res.add(building.getGuiItem(iconManager, player, this, langType));
         }
         return res;
     }

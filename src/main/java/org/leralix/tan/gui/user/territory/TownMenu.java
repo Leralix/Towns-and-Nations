@@ -51,16 +51,16 @@ public class TownMenu extends TerritoryMenu {
     private GuiItem getSettingsButton() {
         return IconManager.getInstance().get(IconKey.TERRITORY_SETTINGS_ICON)
                 .setName(Lang.GUI_TOWN_SETTINGS_ICON.get(tanPlayer.getLang()))
-                .setDescription(Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get(tanPlayer.getLang()))
+                .setDescription(Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get())
                 .setAction(event -> new TownSettingsMenu(player, townData))
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private GuiItem getLandmarksButton() {
         return IconManager.getInstance().get(IconKey.TOWN_LANDMARKS_ICON)
                 .setName(Lang.ADMIN_GUI_LANDMARK_ICON.get(tanPlayer.getLang()))
-                .setDescription(Lang.ADMIN_GUI_LANDMARK_DESC1.get(tanPlayer.getLang()))
+                .setDescription(Lang.ADMIN_GUI_LANDMARK_DESC1.get())
                 .setAction(event -> PlayerGUI.openOwnedLandmark(player, townData, 0))
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 }

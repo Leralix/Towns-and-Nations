@@ -12,6 +12,7 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.LandmarkStorage;
@@ -61,10 +62,10 @@ public class LandmarkNoOwnerMenu extends BasicGui {
     private @NotNull GuiItem getClaimButton() {
         TownData playerTown = TownDataStorage.getInstance().get(player);
         double cost = Constants.getClaimLandmarkCost();
-        List<String> description = new ArrayList<>();
+        List<FilledLang> description = new ArrayList<>();
 
         if (cost > 0.0) {
-            description.add(Lang.GUI_LANDMARK_CLAIM_COST.get(player, String.valueOf(cost)));
+            description.add(Lang.GUI_LANDMARK_CLAIM_COST.get(String.valueOf(cost)));
         }
 
         boolean isRequirementsMet = true;
@@ -73,21 +74,21 @@ public class LandmarkNoOwnerMenu extends BasicGui {
         int currentLandmarkCount = LandmarkStorage.getInstance().getLandmarkOf(playerTown).size();
         if (!landmarkCap.canDoAction(currentLandmarkCount)) {
             isRequirementsMet = false;
-            description.add(Lang.GUI_LANDMARK_TOWN_FULL.get(tanPlayer));
+            description.add(Lang.GUI_LANDMARK_TOWN_FULL.get());
         }
 
         if (Constants.isLandmarkClaimRequiresEncirclement() && !landmark.isEncircledBy(playerTown)) {
             isRequirementsMet = false;
-            description.add(Lang.GUI_LANDMARK_NOT_ENCIRCLED.get(tanPlayer));
+            description.add(Lang.GUI_LANDMARK_NOT_ENCIRCLED.get());
         }
 
         if (cost > playerTown.getBalance()) {
             isRequirementsMet = false;
-            description.add(Lang.GUI_LANDMARK_NOT_ENOUGH_MONEY.get(tanPlayer, Double.toString(Constants.getClaimLandmarkCost())));
+            description.add(Lang.GUI_LANDMARK_NOT_ENOUGH_MONEY.get( Double.toString(Constants.getClaimLandmarkCost())));
         }
 
         if (isRequirementsMet) {
-            description.add(Lang.GUI_LANDMARK_LEFT_CLICK_TO_CLAIM.get(tanPlayer));
+            description.add(Lang.GUI_LANDMARK_LEFT_CLICK_TO_CLAIM.get());
         }
 
 
@@ -120,7 +121,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
                     );
 
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
 }

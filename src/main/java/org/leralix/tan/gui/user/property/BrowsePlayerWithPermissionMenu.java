@@ -56,7 +56,7 @@ public class BrowsePlayerWithPermissionMenu extends IteratorGUI {
                             );
                         }
                 )
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
 
     }
 

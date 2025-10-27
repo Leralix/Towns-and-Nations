@@ -45,7 +45,7 @@ public class TownPropertiesMenu extends IteratorGUI {
 
             res.add(iconManager.get(townProperty.getIcon())
                     .setName(townProperty.getName())
-                    .setDescription(townProperty.getBasicDescription(tanPlayer.getLang()))
+                    .setDescription(townProperty.getBasicDescription())
                     .setAction(event -> {
                         event.setCancelled(true);
                         if(!tanPlayer.hasTown()){
@@ -58,7 +58,7 @@ public class TownPropertiesMenu extends IteratorGUI {
                         }
                         new TownPropertyManager(player, townProperty, townData);
                     })
-                    .asGuiItem(player));
+                    .asGuiItem(player, langType));
         }
         return res;
     }

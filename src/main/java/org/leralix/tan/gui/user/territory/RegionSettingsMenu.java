@@ -50,8 +50,8 @@ public class RegionSettingsMenu extends SettingsMenus {
         return iconManager.get(IconKey.REGION_CHANGE_OWNERSHIP_ICON)
                 .setName(Lang.GUI_REGION_CHANGE_CAPITAL.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_REGION_CHANGE_CAPITAL_DESC1.get(tanPlayer, regionData.getCapital().getName()),
-                        Lang.GUI_REGION_CHANGE_CAPITAL_DESC2.get(tanPlayer)
+                        Lang.GUI_REGION_CHANGE_CAPITAL_DESC1.get(regionData.getCapital().getName()),
+                        Lang.GUI_REGION_CHANGE_CAPITAL_DESC2.get()
                 )
                 .setAction(event -> {
                     event.setCancelled(true);
@@ -61,16 +61,16 @@ public class RegionSettingsMenu extends SettingsMenus {
                     }
                     PlayerGUI.openRegionChangeOwnership(player, 0);
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private GuiItem getDeleteButton() {
         return iconManager.get(IconKey.REGION_DELETE_REGION_ICON)
                 .setName(Lang.GUI_REGION_DELETE.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_REGION_DELETE_DESC1.get(tanPlayer, regionData.getName()),
-                        Lang.GUI_REGION_DELETE_DESC2.get(tanPlayer),
-                        Lang.GUI_REGION_DELETE_DESC3.get(tanPlayer)
+                        Lang.GUI_REGION_DELETE_DESC1.get(regionData.getName()),
+                        Lang.GUI_REGION_DELETE_DESC2.get(),
+                        Lang.GUI_REGION_DELETE_DESC3.get()
                 )
                 .setAction(event -> {
                     event.setCancelled(true);
@@ -97,7 +97,7 @@ public class RegionSettingsMenu extends SettingsMenus {
                         new MainMenu(player);
                     }, remove -> open());
                 })
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
 

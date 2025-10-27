@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.user.territory.EconomicHistoryMenu;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.constants.Constants;
@@ -27,8 +28,8 @@ public class ChunkUpkeepLine extends ProfitLine {
     }
 
     @Override
-    public String getLine(LangType lang) {
-        return Lang.TERRITORY_UPKEEP_LINE.get(lang, StringUtil.getColoredMoney(getMoney()));
+    public FilledLang getLine() {
+        return Lang.TERRITORY_UPKEEP_LINE.get(StringUtil.getColoredMoney(getMoney()));
     }
 
     @Override

@@ -61,10 +61,10 @@ public class VassalsMenu extends IteratorGUI {
                     .setName(vassal.getColoredName())
                     .setDescription()
                     .setDescription(
-                            Lang.GUI_TOWN_INFO_DESC0.get(langType, vassal.getDescription()),
-                            Lang.GUI_TOWN_INFO_DESC1.get(langType, vassal.getLeaderName()),
-                            Lang.GUI_TOWN_INFO_DESC2.get(langType, Integer.toString(vassal.getPlayerIDList().size())),
-                            Lang.GUI_TOWN_INFO_DESC3.get(langType, Integer.toString(vassal.getNumberOfClaimedChunk()))
+                            Lang.GUI_TOWN_INFO_DESC0.get(vassal.getDescription()),
+                            Lang.GUI_TOWN_INFO_DESC1.get(vassal.getLeaderName()),
+                            Lang.GUI_TOWN_INFO_DESC2.get(Integer.toString(vassal.getPlayerIDList().size())),
+                            Lang.GUI_TOWN_INFO_DESC3.get(Integer.toString(vassal.getNumberOfClaimedChunk()))
                     )
                     .setClickToAcceptMessage(Lang.GUI_GENERIC_RIGHT_CLICK_TO_REMOVE)
                     .setAction(action -> {
@@ -83,13 +83,11 @@ public class VassalsMenu extends IteratorGUI {
                                     vassal.removeOverlord();
                                     player.closeInventory();
                                 },
-                                previousAction -> {
-                                    open();
-                                }
+                                previousAction -> open()
                         );
 
                     })
-                    .asGuiItem(player);
+                    .asGuiItem(player, langType);
             res.add(vassalButton);
         }
         return res;

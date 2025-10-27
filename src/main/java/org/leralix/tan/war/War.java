@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
@@ -133,16 +134,16 @@ public class War {
         throw new IllegalArgumentException(warRole + " is not authorized");
     }
 
-    public Collection<String> generateWarGoalsDesciption(WarRole warRole, LangType langType) {
+    public Collection<FilledLang> generateWarGoalsDesciption(WarRole warRole, LangType langType) {
         List<WarGoal> goals = getGoals(warRole.opposite());
-        List<String> goalsToString = new ArrayList<>();
+        List<FilledLang> goalsToString = new ArrayList<>();
         for(WarGoal goal : goals) {
-            goalsToString.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(langType, goal.getCurrentDesc(langType)));
+            goalsToString.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(goal.getCurrentDesc(langType)));
         }
 
         // If no goals are set, add a message
         if(goalsToString.isEmpty()) {
-            goalsToString.add(Lang.WAR_GOAL_LIST_BUTTON_LIST_NO_WAR_GOAL_SET.get(langType));
+            goalsToString.add(Lang.WAR_GOAL_LIST_BUTTON_LIST_NO_WAR_GOAL_SET.get());
         }
         return goalsToString;
 

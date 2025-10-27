@@ -16,6 +16,7 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.user.territory.EconomicHistoryMenu;
 import org.leralix.tan.gui.user.territory.TreasuryMenu;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
@@ -55,11 +56,11 @@ public class PlayerTaxLine extends ProfitLine {
     }
 
     @Override
-    public String getLine(LangType lang) {
+    public FilledLang getLine() {
         if (missingTaxes > 0)
-            return Lang.PLAYER_TAX_MISSING_LINE.get(lang, StringUtil.getColoredMoney(getMoney()), StringUtil.formatMoney(missingTaxes));
+            return Lang.PLAYER_TAX_MISSING_LINE.get(StringUtil.getColoredMoney(getMoney()), StringUtil.formatMoney(missingTaxes));
         else
-            return Lang.PLAYER_TAX_LINE.get(lang, StringUtil.getColoredMoney(getMoney()));
+            return Lang.PLAYER_TAX_LINE.get(StringUtil.getColoredMoney(getMoney()));
     }
 
     @Override

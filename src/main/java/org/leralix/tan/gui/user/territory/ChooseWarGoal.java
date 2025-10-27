@@ -54,7 +54,7 @@ public class ChooseWarGoal extends BasicGui {
 
         return iconManager.get(IconKey.WAR_GOAL_CONQUER_ICON)
                 .setName(Lang.CONQUER_WAR_GOAL.get(langType))
-                .setDescription(Lang.CONQUER_WAR_GOAL_DESC.get(tanPlayer))
+                .setDescription(Lang.CONQUER_WAR_GOAL_DESC.get())
                 .setClickToAcceptMessage(conquerAlreadyUsed ?
                         Lang.GUI_ONLY_ONE_CONQUER_WAR_GOAL :
                         Lang.GUI_GENERIC_CLICK_TO_SELECT
@@ -70,33 +70,29 @@ public class ChooseWarGoal extends BasicGui {
                             PlayerChatListenerStorage.register(player, new SelectNbChunksForConquer(war, warRole, new SelectWarGoals(player, territoryData, war, warRole)));
                         }
                 )
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getcaptureLandmarkButton() {
         return iconManager.get(IconKey.WAR_GOAL_CAPTURE_LANDMARK_ICON)
                 .setName(Lang.CAPTURE_LANDMARK_WAR_GOAL.get(langType))
-                .setDescription(Lang.CAPTURE_LANDMARK_WAR_GOAL_DESC.get(tanPlayer))
+                .setDescription(Lang.CAPTURE_LANDMARK_WAR_GOAL_DESC.get())
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
                 .setAction(
-                        action -> {
-                            new SelectLandmarkForCapture(player, territoryData, war, warRole);
-                        }
+                        action -> new SelectLandmarkForCapture(player, territoryData, war, warRole)
                 )
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getCaptureFortButton() {
         return iconManager.get(IconKey.WAR_GOAL_CAPTURE_FORT_ICON)
                 .setName(Lang.CAPTURE_FORT_WAR_GOAL.get(langType))
-                .setDescription(Lang.CAPTURE_FORT_WAR_GOAL_DESC.get(tanPlayer))
+                .setDescription(Lang.CAPTURE_FORT_WAR_GOAL_DESC.get())
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
                 .setAction(
-                        action -> {
-                            new SelectFortForCapture(player, territoryData, war, warRole);
-                        }
+                        action -> new SelectFortForCapture(player, territoryData, war, warRole)
                 )
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getSubjugateButton() {
@@ -107,7 +103,7 @@ public class ChooseWarGoal extends BasicGui {
 
         return iconManager.get(IconKey.WAR_GOAL_SUBJUGATE_ICON)
                 .setName(Lang.SUBJUGATE_WAR_GOAL.get(langType))
-                .setDescription(Lang.SUBJUGATE_WAR_GOAL_DESC.get(langType))
+                .setDescription(Lang.SUBJUGATE_WAR_GOAL_DESC.get())
                 .setClickToAcceptMessage(
                         canBeSubjugated ?
                                 Lang.GUI_GENERIC_CLICK_TO_SELECT :
@@ -125,7 +121,7 @@ public class ChooseWarGoal extends BasicGui {
                             new SelectWarGoals(player, territoryData, war, warRole);
                         }
                 )
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getLiberateButton() {
@@ -136,9 +132,7 @@ public class ChooseWarGoal extends BasicGui {
 
         return iconManager.get(IconKey.WAR_GOAL_LIBERATE_ICON)
                 .setName(Lang.LIBERATE_SUBJECT_WAR_GOAL.get(langType))
-                .setDescription(
-                        Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC.get(langType)
-                )
+                .setDescription(Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC.get())
                 .setClickToAcceptMessage(
                         doesEnemyHaveSubjects ?
                                 Lang.GUI_GENERIC_CLICK_TO_SELECT :
@@ -154,7 +148,7 @@ public class ChooseWarGoal extends BasicGui {
                             new SelectTerritoryForLIberation(player, territoryData, war, warRole);
                         }
                 )
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
 
     }
 

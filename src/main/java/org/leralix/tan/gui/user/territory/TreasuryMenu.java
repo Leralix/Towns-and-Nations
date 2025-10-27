@@ -9,7 +9,9 @@ import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.DonateToTerritory;
 import org.leralix.tan.listeners.chat.events.RetrieveMoney;
@@ -35,7 +37,7 @@ public class TreasuryMenu extends BasicGui {
     public void open() {
         budget.createGui(gui, player, langType);
 
-        gui.setItem(1, 5, getBudgetIcon());
+        gui.setItem(1, 5, getBudgetIcon(langType));
         gui.getFiller().fillTop(GuiUtil.getUnnamedItem(Material.YELLOW_STAINED_GLASS_PANE));
 
         gui.setItem(2,8, getMiscSpendingsIcon());
@@ -48,15 +50,15 @@ public class TreasuryMenu extends BasicGui {
         gui.open(player);
     }
 
-    protected GuiItem getBudgetIcon(){
-        List<String> description = new ArrayList<>();
-        description.add(Lang.GUI_TREASURY_STORAGE_DESC1.get(tanPlayer, Double.toString(territoryData.getBalance())));
-        description.addAll(budget.createLore(tanPlayer.getLang()));
+    protected GuiItem getBudgetIcon(LangType langType){
+        List<FilledLang> description = new ArrayList<>();
+        description.add(Lang.GUI_TREASURY_STORAGE_DESC1.get(Double.toString(territoryData.getBalance())));
+        description.addAll(budget.createLore());
 
         return iconManager.get(IconKey.BUDGET_ICON)
                 .setName(Lang.GUI_TREASURY_STORAGE.get(tanPlayer))
                 .setDescription(description)
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     protected GuiItem getMiscSpendingsIcon(){
@@ -66,7 +68,7 @@ public class TreasuryMenu extends BasicGui {
                 .setAction(action ->
                         new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.MISCELLANEOUS)
                 )
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     protected GuiItem getDonationButton(){
@@ -81,18 +83,18 @@ public class TreasuryMenu extends BasicGui {
                         new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.DONATION);
                     }
                 })
-                .setDescription(Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get(langType))
+                .setDescription(Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get())
                 .setClickToAcceptMessage(
                         Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY,
                         Lang.GUI_TOWN_TREASURY_RIGHT_CLICK_TO_DONATE
                 )
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 
     protected GuiItem getRetrieveButton(){
         return iconManager.get(IconKey.RETRIEVE_MONEY_ICON)
                 .setName(Lang.GUI_TREASURY_RETRIEVE_GOLD.get(tanPlayer))
-                .setDescription(Lang.GUI_TREASURY_RETRIEVE_GOLD_DESC1.get(tanPlayer))
+                .setDescription(Lang.GUI_TREASURY_RETRIEVE_GOLD_DESC1.get())
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> {
                     if(!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)){
@@ -103,6 +105,6 @@ public class TreasuryMenu extends BasicGui {
                     PlayerChatListenerStorage.register(player,new RetrieveMoney(territoryData));
                 })
 
-                .asGuiItem(player);
+                .asGuiItem(player, langType);
     }
 }
