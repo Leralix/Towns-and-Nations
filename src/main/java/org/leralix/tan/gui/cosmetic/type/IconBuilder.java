@@ -29,6 +29,7 @@ public class IconBuilder {
     private Consumer<InventoryClickEvent> action;
     private boolean hideItemFlags;
     private final IconType menuIcon;
+    private boolean hidePrerequisites;
     private final List<Lang> clickForActionMessage;
 
     public IconBuilder(IconType menuIcon) {
@@ -37,6 +38,7 @@ public class IconBuilder {
         this.requirements = new Requirements();
         this.clickForActionMessage = new ArrayList<>();
         this.clickForActionMessage.add(Lang.GUI_GENERIC_CLICK_TO_OPEN);
+        this.hidePrerequisites = false;
         if (menuIcon == null) {
             this.menuIcon = new ItemIconBuilder(Material.BARRIER);
         } else {
@@ -87,6 +89,11 @@ public class IconBuilder {
         return this;
     }
 
+    public IconBuilder hidePrerequisite(boolean hidePrerequisites){
+        this.hidePrerequisites = hidePrerequisites;
+        return this;
+    }
+
     public GuiItem asGuiItem(Player player, LangType langType) {
         ItemStack item = menuIcon.getItemStack(player);
         ItemMeta meta = item.getItemMeta();
@@ -124,7 +131,7 @@ public class IconBuilder {
             res.add(filledLang.get(langType));
         }
 
-        if (action != null && !requirements.isEmpty()) {
+        if (!hidePrerequisites && action != null && !requirements.isEmpty()) {
             res.add("");
             res.addAll(requirements.getRequirementsParagraph(langType));
         }
