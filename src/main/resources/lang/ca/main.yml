@@ -34,7 +34,6 @@ language:
   INTERACTION_TOO_FAR_ERROR: "§cEstàs massa lluny per poder dur a terme aquesta acció"
   CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§cAquesta regió no pertany a {0}"
   CANNOT_DELETE_TERRITORY_IF_CAPITAL: "§cAquest territori no es pot eliminar perquè és el líder de {0}"
-  ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT: "§cNo pots interactuar amb aquests permisos perquè el teu rang no els té"
   TOWN_NOT_FOUND: "§cLocalitat no trobada"
   TERRITORY_NOT_FOUND: "§cTerritori no trobat"
   INVALID_ARGUMENTS: "§cArguments invàlids"
@@ -139,7 +138,6 @@ language:
   NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2: "§fClic esquerra per obrir la proposta"
   NEWSLETTER_SUBJUGATE_PROPOSAL: "§fProposta de subjugar de {0}"
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§fClic esquerra per accedir a la proposta"
-  #Newsletter Broadcast
   TOWN_CREATED_NEWSLETTER_TITLE: "Localitat nova creada"
   TOWN_DELETED_NEWSLETTER_TITLE: "Localitat eliminada"
   PLAYER_JOINED_TOWN_NEWSLETTER_TITLE: "Un nou membre s'ha unit a la localitat"

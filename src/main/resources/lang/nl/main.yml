@@ -31,7 +31,6 @@ language:
   INTERACTION_TOO_FAR_ERROR: "§cJe bent te ver om deze actie te doen"
   CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§cDeze chunk behoort niet tot {0}"
   CANNOT_DELETE_TERRITORY_IF_CAPITAL: "§cDit territorium kan niet worden verwijderd omdat het de hoofdstad van {0} is"
-  ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT: "§cJe kunt niet met deze machtiging omgaan omdat je rang het niet heeft"
   #Common uses
   DISPLAY_COORDINATES: "§fCoördinaten: §d[{0}, {1}, {2}]"
   GUI_BASIC_NAME: "§a{0}"

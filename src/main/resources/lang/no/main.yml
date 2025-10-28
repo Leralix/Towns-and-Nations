@@ -41,9 +41,6 @@ language:
   CHUNK_ALREADY_CLAIMED_WARNING: "§cDenne chunk er allerede hevdet av: §9{0}"
   MAX_CHUNK_LIMIT_REACHED: "§cDu har nådd maksimalt antall chunks hevdet, oppgrader din by for å få flere tilgjengelige chunks"
   CHUNK_NOT_ADJACENT: "§cDenne chunk er ikke tilstøtende til din by"
-  CHUNK_CLAIMED_SUCCESS_REGION: "Regional chunk hevdet !"
-  CHUNK_CLAIMED_SUCCESS: "Chunk hevdet ! Nåværende antall hevdede chunks: §2{0}/{1}♦)"
-  REGION_CHUNK_CLAIMED_SUCCESS: "Region chunk hevding vellykket"
   #Sell rare item command
   SELL_RARE_ITEM_COMMAND_DESC: "Selg sjelden gjenstand i spillerens hånd"
   NO_ITEM_IN_HAND: "§cDu må ha en sjelden gjenstand i hånden din"
@@ -88,7 +85,6 @@ language:
   PLAYER_NOT_ENOUGH_MONEY: "§cDu har ikke nok penger til å utføre denne handlingen"
   LEADER_NOT_ONLINE: "§cBylederen er ikke på nett"
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cDu har ikke nok penger. Du trenger {0} mer"
-  TOWN_NOT_ENOUGH_MONEY: "§cByen har ikke nok penger til å utføre denne handlingen"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Skriv navnet på byen i chatten."
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "Sett byens spawn"
@@ -171,10 +167,8 @@ language:
   GUI_REGION_TREASURY_DONATION_DESC1: "§fDoner penger til regionen"
   WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION: "§aSkriv inn beløpet du vil gi"
   GUI_TREASURY_DONATION_HISTORY: "§aDonasjonshistorikk"
-  GUI_TOWN_LEVEL_INFO: "{0}" #town's name
   GUI_TOWN_LEVEL_UP: "§aOppgrader bynivå"
   GUI_TOWN_LEVEL_UP_DESC1: "§fNåværende nivå er: §e{0}"
-  GUI_TOWN_LEVEL_UP_UNI: "§a{}"
   GUI_TOWN_LEVEL_UP_UNI_DESC1: "§fNåværende nivå: §e{0}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nForutsetninger:"
   GUI_TOWN_LEVEL_UP_UNI_DESC4: "§f§nOppgraderingsbelønninger:"
@@ -251,7 +245,6 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fByen §aaksepterer §fsøknader"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fByen §caksepterer ikke §fsøknader"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH: "§fVenstreklikk for å bytte"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1: "§fNåværende navn: §9{0}"
   GUI_TOWN_SETTINGS_QUIT_REGION: "§aForlat regionen"
   GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_NOREGION: "§fDu tilhører ikke en region eller du er den regionale hovedstaden"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR: "§aEndre chunkfarge"
@@ -260,7 +253,6 @@ language:
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§fFarge vellykket endret"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cUgyldig fargeformat"
   GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY: "§fEndre byfarge: §9{0}§f -> §9{1}"
-  #Region GUI
   GUI_REGION_CREATE: "§aOpprett en region"
   GUI_REGION_CREATE_DESC2: "§fVenstreklikk for å opprette en ny region med din by som regional hovedstad"
   GUI_REGION_BROWSE: "§aBla gjennom region"

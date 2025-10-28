@@ -1,7 +1,6 @@
 language:
   WELCOME: "§fWelcome"
   STRING: "§f{0}"
-  EMPTY: ""
   LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] English language successfully loaded"
   PLUGIN_STRING: "§6[TaN]§f "
   PLUGIN_DEBUG_STRING: "§c[TaN - Debug]§f "
@@ -478,8 +477,8 @@ language:
   #Building menu
   GUI_BUILDING_MENU: "§aBuilding"
   GUI_BUILDING_MENU_DESC1: "§fCreate and manage buildings"
-  CREATE_PUBLIC_PROPERTY_ICON : "§aCreate a public property"
-  CREATE_PUBLIC_PROPERTY_COST : "§fCost : §eFree"
+  CREATE_PUBLIC_PROPERTY_ICON: "§aCreate a public property"
+  CREATE_PUBLIC_PROPERTY_COST: "§fCost : §eFree"
   CREATE_FORT_ICON: "§aCreate a new fort"
   CREATE_FORT_DESC1: "§fCost : §e{0}{MONEY_CHAR}"
   #War menu
@@ -613,10 +612,12 @@ language:
   GUI_TREASURY_DONATION_HISTORY: "§aDonation history"
   GUI_TREASURY_RETRIEVE_GOLD: "§aRetrieve gold"
   GUI_TREASURY_RETRIEVE_GOLD_DESC1: "§fRetrieve gold from the treasury"
-  # Upgrades
-  GUI_GENERIC_UP : "§aUp"
-  GUI_GENERIC_DOWN : "§aDown"
+  #Upgrades
+  GUI_GENERIC_UP: "§aUp"
+  GUI_GENERIC_DOWN: "§aDown"
   LEVEL_LOCKED: "§cLevel locked"
+  LEVEL_LOCKED_WITH_LEVEL: "§cLevel {0} locked"
+  LEVEL_UNLOCKED_WITH_LEVEL: "§aLevel {0}"
   GUI_TOWN_LEVEL_UP: "§aUpgrade town level"
   GUI_TOWN_LEVEL_UP_DESC1: "§fCurrent level is: §e{0}"
   GUI_TOWN_LEVEL_UP_DESC2: "§fLevel §a{0}§f upgrade cost: §e{1}{MONEY_CHAR}"
@@ -636,7 +637,7 @@ language:
   ANY_LOG_SCOPE_NAME: "Any log"
   ANY_PLANK_SCOPE_NAME: "Any planks"
   ANY_STONE_SCOPE_NAME: "Any stone"
-  # Requirements
+  #Requirements
   REQUIREMENT_RANK_PERMISSION_NEGATIVE: "§c- Permission : {0}"
   REQUIREMENT_RANK_PERMISSION_POSITIVE: "§a- Permission : {0}"
   REQUIREMENT_RANK_LEVEL_NEGATIVE: "§c- Rank Level : {0} <= {1}"
@@ -652,7 +653,7 @@ language:
   REQUIREMENT_RESOURCES_NEGATIVE: "§c- Resources : {1} {2}"
   REQUIREMENT_RESOURCES_POSITIVE: "§a- Resources : {1} {2}"
   GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET: "§cYou do not meet the prerequisites"
-  # Upgrade rewards
+  #Upgrade rewards
   UPGRADE_CURRENT_LEVEL: "§fCurrent level: §e{0}/{1}"
   UPGRADE_NEXT_LEVEL_COST: "§fUpgrade cost: §6{0}{MONEY_CHAR}"
   UPGRADE_LINE_INT: "§f- {0} : {1} §e{2}"
@@ -668,13 +669,13 @@ language:
   CHUNK_CAP: "Max chunk"
   PROPERTY_CAP: "Max property"
   LANDMARK_CAP: "Max landmarks"
-  CHUNK_COST: "Chunk cost"
+  CHUNK_COST: "Max landmarks"
   UNLOCK_TOWN_SPAWN: "Town spawn"
   UNLOCK_MOB_BAN: "Mob ban"
   LANDMARK_BONUS: "Landmark rewards"
   UNLOCK_PERMISSION: "Unlock permission"
   CHUNK_AUTHORIZED_BIOMES: "Authorized biomes"
-  # Diplomacy
+  #Diplomacy
   GUI_TOWN_RELATION_HOSTILE: "§aHostile"
   GUI_TOWN_RELATION_HOSTILE_DESC1: "§fManage hostile relations"
   GUI_TOWN_RELATION_EMBARGO: "§aEmbargo"

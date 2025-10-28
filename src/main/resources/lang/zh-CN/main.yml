@@ -34,7 +34,6 @@ language:
   INTERACTION_TOO_FAR_ERROR: "§c你距离太远，无法执行此操作"
   CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§c此区块不属于 {0}"
   CANNOT_DELETE_TERRITORY_IF_CAPITAL: "§c无法删除此领地，因为它是 {0} 的领导者"
-  ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT: "§c您无法与此权限交互，因为您的等级不具备此权限"
   TOWN_NOT_FOUND: "§c城镇未找到"
   TERRITORY_NOT_FOUND: "§c领土未找到"
   INVALID_ARGUMENTS: "§c无效参数"
@@ -96,9 +95,6 @@ language:
   CANNOT_CLAIM_LANDMARK: "§c你不能占领资源点区块"
   MAX_CHUNK_LIMIT_REACHED: "§c你已达到占领区块的最大数量，升级你的城镇以获得更多可用区块"
   CHUNK_NOT_ADJACENT: "§c此区块不邻接你的城镇"
-  CHUNK_CLAIMED_SUCCESS_REGION: "已成功占领联盟区块！"
-  CHUNK_CLAIMED_SUCCESS: "区块已占领！ 当前占领区块数: §2{0}/{1}♦"
-  REGION_CHUNK_CLAIMED_SUCCESS: "联盟区块占领成功"
   #Sell rare item command
   SELL_RARE_ITEM_COMMAND_DESC: "出售玩家手中的稀有物品"
   NO_ITEM_IN_HAND: "§c你需要手中有一个稀有物品"
@@ -156,8 +152,6 @@ language:
   #SUDO command
   SUDO_PLAYER_ADDED: "§3{0}§f 进入管理员模式"
   SUDO_PLAYER_REMOVED: "§3{0}§f 推出了管理员模式"
-  TOWN_NOT_ENOUGH_MONEY_EXTENDED: "§cThe town doesn't have enough money to perform this action. It need {0}游戏币 more"
-  REGION_NOT_ENOUGH_MONEY_EXTENDED: "§cThe region doesn't have enough money to perform this action. It need {0}游戏币 more"
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aYou successfully retrieved §6{0}游戏币§a from the town"
   PLAYER_SEND_MONEY_SUCCESS: "§fYou sent §6{0}游戏币§f to {1}"
   PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY: "右键点击2 blocs to create your private property"
@@ -304,10 +298,7 @@ language:
   GUI_TREASURY_FLAT_TAX: "§a固定税收"
   GUI_TREASURY_TAX_HISTORY: "§a税收历史"
   GUI_TREASURY_SALARY_HISTORY: "§a薪水历史"
-  GUI_TREASURY_SALARY_HISTORY_DESC1: "§f薪酬支出高达: {0}游戏币"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY: "§a区块支出历史"
-  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1: "§f城镇维护费用已提升至 : {0}游戏币"
-  GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2: "§c单个区块维护费用 : {0}游戏币"
   GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3: "§f你的城镇有 §2{0}♦§f 个区块"
   GUI_TREASURY_MISCELLANEOUS_SPENDING: "§a杂项支出"
   GUI_TREASURY_MISCELLANEOUS_SPENDING_DESC1: "§f左键点击打开杂项支出历史"
@@ -331,6 +322,7 @@ language:
   TOWN_LEVEL_BONUS_RECAP: "§f§n当前城镇状态："
   TOWN_UPGRADE_MAX_LEVEL: "§c您已达到升级的最大级别"
   GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET: "§c您不满足前提条件"
+  #Diplomacy
   GUI_TOWN_RELATION_HOSTILE: "§a敌对"
   GUI_TOWN_RELATION_HOSTILE_DESC1: "§f管理敌对关系"
   GUI_TOWN_RELATION_EMBARGO: "§a禁运"
@@ -424,8 +416,6 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§f城镇 §a接受 §f申请"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§f城镇 §c不接受 §f申请"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH: "§f左键切换"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1: "§f当前名称: §9{0}"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC3: "§f花费: §6{0}游戏币"
   GUI_TOWN_SETTINGS_QUIT_REGION: "§a退出联盟"
   GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION: "§c退出联盟 §b{0}"
   GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_NOREGION: "§f您不属于任何联盟或您是联盟首都"
@@ -437,7 +427,6 @@ language:
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§f颜色成功更改"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§c颜色格式无效"
   GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY: "§f修改城镇颜色: §9{0}§f -> §9{1}"
-  #Region GUI
   GUI_REGION_CREATE: "§a创建联盟"
   GUI_REGION_CREATE_DESC1: "§f花费: §6{0}游戏币"
   GUI_REGION_CREATE_DESC2: "§f左键点击以创建一个新联盟，您的城镇作为联盟首都"
@@ -667,6 +656,7 @@ language:
   #Greeting
   NEWSLETTER_GREETING: "§f你有 §b{0}§f 条未读消息"
   CLICK_TO_OPEN_NEWSLETTER: "[点击打开 信箱]"
+  #Single newsletter
   NEWSLETTER_PLAYER_APPLICATION: "§f来自 §3{0} 的城镇申请"
   NEWSLETTER_PLAYER_APPLICATION_DESC1: "§3{0}§f 已申请加入 {1}"
   NEWSLETTER_PLAYER_APPLICATION_DESC2: "§f左键点击管理程序"

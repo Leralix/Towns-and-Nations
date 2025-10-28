@@ -64,9 +64,6 @@ language:
   CHUNK_ALREADY_CLAIMED_WARNING: "§c이 청크는 이미 §9{0}§c에 의해 소유되었습니다"
   MAX_CHUNK_LIMIT_REACHED: "§c소유 가능한 청크의 최대 한도에 도달했습니다. 마을을 업그레이드하여 더 많은 청크를 확보하세요"
   CHUNK_NOT_ADJACENT: "§c이 청크는 마을에 인접하지 않습니다"
-  CHUNK_CLAIMED_SUCCESS_REGION: "지역 청크가 성공적으로 소유되었습니다!"
-  CHUNK_CLAIMED_SUCCESS: "청크가 성공적으로 소유되었습니다! 현재 소유된 청크 수: §2{0}/{1}♦"
-  REGION_CHUNK_CLAIMED_SUCCESS: "지역 청크가 성공적으로 소유되었습니다!"
   #Sell rare item command
   SELL_RARE_ITEM_COMMAND_DESC: "플레이어 손에 있는 희귀 아이템을 판매합니다"
   NO_ITEM_IN_HAND: "§c손에 희귀 아이템이 있어야 합니다"
@@ -132,7 +129,6 @@ language:
   PLAYER_NOT_ENOUGH_MONEY: "§c이 작업을 수행할 충분한 돈이 없습니다"
   LEADER_NOT_ONLINE: "§c마을 리더가 온라인 상태가 아닙니다"
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§c돈이 부족합니다. §6{0}✦§c 더 필요합니다"
-  TOWN_NOT_ENOUGH_MONEY: "§c마을에 이 작업을 수행할 충분한 돈이 없습니다"
   NAME_ALREADY_USED: "§c이 이름은 이미 사용 중입니다"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "채팅에 마을 이름을 입력하세요."
   PLAYER_WRITE_QUANTITY_IN_CHAT: "채팅에 수량을 입력하세요"
@@ -275,6 +271,7 @@ language:
   TOWN_LEVEL_BONUS_RECAP: "§f§n현재 마을 통계:"
   TOWN_UPGRADE_MAX_LEVEL: "§c업그레이드의 최대 레벨에 도달했습니다"
   GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET: "§c필수 조건을 충족하지 못했습니다"
+  #Diplomacy
   GUI_TOWN_RELATION_HOSTILE: "§a적대적"
   GUI_TOWN_RELATION_HOSTILE_DESC1: "§f적대 관계를 관리합니다"
   GUI_TOWN_RELATION_EMBARGO: "§a봉쇄"
@@ -355,7 +352,6 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§f마을 §a지원 받음"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§f마을 §c지원 받지 않음"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH: "§f좌클릭하여 전환합니다"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1: "§f현재 이름: §9{0}"
   GUI_TOWN_SETTINGS_QUIT_REGION: "§a지역 탈퇴"
   GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION: "§c지역 §b{0}§c에서 탈퇴합니다"
   GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_NOREGION: "§f당신은 지역에 속해 있지 않거나, 지역 수도입니다"
@@ -367,7 +363,6 @@ language:
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§f색상이 성공적으로 변경되었습니다"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§c잘못된 색상 형식입니다"
   GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY: "§f마을 색상 변경: §9{0}§f -> §9{1}"
-  #Region GUI
   GUI_REGION_CREATE: "§a지역 생성"
   GUI_REGION_CREATE_DESC2: "§f좌클릭하여 자신의 마을을 지역 수도로 지정하고 새로운 지역을 만듭니다"
   GUI_REGION_BROWSE: "§a지역 탐색"

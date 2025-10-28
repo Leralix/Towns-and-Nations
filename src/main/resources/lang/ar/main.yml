@@ -1,10 +1,24 @@
 language:
   WELCOME: "مرحباً"
+  LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] تم تحميل اللغة الإنجليزية بنجاح"
   NEWSLETTER_STRING: "النشرة الإخبارية"
   #Common errors
   PLAYER_NO_TOWN: "أنت لست جزءا من المدينة"
   PLAYER_NO_REGION: "أنت لست جزءًا من منطقة"
+  VALUE_CANNOT_BE_NEGATIVE_ERROR: "§ لا يمكن أن تكون القيمة سالبة"
   TOWN_NO_REGION: "مدينتك ليست جزءا من سوزرية"
+  PLAYER_NOT_LEADER_OF_REGION: "§cc تحتاج إلى أن تكون قائد المنطقة لتنفيذ هذا الإجراء"
   LEADER_CANNOT_QUIT_TOWN: "لا يمكن للزعيم أن يتخلى عن المدينة"
   TOWN_ALREADY_HAVE_OVERLORD: "هذه المدينة لديها بالفعل سوزرية"
+  PLAYER_NO_PERMISSION: "ليس لديك الإذن لتنفيذ هذا الأمر"
+  PLAYER_NOT_ONLINE: "§c: اللاعب غير متصل"
+  TERRITORY_NOT_FOUND: "§cاقاليم غير موجودة"
+  INVALID_ARGUMENTS: "§cهذا اللاعب لديه بالفعل مدينة"
+  PLAYER_ALREADY_HAVE_TOWN: "§cهذا اللاعب لديه بالفعل مدينة"
+  #Placeholder API
+  INVALID_VALUE: "قيمة خاطئة"
+  INVALID_ID: "معرف غير صالح"
+  INVALID_NAME: "اسم غير صالح"
+  INVALID_TERRITORY: "منطقة غير صالحة"
+  INVALID_PLAYER_NAME: "اسم اللاعب غير صالح"
 

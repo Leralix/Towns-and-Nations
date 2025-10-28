@@ -57,19 +57,27 @@ public class UpgradeMenu extends BasicGui {
         TerritoryStats territoryStats = territoryData.getNewLevel();
         int townLevel = territoryStats.getMainLevel();
         //Fill the 5 rows of colored due to town level.
+
+        var unlockedFiller = GuiUtil.getUnnamedItem(Material.LIME_STAINED_GLASS_PANE);
+        var unlockedLevels = iconManager.get(Material.GREEN_STAINED_GLASS_PANE);
+        var lockedFiller = iconManager.get(Material.IRON_BARS)
+                .setName(Lang.LEVEL_LOCKED.get(langType))
+                .asGuiItem(player, langType);
+        var lockedLevels = iconManager.get(Material.RED_STAINED_GLASS_PANE);
+
         for(int i = 2; i < 10; i++){
-            int adaptedCursor = i - 1 + scrollIndex;
+            int adaptedCursor = i - 3 + scrollIndex;
             if(adaptedCursor > townLevel){
-                gui.getFiller().fillBetweenPoints(1, i, 4, i, GuiUtil.getUnnamedItem(Material.IRON_BARS));
-                gui.setItem(5, i, GuiUtil.getUnnamedItem(Material.RED_STAINED_GLASS_PANE));
+                gui.getFiller().fillBetweenPoints(1, i, 4, i, lockedFiller);
+                gui.setItem(5, i, lockedLevels.setName(Lang.LEVEL_LOCKED_WITH_LEVEL.get(langType, Integer.toString(i))).asGuiItem(player, langType));
             }
             else if(adaptedCursor == townLevel){
-                gui.getFiller().fillBetweenPoints(1, i, 4, i, GuiUtil.getUnnamedItem(Material.IRON_BARS));
+                gui.getFiller().fillBetweenPoints(1, i, 4, i, lockedFiller);
                 gui.setItem(5, i, getUpgradeTownButton());
             }
             else {
-                gui.getFiller().fillBetweenPoints(1, i, 4, i, GuiUtil.getUnnamedItem(Material.LIME_STAINED_GLASS_PANE));
-                gui.setItem(5, i, GuiUtil.getUnnamedItem(Material.GREEN_STAINED_GLASS_PANE));
+                gui.getFiller().fillBetweenPoints(1, i, 4, i, unlockedFiller);
+                gui.setItem(5, i, unlockedLevels.setName(Lang.LEVEL_UNLOCKED_WITH_LEVEL.get(langType,Integer.toString(i))).asGuiItem(player, langType));
             }
         }
 

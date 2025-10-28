@@ -71,9 +71,6 @@ language:
   CHUNK_ALREADY_CLAIMED_WARNING: "§cTen chunk należy do: §9{0}"
   MAX_CHUNK_LIMIT_REACHED: "§cOsiągnąłeś swój limit zajmowania kolejnych chunków, ulepsz swoje miasto, aby powiększyć ilość zajmowanych chunków"
   CHUNK_NOT_ADJACENT: "§Ten chunk nie sąsiaduje z twoim miastem"
-  CHUNK_CLAIMED_SUCCESS_REGION: "Rejon chunku został pomyślnie zajęty!"
-  CHUNK_CLAIMED_SUCCESS: "Chunk zajęty ! Aktualna liczba zajętych chunków wynosi: §2{0}/{1}♦)"
-  REGION_CHUNK_CLAIMED_SUCCESS: "Region chunka został zajęty"
   #Sell rare item command
   SELL_RARE_ITEM_COMMAND_DESC: "Sprzedaj rzadki przedmiot w ręce gracza"
   NO_ITEM_IN_HAND: "§cMusisz posiadać rzadki przedmiot w ręce"
@@ -138,7 +135,6 @@ language:
   PLAYER_NOT_ENOUGH_MONEY: "§cNie masz wystarczająco pieniędzy, aby wykonać tę akcje."
   LEADER_NOT_ONLINE: "§cWłaściciel miasta nie jest online!"
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cNie masz wystarczająco pieniędzy. Potrzebujesz jeszcze {0}"
-  TOWN_NOT_ENOUGH_MONEY: "§cMiasto nie ma wystarczających funduszy, aby wykonać tę akcje"
   NAME_ALREADY_USED: "§cTa nazwa jest już w użyciu"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Wpisz nazwę miasta na chacie."
   PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY: "Kliknij prawym przyciskiem myszy 2 bloki, aby utworzyć swoją prywatną własność"
@@ -238,11 +234,9 @@ language:
   GUI_REGION_TREASURY_DONATION_DESC1: "§fPrzekaż pieniądze regionowi"
   WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION: "§aNapisz jaką kwotę chcesz przekazać"
   GUI_TREASURY_DONATION_HISTORY: "§aHistoria darowizn"
-  GUI_TOWN_LEVEL_INFO: "{0}" #town's name
   LEVEL_LOCKED: "§cPoziom zablokowany"
   GUI_TOWN_LEVEL_UP: "§aUlepsz poziom miasta"
   GUI_TOWN_LEVEL_UP_DESC1: "§fObecny poziom to: §e{0}"
-  GUI_TOWN_LEVEL_UP_UNI: "§a{}"
   GUI_TOWN_LEVEL_UP_UNI_DESC1: "§fAktualny poziom: §e{0}"
   GUI_TOWN_LEVEL_UP_UNI_DESC2_MAX_LEVEL: "§6Maksymalny poziom osiągnięty"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nWarunki wstępne:"
@@ -255,6 +249,7 @@ language:
   TOWN_LEVEL_BONUS_RECAP: "§f§nAktualne statystyki miasta:"
   TOWN_UPGRADE_MAX_LEVEL: "§cOsiągnąłeś maksymalny poziom ulepszeń"
   GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET: "§cNie spełniasz wstępnych wymagań"
+  #Diplomacy
   GUI_TOWN_RELATION_HOSTILE: "§aWrogi"
   GUI_TOWN_RELATION_HOSTILE_DESC1: "§fZarządzaj wrogimi stosunkami"
   GUI_TOWN_RELATION_EMBARGO: "§aEmbargo"
@@ -331,7 +326,6 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fMiasto §aackeptuje §fwniosek"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fMiasto §codrzuca §fwniosek"
   GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_CLICK_TO_SWITCH: "§fKliknij lewym przyciskiem myszy, aby przełączyć"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_NAME_DESC1: "§fObecna nazwa: §9{0}"
   GUI_TOWN_SETTINGS_QUIT_REGION: "§aOpuść region"
   GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_REGION: "§cOpuść region §b{0}"
   GUI_TOWN_SETTINGS_QUIT_REGION_DESC1_NOREGION: "§fNie należysz do tego regionu lub stolicy"
@@ -343,7 +337,6 @@ language:
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§fKolor został zmieniony"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cNieprawidłowy format koloru"
   GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY: "§fZmień kolor miasta: §9{0}§f -> §9{1}"
-  #Region GUI
   GUI_REGION_CREATE: "§aUtwórz region"
   GUI_REGION_CREATE_DESC2: "§fKliknij lewym przyciskiem myszy, aby utworzyć nowy region z Twoim miastem jako stolicą regionu"
   GUI_REGION_BROWSE: "§aPrzeglądaj region"
