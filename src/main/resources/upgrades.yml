@@ -51,8 +51,8 @@ regionLevelExpression:
 upgrades:
 
   CITY_HALL: #"City hall" tag is already unlocked when creating a town. Use it to store default values of yur towns
-    col: 0
-    row: 0
+    col: -1 #Hidden
+    row: -1 #Hidden
     itemCode: 'BELL'
     maxLevel: 1
     cost: [ '0' ]
@@ -65,26 +65,26 @@ upgrades:
       AUTHORIZED_BIOMES: [ 'ALL' ]
 
   ADMINISTRATION:
-    col: 3
+    col: 0
     row: 0
     itemCode: 'WRITABLE_BOOK'
     maxLevel: 10
     cost: [ '500', '590', '760', '1010', '1340', '1750', '2240', '2800', '3200', '3800', '4500' ]
     prerequisites:
-      TOWN_LEVEL: 1
+      TOWN_LEVEL: 0
     resources:
       ANY_PLANK: 32
     benefits:
       CHUNK_CAP: +35
 
   BARRACKS:
-    col: 1
+    col: 0
     row: 1
     itemCode: 'IRON_SWORD'
     maxLevel: 10
     cost: [ '500', '590', '760', '1010', '1340', '1750', '2240', '2810', '3460', '4190', '5000' ]
     prerequisites:
-      TOWN_LEVEL: 2
+      TOWN_LEVEL: 0
     resources:
       ANY_STONE: 64
     benefits:
@@ -97,7 +97,7 @@ upgrades:
     maxLevel: 5
     cost: [ '700', '1000', '1350', '1700', '2200' ]
     prerequisites:
-      TOWN_LEVEL: 3
+      TOWN_LEVEL: 2
       BARRACKS: 1
     resources:
       ANY_LOG: 64
@@ -106,7 +106,7 @@ upgrades:
       PLAYER_CAP: -1
 
   PORTAL:
-    col: 5
+    col: 4
     row: 3
     itemCode: 'BEACON'
     maxLevel: 1
@@ -121,8 +121,8 @@ upgrades:
       UNLOCK_TOWN_SPAWN: +1
 
   NOTARY_HOUSE:
-    col: 4
-    row: 2
+    col: 3
+    row: 0
     itemCode: 'PAPER'
     maxLevel: 5
     cost: [ '500', '800', '1200' ]
@@ -133,8 +133,8 @@ upgrades:
       PROPERTY_CAP: +3
 
   GUARDS:
-    col: 3
-    row: 4
+    col: 5
+    row: 2
     itemCode: 'COBBLESTONE_WALL'
     maxLevel: 1
     cost: [ '1000' ]
@@ -145,8 +145,8 @@ upgrades:
       UNLOCK_MOB_BAN: +1
 
   EXTRACTION_TEAM:
-    col: 4
-    row: 4
+    col: 5
+    row: 0
     itemCode: 'CAULDRON'
     maxLevel: 10
     cost: [ '500', '1000', '1500', '1750', '2000', '2250', '2500', '2750', '3000', '3250' ]
@@ -158,8 +158,8 @@ upgrades:
       LANDMARKS_CAP: +1
 
   BETTER_TOOLS:
-    col: 4
-    row: 5
+    col: 5
+    row: 0
     itemCode: 'SMITHING_TABLE'
     maxLevel: 6
     cost: [ '2000' ]
@@ -169,8 +169,8 @@ upgrades:
       LANDMARK_BONUS: +10
 
   EXTENDED_ADMINISTRATION:
-    col: 2
-    row: 5
+    col: 5
+    row: 1
     itemCode: 'LECTERN'
     maxLevel: 6
     cost: [ '3000', '4000', '5000', '6000', '7000' ]
@@ -188,8 +188,8 @@ upgrades:
 region_upgrades:
 
   CITY_HALL: #"City hall" tag is already unlocked when creating a town. Use it to store default values of yur towns
-    col: 0
-    row: 0
+    col: -1 #Hidden
+    row: -1 #Hidden
     itemCode: 'BELL'
     maxLevel: 1
     cost: [ '0' ]

@@ -27,13 +27,13 @@ import java.util.List;
 public class UpgradeMenu extends BasicGui {
 
     private final TerritoryData territoryData;
-    private int verticalScrollIndex;
+    private int scrollIndex;
     private final int maxLevel;
 
     public UpgradeMenu(Player player, TerritoryData territoryData){
         super(player, Lang.HEADER_TOWN_UPGRADE, 6);
         this.territoryData = territoryData;
-        this.verticalScrollIndex = 0;
+        this.scrollIndex = 0;
         this.maxLevel = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownMaxLevel", 10);
         open();
     }
@@ -51,32 +51,35 @@ public class UpgradeMenu extends BasicGui {
 
     private void generateUpgrades() {
 
-        gui.setItem(6, 6, getTerritoryStats(territoryData));
+        gui.setItem(1, 1, getTerritoryStats(territoryData));
 
 
         TerritoryStats territoryStats = territoryData.getNewLevel();
         int townLevel = territoryStats.getMainLevel();
         //Fill the 5 rows of colored due to town level.
-        for(int i = 0; i < 6; i++){
-            int adaptedCursor = 5 - i + verticalScrollIndex;
+        for(int i = 2; i < 10; i++){
+            int adaptedCursor = i - 1 + scrollIndex;
             if(adaptedCursor > townLevel){
-                gui.getFiller().fillBetweenPoints(i, 2, i, 9, GuiUtil.getUnnamedItem(Material.RED_STAINED_GLASS_PANE));
+                gui.getFiller().fillBetweenPoints(1, i, 4, i, GuiUtil.getUnnamedItem(Material.IRON_BARS));
+                gui.setItem(5, i, GuiUtil.getUnnamedItem(Material.RED_STAINED_GLASS_PANE));
             }
             else if(adaptedCursor == townLevel){
-                gui.getFiller().fillBetweenPoints(i, 2, i, 9, GuiUtil.getUnnamedItem(Material.YELLOW_STAINED_GLASS_PANE));
+                gui.getFiller().fillBetweenPoints(1, i, 4, i, GuiUtil.getUnnamedItem(Material.IRON_BARS));
+                gui.setItem(5, i, getUpgradeTownButton());
             }
             else {
-                gui.getFiller().fillBetweenPoints(i, 2, i, 9, GuiUtil.getUnnamedItem(Material.GREEN_STAINED_GLASS_PANE));
+                gui.getFiller().fillBetweenPoints(1, i, 4, i, GuiUtil.getUnnamedItem(Material.LIME_STAINED_GLASS_PANE));
+                gui.setItem(5, i, GuiUtil.getUnnamedItem(Material.GREEN_STAINED_GLASS_PANE));
             }
         }
 
 
-            for(Upgrade upgrade : Constants.getUpgradeStorage().getUpgrades(territoryData)){
+        for(Upgrade upgrade : Constants.getUpgradeStorage().getUpgrades(territoryData)){
 
-            int row =  5 - upgrade.getRow() + verticalScrollIndex;
-            int column = upgrade.getColumn() + 2;
+            int row =  upgrade.getRow() + 1;
+            int column = upgrade.getColumn() + 2 - scrollIndex;
 
-            if(column > 9 || column < 2 || row > 5 || row < 1){
+            if(column > 9 || column < 2 || row > 4 || row < 1){
                 continue;
             }
             int levelOfUpgrade = territoryStats.getLevel(upgrade) ;
@@ -108,7 +111,6 @@ public class UpgradeMenu extends BasicGui {
                             })
                             .asGuiItem(player, langType)
             );
-
         }
     }
 
@@ -132,10 +134,8 @@ public class UpgradeMenu extends BasicGui {
         gui.getFiller().fillBottom(GuiUtil.getUnnamedItem(Material.GRAY_STAINED_GLASS_PANE));
         gui.getFiller().fillSide(GuiFiller.Side.LEFT, Collections.singletonList(GuiUtil.getUnnamedItem(Material.GRAY_STAINED_GLASS_PANE)));
 
-        gui.setItem(3, 1, getUpButton());
-        gui.setItem(4, 1, getDownButton());
-
-        gui.setItem(6, 3, getUpgradeTownButton());
+        gui.setItem(6, 8, getRightButton());
+        gui.setItem(6, 7, getLeftButton());
 
         gui.setItem(6, 1, GuiUtil.createBackArrow(player, territoryData::openMainMenu));
     }
@@ -161,24 +161,24 @@ public class UpgradeMenu extends BasicGui {
                 .asGuiItem(player, langType);
     }
 
-    private @NotNull GuiItem getUpButton() {
-        return iconManager.get(IconKey.UP_ARROW)
+    private @NotNull GuiItem getRightButton() {
+        return iconManager.get(IconKey.RIGHT_ARROW)
                 .setName(Lang.GUI_GENERIC_UP.get(langType))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction( action -> {
-                    verticalScrollIndex = Math.min(maxLevel, verticalScrollIndex + 1);
+                    scrollIndex = Math.min(maxLevel, scrollIndex + 1);
                     generateUpgrades();
                     gui.open(player);
                 })
                 .asGuiItem(player, langType);
     }
 
-    private @NotNull GuiItem getDownButton() {
-        return iconManager.get(IconKey.DOWN_ARROW)
+    private @NotNull GuiItem getLeftButton() {
+        return iconManager.get(IconKey.LEFT_ARROW)
                 .setName(Lang.GUI_GENERIC_DOWN.get(langType))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction( action -> {
-                    verticalScrollIndex = Math.max(0, verticalScrollIndex - 1);
+                    scrollIndex = Math.max(0, scrollIndex - 1);
                     generateUpgrades();
                     gui.open(player);
                 })

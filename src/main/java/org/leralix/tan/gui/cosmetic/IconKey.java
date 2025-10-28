@@ -180,6 +180,8 @@ public enum IconKey {
     WAR_GOAL_LIBERATE_ICON,
 
     // Upgrades
+    RIGHT_ARROW,
+    LEFT_ARROW,
     UP_ARROW,
     DOWN_ARROW,
     LEVEL_UP_ICON,

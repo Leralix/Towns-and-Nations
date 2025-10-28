@@ -523,7 +523,7 @@ language:
   HEADER_RANK_PERMISSIONS: "Permissions"
   HEADER_ECONOMY: "Economy"
   HEADER_HISTORY: "History"
-  HEADER_TOWN_UPGRADE: "Town upgrade | {0}"
+  HEADER_TOWN_UPGRADE: "Town upgrade"
   HEADER_SETTINGS: "Settings"
   HEADER_CHANGE_OWNERSHIP: "Change ownership"
   HEADER_RELATIONS: "Diplomacy"

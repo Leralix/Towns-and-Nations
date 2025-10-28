@@ -41,7 +41,7 @@ public class GuiUtil {
     public static GuiItem getUnnamedItem(Material material) {
         ItemStack item = new ItemStack(material);
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName("");
+        itemMeta.setDisplayName(" ");
         item.setItemMeta(itemMeta);
         return ItemBuilder.from(item).asGuiItem(event -> event.setCancelled(true));
     }
