@@ -1,6 +1,7 @@
 language:
   WELCOME: "§fWelcome"
   STRING: "§f{0}"
+  EMPTY: ""
   LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] English language successfully loaded"
   PLUGIN_STRING: "§6[TaN]§f "
   PLUGIN_DEBUG_STRING: "§c[TaN - Debug]§f "
