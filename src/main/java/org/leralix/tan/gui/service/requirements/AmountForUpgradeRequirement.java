@@ -3,6 +3,8 @@ package org.leralix.tan.gui.service.requirements;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.database.transactions.TransactionManager;
+import org.leralix.tan.storage.database.transactions.UpgradeTransaction;
 import org.leralix.tan.upgrade.Upgrade;
 import org.leralix.tan.utils.text.NumberUtil;
 
@@ -44,6 +46,8 @@ public class AmountForUpgradeRequirement extends IndividualRequirementWithCost {
 
     @Override
     public void actionDone() {
-        territoryData.removeFromBalance(getCost());
+        double cost = getCost();
+        TransactionManager.getInstance().register(new UpgradeTransaction(territoryData.getID(), upgrade.getID(), territoryData.getNewLevel().getLevel(upgrade), cost));
+        territoryData.removeFromBalance(cost);
     }
 }

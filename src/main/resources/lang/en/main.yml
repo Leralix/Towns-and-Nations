@@ -1076,10 +1076,16 @@ language:
   GUI_JOIN_DEFENDING_SIDE: "§aJoin the defending side"
   GUI_JOIN_DEFENDING_SIDE_DESC1: "{0}§f joins the defending side against :"
   GUI_WAR_GOAL_INFO: "{0}"
+  #Brose scope
   BROWSE_SCOPE: "§fScope : {0}"
   BROWSE_ALL_NAME: "§aAll"
   BROWSE_TOWNS_NAME: "§9Towns"
   BROWSE_REGIONS_NAME: "§bRegions"
+  #Transaction scope
+  ALL_TRANSACTION_SCOPE: "§aAll transactions"
+  PAYMENT_TRANSACTION_SCOPE: "§9Player Payment"
+  DONATION_TRANSACTION_SCOPE: "§9Territory donation"
+  UPGRADE_TRANSACTION_SCOPE: "§9Territory upgrades"
   MAIN_ATTACKER_NAME: "Main attacker"
   MAIN_DEFENDER_NAME: "Main defender"
   OTHER_ATTACKER_NAME: "Other attackers"

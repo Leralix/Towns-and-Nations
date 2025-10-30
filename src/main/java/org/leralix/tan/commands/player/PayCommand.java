@@ -7,6 +7,8 @@ import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.database.transactions.PaymentTransaction;
+import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -97,6 +99,14 @@ public class PayCommand extends PlayerSubCommand {
         }
         EconomyUtil.removeFromBalance(player, amount);
         EconomyUtil.addFromBalance(receiver, amount);
+
+        TransactionManager.getInstance().register(
+                new PaymentTransaction(
+                        player.getUniqueId().toString(),
+                        receiver.getUniqueId().toString(),
+                        amount
+                        )
+        );
         TanChatUtils.message(player, Lang.PAY_CONFIRMED_SENDER.get(langType, Integer.toString(amount), receiver.getName()));
         TanChatUtils.message(receiver, Lang.PAY_CONFIRMED_RECEIVER.get(receiver, Integer.toString(amount), player.getName()));
     }
