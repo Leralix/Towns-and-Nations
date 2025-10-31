@@ -2,14 +2,12 @@ package org.leralix.tan.storage.database.transactions;
 
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.storage.database.transactions.instance.*;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
@@ -52,7 +50,7 @@ public class TransactionManager {
             }
 
             for(TransactionType transactionType : TransactionType.values()){
-                statement.addBatch(transactionType.getCreateTableSQL().formatted(autoIncrementSyntax));
+                statement.addBatch(transactionType.getCreateTableSQL(autoIncrementSyntax));
             }
 
             statement.executeBatch();
@@ -73,14 +71,14 @@ public class TransactionManager {
         }
     }
 
-    private List<AbstractTransaction> getTransactionOf(Connection conn, String concernedID, TransactionType wantedRelationType) {
+    private List<AbstractTransaction> getTransactionOf(Connection conn, String concernedID, TransactionType wantedType) {
 
         String sqlIndex = """
-            SELECT id_transaction, type
-            FROM transaction_index
-            WHERE concerned = ?
-            ORDER BY id_transaction DESC
-        """;
+                SELECT id_transaction, type
+                FROM transaction_index
+                WHERE concerned = ?
+                ORDER BY id_transaction DESC
+                """;
 
         EnumMap<TransactionType, List<Long>> transactionIdsByType = new EnumMap<>(TransactionType.class);
 
@@ -95,11 +93,7 @@ public class TransactionManager {
                     try {
                         TransactionType transactionType = TransactionType.valueOf(typeStr);
 
-                        //If relationType is INDEX, show all.
-
-                        if (wantedRelationType != TransactionType.INDEX && transactionType != wantedRelationType) {
-                            continue;
-                        }
+                        if (wantedType != TransactionType.INDEX && transactionType != wantedType) continue;
 
                         transactionIdsByType
                                 .computeIfAbsent(transactionType, k -> new ArrayList<>())
@@ -110,7 +104,8 @@ public class TransactionManager {
                     }
                 }
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             pluginLogger.severe("[TAN] Error while reading index: " + e.getMessage());
             return Collections.emptyList();
         }
@@ -118,7 +113,10 @@ public class TransactionManager {
         return getTransactionById(conn, transactionIdsByType);
     }
 
-    private @NotNull List<AbstractTransaction> getTransactionById(Connection conn, EnumMap<TransactionType, List<Long>> transactionIdsByType) {
+    private @NotNull List<AbstractTransaction> getTransactionById(
+            Connection conn,
+            EnumMap<TransactionType, List<Long>> transactionIdsByType
+    ) {
         List<AbstractTransaction> transactions = new ArrayList<>();
 
         for (var entry : transactionIdsByType.entrySet()) {
@@ -126,8 +124,18 @@ public class TransactionManager {
             List<Long> ids = entry.getValue();
 
             switch (type) {
-                case DONATION -> transactions.addAll(getDonationTransactions(conn, ids));
-                case PAYMENT -> transactions.addAll(getPaymentTransactions(conn, ids));
+                case PAYMENT ->
+                        transactions.addAll(getTransactionsGeneric(conn, ids, type, PaymentTransaction.class));
+                case DONATION ->
+                        transactions.addAll(getTransactionsGeneric(conn, ids, type, DonationTransaction.class));
+                case RETRIEVE ->
+                        transactions.addAll(getTransactionsGeneric(conn, ids, type, RetrieveTransaction.class));
+                case TAXES ->
+                        transactions.addAll(getTransactionsGeneric(conn, ids, type, TaxTransaction.class));
+                case SALARY ->
+                        transactions.addAll(getTransactionsGeneric(conn, ids, type, SalaryTransaction.class));
+                case UPGRADE ->
+                        transactions.addAll(getTransactionsGeneric(conn, ids, type, UpgradeTransaction.class));
                 default -> pluginLogger.warning("[TAN] Unhandled transaction type: " + type);
             }
         }
@@ -135,141 +143,67 @@ public class TransactionManager {
         return transactions;
     }
 
-    private List<PaymentTransaction> getPaymentTransactions(Connection conn, List<Long> ids) {
-        if (ids.isEmpty()) return Collections.emptyList();
+    /**
+     * Generic transaction fetcher that can return a typed list (PaymentTransaction, DonationTransaction, etc.)
+     */
+    private <T extends AbstractTransaction> List<T> getTransactionsGeneric(
+            Connection conn,
+            List<Long> ids,
+            TransactionType transactionType,
+            Class<T> clazz
+    ) {
+        if (ids == null || ids.isEmpty()) return Collections.emptyList();
 
-        // ⚡ Construction dynamique du WHERE id IN (...)
-        String placeholders = ids.stream()
-                .map(id -> "?")
-                .collect(java.util.stream.Collectors.joining(","));
-        String sql = "SELECT sender_id, receiver_id, amount, timestamp FROM transaction_payment WHERE id IN (" + placeholders + ")";
+        String placeholders = String.join(",", Collections.nCopies(ids.size(), "?"));
+        String sql = "SELECT * FROM " + transactionType.getTableName() + " WHERE id IN (" + placeholders + ")";
 
-        List<PaymentTransaction> donations = new ArrayList<>();
+        List<T> results = new ArrayList<>();
 
         try (var ps = conn.prepareStatement(sql)) {
-            for (int i = 0; i < ids.size(); i++) {
-                ps.setLong(i + 1, ids.get(i));
-            }
+            for (int i = 0; i < ids.size(); i++) ps.setLong(i + 1, ids.get(i));
 
             try (var rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    String sender = rs.getString("sender_id");
-                    String receiver = rs.getString("receiver_id");
-                    double amount = rs.getDouble("amount");
-                    long timestamp = rs.getLong("timestamp");
-                    Instant instant = Instant.ofEpochMilli(timestamp);
-                    LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-
-
-                    donations.add(new PaymentTransaction(dateTime, sender,  receiver, amount));
+                    results.add(AbstractTransaction.fromResultSet(rs, clazz));
                 }
             }
+
         } catch (SQLException e) {
-            pluginLogger.severe("[TAN] Error while fetching donation transactions: " + e.getMessage());
+            pluginLogger.severe("[TAN] Error while fetching on " + transactionType.getTableName() + ": " + e.getMessage());
         }
 
-        return donations;
+        return results;
     }
-
-    private List<DonationTransaction> getDonationTransactions(Connection conn, List<Long> ids) {
-        if (ids.isEmpty()) return Collections.emptyList();
-
-        // ⚡ Construction dynamique du WHERE id IN (...)
-        String placeholders = ids.stream()
-                .map(id -> "?")
-                .collect(java.util.stream.Collectors.joining(","));
-        String sql = "SELECT sender_id, receiver_id, amount, timestamp FROM transaction_donation WHERE id IN (" + placeholders + ")";
-
-        List<DonationTransaction> donations = new ArrayList<>();
-
-        try (var ps = conn.prepareStatement(sql)) {
-            for (int i = 0; i < ids.size(); i++) {
-                ps.setLong(i + 1, ids.get(i));
-            }
-
-            try (var rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    String sender = rs.getString("sender_id");
-                    String receiver = rs.getString("receiver_id");
-                    double amount = rs.getDouble("amount");
-                    long timestamp = rs.getLong("timestamp");
-                    Instant instant = Instant.ofEpochMilli(timestamp);
-                    LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-
-
-                    donations.add(new DonationTransaction(dateTime, sender,  receiver, amount));
-                }
-            }
-        } catch (SQLException e) {
-            pluginLogger.severe("[TAN] Error while fetching donation transactions: " + e.getMessage());
-        }
-
-        return donations;
-    }
-
 
     public void register(AbstractTransaction transaction) {
         try (Connection conn = dataSource.getConnection()) {
-            switch (transaction) {
-                case DonationTransaction donationTransaction -> insertDonation(conn, donationTransaction);
-                case PaymentTransaction paymentTransaction -> insertPaymentTransaction(conn, paymentTransaction);
-                default -> pluginLogger.warning("[TAN] Unknown transaction type: " + transaction.getType());
-            }
+            insertTransaction(conn, transaction);
         } catch (SQLException e) {
             pluginLogger.severe("[TAN] Error while inserting transaction: " + e.getMessage());
         }
     }
 
-    private void insertPaymentTransaction(Connection conn, PaymentTransaction paymentTransaction) throws SQLException {
+    private void insertTransaction(Connection conn, AbstractTransaction transaction) throws SQLException {
         long transactionID;
 
-        String sqlDonation = "INSERT INTO transaction_payment (timestamp, sender_id, receiver_id, amount) VALUES (?, ?, ?, ?)";
-
-        try (var ps = conn.prepareStatement(sqlDonation, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setLong(1, paymentTransaction.getDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-            ps.setString(2, paymentTransaction.getSenderID());
-            ps.setString(3, paymentTransaction.getReceiverID());
-            ps.setDouble(4, paymentTransaction.getAmount());
+        try (var ps = conn.prepareStatement(transaction.getInsertSQL(), Statement.RETURN_GENERATED_KEYS)) {
+            transaction.fillInsertStatement(ps);
             ps.executeUpdate();
 
             try (var rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
                     transactionID = rs.getLong(1);
                 } else {
-                    throw new SQLException("Failed to retrieve generated donation ID");
+                    throw new SQLException("Failed to retrieve generated transaction ID for " + transaction.getType());
                 }
             }
         }
 
-        addToIndex(conn, transactionID, TransactionType.DONATION, paymentTransaction.getSenderID(), paymentTransaction.getReceiverID());
+        addToIndex(conn, transactionID, transaction.getType(), transaction.getConcerned());
     }
 
-    private void insertDonation(Connection conn, DonationTransaction tx) throws SQLException {
-        long transactionID;
-
-        String sqlDonation = "INSERT INTO transaction_donation (timestamp, sender_id, receiver_id, amount) VALUES (?, ?, ?, ?)";
-
-        try (var ps = conn.prepareStatement(sqlDonation, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setLong(1, tx.getDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-            ps.setString(2, tx.getPlayerID());
-            ps.setString(3, tx.getTerritoryID());
-            ps.setDouble(4, tx.getAmount());
-            ps.executeUpdate();
-
-            try (var rs = ps.getGeneratedKeys()) {
-                if (rs.next()) {
-                    transactionID = rs.getLong(1);
-                } else {
-                    throw new SQLException("Failed to retrieve generated donation ID");
-                }
-            }
-        }
-
-        addToIndex(conn, transactionID, TransactionType.DONATION, tx.getTerritoryID(), tx.getPlayerID());
-    }
-
-    private void addToIndex(Connection conn, long transactionId, TransactionType transactionType, String... concerned) throws SQLException {
-        if (concerned == null || concerned.length == 0) {
+    private void addToIndex(Connection conn, long transactionId, TransactionType transactionType, List<String> concerned) throws SQLException {
+        if (concerned == null || concerned.isEmpty()) {
             return;
         }
 

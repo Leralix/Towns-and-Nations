@@ -11,9 +11,9 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.TreasuryMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.database.transactions.AbstractTransaction;
+import org.leralix.tan.storage.database.transactions.EntityScope;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.TransactionType;
-import org.leralix.tan.storage.database.transactions.scope.EntityScope;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -4,7 +4,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
-import org.leralix.tan.storage.database.transactions.UpgradeTransaction;
+import org.leralix.tan.storage.database.transactions.instance.UpgradeTransaction;
 import org.leralix.tan.upgrade.Upgrade;
 import org.leralix.tan.utils.text.NumberUtil;
 
