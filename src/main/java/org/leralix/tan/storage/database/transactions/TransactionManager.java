@@ -1,5 +1,6 @@
 package org.leralix.tan.storage.database.transactions;
 
+import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
 
 import javax.sql.DataSource;
@@ -20,6 +21,7 @@ public class TransactionManager {
     private final DataSource dataSource;
     private static TransactionManager instance;
     private final Logger pluginLogger;
+    private final String SQL_INDEX_STATEMENT = "INSERT INTO transaction_index (concerned, id_transaction, type) VALUES (?, ?, ?)";
 
     private TransactionManager(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -72,14 +74,13 @@ public class TransactionManager {
     }
 
     private List<AbstractTransaction> getTransactionOf(Connection conn, String concernedID, TransactionType wantedRelationType) {
-        List<AbstractTransaction> transactions = new ArrayList<>();
 
         String sqlIndex = """
-        SELECT id_transaction, type
-        FROM transaction_index
-        WHERE concerned = ?
-        ORDER BY id_transaction DESC
-    """;
+            SELECT id_transaction, type
+            FROM transaction_index
+            WHERE concerned = ?
+            ORDER BY id_transaction DESC
+        """;
 
         EnumMap<TransactionType, List<Long>> transactionIdsByType = new EnumMap<>(TransactionType.class);
 
@@ -111,8 +112,14 @@ public class TransactionManager {
             }
         } catch (SQLException e) {
             pluginLogger.severe("[TAN] Error while reading index: " + e.getMessage());
-            return transactions;
+            return Collections.emptyList();
         }
+
+        return getTransactionById(conn, transactionIdsByType);
+    }
+
+    private @NotNull List<AbstractTransaction> getTransactionById(Connection conn, EnumMap<TransactionType, List<Long>> transactionIdsByType) {
+        List<AbstractTransaction> transactions = new ArrayList<>();
 
         for (var entry : transactionIdsByType.entrySet()) {
             TransactionType type = entry.getKey();
@@ -214,7 +221,7 @@ public class TransactionManager {
     }
 
     private void insertPaymentTransaction(Connection conn, PaymentTransaction paymentTransaction) throws SQLException {
-        long donationId;
+        long transactionID;
 
         String sqlDonation = "INSERT INTO transaction_payment (timestamp, sender_id, receiver_id, amount) VALUES (?, ?, ?, ?)";
 
@@ -227,31 +234,18 @@ public class TransactionManager {
 
             try (var rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    donationId = rs.getLong(1);
+                    transactionID = rs.getLong(1);
                 } else {
                     throw new SQLException("Failed to retrieve generated donation ID");
                 }
             }
         }
 
-        String sqlIndex = "INSERT INTO transaction_index (concerned, id_transaction, type) VALUES (?, ?, ?)";
-        try (var ps = conn.prepareStatement(sqlIndex)) {
-            ps.setString(1, paymentTransaction.getSenderID());
-            ps.setLong(2, donationId);
-            ps.setString(3, TransactionType.PAYMENT.name());
-            ps.executeUpdate();
-        }
-
-        try (var ps = conn.prepareStatement(sqlIndex)) {
-            ps.setString(1, paymentTransaction.getReceiverID());
-            ps.setLong(2, donationId);
-            ps.setString(3, TransactionType.PAYMENT.name());
-            ps.executeUpdate();
-        }
+        addToIndex(conn, transactionID, TransactionType.DONATION, paymentTransaction.getSenderID(), paymentTransaction.getReceiverID());
     }
 
     private void insertDonation(Connection conn, DonationTransaction tx) throws SQLException {
-        long donationId;
+        long transactionID;
 
         String sqlDonation = "INSERT INTO transaction_donation (timestamp, sender_id, receiver_id, amount) VALUES (?, ?, ?, ?)";
 
@@ -264,26 +258,31 @@ public class TransactionManager {
 
             try (var rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    donationId = rs.getLong(1);
+                    transactionID = rs.getLong(1);
                 } else {
                     throw new SQLException("Failed to retrieve generated donation ID");
                 }
             }
         }
 
-        String sqlIndex = "INSERT INTO transaction_index (concerned, id_transaction, type) VALUES (?, ?, ?)";
-        try (var ps = conn.prepareStatement(sqlIndex)) {
-            ps.setString(1, tx.getTerritoryID());
-            ps.setLong(2, donationId);
-            ps.setString(3, TransactionType.DONATION.name());
-            ps.executeUpdate();
+        addToIndex(conn, transactionID, TransactionType.DONATION, tx.getTerritoryID(), tx.getPlayerID());
+    }
+
+    private void addToIndex(Connection conn, long transactionId, TransactionType transactionType, String... concerned) throws SQLException {
+        if (concerned == null || concerned.length == 0) {
+            return;
         }
 
-        try (var ps = conn.prepareStatement(sqlIndex)) {
-            ps.setString(1, tx.getPlayerID());
-            ps.setLong(2, donationId);
-            ps.setString(3, TransactionType.DONATION.name());
-            ps.executeUpdate();
+        try (var ps = conn.prepareStatement(SQL_INDEX_STATEMENT)) {
+            for (String c : concerned) {
+                ps.setString(1, c);
+                ps.setLong(2, transactionId);
+                ps.setString(3, transactionType.name());
+                ps.addBatch();
+            }
+
+            ps.executeBatch();
         }
     }
+
 }
