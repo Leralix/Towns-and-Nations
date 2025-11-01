@@ -81,8 +81,9 @@ public class TeleportationRegister {
 
             registerSpawn(tanPlayer, townData);
         }
-        Bukkit.getScheduler().runTaskLater(TownsAndNations.getPlugin(),
-                () -> confirmTeleportation(tanPlayer), secondBeforeTeleport * 20L);
+        long delay = Math.max(1L, secondBeforeTeleport * 20L);
+        org.leralix.tan.utils.FoliaScheduler.runTaskLater(TownsAndNations.getPlugin(),
+                () -> confirmTeleportation(tanPlayer), delay);
     }
 
     public static void confirmTeleportation(ITanPlayer tanPlayer) {

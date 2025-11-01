@@ -63,7 +63,7 @@ public class CreateTown extends ChatListenerEvent {
         EventManager.getInstance().callEvent(new TownCreatedInternalEvent(newTown, playerData));
         FileUtil.addLineToHistory(Lang.TOWN_CREATED_NEWSLETTER.get(player.getName(), newTown.getName()));
 
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> TeamUtils.setIndividualScoreBoard(player));
+        org.leralix.tan.utils.FoliaScheduler.runTask(TownsAndNations.getPlugin(), () -> TeamUtils.setIndividualScoreBoard(player));
 
         openGui(p -> PlayerGUI.dispatchPlayerTown(player), player);
     }

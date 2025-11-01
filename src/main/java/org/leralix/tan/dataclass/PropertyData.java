@@ -153,12 +153,12 @@ public class PropertyData extends Building {
     public void setName(String name) {
         this.name = name;
 
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), this::updateSign);
+        org.leralix.tan.utils.FoliaScheduler.runTask(TownsAndNations.getPlugin(), this::updateSign);
     }
 
     public void setDescription(String description) {
         this.description = description;
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), this::updateSign);
+        org.leralix.tan.utils.FoliaScheduler.runTask(TownsAndNations.getPlugin(), this::updateSign);
     }
 
     public void allocateRenter(Player renter) {
@@ -343,12 +343,12 @@ public class PropertyData extends Building {
 
     public void setRentPrice(double i) {
         this.rentPrice = i;
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), this::updateSign);
+        org.leralix.tan.utils.FoliaScheduler.runTask(TownsAndNations.getPlugin(), this::updateSign);
     }
 
     public void setSalePrice(double i) {
         this.salePrice = i;
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), this::updateSign);
+        org.leralix.tan.utils.FoliaScheduler.runTask(TownsAndNations.getPlugin(), this::updateSign);
     }
 
     public Optional<Block> getSign() {

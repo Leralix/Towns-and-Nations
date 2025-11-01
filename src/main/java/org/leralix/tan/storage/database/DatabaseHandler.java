@@ -22,7 +22,7 @@ public abstract class DatabaseHandler {
 
 
     public void addTransactionHistory(TransactionHistory transactionHistory) {
-        Bukkit.getScheduler().runTaskAsynchronously(TownsAndNations.getPlugin(), () -> {
+        org.leralix.tan.utils.FoliaScheduler.runTaskAsynchronously(TownsAndNations.getPlugin(), () -> {
             checkIfHistoryDbExists();
             String insertSQL = """
                 INSERT INTO territoryTransactionHistory (date, type, territoryDataID, transactionParty, amount)

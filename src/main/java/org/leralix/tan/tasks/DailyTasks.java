@@ -1,7 +1,6 @@
 package org.leralix.tan.tasks;
 
 
-import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
@@ -16,6 +15,7 @@ import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.FoliaScheduler;
 import org.leralix.tan.utils.file.ArchiveUtil;
 
 import java.util.Calendar;
@@ -35,14 +35,11 @@ public class DailyTasks {
     }
 
     public void scheduleMidnightTask() {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (calendar.get(Calendar.HOUR_OF_DAY) == hourTime && calendar.get(Calendar.MINUTE) == minuteTime) {
-                    executeMidnightTasks();
-                }
+        FoliaScheduler.runTaskTimer(TownsAndNations.getPlugin(), () -> {
+            if (calendar.get(Calendar.HOUR_OF_DAY) == hourTime && calendar.get(Calendar.MINUTE) == minuteTime) {
+                executeMidnightTasks();
             }
-        }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L); // Execute every 1200 ticks (1 minute)
+        }, 1L, 1200L); // Execute every 1200 ticks (1 minute)
     }
 
     public static void executeMidnightTasks() {

@@ -37,7 +37,7 @@ public class TeamUtils {
      */
 
     public static void setIndividualScoreBoard(Player player) {
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> setIndividualScoreBoardSync(player));
+        org.leralix.tan.utils.FoliaScheduler.runTask(TownsAndNations.getPlugin(), () -> setIndividualScoreBoardSync(player));
     }
 
     private static void setIndividualScoreBoardSync(Player player) {

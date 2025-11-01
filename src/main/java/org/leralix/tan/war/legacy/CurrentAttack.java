@@ -1,15 +1,16 @@
 package org.leralix.tan.war.legacy;
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.storage.CurrentAttacksStorage;
+import org.leralix.tan.utils.FoliaScheduler;
 import org.leralix.tan.utils.gameplay.CommandExecutor;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.cosmetic.ShowBoundaries;
@@ -28,6 +29,7 @@ public class CurrentAttack {
      */
     private long remaining;
     private final BossBar bossBar;
+    private ScheduledTask timerTask;
 
     public CurrentAttack(PlannedAttack plannedAttack, long startTime, long endTime) {
 
@@ -81,20 +83,18 @@ public class CurrentAttack {
     }
 
     private void start() {
-        BukkitRunnable timerTask = new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (remaining > 0 && !end) {
-                    remaining--;
-                    updateBossBar();
-                }
-                else {
-                    end();
-                    cancel();
+        FoliaScheduler.runTaskTimer(TownsAndNations.getPlugin(), () -> {
+            if (remaining > 0 && !end) {
+                remaining--;
+                updateBossBar();
+            }
+            else {
+                end();
+                if (timerTask != null) {
+                    timerTask.cancel();
                 }
             }
-        };
-        timerTask.runTaskTimer(TownsAndNations.getPlugin(), 0, 1); // Execute every tick (20/s)
+        }, 1, 1); // Execute every tick (20/s)
     }
 
 
@@ -103,32 +103,28 @@ public class CurrentAttack {
         CommandExecutor.applyEndWarCommands(getAttackData());
         end = true;
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (TerritoryData territoryData : attackData.getAttackingTerritories()) {
-                    for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                        tanPlayer.removeWar(CurrentAttack.this);
-                    }
+        FoliaScheduler.runTaskLater(TownsAndNations.getPlugin(), () -> {
+            for (TerritoryData territoryData : attackData.getAttackingTerritories()) {
+                for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
+                    tanPlayer.removeWar(CurrentAttack.this);
                 }
-                for (TerritoryData territoryData : attackData.getDefendingTerritories()) {
-                    for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                        tanPlayer.removeWar(CurrentAttack.this);
-                    }
-                }
-
-                bossBar.removeAll();
-                CurrentAttacksStorage.remove(CurrentAttack.this);
-
-                for (TerritoryData territoryData : attackData.getAttackingTerritories()) {
-                    territoryData.removeCurrentAttack(CurrentAttack.this);
-                }
-                for (TerritoryData territoryData : attackData.getDefendingTerritories()) {
-                    territoryData.removeCurrentAttack(CurrentAttack.this);
-                }
-
             }
-        }.runTaskLater(TownsAndNations.getPlugin(), 20L * 20); //Still showing the boss bar for 20s
+            for (TerritoryData territoryData : attackData.getDefendingTerritories()) {
+                for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
+                    tanPlayer.removeWar(CurrentAttack.this);
+                }
+            }
+
+            bossBar.removeAll();
+            CurrentAttacksStorage.remove(CurrentAttack.this);
+
+            for (TerritoryData territoryData : attackData.getAttackingTerritories()) {
+                territoryData.removeCurrentAttack(CurrentAttack.this);
+            }
+            for (TerritoryData territoryData : attackData.getDefendingTerritories()) {
+                territoryData.removeCurrentAttack(CurrentAttack.this);
+            }
+        }, 20L * 20); //Still showing the boss bar for 20s
     }
 
     public boolean containsPlayer(ITanPlayer tanPlayer) {

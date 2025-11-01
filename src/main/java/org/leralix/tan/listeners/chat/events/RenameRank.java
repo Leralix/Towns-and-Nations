@@ -32,7 +32,7 @@ public class RenameRank extends ChatListenerEvent {
         }
 
         rankData.setName(message);
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> new RankManagerMenu(player, territoryConcerned, rankData).open());
+        org.leralix.tan.utils.FoliaScheduler.runTask(TownsAndNations.getPlugin(), () -> new RankManagerMenu(player, territoryConcerned, rankData).open());
         return false;
     }
 }

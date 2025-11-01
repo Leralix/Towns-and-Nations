@@ -1,12 +1,12 @@
 package org.leralix.tan.war;
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -50,8 +50,8 @@ public class PlannedAttack {
     private final War war;
     private final WarRole warRole;
 
-    private transient BukkitRunnable warStartTask;
-    private transient BukkitRunnable warWarningTask;
+    private transient ScheduledTask warStartTask;
+    private transient ScheduledTask warWarningTask;
 
     boolean isAdminApproved;
 
@@ -157,22 +157,13 @@ public class PlannedAttack {
             return;
         }
 
-        warStartTask = new BukkitRunnable() {
-            @Override
-            public void run() {
-                startWar(startTime);
-            }
-        };
-        warStartTask.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeStart);
+        warStartTask = org.leralix.tan.utils.FoliaScheduler.runTaskLater(TownsAndNations.getPlugin(),
+                () -> startWar(startTime), timeLeftBeforeStart);
 
         if(timeLeftBeforeWarning > 0){
-            warWarningTask = new BukkitRunnable() {
-                @Override
-                public void run() {
-                    broadCastMessageWithSound(Lang.ATTACK_START_IN_1_MINUTES.get(name), SoundEnum.WAR);
-                }
-            };
-            warWarningTask.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeWarning);
+            warWarningTask = org.leralix.tan.utils.FoliaScheduler.runTaskLater(TownsAndNations.getPlugin(),
+                    () -> broadCastMessageWithSound(Lang.ATTACK_START_IN_1_MINUTES.get(name), SoundEnum.WAR),
+                    timeLeftBeforeWarning);
         }
     }
 

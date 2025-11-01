@@ -50,7 +50,7 @@ public class PlayerJoinListener implements Listener {
             player.spigot().sendMessage(message);
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(TownsAndNations.getPlugin(), () -> {
+        org.leralix.tan.utils.FoliaScheduler.runTaskAsynchronously(TownsAndNations.getPlugin(), () -> {
             PremiumStorage.getInstance().isPremium(player.getName());
         });
 

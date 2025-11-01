@@ -8,7 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
@@ -96,14 +95,10 @@ public class AdminGUI {
                 if (!event.isShiftClick()) {
                     openSpecificLandmarkMenu(player, landmark);
                 } else {
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            player.closeInventory();
-                            player.teleport(landmark.getLocation());
-                        }
-                    }.runTaskLater(TownsAndNations.getPlugin(), 1L);
-
+                    org.leralix.tan.utils.FoliaScheduler.runTaskLater(TownsAndNations.getPlugin(), () -> {
+                        player.closeInventory();
+                        player.teleport(landmark.getLocation());
+                    }, 1L);
 
                     SoundUtil.playSound(player, GOOD);
                 }

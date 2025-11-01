@@ -1,8 +1,8 @@
 package org.leralix.tan.listeners.chat;
 
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.utils.FoliaScheduler;
 
 import java.util.function.Consumer;
 
@@ -33,11 +33,6 @@ public abstract class ChatListenerEvent {
     }
 
     protected void openGui(Consumer<Player> playerConsumer, Player player){
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                playerConsumer.accept(player);
-            }
-        }.runTask(TownsAndNations.getPlugin());
+        FoliaScheduler.runTask(TownsAndNations.getPlugin(), () -> playerConsumer.accept(player));
     }
 }

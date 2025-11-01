@@ -1,8 +1,8 @@
 package org.leralix.tan.tasks;
 
-import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.storage.stored.*;
+import org.leralix.tan.utils.FoliaScheduler;
 
 public class SaveStats {
 
@@ -11,12 +11,7 @@ public class SaveStats {
     }
 
     public static void startSchedule() {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                saveAll();
-            }
-        }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L);
+        FoliaScheduler.runTaskTimer(TownsAndNations.getPlugin(), SaveStats::saveAll, 1L, 1200L);
     }
 
     public static void saveAll() {

@@ -34,7 +34,7 @@ public abstract class SetSpecificRate extends ChatListenerEvent {
 
         setRate(amount / 100);
 
-        Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> new TreasuryMenu(player, territoryData));
+        org.leralix.tan.utils.FoliaScheduler.runTask(TownsAndNations.getPlugin(), () -> new TreasuryMenu(player, territoryData));
         return false;
     }
 
