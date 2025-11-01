@@ -10,10 +10,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.newhistory.PlayerTaxHistory;
 import org.leralix.tan.dataclass.territory.economy.*;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
@@ -25,6 +23,8 @@ import org.leralix.tan.gui.user.territory.TerritoryMemberMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.database.transactions.TransactionManager;
+import org.leralix.tan.storage.database.transactions.instance.PlayerTaxTransaction;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.upgrade.rewards.numeric.TownPlayerCap;
 import org.leralix.tan.utils.constants.Constants;
@@ -122,11 +122,11 @@ public class TownData extends TerritoryData {
 
     @Override
     public Collection<ITanPlayer> getITanPlayerList() {
-        ArrayList<ITanPlayer> ITanPlayerList = new ArrayList<>();
+        ArrayList<ITanPlayer> res = new ArrayList<>();
         for (String playerID : getPlayerIDList()) {
-            ITanPlayerList.add(PlayerDataStorage.getInstance().get(playerID));
+            res.add(PlayerDataStorage.getInstance().get(playerID));
         }
-        return ITanPlayerList;
+        return res;
     }
 
     @Override
@@ -289,13 +289,17 @@ public class TownData extends TerritoryData {
             if (!getRank(tanPlayer).isPayingTaxes()) continue;
 
             double tax = getTax();
+            double playerBalance = EconomyUtil.getBalance(offlinePlayer);
 
-            if (EconomyUtil.getBalance(offlinePlayer) > tax) {
+            //If player does not have enough money, take what they can give
+            if (playerBalance < tax) {
+                EconomyUtil.removeFromBalance(offlinePlayer, playerBalance);
+                addToBalance(playerBalance);
+                TransactionManager.getInstance().register(new PlayerTaxTransaction(this, tanPlayer.getID(), playerBalance, false));
+            } else {
                 EconomyUtil.removeFromBalance(offlinePlayer, tax);
                 addToBalance(tax);
-                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerTaxHistory(this, tanPlayer, tax));
-            } else {
-                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerTaxHistory(this, tanPlayer, -1));
+                TransactionManager.getInstance().register(new PlayerTaxTransaction(this, tanPlayer.getID(), tax, true));
             }
         }
     }

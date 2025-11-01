@@ -123,21 +123,23 @@ public class TransactionManager {
             TransactionType type = entry.getKey();
             List<Long> ids = entry.getValue();
 
-            switch (type) {
-                case PAYMENT ->
-                        transactions.addAll(getTransactionsGeneric(conn, ids, type, PaymentTransaction.class));
-                case DONATION ->
-                        transactions.addAll(getTransactionsGeneric(conn, ids, type, DonationTransaction.class));
-                case RETRIEVE ->
-                        transactions.addAll(getTransactionsGeneric(conn, ids, type, RetrieveTransaction.class));
-                case TAXES ->
-                        transactions.addAll(getTransactionsGeneric(conn, ids, type, TaxTransaction.class));
-                case SALARY ->
-                        transactions.addAll(getTransactionsGeneric(conn, ids, type, SalaryTransaction.class));
-                case UPGRADE ->
-                        transactions.addAll(getTransactionsGeneric(conn, ids, type, UpgradeTransaction.class));
-                default -> pluginLogger.warning("[TAN] Unhandled transaction type: " + type);
+
+            var wantedClass = switch (type) {
+                case PAYMENT -> PaymentTransaction.class;
+                case DONATION -> DonationTransaction.class;
+                case RETRIEVE -> RetrieveTransaction.class;
+                case TAXES -> PlayerTaxTransaction.class;
+                case TERRITORY_TAX -> TerritoryTaxTransaction.class;
+                case SALARY -> SalaryTransaction.class;
+                case UPGRADE -> UpgradeTransaction.class;
+                default -> null;
+            };
+            if(wantedClass == null){
+                pluginLogger.warning("[TAN] Unhandled transaction type: " + type);
+                continue;
             }
+
+            transactions.addAll(getTransactionsGeneric(conn, ids, type, wantedClass));
         }
 
         return transactions;

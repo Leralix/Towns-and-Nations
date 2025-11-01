@@ -33,14 +33,6 @@ public class UpgradeTransaction extends AbstractTransaction {
         this.amount = amount;
     }
 
-    public UpgradeTransaction(LocalDateTime localDate, String territoryID, String upgradeID, int newLevel, double amount){
-        super(localDate);
-        this.territoryID = territoryID;
-        this.upgradeID = upgradeID;
-        this.newLevel = newLevel;
-        this.amount = amount;
-    }
-
     public TransactionType getType(){
         return TransactionType.DONATION;
     }

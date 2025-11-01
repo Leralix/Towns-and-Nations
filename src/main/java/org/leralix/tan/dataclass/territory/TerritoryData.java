@@ -47,6 +47,7 @@ import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.DonationTransaction;
+import org.leralix.tan.storage.database.transactions.instance.SalaryTransaction;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
@@ -858,7 +859,9 @@ public abstract class TerritoryData {
     }
 
     public double getTax() {
-        if (baseTax == null) setTax(0.0);
+        if (baseTax == null){
+            baseTax = 0.0;
+        }
         return baseTax;
     }
 
@@ -889,6 +892,7 @@ public abstract class TerritoryData {
             for (String playerId : playerIdList) {
                 ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerId);
                 EconomyUtil.addFromBalance(tanPlayer, rankSalary);
+                TransactionManager.getInstance().register(new SalaryTransaction(getID(), playerId, costOfSalary));
                 TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SalaryPaymentHistory(this, String.valueOf(rank.getID()), costOfSalary));
             }
         }

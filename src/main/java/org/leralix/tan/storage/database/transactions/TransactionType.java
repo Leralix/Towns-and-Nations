@@ -111,7 +111,17 @@ public enum TransactionType {
             upgrade_new_level INT NOT NULL,
             amount DOUBLE PRECISION NOT NULL
         );
-    """);
+    """),
+    TERRITORY_TAX(Lang.TAXES_TRANSACTION_SCOPE, "transaction_territory_taxes",
+            """
+                id %s,
+                timestamp TIMESTAMP NOT NULL,
+                sender_id BIGINT NOT NULL,
+                receiver_id BIGINT NOT NULL,
+                amount DOUBLE PRECISION NOT NULL
+            );
+        """)
+    ;
 
 
     private final Lang name;
@@ -149,7 +159,8 @@ public enum TransactionType {
                     yield TransactionType.INDEX;
                 }
             }
-            case UPGRADE -> TransactionType.INDEX;
+            case UPGRADE -> TransactionType.TERRITORY_TAX;
+            case TERRITORY_TAX -> TransactionType.INDEX;
         };
     }
 

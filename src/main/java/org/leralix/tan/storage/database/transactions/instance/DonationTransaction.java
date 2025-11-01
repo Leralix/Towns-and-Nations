@@ -32,13 +32,6 @@ public class DonationTransaction extends AbstractTransaction {
         this.amount = amount;
     }
 
-    public DonationTransaction(LocalDateTime localDate, String playerID, String territoryID, double amount){
-        super(localDate);
-        this.playerID = playerID;
-        this.territoryID = territoryID;
-        this.amount = amount;
-    }
-
     public TransactionType getType(){
         return TransactionType.DONATION;
     }

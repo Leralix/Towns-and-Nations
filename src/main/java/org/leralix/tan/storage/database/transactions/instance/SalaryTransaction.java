@@ -31,13 +31,6 @@ public class SalaryTransaction extends AbstractTransaction {
         this.amount = amount;
     }
 
-    public SalaryTransaction(LocalDateTime localDate, String territoryID, String playerID, double amount){
-        super(localDate);
-        this.territoryID = territoryID;
-        this.playerID = playerID;
-        this.amount = amount;
-    }
-
     public TransactionType getType(){
         return TransactionType.SALARY;
     }

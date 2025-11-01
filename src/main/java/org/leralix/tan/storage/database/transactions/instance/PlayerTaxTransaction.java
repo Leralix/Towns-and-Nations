@@ -2,6 +2,7 @@ package org.leralix.tan.storage.database.transactions.instance;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
@@ -18,28 +19,30 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaymentTransaction extends AbstractTransaction {
+public class PlayerTaxTransaction extends AbstractTransaction {
 
 
-    private String senderID;
-    private String receiverID;
+    private String playerID;
+    private String townID;
     private double amount;
+    private boolean enoughMoney;
 
-    public PaymentTransaction(String senderID, String receiverID, double amount){
-        this.senderID = senderID;
-        this.receiverID = receiverID;
+    public PlayerTaxTransaction(TerritoryData territoryData, String playerID, double amount, boolean enoughMoney){
+        this.playerID = territoryData.getID();
+        this.townID = playerID;
         this.amount = amount;
+        this.enoughMoney = enoughMoney;
     }
 
     public TransactionType getType(){
-        return TransactionType.PAYMENT;
+        return TransactionType.TAXES;
     }
 
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
-        return iconManager.get(IconKey.PLAYER_HEAD_ICON)
+        return iconManager.get(IconKey.BUDGET_ICON)
                 .setName("Donation")
-                .setDescription(Lang.DONATION_PAYMENT_HISTORY_LORE.get(senderID + " - " + receiverID, Double.toString(amount)))
+                .setDescription(Lang.DONATION_PAYMENT_HISTORY_LORE.get(playerID + " - " + townID, Double.toString(amount)))
                 .asGuiItem(player, langType);
     }
 
@@ -47,38 +50,40 @@ public class PaymentTransaction extends AbstractTransaction {
     protected void fromResultSet(ResultSet rs) throws SQLException {
         long timestamp = rs.getLong("timestamp");
         this.localDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
-        this.senderID = rs.getString("sender_id");
-        this.receiverID = rs.getString("receiver_id");
+        this.townID = rs.getString("territory_id");
+        this.playerID = rs.getString("player_id");
         this.amount = rs.getDouble("amount");
+        this.enoughMoney = rs.getBoolean("enough_money");
     }
 
     @Override
     public String getInsertSQL() {
-        return "INSERT INTO transaction_payment (timestamp, sender_id, receiver_id, amount) VALUES (?, ?, ?, ?)";
+        return "INSERT INTO transaction_taxes (timestamp, player_id, territory_id, amount, enough_money) VALUES (?, ?, ?, ?, ?)";
     }
 
     @Override
     public void fillInsertStatement(PreparedStatement ps) throws SQLException {
         ps.setLong(1, getDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-        ps.setString(2, senderID);
-        ps.setString(3, receiverID);
+        ps.setString(2, playerID);
+        ps.setString(3, townID);
         ps.setDouble(4, amount);
+        ps.setBoolean(5, enoughMoney);
     }
 
     @Override
     public List<String> getConcerned() {
         List<String> res = new ArrayList<>();
-        res.add(senderID);
-        res.add(receiverID);
+        res.add(playerID);
+        res.add(townID);
         return res;
     }
 
-    public String getSenderID() {
-        return senderID;
+    public String getPlayerID() {
+        return playerID;
     }
 
-    public String getReceiverID() {
-        return receiverID;
+    public String getTownID() {
+        return townID;
     }
 
     public double getAmount() {
