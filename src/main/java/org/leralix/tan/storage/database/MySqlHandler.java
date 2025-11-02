@@ -79,9 +79,16 @@ public class MySqlHandler extends DatabaseHandler {
             )
         """;
 
+        String createTownsTableSQL = "CREATE TABLE IF NOT EXISTS `towns` (`id` VARCHAR(36) NOT NULL, `name` VARCHAR(255) NOT NULL, `owner` VARCHAR(36) NOT NULL, `spawn` VARCHAR(255) NOT NULL, `balance` DOUBLE NOT NULL, `members` TEXT NOT NULL, `chunks` TEXT NOT NULL, `upgrades` TEXT NOT NULL, `created` BIGINT NOT NULL, PRIMARY KEY (`id`))";
+        String createNationsTableSQL = "CREATE TABLE IF NOT EXISTS `nations` (`id` VARCHAR(36) NOT NULL, `name` VARCHAR(255) NOT NULL, `owner` VARCHAR(36) NOT NULL, `balance` DOUBLE NOT NULL, `members` TEXT NOT NULL, `towns` TEXT NOT NULL, `upgrades` TEXT NOT NULL, `created` BIGINT NOT NULL, PRIMARY KEY (`id`))";
+        String createPlayersTableSQL = "CREATE TABLE IF NOT EXISTS `players` (`uuid` VARCHAR(36) NOT NULL, `town` VARCHAR(36) NULL, `town_name` VARCHAR(255) NULL, `nation` VARCHAR(36) NULL, `nation_name` VARCHAR(255) NULL, `role` VARCHAR(255) NOT NULL, `last_online` BIGINT NOT NULL, PRIMARY KEY (`uuid`))";
+
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(createTableSQL);
+            stmt.execute(createTownsTableSQL);
+            stmt.execute(createNationsTableSQL);
+            stmt.execute(createPlayersTableSQL);
             // Add new columns to players table if they don't exist
             stmt.executeUpdate("ALTER TABLE `players` ADD COLUMN `town_name` VARCHAR(255) NULL AFTER `town`");
             stmt.executeUpdate("ALTER TABLE `players` ADD COLUMN `nation_name` VARCHAR(255) NULL AFTER `nation`");
