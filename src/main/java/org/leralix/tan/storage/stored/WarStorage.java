@@ -1,28 +1,49 @@
 package org.leralix.tan.storage.stored;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.storage.typeadapter.WargoalTypeAdapter;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
-import java.util.HashMap;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.SQLException;
 import java.util.List;
 
-public class WarStorage extends JsonStorage<War>{
+public class WarStorage extends DatabaseStorage<War>{
 
-
+    private static final String TABLE_NAME = "tan_wars";
     private static WarStorage instance;
 
     private WarStorage(){
-        super("Wars.json",
-                new TypeToken<HashMap<String, War>>() {}.getType(),
+        super(TABLE_NAME,
+                War.class,
                 new GsonBuilder()
                         .registerTypeAdapter(WarGoal.class, new WargoalTypeAdapter())
-                        .setPrettyPrinting().
-                        create()
+                        .setPrettyPrinting()
+                        .create()
         );
+    }
+
+    @Override
+    protected void createTable() {
+        String createTableSQL = """
+            CREATE TABLE IF NOT EXISTS %s (
+                id VARCHAR(255) PRIMARY KEY,
+                data TEXT NOT NULL
+            )
+        """.formatted(TABLE_NAME);
+
+        try (Connection conn = getDatabase().getDataSource().getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(createTableSQL);
+        } catch (SQLException e) {
+            TownsAndNations.getPlugin().getLogger().severe(
+                "Error creating table " + TABLE_NAME + ": " + e.getMessage()
+            );
+        }
     }
 
     public War newWar(TerritoryData attackingTerritory, TerritoryData defendingTerritory) {
@@ -49,7 +70,7 @@ public class WarStorage extends JsonStorage<War>{
 
     private String getNewID(){
         int ID = 0;
-        while(dataMap.containsKey("W"+ID)){
+        while(exists("W"+ID)){
             ID++;
         }
         return "W"+ID;
@@ -57,14 +78,14 @@ public class WarStorage extends JsonStorage<War>{
 
 
     public void territoryDeleted(TerritoryData territoryData) {
-        for(War plannedAttack : dataMap.values()){
+        for(War plannedAttack : getAll().values()){
             if(plannedAttack.isMainAttacker(territoryData) || plannedAttack.isMainDefender(territoryData))
                 plannedAttack.endWar();
         }
     }
 
     public List<War> getWarsOfTerritory(TerritoryData territoryData) {
-        return dataMap.values().stream()
+        return getAll().values().stream()
                 .filter(war -> war.isMainAttacker(territoryData) || war.isMainDefender(territoryData))
                 .toList();
     }

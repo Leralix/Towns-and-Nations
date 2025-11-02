@@ -4,6 +4,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.property.AbstractOwner;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -16,19 +17,24 @@ import org.leralix.tan.storage.typeadapter.EnumMapKeyValueDeserializer;
 import org.leralix.tan.storage.typeadapter.IconAdapter;
 import org.leralix.tan.storage.typeadapter.OwnerDeserializer;
 
-import java.util.LinkedHashMap;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
-public class TownDataStorage extends JsonStorage<TownData>{
+public class TownDataStorage extends DatabaseStorage<TownData>{
 
+    private static final String TABLE_NAME = "tan_towns";
     private static TownDataStorage instance;
 
     private int newTownId;
 
     private TownDataStorage() {
-        super("TAN - Towns.json",
-                new TypeToken<LinkedHashMap<String, TownData>>() {}.getType(),
+        super(TABLE_NAME,
+                TownData.class,
                 new GsonBuilder()
                         .registerTypeAdapter(new TypeToken<Map<ChunkPermissionType, RelationPermission>>() {}.getType(), new EnumMapKeyValueDeserializer<>(ChunkPermissionType.class, RelationPermission.class))
                         .registerTypeAdapter(new TypeToken<Map<TownRelation, List<String>>>() {}.getType(),new EnumMapDeserializer<>(TownRelation.class, new TypeToken<List<String>>(){}.getType()))
@@ -37,14 +43,32 @@ public class TownDataStorage extends JsonStorage<TownData>{
                         .registerTypeAdapter(ICustomIcon.class, new IconAdapter())
                         .setPrettyPrinting()
                         .create());
+        loadNextTownId();
     }
 
     @Override
-    protected void load() {
-        super.load();
+    protected void createTable() {
+        String createTableSQL = """
+            CREATE TABLE IF NOT EXISTS %s (
+                id VARCHAR(255) PRIMARY KEY,
+                data TEXT NOT NULL
+            )
+        """.formatted(TABLE_NAME);
 
+        try (Connection conn = getDatabase().getDataSource().getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(createTableSQL);
+        } catch (SQLException e) {
+            TownsAndNations.getPlugin().getLogger().severe(
+                "Error creating table " + TABLE_NAME + ": " + e.getMessage()
+            );
+        }
+    }
+
+    private void loadNextTownId() {
         int id = 0;
-        for (String cle : dataMap.keySet()) {
+        Map<String, TownData> allTowns = getAll();
+        for (String cle : allTowns.keySet()) {
             try {
                 int newID = Integer.parseInt(cle.substring(1));
                 if (newID > id) {
@@ -94,8 +118,7 @@ public class TownDataStorage extends JsonStorage<TownData>{
 
 
     public void deleteTown(TownData townData) {
-        dataMap.remove(townData.getID());
-        save();
+        delete(townData.getID());
     }
 
 
@@ -109,14 +132,37 @@ public class TownDataStorage extends JsonStorage<TownData>{
 
 
     public int getNumberOfTown() {
-        return dataMap.size();
+        return count();
     }
 
     public boolean isNameUsed(String townName){
-        for (TownData town : dataMap.values()){
-            if(townName.equals(town.getName()))
-                return true;
+        if (townName == null) {
+            return false;
         }
+
+        // Optimized: scan JSON data for name instead of deserializing all objects
+        String selectSQL = "SELECT 1 FROM " + TABLE_NAME + " WHERE json_extract(data, '$.name') = ? LIMIT 1";
+
+        try (Connection conn = getDatabase().getDataSource().getConnection();
+             PreparedStatement ps = conn.prepareStatement(selectSQL)) {
+
+            ps.setString(1, townName);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            // Fallback to the old method if json_extract is not supported
+            TownsAndNations.getPlugin().getLogger().warning(
+                "json_extract not supported, falling back to full scan: " + e.getMessage()
+            );
+
+            for (TownData town : getAll().values()){
+                if(townName.equals(town.getName()))
+                    return true;
+            }
+        }
+
         return false;
     }
 }

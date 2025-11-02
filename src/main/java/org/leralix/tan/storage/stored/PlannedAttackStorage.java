@@ -1,7 +1,7 @@
 package org.leralix.tan.storage.stored;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.storage.typeadapter.WargoalTypeAdapter;
 import org.leralix.tan.war.PlannedAttack;
@@ -9,19 +9,41 @@ import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.CreateAttackData;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
-import java.util.HashMap;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.SQLException;
 
-public class PlannedAttackStorage extends JsonStorage<PlannedAttack> {
+public class PlannedAttackStorage extends DatabaseStorage<PlannedAttack> {
 
+    private static final String TABLE_NAME = "tan_planned_attacks";
     private static PlannedAttackStorage instance;
 
     protected PlannedAttackStorage() {
-        super("TAN - Planned_wars.json",
-                new TypeToken<HashMap<String, PlannedAttack>>(){}.getType(),
+        super(TABLE_NAME,
+                PlannedAttack.class,
                 new GsonBuilder()
                         .registerTypeAdapter(WarGoal.class, new WargoalTypeAdapter())
                         .setPrettyPrinting()
                         .create());
+    }
+
+    @Override
+    protected void createTable() {
+        String createTableSQL = """
+            CREATE TABLE IF NOT EXISTS %s (
+                id VARCHAR(255) PRIMARY KEY,
+                data TEXT NOT NULL
+            )
+        """.formatted(TABLE_NAME);
+
+        try (Connection conn = getDatabase().getDataSource().getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(createTableSQL);
+        } catch (SQLException e) {
+            TownsAndNations.getPlugin().getLogger().severe(
+                "Error creating table " + TABLE_NAME + ": " + e.getMessage()
+            );
+        }
     }
 
     public static PlannedAttackStorage getInstance(){
@@ -46,7 +68,7 @@ public class PlannedAttackStorage extends JsonStorage<PlannedAttack> {
 
     private String getNewID() {
         int ID = 0;
-        while (dataMap.containsKey("W" + ID)) {
+        while (exists("W" + ID)) {
             ID++;
         }
         return "W" + ID;
@@ -72,6 +94,6 @@ public class PlannedAttackStorage extends JsonStorage<PlannedAttack> {
 
     @Override
     public void reset() {
-
+        instance = null;
     }
 }

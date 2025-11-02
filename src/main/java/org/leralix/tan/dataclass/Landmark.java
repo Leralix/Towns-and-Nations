@@ -188,7 +188,8 @@ public class Landmark {
     public void setReward(ItemStack itemOnCursor) {
         this.amount = itemOnCursor.getAmount();
         this.materialName = itemOnCursor.getType().name();
-        LandmarkStorage.getInstance().save();
+        // Save this landmark to database (DatabaseStorage auto-saves on put)
+        LandmarkStorage.getInstance().put(this.ID, this);
     }
 
     public Location getLocation() {

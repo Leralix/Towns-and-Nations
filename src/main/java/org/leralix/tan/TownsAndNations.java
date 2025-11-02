@@ -254,7 +254,7 @@ public class TownsAndNations extends JavaPlugin {
             databaseHandler = new MySqlHandler(
                     constants.getHost(),
                     constants.getPort(),
-                    constants.getDbType(),
+                    constants.getName(),
                     constants.getUser(),
                     constants.getPassword());
         }

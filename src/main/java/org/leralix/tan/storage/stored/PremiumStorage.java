@@ -1,28 +1,50 @@
 package org.leralix.tan.storage.stored;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.utils.constants.Constants;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.SQLException;
 
-public class PremiumStorage extends JsonStorage<Boolean> {
+public class PremiumStorage extends DatabaseStorage<Boolean> {
+
+    private static final String TABLE_NAME = "tan_premium_accounts";
+    private static PremiumStorage instance;
 
     private PremiumStorage() {
-        super("Premium accounts.json",
-                new TypeToken<HashMap<String, Boolean>>() {}.getType(),
+        super(TABLE_NAME,
+                Boolean.class,
                 new GsonBuilder()
                         .setPrettyPrinting()
                         .create());
     }
 
-    private static PremiumStorage instance;
+    @Override
+    protected void createTable() {
+        String createTableSQL = """
+            CREATE TABLE IF NOT EXISTS %s (
+                id VARCHAR(255) PRIMARY KEY,
+                data TEXT NOT NULL
+            )
+        """.formatted(TABLE_NAME);
+
+        try (Connection conn = getDatabase().getDataSource().getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(createTableSQL);
+        } catch (SQLException e) {
+            TownsAndNations.getPlugin().getLogger().severe(
+                "Error creating table " + TABLE_NAME + ": " + e.getMessage()
+            );
+        }
+    }
 
     public static synchronized PremiumStorage getInstance() {
         if (instance == null) {
@@ -43,12 +65,13 @@ public class PremiumStorage extends JsonStorage<Boolean> {
 
         String key = playerName.toLowerCase();
 
-        if (dataMap.containsKey(key)) {
-            return dataMap.get(key);
+        Boolean cachedValue = get(key);
+        if (cachedValue != null) {
+            return cachedValue;
         }
 
         boolean premium = fetchPremium(playerName);
-        dataMap.put(key, premium);
+        put(key, premium);
         return premium;
     }
 

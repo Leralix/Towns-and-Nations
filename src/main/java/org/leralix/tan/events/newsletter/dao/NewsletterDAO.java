@@ -66,7 +66,7 @@ public class NewsletterDAO {
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, newsletter.getId());
+            ps.setString(1, newsletter.getId().toString());
             ps.setString(2, newsletter.getType().name());
             ps.setTimestamp(3, Timestamp.from(Instant.ofEpochMilli(newsletter.getDate())));
             ps.executeUpdate();
@@ -80,11 +80,11 @@ public class NewsletterDAO {
     }
 
     public void markAsRead(UUID newsletterId, UUID playerId) {
-        String sql = "INSERT INTO newsletter_read (newsletter_id, player_id) VALUES (?, ?) ON CONFLICT DO NOTHING";
+        String sql = "INSERT IGNORE INTO newsletter_read (newsletter_id, player_id) VALUES (?, ?)";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, newsletterId);
-            ps.setObject(2, playerId);
+            ps.setString(1, newsletterId.toString());
+            ps.setString(2, playerId.toString());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to add entry in newsletter_read table", e);
@@ -95,8 +95,8 @@ public class NewsletterDAO {
         String sql = "SELECT 1 FROM newsletter_read WHERE newsletter_id = ? AND player_id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, newsletterId);
-            ps.setObject(2, playerId);
+            ps.setString(1, newsletterId.toString());
+            ps.setString(2, playerId.toString());
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next();
             }
@@ -157,7 +157,7 @@ public class NewsletterDAO {
         String sql = "DELETE FROM newsletter WHERE id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, id);
+            ps.setString(1, id.toString());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to remove newsletter", e);

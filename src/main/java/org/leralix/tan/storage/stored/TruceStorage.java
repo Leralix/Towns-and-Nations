@@ -1,21 +1,45 @@
 package org.leralix.tan.storage.stored;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ActiveTruce;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.HashMap;
 
-public class TruceStorage extends JsonStorage<HashMap<String, ActiveTruce>> {
+public class TruceStorage extends DatabaseStorage<HashMap<String, ActiveTruce>> {
 
+    private static final String TABLE_NAME = "tan_truces";
     private static TruceStorage instance;
 
     protected TruceStorage() {
-        super("TAN - Truce.json",
-                new TypeToken<HashMap<String, HashMap<String, ActiveTruce>>>() {}.getType(),
+        super(TABLE_NAME,
+                (Class<HashMap<String, ActiveTruce>>) (Class<?>) HashMap.class,
                 new GsonBuilder().setPrettyPrinting().create());
+    }
+
+    @Override
+    protected void createTable() {
+        String createTableSQL = """
+            CREATE TABLE IF NOT EXISTS %s (
+                id VARCHAR(255) PRIMARY KEY,
+                data TEXT NOT NULL
+            )
+        """.formatted(TABLE_NAME);
+
+        try (Connection conn = getDatabase().getDataSource().getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(createTableSQL);
+        } catch (SQLException e) {
+            TownsAndNations.getPlugin().getLogger().severe(
+                "Error creating table " + TABLE_NAME + ": " + e.getMessage()
+            );
+        }
     }
 
     public static TruceStorage getInstance() {
@@ -26,15 +50,28 @@ public class TruceStorage extends JsonStorage<HashMap<String, ActiveTruce>> {
 
     @Override
     public void reset() {
-        dataMap.clear();
+        instance = null;
     }
 
     public void add(ActiveTruce activeTruce) {
         String id1 = activeTruce.getTerritoryID1();
         String id2 = activeTruce.getTerritoryID2();
 
-        dataMap.computeIfAbsent(id1, k -> new HashMap<>()).put(id2, activeTruce);
-        dataMap.computeIfAbsent(id2, k -> new HashMap<>()).put(id1, activeTruce);
+        // Get or create HashMap for id1
+        HashMap<String, ActiveTruce> map1 = get(id1);
+        if (map1 == null) {
+            map1 = new HashMap<>();
+        }
+        map1.put(id2, activeTruce);
+        put(id1, map1);
+
+        // Get or create HashMap for id2
+        HashMap<String, ActiveTruce> map2 = get(id2);
+        if (map2 == null) {
+            map2 = new HashMap<>();
+        }
+        map2.put(id1, activeTruce);
+        put(id2, map2);
     }
 
 
@@ -42,8 +79,12 @@ public class TruceStorage extends JsonStorage<HashMap<String, ActiveTruce>> {
         String id1 = territoryData1.getID();
         String id2 = territoryData2.getID();
 
+        HashMap<String, ActiveTruce> truceMap = get(id1);
+        if (truceMap == null) {
+            return 0;
+        }
 
-        ActiveTruce truce = dataMap.getOrDefault(id1, new HashMap<>()).get(id2);
+        ActiveTruce truce = truceMap.get(id2);
         if (truce == null) {
             return 0;
         }

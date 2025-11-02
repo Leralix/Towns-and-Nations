@@ -4,6 +4,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -14,12 +15,15 @@ import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.storage.typeadapter.IconAdapter;
 import org.leralix.tan.utils.file.FileUtil;
 
-import java.util.LinkedHashMap;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class RegionDataStorage extends JsonStorage<RegionData> {
+public class RegionDataStorage extends DatabaseStorage<RegionData> {
 
+    private static final String TABLE_NAME = "tan_regions";
     private int nextID;
     private static RegionDataStorage instance;
 
@@ -30,13 +34,43 @@ public class RegionDataStorage extends JsonStorage<RegionData> {
     }
 
     private RegionDataStorage() {
-        super("TAN - Regions.json",
-                new TypeToken<LinkedHashMap<String, RegionData>>() {}.getType(),
+        super(TABLE_NAME,
+                RegionData.class,
                 new GsonBuilder()
                         .registerTypeAdapter(new TypeToken<Map<TownRelation, List<String>>>() {}.getType(),new EnumMapDeserializer<>(TownRelation.class, new TypeToken<List<String>>(){}.getType()))
                         .registerTypeAdapter(ICustomIcon.class, new IconAdapter())
                         .setPrettyPrinting()
                         .create());
+        loadNextID();
+    }
+
+    @Override
+    protected void createTable() {
+        String createTableSQL = """
+            CREATE TABLE IF NOT EXISTS %s (
+                id VARCHAR(255) PRIMARY KEY,
+                data TEXT NOT NULL
+            )
+        """.formatted(TABLE_NAME);
+
+        try (Connection conn = getDatabase().getDataSource().getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(createTableSQL);
+        } catch (SQLException e) {
+            TownsAndNations.getPlugin().getLogger().severe(
+                "Error creating table " + TABLE_NAME + ": " + e.getMessage()
+            );
+        }
+    }
+
+    private void loadNextID() {
+        int id = 0;
+        for (String keys : getAll().keySet()) {
+            int newID =  Integer.parseInt(keys.substring(1));
+            if(newID > id)
+                id = newID;
+        }
+        nextID = id+1;
     }
 
     public RegionData createNewRegion(String name, TownData capital){
@@ -81,17 +115,6 @@ public class RegionDataStorage extends JsonStorage<RegionData> {
         return false;
     }
 
-    @Override
-    public void load() {
-        super.load();
-        int id = 0;
-        for (String keys : getAll().keySet()) {
-            int newID =  Integer.parseInt(keys.substring(1));
-            if(newID > id)
-                id = newID;
-        }
-        nextID = id+1;
-    }
 
     @Override
     public void reset() {

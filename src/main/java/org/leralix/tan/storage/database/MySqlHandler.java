@@ -32,13 +32,14 @@ public class MySqlHandler extends DatabaseHandler {
             throw new RuntimeException(e);
         }
 
+        // Build JDBC URL manually to force connection to the correct database
+        String jdbcUrl = String.format("jdbc:mysql://%s:%d/%s?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC",
+                host, port, databaseName);
+
         MysqlDataSource ds = new MysqlDataSource();
-        ds.setServerName(host);
-        ds.setPort(port);
-        ds.setDatabaseName(databaseName);
+        ds.setURL(jdbcUrl);
         ds.setUser(user);
         ds.setPassword(password);
-        ds.setUseSSL(true);
 
         this.dataSource = ds;
         initialize();

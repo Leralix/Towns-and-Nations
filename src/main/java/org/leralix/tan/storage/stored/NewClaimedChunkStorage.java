@@ -1,28 +1,23 @@
 package org.leralix.tan.storage.stored;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import org.bukkit.Chunk;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.chunk.*;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.lang.reflect.Type;
+import java.sql.*;
 import java.util.*;
 
-public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
+public class NewClaimedChunkStorage extends DatabaseStorage<ClaimedChunk2>{
 
+    private static final String TABLE_NAME = "tan_claimed_chunks";
     private static NewClaimedChunkStorage instance;
 
     private NewClaimedChunkStorage() {
-        super("TAN - Claimed Chunks.json",
-                new TypeToken<HashMap<String, ClaimedChunk2>>() {}.getType(),
+        super(TABLE_NAME,
+                ClaimedChunk2.class,
                 new GsonBuilder()
                         .setPrettyPrinting()
                         .create());
@@ -33,6 +28,25 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
             instance = new NewClaimedChunkStorage();
         }
         return instance;
+    }
+
+    @Override
+    protected void createTable() {
+        String createTableSQL = """
+            CREATE TABLE IF NOT EXISTS %s (
+                id VARCHAR(255) PRIMARY KEY,
+                data TEXT NOT NULL
+            )
+        """.formatted(TABLE_NAME);
+
+        try (Connection conn = getDatabase().getDataSource().getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(createTableSQL);
+        } catch (SQLException e) {
+            TownsAndNations.getPlugin().getLogger().severe(
+                "Error creating table " + TABLE_NAME + ": " + e.getMessage()
+            );
+        }
     }
 
     private static String getChunkKey(Chunk chunk) {
@@ -49,11 +63,11 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
 
 
     public Map<String, ClaimedChunk2> getClaimedChunksMap() {
-        return dataMap;
+        return getAll();
     }
 
     public boolean isChunkClaimed(Chunk chunk) {
-        return dataMap.containsKey(getChunkKey(chunk));
+        return exists(getChunkKey(chunk));
     }
 
     public Collection<TerritoryChunk> getAllChunkFrom(TerritoryData territoryData) {
@@ -62,29 +76,68 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
 
     public Collection<TerritoryChunk> getAllChunkFrom(String territoryDataID) {
         List<TerritoryChunk> chunks = new ArrayList<>();
-        for (ClaimedChunk2 chunk : dataMap.values()) {
-            if (chunk instanceof TerritoryChunk territoryChunk && territoryChunk.getOwnerID().equals(territoryDataID)) {
-                chunks.add(territoryChunk);
+
+        // Optimized: filter in SQL using json_extract
+        String selectSQL = "SELECT id, data FROM " + TABLE_NAME + " WHERE json_extract(data, '$.ownerID') = ?";
+
+        try (Connection conn = getDatabase().getDataSource().getConnection();
+             PreparedStatement ps = conn.prepareStatement(selectSQL)) {
+
+            ps.setString(1, territoryDataID);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String jsonData = rs.getString("data");
+                    ClaimedChunk2 chunk = deserializeChunk(jsonData);
+                    if (chunk instanceof TerritoryChunk territoryChunk) {
+                        chunks.add(territoryChunk);
+                    }
+                }
             }
+            return Collections.unmodifiableCollection(chunks);
+
+        } catch (SQLException e) {
+            TownsAndNations.getPlugin().getLogger().warning(
+                "Error optimized query, falling back to full scan: " + e.getMessage()
+            );
+
+            // Fallback to old method
+            for (ClaimedChunk2 chunk : getAll().values()) {
+                if (chunk instanceof TerritoryChunk territoryChunk && territoryChunk.getOwnerID().equals(territoryDataID)) {
+                    chunks.add(territoryChunk);
+                }
+            }
+            return Collections.unmodifiableCollection(chunks);
         }
-        return Collections.unmodifiableCollection(chunks);
+    }
+
+    /**
+     * Deserialize chunk from JSON with proper type detection
+     */
+    private ClaimedChunk2 deserializeChunk(String jsonData) {
+        // Parse JSON to detect type
+        if (jsonData.contains("\"ownerID\":\"T")) {
+            return gson.fromJson(jsonData, TownClaimedChunk.class);
+        } else if (jsonData.contains("\"ownerID\":\"R")) {
+            return gson.fromJson(jsonData, RegionClaimedChunk.class);
+        } else if (jsonData.contains("\"ownerID\":\"L")) {
+            return gson.fromJson(jsonData, LandmarkClaimedChunk.class);
+        }
+        return gson.fromJson(jsonData, ClaimedChunk2.class);
     }
 
     public TownClaimedChunk claimTownChunk(Chunk chunk, String ownerID) {
         TownClaimedChunk townClaimedChunk = new TownClaimedChunk(chunk, ownerID);
-        dataMap.put(getChunkKey(chunk), townClaimedChunk);
-        save();
+        put(getChunkKey(chunk), townClaimedChunk);
         return townClaimedChunk;
     }
 
     public void claimRegionChunk(Chunk chunk, String ownerID) {
-        dataMap.put(getChunkKey(chunk), new RegionClaimedChunk(chunk, ownerID));
-        save();
+        put(getChunkKey(chunk), new RegionClaimedChunk(chunk, ownerID));
     }
 
     public void claimLandmarkChunk(Chunk chunk, String ownerID) {
-        dataMap.put(getChunkKey(chunk), new LandmarkClaimedChunk(chunk, ownerID));
-        save();
+        put(getChunkKey(chunk), new LandmarkClaimedChunk(chunk, ownerID));
     }
 
     public boolean isAllAdjacentChunksClaimedBySameTerritory(Chunk chunk, String territoryID) {
@@ -96,7 +149,7 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
         );
 
         for (String adjacentChunkKey : adjacentChunkKeys) {
-            ClaimedChunk2 adjacentClaimedChunk = dataMap.get(adjacentChunkKey);
+            ClaimedChunk2 adjacentClaimedChunk = get(adjacentChunkKey);
 
             if (adjacentClaimedChunk == null) {
                 return false;
@@ -121,7 +174,7 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
         );
 
         for (String adjacentChunkKey : adjacentChunkKeys) {
-            ClaimedChunk2 adjacentClaimedChunk = dataMap.get(adjacentChunkKey);
+            ClaimedChunk2 adjacentClaimedChunk = get(adjacentChunkKey);
             if (adjacentClaimedChunk != null && adjacentClaimedChunk.getOwnerID().equals(townID)) {
                 return true;
             }
@@ -135,8 +188,7 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
     }
 
     public void unclaimChunk(ClaimedChunk2 claimedChunk) {
-        dataMap.remove(getChunkKey(claimedChunk));
-        save();
+        delete(getChunkKey(claimedChunk));
     }
 
     public void unclaimChunk(Chunk chunk) {
@@ -172,18 +224,42 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
     }
 
     public void unclaimAllChunkFromID(String id) {
-        Iterator<Map.Entry<String, ClaimedChunk2>> iterator = dataMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, ClaimedChunk2> entry = iterator.next();
-            ClaimedChunk2 chunk = entry.getValue();
-            if (chunk.getOwnerID().equals(id)) {
-                iterator.remove();
+        // Optimized: batch delete using SQL
+        String deleteSQL = "DELETE FROM " + TABLE_NAME + " WHERE json_extract(data, '$.ownerID') = ?";
+
+        try (Connection conn = getDatabase().getDataSource().getConnection();
+             PreparedStatement ps = conn.prepareStatement(deleteSQL)) {
+
+            ps.setString(1, id);
+            int deleted = ps.executeUpdate();
+
+            TownsAndNations.getPlugin().getLogger().info(
+                "Deleted " + deleted + " chunks for territory " + id
+            );
+
+            // Clear cache for this territory (invalidate all since we don't have specific IDs)
+            clearCache();
+
+        } catch (SQLException e) {
+            TownsAndNations.getPlugin().getLogger().warning(
+                "Error in optimized delete, falling back to individual deletes: " + e.getMessage()
+            );
+
+            // Fallback to old method
+            Map<String, ClaimedChunk2> allChunks = getAll();
+            List<String> toDelete = new ArrayList<>();
+            for (Map.Entry<String, ClaimedChunk2> entry : allChunks.entrySet()) {
+                ClaimedChunk2 chunk = entry.getValue();
+                if (chunk.getOwnerID().equals(id)) {
+                    toDelete.add(entry.getKey());
+                }
             }
+            deleteAll(toDelete);
         }
     }
 
     public ClaimedChunk2 get(int x, int z, String worldID) {
-        ClaimedChunk2 claimedChunk = dataMap.get(getChunkKey(x, z, worldID));
+        ClaimedChunk2 claimedChunk = get(getChunkKey(x, z, worldID));
         if (claimedChunk == null) {
             return new WildernessChunk(x, z, worldID);
         }
@@ -191,7 +267,7 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
     }
 
     public @NotNull ClaimedChunk2 get(Chunk chunk) {
-        ClaimedChunk2 claimedChunk = dataMap.get(getChunkKey(chunk));
+        ClaimedChunk2 claimedChunk = get(getChunkKey(chunk));
         if (claimedChunk == null) {
             return new WildernessChunk(chunk);
         }
@@ -199,47 +275,7 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
     }
 
     @Override
-    protected void load() {
-        dataMap = new LinkedHashMap<>();
-        Gson gson = new Gson();
-        File file = getFile("TAN - Claimed Chunks.json");
-        if (file.exists()) {
-            try (FileReader reader = new FileReader(file)) {
-                Type type = new TypeToken<Map<String, JsonObject>>() {}.getType();
-                Map<String, JsonObject> jsonData = gson.fromJson(reader, type);
-
-                for (Map.Entry<String, JsonObject> entry : jsonData.entrySet()) {
-                    JsonObject chunkData = entry.getValue();
-                    JsonObject vector2D = chunkData.getAsJsonObject("vector2D");
-                    int x = vector2D.get("x").getAsInt();
-                    int z = vector2D.get("z").getAsInt();
-                    String worldUUID = vector2D.get("worldID").getAsString();
-
-                    String ownerID = chunkData.get("ownerID").getAsString();
-
-                    if (ownerID.startsWith("T")) {
-                        TownClaimedChunk townChunk = new TownClaimedChunk(x, z, worldUUID, ownerID);
-                        String occupierID = chunkData.has("occupierID") ? chunkData.get("occupierID").getAsString() : ownerID;
-                        townChunk.setOccupierID(occupierID);
-                        dataMap.put(entry.getKey(), townChunk);
-                    } else if (ownerID.startsWith("R")) {
-                        RegionClaimedChunk regionChunk = new RegionClaimedChunk(x, z, worldUUID, ownerID);
-                        String occupierID = chunkData.has("occupierID") ? chunkData.get("occupierID").getAsString() : ownerID;
-                        regionChunk.setOccupierID(occupierID);
-                        dataMap.put(entry.getKey(), regionChunk);
-                    } else if (ownerID.startsWith("L")) {
-                        LandmarkClaimedChunk landmarkClaimedChunk = new LandmarkClaimedChunk(x, z, worldUUID, ownerID);
-                        dataMap.put(entry.getKey(), landmarkClaimedChunk);
-                    }
-                }
-            } catch (IOException e) {
-                TownsAndNations.getPlugin().getLogger().severe("Error while loading claimed chunks stats");
-            }
-        }
-    }
-
-    @Override
     public void reset() {
-        this.dataMap = new HashMap<>();
+        instance = null;
     }
 }

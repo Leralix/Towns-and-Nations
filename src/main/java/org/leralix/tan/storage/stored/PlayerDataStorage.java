@@ -1,6 +1,5 @@
 package org.leralix.tan.storage.stored;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -8,22 +7,27 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.NoPlayerData;
 import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.TownsAndNations;
 
-import java.util.HashMap;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.SQLException;
 import java.util.UUID;
 
-public class PlayerDataStorage extends JsonStorage<ITanPlayer> {
+public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
 
     private static final String ERROR_MESSAGE = "Error while creating player storage";
+    private static final String TABLE_NAME = "tan_players";
 
     private static PlayerDataStorage instance;
 
     private static ITanPlayer NO_PLAYER;
 
     private PlayerDataStorage() {
-        super("TAN - Players.json",
-                new TypeToken<HashMap<String, PlayerData>>() {}.getType(),
+        super(TABLE_NAME,
+                ITanPlayer.class,
                 new GsonBuilder()
+                        .registerTypeAdapter(ITanPlayer.class, new ITanPlayerAdapter())
                         .setPrettyPrinting()
                         .create());
     }
@@ -34,6 +38,25 @@ public class PlayerDataStorage extends JsonStorage<ITanPlayer> {
             NO_PLAYER = new NoPlayerData();
         }
         return instance;
+    }
+
+    @Override
+    protected void createTable() {
+        String createTableSQL = """
+            CREATE TABLE IF NOT EXISTS %s (
+                id VARCHAR(255) PRIMARY KEY,
+                data TEXT NOT NULL
+            )
+        """.formatted(TABLE_NAME);
+
+        try (Connection conn = getDatabase().getDataSource().getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(createTableSQL);
+        } catch (SQLException e) {
+            TownsAndNations.getPlugin().getLogger().severe(
+                "Error creating table " + TABLE_NAME + ": " + e.getMessage()
+            );
+        }
     }
 
 
@@ -64,10 +87,12 @@ public class PlayerDataStorage extends JsonStorage<ITanPlayer> {
         if(id == null)
             return NO_PLAYER;
 
-        ITanPlayer res = dataMap.get(id);
+        // Try to get from database first
+        ITanPlayer res = super.get(id);
         if(res != null)
             return res;
 
+        // If not in database, try to create from online player
         Player newPlayer = Bukkit.getPlayer(UUID.fromString(id));
         if(newPlayer != null){
             return register(newPlayer);

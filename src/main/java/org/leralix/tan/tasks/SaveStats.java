@@ -1,8 +1,6 @@
 package org.leralix.tan.tasks;
 
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.storage.stored.*;
-import org.leralix.tan.utils.FoliaScheduler;
 
 public class SaveStats {
 
@@ -11,20 +9,21 @@ public class SaveStats {
     }
 
     public static void startSchedule() {
-        FoliaScheduler.runTaskTimer(TownsAndNations.getPlugin(), SaveStats::saveAll, 1L, 1200L);
+        // Note: With DatabaseStorage, auto-save is no longer needed
+        // Each put() operation writes directly to the database
+        // This schedule is kept for compatibility but does nothing
+        TownsAndNations.getPlugin().getLogger().info(
+            "SaveStats: Using DatabaseStorage - auto-save on every operation, no periodic save needed"
+        );
     }
 
     public static void saveAll() {
-        RegionDataStorage.getInstance().save();
-        TownDataStorage.getInstance().save();
-        PlayerDataStorage.getInstance().save();
-        NewClaimedChunkStorage.getInstance().save();
-        LandmarkStorage.getInstance().save();
-        PlannedAttackStorage.getInstance().save();
-        WarStorage.getInstance().save();
-        FortStorage.getInstance().save();
-        PremiumStorage.getInstance().save();
-        TruceStorage.getInstance().save();
+        // Note: With DatabaseStorage, this method is obsolete
+        // All data is already persisted in the database on every put() call
+        // No action needed - keeping method for backward compatibility
+        TownsAndNations.getPlugin().getLogger().fine(
+            "SaveStats.saveAll() called but not needed with DatabaseStorage (auto-saves on every operation)"
+        );
     }
 
 }

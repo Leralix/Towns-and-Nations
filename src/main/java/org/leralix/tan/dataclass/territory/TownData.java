@@ -96,7 +96,8 @@ public class TownData extends TerritoryData {
         EventManager.getInstance().callEvent(new PlayerJoinTownAcceptedInternalEvent(tanNewPlayer, this));
         TeamUtils.updateAllScoreboardColor();
         PrefixUtil.updatePrefix(tanNewPlayer.getPlayer());
-        TownDataStorage.getInstance().save();
+        // Save this town to database (DatabaseStorage auto-saves on put)
+        TownDataStorage.getInstance().put(getID(), this);
     }
 
     public void removePlayer(String tanPlayerID) {
@@ -111,7 +112,8 @@ public class TownData extends TerritoryData {
         getRank(tanPlayer).removePlayer(tanPlayer);
         townPlayerListId.remove(tanPlayer.getID());
         tanPlayer.leaveTown();
-        TownDataStorage.getInstance().save();
+        // Save this town to database (DatabaseStorage auto-saves on put)
+        TownDataStorage.getInstance().put(getID(), this);
         PrefixUtil.updatePrefix(tanPlayer.getPlayer());
     }
 
