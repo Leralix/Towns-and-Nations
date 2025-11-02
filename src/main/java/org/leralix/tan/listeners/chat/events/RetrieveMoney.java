@@ -20,7 +20,7 @@ public class RetrieveMoney extends ChatListenerEvent {
     public boolean execute(Player player, String message) {
 
         Double amount = parseStringToDouble(message);
-        if(amount == null){
+        if(amount == null || amount <= 0){
             TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(player));
             return false;
         }
