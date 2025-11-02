@@ -21,10 +21,10 @@ import java.util.List;
 public class TerritoryTaxTransaction extends AbstractTransaction {
 
 
-    private String senderID;
-    private String recieverID;
-    private double amount;
-    private boolean enoughMoney;
+    private final String senderID;
+    private final String recieverID;
+    private final double amount;
+    private final boolean enoughMoney;
 
     public TerritoryTaxTransaction(String senderID, String recieverID, double amount, boolean enoughMoney){
         this.senderID = senderID;
@@ -33,20 +33,7 @@ public class TerritoryTaxTransaction extends AbstractTransaction {
         this.enoughMoney = enoughMoney;
     }
 
-    public TransactionType getType(){
-        return TransactionType.TAXES;
-    }
-
-    @Override
-    public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
-        return iconManager.get(IconKey.BUDGET_ICON)
-                .setName("Donation")
-                .setDescription(Lang.DONATION_PAYMENT_HISTORY_LORE.get(senderID + " - " + recieverID, Double.toString(amount)))
-                .asGuiItem(player, langType);
-    }
-
-    @Override
-    protected void fromResultSet(ResultSet rs) throws SQLException {
+    public TerritoryTaxTransaction(ResultSet rs) throws SQLException {
         long timestamp = rs.getLong("timestamp");
         this.localDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
         this.senderID = rs.getString("sender_id");
@@ -55,9 +42,25 @@ public class TerritoryTaxTransaction extends AbstractTransaction {
         this.enoughMoney = rs.getBoolean("enough_money");
     }
 
+    public TransactionType getType(){
+        return TransactionType.TERRITORY_TAX;
+    }
+
+    @Override
+    public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
+        return iconManager.get(IconKey.TERRITORY_TAX_ICON)
+                .setName(Lang.DONATION_TRANSACTION_NAME.get(langType))
+                .setDescription(
+                        Lang.TRANSACTION_FROM.get(getTerritoryName(senderID)),
+                        Lang.TRANSACTION_TO.get(getPlayerName(recieverID)),
+                        Lang.TRANSACTION_AMOUNT.get(Double.toString(amount))
+                )
+                .asGuiItem(player, langType);
+    }
+
     @Override
     public String getInsertSQL() {
-        return "INSERT INTO transaction_taxes (timestamp, sender_id, receiver_id, amount, enough_money) VALUES (?, ?, ?, ?, ?)";
+        return "INSERT INTO transaction_territory_taxes (timestamp, sender_id, receiver_id, amount, enough_money) VALUES (?, ?, ?, ?, ?)";
     }
 
     @Override

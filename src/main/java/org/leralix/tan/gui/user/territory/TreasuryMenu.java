@@ -67,7 +67,7 @@ public class TreasuryMenu extends BasicGui {
                 .setName(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY)
                 .setAction(action ->
-                        new TerritoryTransactionHistory(player, territoryData)
+                        new TerritoryTransactionHistory(player, territoryData, p -> open())
                 )
                 .asGuiItem(player, langType);
     }

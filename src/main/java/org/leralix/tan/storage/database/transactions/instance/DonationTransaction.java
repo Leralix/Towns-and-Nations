@@ -22,14 +22,22 @@ import java.util.List;
 public class DonationTransaction extends AbstractTransaction {
 
 
-    private String playerID;
-    private String territoryID;
-    private double amount;
+    private final String playerID;
+    private final String territoryID;
+    private final double amount;
 
     public DonationTransaction(TerritoryData territoryData, Player player, double amount){
-        this.playerID = territoryData.getID();
-        this.territoryID = player.getUniqueId().toString();
+        this.playerID = player.getUniqueId().toString();
+        this.territoryID = territoryData.getID();
         this.amount = amount;
+    }
+
+    public DonationTransaction(ResultSet rs) throws SQLException {
+        long timestamp = rs.getLong("timestamp");
+        this.localDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+        this.territoryID = rs.getString("territory_id");
+        this.playerID = rs.getString("player_id");
+        this.amount = rs.getDouble("amount");
     }
 
     public TransactionType getType(){
@@ -38,24 +46,19 @@ public class DonationTransaction extends AbstractTransaction {
 
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
-        return iconManager.get(IconKey.BUDGET_ICON)
-                .setName("Donation")
-                .setDescription(Lang.DONATION_PAYMENT_HISTORY_LORE.get(playerID + " - " + territoryID, Double.toString(amount)))
+        return iconManager.get(IconKey.DONATION_TRANSACTION)
+                .setName(Lang.DONATION_TRANSACTION_NAME.get(langType))
+                .setDescription(
+                        Lang.TRANSACTION_FROM.get(getPlayerName(playerID)),
+                        Lang.TRANSACTION_TO.get(getTerritoryName(territoryID)),
+                        Lang.TRANSACTION_AMOUNT.get(Double.toString(amount))
+                )
                 .asGuiItem(player, langType);
     }
 
     @Override
-    protected void fromResultSet(ResultSet rs) throws SQLException {
-        long timestamp = rs.getLong("timestamp");
-        this.localDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
-        this.territoryID = rs.getString("territory_id");
-        this.playerID = rs.getString("player_id");
-        this.amount = rs.getDouble("amount");
-    }
-
-    @Override
     public String getInsertSQL() {
-        return "INSERT INTO transaction_payment (timestamp, territory_id, player_id, amount) VALUES (?, ?, ?, ?)";
+        return "INSERT INTO transaction_donation (timestamp, territory_id, player_id, amount) VALUES (?, ?, ?, ?)";
     }
 
     @Override

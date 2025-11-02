@@ -162,8 +162,8 @@ GUI_NON_AGGRESSION_PACT_ICON: "minecraft:WRITABLE_BOOK"
 GUI_ALLIANCE_ICON: "minecraft:CAMPFIRE"
 GUI_PROPOSALS_ICON: "minecraft:PAPER"
 
-GUI_REMOVE_TERRITORY_ICON : "https://textures.minecraft.net/texture/4e4b8b8d2362c864e062301487d94d3272a6b570afbf80c2c5b148c954579d46"
-GUI_ADD_TERRITORY_ICON : "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1"
+GUI_REMOVE_TERRITORY_ICON: "https://textures.minecraft.net/texture/4e4b8b8d2362c864e062301487d94d3272a6b570afbf80c2c5b148c954579d46"
+GUI_ADD_TERRITORY_ICON: "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1"
 
 #Wars
 #War settings menu
@@ -203,3 +203,12 @@ LEFT_ARROW: "http://textures.minecraft.net/texture/542fde8b82e8c1b8c22b22679983f
 UP_ARROW: "http://textures.minecraft.net/texture/14a5667ef7285c9225fc267d45117eab5478c786bd5af0a199c29a2c14c1f"
 DOWN_ARROW: "http://textures.minecraft.net/texture/d1b62db5c0a3fa1ef441bf7044f511be58bedf9b6731853e50ce90cd44fb69"
 LEVEL_UP_ICON: "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1"
+
+#Transaction
+DONATION_TRANSACTION: "minecraft:GOLD_INGOT"
+PAYMENT_TRANSACTION: "minecraft:PAPER"
+PLAYER_TAX_TRANSACTION: "https://textures.minecraft.net/texture/63d02cdc075bb1cc5f6fe3c7711ae4977e38b910d50ed6023df73913e5e7fcff"
+WITHDRAWAL_TRANSACTION: "minecraft:IRON_INGOT"
+SALARY_TRANSACTION: "minecraft:EMERALD"
+TERRITORY_TAX_ICON: "https://textures.minecraft.net/texture/49c1832e4ef5c4ad9c519d194b1985030d257914334aaf2745c9dfd611d6d61d"
+UPGRADE_REQUIREMENT: "https://textures.minecraft.net/texture/fbe529ab6b2ea7c50d9192d89f898fd7da8a9e750d378295df73205e7a7eeae0"

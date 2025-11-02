@@ -22,16 +22,25 @@ import java.util.List;
 public class PlayerTaxTransaction extends AbstractTransaction {
 
 
-    private String playerID;
-    private String townID;
-    private double amount;
-    private boolean enoughMoney;
+    private final String playerID;
+    private final String townID;
+    private final double amount;
+    private final boolean enoughMoney;
 
     public PlayerTaxTransaction(TerritoryData territoryData, String playerID, double amount, boolean enoughMoney){
-        this.playerID = territoryData.getID();
-        this.townID = playerID;
+        this.playerID = playerID;
+        this.townID = territoryData.getID();
         this.amount = amount;
         this.enoughMoney = enoughMoney;
+    }
+
+    public PlayerTaxTransaction(ResultSet rs) throws SQLException {
+        long timestamp = rs.getLong("timestamp");
+        this.localDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+        this.townID = rs.getString("territory_id");
+        this.playerID = rs.getString("player_id");
+        this.amount = rs.getDouble("amount");
+        this.enoughMoney = rs.getBoolean("enough_money");
     }
 
     public TransactionType getType(){
@@ -40,20 +49,14 @@ public class PlayerTaxTransaction extends AbstractTransaction {
 
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
-        return iconManager.get(IconKey.BUDGET_ICON)
-                .setName("Donation")
-                .setDescription(Lang.DONATION_PAYMENT_HISTORY_LORE.get(playerID + " - " + townID, Double.toString(amount)))
+        return iconManager.get(IconKey.PLAYER_TAX_TRANSACTION)
+                .setName(Lang.PLAYER_TAX_TRANSACTION.get(langType))
+                .setDescription(
+                        Lang.TRANSACTION_FROM.get(getPlayerName(playerID)),
+                        Lang.TRANSACTION_TO.get(getTerritoryName(townID)),
+                        Lang.TRANSACTION_AMOUNT.get(Double.toString(amount))
+                )
                 .asGuiItem(player, langType);
-    }
-
-    @Override
-    protected void fromResultSet(ResultSet rs) throws SQLException {
-        long timestamp = rs.getLong("timestamp");
-        this.localDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
-        this.townID = rs.getString("territory_id");
-        this.playerID = rs.getString("player_id");
-        this.amount = rs.getDouble("amount");
-        this.enoughMoney = rs.getBoolean("enough_money");
     }
 
     @Override

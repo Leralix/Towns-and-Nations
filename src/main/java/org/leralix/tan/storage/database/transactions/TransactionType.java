@@ -47,7 +47,8 @@ public enum TransactionType {
             timestamp TIMESTAMP NOT NULL,
             territory_id BIGINT NOT NULL,
             player_id BIGINT NOT NULL,
-            amount DOUBLE PRECISION NOT NULL
+            amount DOUBLE PRECISION NOT NULL,
+            enough_money SMALLINT NOT NULL CHECK (enough_money IN (0, 1))
         );
     """),
     SALARY(Lang.SALARY_TRANSACTION_SCOPE, "transaction_salary",
@@ -102,7 +103,7 @@ public enum TransactionType {
             tax_percentage DOUBLE PRECISION NOT NULL
         );
     """),
-    UPGRADE(Lang.UPGRADE_TRANSACTION_SCOPE, "transaction_upgrade",
+    UPGRADE(Lang.UPGRADE_TRANSACTION_SCOPE, "transaction_upgrades",
         """
             id %s,
             timestamp TIMESTAMP NOT NULL,
@@ -112,13 +113,14 @@ public enum TransactionType {
             amount DOUBLE PRECISION NOT NULL
         );
     """),
-    TERRITORY_TAX(Lang.TAXES_TRANSACTION_SCOPE, "transaction_territory_taxes",
+    TERRITORY_TAX(Lang.TERRITORY_TAXES_TRANSACTION_SCOPE, "transaction_territory_taxes",
             """
                 id %s,
                 timestamp TIMESTAMP NOT NULL,
                 sender_id BIGINT NOT NULL,
                 receiver_id BIGINT NOT NULL,
-                amount DOUBLE PRECISION NOT NULL
+                amount DOUBLE PRECISION NOT NULL,
+                enough_money SMALLINT NOT NULL CHECK (enough_money IN (0, 1))
             );
         """)
     ;

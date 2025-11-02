@@ -1,35 +1,34 @@
 package org.leralix.tan.gui.user.territory.history;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.storage.database.transactions.EntityScope;
 import org.leralix.tan.storage.database.transactions.TransactionType;
 
 import java.util.function.Consumer;
 
-public class TerritoryTransactionHistory extends AbstractTerritoryTransactionHistory {
+public class PlayerTransactionHistory extends AbstractTerritoryTransactionHistory {
 
-    private final TerritoryData territoryData;
+    private final ITanPlayer playerData;
 
-    public TerritoryTransactionHistory(
+    public PlayerTransactionHistory(
             Player player,
-            TerritoryData territoryData,
+            ITanPlayer playerData,
             Consumer<Player> guiCallback
     ){
         super(player, guiCallback);
-        this.territoryData = territoryData;
+        this.playerData = playerData;
         open();
     }
 
-    public TerritoryTransactionHistory(
+    public PlayerTransactionHistory(
             Player player,
-            TerritoryData territoryData,
+            ITanPlayer playerData,
             TransactionType transactionType,
             Consumer<Player> guiCallback
     ){
         super(player, guiCallback, transactionType);
-        this.territoryData = territoryData;
-        open();
+        this.playerData = playerData;
     }
 
 
@@ -40,6 +39,6 @@ public class TerritoryTransactionHistory extends AbstractTerritoryTransactionHis
 
     @Override
     protected String getID() {
-        return territoryData.getID();
+        return playerData.getID();
     }
 }

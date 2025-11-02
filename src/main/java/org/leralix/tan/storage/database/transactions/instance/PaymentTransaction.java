@@ -21,14 +21,22 @@ import java.util.List;
 public class PaymentTransaction extends AbstractTransaction {
 
 
-    private String senderID;
-    private String receiverID;
-    private double amount;
+    private final String senderID;
+    private final String receiverID;
+    private final double amount;
 
     public PaymentTransaction(String senderID, String receiverID, double amount){
         this.senderID = senderID;
         this.receiverID = receiverID;
         this.amount = amount;
+    }
+
+    public PaymentTransaction(ResultSet rs) throws SQLException {
+        long timestamp = rs.getLong("timestamp");
+        this.localDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+        this.senderID = rs.getString("sender_id");
+        this.receiverID = rs.getString("receiver_id");
+        this.amount = rs.getDouble("amount");
     }
 
     public TransactionType getType(){
@@ -37,20 +45,17 @@ public class PaymentTransaction extends AbstractTransaction {
 
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
-        return iconManager.get(IconKey.PLAYER_HEAD_ICON)
-                .setName("Donation")
-                .setDescription(Lang.DONATION_PAYMENT_HISTORY_LORE.get(senderID + " - " + receiverID, Double.toString(amount)))
+        return iconManager.get(IconKey.PAYMENT_TRANSACTION)
+                .setName(Lang.PAYMENT_TRANSACTION_NAME.get(langType))
+                .setDescription(
+                        Lang.TRANSACTION_FROM.get(getPlayerName(senderID)),
+                        Lang.TRANSACTION_TO.get(getPlayerName(receiverID)),
+                        Lang.TRANSACTION_AMOUNT.get(Double.toString(amount))
+                )
                 .asGuiItem(player, langType);
     }
 
-    @Override
-    protected void fromResultSet(ResultSet rs) throws SQLException {
-        long timestamp = rs.getLong("timestamp");
-        this.localDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
-        this.senderID = rs.getString("sender_id");
-        this.receiverID = rs.getString("receiver_id");
-        this.amount = rs.getDouble("amount");
-    }
+
 
     @Override
     public String getInsertSQL() {

@@ -21,14 +21,22 @@ import java.util.List;
 public class SalaryTransaction extends AbstractTransaction {
 
 
-    private String territoryID;
-    private String playerID;
-    private double amount;
+    private final String territoryID;
+    private final String playerID;
+    private final double amount;
 
     public SalaryTransaction(String territoryID, String playerID, double amount){
         this.territoryID = territoryID;
         this.playerID = playerID;
         this.amount = amount;
+    }
+
+    public SalaryTransaction(ResultSet rs) throws SQLException {
+        long timestamp = rs.getLong("timestamp");
+        this.localDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+        this.playerID = rs.getString("player_id");
+        this.territoryID = rs.getString("territory_id");
+        this.amount = rs.getDouble("amount");
     }
 
     public TransactionType getType(){
@@ -37,24 +45,19 @@ public class SalaryTransaction extends AbstractTransaction {
 
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
-        return iconManager.get(IconKey.PLAYER_HEAD_ICON)
-                .setName("Donation")
-                .setDescription(Lang.DONATION_PAYMENT_HISTORY_LORE.get(territoryID + " - " + playerID, Double.toString(amount)))
+        return iconManager.get(IconKey.SALARY_TRANSACTION)
+                .setName(Lang.SALARY_TRANSACTION_NAME.get(langType))
+                .setDescription(
+                        Lang.TRANSACTION_FROM.get(getTerritoryName(territoryID)),
+                        Lang.TRANSACTION_TO.get(getPlayerName(playerID)),
+                        Lang.TRANSACTION_AMOUNT.get(Double.toString(amount))
+                )
                 .asGuiItem(player, langType);
     }
 
     @Override
-    protected void fromResultSet(ResultSet rs) throws SQLException {
-        long timestamp = rs.getLong("timestamp");
-        this.localDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
-        this.playerID = rs.getString("player_id");
-        this.territoryID = rs.getString("territory_id");
-        this.amount = rs.getDouble("amount");
-    }
-
-    @Override
     public String getInsertSQL() {
-        return "INSERT INTO transaction_retrieve (timestamp, player_id, territory_id, amount) VALUES (?, ?, ?, ?)";
+        return "INSERT INTO transaction_salary (timestamp, player_id, territory_id, amount) VALUES (?, ?, ?, ?)";
     }
 
     @Override

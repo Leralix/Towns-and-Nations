@@ -157,11 +157,11 @@ public class NewUpgradeStorage {
         }
     }
 
-    public Upgrade getUpgradeByName(TerritoryData territoryData, String name) {
+    public Upgrade getUpgrade(TerritoryData territoryData, String id) {
         if(territoryData instanceof RegionData){
-            return regionUpgrades.get(name);
+            return regionUpgrades.get(id);
         }
-        return townUpgrades.get(name);
+        return townUpgrades.get(id);
     }
 
     public Collection<Upgrade> getUpgrades(StatsType statsType) {
@@ -178,5 +178,4 @@ public class NewUpgradeStorage {
         }
         return getUpgrades(StatsType.TOWN);
     }
-
 }
