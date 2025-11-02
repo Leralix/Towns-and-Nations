@@ -32,6 +32,8 @@ public interface ITanPlayer {
 
     String getTownId();
 
+    String getTownName();
+
     TownData getTown();
 
     boolean hasTown();
@@ -49,6 +51,8 @@ public interface ITanPlayer {
     boolean hasRegion();
 
     RegionData getRegion();
+
+    String getNationName();
 
     UUID getUUID();
 

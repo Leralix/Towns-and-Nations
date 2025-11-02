@@ -71,6 +71,12 @@ public class CommandBlocker implements Listener {
 
             ITanPlayer senderData = PlayerDataStorage.getInstance().get(sender);
             ITanPlayer receiverData = PlayerDataStorage.getInstance().get(receiver);
+
+            // Validate player data exists
+            if (senderData == null || receiverData == null) {
+                continue;
+            }
+
             TownRelation worstRelationWithPlayer = senderData.getRelationWithPlayer(receiverData);
             if(Constants.getRelationConstants(worstRelationWithPlayer).getBlockedCommands().contains(blackListedCommand)){
                 LangType lang = senderData.getLang();
@@ -82,10 +88,16 @@ public class CommandBlocker implements Listener {
     }
 
     private static boolean isPlayerInAnAttack(Player player, String inputCommand) {
+        ITanPlayer playerData = PlayerDataStorage.getInstance().get(player);
 
-        if(PlayerDataStorage.getInstance().get(player).getAttackInvolvedIn().isEmpty()){
+        // Validate player data exists
+        if (playerData == null) {
+            return false;
+        }
+
+        if(!playerData.getAttackInvolvedIn().isEmpty()){
             for(String blackListedCommands : Constants.getBlacklistedCommandsDuringAttacks()){
-                if(blackListedCommands.startsWith(inputCommand)){
+                if(inputCommand.startsWith(blackListedCommands)){
                     return true;
                 }
             }

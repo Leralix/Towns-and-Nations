@@ -82,16 +82,27 @@ public abstract class DatabaseHandler {
     }
 
     public void deleteOldHistory(int nbDays, TransactionHistoryEnum type) {
-        String deleteSQL = """
-        DELETE FROM territoryTransactionHistory
-        WHERE date < DATE('now', '-' || ? || ' days')
-        AND type != ?
-    """;
+        String deleteSQL;
+
+        if (isMySQL()) {
+            deleteSQL = """
+            DELETE FROM territoryTransactionHistory
+            WHERE date < DATE_SUB(NOW(), INTERVAL ? DAY)
+            AND type != ?
+        """;
+        } else {
+            deleteSQL = """
+            DELETE FROM territoryTransactionHistory
+            WHERE date < DATE('now', '-' || ? || ' days')
+            AND type != ?
+        """;
+        }
 
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(deleteSQL)) {
             preparedStatement.setInt(1, nbDays);
             preparedStatement.setString(2, type.toString());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             TownsAndNations.getPlugin().getLogger().severe("Error while deleting old history : " + e.getMessage());
         }
@@ -130,6 +141,41 @@ public abstract class DatabaseHandler {
 
     public DataSource getDataSource() {
         return dataSource;
+    }
+
+    /**
+     * Check if the database is MySQL
+     * @return true if MySQL, false if SQLite
+     */
+    public boolean isMySQL() {
+        return this instanceof MySqlHandler;
+    }
+
+    /**
+     * Validate table name to prevent SQL injection
+     * @param tableName The table name to validate
+     * @return true if valid, false otherwise
+     */
+    private boolean isValidTableName(String tableName) {
+        // Table names should only contain alphanumeric characters and underscores
+        return tableName != null && tableName.matches("^[a-zA-Z0-9_]+$");
+    }
+
+    /**
+     * Get the appropriate UPSERT SQL statement based on database type
+     * @param tableName The table name
+     * @return The UPSERT SQL statement
+     * @throws IllegalArgumentException if table name is invalid
+     */
+    public String getUpsertSQL(String tableName) {
+        if (!isValidTableName(tableName)) {
+            throw new IllegalArgumentException("Invalid table name: " + tableName);
+        }
+        if (isMySQL()) {
+            return "INSERT INTO " + tableName + " (id, data) VALUES (?, ?) ON DUPLICATE KEY UPDATE data = VALUES(data)";
+        } else {
+            return "INSERT OR REPLACE INTO " + tableName + " (id, data) VALUES (?, ?)";
+        }
     }
 
 }

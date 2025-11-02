@@ -4,8 +4,8 @@ main: org.leralix.tan.TownsAndNations
 api-version: "1.19"
 folia-supported: true
 authors: [ Leralix ]
-depend: [SphereLib, Vault]
-softdepend: [PlaceholderAPI, WorldGuard]
+depend: [SphereLib]
+softdepend: [PlaceholderAPI, WorldGuard, Vault]
 description: A town plugin with roleplay elements
 commands:
   tan:

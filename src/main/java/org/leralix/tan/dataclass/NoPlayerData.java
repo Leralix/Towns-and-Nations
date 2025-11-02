@@ -57,6 +57,11 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
+    public String getTownName() {
+        return null;
+    }
+
+    @Override
     public TownData getTown() {
         return null;
     }
@@ -103,6 +108,11 @@ public class NoPlayerData implements ITanPlayer {
 
     @Override
     public UUID getUUID() {
+        return null;
+    }
+
+    @Override
+    public String getNationName() {
         return null;
     }
 

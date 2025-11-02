@@ -88,6 +88,14 @@ public class PlayerData implements ITanPlayer {
         return this.TownId;
     }
 
+    @Override
+    public String getTownName() {
+        if (hasTown()) {
+            return getTown().getName();
+        }
+        return null;
+    }
+
     public TownData getTown() {
         return TownDataStorage.getInstance().get(this.TownId);
     }
@@ -133,6 +141,14 @@ public class PlayerData implements ITanPlayer {
         if (!hasRegion())
             return null;
         return getTown().getRegion();
+    }
+
+    @Override
+    public String getNationName() {
+        if (hasRegion()) {
+            return getRegion().getName();
+        }
+        return null;
     }
 
     public UUID getUUID() {

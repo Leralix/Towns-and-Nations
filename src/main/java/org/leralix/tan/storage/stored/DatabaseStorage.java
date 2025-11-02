@@ -109,46 +109,69 @@ public abstract class DatabaseStorage<T> {
             return null;
         }
 
-        // Check cache first
+        // Check cache first (with double-checked locking pattern for better performance)
         if (cacheEnabled && cache != null) {
+            T cached = cache.get(id);
+            if (cached != null) {
+                return cached;
+            }
+
+            // Synchronize on the cache to prevent multiple threads from loading the same data
             synchronized (cache) {
-                T cached = cache.get(id);
+                // Double-check: another thread might have loaded it while we were waiting
+                cached = cache.get(id);
                 if (cached != null) {
                     return cached;
                 }
+
+                // Load from database and cache it
+                T object = loadFromDatabase(id);
+                if (object != null) {
+                    cache.put(id, object);
+                }
+                return object;
             }
         }
 
+        // Cache disabled, just load from database
+        return loadFromDatabase(id);
+    }
+
+    /**
+     * Load an object from the database (internal method, not cached)
+     * @param id The ID of the object
+     * @return The object, or null if not found
+     */
+    private T loadFromDatabase(String id) {
         String selectSQL = "SELECT data FROM " + tableName + " WHERE id = ?";
 
-        try (Connection conn = getDatabase().getDataSource().getConnection();
-             PreparedStatement ps = conn.prepareStatement(selectSQL)) {
+        try (Connection conn = getDatabase().getDataSource().getConnection()) {
+            // Validate connection
+            if (conn == null || conn.isClosed()) {
+                TownsAndNations.getPlugin().getLogger().severe(
+                    "Database connection is null or closed for " + typeClass.getSimpleName()
+                );
+                return null;
+            }
 
-            ps.setString(1, id);
+            try (PreparedStatement ps = conn.prepareStatement(selectSQL)) {
+                ps.setString(1, id);
 
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    String jsonData = rs.getString("data");
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        String jsonData = rs.getString("data");
 
-                    if (typeToken.equals(ITanPlayer.class)) {
-                        com.google.gson.JsonElement jsonElement = com.google.gson.JsonParser.parseString(jsonData);
-                        if (jsonElement.isJsonObject()) {
-                            com.google.gson.JsonObject jsonObject = jsonElement.getAsJsonObject();
-                            jsonObject.addProperty("uuid", id);
-                            jsonData = jsonObject.toString();
+                        if (typeToken.equals(ITanPlayer.class)) {
+                            com.google.gson.JsonElement jsonElement = com.google.gson.JsonParser.parseString(jsonData);
+                            if (jsonElement.isJsonObject()) {
+                                com.google.gson.JsonObject jsonObject = jsonElement.getAsJsonObject();
+                                jsonObject.addProperty("uuid", id);
+                                jsonData = jsonObject.toString();
+                            }
                         }
+
+                        return gson.fromJson(jsonData, typeToken);
                     }
-
-                    T object = gson.fromJson(jsonData, typeToken);
-
-                    // Add to cache
-                    if (cacheEnabled && cache != null && object != null) {
-                        synchronized (cache) {
-                            cache.put(id, object);
-                        }
-                    }
-
-                    return object;
                 }
             }
         } catch (SQLException | JsonSyntaxException e) {
@@ -231,7 +254,7 @@ public abstract class DatabaseStorage<T> {
         }
 
         String jsonData = gson.toJson(obj, typeToken);
-        String upsertSQL = "INSERT INTO " + tableName + " (id, data) VALUES (?, ?) ON DUPLICATE KEY UPDATE data = VALUES(data)";
+        String upsertSQL = getDatabase().getUpsertSQL(tableName);
 
         try (Connection conn = getDatabase().getDataSource().getConnection();
              PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
@@ -263,33 +286,50 @@ public abstract class DatabaseStorage<T> {
             return;
         }
 
-        String upsertSQL = "INSERT INTO " + tableName + " (id, data) VALUES (?, ?) ON DUPLICATE KEY UPDATE data = VALUES(data)";
+        String upsertSQL = getDatabase().getUpsertSQL(tableName);
+        Connection conn = null;
 
-        try (Connection conn = getDatabase().getDataSource().getConnection();
-             PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
-
+        try {
+            conn = getDatabase().getDataSource().getConnection();
             conn.setAutoCommit(false);
 
-            for (Map.Entry<String, T> entry : objects.entrySet()) {
-                String id = entry.getKey();
-                T obj = entry.getValue();
+            try (PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
+                for (Map.Entry<String, T> entry : objects.entrySet()) {
+                    String id = entry.getKey();
+                    T obj = entry.getValue();
 
-                if (id != null && obj != null) {
-                    String jsonData = gson.toJson(obj, typeToken);
-                    ps.setString(1, id);
-                    ps.setString(2, jsonData);
-                    ps.addBatch();
+                    if (id != null && obj != null) {
+                        String jsonData = gson.toJson(obj, typeToken);
+                        ps.setString(1, id);
+                        ps.setString(2, jsonData);
+                        ps.addBatch();
+                    }
                 }
-            }
 
-            ps.executeBatch();
-            conn.commit();
-            conn.setAutoCommit(true);
+                ps.executeBatch();
+                conn.commit();
 
-            // Update cache
-            if (cacheEnabled && cache != null) {
-                synchronized (cache) {
-                    cache.putAll(objects);
+                // Update cache
+                if (cacheEnabled && cache != null) {
+                    synchronized (cache) {
+                        cache.putAll(objects);
+                    }
+                }
+
+            } catch (SQLException e) {
+                try {
+                    if (conn != null) {
+                        conn.rollback();
+                    }
+                } catch (SQLException rollbackEx) {
+                    TownsAndNations.getPlugin().getLogger().severe(
+                        "Error rolling back transaction for " + typeClass.getSimpleName() + ": " + rollbackEx.getMessage()
+                    );
+                }
+                throw e;
+            } finally {
+                if (conn != null) {
+                    conn.setAutoCommit(true);
                 }
             }
 
@@ -297,6 +337,16 @@ public abstract class DatabaseStorage<T> {
             TownsAndNations.getPlugin().getLogger().severe(
                 "Error batch storing " + typeClass.getSimpleName() + " objects: " + e.getMessage()
             );
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    TownsAndNations.getPlugin().getLogger().warning(
+                        "Error closing connection: " + e.getMessage()
+                    );
+                }
+            }
         }
     }
 
@@ -337,28 +387,61 @@ public abstract class DatabaseStorage<T> {
         }
 
         String deleteSQL = "DELETE FROM " + tableName + " WHERE id = ?";
+        Connection conn = null;
 
-        try (Connection conn = getDatabase().getDataSource().getConnection();
-             PreparedStatement ps = conn.prepareStatement(deleteSQL)) {
-
+        try {
+            conn = getDatabase().getDataSource().getConnection();
             conn.setAutoCommit(false);
 
-            for (String id : ids) {
-                if (id != null) {
-                    ps.setString(1, id);
-                    ps.addBatch();
-                    invalidateCache(id);
+            try (PreparedStatement ps = conn.prepareStatement(deleteSQL)) {
+                for (String id : ids) {
+                    if (id != null) {
+                        ps.setString(1, id);
+                        ps.addBatch();
+                    }
+                }
+
+                ps.executeBatch();
+                conn.commit();
+
+                // Invalidate cache only after successful commit
+                for (String id : ids) {
+                    if (id != null) {
+                        invalidateCache(id);
+                    }
+                }
+
+            } catch (SQLException e) {
+                try {
+                    if (conn != null) {
+                        conn.rollback();
+                    }
+                } catch (SQLException rollbackEx) {
+                    TownsAndNations.getPlugin().getLogger().severe(
+                        "Error rolling back transaction for " + typeClass.getSimpleName() + ": " + rollbackEx.getMessage()
+                    );
+                }
+                throw e;
+            } finally {
+                if (conn != null) {
+                    conn.setAutoCommit(true);
                 }
             }
-
-            ps.executeBatch();
-            conn.commit();
-            conn.setAutoCommit(true);
 
         } catch (SQLException e) {
             TownsAndNations.getPlugin().getLogger().severe(
                 "Error batch deleting " + typeClass.getSimpleName() + " objects: " + e.getMessage()
             );
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    TownsAndNations.getPlugin().getLogger().warning(
+                        "Error closing connection: " + e.getMessage()
+                    );
+                }
+            }
         }
     }
 

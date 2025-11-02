@@ -16,9 +16,11 @@ public class MySqlHandler extends DatabaseHandler {
     private final String databaseName;
     private final String user;
     private final String password;
+    private final TownsAndNations plugin;
     private HikariDataSource hikariDataSource;
 
-    public MySqlHandler(String host, int port, String database, String username, String password) {
+    public MySqlHandler(TownsAndNations plugin, String host, int port, String database, String username, String password) {
+        this.plugin = plugin;
         this.host = host;
         this.port = port;
         this.databaseName = database;
@@ -34,17 +36,36 @@ public class MySqlHandler extends DatabaseHandler {
         }
 
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(String.format("jdbc:mysql://%s:%d/%s?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC",
-                host, port, databaseName));
+        boolean sslEnabled = plugin.getConfig().getBoolean("database.ssl.enabled", false);
+        boolean sslRequired = plugin.getConfig().getBoolean("database.ssl.require", false);
+        boolean verifyServerCert = plugin.getConfig().getBoolean("database.ssl.verify-server-certificate", false);
+
+        String sslParams = "useSSL=" + sslEnabled;
+        if (sslEnabled) {
+            sslParams += "&requireSSL=" + sslRequired;
+            sslParams += "&verifyServerCertificate=" + verifyServerCert;
+        }
+
+        config.setJdbcUrl(String.format("jdbc:mysql://%s:%d/%s?%s&allowPublicKeyRetrieval=true&serverTimezone=UTC",
+                host, port, databaseName, sslParams));
         config.setUsername(user);
         config.setPassword(password);
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.addDataSourceProperty("maintainTimeStats", "false");
+        config.addDataSourceProperty("alwaysSendSetIsolation", "false");
+        config.addDataSourceProperty("enableQueryTimeouts", "false");
         config.setPoolName("TownsAndNations-MySql-Pool");
-        this.hikariDataSource = new HikariDataSource(config);
 
-        this.dataSource = hikariDataSource;
+        // Connection pool configuration
+        config.setMaximumPoolSize(plugin.getConfig().getInt("database.pool-size", 10));
+        config.setMinimumIdle(plugin.getConfig().getInt("database.min-idle", 2));
+        config.setConnectionTimeout(plugin.getConfig().getLong("database.connection-timeout", 30000L));
+        config.setIdleTimeout(plugin.getConfig().getLong("database.idle-timeout", 600000L));
+        config.setMaxLifetime(plugin.getConfig().getLong("database.max-lifetime", 1800000L));
+
+        this.dataSource = new HikariDataSource(config);
+
         createMetadataTable();
         initialize();
     }
@@ -61,10 +82,16 @@ public class MySqlHandler extends DatabaseHandler {
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(createTableSQL);
+            // Add new columns to players table if they don't exist
+            stmt.executeUpdate("ALTER TABLE `players` ADD COLUMN `town_name` VARCHAR(255) NULL AFTER `town`");
+            stmt.executeUpdate("ALTER TABLE `players` ADD COLUMN `nation_name` VARCHAR(255) NULL AFTER `nation`");
         } catch (SQLException e) {
-            TownsAndNations.getPlugin().getLogger().severe(
-                "Error creating table tan_metadata: " + e.getMessage()
-            );
+            // Ignore "duplicate column" errors if columns already exist
+            if (!e.getMessage().contains("Duplicate column name")) {
+                TownsAndNations.getPlugin().getLogger().severe(
+                    "Error creating table tan_metadata or altering players table: " + e.getMessage()
+                );
+            }
         }
     }
 

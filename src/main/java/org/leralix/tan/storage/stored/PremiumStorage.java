@@ -77,9 +77,10 @@ public class PremiumStorage extends DatabaseStorage<Boolean> {
 
     private boolean fetchPremium(String playerName) {
 
+        HttpURLConnection connection = null;
         try {
             URL url = new URL("https://api.mojang.com/users/profiles/minecraft/" + playerName);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(2000);
             connection.setReadTimeout(2000);
 
@@ -91,8 +92,14 @@ public class PremiumStorage extends DatabaseStorage<Boolean> {
                     return obj.has("id") && obj.has("name");
                 }
             }
-        } catch (Exception ignored) {
-
+        } catch (Exception e) {
+            TownsAndNations.getPlugin().getLogger().fine(
+                "Could not verify premium status for player " + playerName + ": " + e.getMessage()
+            );
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
         return false;
     }

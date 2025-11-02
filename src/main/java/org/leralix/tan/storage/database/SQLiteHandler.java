@@ -38,6 +38,13 @@ public class SQLiteHandler extends DatabaseHandler {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:sqlite:" + databasePath);
         config.setPoolName("TownsAndNations-SQLite-Pool");
+
+        // Connection pool configuration for SQLite
+        config.setMaximumPoolSize(1); // SQLite only supports one writer at a time
+        config.setConnectionTimeout(30000);
+        config.setIdleTimeout(600000);
+        config.setMaxLifetime(1800000);
+
         this.hikariDataSource = new HikariDataSource(config);
 
         this.dataSource = hikariDataSource;

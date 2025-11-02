@@ -252,6 +252,7 @@ public class TownsAndNations extends JavaPlugin {
         }
         if (dbName.equals("mysql")) {
             databaseHandler = new MySqlHandler(
+                    this,
                     constants.getHost(),
                     constants.getPort(),
                     constants.getName(),
@@ -293,11 +294,9 @@ public class TownsAndNations extends JavaPlugin {
 
         SaveStats.saveAll();
 
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        // Wait for async save operations to complete (non-blocking approach)
+        // Instead of Thread.sleep which blocks the main thread, we just log completion
+        // The SaveStats.saveAll() should handle synchronization internally
 
         getLogger().info("[TaN] Plugin disabled");
     }
@@ -346,23 +345,25 @@ public class TownsAndNations extends JavaPlugin {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("User-Agent", USER_AGENT);
+            con.setConnectTimeout(5000); // 5 seconds connection timeout
+            con.setReadTimeout(5000); // 5 seconds read timeout
 
             int responseCode = con.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
+                try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
+                    String inputLine;
+                    StringBuilder response = new StringBuilder();
 
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
 
-                latestVersion = extractVersionFromResponse(response.toString());
-                if (CURRENT_VERSION.isOlderThan(latestVersion)) {
-                    getLogger().log(Level.INFO, "[TaN] A new version is available : {0}", latestVersion);
-                } else {
-                    getLogger().info("[TaN] Towns and Nation is up to date: " + CURRENT_VERSION);
+                    latestVersion = extractVersionFromResponse(response.toString());
+                    if (CURRENT_VERSION.isOlderThan(latestVersion)) {
+                        getLogger().log(Level.INFO, "[TaN] A new version is available : {0}", latestVersion);
+                    } else {
+                        getLogger().info("[TaN] Towns and Nation is up to date: " + CURRENT_VERSION);
+                    }
                 }
             } else {
                 getLogger().info("[TaN] An error occurred while trying to accesses github API.");

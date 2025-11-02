@@ -28,7 +28,10 @@ public class CustomIcon implements ICustomIcon {
     }
 
     private @NotNull ItemStack getOldIcon() {
-        Material material = Material.getMaterial(materialTypeName);
+        Material material = null;
+        if (materialTypeName != null) {
+            material = Material.getMaterial(materialTypeName);
+        }
         if(material == null){
             material = Material.BARRIER;
         }
@@ -42,8 +45,10 @@ public class CustomIcon implements ICustomIcon {
 
         if(customModelData != null){
             ItemMeta meta = icon.getItemMeta();
-            meta.setCustomModelData(customModelData);
-            icon.setItemMeta(meta);
+            if (meta != null) {
+                meta.setCustomModelData(customModelData);
+                icon.setItemMeta(meta);
+            }
         }
         return icon;
     }

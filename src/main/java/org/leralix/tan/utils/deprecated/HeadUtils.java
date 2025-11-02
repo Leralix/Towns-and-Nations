@@ -184,8 +184,7 @@ public class HeadUtils {
     @NotNull
     public static URL getUrlFromBase64(@NotNull String base64) {
         var decoded = new String(Base64.getDecoder().decode(base64));
-        JsonParser parser = new JsonParser();
-        var json = parser.parse(decoded).getAsJsonObject();
+        var json = JsonParser.parseString(decoded).getAsJsonObject();
         var url = json.getAsJsonObject("textures")
                 .getAsJsonObject("SKIN")
                 .get("url").getAsString();

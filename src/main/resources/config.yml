@@ -520,6 +520,15 @@ database:
   user: "user"
   #Database password (if using sqlite, unused)
   password: "password"
+  ssl:
+    enabled: false
+    require: false
+    verify-server-certificate: false
+  pool-size: 10
+  min-idle: 2
+  connection-timeout: 30000
+  idle-timeout: 600000
+  max-lifetime: 1800000
 
 ########################
 ##     Extensions     ##

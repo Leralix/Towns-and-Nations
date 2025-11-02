@@ -41,8 +41,9 @@ public class JsonToDatabaseMigration {
         int migrated = 0;
         Gson gson = new Gson();
 
+        Connection conn = null;
         try (FileReader reader = new FileReader(jsonFile)) {
-            JsonObject rootObject = new JsonParser().parse(reader).getAsJsonObject();
+            JsonObject rootObject = JsonParser.parseReader(reader).getAsJsonObject();
             Map<String, String> dataMap = new HashMap<>();
 
             // Parse JSON into id -> jsonData map
@@ -53,33 +54,59 @@ public class JsonToDatabaseMigration {
             }
 
             // Batch insert into database
-            String insertSQL = "INSERT OR REPLACE INTO " + tableName + " (id, data) VALUES (?, ?)";
+            String insertSQL = TownsAndNations.getPlugin().getDatabaseHandler().getUpsertSQL(tableName);
 
-            try (Connection conn = TownsAndNations.getPlugin().getDatabaseHandler().getDataSource().getConnection();
-                 PreparedStatement ps = conn.prepareStatement(insertSQL)) {
-
+            try {
+                conn = TownsAndNations.getPlugin().getDatabaseHandler().getDataSource().getConnection();
                 conn.setAutoCommit(false);
 
-                for (Map.Entry<String, String> entry : dataMap.entrySet()) {
-                    ps.setString(1, entry.getKey());
-                    ps.setString(2, entry.getValue());
-                    ps.addBatch();
-                    migrated++;
+                try (PreparedStatement ps = conn.prepareStatement(insertSQL)) {
+                    for (Map.Entry<String, String> entry : dataMap.entrySet()) {
+                        ps.setString(1, entry.getKey());
+                        ps.setString(2, entry.getValue());
+                        ps.addBatch();
+                        migrated++;
+                    }
+
+                    ps.executeBatch();
+                    conn.commit();
+
+                    TownsAndNations.getPlugin().getLogger().info(
+                        "Successfully migrated " + migrated + " records from " + jsonFileName + " to " + tableName
+                    );
+
+                } catch (SQLException e) {
+                    try {
+                        if (conn != null) {
+                            conn.rollback();
+                        }
+                    } catch (SQLException rollbackEx) {
+                        TownsAndNations.getPlugin().getLogger().severe(
+                            "Error rolling back migration: " + rollbackEx.getMessage()
+                        );
+                    }
+                    throw e;
+                } finally {
+                    if (conn != null) {
+                        conn.setAutoCommit(true);
+                    }
                 }
-
-                ps.executeBatch();
-                conn.commit();
-                conn.setAutoCommit(true);
-
-                TownsAndNations.getPlugin().getLogger().info(
-                    "Successfully migrated " + migrated + " records from " + jsonFileName + " to " + tableName
-                );
 
             } catch (SQLException e) {
                 TownsAndNations.getPlugin().getLogger().severe(
                     "Error migrating " + jsonFileName + " to database: " + e.getMessage()
                 );
                 e.printStackTrace();
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException e) {
+                        TownsAndNations.getPlugin().getLogger().warning(
+                            "Error closing connection: " + e.getMessage()
+                        );
+                    }
+                }
             }
 
         } catch (IOException e) {

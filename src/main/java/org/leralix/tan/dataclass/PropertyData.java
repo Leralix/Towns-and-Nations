@@ -187,11 +187,31 @@ public class PropertyData extends Building {
     }
 
     public Player getRenterPlayer() {
-        return Bukkit.getPlayer(UUID.fromString(rentingPlayerID));
+        if (rentingPlayerID == null) {
+            return null;
+        }
+        try {
+            return Bukkit.getPlayer(UUID.fromString(rentingPlayerID));
+        } catch (IllegalArgumentException e) {
+            TownsAndNations.getPlugin().getLogger().warning(
+                "Invalid renting player UUID for property " + name + ": " + rentingPlayerID
+            );
+            return null;
+        }
     }
 
     public OfflinePlayer getOfflineRenter() {
-        return Bukkit.getOfflinePlayer(UUID.fromString(rentingPlayerID));
+        if (rentingPlayerID == null) {
+            return null;
+        }
+        try {
+            return Bukkit.getOfflinePlayer(UUID.fromString(rentingPlayerID));
+        } catch (IllegalArgumentException e) {
+            TownsAndNations.getPlugin().getLogger().warning(
+                "Invalid renting player UUID for property " + name + ": " + rentingPlayerID
+            );
+            return null;
+        }
     }
 
     public String getDescription() {
@@ -199,9 +219,29 @@ public class PropertyData extends Building {
     }
 
     public void payRent() {
+        if (rentingPlayerID == null) {
+            return;
+        }
 
-        OfflinePlayer renter = Bukkit.getOfflinePlayer(UUID.fromString(rentingPlayerID));
+        OfflinePlayer renter;
+        try {
+            renter = Bukkit.getOfflinePlayer(UUID.fromString(rentingPlayerID));
+        } catch (IllegalArgumentException e) {
+            TownsAndNations.getPlugin().getLogger().warning(
+                "Invalid renting player UUID for property " + name + ", expelling renter"
+            );
+            expelRenter(true);
+            return;
+        }
+
         TerritoryData town = getTown();
+
+        if (town == null) {
+            TownsAndNations.getPlugin().getLogger().warning(
+                "Property " + name + " has no valid town, cannot collect rent"
+            );
+            return;
+        }
 
         double baseRent = getBaseRentPrice();
         double rent = getRentPrice();
@@ -240,7 +280,11 @@ public class PropertyData extends Building {
     }
 
     public double getRentPrice() {
-        return NumberUtil.roundWithDigits(getBaseRentPrice() * (1 + getTown().getTaxOnRentingProperty()));
+        TownData town = getTown();
+        if (town == null) {
+            return getBaseRentPrice();
+        }
+        return NumberUtil.roundWithDigits(getBaseRentPrice() * (1 + town.getTaxOnRentingProperty()));
     }
 
     public double getBaseSalePrice() {
@@ -248,7 +292,11 @@ public class PropertyData extends Building {
     }
 
     public double getSalePrice() {
-        return NumberUtil.roundWithDigits(getBaseSalePrice() * (1 + getTown().getTaxOnBuyingProperty()));
+        TownData town = getTown();
+        if (town == null) {
+            return getBaseSalePrice();
+        }
+        return NumberUtil.roundWithDigits(getBaseSalePrice() * (1 + town.getTaxOnBuyingProperty()));
     }
 
     public boolean containsLocation(Location location) {
@@ -261,13 +309,21 @@ public class PropertyData extends Building {
         List<FilledLang> lore = new ArrayList<>();
 
         lore.add(Lang.GUI_PROPERTY_DESCRIPTION.get(getDescription()));
-        lore.add(Lang.GUI_PROPERTY_STRUCTURE_OWNER.get(getTown().getName()));
+
+        TownData town = getTown();
+        if (town != null) {
+            lore.add(Lang.GUI_PROPERTY_STRUCTURE_OWNER.get(town.getName()));
+        }
 
         lore.add(Lang.GUI_PROPERTY_OWNER.get(getOwner().getName()));
         if (isForSale())
             lore.add(Lang.GUI_PROPERTY_FOR_SALE.get(String.valueOf(salePrice)));
-        else if (isRented())
-            lore.add(Lang.GUI_PROPERTY_RENTED_BY.get(getRenter().getNameStored(), String.valueOf(rentPrice)));
+        else if (isRented()) {
+            ITanPlayer renter = getRenter();
+            if (renter != null) {
+                lore.add(Lang.GUI_PROPERTY_RENTED_BY.get(renter.getNameStored(), String.valueOf(rentPrice)));
+            }
+        }
         else if (isForRent())
             lore.add(Lang.GUI_PROPERTY_FOR_RENT.get(String.valueOf(rentPrice)));
         else {
@@ -295,23 +351,40 @@ public class PropertyData extends Building {
     }
 
     public void updateSign() {
-        World world = Bukkit.getWorld(signLocation.getWorldID());
-        if (world == null)
+        if (signLocation == null) {
             return;
-        Block signBlock = world.getBlockAt(signLocation.getX(), signLocation.getY(), signLocation.getZ());
+        }
 
-        Sign sign = (Sign) signBlock.getState();
+        try {
+            World world = Bukkit.getWorld(signLocation.getWorldID());
+            if (world == null) {
+                return;
+            }
 
-        String[] lines = updateLines();
+            Block signBlock = world.getBlockAt(signLocation.getX(), signLocation.getY(), signLocation.getZ());
 
-        SignSide signSide = sign.getSide(Side.FRONT);
+            if (!(signBlock.getState() instanceof Sign)) {
+                TownsAndNations.getPlugin().getLogger().warning(
+                    "Property " + name + " sign location is not a sign: " + signBlock.getType()
+                );
+                return;
+            }
 
-        signSide.setLine(0, lines[0]);
-        signSide.setLine(1, lines[1]);
-        signSide.setLine(2, lines[2]);
-        signSide.setLine(3, lines[3]);
+            Sign sign = (Sign) signBlock.getState();
+            String[] lines = updateLines();
+            SignSide signSide = sign.getSide(Side.FRONT);
 
-        sign.update();
+            signSide.setLine(0, lines[0]);
+            signSide.setLine(1, lines[1]);
+            signSide.setLine(2, lines[2]);
+            signSide.setLine(3, lines[3]);
+
+            sign.update();
+        } catch (Exception e) {
+            TownsAndNations.getPlugin().getLogger().warning(
+                "Error updating sign for property " + name + ": " + e.getMessage()
+            );
+        }
     }
 
     private String[] updateLines() {
@@ -332,7 +405,8 @@ public class PropertyData extends Building {
             lines[3] = Lang.SIGN_RENT_PRICE.get(langType, Double.toString(this.getRentPrice()));
         } else if (this.isRented()) {
             lines[2] = Lang.SIGN_RENTED_BY.get(langType);
-            lines[3] = this.getRenter().getNameStored();
+            ITanPlayer renter = this.getRenter();
+            lines[3] = renter != null ? renter.getNameStored() : "Unknown";
         } else {
             lines[2] = Lang.SIGN_NOT_FOR_SALE.get(langType);
             lines[3] = "";
@@ -410,10 +484,16 @@ public class PropertyData extends Building {
             UUID exOwnerID = UUID.fromString(playerOwned.getPlayerID());
             OfflinePlayer exOwnerOffline = Bukkit.getOfflinePlayer(exOwnerID);
             Player exOwner = exOwnerOffline.getPlayer();
-            TanChatUtils.message(exOwner, Lang.PROPERTY_SOLD_EX_OWNER.get(langType, getName(), buyer.getName(), Double.toString(getSalePrice())), SoundEnum.GOOD);
+
+            // Only send message if player is online
+            if (exOwner != null) {
+                TanChatUtils.message(exOwner, Lang.PROPERTY_SOLD_EX_OWNER.get(langType, getName(), buyer.getName(), Double.toString(getSalePrice())), SoundEnum.GOOD);
+            }
 
             ITanPlayer exOwnerData = PlayerDataStorage.getInstance().get(exOwnerID);
-            exOwnerData.removeProperty(this);
+            if (exOwnerData != null) {
+                exOwnerData.removeProperty(this);
+            }
         }
 
         TanChatUtils.message(buyer, Lang.PROPERTY_SOLD_NEW_OWNER.get(langType, getName(), Double.toString(getSalePrice())), SoundEnum.BAD);

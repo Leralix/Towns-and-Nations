@@ -13,12 +13,10 @@ import java.util.Base64;
 public class ItemStackSerializer {
 
     public static String serializeItemStack(ItemStack item) {
-        try {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)) {
 
             dataOutput.writeObject(item);
-            dataOutput.close();
             return Base64.getEncoder().encodeToString(outputStream.toByteArray());
         } catch (IOException e) {
             Bukkit.getLogger().severe("Error serializing " + item.getType() + " : " + e.getMessage());
@@ -27,13 +25,10 @@ public class ItemStackSerializer {
     }
 
     public static ItemStack deserializeItemStack(String data) {
-        try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64.getDecoder().decode(data));
-            BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64.getDecoder().decode(data));
+             BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)) {
 
-            ItemStack item = (ItemStack) dataInput.readObject();
-            dataInput.close();
-            return item;
+            return (ItemStack) dataInput.readObject();
         } catch (IOException | ClassNotFoundException e) {
             Bukkit.getLogger().severe("Error deSerializing " + data + " : " + e.getMessage());
         }
