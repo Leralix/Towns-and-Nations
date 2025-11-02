@@ -630,3 +630,12 @@ CancelMobSpawnInTown:
 
 
 
+
+########################
+##       Cache        ##
+########################
+
+cache:
+  tan_players: 100
+  tan_towns: 100
+  tan_regions: 100

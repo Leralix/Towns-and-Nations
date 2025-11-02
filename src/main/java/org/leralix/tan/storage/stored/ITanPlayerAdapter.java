@@ -10,11 +10,18 @@ public class ITanPlayerAdapter implements JsonSerializer<ITanPlayer>, JsonDeseri
 
     @Override
     public ITanPlayer deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return context.deserialize(json, PlayerData.class);
+        JsonObject jsonObject = json.getAsJsonObject();
+        PlayerData playerData = context.deserialize(json, PlayerData.class);
+        if (jsonObject.has("uuid")) {
+            playerData.setUuid(jsonObject.get("uuid").getAsString());
+        }
+        return playerData;
     }
 
     @Override
     public JsonElement serialize(ITanPlayer src, Type typeOfSrc, JsonSerializationContext context) {
-        return context.serialize(src, PlayerData.class);
+        JsonObject jsonObject = context.serialize(src, src.getClass()).getAsJsonObject();
+        jsonObject.addProperty("uuid", src.getID());
+        return jsonObject;
     }
 }

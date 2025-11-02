@@ -37,7 +37,7 @@ public class TerritoryVassalForcedDAO extends NewsletterSubDAO<TerritoryVassalFo
         String sql = "INSERT INTO " + TABLE_NAME + " (id, proposingTerritoryID, forcedTerritoryID) VALUES (?, ?, ?)";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, newsletter.getId());
+            ps.setString(1, newsletter.getId().toString());
             ps.setString(2, newsletter.getProposingTerritoryID());
             ps.setString(3, newsletter.getForcedTerritoryID());
             ps.executeUpdate();
@@ -51,7 +51,7 @@ public class TerritoryVassalForcedDAO extends NewsletterSubDAO<TerritoryVassalFo
         String sql = "SELECT proposingTerritoryID, forcedTerritoryID FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, id);
+            ps.setString(1, id.toString());
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     String proposingTerritoryID = rs.getString("proposingTerritoryID");
@@ -70,7 +70,7 @@ public class TerritoryVassalForcedDAO extends NewsletterSubDAO<TerritoryVassalFo
         String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, id);
+            ps.setString(1, id.toString());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to delete from table " + TABLE_NAME, e);

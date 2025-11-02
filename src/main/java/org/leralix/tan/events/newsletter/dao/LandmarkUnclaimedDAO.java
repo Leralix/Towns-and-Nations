@@ -39,7 +39,7 @@ public class LandmarkUnclaimedDAO extends NewsletterSubDAO<LandmarkUnclaimedNews
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, newsletter.getId());
+            ps.setString(1, newsletter.getId().toString());
             ps.setString(2, newsletter.getLandmarkID());
             ps.setString(3, newsletter.getOldOwnerID());
             ps.executeUpdate();
@@ -53,7 +53,7 @@ public class LandmarkUnclaimedDAO extends NewsletterSubDAO<LandmarkUnclaimedNews
         String sql = "SELECT landmarkID, oldOwnerID FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, id);
+            ps.setString(1, id.toString());
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     String landmarkID = rs.getString("landmarkID");
@@ -72,7 +72,7 @@ public class LandmarkUnclaimedDAO extends NewsletterSubDAO<LandmarkUnclaimedNews
         String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, uuid);
+            ps.setString(1, uuid.toString());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to delete from table " + TABLE_NAME, e);

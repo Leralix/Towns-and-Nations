@@ -22,6 +22,11 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
+    public void setUuid(String uuid) {
+        // singleton class, no need to set uuid
+    }
+
+    @Override
     public String getNameStored() {
         return Lang.NO_LEADER.getDefault();
     }

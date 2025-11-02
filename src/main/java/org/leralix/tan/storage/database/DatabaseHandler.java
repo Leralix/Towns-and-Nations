@@ -118,6 +118,16 @@ public abstract class DatabaseHandler {
         checkIfHistoryDbExists();
     }
 
+    public abstract void createMetadataTable();
+
+    public abstract int getNextTownId();
+
+    public abstract void updateNextTownId(int newId);
+
+    public abstract int getNextRegionId();
+
+    public abstract void updateNextRegionId(int newId);
+
     public DataSource getDataSource() {
         return dataSource;
     }

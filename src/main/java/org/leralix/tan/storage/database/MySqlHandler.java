@@ -1,8 +1,13 @@
 package org.leralix.tan.storage.database;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
-
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import org.leralix.tan.TownsAndNations;
 
 public class MySqlHandler extends DatabaseHandler {
 
@@ -11,6 +16,7 @@ public class MySqlHandler extends DatabaseHandler {
     private final String databaseName;
     private final String user;
     private final String password;
+    private HikariDataSource hikariDataSource;
 
     public MySqlHandler(String host, int port, String database, String username, String password) {
         this.host = host;
@@ -26,23 +32,100 @@ public class MySqlHandler extends DatabaseHandler {
         if (host == null || databaseName == null) {
             return;
         }
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
 
-        // Build JDBC URL manually to force connection to the correct database
-        String jdbcUrl = String.format("jdbc:mysql://%s:%d/%s?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC",
-                host, port, databaseName);
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(String.format("jdbc:mysql://%s:%d/%s?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC",
+                host, port, databaseName));
+        config.setUsername(user);
+        config.setPassword(password);
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.setPoolName("TownsAndNations-MySql-Pool");
+        this.hikariDataSource = new HikariDataSource(config);
 
-        MysqlDataSource ds = new MysqlDataSource();
-        ds.setURL(jdbcUrl);
-        ds.setUser(user);
-        ds.setPassword(password);
-
-        this.dataSource = ds;
+        this.dataSource = hikariDataSource;
+        createMetadataTable();
         initialize();
+    }
+
+    @Override
+    public void createMetadataTable() {
+        String createTableSQL = """
+            CREATE TABLE IF NOT EXISTS tan_metadata (
+                meta_key VARCHAR(255) PRIMARY KEY,
+                meta_value VARCHAR(255) NOT NULL
+            )
+        """;
+
+        try (Connection conn = dataSource.getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(createTableSQL);
+        } catch (SQLException e) {
+            TownsAndNations.getPlugin().getLogger().severe(
+                "Error creating table tan_metadata: " + e.getMessage()
+            );
+        }
+    }
+
+    @Override
+    public int getNextTownId() {
+        String selectSQL = "SELECT meta_value FROM tan_metadata WHERE meta_key = 'next_town_id'";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(selectSQL)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return Integer.parseInt(rs.getString("meta_value"));
+                }
+            }
+        } catch (SQLException | NumberFormatException e) {
+            // Ignore, we'll insert the default value
+        }
+        return 1;
+    }
+
+    @Override
+    public void updateNextTownId(int newId) {
+        String upsertSQL = "INSERT INTO tan_metadata (meta_key, meta_value) VALUES ('next_town_id', ?) ON DUPLICATE KEY UPDATE meta_value = VALUES(meta_value)";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
+            ps.setString(1, String.valueOf(newId));
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            TownsAndNations.getPlugin().getLogger().severe(
+                "Error updating next_town_id: " + e.getMessage()
+            );
+        }
+    }
+
+    @Override
+    public int getNextRegionId() {
+        String selectSQL = "SELECT meta_value FROM tan_metadata WHERE meta_key = 'next_region_id'";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(selectSQL)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return Integer.parseInt(rs.getString("meta_value"));
+                }
+            }
+        } catch (SQLException | NumberFormatException e) {
+            // Ignore, we'll insert the default value
+        }
+        return 1;
+    }
+
+    @Override
+    public void updateNextRegionId(int newId) {
+        String upsertSQL = "INSERT INTO tan_metadata (meta_key, meta_value) VALUES ('next_region_id', ?) ON DUPLICATE KEY UPDATE meta_value = VALUES(meta_value)";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
+            ps.setString(1, String.valueOf(newId));
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            TownsAndNations.getPlugin().getLogger().severe(
+                "Error updating next_region_id: " + e.getMessage()
+            );
+        }
     }
 
 }

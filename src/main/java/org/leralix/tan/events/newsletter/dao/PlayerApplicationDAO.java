@@ -38,7 +38,7 @@ public class PlayerApplicationDAO extends NewsletterSubDAO<PlayerJoinRequestNews
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, newsletter.getId());
+            ps.setString(1, newsletter.getId().toString());
             ps.setString(2, newsletter.getPlayerID());
             ps.setString(3, newsletter.getTownID());
             ps.executeUpdate();
@@ -52,7 +52,7 @@ public class PlayerApplicationDAO extends NewsletterSubDAO<PlayerJoinRequestNews
         String sql = "SELECT playerID, townID FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, id);
+            ps.setString(1, id.toString());
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     String playerID = rs.getString("playerID");
@@ -71,7 +71,7 @@ public class PlayerApplicationDAO extends NewsletterSubDAO<PlayerJoinRequestNews
         String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, id);
+            ps.setString(1, id.toString());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to delete newsletter from " + TABLE_NAME, e);

@@ -64,13 +64,7 @@ public class RegionDataStorage extends DatabaseStorage<RegionData> {
     }
 
     private void loadNextID() {
-        int id = 0;
-        for (String keys : getAll().keySet()) {
-            int newID =  Integer.parseInt(keys.substring(1));
-            if(newID > id)
-                id = newID;
-        }
-        nextID = id+1;
+        nextID = getDatabase().getNextRegionId();
     }
 
     public RegionData createNewRegion(String name, TownData capital){
@@ -90,6 +84,7 @@ public class RegionDataStorage extends DatabaseStorage<RegionData> {
     private @NotNull String generateNextID() {
         String regionID = "R"+nextID;
         nextID++;
+        getDatabase().updateNextRegionId(nextID);
         return regionID;
     }
 

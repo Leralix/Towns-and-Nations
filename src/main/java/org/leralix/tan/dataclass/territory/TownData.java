@@ -43,11 +43,6 @@ public class TownData extends TerritoryData {
     private String UuidLeader;
     private String townTag;
     private boolean isRecruiting;
-    /**
-     * Keep to maintain backward compatibility until 0.17.0
-     */
-    @Deprecated(since = "0.16.0", forRemoval = true)
-    Level townLevel;
     private HashSet<String> PlayerJoinRequestSet;
     private Map<String, PropertyData> propertyDataMap;
     private TeleportationPosition teleportationPosition;
@@ -55,9 +50,7 @@ public class TownData extends TerritoryData {
     private Vector2D capitalLocation;
 
 
-    public TownData(String townId, String townName) {
-        this(townId, townName, null); // Appelle le constructeur principal
-    }
+
 
     public TownData(String townId, String townName, ITanPlayer leader) {
         super(townId, townName, leader);
@@ -241,7 +234,7 @@ public class TownData extends TerritoryData {
 
 
     public boolean isFull() {
-        return !getNewLevel().getStat(TownPlayerCap.class).canDoAction(this.townPlayerListId.size());
+        return !upgradesStatus.getStat(TownPlayerCap.class).canDoAction(this.townPlayerListId.size());
     }
 
     public void addPlayerJoinRequest(Player player) {

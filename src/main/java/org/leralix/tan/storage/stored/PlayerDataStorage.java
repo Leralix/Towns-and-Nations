@@ -10,6 +10,8 @@ import org.leralix.tan.dataclass.PlayerData;
 import org.leralix.tan.TownsAndNations;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -52,6 +54,15 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
         try (Connection conn = getDatabase().getDataSource().getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(createTableSQL);
+
+            // Migration: Add player_name column if it doesn't exist
+            try (ResultSet rs = conn.getMetaData().getColumns(null, null, TABLE_NAME, "player_name")) {
+                if (!rs.next()) {
+                    stmt.executeUpdate("ALTER TABLE %s ADD COLUMN player_name VARCHAR(255)".formatted(TABLE_NAME));
+                    TownsAndNations.getPlugin().getLogger().info("Added player_name column to " + TABLE_NAME);
+                }
+            }
+
         } catch (SQLException e) {
             TownsAndNations.getPlugin().getLogger().severe(
                 "Error creating table " + TABLE_NAME + ": " + e.getMessage()
@@ -59,6 +70,37 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
         }
     }
 
+
+    @Override
+    public void put(String id, ITanPlayer obj) {
+        if (id == null || obj == null) {
+            return;
+        }
+
+        String jsonData = gson.toJson(obj, typeToken);
+        String upsertSQL = "INSERT INTO " + tableName + " (id, player_name, data) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE player_name = VALUES(player_name), data = VALUES(data)";
+
+        try (Connection conn = getDatabase().getDataSource().getConnection();
+             PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
+
+            ps.setString(1, id);
+            ps.setString(2, obj.getNameStored()); // Set player_name
+            ps.setString(3, jsonData);
+            ps.executeUpdate();
+
+            // Update cache
+            if (cacheEnabled && cache != null) {
+                synchronized (cache) {
+                    cache.put(id, obj);
+                }
+            }
+
+        } catch (SQLException e) {
+            TownsAndNations.getPlugin().getLogger().severe(
+                "Error storing " + typeClass.getSimpleName() + " with ID " + id + ": " + e.getMessage()
+            );
+        }
+    }
 
     public ITanPlayer register(Player p) {
         ITanPlayer tanPlayer = new PlayerData(p);

@@ -18,6 +18,8 @@ public interface ITanPlayer {
 
     String getID();
 
+    void setUuid(String uuid);
+
     String getNameStored();
 
     void setNameStored(String name);

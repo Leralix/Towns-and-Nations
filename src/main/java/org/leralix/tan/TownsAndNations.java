@@ -160,7 +160,7 @@ public class TownsAndNations extends JavaPlugin {
         getLogger().log(Level.INFO, "[TaN] -Loading Configs");
 
         Constants.init(ConfigUtil.getCustomConfig(ConfigTag.MAIN));
-        UpgradeStorage.init();
+
         MobChunkSpawnStorage.init();
         ClaimBlacklistStorage.init();
         NewsletterType.init();

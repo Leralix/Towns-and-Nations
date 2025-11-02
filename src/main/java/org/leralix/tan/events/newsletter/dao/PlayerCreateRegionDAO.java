@@ -36,7 +36,7 @@ public class PlayerCreateRegionDAO extends NewsletterSubDAO<RegionCreationNews> 
         String sql = "INSERT INTO " + TABLE_NAME + " (id, playerID, regionID) VALUES (?, ?, ?)";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, newsletter.getId());
+            ps.setString(1, newsletter.getId().toString());
             ps.setString(2, newsletter.getPlayerID());
             ps.setString(3, newsletter.getRegionID());
             ps.executeUpdate();
@@ -50,7 +50,7 @@ public class PlayerCreateRegionDAO extends NewsletterSubDAO<RegionCreationNews> 
         String sql = "SELECT playerID, regionID FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, id);
+            ps.setString(1, id.toString());
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     String playerID = rs.getString("playerID");
@@ -69,7 +69,7 @@ public class PlayerCreateRegionDAO extends NewsletterSubDAO<RegionCreationNews> 
         String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, id);
+            ps.setString(1, id.toString());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to delete newsletter from " + TABLE_NAME, e);

@@ -1,7 +1,11 @@
 package org.leralix.tan.storage.stored;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.storage.database.DatabaseHandler;
 
@@ -23,24 +27,29 @@ public abstract class DatabaseStorage<T> {
     protected final Type typeToken;
 
     // Optional LRU cache for frequently accessed objects (max 100 entries)
-    private final Map<String, T> cache;
-    private static final int MAX_CACHE_SIZE = 100;
-    private final boolean cacheEnabled;
+    protected final Map<String, T> cache;
+    protected final int cacheSize;
+    protected final boolean cacheEnabled;
 
     protected DatabaseStorage(String tableName, Class<T> typeClass, Gson gson) {
         this(tableName, typeClass, typeClass, gson, true);
     }
 
     protected DatabaseStorage(String tableName, Class<T> typeClass, Type typeToken, Gson gson, boolean enableCache) {
+        this(tableName, typeClass, typeToken, gson, enableCache, TownsAndNations.getPlugin().getConfig().getInt("cache." + tableName, 100));
+    }
+
+    protected DatabaseStorage(String tableName, Class<T> typeClass, Type typeToken, Gson gson, boolean enableCache, int cacheSize) {
         this.tableName = tableName;
         this.typeClass = typeClass;
         this.typeToken = typeToken;
         this.gson = gson;
         this.cacheEnabled = enableCache;
+        this.cacheSize = cacheSize;
         this.cache = enableCache ? new LinkedHashMap<String, T>(16, 0.75f, true) {
             @Override
             protected boolean removeEldestEntry(Map.Entry<String, T> eldest) {
-                return size() > MAX_CACHE_SIZE;
+                return size() > cacheSize;
             }
         } : null;
         createTable();
@@ -120,6 +129,16 @@ public abstract class DatabaseStorage<T> {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     String jsonData = rs.getString("data");
+
+                    if (typeToken.equals(ITanPlayer.class)) {
+                        com.google.gson.JsonElement jsonElement = com.google.gson.JsonParser.parseString(jsonData);
+                        if (jsonElement.isJsonObject()) {
+                            com.google.gson.JsonObject jsonObject = jsonElement.getAsJsonObject();
+                            jsonObject.addProperty("uuid", id);
+                            jsonData = jsonObject.toString();
+                        }
+                    }
+
                     T object = gson.fromJson(jsonData, typeToken);
 
                     // Add to cache

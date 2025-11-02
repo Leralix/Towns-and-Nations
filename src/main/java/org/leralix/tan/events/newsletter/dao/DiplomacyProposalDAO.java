@@ -41,7 +41,7 @@ public class DiplomacyProposalDAO extends NewsletterSubDAO<DiplomacyProposalNews
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, newsletter.getId());
+            ps.setString(1, newsletter.getId().toString());
             ps.setString(2, newsletter.getProposingTerritoryID());
             ps.setString(3, newsletter.getReceivingTerritoryID());
             ps.setString(4, newsletter.getWantedRelation().toString());
@@ -56,7 +56,7 @@ public class DiplomacyProposalDAO extends NewsletterSubDAO<DiplomacyProposalNews
         String sql = "SELECT proposingTerritoryID, receivingTerritoryID, wantedRelation FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, id);
+            ps.setString(1, id.toString());
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     String proposingTerritoryID = rs.getString("proposingTerritoryID");
@@ -76,7 +76,7 @@ public class DiplomacyProposalDAO extends NewsletterSubDAO<DiplomacyProposalNews
         String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, id);
+            ps.setString(1, id.toString());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to delete from table " + TABLE_NAME, e);

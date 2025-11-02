@@ -27,7 +27,7 @@ import java.util.UUID;
 
 public class PlayerData implements ITanPlayer {
 
-    private String UUID;
+    private String uuid;
     private String storedName;
     private Double Balance;
     private String TownId;
@@ -39,7 +39,7 @@ public class PlayerData implements ITanPlayer {
     private TimeZoneEnum timeZone;
 
     public PlayerData(Player player) {
-        this.UUID = player.getUniqueId().toString();
+        this.uuid = player.getUniqueId().toString();
         this.storedName = player.getName();
         this.Balance = Constants.getStartingBalance();
         this.TownId = null;
@@ -50,12 +50,16 @@ public class PlayerData implements ITanPlayer {
     }
 
     public String getID() {
-        return UUID;
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getNameStored() {
         if (storedName == null) {
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(java.util.UUID.fromString(UUID));
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(java.util.UUID.fromString(uuid));
             storedName = offlinePlayer.getName();
             if (storedName == null) {
                 storedName = "Unknown name";
@@ -95,7 +99,7 @@ public class PlayerData implements ITanPlayer {
     public boolean isTownOverlord() {
         if (!hasTown())
             return false;
-        return getTown().isLeader(this.UUID);
+        return getTown().isLeader(this.uuid);
     }
 
     public RankData getTownRank() {
@@ -132,7 +136,7 @@ public class PlayerData implements ITanPlayer {
     }
 
     public UUID getUUID() {
-        return java.util.UUID.fromString(UUID);
+        return java.util.UUID.fromString(uuid);
     }
 
     public void joinTown(TownData townData) {
@@ -302,9 +306,9 @@ public class PlayerData implements ITanPlayer {
     }
 
     public void clearAllTownApplications() {
-        TownInviteDataStorage.removeInvitation(UUID); //Remove town invitation
+        TownInviteDataStorage.removeInvitation(uuid); //Remove town invitation
         for (TownData allTown : TownDataStorage.getInstance().getAll().values()) {
-            allTown.removePlayerJoinRequest(UUID); //Remove applications
+            allTown.removePlayerJoinRequest(uuid); //Remove applications
         }
     }
 

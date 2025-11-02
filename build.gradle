@@ -9,6 +9,7 @@ tasks.shadowJar {
     relocate 'net.objecthunter.exp4j', 'org.leralix.tan.libs.exp4j'
     relocate 'org.bstats', 'org.leralix.tan.bstat'
     relocate 'com.mysql', 'org.leralix.shadow.mysql'
+    relocate 'com.zaxxer.hikari', 'org.leralix.shadow.hikari'
 }
 
 group = 'org.tan'
@@ -83,6 +84,7 @@ dependencies {
     //Database dependencies
     implementation 'com.mysql:mysql-connector-j:8.4.0'
     implementation 'org.xerial:sqlite-jdbc:3.43.2.0'
+    implementation 'com.zaxxer:HikariCP:5.1.0'
 
     testImplementation 'io.github.leralix:sphere-lib:0.6.0'
     testImplementation 'com.github.MockBukkit:MockBukkit:v4.72.9'

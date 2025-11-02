@@ -39,7 +39,7 @@ public class AttackCancelledDAO extends NewsletterSubDAO<AttackCancelledByDefend
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, newsletter.getId());
+            ps.setString(1, newsletter.getId().toString());
             ps.setString(2, newsletter.getAttackingTerritoryID());
             ps.setString(3, newsletter.getDefendingTerritoryID());
             ps.executeUpdate();
@@ -54,7 +54,7 @@ public class AttackCancelledDAO extends NewsletterSubDAO<AttackCancelledByDefend
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, id);
+            ps.setString(1, id.toString());
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     String attackingTerritoryID = rs.getString("attackingTerritoryID");
@@ -73,7 +73,7 @@ public class AttackCancelledDAO extends NewsletterSubDAO<AttackCancelledByDefend
         String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, id);
+            ps.setString(1, id.toString());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to delete from table " + TABLE_NAME, e);

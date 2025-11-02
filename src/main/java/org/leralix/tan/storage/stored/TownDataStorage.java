@@ -66,19 +66,7 @@ public class TownDataStorage extends DatabaseStorage<TownData>{
     }
 
     private void loadNextTownId() {
-        int id = 0;
-        Map<String, TownData> allTowns = getAll();
-        for (String cle : allTowns.keySet()) {
-            try {
-                int newID = Integer.parseInt(cle.substring(1));
-                if (newID > id) {
-                    id = newID;
-                }
-            } catch (NumberFormatException ignored) {
-
-            }
-        }
-        newTownId = id + 1;
+        newTownId = getDatabase().getNextTownId();
     }
 
     @Override
@@ -104,13 +92,14 @@ public class TownDataStorage extends DatabaseStorage<TownData>{
     private @NotNull String getNextTownID() {
         String townId = "T"+ newTownId;
         newTownId++;
+        getDatabase().updateNextTownId(newTownId);
         return townId;
     }
 
     public TownData newTown(String townName){
         String townId = getNextTownID();
 
-        TownData newTown = new TownData(townId, townName);
+        TownData newTown = new TownData(townId, townName, null);
 
         put(townId,newTown);
         return newTown;
