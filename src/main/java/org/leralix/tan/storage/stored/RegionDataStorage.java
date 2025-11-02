@@ -16,6 +16,8 @@ import org.leralix.tan.storage.typeadapter.IconAdapter;
 import org.leralix.tan.utils.file.FileUtil;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
 import java.util.List;
@@ -56,9 +58,49 @@ public class RegionDataStorage extends DatabaseStorage<RegionData> {
         try (Connection conn = getDatabase().getDataSource().getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(createTableSQL);
+
+            // Migration: Add region_name column if it doesn't exist
+            try (ResultSet rs = conn.getMetaData().getColumns(null, null, TABLE_NAME, "region_name")) {
+                if (!rs.next()) {
+                    stmt.executeUpdate("ALTER TABLE %s ADD COLUMN region_name VARCHAR(255) UNIQUE NULL".formatted(TABLE_NAME));
+                    TownsAndNations.getPlugin().getLogger().info("Added region_name column to " + TABLE_NAME);
+                }
+            }
+
         } catch (SQLException e) {
             TownsAndNations.getPlugin().getLogger().severe(
                 "Error creating table " + TABLE_NAME + ": " + e.getMessage()
+            );
+        }
+    }
+
+    @Override
+    public void put(String id, RegionData obj) {
+        if (id == null || obj == null) {
+            return;
+        }
+
+        String jsonData = gson.toJson(obj, typeToken);
+        String upsertSQL = "INSERT INTO " + tableName + " (id, region_name, data) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE region_name = VALUES(region_name), data = VALUES(data)";
+
+        try (Connection conn = getDatabase().getDataSource().getConnection();
+             PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
+
+            ps.setString(1, id);
+            ps.setString(2, obj.getName()); // Set region_name
+            ps.setString(3, jsonData);
+            ps.executeUpdate();
+
+            // Update cache
+            if (cacheEnabled && cache != null) {
+                synchronized (cache) {
+                    cache.put(id, obj);
+                }
+            }
+
+        } catch (SQLException e) {
+            TownsAndNations.getPlugin().getLogger().severe(
+                "Error storing " + typeClass.getSimpleName() + " with ID " + id + ": " + e.getMessage()
             );
         }
     }

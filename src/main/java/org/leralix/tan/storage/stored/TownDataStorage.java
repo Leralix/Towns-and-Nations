@@ -58,9 +58,49 @@ public class TownDataStorage extends DatabaseStorage<TownData>{
         try (Connection conn = getDatabase().getDataSource().getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(createTableSQL);
+
+            // Migration: Add town_name column if it doesn't exist
+            try (ResultSet rs = conn.getMetaData().getColumns(null, null, TABLE_NAME, "town_name")) {
+                if (!rs.next()) {
+                    stmt.executeUpdate("ALTER TABLE %s ADD COLUMN town_name VARCHAR(255) UNIQUE NULL".formatted(TABLE_NAME));
+                    TownsAndNations.getPlugin().getLogger().info("Added town_name column to " + TABLE_NAME);
+                }
+            }
+
         } catch (SQLException e) {
             TownsAndNations.getPlugin().getLogger().severe(
                 "Error creating table " + TABLE_NAME + ": " + e.getMessage()
+            );
+        }
+    }
+
+    @Override
+    public void put(String id, TownData obj) {
+        if (id == null || obj == null) {
+            return;
+        }
+
+        String jsonData = gson.toJson(obj, typeToken);
+        String upsertSQL = "INSERT INTO " + tableName + " (id, town_name, data) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE town_name = VALUES(town_name), data = VALUES(data)";
+
+        try (Connection conn = getDatabase().getDataSource().getConnection();
+             PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
+
+            ps.setString(1, id);
+            ps.setString(2, obj.getName()); // Set town_name
+            ps.setString(3, jsonData);
+            ps.executeUpdate();
+
+            // Update cache
+            if (cacheEnabled && cache != null) {
+                synchronized (cache) {
+                    cache.put(id, obj);
+                }
+            }
+
+        } catch (SQLException e) {
+            TownsAndNations.getPlugin().getLogger().severe(
+                "Error storing " + typeClass.getSimpleName() + " with ID " + id + ": " + e.getMessage()
             );
         }
     }
