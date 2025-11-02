@@ -53,6 +53,11 @@ public class RegionData extends TerritoryData {
         this.townsInRegion = new ArrayList<>();
     }
 
+    @Override
+    protected void initUpgradesStatus() {
+        this.upgradesStatus = new org.leralix.tan.upgrade.TerritoryStats(org.leralix.tan.upgrade.rewards.StatsType.REGION);
+    }
+
     public int getHierarchyRank() {
         return 1;
     }

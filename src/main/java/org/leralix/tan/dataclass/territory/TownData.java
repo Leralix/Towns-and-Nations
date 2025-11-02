@@ -68,6 +68,11 @@ public class TownData extends TerritoryData {
     }
 
     @Override
+    protected void initUpgradesStatus() {
+        this.upgradesStatus = new org.leralix.tan.upgrade.TerritoryStats(org.leralix.tan.upgrade.rewards.StatsType.TOWN);
+    }
+
+    @Override
     public RankData getRank(ITanPlayer tanPlayer) {
         return getRank(tanPlayer.getTownRankID());
     }

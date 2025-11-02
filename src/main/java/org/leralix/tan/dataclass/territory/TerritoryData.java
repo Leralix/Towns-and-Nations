@@ -124,7 +124,10 @@ public abstract class TerritoryData {
         chunkSettings = new ClaimedChunkSettings();
 
         color = StringUtil.randomColor();
+        initUpgradesStatus();
     }
+
+    protected abstract void initUpgradesStatus();
 
     public String getID() {
         return id;
