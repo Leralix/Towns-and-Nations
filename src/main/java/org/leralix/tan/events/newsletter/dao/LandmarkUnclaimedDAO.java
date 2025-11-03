@@ -34,11 +34,10 @@ public class LandmarkUnclaimedDAO extends NewsletterSubDAO<LandmarkUnclaimedNews
     }
 
     @Override
-    public void save(LandmarkUnclaimedNewsletter newsletter) throws SQLException {
+    public void save(LandmarkUnclaimedNewsletter newsletter, Connection conn) throws SQLException {
         String sql = "INSERT INTO " + TABLE_NAME + " (id, landmarkID, oldOwnerID) VALUES (?, ?, ?)";
 
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getLandmarkID());
             ps.setString(3, newsletter.getOldOwnerID());
@@ -49,10 +48,9 @@ public class LandmarkUnclaimedDAO extends NewsletterSubDAO<LandmarkUnclaimedNews
     }
 
     @Override
-    public LandmarkUnclaimedNewsletter load(UUID id, long date) throws SQLException {
+    public LandmarkUnclaimedNewsletter load(UUID id, long date, Connection conn) throws SQLException {
         String sql = "SELECT landmarkID, oldOwnerID FROM " + TABLE_NAME + " WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

@@ -34,11 +34,10 @@ public class AttackCancelledDAO extends NewsletterSubDAO<AttackCancelledByDefend
     }
 
     @Override
-    public void save(AttackCancelledByDefenderNewsletter newsletter) {
+    public void save(AttackCancelledByDefenderNewsletter newsletter, Connection conn) {
         String sql = "INSERT INTO " + TABLE_NAME + " (id, attackingTerritoryID, defendingTerritoryID) VALUES (?, ?, ?)";
 
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getAttackingTerritoryID());
             ps.setString(3, newsletter.getDefendingTerritoryID());
@@ -49,11 +48,10 @@ public class AttackCancelledDAO extends NewsletterSubDAO<AttackCancelledByDefend
     }
 
     @Override
-    public AttackCancelledByDefenderNewsletter load(UUID id, long date) {
+    public AttackCancelledByDefenderNewsletter load(UUID id, long date, Connection conn) {
         String sql = "SELECT attackingTerritoryID, defendingTerritoryID FROM " + TABLE_NAME + " WHERE id = ?";
 
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

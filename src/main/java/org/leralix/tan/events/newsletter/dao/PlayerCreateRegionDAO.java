@@ -32,10 +32,9 @@ public class PlayerCreateRegionDAO extends NewsletterSubDAO<RegionCreationNews> 
     }
 
     @Override
-    public void save(RegionCreationNews newsletter) {
+    public void save(RegionCreationNews newsletter, Connection conn) {
         String sql = "INSERT INTO " + TABLE_NAME + " (id, playerID, regionID) VALUES (?, ?, ?)";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getPlayerID());
             ps.setString(3, newsletter.getRegionID());
@@ -46,7 +45,7 @@ public class PlayerCreateRegionDAO extends NewsletterSubDAO<RegionCreationNews> 
     }
 
     @Override
-    public RegionCreationNews load(UUID id, long date) {
+    public RegionCreationNews load(UUID id, long date, Connection conn) {
         String sql = "SELECT playerID, regionID FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {

@@ -33,10 +33,9 @@ public class PlayerDeleteTownDAO extends NewsletterSubDAO<TownDeletedNews> {
     }
 
     @Override
-    public void save(TownDeletedNews newsletter) {
+    public void save(TownDeletedNews newsletter, Connection conn) {
         String sql = "INSERT INTO " + TABLE_NAME + " (id, playerID, oldTownName) VALUES (?, ?, ?)";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getPlayerID());
             ps.setString(3, newsletter.getOldTownName());
@@ -47,10 +46,9 @@ public class PlayerDeleteTownDAO extends NewsletterSubDAO<TownDeletedNews> {
     }
 
     @Override
-    public TownDeletedNews load(UUID id, long date) {
+    public TownDeletedNews load(UUID id, long date, Connection conn) {
         String sql = "SELECT playerID, oldTownName FROM " + TABLE_NAME + " WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

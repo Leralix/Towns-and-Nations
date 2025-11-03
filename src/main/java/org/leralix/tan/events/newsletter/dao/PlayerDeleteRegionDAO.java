@@ -32,10 +32,9 @@ public class PlayerDeleteRegionDAO extends NewsletterSubDAO<RegionDeletedNews> {
     }
 
     @Override
-    public void save(RegionDeletedNews newsletter) {
+    public void save(RegionDeletedNews newsletter, Connection conn) {
         String sql = "INSERT INTO " + TABLE_NAME + " (id, playerID, oldRegionName) VALUES (?, ?, ?)";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getPlayerID());
             ps.setString(3, newsletter.getRegionName());
@@ -46,10 +45,9 @@ public class PlayerDeleteRegionDAO extends NewsletterSubDAO<RegionDeletedNews> {
     }
 
     @Override
-    public RegionDeletedNews load(UUID id, long date) {
+    public RegionDeletedNews load(UUID id, long date, Connection conn) {
         String sql = "SELECT playerID, oldRegionName FROM " + TABLE_NAME + " WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

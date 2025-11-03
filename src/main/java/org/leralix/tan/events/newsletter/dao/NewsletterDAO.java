@@ -1,5 +1,6 @@
 package org.leralix.tan.events.newsletter.dao;
 
+import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.events.newsletter.news.Newsletter;
@@ -64,19 +65,27 @@ public class NewsletterDAO {
     public void save(Newsletter newsletter) throws SQLException {
         String sql = "INSERT INTO newsletter (id, type, date_created) VALUES (?, ?, ?)";
 
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, newsletter.getId());
-            ps.setString(2, newsletter.getType().name());
-            ps.setTimestamp(3, Timestamp.from(Instant.ofEpochMilli(newsletter.getDate())));
-            ps.executeUpdate();
-        }
+        try (Connection conn = dataSource.getConnection()) {
+            conn.setAutoCommit(false);
 
-        NewsletterSubDAO subDAO = subDaos.get(newsletter.getType());
-        if (subDAO == null) {
-            throw new IllegalStateException("No DAO for type " + newsletter.getType());
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setObject(1, newsletter.getId());
+                ps.setString(2, newsletter.getType().name());
+                ps.setTimestamp(3, Timestamp.from(Instant.ofEpochMilli(newsletter.getDate())));
+                ps.executeUpdate();
+            }
+
+            NewsletterSubDAO subDAO = subDaos.get(newsletter.getType());
+            if (subDAO == null) {
+                throw new IllegalStateException("No DAO for type " + newsletter.getType());
+            }
+
+            subDAO.save(newsletter, conn);
+
+            conn.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to save newsletter", e);
         }
-        subDAO.save(newsletter);
     }
 
     public void markAsRead(UUID newsletterId, UUID playerId) {
@@ -139,7 +148,7 @@ public class NewsletterDAO {
 
                     ZoneOffset zoneOffset = TimeZoneManager.getInstance().getTimezoneEnum().toZoneOffset();
                     long createdAtMillis = createdAt.toInstant(zoneOffset).toEpochMilli();
-                    Newsletter newsletter = subDAO.load(id, createdAtMillis);
+                    Newsletter newsletter = subDAO.load(id, createdAtMillis, conn);
                     if (newsletter != null) {
                         newsletters.add(newsletter);
                     }
@@ -205,4 +214,32 @@ public class NewsletterDAO {
         }
     }
 
+    public void markAllAsRead(Player player) {
+
+        String playerId = player.getUniqueId().toString();
+
+        List<Newsletter> newsletters = getNewsletters();
+        if (newsletters.isEmpty()) return;
+        List<UUID> ids = newsletters.stream()
+                .map(Newsletter::getId)
+                .toList();
+
+        if (ids.isEmpty()) return;
+
+        // Adaptez le nom et les colonnes selon votre schéma réel
+        String sql = "INSERT INTO newsletter_read (newsletter_id, player_id) VALUES (?, ?)";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            conn.setAutoCommit(false);
+            ps.setString(2, playerId);
+            for (UUID nid : ids) {
+                ps.setString(1, nid.toString());
+                ps.addBatch();
+            }
+            ps.executeBatch();
+            conn.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to mark newsletters as read in batch", e);
+        }
+    }
 }

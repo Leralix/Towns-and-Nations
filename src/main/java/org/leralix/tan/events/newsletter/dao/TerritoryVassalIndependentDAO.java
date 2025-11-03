@@ -33,10 +33,9 @@ public class TerritoryVassalIndependentDAO extends NewsletterSubDAO<TerritoryInd
     }
 
     @Override
-    public void save(TerritoryIndependentNews newsletter) {
+    public void save(TerritoryIndependentNews newsletter, Connection conn) {
         String sql = "INSERT INTO " + TABLE_NAME + " (id, independentTerritoryID, formerMasterID) VALUES (?, ?, ?)";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getIndependentTerritoryID());
             ps.setString(3, newsletter.getFormerMasterID());
@@ -47,10 +46,9 @@ public class TerritoryVassalIndependentDAO extends NewsletterSubDAO<TerritoryInd
     }
 
     @Override
-    public TerritoryIndependentNews load(UUID id, long date) {
+    public TerritoryIndependentNews load(UUID id, long date, Connection conn) {
         String sql = "SELECT independentTerritoryID, formerMasterID FROM " + TABLE_NAME + " WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

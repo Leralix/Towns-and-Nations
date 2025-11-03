@@ -37,11 +37,10 @@ public class DiplomacyAcceptedDAO extends NewsletterSubDAO<DiplomacyAcceptedNews
     }
 
     @Override
-    public void save(DiplomacyAcceptedNews newsletter) {
+    public void save(DiplomacyAcceptedNews newsletter, Connection conn) {
         String sql = "INSERT INTO " + TABLE_NAME + " (id, proposingTerritoryID, receivingTerritoryID, wantedRelation, isWorseRelation) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getProposingTerritoryID());
             ps.setString(3, newsletter.getReceivingTerritoryID());
@@ -54,10 +53,9 @@ public class DiplomacyAcceptedDAO extends NewsletterSubDAO<DiplomacyAcceptedNews
     }
 
     @Override
-    public DiplomacyAcceptedNews load(UUID id, long date) {
+    public DiplomacyAcceptedNews load(UUID id, long date, Connection conn) {
         String sql = "SELECT proposingTerritoryID, receivingTerritoryID, wantedRelation, isWorseRelation FROM " + TABLE_NAME + " WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

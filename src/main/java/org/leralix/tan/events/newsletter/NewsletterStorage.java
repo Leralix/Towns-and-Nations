@@ -118,9 +118,7 @@ public class NewsletterStorage {
 
 
     public void markAllAsReadForPlayer(Player player) {
-        for (Newsletter newsletter : getNewsletters()) {
-            newsletter.markAsRead(player);
-        }
+        getNewsletterDAO().markAllAsRead(player);
     }
 
 

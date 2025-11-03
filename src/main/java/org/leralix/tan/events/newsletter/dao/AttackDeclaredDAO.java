@@ -33,11 +33,10 @@ public class AttackDeclaredDAO extends NewsletterSubDAO<AttackDeclaredNewsletter
     }
 
     @Override
-    public void save(AttackDeclaredNewsletter newsletter) {
+    public void save(AttackDeclaredNewsletter newsletter, Connection conn) {
         String sql = "INSERT INTO " + TABLE_NAME + " (id, attackingTerritoryID, defendingTerritoryID) VALUES (?, ?, ?)";
 
-        try (Connection conn = dataSource.getConnection();
-             var ps = conn.prepareStatement(sql)) {
+        try (var ps = conn.prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getAttackingTerritoryID());
             ps.setString(3, newsletter.getDefendingTerritoryID());
@@ -49,11 +48,10 @@ public class AttackDeclaredDAO extends NewsletterSubDAO<AttackDeclaredNewsletter
 
 
     @Override
-    public AttackDeclaredNewsletter load(UUID id, long date) {
+    public AttackDeclaredNewsletter load(UUID id, long date, Connection conn) {
         String sql = "SELECT attackingTerritoryID, defendingTerritoryID FROM " + TABLE_NAME + " WHERE id = ?";
 
-        try (Connection conn = dataSource.getConnection();
-             var ps = conn.prepareStatement(sql)) {
+        try (var ps = conn.prepareStatement(sql)) {
             ps.setObject(1, id);
             try (var rs = ps.executeQuery()) {
                 if (rs.next()) {

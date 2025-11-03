@@ -33,10 +33,9 @@ public class TerritoryVassalForcedDAO extends NewsletterSubDAO<TerritoryVassalFo
     }
 
     @Override
-    public void save(TerritoryVassalForcedNews newsletter) {
+    public void save(TerritoryVassalForcedNews newsletter, Connection conn) {
         String sql = "INSERT INTO " + TABLE_NAME + " (id, proposingTerritoryID, forcedTerritoryID) VALUES (?, ?, ?)";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getProposingTerritoryID());
             ps.setString(3, newsletter.getForcedTerritoryID());
@@ -47,10 +46,9 @@ public class TerritoryVassalForcedDAO extends NewsletterSubDAO<TerritoryVassalFo
     }
 
     @Override
-    public TerritoryVassalForcedNews load(UUID id, long date) {
+    public TerritoryVassalForcedNews load(UUID id, long date, Connection conn) {
         String sql = "SELECT proposingTerritoryID, forcedTerritoryID FROM " + TABLE_NAME + " WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

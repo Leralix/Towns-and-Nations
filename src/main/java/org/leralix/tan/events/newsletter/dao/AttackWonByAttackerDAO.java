@@ -34,11 +34,10 @@ public class AttackWonByAttackerDAO extends NewsletterSubDAO<AttackWonByAttacker
     }
 
     @Override
-    public void save(AttackWonByAttackerNewsletter newsletter) {
+    public void save(AttackWonByAttackerNewsletter newsletter, Connection conn) {
         String sql = "INSERT INTO " + TABLE_NAME + " (id, attackingTerritoryID, defendingTerritoryID) VALUES (?, ?, ?)";
 
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getAttackingTerritoryID());
             ps.setString(3, newsletter.getDefendingTerritoryID());
@@ -49,11 +48,10 @@ public class AttackWonByAttackerDAO extends NewsletterSubDAO<AttackWonByAttacker
     }
 
     @Override
-    public AttackWonByAttackerNewsletter load(UUID id, long date) {
+    public AttackWonByAttackerNewsletter load(UUID id, long date, Connection conn) {
         String sql = "SELECT attackingTerritoryID, defendingTerritoryID FROM " + TABLE_NAME + " WHERE id = ?";
 
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
