@@ -48,8 +48,8 @@ public class SalaryTransaction extends AbstractTransaction {
         return iconManager.get(IconKey.SALARY_TRANSACTION)
                 .setName(Lang.SALARY_TRANSACTION_NAME.get(langType))
                 .setDescription(
-                        Lang.TRANSACTION_FROM.get(getTerritoryName(territoryID)),
-                        Lang.TRANSACTION_TO.get(getPlayerName(playerID)),
+                        Lang.TRANSACTION_FROM.get(getTerritoryName(territoryID, langType)),
+                        Lang.TRANSACTION_TO.get(getPlayerName(playerID, langType)),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(amount))
                 )
                 .asGuiItem(player, langType);

@@ -40,4 +40,9 @@ public class TerritoryOwned extends AbstractOwner {
         }
         territoryData.addToBalance(amount);
     }
+
+    @Override
+    public String getID() {
+        return territoryID;
+    }
 }

@@ -48,8 +48,8 @@ public class PaymentTransaction extends AbstractTransaction {
         return iconManager.get(IconKey.PAYMENT_TRANSACTION)
                 .setName(Lang.PAYMENT_TRANSACTION_NAME.get(langType))
                 .setDescription(
-                        Lang.TRANSACTION_FROM.get(getPlayerName(senderID)),
-                        Lang.TRANSACTION_TO.get(getPlayerName(receiverID)),
+                        Lang.TRANSACTION_FROM.get(getPlayerName(senderID, langType)),
+                        Lang.TRANSACTION_TO.get(getPlayerName(receiverID, langType)),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(amount))
                 )
                 .asGuiItem(player, langType);

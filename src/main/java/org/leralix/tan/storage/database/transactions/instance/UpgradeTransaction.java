@@ -2,17 +2,12 @@ package org.leralix.tan.storage.database.transactions.instance;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.AbstractTransaction;
 import org.leralix.tan.storage.database.transactions.TransactionType;
-import org.leralix.tan.upgrade.NewUpgradeStorage;
-import org.leralix.tan.upgrade.Upgrade;
-import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,29 +49,16 @@ public class UpgradeTransaction extends AbstractTransaction {
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
 
-        String upgradeName = getUpgradeName(langType);
+        String upgradeName = getUpgradeName(territoryID, upgradeID, langType);
 
         return iconManager.get(IconKey.UPGRADE_REQUIREMENT)
                 .setName(Lang.UPGRADE_TRANSACTION.get(langType))
                 .setDescription(
-                        Lang.TRANSACTION_FROM.get(getTerritoryName(territoryID)),
+                        Lang.TRANSACTION_FROM.get(getTerritoryName(territoryID, langType)),
                         Lang.TRANSACTION_UPGRADE.get(upgradeName, Integer.toString(newLevel)),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(amount))
                 )
                 .asGuiItem(player, langType);
-    }
-
-    private String getUpgradeName(LangType langType) {
-        TerritoryData territoryData = TerritoryUtil.getTerritory(territoryID);
-        NewUpgradeStorage upgradeStorage = Constants.getUpgradeStorage();
-        if(territoryData == null){
-            return Lang.TERRITORY_NOT_FOUND.get(langType);
-        }
-        Upgrade upgrade = upgradeStorage.getUpgrade(territoryData, upgradeID);
-        if(upgrade == null){
-            return Lang.UPGRADE_NOT_FOUND.get(langType);
-        }
-        return upgrade.getName(langType);
     }
 
     @Override

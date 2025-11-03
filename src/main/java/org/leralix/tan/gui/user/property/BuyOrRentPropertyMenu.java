@@ -41,7 +41,7 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
 
     private GuiItem getConfirmBuyButton() {
 
-        double price = propertyData.getSalePrice();
+        double price = propertyData.getPriceWithTax();
 
         return iconManager.get(IconKey.CONFIRM_BUY_PROPERTY_ICON)
                 .setName(Lang.CONFIRM_SALE.get(tanPlayer))
@@ -64,7 +64,7 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
 
     private GuiItem getConfirmRentButton() {
 
-        double price = propertyData.getRentPrice();
+        double price = propertyData.getRentPriceWithTax();
 
         return iconManager.get(IconKey.CONFIRM_RENT_PROPERTY_ICON)
                 .setName(Lang.CONFIRM_RENT.get(tanPlayer))

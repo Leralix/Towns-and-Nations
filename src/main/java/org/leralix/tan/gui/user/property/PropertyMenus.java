@@ -77,9 +77,9 @@ public abstract class PropertyMenus extends BasicGui {
         IconKey iconKey = propertyData.isForSale() ? IconKey.SELL_PROPERTY_ICON_FOR_SALE : IconKey.SELL_PROPERTY_ICON_NOT_FOR_SALE;
         Lang name = propertyData.isForSale() ? Lang.GUI_PROPERTY_FOR_SALE : Lang.GUI_PROPERTY_NOT_FOR_SALE;
 
-        double price = propertyData.getSalePrice();
-        double taxPrice = NumberUtil.roundWithDigits(price * propertyData.getTown().getTaxOnBuyingProperty());
-        double total = NumberUtil.roundWithDigits(price + taxPrice);
+        double price = propertyData.getPrice();
+        double total = propertyData.getPriceWithTax();
+        double taxPrice = total - price;
 
         return iconManager.get(iconKey)
                 .setName(name.get(langType))
@@ -112,9 +112,9 @@ public abstract class PropertyMenus extends BasicGui {
         IconKey iconKey = propertyData.isForRent() ? IconKey.RENT_PROPERTY_ICON_FOR_RENT : IconKey.RENT_PROPERTY_ICON_NOT_FOR_RENT;
         Lang name = propertyData.isForRent() ? Lang.GUI_PROPERTY_FOR_RENT : Lang.GUI_PROPERTY_NOT_FOR_RENT;
 
-        double price = propertyData.getBaseRentPrice();
+        double price = propertyData.getRentPrice();
         double taxPrice = NumberUtil.roundWithDigits(price * propertyData.getTown().getTaxOnRentingProperty());
-        double total = propertyData.getRentPrice();
+        double total = propertyData.getRentPriceWithTax();
 
         return iconManager.get(iconKey)
                 .setName(name.get(langType))

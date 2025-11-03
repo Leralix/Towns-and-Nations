@@ -49,8 +49,8 @@ public class DonationTransaction extends AbstractTransaction {
         return iconManager.get(IconKey.DONATION_TRANSACTION)
                 .setName(Lang.DONATION_TRANSACTION_NAME.get(langType))
                 .setDescription(
-                        Lang.TRANSACTION_FROM.get(getPlayerName(playerID)),
-                        Lang.TRANSACTION_TO.get(getTerritoryName(territoryID)),
+                        Lang.TRANSACTION_FROM.get(getPlayerName(playerID, langType)),
+                        Lang.TRANSACTION_TO.get(getTerritoryName(territoryID, langType)),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(amount))
                 )
                 .asGuiItem(player, langType);

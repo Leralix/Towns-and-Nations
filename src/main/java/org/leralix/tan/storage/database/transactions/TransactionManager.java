@@ -132,6 +132,8 @@ public class TransactionManager {
                 case TERRITORY_TAX -> TerritoryTaxTransaction.class;
                 case SALARY -> SalaryTransaction.class;
                 case UPGRADE -> UpgradeTransaction.class;
+                case SELLING_PROPERTY -> SellingPropertyTransaction.class;
+                case RENTING_PROPERTY -> RentingPropertyTransaction.class;
                 default -> null;
             };
             if(wantedClass == null){

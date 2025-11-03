@@ -51,8 +51,8 @@ public class TerritoryTaxTransaction extends AbstractTransaction {
         return iconManager.get(IconKey.TERRITORY_TAX_ICON)
                 .setName(Lang.DONATION_TRANSACTION_NAME.get(langType))
                 .setDescription(
-                        Lang.TRANSACTION_FROM.get(getTerritoryName(senderID)),
-                        Lang.TRANSACTION_TO.get(getPlayerName(recieverID)),
+                        Lang.TRANSACTION_FROM.get(getTerritoryName(senderID, langType)),
+                        Lang.TRANSACTION_TO.get(getPlayerName(recieverID, langType)),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(amount))
                 )
                 .asGuiItem(player, langType);

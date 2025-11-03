@@ -73,11 +73,11 @@ public class PropertyDataWrapper implements TanProperty {
 
     @Override
     public double getRentPrice() {
-        return propertyData.getRentPrice();
+        return propertyData.getRentPriceWithTax();
     }
 
     @Override
     public double getSalePrice() {
-        return propertyData.getSalePrice();
+        return propertyData.getPriceWithTax();
     }
 }

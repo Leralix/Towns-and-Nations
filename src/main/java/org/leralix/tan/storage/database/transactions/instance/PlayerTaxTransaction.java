@@ -52,8 +52,8 @@ public class PlayerTaxTransaction extends AbstractTransaction {
         return iconManager.get(IconKey.PLAYER_TAX_TRANSACTION)
                 .setName(Lang.PLAYER_TAX_TRANSACTION.get(langType))
                 .setDescription(
-                        Lang.TRANSACTION_FROM.get(getPlayerName(playerID)),
-                        Lang.TRANSACTION_TO.get(getTerritoryName(townID)),
+                        Lang.TRANSACTION_FROM.get(getPlayerName(playerID, langType)),
+                        Lang.TRANSACTION_TO.get(getTerritoryName(townID, langType)),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(amount))
                 )
                 .asGuiItem(player, langType);

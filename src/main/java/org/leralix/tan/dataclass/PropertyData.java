@@ -19,7 +19,6 @@ import org.leralix.lib.utils.particles.ParticleUtils;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.newhistory.PropertyBuyTaxTransaction;
 import org.leralix.tan.dataclass.property.AbstractOwner;
 import org.leralix.tan.dataclass.property.PlayerOwned;
 import org.leralix.tan.dataclass.property.TerritoryOwned;
@@ -38,6 +37,9 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.interact.events.property.CreatePropertyEvent;
 import org.leralix.tan.storage.PermissionManager;
+import org.leralix.tan.storage.database.transactions.TransactionManager;
+import org.leralix.tan.storage.database.transactions.instance.RentingPropertyTransaction;
+import org.leralix.tan.storage.database.transactions.instance.SellingPropertyTransaction;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
@@ -136,13 +138,13 @@ public class PropertyData extends Building {
         return icon.getIcon();
     }
 
+    public TownData getTown() {
+        return TownDataStorage.getInstance().get(getOwningStructureID());
+    }
+
     private String getOwningStructureID() {
         String[] parts = ID.split("_");
         return parts[0];
-    }
-
-    public TownData getTown() {
-        return TownDataStorage.getInstance().get(getOwningStructureID());
     }
 
     public String getPropertyID() {
@@ -203,8 +205,8 @@ public class PropertyData extends Building {
         OfflinePlayer renter = Bukkit.getOfflinePlayer(UUID.fromString(rentingPlayerID));
         TerritoryData town = getTown();
 
-        double baseRent = getBaseRentPrice();
-        double rent = getRentPrice();
+        double baseRent = getRentPrice();
+        double rent = getRentPriceWithTax();
         double taxRent = rent - baseRent;
 
 
@@ -217,6 +219,17 @@ public class PropertyData extends Building {
         EconomyUtil.removeFromBalance(renter, rent);
         getOwner().addToBalance(baseRent);
         town.addToBalance(taxRent);
+
+        TransactionManager.getInstance().register(
+                new RentingPropertyTransaction(
+                        town.getID(),
+                        getPropertyID(),
+                        owner.getID(),
+                        renter.getUniqueId().toString(),
+                        baseRent,
+                        town.getTaxOnRentingProperty()
+                )
+        );
     }
 
     public AbstractOwner getOwner() {
@@ -235,20 +248,20 @@ public class PropertyData extends Building {
     }
 
 
-    public double getBaseRentPrice() {
+    public double getRentPrice() {
         return this.rentPrice;
     }
 
-    public double getRentPrice() {
-        return NumberUtil.roundWithDigits(getBaseRentPrice() * (1 + getTown().getTaxOnRentingProperty()));
+    public double getRentPriceWithTax() {
+        return NumberUtil.roundWithDigits(getRentPrice() * (1 + getTown().getTaxOnRentingProperty()));
     }
 
-    public double getBaseSalePrice() {
+    public double getPrice() {
         return this.salePrice;
     }
 
-    public double getSalePrice() {
-        return NumberUtil.roundWithDigits(getBaseSalePrice() * (1 + getTown().getTaxOnBuyingProperty()));
+    public double getPriceWithTax() {
+        return NumberUtil.roundWithDigits(getPrice() * (1 + getTown().getTaxOnBuyingProperty()));
     }
 
     public boolean containsLocation(Location location) {
@@ -326,10 +339,10 @@ public class PropertyData extends Building {
 
         if (this.isForSale) {
             lines[2] = Lang.SIGN_FOR_SALE.get(langType);
-            lines[3] = Lang.SIGN_SALE_PRICE.get(langType, Double.toString(this.getSalePrice()));
+            lines[3] = Lang.SIGN_SALE_PRICE.get(langType, Double.toString(this.getPriceWithTax()));
         } else if (this.isForRent) {
             lines[2] = Lang.SIGN_RENT.get(langType);
-            lines[3] = Lang.SIGN_RENT_PRICE.get(langType, Double.toString(this.getRentPrice()));
+            lines[3] = Lang.SIGN_RENT_PRICE.get(langType, Double.toString(this.getRentPriceWithTax()));
         } else if (this.isRented()) {
             lines[2] = Lang.SIGN_RENTED_BY.get(langType);
             lines[3] = this.getRenter().getNameStored();
@@ -400,7 +413,7 @@ public class PropertyData extends Building {
         LangType langType = PlayerDataStorage.getInstance().get(buyer).getLang();
 
         double playerBalance = EconomyUtil.getBalance(buyer);
-        double cost = getSalePrice();
+        double cost = getPriceWithTax();
         if (playerBalance < cost) {
             TanChatUtils.message(buyer, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(langType, Double.toString(cost - playerBalance)), SoundEnum.MINOR_BAD);
             return;
@@ -410,22 +423,31 @@ public class PropertyData extends Building {
             UUID exOwnerID = UUID.fromString(playerOwned.getPlayerID());
             OfflinePlayer exOwnerOffline = Bukkit.getOfflinePlayer(exOwnerID);
             Player exOwner = exOwnerOffline.getPlayer();
-            TanChatUtils.message(exOwner, Lang.PROPERTY_SOLD_EX_OWNER.get(langType, getName(), buyer.getName(), Double.toString(getSalePrice())), SoundEnum.GOOD);
+            TanChatUtils.message(exOwner, Lang.PROPERTY_SOLD_EX_OWNER.get(langType, getName(), buyer.getName(), Double.toString(getPriceWithTax())), SoundEnum.GOOD);
 
             ITanPlayer exOwnerData = PlayerDataStorage.getInstance().get(exOwnerID);
             exOwnerData.removeProperty(this);
         }
 
-        TanChatUtils.message(buyer, Lang.PROPERTY_SOLD_NEW_OWNER.get(langType, getName(), Double.toString(getSalePrice())), SoundEnum.BAD);
+        TanChatUtils.message(buyer, Lang.PROPERTY_SOLD_NEW_OWNER.get(langType, getName(), Double.toString(getPriceWithTax())), SoundEnum.BAD);
 
         TownData town = getTown();
-        double townCut = getSalePrice() - getBaseSalePrice();
+        double townCut = getPriceWithTax() - getPrice();
 
-        TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PropertyBuyTaxTransaction(town, this, townCut));
-        EconomyUtil.removeFromBalance(buyer, getSalePrice());
-        getOwner().addToBalance(getBaseSalePrice());
+        EconomyUtil.removeFromBalance(buyer, getPriceWithTax());
+        getOwner().addToBalance(getPrice());
         town.addToBalance(townCut);
 
+        TransactionManager.getInstance().register(
+                new SellingPropertyTransaction(
+                        getTown().getID(),
+                        getPropertyID(),
+                        getOwner().getID(),
+                        buyer.getUniqueId().toString(),
+                        getPriceWithTax(),
+                        getTown().getTaxOnBuyingProperty()
+                )
+        );
 
         ITanPlayer newOwnerData = PlayerDataStorage.getInstance().get(buyer.getUniqueId().toString());
         newOwnerData.addProperty(this);
