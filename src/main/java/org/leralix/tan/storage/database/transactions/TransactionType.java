@@ -67,7 +67,7 @@ public enum TransactionType implements DisplayableEnum {
             timestamp TIMESTAMP NOT NULL,
             property_id VARCHAR(32) NOT NULL,
             territory_id BIGINT NOT NULL,
-            player_id BIGINT NOT NULL,
+            creator_id BIGINT NOT NULL,
             amount DOUBLE PRECISION NOT NULL,
             tax_per_block DOUBLE PRECISION NOT NULL
         );
@@ -142,31 +142,6 @@ public enum TransactionType implements DisplayableEnum {
         return title + createTableSQL.formatted(autoIncrementSyntax);
     }
 
-
-    public TransactionType next(EntityScope scope){
-        return switch (this){
-            case INDEX -> TransactionType.PAYMENT;
-            case PAYMENT -> TransactionType.DONATION;
-            case DONATION -> TransactionType.RETRIEVE;
-            case RETRIEVE -> TransactionType.TAXES;
-            case TAXES -> TransactionType.SALARY;
-            case SALARY -> TransactionType.CREATE_PROPERTY;
-            case CREATE_PROPERTY -> TransactionType.SELLING_PROPERTY;
-            case SELLING_PROPERTY -> TransactionType.RENTING_PROPERTY;
-            case RENTING_PROPERTY -> TransactionType.CHANGE_TERRITORY_NAME;
-            case CHANGE_TERRITORY_NAME -> {
-                if(scope == EntityScope.TERRITORY){
-                    yield TransactionType.UPGRADE;
-                } 
-                else {
-                    yield TransactionType.INDEX;
-                }
-            }
-            case UPGRADE -> TransactionType.TERRITORY_TAX;
-            case TERRITORY_TAX -> TransactionType.INDEX;
-        };
-    }
-
     @Override
     public String getDisplayName(LangType langType) {
         return name.get(langType);
@@ -174,28 +149,5 @@ public enum TransactionType implements DisplayableEnum {
 
     public String getTableName() {
         return tableName;
-    }
-
-    public TransactionType previous(EntityScope scope) {
-        return switch (this) {
-            case INDEX -> {
-                if (scope == EntityScope.TERRITORY) {
-                    yield TransactionType.TERRITORY_TAX;
-                } else {
-                    yield TransactionType.CHANGE_TERRITORY_NAME;
-                }
-            }
-            case PAYMENT -> TransactionType.INDEX;
-            case DONATION -> TransactionType.PAYMENT;
-            case RETRIEVE -> TransactionType.DONATION;
-            case TAXES -> TransactionType.RETRIEVE;
-            case SALARY -> TransactionType.TAXES;
-            case CREATE_PROPERTY -> TransactionType.SALARY;
-            case SELLING_PROPERTY -> TransactionType.CREATE_PROPERTY;
-            case RENTING_PROPERTY -> TransactionType.SELLING_PROPERTY;
-            case CHANGE_TERRITORY_NAME -> TransactionType.RENTING_PROPERTY;
-            case UPGRADE -> TransactionType.CHANGE_TERRITORY_NAME;
-            case TERRITORY_TAX -> TransactionType.UPGRADE;
-        };
     }
 }

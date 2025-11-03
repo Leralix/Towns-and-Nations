@@ -1114,6 +1114,7 @@ language:
   TRANSACTION_PROPERTY: "§fProperty : {0}"
   TRANSACTION_AMOUNT: "§fAmount : §6{0}{MONEY_CHAR}"
   TRANSACTION_TAX: "§fTax : §9{0}%§f (§6{1}{MONEY_CHAR}§f)"
+  TRANSACTION_FLAT_TAX: "§fTax : §9{0}{MONEY_CHAR}"
   TRANSACTION_UPGRADE: "§fUpgrade : §a{0}§f (lvl {1})"
   TRANSACTION_DATE: "§fDate : {0}"
   #War menu

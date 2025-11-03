@@ -20,6 +20,4 @@ public class CreatePlayerPropertyEvent extends CreatePropertyEvent {
         new PlayerPropertyManager(player, property, HumanEntity::closeInventory);
         return property;
     }
-
-
 }
