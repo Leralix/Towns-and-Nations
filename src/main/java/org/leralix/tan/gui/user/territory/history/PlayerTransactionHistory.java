@@ -34,7 +34,7 @@ public class PlayerTransactionHistory extends AbstractTerritoryTransactionHistor
 
     @Override
     protected EntityScope getScope() {
-        return EntityScope.TERRITORY;
+        return EntityScope.PLAYER;
     }
 
     @Override

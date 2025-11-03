@@ -7,7 +7,6 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.BrowseScope;
 import org.leralix.tan.gui.IteratorGUI;
-import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -47,15 +46,17 @@ public class BrowseTerritoryMenu extends IteratorGUI {
         gui.setItem(6, 5, getScopeButton());
 
         gui.open(player);
-
     }
 
     private GuiItem getScopeButton() {
-        return iconManager.get(IconKey.CHANGE_SCOPE_ICON)
-                .setName(Lang.BROWSE_SCOPE.get(tanPlayer, scope.getName(tanPlayer)))
-                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SWITCH)
-                .setAction(p -> setScope(scope.getNextScope()))
-                .asGuiItem(player, langType);
+        return GuiUtil.getNextScopeButton(
+                iconManager,
+                this,
+                scope,
+                newValue -> scope = newValue,
+                langType,
+                player
+        );
     }
 
     private List<GuiItem> getTerritory() {

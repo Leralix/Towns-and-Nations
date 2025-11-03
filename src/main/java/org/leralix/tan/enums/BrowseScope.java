@@ -1,33 +1,23 @@
 package org.leralix.tan.enums;
 
-import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
+import org.leralix.tan.utils.deprecated.DisplayableEnum;
 
-public enum BrowseScope {
+public enum BrowseScope implements DisplayableEnum {
 
-    ALL(Lang.BROWSE_ALL_NAME, null),
-    TOWNS(Lang.BROWSE_TOWNS_NAME, null),
-    REGIONS( Lang.BROWSE_REGIONS_NAME, null);
+    ALL(Lang.BROWSE_ALL_NAME),
+    TOWNS(Lang.BROWSE_TOWNS_NAME),
+    REGIONS(Lang.BROWSE_REGIONS_NAME);
 
     private final Lang name;
-    private BrowseScope nextScope;
 
-    BrowseScope(Lang name, BrowseScope nextScope) {
+    BrowseScope(Lang name) {
         this.name = name;
-        this.nextScope = nextScope;
     }
 
-    public BrowseScope getNextScope() {
-        return nextScope;
-    }
-
-    static {
-        ALL.nextScope = TOWNS;
-        TOWNS.nextScope = REGIONS;
-        REGIONS.nextScope = ALL;
-    }
-
-    public String getName(ITanPlayer tanPlayer) {
-        return name.get(tanPlayer);
+    @Override
+    public String getDisplayName(LangType langType) {
+        return name.get(langType);
     }
 }

@@ -3,15 +3,13 @@ package org.leralix.tan.gui.user.territory.history;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.gui.IteratorGUI;
-import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.database.transactions.AbstractTransaction;
 import org.leralix.tan.storage.database.transactions.EntityScope;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.TransactionType;
+import org.leralix.tan.utils.deprecated.GuiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,15 +39,14 @@ public abstract class AbstractTerritoryTransactionHistory extends IteratorGUI {
     }
 
     private @NotNull GuiItem getNextScopeButton() {
-        return iconManager.get(IconKey.CHANGE_SCOPE_ICON)
-                .setName(Lang.BROWSE_SCOPE.get(langType, transactionType.getName(langType)))
-                .setDescription(Lang.LEFT_CLICK_TO_MODIFY.get())
-                .setAction(action -> {
-                    transactionType = transactionType.next(getScope());
-                    SoundUtil.playSound(player, SoundEnum.ADD);
-                    open();
-                })
-                .asGuiItem(player, langType);
+        return GuiUtil.getNextScopeButton(
+                iconManager,
+                this,
+                transactionType,
+                newValue -> transactionType = newValue,
+                langType,
+                player
+        );
     }
 
     protected abstract EntityScope getScope();

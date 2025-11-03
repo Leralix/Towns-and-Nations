@@ -2,8 +2,9 @@ package org.leralix.tan.storage.database.transactions;
 
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.utils.deprecated.DisplayableEnum;
 
-public enum TransactionType {
+public enum TransactionType implements DisplayableEnum {
 
     //%s because each DB acts differently for auto id
     INDEX(Lang.ALL_TRANSACTION_SCOPE, "transaction_index",
@@ -166,7 +167,8 @@ public enum TransactionType {
         };
     }
 
-    public String getName(LangType langType) {
+    @Override
+    public String getDisplayName(LangType langType) {
         return name.get(langType);
     }
 
@@ -174,4 +176,26 @@ public enum TransactionType {
         return tableName;
     }
 
+    public TransactionType previous(EntityScope scope) {
+        return switch (this) {
+            case INDEX -> {
+                if (scope == EntityScope.TERRITORY) {
+                    yield TransactionType.TERRITORY_TAX;
+                } else {
+                    yield TransactionType.CHANGE_TERRITORY_NAME;
+                }
+            }
+            case PAYMENT -> TransactionType.INDEX;
+            case DONATION -> TransactionType.PAYMENT;
+            case RETRIEVE -> TransactionType.DONATION;
+            case TAXES -> TransactionType.RETRIEVE;
+            case SALARY -> TransactionType.TAXES;
+            case CREATE_PROPERTY -> TransactionType.SALARY;
+            case SELLING_PROPERTY -> TransactionType.CREATE_PROPERTY;
+            case RENTING_PROPERTY -> TransactionType.SELLING_PROPERTY;
+            case CHANGE_TERRITORY_NAME -> TransactionType.RENTING_PROPERTY;
+            case UPGRADE -> TransactionType.CHANGE_TERRITORY_NAME;
+            case TERRITORY_TAX -> TransactionType.UPGRADE;
+        };
+    }
 }
