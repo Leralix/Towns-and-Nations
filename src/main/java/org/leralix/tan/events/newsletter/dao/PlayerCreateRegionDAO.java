@@ -47,8 +47,7 @@ public class PlayerCreateRegionDAO extends NewsletterSubDAO<RegionCreationNews> 
     @Override
     public RegionCreationNews load(UUID id, long date, Connection conn) {
         String sql = "SELECT playerID, regionID FROM " + TABLE_NAME + " WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
