@@ -34,7 +34,7 @@ public class ClaimBlacklistStorage {
                     continue;
                 }
 
-                if(coordinates == null) {
+                if (coordinates == null || coordinates.isEmpty()) {
                     blacklist.add(new BlackListWorld(name));
                     continue;
                 }

@@ -44,7 +44,13 @@ public class Constants {
 
     //Territory
     private static int townCost;
+    private static int townMaxNameSize;
+    private static int townMaxDescriptionSize;
     private static int regionCost;
+    private static int regionMaxNameSize;
+    private static int regionMaxDescriptionSize;
+    private static int maxRankSize;
+    private static int rankNameSize;
     private static double townChunkUpkeepCost;
     private static double regionChunkUpkeepCost;
     private static boolean displayTerritoryColor;
@@ -135,7 +141,13 @@ public class Constants {
         prefixSize = config.getInt("prefixSize", 3);
         //Territory
         townCost = config.getInt("townCost", 1000);
+        townMaxNameSize = config.getInt("TownNameSize", 45);
+        townMaxDescriptionSize = config.getInt("TownDescSize", 55);
         regionCost = config.getInt("regionCost", 7500);
+        regionMaxNameSize = config.getInt("RegionNameSize", 45);
+        regionMaxDescriptionSize = config.getInt("RegionDescSize", 55);
+        maxRankSize = config.getInt("maxRanks", 9);
+        rankNameSize = config.getInt("RankNameSize", 40);
         townChunkUpkeepCost = config.getDouble("TownChunkUpkeepCost", 0);
         regionChunkUpkeepCost = config.getDouble("RegionChunkUpkeepCost", 0);
 
@@ -431,8 +443,32 @@ public class Constants {
         return townCost;
     }
 
+    public static int getTownMaxNameSize() {
+        return townMaxNameSize;
+    }
+
+    public static int getTownMaxDescriptionSize() {
+        return townMaxDescriptionSize;
+    }
+
     public static int getRegionCost() {
         return regionCost;
+    }
+
+    public static int getRegionMaxNameSize(){
+        return regionMaxNameSize;
+    }
+
+    public static int getRegionMaxDescriptionSize(){
+        return regionMaxDescriptionSize;
+    }
+
+    public static int getMaxRankSize() {
+        return maxRankSize;
+    }
+
+    public static int getRankNameSize() {
+        return rankNameSize;
     }
 
     public static double getUpkeepCost(TerritoryData territoryData) {

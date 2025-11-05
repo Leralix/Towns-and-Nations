@@ -2,8 +2,6 @@ package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
@@ -15,6 +13,7 @@ import org.leralix.tan.gui.user.ranks.RankManagerMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.CreateRank;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -46,7 +45,7 @@ public class TerritoryRanksMenu extends IteratorGUI {
 
     private GuiItem getCreateNewRoleButton() {
 
-        int nbRanks = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("townMaxRank",8);
+        int nbRanks = Constants.getMaxRankSize();
 
         return iconManager.get(IconKey.NEW_RANK_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES.get(tanPlayer))

@@ -2,11 +2,11 @@ package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -24,7 +24,10 @@ public class ChangeTerritoryDescription extends ChatListenerEvent {
 
     @Override
     public boolean execute(Player player, String message) {
-        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownDescSize");
+
+        int maxSize = territoryData instanceof TownData ?
+                Constants.getTownMaxDescriptionSize() :
+                Constants.getRegionMaxDescriptionSize();
 
         if (message.length() > maxSize) {
             TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxSize)));
