@@ -8,7 +8,8 @@
       "Bash(where:*)",
       "Bash(cmd /c mvn clean compile)",
       "Bash(dir:*)",
-      "Bash(gradle clean:*)"
+      "Bash(gradle clean:*)",
+      "Bash(gradle build:*)"
     ],
     "deny": [],
     "ask": []

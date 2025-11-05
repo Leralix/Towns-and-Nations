@@ -203,7 +203,7 @@ public abstract class DatabaseStorage<T> {
                         String jsonData = rs.getString("data");
 
                         if (typeToken.equals(ITanPlayer.class)) {
-                            com.google.gson.JsonElement jsonElement = com.google.gson.JsonParser.parseString(jsonData);
+                            com.google.gson.JsonElement jsonElement = new JsonParser().parse(jsonData);
                             if (jsonElement.isJsonObject()) {
                                 com.google.gson.JsonObject jsonObject = jsonElement.getAsJsonObject();
                                 jsonObject.addProperty("uuid", id);

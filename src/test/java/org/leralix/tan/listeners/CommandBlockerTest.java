@@ -31,7 +31,7 @@ class CommandBlockerTest extends BasicTest {
 
         town1.setRelation(town2, TownRelation.EMBARGO);
 
-        assertTrue(CommandBlocker.relationForbidCommandWithPlayer(sender, "/tpa target", Collections.singleton("/tpa %PLAYER%")));
+        assertTrue(CommandBlocker.relationForbidCommandWithPlayer(sender, "/tpa target", Collections.singleton("/tpa %PLAYER%")).join());
     }
 
 }

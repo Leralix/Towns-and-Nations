@@ -43,7 +43,7 @@ public class JsonToDatabaseMigration {
 
         Connection conn = null;
         try (FileReader reader = new FileReader(jsonFile)) {
-            JsonObject rootObject = JsonParser.parseReader(reader).getAsJsonObject();
+            JsonObject rootObject = new JsonParser().parse(reader).getAsJsonObject();
             Map<String, String> dataMap = new HashMap<>();
 
             // Parse JSON into id -> jsonData map

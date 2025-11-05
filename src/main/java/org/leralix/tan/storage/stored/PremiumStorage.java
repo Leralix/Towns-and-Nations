@@ -87,7 +87,7 @@ public class PremiumStorage extends DatabaseStorage<Boolean> {
             if (connection.getResponseCode() == 200) {
                 try (InputStream in = connection.getInputStream()) {
                     String json = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-                    JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
+                    JsonObject obj = new JsonParser().parse(json).getAsJsonObject();
 
                     return obj.has("id") && obj.has("name");
                 }
