@@ -939,8 +939,8 @@ language:
   CHAT_PLAYER_LEFT_THE_TOWN: "§fYou left the town"
   WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cThe town {0}§c, with which you had a relation: {1}§c has been deleted"
   #Chunk permissions
-  TOWN_PERMISSION: "Town"
-  ALLIANCE_PERMISSION: "Region"
+  TOWN_PERMISSION: "Self"
+  ALLIANCE_PERMISSION: "Alliance"
   EVERYONE_PERMISSION: "Everyone"
   SELECTED_ONLY_PERMISSION: "Selected only"
   #Custom Item
