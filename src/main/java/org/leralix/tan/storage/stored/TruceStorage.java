@@ -58,7 +58,7 @@ public class TruceStorage extends DatabaseStorage<HashMap<String, ActiveTruce>> 
         String id2 = activeTruce.getTerritoryID2();
 
         // Get or create HashMap for id1
-        HashMap<String, ActiveTruce> map1 = get(id1);
+        HashMap<String, ActiveTruce> map1 = get(id1).join();
         if (map1 == null) {
             map1 = new HashMap<>();
         }
@@ -66,7 +66,7 @@ public class TruceStorage extends DatabaseStorage<HashMap<String, ActiveTruce>> 
         put(id1, map1);
 
         // Get or create HashMap for id2
-        HashMap<String, ActiveTruce> map2 = get(id2);
+        HashMap<String, ActiveTruce> map2 = get(id2).join();
         if (map2 == null) {
             map2 = new HashMap<>();
         }
@@ -79,7 +79,7 @@ public class TruceStorage extends DatabaseStorage<HashMap<String, ActiveTruce>> 
         String id1 = territoryData1.getID();
         String id2 = territoryData2.getID();
 
-        HashMap<String, ActiveTruce> truceMap = get(id1);
+        HashMap<String, ActiveTruce> truceMap = get(id1).join();
         if (truceMap == null) {
             return 0;
         }

@@ -44,12 +44,12 @@ public abstract class PapiEntry {
     }
 
     protected TerritoryData getTerritoryByName(String name) {
-        for(TownData townData : TownDataStorage.getInstance().getAll().values()){
+        for(TownData townData : TownDataStorage.getInstance().getAllAsync().join().values()){
             if(townData.getName().equalsIgnoreCase(name)){
                 return townData;
             }
         }
-        for(RegionData regionData : RegionDataStorage.getInstance().getAll().values()){
+        for(RegionData regionData : RegionDataStorage.getInstance().getAllAsync().join().values()){
             if(regionData.getName().equalsIgnoreCase(name)){
                 return regionData;
             }

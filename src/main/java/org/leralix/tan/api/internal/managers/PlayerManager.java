@@ -21,27 +21,27 @@ public class PlayerManager implements TanPlayerManager {
 
     @Override
     public Optional<TanPlayer> get(String name) {
-        return Optional.ofNullable(TanPlayerWrapper.of(playerDataStorage.get(name)));
+        return Optional.ofNullable(TanPlayerWrapper.of(playerDataStorage.getSync(name)));
     }
 
     @Override
     public Optional<TanPlayer> get(UUID uuid) {
-        return Optional.ofNullable(TanPlayerWrapper.of(playerDataStorage.get(uuid)));
+        return Optional.ofNullable(TanPlayerWrapper.of(playerDataStorage.getSync(uuid)));
     }
 
     @Override
     public TanPlayer get(Player player) {
-        return TanPlayerWrapper.of(playerDataStorage.get(player));
+        return TanPlayerWrapper.of(playerDataStorage.getSync(player));
     }
 
     @Override
     public TanPlayer get(OfflinePlayer offlinePlayer) {
-        return TanPlayerWrapper.of(playerDataStorage.get(offlinePlayer));
+        return TanPlayerWrapper.of(playerDataStorage.getSync(offlinePlayer));
     }
 
     @Override
     public Collection<TanPlayer> getAll() {
-        return playerDataStorage.getAll().values().stream()
+        return playerDataStorage.getAllAsync().join().values().stream()
                 .map(TanPlayerWrapper::of)
                 .toList();
     }

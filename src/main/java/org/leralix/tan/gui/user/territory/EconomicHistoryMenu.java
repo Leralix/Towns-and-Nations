@@ -2,7 +2,6 @@ package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -43,7 +42,7 @@ public class EconomicHistoryMenu extends IteratorGUI {
         List<GuiItem> guiItems = new ArrayList<>();
 
         for (List<TransactionHistory> transactionHistory : TownsAndNations.getPlugin().getDatabaseHandler().getTransactionHistory(territoryData, transactionHistoryEnum)) {
-            ItemStack transactionIcon = HeadUtils.createCustomItemStack(Material.PAPER, ChatColor.GREEN + transactionHistory.get(0).getDate());
+            ItemStack transactionIcon = HeadUtils.createCustomItemStack(Material.PAPER, "§a" + transactionHistory.get(0).getDate());
 
             for (TransactionHistory transaction : transactionHistory) {
                 HeadUtils.addLore(transactionIcon, transaction.addLoreLine());

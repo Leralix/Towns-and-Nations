@@ -10,10 +10,10 @@ public class TownIconType extends IconType {
 
     @Override
     protected ItemStack getItemStack(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         if(!tanPlayer.hasTown()){
             return new ItemStack(Material.BARRIER);
         }
-        return tanPlayer.getTown().getIcon();
+        return tanPlayer.getTownSync().getIcon();
     }
 }

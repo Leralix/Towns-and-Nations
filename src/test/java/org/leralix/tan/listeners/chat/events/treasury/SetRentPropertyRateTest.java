@@ -13,7 +13,7 @@ class SetRentPropertyRateTest extends BasicTest {
     void nominalTest(){
 
         double wantedRentRate = 0.2;
-        TownData townData = TownDataStorage.getInstance().newTown("town");
+        TownData townData = TownDataStorage.getInstance().newTown("town").join();
 
         SetRentPropertyRate command = new SetRentPropertyRate(townData);
         command.setRate(wantedRentRate);

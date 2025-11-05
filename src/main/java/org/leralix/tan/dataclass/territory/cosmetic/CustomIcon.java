@@ -30,7 +30,7 @@ public class CustomIcon implements ICustomIcon {
     private @NotNull ItemStack getOldIcon() {
         Material material = null;
         if (materialTypeName != null) {
-            material = Material.getMaterial(materialTypeName);
+            material = Material.getMaterial(materialTypeName, false);
         }
         if(material == null){
             material = Material.BARRIER;

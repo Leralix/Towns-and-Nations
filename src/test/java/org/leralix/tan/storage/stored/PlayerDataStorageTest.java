@@ -43,7 +43,7 @@ class PlayerDataStorageTest {
         PlayerMock player = server.addPlayer("TestPlayer");
 
         // Create player data
-        ITanPlayer tanPlayer = storage.get(player);
+        ITanPlayer tanPlayer = storage.get(player).join();
 
         // Verify that the player data was created
         assertNotNull(tanPlayer, "Player data should be created and retrievable");

@@ -85,7 +85,7 @@ public class LandmarkDataWrapper implements TanLandmark {
 
     @Override
     public void setOwner(UUID uuid) {
-        landmark.setOwner(TownDataStorage.getInstance().get(uuid.toString()));
+        landmark.setOwner(TownDataStorage.getInstance().getSync(uuid.toString()));
     }
 
     @Override

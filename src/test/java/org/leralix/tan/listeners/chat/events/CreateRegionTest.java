@@ -35,16 +35,17 @@ class CreateRegionTest {
 
     @Test
     void nominalCase(){
-        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
-        var townData = TownDataStorage.getInstance().newTown("Town-B", tanPlayer);
+        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
+        var townData = TownDataStorage.getInstance().newTown("Town-B", tanPlayer).join();
         townData.addToBalance(50);
         String regionName = "Region-B";
 
         CreateRegion createRegion = new CreateRegion(25);
-        createRegion.execute(tanPlayer.getPlayer(), regionName);
+        boolean result = createRegion.execute(tanPlayer.getPlayer(), regionName);
 
+        assertTrue(result);
         assertTrue(townData.haveOverlord());
-        RegionData regionData = townData.getRegion();
+        RegionData regionData = (RegionData) townData.getOverlord().orElseThrow();
         assertFalse(regionData.haveOverlord());
         assertEquals(regionName, regionData.getName());
         assertEquals(1, regionData.getSubjects().size());
@@ -53,61 +54,66 @@ class CreateRegionTest {
 
     @Test
     void playerNotLeader(){
-        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
-        var secondTanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
+        var secondTanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
 
-        var townData = TownDataStorage.getInstance().newTown("Town", tanPlayer);
+        var townData = TownDataStorage.getInstance().newTown("Town", tanPlayer).join();
 
         townData.addPlayer(secondTanPlayer);
 
         String regionName = "Region";
 
         CreateRegion createRegion = new CreateRegion(0);
-        createRegion.execute(secondTanPlayer.getPlayer(), regionName);
+        boolean result = createRegion.execute(secondTanPlayer.getPlayer(), regionName);
 
+        assertFalse(result);
         assertFalse(townData.haveOverlord());
     }
 
     @Test
     void notEnoughMoney(){
-        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
 
-        var townData = TownDataStorage.getInstance().newTown("Town", tanPlayer);
+        var townData = TownDataStorage.getInstance().newTown("Town", tanPlayer).join();
 
         CreateRegion createRegion = new CreateRegion(1);
-        createRegion.execute(tanPlayer.getPlayer(), "Region");
+        boolean result = createRegion.execute(tanPlayer.getPlayer(), "Region");
 
+        assertFalse(result);
         assertFalse(townData.haveOverlord());
     }
 
     @Test
     void regionNameTooLong(){
-        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
-        var townData = TownDataStorage.getInstance().newTown("Town", tanPlayer);
+        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
+        var townData = TownDataStorage.getInstance().newTown("Town", tanPlayer).join();
         townData.addToBalance(50);
 
         int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RegionNameSize");
 
         CreateRegion createRegion = new CreateRegion(25);
-        createRegion.execute(tanPlayer.getPlayer(), "a" + "a".repeat(Math.max(0, maxSize)));
+        boolean result = createRegion.execute(tanPlayer.getPlayer(), "a" + "a".repeat(Math.max(0, maxSize)));
 
+        assertFalse(result);
         assertFalse(townData.haveOverlord());
     }
 
     @Test
     void regionNameAlreadyUsed(){
-        var tanPlayer1 = PlayerDataStorage.getInstance().get(server.addPlayer());
-        var townData1 = TownDataStorage.getInstance().newTown("townData1", tanPlayer1);
+        var tanPlayer1 = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
+        var townData1 = TownDataStorage.getInstance().newTown("townData1", tanPlayer1).join();
 
-        var tanPlayer2 = PlayerDataStorage.getInstance().get(server.addPlayer());
-        var townData2 = TownDataStorage.getInstance().newTown("townData2", tanPlayer2);
+        var tanPlayer2 = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
+        var townData2 = TownDataStorage.getInstance().newTown("townData2", tanPlayer2).join();
 
         String regionName = "specificRegionName";
 
         CreateRegion createRegion = new CreateRegion(0);
-        createRegion.execute(tanPlayer1.getPlayer(), regionName);
-        createRegion.execute(tanPlayer2.getPlayer(), regionName);
+        boolean result1 = createRegion.execute(tanPlayer1.getPlayer(), regionName);
+        boolean result2 = createRegion.execute(tanPlayer2.getPlayer(), regionName);
 
+        assertTrue(result1);
+        assertFalse(result2);
         assertTrue(townData1.haveOverlord());
         assertFalse(townData2.haveOverlord());
     }

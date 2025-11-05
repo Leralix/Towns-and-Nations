@@ -7,7 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
@@ -50,7 +49,7 @@ public class PlayerApplicationMenu extends IteratorGUI {
         for (String playerUUID: townData.getPlayerJoinRequestSet()) {
 
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
-            ITanPlayer playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
+            ITanPlayer playerIterateData = PlayerDataStorage.getInstance().getSync(playerUUID);
 
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
                     Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC2.get(tanPlayer),

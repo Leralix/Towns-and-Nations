@@ -11,7 +11,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.upgrade.rewards.bool.EnableTownSpawn;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -42,7 +41,8 @@ public class SetTownSpawnCommand extends PlayerSubCommand {
     @Override
     public void perform(Player player, String[] args){
 
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        LangType langType = tanPlayer.getLang();
 
         //Incorrect syntax
         if (args.length != 1){
@@ -51,20 +51,21 @@ public class SetTownSpawnCommand extends PlayerSubCommand {
         }
 
         //No town
-        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
-        if(!playerStat.hasTown()){
+        if(!tanPlayer.hasTown()){
             TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
             return;
         }
 
-        //No permission
-        TownData townData = TownDataStorage.getInstance().get(player);
-
-        if(!townData.doesPlayerHavePermission(playerStat, RolePermission.TOWN_ADMINISTRATOR)){
-            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType));
+        TownData townData = tanPlayer.getTownSync();
+        if (townData == null) {
+            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType)); // Should not happen if hasTown() is true
             return;
         }
 
+        if(!townData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)){
+            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType));
+            return;
+        }
 
         //Spawn Unlocked
         EnableTownSpawn enableTownSpawn = townData.getNewLevel().getStat(EnableTownSpawn.class);

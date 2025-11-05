@@ -42,10 +42,10 @@ public class PropertySignListener implements Listener {
                 for (MetadataValue value : sign.getMetadata("propertySign")) {
                     String customData = value.asString();
                     String[] ids = customData.split("_");
-                    PropertyData propertyData = TownDataStorage.getInstance().get(ids[0]).getProperty(ids[1]);
+                    PropertyData propertyData = TownDataStorage.getInstance().getSync(ids[0]).getProperty(ids[1]);
                     if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
-                        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+                        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
                         LangType langType = tanPlayer.getLang();
 
                         if (!canPlayerOpenMenu(player, clickedBlock)) {
@@ -74,9 +74,9 @@ public class PropertySignListener implements Listener {
 
     private boolean canPlayerOpenMenu(Player player, Block clickedBlock) {
         ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(clickedBlock.getChunk());
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         if (tanPlayer.hasTown() && claimedChunk2 instanceof TownClaimedChunk townClaimedChunk) {
-            TownRelation territoryRelation = townClaimedChunk.getTown().getWorstRelationWith(tanPlayer);
+            TownRelation territoryRelation = townClaimedChunk.getTown().getWorstRelationWithSync(tanPlayer);
             return Constants.getRelationConstants(territoryRelation).canInteractWithProperty();
         }
         return false;

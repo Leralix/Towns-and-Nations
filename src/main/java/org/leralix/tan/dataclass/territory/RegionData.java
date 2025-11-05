@@ -45,7 +45,8 @@ public class RegionData extends TerritoryData {
 
     public RegionData(String id, String name, ITanPlayer owner) {
         super(id, name, owner);
-        TownData ownerTown = owner.getTown();
+        // getTownSync() retourne directement TownData (synchrone)
+        TownData ownerTown = owner.getTownSync();
 
         this.capitalID = ownerTown.getID();
         this.nationID = null;
@@ -75,7 +76,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     public ITanPlayer getLeaderData() {
-        return PlayerDataStorage.getInstance().get(getLeaderID());
+        return PlayerDataStorage.getInstance().getSync(getLeaderID());
     }
 
     @Override
@@ -100,11 +101,14 @@ public class RegionData extends TerritoryData {
 
     @Override
     public Collection<ITanPlayer> getITanPlayerList() {
-        ArrayList<ITanPlayer> ITanPlayerList = new ArrayList<>();
+        List<ITanPlayer> players = new ArrayList<>();
         for (String playerID : getPlayerIDList()) {
-            ITanPlayerList.add(PlayerDataStorage.getInstance().get(playerID));
+            ITanPlayer player = PlayerDataStorage.getInstance().getSync(playerID);
+            if (player != null) {
+                players.add(player);
+            }
         }
-        return ITanPlayerList;
+        return players;
     }
 
 
@@ -295,7 +299,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     public Collection<TerritoryData> getPotentialVassals() {
-        return new ArrayList<>(TownDataStorage.getInstance().getAll().values());
+        return new ArrayList<>(TownDataStorage.getInstance().getAllAsync().join().values());
     }
 
 
@@ -310,9 +314,9 @@ public class RegionData extends TerritoryData {
     @Override
     public List<GuiItem> getOrderedMemberList(ITanPlayer tanPlayer) {
         List<GuiItem> res = new ArrayList<>();
-        for (String playerUUID : getOrderedPlayerIDList()) {
+        for (String playerUUID : getOrderedPlayerIDListSync()) {
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
-            ITanPlayer playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
+            ITanPlayer playerIterateData = PlayerDataStorage.getInstance().getSync(playerUUID);
             ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate, Lang.GUI_TOWN_MEMBER_DESC1.get(tanPlayer.getLang(), playerIterateData.getRegionRank().getColoredName()));
 
             GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> event.setCancelled(true));

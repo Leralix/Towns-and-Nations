@@ -5,7 +5,6 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.events.newsletter.NewsletterType;
@@ -56,10 +55,10 @@ public class RegionCreationNews extends Newsletter {
 
     @Override
     public void broadcast(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(playerID);
         if(tanPlayer == null)
             return;
-        RegionData regionData = RegionDataStorage.getInstance().get(regionID);
+        RegionData regionData = RegionDataStorage.getInstance().getSync(regionID);
         if(regionData == null)
             return;
         TanChatUtils.message(player, Lang.REGION_CREATED_NEWSLETTER.get(player, tanPlayer.getNameStored(), regionData.getBaseColoredName()));
@@ -73,10 +72,10 @@ public class RegionCreationNews extends Newsletter {
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(playerID);
         if(tanPlayer == null)
             return null;
-        RegionData regionData = RegionDataStorage.getInstance().get(regionID);
+        RegionData regionData = RegionDataStorage.getInstance().getSync(regionID);
         if(regionData == null)
             return null;
 

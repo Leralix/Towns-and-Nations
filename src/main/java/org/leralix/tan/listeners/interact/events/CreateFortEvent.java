@@ -31,7 +31,7 @@ public class CreateFortEvent extends RightClickListenerEvent {
     public ListenerState execute(PlayerInteractEvent event) {
 
         Player player = event.getPlayer();
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
 
         Block block = event.getClickedBlock();
         if (block == null) {

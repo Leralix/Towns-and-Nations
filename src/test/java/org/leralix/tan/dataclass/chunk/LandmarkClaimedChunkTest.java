@@ -31,7 +31,6 @@ class LandmarkClaimedChunkTest extends BasicTest {
     @AfterEach
     protected void tearDown() {
         super.tearDown();
-        townsAndNations.resetSingletonForTests();
     }
 
     @Test
@@ -61,7 +60,7 @@ class LandmarkClaimedChunkTest extends BasicTest {
                 (double) chunk.getZ() * 16)
         );
 
-        TownData townData = TownDataStorage.getInstance().newTown("town");
+        TownData townData = TownDataStorage.getInstance().newTown("town").join();
         landmark.setOwner(townData);
 
         assertTrue(landmark.isOwned());
@@ -90,7 +89,7 @@ class LandmarkClaimedChunkTest extends BasicTest {
                 (double) chunk.getZ() * 16)
         );
 
-        TownData townData = TownDataStorage.getInstance().newTown("town");
+        TownData townData = TownDataStorage.getInstance().newTown("town").join();
 
 
         for(ClaimedChunk2 adjacent : claimedChunkStorage.getEightAjacentChunks(claimedChunkStorage.get(chunk))){

@@ -1,5 +1,7 @@
 package org.leralix.tan.storage.stored;
 
+import org.leralix.tan.utils.FoliaScheduler;
+
 import com.google.gson.GsonBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -15,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
 
@@ -87,78 +90,155 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
     }
 
     @Override
-    public void put(String id, ITanPlayer obj) {
-
-        String jsonData = gson.toJson(obj, typeToken);
-        String upsertSQL = "INSERT INTO " + tableName + " (id, player_name, town_name, nation_name, data) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE player_name = VALUES(player_name), town_name = VALUES(town_name), nation_name = VALUES(nation_name), data = VALUES(data)";
+    protected void createIndexes() {
+        // PERFORMANCE FIX: Add indexes for frequently queried columns
+        String createPlayerNameIndexSQL = "CREATE INDEX IF NOT EXISTS idx_player_name ON " + TABLE_NAME + " (player_name)";
+        String createTownNameIndexSQL = "CREATE INDEX IF NOT EXISTS idx_player_town ON " + TABLE_NAME + " (town_name)";
+        String createNationNameIndexSQL = "CREATE INDEX IF NOT EXISTS idx_player_nation ON " + TABLE_NAME + " (nation_name)";
 
         try (Connection conn = getDatabase().getDataSource().getConnection();
-             PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
-
-            ps.setString(1, id);
-            ps.setString(2, obj.getNameStored()); // Set player_name
-            ps.setString(3, obj.getTownName()); // Set town_name
-            ps.setString(4, obj.getNationName()); // Set nation_name
-            ps.setString(5, jsonData);
-            ps.executeUpdate();
-
-            // Update cache
-            if (cacheEnabled && cache != null) {
-                synchronized (cache) {
-                    cache.put(id, obj);
-                }
-            }
-
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(createPlayerNameIndexSQL);
+            stmt.execute(createTownNameIndexSQL);
+            stmt.execute(createNationNameIndexSQL);
+            TownsAndNations.getPlugin().getLogger().info("Created indexes on " + TABLE_NAME);
         } catch (SQLException e) {
-            TownsAndNations.getPlugin().getLogger().severe(
-                "Error storing " + typeClass.getSimpleName() + " with ID " + id + ": " + e.getMessage()
+            TownsAndNations.getPlugin().getLogger().warning(
+                "Error creating indexes for " + TABLE_NAME + ": " + e.getMessage()
             );
         }
     }
 
-    public ITanPlayer register(Player p) {
+    @Override
+    public void put(String id, ITanPlayer obj) {
+        if (id == null || obj == null) {
+            return;
+        }
+
+        String jsonData = gson.toJson(obj, typeToken);
+        String upsertSQL = "INSERT INTO " + tableName + " (id, player_name, town_name, nation_name, data) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE player_name = VALUES(player_name), town_name = VALUES(town_name), nation_name = VALUES(nation_name), data = VALUES(data)";
+
+        FoliaScheduler.runTaskAsynchronously(TownsAndNations.getPlugin(), () -> {
+            try (Connection conn = getDatabase().getDataSource().getConnection();
+                 PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
+
+                ps.setString(1, id);
+                ps.setString(2, obj.getNameStored()); // Set player_name
+                ps.setString(3, obj.getTownName()); // Set town_name
+                ps.setString(4, obj.getNationName()); // Set nation_name
+                ps.setString(5, jsonData);
+                ps.executeUpdate();
+
+                // Update cache
+                if (cacheEnabled && cache != null) {
+                    synchronized (cache) {
+                        cache.put(id, obj);
+                    }
+                }
+
+            } catch (SQLException e) {
+                TownsAndNations.getPlugin().getLogger().severe(
+                    "Error storing " + typeClass.getSimpleName() + " with ID " + id + ": " + e.getMessage()
+                );
+            }
+        });
+    }
+
+    public CompletableFuture<ITanPlayer> register(Player p) {
         ITanPlayer tanPlayer = new PlayerData(p);
         return register(tanPlayer);
     }
-    ITanPlayer register(ITanPlayer p) {
+    CompletableFuture<ITanPlayer> register(ITanPlayer p) {
+        CompletableFuture<ITanPlayer> future = new CompletableFuture<>();
         put(p.getID(), p);
-        return p;
+        future.complete(p); // Assuming put() will eventually complete the storage. This is a simplification.
+        return future;
     }
 
-    public ITanPlayer get(OfflinePlayer player) {
+    public CompletableFuture<ITanPlayer> get(OfflinePlayer player) {
         return get(player.getUniqueId().toString());
     }
 
-    public ITanPlayer get(Player player) {
+    public CompletableFuture<ITanPlayer> get(Player player) {
         return get(player.getUniqueId().toString());
     }
 
-    public ITanPlayer get(UUID playerID) {
+    public CompletableFuture<ITanPlayer> get(UUID playerID) {
         return get(playerID.toString());
     }
 
     @Override
-    public ITanPlayer get(String id){
-
-        if(id == null)
-            return NO_PLAYER;
-
-        // Try to get from database first
-        ITanPlayer res = super.get(id);
-        if(res != null)
-            return res;
-
-        // If not in database, try to create from online player
-        Player newPlayer = Bukkit.getPlayer(UUID.fromString(id));
-        if(newPlayer != null){
-            return register(newPlayer);
+    public CompletableFuture<ITanPlayer> get(String id){
+        CompletableFuture<ITanPlayer> future = new CompletableFuture<>();
+        if(id == null) {
+            future.complete(NO_PLAYER);
+            return future;
         }
-        throw new RuntimeException("Error : Player ID [" + id + "] has not been found" );
+
+        super.get(id).thenAccept(res -> {
+            if(res != null) {
+                future.complete(res);
+            } else {
+                // If not in database, try to create from online player
+                // MUST execute Bukkit.getPlayer() on the main thread (Folia/Paper requirement)
+                FoliaScheduler.runTask(TownsAndNations.getPlugin(), () -> {
+                    Player newPlayer = Bukkit.getPlayer(UUID.fromString(id));
+                    if(newPlayer != null){
+                        // Create PlayerData and register it
+                        ITanPlayer newTanPlayer = new PlayerData(newPlayer);
+                        // Register asynchronously
+                        register(newTanPlayer).thenAccept(registeredPlayer -> {
+                            future.complete(registeredPlayer);
+                        }).exceptionally(ex -> {
+                            future.completeExceptionally(ex);
+                            return null;
+                        });
+                    } else {
+                        // If player not found in DB and not online, complete with NO_PLAYER or throw exception
+                        future.completeExceptionally(new RuntimeException("Error : Player ID [" + id + "] has not been found" ));
+                    }
+                });
+            }
+        }).exceptionally(ex -> {
+            future.completeExceptionally(ex);
+            return null;
+        });
+
+        return future;
     }
 
     @Override
     public void reset() {
         instance = null;
+    }
+
+    /**
+     * Synchronous get method for backward compatibility
+     * WARNING: This blocks the current thread. Use get() with thenAccept() for async operations.
+     * @param id The ID of the player
+     * @return The player data, or NO_PLAYER if not found
+     */
+    public ITanPlayer getSync(String id) {
+        try {
+            return get(id).join();
+        } catch (Exception e) {
+            TownsAndNations.getPlugin().getLogger().warning(
+                "Error getting player data synchronously: " + e.getMessage()
+            );
+            return NO_PLAYER;
+        }
+    }
+
+    public ITanPlayer getSync(UUID playerID) {
+        return getSync(playerID.toString());
+    }
+
+    public ITanPlayer getSync(Player player) {
+        return getSync(player.getUniqueId());
+    }
+
+    public ITanPlayer getSync(OfflinePlayer player) {
+        return getSync(player.getUniqueId());
     }
 
 

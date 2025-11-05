@@ -22,7 +22,9 @@ import org.leralix.tan.war.legacy.CurrentAttack;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 
 public class PlayerData implements ITanPlayer {
@@ -91,12 +93,17 @@ public class PlayerData implements ITanPlayer {
     @Override
     public String getTownName() {
         if (hasTown()) {
-            return getTown().getName();
+            // Bloquant ici, mais getName() est une opération rapide sur l'objet TownData
+            // Idéalement, getTownName() devrait aussi retourner CompletableFuture<String>
+            return getTown().join().getName();
         }
         return null;
     }
 
-    public TownData getTown() {
+    public CompletableFuture<TownData> getTown() {
+        if (this.TownId == null) {
+            return CompletableFuture.completedFuture(null);
+        }
         return TownDataStorage.getInstance().get(this.TownId);
     }
 
@@ -107,19 +114,22 @@ public class PlayerData implements ITanPlayer {
     public boolean isTownOverlord() {
         if (!hasTown())
             return false;
-        return getTown().isLeader(this.uuid);
+        // Bloquant ici, mais isLeader() est une opération rapide sur l'objet TownData
+        return getTown().join().isLeader(this.uuid);
     }
 
     public RankData getTownRank() {
         if (!hasTown())
             return null;
-        return getTown().getRank(getTownRankID());
+        // Bloquant ici, mais getRank() est une opération rapide sur l'objet TownData
+        return getTown().join().getRank(getTownRankID());
     }
 
     public RankData getRegionRank() {
         if (!hasRegion())
             return null;
-        return getRegion().getRank(getRegionRankID());
+        // Bloquant ici, mais getRank() est une opération rapide sur l'objet RegionData
+        return getRegion().join().getRank(getRegionRankID());
     }
 
     public void addToBalance(double amount) {
@@ -134,19 +144,26 @@ public class PlayerData implements ITanPlayer {
         if (!this.hasTown()) {
             return false;
         }
-        return getTown().haveOverlord();
+        // Bloquant ici, mais haveOverlord() est une opération rapide sur l'objet TownData
+        return getTown().join().haveOverlord();
     }
 
-    public RegionData getRegion() {
+    public CompletableFuture<RegionData> getRegion() {
         if (!hasRegion())
-            return null;
-        return getTown().getRegion();
+            return CompletableFuture.completedFuture(null);
+        return getTown().thenApply(town -> {
+            if (town == null) return null;
+            Optional<TerritoryData> overlord = town.getOverlord();
+            return overlord.map(territoryData -> (RegionData) territoryData).orElse(null);
+        });
     }
 
     @Override
     public String getNationName() {
         if (hasRegion()) {
-            return getRegion().getName();
+            // Bloquant ici, mais getName() est une opération rapide sur l'objet RegionData
+            // Idéalement, getNationName() devrait aussi retourner CompletableFuture<String>
+            return getRegion().join().getName();
         }
         return null;
     }
@@ -191,7 +208,8 @@ public class PlayerData implements ITanPlayer {
             String tID = parts[0];
             String pID = parts[1];
 
-            PropertyData nextProperty = TownDataStorage.getInstance().get(tID).getProperty(pID);
+            // Bloquant ici, mais nécessaire pour construire la liste de PropertyData
+            PropertyData nextProperty = TownDataStorage.getInstance().getSync(tID).getProperty(pID);
 
             propertyDataList.add(nextProperty);
         }
@@ -255,17 +273,33 @@ public class PlayerData implements ITanPlayer {
     }
 
     @Override
-    public TownRelation getRelationWithPlayer(Player otherPlayer) {
-        return getRelationWithPlayer(PlayerDataStorage.getInstance().get(otherPlayer));
+    public CompletableFuture<TownRelation> getRelationWithPlayer(Player otherPlayer) {
+        ITanPlayer otherPlayerData = PlayerDataStorage.getInstance().getSync(otherPlayer);
+        return getRelationWithPlayer(otherPlayerData);
     }
 
-    public TownRelation getRelationWithPlayer(ITanPlayer otherPlayer) {
+    public CompletableFuture<TownRelation> getRelationWithPlayer(ITanPlayer otherPlayer) {
+        if (!hasTown() || !otherPlayer.hasTown())
+            return CompletableFuture.completedFuture(TownRelation.NEUTRAL);
+
+        return getTown().thenCombine(otherPlayer.getTown(), (playerTown, otherPlayerTown) -> {
+            if (playerTown == null || otherPlayerTown == null) {
+                return TownRelation.NEUTRAL;
+            }
+            return playerTown.getRelationWith(otherPlayerTown);
+        });
+    }
+
+    public TownRelation getRelationWithPlayerSync(ITanPlayer otherPlayer) {
         if (!hasTown() || !otherPlayer.hasTown())
             return TownRelation.NEUTRAL;
 
-        TownData playerTown = getTown();
-        TownData otherPlayerTown = otherPlayer.getTown();
+        TownData playerTown = getTownSync();
+        TownData otherPlayerTown = otherPlayer.getTownSync();
 
+        if (playerTown == null || otherPlayerTown == null) {
+            return TownRelation.NEUTRAL;
+        }
         return playerTown.getRelationWith(otherPlayerTown);
     }
 
@@ -274,7 +308,8 @@ public class PlayerData implements ITanPlayer {
             return null;
         }
         if (regionRankID == null)
-            regionRankID = getRegion().getDefaultRankID();
+            // Bloquant ici, mais getDefaultRankID() est une opération rapide sur l'objet RegionData
+            regionRankID = getRegion().join().getDefaultRankID();
         return regionRankID;
     }
 
@@ -296,15 +331,24 @@ public class PlayerData implements ITanPlayer {
         return territoryData.getRank(getRankID(territoryData));
     }
 
-    public List<TerritoryData> getAllTerritoriesPlayerIsIn() {
-        List<TerritoryData> territories = new ArrayList<>();
-        if (hasTown()) {
-            territories.add(getTown());
-        }
-        if (hasRegion()) {
-            territories.add(getRegion());
-        }
-        return territories;
+    public CompletableFuture<List<TerritoryData>> getAllTerritoriesPlayerIsIn() {
+        CompletableFuture<TownData> townFuture = getTown();
+        CompletableFuture<RegionData> regionFuture = getRegion();
+
+        return CompletableFuture.allOf(townFuture, regionFuture)
+                .thenApply(v -> {
+                    List<TerritoryData> territories = new ArrayList<>();
+                    TownData town = townFuture.join();
+                    RegionData region = regionFuture.join();
+
+                    if (town != null) {
+                        territories.add(town);
+                    }
+                    if (region != null) {
+                        territories.add(region);
+                    }
+                    return territories;
+                });
     }
 
     public OfflinePlayer getOfflinePlayer() {
@@ -323,7 +367,7 @@ public class PlayerData implements ITanPlayer {
 
     public void clearAllTownApplications() {
         TownInviteDataStorage.removeInvitation(uuid); //Remove town invitation
-        for (TownData allTown : TownDataStorage.getInstance().getAll().values()) {
+        for (TownData allTown : TownDataStorage.getInstance().getAllSync().values()) {
             allTown.removePlayerJoinRequest(uuid); //Remove applications
         }
     }
@@ -350,14 +394,14 @@ public class PlayerData implements ITanPlayer {
     }
 
     @Override
-    public List<CurrentAttack> getCurrentAttacks() {
-        List<CurrentAttack> res = new ArrayList<>();
-
-        for(TerritoryData territoryData : getAllTerritoriesPlayerIsIn()){
-            res.addAll(territoryData.getCurrentAttacks());
-        }
-
-        return res;
+    public CompletableFuture<List<CurrentAttack>> getCurrentAttacks() {
+        return getAllTerritoriesPlayerIsIn().thenApply(territories -> {
+            List<CurrentAttack> res = new ArrayList<>();
+            for(TerritoryData territoryData : territories){
+                res.addAll(territoryData.getCurrentAttacks());
+            }
+            return res;
+        });
     }
 
 }

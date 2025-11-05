@@ -16,7 +16,7 @@ public class RegionMenu extends TerritoryMenu {
     private final RegionData regionData;
 
     public RegionMenu(Player player, RegionData regionData){
-        super(player, Lang.HEADER_REGION_MENU.get(player, PlayerDataStorage.getInstance().get(player).getRegion().getName()), regionData);
+        super(player, Lang.HEADER_REGION_MENU.get(player, PlayerDataStorage.getInstance().getSync(player).getRegionSync().getName()), regionData);
         this.regionData = regionData;
         open();
     }

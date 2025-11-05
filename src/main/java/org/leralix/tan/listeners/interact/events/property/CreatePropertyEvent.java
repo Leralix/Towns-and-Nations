@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
@@ -35,8 +34,8 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
 
     protected CreatePropertyEvent(Player player) {
         this.player = player;
-        this.townData = TownDataStorage.getInstance().get(player);
-        this.tanPlayer = PlayerDataStorage.getInstance().get(player);
+        this.townData = TownDataStorage.getInstance().getSync(player);
+        this.tanPlayer = PlayerDataStorage.getInstance().getSync(player);
     }
 
 

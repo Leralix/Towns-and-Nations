@@ -128,7 +128,7 @@ public class TownSettingsMenu extends SettingsMenus {
                     }
 
                     if (townData.haveOverlord()) {
-                        RegionData regionData = townData.getRegion();
+                        RegionData regionData = townData.getRegionSync();
                         if (regionData.isLeader(tanPlayer)) {
                             TanChatUtils.message(player, Lang.CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER.get(tanPlayer), NOT_ALLOWED);
                         }

@@ -17,14 +17,14 @@ public class PlayerTownChunkMaxQuantity extends PapiEntry {
     @Override
     public String getData(OfflinePlayer player, @NotNull String params) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId());
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player.getUniqueId());
 
         if (tanPlayer == null) {
             return PLAYER_NOT_FOUND;
         }
 
         if (tanPlayer.hasTown()) {
-            var town = tanPlayer.getTown();
+            var town = tanPlayer.getTownSync();
             var level = town.getNewLevel().getStat(ChunkCap.class);
 
             if (level.isUnlimited()) {

@@ -93,7 +93,7 @@ public class RankData {
     public List<ITanPlayer> getPlayers() {
         List<ITanPlayer> playerList = new ArrayList<>();
         for (String playerID : this.players) {
-            playerList.add(PlayerDataStorage.getInstance().get(playerID));
+            playerList.add(PlayerDataStorage.getInstance().getSync(playerID));
         }
         return playerList;
     }

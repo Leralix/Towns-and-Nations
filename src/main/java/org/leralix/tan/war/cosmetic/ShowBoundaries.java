@@ -24,18 +24,25 @@ public class ShowBoundaries {
 
     public static void display(Player player) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        PlayerDataStorage.getInstance().get(player).thenAccept(tanPlayer -> {
+            tanPlayer.getCurrentAttacks().thenAccept(attacks -> {
+                if (attacks.isEmpty()) {
+                    return;
+                }
+                double radius = Constants.getWarBoundaryRadius();
+                List<ClaimedChunk2> chunkInRange = ChunkUtil.getChunksInRadius(player.getChunk(), radius);
 
-        List<CurrentAttack> attacks = tanPlayer.getCurrentAttacks();
-        if (attacks.isEmpty()) {
-            return;
-        }
-        double radius = Constants.getWarBoundaryRadius();
-        List<ClaimedChunk2> chunkInRange = ChunkUtil.getChunksInRadius(player.getChunk(), radius);
+                List<ChunkLine> lines = sortChunkLines(chunkInRange, attacks);
 
-        List<ChunkLine> lines = sortChunkLines(chunkInRange, attacks);
-
-        drawLines(player, lines);
+                drawLines(player, lines);
+            }).exceptionally(ex -> {
+                TownsAndNations.getPlugin().getLogger().severe("Error retrieving current attacks for " + player.getName() + ": " + ex.getMessage());
+                return null;
+            });
+        }).exceptionally(ex -> {
+            TownsAndNations.getPlugin().getLogger().severe("Error retrieving player data for " + player.getName() + ": " + ex.getMessage());
+            return null;
+        });
     }
 
     static void drawLines(Player player, List<ChunkLine> lines) {

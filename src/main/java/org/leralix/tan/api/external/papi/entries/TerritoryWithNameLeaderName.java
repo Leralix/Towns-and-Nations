@@ -19,7 +19,7 @@ public class TerritoryWithNameLeaderName extends PapiEntry {
     @Override
     public String getData(OfflinePlayer player, @NotNull String params) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId());
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player.getUniqueId());
 
         if (tanPlayer == null) {
             return PLAYER_NOT_FOUND;
@@ -29,8 +29,8 @@ public class TerritoryWithNameLeaderName extends PapiEntry {
         if(values.length == 0) return Lang.INVALID_VALUE.get(tanPlayer);
         String id = values[0];
         if(id == null) return Lang.INVALID_ID.get(tanPlayer);
-        TerritoryData territoryData = TownDataStorage.getInstance().get(id);
-        if(territoryData == null) territoryData = RegionDataStorage.getInstance().get(id);
+        TerritoryData territoryData = TownDataStorage.getInstance().getSync(id);
+        if(territoryData == null) territoryData = RegionDataStorage.getInstance().getSync(id);
         if (territoryData == null) return Lang.INVALID_TERRITORY.get(tanPlayer);
 
         return territoryData.getLeaderData().getOfflinePlayer().getName();

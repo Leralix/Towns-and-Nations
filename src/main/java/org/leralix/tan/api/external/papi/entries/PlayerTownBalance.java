@@ -15,13 +15,13 @@ public class PlayerTownBalance extends PapiEntry{
     @Override
     public String getData(OfflinePlayer player, @NotNull String params) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId());
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player.getUniqueId());
 
         if (tanPlayer == null) {
             return PLAYER_NOT_FOUND;
         }
 
-        return tanPlayer.hasTown() ? Double.toString(tanPlayer.getTown().getBalance()) : Lang.NO_TOWN.get(tanPlayer);
+        return tanPlayer.hasTown() ? Double.toString(tanPlayer.getTownSync().getBalance()) : Lang.NO_TOWN.get(tanPlayer);
 
     }
 }

@@ -5,7 +5,6 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ActiveTruce;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
@@ -29,7 +28,7 @@ public class RemoveRelationMenu extends IteratorGUI {
     private final TownRelation relation;
 
     public RemoveRelationMenu(Player player, TerritoryData territoryData, TownRelation relation){
-        super(player, Lang.HEADER_SELECT_REMOVE_TERRITORY_RELATION.get(player, relation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
+        super(player, Lang.HEADER_SELECT_REMOVE_TERRITORY_RELATION.get(player, relation.getName(PlayerDataStorage.getInstance().getSync(player).getLang())), 6);
         this.territoryData = territoryData;
         this.relation = relation;
         open();

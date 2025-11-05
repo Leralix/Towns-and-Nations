@@ -44,7 +44,7 @@ public class LandmarkClaimedNewsletter extends Newsletter {
     @Override
     public GuiItem createGuiItem(Player player, LangType langType, Consumer<Player> onClick) {
         TerritoryData newOwner = TerritoryUtil.getTerritory(newOwnerID);
-        Landmark landmark = LandmarkStorage.getInstance().get(landmarkID);
+        Landmark landmark = LandmarkStorage.getInstance().getSync(landmarkID);
 
         if(landmark == null || newOwner == null){
             return null;
@@ -83,7 +83,7 @@ public class LandmarkClaimedNewsletter extends Newsletter {
     @Override
     public void broadcast(Player player) {
         TerritoryData newOwner = TerritoryUtil.getTerritory(newOwnerID);
-        Landmark landmark = LandmarkStorage.getInstance().get(landmarkID);
+        Landmark landmark = LandmarkStorage.getInstance().getSync(landmarkID);
         Lang.LANDMARK_CLAIMED_NEWSLETTER.get(player, newOwner.getColoredName(), landmark.getName());
     }
 

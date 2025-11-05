@@ -13,8 +13,8 @@ class PlannedAttackTest extends BasicTest {
     @Test
     public void test_correctTimestamp() {
 
-        TownData town1 = TownDataStorage.getInstance().newTown("town1");
-        TownData town2 = TownDataStorage.getInstance().newTown("town2");
+        TownData town1 = TownDataStorage.getInstance().newTown("town1").join();
+        TownData town2 = TownDataStorage.getInstance().newTown("town2").join();
 
         War war = new War("0", town1, town2);
         CreateAttackData createAttackData = new CreateAttackData(war, WarRole.MAIN_ATTACKER);

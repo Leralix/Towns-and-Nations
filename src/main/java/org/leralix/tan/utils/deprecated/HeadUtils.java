@@ -42,7 +42,7 @@ public class HeadUtils {
      */
     public static @NotNull ItemStack getPlayerHeadInformation(final @NotNull OfflinePlayer offlinePlayer) {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(offlinePlayer);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(offlinePlayer);
         SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
 
         if (skullMeta == null) {

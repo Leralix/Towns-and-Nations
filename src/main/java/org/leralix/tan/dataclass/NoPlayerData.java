@@ -14,6 +14,7 @@ import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class NoPlayerData implements ITanPlayer {
     @Override
@@ -62,8 +63,8 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
-    public TownData getTown() {
-        return null;
+    public CompletableFuture<TownData> getTown() {
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
@@ -102,8 +103,8 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
-    public RegionData getRegion() {
-        return null;
+    public CompletableFuture<RegionData> getRegion() {
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
@@ -188,12 +189,17 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
-    public TownRelation getRelationWithPlayer(ITanPlayer otherPlayer) {
-        return TownRelation.NEUTRAL;
+    public CompletableFuture<TownRelation> getRelationWithPlayer(ITanPlayer otherPlayer) {
+        return CompletableFuture.completedFuture(TownRelation.NEUTRAL);
     }
 
     @Override
-    public TownRelation getRelationWithPlayer(Player otherPlayer) {
+    public CompletableFuture<TownRelation> getRelationWithPlayer(Player otherPlayer) {
+        return CompletableFuture.completedFuture(TownRelation.NEUTRAL);
+    }
+
+    @Override
+    public TownRelation getRelationWithPlayerSync(ITanPlayer otherPlayer) {
         return TownRelation.NEUTRAL;
     }
 
@@ -218,8 +224,8 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
-    public List<TerritoryData> getAllTerritoriesPlayerIsIn() {
-        return List.of();
+    public CompletableFuture<List<TerritoryData>> getAllTerritoriesPlayerIsIn() {
+        return CompletableFuture.completedFuture(List.of());
     }
 
     @Override
@@ -258,7 +264,7 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
-    public List<CurrentAttack> getCurrentAttacks() {
-        return List.of();
+    public CompletableFuture<List<CurrentAttack>> getCurrentAttacks() {
+        return CompletableFuture.completedFuture(List.of());
     }
 }

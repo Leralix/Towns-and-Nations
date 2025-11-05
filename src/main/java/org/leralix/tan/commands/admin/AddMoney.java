@@ -46,7 +46,7 @@ public class AddMoney extends SubCommand {
             TanChatUtils.message(commandSender, Lang.NOT_ENOUGH_ARGS_ERROR, SoundEnum.NOT_ALLOWED);
             TanChatUtils.message(commandSender, Lang.CORRECT_SYNTAX_INFO);
         } else if (args.length == 3) {
-            ITanPlayer target = PlayerDataStorage.getInstance().get(Bukkit.getServer().getOfflinePlayer(args[1]));
+            ITanPlayer target = PlayerDataStorage.getInstance().getSync(Bukkit.getServer().getOfflinePlayer(args[1]));
             addMoney(commandSender, args, target);
         } else {
             TanChatUtils.message(commandSender, Lang.TOO_MANY_ARGS_ERROR, SoundEnum.NOT_ALLOWED);

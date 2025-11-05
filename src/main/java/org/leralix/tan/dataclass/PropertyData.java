@@ -142,7 +142,7 @@ public class PropertyData extends Building {
     }
 
     public TownData getTown() {
-        return TownDataStorage.getInstance().get(getOwningStructureID());
+        return TownDataStorage.getInstance().getSync(getOwningStructureID());
     }
 
     public String getPropertyID() {
@@ -166,7 +166,7 @@ public class PropertyData extends Building {
         this.isForRent = false;
         if (Constants.shouldPayRentAtStart())
             payRent();
-        this.updateSign();
+        org.leralix.tan.utils.FoliaScheduler.runTask(TownsAndNations.getPlugin(), this::updateSign);
         getPermissionManager().setAll(RelationPermission.SELECTED_ONLY);
     }
 
@@ -179,7 +179,7 @@ public class PropertyData extends Building {
     }
 
     public ITanPlayer getRenter() {
-        return PlayerDataStorage.getInstance().get(rentingPlayerID);
+        return PlayerDataStorage.getInstance().getSync(rentingPlayerID);
     }
 
     public String getRenterID() {
@@ -336,14 +336,14 @@ public class PropertyData extends Building {
         this.isForSale = !this.isForSale;
         if (this.isForSale)
             this.isForRent = false;
-        updateSign();
+        org.leralix.tan.utils.FoliaScheduler.runTask(TownsAndNations.getPlugin(), this::updateSign);
     }
 
     public void swapIsRent() {
         this.isForRent = !this.isForRent;
         if (this.isForRent)
             this.isForSale = false;
-        updateSign();
+        org.leralix.tan.utils.FoliaScheduler.runTask(TownsAndNations.getPlugin(), this::updateSign);
     }
 
     public void showBox(Player player) {
@@ -444,7 +444,7 @@ public class PropertyData extends Building {
         town.removeProperty(this);
 
         if (getOwner() instanceof PlayerOwned playerOwnedClass) {
-            ITanPlayer playerOwner = PlayerDataStorage.getInstance().get(playerOwnedClass.getPlayerID());
+            ITanPlayer playerOwner = PlayerDataStorage.getInstance().getSync(playerOwnedClass.getPlayerID());
             playerOwner.removeProperty(this);
 
             Player player = Bukkit.getPlayer(UUID.fromString(playerOwnedClass.getPlayerID()));
@@ -471,7 +471,7 @@ public class PropertyData extends Building {
     }
 
     public void buyProperty(Player buyer) {
-        LangType langType = PlayerDataStorage.getInstance().get(buyer).getLang();
+        LangType langType = PlayerDataStorage.getInstance().getSync(buyer).getLang();
 
         double playerBalance = EconomyUtil.getBalance(buyer);
         double cost = getSalePrice();
@@ -490,7 +490,7 @@ public class PropertyData extends Building {
                 TanChatUtils.message(exOwner, Lang.PROPERTY_SOLD_EX_OWNER.get(langType, getName(), buyer.getName(), Double.toString(getSalePrice())), SoundEnum.GOOD);
             }
 
-            ITanPlayer exOwnerData = PlayerDataStorage.getInstance().get(exOwnerID);
+            ITanPlayer exOwnerData = PlayerDataStorage.getInstance().getSync(exOwnerID);
             if (exOwnerData != null) {
                 exOwnerData.removeProperty(this);
             }
@@ -507,12 +507,12 @@ public class PropertyData extends Building {
         town.addToBalance(townCut);
 
 
-        ITanPlayer newOwnerData = PlayerDataStorage.getInstance().get(buyer.getUniqueId().toString());
+        ITanPlayer newOwnerData = PlayerDataStorage.getInstance().getSync(buyer.getUniqueId().toString());
         newOwnerData.addProperty(this);
         this.owner = new PlayerOwned(buyer.getUniqueId().toString());
 
         this.isForSale = false;
-        updateSign();
+        org.leralix.tan.utils.FoliaScheduler.runTask(TownsAndNations.getPlugin(), this::updateSign);
         getPermissionManager().setAll(RelationPermission.SELECTED_ONLY);
     }
 
@@ -537,12 +537,12 @@ public class PropertyData extends Building {
     public void expelRenter(boolean rentBack) {
         if (!isRented())
             return;
-        ITanPlayer renter = PlayerDataStorage.getInstance().get(rentingPlayerID);
+        ITanPlayer renter = PlayerDataStorage.getInstance().getSync(rentingPlayerID);
         renter.removeProperty(this);
         this.rentingPlayerID = null;
         if (rentBack)
             isForRent = true;
-        updateSign();
+        org.leralix.tan.utils.FoliaScheduler.runTask(TownsAndNations.getPlugin(), this::updateSign);
         getPermissionManager().setAll(RelationPermission.SELECTED_ONLY);
     }
 
@@ -605,7 +605,7 @@ public class PropertyData extends Building {
     @Override
     public GuiItem getGuiItem(IconManager iconManager, Player player, BasicGui basicGui, LangType langType) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         boolean canInteract = getOwner().canAccess(tanPlayer);
 
         return iconManager.get(getIcon())

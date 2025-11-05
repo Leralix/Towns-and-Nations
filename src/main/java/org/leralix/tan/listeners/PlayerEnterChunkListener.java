@@ -22,6 +22,8 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
+import java.util.concurrent.CompletableFuture;
+
 public class PlayerEnterChunkListener implements Listener {
 
     private final boolean displayTerritoryNamewithColor;
@@ -56,7 +58,6 @@ public class PlayerEnterChunkListener implements Listener {
             return;
         }
 
-
         ClaimedChunk2 currentClaimedChunk = newClaimedChunkStorage.get(currentChunk);
         ClaimedChunk2 nextClaimedChunk = newClaimedChunkStorage.get(nextChunk);
 
@@ -66,18 +67,28 @@ public class PlayerEnterChunkListener implements Listener {
         }
         //If territory deny access to players with a certain relation.
         if (nextClaimedChunk instanceof TerritoryChunk territoryChunk) {
-            ITanPlayer tanPlayer = playerDataStorage.get(player);
-            TownRelation worstRelation = territoryChunk.getOwner().getWorstRelationWith(tanPlayer);
-            if (!Constants.getRelationConstants(worstRelation).canAccessTerritory()) {
-                event.setCancelled(true);
-                LangType lang = tanPlayer.getLang();
-                TanChatUtils.message(player, Lang.PLAYER_CANNOT_ENTER_CHUNK_WITH_RELATION.get(lang, territoryChunk.getOwner().getColoredName(), worstRelation.getColoredName(lang)));
-                return;
-            }
+            playerDataStorage.get(player).thenAccept(tanPlayer -> {
+                territoryChunk.getOwner().getWorstRelationWith(tanPlayer).thenAccept(worstRelation -> {
+                    // CRITICAL: Event modification MUST happen synchronously before event completes
+                    // We cannot cancel event after the handler returns, so we do it immediately
+                    if (!Constants.getRelationConstants(worstRelation).canAccessTerritory()) {
+                        // Event is already processed, too late to cancel
+                        // We need to handle this differently - teleport player back
+                        org.leralix.tan.utils.FoliaScheduler.runTask(org.leralix.tan.TownsAndNations.getPlugin(), () -> {
+                            player.teleport(event.getFrom());
+                            LangType lang = tanPlayer.getLang();
+                            TanChatUtils.message(player, Lang.PLAYER_CANNOT_ENTER_CHUNK_WITH_RELATION.get(lang, territoryChunk.getOwner().getColoredName(), worstRelation.getColoredName(lang)));
+                        });
+                    } else {
+                        org.leralix.tan.utils.FoliaScheduler.runTask(org.leralix.tan.TownsAndNations.getPlugin(), () -> {
+                            nextClaimedChunk.playerEnterClaimedArea(player, displayTerritoryNamewithColor);
+                        });
+                    }
+                });
+            });
+        } else {
+            nextClaimedChunk.playerEnterClaimedArea(player, displayTerritoryNamewithColor);
         }
-
-        nextClaimedChunk.playerEnterClaimedArea(player, displayTerritoryNamewithColor);
-
 
         if (nextClaimedChunk instanceof WildernessChunk &&
                 PlayerAutoClaimStorage.containsPlayer(event.getPlayer())) {
@@ -87,21 +98,29 @@ public class PlayerEnterChunkListener implements Listener {
 
     private void autoClaimChunk(final @NotNull PlayerMoveEvent e, final @NotNull Chunk nextChunk, final @NotNull Player player) {
         ChunkType chunkType = PlayerAutoClaimStorage.getChunkType(e.getPlayer());
-        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        ITanPlayer playerStat = PlayerDataStorage.getInstance().getSync(player.getUniqueId().toString());
 
         if (chunkType == ChunkType.TOWN) {
             if (!playerStat.hasTown()) {
                 TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(player));
                 return;
             }
-            playerStat.getTown().claimChunk(player, nextChunk);
+            playerStat.getTown().thenAccept(townData -> {
+                if (townData != null) {
+                    townData.claimChunk(player, nextChunk);
+                }
+            });
         }
         if (chunkType == ChunkType.REGION) {
             if (!playerStat.hasRegion()) {
                 TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(player));
                 return;
             }
-            playerStat.getRegion().claimChunk(player, nextChunk);
+            playerStat.getRegion().thenAccept(regionData -> {
+                if (regionData != null) {
+                    regionData.claimChunk(player, nextChunk);
+                }
+            });
         }
     }
 

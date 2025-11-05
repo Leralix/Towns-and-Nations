@@ -55,11 +55,11 @@ public class CreateTown extends ChatListenerEvent {
     }
 
     public void createTown(Player player, String message) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        TownData newTown = TownDataStorage.getInstance().newTown(message, tanPlayer);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        TownData newTown = TownDataStorage.getInstance().newTown(message, tanPlayer).join();
         EconomyUtil.removeFromBalance(player, cost);
 
-        ITanPlayer playerData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer playerData = PlayerDataStorage.getInstance().getSync(player);
         EventManager.getInstance().callEvent(new TownCreatedInternalEvent(newTown, playerData));
         FileUtil.addLineToHistory(Lang.TOWN_CREATED_NEWSLETTER.get(player.getName(), newTown.getName()));
 

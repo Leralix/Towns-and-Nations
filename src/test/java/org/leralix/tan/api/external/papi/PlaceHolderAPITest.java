@@ -87,7 +87,7 @@ class PlaceHolderAPITest extends BasicTest {
     void onRequestHitWithParam() {
 
         Player player = server.addPlayer("playerName");
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player).join();
 
         placeHolderAPI.registerEntry(new OtherPlayerChatMode());
 

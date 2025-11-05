@@ -8,7 +8,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 public class PlayerLanguageIconType extends IconType {
     @Override
     protected ItemStack getItemStack(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         return tanPlayer.getLang().getIcon(tanPlayer.getLang());
     }
 }

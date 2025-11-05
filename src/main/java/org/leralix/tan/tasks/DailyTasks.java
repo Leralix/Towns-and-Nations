@@ -43,39 +43,58 @@ public class DailyTasks {
     }
 
     public static void executeMidnightTasks() {
-        propertyRent();
+        // PERFORMANCE FIX: Run tasks asynchronously to avoid blocking server at midnight
+        // Previously caused massive lag spikes when processing thousands of towns/regions
+        FoliaScheduler.runTaskAsynchronously(TownsAndNations.getPlugin(), () -> {
+            propertyRent();
 
-        for(TownData town : TownDataStorage.getInstance().getAll().values()){
-            town.executeTasks();
-        }
-        for(RegionData regionData : RegionDataStorage.getInstance().getAll().values()){
-            regionData.executeTasks();
-        }
+            // Process towns in batches to avoid loading everything at once
+            TownDataStorage.getInstance().processBatches(100, batch -> {
+                for(TownData town : batch.values()){
+                    town.executeTasks();
+                }
+            }).join();
 
-        clearOldTaxes();
-        updatePlayerUsernames();
+            // Process regions in batches
+            RegionDataStorage.getInstance().processBatches(100, batch -> {
+                for(RegionData regionData : batch.values()){
+                    regionData.executeTasks();
+                }
+            }).join();
 
-        NewsletterStorage.getInstance().clearOldNewsletters();
-        if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("enableMidnightGenerateResource", true)) {
-          LandmarkStorage.getInstance().generateAllResources();
-        }
-        ArchiveUtil.archiveFiles();
+            clearOldTaxes();
+            updatePlayerUsernames();
+
+            NewsletterStorage.getInstance().clearOldNewsletters();
+            if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("enableMidnightGenerateResource", true)) {
+              LandmarkStorage.getInstance().generateAllResources();
+            }
+            ArchiveUtil.archiveFiles();
+
+            TownsAndNations.getPlugin().getLogger().info("Daily tasks completed successfully");
+        });
     }
 
     private static void updatePlayerUsernames() {
-        for(ITanPlayer player : PlayerDataStorage.getInstance().getAll().values()){
-            player.clearName();
-        }
+        // PERFORMANCE FIX: Use batch processing instead of deprecated getAll()
+        PlayerDataStorage.getInstance().processBatches(200, batch -> {
+            for(ITanPlayer player : batch.values()){
+                player.clearName();
+            }
+        }).join();
     }
 
     private static void propertyRent() {
-        for (TownData town : TownDataStorage.getInstance().getAll().values()) {
-            for (PropertyData property : town.getProperties()) {
-                if (property.isRented()) {
-                    property.payRent();
+        // PERFORMANCE FIX: Use batch processing instead of deprecated getAll()
+        TownDataStorage.getInstance().processBatches(100, batch -> {
+            for (TownData town : batch.values()) {
+                for (PropertyData property : town.getProperties()) {
+                    if (property.isRented()) {
+                        property.payRent();
+                    }
                 }
             }
-        }
+        }).join();
     }
 
 

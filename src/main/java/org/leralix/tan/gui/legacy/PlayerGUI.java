@@ -49,7 +49,7 @@ public class PlayerGUI {
     }
 
     public static void dispatchPlayerRegion(Player player) {
-        RegionData regionData = RegionDataStorage.getInstance().get(player);
+        RegionData regionData = RegionDataStorage.getInstance().getSync(player);
         if (regionData != null) {
             new RegionMenu(player, regionData);
         } else {
@@ -58,7 +58,7 @@ public class PlayerGUI {
     }
 
     public static void dispatchPlayerTown(Player player) {
-        TownData townData = TownDataStorage.getInstance().get(player);
+        TownData townData = TownDataStorage.getInstance().getSync(player);
         if (townData != null) {
             new TownMenu(player, townData);
         } else {
@@ -68,7 +68,7 @@ public class PlayerGUI {
 
     //Landmarks, to update
     public static void openOwnedLandmark(Player player, TownData townData, int page) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_OWNED_LANDMARK.get(tanPlayer, String.valueOf(page + 1)), 6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
@@ -91,7 +91,7 @@ public class PlayerGUI {
 
 
     public static void openChunkGeneralSettings(Player player, TerritoryData territoryData) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_CHUNK_GENERAL_SETTINGS.get(tanPlayer), 3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
         Map<GeneralChunkSetting, Boolean> generalSettings = territoryData.getChunkSettings().getChunkSetting();
@@ -118,10 +118,10 @@ public class PlayerGUI {
     }
 
     public static void openTownChunkMobSettings(Player player, int page) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_MOB_SETTINGS.get(tanPlayer, Integer.toString(page + 1)), 6);
 
-        TownData townData = TownDataStorage.getInstance().get(player);
+        TownData townData = TownDataStorage.getInstance().getSync(player);
         ClaimedChunkSettings chunkSettings = townData.getChunkSettings();
 
         ArrayList<GuiItem> guiLists = new ArrayList<>();
@@ -179,10 +179,10 @@ public class PlayerGUI {
     }
 
     public static void openPlayerListForChunkPermission(Player player, TerritoryData territoryData, ChunkPermissionType type, int page) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         Gui gui = GuiUtil.createChestGui(type.getLabel(tanPlayer.getLang()), 6);
 
-        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        ITanPlayer playerStat = PlayerDataStorage.getInstance().getSync(player.getUniqueId().toString());
         List<GuiItem> guiItems = new ArrayList<>();
 
         for (String authorizedPlayerID : territoryData.getPermission(type).getAuthorizedPlayers()) {
@@ -227,16 +227,16 @@ public class PlayerGUI {
     }
 
     public static void openAddPlayerForChunkPermission(Player player, TerritoryData territoryData, ChunkPermissionType type, int page) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_AUTHORIZE_PLAYER.get(tanPlayer), 6);
 
-        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        ITanPlayer playerStat = PlayerDataStorage.getInstance().getSync(player.getUniqueId().toString());
 
         List<GuiItem> guiItems = new ArrayList<>();
 
         for (Player playerToAdd : Bukkit.getOnlinePlayers()) {
 
-            ITanPlayer playerToAddData = PlayerDataStorage.getInstance().get(playerToAdd);
+            ITanPlayer playerToAddData = PlayerDataStorage.getInstance().getSync(playerToAdd);
             if (territoryData.getPermission(type).isAllowed(territoryData, playerToAddData))
                 continue;
 
@@ -267,7 +267,7 @@ public class PlayerGUI {
 
 
     public static void openAddVassal(Player player, TerritoryData territoryData, int page) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_VASSALS.get(tanPlayer, Integer.toString(page + 1)), 6);
 
         List<GuiItem> guiItems = new ArrayList<>();
@@ -295,27 +295,27 @@ public class PlayerGUI {
     }
 
     public static void openRegionChangeOwnership(Player player, int page) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_CHANGE_OWNERSHIP.get(tanPlayer), 6);
-        RegionData regionData = tanPlayer.getRegion();
+        RegionData regionData = tanPlayer.getRegionSync();
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for (String playerID : regionData.getPlayerIDList()) {
 
-            ITanPlayer iteratetanPlayer = PlayerDataStorage.getInstance().get(playerID);
+            ITanPlayer iteratetanPlayer = PlayerDataStorage.getInstance().getSync(playerID);
             ItemStack switchPlayerIcon = HeadUtils.getPlayerHead(Bukkit.getOfflinePlayer(UUID.fromString(playerID)));
 
             GuiItem switchPlayerButton = ItemBuilder.from(switchPlayerIcon).asGuiItem(event -> {
                 event.setCancelled(true);
 
                 openConfirmMenu(player, Lang.GUI_CONFIRM_CHANGE_LEADER.get(tanPlayer, iteratetanPlayer.getNameStored()), confirm -> {
-                    FileUtil.addLineToHistory(Lang.HISTORY_REGION_CAPITAL_CHANGED.get(player.getName(), regionData.getCapital().getName(), tanPlayer.getTown().getName()));
+                    FileUtil.addLineToHistory(Lang.HISTORY_REGION_CAPITAL_CHANGED.get(player.getName(), regionData.getCapital().getName(), tanPlayer.getTownSync().getName()));
                     regionData.setLeaderID(iteratetanPlayer.getID());
 
                     regionData.broadcastMessageWithSound(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST.get(iteratetanPlayer.getNameStored()), GOOD);
 
-                    if (!regionData.getCapital().getID().equals(iteratetanPlayer.getTown().getID())) {
-                        regionData.broadCastMessage(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST.get(iteratetanPlayer.getTown().getName()));
+                    if (!regionData.getCapital().getID().equals(iteratetanPlayer.getTownSync().getID())) {
+                        regionData.broadCastMessage(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST.get(iteratetanPlayer.getTownSync().getName()));
                         regionData.setCapital(iteratetanPlayer.getTownId());
                     }
                     new RegionSettingsMenu(player, regionData);
@@ -334,8 +334,8 @@ public class PlayerGUI {
 
     public static void dispatchLandmarkGui(Player player, Landmark landmark) {
 
-        TownData townData = TownDataStorage.getInstance().get(player);
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        TownData townData = TownDataStorage.getInstance().getSync(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         if (!landmark.isOwned()) {
             new LandmarkNoOwnerMenu(player, landmark);
             return;
@@ -344,13 +344,13 @@ public class PlayerGUI {
             openPlayerOwnLandmark(player, landmark);
             return;
         }
-        TownData owner = TownDataStorage.getInstance().get(landmark.getOwnerID());
+        TownData owner = TownDataStorage.getInstance().getSync(landmark.getOwnerID());
         TanChatUtils.message(player, Lang.LANDMARK_ALREADY_CLAIMED.get(tanPlayer, owner.getName()), MINOR_BAD);
     }
 
     private static void openPlayerOwnLandmark(Player player, Landmark landmark) {
-        TownData townData = TownDataStorage.getInstance().get(landmark.getOwnerID());
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        TownData townData = TownDataStorage.getInstance().getSync(landmark.getOwnerID());
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_LANDMARK_CLAIMED.get(tanPlayer, townData.getName()), 3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
@@ -410,7 +410,7 @@ public class PlayerGUI {
     }
 
     public static void openConfirmMenu(Player player, String confirmLore, Consumer<Void> confirmAction, Consumer<Void> returnAction) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_CONFIRMATION.get(tanPlayer), 3);
 
         ItemStack confirm = HeadUtils.makeSkullB64(Lang.GENERIC_CONFIRM_ACTION.get(tanPlayer), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDMxMmNhNDYzMmRlZjVmZmFmMmViMGQ5ZDdjYzdiNTVhNTBjNGUzOTIwZDkwMzcyYWFiMTQwNzgxZjVkZmJjNCJ9fX0=",
@@ -436,7 +436,7 @@ public class PlayerGUI {
     }
 
     public static void openHierarchyMenu(Player player, TerritoryData territoryData) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_HIERARCHY.get(tanPlayer), 3);
 
         GuiItem decorativeGlass = GuiUtil.getUnnamedItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE);

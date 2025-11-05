@@ -5,7 +5,6 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.events.newsletter.NewsletterType;
@@ -55,11 +54,11 @@ public class TownCreatedNews extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(playerID);
         if (tanPlayer == null)
             return null;
 
-        TownData townData = TownDataStorage.getInstance().get(townID);
+        TownData townData = TownDataStorage.getInstance().getSync(townID);
         if (townData == null)
             return null;
 
@@ -96,11 +95,11 @@ public class TownCreatedNews extends Newsletter {
 
     @Override
     public void broadcast(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(playerID);
         if (tanPlayer == null)
             return;
 
-        TownData townData = TownDataStorage.getInstance().get(townID);
+        TownData townData = TownDataStorage.getInstance().getSync(townID);
         if (townData == null)
             return;
         TanChatUtils.message(player, Lang.TOWN_CREATED_NEWSLETTER.get(player, tanPlayer.getNameStored(), townData.getBaseColoredName()), SoundEnum.GOOD);

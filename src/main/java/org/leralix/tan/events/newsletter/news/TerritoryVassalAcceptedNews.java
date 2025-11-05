@@ -1,11 +1,12 @@
 package org.leralix.tan.events.newsletter.news;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
@@ -47,10 +48,13 @@ public class TerritoryVassalAcceptedNews extends Newsletter {
         if (town == null)
             return null;
 
+        // BUGFIX: Convert Adventure Component to legacy text properly
         ItemStack itemStack = HeadUtils.makeSkullB64(
                 Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER_TITLE.get(lang), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
                 Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
-                Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER.get(lang, town.getCustomColoredName().toLegacyText(), region.getCustomColoredName().toLegacyText()),
+                Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER.get(lang,
+                    LegacyComponentSerializer.legacySection().serialize(town.getCustomColoredName()),
+                    LegacyComponentSerializer.legacySection().serialize(region.getCustomColoredName())),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang)
         );
 
@@ -94,10 +98,11 @@ public class TerritoryVassalAcceptedNews extends Newsletter {
         if (receivingTerritory == null)
             return;
 
+        // BUGFIX: Convert Adventure Component to legacy text properly
         TanChatUtils.message(player, Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER.get(
                 player,
-                proposingTerritory.getCustomColoredName().toLegacyText(),
-                receivingTerritory.getCustomColoredName().toLegacyText()),
+                LegacyComponentSerializer.legacySection().serialize(proposingTerritory.getCustomColoredName()),
+                LegacyComponentSerializer.legacySection().serialize(receivingTerritory.getCustomColoredName())),
                 SoundEnum.MINOR_GOOD);
     }
 

@@ -30,8 +30,8 @@ public class CreateRegion extends ChatListenerEvent {
     @Override
     public boolean execute(Player player, String message) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        TownData town = TownDataStorage.getInstance().get(tanPlayer);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        TownData town = TownDataStorage.getInstance().getSync(tanPlayer);
 
         if(!town.isLeader(player)){
             TanChatUtils.message(player, Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get(tanPlayer));
@@ -60,9 +60,9 @@ public class CreateRegion extends ChatListenerEvent {
 
     private void createRegion(Player player, String regionName, TownData capital) {
         capital.removeFromBalance(cost);
-        RegionData newRegion = RegionDataStorage.getInstance().createNewRegion(regionName, capital);
+        RegionData newRegion = RegionDataStorage.getInstance().createNewRegion(regionName, capital).join();
 
-        ITanPlayer playerData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer playerData = PlayerDataStorage.getInstance().getSync(player);
         EventManager.getInstance().callEvent(new RegionCreatedInternalEvent(newRegion, TanPlayerWrapper.of(playerData)));
 
         openGui(p -> PlayerGUI.dispatchPlayerRegion(player), player);

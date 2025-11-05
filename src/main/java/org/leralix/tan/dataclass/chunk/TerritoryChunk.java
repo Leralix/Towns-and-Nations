@@ -1,8 +1,7 @@
 package org.leralix.tan.dataclass.chunk;
 
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Chunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
@@ -27,32 +26,28 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
 
 
     @Override
-    public TextComponent getMapIcon(LangType langType) {
-
-        TextComponent textComponent;
+    public Component getMapIcon(LangType langType) {
+        Component component;
         String text;
         if(isOccupied()){
-            textComponent = new TextComponent("🟧");
-            textComponent.setColor(getOccupier().getChunkColor());
             text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
                     getOwner().getBaseColoredName() + "\n" +
                     getOccupier().getBaseColoredName() + "\n" +
                     Lang.LEFT_CLICK_TO_CLAIM.get(langType);
+            component = Component.text("🟧")
+                    .color(getOccupier().getChunkColor())
+                    .hoverEvent(HoverEvent.showText(Component.text(text)));
         }
         else {
-            textComponent = new TextComponent("⬛");
-            textComponent.setColor(getOwner().getChunkColor());
             text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
                     getOwner().getBaseColoredName() + "\n" +
                     Lang.LEFT_CLICK_TO_CLAIM.get(langType);
+            component = Component.text("⬛")
+                    .color(getOwner().getChunkColor())
+                    .hoverEvent(HoverEvent.showText(Component.text(text)));
         }
 
-
-
-        textComponent.setHoverEvent(new HoverEvent(
-                HoverEvent.Action.SHOW_TEXT,
-                new Text(text)));
-        return textComponent;
+        return component;
     }
 
 

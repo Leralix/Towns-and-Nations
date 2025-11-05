@@ -35,6 +35,6 @@ public class FilledLang {
     }
 
     public String get(Player player) {
-        return lang.get(PlayerDataStorage.getInstance().get(player).getLang(), placeholders);
+        return lang.get(PlayerDataStorage.getInstance().getSync(player).getLang(), placeholders);
     }
 }

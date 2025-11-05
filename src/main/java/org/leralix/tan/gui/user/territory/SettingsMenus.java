@@ -36,7 +36,7 @@ public abstract class SettingsMenus extends BasicGui {
 
         List<FilledLang> lore = new ArrayList<>();
         lore.add(Lang.GUI_TOWN_INFO_DESC0.get(territoryData.getDescription()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC1.get(territoryData.getLeaderName()));
+        lore.add(Lang.GUI_TOWN_INFO_DESC1.get(territoryData.getLeaderNameSync()));
         lore.add(Lang.GUI_TOWN_INFO_DESC2.get(Integer.toString(territoryData.getPlayerIDList().size())));
         lore.add(Lang.GUI_TOWN_INFO_DESC3.get(Integer.toString(territoryData.getNumberOfClaimedChunk())));
         lore.add(territoryData.getOverlord()

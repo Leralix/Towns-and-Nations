@@ -48,7 +48,7 @@ public class TanPlayerWrapper implements TanPlayer {
 
     @Override
     public Optional<TanTown> getTown() {
-        return Optional.ofNullable(TownDataWrapper.of(tanPlayer.getTown()));
+        return Optional.ofNullable(TownDataWrapper.of(tanPlayer.getTownSync()));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class TanPlayerWrapper implements TanPlayer {
 
     @Override
     public TanRegion getRegion() {
-        return RegionDataWrapper.of(tanPlayer.getRegion());
+        return RegionDataWrapper.of(tanPlayer.getRegionSync());
     }
 
     @Override
@@ -73,7 +73,7 @@ public class TanPlayerWrapper implements TanPlayer {
     public Collection<TanProperty> getPropertiesRented() {
         List<TanProperty> properties = new ArrayList<>();
 
-        for(TownData town : TownDataStorage.getInstance().getAll().values()){
+        for(TownData town : TownDataStorage.getInstance().getAllSync().values()){
             for(PropertyData property : town.getProperties()){
                 ITanPlayer renter = property.getRenter();
                 if(renter == null){

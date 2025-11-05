@@ -91,7 +91,7 @@ public class MainMenu extends BasicGui {
         List<FilledLang> description = new ArrayList<>();
 
         if (tanPlayer.hasRegion()) {
-            RegionData regionData = tanPlayer.getRegion();
+            RegionData regionData = tanPlayer.getRegionSync();
             description.add(Lang.GUI_REGION_ICON_DESC1_REGION.get(regionData.getColoredName()));
             description.add(Lang.GUI_REGION_ICON_DESC2_REGION.get(regionData.getRank(tanPlayer).getColoredName()));
         } else {
@@ -110,8 +110,8 @@ public class MainMenu extends BasicGui {
 
         List<FilledLang> description = new ArrayList<>();
         if (tanPlayer.hasTown()) {
-            description.add(Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(tanPlayer.getTown().getColoredName()));
-            description.add(Lang.GUI_TOWN_ICON_DESC2_HAVE_TOWN.get(tanPlayer.getTown().getRank(tanPlayer).getColoredName()));
+            description.add(Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(tanPlayer.getTownSync().getColoredName()));
+            description.add(Lang.GUI_TOWN_ICON_DESC2_HAVE_TOWN.get(tanPlayer.getTownSync().getRank(tanPlayer).getColoredName()));
         } else {
             description.add(Lang.GUI_TOWN_ICON_DESC1_NO_TOWN.get());
         }

@@ -41,8 +41,8 @@ class ChangeAttackNameTest {
 
         Player player = server.addPlayer();
 
-        TownData town1 = TownDataStorage.getInstance().newTown("town 1");
-        TownData town2 = TownDataStorage.getInstance().newTown("town 2");
+        TownData town1 = TownDataStorage.getInstance().newTown("town 1").join();
+        TownData town2 = TownDataStorage.getInstance().newTown("town 2").join();
 
         War war = new War("W1", town1, town2);
 

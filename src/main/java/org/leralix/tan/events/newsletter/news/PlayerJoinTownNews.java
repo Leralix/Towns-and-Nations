@@ -1,11 +1,12 @@
 package org.leralix.tan.events.newsletter.news;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
@@ -56,10 +57,10 @@ public class PlayerJoinTownNews extends Newsletter {
 
     @Override
     public void broadcast(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(playerID);
         if (tanPlayer == null)
             return;
-        TownData townData = TownDataStorage.getInstance().get(townID);
+        TownData townData = TownDataStorage.getInstance().getSync(townID);
         if (townData == null)
             return;
         TanChatUtils.message(player, Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(player, tanPlayer.getNameStored(), townData.getBaseColoredName()), SoundEnum.MINOR_GOOD);
@@ -67,17 +68,19 @@ public class PlayerJoinTownNews extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(playerID);
         if (tanPlayer == null)
             return null;
-        TownData townData = TownDataStorage.getInstance().get(townID);
+        TownData townData = TownDataStorage.getInstance().getSync(townID);
         if (townData == null)
             return null;
 
+        // BUGFIX: Convert Adventure Component to legacy text properly
         ItemStack itemStack = HeadUtils.makeSkullURL(
                 Lang.PLAYER_JOINED_TOWN_NEWSLETTER_TITLE.get(lang), "http://textures.minecraft.net/texture/16338322d26c6a7c08fb9fd22959a136728fa2d4dccd22b1563eb1bbaa1d5471",
                 Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
-                Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(lang, tanPlayer.getNameStored(), townData.getCustomColoredName().toLegacyText()),
+                Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(lang, tanPlayer.getNameStored(),
+                    LegacyComponentSerializer.legacySection().serialize(townData.getCustomColoredName())),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
         return ItemBuilder.from(itemStack).asGuiItem(event -> {
@@ -96,7 +99,7 @@ public class PlayerJoinTownNews extends Newsletter {
 
     @Override
     public boolean shouldShowToPlayer(Player player) {
-        TownData townData = TownDataStorage.getInstance().get(townID);
+        TownData townData = TownDataStorage.getInstance().getSync(townID);
         if (townData == null)
             return false;
         return townData.doesPlayerHavePermission(player, RolePermission.INVITE_PLAYER);

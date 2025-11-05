@@ -1,10 +1,8 @@
 package org.leralix.tan.dataclass.chunk;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -30,7 +28,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
     }
 
     public String getName() {
-        return TownDataStorage.getInstance().get(getOwnerID()).getName();
+        return TownDataStorage.getInstance().getSync(getOwnerID()).getName();
     }
 
     @Override
@@ -58,7 +56,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
 
 
     public Landmark getLandMark() {
-        return LandmarkStorage.getInstance().get(ownerID);
+        return LandmarkStorage.getInstance().getSync(ownerID);
     }
 
     public void unclaimChunk(Player player) {
@@ -66,7 +64,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
     }
 
     public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.PLAYER_ENTER_LANDMARK_CHUNK.getDefault()));
+        player.sendActionBar(Component.text(Lang.PLAYER_ENTER_LANDMARK_CHUNK.getDefault()));
     }
 
     @Override
@@ -75,15 +73,13 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public TextComponent getMapIcon(LangType langType) {
-        TextComponent textComponent = new TextComponent("⬛");
-        textComponent.setColor(ChatColor.GOLD);
-        textComponent.setHoverEvent(new HoverEvent(
-                HoverEvent.Action.SHOW_TEXT,
-                new Text("x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
-                        ChatColor.GOLD + getLandMark().getName() + "\n" +
-                        Lang.LEFT_CLICK_TO_CLAIM.get(langType))));
-        return textComponent;
+    public Component getMapIcon(LangType langType) {
+        String hoverText = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
+                getLandMark().getName() + "\n" +
+                Lang.LEFT_CLICK_TO_CLAIM.get(langType);
+        return Component.text("⬛")
+                .color(NamedTextColor.GOLD)
+                .hoverEvent(HoverEvent.showText(Component.text(hoverText)));
     }
 
     @Override

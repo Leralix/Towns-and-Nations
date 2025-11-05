@@ -1,8 +1,11 @@
 package org.leralix.tan.dataclass.chunk;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.title.Title;
+import java.time.Duration;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -41,12 +44,12 @@ public class TownClaimedChunk extends TerritoryChunk {
     }
 
     public TownData getTown() {
-        return TownDataStorage.getInstance().get(ownerID);
+        return TownDataStorage.getInstance().getSync(ownerID);
     }
 
     @Override
     protected boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
 
         //Location is in a property and players owns or rent it
         TownData ownerTown = getTown();
@@ -76,9 +79,9 @@ public class TownClaimedChunk extends TerritoryChunk {
 
 
     public void unclaimChunk(Player player) {
-        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer playerStat = PlayerDataStorage.getInstance().getSync(player);
         LangType langType = playerStat.getLang();
-        TownData playerTown = playerStat.getTown();
+        TownData playerTown = playerStat.getTownSync();
 
         if (playerTown == null) {
             TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
@@ -124,20 +127,30 @@ public class TownClaimedChunk extends TerritoryChunk {
     public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
         TownData townTo = getTown();
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
 
-        TextComponent name = displayTerritoryColor ? townTo.getCustomColoredName() : new TextComponent(townTo.getBaseColoredName());
-        String message = Lang.PLAYER_ENTER_TERRITORY_CHUNK.get(tanPlayer.getPlayer(), name.toLegacyText());
-        player.sendTitle("", message, 5, 40, 20);
+        // BUGFIX: Convert Adventure Component to legacy text properly
+        String coloredName = displayTerritoryColor
+            ? LegacyComponentSerializer.legacySection().serialize(townTo.getCustomColoredName())
+            : townTo.getBaseColoredName();
 
-        TextComponent textComponent = new TextComponent(townTo.getDescription());
-        textComponent.setColor(ChatColor.GRAY);
-        textComponent.setItalic(true);
+        String message = Lang.PLAYER_ENTER_TERRITORY_CHUNK.get(tanPlayer.getPlayer(), coloredName);
 
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, textComponent);
+        // Use Adventure API for title
+        player.showTitle(Title.title(
+            Component.empty(),
+            LegacyComponentSerializer.legacySection().deserialize(message),
+            Title.Times.times(Duration.ofMillis(100), Duration.ofMillis(800), Duration.ofMillis(400))
+        ));
+
+        Component actionBarComponent = Component.text(townTo.getDescription())
+                .color(NamedTextColor.GRAY)
+                .decorate(TextDecoration.ITALIC);
+
+        player.sendActionBar(actionBarComponent);
 
 
-        TownData playerTown = tanPlayer.getTown();
+        TownData playerTown = tanPlayer.getTownSync();
         if (playerTown == null) {
             return;
         }
@@ -145,7 +158,7 @@ public class TownClaimedChunk extends TerritoryChunk {
 
         if (relation == TownRelation.WAR && Constants.notifyWhenEnemyEnterTerritory()) {
             TanChatUtils.message(player, Lang.CHUNK_ENTER_TOWN_AT_WAR.get(tanPlayer.getLang()), SoundEnum.BAD);
-            townTo.broadcastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.getInstance().get(player).getName(), player.getName()), SoundEnum.BAD);
+            townTo.broadcastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(playerTown.getName(), player.getName()), SoundEnum.BAD);
         }
     }
 

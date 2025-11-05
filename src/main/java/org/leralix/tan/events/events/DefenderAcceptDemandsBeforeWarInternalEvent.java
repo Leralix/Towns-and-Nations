@@ -19,11 +19,11 @@ public class DefenderAcceptDemandsBeforeWarInternalEvent extends InternalEvent i
 
     @Override
     public TanTerritory getDefenderTerritory() {
-        return TerritoryDataWrapper.of(attackedTerritory);
+        return TerritoryDataWrapper.of(defendingTerritory);
     }
 
     @Override
     public TanTerritory getAttackerTerritory() {
-        return TerritoryDataWrapper.of(defendingTerritory);
+        return TerritoryDataWrapper.of(attackedTerritory);
     }
 }

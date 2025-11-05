@@ -7,7 +7,6 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -46,7 +45,7 @@ public class SetMoney extends SubCommand {
             TanChatUtils.message(player, Lang.NOT_ENOUGH_ARGS_ERROR, SoundEnum.NOT_ALLOWED);
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO);
         } else if (args.length == 3) {
-            ITanPlayer target = PlayerDataStorage.getInstance().get(Bukkit.getOfflinePlayer(args[1]));
+            ITanPlayer target = PlayerDataStorage.getInstance().getSync(Bukkit.getOfflinePlayer(args[1]));
             setMoney(player, args, target);
 
         } else {

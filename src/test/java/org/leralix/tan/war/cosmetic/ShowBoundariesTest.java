@@ -32,11 +32,11 @@ class ShowBoundariesTest extends BasicTest {
     void test_getChunksInRadius_no_chunks() {
 
         PlayerMock defender = server.addPlayer();
-        ITanPlayer tanDefender = PlayerDataStorage.getInstance().get(defender);
+        ITanPlayer tanDefender = PlayerDataStorage.getInstance().get(defender).join();
         World world = server.addSimpleWorld("world");
 
-        var townAttacker = TownDataStorage.getInstance().newTown("AttackerTown");
-        var townDefender = TownDataStorage.getInstance().newTown("DefenderTown", tanDefender);
+        var townAttacker = TownDataStorage.getInstance().newTown("AttackerTown").join();
+        var townDefender = TownDataStorage.getInstance().newTown("DefenderTown", tanDefender).join();
 
         War war = new War("TestWar", townAttacker, townDefender);
         CreateAttackData createAttackData = new CreateAttackData(war, WarRole.MAIN_ATTACKER);

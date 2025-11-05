@@ -91,7 +91,7 @@ public class War {
 
     public void endWar() {
         getMainAttacker().setRelation(getMainDefender(), TownRelation.NEUTRAL);
-        for(PlannedAttack plannedAttack : PlannedAttackStorage.getInstance().getAll().values()){
+        for(PlannedAttack plannedAttack : PlannedAttackStorage.getInstance().getAllAsync().join().values()){
             if(plannedAttack.getWar().getID().equals(getID())){
                 plannedAttack.end();
             }

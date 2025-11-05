@@ -15,12 +15,12 @@ public class PlayerRegionBalance extends PapiEntry {
     @Override
     public String getData(OfflinePlayer player, @NotNull String params) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId());
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player.getUniqueId());
 
         if (tanPlayer == null) {
             return PLAYER_NOT_FOUND;
         }
 
-        return tanPlayer.hasRegion() ? Double.toString(tanPlayer.getRegion().getBalance()) : Lang.NO_REGION.get(tanPlayer);
+        return tanPlayer.hasRegion() ? Double.toString(tanPlayer.getRegionSync().getBalance()) : Lang.NO_REGION.get(tanPlayer);
     }
 }

@@ -3,7 +3,6 @@ package org.leralix.tan.storage.database;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.leralix.tan.TownsAndNations;
-import org.sqlite.SQLiteDataSource;
 
 import java.io.File;
 import java.io.IOException;

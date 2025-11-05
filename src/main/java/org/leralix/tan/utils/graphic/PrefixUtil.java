@@ -22,10 +22,10 @@ public class PrefixUtil {
         if(!Constants.enableTownTag()){
             return;
         }
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
 
-        if (tanPlayer.getTown() != null){
-            String prefix = tanPlayer.getTown().getColoredTag() + " ";
+        if (tanPlayer.getTownSync() != null){
+            String prefix = tanPlayer.getTownSync().getColoredTag() + " ";
 
             player.setPlayerListName(prefix + player.getName());
             player.setDisplayName(prefix + player.getName());

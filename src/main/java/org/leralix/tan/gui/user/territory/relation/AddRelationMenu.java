@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ActiveTruce;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -34,7 +33,7 @@ public class AddRelationMenu extends IteratorGUI {
 
 
     public AddRelationMenu(Player player, TerritoryData territory, TownRelation wantedRelation) {
-        super(player, Lang.HEADER_SELECT_ADD_TERRITORY_RELATION.get(player, wantedRelation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
+        super(player, Lang.HEADER_SELECT_ADD_TERRITORY_RELATION.get(player, wantedRelation.getName(PlayerDataStorage.getInstance().getSync(player).getLang())), 6);
         this.territoryData = territory;
         this.wantedRelation = wantedRelation;
         open();
@@ -49,14 +48,14 @@ public class AddRelationMenu extends IteratorGUI {
     }
 
     private List<GuiItem> getTerritories() {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
 
         List<String> relationListID = territoryData.getRelations().getTerritoriesIDWithRelation(wantedRelation);
         List<GuiItem> guiItems = new ArrayList<>();
 
         List<String> territories = new ArrayList<>();
-        territories.addAll(TownDataStorage.getInstance().getAll().keySet());
-        territories.addAll(RegionDataStorage.getInstance().getAll().keySet());
+        territories.addAll(TownDataStorage.getInstance().getAllSync().keySet());
+        territories.addAll(RegionDataStorage.getInstance().getAllSync().keySet());
 
         territories.removeAll(relationListID); //Territory already have this relation
         territories.remove(territoryData.getID()); //Remove itself

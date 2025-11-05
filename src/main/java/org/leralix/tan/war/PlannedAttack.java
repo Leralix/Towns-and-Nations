@@ -278,7 +278,9 @@ public class PlannedAttack {
     }
 
     public WarRole getRole(ITanPlayer player) {
-        for (TerritoryData territoryData : player.getAllTerritoriesPlayerIsIn()) {
+        List<TerritoryData> territories = player.getAllTerritoriesPlayerIsInSync();
+        if (territories == null) return WarRole.NEUTRAL;
+        for (TerritoryData territoryData : territories) {
             WarRole role = getTerritoryRole(territoryData);
             if (role != WarRole.NEUTRAL) {
                 return role;

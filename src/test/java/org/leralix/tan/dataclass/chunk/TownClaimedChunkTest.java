@@ -32,7 +32,7 @@ class TownClaimedChunkTest extends BasicTest {
     @Test
     void notifyUpdate() {
 
-        TownData townData = TownDataStorage.getInstance().newTown("Town");
+        TownData townData = TownDataStorage.getInstance().newTown("Town").join();
 
         claimedChunkStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
         claimedChunkStorage.claimTownChunk(world.getChunkAt(0, 1), townData.getID());
@@ -46,7 +46,7 @@ class TownClaimedChunkTest extends BasicTest {
     @Test
     void notifyUpdateWithCapital() {
 
-        TownData townData = TownDataStorage.getInstance().newTown("Town");
+        TownData townData = TownDataStorage.getInstance().newTown("Town").join();
 
         claimedChunkStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
         townData.setCapitalLocation(new Vector2D(1,0, world.getUID().toString()));
@@ -61,7 +61,7 @@ class TownClaimedChunkTest extends BasicTest {
     @Test
     void notifyUpdateWithOneFort() {
 
-        TownData townData = TownDataStorage.getInstance().newTown("Town");
+        TownData townData = TownDataStorage.getInstance().newTown("Town").join();
 
         claimedChunkStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
         ClaimedChunk2 claimedChunkToKeep = claimedChunkStorage.claimTownChunk(world.getChunkAt(0, 1), townData.getID());

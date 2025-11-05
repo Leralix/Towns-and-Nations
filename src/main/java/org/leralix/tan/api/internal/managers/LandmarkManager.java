@@ -29,7 +29,7 @@ public class LandmarkManager implements TanLandmarkManager {
 
     @Override
     public Collection<TanLandmark> getLandmarks() {
-        return landmarkStorage.getAll().values().stream()
+        return landmarkStorage.getAllAsync().join().values().stream()
                 .map(LandmarkDataWrapper::of)
                 .map(t -> (TanLandmark) t)
                 .toList();
@@ -37,7 +37,7 @@ public class LandmarkManager implements TanLandmarkManager {
 
     @Override
     public Optional<TanLandmark> getLandmark(String s) {
-        return Optional.ofNullable(LandmarkDataWrapper.of(landmarkStorage.get(s)));
+        return Optional.ofNullable(LandmarkDataWrapper.of(landmarkStorage.getSync(s)));
     }
 
     @Override

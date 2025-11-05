@@ -2,11 +2,11 @@ package org.leralix.tan.events.newsletter.news;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
@@ -25,8 +25,6 @@ import org.tan.api.interfaces.TanTerritory;
 
 import java.util.UUID;
 import java.util.function.Consumer;
-
-import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
 
 
 public class DiplomacyProposalNews extends Newsletter {
@@ -73,12 +71,13 @@ public class DiplomacyProposalNews extends Newsletter {
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         if(receivingTerritory == null)
             return;
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        // BUGFIX: Convert Adventure Component to legacy text properly
         TanChatUtils.message(player,
                 Lang.DIPLOMACY_PROPOSAL_NEWSLETTER.get(
                         player,
-                        proposingTerritory.getCustomColoredName().toLegacyText(),
-                        receivingTerritory.getCustomColoredName().toLegacyText(),
+                        LegacyComponentSerializer.legacySection().serialize(proposingTerritory.getCustomColoredName()),
+                        LegacyComponentSerializer.legacySection().serialize(receivingTerritory.getCustomColoredName()),
                         wantedRelation.getColoredName(tanPlayer.getLang())),
                 SoundEnum.MINOR_GOOD);
     }
@@ -150,7 +149,7 @@ public class DiplomacyProposalNews extends Newsletter {
         if(proposingTerritory == null)
             return false;
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         return proposingTerritory.isPlayerIn(tanPlayer) || receivingTerritory.isPlayerIn(tanPlayer);
     }
 }

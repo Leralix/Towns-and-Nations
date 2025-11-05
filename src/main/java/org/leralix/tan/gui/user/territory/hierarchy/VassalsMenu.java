@@ -62,7 +62,7 @@ public class VassalsMenu extends IteratorGUI {
                     .setDescription()
                     .setDescription(
                             Lang.GUI_TOWN_INFO_DESC0.get(vassal.getDescription()),
-                            Lang.GUI_TOWN_INFO_DESC1.get(vassal.getLeaderName()),
+                            Lang.GUI_TOWN_INFO_DESC1.get(vassal.getLeaderNameSync()),
                             Lang.GUI_TOWN_INFO_DESC2.get(Integer.toString(vassal.getPlayerIDList().size())),
                             Lang.GUI_TOWN_INFO_DESC3.get(Integer.toString(vassal.getNumberOfClaimedChunk()))
                     )

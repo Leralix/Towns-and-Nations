@@ -1,6 +1,6 @@
 package org.leralix.tan.dataclass.chunk;
 
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -13,7 +13,6 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -106,7 +105,7 @@ public abstract class ClaimedChunk2 {
         return TerritoryUtil.getTerritory(ownerID);
     }
 
-    public abstract TextComponent getMapIcon(LangType langType);
+    public abstract Component getMapIcon(LangType langType);
 
     public abstract boolean canTerritoryClaim(TerritoryData territoryData);
 

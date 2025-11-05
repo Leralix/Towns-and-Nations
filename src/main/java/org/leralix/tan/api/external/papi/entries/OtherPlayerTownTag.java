@@ -16,7 +16,7 @@ public class OtherPlayerTownTag extends PapiEntry {
     @Override
     public String getData(OfflinePlayer player, @NotNull String params) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId());
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player.getUniqueId());
 
         if (tanPlayer == null) {
             return PLAYER_NOT_FOUND;
@@ -25,10 +25,10 @@ public class OtherPlayerTownTag extends PapiEntry {
         String[] values = extractValues(params);
         OfflinePlayer playerSelected = Bukkit.getOfflinePlayer(values[0]);
 
-        ITanPlayer otherTanPlayer = PlayerDataStorage.getInstance().get(playerSelected);
+        ITanPlayer otherTanPlayer = PlayerDataStorage.getInstance().getSync(playerSelected);
 
         return otherTanPlayer.hasTown() ?
-                otherTanPlayer.getTown().getTownTag() :
+                otherTanPlayer.getTownSync().getTownTag() :
                 Lang.NO_TOWN.get(tanPlayer);
     }
 }

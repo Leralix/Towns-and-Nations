@@ -8,7 +8,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.TeleportationRegister;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.upgrade.rewards.bool.EnableTownSpawn;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -44,7 +43,8 @@ public class TownSpawnCommand extends PlayerSubCommand {
     @Override
     public void perform(Player player, String[] args) {
 
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        LangType langType = tanPlayer.getLang();
         //Incorrect syntax
         if (args.length != 1) {
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
@@ -52,13 +52,17 @@ public class TownSpawnCommand extends PlayerSubCommand {
         }
 
         //No town
-        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
-        if (!playerStat.hasTown()) {
+        if (!tanPlayer.hasTown()) {
             TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
             return;
         }
 
-        TownData townData = TownDataStorage.getInstance().get(player);
+        TownData townData = tanPlayer.getTownSync();
+        if (townData == null) {
+            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType)); // Should not happen if hasTown() is true
+            return;
+        }
+
         EnableTownSpawn enableTownSpawn = townData.getNewLevel().getStat(EnableTownSpawn.class);
         //Spawn Unlocked
         if (!enableTownSpawn.isEnabled()) {
@@ -72,9 +76,7 @@ public class TownSpawnCommand extends PlayerSubCommand {
             return;
         }
 
-        TeleportationRegister.teleportToTownSpawn(playerStat, townData);
-
-
+        TeleportationRegister.teleportToTownSpawn(tanPlayer, townData);
     }
 
 }

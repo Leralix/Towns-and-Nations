@@ -40,9 +40,9 @@ public class CreateEmptyTown extends ChatListenerEvent {
             return false;
         }
 
-        TownData newTown = TownDataStorage.getInstance().newTown(townName);
+        TownData newTown = TownDataStorage.getInstance().newTown(townName).join();
 
-        ITanPlayer playerData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer playerData = PlayerDataStorage.getInstance().getSync(player);
         EventManager.getInstance().callEvent(new TownCreatedInternalEvent(newTown, playerData));
         FileUtil.addLineToHistory(Lang.TOWN_CREATED_NEWSLETTER.get(player.getName(), newTown.getName()));
 

@@ -7,6 +7,8 @@ import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 
+import java.util.List;
+
 public enum RelationPermission {
 
     TOWN(Lang.TOWN_PERMISSION, ChatColor.GREEN),
@@ -56,9 +58,12 @@ public enum RelationPermission {
                 if (territoryToCheck.isPlayerIn(tanPlayer)) {
                     return true;
                 }
-                for (TerritoryData playerTerritory : tanPlayer.getAllTerritoriesPlayerIsIn()) {
-                    if (territoryToCheck.getRelations().getRelationWith(playerTerritory) == TownRelation.ALLIANCE) {
-                        return true;
+                List<TerritoryData> territories = tanPlayer.getAllTerritoriesPlayerIsInSync();
+                if (territories != null) {
+                    for (TerritoryData playerTerritory : territories) {
+                        if (territoryToCheck.getRelations().getRelationWith(playerTerritory) == TownRelation.ALLIANCE) {
+                            return true;
+                        }
                     }
                 }
                 return false;

@@ -51,10 +51,10 @@ public class AdminGUI {
     }
 
     public static void openAdminWarMenu(Player player, int page) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_WAR_MENU.get(langType), 6);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (PlannedAttack plannedAttack : PlannedAttackStorage.getInstance().getAll().values()) {
+        for (PlannedAttack plannedAttack : PlannedAttackStorage.getInstance().getAllSync().values()) {
             ItemStack icon = plannedAttack.getAdminIcon(langType);
 
             GuiItem item = ItemBuilder.from(icon).asGuiItem(event -> {
@@ -77,13 +77,13 @@ public class AdminGUI {
     }
 
     public static void openLandmarks(Player player, int page) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_LANDMARK_MENU.get(langType), 6);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
-        for (Landmark landmark : LandmarkStorage.getInstance().getAll().values()) {
+        for (Landmark landmark : LandmarkStorage.getInstance().getAllSync().values()) {
             ItemStack icon = landmark.getIcon(langType);
             HeadUtils.addLore(icon,
                     "",
@@ -130,7 +130,7 @@ public class AdminGUI {
     }
 
     private static void openSpecificLandmarkMenu(Player player, Landmark landmark) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_SPECIFIC_LANDMARK_MENU.get(langType, landmark.getName()), 3);
 
@@ -183,13 +183,13 @@ public class AdminGUI {
     }
 
     public static void openAdminBrowseRegion(Player player, int page) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_REGION_MENU.get(langType), 6);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
-        for (RegionData regionData : RegionDataStorage.getInstance().getAll().values()) {
+        for (RegionData regionData : RegionDataStorage.getInstance().getAllSync().values()) {
 
             ItemStack regionIcon = HeadUtils.getRegionIcon(regionData, langType);
             HeadUtils.addLore(regionIcon, Lang.ADMIN_GUI_REGION_DESC.get(langType));
@@ -216,7 +216,7 @@ public class AdminGUI {
 
 
     private static void openSpecificRegionMenu(Player player, RegionData regionData) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_SPECIFIC_REGION_MENU.get(langType), 3);
 
@@ -238,7 +238,7 @@ public class AdminGUI {
     }
 
     private static void addCommonTerritoryDebugOption(Gui gui, Player player, TerritoryData territoryData) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
 
         ItemStack changeRegionName = HeadUtils.createCustomItemStack(Material.NAME_TAG,
                 Lang.ADMIN_GUI_CHANGE_TOWN_NAME.get(langType),
@@ -283,27 +283,27 @@ public class AdminGUI {
     }
 
     private static void openRegionDebugChangeOwnershipPlayerSelect(Player player, RegionData regionData, int page) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
 
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_CHANGE_REGION_LEADER.get(langType, regionData.getName()), 6);
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for (String playerID : regionData.getPlayerIDList()) {
 
-            ITanPlayer iterateTanPlayer = PlayerDataStorage.getInstance().get(playerID);
+            ITanPlayer iterateTanPlayer = PlayerDataStorage.getInstance().getSync(playerID);
             ItemStack switchPlayerIcon = HeadUtils.getPlayerHead(Bukkit.getOfflinePlayer(UUID.fromString(playerID)));
 
             GuiItem switchPlayerGui = ItemBuilder.from(switchPlayerIcon).asGuiItem(event -> {
                 event.setCancelled(true);
-                FileUtil.addLineToHistory(Lang.HISTORY_REGION_CAPITAL_CHANGED.get(player.getName(), regionData.getCapital().getName(), tanPlayer.getTown().getName()));
+                FileUtil.addLineToHistory(Lang.HISTORY_REGION_CAPITAL_CHANGED.get(player.getName(), regionData.getCapital().getName(), tanPlayer.getTownSync().getName()));
                 regionData.setLeaderID(iterateTanPlayer.getID());
 
                 regionData.broadcastMessageWithSound(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST.get(iterateTanPlayer.getNameStored()), GOOD);
 
-                if (!regionData.getCapital().getID().equals(iterateTanPlayer.getTown().getID())) {
-                    regionData.broadCastMessage(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST.get(iterateTanPlayer.getTown().getName()));
+                if (!regionData.getCapital().getID().equals(iterateTanPlayer.getTownSync().getID())) {
+                    regionData.broadCastMessage(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST.get(iterateTanPlayer.getTownSync().getName()));
                     regionData.setCapital(iterateTanPlayer.getTownId());
                 }
                 openSpecificRegionMenu(player, regionData);
@@ -323,13 +323,13 @@ public class AdminGUI {
     }
 
     public static void openAdminBrowseTown(Player player, int page) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_TOWN_MENU.get(langType), 6);
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (TownData townData : TownDataStorage.getInstance().getAll().values()) {
+        for (TownData townData : TownDataStorage.getInstance().getAllSync().values()) {
             ItemStack townIcon = townData.getIconWithInformations(tanPlayer.getLang());
             HeadUtils.addLore(townIcon,
                     "",
@@ -364,7 +364,7 @@ public class AdminGUI {
     }
 
     public static void openSpecificTownMenu(Player player, @NotNull TownData townData) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_SPECIFIC_TOWN_MENU.get(langType, townData.getName()), 3);
 
@@ -372,7 +372,7 @@ public class AdminGUI {
 
         ItemStack changeTownLeader = HeadUtils.createCustomItemStack(Material.PLAYER_HEAD,
                 Lang.ADMIN_GUI_CHANGE_TOWN_LEADER.get(langType),
-                Lang.ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1.get(langType, townData.getLeaderName()));
+                Lang.ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1.get(langType, townData.getLeaderNameSync()));
 
 
         String name = townData.getOverlord()
@@ -417,12 +417,12 @@ public class AdminGUI {
     }
 
     private static void openChooseNewOverlord(Player player, TerritoryData territoryData, int page) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_CHANGE_OVERLORD.get(langType, territoryData.getName()), 6);
 
-        Collection<RegionData> territoryDataList = RegionDataStorage.getInstance().getAll().values();
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        Collection<RegionData> territoryDataList = RegionDataStorage.getInstance().getAllSync().values();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         List<GuiItem> guiItems = new ArrayList<>();
 
         for (TerritoryData potentialOverlord : territoryDataList) {
@@ -445,7 +445,7 @@ public class AdminGUI {
     }
 
     private static void openTownDebugChangeOwnershipPlayerSelect(Player player, TownData townData, int page) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_CHANGE_TOWN_LEADER.get(langType, townData.getName()), 3);
 
@@ -477,12 +477,12 @@ public class AdminGUI {
     }
 
     public static void openPlayerMenu(Player player, int page) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_PLAYER_MENU.get(langType), 6);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (ITanPlayer tanPlayer : PlayerDataStorage.getInstance().getAll().values()) {
+        for (ITanPlayer tanPlayer : PlayerDataStorage.getInstance().getAllSync().values()) {
 
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(tanPlayer.getID()));
             ItemStack playerHead = HeadUtils.getPlayerHeadInformation(offlinePlayer);
@@ -500,7 +500,7 @@ public class AdminGUI {
     }
 
     private static void openSpecificPlayerMenu(Player player, ITanPlayer tanPlayer) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_PLAYER_MENU.get(langType), 3);
 
@@ -508,14 +508,14 @@ public class AdminGUI {
 
         if (tanPlayer.hasTown()) {
             ItemStack removePlayerTown = HeadUtils.createCustomItemStack(Material.SPRUCE_DOOR,
-                    Lang.ADMIN_GUI_TOWN_PLAYER_TOWN.get(langType, tanPlayer.getTown().getName()),
+                    Lang.ADMIN_GUI_TOWN_PLAYER_TOWN.get(langType, tanPlayer.getTownSync().getName()),
                     Lang.ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1.get(langType),
                     Lang.ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2.get(langType));
 
 
             GuiItem removePlayerTownGui = ItemBuilder.from(removePlayerTown).asGuiItem(event -> {
                 event.setCancelled(true);
-                TownData townData = tanPlayer.getTown();
+                TownData townData = tanPlayer.getTownSync();
 
                 if (townData.isLeader(tanPlayer)) {
                     TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get(langType));
@@ -547,14 +547,14 @@ public class AdminGUI {
     }
 
     private static void setPlayerTown(Player player, ITanPlayer tanPlayer, int page) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_SET_PLAYER_TOWN.get(langType), 6);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
 
-        for (TownData townData : TownDataStorage.getInstance().getAll().values()) {
+        for (TownData townData : TownDataStorage.getInstance().getAllSync().values()) {
             ItemStack townIcon = townData.getIconWithInformations(tanPlayer.getLang());
             HeadUtils.addLore(townIcon,
                     "",

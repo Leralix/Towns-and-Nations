@@ -38,9 +38,9 @@ class CreateFortEventTest extends BasicTest {
 
         world.setBlockData(-1, 1, -1, Bukkit.createBlockData(Material.AIR));
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player).join();
 
-        TownData townData = TownDataStorage.getInstance().newTown("town", tanPlayer);
+        TownData townData = TownDataStorage.getInstance().newTown("town", tanPlayer).join();
         townData.addToBalance(5000.);
 
         CreateFortEvent createfortEvent = new CreateFortEvent(townData);

@@ -3,8 +3,6 @@ package org.leralix.tan.commands.server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -57,12 +55,18 @@ public class ApplyTownServer extends SubCommand {
             TanChatUtils.message(commandSender, Lang.TOWN_NOT_FOUND);
             return;
         }
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(p.getUniqueId().toString());
-        if(tanPlayer.hasTown()){
-            TanChatUtils.message(commandSender, Lang.PLAYER_ALREADY_HAVE_TOWN);
-            return;
-        }
-        TownData townData = TownDataStorage.getInstance().get(townID);
-        townData.addPlayerJoinRequest(p);
+        PlayerDataStorage.getInstance().get(p.getUniqueId().toString()).thenAccept(tanPlayer -> {
+            if(tanPlayer.hasTown()){
+                TanChatUtils.message(commandSender, Lang.PLAYER_ALREADY_HAVE_TOWN);
+                return;
+            }
+            TownDataStorage.getInstance().get(townID).thenAccept(townData -> {
+                if (townData == null) {
+                    TanChatUtils.message(commandSender, Lang.TOWN_NOT_FOUND); // Assuming a new Lang entry for town not found
+                    return;
+                }
+                townData.addPlayerJoinRequest(p);
+            });
+        });
     }
 }

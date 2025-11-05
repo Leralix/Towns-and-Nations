@@ -14,7 +14,7 @@ class SetCreatePropertyTaxTest extends BasicTest {
     void nominalTest(){
 
         double wantedBuyRate = 1.2;
-        TownData townData = TownDataStorage.getInstance().newTown("town");
+        TownData townData = TownDataStorage.getInstance().newTown("town").join();
 
         SetCreatePropertyTax command = new SetCreatePropertyTax(townData, null);
         command.setTax(wantedBuyRate);

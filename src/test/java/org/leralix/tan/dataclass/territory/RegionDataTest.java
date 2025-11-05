@@ -37,9 +37,9 @@ class RegionDataTest {
     @Test
     void testCreation(){
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
-        TownData townData = TownDataStorage.getInstance().newTown("testTown", tanPlayer);
-        RegionData regionData = RegionDataStorage.getInstance().createNewRegion("testRegion", townData);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
+        TownData townData = TownDataStorage.getInstance().newTown("testTown", tanPlayer).join();
+        RegionData regionData = RegionDataStorage.getInstance().createNewRegion("testRegion", townData).join();
 
         assertSame(tanPlayer, regionData.getLeaderData());
         assertSame(townData, regionData.getCapital());
@@ -55,10 +55,10 @@ class RegionDataTest {
     @Test
     void testAddVassal(){
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
-        TownData townData = TownDataStorage.getInstance().newTown("FirstTown", tanPlayer);
-        RegionData regionData = RegionDataStorage.getInstance().createNewRegion("testRegion", townData);
-        TownData newTown = TownDataStorage.getInstance().newTown("secondTown");
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
+        TownData townData = TownDataStorage.getInstance().newTown("FirstTown", tanPlayer).join();
+        RegionData regionData = RegionDataStorage.getInstance().createNewRegion("testRegion", townData).join();
+        TownData newTown = TownDataStorage.getInstance().newTown("secondTown").join();
 
         newTown.setOverlord(regionData);
 
@@ -73,13 +73,13 @@ class RegionDataTest {
     @Test
     void getAllPlayer(){
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
-        ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().get(server.addPlayer());
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
+        ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
 
-        TownData town1 = TownDataStorage.getInstance().newTown("testTown", tanPlayer);
-        TownData town2 = TownDataStorage.getInstance().newTown("testTown", tanPlayer2);
+        TownData town1 = TownDataStorage.getInstance().newTown("testTown", tanPlayer).join();
+        TownData town2 = TownDataStorage.getInstance().newTown("testTown", tanPlayer2).join();
 
-        RegionData regionData = RegionDataStorage.getInstance().createNewRegion("testRegion", town1);
+        RegionData regionData = RegionDataStorage.getInstance().createNewRegion("testRegion", town1).join();
 
         town2.setOverlord(regionData);
 
@@ -94,12 +94,12 @@ class RegionDataTest {
     @Test
     void addPlayerToTownAfterRegionCreation(){
 
-        ITanPlayer leader = PlayerDataStorage.getInstance().get(server.addPlayer());
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        ITanPlayer leader = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
 
-        TownData townData = TownDataStorage.getInstance().newTown("town", leader);
+        TownData townData = TownDataStorage.getInstance().newTown("town", leader).join();
 
-        RegionData regionData = RegionDataStorage.getInstance().createNewRegion("region", townData);
+        RegionData regionData = RegionDataStorage.getInstance().createNewRegion("region", townData).join();
 
 
         townData.addPlayer(tanPlayer);

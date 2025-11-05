@@ -28,7 +28,7 @@ public class EconomyUtil {
      * @return              The player's current balance.
      */
     public static double getBalance(OfflinePlayer offlinePlayer){
-        return econ.getBalance(PlayerDataStorage.getInstance().get(offlinePlayer));
+        return econ.getBalance(PlayerDataStorage.getInstance().getSync(offlinePlayer));
     }
     /**
      * Retrieves the current balance of the specified player.
@@ -44,7 +44,7 @@ public class EconomyUtil {
      * @return          The player's current balance.
      */
     public static double getBalance(Player player){
-        return econ.getBalance(PlayerDataStorage.getInstance().get(player));
+        return econ.getBalance(PlayerDataStorage.getInstance().getSync(player));
     }
 
     /**
@@ -61,7 +61,7 @@ public class EconomyUtil {
      * @param amount            The amount of money to be subtracted
      */
     public static void removeFromBalance(OfflinePlayer offlinePlayer, double amount){
-        econ.withdrawPlayer(PlayerDataStorage.getInstance().get(offlinePlayer), amount);
+        econ.withdrawPlayer(PlayerDataStorage.getInstance().getSync(offlinePlayer), amount);
     }
 
     /**
@@ -70,7 +70,7 @@ public class EconomyUtil {
      * @param amount     The amount of money to be subtracted
      */
     public static void removeFromBalance(Player player, double amount) {
-        econ.withdrawPlayer(PlayerDataStorage.getInstance().get(player), amount);
+        econ.withdrawPlayer(PlayerDataStorage.getInstance().getSync(player), amount);
     }
     /**
      * Add the given amount of money to a player balance
@@ -86,7 +86,7 @@ public class EconomyUtil {
      * @param amount     The amount of money to be added
      */
     public static void addFromBalance(Player player, double amount){
-        econ.depositPlayer(PlayerDataStorage.getInstance().get(player), amount);
+        econ.depositPlayer(PlayerDataStorage.getInstance().getSync(player), amount);
     }
     /**
      * Add the given amount of money to a player balance
@@ -94,7 +94,7 @@ public class EconomyUtil {
      * @param amount            The amount of money to be added
      */
     public static void addFromBalance(OfflinePlayer offlinePlayer, double amount) {
-        econ.depositPlayer(PlayerDataStorage.getInstance().get(offlinePlayer), amount);
+        econ.depositPlayer(PlayerDataStorage.getInstance().getSync(offlinePlayer), amount);
     }
 
     public static String getMoneyIcon() {

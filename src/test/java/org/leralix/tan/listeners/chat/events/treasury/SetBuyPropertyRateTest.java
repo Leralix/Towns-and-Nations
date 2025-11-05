@@ -13,7 +13,7 @@ class SetBuyPropertyRateTest extends BasicTest {
     void nominalTest(){
 
         double wantedBuyRate = 0.2;
-        TownData townData = TownDataStorage.getInstance().newTown("town");
+        TownData townData = TownDataStorage.getInstance().newTown("town").join();
 
         SetBuyPropertyRate command = new SetBuyPropertyRate(townData);
         command.setRate(wantedBuyRate);

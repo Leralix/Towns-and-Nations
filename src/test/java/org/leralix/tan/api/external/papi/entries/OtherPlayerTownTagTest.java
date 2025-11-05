@@ -25,9 +25,9 @@ class OtherPlayerTownTagTest extends BasicTest {
     void nominalTest() {
 
         Player player = server.addPlayer("name");
-        ITanPlayer tanPlayer  = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer  = PlayerDataStorage.getInstance().get(player).join();
 
-        TownData townData = TownDataStorage.getInstance().newTown("Town", tanPlayer);
+        TownData townData = TownDataStorage.getInstance().newTown("Town", tanPlayer).join();
 
         OtherPlayerTownTag entry = new OtherPlayerTownTag();
 

@@ -12,6 +12,8 @@ import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DonateToTerritoryTest {
 
@@ -32,40 +34,43 @@ class DonateToTerritoryTest {
 
     @Test
     void nominalCase() {
-        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
-        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", tanPlayer);
+        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
+        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", tanPlayer).join();
         int amount = 1;
         tanPlayer.addToBalance(amount);
 
         DonateToTerritory donateToTerritory = new DonateToTerritory(townData);
-        donateToTerritory.execute(tanPlayer.getPlayer(), String.valueOf(amount));
+        boolean result = donateToTerritory.execute(tanPlayer.getPlayer(), String.valueOf(amount));
 
+        assertTrue(result);
         assertEquals(amount, townData.getBalance());
     }
 
     @Test
     void notEnoughMoney() {
-        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
-        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", tanPlayer);
+        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
+        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", tanPlayer).join();
 
         int amount = (int) (tanPlayer.getBalance() + 1);
 
         DonateToTerritory donateToTerritory = new DonateToTerritory(townData);
-        donateToTerritory.execute(tanPlayer.getPlayer(), String.valueOf(amount));
+        boolean result = donateToTerritory.execute(tanPlayer.getPlayer(), String.valueOf(amount));
 
+        assertFalse(result);
         assertEquals(0, townData.getBalance());
     }
 
     @Test
     void notANumber() {
-        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
-        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", tanPlayer);
+        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
+        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", tanPlayer).join();
 
         String amount = "notANumber";
 
         DonateToTerritory donateToTerritory = new DonateToTerritory(townData);
-        donateToTerritory.execute(tanPlayer.getPlayer(), amount);
+        boolean result = donateToTerritory.execute(tanPlayer.getPlayer(), amount);
 
+        assertFalse(result);
         assertEquals(0, townData.getBalance());
     }
 

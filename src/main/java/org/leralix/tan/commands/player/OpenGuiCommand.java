@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -42,9 +43,13 @@ public class OpenGuiCommand extends PlayerSubCommand {
 
             getOpeningGui(player);
         }else if(args.length > 1){
-            LangType lang = PlayerDataStorage.getInstance().get(player).getLang();
-            TanChatUtils.message(player, Lang.TOO_MANY_ARGS_ERROR.get(lang));
-            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(lang, getSyntax()));
+            ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+            // CRITICAL: Player interactions must run on main thread
+            org.leralix.tan.utils.FoliaScheduler.runTask(org.leralix.tan.TownsAndNations.getPlugin(), () -> {
+                LangType lang = tanPlayer.getLang();
+                TanChatUtils.message(player, Lang.TOO_MANY_ARGS_ERROR.get(lang));
+                TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(lang, getSyntax()));
+            });
         }
 
     }

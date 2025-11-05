@@ -29,7 +29,7 @@ public class OpenRelationMenu extends IteratorGUI {
     private final TownRelation relation;
 
     public OpenRelationMenu(Player player, TerritoryData territoryData, TownRelation relation) {
-        super(player, Lang.HEADER_RELATION_WITH.get(player, relation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
+        super(player, Lang.HEADER_RELATION_WITH.get(player, relation.getName(PlayerDataStorage.getInstance().getSync(player).getLang())), 6);
         this.territoryData = territoryData;
         this.relation = relation;
         open();

@@ -33,7 +33,7 @@ public class AddMoneyTest {
         playerMock = server.addPlayer("TestPlayer");
         playerMock.setOp(true);
 
-        tanPlayer = PlayerDataStorage.getInstance().get(playerMock);
+        tanPlayer = PlayerDataStorage.getInstance().get(playerMock).join();
     }
 
     @Test

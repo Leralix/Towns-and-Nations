@@ -15,16 +15,16 @@ public class PlayerBiggerOverlordName extends PapiEntry{
     @Override
     public String getData(OfflinePlayer player, @NotNull String params) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId());
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player.getUniqueId());
 
         if (tanPlayer == null) {
             return PLAYER_NOT_FOUND;
         }
 
         if(tanPlayer.hasRegion())
-            return tanPlayer.getRegion().getName();
+            return tanPlayer.getRegionSync().getName();
         if(tanPlayer.hasTown())
-            return tanPlayer.getTown().getName();
+            return tanPlayer.getTownSync().getName();
         return Lang.NO_TOWN.get(tanPlayer);
     }
 }

@@ -36,7 +36,7 @@ public class AttackMenu extends IteratorGUI {
 
     private List<GuiItem> getWars(ITanPlayer tanPlayer) {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for(PlannedAttack plannedAttack : PlannedAttackStorage.getInstance().getAll().values()){
+        for(PlannedAttack plannedAttack : PlannedAttackStorage.getInstance().getAllSync().values()){
             ItemStack attackIcon = plannedAttack.getIcon(tanPlayer, territoryData);
             GuiItem attackButton = ItemBuilder.from(attackIcon).asGuiItem(event -> {
                 event.setCancelled(true);

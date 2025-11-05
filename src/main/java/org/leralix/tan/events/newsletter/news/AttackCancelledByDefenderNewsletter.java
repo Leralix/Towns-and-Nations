@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
@@ -54,7 +53,7 @@ public class AttackCancelledByDefenderNewsletter extends Newsletter {
         if (attackingTerritory == null || defendingTerritory == null)
             return null;
 
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
                 Lang.ATTACK_CANCELLED_TITLE.get(langType),

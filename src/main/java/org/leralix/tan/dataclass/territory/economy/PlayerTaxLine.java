@@ -37,7 +37,7 @@ public class PlayerTaxLine extends ProfitLine {
         super(townData);
         double flatTax = townData.getTax();
         for (String playerID : townData.getPlayerIDList()) {
-            ITanPlayer othertanPlayer = PlayerDataStorage.getInstance().get(playerID);
+            ITanPlayer othertanPlayer = PlayerDataStorage.getInstance().getSync(playerID);
             OfflinePlayer otherPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
             if (!othertanPlayer.getTownRank().isPayingTaxes()) {
                 continue;
@@ -66,7 +66,7 @@ public class PlayerTaxLine extends ProfitLine {
     @Override
     public void addItems(Gui gui, Player player, LangType lang) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
 
         ItemStack lowerTax = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_LOWER_TAX.get(lang), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU0YjhiOGQyMzYyYzg2NGUwNjIzMDE0ODdkOTRkMzI3MmE2YjU3MGFmYmY4MGMyYzViMTQ4Yzk1NDU3OWQ0NiJ9fX0=",
                 Lang.GUI_DECREASE_1_DESC.get(lang),

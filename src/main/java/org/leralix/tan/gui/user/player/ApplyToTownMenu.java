@@ -4,7 +4,6 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.user.territory.NoTownMenu;
@@ -42,7 +41,7 @@ public class ApplyToTownMenu extends IteratorGUI {
     public List<GuiItem> getTowns(){
         ArrayList<GuiItem> towns = new ArrayList<>();
 
-        for(TownData specificTownData : TownDataStorage.getInstance().getAll().values()){
+        for(TownData specificTownData : TownDataStorage.getInstance().getAllSync().values()){
             ItemStack townIcon = specificTownData.getIconWithInformations(tanPlayer.getLang());
             HeadUtils.addLore(townIcon,
                     "",

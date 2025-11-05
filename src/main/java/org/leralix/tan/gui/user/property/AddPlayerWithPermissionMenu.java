@@ -51,10 +51,10 @@ public class AddPlayerWithPermissionMenu extends IteratorGUI {
         List<GuiItem> guiItems = new ArrayList<>();
         for (Player playerToAdd : Bukkit.getOnlinePlayers()) {
 
-            ITanPlayer playerToAddData = PlayerDataStorage.getInstance().get(playerToAdd);
+            ITanPlayer playerToAddData = PlayerDataStorage.getInstance().getSync(playerToAdd);
             ChunkPermission permission = permissionManager.get(chunkPermission);
             //Check with town since only town can have territories
-            if (permission.isAllowed(tanPlayer.getTown(), playerToAddData))
+            if (permission.isAllowed(tanPlayer.getTownSync(), playerToAddData))
                 continue;
 
             ItemStack icon = HeadUtils.getPlayerHead(playerToAdd.getName(), playerToAdd,

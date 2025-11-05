@@ -69,15 +69,15 @@ public class CommandBlocker implements Listener {
                 continue;
             }
 
-            ITanPlayer senderData = PlayerDataStorage.getInstance().get(sender);
-            ITanPlayer receiverData = PlayerDataStorage.getInstance().get(receiver);
+            ITanPlayer senderData = PlayerDataStorage.getInstance().getSync(sender);
+            ITanPlayer receiverData = PlayerDataStorage.getInstance().getSync(receiver);
 
             // Validate player data exists
             if (senderData == null || receiverData == null) {
                 continue;
             }
 
-            TownRelation worstRelationWithPlayer = senderData.getRelationWithPlayer(receiverData);
+            TownRelation worstRelationWithPlayer = senderData.getRelationWithPlayerSync(receiverData);
             if(Constants.getRelationConstants(worstRelationWithPlayer).getBlockedCommands().contains(blackListedCommand)){
                 LangType lang = senderData.getLang();
                 TanChatUtils.message(sender, Lang.CANNOT_CAST_COMMAND_ON_PLAYER_WITH_SPECIFIC_RELATION.get(lang, receiver.getName(),worstRelationWithPlayer.getColoredName(lang)), SoundEnum.NOT_ALLOWED);
@@ -88,7 +88,7 @@ public class CommandBlocker implements Listener {
     }
 
     private static boolean isPlayerInAnAttack(Player player, String inputCommand) {
-        ITanPlayer playerData = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer playerData = PlayerDataStorage.getInstance().getSync(player);
 
         // Validate player data exists
         if (playerData == null) {

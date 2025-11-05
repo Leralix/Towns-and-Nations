@@ -27,10 +27,10 @@ class OtherPlayerRegionNameTest extends BasicTest  {
     void nominalTest() {
 
         Player player = server.addPlayer("player name");
-        ITanPlayer tanPlayer  = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer  = PlayerDataStorage.getInstance().get(player).join();
 
-        TownData townData = TownDataStorage.getInstance().newTown("Town", tanPlayer);
-        RegionData regionData = RegionDataStorage.getInstance().createNewRegion("Region", townData);
+        TownData townData = TownDataStorage.getInstance().newTown("Town", tanPlayer).join();
+        RegionData regionData = RegionDataStorage.getInstance().createNewRegion("Region", townData).join();
 
         OtherPlayerRegionName entry = new OtherPlayerRegionName();
 
@@ -43,7 +43,7 @@ class OtherPlayerRegionNameTest extends BasicTest  {
     void noRegionTest() {
 
         Player player = server.addPlayer("player name");
-        PlayerDataStorage.getInstance().get(player);
+        PlayerDataStorage.getInstance().get(player).join();
 
         OtherPlayerRegionName entry = new OtherPlayerRegionName();
 

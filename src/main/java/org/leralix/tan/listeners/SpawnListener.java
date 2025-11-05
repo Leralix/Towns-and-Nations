@@ -23,7 +23,7 @@ public class SpawnListener implements Listener {
                 !TeleportationRegister.getTeleportationData(player).isCancelled() &&
                 ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnDamage", true)) {
 
-            ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+            ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player.getUniqueId().toString());
             TeleportationRegister.getTeleportationData(tanPlayer).setCancelled(true);
             TanChatUtils.message(player, Lang.TELEPORTATION_CANCELLED.get(player));
         }
@@ -55,7 +55,7 @@ public class SpawnListener implements Listener {
 
 
     public void cancelTeleportation(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player.getUniqueId().toString());
         TeleportationRegister.getTeleportationData(tanPlayer).setCancelled(true);
         TanChatUtils.message(player, Lang.TELEPORTATION_CANCELLED.get(player));
     }

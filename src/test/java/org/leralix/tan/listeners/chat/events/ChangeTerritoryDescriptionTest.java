@@ -35,8 +35,8 @@ class ChangeTerritoryDescriptionTest {
         MockBukkit.load(TownsAndNations.class);
 
         player = server.addPlayer();
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        townData = TownDataStorage.getInstance().newTown("town 1", tanPlayer);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player).join();
+        townData = TownDataStorage.getInstance().newTown("town 1", tanPlayer).join();
     }
 
     @AfterEach
@@ -58,7 +58,7 @@ class ChangeTerritoryDescriptionTest {
     @Test
     void nominalCaseRegion() {
 
-        RegionData regionData = RegionDataStorage.getInstance().createNewRegion("nation 1", townData);
+        RegionData regionData = RegionDataStorage.getInstance().createNewRegion("nation 1", townData).join();
         ChangeTerritoryDescription changeDescription = new ChangeTerritoryDescription(regionData, null);
         String description = "new description 2";
 

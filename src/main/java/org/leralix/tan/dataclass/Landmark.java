@@ -134,7 +134,7 @@ public class Landmark {
     }
 
     private TownData getOwner() {
-        return TownDataStorage.getInstance().get(ownerID);
+        return TownDataStorage.getInstance().getSync(ownerID);
     }
 
 
@@ -166,7 +166,7 @@ public class Landmark {
     public void deleteLandmark() {
         dispawnChest();
         NewClaimedChunkStorage.getInstance().unclaimChunk(position.getLocation().getChunk());
-        LandmarkStorage.getInstance().delete(getID());
+        LandmarkStorage.getInstance().deleteAsync(getID()).join();
 
     }
 
@@ -189,7 +189,7 @@ public class Landmark {
         this.amount = itemOnCursor.getAmount();
         this.materialName = itemOnCursor.getType().name();
         // Save this landmark to database (DatabaseStorage auto-saves on put)
-        LandmarkStorage.getInstance().put(this.ID, this);
+        LandmarkStorage.getInstance().putAsync(this.ID, this).join();
     }
 
     public Location getLocation() {

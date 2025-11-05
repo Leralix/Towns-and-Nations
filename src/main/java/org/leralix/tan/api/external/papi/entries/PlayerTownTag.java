@@ -15,7 +15,7 @@ public class PlayerTownTag extends PapiEntry {
     @Override
     public String getData(OfflinePlayer player, @NotNull String params) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId());
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player.getUniqueId());
 
         if (tanPlayer == null) {
             return PLAYER_NOT_FOUND;
@@ -23,7 +23,7 @@ public class PlayerTownTag extends PapiEntry {
 
 
         return tanPlayer.hasTown() ?
-                tanPlayer.getTown().getTownTag() :
+                tanPlayer.getTownSync().getTownTag() :
                 Lang.NO_TOWN.get(tanPlayer);
     }
 }

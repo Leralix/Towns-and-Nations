@@ -47,7 +47,7 @@ public class PlayerPropertiesMenu extends IteratorGUI {
         List<FilledLang> description = new ArrayList<>();
         List<IndividualRequirement> requirements = new ArrayList<>();
         if(tanPlayer.hasTown()){
-            TownData townData = tanPlayer.getTown();
+            TownData townData = tanPlayer.getTownSync();
 
             double costPerBlock = townData.getTaxOnCreatingProperty();
 

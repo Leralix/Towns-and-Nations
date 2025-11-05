@@ -56,7 +56,7 @@ public class UnclaimChunkTest {
 
         playerMock.teleport(new Location(world, 0, 10, 0));
 
-        TownData town = TownDataStorage.getInstance().newTown("town");
+        TownData town = TownDataStorage.getInstance().newTown("town").join();
 
         Chunk chunkToUnclaim = world.getChunkAt(0,0);
         NewClaimedChunkStorage.getInstance().claimTownChunk(chunkToUnclaim, town.getID());
@@ -73,7 +73,7 @@ public class UnclaimChunkTest {
 
         assertFalse(NewClaimedChunkStorage.getInstance().isChunkClaimed(chunkToFailToUnclaim));
 
-        TownData town = TownDataStorage.getInstance().newTown("town");
+        TownData town = TownDataStorage.getInstance().newTown("town").join();
         NewClaimedChunkStorage.getInstance().claimTownChunk(chunkToFailToUnclaim, town.getID());
 
         playerMock.teleport(new Location(world, -8, 10, -8));
@@ -93,7 +93,7 @@ public class UnclaimChunkTest {
 
         playerMock.removeAttachment(attachment);
         playerMock.teleport(new Location(world, 0, 10, 0));
-        TownData town = TownDataStorage.getInstance().newTown("town");
+        TownData town = TownDataStorage.getInstance().newTown("town").join();
         NewClaimedChunkStorage.getInstance().claimTownChunk(chunkToFailToUnclaim, town.getID());
 
         server.dispatchCommand(playerMock, "tanadmin unclaim");

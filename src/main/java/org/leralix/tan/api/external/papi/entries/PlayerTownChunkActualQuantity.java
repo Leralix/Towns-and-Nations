@@ -16,12 +16,12 @@ public class PlayerTownChunkActualQuantity extends PapiEntry {
     @Override
     public String getData(OfflinePlayer player, @NotNull String params) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId());
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player.getUniqueId());
 
         if (tanPlayer == null) {
             return PLAYER_NOT_FOUND;
         }
 
-        return tanPlayer.hasTown() ? Integer.toString(tanPlayer.getTown().getNumberOfClaimedChunk()) : Lang.NO_TOWN.get(tanPlayer);
+        return tanPlayer.hasTown() ? Integer.toString(tanPlayer.getTownSync().getNumberOfClaimedChunk()) : Lang.NO_TOWN.get(tanPlayer);
     }
 }

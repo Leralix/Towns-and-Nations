@@ -524,7 +524,7 @@ database:
     enabled: false
     require: false
     verify-server-certificate: false
-  pool-size: 10
+  pool-size: 50
   min-idle: 2
   connection-timeout: 30000
   idle-timeout: 600000

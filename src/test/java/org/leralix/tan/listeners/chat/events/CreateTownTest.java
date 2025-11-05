@@ -35,13 +35,13 @@ class CreateTownTest {
     @Test
     void nominalCase() {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
 
         CreateTown createTown = new CreateTown(10);
         createTown.execute(tanPlayer.getPlayer(), "town-A");
 
         assertTrue(tanPlayer.hasTown());
-        TownData town = tanPlayer.getTown();
+        TownData town = tanPlayer.getTown().join();
         assertEquals(1, town.getAllRanks().size());
         assertEquals(1, town.getTownDefaultRank().getNumberOfPlayer());
         assertEquals(0, town.getBalance());
@@ -51,7 +51,7 @@ class CreateTownTest {
     @Test
     void notEnoughMoney() {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
 
         CreateTown createTown = new CreateTown((int) (tanPlayer.getBalance() + 1));
         createTown.execute(tanPlayer.getPlayer(), "anotherName");
@@ -62,7 +62,7 @@ class CreateTownTest {
     @Test
     void nameTooLong() {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
 
         int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RegionNameSize");
 
@@ -75,8 +75,8 @@ class CreateTownTest {
     @Test
     void nameAlreadyUsed() {
 
-        ITanPlayer tanPlayer1 = PlayerDataStorage.getInstance().get(server.addPlayer());
-        ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().get(server.addPlayer());
+        ITanPlayer tanPlayer1 = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
+        ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
 
         String townName = "townWithDuplicateName";
 

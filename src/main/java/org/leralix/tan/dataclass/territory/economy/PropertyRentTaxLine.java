@@ -46,7 +46,7 @@ public class PropertyRentTaxLine extends ProfitLine {
     @Override
     public void addItems(Gui gui, Player player, LangType lang) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
 
         ItemStack tax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_RENT_PROPERTY_TAX.get(lang), "https://textures.minecraft.net/texture/e19997593f2c592b9fbd4f15ead1673b76f519d7ab3efa15edd19448d1a20bfc",
                 Lang.GUI_TREASURY_PROPERTY_RENT_TAX_DESC1.get(lang, String.format("%.2f", territoryData.getTaxOnRentingProperty() * 100)),

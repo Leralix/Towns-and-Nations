@@ -1,9 +1,8 @@
 package org.leralix.tan.enums;
 
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 
@@ -34,17 +33,15 @@ public class MapSettings {
         return claimAction;
     }
 
-    public TextComponent getMapTypeButton(LangType langType){
-        TextComponent claimButton = new TextComponent(claimType.getName(langType));
-        claimButton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Lang.LEFT_CLICK_TO_MODIFY.get(langType))));
-        claimButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, getNextCommand(claimAction, claimType.getNextType())));
-        return claimButton;
+    public Component getMapTypeButton(LangType langType){
+        return Component.text(claimType.getName(langType))
+                .hoverEvent(HoverEvent.showText(Component.text(Lang.LEFT_CLICK_TO_MODIFY.get(langType))))
+                .clickEvent(ClickEvent.runCommand(getNextCommand(claimAction, claimType.getNextType())));
     }
 
-    public TextComponent getClaimTypeButton(LangType langType){
-        TextComponent claimButton = new TextComponent(claimAction.getName(langType));
-        claimButton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Lang.LEFT_CLICK_TO_MODIFY.get(langType))));
-        claimButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, getNextCommand(claimAction.getNextType(), claimType)));
-        return claimButton;
+    public Component getClaimTypeButton(LangType langType){
+        return Component.text(claimAction.getName(langType))
+                .hoverEvent(HoverEvent.showText(Component.text(Lang.LEFT_CLICK_TO_MODIFY.get(langType))))
+                .clickEvent(ClickEvent.runCommand(getNextCommand(claimAction.getNextType(), claimType)));
     }
 }

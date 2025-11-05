@@ -45,7 +45,7 @@ public class AssignPlayerToRankMenu extends IteratorGUI {
     private List<GuiItem> getAvailablePlayers() {
         List<GuiItem> playersToAdd = new ArrayList<>();
         for (String otherPlayerUUID : territoryData.getPlayerIDList()) {
-            ITanPlayer otherITanPlayer = PlayerDataStorage.getInstance().get(otherPlayerUUID);
+            ITanPlayer otherITanPlayer = PlayerDataStorage.getInstance().getSync(otherPlayerUUID);
 
             if(Objects.equals(otherITanPlayer.getRankID(territoryData), rankData.getID())){
                 continue;
@@ -59,7 +59,7 @@ public class AssignPlayerToRankMenu extends IteratorGUI {
                     return;
                 }
 
-                ITanPlayer playerStat = PlayerDataStorage.getInstance().get(otherPlayerUUID);
+                ITanPlayer playerStat = PlayerDataStorage.getInstance().getSync(otherPlayerUUID);
                 territoryData.setPlayerRank(playerStat, rankData);
                 new RankManagerMenu(player, territoryData, rankData).open();
             });

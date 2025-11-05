@@ -13,6 +13,7 @@ import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public interface ITanPlayer {
 
@@ -34,7 +35,15 @@ public interface ITanPlayer {
 
     String getTownName();
 
-    TownData getTown();
+    CompletableFuture<TownData> getTown();
+
+    default TownData getTownSync() {
+        try {
+            return getTown().join();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     boolean hasTown();
 
@@ -50,7 +59,15 @@ public interface ITanPlayer {
 
     boolean hasRegion();
 
-    RegionData getRegion();
+    CompletableFuture<RegionData> getRegion();
+
+    default RegionData getRegionSync() {
+        try {
+            return getRegion().join();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     String getNationName();
 
@@ -84,9 +101,11 @@ public interface ITanPlayer {
 
     void removeWar(@NotNull CurrentAttack currentAttacks);
 
-    TownRelation getRelationWithPlayer(ITanPlayer otherPlayer);
+    CompletableFuture<TownRelation> getRelationWithPlayer(ITanPlayer otherPlayer);
 
-    TownRelation getRelationWithPlayer(Player otherPlayer);
+    CompletableFuture<TownRelation> getRelationWithPlayer(Player otherPlayer);
+
+    TownRelation getRelationWithPlayerSync(ITanPlayer otherPlayer);
 
     Integer getRegionRankID();
 
@@ -99,7 +118,15 @@ public interface ITanPlayer {
     /**
      * @return  A list of all territory a player is in, starting from the lowest level.
      */
-    List<TerritoryData> getAllTerritoriesPlayerIsIn();
+    CompletableFuture<List<TerritoryData>> getAllTerritoriesPlayerIsIn();
+
+    default List<TerritoryData> getAllTerritoriesPlayerIsInSync() {
+        try {
+            return getAllTerritoriesPlayerIsIn().join();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     OfflinePlayer getOfflinePlayer();
 
@@ -115,5 +142,5 @@ public interface ITanPlayer {
 
     void setTimeZone(TimeZoneEnum timeZone);
 
-    List<CurrentAttack> getCurrentAttacks();
+    CompletableFuture<List<CurrentAttack>> getCurrentAttacks();
 }

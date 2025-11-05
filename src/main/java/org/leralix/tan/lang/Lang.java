@@ -1189,7 +1189,7 @@ public enum Lang {
         if(player == null){
             return get(serverLang);
         }
-        return get(PlayerDataStorage.getInstance().get(player));
+        return get(PlayerDataStorage.getInstance().getSync(player));
     }
 
     public String get(ITanPlayer tanPlayer){
@@ -1216,7 +1216,7 @@ public enum Lang {
     }
 
     public String get(Player player, String... placeholders) {
-        return get(PlayerDataStorage.getInstance().get(player), placeholders);
+        return get(PlayerDataStorage.getInstance().getSync(player), placeholders);
     }
 
     public String get(ITanPlayer tanPlayer, String... placeholders) {

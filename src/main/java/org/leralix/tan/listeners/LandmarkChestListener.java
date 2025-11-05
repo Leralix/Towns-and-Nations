@@ -27,10 +27,10 @@ public class LandmarkChestListener implements Listener {
                 clickedBlock.getType() == Material.CHEST &&
                 clickedBlock.hasMetadata("LandmarkChest")) {
             event.setCancelled(true);
-            ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+            ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
             for (MetadataValue value : clickedBlock.getMetadata("LandmarkChest")) {
                 String customData = value.asString();
-                Landmark landmark = LandmarkStorage.getInstance().get(customData);
+                Landmark landmark = LandmarkStorage.getInstance().getSync(customData);
                 if (!tanPlayer.hasTown()) {
                     TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer.getLang()));
                     return;

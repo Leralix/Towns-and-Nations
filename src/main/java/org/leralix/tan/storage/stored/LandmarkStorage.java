@@ -49,7 +49,7 @@ public class LandmarkStorage extends DatabaseStorage<Landmark> {
 
     private void loadNextLandmarkID() {
         int ID = 0;
-        for (String ids: getAll().keySet()) {
+        for (String ids: getAllAsync().join().keySet()) {
             int newID =  Integer.parseInt(ids.substring(1));
             if(newID > ID)
                 ID = newID;
@@ -68,6 +68,17 @@ public class LandmarkStorage extends DatabaseStorage<Landmark> {
         instance = mockLandmarkStorage;
     }
 
+    public Landmark getSync(String id) {
+        try {
+            return get(id).join();
+        } catch (Exception e) {
+            TownsAndNations.getPlugin().getLogger().warning(
+                "Error getting landmark data synchronously: " + e.getMessage()
+            );
+            return null;
+        }
+    }
+
 
     public Landmark addLandmark(Location position){
         Vector3D vector3D = new Vector3D(position);
@@ -80,13 +91,13 @@ public class LandmarkStorage extends DatabaseStorage<Landmark> {
     }
 
     public List<Landmark> getLandmarkOf(TerritoryData territoryData){
-        return getAll().values().stream()
+        return getAllAsync().join().values().stream()
                 .filter(landmark -> landmark.isOwnedBy(territoryData))
                 .toList();
     }
 
     public void generateAllResources(){
-        for (Landmark landmark : getAll().values()) {
+        for (Landmark landmark : getAllAsync().join().values()) {
             landmark.generateResources();
         }
     }

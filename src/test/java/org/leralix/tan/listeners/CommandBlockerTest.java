@@ -23,11 +23,11 @@ class CommandBlockerTest extends BasicTest {
         Player sender = server.addPlayer("sender");
         Player target = server.addPlayer("target");
 
-        ITanPlayer tanSender = PlayerDataStorage.getInstance().get(sender);
-        TownData town1 = TownDataStorage.getInstance().newTown("town1", tanSender);
+        ITanPlayer tanSender = PlayerDataStorage.getInstance().get(sender).join();
+        TownData town1 = TownDataStorage.getInstance().newTown("town1", tanSender).join();
 
-        ITanPlayer tanTarget = PlayerDataStorage.getInstance().get(target);
-        TownData town2 = TownDataStorage.getInstance().newTown("town2", tanTarget);
+        ITanPlayer tanTarget = PlayerDataStorage.getInstance().get(target).join();
+        TownData town2 = TownDataStorage.getInstance().newTown("town2", tanTarget).join();
 
         town1.setRelation(town2, TownRelation.EMBARGO);
 

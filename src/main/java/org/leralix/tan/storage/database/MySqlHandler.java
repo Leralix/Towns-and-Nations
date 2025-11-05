@@ -57,12 +57,17 @@ public class MySqlHandler extends DatabaseHandler {
         config.addDataSourceProperty("enableQueryTimeouts", "false");
         config.setPoolName("TownsAndNations-MySql-Pool");
 
-        // Connection pool configuration
-        config.setMaximumPoolSize(plugin.getConfig().getInt("database.pool-size", 10));
-        config.setMinimumIdle(plugin.getConfig().getInt("database.min-idle", 2));
+        // PERFORMANCE FIX: Connection pool configuration optimized for high-load servers
+        // Previous default of 10 was insufficient for 100+ player servers
+        // Recommended: 30 for medium servers (50-100 players), 50+ for large servers (100+ players)
+        config.setMaximumPoolSize(plugin.getConfig().getInt("database.pool-size", 30));
+        config.setMinimumIdle(plugin.getConfig().getInt("database.min-idle", 5));
         config.setConnectionTimeout(plugin.getConfig().getLong("database.connection-timeout", 30000L));
         config.setIdleTimeout(plugin.getConfig().getLong("database.idle-timeout", 600000L));
         config.setMaxLifetime(plugin.getConfig().getLong("database.max-lifetime", 1800000L));
+
+        // Additional HikariCP performance optimizations
+        config.setLeakDetectionThreshold(plugin.getConfig().getLong("database.leak-detection-threshold", 60000L));
 
         this.dataSource = new HikariDataSource(config);
 

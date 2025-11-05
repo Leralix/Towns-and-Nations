@@ -1,8 +1,11 @@
 package org.leralix.tan.dataclass.chunk;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.title.Title;
+import java.time.Duration;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -38,7 +41,7 @@ public class RegionClaimedChunk extends TerritoryChunk {
 
     @Override
     protected boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
 
         RegionData ownerRegion = getRegion();
 
@@ -58,11 +61,11 @@ public class RegionClaimedChunk extends TerritoryChunk {
     }
 
     public RegionData getRegion() {
-        return RegionDataStorage.getInstance().get(getOwnerID());
+        return RegionDataStorage.getInstance().getSync(getOwnerID());
     }
 
     public void unclaimChunk(Player player) {
-        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        ITanPlayer playerStat = PlayerDataStorage.getInstance().getSync(player.getUniqueId().toString());
         if (!playerStat.hasTown()) {
             TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(player));
             return;
@@ -73,7 +76,7 @@ public class RegionClaimedChunk extends TerritoryChunk {
             return;
         }
 
-        RegionData regionData = playerStat.getRegion();
+        RegionData regionData = playerStat.getRegionSync();
 
         if (!regionData.equals(getRegion())) {
             TanChatUtils.message(player, Lang.UNCLAIMED_CHUNK_NOT_RIGHT_REGION.get(player, getRegion().getName()));
@@ -100,15 +103,25 @@ public class RegionClaimedChunk extends TerritoryChunk {
     public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
         RegionData regionData = getRegion();
 
-        TextComponent name = displayTerritoryColor ? regionData.getCustomColoredName() : new TextComponent(regionData.getBaseColoredName());
-        String message = Lang.PLAYER_ENTER_TERRITORY_CHUNK.get(player, name.toLegacyText());
-        player.sendTitle("", message, 5, 40, 20);
+        // BUGFIX: Convert Adventure Component to legacy text properly
+        String coloredName = displayTerritoryColor
+            ? LegacyComponentSerializer.legacySection().serialize(regionData.getCustomColoredName())
+            : regionData.getBaseColoredName();
 
-        TextComponent textComponent = new TextComponent(regionData.getDescription());
-        textComponent.setColor(ChatColor.GRAY);
-        textComponent.setItalic(true);
+        String message = Lang.PLAYER_ENTER_TERRITORY_CHUNK.get(player, coloredName);
 
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, textComponent);
+        // Use Adventure API for title
+        player.showTitle(Title.title(
+            Component.empty(),
+            LegacyComponentSerializer.legacySection().deserialize(message),
+            Title.Times.times(Duration.ofMillis(100), Duration.ofMillis(800), Duration.ofMillis(400))
+        ));
+
+        Component actionBarComponent = Component.text(regionData.getDescription())
+                .color(NamedTextColor.GRAY)
+                .decorate(TextDecoration.ITALIC);
+
+        player.sendActionBar(actionBarComponent);
     }
 
     @Override

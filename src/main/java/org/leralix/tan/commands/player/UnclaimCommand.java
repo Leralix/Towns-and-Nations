@@ -6,6 +6,7 @@ import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.enums.MapSettings;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -38,7 +39,8 @@ public class UnclaimCommand extends PlayerSubCommand {
     @Override
     public void perform(Player player, String[] args){
 
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        LangType langType = tanPlayer.getLang();
         if (!(args.length == 1 || args.length == 4)) {
             TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()) );

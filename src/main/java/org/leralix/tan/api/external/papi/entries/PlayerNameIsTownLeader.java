@@ -17,7 +17,7 @@ public class PlayerNameIsTownLeader extends PapiEntry {
     @Override
     public String getData(OfflinePlayer player, @NotNull String params) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId());
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player.getUniqueId());
 
         if (tanPlayer == null) {
             return PLAYER_NOT_FOUND;
@@ -28,7 +28,7 @@ public class PlayerNameIsTownLeader extends PapiEntry {
         String playerName = values[0];
         if(playerName == null) return Lang.INVALID_PLAYER_NAME.get(tanPlayer);
         OfflinePlayer playerSelected = Bukkit.getOfflinePlayer(playerName);
-        ITanPlayer tanPlayer1 = PlayerDataStorage.getInstance().get(playerSelected);
+        ITanPlayer tanPlayer1 = PlayerDataStorage.getInstance().getSync(playerSelected);
         if(tanPlayer1 == null) return Lang.INVALID_NAME.get(tanPlayer);
         return tanPlayer1.isTownOverlord() ? TRUE: FALSE;
     }

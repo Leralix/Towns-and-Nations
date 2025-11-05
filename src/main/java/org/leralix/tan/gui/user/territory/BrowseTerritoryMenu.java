@@ -62,9 +62,9 @@ public class BrowseTerritoryMenu extends IteratorGUI {
         List<TerritoryData> territoryList = new ArrayList<>();
 
         if(scope == BrowseScope.ALL || scope == BrowseScope.TOWNS)
-            territoryList.addAll(TownDataStorage.getInstance().getAll().values());
+            territoryList.addAll(TownDataStorage.getInstance().getAllSync().values());
         if(scope == BrowseScope.ALL || scope == BrowseScope.REGIONS)
-            territoryList.addAll(RegionDataStorage.getInstance().getAll().values());
+            territoryList.addAll(RegionDataStorage.getInstance().getAllSync().values());
 
         ArrayList<GuiItem> townGuiItems = new ArrayList<>();
 

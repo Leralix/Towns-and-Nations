@@ -2,7 +2,6 @@ package org.leralix.tan.storage;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
@@ -52,7 +51,7 @@ public class LocalChatStorage {
     }
 
     public static void broadcastInScope(Player player, String message) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
 
         if (!tanPlayer.hasTown()) {
             return;
@@ -62,7 +61,7 @@ public class LocalChatStorage {
         boolean sendLogsToConsole = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("sendPrivateMessagesToConsole", false);
 
         if (scope == ChatScope.CITY) {
-            TownData townData = tanPlayer.getTown();
+            TownData townData = tanPlayer.getTownSync();
 
             FilledLang messageFormat = Lang.CHAT_SCOPE_TOWN_MESSAGE.get(townData.getName(), player.getName(), message);
 
@@ -77,7 +76,7 @@ public class LocalChatStorage {
                 return;
             }
 
-            RegionData regionData = tanPlayer.getRegion();
+            RegionData regionData = tanPlayer.getRegionSync();
 
             FilledLang messageFormat = Lang.CHAT_SCOPE_REGION_MESSAGE.get(regionData.getName(), player.getName(), message);
 
@@ -85,7 +84,7 @@ public class LocalChatStorage {
             if (sendLogsToConsole)
                 TownsAndNations.getPlugin().getLogger().info(messageFormat.getDefault());
         } else if (scope == ChatScope.ALLIANCE) {
-            TownData playerTown = tanPlayer.getTown();
+            TownData playerTown = tanPlayer.getTownSync();
 
             FilledLang messageFormat = Lang.CHAT_SCOPE_TOWN_MESSAGE.get(playerTown.getName(), player.getName(), message);
 

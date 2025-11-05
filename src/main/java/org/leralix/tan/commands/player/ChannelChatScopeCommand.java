@@ -1,5 +1,7 @@
 package org.leralix.tan.commands.player;
 
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.data.SoundEnum;
@@ -63,7 +65,8 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
     @Override
     public void perform(Player player, String[] args) {
 
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        LangType langType = tanPlayer.getLang();
         if (args.length == 1) {
             TanChatUtils.message(player, Lang.NOT_ENOUGH_ARGS_ERROR.get(langType), SoundEnum.NOT_ALLOWED);
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
@@ -78,9 +81,9 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
     }
 
     private static void registerPlayerToScope(Player player, String channelName) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         LangType langType = tanPlayer.getLang();
-        TownData town = tanPlayer.getTown();
+        TownData town = tanPlayer.getTownSync();
         if (town == null) {
             TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
             return;
@@ -130,20 +133,22 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
     }
 
     private void sendSingleMessage(Player player, String channelName, String[] words) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         LangType langType = tanPlayer.getLang();
         String message = String.join(" ", Arrays.copyOfRange(words, 2, words.length));
 
         switch (channelName.toLowerCase()) {
             case "global":
-                // Workaround
+                // Send message to global chat by broadcasting it with Adventure API
                 if (LocalChatStorage.isPlayerInChatScope(player.getUniqueId().toString())) {
                     ChatScope prevScope = LocalChatStorage.getPlayerChatScope(player);
                     LocalChatStorage.removePlayerChatScope(player);
-                    player.chat(message);
+                    Component formattedMessage = Component.text(String.format("<%s> %s", player.getName(), message));
+                    Bukkit.broadcast(formattedMessage);
                     LocalChatStorage.setPlayerChatScope(player, prevScope);
                 } else {
-                    player.chat(message);
+                    Component formattedMessage = Component.text(String.format("<%s> %s", player.getName(), message));
+                    Bukkit.broadcast(formattedMessage);
                 }
                 return;
             case "alliance":
@@ -152,8 +157,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
                     return;
                 }
 
-                TownData playerTown = tanPlayer.getTown();
-
+                TownData playerTown = tanPlayer.getTownSync();
                 playerTown.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE)
                         .forEach(territoryID -> Objects.requireNonNull(TerritoryUtil.getTerritory(territoryID))
                                 .broadCastMessage(Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.get(playerTown.getName(), player.getName(), message))
@@ -165,7 +169,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
                     return;
                 }
 
-                RegionData regionData = tanPlayer.getRegion();
+                RegionData regionData = tanPlayer.getRegionSync();
                 if (regionData != null)
                     regionData.broadCastMessage(Lang.CHAT_SCOPE_REGION_MESSAGE.get(regionData.getName(), player.getName(), message));
                 return;
@@ -175,7 +179,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
                     return;
                 }
 
-                TownData townData = tanPlayer.getTown();
+                TownData townData = tanPlayer.getTownSync();
                 if (townData != null)
                     townData.broadCastMessage(Lang.CHAT_SCOPE_TOWN_MESSAGE.get(townData.getName(), player.getName(), message));
                 return;

@@ -34,7 +34,7 @@ public class LandmarkSetStoredLimitServer extends SubCommand {
     @Override
     public List<String> getTabCompleteSuggestions(CommandSender commandSender, String s, String[] args) {
         if (args.length == 2) {
-            return LandmarkStorage.getInstance().getAll().values().stream().map(Landmark::getID).toList();
+            return LandmarkStorage.getInstance().getAllSync().values().stream().map(Landmark::getID).toList();
         }
         return Collections.emptyList();
     }
@@ -44,19 +44,20 @@ public class LandmarkSetStoredLimitServer extends SubCommand {
         if (args.length < 3) {
             TanChatUtils.message(commandSender, Lang.INVALID_ARGUMENTS);
         } else {
-            Landmark landmark = LandmarkStorage.getInstance().get(args[1]);
-            if(landmark == null){
-                TanChatUtils.message(commandSender, Lang.LANDMARK_NOT_FOUND);
-                return;
-            }
-            String value = args[2];
-            if(value == null){
-                TanChatUtils.message(commandSender, Lang.INVALID_ARGUMENTS);
-                return;
-            }
+            LandmarkStorage.getInstance().get(args[1]).thenAccept(landmark -> {
+                if(landmark == null){
+                    TanChatUtils.message(commandSender, Lang.LANDMARK_NOT_FOUND);
+                    return;
+                }
+                String value = args[2];
+                if(value == null){
+                    TanChatUtils.message(commandSender, Lang.INVALID_ARGUMENTS);
+                    return;
+                }
 
-            landmark.setStoredLimit(Integer.parseInt(value));
-            TanChatUtils.message(commandSender, Lang.LANDMARK_STORED_UPDATED.get(landmark.getName(), landmark.getID(), value));
+                landmark.setStoredLimit(Integer.parseInt(value));
+                TanChatUtils.message(commandSender, Lang.LANDMARK_STORED_UPDATED.get(landmark.getName(), landmark.getID(), value));
+            });
         }
     }
 }

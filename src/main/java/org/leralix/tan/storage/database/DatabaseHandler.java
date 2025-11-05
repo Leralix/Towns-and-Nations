@@ -1,6 +1,5 @@
 package org.leralix.tan.storage.database;
 
-import org.bukkit.Bukkit;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.newhistory.TransactionHistory;
 import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;

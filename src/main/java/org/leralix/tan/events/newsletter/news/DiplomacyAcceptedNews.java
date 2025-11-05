@@ -2,10 +2,10 @@ package org.leralix.tan.events.newsletter.news;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
@@ -22,8 +22,6 @@ import org.tan.api.interfaces.TanTerritory;
 
 import java.util.UUID;
 import java.util.function.Consumer;
-
-import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
 
 
 public class DiplomacyAcceptedNews extends Newsletter {
@@ -78,14 +76,15 @@ public class DiplomacyAcceptedNews extends Newsletter {
         if(receivingTerritory == null)
             return;
 
-        LangType lang = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType lang = PlayerDataStorage.getInstance().getSync(player).getLang();
 
+        // BUGFIX: Convert Adventure Component to legacy text properly
         if(isRelationWorse){
             TanChatUtils.message(player,
                     Lang.BROADCAST_RELATION_WORSEN.get(
                             player,
-                            proposingTerritory.getCustomColoredName().toLegacyText(),
-                            receivingTerritory.getCustomColoredName().toLegacyText(),
+                            LegacyComponentSerializer.legacySection().serialize(proposingTerritory.getCustomColoredName()),
+                            LegacyComponentSerializer.legacySection().serialize(receivingTerritory.getCustomColoredName()),
                             wantedRelation.getColoredName(lang)),
                     SoundEnum.BAD);
         }
@@ -93,8 +92,8 @@ public class DiplomacyAcceptedNews extends Newsletter {
             TanChatUtils.message(player,
                     Lang.BROADCAST_RELATION_IMPROVE.get(
                             player,
-                            proposingTerritory.getCustomColoredName().toLegacyText(),
-                            receivingTerritory.getCustomColoredName().toLegacyText(),
+                            LegacyComponentSerializer.legacySection().serialize(proposingTerritory.getCustomColoredName()),
+                            LegacyComponentSerializer.legacySection().serialize(receivingTerritory.getCustomColoredName()),
                             wantedRelation.getColoredName(lang)),
                     SoundEnum.GOOD);
        }
@@ -110,9 +109,13 @@ public class DiplomacyAcceptedNews extends Newsletter {
         if(receivingTerritory == null)
             return null;
 
+        // BUGFIX: Convert Adventure Component to legacy text properly
         ItemStack itemStack = HeadUtils.makeSkullURL(Lang.DIPLOMACY_ACCEPT_NEWSLETTER_TITLE.get(lang), "http://textures.minecraft.net/texture/b62c08805bd9c957da3450554a09e994042f54695db855c1c2cb47ef442e1bf6",
                 Lang.NEWSLETTER_DATE.get(lang, TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
-                Lang.BROADCAST_RELATION_WORSEN.get(lang, proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName(lang)),
+                Lang.BROADCAST_RELATION_WORSEN.get(lang,
+                    LegacyComponentSerializer.legacySection().serialize(proposingTerritory.getCustomColoredName()),
+                    LegacyComponentSerializer.legacySection().serialize(receivingTerritory.getCustomColoredName()),
+                    wantedRelation.getColoredName(lang)),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
         return ItemBuilder.from(itemStack).asGuiItem(e -> {
@@ -137,7 +140,7 @@ public class DiplomacyAcceptedNews extends Newsletter {
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         if(receivingTerritory == null)
             return false;
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         return receivingTerritory.isPlayerIn(tanPlayer) || proposingTerritory.isPlayerIn(tanPlayer);
     }
 

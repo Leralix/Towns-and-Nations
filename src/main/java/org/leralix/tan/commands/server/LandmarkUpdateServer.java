@@ -34,7 +34,7 @@ public class LandmarkUpdateServer extends SubCommand {
     @Override
     public List<String> getTabCompleteSuggestions(CommandSender commandSender, String s, String[] args) {
         if (args.length == 2) {
-            return LandmarkStorage.getInstance().getAll().values().stream().map(Landmark::getID).toList();
+            return LandmarkStorage.getInstance().getAllSync().values().stream().map(Landmark::getID).toList();
         }
         return Collections.emptyList();
     }
@@ -46,9 +46,14 @@ public class LandmarkUpdateServer extends SubCommand {
             instance.generateAllResources();
             TanChatUtils.message(commandSender, Lang.ALL_LANDMARK_UPDATED);
         } else {
-            Landmark landmark = instance.get(args[1]);
-            landmark.generateResources();
-            TanChatUtils.message(commandSender, Lang.LANDMARK_UPDATED.get(landmark.getName(), landmark.getID()));
+            instance.get(args[1]).thenAccept(landmark -> {
+                if (landmark == null) {
+                    TanChatUtils.message(commandSender, Lang.LANDMARK_NOT_FOUND); // Assuming a new Lang entry for landmark not found
+                    return;
+                }
+                landmark.generateResources();
+                TanChatUtils.message(commandSender, Lang.LANDMARK_UPDATED.get(landmark.getName(), landmark.getID()));
+            });
         }
     }
 }

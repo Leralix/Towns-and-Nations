@@ -7,7 +7,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.events.newsletter.NewsletterType;
@@ -50,7 +49,7 @@ public class PlayerJoinRequestNews extends Newsletter {
     }
 
     private TownData getTownData(){
-        return TownDataStorage.getInstance().get(townID);
+        return TownDataStorage.getInstance().getSync(townID);
     }
 
     public String getPlayerID() {
@@ -63,10 +62,10 @@ public class PlayerJoinRequestNews extends Newsletter {
 
     @Override
     public void broadcast(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(playerID);
         if(tanPlayer == null)
             return;
-        TownData townData = TownDataStorage.getInstance().get(townID);
+        TownData townData = TownDataStorage.getInstance().getSync(townID);
         if(townData == null)
             return;
         TanChatUtils.message(player,
@@ -109,7 +108,7 @@ public class PlayerJoinRequestNews extends Newsletter {
 
         ItemStack itemStack = HeadUtils.getPlayerHead(
                 Lang.NEWSLETTER_PLAYER_APPLICATION.get(lang, offlinePlayer.getName()), offlinePlayer,
-                Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(lang, offlinePlayer.getName(), TownDataStorage.getInstance().get(townID).getBaseColoredName()),
+                Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(lang, offlinePlayer.getName(), TownDataStorage.getInstance().getSync(townID).getBaseColoredName()),
                 Lang.NEWSLETTER_PLAYER_APPLICATION_DESC2.get(lang),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 

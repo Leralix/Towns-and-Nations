@@ -59,7 +59,7 @@ public enum LangType {
     }
 
     public static LangType of(Player player) {
-        return PlayerDataStorage.getInstance().get(player).getLang();
+        return PlayerDataStorage.getInstance().getSync(player).getLang();
     }
 
     public String getCode() {

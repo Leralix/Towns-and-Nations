@@ -42,13 +42,13 @@ public class AddPlayerForChunkPermission extends IteratorGUI {
     }
 
     private List<GuiItem> getPeopleToAuthorized() {
-        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        ITanPlayer playerStat = PlayerDataStorage.getInstance().getSync(player.getUniqueId().toString());
 
         List<GuiItem> guiItems = new ArrayList<>();
 
         for (Player playerToAdd : Bukkit.getOnlinePlayers()) {
 
-            ITanPlayer playerToAddData = PlayerDataStorage.getInstance().get(playerToAdd);
+            ITanPlayer playerToAddData = PlayerDataStorage.getInstance().getSync(playerToAdd);
             if (territoryData.getPermission(type).isAllowed(territoryData, playerToAddData))
                 continue;
 

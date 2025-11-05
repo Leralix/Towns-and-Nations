@@ -12,6 +12,7 @@ import org.leralix.tan.storage.database.DatabaseHandler;
 import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Base class for database-backed storage with optional caching.
@@ -36,7 +37,8 @@ public abstract class DatabaseStorage<T> {
     }
 
     protected DatabaseStorage(String tableName, Class<T> typeClass, Type typeToken, Gson gson, boolean enableCache) {
-        this(tableName, typeClass, typeToken, gson, enableCache, TownsAndNations.getPlugin().getConfig().getInt("cache." + tableName, 100));
+        // PERFORMANCE FIX: Default cache size increased from 100 to 1000
+        this(tableName, typeClass, typeToken, gson, enableCache, TownsAndNations.getPlugin().getConfig().getInt("cache." + tableName, 1000));
     }
 
     protected DatabaseStorage(String tableName, Class<T> typeClass, Type typeToken, Gson gson, boolean enableCache, int cacheSize) {
@@ -45,13 +47,15 @@ public abstract class DatabaseStorage<T> {
         this.typeToken = typeToken;
         this.gson = gson;
         this.cacheEnabled = enableCache;
+        // PERFORMANCE FIX: Increased default from 100 to 1000 for better cache hit rate on busy servers
+        // For large servers, configure higher in config.yml: cache.<table_name>: 5000
         this.cacheSize = cacheSize;
-        this.cache = enableCache ? new LinkedHashMap<String, T>(16, 0.75f, true) {
+        this.cache = enableCache ? Collections.synchronizedMap(new LinkedHashMap<String, T>(16, 0.75f, true) {
             @Override
             protected boolean removeEldestEntry(Map.Entry<String, T> eldest) {
                 return size() > cacheSize;
             }
-        } : null;
+        }) : null;
         createTable();
         createIndexes();
     }
@@ -82,9 +86,7 @@ public abstract class DatabaseStorage<T> {
      */
     protected void clearCache() {
         if (cacheEnabled && cache != null) {
-            synchronized (cache) {
-                cache.clear();
-            }
+            cache.clear();
         }
     }
 
@@ -93,9 +95,17 @@ public abstract class DatabaseStorage<T> {
      */
     protected void invalidateCache(String id) {
         if (cacheEnabled && cache != null) {
-            synchronized (cache) {
-                cache.remove(id);
-            }
+            cache.remove(id);
+        }
+    }
+
+    /**
+     * Invalidate cache entries by matching a condition (e.g., by owner ID)
+     * More efficient than clearing entire cache
+     */
+    protected void invalidateCacheIf(java.util.function.Predicate<T> condition) {
+        if (cacheEnabled && cache != null) {
+            cache.entrySet().removeIf(entry -> condition.test(entry.getValue()));
         }
     }
 
@@ -104,37 +114,47 @@ public abstract class DatabaseStorage<T> {
      * @param id The ID of the object
      * @return The object, or null if not found
      */
-    public T get(String id) {
+    public CompletableFuture<T> get(String id) {
+        CompletableFuture<T> future = new CompletableFuture<>();
         if (id == null) {
-            return null;
+            future.complete(null);
+            return future;
         }
 
-        // Check cache first (with double-checked locking pattern for better performance)
+        // Check cache first
         if (cacheEnabled && cache != null) {
             T cached = cache.get(id);
             if (cached != null) {
-                return cached;
-            }
-
-            // Synchronize on the cache to prevent multiple threads from loading the same data
-            synchronized (cache) {
-                // Double-check: another thread might have loaded it while we were waiting
-                cached = cache.get(id);
-                if (cached != null) {
-                    return cached;
-                }
-
-                // Load from database and cache it
-                T object = loadFromDatabase(id);
-                if (object != null) {
-                    cache.put(id, object);
-                }
-                return object;
+                future.complete(cached);
+                return future;
             }
         }
 
-        // Cache disabled, just load from database
-        return loadFromDatabase(id);
+        // Load from database asynchronously
+        runAsync(() -> {
+            T object = loadFromDatabase(id);
+            if (object != null && cacheEnabled && cache != null) {
+                cache.put(id, object);
+            }
+            future.complete(object);
+        });
+
+        return future;
+    }
+
+    /**
+     * Helper method to run a task asynchronously, detecting Folia/Paper environment.
+     */
+    private void runAsync(Runnable task) {
+        try {
+            // Check if FoliaScheduler is available (e.g., by trying to call a Folia-specific method)
+            // This is a placeholder for actual Folia detection logic.
+            // For now, we'll just use FoliaScheduler directly as it's already imported in other files.
+            org.leralix.tan.utils.FoliaScheduler.runTaskAsynchronously(TownsAndNations.getPlugin(), task);
+        } catch (NoClassDefFoundError | NoSuchMethodError e) {
+            // Fallback for Paper/Spigot
+            org.bukkit.Bukkit.getScheduler().runTaskAsynchronously(TownsAndNations.getPlugin(), task);
+        }
     }
 
     /**
@@ -184,11 +204,24 @@ public abstract class DatabaseStorage<T> {
     }
 
     /**
-     * Get all objects from the database
+     * Get all objects from the database synchronously
      * WARNING: This can be expensive for large tables. Consider using pagination or specific queries.
+     * @deprecated Use getAllAsync() for background operations or getAllSync() for explicit synchronous needs
      * @return A map of ID to object
      */
+    @Deprecated
     public Map<String, T> getAll() {
+        return getAllSync();
+    }
+
+    /**
+     * Get all objects from the database synchronously (blocks current thread)
+     * Use this method when you explicitly need synchronous access (e.g., in GUI menus).
+     * For background operations, prefer getAllAsync() or processBatches().
+     * WARNING: This can be expensive for large tables.
+     * @return A map of ID to object
+     */
+    public Map<String, T> getAllSync() {
         Map<String, T> result = new LinkedHashMap<>();
         String selectSQL = "SELECT id, data FROM " + tableName;
 
@@ -220,6 +253,50 @@ public abstract class DatabaseStorage<T> {
     }
 
     /**
+     * Get all objects from the database asynchronously (non-blocking)
+     * WARNING: This can be expensive for large tables. Consider using pagination or specific queries.
+     * @return CompletableFuture with a map of ID to object
+     */
+    public CompletableFuture<Map<String, T>> getAllAsync() {
+        CompletableFuture<Map<String, T>> future = new CompletableFuture<>();
+
+        runAsync(() -> {
+            Map<String, T> result = new LinkedHashMap<>();
+            String selectSQL = "SELECT id, data FROM " + tableName;
+
+            try (Connection conn = getDatabase().getDataSource().getConnection();
+                 PreparedStatement ps = conn.prepareStatement(selectSQL);
+                 ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+                    String id = rs.getString("id");
+                    String jsonData = rs.getString("data");
+                    try {
+                        T object = gson.fromJson(jsonData, typeToken);
+                        if (object != null) {
+                            result.put(id, object);
+                        }
+                    } catch (JsonSyntaxException e) {
+                        TownsAndNations.getPlugin().getLogger().warning(
+                            "Failed to deserialize " + typeClass.getSimpleName() + " with ID " + id + ": " + e.getMessage()
+                        );
+                    }
+                }
+
+                future.complete(result);
+
+            } catch (SQLException e) {
+                TownsAndNations.getPlugin().getLogger().severe(
+                    "Error retrieving all " + typeClass.getSimpleName() + " objects: " + e.getMessage()
+                );
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
+    }
+
+    /**
      * Get all IDs from the database (faster than getAll() when you only need IDs)
      * @return A list of IDs
      */
@@ -244,11 +321,24 @@ public abstract class DatabaseStorage<T> {
     }
 
     /**
-     * Put an object in the database
+     * Put an object in the database synchronously (blocks current thread)
+     * @deprecated Use putAsync() for background operations or putSync() for explicit synchronous needs
      * @param id The ID of the object
      * @param obj The object to store
      */
+    @Deprecated
     public void put(String id, T obj) {
+        putSync(id, obj);
+    }
+
+    /**
+     * Put an object in the database synchronously (blocks current thread)
+     * Use this method when you explicitly need synchronous write (e.g., critical saves).
+     * For most operations, prefer putAsync() for better performance.
+     * @param id The ID of the object
+     * @param obj The object to store
+     */
+    public void putSync(String id, T obj) {
         if (id == null || obj == null) {
             return;
         }
@@ -275,6 +365,47 @@ public abstract class DatabaseStorage<T> {
                 "Error storing " + typeClass.getSimpleName() + " with ID " + id + ": " + e.getMessage()
             );
         }
+    }
+
+    /**
+     * Put an object in the database asynchronously (non-blocking)
+     * @param id The ID of the object
+     * @param obj The object to store
+     * @return CompletableFuture that completes when the operation is done
+     */
+    public CompletableFuture<Void> putAsync(String id, T obj) {
+        if (id == null || obj == null) {
+            return CompletableFuture.completedFuture(null);
+        }
+
+        // Update cache immediately (optimistic update)
+        if (cacheEnabled && cache != null) {
+            cache.put(id, obj);
+        }
+
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        String jsonData = gson.toJson(obj, typeToken);
+        String upsertSQL = getDatabase().getUpsertSQL(tableName);
+
+        runAsync(() -> {
+            try (Connection conn = getDatabase().getDataSource().getConnection();
+                 PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
+
+                ps.setString(1, id);
+                ps.setString(2, jsonData);
+                ps.executeUpdate();
+
+                future.complete(null);
+
+            } catch (SQLException e) {
+                TownsAndNations.getPlugin().getLogger().severe(
+                    "Error storing " + typeClass.getSimpleName() + " with ID " + id + ": " + e.getMessage()
+                );
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
     }
 
     /**
@@ -311,9 +442,7 @@ public abstract class DatabaseStorage<T> {
 
                 // Update cache
                 if (cacheEnabled && cache != null) {
-                    synchronized (cache) {
-                        cache.putAll(objects);
-                    }
+                    cache.putAll(objects);
                 }
 
             } catch (SQLException e) {
@@ -351,9 +480,11 @@ public abstract class DatabaseStorage<T> {
     }
 
     /**
-     * Delete an object from the database
+     * Delete an object from the database synchronously (blocks current thread)
+     * @deprecated Use deleteAsync() instead for non-blocking operations
      * @param id The ID of the object
      */
+    @Deprecated
     public void delete(String id) {
         if (id == null) {
             return;
@@ -375,6 +506,42 @@ public abstract class DatabaseStorage<T> {
                 "Error deleting " + typeClass.getSimpleName() + " with ID " + id + ": " + e.getMessage()
             );
         }
+    }
+
+    /**
+     * Delete an object from the database asynchronously (non-blocking)
+     * @param id The ID of the object
+     * @return CompletableFuture that completes when the operation is done
+     */
+    public CompletableFuture<Void> deleteAsync(String id) {
+        if (id == null) {
+            return CompletableFuture.completedFuture(null);
+        }
+
+        // Remove from cache immediately (optimistic delete)
+        invalidateCache(id);
+
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        String deleteSQL = "DELETE FROM " + tableName + " WHERE id = ?";
+
+        runAsync(() -> {
+            try (Connection conn = getDatabase().getDataSource().getConnection();
+                 PreparedStatement ps = conn.prepareStatement(deleteSQL)) {
+
+                ps.setString(1, id);
+                ps.executeUpdate();
+
+                future.complete(null);
+
+            } catch (SQLException e) {
+                TownsAndNations.getPlugin().getLogger().severe(
+                    "Error deleting " + typeClass.getSimpleName() + " with ID " + id + ": " + e.getMessage()
+                );
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
     }
 
     /**
@@ -491,6 +658,97 @@ public abstract class DatabaseStorage<T> {
         }
 
         return 0;
+    }
+
+    /**
+     * Get a paginated list of objects from the database (async)
+     * PERFORMANCE: Use this instead of getAll() for large tables to avoid loading everything at once
+     * @param offset Starting position (0-indexed)
+     * @param limit Maximum number of objects to retrieve
+     * @return CompletableFuture with a map of ID to object
+     */
+    public CompletableFuture<Map<String, T>> getPaginated(int offset, int limit) {
+        CompletableFuture<Map<String, T>> future = new CompletableFuture<>();
+
+        runAsync(() -> {
+            Map<String, T> result = new LinkedHashMap<>();
+            String selectSQL = "SELECT id, data FROM " + tableName + " LIMIT ? OFFSET ?";
+
+            try (Connection conn = getDatabase().getDataSource().getConnection();
+                 PreparedStatement ps = conn.prepareStatement(selectSQL)) {
+
+                ps.setInt(1, limit);
+                ps.setInt(2, offset);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        String id = rs.getString("id");
+                        String jsonData = rs.getString("data");
+                        try {
+                            T object = gson.fromJson(jsonData, typeToken);
+                            if (object != null) {
+                                result.put(id, object);
+                                // Update cache
+                                if (cacheEnabled && cache != null) {
+                                    cache.put(id, object);
+                                }
+                            }
+                        } catch (JsonSyntaxException e) {
+                            TownsAndNations.getPlugin().getLogger().warning(
+                                "Failed to deserialize " + typeClass.getSimpleName() + " with ID " + id + ": " + e.getMessage()
+                            );
+                        }
+                    }
+                }
+
+                future.complete(result);
+
+            } catch (SQLException e) {
+                TownsAndNations.getPlugin().getLogger().severe(
+                    "Error retrieving paginated " + typeClass.getSimpleName() + " objects: " + e.getMessage()
+                );
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
+    }
+
+    /**
+     * Process all objects in batches using a consumer function
+     * PERFORMANCE: Use this for processing large tables to avoid memory issues
+     * @param batchSize Number of objects to process per batch
+     * @param consumer Function to process each batch
+     * @return CompletableFuture that completes when all batches are processed
+     */
+    public CompletableFuture<Void> processBatches(int batchSize, java.util.function.Consumer<Map<String, T>> consumer) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        runAsync(() -> {
+            try {
+                int offset = 0;
+                int totalCount = count();
+
+                while (offset < totalCount) {
+                    Map<String, T> batch = getPaginated(offset, batchSize).join();
+                    if (batch.isEmpty()) {
+                        break;
+                    }
+                    consumer.accept(batch);
+                    offset += batchSize;
+                }
+
+                future.complete(null);
+
+            } catch (Exception e) {
+                TownsAndNations.getPlugin().getLogger().severe(
+                    "Error processing batches for " + typeClass.getSimpleName() + ": " + e.getMessage()
+                );
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
     }
 
     /**

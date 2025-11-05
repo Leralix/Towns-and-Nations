@@ -71,7 +71,7 @@ public class NewsletterStorage {
     public List<GuiItem> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onClick) {
         List<GuiItem> newsletters = new ArrayList<>();
 
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
 
         for (Newsletter newsletter : getNewsletters()) {
 

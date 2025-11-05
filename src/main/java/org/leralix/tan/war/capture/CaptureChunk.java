@@ -1,7 +1,6 @@
 package org.leralix.tan.war.capture;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -67,7 +66,7 @@ public class CaptureChunk {
             if (player == null || !player.isOnline() || player.getPlayer() == null) {
                 continue;
             }
-            player.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
+            player.getPlayer().sendActionBar(Component.text(message));
         }
     }
 

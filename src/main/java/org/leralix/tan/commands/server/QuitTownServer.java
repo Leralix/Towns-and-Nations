@@ -3,8 +3,6 @@ package org.leralix.tan.commands.server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -53,16 +51,18 @@ class QuitTownServer extends SubCommand {
             TanChatUtils.message(commandSender, Lang.PLAYER_NOT_FOUND);
             return;
         }
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(p);
-        TownData townData = tanPlayer.getTown();
-        if(townData == null){
-            TanChatUtils.message(commandSender, Lang.PLAYER_NO_TOWN);
-            return;
-        }
-        if(townData.isLeader(tanPlayer)){
-            TanChatUtils.message(commandSender, Lang.LEADER_CANNOT_QUIT_TOWN);
-            return;
-        }
-        townData.removePlayer(tanPlayer);
+        PlayerDataStorage.getInstance().get(p).thenAccept(tanPlayer -> {
+            tanPlayer.getTown().thenAccept(townData -> {
+                if(townData == null){
+                    TanChatUtils.message(commandSender, Lang.PLAYER_NO_TOWN);
+                    return;
+                }
+                if(townData.isLeader(tanPlayer)){
+                    TanChatUtils.message(commandSender, Lang.LEADER_CANNOT_QUIT_TOWN);
+                    return;
+                }
+                townData.removePlayer(tanPlayer);
+            });
+        });
     }
 }

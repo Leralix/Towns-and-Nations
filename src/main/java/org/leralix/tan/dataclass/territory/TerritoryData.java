@@ -3,8 +3,9 @@ package org.leralix.tan.dataclass.territory;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -70,6 +71,7 @@ import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public abstract class TerritoryData {
@@ -160,9 +162,9 @@ public abstract class TerritoryData {
 
     public abstract String getBaseColoredName();
 
-    public TextComponent getCustomColoredName() {
-        TextComponent coloredName = new TextComponent(getName());
-        coloredName.setColor(getChunkColor());
+    public Component getCustomColoredName() {
+        Component coloredName = Component.text(getName());
+        coloredName = coloredName.color(getChunkColor());
         return coloredName;
     }
 
@@ -220,9 +222,20 @@ public abstract class TerritoryData {
         return getPlayerIDList().contains(playerID);
     }
 
-    public Collection<String> getOrderedPlayerIDList() {
+    /**
+     * @deprecated Use getOrderedPlayerIDListSync() for synchronous operations
+     */
+    @Deprecated
+    public CompletableFuture<Collection<String>> getOrderedPlayerIDList() {
+        return CompletableFuture.supplyAsync(() -> getOrderedPlayerIDListSync());
+    }
+
+    public Collection<String> getOrderedPlayerIDListSync() {
         List<String> sortedList = new ArrayList<>();
-        List<ITanPlayer> playersSorted = getITanPlayerList().stream().sorted(Comparator.comparingInt(tanPlayer -> -this.getRank(tanPlayer.getRankID(this)).getLevel())).toList();
+        Collection<ITanPlayer> iTanPlayers = getITanPlayerList();
+        List<ITanPlayer> playersSorted = iTanPlayers.stream()
+            .sorted(Comparator.comparingInt(tanPlayer -> -this.getRank(tanPlayer.getRankID(this)).getLevel()))
+            .toList();
 
         for (ITanPlayer tanPlayer : playersSorted) {
             sortedList.add(tanPlayer.getID());
@@ -288,9 +301,27 @@ public abstract class TerritoryData {
      * @param player    The player to check
      * @return          The worst relation
      */
-    public TownRelation getWorstRelationWith(ITanPlayer player) {
+    public CompletableFuture<TownRelation> getWorstRelationWith(ITanPlayer player) {
+        return player.getAllTerritoriesPlayerIsIn().thenApply(territoryDataList -> {
+            TownRelation worstRelation = null;
+            for(TerritoryData territoryData : territoryDataList){
+                TownRelation actualRelation = getRelationWith(territoryData);
+                if(worstRelation == null || worstRelation.isSuperiorTo(actualRelation)){
+                    worstRelation = actualRelation;
+                }
+            }
+            if(worstRelation == null){
+                return TownRelation.NEUTRAL;
+            }
+            return worstRelation;
+        });
+    }
+
+    public TownRelation getWorstRelationWithSync(ITanPlayer player) {
         TownRelation worstRelation = null;
-        for(TerritoryData territoryData : player.getAllTerritoriesPlayerIsIn()){
+        List<TerritoryData> territoryDataList = player.getAllTerritoriesPlayerIsInSync();
+        if (territoryDataList == null) return TownRelation.NEUTRAL;
+        for(TerritoryData territoryData : territoryDataList){
             TownRelation actualRelation = getRelationWith(territoryData);
             if(worstRelation == null || worstRelation.isSuperiorTo(actualRelation)){
                 worstRelation = actualRelation;
@@ -339,14 +370,14 @@ public abstract class TerritoryData {
 
         ItemMeta meta = icon.getItemMeta();
         if (meta != null) {
-            List<String> lore = meta.getLore();
+            List<String> lore = meta.hasLore() ? meta.lore().stream().map(LegacyComponentSerializer.legacySection()::serialize).toList() : new ArrayList<>();
 
             if (territoryData != null && lore != null) {
                 TownRelation relation = getRelationWith(territoryData);
                 lore.add(Lang.GUI_TOWN_INFO_TOWN_RELATION.get(langType, relation.getColoredName(langType)));
             }
 
-            meta.setLore(lore);
+            meta.lore(lore.stream().map(LegacyComponentSerializer.legacySection()::deserialize).toList());
             icon.setItemMeta(meta);
         }
         return icon;
@@ -455,8 +486,8 @@ public abstract class TerritoryData {
         return String.format("#%06X", getChunkColorCode());
     }
 
-    public ChatColor getChunkColor() {
-        return ChatColor.of(getChunkColorInHex());
+    public TextColor getChunkColor() {
+        return TextColor.fromHexString(getChunkColorInHex());
     }
 
     public void setChunkColor(int color) {
@@ -514,7 +545,7 @@ public abstract class TerritoryData {
      * @return True if the chunk has been claimed successfully, false otherwise
      */
     public boolean claimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
-        if(!canClaimChunk(player, chunk, ignoreAdjacent)) {
+        if(!canClaimChunkSync(player, chunk, ignoreAdjacent)) {
             return false;
         }
 
@@ -547,9 +578,9 @@ public abstract class TerritoryData {
      */
     protected abstract void abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent);
 
-    public boolean canClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-
+    public boolean canClaimChunkSync(Player player, Chunk chunk, boolean ignoreAdjacent) {
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        
         if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
             TanChatUtils.message(player, Lang.CHUNK_IS_BLACKLISTED.get(player));
             return false;
@@ -599,7 +630,7 @@ public abstract class TerritoryData {
         }
 
 
-        if (!NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTerritory(chunk, getID())) {
+        if (!NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTerritoryAsync(chunk, getID()).join()) {
             TanChatUtils.message(player, Lang.CHUNK_NOT_ADJACENT.get(player));
             return false;
         }
@@ -641,7 +672,8 @@ public abstract class TerritoryData {
     }
 
     public void addDonation(Player player, double amount) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        LangType langType = tanPlayer.getLang();
         double playerBalance = EconomyUtil.getBalance(player);
 
         if (playerBalance < amount) {
@@ -716,7 +748,7 @@ public abstract class TerritoryData {
 
     public List<GuiItem> getAllSubjugationProposals(Player player, int page) {
         ArrayList<GuiItem> proposals = new ArrayList<>();
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         LangType langType = tanPlayer.getLang();
 
         for (String proposalID : getOverlordsProposals()) {
@@ -770,7 +802,7 @@ public abstract class TerritoryData {
     public abstract RankData getRank(ITanPlayer tanPlayer);
 
     public RankData getRank(Player player) {
-        return getRank(PlayerDataStorage.getInstance().get(player));
+        return getRank(PlayerDataStorage.getInstance().getSync(player));
     }
 
     public int getNumberOfRank() {
@@ -820,7 +852,14 @@ public abstract class TerritoryData {
 
 
     public boolean doesPlayerHavePermission(Player player, RolePermission townRolePermission) {
-        return doesPlayerHavePermission(PlayerDataStorage.getInstance().get(player), townRolePermission);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        if (!this.isPlayerIn(tanPlayer)) {
+            return false;
+        }
+
+        if (isLeader(tanPlayer)) return true;
+
+        return getRank(tanPlayer).hasPermission(townRolePermission);
     }
 
     public boolean doesPlayerHavePermission(ITanPlayer tanPlayer, RolePermission townRolePermission) {
@@ -890,7 +929,7 @@ public abstract class TerritoryData {
             }
             removeFromBalance(costOfSalary);
             for (String playerId : playerIdList) {
-                ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerId);
+                ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(playerId);
                 EconomyUtil.addFromBalance(tanPlayer, rankSalary);
                 TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SalaryPaymentHistory(this, String.valueOf(rank.getID()), costOfSalary));
             }
@@ -996,13 +1035,18 @@ public abstract class TerritoryData {
 
     public String getColoredName() {
         if (Constants.displayTerritoryColor()) {
-            return getCustomColoredName().getText();
+            return LegacyComponentSerializer.legacySection().serialize(getCustomColoredName());
         } else {
             return getBaseColoredName();
         }
     }
 
-    public String getLeaderName() {
+    public CompletableFuture<String> getLeaderName() {
+        if (this.haveNoLeader()) return CompletableFuture.completedFuture(Lang.NO_LEADER.getDefault());
+        return CompletableFuture.completedFuture(getLeaderData().getNameStored());
+    }
+
+    public String getLeaderNameSync() {
         if (this.haveNoLeader()) return Lang.NO_LEADER.getDefault();
         return getLeaderData().getNameStored();
     }

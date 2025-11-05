@@ -65,7 +65,7 @@ public class PremiumStorage extends DatabaseStorage<Boolean> {
 
         String key = playerName.toLowerCase();
 
-        Boolean cachedValue = get(key);
+        Boolean cachedValue = get(key).join();
         if (cachedValue != null) {
             return cachedValue;
         }

@@ -40,7 +40,7 @@ public class PropertySellTaxLine extends ProfitLine {
     @Override
     public void addItems(Gui gui, Player player, LangType lang) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
 
         ItemStack tax = HeadUtils.makeSkullURL(Lang.GUI_TREASURY_BUY_PROPERTY_TAX.get(lang), "http://textures.minecraft.net/texture/97f82aceb98fe069e8c166ced00242a76660bbe07091c92cdde54c6ed10dcff9",
                 Lang.GUI_TREASURY_PROPERTY_RENT_TAX_DESC1.get(lang, String.format("%.2f", territoryData.getTaxOnBuyingProperty() * 100)),

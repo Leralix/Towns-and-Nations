@@ -3,7 +3,6 @@ package org.leralix.tan.commands.player;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
@@ -50,7 +49,8 @@ public class JoinTownCommand extends PlayerSubCommand {
     @Override
     public void perform(Player player, String[] args) {
 
-        LangType lang = PlayerDataStorage.getInstance().get(player).getLang();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        LangType lang = tanPlayer.getLang();
 
         if (args.length == 1) {
             TanChatUtils.message(player, Lang.NOT_ENOUGH_ARGS_ERROR.get(lang), SoundEnum.NOT_ALLOWED);
@@ -69,8 +69,11 @@ public class JoinTownCommand extends PlayerSubCommand {
                 return;
             }
 
-            TownData townData = TownDataStorage.getInstance().get(townID);
-            ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+            TownData townData = TownDataStorage.getInstance().getSync(townID);
+            if(townData == null) {
+                TanChatUtils.message(player, Lang.TOWN_NOT_FOUND.get(lang)); // Assuming a new Lang entry for town not found
+                return;
+            }
 
             if(townData.isFull()){
                 TanChatUtils.message(player, Lang.INVITATION_TOWN_FULL.get(lang));

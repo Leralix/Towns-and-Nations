@@ -36,7 +36,7 @@ class ChangeColorTest {
     void nominalCase() {
 
         Player player = server.addPlayer();
-        TownData townData = TownDataStorage.getInstance().newTown("town 1");
+        TownData townData = TownDataStorage.getInstance().newTown("town 1").join();
 
         ChangeColor changeColor = new ChangeColor(townData, null);
 

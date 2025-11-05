@@ -58,19 +58,20 @@ public class ClaimCommand extends PlayerSubCommand {
         TerritoryData territoryData;
 
         if (args[1].equals("town")) {
-            territoryData = TownDataStorage.getInstance().get(player);
-            if (territoryData == null) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get().getDefault());
-                return;
-            }
+            territoryData = TownDataStorage.getInstance().getSync(player);
         } else if (args[1].equals("region")) {
-            territoryData = RegionDataStorage.getInstance().get(player);
-            if (territoryData == null) {
-                TanChatUtils.message(player, Lang.TOWN_NO_REGION.get().getDefault());
-                return;
-            }
+            territoryData = RegionDataStorage.getInstance().getSync(player);
         } else {
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
+            return;
+        }
+
+        if (territoryData == null) {
+            if (args[1].equals("town")) {
+                TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get().getDefault());
+            } else {
+                TanChatUtils.message(player, Lang.TOWN_NO_REGION.get().getDefault());
+            }
             return;
         }
 

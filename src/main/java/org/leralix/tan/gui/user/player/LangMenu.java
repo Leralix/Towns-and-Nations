@@ -2,8 +2,8 @@ package org.leralix.tan.gui.user.player;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.gui.IteratorGUI;
@@ -58,9 +58,9 @@ public class LangMenu extends IteratorGUI {
         return IconManager.getInstance().get(IconKey.HELP_TRANSLATION_ICON)
                 .setName(Lang.HELP_US_TRANSLATE.get(tanPlayer))
                 .setAction(event -> {
-                    TextComponent textComponent = new TextComponent(Lang.CLICK_HERE_TO_OPEN_BROWSER.get(tanPlayer));
-                    textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://crowdin.com/project/town-and-nation"));
-                    player.spigot().sendMessage(textComponent);
+                    Component textComponent = Component.text(Lang.CLICK_HERE_TO_OPEN_BROWSER.get(tanPlayer))
+                            .clickEvent(ClickEvent.openUrl("https://crowdin.com/project/town-and-nation"));
+                    player.sendMessage(textComponent);
                     player.closeInventory();
                 })
                 .asGuiItem(player, langType);

@@ -38,7 +38,7 @@ public class TerritoryManager implements TanTerritoryManager {
 
     @Override
     public Optional<TanTown> getTown(String uuid) {
-        TownDataWrapper townDataWrapper = TownDataWrapper.of(townDataStorageInstance.get(uuid));
+        TownDataWrapper townDataWrapper = TownDataWrapper.of(townDataStorageInstance.getSync(uuid));
         return Optional.ofNullable(townDataWrapper);
     }
 
@@ -49,7 +49,7 @@ public class TerritoryManager implements TanTerritoryManager {
 
     @Override
     public Collection<TanTown> getTowns() {
-        return townDataStorageInstance.getAll().values().stream()
+        return townDataStorageInstance.getAllAsync().join().values().stream()
                 .map(TownDataWrapper::of)
                 .map(t -> (TanTown) t)
                 .toList();
@@ -57,7 +57,7 @@ public class TerritoryManager implements TanTerritoryManager {
 
     @Override
     public Optional<TanRegion> getRegion(String uuid) {
-        RegionDataWrapper regionDataWrapper = RegionDataWrapper.of(regionDataStorageInstance.get(uuid));
+        RegionDataWrapper regionDataWrapper = RegionDataWrapper.of(regionDataStorageInstance.getSync(uuid));
         return Optional.ofNullable(regionDataWrapper);
     }
 
@@ -68,7 +68,7 @@ public class TerritoryManager implements TanTerritoryManager {
 
     @Override
     public Collection<TanRegion> getRegions() {
-        return regionDataStorageInstance.getAll().values().stream()
+        return regionDataStorageInstance.getAllAsync().join().values().stream()
                 .map(RegionDataWrapper::of)
                 .map(TanRegion.class::cast)
                 .toList();

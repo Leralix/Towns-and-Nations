@@ -36,7 +36,7 @@ class TownDataTest {
 
     @Test
     void createTown(){
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
         TownData townData = new TownData("T1", "testTown", tanPlayer);
 
         assertEquals("T1", townData.getID());
@@ -49,8 +49,8 @@ class TownDataTest {
 
     @Test
     void addRank(){
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
-        TownData townData = TownDataStorage.getInstance().newTown("testTown", tanPlayer);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
+        TownData townData = TownDataStorage.getInstance().newTown("testTown", tanPlayer).join();
 
         assertEquals(townData.getTownDefaultRank(), tanPlayer.getTownRank());
 
@@ -68,9 +68,9 @@ class TownDataTest {
 
     @Test
     void deleteTownWithPlayers(){
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
-        ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().get(server.addPlayer());
-        TownData townData = TownDataStorage.getInstance().newTown("testTown", tanPlayer);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
+        ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().get(server.addPlayer()).join();
+        TownData townData = TownDataStorage.getInstance().newTown("testTown", tanPlayer).join();
 
         assertEquals(1, townData.getPlayerIDList().size());
         assertEquals(townData.getID(), tanPlayer.getTownId());
@@ -83,7 +83,7 @@ class TownDataTest {
         assertTrue(townData.getTownDefaultRank().getPlayersID().contains(tanPlayer2.getID()));
 
         townData.delete();
-        TownData otherTownData = TownDataStorage.getInstance().newTown("townToShowPlayerRank");
+        TownData otherTownData = TownDataStorage.getInstance().newTown("townToShowPlayerRank").join();
 
         assertNull(tanPlayer.getTownId());
         assertNull(tanPlayer2.getTownId());
@@ -93,7 +93,7 @@ class TownDataTest {
 
     @Test
     void createGhostTown(){
-        TownData townData = TownDataStorage.getInstance().newTown("ghost town");
+        TownData townData = TownDataStorage.getInstance().newTown("ghost town").join();
 
         assertEquals(0, townData.getITanPlayerList().size());
         assertEquals(0, townData.getBalance());

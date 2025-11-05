@@ -29,8 +29,8 @@ class ChangeTownTagTest {
         MockBukkit.load(TownsAndNations.class);
 
         player = server.addPlayer();
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        townData = TownDataStorage.getInstance().newTown("town 1", tanPlayer);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player).join();
+        townData = TownDataStorage.getInstance().newTown("town 1", tanPlayer).join();
     }
 
     @AfterEach
